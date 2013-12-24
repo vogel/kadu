@@ -19,42 +19,28 @@
 
 #include "active-plugin.h"
 
-#include "configuration/configuration-file.h"
-#include "misc/kadu-paths.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-loader.h"
 #include "plugins/plugin-root-component.h"
+#include "plugins/plugin-translations-loader.h"
 #include "plugins/plugin.h"
-#include "debug.h"
-
-#include <QtCore/QTranslator>
-#include <QtGui/QApplication>
 
 ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
-		: QObject{parent}, m_plugin{plugin}, m_pluginLoader{nullptr}, m_pluginRootComponent{nullptr}, m_translator{nullptr}
+		: QObject{parent}, m_plugin{plugin}, m_pluginLoader{nullptr}, m_pluginRootComponent{nullptr}
 {
-	m_pluginLoader.reset(new PluginLoader(plugin));
-
+	m_pluginLoader.reset(new PluginLoader{plugin});
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
-	loadTranslations();
+	m_pluginTranslationsLoader.reset(new PluginTranslationsLoader{plugin->name()});
 
 	m_pluginRootComponent = m_pluginLoader->instance();
 	if (!m_pluginRootComponent)
-	{
-		unloadTranslations();
-
-		kdebugf2();
 		throw PluginActivationErrorException(plugin, tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_plugin->name()));
-	}
 
 	auto res = m_pluginRootComponent->init(firstLoad);
 
 	if (res != 0)
 	{
 		m_pluginRootComponent = nullptr;
-
-		unloadTranslations();
-
 		throw PluginActivationErrorException(plugin, tr("Module initialization routine for %1 failed.").arg(m_plugin->name()));
 	}
 }
@@ -65,48 +51,6 @@ ActivePlugin::~ActivePlugin()
 		m_pluginRootComponent->done();
 
 	m_pluginRootComponent = nullptr;
-
-	// We cannot unload translations before calling PluginObject->done(), see #2177.
-	unloadTranslations();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Loads translations for plugin.
- *
- * This method loads translations for current Kadu's language. Translations are loaded from
- * dataDir/kadu/plugins/translations/pluginName_lang.qm file.
- */
-void ActivePlugin::loadTranslations()
-{
-	m_translator = new QTranslator{this};
-	auto const lang = config_file.readEntry("General", "Language");
-
-	if (m_translator->load(m_plugin->name() + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
-		qApp->installTranslator(m_translator);
-	else
-	{
-		delete m_translator;
-		m_translator = nullptr;
-	}
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @author Bartosz 'beevvy' Brachaczek
- * @short Unloads translations for plugin.
- *
- * This method unloads existing translations for this plugin. Translations are removed
- * from QApplication instance and \c Translator is deleted.
- */
-void ActivePlugin::unloadTranslations()
-{
-	if (m_translator)
-	{
-		qApp->removeTranslator(m_translator);
-		delete m_translator;
-		m_translator = nullptr;
-	}
 }
 
 #include "moc_active-plugin.cpp"

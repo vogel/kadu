@@ -19,26 +19,19 @@
 
 #pragma once
 
-#include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
-class Plugin;
-class PluginLoader;
-class PluginRootComponent;
-class PluginTranslationsLoader;
+class QString;
+class QTranslator;
 
-class ActivePlugin : public QObject
+class PluginTranslationsLoader
 {
-	Q_OBJECT
 
 public:
-	explicit ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent = nullptr);
-	virtual ~ActivePlugin();
+	explicit PluginTranslationsLoader(const QString &pluginName) noexcept;
+	~PluginTranslationsLoader() noexcept;
 
 private:
-	Plugin *m_plugin;
-	QScopedPointer<PluginLoader> m_pluginLoader;
-	QScopedPointer<PluginTranslationsLoader> m_pluginTranslationsLoader;
-	PluginRootComponent *m_pluginRootComponent;
+	QScopedPointer<QTranslator> m_translator;
 
 };

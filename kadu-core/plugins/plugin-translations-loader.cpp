@@ -17,28 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "plugin-translations-loader.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
+#include "configuration/configuration-file.h"
+#include "misc/kadu-paths.h"
 
-class Plugin;
-class PluginLoader;
-class PluginRootComponent;
-class PluginTranslationsLoader;
+#include <QtCore/QLatin1String>
+#include <QtCore/QTranslator>
+#include <QtGui/QApplication>
 
-class ActivePlugin : public QObject
+PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept
 {
-	Q_OBJECT
+	auto const lang = config_file.readEntry("General", "Language");
 
-public:
-	explicit ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent = nullptr);
-	virtual ~ActivePlugin();
+	m_translator.reset(new QTranslator);
 
-private:
-	Plugin *m_plugin;
-	QScopedPointer<PluginLoader> m_pluginLoader;
-	QScopedPointer<PluginTranslationsLoader> m_pluginTranslationsLoader;
-	PluginRootComponent *m_pluginRootComponent;
+	if (m_translator->load(pluginName + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
+		qApp->installTranslator(m_translator.data());
+	else
+		m_translator.reset();
+}
 
-};
+PluginTranslationsLoader::~PluginTranslationsLoader() noexcept
+{
+	qApp->removeTranslator(m_translator.data());
+}
