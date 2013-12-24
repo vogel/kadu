@@ -12,6 +12,7 @@ set (plugins_SRCS
 	plugin-info-reader.cpp
 	plugin-loader.cpp
 	plugin-repository.cpp
+	plugin-root-component-handler.cpp
 	plugin-translations-loader.cpp
 	plugins-manager.cpp
 )

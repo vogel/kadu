@@ -17,17 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "active-plugin.h"
+#pragma once
 
-#include "plugins/plugin-loader.h"
-#include "plugins/plugin-root-component-handler.h"
-#include "plugins/plugin-translations-loader.h"
-#include "plugins/plugin.h"
+#include <QtCore/QObject>
 
-ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad)
+class Plugin;
+class PluginRootComponent;
+
+class PluginRootComponentHandler : QObject
 {
-	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
-	m_pluginTranslationsLoader.reset(new PluginTranslationsLoader{plugin->name()});
-	m_pluginLoader.reset(new PluginLoader{plugin});
-	m_pluginRootComponentHandler.reset(new PluginRootComponentHandler{plugin, firstLoad, m_pluginLoader->instance()});
-}
+	Q_OBJECT
+
+public:
+	PluginRootComponentHandler(Plugin *plugin, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr) noexcept(false);
+	~PluginRootComponentHandler() noexcept;
+
+private:
+	PluginRootComponent *m_pluginRootComponent;
+
+};

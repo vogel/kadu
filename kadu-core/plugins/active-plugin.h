@@ -19,25 +19,24 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "plugins/plugin-loader.h"
+#include "plugins/plugin-root-component-handler.h"
+#include "plugins/plugin-translations-loader.h"
+
 #include <QtCore/QScopedPointer>
 
 class Plugin;
-class PluginLoader;
-class PluginRootComponent;
-class PluginTranslationsLoader;
 
-class ActivePlugin : public QObject
+class ActivePlugin
 {
-	Q_OBJECT
 
 public:
-	explicit ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent = nullptr);
-	virtual ~ActivePlugin();
+	explicit ActivePlugin(Plugin *plugin, bool firstLoad);
 
 private:
-	QScopedPointer<PluginLoader> m_pluginLoader;
+	// translations must be loaded first and uloaded last, see #2177
 	QScopedPointer<PluginTranslationsLoader> m_pluginTranslationsLoader;
-	PluginRootComponent *m_pluginRootComponent;
+	QScopedPointer<PluginLoader> m_pluginLoader;
+	QScopedPointer<PluginRootComponentHandler> m_pluginRootComponentHandler;
 
 };
