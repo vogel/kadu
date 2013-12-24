@@ -33,7 +33,7 @@ class PluginLoader : public QObject
 
 public:
 	explicit PluginLoader(Plugin *plugin, QObject *parent = nullptr) noexcept(false);
-	~PluginLoader() noexcept;
+	virtual ~PluginLoader() noexcept;
 
 	PluginRootComponent * instance() const noexcept;
 
