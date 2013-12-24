@@ -3,6 +3,7 @@ set (plugins_SRCS
 	dependency-graph/plugin-dependency-graph-builder.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
+	active-plugin.cpp
 	plugin.cpp
 	plugin-activation-action.cpp
 	plugin-activation-service.cpp

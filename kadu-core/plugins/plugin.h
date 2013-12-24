@@ -30,11 +30,7 @@
 
 #include <QtCore/QObject>
 
-class GenericPlugin;
-
-class QLibrary;
-class QPluginLoader;
-class QTranslator;
+class ActivePlugin;
 
 enum class PluginActivationReason;
 enum class PluginDeactivationReason;
@@ -128,7 +124,7 @@ public:
 	 * Returns true if plugin is active. Plugin is active when its library file is loaded
 	 * and object is created and available.
 	 */
-	bool isActive() const { return m_active; }
+	bool isActive() const { return m_activePlugin; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -162,16 +158,8 @@ protected:
 
 private:
 	PluginInfo m_pluginInfo;
-	bool m_active;
+	ActivePlugin *m_activePlugin;
 	PluginState m_state;
-
-	QPluginLoader *m_pluginLoader;
-	GenericPlugin *m_pluginObject;
-
-	QTranslator *m_translator;
-
-	void loadTranslations();
-	void unloadTranslations();
 
 };
 
