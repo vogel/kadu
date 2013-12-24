@@ -45,7 +45,7 @@ EncryptionNgPlugin::~EncryptionNgPlugin()
 
 }
 
-int EncryptionNgPlugin::init(bool firstLoad)
+bool EncryptionNgPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -56,7 +56,7 @@ int EncryptionNgPlugin::init(bool firstLoad)
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Encryption"),
 				tr("The QCA OSSL plugin for libqca2 is not present!"));
 
-		return -1;
+		return false;
 	}
 
 	EncryptionNgNotification::registerNotifications();
@@ -65,7 +65,7 @@ int EncryptionNgPlugin::init(bool firstLoad)
 	EncryptionActions::registerActions();
 	EncryptionManager::createInstance();
 
-	return 0;
+	return true;
 }
 
 void EncryptionNgPlugin::done()

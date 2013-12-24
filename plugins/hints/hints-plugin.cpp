@@ -43,7 +43,7 @@ HintsPlugin::~HintsPlugin()
 	Instance = 0;
 }
 
-int HintsPlugin::init(bool firstLoad)
+bool HintsPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -51,7 +51,7 @@ int HintsPlugin::init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 	MainConfigurationWindow::registerUiHandler(HintManagerInstance->uiHandler());
 
-	return 0;
+	return true;
 }
 
 void HintsPlugin::done()

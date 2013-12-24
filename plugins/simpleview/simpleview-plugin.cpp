@@ -36,13 +36,13 @@ SimpleViewPlugin::~SimpleViewPlugin()
 {
 }
 
-int SimpleViewPlugin::init(bool firstLoad)
+bool SimpleViewPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	SimpleView::createInstance();
 
-	return 0;
+	return true;
 }
 
 void SimpleViewPlugin::done()

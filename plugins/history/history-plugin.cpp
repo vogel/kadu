@@ -43,7 +43,7 @@ HistoryPlugin::~HistoryPlugin()
 {
 }
 
-int HistoryPlugin::init(bool firstLoad)
+bool HistoryPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -56,7 +56,7 @@ int HistoryPlugin::init(bool firstLoad)
 
 	registerServices();
 
-	return 0;
+	return true;
 }
 
 void HistoryPlugin::done()

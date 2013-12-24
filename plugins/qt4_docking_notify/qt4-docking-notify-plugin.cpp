@@ -32,16 +32,16 @@ Qt4DockingNotifyPlugin::~Qt4DockingNotifyPlugin()
 {
 }
 
-int Qt4DockingNotifyPlugin::init(bool firstLoad)
+bool Qt4DockingNotifyPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	if (!QSystemTrayIcon::supportsMessages())
-		return 1;
+		return false;
 
 	NotifierInstance = new Qt4Notify(this);
 
-	return 0;
+	return true;
 }
 
 void Qt4DockingNotifyPlugin::done()

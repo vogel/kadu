@@ -37,7 +37,7 @@ class Qt4DockingPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~Qt4DockingPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 };
 

@@ -117,14 +117,14 @@ PCSpeaker::~PCSpeaker()
 {
 }
 
-int PCSpeaker::init(bool firstLoad)
+bool PCSpeaker::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	NotificationManager::instance()->registerNotifier(this);
 	createDefaultConfiguration();
 
-	return 0;
+	return true;
 }
 
 void PCSpeaker::done()

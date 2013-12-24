@@ -30,12 +30,12 @@ IdlePlugin::~IdlePlugin()
 {
 }
 
-int IdlePlugin::init(bool firstLoad)
+bool IdlePlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	IdleInstance = new Idle(this);
-	return 0;
+	return true;
 }
 
 void IdlePlugin::done()

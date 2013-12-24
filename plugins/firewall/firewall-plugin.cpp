@@ -33,7 +33,7 @@ FirewallPlugin::~FirewallPlugin()
 {
 }
 
-int FirewallPlugin::init(bool firstLoad)
+bool FirewallPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -42,7 +42,7 @@ int FirewallPlugin::init(bool firstLoad)
 	FirewallNotification::registerNotifications();
 	FirewallConfigurationUiHandler::registerUiHandler();
 
-	return 0;
+	return true;
 }
 
 void FirewallPlugin::done()

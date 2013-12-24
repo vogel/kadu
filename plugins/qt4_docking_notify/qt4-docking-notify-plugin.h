@@ -41,7 +41,7 @@ class Qt4DockingNotifyPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~Qt4DockingNotifyPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

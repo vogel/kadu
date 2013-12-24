@@ -108,7 +108,7 @@ void EmoticonsPlugin::stopConfigurator()
 	Configurator.reset();
 }
 
-int EmoticonsPlugin::init(bool firstLoad)
+bool EmoticonsPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -118,7 +118,7 @@ int EmoticonsPlugin::init(bool firstLoad)
 	registerActions();
 	startConfigurator();
 
-	return 0;
+	return true;
 }
 
 void EmoticonsPlugin::done()

@@ -34,7 +34,7 @@ TabsPlugin::~TabsPlugin()
 {
 }
 
-int TabsPlugin::init(bool firstLoad)
+bool TabsPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -50,7 +50,7 @@ int TabsPlugin::init(bool firstLoad)
 
 	TabsManagerInstance->openStoredChatTabs();
 
-	return 0;
+	return true;
 }
 
 void TabsPlugin::done()

@@ -30,7 +30,7 @@ AntistringPlugin::~AntistringPlugin()
 {
 }
 
-int AntistringPlugin::init(bool firstLoad)
+bool AntistringPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -38,7 +38,7 @@ int AntistringPlugin::init(bool firstLoad)
 	AntistringConfigurationUiHandler::registerUiHandler();
 	AntistringNotification::registerNotifications();
 
-	return 0;
+	return true;
 }
 
 void AntistringPlugin::done()

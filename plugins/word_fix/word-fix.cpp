@@ -131,7 +131,7 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	}
 }
 
-int WordFix::init(bool firstLoad)
+bool WordFix::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -142,7 +142,7 @@ int WordFix::init(bool firstLoad)
 	setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 
 	kdebugf2();
-	return 0;
+	return true;
 }
 
 void WordFix::done()

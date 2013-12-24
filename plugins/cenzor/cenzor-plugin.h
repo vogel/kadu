@@ -37,7 +37,7 @@ class CenzorPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~CenzorPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 };
 

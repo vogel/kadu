@@ -40,7 +40,7 @@ class SqlHistoryPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~SqlHistoryPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

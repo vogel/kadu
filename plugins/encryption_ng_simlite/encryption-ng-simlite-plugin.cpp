@@ -48,7 +48,7 @@ EngryptionNgSimlitePlugin::~EngryptionNgSimlitePlugin()
 {
 }
 
-int EngryptionNgSimlitePlugin::init(bool firstLoad)
+bool EngryptionNgSimlitePlugin::init(bool firstLoad)
 {
 	if (firstLoad)
 		EncryptioNgSimliteKeyImporter::createInstance();
@@ -69,7 +69,7 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
 	MenuInventory::instance()->menu("encryption-ng")->addAction(Actions::instance()->value("simliteSendPublicKeyAction"), KaduMenu::SectionConfig);
 
-	return 0;
+	return true;
 }
 
 void EngryptionNgSimlitePlugin::done()

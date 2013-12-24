@@ -34,20 +34,20 @@ Qt4SoundPlugin::~Qt4SoundPlugin()
 {
 }
 
-int Qt4SoundPlugin::init(bool firstLoad)
+bool Qt4SoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	if (!QSound::isAvailable())
 	{
 		MessageDialog::show(KaduIcon("dialog-error"), QObject::tr("Kadu"), QObject::tr("QSound API is not available on this platform"));
-		return 1;
+		return false;
 	}
 
 	QtSound4Player::createInstance();
 	SoundManager::instance()->setPlayer(QtSound4Player::instance());
 
-	return 0;
+	return true;
 }
 
 void Qt4SoundPlugin::done()

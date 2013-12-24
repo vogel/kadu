@@ -88,7 +88,7 @@ void ImageLinkPlugin::stopConfigurator()
 	Configurator.reset();
 }
 
-int ImageLinkPlugin::init(bool firstLoad)
+bool ImageLinkPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -97,7 +97,7 @@ int ImageLinkPlugin::init(bool firstLoad)
 	registerVideoExpander();
 	startConfigurator();
 
-	return 0;
+	return true;
 }
 
 void ImageLinkPlugin::done()

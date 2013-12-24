@@ -29,7 +29,7 @@ HistoryMigrationPlugin::~HistoryMigrationPlugin()
 {
 }
 
-int HistoryMigrationPlugin::init(bool firstLoad)
+bool HistoryMigrationPlugin::init(bool firstLoad)
 {
 	HistoryMigrationActions::registerActions();
 	HistoryImporterManager::createInstance();
@@ -37,7 +37,7 @@ int HistoryMigrationPlugin::init(bool firstLoad)
 	if (firstLoad)
 		HistoryMigrationActions::instance()->runImportHistoryAction();
 
-	return 0;
+	return true;
 }
 
 void HistoryMigrationPlugin::done()

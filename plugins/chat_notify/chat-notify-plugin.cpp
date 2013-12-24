@@ -33,7 +33,7 @@ ChatNotifyPlugin::~ChatNotifyPlugin()
 {
 }
 
-int ChatNotifyPlugin::init(bool firstLoad)
+bool ChatNotifyPlugin::init(bool firstLoad)
 {
 	if (firstLoad)
 		createDefaultConfiguration();
@@ -44,7 +44,7 @@ int ChatNotifyPlugin::init(bool firstLoad)
 
 	NotificationManager::instance()->registerNotifier(NotifierInstance);
 
-	return 0;
+	return true;
 }
 
 void ChatNotifyPlugin::done()

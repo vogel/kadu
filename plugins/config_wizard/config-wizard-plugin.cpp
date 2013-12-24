@@ -29,13 +29,13 @@ ConfigWizardPlugin::~ConfigWizardPlugin()
 
 }
 
-int ConfigWizardPlugin::init(bool firstLoad)
+bool ConfigWizardPlugin::init(bool firstLoad)
 {
 	ConfigWizardConfigurationUiHandler::registerActions(firstLoad);
 	if (firstLoad)
 		ConfigWizardConfigurationUiHandler::instance()->showConfigWizard();
 
-	return 0;
+	return true;
 }
 
 void ConfigWizardPlugin::done()

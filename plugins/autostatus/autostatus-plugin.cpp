@@ -32,7 +32,7 @@ AutostatusPlugin::~AutostatusPlugin()
 {
 }
 
-int AutostatusPlugin::init(bool firstLoad)
+bool AutostatusPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -41,7 +41,7 @@ int AutostatusPlugin::init(bool firstLoad)
 	AutostatusActions::createInstance();
 	AutostatusActions::instance()->registerActions();
 
-	return 0;
+	return true;
 }
 
 void AutostatusPlugin::done()

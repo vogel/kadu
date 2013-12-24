@@ -33,7 +33,7 @@ ExtSoundPlugin::~ExtSoundPlugin()
 {
 }
 
-int ExtSoundPlugin::init(bool firstLoad)
+bool ExtSoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -41,7 +41,7 @@ int ExtSoundPlugin::init(bool firstLoad)
 	SoundManager::instance()->setPlayer(ExternalPlayer::instance());
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
 
-	return 0;
+	return true;
 }
 
 void ExtSoundPlugin::done()

@@ -48,7 +48,7 @@ public:
 	explicit SpellCheckerPlugin(QObject *parent = 0);
 	virtual ~SpellCheckerPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 	SpellChecker * spellChecker() const { return SpellCheckerInstance; }

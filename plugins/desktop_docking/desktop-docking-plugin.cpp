@@ -35,7 +35,7 @@ DesktopDockingPlugin::~DesktopDockingPlugin()
 {
 }
 
-int DesktopDockingPlugin::init(bool firstLoad)
+bool DesktopDockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -45,7 +45,7 @@ int DesktopDockingPlugin::init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
 	MainConfigurationWindow::registerUiHandler(DesktopDockConfigurationUiHandler::instance());
 
-	return 0;
+	return true;
 }
 
 void DesktopDockingPlugin::done()

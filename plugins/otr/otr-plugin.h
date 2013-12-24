@@ -155,7 +155,7 @@ public:
 	explicit OtrPlugin();
 	virtual ~OtrPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

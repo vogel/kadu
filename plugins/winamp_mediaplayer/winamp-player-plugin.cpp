@@ -35,12 +35,11 @@ WinampMediaplayerPlugin::~WinampMediaplayerPlugin()
 {
 }
 
-int WinampMediaplayerPlugin::init(bool firstLoad)
+bool WinampMediaplayerPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 	PlayerInstance = new WinampMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer(PlayerInstance, PlayerInstance);
-	return res ? 0 : 1;
+	return MediaPlayer::instance()->registerMediaPlayer(PlayerInstance, PlayerInstance);
 }
 
 void WinampMediaplayerPlugin::done()

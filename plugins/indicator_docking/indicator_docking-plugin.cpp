@@ -31,12 +31,12 @@ IndicatorDockingPlugin::~IndicatorDockingPlugin()
 {
 }
 
-int IndicatorDockingPlugin::init(bool firstLoad)
+bool IndicatorDockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	IndicatorDocking::createInstance();
-	return 0;
+	return true;
 }
 
 void IndicatorDockingPlugin::done()

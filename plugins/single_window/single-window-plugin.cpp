@@ -34,7 +34,7 @@ SingleWindowPlugin::~SingleWindowPlugin()
 {
 }
 
-int SingleWindowPlugin::init(bool firstLoad)
+bool SingleWindowPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -45,7 +45,7 @@ int SingleWindowPlugin::init(bool firstLoad)
 	m_singleWindowChatWidgetContainerHandler.data()->setSingleWindow(m_singleWindowManager.data()->window());
 	Core::instance()->chatWidgetContainerHandlerRepository()->registerChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler.data());
 
-	return 0;
+	return true;
 }
 
 void SingleWindowPlugin::done()

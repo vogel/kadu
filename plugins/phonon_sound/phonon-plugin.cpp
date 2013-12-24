@@ -32,14 +32,14 @@ PhononPlugin::~PhononPlugin()
 {
 }
 
-int PhononPlugin::init(bool firstLoad)
+bool PhononPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	PhononPlayer::createInstance();
 	SoundManager::instance()->setPlayer(PhononPlayer::instance());
 
-	return 0;
+	return true;
 }
 
 void PhononPlugin::done()

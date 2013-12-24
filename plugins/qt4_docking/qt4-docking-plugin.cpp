@@ -31,12 +31,12 @@ Qt4DockingPlugin::~Qt4DockingPlugin()
 {
 }
 
-int Qt4DockingPlugin::init(bool firstLoad)
+bool Qt4DockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	DockingManager::instance()->setDocker(Qt4TrayIcon::createInstance());
-	return 0;
+	return true;
 }
 
 void Qt4DockingPlugin::done()

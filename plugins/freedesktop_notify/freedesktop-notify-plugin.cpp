@@ -30,14 +30,14 @@ FreedesktopNotifyPlugin::~FreedesktopNotifyPlugin()
 {
 }
 
-int FreedesktopNotifyPlugin::init(bool firstLoad)
+bool FreedesktopNotifyPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	FreedesktopNotify::createInstance();
 	FreedesktopNotifyConfigurationUiHandler::registerConfigurationUi();
 
-	return 0;
+	return true;
 }
 
 void FreedesktopNotifyPlugin::done()

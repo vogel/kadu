@@ -43,7 +43,7 @@ class WinampMediaplayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~WinampMediaplayerPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 };
 

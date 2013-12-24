@@ -36,13 +36,12 @@ ItunesMediaplayerPlugin::~ItunesMediaplayerPlugin()
 
 }
 
-int ItunesMediaplayerPlugin::init(bool firstLoad)
+bool ItunesMediaplayerPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	iTunes = new ITunesMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer(iTunes, iTunes);
-	return res ? 0 : 1;
+	return MediaPlayer::instance()->registerMediaPlayer(iTunes, iTunes);
 }
 
 void ItunesMediaplayerPlugin::done()

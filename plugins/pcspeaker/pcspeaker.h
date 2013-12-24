@@ -20,7 +20,7 @@ class PCSpeaker : public Notifier, public PluginRootComponent
 		PCSpeaker(QObject *parent = NULL);
 		~PCSpeaker();
 
-		virtual int init(bool firstLoad);
+		virtual bool init(bool firstLoad);
 		virtual void done();
 
 		virtual void notify(Notification *notification);

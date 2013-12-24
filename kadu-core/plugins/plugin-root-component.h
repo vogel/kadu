@@ -60,7 +60,7 @@ public:
 	 * Kadu instance. Plugin can then do additional work if reuired (like showing configuration
 	 * wizard window).
 	 */
-	virtual int init(bool firstLoad) = 0;
+	virtual bool init(bool firstLoad) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

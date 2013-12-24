@@ -42,7 +42,7 @@ SpellCheckerPlugin::~SpellCheckerPlugin()
 	Instance = 0;
 }
 
-int SpellCheckerPlugin::init(bool firstLoad)
+bool SpellCheckerPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -54,7 +54,7 @@ int SpellCheckerPlugin::init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::registerUiHandler(SpellCheckerInstance);
 
-	return 0;
+	return true;
 }
 
 void SpellCheckerPlugin::done()

@@ -29,7 +29,7 @@ public:
 	explicit FalfMediaPlayer(QObject *parent = 0);
 	virtual ~FalfMediaPlayer();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 	virtual QString getTitle();

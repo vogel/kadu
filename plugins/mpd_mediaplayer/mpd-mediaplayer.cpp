@@ -33,12 +33,11 @@ MPDMediaPlayer::~MPDMediaPlayer()
 {
 }
 
-int MPDMediaPlayer::init(bool firstLoad)
+bool MPDMediaPlayer::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	bool res = MediaPlayer::instance()->registerMediaPlayer(this, this);
-	return res ? 0 : 1;
+	return MediaPlayer::instance()->registerMediaPlayer(this, this);
 }
 
 void MPDMediaPlayer::done()

@@ -33,7 +33,7 @@ CenzorPlugin::~CenzorPlugin()
 {
 }
 
-int CenzorPlugin::init(bool firstLoad)
+bool CenzorPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -41,7 +41,7 @@ int CenzorPlugin::init(bool firstLoad)
 	CenzorNotification::registerNotifications();
 	CenzorConfigurationUiHandler::registerConfigurationUi();
 
-	return 0;
+	return true;
 }
 
 void CenzorPlugin::done()

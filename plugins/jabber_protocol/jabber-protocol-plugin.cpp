@@ -45,14 +45,14 @@ JabberProtocolPlugin::~JabberProtocolPlugin()
 {
 }
 
-int JabberProtocolPlugin::init(bool firstLoad)
+bool JabberProtocolPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
 			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk")
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
-		return 0;
+		return true;
 
 	S5BServerManager::createInstance();
 
@@ -77,7 +77,7 @@ int JabberProtocolPlugin::init(bool firstLoad)
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
-	return 0;
+	return true;
 }
 
 void JabberProtocolPlugin::done()

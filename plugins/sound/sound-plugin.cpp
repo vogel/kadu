@@ -38,7 +38,7 @@ SoundPlugin::~SoundPlugin()
 {
 }
 
-int SoundPlugin::init(bool firstLoad)
+bool SoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -49,7 +49,7 @@ int SoundPlugin::init(bool firstLoad)
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
 	SoundActions::registerActions();
 
-	return 0;
+	return true;
 
 }
 

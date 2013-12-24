@@ -75,10 +75,10 @@ AutoResponder::~AutoResponder()
 	disconnect(Core::instance()->chatWidgetRepository(), 0, this, 0);
 }
 
-int AutoResponder::init(bool firstLoad)
+bool AutoResponder::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-	return 0;
+	return true;
 }
 
 void AutoResponder::done()

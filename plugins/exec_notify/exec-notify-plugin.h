@@ -42,7 +42,7 @@ class ExecNotifyPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ExecNotifyPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

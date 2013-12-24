@@ -37,7 +37,7 @@ class DockingPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~DockingPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 };
 

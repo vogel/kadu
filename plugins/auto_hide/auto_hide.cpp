@@ -46,14 +46,14 @@ AutoHide::~AutoHide()
 {
 }
 
-int AutoHide::init(bool firstLoad)
+bool AutoHide::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
-	return 0;
+	return true;
 }
 
 void AutoHide::done()

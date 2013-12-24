@@ -49,16 +49,16 @@ AmarokMediaPlayer::~AmarokMediaPlayer()
 	kdebugf();
 }
 
-int AmarokMediaPlayer::init(bool firstLoad)
+bool AmarokMediaPlayer::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	bool res = MediaPlayer::instance()->registerMediaPlayer(this, this);
 	if (!res)
-		return 1;
+		return false;
 
 	MediaPlayer::instance()->setInterval(5);
-	return 0;
+	return true;
 }
 
 void AmarokMediaPlayer::done()

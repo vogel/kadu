@@ -76,14 +76,14 @@ AutoAway::~AutoAway()
 	StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);
 }
 
-int AutoAway::init(bool firstLoad)
+bool AutoAway::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
-	return 0;
+	return true;
 }
 
 void AutoAway::done()

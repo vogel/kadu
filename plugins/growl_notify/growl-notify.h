@@ -23,7 +23,7 @@ public:
 	GrowlNotify(QObject *parent = 0);
 	~GrowlNotify();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 	virtual void notify(Notification *notification);

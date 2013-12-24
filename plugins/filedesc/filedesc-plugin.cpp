@@ -31,14 +31,14 @@ FiledescPlugin::~FiledescPlugin()
 {
 }
 
-int FiledescPlugin::init(bool firstLoad)
+bool FiledescPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	FileDescriptionInstance = new FileDescription(this);
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
 
-	return 0;
+	return true;
 }
 
 void FiledescPlugin::done()

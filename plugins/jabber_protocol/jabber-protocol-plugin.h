@@ -42,7 +42,7 @@ class JabberProtocolPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~JabberProtocolPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

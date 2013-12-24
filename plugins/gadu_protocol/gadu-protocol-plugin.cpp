@@ -47,12 +47,12 @@ GaduProtocolPlugin::~GaduProtocolPlugin()
 {
 }
 
-int GaduProtocolPlugin::init(bool firstLoad)
+bool GaduProtocolPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
-		return 0;
+		return true;
 
 #ifdef DEBUG_OUTPUT_ENABLED
 	// 8 bits for gadu debug
@@ -66,7 +66,7 @@ int GaduProtocolPlugin::init(bool firstLoad)
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Gadu-Gadu Protocol"),
 				tr("Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support."));
 
-		return -1;
+		return false;
 	}
 
 	gg_proxy_host = 0;
@@ -91,7 +91,7 @@ int GaduProtocolPlugin::init(bool firstLoad)
 		GaduImporter::instance()->importAccounts();
 	GaduImporter::instance()->importContacts();
 
-	return 0;
+	return true;
 }
 
 void GaduProtocolPlugin::done()

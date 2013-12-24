@@ -29,7 +29,7 @@ PluginRootComponentHandler::PluginRootComponentHandler(Plugin *plugin, bool firs
 	if (!m_pluginRootComponent)
 		throw PluginActivationErrorException(plugin, tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(plugin->name()));
 
-	if (0 != m_pluginRootComponent->init(firstLoad))
+	if (!m_pluginRootComponent->init(firstLoad))
 		throw PluginActivationErrorException(plugin, tr("Module initialization routine for %1 failed.").arg(plugin->name()));
 }
 

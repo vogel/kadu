@@ -42,7 +42,7 @@ class ItunesMediaplayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ItunesMediaplayerPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 };
 

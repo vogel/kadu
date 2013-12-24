@@ -308,12 +308,12 @@ void OtrPlugin::unregisterOtrUserStateService()
 	UserStateService.reset();
 }
 
-int OtrPlugin::init(bool firstLoad)
+bool OtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
 
 	if (!OtrAvailable)
-		return 1;
+		return false;
 
 	registerOtrAccountConfigurationWidgetFactory();
 	registerOtrAppOpsService();
@@ -429,7 +429,7 @@ int OtrPlugin::init(bool firstLoad)
 	TrustLevelService->setUserStateService(UserStateService.data());
 	TrustLevelService->updateTrustLevels();
 
-	return 0;
+	return true;
 }
 
 void OtrPlugin::done()

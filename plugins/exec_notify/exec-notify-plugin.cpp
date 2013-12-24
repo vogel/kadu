@@ -30,13 +30,13 @@ ExecNotifyPlugin::~ExecNotifyPlugin()
 {
 }
 
-int ExecNotifyPlugin::init(bool firstLoad)
+bool ExecNotifyPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	ExecNotifyInstance = new ExecNotify(this);
 
-	return 0;
+	return true;
 }
 
 void ExecNotifyPlugin::done()

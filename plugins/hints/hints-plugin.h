@@ -47,7 +47,7 @@ public:
 	explicit HintsPlugin(QObject *parent = 0);
 	virtual ~HintsPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 	HintManager * hintsManger() { return HintManagerInstance; }

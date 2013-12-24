@@ -39,7 +39,7 @@ class MediaplayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~MediaplayerPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

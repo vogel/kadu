@@ -31,14 +31,14 @@ DockingPlugin::~DockingPlugin()
 {
 }
 
-int DockingPlugin::init(bool firstLoad)
+bool DockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	DockingManager::createInstance();
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
 
-	return 0;
+	return true;
 }
 
 void DockingPlugin::done()

@@ -68,20 +68,20 @@ GrowlNotify::~GrowlNotify()
 	kdebugf2();
 }
 
-int GrowlNotify::init(bool firstLoad)
+bool GrowlNotify::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	if (!grow_is_installed())
 	{
 		QMessageBox::information(NULL, tr("Error"), tr("Growl is not installed in your system"));
-		return 1;
+		return false;
 	}
 
 	NotificationManager::instance()->registerNotifier(this);
 	createDefaultConfiguration();
 
-	return 0;
+	return true;
 }
 
 void GrowlNotify::done()

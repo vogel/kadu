@@ -30,7 +30,7 @@ MediaplayerPlugin::~MediaplayerPlugin()
 {
 }
 
-int MediaplayerPlugin::init(bool firstLoad)
+bool MediaplayerPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -39,7 +39,7 @@ int MediaplayerPlugin::init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(MediaPlayer::instance());
 
-	return 0;
+	return true;
 }
 
 void MediaplayerPlugin::done()

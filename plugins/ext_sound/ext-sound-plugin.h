@@ -36,7 +36,7 @@ class ExtSoundPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ExtSoundPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

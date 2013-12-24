@@ -33,7 +33,7 @@ SMSPlugin::~SMSPlugin()
 {
 }
 
-int SMSPlugin::init(bool firstLoad)
+bool SMSPlugin::init(bool firstLoad)
 {
 	m_smsDialogRepository.reset(new SmsDialogRepository(this));
 
@@ -42,7 +42,7 @@ int SMSPlugin::init(bool firstLoad)
 
 	SmsActions::instance()->setSmsDialogRepository(m_smsDialogRepository.data());
 
-	return 0;
+	return true;
 }
 
 void SMSPlugin::done()

@@ -90,7 +90,7 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 public slots:

@@ -37,7 +37,7 @@ ScreenshotPlugin::~ScreenshotPlugin()
 {
 }
 
-int ScreenshotPlugin::init(bool firstLoad)
+bool ScreenshotPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -48,7 +48,7 @@ int ScreenshotPlugin::init(bool firstLoad)
 	ScreenShotConfigurationUiHandler::registerConfigurationUi();
 	ScreenshotNotification::registerNotifications();
 
-	return 0;
+	return true;
 }
 
 void ScreenshotPlugin::done()

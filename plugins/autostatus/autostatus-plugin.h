@@ -38,7 +38,7 @@ class AutostatusPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~AutostatusPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

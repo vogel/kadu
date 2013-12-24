@@ -39,7 +39,7 @@ class MPRISPlayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~MPRISPlayerPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 };
 

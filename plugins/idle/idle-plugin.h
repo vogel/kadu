@@ -42,7 +42,7 @@ class IDLEAPI IdlePlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~IdlePlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 	static Idle * idle() { return IdleInstance; }

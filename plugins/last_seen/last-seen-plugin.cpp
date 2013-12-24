@@ -30,13 +30,13 @@ LastSeenPlugin::~LastSeenPlugin()
 {
 }
 
-int LastSeenPlugin::init(bool firstLoad)
+bool LastSeenPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	InfosInstance = new Infos(this);
 
-	return 0;
+	return true;
 }
 
 void LastSeenPlugin::done()

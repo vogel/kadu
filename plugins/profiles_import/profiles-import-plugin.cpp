@@ -37,7 +37,7 @@ ProfilesImportPlugin::~ProfilesImportPlugin()
 {
 }
 
-int ProfilesImportPlugin::init(bool firstLoad)
+bool ProfilesImportPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -46,7 +46,7 @@ int ProfilesImportPlugin::init(bool firstLoad)
 	if (firstLoad && !ProfileDataManager::readProfileData().isEmpty())
 		(new ImportProfilesWindow(Core::instance()->kaduWindow()))->show();
 
-	return 0;
+	return true;
 }
 
 void ProfilesImportPlugin::done()

@@ -31,7 +31,7 @@ SpeechPlugin::~SpeechPlugin()
 {
 }
 
-int SpeechPlugin::init(bool firstLoad)
+bool SpeechPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -41,7 +41,7 @@ int SpeechPlugin::init(bool firstLoad)
 	SpeechConfigurationUiHandler::registerUiHandler();
 
 	kdebugf2();
-	return 0;
+	return true;
 }
 
 void SpeechPlugin::done()

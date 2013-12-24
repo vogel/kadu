@@ -36,7 +36,7 @@ class Qt4SoundPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~Qt4SoundPlugin();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };

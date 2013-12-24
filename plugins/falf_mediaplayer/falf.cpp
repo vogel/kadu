@@ -44,12 +44,11 @@ FalfMediaPlayer::~FalfMediaPlayer()
 	kdebugf();
 }
 
-int FalfMediaPlayer::init(bool firstLoad)
+bool FalfMediaPlayer::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	bool res = MediaPlayer::instance()->registerMediaPlayer(this, 0);
-	return res ? 0 : 1;
+	return MediaPlayer::instance()->registerMediaPlayer(this, 0);
 }
 
 void FalfMediaPlayer::done()

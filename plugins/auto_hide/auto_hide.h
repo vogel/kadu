@@ -53,7 +53,7 @@ public:
 	explicit AutoHide(QObject *parent = 0);
 	virtual ~AutoHide();
 
-	virtual int init(bool firstLoad);
+	virtual bool init(bool firstLoad);
 	virtual void done();
 
 };
