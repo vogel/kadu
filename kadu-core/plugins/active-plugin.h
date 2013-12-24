@@ -36,7 +36,6 @@ public:
 	virtual ~ActivePlugin();
 
 private:
-	Plugin *m_plugin;
 	QScopedPointer<PluginLoader> m_pluginLoader;
 	QScopedPointer<PluginTranslationsLoader> m_pluginTranslationsLoader;
 	PluginRootComponent *m_pluginRootComponent;

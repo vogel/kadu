@@ -26,7 +26,7 @@
 #include "plugins/plugin.h"
 
 ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
-		: QObject{parent}, m_plugin{plugin}, m_pluginLoader{nullptr}, m_pluginRootComponent{nullptr}
+		: QObject{parent}, m_pluginLoader{nullptr}, m_pluginRootComponent{nullptr}
 {
 	m_pluginLoader.reset(new PluginLoader{plugin});
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
@@ -34,14 +34,14 @@ ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
 
 	m_pluginRootComponent = m_pluginLoader->instance();
 	if (!m_pluginRootComponent)
-		throw PluginActivationErrorException(plugin, tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_plugin->name()));
+		throw PluginActivationErrorException(plugin, tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(plugin->name()));
 
 	auto res = m_pluginRootComponent->init(firstLoad);
 
 	if (res != 0)
 	{
 		m_pluginRootComponent = nullptr;
-		throw PluginActivationErrorException(plugin, tr("Module initialization routine for %1 failed.").arg(m_plugin->name()));
+		throw PluginActivationErrorException(plugin, tr("Module initialization routine for %1 failed.").arg(plugin->name()));
 	}
 }
 
