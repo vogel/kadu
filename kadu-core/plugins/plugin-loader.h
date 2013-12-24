@@ -22,28 +22,22 @@
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
+class QPluginLoader;
+
 class Plugin;
-class PluginLoader;
 class PluginRootComponent;
 
-class QPluginLoader;
-class QTranslator;
-
-class ActivePlugin : public QObject
+class PluginLoader : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent = nullptr);
-	virtual ~ActivePlugin();
+	explicit PluginLoader(Plugin *plugin, QObject *parent = nullptr) noexcept(false);
+	~PluginLoader() noexcept;
+
+	PluginRootComponent * instance() const noexcept;
 
 private:
-	Plugin *m_plugin;
-	QScopedPointer<PluginLoader> m_pluginLoader;
-	PluginRootComponent *m_pluginRootComponent;
-	QTranslator *m_translator;
-
-	void loadTranslations();
-	void unloadTranslations();
+	QScopedPointer<QPluginLoader> m_pluginLoader;
 
 };

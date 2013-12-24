@@ -21,58 +21,26 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
-#include "plugins/plugin-root-component.h"
 #include "plugins/plugin-activation-error-exception.h"
+#include "plugins/plugin-loader.h"
+#include "plugins/plugin-root-component.h"
 #include "plugins/plugin.h"
 #include "debug.h"
 
-#include <QtCore/QEvent>
-#include <QtCore/QLibrary>
-#include <QtCore/QPluginLoader>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
-
-#ifdef Q_OS_MAC
-	#define SO_PREFIX "lib"
-	#define SO_EXT "dylib"
-#elif defined(Q_OS_WIN)
-	#define SO_PREFIX ""
-	#define SO_EXT "dll"
-#else
-	#define SO_PREFIX "lib"
-	#define SO_EXT "so"
-#endif
 
 ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
 		: QObject{parent}, m_plugin{plugin}, m_pluginLoader{nullptr}, m_pluginRootComponent{nullptr}, m_translator{nullptr}
 {
-	m_pluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + m_plugin->name() + QLatin1String("." SO_EXT));
-	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
-
-	if (!m_pluginLoader->load())
-	{
-		QString err = m_pluginLoader->errorString();
-		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(m_plugin->name()), qPrintable(err));
-
-		delete m_pluginLoader;
-		m_pluginLoader = nullptr;
-
-		kdebugf2();
-		throw PluginActivationErrorException(plugin, tr("Cannot load %1 plugin library:\n%2").arg(m_plugin->name(), err));
-	}
+	m_pluginLoader.reset(new PluginLoader(plugin));
 
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
 	loadTranslations();
 
-	m_pluginRootComponent = qobject_cast<PluginRootComponent *>(m_pluginLoader->instance());
+	m_pluginRootComponent = m_pluginLoader->instance();
 	if (!m_pluginRootComponent)
 	{
-		// Refer to deactivate() method for reasons to this.
-		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
-		m_pluginLoader->unload();
-		delete m_pluginLoader;
-		m_pluginLoader = nullptr;
-
 		unloadTranslations();
 
 		kdebugf2();
@@ -83,11 +51,6 @@ ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
 
 	if (res != 0)
 	{
-		// Refer to deactivate() method for reasons to this.
-		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
-		m_pluginLoader->unload();
-		delete m_pluginLoader;
-		m_pluginLoader = nullptr;
 		m_pluginRootComponent = nullptr;
 
 		unloadTranslations();
@@ -101,18 +64,6 @@ ActivePlugin::~ActivePlugin()
 	if (m_pluginRootComponent)
 		m_pluginRootComponent->done();
 
-	// We need this because plugins can call deleteLater() just before being
-	// unloaded. In this case control would not return to the event loop before
-	// unloading the plugin and the event loop would try to delete objects
-	// belonging to already unloaded plugins, which can result in segfaults.
-	QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
-
-	if (m_pluginLoader)
-	{
-		m_pluginLoader->unload();
-		m_pluginLoader->deleteLater();
-		m_pluginLoader = nullptr;
-	}
 	m_pluginRootComponent = nullptr;
 
 	// We cannot unload translations before calling PluginObject->done(), see #2177.
