@@ -59,7 +59,7 @@ void PluginActivationService::activatePlugin(Plugin *plugin) noexcept(false)
 	if (!plugin)
 		return;
 
-	m_activePlugins.insert(std::make_pair(plugin->name(), make_unique<ActivePlugin>(plugin, Plugin::PluginStateNew == plugin->state())));
+	m_activePlugins.insert(std::make_pair(plugin->name(), make_unique<ActivePlugin>(plugin, PluginState::New == plugin->state())));
 }
 
 void PluginActivationService::deactivatePlugin(Plugin *plugin) noexcept

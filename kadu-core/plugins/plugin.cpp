@@ -49,7 +49,7 @@
  */
 Plugin::Plugin(PluginInfo pluginInfo, QObject *parent) :
 		QObject{parent}, m_pluginInfo(std::move(pluginInfo)),
-		m_state{PluginStateNew}
+		m_state{PluginState::New}
 {
 	StorableObject::setState(StateNotLoaded);
 }
@@ -73,11 +73,11 @@ void Plugin::load()
 
 	auto stateString = loadValue<QString>("State");
 	if (stateString == "Loaded")
-		m_state = PluginStateEnabled;
+		m_state = PluginState::Enabled;
 	else if (stateString == "NotLoaded")
-		m_state = PluginStateDisabled;
+		m_state = PluginState::Disabled;
 	else
-		m_state = PluginStateNew;
+		m_state = PluginState::New;
 }
 
 /**
@@ -97,10 +97,10 @@ void Plugin::store()
 
 	switch (m_state)
 	{
-		case PluginStateEnabled:
+		case PluginState::Enabled:
 			storeValue("State", "Loaded");
 			break;
-		case PluginStateDisabled:
+		case PluginState::Disabled:
 			storeValue("State", "NotLoaded");
 			break;
 		default:
@@ -113,26 +113,26 @@ void Plugin::store()
  * @author Bartosz 'beevvy' Brachaczek
  * @short Reimplemented from StorableObject::shouldStore().
  *
- * Reimplemented from StorableObject::shouldStore(). Returns false if State is PluginStateNew.
+ * Reimplemented from StorableObject::shouldStore(). Returns false if State is PluginState::New.
  */
 bool Plugin::shouldStore()
 {
 	ensureLoaded();
 
-	return NamedStorableObject::shouldStore() && PluginStateNew != state();
+	return NamedStorableObject::shouldStore() && PluginState::New != state();
 }
 
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Sets state of plugin.
  *
- * This method changes state of plugin. Set state to PluginStateEnabled to make this plugin
+ * This method changes state of plugin. Set state to PluginState::Enabled to make this plugin
  * activate at every Kadu run.
  *
  * Please do not call this method unless you are absolutely sure the plugin had been loaded
  * at least once.
  */
-void Plugin::setState(Plugin::PluginState state)
+void Plugin::setState(PluginState state)
 {
 	ensureLoaded();
 

@@ -32,6 +32,7 @@
 
 enum class PluginActivationReason;
 enum class PluginDeactivationReason;
+enum class PluginState;
 
 /**
  * @addtogroup Plugins
@@ -55,50 +56,25 @@ enum class PluginDeactivationReason;
  * Plugin without .desc file is considered invalid or depreeated. That plugin wont be loaded or
  * activated, but its data is stored for use with PluginInfo::replaces() for replacement plugins.
  *
- * Each plugin can be in three states - PluginStateNew, PluginStateDisabled and PluginStateEnabled
- * Plugin is PluginStateNew, when it was not  known to Kadu at previous run (i.e.: installed just
+ * Each plugin can be in three states - PluginState::New, PluginState::Disabled and PluginState::Enabled
+ * Plugin is PluginState::New, when it was not  known to Kadu at previous run (i.e.: installed just
  * before current run). New plugin can be loaded and activated without user interaction if it has
  * PluginInfo::loadByDefault() set to true.
  *
- * PluginStateEnabled plugins are activated (with dependencies) at Kadu start.
+ * PluginState::Enabled plugins are activated (with dependencies) at Kadu start.
  *
- * PluginStateDisabled plugins are activated only as dependencies of other Plugins.
+ * PluginState::Disabled plugins are activated only as dependencies of other Plugins.
  *
  * Data of plugin (including state) is stored under /Plugins/Plugin[\@name=pluginName]/ node.
  *
  * Plugin can be activated manually by calling its activate() method, but wont be activated automatically
- * until its state is changed to PluginStateEnabled.
+ * until its state is changed to PluginState::Enabled.
  *
  * Note: this class is not responsible for activating dependencies, see PluginsManager::activateDependencies()
  */
 class KADUAPI Plugin : public QObject, public NamedStorableObject
 {
 	Q_OBJECT
-
-public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Plugin state.
-	 *
-	 * Plugin state
-	 */
-	enum PluginState
-	{
-		/**
-		 * This plugin has been never successfully activated before. May be activated automatically
-		 * if has PluginInfo::loadByDefault() set to true.
-		 */
-		PluginStateNew,
-		/**
-		 * This plugin is normally disabled and will be activated only as dependency of other plugin
-		 * or at user request.
-		 */
-		PluginStateDisabled,
-		/**
-		 * This plugin is enabled and will be activated at Kadu start automatically.
-		 */
-		PluginStateEnabled
-	};
 
 public:
 	explicit Plugin(PluginInfo pluginInfo, QObject *parent = nullptr);
@@ -117,7 +93,7 @@ public:
 	 * Returns plugin state.
 	 *
 	 * Note that plugin state describes only its state on configuration. All combinations
-	 * of state() and isActive() are possible, except state PluginStateNew and plugin active.
+	 * of state() and isActive() are possible, except state PluginState::New and plugin active.
 	 */
 	PluginState state() { ensureLoaded(); return m_state; }
 	void setState(PluginState state);

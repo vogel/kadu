@@ -23,6 +23,30 @@
 
 #pragma once
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Plugin state.
+ *
+ * Plugin state
+ */
+enum class PluginState
+{
+	/**
+	 * Plugin has been never successfully activated before. May be activated automatically
+	 * if has PluginInfo::loadByDefault() set to true.
+	 */
+	New,
+	/**
+	 * Plugin is normally disabled and will be activated only as dependency of other plugin
+	 * or at user request.
+	 */
+	Disabled,
+	/**
+	 * Plugin is enabled and will be activated at Kadu start automatically.
+	 */
+	Enabled
+};
+
 enum class PluginActivationType
 {
 	Activation,

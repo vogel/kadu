@@ -115,7 +115,7 @@ void PluginsManager::setPluginActivationService(PluginActivationService *pluginA
  *
  * After reading all plugins configuration this method check for existence of new plugins that could
  * be recently installed. Check is done by searching datadir/kadu/plugins directory for new *.desc
- * files. All new plugins are set to have Plugin::PluginStateNew state.
+ * files. All new plugins are set to have PluginState::New state.
  */
 void PluginsManager::load()
 {
@@ -208,18 +208,18 @@ void PluginsManager::importFrom09()
 		if (allPlugins.contains(plugin->name()))
 		{
 			if (loadedPlugins.contains(plugin->name()))
-				plugin->setState(Plugin::PluginStateEnabled);
+				plugin->setState(PluginState::Enabled);
 			else if (everLoaded.contains(plugin->name()))
-				plugin->setState(Plugin::PluginStateDisabled);
+				plugin->setState(PluginState::Disabled);
 		}
 
 	for (auto plugin : oldPlugins.values())
 		if (allPlugins.contains(plugin->name()))
 		{
 			if (loadedPlugins.contains(plugin->name()))
-				plugin->setState(Plugin::PluginStateEnabled);
+				plugin->setState(PluginState::Enabled);
 			else if (everLoaded.contains(plugin->name()))
-				plugin->setState(Plugin::PluginStateDisabled);
+				plugin->setState(PluginState::Disabled);
 		}
 
 	for (auto plugin : oldPlugins)
@@ -233,8 +233,8 @@ void PluginsManager::importFrom09()
  * @author Rafał 'Vogel' Malinowski
  * @short Activate all protocols plugins that are enabled.
  *
- * This method activates all plugins with type "protocol" that are either enabled (Plugin::PluginStateEnabled)
- * or new (Plugin::PluginStateNew) with attribute "load by default" set. This method is generally called before
+ * This method activates all plugins with type "protocol" that are either enabled (PluginState::Enabled)
+ * or new (PluginState::New) with attribute "load by default" set. This method is generally called before
  * any other activation to ensure that all protocols and accounts are available for other plugins.
  */
 void PluginsManager::activateProtocolPlugins()
@@ -248,7 +248,7 @@ void PluginsManager::activateProtocolPlugins()
 
 		if (shouldActivate(plugin))
 		{
-			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
+			auto activationReason = (plugin->state() == PluginState::New)
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
@@ -267,7 +267,7 @@ void PluginsManager::activateProtocolPlugins()
  * @author Rafał 'Vogel' Malinowski
  * @short Activate all plugins that are enabled.
  *
- * This method activates all plugins that are either enabled (Plugin::PluginStateEnabled) or new (Plugin::PluginStateNew)
+ * This method activates all plugins that are either enabled (PluginState::Enabled) or new (PluginState::New)
  * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is searched
  * (by checking Plugin::replaces()). Any found replacement plugin is activated.
  */
@@ -281,7 +281,7 @@ void PluginsManager::activatePlugins()
 	for (auto plugin : Core::instance()->pluginRepository())
 		if (shouldActivate(plugin))
 		{
-			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
+			auto activationReason = (plugin->state() == PluginState::New)
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
@@ -291,11 +291,11 @@ void PluginsManager::activatePlugins()
 
 	for (auto pluginToReplace : Core::instance()->pluginRepository())
 	{
-		if (m_pluginActivationService.data()->isActive(pluginToReplace) || pluginToReplace->state() != Plugin::PluginStateEnabled)
+		if (m_pluginActivationService.data()->isActive(pluginToReplace) || pluginToReplace->state() != PluginState::Enabled)
 			continue;
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplace->name());
-		if (replacementPlugin->state() == Plugin::PluginStateNew)
+		if (replacementPlugin->state() == PluginState::New)
 			if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
 				saveList = true; // list has changed
 	}
@@ -314,16 +314,16 @@ void PluginsManager::activatePlugins()
  * Module should be activated only if:
  * <ul>
  *   <li>it is valid (has .desc file associated with it)
- *   <li>is either PluginStateEnabled or PluginStateNew with PluginInfo::loadByDefault() set to true
+ *   <li>is either PluginState::Enabled or PluginState::New with PluginInfo::loadByDefault() set to true
  * </ul>
  */
 bool PluginsManager::shouldActivate(Plugin *plugin) const noexcept
 {
 	auto state = plugin->state();
 
-	if (Plugin::PluginStateEnabled == state)
+	if (PluginState::Enabled == state)
 		return true;
-	if (Plugin::PluginStateDisabled == state)
+	if (PluginState::Disabled == state)
 		return false;
 	return plugin->info().loadByDefault();
 }
@@ -510,9 +510,9 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		for (auto dependency : dependencies)
 		{
 			auto activationReason = PluginActivationReason{};
-			if (Plugin::PluginStateEnabled == dependency->state())
+			if (PluginState::Enabled == dependency->state())
 				activationReason = PluginActivationReason::KnownDefault;
-			else if (Plugin::PluginStateNew == dependency->state() && dependency->info().loadByDefault())
+			else if (PluginState::New == dependency->state() && dependency->info().loadByDefault())
 				activationReason = PluginActivationReason::NewDefault;
 			else
 				activationReason = PluginActivationReason::Dependency;
@@ -530,7 +530,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 				 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
 				 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
 				 */
-				action.plugin()->setState(Plugin::PluginStateDisabled);
+				action.plugin()->setState(PluginState::Disabled);
 			}
 		}
 		catch (PluginActivationErrorException &e)
@@ -542,7 +542,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		try
 		{
 			m_pluginActivationService.data()->performActivationAction({plugin, reason});
-			plugin->setState(Plugin::PluginStateEnabled);
+			plugin->setState(PluginState::Enabled);
 		}
 		catch (PluginActivationErrorException &e)
 		{
@@ -604,7 +604,7 @@ void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason r
 	{
 		m_pluginActivationService.data()->performActivationAction(action);
 		if (PluginDeactivationReason::UserRequest == reason)
-			action.plugin()->setState(Plugin::PluginStateDisabled);
+			action.plugin()->setState(PluginState::Disabled);
 	}
 }
 
@@ -612,10 +612,10 @@ void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason r
  * @author Bartosz 'beevvy' Brachaczek
  * @short Sets state enablement of plugin if it is inactive.
  *
- * If this plugin is active or its state is PluginStateNew, this method does nothing.
+ * If this plugin is active or its state is PluginState::New, this method does nothing.
  *
- * Otherwise, this method sets its state to PluginStateEnabled if \p enable is true.
- * If \p enable is false, this method sets the plugin's state to PluginStateDisabled.
+ * Otherwise, this method sets its state to PluginState::Enabled if \p enable is true.
+ * If \p enable is false, this method sets the plugin's state to PluginState::Disabled.
  */
 void PluginsManager::setStateEnabledIfInactive(Plugin *plugin, bool enable)
 {
@@ -626,10 +626,10 @@ void PluginsManager::setStateEnabledIfInactive(Plugin *plugin, bool enable)
 		return;
 
 	// It is necessary to not break firstLoad.
-	if (Plugin::PluginStateNew == plugin->state())
+	if (PluginState::New == plugin->state())
 		return;
 
-	plugin->setState(enable ? Plugin::PluginStateEnabled : Plugin::PluginStateDisabled);
+	plugin->setState(enable ? PluginState::Enabled : PluginState::Disabled);
 }
 
 #include "moc_plugins-manager.cpp"

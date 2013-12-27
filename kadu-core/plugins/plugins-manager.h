@@ -82,7 +82,7 @@ enum class PluginDeactivationReason;
  *
  * For activating and deactivating plugins see activatePlugin() and deactivatingPlugin().
  * For enabling auto-activating plugins see Plugin::setState() method - only plugins with state equal
- * to Plugin::PluginStateEnabled will be loaded automatically.
+ * to PluginState::Enabled will be loaded automatically.
  */
 class KADUAPI PluginsManager : public QObject, public StorableObject
 {
