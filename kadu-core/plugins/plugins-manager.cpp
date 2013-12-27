@@ -35,11 +35,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
-#include "gui/hot-key.h"
-#include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-dialog.h"
 #include "gui/windows/plugin-error-dialog.h"
-#include "icons/icons-manager.h"
 #include "misc/kadu-paths.h"
 #include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
@@ -54,25 +50,10 @@
 #include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-common.h"
-#include "activate.h"
 #include "debug.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QLibrary>
-#include <QtCore/QPluginLoader>
-#include <QtCore/QTextCodec>
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QScrollBar>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
-#include <QtGui/QVBoxLayout>
 
 /**
  * @author Rafał 'Vogel' Malinowski
