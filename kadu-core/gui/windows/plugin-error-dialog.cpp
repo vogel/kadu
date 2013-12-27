@@ -27,8 +27,8 @@
 
 #include "plugin-error-dialog.h"
 
-PluginErrorDialog::PluginErrorDialog(const QString &text, bool offerLoadInFutureChoice, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this), LoadInFutureCheck(0)
+PluginErrorDialog::PluginErrorDialog(Plugin *plugin, const QString &text, bool offerLoadInFutureChoice, QWidget *parent) :
+		QDialog(parent), DesktopAwareObject(this), m_plugin{plugin}, LoadInFutureCheck(0)
 {
 	setWindowRole("kadu-plugin-error");
 	setWindowTitle(tr("Kadu"));
@@ -75,7 +75,7 @@ void PluginErrorDialog::accept()
 	close();
 
 	if (LoadInFutureCheck)
-		emit accepted(LoadInFutureCheck->isChecked());
+		emit accepted(m_plugin, LoadInFutureCheck->isChecked());
 }
 
 #include "moc_plugin-error-dialog.cpp"

@@ -44,6 +44,7 @@ class CategorizedListViewPainter;
 class PluginsManager;
 class PluginListWidgetDelegate;
 class Plugin;
+class PluginActivationService;
 class PluginEntry;
 class PluginListWidget;
 
@@ -53,35 +54,39 @@ class PluginModel : public QAbstractListModel
 	Q_OBJECT
 
 public:
-        PluginModel(PluginListWidget *pluginSelector_d, QObject *parent = 0);
-        ~PluginModel();
+	PluginModel(PluginListWidget *pluginSelector_d, QObject *parent = 0);
+	~PluginModel();
 
-        enum ExtraRoles
-        {
-                PluginEntryRole   = 0x09386561,
-                ServicesCountRole = 0x1422E2AA,
-                NameRole          = 0x0CBBBB00,
-                CommentRole       = 0x19FC6DE2,
-                AuthorRole        = 0x30861E10,
-                EmailRole         = 0x02BE3775,
-                WebsiteRole       = 0x13095A34,
-                VersionRole       = 0x0A0CB450,
-                LicenseRole       = 0x001F308A,
-                DependenciesRole  = 0x04CAB650,
-                IsCheckableRole   = 0x0AC2AFF8
-        };
+	void setPluginActivationService(PluginActivationService *pluginActivationService);
 
-        virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-        virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-        virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-        virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	enum ExtraRoles
+	{
+		PluginEntryRole   = 0x09386561,
+		ServicesCountRole = 0x1422E2AA,
+		NameRole          = 0x0CBBBB00,
+		CommentRole       = 0x19FC6DE2,
+		AuthorRole        = 0x30861E10,
+		EmailRole         = 0x02BE3775,
+		WebsiteRole       = 0x13095A34,
+		VersionRole       = 0x0A0CB450,
+		LicenseRole       = 0x001F308A,
+		DependenciesRole  = 0x04CAB650,
+		IsCheckableRole   = 0x0AC2AFF8
+	};
 
-        void loadPluginData();
+	virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
+	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
+	void loadPluginData();
 
 private:
-        PluginListWidget *pluginSelector_d;
-        PluginsManager *Manager;
-        QList<PluginEntry> Plugins;
+	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	PluginListWidget *pluginSelector_d;
+	PluginsManager *Manager;
+	QList<PluginEntry> Plugins;
+
 };
 
 
@@ -89,18 +94,19 @@ class PluginEntry
 {
 
 public:
-        QString category;
-        QString name;
-        QString pluginName;
-        QString description;
-        QString author;
-        bool checked;
-        bool isCheckable;
+	QString category;
+	QString name;
+	QString pluginName;
+	QString description;
+	QString author;
+	bool checked;
+	bool isCheckable;
 
-        bool operator==(const PluginEntry &pe) const
-        {
-                return name == pe.name;
-        }
+	bool operator==(const PluginEntry &pe) const
+	{
+		return name == pe.name;
+	}
+
 };
 
 Q_DECLARE_METATYPE(PluginEntry*)

@@ -273,6 +273,9 @@ void PluginsManager::activateProtocolPlugins()
  */
 void PluginsManager::activatePlugins()
 {
+	if (!m_pluginActivationService)
+		return;
+
 	auto saveList = false;
 
 	for (auto plugin : Core::instance()->pluginRepository())
@@ -288,7 +291,7 @@ void PluginsManager::activatePlugins()
 
 	for (auto pluginToReplace : Core::instance()->pluginRepository())
 	{
-		if (pluginToReplace->isActive() || pluginToReplace->state() != Plugin::PluginStateEnabled)
+		if (m_pluginActivationService.data()->isActive(pluginToReplace) || pluginToReplace->state() != Plugin::PluginStateEnabled)
 			continue;
 
 		for (auto replacementPlugin : Core::instance()->pluginRepository())
@@ -334,8 +337,11 @@ void PluginsManager::deactivatePlugins()
 QList<Plugin *> PluginsManager::activePlugins() const
 {
 	auto result = QList<Plugin *>{};
+	if (!m_pluginActivationService)
+		return result;
+
 	for (auto plugin : Core::instance()->pluginRepository())
-		if (plugin->isActive())
+		if (m_pluginActivationService.data()->isActive(plugin))
 			result.append(plugin);
 	return result;
 }
@@ -454,7 +460,10 @@ QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin) noexcept
  */
 bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reason)
 {
-	if (plugin->isActive())
+	if (!m_pluginActivationService)
+		return false;
+
+	if (m_pluginActivationService.data()->isActive(plugin))
 		return true;
 
 	auto conflict = findActiveProviding(plugin->info().provides());
@@ -540,16 +549,19 @@ void PluginsManager::activationError(Plugin *plugin, const QString &errorMessage
 	auto offerLoadInFutureChoice = (PluginActivationReason::KnownDefault == activationReason);
 
 	// TODO: set parent to MainConfigurationWindow is it exists
-	auto errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, 0);
+	auto errorDialog = new PluginErrorDialog(plugin, errorMessage, offerLoadInFutureChoice, 0);
 	if (offerLoadInFutureChoice)
-		connect(errorDialog, SIGNAL(accepted(bool)), plugin, SLOT(setStateEnabledIfInactive(bool)));
+		connect(errorDialog, SIGNAL(accepted(Plugin*,bool)), this, SLOT(setStateEnabledIfInactive(Plugin*,bool)));
 
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
 void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason)
 {
-	if (!plugin->isActive())
+	if (!m_pluginActivationService)
+		return;
+
+	if (!m_pluginActivationService.data()->isActive(plugin))
 		return;
 
 	auto dependents = allDependents(plugin);
@@ -564,6 +576,30 @@ void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason r
 		if (PluginDeactivationReason::UserRequest == reason)
 			action.plugin()->setState(Plugin::PluginStateDisabled);
 	}
+}
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Sets state enablement of plugin if it is inactive.
+ *
+ * If this plugin is active or its state is PluginStateNew, this method does nothing.
+ *
+ * Otherwise, this method sets its state to PluginStateEnabled if \p enable is true.
+ * If \p enable is false, this method sets the plugin's state to PluginStateDisabled.
+ */
+void PluginsManager::setStateEnabledIfInactive(Plugin *plugin, bool enable)
+{
+	if (!m_pluginActivationService)
+		return;
+
+	if (m_pluginActivationService.data()->isActive(plugin))
+		return;
+
+	// It is necessary to not break firstLoad.
+	if (Plugin::PluginStateNew == plugin->state())
+		return;
+
+	plugin->setState(enable ? Plugin::PluginStateEnabled : Plugin::PluginStateDisabled);
 }
 
 #include "moc_plugins-manager.cpp"

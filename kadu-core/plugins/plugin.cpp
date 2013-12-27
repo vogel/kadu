@@ -49,7 +49,7 @@
  */
 Plugin::Plugin(PluginInfo pluginInfo, QObject *parent) :
 		QObject{parent}, m_pluginInfo(std::move(pluginInfo)),
-		m_activePlugin{nullptr}, m_state{PluginStateNew}
+		m_state{PluginStateNew}
 {
 	StorableObject::setState(StateNotLoaded);
 }
@@ -137,59 +137,11 @@ bool Plugin::shouldBeActivated()
 {
 	ensureLoaded();
 
-	if (isActive())
-		return false;
-
 	if (PluginStateEnabled == m_state)
 		return true;
 	if (PluginStateDisabled == m_state)
 		return false;
 	return m_pluginInfo.loadByDefault();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Activates plugin and retursn true if plugin is active.
- * @param reason plugin activation reason
- * @return true if plugin is active after method return
- *
- * This method loads plugin library file (if exists) and set up  PluginRootComponent object from this library.
- * Then translations file is loaded. Next PluginRootComponent::init() method is called with firstLoad
- * paramer set to true if this plugin's state  if PluginStateNew. If this methods returns value different
- * than 0, plugin is deactivated and false value is returned.
- *
- * Translations must be loaded before the root component of the plugin is instantiated.
- *
- * This method returns true if plugin is active after method returns - especially when plugin was active
- * before this call.
- */
-void Plugin::activate() noexcept(false)
-{
-	if (m_activePlugin)
-		return;
-
-	ensureLoaded();
-
-	m_activePlugin = new ActivePlugin(this, PluginStateNew == m_state);
-
-	kdebugf2();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Deactivates plugin.
- *
- * If plugin is active, its PluginRootComponent::done() method is called. Then all deferred delete
- * events are sent so that we will not end up trying to delete objects belonging to unloaded
- * plugins. Finally all data is removed from memory - plugin library file and plugin translations.
- */
-void Plugin::deactivate() noexcept
-{
-	if (!m_activePlugin)
-		return;
-
-	delete m_activePlugin;
-	m_activePlugin = 0;
 }
 
 /**
@@ -207,27 +159,6 @@ void Plugin::setState(Plugin::PluginState state)
 	ensureLoaded();
 
 	m_state = state;
-}
-
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @short Sets state enablement of plugin if it is inactive.
- *
- * If this plugin is active or its state is PluginStateNew, this method does nothing.
- *
- * Otherwise, this method sets its state to PluginStateEnabled if \p enable is true.
- * If \p enable is false, this method sets the plugin's state to PluginStateDisabled.
- */
-void Plugin::setStateEnabledIfInactive(bool enable)
-{
-	if (isActive())
-		return;
-
-	// It is necessary to not break firstLoad.
-	if (PluginStateNew == state())
-		return;
-
-	setState(enable ? PluginStateEnabled : PluginStateDisabled);
 }
 
 #include "moc_plugin.cpp"

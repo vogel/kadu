@@ -30,8 +30,6 @@
 
 #include <QtCore/QObject>
 
-class ActivePlugin;
-
 enum class PluginActivationReason;
 enum class PluginDeactivationReason;
 
@@ -113,19 +111,6 @@ public:
 
 	bool shouldBeActivated();
 
-	void activate() noexcept(false);
-	void deactivate() noexcept;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if plugin is active.
-	 * @return true if plugin is active
-	 *
-	 * Returns true if plugin is active. Plugin is active when its library file is loaded
-	 * and object is created and available.
-	 */
-	bool isActive() const { return m_activePlugin; }
-
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns plugin state.
@@ -148,9 +133,6 @@ public:
 	 */
 	const PluginInfo & info() const { return m_pluginInfo; }
 
-public slots:
-	void setStateEnabledIfInactive(bool enable);
-
 protected:
 	virtual void load();
 	virtual void store();
@@ -158,7 +140,6 @@ protected:
 
 private:
 	PluginInfo m_pluginInfo;
-	ActivePlugin *m_activePlugin;
 	PluginState m_state;
 
 };

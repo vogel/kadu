@@ -20,11 +20,18 @@
 #pragma once
 
 #include <algorithm>
+#include <map>
 
 template<typename C, typename T>
 bool contains(const C &c, const T &v)
 {
 	return std::find(c.begin(), c.end(), v) != c.end();
+}
+
+template<typename K, typename V>
+bool contains(const std::map<K, V> &c, const K &k)
+{
+	return c.find(k) != c.end();
 }
 
 template<typename C, typename T>

@@ -128,6 +128,9 @@ private:
 
 	void activationError(Plugin *plugin, const QString &errorMessage, PluginActivationReason activationReason);
 
+private slots:
+	void setStateEnabledIfInactive(Plugin *plugin, bool enable);
+
 };
 
 /**

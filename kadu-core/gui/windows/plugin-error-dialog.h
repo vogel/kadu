@@ -33,21 +33,24 @@
 
 class QCheckBox;
 
+class Plugin;
+
 class PluginErrorDialog : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
+	Plugin *m_plugin;
 	QCheckBox *LoadInFutureCheck;
 
 public:
-	PluginErrorDialog(const QString &text, bool offerLoadInFutureChoice, QWidget *parent = 0);
+	PluginErrorDialog(Plugin *plugin, const QString &text, bool offerLoadInFutureChoice, QWidget *parent = 0);
 	virtual ~PluginErrorDialog();
 
 public slots:
 	void accept();
 
 signals:
-	void accepted(bool loadInFuture);
+	void accepted(Plugin *plugin, bool loadInFuture);
 
 };
 

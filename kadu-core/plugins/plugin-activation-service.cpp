@@ -19,6 +19,9 @@
 
 #include "plugin-activation-service.h"
 
+#include "misc/algorithm.h"
+#include "misc/memory.h"
+#include "plugins/active-plugin.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-activation-action.h"
 #include "plugins/plugins-common.h"
@@ -46,12 +49,23 @@ void PluginActivationService::performActivationAction(const PluginActivationActi
 	}
 }
 
+bool PluginActivationService::isActive(Plugin *plugin) const noexcept
+{
+	return plugin ? contains(m_activePlugins, plugin->name()) : false;
+}
+
 void PluginActivationService::activatePlugin(Plugin *plugin) noexcept(false)
 {
-	plugin->activate();
+	if (!plugin)
+		return;
+
+	m_activePlugins.insert(std::make_pair(plugin->name(), make_unique<ActivePlugin>(plugin, Plugin::PluginStateNew == plugin->state())));
 }
 
 void PluginActivationService::deactivatePlugin(Plugin *plugin) noexcept
 {
-	plugin->deactivate();
+	if (!plugin)
+		return;
+
+	m_activePlugins.erase(plugin->name());
 }

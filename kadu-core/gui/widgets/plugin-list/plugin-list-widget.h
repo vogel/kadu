@@ -33,6 +33,7 @@ class CategorizedListView;
 class CategorizedListViewPainter;
 class FilterWidget;
 class MainConfigurationWindow;
+class PluginActivationService;
 class PluginModel;
 class PluginListWidgetItemDelegate;
 class PluginProxyModel;
@@ -54,6 +55,7 @@ class PluginListWidget : public QWidget
 	friend class PluginModel;
 	friend class PluginProxyModel;
 
+	QWeakPointer<PluginActivationService> m_pluginActivationService;
 	QWeakPointer<PluginsManager> m_pluginsManager;
 
 	FilterWidget *LineEdit;
@@ -71,6 +73,7 @@ public:
 	explicit PluginListWidget(MainConfigurationWindow *mainWindow);
 	virtual ~PluginListWidget();
 
+	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginsManager(PluginsManager *pluginsManager);
 
 	void applyChanges();

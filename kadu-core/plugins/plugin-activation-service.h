@@ -20,7 +20,10 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <map>
+#include <memory>
 
+class ActivePlugin;
 class Plugin;
 class PluginActivationAction;
 
@@ -35,8 +38,11 @@ public:
 	virtual ~PluginActivationService();
 
 	void performActivationAction(const PluginActivationAction &action) noexcept(false);
+	bool isActive(Plugin *plugin) const noexcept;
 
 private:
+	std::map<QString, std::unique_ptr<ActivePlugin>> m_activePlugins;
+
 	void activatePlugin(Plugin *plugin) noexcept(false);
 	void deactivatePlugin(Plugin *plugin) noexcept;
 

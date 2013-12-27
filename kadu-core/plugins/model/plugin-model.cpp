@@ -45,9 +45,10 @@
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugins/model/plugin-proxy-model.h"
+#include "plugins/plugin.h"
+#include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-repository.h"
-#include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
 #include "plugin-model.h"
@@ -72,7 +73,7 @@ void PluginModel::loadPluginData()
                 pluginEntry.description = pluginInfo.description();
                 pluginEntry.author = pluginInfo.author();
                 pluginEntry.pluginName = plugin->name();
-                pluginEntry.checked = plugin->isActive();
+                pluginEntry.checked = m_pluginActivationService.data()->isActive(plugin);
                 pluginEntry.isCheckable = true;
 
                 listToAdd.append(pluginEntry);
@@ -93,6 +94,11 @@ PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent)
 
 PluginModel::~PluginModel()
 {
+}
+
+void PluginModel::setPluginActivationService(PluginActivationService *pluginActivationService)
+{
+	m_pluginActivationService = pluginActivationService;
 }
 
 QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) const

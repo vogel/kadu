@@ -78,7 +78,6 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	Proxy = new PluginProxyModel(this, this);
 	Proxy->setCategorizedModel(true);
 	Proxy->setSourceModel(Model);
-	Model->loadPluginData();
 	ListView->setModel(Proxy);
 	ListView->setAlternatingRowColors(true);
 
@@ -110,6 +109,13 @@ PluginListWidget::~PluginListWidget()
 	delete CategoryDrawer;
 }
 
+void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
+{
+	m_pluginActivationService = pluginActivationService;
+	Model->setPluginActivationService(pluginActivationService);
+	Model->loadPluginData();
+}
+
 void PluginListWidget::setPluginsManager(PluginsManager *pluginsManager)
 {
 	m_pluginsManager = pluginsManager;
@@ -138,7 +144,7 @@ void PluginListWidget::applyChanges()
 		if (!plugin)
 			continue;
 
-		if (plugin->isActive() != pluginEntry->checked)
+		if (m_pluginActivationService.data()->isActive(plugin) != pluginEntry->checked)
 		{
 			if (pluginEntry->checked)
 				pluginsToActivate.append(plugin);
