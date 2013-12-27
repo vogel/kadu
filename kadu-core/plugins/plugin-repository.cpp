@@ -19,6 +19,11 @@
 
 #include "plugin-repository.h"
 
+Plugin * PluginRepository::converter(PluginRepository::WrappedIterator iterator)
+{
+	return *iterator;
+}
+
 PluginRepository::PluginRepository(QObject *parent) :
 		QObject{parent}
 {
@@ -28,14 +33,14 @@ PluginRepository::~PluginRepository()
 {
 }
 
-PluginRepositoryIterator PluginRepository::begin()
+PluginRepository::Iterator PluginRepository::begin()
 {
-	return PluginRepositoryIterator{m_plugins.begin()};
+	return Iterator{m_plugins.begin(), converter};
 }
 
-PluginRepositoryIterator PluginRepository::end()
+PluginRepository::Iterator PluginRepository::end()
 {
-	return PluginRepositoryIterator{m_plugins.end()};
+	return Iterator{m_plugins.end(), converter};
 }
 
 void PluginRepository::addPlugin(const QString &name, Plugin *plugin)

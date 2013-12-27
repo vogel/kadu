@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "plugins/plugin-repository-iterator.h"
+#include "misc/iterator.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
@@ -31,12 +31,17 @@ class KADUAPI PluginRepository : public QObject
 {
 	Q_OBJECT
 
+	using Storage = QMap<QString, Plugin *>;
+	using WrappedIterator = Storage::Iterator;
+
 public:
+	using Iterator = IteratorWrapper<WrappedIterator, Plugin *>;
+
 	explicit PluginRepository(QObject *parent = nullptr);
 	virtual ~PluginRepository();
 
-	PluginRepositoryIterator begin();
-	PluginRepositoryIterator end();
+	Iterator begin();
+	Iterator end();
 
 	void addPlugin(const QString &name, Plugin *plugin);
 	void removePlugin(const QString &name);
@@ -45,16 +50,18 @@ public:
 	Plugin * plugin(const QString &name) const;
 
 private:
+	static Plugin * converter(WrappedIterator iterator);
+
 	QMap<QString, Plugin *> m_plugins;
 
 };
 
-inline PluginRepositoryIterator begin(PluginRepository *pluginRepository)
+inline PluginRepository::Iterator begin(PluginRepository *pluginRepository)
 {
 	return pluginRepository->begin();
 }
 
-inline PluginRepositoryIterator end(PluginRepository *pluginRepository)
+inline PluginRepository::Iterator end(PluginRepository *pluginRepository)
 {
 	return pluginRepository->end();
 }
