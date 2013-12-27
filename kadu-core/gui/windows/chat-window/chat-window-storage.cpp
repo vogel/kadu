@@ -60,9 +60,9 @@ QVector<Chat> ChatWindowStorage::loadChats() const
 	if (!storage)
 		return {};
 
-	auto stringListStorage = ChatListStorage{storage.get(), QLatin1String("Chat")};
-	stringListStorage.setChatManager(m_chatManager.data());
-	return stringListStorage.load();
+	auto chatListStorage = ChatListStorage{storage.get(), QLatin1String("Chat")};
+	chatListStorage.setChatManager(m_chatManager.data());
+	return chatListStorage.load();
 }
 
 void ChatWindowStorage::storeChats(const QVector<Chat> &chats)
@@ -71,8 +71,8 @@ void ChatWindowStorage::storeChats(const QVector<Chat> &chats)
 	if (!storage)
 		return;
 
-	auto stringListStorage = ChatListStorage{storage.get(), QLatin1String("Chat")};
-	stringListStorage.store(chats);
+	auto chatListStorage = ChatListStorage{storage.get(), QLatin1String("Chat")};
+	chatListStorage.store(chats);
 }
 
 #include "moc_chat-window-storage.cpp"
