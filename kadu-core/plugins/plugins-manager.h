@@ -126,6 +126,8 @@ private:
 	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept;
 	QVector<Plugin *> allDependents(Plugin *plugin) noexcept;
 
+	Plugin * findReplacementPlugin(const QString &pluginToReplace) const noexcept;
+
 	void activationError(Plugin *plugin, const QString &errorMessage, PluginActivationReason activationReason);
 
 private slots:

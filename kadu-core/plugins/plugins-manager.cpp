@@ -294,17 +294,25 @@ void PluginsManager::activatePlugins()
 		if (m_pluginActivationService.data()->isActive(pluginToReplace) || pluginToReplace->state() != Plugin::PluginStateEnabled)
 			continue;
 
-		for (auto replacementPlugin : Core::instance()->pluginRepository())
-			if (replacementPlugin->state() == Plugin::PluginStateNew
-					&& replacementPlugin->info().replaces().contains(pluginToReplace->name()))
-				if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
-					saveList = true; // list has changed
+		auto replacementPlugin = findReplacementPlugin(pluginToReplace->name());
+		if (replacementPlugin->state() == Plugin::PluginStateNew)
+			if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
+				saveList = true; // list has changed
 	}
 
 	// if not all plugins were loaded properly or new plugin was added
 	// save the list of plugins
 	if (saveList)
 		ConfigurationManager::instance()->flush();
+}
+
+Plugin * PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
+{
+	for (auto plugin : Core::instance()->pluginRepository())
+		if (plugin->info().replaces().contains(pluginToReplace))
+			return plugin;
+
+	return {};
 }
 
 /**
