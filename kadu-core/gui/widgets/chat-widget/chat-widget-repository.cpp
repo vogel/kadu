@@ -21,6 +21,11 @@
 
 #include "gui/widgets/chat-widget/chat-widget.h"
 
+ChatWidget * ChatWidgetRepository::converter(ChatWidgetRepository::WrappedIterator iterator)
+{
+	return iterator->second.get();
+}
+
 ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
 		QObject(parent)
 {
@@ -33,14 +38,14 @@ ChatWidgetRepository::~ChatWidgetRepository()
 		removeChatWidget((*m_widgets.begin()).second.get());
 }
 
-ChatWidgetRepositoryIterator ChatWidgetRepository::begin()
+ChatWidgetRepository::Iterator ChatWidgetRepository::begin()
 {
-	return ChatWidgetRepositoryIterator{m_widgets.begin()};
+	return Iterator{m_widgets.begin(), converter};
 }
 
-ChatWidgetRepositoryIterator ChatWidgetRepository::end()
+ChatWidgetRepository::Iterator ChatWidgetRepository::end()
 {
-	return ChatWidgetRepositoryIterator{m_widgets.end()};
+	return Iterator{m_widgets.end(), converter};
 }
 
 void ChatWidgetRepository::addChatWidget(std::unique_ptr<ChatWidget> chatWidget)

@@ -20,7 +20,7 @@
 #pragma once
 
 #include "chat/chat.h"
-#include "gui/widgets/chat-widget/chat-widget-repository-iterator.h"
+#include "misc/iterator.h"
 #include "exports.h"
 
 #include <map>
@@ -56,19 +56,24 @@ class KADUAPI ChatWidgetRepository : public QObject
 {
 	Q_OBJECT
 
+	using Storage = std::map<Chat, std::unique_ptr<ChatWidget>>;
+	using WrappedIterator = Storage::iterator;
+
 public:
+	using Iterator = IteratorWrapper<WrappedIterator, ChatWidget *>;
+
 	explicit ChatWidgetRepository(QObject *parent = nullptr);
 	virtual ~ChatWidgetRepository();
 
 	/**
 	 * @short Begin iterator that returns ChatWidget *.
 	 */
-	ChatWidgetRepositoryIterator begin();
+	Iterator begin();
 
 	/**
 	 * @short Begin iterator that returns ChatWidget *.
 	 */
-	ChatWidgetRepositoryIterator end();
+	Iterator end();
 
 	/**
 	 * @short Add new chatWidget to repository.
@@ -119,16 +124,18 @@ signals:
 	void chatWidgetRemoved(ChatWidget *chatWidget);
 
 private:
-	std::map<Chat, std::unique_ptr<ChatWidget>> m_widgets;
+	static ChatWidget * converter(WrappedIterator iterator);
+
+	Storage m_widgets;
 
 };
 
-inline ChatWidgetRepositoryIterator begin(ChatWidgetRepository *chatWidgetRepository)
+inline ChatWidgetRepository::Iterator begin(ChatWidgetRepository *chatWidgetRepository)
 {
 	return chatWidgetRepository->begin();
 }
 
-inline ChatWidgetRepositoryIterator end(ChatWidgetRepository *chatWidgetRepository)
+inline ChatWidgetRepository::Iterator end(ChatWidgetRepository *chatWidgetRepository)
 {
 	return chatWidgetRepository->end();
 }

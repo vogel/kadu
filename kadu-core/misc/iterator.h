@@ -19,49 +19,35 @@
 
 #pragma once
 
-#include <map>
-#include <memory>
+#include <functional>
 
-class Chat;
-class ChatWidget;
-
-/**
- * @addtogroup Gui
- * @{
- */
-
-/**
- * @class ChatWidgetRepositoryIterator
- * @short Iterator for ChatWidget* instances in ChatWidgetRepository.
- */
-class ChatWidgetRepositoryIterator
+template<typename Iterator, typename Type>
+class IteratorWrapper
 {
-	using Iterator = std::map<Chat, std::unique_ptr<ChatWidget>>::iterator;
 
 public:
-	inline explicit ChatWidgetRepositoryIterator(Iterator iterator) : m_iterator{iterator} {}
+	using Converter = std::function<Type(Iterator)>;
 
-	inline bool operator != (const ChatWidgetRepositoryIterator &compareTo) const
+	inline explicit IteratorWrapper(Iterator iterator, Converter converter) : m_iterator{iterator}, m_converter{converter} {}
+
+	inline bool operator != (const IteratorWrapper &compareTo) const
 	{
 		return m_iterator != compareTo.m_iterator;
 	}
 
-	inline ChatWidgetRepositoryIterator & operator++()
+	inline IteratorWrapper & operator++()
 	{
 		++m_iterator;
 		return *this;
 	}
 
-	inline ChatWidget * operator*() const
+	inline Type operator*() const
 	{
-		return m_iterator->second.get();
+		return m_converter(m_iterator);
 	}
 
 private:
 	Iterator m_iterator;
+	Converter m_converter;
 
 };
-
-/**
- * @}
- */
