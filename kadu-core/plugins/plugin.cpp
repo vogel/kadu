@@ -124,28 +124,6 @@ bool Plugin::shouldStore()
 
 /**
  * @author Rafał 'Vogel' Malinowski
- * @short Returns true if this plugin should be activated.
- * @return true if this plugin should be activated
- *
- * Module should be activated only if:
- * <ul>
- *   <li>it is valid (has .desc file associated with it)
- *   <li>is either PluginStateEnabled or PluginStateNew with PluginInfo::loadByDefault() set to true
- * </ul>
- */
-bool Plugin::shouldBeActivated()
-{
-	ensureLoaded();
-
-	if (PluginStateEnabled == m_state)
-		return true;
-	if (PluginStateDisabled == m_state)
-		return false;
-	return m_pluginInfo.loadByDefault();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
  * @short Sets state of plugin.
  *
  * This method changes state of plugin. Set state to PluginStateEnabled to make this plugin

@@ -109,8 +109,6 @@ public:
 	virtual QString storageNodeName() override { return QLatin1String{"Plugin"}; }
 	virtual QString name() const override { return m_pluginInfo.name(); }
 
-	bool shouldBeActivated();
-
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns plugin state.

@@ -246,7 +246,7 @@ void PluginsManager::activateProtocolPlugins()
 		if (plugin->info().type() != "protocol")
 			continue;
 
-		if (plugin->shouldBeActivated())
+		if (shouldActivate(plugin))
 		{
 			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
 					? PluginActivationReason::NewDefault
@@ -279,7 +279,7 @@ void PluginsManager::activatePlugins()
 	auto saveList = false;
 
 	for (auto plugin : Core::instance()->pluginRepository())
-		if (plugin->shouldBeActivated())
+		if (shouldActivate(plugin))
 		{
 			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
 					? PluginActivationReason::NewDefault
@@ -304,6 +304,28 @@ void PluginsManager::activatePlugins()
 	// save the list of plugins
 	if (saveList)
 		ConfigurationManager::instance()->flush();
+}
+
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Returns true if this plugin should be activated.
+ * @return true if this plugin should be activated
+ *
+ * Module should be activated only if:
+ * <ul>
+ *   <li>it is valid (has .desc file associated with it)
+ *   <li>is either PluginStateEnabled or PluginStateNew with PluginInfo::loadByDefault() set to true
+ * </ul>
+ */
+bool PluginsManager::shouldActivate(Plugin *plugin) const noexcept
+{
+	auto state = plugin->state();
+
+	if (Plugin::PluginStateEnabled == state)
+		return true;
+	if (Plugin::PluginStateDisabled == state)
+		return false;
+	return plugin->info().loadByDefault();
 }
 
 Plugin * PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
