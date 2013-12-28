@@ -20,7 +20,6 @@
 #include "plugin-loader.h"
 
 #include "misc/kadu-paths.h"
-#include "plugins/plugin.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-root-component.h"
 #include "debug.h"
@@ -41,18 +40,18 @@
 	#define SO_EXT "so"
 #endif
 
-PluginLoader::PluginLoader(Plugin *plugin, QObject *parent) noexcept(false) :
+PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(false) :
 		QObject{parent}
 {
-	m_pluginLoader.reset(new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + plugin->name() + QLatin1String("." SO_EXT)));
+	m_pluginLoader.reset(new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT)));
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
 	if (!m_pluginLoader->load())
 	{
 		QString errorString = m_pluginLoader->errorString();
-		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(plugin->name()), qPrintable(errorString));
+		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(pluginName), qPrintable(errorString));
 
-		throw PluginActivationErrorException(plugin->name(), tr("Cannot load %1 plugin library:\n%2").arg(plugin->name(), errorString));
+		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, errorString));
 	}
 }
 

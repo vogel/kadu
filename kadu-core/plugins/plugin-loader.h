@@ -24,7 +24,6 @@
 
 class QPluginLoader;
 
-class Plugin;
 class PluginRootComponent;
 
 class PluginLoader : public QObject
@@ -32,7 +31,7 @@ class PluginLoader : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginLoader(Plugin *plugin, QObject *parent = nullptr) noexcept(false);
+	explicit PluginLoader(const QString &pluginName, QObject *parent = nullptr) noexcept(false);
 	virtual ~PluginLoader() noexcept;
 
 	PluginRootComponent * instance() const noexcept;
