@@ -19,18 +19,17 @@
 
 #include "plugin-root-component-handler.h"
 
-#include "plugins/plugin.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-root-component.h"
 
-PluginRootComponentHandler::PluginRootComponentHandler(Plugin *plugin, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent) noexcept(false) :
+PluginRootComponentHandler::PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent) noexcept(false) :
 		QObject{parent}, m_pluginRootComponent{pluginRootComponent}
 {
 	if (!m_pluginRootComponent)
-		throw PluginActivationErrorException(plugin->name(), tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(plugin->name()));
+		throw PluginActivationErrorException(pluginName, tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(pluginName));
 
 	if (!m_pluginRootComponent->init(firstLoad))
-		throw PluginActivationErrorException(plugin->name(), tr("Plugin initialization routine for %1 failed.").arg(plugin->name()));
+		throw PluginActivationErrorException(pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName));
 }
 
 PluginRootComponentHandler::~PluginRootComponentHandler() noexcept

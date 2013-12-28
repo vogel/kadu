@@ -21,7 +21,6 @@
 
 #include <QtCore/QObject>
 
-class Plugin;
 class PluginRootComponent;
 
 class PluginRootComponentHandler : QObject
@@ -29,7 +28,7 @@ class PluginRootComponentHandler : QObject
 	Q_OBJECT
 
 public:
-	PluginRootComponentHandler(Plugin *plugin, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr) noexcept(false);
+	PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr) noexcept(false);
 	~PluginRootComponentHandler() noexcept;
 
 private:
