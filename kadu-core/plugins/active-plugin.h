@@ -25,13 +25,11 @@
 
 #include <QtCore/QScopedPointer>
 
-class Plugin;
-
 class ActivePlugin
 {
 
 public:
-	explicit ActivePlugin(Plugin *plugin, bool firstLoad);
+	explicit ActivePlugin(const QString &pluginName, bool firstLoad);
 
 private:
 	// translations must be loaded first and uloaded last, see #2177

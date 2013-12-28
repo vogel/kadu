@@ -22,12 +22,11 @@
 #include "plugins/plugin-loader.h"
 #include "plugins/plugin-root-component-handler.h"
 #include "plugins/plugin-translations-loader.h"
-#include "plugins/plugin.h"
 
-ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad)
+ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad)
 {
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
-	m_pluginTranslationsLoader.reset(new PluginTranslationsLoader{plugin->name()});
-	m_pluginLoader.reset(new PluginLoader{plugin->name()});
-	m_pluginRootComponentHandler.reset(new PluginRootComponentHandler{plugin->name(), firstLoad, m_pluginLoader->instance()});
+	m_pluginTranslationsLoader.reset(new PluginTranslationsLoader{pluginName});
+	m_pluginLoader.reset(new PluginLoader{pluginName});
+	m_pluginRootComponentHandler.reset(new PluginRootComponentHandler{pluginName, firstLoad, m_pluginLoader->instance()});
 }
