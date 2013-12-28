@@ -27,10 +27,10 @@ PluginRootComponentHandler::PluginRootComponentHandler(Plugin *plugin, bool firs
 		QObject{parent}, m_pluginRootComponent{pluginRootComponent}
 {
 	if (!m_pluginRootComponent)
-		throw PluginActivationErrorException(plugin, tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(plugin->name()));
+		throw PluginActivationErrorException(plugin->name(), tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(plugin->name()));
 
 	if (!m_pluginRootComponent->init(firstLoad))
-		throw PluginActivationErrorException(plugin, tr("Plugin initialization routine for %1 failed.").arg(plugin->name()));
+		throw PluginActivationErrorException(plugin->name(), tr("Plugin initialization routine for %1 failed.").arg(plugin->name()));
 }
 
 PluginRootComponentHandler::~PluginRootComponentHandler() noexcept

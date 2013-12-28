@@ -52,7 +52,7 @@ PluginLoader::PluginLoader(Plugin *plugin, QObject *parent) noexcept(false) :
 		QString errorString = m_pluginLoader->errorString();
 		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(plugin->name()), qPrintable(errorString));
 
-		throw PluginActivationErrorException(plugin, tr("Cannot load %1 plugin library:\n%2").arg(plugin->name(), errorString));
+		throw PluginActivationErrorException(plugin->name(), tr("Cannot load %1 plugin library:\n%2").arg(plugin->name(), errorString));
 	}
 }
 

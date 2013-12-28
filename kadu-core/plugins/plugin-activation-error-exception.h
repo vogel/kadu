@@ -22,20 +22,18 @@
 #include <QtCore/QString>
 #include <exception>
 
-class Plugin;
-
 class PluginActivationErrorException : public std::exception
 {
 
 public:
-	PluginActivationErrorException(Plugin *plugin, QString errorMessage) :
-			m_plugin(plugin), m_errorMessage{std::move(errorMessage)} {}
+	PluginActivationErrorException(QString pluginName, QString errorMessage) :
+			m_pluginName{std::move(pluginName)}, m_errorMessage{std::move(errorMessage)} {}
 
-	Plugin * plugin() const { return m_plugin; }
+	QString pluginName() const { return m_pluginName; }
 	QString errorMessage() const { return m_errorMessage; }
 
 private:
-	Plugin *m_plugin;
+	QString m_pluginName;
 	QString m_errorMessage;
 
 	virtual const char * what() const noexcept { return "Plugin activation error"; }

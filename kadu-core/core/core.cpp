@@ -680,6 +680,7 @@ void Core::runServices()
 
 	CurrentPluginsManager = new PluginsManager(this);
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginsManager->setPluginRepository(CurrentPluginRepository);
 	CurrentPluginsManager->ensureLoaded();
 }
 

@@ -86,6 +86,11 @@ void PluginsManager::setPluginActivationService(PluginActivationService *pluginA
 	m_pluginActivationService = pluginActivationService;
 }
 
+void PluginsManager::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
+}
+
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Loads PluginsManager and all Plugin configurations.
@@ -109,15 +114,15 @@ void PluginsManager::load()
 	{
 		auto plugin = loadPlugin(pluginName);
 		if (plugin)
-			Core::instance()->pluginRepository()->addPlugin(pluginName, plugin);
+			m_pluginRepository.data()->addPlugin(pluginName, plugin);
 	}
 
-	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*Core::instance()->pluginRepository());
+	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
-		Core::instance()->pluginRepository()->removePlugin(pluginInDependency);
+		m_pluginRepository.data()->removePlugin(pluginInDependency);
 
-	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*Core::instance()->pluginRepository());
+	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginRepository.data());
 
 	if (!loadAttribute<bool>("imported_from_09", false))
 	{
@@ -135,6 +140,9 @@ void PluginsManager::load()
  */
 void PluginsManager::store()
 {
+	if (!m_pluginRepository)
+		return;
+
 	if (!isValidStorage())
 		return;
 
@@ -142,7 +150,7 @@ void PluginsManager::store()
 
 	StorableObject::store();
 
-	for (auto plugin : Core::instance()->pluginRepository())
+	for (auto plugin : m_pluginRepository.data())
 		plugin->ensureStored();
 }
 
@@ -155,6 +163,9 @@ void PluginsManager::store()
  */
 void PluginsManager::importFrom09()
 {
+	if (!m_pluginRepository)
+		return;
+
 	auto everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
 	auto loaded = config_file.readEntry("General", "LoadedModules");
 
@@ -166,7 +177,7 @@ void PluginsManager::importFrom09()
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QMap<QString, Plugin *> oldPlugins;
 	for (auto pluginName : allPlugins)
-		if (!Core::instance()->pluginRepository()->hasPlugin(pluginName) && !oldPlugins.contains(pluginName))
+		if (!m_pluginRepository.data()->hasPlugin(pluginName) && !oldPlugins.contains(pluginName))
 		{
 			auto plugin = loadPlugin(pluginName);
 			if (plugin)
@@ -185,7 +196,7 @@ void PluginsManager::importFrom09()
 		loadedPlugins.insert("hints");
 	}
 
-	for (auto plugin : Core::instance()->pluginRepository())
+	for (auto plugin : m_pluginRepository.data())
 		if (allPlugins.contains(plugin->name()))
 		{
 			if (loadedPlugins.contains(plugin->name()))
@@ -220,9 +231,12 @@ void PluginsManager::importFrom09()
  */
 void PluginsManager::activateProtocolPlugins()
 {
+	if (!m_pluginRepository)
+		return;
+
 	auto saveList = false;
 
-	for (auto plugin : Core::instance()->pluginRepository())
+	for (auto plugin : m_pluginRepository.data())
 	{
 		if (plugin->info().type() != "protocol")
 			continue;
@@ -254,12 +268,12 @@ void PluginsManager::activateProtocolPlugins()
  */
 void PluginsManager::activatePlugins()
 {
-	if (!m_pluginActivationService)
+	if (!m_pluginActivationService || !m_pluginRepository)
 		return;
 
 	auto saveList = false;
 
-	for (auto plugin : Core::instance()->pluginRepository())
+	for (auto plugin : m_pluginRepository.data())
 		if (shouldActivate(plugin))
 		{
 			auto activationReason = (plugin->state() == PluginState::New)
@@ -270,7 +284,7 @@ void PluginsManager::activatePlugins()
 				saveList = true;
 		}
 
-	for (auto pluginToReplace : Core::instance()->pluginRepository())
+	for (auto pluginToReplace : m_pluginRepository.data())
 	{
 		if (m_pluginActivationService.data()->isActive(pluginToReplace) || pluginToReplace->state() != PluginState::Enabled)
 			continue;
@@ -311,7 +325,10 @@ bool PluginsManager::shouldActivate(Plugin *plugin) const noexcept
 
 Plugin * PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
 {
-	for (auto plugin : Core::instance()->pluginRepository())
+	if (!m_pluginRepository)
+		return {};
+
+	for (auto plugin : m_pluginRepository.data())
 		if (plugin->info().replaces().contains(pluginToReplace))
 			return plugin;
 
@@ -348,10 +365,10 @@ void PluginsManager::deactivatePlugins()
 QList<Plugin *> PluginsManager::activePlugins() const
 {
 	auto result = QList<Plugin *>{};
-	if (!m_pluginActivationService)
+	if (!m_pluginActivationService || !m_pluginRepository)
 		return result;
 
-	for (auto plugin : Core::instance()->pluginRepository())
+	for (auto plugin : m_pluginRepository.data())
 		if (m_pluginActivationService.data()->isActive(plugin))
 			result.append(plugin);
 	return result;
@@ -414,7 +431,7 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 
 QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept
 {
-	if (!plugin || !m_pluginDependencyDAG)
+	if (!plugin || !m_pluginDependencyDAG || !m_pluginRepository)
 		return {};
 
 	auto result = QVector<Plugin *>{};
@@ -422,7 +439,7 @@ QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept
 	auto dependencies = m_pluginDependencyDAG.get()->findDependencies(plugin->name());
 	for (auto dependency : dependencies)
 	{
-		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependency);
+		auto dependencyPlugin = m_pluginRepository.data()->plugin(dependency);
 		if (!dependencyPlugin)
 		{
 			throw PluginActivationErrorException(nullptr, tr("Required plugin %1 was not found").arg(dependency));
@@ -436,7 +453,7 @@ QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept
 
 QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin) noexcept
 {
-	if (!plugin || !m_pluginDependencyDAG)
+	if (!plugin || !m_pluginDependencyDAG || !m_pluginRepository)
 		return {};
 
 	auto result = QVector<Plugin *>{};
@@ -444,7 +461,7 @@ QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin) noexcept
 	auto dependents = m_pluginDependencyDAG.get()->findDependents(plugin->name());
 	for (auto dependent : dependents)
 	{
-		auto dependentPlugin = Core::instance()->pluginRepository()->plugin(dependent);
+		auto dependentPlugin = m_pluginRepository.data()->plugin(dependent);
 		if (dependentPlugin)
 			result += dependentPlugin;
 	}
@@ -480,7 +497,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	auto conflict = findActiveProviding(plugin->info().provides());
 	if (!conflict.isEmpty())
 	{
-		activationError(plugin, tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
+		activationError(plugin->name(), tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
 		return false;
 	}
 
@@ -516,7 +533,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		}
 		catch (PluginActivationErrorException &e)
 		{
-			activationError(e.plugin(), e.errorMessage(), PluginActivationReason::Dependency);
+			activationError(e.pluginName(), e.errorMessage(), PluginActivationReason::Dependency);
 			return false;
 		}
 
@@ -527,7 +544,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		}
 		catch (PluginActivationErrorException &e)
 		{
-			activationError(e.plugin(), e.errorMessage(), reason);
+			activationError(e.pluginName(), e.errorMessage(), reason);
 			return false;
 		}
 	}
@@ -552,17 +569,17 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
  * \p activationReason, it also intructs the dialog wheter to offer the user choice wheter to try
  * to load this plugin automatically in future.
  */
-void PluginsManager::activationError(Plugin *plugin, const QString &errorMessage, PluginActivationReason activationReason)
+void PluginsManager::activationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason)
 {
-	if (!plugin)
+	if (pluginName.isEmpty())
 		return;
 
 	auto offerLoadInFutureChoice = (PluginActivationReason::KnownDefault == activationReason);
 
 	// TODO: set parent to MainConfigurationWindow is it exists
-	auto errorDialog = new PluginErrorDialog(plugin, errorMessage, offerLoadInFutureChoice, 0);
+	auto errorDialog = new PluginErrorDialog(pluginName, errorMessage, offerLoadInFutureChoice, 0);
 	if (offerLoadInFutureChoice)
-		connect(errorDialog, SIGNAL(accepted(Plugin*,bool)), this, SLOT(setStateEnabledIfInactive(Plugin*,bool)));
+		connect(errorDialog, SIGNAL(accepted(QString,bool)), this, SLOT(setStateEnabledIfInactive(QString,bool)));
 
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
@@ -598,9 +615,13 @@ void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason r
  * Otherwise, this method sets its state to PluginState::Enabled if \p enable is true.
  * If \p enable is false, this method sets the plugin's state to PluginState::Disabled.
  */
-void PluginsManager::setStateEnabledIfInactive(Plugin *plugin, bool enable)
+void PluginsManager::setStateEnabledIfInactive(const QString &pluginName, bool enable)
 {
-	if (!m_pluginActivationService)
+	if (!m_pluginRepository || !m_pluginActivationService)
+		return;
+
+	auto plugin = m_pluginRepository.data()->plugin(pluginName);
+	if (!plugin)
 		return;
 
 	if (m_pluginActivationService.data()->isActive(plugin))

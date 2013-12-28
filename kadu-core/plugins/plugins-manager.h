@@ -42,6 +42,7 @@
 
 class PluginRootComponent;
 class PluginActivationService;
+class PluginRepository;
 class PluginsWindow;
 class Plugin;
 
@@ -94,6 +95,7 @@ public:
 	virtual ~PluginsManager();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginRepository(PluginRepository *pluginRepository);
 
 	// storage implementation
 	virtual StorableObject * storageParent() { return nullptr; }
@@ -114,6 +116,7 @@ protected:
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	QWeakPointer<PluginRepository> m_pluginRepository;
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
@@ -129,10 +132,10 @@ private:
 	bool shouldActivate(Plugin *plugin) const noexcept;
 	Plugin * findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
-	void activationError(Plugin *plugin, const QString &errorMessage, PluginActivationReason activationReason);
+	void activationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason);
 
 private slots:
-	void setStateEnabledIfInactive(Plugin *plugin, bool enable);
+	void setStateEnabledIfInactive(const QString &pluginName, bool enable);
 
 };
 
