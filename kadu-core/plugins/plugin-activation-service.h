@@ -24,7 +24,6 @@
 #include <memory>
 
 class ActivePlugin;
-class Plugin;
 class PluginActivationAction;
 
 enum class PluginActivationReason;
@@ -38,12 +37,12 @@ public:
 	virtual ~PluginActivationService();
 
 	void performActivationAction(const PluginActivationAction &action) noexcept(false);
-	bool isActive(Plugin *plugin) const noexcept;
+	bool isActive(const QString &name) const noexcept;
 
 private:
 	std::map<QString, std::unique_ptr<ActivePlugin>> m_activePlugins;
 
-	void activatePlugin(Plugin *plugin) noexcept(false);
-	void deactivatePlugin(Plugin *plugin) noexcept;
+	void activatePlugin(const QString &name, bool firstTime) noexcept(false);
+	void deactivatePlugin(const QString &name) noexcept;
 
 };

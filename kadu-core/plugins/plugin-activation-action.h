@@ -19,7 +19,7 @@
 
 #pragma once
 
-class Plugin;
+#include <QtCore/QString>
 
 enum class PluginActivationType;
 enum class PluginActivationReason;
@@ -30,20 +30,25 @@ class PluginActivationAction
 
 public:
 	PluginActivationAction();
-	PluginActivationAction(Plugin *plugin, PluginActivationReason activationReason);
-	PluginActivationAction(Plugin *plugin, PluginDeactivationReason deactivationReason);
+	PluginActivationAction(QString pluginName, PluginActivationReason activationReason, bool firstTime);
+	PluginActivationAction(QString pluginName, PluginDeactivationReason deactivationReason);
 
-	Plugin * plugin() const;
+	QString pluginName() const;
 	PluginActivationType type() const;
 	PluginActivationReason activationReason() const;
+	bool firstTime() const;
 	PluginDeactivationReason deactivationReason() const;
 
 private:
-	Plugin *m_plugin;
+	QString m_pluginName;
 	PluginActivationType m_type;
 	union
 	{
-		PluginActivationReason m_activationReason;
+		struct
+		{
+			PluginActivationReason m_activationReason;
+			bool m_firstTime;
+		};
 		PluginDeactivationReason m_deactivationReason;
 	};
 

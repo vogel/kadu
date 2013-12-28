@@ -144,7 +144,7 @@ void PluginListWidget::applyChanges()
 		if (!plugin)
 			continue;
 
-		if (m_pluginActivationService.data()->isActive(plugin) != pluginEntry->checked)
+		if (m_pluginActivationService.data()->isActive(plugin->name()) != pluginEntry->checked)
 		{
 			if (pluginEntry->checked)
 				pluginsToActivate.append(plugin);

@@ -40,32 +40,26 @@ void PluginActivationService::performActivationAction(const PluginActivationActi
 	switch (action.type())
 	{
 		case PluginActivationType::Activation:
-			activatePlugin(action.plugin());
+			activatePlugin(action.pluginName(), action.firstTime());
 			return;
 
 		case PluginActivationType::Deactivation:
-			deactivatePlugin(action.plugin());
+			deactivatePlugin(action.pluginName());
 			return;
 	}
 }
 
-bool PluginActivationService::isActive(Plugin *plugin) const noexcept
+bool PluginActivationService::isActive(const QString &name) const noexcept
 {
-	return plugin ? contains(m_activePlugins, plugin->name()) : false;
+	return contains(m_activePlugins, name);
 }
 
-void PluginActivationService::activatePlugin(Plugin *plugin) noexcept(false)
+void PluginActivationService::activatePlugin(const QString &name, bool firstTime) noexcept(false)
 {
-	if (!plugin)
-		return;
-
-	m_activePlugins.insert(std::make_pair(plugin->name(), make_unique<ActivePlugin>(plugin->name(), PluginState::New == plugin->state())));
+	m_activePlugins.insert(std::make_pair(name, make_unique<ActivePlugin>(name, firstTime)));
 }
 
-void PluginActivationService::deactivatePlugin(Plugin *plugin) noexcept
+void PluginActivationService::deactivatePlugin(const QString &name) noexcept
 {
-	if (!plugin)
-		return;
-
-	m_activePlugins.erase(plugin->name());
+	m_activePlugins.erase(name);
 }

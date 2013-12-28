@@ -73,7 +73,7 @@ void PluginModel::loadPluginData()
                 pluginEntry.description = pluginInfo.description();
                 pluginEntry.author = pluginInfo.author();
                 pluginEntry.pluginName = plugin->name();
-                pluginEntry.checked = m_pluginActivationService.data()->isActive(plugin);
+                pluginEntry.checked = m_pluginActivationService.data()->isActive(plugin->name());
                 pluginEntry.isCheckable = true;
 
                 listToAdd.append(pluginEntry);

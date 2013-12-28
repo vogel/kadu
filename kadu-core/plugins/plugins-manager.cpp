@@ -286,7 +286,7 @@ void PluginsManager::activatePlugins()
 
 	for (auto pluginToReplace : m_pluginRepository.data())
 	{
-		if (m_pluginActivationService.data()->isActive(pluginToReplace) || pluginToReplace->state() != PluginState::Enabled)
+		if (m_pluginActivationService.data()->isActive(pluginToReplace->name()) || pluginToReplace->state() != PluginState::Enabled)
 			continue;
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplace->name());
@@ -369,7 +369,7 @@ QList<Plugin *> PluginsManager::activePlugins() const
 		return result;
 
 	for (auto plugin : m_pluginRepository.data())
-		if (m_pluginActivationService.data()->isActive(plugin))
+		if (m_pluginActivationService.data()->isActive(plugin->name()))
 			result.append(plugin);
 	return result;
 }
@@ -491,7 +491,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	if (!m_pluginActivationService)
 		return false;
 
-	if (m_pluginActivationService.data()->isActive(plugin))
+	if (m_pluginActivationService.data()->isActive(plugin->name()))
 		return true;
 
 	auto conflict = findActiveProviding(plugin->info().provides());
@@ -515,7 +515,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 			else
 				activationReason = PluginActivationReason::Dependency;
 
-			actions.append({dependency, activationReason});
+			actions.append({dependency->name(), activationReason, PluginState::New == dependency->state()});
 		}
 
 		try
@@ -528,7 +528,9 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 				 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
 				 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
 				 */
-				action.plugin()->setState(PluginState::Disabled);
+				auto plugin = m_pluginRepository.data()->plugin(action.pluginName());
+				if (plugin)
+					plugin->setState(PluginState::Disabled);
 			}
 		}
 		catch (PluginActivationErrorException &e)
@@ -539,7 +541,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 
 		try
 		{
-			m_pluginActivationService.data()->performActivationAction({plugin, reason});
+			m_pluginActivationService.data()->performActivationAction({plugin->name(), reason, PluginState::New == plugin->state()});
 			plugin->setState(PluginState::Enabled);
 		}
 		catch (PluginActivationErrorException &e)
@@ -586,23 +588,27 @@ void PluginsManager::activationError(const QString &pluginName, const QString &e
 
 void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason)
 {
-	if (!m_pluginActivationService)
+	if (!m_pluginActivationService || m_pluginRepository)
 		return;
 
-	if (!m_pluginActivationService.data()->isActive(plugin))
+	if (!m_pluginActivationService.data()->isActive(plugin->name()))
 		return;
 
 	auto dependents = allDependents(plugin);
 	auto actions = QVector<PluginActivationAction>{};
 	for (auto dependent : dependents)
-		actions.append({dependent, reason});
-	actions.append({plugin, reason});
+		actions.append({dependent->name(), reason});
+	actions.append({plugin->name(), reason});
 
 	for (auto const &action : actions)
 	{
 		m_pluginActivationService.data()->performActivationAction(action);
 		if (PluginDeactivationReason::UserRequest == reason)
-			action.plugin()->setState(PluginState::Disabled);
+		{
+			auto plugin = m_pluginRepository.data()->plugin(action.pluginName());
+			if (plugin)
+				plugin->setState(PluginState::Disabled);
+		}
 	}
 }
 
@@ -624,7 +630,7 @@ void PluginsManager::setStateEnabledIfInactive(const QString &pluginName, bool e
 	if (!plugin)
 		return;
 
-	if (m_pluginActivationService.data()->isActive(plugin))
+	if (m_pluginActivationService.data()->isActive(pluginName))
 		return;
 
 	// It is necessary to not break firstLoad.

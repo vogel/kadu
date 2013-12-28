@@ -22,23 +22,23 @@
 #include "plugins/plugins-common.h"
 
 PluginActivationAction::PluginActivationAction() :
-		m_plugin{}
+		m_pluginName{}
 {
 }
 
-PluginActivationAction::PluginActivationAction(Plugin *plugin, PluginActivationReason activationReason) :
-		m_plugin{plugin}, m_type{PluginActivationType::Activation}, m_activationReason{activationReason}
+PluginActivationAction::PluginActivationAction(QString pluginName, PluginActivationReason activationReason, bool firstTime) :
+		m_pluginName{std::move(pluginName)}, m_type{PluginActivationType::Activation}, m_activationReason{activationReason}, m_firstTime{firstTime}
 {
 }
 
-PluginActivationAction::PluginActivationAction(Plugin *plugin, PluginDeactivationReason deactivationReason) :
-		m_plugin{plugin}, m_type{PluginActivationType::Deactivation}, m_deactivationReason{deactivationReason}
+PluginActivationAction::PluginActivationAction(QString pluginName, PluginDeactivationReason deactivationReason) :
+		m_pluginName{std::move(pluginName)}, m_type{PluginActivationType::Deactivation}, m_deactivationReason{deactivationReason}
 {
 }
 
-Plugin * PluginActivationAction::plugin() const
+QString PluginActivationAction::pluginName() const
 {
-	return m_plugin;
+	return m_pluginName;
 }
 
 PluginActivationType PluginActivationAction::type() const
@@ -49,6 +49,11 @@ PluginActivationType PluginActivationAction::type() const
 PluginActivationReason PluginActivationAction::activationReason() const
 {
 	return m_activationReason;
+}
+
+bool PluginActivationAction::firstTime() const
+{
+	return m_firstTime;
 }
 
 PluginDeactivationReason PluginActivationAction::deactivationReason() const
