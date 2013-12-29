@@ -136,7 +136,10 @@ void PluginsManager::load()
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
+	{
+		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
 		m_pluginRepository.data()->removePlugin(pluginInDependency);
+	}
 
 	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 
