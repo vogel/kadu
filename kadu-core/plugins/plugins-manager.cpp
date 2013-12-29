@@ -366,10 +366,10 @@ QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) co
 void PluginsManager::deactivatePlugins()
 {
 	auto active = activePlugins();
-	for (auto plugin : active)
+	for (auto const &pluginName : active)
 	{
-		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(plugin->name()));
-		deactivatePlugin(plugin->name(), PluginDeactivationReason::Exiting);
+		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(pluginName));
+		deactivatePlugin(pluginName, PluginDeactivationReason::Exiting);
 	}
 }
 
@@ -381,15 +381,15 @@ void PluginsManager::deactivatePlugins()
  * This method returns list of all active plugins. Active plugin has its shred library loaded and objects
  * created.
  */
-QList<Plugin *> PluginsManager::activePlugins() const
+QSet<QString> PluginsManager::activePlugins() const
 {
-	auto result = QList<Plugin *>{};
-	if (!m_pluginActivationService || !m_pluginRepository)
+	auto result = QSet<QString>{};
+	if (!m_pluginActivationService || !m_pluginInfoRepository)
 		return result;
 
-	for (auto plugin : m_pluginRepository.data())
-		if (m_pluginActivationService.data()->isActive(plugin->name()))
-			result.append(plugin);
+	for (auto const &pluginInfo : m_pluginInfoRepository.data())
+		if (m_pluginActivationService.data()->isActive(pluginInfo.name()))
+			result.insert(pluginInfo.name());
 	return result;
 }
 
@@ -431,10 +431,10 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 	if (feature.isEmpty() || !m_pluginInfoRepository)
 		return {};
 
-	for (auto activePlugin : activePlugins())
-		if (m_pluginInfoRepository.data()->hasPluginInfo(activePlugin->name()))
-			if (m_pluginInfoRepository.data()->pluginInfo(activePlugin->name()).provides() == feature)
-				return activePlugin->name();
+	for (auto const &activePluginName : activePlugins())
+		if (m_pluginInfoRepository.data()->hasPluginInfo(activePluginName))
+			if (m_pluginInfoRepository.data()->pluginInfo(activePluginName).provides() == feature)
+				return activePluginName;
 
 	return {};
 }

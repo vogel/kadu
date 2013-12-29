@@ -105,7 +105,7 @@ public:
 	virtual StorableObject * storageParent() { return nullptr; }
 	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
 
-	QList<Plugin *> activePlugins() const;
+	QSet<QString> activePlugins() const;
 
 	void activateProtocolPlugins();
 	void activatePlugins();

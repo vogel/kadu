@@ -98,9 +98,9 @@ static void kadu_signal_handler(int signal)
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
 			fprintf(backtraceFile, "loaded plugins:\n");
-			QList<Plugin *> plugins = Core::instance()->pluginsManager()->activePlugins();
-			foreach (Plugin *plugin, plugins)
-				fprintf(backtraceFile, "> %s\n", qPrintable(plugin->name()));
+			auto pluginNames = Core::instance()->pluginsManager()->activePlugins();
+			for (auto const &pluginName : pluginNames)
+				fprintf(backtraceFile, "> %s\n", qPrintable(pluginName));
 			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
 			fprintf(backtraceFile, "Qt compile time version: %s\nQt runtime version: %s\n",
 					QT_VERSION_STR, qVersion());
