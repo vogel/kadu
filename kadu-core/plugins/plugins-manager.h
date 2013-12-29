@@ -114,6 +114,9 @@ public:
 	bool activatePlugin(const QString &pluginName, PluginActivationReason reason);
 	void deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason);
 
+	PluginState pluginState(const QString &pluginName) const noexcept;
+	void setPluginState(const QString &pluginName, PluginState state) const noexcept;
+
 protected:
 	virtual void load();
 	virtual void store();
@@ -133,9 +136,6 @@ private:
 	QString findActiveProviding(const QString &feature) const;
 	QVector<QString> allDependencies(const QString &pluginName) noexcept;
 	QVector<QString> allDependents(const QString &pluginName) noexcept;
-
-	PluginState pluginState(const QString &pluginName) const noexcept;
-	void setPluginState(const QString &pluginName, PluginState state) const noexcept;
 
 	bool shouldActivate(Plugin *plugin) const noexcept;
 	Plugin * findReplacementPlugin(const QString &pluginToReplace) const noexcept;

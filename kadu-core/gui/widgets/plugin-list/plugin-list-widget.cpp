@@ -50,7 +50,6 @@
 #include "plugins/model/plugin-model.h"
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-info.h"
-#include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
