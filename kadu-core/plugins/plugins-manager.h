@@ -130,8 +130,8 @@ private:
 
 	PluginInfo loadPlugin(const QString &pluginName);
 	QString findActiveProviding(const QString &feature) const;
-	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept;
-	QVector<Plugin *> allDependents(Plugin *plugin) noexcept;
+	QVector<QString> allDependencies(const QString &pluginName) noexcept;
+	QVector<QString> allDependents(const QString &pluginName) noexcept;
 
 	bool shouldActivate(Plugin *plugin) const noexcept;
 	Plugin * findReplacementPlugin(const QString &pluginToReplace) const noexcept;

@@ -450,44 +450,14 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 	return {};
 }
 
-QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept
+QVector<QString> PluginsManager::allDependencies(const QString &pluginName) noexcept
 {
-	if (!plugin || !m_pluginDependencyDAG || !m_pluginRepository)
-		return {};
-
-	auto result = QVector<Plugin *>{};
-
-	auto dependencies = m_pluginDependencyDAG.get()->findDependencies(plugin->name());
-	for (auto dependency : dependencies)
-	{
-		auto dependencyPlugin = m_pluginRepository.data()->plugin(dependency);
-		if (!dependencyPlugin)
-		{
-			throw PluginActivationErrorException(nullptr, tr("Required plugin %1 was not found").arg(dependency));
-		}
-
-		result += dependencyPlugin;
-	}
-
-	return result;
+	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependencies(pluginName) : QVector<QString>{};
 }
 
-QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin) noexcept
+QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexcept
 {
-	if (!plugin || !m_pluginDependencyDAG || !m_pluginRepository)
-		return {};
-
-	auto result = QVector<Plugin *>{};
-
-	auto dependents = m_pluginDependencyDAG.get()->findDependents(plugin->name());
-	for (auto dependent : dependents)
-	{
-		auto dependentPlugin = m_pluginRepository.data()->plugin(dependent);
-		if (dependentPlugin)
-			result += dependentPlugin;
-	}
-
-	return result;
+	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependents(pluginName) : QVector<QString>{};
 }
 
 /**
@@ -527,23 +497,25 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 
 	try
 	{
-		auto dependencies = allDependencies(plugin);
+		auto dependencies = allDependencies(plugin->name());
 		auto actions = QVector<PluginActivationAction>{};
 		for (auto dependency : dependencies)
 		{
-			auto loadByDefault = m_pluginInfoRepository.data()->hasPluginInfo(dependency->name())
-					? m_pluginInfoRepository.data()->pluginInfo(dependency->name()).loadByDefault()
+			auto loadByDefault = m_pluginInfoRepository.data()->hasPluginInfo(dependency)
+					? m_pluginInfoRepository.data()->pluginInfo(dependency).loadByDefault()
 					: false;
+			auto dependencyConfiguration = m_pluginRepository.data()->plugin(dependency);
+			auto state = dependencyConfiguration ? dependencyConfiguration->state() : PluginState::Disabled;
 
 			auto activationReason = PluginActivationReason{};
-			if (PluginState::Enabled == dependency->state())
+			if (PluginState::Enabled == state)
 				activationReason = PluginActivationReason::KnownDefault;
-			else if (PluginState::New == dependency->state() && loadByDefault)
+			else if (PluginState::New == state && loadByDefault)
 				activationReason = PluginActivationReason::NewDefault;
 			else
 				activationReason = PluginActivationReason::Dependency;
 
-			actions.append({dependency->name(), activationReason, PluginState::New == dependency->state()});
+			actions.append({dependency, activationReason, PluginState::New == state});
 		}
 
 		try
@@ -622,10 +594,10 @@ void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason r
 	if (!m_pluginActivationService.data()->isActive(plugin->name()))
 		return;
 
-	auto dependents = allDependents(plugin);
+	auto dependents = allDependents(plugin->name());
 	auto actions = QVector<PluginActivationAction>{};
 	for (auto dependent : dependents)
-		actions.append({dependent->name(), reason});
+		actions.append({dependent, reason});
 	actions.append({plugin->name(), reason});
 
 	for (auto const &action : actions)

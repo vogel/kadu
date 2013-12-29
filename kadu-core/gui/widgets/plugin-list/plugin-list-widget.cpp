@@ -150,7 +150,6 @@ void PluginListWidget::applyChanges()
 				pluginsToActivate.append(plugin);
 			else
 				pluginsToDeactivate.append(plugin);
-
 		}
 	}
 
