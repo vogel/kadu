@@ -88,6 +88,7 @@
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-reader.h"
+#include "plugins/plugin-info-repository.h"
 #include "plugins/plugin-repository.h"
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
@@ -675,11 +676,13 @@ void Core::runServices()
 
 	CurrentPluginInfoReader = new PluginInfoReader(this);
 	CurrentPluginRepository = new PluginRepository(this);
+	CurrentPluginInfoRepository = new PluginInfoRepository(this);
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 
 	CurrentPluginsManager = new PluginsManager(this);
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginsManager->setPluginInfoRepository(CurrentPluginInfoRepository);
 	CurrentPluginsManager->setPluginRepository(CurrentPluginRepository);
 	CurrentPluginsManager->ensureLoaded();
 }
@@ -861,6 +864,11 @@ PluginInfoReader * Core::pluginInfoReader() const
 PluginRepository * Core::pluginRepository() const
 {
 	return CurrentPluginRepository;
+}
+
+PluginInfoRepository * Core::pluginInfoRepository() const
+{
+	return CurrentPluginInfoRepository;
 }
 
 PluginsManager * Core::pluginsManager() const

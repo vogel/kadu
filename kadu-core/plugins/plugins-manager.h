@@ -42,6 +42,8 @@
 
 class PluginRootComponent;
 class PluginActivationService;
+class PluginInfo;
+class PluginInfoRepository;
 class PluginRepository;
 class PluginsWindow;
 class Plugin;
@@ -95,6 +97,7 @@ public:
 	virtual ~PluginsManager();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository);
 	void setPluginRepository(PluginRepository *pluginRepository);
 
 	// storage implementation
@@ -116,6 +119,7 @@ protected:
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	QWeakPointer<PluginInfoRepository> m_pluginInfoRepository;
 	QWeakPointer<PluginRepository> m_pluginRepository;
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
@@ -124,7 +128,7 @@ private:
 
 	QStringList installedPlugins() const;
 
-	Plugin * loadPlugin(const QString &pluginName);
+	PluginInfo loadPlugin(const QString &pluginName);
 	QString findActiveProviding(const QString &feature) const;
 	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept;
 	QVector<Plugin *> allDependents(Plugin *plugin) noexcept;

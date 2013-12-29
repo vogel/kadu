@@ -48,7 +48,7 @@
 #include "plugins/plugin.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info.h"
-#include "plugins/plugin-repository.h"
+#include "plugins/plugin-info-repository.h"
 #include "plugins/plugins-manager.h"
 
 #include "plugin-model.h"
@@ -59,21 +59,20 @@ void PluginModel::loadPluginData()
         Plugins.clear();
         QList<PluginEntry> listToAdd;
 
-        for (Plugin *plugin : Core::instance()->pluginRepository())
+        for (auto const &pluginInfo : Core::instance()->pluginInfoRepository())
         {
                 PluginEntry pluginEntry;
-                auto &pluginInfo = plugin->info();
 
                 pluginEntry.category = !pluginInfo.category().isEmpty()
                         ? pluginInfo.category()
                         : "Misc";
                 pluginEntry.name = !pluginInfo.displayName().isEmpty()
                         ? pluginInfo.displayName()
-                        : plugin->name();
+                        : pluginInfo.name();
                 pluginEntry.description = pluginInfo.description();
                 pluginEntry.author = pluginInfo.author();
-                pluginEntry.pluginName = plugin->name();
-                pluginEntry.checked = m_pluginActivationService.data()->isActive(plugin->name());
+                pluginEntry.pluginName = pluginInfo.name();
+                pluginEntry.checked = m_pluginActivationService.data()->isActive(pluginInfo.name());
                 pluginEntry.isCheckable = true;
 
                 listToAdd.append(pluginEntry);

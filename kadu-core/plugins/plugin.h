@@ -22,7 +22,6 @@
 #pragma once
 
 #include "core/core.h"
-#include "plugins/plugin-info.h"
 #include "plugins/plugins-manager.h"
 #include "exports.h"
 
@@ -77,13 +76,13 @@ class KADUAPI Plugin : public QObject, public NamedStorableObject
 	Q_OBJECT
 
 public:
-	explicit Plugin(PluginInfo pluginInfo, QObject *parent = nullptr);
+	explicit Plugin(QString name, QObject *parent = nullptr);
 	virtual ~Plugin();
 
 	// storage implementation
 	virtual StorableObject* storageParent() override { return Core::instance()->pluginsManager(); }
 	virtual QString storageNodeName() override { return QLatin1String{"Plugin"}; }
-	virtual QString name() const override { return m_pluginInfo.name(); }
+	virtual QString name() const override { return m_name; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -98,22 +97,13 @@ public:
 	PluginState state() { ensureLoaded(); return m_state; }
 	void setState(PluginState state);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns PluginInfo object for this plugin.
-	 * @return PluginInfo object for this plugin
-	 *
-	 * Returns PluginInfo object for this plugin.
-	 */
-	const PluginInfo & info() const { return m_pluginInfo; }
-
 protected:
 	virtual void load();
 	virtual void store();
 	virtual bool shouldStore();
 
 private:
-	PluginInfo m_pluginInfo;
+	QString m_name;
 	PluginState m_state;
 
 };

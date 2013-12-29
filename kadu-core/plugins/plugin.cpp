@@ -47,8 +47,8 @@
  * is created if dataDir/kadu/plugins/name.desc is found. If this file is not found, plugin
  * is marked as invalid and will be unable to be activated.
  */
-Plugin::Plugin(PluginInfo pluginInfo, QObject *parent) :
-		QObject{parent}, m_pluginInfo(std::move(pluginInfo)),
+Plugin::Plugin(QString name, QObject *parent) :
+		QObject{parent}, m_name(std::move(name)),
 		m_state{PluginState::New}
 {
 	StorableObject::setState(StateNotLoaded);

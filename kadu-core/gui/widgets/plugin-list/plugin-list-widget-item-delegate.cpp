@@ -48,7 +48,7 @@
 #include "plugins/model/plugin-model.h"
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-info.h"
-#include "plugins/plugin-repository.h"
+#include "plugins/plugin-info-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
@@ -264,11 +264,10 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
         info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()) + "\n";
 
         auto pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
-		auto plugin = Core::instance()->pluginRepository()->plugin(pluginEntry->pluginName);
 
-		if (plugin)
+		if (Core::instance()->pluginInfoRepository()->hasPluginInfo(pluginEntry->pluginName))
 		{
-			auto &pluginInfo = plugin->info();
+			auto const &pluginInfo = Core::instance()->pluginInfoRepository()->pluginInfo(pluginEntry->pluginName);
 
 			info += tr("Author: %1").arg(pluginInfo.author()) + "\n";
 			info += tr("Version: %1").arg(pluginInfo.version()) + "\n";

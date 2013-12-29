@@ -10,6 +10,7 @@ set (plugins_SRCS
 	plugin-info.cpp
 	plugin-info-builder.cpp
 	plugin-info-reader.cpp
+	plugin-info-repository.cpp
 	plugin-loader.cpp
 	plugin-repository.cpp
 	plugin-root-component-handler.cpp

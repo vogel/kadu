@@ -21,8 +21,8 @@
 
 #include "misc/memory.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
-#include "plugins/plugin.h"
-#include "plugins/plugin-repository.h"
+#include "plugins/plugin-info.h"
+#include "plugins/plugin-info-repository.h"
 
 PluginDependencyGraphBuilder::PluginDependencyGraphBuilder(QObject *parent) :
 		QObject{parent}
@@ -33,34 +33,34 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 {
 }
 
-std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(PluginRepository &pluginRepository) const
+std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(PluginInfoRepository &pluginInfoRepository) const
 {
 	auto result = make_unique<PluginDependencyGraph>();
 
-	auto pluginNames = getPluginNames(pluginRepository);
+	auto pluginNames = getPluginNames(pluginInfoRepository);
 	for (auto pluginName : pluginNames)
 		result.get()->addPlugin(pluginName);
 
 	for (auto pluginName : pluginNames)
 	{
-		auto plugin = pluginRepository.plugin(pluginName);
-		if (!plugin)
+		if (!pluginInfoRepository.hasPluginInfo(pluginName))
 			continue;
 
-		for (auto const &dependency : plugin->info().dependencies())
+		auto pluginInfo = pluginInfoRepository.pluginInfo(pluginName);
+		for (auto const &dependency : pluginInfo.dependencies())
 			result.get()->addDependency(pluginName, dependency);
 	}
 
 	return std::move(result);
 }
 
-std::set<QString> PluginDependencyGraphBuilder::getPluginNames(PluginRepository &pluginRepository) const
+std::set<QString> PluginDependencyGraphBuilder::getPluginNames(PluginInfoRepository &pluginInfoRepository) const
 {
 	auto pluginNames = std::set<QString>{};
-	for (auto plugin : pluginRepository)
+	for (auto pluginInfo : pluginInfoRepository)
 	{
-		pluginNames.insert(plugin->info().name());
-		for (auto dependency : plugin->info().dependencies())
+		pluginNames.insert(pluginInfo.name());
+		for (auto dependency : pluginInfo.dependencies())
 			pluginNames.insert(dependency);
 	}
 	return pluginNames;

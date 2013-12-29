@@ -28,7 +28,7 @@
 #include "exports.h"
 
 class PluginInfo;
-class PluginRepository;
+class PluginInfoRepository;
 
 class KADUAPI PluginDependencyGraphBuilder : public QObject
 {
@@ -38,9 +38,9 @@ public:
 	explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
 	virtual ~PluginDependencyGraphBuilder();
 
-	std::unique_ptr<PluginDependencyGraph> buildGraph(PluginRepository &pluginRepository) const;
+	std::unique_ptr<PluginDependencyGraph> buildGraph(PluginInfoRepository &pluginRepository) const;
 
 private:
-	std::set<QString> getPluginNames(PluginRepository &pluginRepository) const;
+	std::set<QString> getPluginNames(PluginInfoRepository &pluginRepository) const;
 
 };
