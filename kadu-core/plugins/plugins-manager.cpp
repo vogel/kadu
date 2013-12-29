@@ -624,7 +624,7 @@ void PluginsManager::deactivatePlugin(const QString &pluginName, PluginDeactivat
  */
 void PluginsManager::setStateEnabledIfInactive(const QString &pluginName, bool enable)
 {
-	if (!m_pluginRepository || !m_pluginActivationService)
+	if (!m_pluginActivationService)
 		return;
 
 	if (m_pluginActivationService.data()->isActive(pluginName))
