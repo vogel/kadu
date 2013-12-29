@@ -57,6 +57,7 @@ class QTreeWidgetItem;
 
 enum class PluginActivationReason;
 enum class PluginDeactivationReason;
+enum class PluginState;
 
 /**
  * @addtogroup Plugins
@@ -132,6 +133,9 @@ private:
 	QString findActiveProviding(const QString &feature) const;
 	QVector<QString> allDependencies(const QString &pluginName) noexcept;
 	QVector<QString> allDependents(const QString &pluginName) noexcept;
+
+	PluginState pluginState(const QString &pluginName) const noexcept;
+	void setPluginState(const QString &pluginName, PluginState state) const noexcept;
 
 	bool shouldActivate(Plugin *plugin) const noexcept;
 	Plugin * findReplacementPlugin(const QString &pluginToReplace) const noexcept;

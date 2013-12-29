@@ -460,6 +460,25 @@ QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexce
 	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependents(pluginName) : QVector<QString>{};
 }
 
+PluginState PluginsManager::pluginState(const QString &pluginName) const noexcept
+{
+	if (!m_pluginRepository)
+		return PluginState::Disabled;
+
+	auto pluginConfiguration = m_pluginRepository.data()->plugin(pluginName);
+	return pluginConfiguration ? pluginConfiguration->state() : PluginState::Disabled;
+}
+
+void PluginsManager::setPluginState(const QString &pluginName, PluginState state) const noexcept
+{
+	if (!m_pluginRepository)
+		return;
+
+	auto pluginConfiguration = m_pluginRepository.data()->plugin(pluginName);
+	if (pluginConfiguration)
+		pluginConfiguration->setState(state);
+}
+
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Activates given plugin and all its dependencies.
@@ -504,8 +523,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 			auto loadByDefault = m_pluginInfoRepository.data()->hasPluginInfo(dependency)
 					? m_pluginInfoRepository.data()->pluginInfo(dependency).loadByDefault()
 					: false;
-			auto dependencyConfiguration = m_pluginRepository.data()->plugin(dependency);
-			auto state = dependencyConfiguration ? dependencyConfiguration->state() : PluginState::Disabled;
+			auto state = pluginState(dependency);
 
 			auto activationReason = PluginActivationReason{};
 			if (PluginState::Enabled == state)
@@ -528,9 +546,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 				 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
 				 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
 				 */
-				auto plugin = m_pluginRepository.data()->plugin(action.pluginName());
-				if (plugin)
-					plugin->setState(PluginState::Disabled);
+				setPluginState(action.pluginName(), PluginState::Disabled);
 			}
 		}
 		catch (PluginActivationErrorException &e)
@@ -604,11 +620,7 @@ void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason r
 	{
 		m_pluginActivationService.data()->performActivationAction(action);
 		if (PluginDeactivationReason::UserRequest == reason)
-		{
-			auto plugin = m_pluginRepository.data()->plugin(action.pluginName());
-			if (plugin)
-				plugin->setState(PluginState::Disabled);
-		}
+			setPluginState(action.pluginName(), PluginState::Disabled);
 	}
 }
 
@@ -626,18 +638,14 @@ void PluginsManager::setStateEnabledIfInactive(const QString &pluginName, bool e
 	if (!m_pluginRepository || !m_pluginActivationService)
 		return;
 
-	auto plugin = m_pluginRepository.data()->plugin(pluginName);
-	if (!plugin)
-		return;
-
 	if (m_pluginActivationService.data()->isActive(pluginName))
 		return;
 
 	// It is necessary to not break firstLoad.
-	if (PluginState::New == plugin->state())
+	if (PluginState::New == pluginState(pluginName))
 		return;
 
-	plugin->setState(enable ? PluginState::Enabled : PluginState::Disabled);
+	setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
 }
 
 #include "moc_plugins-manager.cpp"
