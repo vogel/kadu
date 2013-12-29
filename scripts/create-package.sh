@@ -35,13 +35,8 @@ PACKAGE_NAME=kadu-$VERSION
 PACKAGE_DIR=$PACKAGE_NAME
 PACKAGE_FILE=$PACKAGE_NAME.tar.bz2
 
-git clone git@gitorious.org:kadu/kadu.git $PACKAGE_DIR
-pushd $PACKAGE_DIR
-git checkout $VERSION
-git submodule init
-git submodule update
-find -name ".git*" | xargs rm -rf
-popd
+git clone --recursive --depth 1 --branch $VERSION -- git@gitorious.org:kadu/kadu.git $PACKAGE_DIR
+find $PACKAGE_DIR -name ".git*" | xargs rm -rf
 
 tar cjf $PACKAGE_FILE $PACKAGE_DIR
 md5sum $PACKAGE_FILE > $PACKAGE_FILE.md5
