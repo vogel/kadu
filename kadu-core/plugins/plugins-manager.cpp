@@ -272,7 +272,7 @@ void PluginsManager::activateProtocolPlugins()
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
-			if (!activatePlugin(plugin, activationReason))
+			if (!activatePlugin(plugin->name(), activationReason))
 				saveList = true;
 		}
 	}
@@ -305,7 +305,7 @@ void PluginsManager::activatePlugins()
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
-			if (!activatePlugin(plugin, activationReason))
+			if (!activatePlugin(plugin->name(), activationReason))
 				saveList = true;
 		}
 
@@ -316,7 +316,7 @@ void PluginsManager::activatePlugins()
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplace->name());
 		if (replacementPlugin->state() == PluginState::New)
-			if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
+			if (activatePlugin(replacementPlugin->name(), PluginActivationReason::NewDefault))
 				saveList = true; // list has changed
 	}
 
@@ -380,7 +380,7 @@ void PluginsManager::deactivatePlugins()
 	for (auto plugin : active)
 	{
 		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(plugin->name()));
-		deactivatePlugin(plugin, PluginDeactivationReason::Exiting);
+		deactivatePlugin(plugin->name(), PluginDeactivationReason::Exiting);
 	}
 }
 
@@ -496,27 +496,27 @@ void PluginsManager::setPluginState(const QString &pluginName, PluginState state
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reason)
+bool PluginsManager::activatePlugin(const QString &pluginName, PluginActivationReason reason)
 {
 	if (!m_pluginActivationService || !m_pluginRepository || !m_pluginInfoRepository)
 		return false;
 
-	if (m_pluginActivationService.data()->isActive(plugin->name()))
+	if (m_pluginActivationService.data()->isActive(pluginName))
 		return true;
 
-	if (m_pluginInfoRepository.data()->hasPluginInfo(plugin->name()))
+	if (m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
 	{
-		auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(plugin->name()).provides());
+		auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
 		if (!conflict.isEmpty())
 		{
-			activationError(plugin->name(), tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
+			activationError(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict), reason);
 			return false;
 		}
 	}
 
 	try
 	{
-		auto dependencies = allDependencies(plugin->name());
+		auto dependencies = allDependencies(pluginName);
 		auto actions = QVector<PluginActivationAction>{};
 		for (auto dependency : dependencies)
 		{
@@ -557,8 +557,8 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 
 		try
 		{
-			m_pluginActivationService.data()->performActivationAction({plugin->name(), reason, PluginState::New == plugin->state()});
-			plugin->setState(PluginState::Enabled);
+			m_pluginActivationService.data()->performActivationAction({pluginName, reason, PluginState::New == pluginState(pluginName)});
+			setPluginState(pluginName, PluginState::Enabled);
 		}
 		catch (PluginActivationErrorException &e)
 		{
@@ -602,19 +602,19 @@ void PluginsManager::activationError(const QString &pluginName, const QString &e
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
-void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason)
+void PluginsManager::deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason)
 {
 	if (!m_pluginActivationService || m_pluginRepository)
 		return;
 
-	if (!m_pluginActivationService.data()->isActive(plugin->name()))
+	if (!m_pluginActivationService.data()->isActive(pluginName))
 		return;
 
-	auto dependents = allDependents(plugin->name());
+	auto dependents = allDependents(pluginName);
 	auto actions = QVector<PluginActivationAction>{};
 	for (auto dependent : dependents)
 		actions.append({dependent, reason});
-	actions.append({plugin->name(), reason});
+	actions.append({pluginName, reason});
 
 	for (auto const &action : actions)
 	{

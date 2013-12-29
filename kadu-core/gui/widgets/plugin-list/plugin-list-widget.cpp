@@ -133,33 +133,28 @@ void PluginListWidget::applyChanges()
 {
 	int count = Model->rowCount();
 
-	QVector<Plugin *> pluginsToDeactivate;
-	QVector<Plugin *> pluginsToActivate;
+	QVector<QString> pluginsToDeactivate;
+	QVector<QString> pluginsToActivate;
 
 	for (int i = 0; i < count; i++)
 	{
 		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
-		auto plugin = Core::instance()->pluginRepository()->plugin(pluginEntry->pluginName);
-
-		if (!plugin)
-			continue;
-
-		if (m_pluginActivationService.data()->isActive(plugin->name()) != pluginEntry->checked)
+		if (m_pluginActivationService.data()->isActive(pluginEntry->pluginName) != pluginEntry->checked)
 		{
 			if (pluginEntry->checked)
-				pluginsToActivate.append(plugin);
+				pluginsToActivate.append(pluginEntry->pluginName);
 			else
-				pluginsToDeactivate.append(plugin);
+				pluginsToDeactivate.append(pluginEntry->pluginName);
 		}
 	}
 
 	if (m_pluginsManager)
 	{
-		for (Plugin *plugin : pluginsToDeactivate)
-			m_pluginsManager.data()->deactivatePlugin(plugin, PluginDeactivationReason::UserRequest);
+		for (auto const &pluginName : pluginsToDeactivate)
+			m_pluginsManager.data()->deactivatePlugin(pluginName, PluginDeactivationReason::UserRequest);
 
-		for (Plugin *plugin : pluginsToActivate)
-			m_pluginsManager.data()->activatePlugin(plugin, PluginActivationReason::UserRequest);
+		for (auto const &pluginName : pluginsToActivate)
+			m_pluginsManager.data()->activatePlugin(pluginName, PluginActivationReason::UserRequest);
 	}
 
 	Model->loadPluginData();

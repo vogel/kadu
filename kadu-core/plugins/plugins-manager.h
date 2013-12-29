@@ -111,8 +111,8 @@ public:
 	void activatePlugins();
 	void deactivatePlugins();
 
-	bool activatePlugin(Plugin *plugin, PluginActivationReason reason);
-	void deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason);
+	bool activatePlugin(const QString &pluginName, PluginActivationReason reason);
+	void deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason);
 
 protected:
 	virtual void load();
