@@ -182,7 +182,7 @@ void PluginsManager::store()
  */
 void PluginsManager::importFrom09()
 {
-	if (!m_pluginRepository)
+	if (!m_pluginInfoRepository)
 		return;
 
 	auto everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
@@ -196,18 +196,8 @@ void PluginsManager::importFrom09()
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QMap<QString, Plugin *> oldPlugins;
 	for (auto pluginName : allPlugins)
-		if (!m_pluginRepository.data()->hasPlugin(pluginName) && !oldPlugins.contains(pluginName))
-		{
-			try
-			{
-				auto pluginInfo = loadPlugin(pluginName);
-				oldPlugins.insert(pluginName, new Plugin{pluginName, this});
-			}
-			catch (...)
-			{
-				// TODO: implement
-			}
-		}
+		if (!m_pluginInfoRepository.data()->hasPluginInfo(pluginName) && !oldPlugins.contains(pluginName))
+			oldPlugins.insert(pluginName, new Plugin{pluginName, this});
 
 	if (loadedPlugins.contains("encryption"))
 	{
@@ -221,13 +211,13 @@ void PluginsManager::importFrom09()
 		loadedPlugins.insert("hints");
 	}
 
-	for (auto plugin : m_pluginRepository.data())
-		if (allPlugins.contains(plugin->name()))
+	for (auto const &pluginInfo : m_pluginInfoRepository.data())
+		if (allPlugins.contains(pluginInfo.name()))
 		{
-			if (loadedPlugins.contains(plugin->name()))
-				plugin->setState(PluginState::Enabled);
-			else if (everLoaded.contains(plugin->name()))
-				plugin->setState(PluginState::Disabled);
+			if (loadedPlugins.contains(pluginInfo.name()))
+				setPluginState(pluginInfo.name(), PluginState::Enabled);
+			else if (everLoaded.contains(pluginInfo.name()))
+				setPluginState(pluginInfo.name(), PluginState::Disabled);
 		}
 
 	for (auto plugin : oldPlugins.values())
@@ -256,26 +246,23 @@ void PluginsManager::importFrom09()
  */
 void PluginsManager::activateProtocolPlugins()
 {
-	if (!m_pluginRepository || !m_pluginInfoRepository)
+	if (!m_pluginInfoRepository)
 		return;
 
 	auto saveList = false;
 
-	for (auto plugin : m_pluginRepository.data())
+	for (const auto &pluginInfo : m_pluginInfoRepository.data())
 	{
-		if (!m_pluginInfoRepository.data()->hasPluginInfo(plugin->name()))
+		if (pluginInfo.type() != "protocol")
 			continue;
 
-		if (m_pluginInfoRepository.data()->pluginInfo(plugin->name()).type() != "protocol")
-			continue;
-
-		if (shouldActivate(plugin->name()))
+		if (shouldActivate(pluginInfo.name()))
 		{
-			auto activationReason = (plugin->state() == PluginState::New)
+			auto activationReason = (pluginState(pluginInfo.name()) == PluginState::New)
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
-			if (!activatePlugin(plugin->name(), activationReason))
+			if (!activatePlugin(pluginInfo.name(), activationReason))
 				saveList = true;
 		}
 	}
@@ -296,30 +283,30 @@ void PluginsManager::activateProtocolPlugins()
  */
 void PluginsManager::activatePlugins()
 {
-	if (!m_pluginActivationService || !m_pluginRepository)
+	if (!m_pluginActivationService || !m_pluginInfoRepository)
 		return;
 
 	auto saveList = false;
 
-	for (auto plugin : m_pluginRepository.data())
-		if (shouldActivate(plugin->name()))
+	for (auto const &pluginInfo : m_pluginInfoRepository.data())
+		if (shouldActivate(pluginInfo.name()))
 		{
-			auto activationReason = (plugin->state() == PluginState::New)
+			auto activationReason = (pluginState(pluginInfo.name()) == PluginState::New)
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
-			if (!activatePlugin(plugin->name(), activationReason))
+			if (!activatePlugin(pluginInfo.name(), activationReason))
 				saveList = true;
 		}
 
-	for (auto pluginToReplace : m_pluginRepository.data())
+	for (auto const &pluginToReplaceInfo : m_pluginInfoRepository.data())
 	{
-		if (m_pluginActivationService.data()->isActive(pluginToReplace->name()) || pluginToReplace->state() != PluginState::Enabled)
+		if (m_pluginActivationService.data()->isActive(pluginToReplaceInfo.name()) || pluginState(pluginToReplaceInfo.name()) != PluginState::Enabled)
 			continue;
 
-		auto replacementPlugin = findReplacementPlugin(pluginToReplace->name());
-		if (replacementPlugin->state() == PluginState::New)
-			if (activatePlugin(replacementPlugin->name(), PluginActivationReason::NewDefault))
+		auto replacementPlugin = findReplacementPlugin(pluginToReplaceInfo.name());
+		if (pluginState(replacementPlugin) == PluginState::New)
+			if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
 				saveList = true; // list has changed
 	}
 
@@ -355,15 +342,14 @@ bool PluginsManager::shouldActivate(const QString &pluginName) const noexcept
 	return m_pluginInfoRepository.data()->pluginInfo(pluginName).loadByDefault();
 }
 
-Plugin * PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
+QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
 {
-	if (!m_pluginRepository || !m_pluginInfoRepository)
+	if (!m_pluginInfoRepository)
 		return {};
 
-	for (auto plugin : m_pluginRepository.data())
-		if (m_pluginInfoRepository.data()->hasPluginInfo(plugin->name()))
-			if (m_pluginInfoRepository.data()->pluginInfo(plugin->name()).replaces().contains(pluginToReplace))
-				return plugin;
+	for (auto const &pluginInfo : m_pluginInfoRepository.data())
+		if (m_pluginInfoRepository.data()->pluginInfo(pluginInfo.name()).replaces().contains(pluginToReplace))
+			return pluginInfo.name();
 
 	return {};
 }
@@ -501,7 +487,7 @@ void PluginsManager::setPluginState(const QString &pluginName, PluginState state
  */
 bool PluginsManager::activatePlugin(const QString &pluginName, PluginActivationReason reason)
 {
-	if (!m_pluginActivationService || !m_pluginRepository || !m_pluginInfoRepository)
+	if (!m_pluginActivationService || !m_pluginInfoRepository)
 		return false;
 
 	if (m_pluginActivationService.data()->isActive(pluginName))
@@ -607,7 +593,7 @@ void PluginsManager::activationError(const QString &pluginName, const QString &e
 
 void PluginsManager::deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason)
 {
-	if (!m_pluginActivationService || m_pluginRepository)
+	if (!m_pluginActivationService)
 		return;
 
 	if (!m_pluginActivationService.data()->isActive(pluginName))

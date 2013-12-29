@@ -138,7 +138,7 @@ private:
 	QVector<QString> allDependents(const QString &pluginName) noexcept;
 
 	bool shouldActivate(const QString &pluginName) const noexcept;
-	Plugin * findReplacementPlugin(const QString &pluginToReplace) const noexcept;
+	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
 	void activationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason);
 
