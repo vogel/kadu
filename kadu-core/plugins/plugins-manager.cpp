@@ -269,7 +269,7 @@ void PluginsManager::activateProtocolPlugins()
 		if (m_pluginInfoRepository.data()->pluginInfo(plugin->name()).type() != "protocol")
 			continue;
 
-		if (shouldActivate(plugin))
+		if (shouldActivate(plugin->name()))
 		{
 			auto activationReason = (plugin->state() == PluginState::New)
 					? PluginActivationReason::NewDefault
@@ -302,7 +302,7 @@ void PluginsManager::activatePlugins()
 	auto saveList = false;
 
 	for (auto plugin : m_pluginRepository.data())
-		if (shouldActivate(plugin))
+		if (shouldActivate(plugin->name()))
 		{
 			auto activationReason = (plugin->state() == PluginState::New)
 					? PluginActivationReason::NewDefault
@@ -340,19 +340,19 @@ void PluginsManager::activatePlugins()
  *   <li>is either PluginState::Enabled or PluginState::New with PluginInfo::loadByDefault() set to true
  * </ul>
  */
-bool PluginsManager::shouldActivate(Plugin *plugin) const noexcept
+bool PluginsManager::shouldActivate(const QString &pluginName) const noexcept
 {
-	auto state = plugin->state();
+	auto state = pluginState(pluginName);
 
 	if (PluginState::Enabled == state)
 		return true;
 	if (PluginState::Disabled == state)
 		return false;
 
-	if (!m_pluginInfoRepository || !m_pluginInfoRepository.data()->hasPluginInfo(plugin->name()))
+	if (!m_pluginInfoRepository || !m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
 		return false;
 
-	return m_pluginInfoRepository.data()->pluginInfo(plugin->name()).loadByDefault();
+	return m_pluginInfoRepository.data()->pluginInfo(pluginName).loadByDefault();
 }
 
 Plugin * PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
