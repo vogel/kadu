@@ -5,13 +5,13 @@ if exist zlib-install (
 
 if exist zlib-%ZLIBVER% %RMDIR% zlib-%ZLIBVER%
 
-if not exist zlib-%ZLIBVER%.tar.bz2 (
-	%WGET% http://zlib.net/zlib-%ZLIBVER%.tar.bz2
+if not exist zlib-%ZLIBVER%.tar.xz (
+	%WGET% http://zlib.net/zlib-%ZLIBVER%.tar.xz
 	if errorlevel 1 exit /b 1
 )
 
 if exist zlib-%ZLIBVER%.tar %RM% zlib-%ZLIBVER%.tar
-%SEVENZ% x zlib-%ZLIBVER%.tar.bz2
+%SEVENZ% x zlib-%ZLIBVER%.tar.xz
 if errorlevel 1 exit /b 1
 %SEVENZ% x zlib-%ZLIBVER%.tar
 if errorlevel 1 exit /b 1

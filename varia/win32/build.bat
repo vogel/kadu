@@ -18,24 +18,27 @@ set CL=/D_USING_V110_SDK71_ %CL%
 set ARCHIVEVER=3.1.2
 set ASPELLVER=0.60.6.1
 set GADUVER=1324
+set GCRYPTVER=1.5.3
+set GNUWIN32GAWKVER=3.1.6-1
 set GNUWIN32GPERFVER=3.0.1
 set GNUWIN32GREPVER=2.5.4
+set GPGERRORVER=1.12
 set IDNVER=1.26
 set NASMVER=2.10.07
 set OSSLVER=1.0.1e
+set OTRVER=4.0.0
 set PERLVER=5.16.3.1
 set PYTHONCOMMONPORTABLEVER=2.7
 set QCAVER=1311233
 rem v4.8.4 tag does not compile on VS2012, and this version works just fine.
 rem TODO: Please switch to official v4.8.5 when it gets released.
-rem set QTVER=7f1197a689deae502129148be94b63c246962b8f
-set QTVER=6c7b0b19da9bebbccf846f694eb6bf7891e5e883
+set QTVER=1db90ef81fae863751befcfc3502cbdac4bebf65
 set QTWEBKIT23VER=2.3.1b
 set RUBYVER=2.0.0-p0
 set SQLITEYEAR=2013
-set SQLITEVER=3071602
+set SQLITEVER=3071700
 set XZVER=5.0.4
-set ZLIBVER=1.2.7
+set ZLIBVER=1.2.8
 
 set Configuration=Release
 set PlatformToolset=v110_xp
@@ -101,10 +104,19 @@ if errorlevel 1 goto fail
 call "%~dp0"\dependencies\openssl.bat
 if errorlevel 1 goto fail
 
-call "%~dp0"\dependencies\libgadu.bat
-if errorlevel 1 goto fail
+rem call "%~dp0"\dependencies\libgadu.bat
+rem if errorlevel 1 goto fail
 
 call "%~dp0"\dependencies\aspell.bat
+if errorlevel 1 goto fail
+
+call "%~dp0"\dependencies\libgpg-error.bat
+if errorlevel 1 goto fail
+
+call "%~dp0"\dependencies\libgcrypt.bat
+if errorlevel 1 goto fail
+
+call "%~dp0"\dependencies\libotr.bat
 if errorlevel 1 goto fail
 
 call "%~dp0"\dependencies\qt.bat
@@ -152,7 +164,7 @@ if exist install goto pastkadu
 	pushd build
 	if errorlevel 1 goto fail
 
-	%CMAKE% -DCMAKE_INSTALL_PREFIX:PATH="%KADUROOT%"\install -DKADU_SDK_DIR:PATH="%KADUROOT%"\sdk -DCMAKE_PREFIX_PATH="%INSTALLPREFIX%"\qca;"%INSTALLPREFIX%"\libarchive-install -DZLIB_ROOT:PATH="%INSTALLPREFIX%"\zlib-install -DWIN_LIBGADU_DIR:PATH="%INSTALLPREFIX%"\libgadu-install -DWIN_IDN_DIR:PATH="%INSTALLPREFIX%"\libidn -DWIN_ASPELL_DIR:PATH="%INSTALLPREFIX%"\aspell-install "%KADUGIT%"
+	%CMAKE% -DCMAKE_INSTALL_PREFIX:PATH="%KADUROOT%"\install -DCMAKE_PREFIX_PATH="%INSTALLPREFIX%"\qca;"%INSTALLPREFIX%"\libarchive-install -DZLIB_ROOT:PATH="%INSTALLPREFIX%"\zlib-install -DWIN_LIBOTR_DIR:PATH="%INSTALLPREFIX%"\libotr-install -DWIN_LIBGADU_DIR:PATH="%INSTALLPREFIX%"\libgadu-obs -DWIN_IDN_DIR:PATH="%INSTALLPREFIX%"\libidn -DWIN_ASPELL_DIR:PATH="%INSTALLPREFIX%"\aspell-install "%KADUGIT%"
 	if errorlevel 1 goto fail
 	%CMAKE_MAKE%
 	if errorlevel 1 goto fail

@@ -34,8 +34,15 @@ endif ()
 set (DEFINITIONS_DEBUG DEBUG_ENABLED DEBUG_OUTPUT_ENABLED)
 
 if (MSVC)
-	set (COMMON_COMPILE_FLAGS "/MP /Zc:wchar_t-")
+	# /Zc:wchar_t- is needed in Qt4 (AFAIK Qt5 doesn't need it)
+	set (COMMON_COMPILE_FLAGS "/W3 /MP /Zc:wchar_t-") # XXX: /Wall /sdl
 	list (APPEND DEFINITIONS _CRT_SECURE_NO_WARNINGS=1)
+	# release: cc/GL link/LTCG, debug: link/INCREMENTAL
+
+	if (ENABLE_DEVELOPER_BUILD)
+		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS}") # XXX: /WX
+		# debug: cc/RTCc cc/RTC1
+	endif ()
 else ()
 	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -fno-common")
 	set (C_FLAGS "-Wwrite-strings")
@@ -233,6 +240,11 @@ macro (kadu_configure_package_config_file _in _out _mode)
 		set (INCLUDE_DIR "${INSTALL_INCLUDE_DIR}")
 		set (SDK_DIR "${INSTALL_SDK_DIR}")
 		list (APPEND path_vars INCLUDE_DIR SDK_DIR)
+
+		# Sanitize paths so that configure_package_config_file will work.
+		foreach (var ${path_vars} INSTALL_CMAKE_DIR CMAKE_INSTALL_PREFIX)
+			get_filename_component (${var} "${${var}}" ABSOLUTE)
+		endforeach ()
 
 		configure_package_config_file ("${_in}" "${_out}"
 			INSTALL_DESTINATION "${INSTALL_CMAKE_DIR}"

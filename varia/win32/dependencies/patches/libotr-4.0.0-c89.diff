@@ -1,0 +1,33 @@
+diff -aur libotr-4.0.0.orig/src/instag.c libotr-4.0.0/src/instag.c
+--- libotr-4.0.0.orig/src/instag.c	2012-08-23 13:39:06.000000000 +0200
++++ libotr-4.0.0/src/instag.c	2013-10-13 16:48:09.304755800 +0200
+@@ -90,12 +90,12 @@
+  * OtrlUserState. The FILE* must be open for reading. */
+ gcry_error_t otrl_instag_read_FILEp(OtrlUserState us, FILE *instf)
+ {
+-    if (!instf) return gcry_error(GPG_ERR_NO_ERROR);
+-
+     OtrlInsTag *p;
+     char storeline[1000];
+     size_t maxsize = sizeof(storeline);
+ 
++    if (!instf) return gcry_error(GPG_ERR_NO_ERROR);
++
+     while(fgets(storeline, maxsize, instf)) {
+ 	char *prevpos;
+ 	char *pos;
+diff -aur libotr-4.0.0.orig/src/message.c libotr-4.0.0/src/message.c
+--- libotr-4.0.0.orig/src/message.c	2012-08-31 14:15:35.000000000 +0200
++++ libotr-4.0.0/src/message.c	2013-10-13 16:47:38.990757152 +0200
+@@ -459,9 +459,10 @@
+     if (!err) {
+ 	const char *msg = context->auth.lastauthmsg;
+ 	if (msg && *msg) {
++	    time_t now;
+ 	    fragment_and_send(ops, opdata, context, msg,
+ 		    OTRL_FRAGMENT_SEND_ALL, NULL);
+-	    time_t now = time(NULL);
++	    now = time(NULL);
+ 	    /* Update the "last sent" fields, unless this is a version 3
+ 	     * message typing to update the master context (as happens
+ 	     * when sending a v3 COMMIT message, for example). */

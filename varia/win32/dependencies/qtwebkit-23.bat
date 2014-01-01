@@ -133,17 +133,24 @@ set QTDIR=%INSTALLPREFIX%\qt
 set SQLITE3SRCDIR=%QTDIR%\src\3rdparty\sqlite
 set PATH=%QTDIR%\bin;%INSTALLPREFIX%\zlib-install\bin;%PATH%
 
-rem debug: --inspector --javascript-debugger?
-rem TODO all: --svg?
-%PERL% Tools\Scripts\build-webkit --qt --release --no-webkit2 --no-force-sse2 --minimal --netscape-plugin-api
-if errorlevel 1 exit /b 1
+rem TODO: --svg?
+set BUILD_WEBKIT=%PERL% Tools\Scripts\build-webkit --qt --no-webkit2 --no-force-sse2 --minimal --netscape-plugin-api
 
+%BUILD_WEBKIT% --release
+if errorlevel 1 exit /b 1
 pushd WebKitBuild\Release
 if errorlevel 1 exit /b 1
-
 nmake install
 if errorlevel 1 exit /b 1
+popd
+if errorlevel 1 exit /b 1
 
+%BUILD_WEBKIT% --debug --inspector --javascript-debugger
+if errorlevel 1 exit /b 1
+pushd WebKitBuild\Debug
+if errorlevel 1 exit /b 1
+nmake install
+if errorlevel 1 exit /b 1
 popd
 if errorlevel 1 exit /b 1
 

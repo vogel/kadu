@@ -62,7 +62,7 @@ rem qmake.exe will need zlib1.dll in PATH
 set OLDPATH=%PATH%
 set PATH=%INSTALLPREFIX%\zlib-install\bin;%PATH%
 
-configure -release -opensource -confirm-license -shared -ltcg -no-accessibility -plugin-sql-sqlite -no-qt3support -no-opengl -no-openvg -platform win32-msvc2012 -I "%INSTALLPREFIX%"\zlib-install\include -L "%INSTALLPREFIX%"\zlib-install\lib -l zlib -I "%INSTALLPREFIX%"\openssl-install\include -L "%INSTALLPREFIX%"\openssl-install\lib OPENSSL_LIBS="-lssleay32 -llibeay32" -system-zlib -qt-libpng -no-libmng -no-libtiff -qt-libjpeg -openssl-linked -no-dbus -phonon -phonon-backend -no-multimedia -no-webkit -script -scripttools -declarative -arch windows -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -nomake demos -nomake examples -nomake tests -nomake tools -mp
+configure -debug-and-release -opensource -confirm-license -shared -ltcg -no-accessibility -plugin-sql-sqlite -no-qt3support -no-opengl -no-openvg -platform win32-msvc2012 -I "%INSTALLPREFIX%"\zlib-install\include -L "%INSTALLPREFIX%"\zlib-install\lib -l zlib -I "%INSTALLPREFIX%"\openssl-install\include -L "%INSTALLPREFIX%"\openssl-install\lib OPENSSL_LIBS="-lssleay32 -llibeay32" -system-zlib -qt-libpng -no-libmng -no-libtiff -qt-libjpeg -openssl-linked -no-dbus -phonon -phonon-backend -no-multimedia -no-webkit -script -scripttools -declarative -arch windows -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -nomake demos -nomake examples -nomake tests -nomake tools -mp
 if errorlevel 1 exit /b 1
 
 nmake

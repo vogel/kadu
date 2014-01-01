@@ -12,14 +12,13 @@
    http://www.cmake.org/cmake/resources/software.html
    
    To be able to target Windows XP using VC11, the minimum required version
-   of CMake is 2.8.11, which has not been released yet
-   at the time of writing; you will need to use nightly build:
-   http://www.cmake.org/files/dev/?C=M;O=D
+   of CMake is 2.8.11.
 6. Install 7-Zip to %ProgramFiles%\7-Zip.
    http://www.7-zip.org/download.html
 7. Install Wget for Windows to %ProgramFiles(x86)%\GnuWin32:
    Wget: http://gnuwin32.sourceforge.net/packages/wget.htm
-8. Open cmd.exe and execute (TODO: remind about no spaces)
+8. Open cmd.exe and execute (you can use other root directory than "%USERPROFILE%\kadu"
+   but it must not contain spaces in its path):
    > mkdir "%USERPROFILE%\kadu"
    > cd /D "%USERPROFILE%\kadu"
    > git clone git://gitorious.org/kadu/kadu.git git

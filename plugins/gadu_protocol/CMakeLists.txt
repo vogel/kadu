@@ -179,7 +179,7 @@ if (WIN32)
 	else ()
 		set (LIBGADU_FOUND TRUE)
 		set (LIBGADU_INCLUDE_DIRS ${WIN_LIBGADU_DIR}/include)
-		set (LIBGADU_LIBRARIES optimized gadu debug gadud)
+		set (LIBGADU_LIBRARIES optimized libgadu debug libgadud)
 
 		if (MSVC)
 			set (LIBGADU_LIBRARY_DIRS ${WIN_LIBGADU_DIR}/lib)
