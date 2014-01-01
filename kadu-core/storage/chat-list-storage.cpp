@@ -20,8 +20,6 @@
 #include "chat-list-storage.h"
 
 #include "chat/chat-manager.h"
-//#include "configuration/xml-configuration-file.h"
-//#include "storage/storage-point.h"
 #include "storage/string-list-storage.h"
 
 #include <QtCore/QVector>

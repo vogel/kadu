@@ -28,6 +28,7 @@ class StoragePoint;
 
 class ChatListStorage
 {
+
 public:
 	ChatListStorage(StoragePoint *storagePoint, QString nodeName);
 
