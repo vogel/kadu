@@ -47,7 +47,6 @@
 #include "plugins/model/plugin-model.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin.h"
-#include "plugins/plugins-manager.h"
 
 #include "plugin-proxy-model.h"
 

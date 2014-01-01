@@ -29,7 +29,6 @@
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-state-service.h"
 #include "plugins/plugins-common.h"
-#include "plugins/plugins-manager.h"
 
 #include "plugins/mediaplayer/mediaplayer.h"
 

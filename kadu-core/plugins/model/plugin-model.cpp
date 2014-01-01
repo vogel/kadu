@@ -49,7 +49,6 @@
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-info-repository.h"
-#include "plugins/plugins-manager.h"
 
 #include "plugin-model.h"
 

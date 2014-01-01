@@ -50,7 +50,6 @@
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-info-repository.h"
 #include "plugins/plugin.h"
-#include "plugins/plugins-manager.h"
 
 #include "plugin-list-widget-item-delegate.h"
 

@@ -49,11 +49,10 @@
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugins/model/plugin-model.h"
 #include "plugins/model/plugin-proxy-model.h"
-#include "plugins/plugin-info.h"
 #include "plugins/plugin.h"
+#include "plugins/plugin-activation-service.h"
+#include "plugins/plugin-info.h"
 #include "plugins/plugins-common.h"
-#include "plugins/plugins-manager.h"
-#include <plugins/plugin-activation-service.h>
 
 #include "plugin-list-widget.h"
 
