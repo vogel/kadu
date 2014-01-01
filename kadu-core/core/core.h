@@ -85,6 +85,7 @@ class PluginDependencyGraphBuilder;
 class PluginInfoReader;
 class PluginInfoRepository;
 class PluginRepository;
+class PluginStateService;
 class PluginsManager;
 class RawMessageTransformerService;
 class RosterNotifier;
@@ -136,6 +137,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginDependencyGraphBuilder *CurrentPluginDependencyGraphBuilder;
 	PluginInfoReader *CurrentPluginInfoReader;
 	PluginRepository *CurrentPluginRepository;
+	PluginStateService *CurrentPluginStateService;
 	PluginInfoRepository *CurrentPluginInfoRepository;
 	PluginsManager *CurrentPluginsManager;
 
@@ -224,6 +226,7 @@ public:
 	PluginInfoReader * pluginInfoReader() const;
 	PluginInfoRepository * pluginInfoRepository() const;
 	PluginRepository * pluginRepository() const;
+	PluginStateService * pluginStateService() const;
 	PluginsManager * pluginsManager() const;
 
 	void setShowMainWindowOnStart(bool show);

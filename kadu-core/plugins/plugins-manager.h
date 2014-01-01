@@ -45,6 +45,7 @@ class PluginActivationService;
 class PluginInfo;
 class PluginInfoRepository;
 class PluginRepository;
+class PluginStateService;
 class PluginsWindow;
 class Plugin;
 
@@ -100,6 +101,7 @@ public:
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository);
 	void setPluginRepository(PluginRepository *pluginRepository);
+	void setPluginStateService(PluginStateService *pluginStateService);
 
 	// storage implementation
 	virtual StorableObject * storageParent() { return nullptr; }
@@ -114,9 +116,6 @@ public:
 	bool activatePlugin(const QString &pluginName, PluginActivationReason reason);
 	void deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason);
 
-	PluginState pluginState(const QString &pluginName) const noexcept;
-	void setPluginState(const QString &pluginName, PluginState state) const noexcept;
-
 protected:
 	virtual void load();
 	virtual void store();
@@ -125,6 +124,7 @@ private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
 	QWeakPointer<PluginInfoRepository> m_pluginInfoRepository;
 	QWeakPointer<PluginRepository> m_pluginRepository;
+	QWeakPointer<PluginStateService> m_pluginStateService;
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 

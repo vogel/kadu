@@ -90,6 +90,7 @@
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info-repository.h"
 #include "plugins/plugin-repository.h"
+#include "plugins/plugin-state-service.h"
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -676,6 +677,7 @@ void Core::runServices()
 
 	CurrentPluginInfoReader = new PluginInfoReader(this);
 	CurrentPluginRepository = new PluginRepository(this);
+	CurrentPluginStateService = new PluginStateService(this);
 	CurrentPluginInfoRepository = new PluginInfoRepository(this);
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
@@ -684,7 +686,10 @@ void Core::runServices()
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
 	CurrentPluginsManager->setPluginInfoRepository(CurrentPluginInfoRepository);
 	CurrentPluginsManager->setPluginRepository(CurrentPluginRepository);
+	CurrentPluginsManager->setPluginStateService(CurrentPluginStateService);
 	CurrentPluginsManager->ensureLoaded();
+
+	CurrentPluginStateService->setPluginRepository(CurrentPluginRepository);
 }
 
 void Core::runGuiServices()
@@ -864,6 +869,11 @@ PluginInfoReader * Core::pluginInfoReader() const
 PluginRepository * Core::pluginRepository() const
 {
 	return CurrentPluginRepository;
+}
+
+PluginStateService * Core::pluginStateService() const
+{
+	return CurrentPluginStateService;
 }
 
 PluginInfoRepository * Core::pluginInfoRepository() const

@@ -27,6 +27,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-state-service.h"
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 
@@ -90,10 +91,10 @@ void MPRISPlayer::replacePlugin()
 	foreach (const QString &value, replaceMap)
 	{
 		QString key = replaceMap.key(value);
-		if (Core::instance()->pluginsManager()->pluginState(key) == PluginState::Enabled)
+		if (Core::instance()->pluginStateService()->pluginState(key) == PluginState::Enabled)
 		{
 			choosePlayer(key, value);
-			Core::instance()->pluginsManager()->setPluginState(key, PluginState::Disabled);
+			Core::instance()->pluginStateService()->setPluginState(key, PluginState::Disabled);
 			break;
 		}
 	}
