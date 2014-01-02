@@ -19,8 +19,6 @@
 
 #include "plugin-state-service.h"
 
-#include "plugin.h"
-#include "plugin-repository.h"
 #include "plugins-common.h"
 
 PluginStateService::PluginStateService(QObject *parent) :
@@ -32,28 +30,29 @@ PluginStateService::~PluginStateService()
 {
 }
 
-void PluginStateService::setPluginRepository(PluginRepository *pluginRepository)
+QMap<QString, PluginState> PluginStateService::pluginStates() const
 {
-	m_pluginRepository = pluginRepository;
+	return m_pluginStates;
+}
+
+void PluginStateService::setPluginStates(const QMap<QString, PluginState> &pluginStates)
+{
+	m_pluginStates = pluginStates;
 }
 
 PluginState PluginStateService::pluginState(const QString &pluginName) const noexcept
 {
-	if (!m_pluginRepository)
-		return PluginState::Disabled;
-
-	auto pluginConfiguration = m_pluginRepository.data()->plugin(pluginName);
-	return pluginConfiguration ? pluginConfiguration->state() : PluginState::Disabled;
+	return m_pluginStates.contains(pluginName)
+			? m_pluginStates.value(pluginName)
+			: PluginState::New;
 }
 
-void PluginStateService::setPluginState(const QString &pluginName, PluginState state) const noexcept
+void PluginStateService::setPluginState(const QString &pluginName, PluginState state) noexcept
 {
-	if (!m_pluginRepository)
-		return;
-
-	auto pluginConfiguration = m_pluginRepository.data()->plugin(pluginName);
-	if (pluginConfiguration)
-		pluginConfiguration->setState(state);
+	if (PluginState::New == state)
+		m_pluginStates.remove(pluginName);
+	else
+		m_pluginStates.insert(pluginName, state);
 }
 
 #include "moc_plugin-state-service.cpp"

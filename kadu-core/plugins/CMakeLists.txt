@@ -4,7 +4,6 @@ set (plugins_SRCS
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
 	active-plugin.cpp
-	plugin.cpp
 	plugin-activation-action.cpp
 	plugin-activation-service.cpp
 	plugin-info.cpp
@@ -12,16 +11,15 @@ set (plugins_SRCS
 	plugin-info-reader.cpp
 	plugin-info-repository.cpp
 	plugin-loader.cpp
-	plugin-repository.cpp
 	plugin-root-component-handler.cpp
 	plugin-state-service.cpp
+	plugin-state-storage.cpp
 	plugin-translations-loader.cpp
 	plugins-manager.cpp
 )
 
 set (plugins_MOC_SRCS
 	model/plugin-model.h
-	plugin.h
 	plugins-manager.h
 )
 

@@ -22,7 +22,6 @@
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugins/active-plugin.h"
-#include "plugins/plugin.h"
 #include "plugins/plugin-activation-action.h"
 #include "plugins/plugins-common.h"
 

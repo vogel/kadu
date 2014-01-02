@@ -46,7 +46,6 @@
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugins/model/plugin-model.h"
 #include "plugins/plugin-info.h"
-#include "plugins/plugin.h"
 
 #include "plugin-proxy-model.h"
 

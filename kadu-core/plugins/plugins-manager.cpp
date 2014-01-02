@@ -48,10 +48,11 @@
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info-repository.h"
 #include "plugins/plugin-info.h"
-#include "plugins/plugin-repository.h"
 #include "plugins/plugin-state-service.h"
-#include "plugins/plugin.h"
+#include "plugins/plugin-state-storage.h"
 #include "plugins/plugins-common.h"
+#include "plugin-state-storage.h"
+#include "storage/storage-point-factory.h"
 #include "debug.h"
 
 #include <QtCore/QDir>
@@ -93,15 +94,44 @@ void PluginsManager::setPluginInfoRepository(PluginInfoRepository *pluginInfoRep
 	m_pluginInfoRepository = pluginInfoRepository;
 }
 
-void PluginsManager::setPluginRepository(PluginRepository *pluginRepository)
-{
-	m_pluginRepository = pluginRepository;
-}
-
 void PluginsManager::setPluginStateService(PluginStateService *pluginStateService)
 {
 	m_pluginStateService = pluginStateService;
 }
+
+void PluginsManager::setStoragePointFactory(StoragePointFactory *storagePointFactory)
+{
+	m_storagePointFactory = storagePointFactory;
+}
+
+void PluginsManager::loadPluginStates()
+{
+	if (!m_pluginStateService || !m_storagePointFactory)
+		return;
+
+	auto storagePoint = m_storagePointFactory.data()->createStoragePoint(QLatin1String{"Plugins"});
+	if (!storagePoint)
+		return;
+
+	auto pluginStateStorage = PluginStateStorage{storagePoint.get()};
+	auto pluginStates = pluginStateStorage.load();
+	m_pluginStateService.data()->setPluginStates(pluginStates);
+}
+
+void PluginsManager::storePluginStates()
+{
+	if (!m_pluginStateService || !m_storagePointFactory)
+		return;
+
+	auto storagePoint = m_storagePointFactory.data()->createStoragePoint(QLatin1String{"Plugins"});
+	if (!storagePoint)
+		return;
+
+	auto pluginStateStorage = PluginStateStorage{storagePoint.get()};
+	auto pluginStates = m_pluginStateService.data()->pluginStates();
+	pluginStateStorage.store(pluginStates);
+}
+
 
 /**
  * @author Rafał 'Vogel' Malinowski
@@ -131,7 +161,6 @@ void PluginsManager::load()
 		{
 			auto pluginInfo = loadPlugin(pluginName);
 			m_pluginInfoRepository.data()->addPluginInfo(pluginName, pluginInfo);
-			m_pluginRepository.data()->addPlugin(pluginName, new Plugin{pluginName, this});
 		}
 		catch (...)
 		{
@@ -142,10 +171,7 @@ void PluginsManager::load()
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
-	{
 		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
-		m_pluginRepository.data()->removePlugin(pluginInDependency);
-	}
 
 	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 
@@ -165,18 +191,12 @@ void PluginsManager::load()
  */
 void PluginsManager::store()
 {
-	if (!m_pluginRepository)
-		return;
-
 	if (!isValidStorage())
 		return;
 
 	ensureLoaded();
 
 	StorableObject::store();
-
-	for (auto plugin : m_pluginRepository.data())
-		plugin->ensureStored();
 }
 
 /**
@@ -200,10 +220,10 @@ void PluginsManager::importFrom09()
 	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
-	QMap<QString, Plugin *> oldPlugins;
+	QSet<QString> oldPlugins;
 	for (auto pluginName : allPlugins)
 		if (!m_pluginInfoRepository.data()->hasPluginInfo(pluginName) && !oldPlugins.contains(pluginName))
-			oldPlugins.insert(pluginName, new Plugin{pluginName, this});
+			oldPlugins.insert(pluginName);
 
 	if (loadedPlugins.contains("encryption"))
 	{
@@ -226,20 +246,14 @@ void PluginsManager::importFrom09()
 				m_pluginStateService.data()->setPluginState(pluginInfo.name(), PluginState::Disabled);
 		}
 
-	for (auto plugin : oldPlugins.values())
-		if (allPlugins.contains(plugin->name()))
+	for (auto pluginName : oldPlugins)
+		if (allPlugins.contains(pluginName))
 		{
-			if (loadedPlugins.contains(plugin->name()))
-				m_pluginStateService.data()->setPluginState(plugin->name(), PluginState::Enabled);
-			else if (everLoaded.contains(plugin->name()))
-				m_pluginStateService.data()->setPluginState(plugin->name(), PluginState::Disabled);
+			if (loadedPlugins.contains(pluginName))
+				m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
+			else if (everLoaded.contains(pluginName))
+				m_pluginStateService.data()->setPluginState(pluginName, PluginState::Disabled);
 		}
-
-	for (auto plugin : oldPlugins)
-	{
-		plugin->ensureStored();
-		plugin->deleteLater();
-	}
 }
 
 /**
@@ -276,7 +290,10 @@ void PluginsManager::activateProtocolPlugins()
 	// if not all plugins were loaded properly
 	// save the list of plugins
 	if (saveList)
+	{
+		storePluginStates();
 		ConfigurationManager::instance()->flush();
+	}
 }
 
 /**

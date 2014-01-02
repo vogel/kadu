@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,29 @@
 
 #pragma once
 
+#include "plugins/plugins-common.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
-#include <QtCore/QObject>
+
+class StoragePoint;
 
 enum class PluginState;
 
-class KADUAPI PluginStateService : public QObject
+class KADUAPI PluginStateStorage
 {
-	Q_OBJECT
 
 public:
-	explicit PluginStateService(QObject *parent = nullptr);
-	virtual ~PluginStateService();
+	explicit PluginStateStorage(StoragePoint *storagePoint);
+	virtual ~PluginStateStorage();
 
-	QMap<QString, PluginState> pluginStates() const;
-	void setPluginStates(const QMap<QString, PluginState> &pluginStates);
-
-	PluginState pluginState(const QString &pluginName) const noexcept;
-	void setPluginState(const QString &pluginName, PluginState state) noexcept;
+	QMap<QString, PluginState> load() const;
+	void store(const QMap<QString, PluginState> &pluginStates) const;
 
 private:
-	QMap<QString, PluginState> m_pluginStates;
+	StoragePoint *m_storagePoint;
+
+	PluginState stringToState(const QString &string) const;
+	QString stateToString(PluginState state) const;
 
 };

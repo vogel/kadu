@@ -33,7 +33,7 @@
 #include "core/crash-aware-object.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/kadu-paths.h"
-#include "plugins/plugin.h"
+#include "plugins/plugins-manager.h"
 #include "activate.h"
 #include "debug.h"
 #include "kadu-config.h"

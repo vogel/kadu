@@ -43,7 +43,6 @@ class CategorizedListViewPainter;
 // class FilterWidget;
 class PluginsManager;
 class PluginListWidgetDelegate;
-class Plugin;
 class PluginActivationService;
 class PluginEntry;
 class PluginListWidget;

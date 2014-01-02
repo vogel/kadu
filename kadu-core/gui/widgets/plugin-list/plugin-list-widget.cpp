@@ -49,10 +49,10 @@
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugins/model/plugin-model.h"
 #include "plugins/model/plugin-proxy-model.h"
-#include "plugins/plugin.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugins-common.h"
+#include "plugins/plugins-manager.h"
 
 #include "plugin-list-widget.h"
 
@@ -158,7 +158,10 @@ void PluginListWidget::applyChanges()
 	Model->loadPluginData();
 
 	if (pluginsToDeactivate.size() > 0 || pluginsToActivate.size() > 0)
+	{
+		m_pluginsManager.data()->storePluginStates();
 		ConfigurationManager::instance()->flush();
+	}
 
 	emit changed(false);
 }

@@ -89,8 +89,8 @@
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info-repository.h"
-#include "plugins/plugin-repository.h"
 #include "plugins/plugin-state-service.h"
+#include "plugins/plugin-state-storage.h"
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -190,6 +190,8 @@ Core::Core() :
 Core::~Core()
 {
 	IsClosing = true;
+
+	CurrentPluginsManager->storePluginStates();
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
@@ -676,7 +678,6 @@ void Core::runServices()
 	CurrentPluginActivationService = new PluginActivationService(this);
 
 	CurrentPluginInfoReader = new PluginInfoReader(this);
-	CurrentPluginRepository = new PluginRepository(this);
 	CurrentPluginStateService = new PluginStateService(this);
 	CurrentPluginInfoRepository = new PluginInfoRepository(this);
 
@@ -685,11 +686,11 @@ void Core::runServices()
 	CurrentPluginsManager = new PluginsManager(this);
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
 	CurrentPluginsManager->setPluginInfoRepository(CurrentPluginInfoRepository);
-	CurrentPluginsManager->setPluginRepository(CurrentPluginRepository);
 	CurrentPluginsManager->setPluginStateService(CurrentPluginStateService);
-	CurrentPluginsManager->ensureLoaded();
+	CurrentPluginsManager->setStoragePointFactory(CurrentStoragePointFactory);
 
-	CurrentPluginStateService->setPluginRepository(CurrentPluginRepository);
+	CurrentPluginsManager->ensureLoaded();
+	CurrentPluginsManager->loadPluginStates();
 }
 
 void Core::runGuiServices()
@@ -864,11 +865,6 @@ PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
 PluginInfoReader * Core::pluginInfoReader() const
 {
 	return CurrentPluginInfoReader;
-}
-
-PluginRepository * Core::pluginRepository() const
-{
-	return CurrentPluginRepository;
 }
 
 PluginStateService * Core::pluginStateService() const

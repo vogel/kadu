@@ -49,7 +49,6 @@
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-info-repository.h"
-#include "plugins/plugin.h"
 
 #include "plugin-list-widget-item-delegate.h"
 
