@@ -77,9 +77,9 @@ Idle::~Idle()
 	lib = 0;
 }
 
-int Idle::secondsIdle()
+long Idle::secondsIdle()
 {
-	int i;
+	DWORD i;
 	if (GetLastInputInfoFun != 0)
 	{
 		LASTINPUTINFO li;
