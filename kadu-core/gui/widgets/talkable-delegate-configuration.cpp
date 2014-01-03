@@ -40,7 +40,7 @@ TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *l
 
 void TalkableDelegateConfiguration::configurationUpdated()
 {
-	Font = Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "UserboxFont");
+	Font = QFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "UserboxFont"), ListView);
 	BoldFont = Font;
 	BoldFont.setBold(true);
 
