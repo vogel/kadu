@@ -50,9 +50,6 @@
 
 #include "misc.h"
 
-QFont *defaultFont;
-QFontInfo *defaultFontInfo;
-
 QString replacedNewLine(const QString &text, const QString &newLineText)
 {
 	static const QRegExp newLineRegExp("(\r\n|\r|\n)");
