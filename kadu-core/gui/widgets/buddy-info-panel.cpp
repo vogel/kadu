@@ -79,14 +79,9 @@ void BuddyInfoPanel::update()
 	if (Core::instance()->isClosing())
 		return;
 
-	QFont font = config_file.readFontEntry("Look", "PanelFont");
+	QFont font = QFont(config_file.readFontEntry("Look", "PanelFont"), this);
 	QString fontFamily = font.family();
-	QString fontSize;
-	if (font.pointSize() > 0)
-		fontSize = QString::number(font.pointSize()) + "pt";
-	else
-		fontSize = QString::number(font.pixelSize()) + "px";
-
+	QString fontSize = QString::number(QFontMetrics(font).ascent()) + "px";
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";

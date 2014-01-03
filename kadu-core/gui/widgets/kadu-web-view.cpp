@@ -388,7 +388,7 @@ void KaduWebView::setUserFont(const QString &fontString, bool force)
 	{
 		QFont font;
 		font.fromString(fontString);
-		style = QString("* { %1 }").arg(userFontStyle(font, force));
+		style = QString("* { %1 }").arg(userFontStyle(QFont(font, this), force));
 	}
 
 	style.append("\
@@ -403,8 +403,8 @@ void KaduWebView::setUserFont(const QString &fontString, bool force)
 QString KaduWebView::userFontStyle(const QFont &font, bool force)
 {
 	QString style = "font-family:\"" + font.family() + "\",sans-serif" + (force ? " !important;" : ";");
-	if (force && font.pointSize() != -1)
-		style += QString(" font-size:%1pt;").arg(font.pointSize());
+	if (force)
+		style += QString(" font-size:%1px;").arg(QFontMetrics(font).ascent());
 	return style;
 }
 

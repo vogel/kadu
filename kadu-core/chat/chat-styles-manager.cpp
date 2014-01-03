@@ -46,6 +46,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/preview.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-render-info.h"
 #include "misc/kadu-paths.h"
@@ -143,22 +144,12 @@ void ChatStylesManager::configurationUpdated()
 
 	ParagraphSeparator = config_file.readNumEntry("Look", "ParagraphSeparator");
 
-	QFont font = config_file.readFontEntry("Look","ChatFont");
+	QFont font = Core::instance() && Core::instance()->kaduWindow()
+		? QFont(config_file.readFontEntry("Look", "ChatFont"), Core::instance()->kaduWindow())
+		: config_file.readFontEntry("Look", "ChatFont");
 
 	QString fontFamily = font.family();
-	QString fontSize;
-	if (font.pointSize() > 0)
-#ifdef Q_OS_MAC
-		/*  Dorr: On MacOSX this font is being displayed 3pts larger than
-		 *  it really is, so reduce it's size to be coherent in entire
-		 *  application.
-		 */
-		fontSize = QString::number(font.pointSize()-3) + "pt";
-#else
-		fontSize = QString::number(font.pointSize()) + "pt";
-#endif
-	else
-		fontSize = QString::number(font.pixelSize()) + "px";
+	QString fontSize = QString::number(QFontMetrics(font).ascent()) + "px";
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
