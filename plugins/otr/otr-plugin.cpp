@@ -17,12 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
+
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "message/message-manager.h"
+#include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "services/raw-message-transformer-service.h"
 
@@ -314,6 +317,9 @@ bool OtrPlugin::init(bool firstLoad)
 
 	if (!OtrAvailable)
 		return false;
+
+	// TODO: maybe better parametrize this dir so that if new one is used somewhere, we will not forget to create it here, too
+	QDir().mkpath(KaduPaths::instance()->profilePath() + QString("/keys"));
 
 	registerOtrAccountConfigurationWidgetFactory();
 	registerOtrAppOpsService();
