@@ -38,7 +38,7 @@ TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *l
 
 void TalkableDelegateConfiguration::configurationUpdated()
 {
-	Font = config_file.readFontEntry("Look", "UserboxFont");
+	Font = QFont(config_file.readFontEntry("Look", "UserboxFont"), ListView);
 	BoldFont = Font;
 	BoldFont.setBold(true);
 
