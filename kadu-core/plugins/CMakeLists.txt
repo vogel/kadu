@@ -8,6 +8,7 @@ set (plugins_SRCS
 	plugin-activation-service.cpp
 	plugin-info.cpp
 	plugin-info-builder.cpp
+	plugin-info-finder.cpp
 	plugin-info-reader.cpp
 	plugin-info-repository.cpp
 	plugin-loader.cpp

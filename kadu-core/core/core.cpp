@@ -87,6 +87,7 @@
 #include "parser/parser.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/plugin-activation-service.h"
+#include "plugins/plugin-info-finder.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info-repository.h"
 #include "plugins/plugin-state-service.h"
@@ -677,18 +678,23 @@ void Core::runServices()
 
 	CurrentPluginActivationService = new PluginActivationService(this);
 
+	CurrentPluginInfoFinder = new PluginInfoFinder(this);
 	CurrentPluginInfoReader = new PluginInfoReader(this);
 	CurrentPluginStateService = new PluginStateService(this);
 	CurrentPluginInfoRepository = new PluginInfoRepository(this);
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 
+	CurrentPluginInfoFinder->setPluginInfoReader(CurrentPluginInfoReader);
+
 	CurrentPluginsManager = new PluginsManager(this);
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginsManager->setPluginInfoFinder(CurrentPluginInfoFinder);
 	CurrentPluginsManager->setPluginInfoRepository(CurrentPluginInfoRepository);
 	CurrentPluginsManager->setPluginStateService(CurrentPluginStateService);
 	CurrentPluginsManager->setStoragePointFactory(CurrentStoragePointFactory);
 
+	CurrentPluginsManager->loadPluginInfos();
 	CurrentPluginsManager->ensureLoaded();
 	CurrentPluginsManager->loadPluginStates();
 }
@@ -860,6 +866,11 @@ PluginActivationService * Core::pluginActivationService() const
 PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
 {
 	return CurrentPluginDependencyGraphBuilder;
+}
+
+PluginInfoFinder * Core::pluginInfoFinder() const
+{
+	return CurrentPluginInfoFinder;
 }
 
 PluginInfoReader * Core::pluginInfoReader() const

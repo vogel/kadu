@@ -44,6 +44,7 @@
 #include "plugins/plugin-activation-action.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-activation-service.h"
+#include "plugins/plugin-info-finder.h"
 #include "plugins/plugin-info-reader-exception.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info-repository.h"
@@ -84,6 +85,11 @@ PluginsManager::~PluginsManager()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
+void PluginsManager::setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder)
+{
+	m_pluginInfoFinder = pluginInfoFinder;
+}
+
 void PluginsManager::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
 	m_pluginActivationService = pluginActivationService;
@@ -102,6 +108,15 @@ void PluginsManager::setPluginStateService(PluginStateService *pluginStateServic
 void PluginsManager::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
 	m_storagePointFactory = storagePointFactory;
+}
+
+void PluginsManager::loadPluginInfos()
+{
+	if (!m_pluginInfoFinder || !m_pluginInfoRepository)
+		return;
+
+	auto pluginInfos = std::move(m_pluginInfoFinder.data()->readPluginInfos(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"}));
+	m_pluginInfoRepository.data()->setPluginInfos(std::move(pluginInfos));
 }
 
 void PluginsManager::loadPluginStates()
@@ -151,22 +166,6 @@ void PluginsManager::load()
 		return;
 
 	StorableObject::load();
-
-	if (!Core::instance()->pluginInfoReader())
-		return;
-
-	for (auto pluginName : installedPlugins())
-	{
-		try
-		{
-			auto pluginInfo = loadPlugin(pluginName);
-			m_pluginInfoRepository.data()->addPluginInfo(pluginName, pluginInfo);
-		}
-		catch (...)
-		{
-			// TODO: implement
-		}
-	}
 
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
@@ -399,33 +398,6 @@ void PluginsManager::deactivatePlugins()
 		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(pluginName));
 		deactivatePlugin(pluginName, PluginDeactivationReason::Exiting);
 	}
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Lists all installed plugins names.
- * @return list of all installed plugin names
- *
- * Lists all installed plugins names. Installed plugins are searched in dataDir/kadu/plugins as
- * *.desc files.
- */
-QStringList PluginsManager::installedPlugins() const
-{
-	auto dir = QDir{KaduPaths::instance()->dataPath() + QLatin1String("plugins"), "*.desc"};
-	dir.setFilter(QDir::Files);
-
-	auto installed = QStringList{};
-	for (auto const &entry : dir.entryList())
-		installed.append(entry.left(entry.length() - static_cast<int>(qstrlen(".desc"))));
-	return installed;
-}
-
-PluginInfo PluginsManager::loadPlugin(const QString &pluginName)
-{
-	auto descFilePath = QString("%1plugins/%2.desc").arg(KaduPaths::instance()->dataPath()).arg(pluginName);
-	auto pluginInfoReader = Core::instance()->pluginInfoReader();
-
-	return pluginInfoReader->readPluginInfo(pluginName, descFilePath);
 }
 
 /**

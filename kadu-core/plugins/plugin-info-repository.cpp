@@ -45,6 +45,11 @@ PluginInfoRepository::Iterator PluginInfoRepository::end()
 	return Iterator{m_pluginInfos.end(), converter};
 }
 
+void PluginInfoRepository::setPluginInfos(std::map<QString, PluginInfo> &&pluginInfos)
+{
+	m_pluginInfos = std::move(pluginInfos);
+}
+
 void PluginInfoRepository::addPluginInfo(const QString &name, PluginInfo pluginInfo)
 {
 	if (hasPluginInfo(name))

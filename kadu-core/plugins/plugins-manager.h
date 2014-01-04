@@ -43,6 +43,7 @@
 class PluginRootComponent;
 class PluginActivationService;
 class PluginInfo;
+class PluginInfoFinder;
 class PluginInfoRepository;
 class PluginStateService;
 class PluginsWindow;
@@ -98,6 +99,7 @@ public:
 	virtual ~PluginsManager();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder);
 	void setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository);
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
@@ -106,6 +108,7 @@ public:
 	virtual StorableObject * storageParent() { return nullptr; }
 	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
 
+	void loadPluginInfos();
 	void loadPluginStates();
 	void storePluginStates();
 
@@ -122,6 +125,7 @@ protected:
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	QWeakPointer<PluginInfoFinder> m_pluginInfoFinder;
 	QWeakPointer<PluginInfoRepository> m_pluginInfoRepository;
 	QWeakPointer<PluginStateService> m_pluginStateService;
 	QWeakPointer<StoragePointFactory> m_storagePointFactory;
@@ -130,9 +134,6 @@ private:
 
 	void importFrom09();
 
-	QStringList installedPlugins() const;
-
-	PluginInfo loadPlugin(const QString &pluginName);
 	QString findActiveProviding(const QString &feature) const;
 	QVector<QString> allDependencies(const QString &pluginName) noexcept;
 	QVector<QString> allDependents(const QString &pluginName) noexcept;

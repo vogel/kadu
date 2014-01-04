@@ -44,6 +44,7 @@ public:
 	Iterator begin();
 	Iterator end();
 
+	void setPluginInfos(std::map<QString, PluginInfo> &&pluginInfos);
 	void addPluginInfo(const QString &name, PluginInfo pluginInfo);
 	void removePluginInfo(const QString &name);
 
