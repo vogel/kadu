@@ -112,22 +112,22 @@ void StorableObject::removeFromStorage()
 
 void StorableObject::storeValue(const QString &name, const QVariant value)
 {
-	Storage->storage()->createTextNode(Storage->point(), name, value.toString());
+	Storage->storeValue(name, value);
 }
 
 void StorableObject::storeAttribute(const QString &name, const QVariant value)
 {
-	Storage->point().setAttribute(name, value.toString());
+	Storage->storeAttribute(name, value);
 }
 
 void StorableObject::removeValue(const QString& name)
 {
-	Storage->storage()->removeNode(Storage->point(), name);
+	Storage->removeValue(name);
 }
 
 void StorableObject::removeAttribute(const QString& name)
 {
-	Storage->point().removeAttribute(name);
+	Storage->removeAttribute(name);
 }
 
 CustomProperties * StorableObject::customProperties() const

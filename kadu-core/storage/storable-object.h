@@ -312,8 +312,7 @@ public:
 template<class T>
 	T loadAttribute(const QString &name) const
 	{
-		QVariant value = Storage->point().attribute(name);
-		return value.value<T>();
+		return Storage->loadAttribute<T>(name);
 	}
 
 	/**
@@ -328,12 +327,7 @@ template<class T>
 template<class T>
 	T loadValue(const QString &name) const
 	{
-		QVariant value;
-
-		if (Storage->storage()->hasNode(Storage->point(), name))
-			value = Storage->storage()->getTextNode(Storage->point(), name);
-
-		return value.value<T>();
+		return Storage->loadValue<T>(name);
 	}
 
 	/**
@@ -346,7 +340,7 @@ template<class T>
 	 */
 	bool hasValue(const QString &name) const
 	{
-		return Storage->storage()->hasNode(Storage->point(), name);
+		return Storage->hasValue(name);
 	}
 
 	/**
@@ -363,13 +357,7 @@ template<class T>
 template<class T>
 	T loadAttribute(const QString &name, T def) const
 	{
-		if (Storage->point().hasAttribute(name))
-		{
-			QVariant value = Storage->point().attribute(name);
-			return value.value<T>();
-		}
-
-		return def;
+		return Storage->loadAttribute(name, def);
 	}
 
 	/**
@@ -386,13 +374,7 @@ template<class T>
 template<class T>
 	T loadValue(const QString &name, T def) const
 	{
-		if (Storage->storage()->hasNode(Storage->point(), name))
-		{
-			QVariant value = Storage->storage()->getTextNode(Storage->point(), name);
-			return value.value<T>();
-		}
-
-		return def;
+		return Storage->loadValue(name, def);
 	}
 
 	/**

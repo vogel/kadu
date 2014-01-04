@@ -42,7 +42,7 @@ StoragePoint::StoragePoint(XmlConfigFile *storage, QDomElement point)
  *
  * Returns pointer to current XML storage file.
  */
-XmlConfigFile * StoragePoint::storage()
+XmlConfigFile * StoragePoint::storage() const
 {
 	return Storage;
 }
@@ -53,7 +53,27 @@ XmlConfigFile * StoragePoint::storage()
  *
  * Returns current parent DOM Node for this object.
  */
-QDomElement StoragePoint::point()
+QDomElement StoragePoint::point() const
 {
 	return Point;
+}
+
+void StoragePoint::storeValue(const QString &name, const QVariant value)
+{
+	Storage->createTextNode(Point, name, value.toString());
+}
+
+void StoragePoint::storeAttribute(const QString &name, const QVariant value)
+{
+	Point.setAttribute(name, value.toString());
+}
+
+void StoragePoint::removeValue(const QString& name)
+{
+	Storage->removeNode(Point, name);
+}
+
+void StoragePoint::removeAttribute(const QString& name)
+{
+	Point.removeAttribute(name);
 }
