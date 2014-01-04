@@ -19,7 +19,10 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QObject>
+#include <QtCore/QSet>
 #include <map>
 #include <memory>
 
@@ -28,7 +31,7 @@ class PluginActivationAction;
 
 enum class PluginActivationReason;
 
-class PluginActivationService : public QObject
+class KADUAPI PluginActivationService : public QObject
 {
 	Q_OBJECT
 
@@ -38,9 +41,11 @@ public:
 
 	void performActivationAction(const PluginActivationAction &action) noexcept(false);
 	bool isActive(const QString &name) const noexcept;
+	QSet<QString> activePlugins() const noexcept;
 
 private:
-	std::map<QString, std::unique_ptr<ActivePlugin>> m_activePlugins;
+	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
+	map m_activePlugins;
 
 	void activatePlugin(const QString &name, bool firstTime) noexcept(false);
 	void deactivatePlugin(const QString &name) noexcept;

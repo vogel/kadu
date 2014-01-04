@@ -53,6 +53,22 @@ bool PluginActivationService::isActive(const QString &name) const noexcept
 	return contains(m_activePlugins, name);
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Lists all active plugins.
+ * @return list of all active plugins
+ *
+ * This method returns list of all active plugins. Active plugin has its shred library loaded and objects
+ * created.
+ */
+QSet<QString> PluginActivationService::activePlugins() const noexcept
+{
+	auto result = QSet<QString>{};
+	for (auto const &activePlugin : m_activePlugins)
+		result.insert(activePlugin.first);
+	return result;
+}
+
 void PluginActivationService::activatePlugin(const QString &name, bool firstTime) noexcept(false)
 {
 	m_activePlugins.insert(std::make_pair(name, make_unique<ActivePlugin>(name, firstTime)));

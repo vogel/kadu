@@ -109,8 +109,6 @@ public:
 	void loadPluginStates();
 	void storePluginStates();
 
-	QSet<QString> activePlugins() const;
-
 	void activateProtocolPlugins();
 	void activatePlugins();
 	void deactivatePlugins();

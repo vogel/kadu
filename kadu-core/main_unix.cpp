@@ -33,7 +33,7 @@
 #include "core/crash-aware-object.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/kadu-paths.h"
-#include "plugins/plugins-manager.h"
+#include "plugins/plugin-activation-service.h"
 #include "activate.h"
 #include "debug.h"
 #include "kadu-config.h"
@@ -97,7 +97,7 @@ static void kadu_signal_handler(int signal)
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
 			fprintf(backtraceFile, "loaded plugins:\n");
-			auto pluginNames = Core::instance()->pluginsManager()->activePlugins();
+			auto pluginNames = Core::instance()->pluginActivationService()->activePlugins();
 			for (auto const &pluginName : pluginNames)
 				fprintf(backtraceFile, "> %s\n", qPrintable(pluginName));
 			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));

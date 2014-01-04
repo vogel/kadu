@@ -391,32 +391,14 @@ QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) co
  */
 void PluginsManager::deactivatePlugins()
 {
-	auto active = activePlugins();
-	for (auto const &pluginName : active)
+	if (!m_pluginActivationService)
+		return;
+
+	for (auto const &pluginName : m_pluginActivationService.data()->activePlugins())
 	{
 		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(pluginName));
 		deactivatePlugin(pluginName, PluginDeactivationReason::Exiting);
 	}
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Lists all active plugins.
- * @return list of all active plugins
- *
- * This method returns list of all active plugins. Active plugin has its shred library loaded and objects
- * created.
- */
-QSet<QString> PluginsManager::activePlugins() const
-{
-	auto result = QSet<QString>{};
-	if (!m_pluginActivationService || !m_pluginInfoRepository)
-		return result;
-
-	for (auto const &pluginInfo : m_pluginInfoRepository.data())
-		if (m_pluginActivationService.data()->isActive(pluginInfo.name()))
-			result.insert(pluginInfo.name());
-	return result;
 }
 
 /**
@@ -454,10 +436,10 @@ PluginInfo PluginsManager::loadPlugin(const QString &pluginName)
  */
 QString PluginsManager::findActiveProviding(const QString &feature) const
 {
-	if (feature.isEmpty() || !m_pluginInfoRepository)
+	if (feature.isEmpty() || !m_pluginActivationService || !m_pluginInfoRepository)
 		return {};
 
-	for (auto const &activePluginName : activePlugins())
+	for (auto const &activePluginName : m_pluginActivationService.data()->activePlugins())
 		if (m_pluginInfoRepository.data()->hasPluginInfo(activePluginName))
 			if (m_pluginInfoRepository.data()->pluginInfo(activePluginName).provides() == feature)
 				return activePluginName;
