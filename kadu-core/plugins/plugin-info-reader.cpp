@@ -39,8 +39,8 @@ PluginInfoReader::~PluginInfoReader() noexcept
 PluginInfo PluginInfoReader::readPluginInfo(QString name, const QString &filePath) noexcept(false)
 {
 	auto fileInfo = QFileInfo{filePath};
-	if (!fileInfo.exists())
-		throw PluginInfoReaderException();
+	if (!fileInfo.exists() || !fileInfo.isReadable())
+		throw PluginInfoReaderException{};
 
 	auto const lang = config_file.readEntry("General", "Language");
 	PlainConfigFile file{filePath, "UTF-8"};
