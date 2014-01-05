@@ -348,72 +348,41 @@ QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexce
  */
 bool PluginsManager::activatePluginWithDependencies(const QString &pluginName)
 {
-	if (!m_pluginActivationService || !m_pluginInfoRepository)
+	if (!m_pluginActivationService || !m_pluginInfoRepository || !m_pluginStateService)
 		return false;
 
 	if (m_pluginActivationService.data()->isActive(pluginName))
 		return true;
 
-	if (m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
-	{
-		auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
-		if (!conflict.isEmpty())
-		{
-			if (m_pluginActivationErrorHandler)
-				m_pluginActivationErrorHandler.data()->handleActivationError(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
-			return false;
-		}
-	}
-
 	try
 	{
-		auto dependencies = allDependencies(pluginName);
-		auto actions = QVector<PluginActivationAction>{};
-		for (auto dependency : dependencies)
+		if (m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
 		{
-			auto state = m_pluginStateService
-					? m_pluginStateService.data()->pluginState(dependency)
-					: PluginState::Disabled;
-
-			actions.append({dependency, PluginState::New == state});
+			auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
+			if (!conflict.isEmpty())
+				throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
 		}
 
-		try
-		{
-			for (auto const &action : actions)
-				m_pluginActivationService.data()->performActivationAction(action);
-		}
-		catch (PluginActivationErrorException &e)
-		{
-			if (m_pluginActivationErrorHandler)
-				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
-			return false;
-		}
+		for (auto plugin : allDependencies(pluginName))
+			activatePlugin(plugin);
 
-		try
-		{
-			if (m_pluginStateService)
-			{
-				auto state = m_pluginStateService.data()->pluginState(pluginName);
-				m_pluginActivationService.data()->performActivationAction({pluginName, PluginState::New == state});
-				m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
-			}
-		}
-		catch (PluginActivationErrorException &e)
-		{
-			if (m_pluginActivationErrorHandler)
-				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
-			return false;
-		}
+		activatePlugin(pluginName);
+		m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
 	}
-	catch (PluginDependencyCycleException &e)
+	catch (PluginActivationErrorException &e)
 	{
-		Q_UNUSED(e); // TODO: log? rethrow and use in GUI?
-
+		if (m_pluginActivationErrorHandler)
+			m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
 		return false;
 	}
 
 	return true;
+}
+
+void PluginsManager::activatePlugin(const QString &pluginName)
+{
+	auto state = m_pluginStateService.data()->pluginState(pluginName);
+	m_pluginActivationService.data()->performActivationAction({pluginName, PluginState::New == state});
 }
 
 void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason)

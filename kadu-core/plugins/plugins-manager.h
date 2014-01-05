@@ -132,6 +132,8 @@ private:
 
 	QVector<QString> pluginsToActivate(std::function<bool(const PluginInfo &)> filter = [](const PluginInfo &){ return true; }) const;
 
+	void activatePlugin(const QString &pluginName) noexcept(false);
+
 	QString findActiveProviding(const QString &feature) const;
 	QVector<QString> allDependencies(const QString &pluginName) noexcept;
 	QVector<QString> allDependents(const QString &pluginName) noexcept;
