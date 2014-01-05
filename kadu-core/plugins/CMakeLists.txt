@@ -5,6 +5,7 @@ set (plugins_SRCS
 	model/plugin-proxy-model.cpp
 	active-plugin.cpp
 	plugin-activation-action.cpp
+	plugin-activation-error-handler.cpp
 	plugin-activation-service.cpp
 	plugin-info.cpp
 	plugin-info-builder.cpp

@@ -40,15 +40,16 @@
 #include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugins/plugin-root-component.h"
 #include "plugins/plugin-activation-action.h"
 #include "plugins/plugin-activation-error-exception.h"
+#include "plugins/plugin-activation-error-handler.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-finder.h"
 #include "plugins/plugin-info-reader-exception.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info-repository.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-root-component.h"
 #include "plugins/plugin-state-service.h"
 #include "plugins/plugin-state-storage.h"
 #include "plugins/plugin-state-storage-09.h"
@@ -72,6 +73,11 @@ PluginsManager::~PluginsManager()
 void PluginsManager::setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder)
 {
 	m_pluginInfoFinder = pluginInfoFinder;
+}
+
+void PluginsManager::setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler)
+{
+	m_pluginActivationErrorHandler = pluginActivationErrorHandler;
 }
 
 void PluginsManager::setPluginActivationService(PluginActivationService *pluginActivationService)
@@ -364,7 +370,8 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 		auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
 		if (!conflict.isEmpty())
 		{
-			activationError(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict), reason);
+			if (m_pluginActivationErrorHandler)
+				m_pluginActivationErrorHandler.data()->handleActivationError(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict), reason);
 			return false;
 		}
 	}
@@ -409,7 +416,8 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 		}
 		catch (PluginActivationErrorException &e)
 		{
-			activationError(e.pluginName(), e.errorMessage(), PluginActivationReason::Dependency);
+			if (m_pluginActivationErrorHandler)
+				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage(), PluginActivationReason::Dependency);
 			return false;
 		}
 
@@ -424,7 +432,8 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 		}
 		catch (PluginActivationErrorException &e)
 		{
-			activationError(e.pluginName(), e.errorMessage(), reason);
+			if (m_pluginActivationErrorHandler)
+				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage(), reason);
 			return false;
 		}
 	}
@@ -436,32 +445,6 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 	}
 
 	return true;
-}
-
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @short Shows activation error to the user.
- * @param errorMessage error message that will be displayer to the user
- * @param activationReason plugin activation reason
- * @todo it really shouldn't call gui classes directly
- *
- * This method creates new PluginErrorDialog with message \p errorMessage and opens it. Depending on
- * \p activationReason, it also intructs the dialog wheter to offer the user choice wheter to try
- * to load this plugin automatically in future.
- */
-void PluginsManager::activationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason)
-{
-	if (pluginName.isEmpty())
-		return;
-
-	auto offerLoadInFutureChoice = (PluginActivationReason::KnownDefault == activationReason);
-
-	// TODO: set parent to MainConfigurationWindow is it exists
-	auto errorDialog = new PluginErrorDialog(pluginName, errorMessage, offerLoadInFutureChoice, 0);
-	if (offerLoadInFutureChoice)
-		connect(errorDialog, SIGNAL(accepted(QString,bool)), this, SLOT(setStateEnabledIfInactive(QString,bool)));
-
-	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
 void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason)
@@ -484,30 +467,6 @@ void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, P
 		if (PluginDeactivationReason::UserRequest == reason && m_pluginStateService)
 			m_pluginStateService.data()->setPluginState(action.pluginName(), PluginState::Disabled);
 	}
-}
-
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @short Sets state enablement of plugin if it is inactive.
- *
- * If this plugin is active or its state is PluginState::New, this method does nothing.
- *
- * Otherwise, this method sets its state to PluginState::Enabled if \p enable is true.
- * If \p enable is false, this method sets the plugin's state to PluginState::Disabled.
- */
-void PluginsManager::setStateEnabledIfInactive(const QString &pluginName, bool enable)
-{
-	if (!m_pluginActivationService || !m_pluginStateService)
-		return;
-
-	if (m_pluginActivationService.data()->isActive(pluginName))
-		return;
-
-	// It is necessary to not break firstLoad.
-	if (PluginState::New == m_pluginStateService.data()->pluginState(pluginName))
-		return;
-
-	m_pluginStateService.data()->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
 }
 
 #include "moc_plugins-manager.cpp"

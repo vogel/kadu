@@ -86,6 +86,7 @@
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
+#include "plugins/plugin-activation-error-handler.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-finder.h"
 #include "plugins/plugin-info-reader.h"
@@ -676,6 +677,7 @@ void Core::runServices()
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
 
+	CurrentPluginActivationErrorHandler = new PluginActivationErrorHandler{this};
 	CurrentPluginActivationService = new PluginActivationService(this);
 
 	CurrentPluginInfoFinder = new PluginInfoFinder(this);
@@ -688,11 +690,15 @@ void Core::runServices()
 	CurrentPluginInfoFinder->setPluginInfoReader(CurrentPluginInfoReader);
 
 	CurrentPluginsManager = new PluginsManager(this);
+	CurrentPluginsManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
 	CurrentPluginsManager->setPluginInfoFinder(CurrentPluginInfoFinder);
 	CurrentPluginsManager->setPluginInfoRepository(CurrentPluginInfoRepository);
 	CurrentPluginsManager->setPluginStateService(CurrentPluginStateService);
 	CurrentPluginsManager->setStoragePointFactory(CurrentStoragePointFactory);
+
+	CurrentPluginActivationErrorHandler->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginActivationErrorHandler->setPluginStateService(CurrentPluginStateService);
 
 	CurrentPluginsManager->initialize();
 }
@@ -854,6 +860,11 @@ ChatWindowRepository * Core::chatWindowRepository() const
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return CurrentStoragePointFactory;
+}
+
+PluginActivationErrorHandler * Core::pluginActivationErrorHandler() const
+{
+	return CurrentPluginActivationErrorHandler;
 }
 
 PluginActivationService * Core::pluginActivationService() const

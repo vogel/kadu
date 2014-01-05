@@ -39,11 +39,12 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-class PluginRootComponent;
+class PluginActivationErrorHandler;
 class PluginActivationService;
 class PluginInfo;
 class PluginInfoFinder;
 class PluginInfoRepository;
+class PluginRootComponent;
 class PluginStateService;
 class PluginsWindow;
 class StoragePoint;
@@ -98,6 +99,7 @@ public:
 	explicit PluginsManager(QObject *parent = nullptr);
 	virtual ~PluginsManager();
 
+	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder);
 	void setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository);
@@ -115,6 +117,7 @@ public:
 	void deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason);
 
 private:
+	QWeakPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
 	QWeakPointer<PluginInfoFinder> m_pluginInfoFinder;
 	QWeakPointer<PluginInfoRepository> m_pluginInfoRepository;
@@ -134,11 +137,6 @@ private:
 
 	bool shouldActivate(const QString &pluginName) const noexcept;
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
-
-	void activationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason);
-
-private slots:
-	void setStateEnabledIfInactive(const QString &pluginName, bool enable);
 
 };
 
