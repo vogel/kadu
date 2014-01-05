@@ -717,6 +717,11 @@ void Core::stopServices()
 	CurrentChatWidgetRepository = 0;
 }
 
+void Core::activatePlugins()
+{
+	CurrentPluginsManager->activatePlugins();
+}
+
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
 {
 	return CurrentBuddyDataWindowRepository;

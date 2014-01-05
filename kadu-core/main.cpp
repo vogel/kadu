@@ -370,7 +370,7 @@ int main(int argc, char *argv[])
 	QObject::connect(peer, SIGNAL(messageReceived(const QString &)),
 			Core::instance(), SLOT(receivedSignal(const QString &)));
 
-	Core::instance()->pluginsManager()->activatePlugins();
+	Core::instance()->activatePlugins();
 
 	foreach (const QString &id, ids)
 		Core::instance()->receivedSignal(id);

@@ -193,6 +193,8 @@ public:
 	void runGuiServices();
 	void stopServices();
 
+	void activatePlugins();
+
 	BuddyDataWindowRepository * buddyDataWindowRepository() const;
 	ChatDataWindowRepository * chatDataWindowRepository() const;
 	ChatImageRequestService * chatImageRequestService() const;
