@@ -25,26 +25,14 @@
 #include <QtCore/QVector>
 #include <QtXml/QDomElement>
 
-PluginStateStorage::PluginStateStorage(StoragePoint *storagePoint) :
-		m_storagePoint{storagePoint}
+QMap<QString, PluginState> PluginStateStorage::load(StoragePoint &storagePoint) const
 {
-}
-
-PluginStateStorage::~PluginStateStorage()
-{
-}
-
-QMap<QString, PluginState> PluginStateStorage::load() const
-{
-	if (!m_storagePoint)
-		return {};
-
 	auto result = QMap<QString, PluginState>();
-	auto elements = m_storagePoint->storage()->getNodes(m_storagePoint->point(), QLatin1String("Plugin"));
+	auto elements = storagePoint.storage()->getNodes(storagePoint.point(), QLatin1String("Plugin"));
 	for (const auto &element : elements)
 	{
 		auto name = element.attribute("name");
-		auto state = stringToState(m_storagePoint->storage()->getTextNode(element, QLatin1String("State")));
+		auto state = stringToState(storagePoint.storage()->getTextNode(element, QLatin1String("State")));
 		result.insert(name, state);
 	}
 
@@ -61,20 +49,17 @@ PluginState PluginStateStorage::stringToState(const QString &string) const
 		return PluginState::New;
 }
 
-void PluginStateStorage::store(const QMap<QString, PluginState> &pluginStates) const
+void PluginStateStorage::store(StoragePoint &storagePoint, const QMap<QString, PluginState> &pluginStates) const
 {
-	if (!m_storagePoint)
-		return;
-
-	m_storagePoint->storage()->removeChildren(m_storagePoint->point());
+	storagePoint.storage()->removeChildren(storagePoint.point());
 
 	for (const auto &name : pluginStates.keys())
 	{
 		auto stateString = stateToString(pluginStates.value(name));
 		if (!stateString.isEmpty())
 		{
-			auto node = m_storagePoint->storage()->getNamedNode(m_storagePoint->point(), QLatin1String{"Plugin"}, name, XmlConfigFile::ModeAppend);
-			m_storagePoint->storage()->appendTextNode(node, QLatin1String{"State"}, stateString);
+			auto node = storagePoint.storage()->getNamedNode(storagePoint.point(), QLatin1String{"Plugin"}, name, XmlConfigFile::ModeAppend);
+			storagePoint.storage()->appendTextNode(node, QLatin1String{"State"}, stateString);
 		}
 	}
 }

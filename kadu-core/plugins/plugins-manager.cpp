@@ -128,8 +128,8 @@ void PluginsManager::loadPluginStates()
 	if (!storagePoint)
 		return;
 
-	auto pluginStateStorage = PluginStateStorage{storagePoint.get()};
-	auto pluginStates = pluginStateStorage.load();
+	auto pluginStateStorage = PluginStateStorage{};
+	auto pluginStates = pluginStateStorage.load(*storagePoint.get());
 	m_pluginStateService.data()->setPluginStates(pluginStates);
 }
 
@@ -142,9 +142,9 @@ void PluginsManager::storePluginStates()
 	if (!storagePoint)
 		return;
 
-	auto pluginStateStorage = PluginStateStorage{storagePoint.get()};
+	auto pluginStateStorage = PluginStateStorage{};
 	auto pluginStates = m_pluginStateService.data()->pluginStates();
-	pluginStateStorage.store(pluginStates);
+	pluginStateStorage.store(*storagePoint.get(), pluginStates);
 }
 
 

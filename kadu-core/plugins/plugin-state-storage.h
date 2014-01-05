@@ -32,15 +32,10 @@ class KADUAPI PluginStateStorage
 {
 
 public:
-	explicit PluginStateStorage(StoragePoint *storagePoint);
-	virtual ~PluginStateStorage();
-
-	QMap<QString, PluginState> load() const;
-	void store(const QMap<QString, PluginState> &pluginStates) const;
+	QMap<QString, PluginState> load(StoragePoint &storagePoint) const;
+	void store(StoragePoint &storagePoint, const QMap<QString, PluginState> &pluginStates) const;
 
 private:
-	StoragePoint *m_storagePoint;
-
 	PluginState stringToState(const QString &string) const;
 	QString stateToString(PluginState state) const;
 
