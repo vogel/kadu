@@ -23,8 +23,9 @@
 #include "plugins/plugin-info.h"
 #include "exports.h"
 
-#include <QtCore/QObject>
 #include <map>
+#include <set>
+#include <QtCore/QObject>
 
 class PluginInfo;
 
@@ -47,6 +48,8 @@ public:
 	void setPluginInfos(std::map<QString, PluginInfo> &&pluginInfos);
 	void addPluginInfo(const QString &name, PluginInfo pluginInfo);
 	void removePluginInfo(const QString &name);
+
+	std::set<QString> pluginNames() const;
 
 	bool hasPluginInfo(const QString &name) const;
 	PluginInfo pluginInfo(const QString &name) const;

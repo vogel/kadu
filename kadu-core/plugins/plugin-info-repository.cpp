@@ -66,6 +66,15 @@ void PluginInfoRepository::removePluginInfo(const QString &name)
 	m_pluginInfos.erase(name);
 }
 
+std::set<QString> PluginInfoRepository::pluginNames() const
+{
+	auto result = std::set<QString>{};
+	std::transform(m_pluginInfos.begin(), m_pluginInfos.end(), std::inserter(result, result.begin()), [](const Storage::value_type &v){
+		return v.first;
+	});
+	return result;
+}
+
 bool PluginInfoRepository::hasPluginInfo(const QString &name) const
 {
 	return contains(m_pluginInfos, name);
