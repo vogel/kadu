@@ -22,7 +22,6 @@
 #include <QtCore/QString>
 
 enum class PluginActivationType;
-enum class PluginActivationReason;
 enum class PluginDeactivationReason;
 
 class PluginActivationAction
@@ -30,12 +29,11 @@ class PluginActivationAction
 
 public:
 	PluginActivationAction();
-	PluginActivationAction(QString pluginName, PluginActivationReason activationReason, bool firstTime);
+	PluginActivationAction(QString pluginName, bool firstTime);
 	PluginActivationAction(QString pluginName, PluginDeactivationReason deactivationReason);
 
 	QString pluginName() const;
 	PluginActivationType type() const;
-	PluginActivationReason activationReason() const;
 	bool firstTime() const;
 	PluginDeactivationReason deactivationReason() const;
 
@@ -44,11 +42,7 @@ private:
 	PluginActivationType m_type;
 	union
 	{
-		struct
-		{
-			PluginActivationReason m_activationReason;
-			bool m_firstTime;
-		};
+		bool m_firstTime;
 		PluginDeactivationReason m_deactivationReason;
 	};
 

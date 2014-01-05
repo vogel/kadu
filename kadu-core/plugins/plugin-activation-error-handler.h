@@ -27,8 +27,6 @@
 class PluginStateService;
 class PluginActivationService;
 
-enum class PluginActivationReason;
-
 class KADUAPI PluginActivationErrorHandler : public QObject
 {
 	Q_OBJECT
@@ -41,7 +39,7 @@ public:
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginStateService(PluginStateService *pluginStateService);
 
-	void handleActivationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason);
+	void handleActivationError(const QString &pluginName, const QString &errorMessage);
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;

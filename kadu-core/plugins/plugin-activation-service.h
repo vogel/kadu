@@ -29,8 +29,6 @@
 class ActivePlugin;
 class PluginActivationAction;
 
-enum class PluginActivationReason;
-
 class KADUAPI PluginActivationService : public QObject
 {
 	Q_OBJECT

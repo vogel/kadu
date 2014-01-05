@@ -179,14 +179,8 @@ void PluginsManager::activateProtocolPlugins()
 	auto saveList = false;
 
 	for (const auto &pluginName : pluginsToActivate([](const PluginInfo &pluginInfo){ return pluginInfo.type() == "protocol"; }))
-	{
-		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::Enabled)
-				? PluginActivationReason::KnownDefault
-				: PluginActivationReason::Other;
-
-		if (!activatePluginWithDependencies(pluginName, activationReason))
+		if (!activatePluginWithDependencies(pluginName))
 			saveList = true;
-	}
 
 	// if not all plugins were loaded properly
 	// save the list of plugins
@@ -227,14 +221,8 @@ void PluginsManager::activatePlugins()
 	auto saveList = false;
 
 	for (const auto &pluginName : pluginsToActivate())
-	{
-		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::Enabled)
-				? PluginActivationReason::KnownDefault
-				: PluginActivationReason::Other;
-
-		if (!activatePluginWithDependencies(pluginName, activationReason))
+		if (!activatePluginWithDependencies(pluginName))
 			saveList = true;
-	}
 
 	for (auto const &pluginToReplaceInfo : m_pluginInfoRepository.data())
 	{
@@ -243,7 +231,7 @@ void PluginsManager::activatePlugins()
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplaceInfo.name());
 		if (m_pluginStateService.data()->pluginState(replacementPlugin) == PluginState::New)
-			if (activatePluginWithDependencies(replacementPlugin, PluginActivationReason::Other))
+			if (activatePluginWithDependencies(replacementPlugin))
 				saveList = true; // list has changed
 	}
 
@@ -348,7 +336,6 @@ QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexce
  * @author Rafał 'Vogel' Malinowski
  * @short Activates given plugin and all its dependencies.
  * @param plugin plugin to activate
- * @param reason plugin activation reason
  * @return true, if plugin was successfully activated
  *
  * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
@@ -356,12 +343,10 @@ QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexce
  * Please note that no dependency plugin activated in this method will be automatically deactivated if
  * this method fails, so list of active plugins can be changed even if plugin could not be activated.
  *
- * \p reason will be passed to Plugin::activate() method.
- *
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, PluginActivationReason reason)
+bool PluginsManager::activatePluginWithDependencies(const QString &pluginName)
 {
 	if (!m_pluginActivationService || !m_pluginInfoRepository)
 		return false;
@@ -375,7 +360,7 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 		if (!conflict.isEmpty())
 		{
 			if (m_pluginActivationErrorHandler)
-				m_pluginActivationErrorHandler.data()->handleActivationError(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict), reason);
+				m_pluginActivationErrorHandler.data()->handleActivationError(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
 			return false;
 		}
 	}
@@ -390,11 +375,7 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 					? m_pluginStateService.data()->pluginState(dependency)
 					: PluginState::Disabled;
 
-			auto activationReason = (state == PluginState::Enabled)
-					? PluginActivationReason::KnownDefault
-					: PluginActivationReason::Other;
-
-			actions.append({dependency, activationReason, PluginState::New == state});
+			actions.append({dependency, PluginState::New == state});
 		}
 
 		try
@@ -414,7 +395,7 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 		catch (PluginActivationErrorException &e)
 		{
 			if (m_pluginActivationErrorHandler)
-				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage(), PluginActivationReason::Other);
+				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
 			return false;
 		}
 
@@ -423,14 +404,14 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 			if (m_pluginStateService)
 			{
 				auto state = m_pluginStateService.data()->pluginState(pluginName);
-				m_pluginActivationService.data()->performActivationAction({pluginName, reason, PluginState::New == state});
+				m_pluginActivationService.data()->performActivationAction({pluginName, PluginState::New == state});
 				m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
 			}
 		}
 		catch (PluginActivationErrorException &e)
 		{
 			if (m_pluginActivationErrorHandler)
-				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage(), reason);
+				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
 			return false;
 		}
 	}

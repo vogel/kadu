@@ -57,12 +57,13 @@ void PluginActivationErrorHandler::setPluginStateService(PluginStateService *plu
  * \p activationReason, it also intructs the dialog wheter to offer the user choice wheter to try
  * to load this plugin automatically in future.
  */
-void PluginActivationErrorHandler::handleActivationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason)
+void PluginActivationErrorHandler::handleActivationError(const QString &pluginName, const QString &errorMessage)
 {
 	if (pluginName.isEmpty())
 		return;
 
-	auto offerLoadInFutureChoice = (PluginActivationReason::KnownDefault == activationReason);
+	auto state = m_pluginStateService ? m_pluginStateService.data()->pluginState(pluginName) : PluginState::Disabled;
+	auto offerLoadInFutureChoice = PluginState::Enabled == state;
 
 	// TODO: set parent to MainConfigurationWindow is it exists
 	auto errorDialog = new PluginErrorDialog{pluginName, errorMessage, offerLoadInFutureChoice, 0};
@@ -87,10 +88,6 @@ void PluginActivationErrorHandler::setStateEnabledIfInactive(const QString &plug
 		return;
 
 	if (m_pluginActivationService.data()->isActive(pluginName))
-		return;
-
-	// It is necessary to not break firstLoad.
-	if (PluginState::New == m_pluginStateService.data()->pluginState(pluginName))
 		return;
 
 	m_pluginStateService.data()->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);

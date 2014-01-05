@@ -53,12 +53,6 @@ enum class PluginActivationType
 	Deactivation
 };
 
-enum class PluginActivationReason
-{
-	Other,
-	KnownDefault
-};
-
 enum class PluginDeactivationReason
 {
 	UserRequest,

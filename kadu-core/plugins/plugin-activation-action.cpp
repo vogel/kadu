@@ -26,8 +26,8 @@ PluginActivationAction::PluginActivationAction() :
 {
 }
 
-PluginActivationAction::PluginActivationAction(QString pluginName, PluginActivationReason activationReason, bool firstTime) :
-		m_pluginName{std::move(pluginName)}, m_type{PluginActivationType::Activation}, m_activationReason{activationReason}, m_firstTime{firstTime}
+PluginActivationAction::PluginActivationAction(QString pluginName, bool firstTime) :
+		m_pluginName{std::move(pluginName)}, m_type{PluginActivationType::Activation}, m_firstTime{firstTime}
 {
 }
 
@@ -44,11 +44,6 @@ QString PluginActivationAction::pluginName() const
 PluginActivationType PluginActivationAction::type() const
 {
 	return m_type;
-}
-
-PluginActivationReason PluginActivationAction::activationReason() const
-{
-	return m_activationReason;
 }
 
 bool PluginActivationAction::firstTime() const

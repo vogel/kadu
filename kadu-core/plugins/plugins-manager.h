@@ -57,7 +57,6 @@ class QTranslator;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-enum class PluginActivationReason;
 enum class PluginDeactivationReason;
 enum class PluginState;
 
@@ -113,7 +112,7 @@ public:
 	void activatePlugins();
 	void deactivatePlugins();
 
-	bool activatePluginWithDependencies(const QString &pluginName, PluginActivationReason reason);
+	bool activatePluginWithDependencies(const QString &pluginName);
 	void deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason);
 
 private:
