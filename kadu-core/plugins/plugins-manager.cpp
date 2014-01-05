@@ -176,25 +176,16 @@ void PluginsManager::prepareDependencyGraph()
  */
 void PluginsManager::activateProtocolPlugins()
 {
-	if (!m_pluginInfoRepository || !m_pluginStateService)
-		return;
-
 	auto saveList = false;
 
-	for (const auto &pluginInfo : m_pluginInfoRepository.data())
+	for (const auto &pluginName : pluginsToActivate([](const PluginInfo &pluginInfo){ return pluginInfo.type() == "protocol"; }))
 	{
-		if (pluginInfo.type() != "protocol")
-			continue;
+		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::New)
+				? PluginActivationReason::NewDefault
+				: PluginActivationReason::KnownDefault;
 
-		if (shouldActivate(pluginInfo.name()))
-		{
-			auto activationReason = (m_pluginStateService.data()->pluginState(pluginInfo.name()) == PluginState::New)
-					? PluginActivationReason::NewDefault
-					: PluginActivationReason::KnownDefault;
-
-			if (!activatePluginWithDependencies(pluginInfo.name(), activationReason))
-				saveList = true;
-		}
+		if (!activatePluginWithDependencies(pluginName, activationReason))
+			saveList = true;
 	}
 
 	// if not all plugins were loaded properly
@@ -204,6 +195,20 @@ void PluginsManager::activateProtocolPlugins()
 		storePluginStates();
 		ConfigurationManager::instance()->flush();
 	}
+}
+
+QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const PluginInfo &)> filter) const
+{
+	auto result = QVector<QString>{};
+
+	if (!m_pluginInfoRepository)
+		return result;
+
+	for (auto const &pluginInfo : m_pluginInfoRepository.data())
+		if (filter(pluginInfo) && shouldActivate(pluginInfo.name()))
+			result.append(pluginInfo.name());
+
+	return result;
 }
 
 /**
@@ -221,16 +226,15 @@ void PluginsManager::activatePlugins()
 
 	auto saveList = false;
 
-	for (auto const &pluginInfo : m_pluginInfoRepository.data())
-		if (shouldActivate(pluginInfo.name()))
-		{
-			auto activationReason = (m_pluginStateService.data()->pluginState(pluginInfo.name()) == PluginState::New)
-					? PluginActivationReason::NewDefault
-					: PluginActivationReason::KnownDefault;
+	for (const auto &pluginName : pluginsToActivate())
+	{
+		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::New)
+				? PluginActivationReason::NewDefault
+				: PluginActivationReason::KnownDefault;
 
-			if (!activatePluginWithDependencies(pluginInfo.name(), activationReason))
-				saveList = true;
-		}
+		if (!activatePluginWithDependencies(pluginName, activationReason))
+			saveList = true;
+	}
 
 	for (auto const &pluginToReplaceInfo : m_pluginInfoRepository.data())
 	{

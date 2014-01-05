@@ -131,6 +131,8 @@ private:
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 	void prepareDependencyGraph();
 
+	QVector<QString> pluginsToActivate(std::function<bool(const PluginInfo &)> filter = [](const PluginInfo &){ return true; }) const;
+
 	QString findActiveProviding(const QString &feature) const;
 	QVector<QString> allDependencies(const QString &pluginName) noexcept;
 	QVector<QString> allDependents(const QString &pluginName) noexcept;
