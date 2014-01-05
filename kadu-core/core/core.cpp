@@ -696,6 +696,7 @@ void Core::runServices()
 
 	CurrentPluginsManager->loadPluginInfos();
 	CurrentPluginsManager->ensureLoaded();
+	CurrentPluginsManager->prepareDependencyGraph();
 	CurrentPluginsManager->loadPluginStates();
 }
 

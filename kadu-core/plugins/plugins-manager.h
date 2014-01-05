@@ -111,6 +111,7 @@ public:
 	void loadPluginInfos();
 	void loadPluginStates();
 	void storePluginStates();
+	void prepareDependencyGraph();
 
 	void activateProtocolPlugins();
 	void activatePlugins();

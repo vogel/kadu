@@ -159,6 +159,17 @@ void PluginsManager::storePluginStates()
 	pluginStateStorage.store(*storagePoint.get(), pluginStates);
 }
 
+void PluginsManager::prepareDependencyGraph()
+{
+
+	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
+	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
+	for (auto &pluginInDependency : pluginsInDependencyCycle)
+		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
+
+	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
+}
+
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Loads PluginsManager and all Plugin configurations.
@@ -177,13 +188,6 @@ void PluginsManager::load()
 		return;
 
 	StorableObject::load();
-
-	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
-	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
-	for (auto &pluginInDependency : pluginsInDependencyCycle)
-		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
-
-	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 }
 
 /**
