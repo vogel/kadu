@@ -104,10 +104,8 @@ public:
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
-	void loadPluginInfos();
-	void loadPluginStates();
+	void initialize();
 	void storePluginStates();
-	void prepareDependencyGraph();
 
 	void activateProtocolPlugins();
 	void activatePlugins();
@@ -125,7 +123,10 @@ private:
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
+	void loadPluginInfos();
+	void loadPluginStates();
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
+	void prepareDependencyGraph();
 
 	QString findActiveProviding(const QString &feature) const;
 	QVector<QString> allDependencies(const QString &pluginName) noexcept;

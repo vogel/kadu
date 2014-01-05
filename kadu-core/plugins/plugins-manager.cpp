@@ -94,6 +94,13 @@ void PluginsManager::setStoragePointFactory(StoragePointFactory *storagePointFac
 	m_storagePointFactory = storagePointFactory;
 }
 
+void PluginsManager::initialize()
+{
+	loadPluginInfos();
+	loadPluginStates();
+	prepareDependencyGraph();
+}
+
 void PluginsManager::loadPluginInfos()
 {
 	if (!m_pluginInfoFinder || !m_pluginInfoRepository)

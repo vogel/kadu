@@ -694,9 +694,7 @@ void Core::runServices()
 	CurrentPluginsManager->setPluginStateService(CurrentPluginStateService);
 	CurrentPluginsManager->setStoragePointFactory(CurrentStoragePointFactory);
 
-	CurrentPluginsManager->loadPluginInfos();
-	CurrentPluginsManager->loadPluginStates();
-	CurrentPluginsManager->prepareDependencyGraph();
+	CurrentPluginsManager->initialize();
 }
 
 void Core::runGuiServices()
