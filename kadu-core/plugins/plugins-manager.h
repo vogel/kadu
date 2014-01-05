@@ -111,8 +111,8 @@ public:
 	void activatePlugins();
 	void deactivatePlugins();
 
-	bool activatePlugin(const QString &pluginName, PluginActivationReason reason);
-	void deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason);
+	bool activatePluginWithDependencies(const QString &pluginName, PluginActivationReason reason);
+	void deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason);
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;

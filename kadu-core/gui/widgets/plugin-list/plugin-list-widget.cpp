@@ -149,10 +149,10 @@ void PluginListWidget::applyChanges()
 	if (m_pluginsManager)
 	{
 		for (auto const &pluginName : pluginsToDeactivate)
-			m_pluginsManager.data()->deactivatePlugin(pluginName, PluginDeactivationReason::UserRequest);
+			m_pluginsManager.data()->deactivatePluginWithDependents(pluginName, PluginDeactivationReason::UserRequest);
 
 		for (auto const &pluginName : pluginsToActivate)
-			m_pluginsManager.data()->activatePlugin(pluginName, PluginActivationReason::UserRequest);
+			m_pluginsManager.data()->activatePluginWithDependencies(pluginName, PluginActivationReason::UserRequest);
 	}
 
 	Model->loadPluginData();

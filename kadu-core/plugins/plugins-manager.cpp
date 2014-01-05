@@ -186,7 +186,7 @@ void PluginsManager::activateProtocolPlugins()
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
-			if (!activatePlugin(pluginInfo.name(), activationReason))
+			if (!activatePluginWithDependencies(pluginInfo.name(), activationReason))
 				saveList = true;
 		}
 	}
@@ -222,7 +222,7 @@ void PluginsManager::activatePlugins()
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
-			if (!activatePlugin(pluginInfo.name(), activationReason))
+			if (!activatePluginWithDependencies(pluginInfo.name(), activationReason))
 				saveList = true;
 		}
 
@@ -233,7 +233,7 @@ void PluginsManager::activatePlugins()
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplaceInfo.name());
 		if (m_pluginStateService.data()->pluginState(replacementPlugin) == PluginState::New)
-			if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
+			if (activatePluginWithDependencies(replacementPlugin, PluginActivationReason::NewDefault))
 				saveList = true; // list has changed
 	}
 
@@ -301,7 +301,7 @@ void PluginsManager::deactivatePlugins()
 	for (auto const &pluginName : m_pluginActivationService.data()->activePlugins())
 	{
 		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(pluginName));
-		deactivatePlugin(pluginName, PluginDeactivationReason::Exiting);
+		deactivatePluginWithDependents(pluginName, PluginDeactivationReason::Exiting);
 	}
 }
 
@@ -351,7 +351,7 @@ QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexce
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-bool PluginsManager::activatePlugin(const QString &pluginName, PluginActivationReason reason)
+bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, PluginActivationReason reason)
 {
 	if (!m_pluginActivationService || !m_pluginInfoRepository)
 		return false;
@@ -464,7 +464,7 @@ void PluginsManager::activationError(const QString &pluginName, const QString &e
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
-void PluginsManager::deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason)
+void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason)
 {
 	if (!m_pluginActivationService)
 		return;
