@@ -55,10 +55,8 @@ enum class PluginActivationType
 
 enum class PluginActivationReason
 {
-	Dependency,
-	NewDefault,
-	KnownDefault,
-	UserRequest,
+	Other,
+	KnownDefault
 };
 
 enum class PluginDeactivationReason

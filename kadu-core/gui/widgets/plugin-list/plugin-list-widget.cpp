@@ -152,7 +152,7 @@ void PluginListWidget::applyChanges()
 			m_pluginsManager.data()->deactivatePluginWithDependents(pluginName, PluginDeactivationReason::UserRequest);
 
 		for (auto const &pluginName : pluginsToActivate)
-			m_pluginsManager.data()->activatePluginWithDependencies(pluginName, PluginActivationReason::UserRequest);
+			m_pluginsManager.data()->activatePluginWithDependencies(pluginName, PluginActivationReason::Other);
 	}
 
 	Model->loadPluginData();

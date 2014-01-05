@@ -180,9 +180,9 @@ void PluginsManager::activateProtocolPlugins()
 
 	for (const auto &pluginName : pluginsToActivate([](const PluginInfo &pluginInfo){ return pluginInfo.type() == "protocol"; }))
 	{
-		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::New)
-				? PluginActivationReason::NewDefault
-				: PluginActivationReason::KnownDefault;
+		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::Enabled)
+				? PluginActivationReason::KnownDefault
+				: PluginActivationReason::Other;
 
 		if (!activatePluginWithDependencies(pluginName, activationReason))
 			saveList = true;
@@ -228,9 +228,9 @@ void PluginsManager::activatePlugins()
 
 	for (const auto &pluginName : pluginsToActivate())
 	{
-		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::New)
-				? PluginActivationReason::NewDefault
-				: PluginActivationReason::KnownDefault;
+		auto activationReason = (m_pluginStateService.data()->pluginState(pluginName) == PluginState::Enabled)
+				? PluginActivationReason::KnownDefault
+				: PluginActivationReason::Other;
 
 		if (!activatePluginWithDependencies(pluginName, activationReason))
 			saveList = true;
@@ -243,7 +243,7 @@ void PluginsManager::activatePlugins()
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplaceInfo.name());
 		if (m_pluginStateService.data()->pluginState(replacementPlugin) == PluginState::New)
-			if (activatePluginWithDependencies(replacementPlugin, PluginActivationReason::NewDefault))
+			if (activatePluginWithDependencies(replacementPlugin, PluginActivationReason::Other))
 				saveList = true; // list has changed
 	}
 
@@ -386,20 +386,13 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 		auto actions = QVector<PluginActivationAction>{};
 		for (auto dependency : dependencies)
 		{
-			auto loadByDefault = m_pluginInfoRepository.data()->hasPluginInfo(dependency)
-					? m_pluginInfoRepository.data()->pluginInfo(dependency).loadByDefault()
-					: false;
 			auto state = m_pluginStateService
 					? m_pluginStateService.data()->pluginState(dependency)
 					: PluginState::Disabled;
 
-			auto activationReason = PluginActivationReason{};
-			if (PluginState::Enabled == state)
-				activationReason = PluginActivationReason::KnownDefault;
-			else if (PluginState::New == state && loadByDefault)
-				activationReason = PluginActivationReason::NewDefault;
-			else
-				activationReason = PluginActivationReason::Dependency;
+			auto activationReason = (state == PluginState::Enabled)
+					? PluginActivationReason::KnownDefault
+					: PluginActivationReason::Other;
 
 			actions.append({dependency, activationReason, PluginState::New == state});
 		}
@@ -421,7 +414,7 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName, P
 		catch (PluginActivationErrorException &e)
 		{
 			if (m_pluginActivationErrorHandler)
-				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage(), PluginActivationReason::Dependency);
+				m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage(), PluginActivationReason::Other);
 			return false;
 		}
 
