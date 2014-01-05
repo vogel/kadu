@@ -15,6 +15,7 @@ set (plugins_SRCS
 	plugin-root-component-handler.cpp
 	plugin-state-service.cpp
 	plugin-state-storage.cpp
+	plugin-state-storage-09.cpp
 	plugin-translations-loader.cpp
 	plugins-manager.cpp
 )

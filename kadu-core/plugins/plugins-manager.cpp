@@ -51,6 +51,7 @@
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-state-service.h"
 #include "plugins/plugin-state-storage.h"
+#include "plugins/plugin-state-storage-09.h"
 #include "plugins/plugins-common.h"
 #include "plugin-state-storage.h"
 #include "storage/storage-point-factory.h"
@@ -128,9 +129,20 @@ void PluginsManager::loadPluginStates()
 	if (!storagePoint)
 		return;
 
-	auto pluginStateStorage = PluginStateStorage{};
-	auto pluginStates = pluginStateStorage.load(*storagePoint.get());
+	bool importedFrom09 = storagePoint->loadAttribute("imported_from_09", false);
+	storagePoint->storeAttribute("imported_from_09", true);
+
+	auto pluginStates = loadPluginStates(storagePoint.get(), importedFrom09);
 	m_pluginStateService.data()->setPluginStates(pluginStates);
+}
+
+QMap<QString, PluginState> PluginsManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
+{
+	return importedFrom09
+			? PluginStateStorage{}.load(*storagePoint)
+			: m_pluginInfoRepository
+					? PluginStateStorage09{}.load(*m_pluginInfoRepository.data())
+					: QMap<QString, PluginState>{};
 }
 
 void PluginsManager::storePluginStates()
@@ -146,7 +158,6 @@ void PluginsManager::storePluginStates()
 	auto pluginStates = m_pluginStateService.data()->pluginStates();
 	pluginStateStorage.store(*storagePoint.get(), pluginStates);
 }
-
 
 /**
  * @author Rafał 'Vogel' Malinowski
@@ -173,12 +184,6 @@ void PluginsManager::load()
 		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
 
 	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
-
-	if (!loadAttribute<bool>("imported_from_09", false))
-	{
-		importFrom09();
-		storeAttribute("imported_from_09", true);
-	}
 }
 
 /**
@@ -196,63 +201,6 @@ void PluginsManager::store()
 	ensureLoaded();
 
 	StorableObject::store();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Import 0.9.x configuration.
- *
- * This method loads old configuration from depreceated configuration entries: General/EverLaoded,
- * General/LoadedModules and General/UnloadedModules. Do not call it manually.
- */
-void PluginsManager::importFrom09()
-{
-	if (!m_pluginInfoRepository || !m_pluginStateService)
-		return;
-
-	auto everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
-	auto loaded = config_file.readEntry("General", "LoadedModules");
-
-	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
-	everLoaded += loadedPlugins;
-	auto unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
-
-	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
-	QSet<QString> oldPlugins;
-	for (auto pluginName : allPlugins)
-		if (!m_pluginInfoRepository.data()->hasPluginInfo(pluginName) && !oldPlugins.contains(pluginName))
-			oldPlugins.insert(pluginName);
-
-	if (loadedPlugins.contains("encryption"))
-	{
-		loadedPlugins.remove("encryption");
-		loadedPlugins.insert("encryption_ng");
-		loadedPlugins.insert("encryption_ng_simlite");
-	}
-	if (loadedPlugins.contains("osd_hints"))
-	{
-		loadedPlugins.remove("osd_hints");
-		loadedPlugins.insert("hints");
-	}
-
-	for (auto const &pluginInfo : m_pluginInfoRepository.data())
-		if (allPlugins.contains(pluginInfo.name()))
-		{
-			if (loadedPlugins.contains(pluginInfo.name()))
-				m_pluginStateService.data()->setPluginState(pluginInfo.name(), PluginState::Enabled);
-			else if (everLoaded.contains(pluginInfo.name()))
-				m_pluginStateService.data()->setPluginState(pluginInfo.name(), PluginState::Disabled);
-		}
-
-	for (auto pluginName : oldPlugins)
-		if (allPlugins.contains(pluginName))
-		{
-			if (loadedPlugins.contains(pluginName))
-				m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
-			else if (everLoaded.contains(pluginName))
-				m_pluginStateService.data()->setPluginState(pluginName, PluginState::Disabled);
-		}
 }
 
 /**

@@ -132,7 +132,7 @@ private:
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
-	void importFrom09();
+	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 
 	QString findActiveProviding(const QString &feature) const;
 	QVector<QString> allDependencies(const QString &pluginName) noexcept;
