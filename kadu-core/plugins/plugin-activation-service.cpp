@@ -71,7 +71,8 @@ QSet<QString> PluginActivationService::activePlugins() const noexcept
 
 void PluginActivationService::activatePlugin(const QString &name, bool firstTime) noexcept(false)
 {
-	m_activePlugins.insert(std::make_pair(name, make_unique<ActivePlugin>(name, firstTime)));
+	if (!contains(m_activePlugins, name))
+		m_activePlugins.insert(std::make_pair(name, make_unique<ActivePlugin>(name, firstTime)));
 }
 
 void PluginActivationService::deactivatePlugin(const QString &name) noexcept
