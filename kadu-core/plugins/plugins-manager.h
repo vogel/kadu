@@ -32,7 +32,6 @@
 #pragma once
 
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
-#include "storage/storable-object.h"
 #include "exports.h"
 
 #include <memory>
@@ -47,6 +46,7 @@ class PluginInfoFinder;
 class PluginInfoRepository;
 class PluginStateService;
 class PluginsWindow;
+class StoragePoint;
 class StoragePointFactory;
 
 class QCheckBox;
@@ -89,7 +89,7 @@ enum class PluginState;
  * For enabling auto-activating plugins see Plugin::setState() method - only plugins with state equal
  * to PluginState::Enabled will be loaded automatically.
  */
-class KADUAPI PluginsManager : public QObject, public StorableObject
+class KADUAPI PluginsManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(PluginsManager)
@@ -104,10 +104,6 @@ public:
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
-	// storage implementation
-	virtual StorableObject * storageParent() { return nullptr; }
-	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
-
 	void loadPluginInfos();
 	void loadPluginStates();
 	void storePluginStates();
@@ -119,10 +115,6 @@ public:
 
 	bool activatePlugin(const QString &pluginName, PluginActivationReason reason);
 	void deactivatePlugin(const QString &pluginName, PluginDeactivationReason reason);
-
-protected:
-	virtual void load();
-	virtual void store();
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;

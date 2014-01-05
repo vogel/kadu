@@ -60,30 +60,13 @@
 #include <QtCore/QDir>
 #include <QtCore/QTimer>
 
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Creates new PluginsManager and registers it in ConfigurationManager singleton.
- *
- * Creates new PluginsManager, registers it in ConfigurationManager singleton.
- * Storage status is set to Storage::StateNotLoaded.
- */
 PluginsManager::PluginsManager(QObject *parent) :
 		QObject{parent}
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
-
-	setState(StateNotLoaded);
 }
 
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Destroys instance and unregisters it from ConfigurationManager singleton.
- *
- * Destroys instance and unregisters it from ConfigurationManager singleton.
- */
 PluginsManager::~PluginsManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void PluginsManager::setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder)
@@ -168,43 +151,6 @@ void PluginsManager::prepareDependencyGraph()
 		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
 
 	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Loads PluginsManager and all Plugin configurations.
- *
- * This method loads PluginsManager configuration from storage node /root/Plugins and all sub nodes
- * /root/Plugins/Plugin. If attribute /root/Plugins/\@imported_from_09 is not present importFrom09()
- * method will be called to import depreceated configuration from 0.9.x and earlier versions.
- *
- * After reading all plugins configuration this method check for existence of new plugins that could
- * be recently installed. Check is done by searching datadir/kadu/plugins directory for new *.desc
- * files. All new plugins are set to have PluginState::New state.
- */
-void PluginsManager::load()
-{
-	if (!isValidStorage())
-		return;
-
-	StorableObject::load();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Stores PluginsManager and all Plugin configurations.
- *
- * This method stores PluginsManager configuration to storage node /root/Plugins and all sub nodes to
- * /root/Plugins/Plugin. Attribute /root/Plugins/\@imported_from_09 is always stored as "true".
- */
-void PluginsManager::store()
-{
-	if (!isValidStorage())
-		return;
-
-	ensureLoaded();
-
-	StorableObject::store();
 }
 
 /**
