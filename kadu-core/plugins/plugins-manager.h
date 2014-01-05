@@ -112,7 +112,7 @@ public:
 	void activatePlugins();
 	void deactivatePlugins();
 
-	bool activatePluginWithDependencies(const QString &pluginName);
+	void activatePluginWithDependencies(const QString &pluginName);
 	void deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason);
 
 private:

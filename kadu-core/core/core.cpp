@@ -463,6 +463,8 @@ void Core::init()
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	CurrentPluginsManager->activateProtocolPlugins();
+	CurrentPluginsManager->storePluginStates();
+	ConfigurationManager::instance()->flush();
 
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
@@ -720,6 +722,8 @@ void Core::stopServices()
 void Core::activatePlugins()
 {
 	CurrentPluginsManager->activatePlugins();
+	CurrentPluginsManager->storePluginStates();
+	ConfigurationManager::instance()->flush();
 }
 
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const

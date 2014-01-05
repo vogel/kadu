@@ -176,19 +176,8 @@ void PluginsManager::prepareDependencyGraph()
  */
 void PluginsManager::activateProtocolPlugins()
 {
-	auto saveList = false;
-
 	for (const auto &pluginName : pluginsToActivate([](const PluginInfo &pluginInfo){ return pluginInfo.type() == "protocol"; }))
-		if (!activatePluginWithDependencies(pluginName))
-			saveList = true;
-
-	// if not all plugins were loaded properly
-	// save the list of plugins
-	if (saveList)
-	{
-		storePluginStates();
-		ConfigurationManager::instance()->flush();
-	}
+		activatePluginWithDependencies(pluginName);
 }
 
 QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const PluginInfo &)> filter) const
@@ -218,11 +207,8 @@ void PluginsManager::activatePlugins()
 	if (!m_pluginActivationService || !m_pluginInfoRepository || !m_pluginStateService)
 		return;
 
-	auto saveList = false;
-
 	for (const auto &pluginName : pluginsToActivate())
-		if (!activatePluginWithDependencies(pluginName))
-			saveList = true;
+		activatePluginWithDependencies(pluginName);
 
 	for (auto const &pluginToReplaceInfo : m_pluginInfoRepository.data())
 	{
@@ -231,14 +217,8 @@ void PluginsManager::activatePlugins()
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplaceInfo.name());
 		if (m_pluginStateService.data()->pluginState(replacementPlugin) == PluginState::New)
-			if (activatePluginWithDependencies(replacementPlugin))
-				saveList = true; // list has changed
+			activatePluginWithDependencies(replacementPlugin);
 	}
-
-	// if not all plugins were loaded properly or new plugin was added
-	// save the list of plugins
-	if (saveList)
-		ConfigurationManager::instance()->flush();
 }
 
 /**
@@ -346,13 +326,13 @@ QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexce
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-bool PluginsManager::activatePluginWithDependencies(const QString &pluginName)
+void PluginsManager::activatePluginWithDependencies(const QString &pluginName)
 {
 	if (!m_pluginActivationService || !m_pluginInfoRepository || !m_pluginStateService)
-		return false;
+		return;
 
 	if (m_pluginActivationService.data()->isActive(pluginName))
-		return true;
+		return;
 
 	try
 	{
@@ -373,10 +353,7 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName)
 	{
 		if (m_pluginActivationErrorHandler)
 			m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
-		return false;
 	}
-
-	return true;
 }
 
 void PluginsManager::activatePlugin(const QString &pluginName)
