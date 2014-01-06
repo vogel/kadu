@@ -72,7 +72,7 @@ public:
 	 * empty.
 	 *
 	 * Plugins with type Protocol are activated before all other plugins (see
-	 * PluginsManager::activateProtocolPlugins()).
+	 * PluginManager::activateProtocolPlugins()).
 	 */
 	QString type() const;
 

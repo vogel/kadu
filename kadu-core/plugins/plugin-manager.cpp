@@ -50,53 +50,53 @@
 #include "storage/storage-point-factory.h"
 #include "debug.h"
 
-PluginsManager::PluginsManager(QObject *parent) :
+PluginManager::PluginManager(QObject *parent) :
 		QObject{parent}
 {
 }
 
-PluginsManager::~PluginsManager()
+PluginManager::~PluginManager()
 {
 }
 
-void PluginsManager::setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder)
+void PluginManager::setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder)
 {
 	m_pluginInfoFinder = pluginInfoFinder;
 }
 
-void PluginsManager::setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler)
+void PluginManager::setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler)
 {
 	m_pluginActivationErrorHandler = pluginActivationErrorHandler;
 }
 
-void PluginsManager::setPluginActivationService(PluginActivationService *pluginActivationService)
+void PluginManager::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
 	m_pluginActivationService = pluginActivationService;
 }
 
-void PluginsManager::setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository)
+void PluginManager::setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository)
 {
 	m_pluginInfoRepository = pluginInfoRepository;
 }
 
-void PluginsManager::setPluginStateService(PluginStateService *pluginStateService)
+void PluginManager::setPluginStateService(PluginStateService *pluginStateService)
 {
 	m_pluginStateService = pluginStateService;
 }
 
-void PluginsManager::setStoragePointFactory(StoragePointFactory *storagePointFactory)
+void PluginManager::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
 	m_storagePointFactory = storagePointFactory;
 }
 
-void PluginsManager::initialize()
+void PluginManager::initialize()
 {
 	loadPluginInfos();
 	loadPluginStates();
 	prepareDependencyGraph();
 }
 
-void PluginsManager::loadPluginInfos()
+void PluginManager::loadPluginInfos()
 {
 	if (!m_pluginInfoFinder || !m_pluginInfoRepository)
 		return;
@@ -105,7 +105,7 @@ void PluginsManager::loadPluginInfos()
 	m_pluginInfoRepository.data()->setPluginInfos(std::move(pluginInfos));
 }
 
-void PluginsManager::loadPluginStates()
+void PluginManager::loadPluginStates()
 {
 	if (!m_pluginStateService || !m_storagePointFactory)
 		return;
@@ -121,7 +121,7 @@ void PluginsManager::loadPluginStates()
 	m_pluginStateService.data()->setPluginStates(pluginStates);
 }
 
-QMap<QString, PluginState> PluginsManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
+QMap<QString, PluginState> PluginManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
 {
 	return importedFrom09
 			? PluginStateStorage{}.load(*storagePoint)
@@ -130,7 +130,7 @@ QMap<QString, PluginState> PluginsManager::loadPluginStates(StoragePoint *storag
 					: QMap<QString, PluginState>{};
 }
 
-void PluginsManager::storePluginStates()
+void PluginManager::storePluginStates()
 {
 	if (!m_pluginStateService || !m_storagePointFactory)
 		return;
@@ -144,7 +144,7 @@ void PluginsManager::storePluginStates()
 	pluginStateStorage.store(*storagePoint.get(), pluginStates);
 }
 
-void PluginsManager::prepareDependencyGraph()
+void PluginManager::prepareDependencyGraph()
 {
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
@@ -162,7 +162,7 @@ void PluginsManager::prepareDependencyGraph()
  * or new (PluginState::New) with attribute "load by default" set. This method is generally called before
  * any other activation to ensure that all protocols and accounts are available for other plugins.
  */
-void PluginsManager::activateProtocolPlugins()
+void PluginManager::activateProtocolPlugins()
 {
 	for (const auto &pluginName : pluginsToActivate([](const PluginInfo &pluginInfo){ return pluginInfo.type() == "protocol"; }))
 		activatePluginWithDependencies(pluginName);
@@ -176,13 +176,13 @@ void PluginsManager::activateProtocolPlugins()
  * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is searched
  * (by checking Plugin::replaces()). Any found replacement plugin is activated.
  */
-void PluginsManager::activatePlugins()
+void PluginManager::activatePlugins()
 {
 	for (const auto &pluginName : pluginsToActivate())
 		activatePluginWithDependencies(pluginName);
 }
 
-QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const PluginInfo &)> filter) const
+QVector<QString> PluginManager::pluginsToActivate(std::function<bool(const PluginInfo &)> filter) const
 {
 	auto result = QVector<QString>{};
 
@@ -207,7 +207,7 @@ QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const Plug
  *   <li>is either PluginState::Enabled or PluginState::New with PluginInfo::loadByDefault() set to true
  * </ul>
  */
-bool PluginsManager::shouldActivate(const PluginInfo &pluginInfo) const noexcept
+bool PluginManager::shouldActivate(const PluginInfo &pluginInfo) const noexcept
 {
 	if (!m_pluginStateService)
 		return false;
@@ -225,7 +225,7 @@ bool PluginsManager::shouldActivate(const PluginInfo &pluginInfo) const noexcept
 	return false;
 }
 
-void PluginsManager::activateReplacementPlugins()
+void PluginManager::activateReplacementPlugins()
 {
 	if (!m_pluginStateService)
 		return;
@@ -245,7 +245,7 @@ void PluginsManager::activateReplacementPlugins()
 	}
 }
 
-QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
+QString PluginManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
 {
 	if (!m_pluginInfoRepository)
 		return {};
@@ -266,7 +266,7 @@ QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) co
  * performed for all active plugins until no more plugins can be deactivated. Then second iteration is performed.
  * This time no checks are performed.
  */
-void PluginsManager::deactivatePlugins()
+void PluginManager::deactivatePlugins()
 {
 	if (!m_pluginActivationService)
 		return;
@@ -275,7 +275,7 @@ void PluginsManager::deactivatePlugins()
 		deactivatePluginWithDependents(pluginName);
 }
 
-QVector<QString> PluginsManager::withDependencies(const QString &pluginName) noexcept
+QVector<QString> PluginManager::withDependencies(const QString &pluginName) noexcept
 {
 	auto result = m_pluginDependencyDAG
 			? m_pluginDependencyDAG.get()->findDependencies(pluginName)
@@ -284,7 +284,7 @@ QVector<QString> PluginsManager::withDependencies(const QString &pluginName) noe
 	return result;
 }
 
-QVector<QString> PluginsManager::withDependents(const QString &pluginName) noexcept
+QVector<QString> PluginManager::withDependents(const QString &pluginName) noexcept
 {
 	auto result = m_pluginDependencyDAG
 			? m_pluginDependencyDAG.get()->findDependents(pluginName)
@@ -307,7 +307,7 @@ QVector<QString> PluginsManager::withDependents(const QString &pluginName) noexc
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-bool PluginsManager::activatePluginWithDependencies(const QString &pluginName) noexcept
+bool PluginManager::activatePluginWithDependencies(const QString &pluginName) noexcept
 {
 	kdebugm(KDEBUG_INFO, "activate plugin: %s\n", qPrintable(pluginName));
 
@@ -329,7 +329,7 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName) n
 	return true;
 }
 
-void PluginsManager::activatePlugin(const QString &pluginName) noexcept(false)
+void PluginManager::activatePlugin(const QString &pluginName) noexcept(false)
 {
 	if (!m_pluginStateService)
 		return;
@@ -351,7 +351,7 @@ void PluginsManager::activatePlugin(const QString &pluginName) noexcept(false)
  * @param feature feature to search
  * @return name of active plugins that conflicts provides given feature.
  */
-QString PluginsManager::findActiveProviding(const QString &feature) const
+QString PluginManager::findActiveProviding(const QString &feature) const
 {
 	if (feature.isEmpty() || !m_pluginActivationService || !m_pluginInfoRepository)
 		return {};
@@ -364,7 +364,7 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 	return {};
 }
 
-void PluginsManager::deactivatePluginWithDependents(const QString &pluginName) noexcept
+void PluginManager::deactivatePluginWithDependents(const QString &pluginName) noexcept
 {
 	kdebugm(KDEBUG_INFO, "deactivate plugin: %s\n", qPrintable(pluginName));
 

@@ -85,7 +85,7 @@ void PluginModel::loadPluginData()
 PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent)
                 : QAbstractListModel(parent)
                 , pluginSelector_d(pluginSelector_d)
-                , Manager(Core::instance()->pluginsManager())
+                , Manager(Core::instance()->pluginManager())
 {
 }
 

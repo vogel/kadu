@@ -193,7 +193,7 @@ Core::~Core()
 {
 	IsClosing = true;
 
-	CurrentPluginsManager->storePluginStates();
+	CurrentPluginManager->storePluginStates();
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
@@ -204,7 +204,7 @@ Core::~Core()
 
 	xml_config_file->makeBackup();
 
-	CurrentPluginsManager->deactivatePlugins();
+	CurrentPluginManager->deactivatePlugins();
 
 	stopServices();
 
@@ -462,8 +462,8 @@ void Core::init()
 
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
-	CurrentPluginsManager->activateProtocolPlugins();
-	CurrentPluginsManager->storePluginStates();
+	CurrentPluginManager->activateProtocolPlugins();
+	CurrentPluginManager->storePluginStates();
 	ConfigurationManager::instance()->flush();
 
 	Myself.setAnonymous(false);
@@ -691,18 +691,18 @@ void Core::runServices()
 
 	CurrentPluginInfoFinder->setPluginInfoReader(CurrentPluginInfoReader);
 
-	CurrentPluginsManager = new PluginsManager(this);
-	CurrentPluginsManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
-	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
-	CurrentPluginsManager->setPluginInfoFinder(CurrentPluginInfoFinder);
-	CurrentPluginsManager->setPluginInfoRepository(CurrentPluginInfoRepository);
-	CurrentPluginsManager->setPluginStateService(CurrentPluginStateService);
-	CurrentPluginsManager->setStoragePointFactory(CurrentStoragePointFactory);
+	CurrentPluginManager = new PluginManager(this);
+	CurrentPluginManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
+	CurrentPluginManager->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginManager->setPluginInfoFinder(CurrentPluginInfoFinder);
+	CurrentPluginManager->setPluginInfoRepository(CurrentPluginInfoRepository);
+	CurrentPluginManager->setPluginStateService(CurrentPluginStateService);
+	CurrentPluginManager->setStoragePointFactory(CurrentStoragePointFactory);
 
 	CurrentPluginActivationErrorHandler->setPluginActivationService(CurrentPluginActivationService);
 	CurrentPluginActivationErrorHandler->setPluginStateService(CurrentPluginStateService);
 
-	CurrentPluginsManager->initialize();
+	CurrentPluginManager->initialize();
 }
 
 void Core::runGuiServices()
@@ -721,9 +721,9 @@ void Core::stopServices()
 
 void Core::activatePlugins()
 {
-	CurrentPluginsManager->activatePlugins();
-	CurrentPluginsManager->activateReplacementPlugins();
-	CurrentPluginsManager->storePluginStates();
+	CurrentPluginManager->activatePlugins();
+	CurrentPluginManager->activateReplacementPlugins();
+	CurrentPluginManager->storePluginStates();
 	ConfigurationManager::instance()->flush();
 }
 
@@ -907,9 +907,9 @@ PluginInfoRepository * Core::pluginInfoRepository() const
 	return CurrentPluginInfoRepository;
 }
 
-PluginsManager * Core::pluginsManager() const
+PluginManager * Core::pluginManager() const
 {
-	return CurrentPluginsManager;
+	return CurrentPluginManager;
 }
 
 void Core::showMainWindow()

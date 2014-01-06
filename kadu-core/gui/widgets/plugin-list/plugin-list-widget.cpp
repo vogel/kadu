@@ -120,9 +120,9 @@ void PluginListWidget::setPluginStateService(PluginStateService *pluginStateServ
 	m_pluginStateService = pluginStateService;
 }
 
-void PluginListWidget::setPluginsManager(PluginsManager *pluginsManager)
+void PluginListWidget::setPluginManager(PluginManager *pluginManager)
 {
-	m_pluginsManager = pluginsManager;
+	m_pluginManager = pluginManager;
 }
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
@@ -137,23 +137,23 @@ void PluginListWidget::applyChanges()
 {
 	auto storeList = false;
 
-	if (m_pluginsManager)
+	if (m_pluginManager)
 	{
 		for (auto const &pluginName : pluginsWithNewActiveState(false))
 		{
 			storeList = true;
-			m_pluginsManager.data()->deactivatePluginWithDependents(pluginName);
+			m_pluginManager.data()->deactivatePluginWithDependents(pluginName);
 			if (m_pluginStateService)
-				for (auto const &dependentPlugin : m_pluginsManager.data()->withDependents(pluginName))
+				for (auto const &dependentPlugin : m_pluginManager.data()->withDependents(pluginName))
 					m_pluginStateService.data()->setPluginState(dependentPlugin, PluginState::Disabled);
 		}
 
 		for (auto const &pluginName : pluginsWithNewActiveState(true))
-			if (m_pluginsManager.data()->activatePluginWithDependencies(pluginName))
+			if (m_pluginManager.data()->activatePluginWithDependencies(pluginName))
 			{
 				storeList = true;
 				if (m_pluginStateService)
-					for (auto const &dependencyPlugin : m_pluginsManager.data()->withDependencies(pluginName))
+					for (auto const &dependencyPlugin : m_pluginManager.data()->withDependencies(pluginName))
 						m_pluginStateService.data()->setPluginState(dependencyPlugin, PluginState::Enabled);
 			}
 	}
@@ -162,7 +162,7 @@ void PluginListWidget::applyChanges()
 
 	if (storeList)
 	{
-		m_pluginsManager.data()->storePluginStates();
+		m_pluginManager.data()->storePluginStates();
 		ConfigurationManager::instance()->flush();
 	}
 

@@ -36,9 +36,9 @@ class MainConfigurationWindow;
 class PluginActivationService;
 class PluginModel;
 class PluginListWidgetItemDelegate;
+class PluginManager;
 class PluginProxyModel;
 class PluginStateService;
-class PluginsManager;
 
 /**
   * @short A widget to select what plugins to load and configure the plugins.
@@ -58,7 +58,7 @@ class PluginListWidget : public QWidget
 
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
 	QWeakPointer<PluginStateService> m_pluginStateService;
-	QWeakPointer<PluginsManager> m_pluginsManager;
+	QWeakPointer<PluginManager> m_pluginManager;
 
 	FilterWidget *LineEdit;
 	CategorizedListView *ListView;
@@ -78,8 +78,8 @@ public:
 	virtual ~PluginListWidget();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginManager(PluginManager *pluginManager);
 	void setPluginStateService(PluginStateService *pluginStateService);
-	void setPluginsManager(PluginsManager *pluginsManager);
 
 	void applyChanges();
 

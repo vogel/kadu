@@ -41,7 +41,7 @@ class QAbstractItemView;
 class CategorizedListView;
 class CategorizedListViewPainter;
 // class FilterWidget;
-class PluginsManager;
+class PluginManager;
 class PluginListWidgetDelegate;
 class PluginActivationService;
 class PluginEntry;
@@ -83,7 +83,7 @@ public:
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
 	PluginListWidget *pluginSelector_d;
-	PluginsManager *Manager;
+	PluginManager *Manager;
 	QList<PluginEntry> Plugins;
 
 };

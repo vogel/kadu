@@ -55,7 +55,7 @@ enum class PluginState;
  */
 
 /**
- * @class PluginsManager
+ * @class PluginManager
  * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for loading and unloading plugins.
  *
@@ -78,14 +78,14 @@ enum class PluginState;
  * For enabling auto-activating plugins see Plugin::setState() method - only plugins with state equal
  * to PluginState::Enabled will be loaded automatically.
  */
-class KADUAPI PluginsManager : public QObject
+class KADUAPI PluginManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(PluginsManager)
+	Q_DISABLE_COPY(PluginManager)
 
 public:
-	explicit PluginsManager(QObject *parent = nullptr);
-	virtual ~PluginsManager();
+	explicit PluginManager(QObject *parent = nullptr);
+	virtual ~PluginManager();
 
 	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
