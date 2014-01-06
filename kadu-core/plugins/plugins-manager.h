@@ -35,27 +35,17 @@
 #include "exports.h"
 
 #include <memory>
-#include <QtCore/QLibrary>
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
+#include <QtCore/QWeakPointer>
 
 class PluginActivationErrorHandler;
 class PluginActivationService;
 class PluginInfo;
 class PluginInfoFinder;
 class PluginInfoRepository;
-class PluginRootComponent;
 class PluginStateService;
-class PluginsWindow;
 class StoragePoint;
 class StoragePointFactory;
-
-class QCheckBox;
-class QLabel;
-class QPluginLoader;
-class QTranslator;
-class QTreeWidget;
-class QTreeWidgetItem;
 
 enum class PluginDeactivationReason;
 enum class PluginState;

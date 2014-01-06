@@ -32,34 +32,24 @@
 
 #include "plugins-manager.h"
 
-#include "configuration/configuration-file.h"
-#include "configuration/configuration-manager.h"
 #include "core/core.h"
-#include "gui/windows/plugin-error-dialog.h"
 #include "misc/kadu-paths.h"
-#include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/plugin-activation-action.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-activation-error-handler.h"
 #include "plugins/plugin-activation-service.h"
-#include "plugins/plugin-info-finder.h"
-#include "plugins/plugin-info-reader-exception.h"
-#include "plugins/plugin-info-reader.h"
-#include "plugins/plugin-info-repository.h"
 #include "plugins/plugin-info.h"
-#include "plugins/plugin-root-component.h"
+#include "plugins/plugin-info-finder.h"
+#include "plugins/plugin-info-repository.h"
 #include "plugins/plugin-state-service.h"
 #include "plugins/plugin-state-storage.h"
 #include "plugins/plugin-state-storage-09.h"
 #include "plugins/plugins-common.h"
-#include "plugin-state-storage.h"
+#include "storage/storage-point.h"
 #include "storage/storage-point-factory.h"
 #include "debug.h"
-
-#include <QtCore/QDir>
-#include <QtCore/QTimer>
 
 PluginsManager::PluginsManager(QObject *parent) :
 		QObject{parent}
