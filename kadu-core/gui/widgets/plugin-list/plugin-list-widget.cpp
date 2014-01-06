@@ -165,7 +165,8 @@ void PluginListWidget::applyChanges()
 		for (auto const &pluginName : pluginsToActivate)
 			if (m_pluginsManager.data()->activatePluginWithDependencies(pluginName))
 				if (m_pluginStateService)
-					m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
+					for (auto const &dependencyPlugin : m_pluginsManager.data()->withDependencies(pluginName))
+						m_pluginStateService.data()->setPluginState(dependencyPlugin, PluginState::Enabled);
 	}
 
 	Model->loadPluginData();
