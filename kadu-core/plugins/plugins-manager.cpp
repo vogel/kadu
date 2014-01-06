@@ -293,14 +293,22 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 	return {};
 }
 
-QVector<QString> PluginsManager::allDependencies(const QString &pluginName) noexcept
+QVector<QString> PluginsManager::withDependencies(const QString &pluginName) noexcept
 {
-	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependencies(pluginName) : QVector<QString>{};
+	auto result = m_pluginDependencyDAG
+			? m_pluginDependencyDAG.get()->findDependencies(pluginName)
+			: QVector<QString>{};
+	result.append(pluginName);
+	return result;
 }
 
-QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexcept
+QVector<QString> PluginsManager::withDependents(const QString &pluginName) noexcept
 {
-	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependents(pluginName) : QVector<QString>{};
+	auto result = m_pluginDependencyDAG
+			? m_pluginDependencyDAG.get()->findDependents(pluginName)
+			: QVector<QString>{};
+	result.append(pluginName);
+	return result;
 }
 
 /**
@@ -334,10 +342,9 @@ void PluginsManager::activatePluginWithDependencies(const QString &pluginName)
 				throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
 		}
 
-		for (auto plugin : allDependencies(pluginName))
+		for (auto plugin : withDependencies(pluginName))
 			activatePlugin(plugin);
 
-		activatePlugin(pluginName);
 		m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
 	}
 	catch (PluginActivationErrorException &e)
@@ -364,7 +371,7 @@ void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, P
 	if (!m_pluginActivationService.data()->isActive(pluginName))
 		return;
 
-	for (auto const &plugin : (allDependents(pluginName) + QVector<QString>{pluginName}))
+	for (auto const &plugin : withDependents(pluginName))
 	{
 		m_pluginActivationService.data()->deactivatePlugin(plugin);
 		if (PluginDeactivationReason::UserRequest == reason && m_pluginStateService)

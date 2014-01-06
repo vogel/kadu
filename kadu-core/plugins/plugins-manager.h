@@ -126,8 +126,8 @@ private:
 	void activatePlugin(const QString &pluginName) noexcept(false);
 
 	QString findActiveProviding(const QString &feature) const;
-	QVector<QString> allDependencies(const QString &pluginName) noexcept;
-	QVector<QString> allDependents(const QString &pluginName) noexcept;
+	QVector<QString> withDependencies(const QString &pluginName) noexcept;
+	QVector<QString> withDependents(const QString &pluginName) noexcept;
 
 	bool shouldActivate(const PluginInfo &pluginInfo) const noexcept;
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
