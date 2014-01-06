@@ -188,7 +188,7 @@ QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const Plug
 		return result;
 
 	for (auto const &pluginInfo : m_pluginInfoRepository.data())
-		if (filter(pluginInfo) && shouldActivate(pluginInfo.name()))
+		if (filter(pluginInfo) && shouldActivate(pluginInfo))
 			result.append(pluginInfo.name());
 
 	return result;
@@ -232,22 +232,19 @@ void PluginsManager::activatePlugins()
  *   <li>is either PluginState::Enabled or PluginState::New with PluginInfo::loadByDefault() set to true
  * </ul>
  */
-bool PluginsManager::shouldActivate(const QString &pluginName) const noexcept
+bool PluginsManager::shouldActivate(const PluginInfo &pluginInfo) const noexcept
 {
 	if (!m_pluginStateService)
 		return false;
 
-	auto state = m_pluginStateService.data()->pluginState(pluginName);
+	auto state = m_pluginStateService.data()->pluginState(pluginInfo.name());
 
 	if (PluginState::Enabled == state)
 		return true;
 	if (PluginState::Disabled == state)
 		return false;
 
-	if (!m_pluginInfoRepository || !m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
-		return false;
-
-	return m_pluginInfoRepository.data()->pluginInfo(pluginName).loadByDefault();
+	return pluginInfo.loadByDefault();
 }
 
 QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
