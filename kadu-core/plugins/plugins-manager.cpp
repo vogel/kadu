@@ -275,25 +275,6 @@ void PluginsManager::deactivatePlugins()
 		deactivatePluginWithDependents(pluginName);
 }
 
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Returns name of active plugin that provides given feature.
- * @param feature feature to search
- * @return name of active plugins that conflicts provides given feature.
- */
-QString PluginsManager::findActiveProviding(const QString &feature) const
-{
-	if (feature.isEmpty() || !m_pluginActivationService || !m_pluginInfoRepository)
-		return {};
-
-	for (auto const &activePluginName : m_pluginActivationService.data()->activePlugins())
-		if (m_pluginInfoRepository.data()->hasPluginInfo(activePluginName))
-			if (m_pluginInfoRepository.data()->pluginInfo(activePluginName).provides() == feature)
-				return activePluginName;
-
-	return {};
-}
-
 QVector<QString> PluginsManager::withDependencies(const QString &pluginName) noexcept
 {
 	auto result = m_pluginDependencyDAG
@@ -330,18 +311,11 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName) n
 {
 	kdebugm(KDEBUG_INFO, "activate plugin: %s\n", qPrintable(pluginName));
 
-	if (!m_pluginActivationService || !m_pluginInfoRepository || m_pluginActivationService.data()->isActive(pluginName))
+	if (!m_pluginActivationService || m_pluginActivationService.data()->isActive(pluginName))
 		return false;
 
 	try
 	{
-		if (m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
-		{
-			auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
-			if (!conflict.isEmpty())
-				throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
-		}
-
 		for (auto plugin : withDependencies(pluginName))
 			activatePlugin(plugin);
 	}
@@ -355,13 +329,39 @@ bool PluginsManager::activatePluginWithDependencies(const QString &pluginName) n
 	return true;
 }
 
-void PluginsManager::activatePlugin(const QString &pluginName)
+void PluginsManager::activatePlugin(const QString &pluginName) noexcept(false)
 {
 	if (!m_pluginStateService)
 		return;
 
+	if (m_pluginInfoRepository && m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
+	{
+		auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
+		if (!conflict.isEmpty())
+			throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
+	}
+
 	auto state = m_pluginStateService.data()->pluginState(pluginName);
 	m_pluginActivationService.data()->activatePlugin(pluginName, PluginState::New == state);
+}
+
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Returns name of active plugin that provides given feature.
+ * @param feature feature to search
+ * @return name of active plugins that conflicts provides given feature.
+ */
+QString PluginsManager::findActiveProviding(const QString &feature) const
+{
+	if (feature.isEmpty() || !m_pluginActivationService || !m_pluginInfoRepository)
+		return {};
+
+	for (auto const &activePluginName : m_pluginActivationService.data()->activePlugins())
+		if (m_pluginInfoRepository.data()->hasPluginInfo(activePluginName))
+			if (m_pluginInfoRepository.data()->pluginInfo(activePluginName).provides() == feature)
+				return activePluginName;
+
+	return {};
 }
 
 void PluginsManager::deactivatePluginWithDependents(const QString &pluginName) noexcept
