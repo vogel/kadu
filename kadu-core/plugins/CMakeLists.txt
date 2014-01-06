@@ -20,8 +20,4 @@ set (plugins_SRCS
 	plugin-translations-loader.cpp
 )
 
-set (plugins_MOC_SRCS
-	model/plugin-model.h
-)
-
 kadu_subdirectory (plugins "${plugins_SRCS}" "${plugins_MOC_SRCS}" "")
