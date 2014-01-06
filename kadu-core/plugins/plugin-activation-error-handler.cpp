@@ -22,8 +22,8 @@
 
 #include "gui/windows/plugin-error-dialog.h"
 #include "plugins/plugin-activation-service.h"
+#include "plugins/plugin-state.h"
 #include "plugins/plugin-state-service.h"
-#include "plugins/plugins-common.h"
 
 #include <QtCore/QTimer>
 

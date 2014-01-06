@@ -22,7 +22,6 @@
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugins/active-plugin.h"
-#include "plugins/plugins-common.h"
 
 PluginActivationService::PluginActivationService(QObject *parent) :
 		QObject{parent}

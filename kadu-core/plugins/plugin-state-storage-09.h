@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include "plugins/plugins-common.h"
 #include "exports.h"
 
 #include <QtCore/QMap>

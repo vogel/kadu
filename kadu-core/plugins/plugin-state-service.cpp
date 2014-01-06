@@ -19,7 +19,7 @@
 
 #include "plugin-state-service.h"
 
-#include "plugins-common.h"
+#include "plugins/plugin-state.h"
 
 PluginStateService::PluginStateService(QObject *parent) noexcept :
 		QObject{parent}

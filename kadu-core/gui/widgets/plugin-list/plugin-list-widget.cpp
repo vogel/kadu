@@ -51,8 +51,8 @@
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-state.h"
 #include "plugins/plugin-state-service.h"
-#include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 
 #include "plugin-list-widget.h"
