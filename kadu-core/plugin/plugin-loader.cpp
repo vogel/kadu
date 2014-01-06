@@ -20,7 +20,7 @@
 #include "plugin-loader.h"
 
 #include "misc/kadu-paths.h"
-#include "plugin/plugin-activation-error-exception.h"
+#include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-root-component.h"
 #include "debug.h"
 

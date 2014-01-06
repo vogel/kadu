@@ -21,7 +21,7 @@
 #include "plugin-activation-error-handler.h"
 
 #include "gui/windows/plugin-error-dialog.h"
-#include "plugin/plugin-activation-service.h"
+#include "plugin/activation/plugin-activation-service.h"
 #include "plugin/plugin-state.h"
 #include "plugin/plugin-state-service.h"
 

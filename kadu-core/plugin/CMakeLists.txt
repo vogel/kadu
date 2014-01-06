@@ -3,9 +3,9 @@ set (plugin_SRCS
 	dependency-graph/plugin-dependency-graph-builder.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
-	active-plugin.cpp
-	plugin-activation-error-handler.cpp
-	plugin-activation-service.cpp
+	activation/active-plugin.cpp
+	activation/plugin-activation-error-handler.cpp
+	activation/plugin-activation-service.cpp
 	plugin-info.cpp
 	plugin-info-builder.cpp
 	plugin-info-finder.cpp

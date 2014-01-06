@@ -45,7 +45,7 @@
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/model/plugin-proxy-model.h"
-#include "plugin/plugin-activation-service.h"
+#include "plugin/activation/plugin-activation-service.h"
 #include "plugin/plugin-info.h"
 #include "plugin/plugin-info-repository.h"
 
