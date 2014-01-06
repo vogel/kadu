@@ -26,7 +26,7 @@
 #ifndef QT4_SOUND_PLUGIN_H
 #define QT4_SOUND_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class Qt4SoundPlugin : public QObject, public PluginRootComponent
 {

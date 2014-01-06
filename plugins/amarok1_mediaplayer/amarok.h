@@ -1,7 +1,7 @@
 #ifndef AMAROK_H
 #define AMAROK_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 #include "plugins/mediaplayer/player_commands.h"
 #include "plugins/mediaplayer/player_info.h"

@@ -26,7 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugins/mediaplayer/mediaplayer.h"
+#include "plugin/mediaplayer/mediaplayer.h"
 
 #include "itunes-player-plugin.h"
 #include "itunes.h"

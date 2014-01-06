@@ -26,7 +26,7 @@
 #ifndef EXT_SOUND_PLUGIN_H
 #define EXT_SOUND_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class ExtSoundPlugin : public QObject, public PluginRootComponent
 {

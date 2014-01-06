@@ -44,8 +44,8 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
-#include "plugins/model/plugin-model.h"
-#include "plugins/plugin-info.h"
+#include "plugin/model/plugin-model.h"
+#include "plugin/plugin-info.h"
 
 #include "plugin-proxy-model.h"
 

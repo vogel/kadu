@@ -17,16 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "active-plugin.h"
+#pragma once
 
-#include "plugins/plugin-loader.h"
-#include "plugins/plugin-root-component-handler.h"
-#include "plugins/plugin-translations-loader.h"
+#include "plugin/plugin-loader.h"
+#include "plugin/plugin-root-component-handler.h"
+#include "plugin/plugin-translations-loader.h"
 
-ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad)
+#include <QtCore/QScopedPointer>
+
+class ActivePlugin
 {
-	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
-	m_pluginTranslationsLoader.reset(new PluginTranslationsLoader{pluginName});
-	m_pluginLoader.reset(new PluginLoader{pluginName});
-	m_pluginRootComponentHandler.reset(new PluginRootComponentHandler{pluginName, firstLoad, m_pluginLoader->instance()});
-}
+
+public:
+	explicit ActivePlugin(const QString &pluginName, bool firstLoad);
+
+private:
+	// translations must be loaded first and uloaded last, see #2177
+	QScopedPointer<PluginTranslationsLoader> m_pluginTranslationsLoader;
+	QScopedPointer<PluginLoader> m_pluginLoader;
+	QScopedPointer<PluginRootComponentHandler> m_pluginRootComponentHandler;
+
+};

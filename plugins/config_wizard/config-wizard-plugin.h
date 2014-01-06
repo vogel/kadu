@@ -27,7 +27,7 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class ConfigWizardPlugin : public QObject, public PluginRootComponent
 {

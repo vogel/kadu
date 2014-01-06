@@ -27,7 +27,7 @@
 #ifndef DOCKING_PLUGIN_H
 #define DOCKING_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class DockingPlugin : public QObject, public PluginRootComponent
 {

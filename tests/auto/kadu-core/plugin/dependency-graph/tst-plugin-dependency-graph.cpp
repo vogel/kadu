@@ -18,8 +18,8 @@
  */
 
 #include "misc/algorithm.h"
-#include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
-#include "plugins/dependency-graph/plugin-dependency-graph.h"
+#include "plugin/dependency-graph/plugin-dependency-cycle-exception.h"
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "utils/exception.h"
 
 #include <algorithm>

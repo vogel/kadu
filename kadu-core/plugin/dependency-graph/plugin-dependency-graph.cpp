@@ -20,7 +20,7 @@
 #include "plugin-dependency-graph.h"
 
 #include "misc/graph/graph-algorithm.h"
-#include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
+#include "plugin/dependency-graph/plugin-dependency-cycle-exception.h"
 
 PluginDependencyGraph::PluginDependencyGraph()
 {

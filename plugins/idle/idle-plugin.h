@@ -26,7 +26,7 @@
 #ifndef IDLE_PLUGIN_H
 #define IDLE_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 #include "idle_exports.h"
 

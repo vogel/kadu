@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include "plugins/dependency-graph/plugin-dependency-graph.h"
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
 
 #include <memory>

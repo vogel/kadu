@@ -17,30 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "active-plugin.h"
 
-#include <map>
-#include <memory>
-#include <set>
-#include <QtCore/QObject>
+#include "plugin/plugin-loader.h"
+#include "plugin/plugin-root-component-handler.h"
+#include "plugin/plugin-translations-loader.h"
 
-#include "plugins/dependency-graph/plugin-dependency-graph.h"
-#include "exports.h"
-
-class PluginInfo;
-class PluginInfoRepository;
-
-class KADUAPI PluginDependencyGraphBuilder : public QObject
+ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad)
 {
-	Q_OBJECT
-
-public:
-	explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
-	virtual ~PluginDependencyGraphBuilder();
-
-	std::unique_ptr<PluginDependencyGraph> buildGraph(PluginInfoRepository &pluginRepository) const;
-
-private:
-	std::set<QString> getPluginNames(PluginInfoRepository &pluginRepository) const;
-
-};
+	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
+	m_pluginTranslationsLoader.reset(new PluginTranslationsLoader{pluginName});
+	m_pluginLoader.reset(new PluginLoader{pluginName});
+	m_pluginRootComponentHandler.reset(new PluginRootComponentHandler{pluginName, firstLoad, m_pluginLoader->instance()});
+}

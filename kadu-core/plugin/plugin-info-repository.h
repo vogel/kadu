@@ -20,7 +20,7 @@
 #pragma once
 
 #include "misc/iterator.h"
-#include "plugins/plugin-info.h"
+#include "plugin/plugin-info.h"
 #include "exports.h"
 
 #include <map>

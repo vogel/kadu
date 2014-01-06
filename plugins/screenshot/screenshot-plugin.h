@@ -27,7 +27,7 @@
 #ifndef SCREENSHOT_PLUGIN_H
 #define SCREENSHOT_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class ScreenshotPlugin : public QObject, public PluginRootComponent
 {

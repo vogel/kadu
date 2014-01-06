@@ -33,7 +33,7 @@
 #include "image-expander-dom-visitor-provider.h"
 #include "video-expander-dom-visitor-provider.h"
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class ImageLinkPlugin : public QObject, public PluginRootComponent
 {

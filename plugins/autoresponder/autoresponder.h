@@ -32,7 +32,7 @@
 
 #include "chat/chat.h"
 #include "message/message-filter.h"
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 #include "autoresponder-configuration.h"
 

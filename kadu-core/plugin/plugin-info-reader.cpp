@@ -21,9 +21,9 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "plugins/plugin-info-builder.h"
-#include "plugins/plugin-info-reader-exception.h"
-#include "plugins/plugin-info.h"
+#include "plugin/plugin-info-builder.h"
+#include "plugin/plugin-info-reader-exception.h"
+#include "plugin/plugin-info.h"
 
 #include <QtCore/QFileInfo>
 

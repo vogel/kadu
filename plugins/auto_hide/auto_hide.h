@@ -27,7 +27,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 /*!
  * This class provides autohiding Kadu's main window after preset time.

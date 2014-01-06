@@ -1,4 +1,4 @@
-set (plugins_SRCS
+set (plugin_SRCS
 	dependency-graph/plugin-dependency-graph.cpp
 	dependency-graph/plugin-dependency-graph-builder.cpp
 	model/plugin-model.cpp
@@ -20,4 +20,4 @@ set (plugins_SRCS
 	plugin-translations-loader.cpp
 )
 
-kadu_subdirectory (plugins "${plugins_SRCS}" "${plugins_MOC_SRCS}" "")
+kadu_subdirectory (plugin "${plugin_SRCS}" "${plugin_MOC_SRCS}" "")

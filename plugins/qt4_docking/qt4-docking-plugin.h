@@ -27,7 +27,7 @@
 #ifndef QT4_DOCKING_PLUGIN_H
 #define QT4_DOCKING_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class Qt4DockingPlugin : public QObject, public PluginRootComponent
 {

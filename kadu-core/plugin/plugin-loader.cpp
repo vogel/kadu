@@ -20,8 +20,8 @@
 #include "plugin-loader.h"
 
 #include "misc/kadu-paths.h"
-#include "plugins/plugin-activation-error-exception.h"
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-activation-error-exception.h"
+#include "plugin/plugin-root-component.h"
 #include "debug.h"
 
 #include <QtCore/QEvent>

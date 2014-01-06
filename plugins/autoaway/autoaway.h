@@ -34,7 +34,7 @@
 #include <QtCore/QTimer>
 
 #include "gui/windows/main-configuration-window.h"
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 #include "status/status-changer.h"
 
 #include "autoaway-status-changer.h"

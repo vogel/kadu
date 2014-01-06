@@ -19,7 +19,7 @@
 
 #include "plugin-info-builder.h"
 
-#include "plugins/plugin-info.h"
+#include "plugin/plugin-info.h"
 
 PluginInfoBuilder::PluginInfoBuilder() :
 		m_loadByDefault{true}

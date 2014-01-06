@@ -4,7 +4,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QObject>
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 #include "plugins/mediaplayer/player_info.h"
 

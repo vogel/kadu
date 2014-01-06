@@ -27,7 +27,7 @@
 #ifndef PROFILES_IMPORT_PLUGIN_H
 #define PROFILES_IMPORT_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class ProfilesImportPlugin : public QObject, public PluginRootComponent
 {

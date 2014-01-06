@@ -19,22 +19,28 @@
 
 #pragma once
 
-#include "plugins/plugin-loader.h"
-#include "plugins/plugin-root-component-handler.h"
-#include "plugins/plugin-translations-loader.h"
+#include <map>
+#include <memory>
+#include <set>
+#include <QtCore/QObject>
 
-#include <QtCore/QScopedPointer>
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
+#include "exports.h"
 
-class ActivePlugin
+class PluginInfo;
+class PluginInfoRepository;
+
+class KADUAPI PluginDependencyGraphBuilder : public QObject
 {
+	Q_OBJECT
 
 public:
-	explicit ActivePlugin(const QString &pluginName, bool firstLoad);
+	explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
+	virtual ~PluginDependencyGraphBuilder();
+
+	std::unique_ptr<PluginDependencyGraph> buildGraph(PluginInfoRepository &pluginRepository) const;
 
 private:
-	// translations must be loaded first and uloaded last, see #2177
-	QScopedPointer<PluginTranslationsLoader> m_pluginTranslationsLoader;
-	QScopedPointer<PluginLoader> m_pluginLoader;
-	QScopedPointer<PluginRootComponentHandler> m_pluginRootComponentHandler;
+	std::set<QString> getPluginNames(PluginInfoRepository &pluginRepository) const;
 
 };

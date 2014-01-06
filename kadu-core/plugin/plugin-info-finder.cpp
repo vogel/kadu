@@ -19,8 +19,8 @@
 
 #include "plugin-info-finder.h"
 
-#include "plugins/plugin-info.h"
-#include "plugins/plugin-info-reader.h"
+#include "plugin/plugin-info.h"
+#include "plugin/plugin-info-reader.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QVector>

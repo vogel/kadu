@@ -137,7 +137,7 @@ set (kadu_SUBDIRS
 	notify
 	os
 	parser
-	plugins
+	plugin
 	protocols
 	qt
 	services
@@ -340,8 +340,8 @@ kadu_api_directories (kadu-core
 	os/generic
 	os/qtsingleapplication
 	parser
-	plugins
-	plugins/model
+	plugin
+	plugin/model
 	protocols
 	protocols/filter
 	protocols/model

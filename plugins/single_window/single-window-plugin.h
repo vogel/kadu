@@ -26,7 +26,7 @@
 
 #pragma once
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class SingleWindowChatWidgetContainerHandler;
 class SingleWindowManager;

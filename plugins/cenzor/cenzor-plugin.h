@@ -27,7 +27,7 @@
 #ifndef CENZOR_PLUGIN_H
 #define CENZOR_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class CenzorPlugin : public QObject, public PluginRootComponent
 {

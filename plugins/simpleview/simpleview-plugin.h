@@ -27,7 +27,7 @@
 #ifndef SIMPLEVIEW_PLUGIN_H
 #define SIMPLEVIEW_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class SimpleViewPlugin : public QObject, public PluginRootComponent
 {

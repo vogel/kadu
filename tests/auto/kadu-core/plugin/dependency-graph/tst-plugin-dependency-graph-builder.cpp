@@ -19,11 +19,11 @@
 
 #include "misc/algorithm.h"
 #include "misc/memory.h"
-#include "plugins/dependency-graph/plugin-dependency-graph.h"
-#include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugins/plugin-info.h"
-#include "plugins/plugin-info-builder.h"
-#include "plugins/plugin-info-repository.h"
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
+#include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
+#include "plugin/plugin-info.h"
+#include "plugin/plugin-info-builder.h"
+#include "plugin/plugin-info-repository.h"
 
 #include <algorithm>
 #include <QtTest/QtTest>

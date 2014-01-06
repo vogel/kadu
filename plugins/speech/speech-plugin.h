@@ -27,7 +27,7 @@
 #ifndef SPEECH_PLUGIN_H
 #define SPEECH_PLUGIN_H
 
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-root-component.h"
 
 class SpeechPlugin : public QObject, public PluginRootComponent
 {

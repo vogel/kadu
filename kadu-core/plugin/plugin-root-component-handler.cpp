@@ -19,8 +19,8 @@
 
 #include "plugin-root-component-handler.h"
 
-#include "plugins/plugin-activation-error-exception.h"
-#include "plugins/plugin-root-component.h"
+#include "plugin/plugin-activation-error-exception.h"
+#include "plugin/plugin-root-component.h"
 
 PluginRootComponentHandler::PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent) noexcept(false) :
 		QObject{parent}, m_pluginRootComponent{pluginRootComponent}

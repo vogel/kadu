@@ -20,9 +20,9 @@
 #include "plugin-dependency-graph-builder.h"
 
 #include "misc/memory.h"
-#include "plugins/dependency-graph/plugin-dependency-graph.h"
-#include "plugins/plugin-info.h"
-#include "plugins/plugin-info-repository.h"
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
+#include "plugin/plugin-info.h"
+#include "plugin/plugin-info-repository.h"
 
 PluginDependencyGraphBuilder::PluginDependencyGraphBuilder(QObject *parent) :
 		QObject{parent}
