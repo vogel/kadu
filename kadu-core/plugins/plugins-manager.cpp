@@ -268,10 +268,7 @@ void PluginsManager::deactivatePlugins()
 		return;
 
 	for (auto const &pluginName : m_pluginActivationService.data()->activePlugins())
-	{
-		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(pluginName));
 		deactivatePluginWithDependents(pluginName);
-	}
 }
 
 /**
@@ -327,6 +324,8 @@ QVector<QString> PluginsManager::withDependents(const QString &pluginName) noexc
  */
 void PluginsManager::activatePluginWithDependencies(const QString &pluginName) noexcept
 {
+	kdebugm(KDEBUG_INFO, "activate plugin: %s\n", qPrintable(pluginName));
+
 	if (!m_pluginActivationService || !m_pluginInfoRepository || !m_pluginStateService)
 		return;
 
@@ -365,6 +364,8 @@ void PluginsManager::activatePlugin(const QString &pluginName)
 
 void PluginsManager::deactivatePluginWithDependents(const QString &pluginName) noexcept
 {
+	kdebugm(KDEBUG_INFO, "deactivate plugin: %s\n", qPrintable(pluginName));
+
 	if (!m_pluginActivationService || !m_pluginActivationService.data()->isActive(pluginName))
 		return;
 
