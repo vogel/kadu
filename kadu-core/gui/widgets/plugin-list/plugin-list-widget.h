@@ -68,6 +68,8 @@ class PluginListWidget : public QWidget
 	PluginListWidgetItemDelegate *Delegate;
 	bool ShowIcons;
 
+	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
+
 private slots:
 	void configurationApplied();
 

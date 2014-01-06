@@ -135,49 +135,53 @@ int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth)
 
 void PluginListWidget::applyChanges()
 {
-	int count = Model->rowCount();
-
-	QVector<QString> pluginsToDeactivate;
-	QVector<QString> pluginsToActivate;
-
-	for (int i = 0; i < count; i++)
-	{
-		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
-		if (m_pluginActivationService.data()->isActive(pluginEntry->pluginName) != pluginEntry->checked)
-		{
-			if (pluginEntry->checked)
-				pluginsToActivate.append(pluginEntry->pluginName);
-			else
-				pluginsToDeactivate.append(pluginEntry->pluginName);
-		}
-	}
+	auto storeList = false;
 
 	if (m_pluginsManager)
 	{
-		for (auto const &pluginName : pluginsToDeactivate)
+		for (auto const &pluginName : pluginsWithNewActiveState(false))
 		{
+			storeList = true;
 			m_pluginsManager.data()->deactivatePluginWithDependents(pluginName);
 			if (m_pluginStateService)
 				for (auto const &dependentPlugin : m_pluginsManager.data()->withDependents(pluginName))
 					m_pluginStateService.data()->setPluginState(dependentPlugin, PluginState::Disabled);
 		}
 
-		for (auto const &pluginName : pluginsToActivate)
+		for (auto const &pluginName : pluginsWithNewActiveState(true))
 			if (m_pluginsManager.data()->activatePluginWithDependencies(pluginName))
+			{
+				storeList = true;
 				if (m_pluginStateService)
 					for (auto const &dependencyPlugin : m_pluginsManager.data()->withDependencies(pluginName))
 						m_pluginStateService.data()->setPluginState(dependencyPlugin, PluginState::Enabled);
+			}
 	}
 
 	Model->loadPluginData();
 
-	if (pluginsToDeactivate.size() > 0 || pluginsToActivate.size() > 0)
+	if (storeList)
 	{
 		m_pluginsManager.data()->storePluginStates();
 		ConfigurationManager::instance()->flush();
 	}
 
 	emit changed(false);
+}
+
+QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState) const
+{
+	auto result = QVector<QString>{};
+
+	int count = Model->rowCount();
+	for (int i = 0; i < count; i++)
+	{
+		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
+		if ((m_pluginActivationService.data()->isActive(pluginEntry->pluginName) != pluginEntry->checked) && (newActiveState == pluginEntry->checked))
+				result.append(pluginEntry->pluginName);
+	}
+
+	return result;
 }
 
 void PluginListWidget::configurationApplied()
