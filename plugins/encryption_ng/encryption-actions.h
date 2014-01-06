@@ -24,7 +24,7 @@
 #define ENCRYPTION_ACTIONS_H
 
 #include <QtCore/QObject>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "chat/chat.h"
 

@@ -24,7 +24,7 @@
 #ifndef HISTORY_TAB_H
 #define HISTORY_TAB_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 /**
  * @addtogroup History

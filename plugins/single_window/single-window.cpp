@@ -10,8 +10,8 @@
 #include <QtCore/QStringList>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QSplitter>
-#include <QtGui/QTabWidget>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QTabWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
@@ -251,7 +251,7 @@ void SingleWindow::closeTab(int index)
 void SingleWindow::closeEvent(QCloseEvent *event)
 {
 	// do not block window closing when session is about to close
-	if (Core::instance()->application()->sessionClosing())
+	if (Core::instance()->application()->isSavingSession())
 	{
 		QWidget::closeEvent(event);
 		return;

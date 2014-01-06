@@ -29,7 +29,7 @@
 #define TOOLBAR_H
 
 #include <QtGui/QDrag>
-#include <QtGui/QToolBar>
+#include <QtWidgets/QToolBar>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -131,6 +131,8 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QMenu * createContextMenu(QWidget *widget);
 
+	void paintDropMarker();
+
 private slots:
 	/**
 		\fn void addButtonClicked()
@@ -170,8 +172,6 @@ private slots:
 	void slotContextTextRight();
 
 	void slotContextAboutToShow();
-
-	void paintDropMarker();
 
 protected:
 	/**

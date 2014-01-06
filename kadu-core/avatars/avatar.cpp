@@ -35,12 +35,12 @@ Avatar Avatar::create()
 	return new AvatarShared();
 }
 
-Avatar Avatar::loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint)
+Avatar Avatar::loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint)
 {
 	return AvatarShared::loadStubFromStorage(avatarStoragePoint);
 }
 
-Avatar Avatar::loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint)
+Avatar Avatar::loadFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint)
 {
 	return AvatarShared::loadFromStorage(avatarStoragePoint);
 }

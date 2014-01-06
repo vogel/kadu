@@ -37,6 +37,7 @@ class SpellCheckerPlugin : public QObject, PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	static SpellCheckerPlugin *Instance;
 

@@ -20,7 +20,7 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Chat;
 class ChatManager;
@@ -38,7 +38,7 @@ public:
 	void store(const QVector<Chat> &chats) const;
 
 private:
-	QWeakPointer<ChatManager> m_chatManager;
+	QPointer<ChatManager> m_chatManager;
 	StoragePoint *m_storagePoint;
 	QString m_nodeName;
 

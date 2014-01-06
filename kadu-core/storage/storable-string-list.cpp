@@ -51,7 +51,7 @@ void StorableStringList::load()
 
 	StorableObject::load();
 
-	auto stringListStorage = StringListStorage(storage().data(), storageItemNodeName());
+	auto stringListStorage = StringListStorage(storage().get(), storageItemNodeName());
 	StringList = stringListStorage.load();
 }
 
@@ -67,7 +67,7 @@ void StorableStringList::store()
 	if (!isValidStorage())
 		return;
 
-	auto stringListStorage = StringListStorage(storage().data(), storageItemNodeName());
+	auto stringListStorage = StringListStorage(storage().get(), storageItemNodeName());
 	stringListStorage.store(content());
 }
 

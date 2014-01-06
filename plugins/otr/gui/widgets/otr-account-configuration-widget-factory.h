@@ -22,7 +22,7 @@
 #ifndef OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
 #define OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "gui/widgets/account-configuration-widget-factory.h"
 
@@ -30,7 +30,7 @@ class OtrPolicyService;
 
 class OtrAccountConfigurationWidgetFactory : public AccountConfigurationWidgetFactory
 {
-	QWeakPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrPolicyService> PolicyService;
 
 public:
 	virtual ~OtrAccountConfigurationWidgetFactory();

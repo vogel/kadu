@@ -33,9 +33,9 @@
 
 #include <math.h> // trunc on C99 compliant systems
 
-#include <QPaintEvent>
-#include <QPainter>
-#include <QScrollBar>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QPainter>
+#include <QtWidgets/QScrollBar>
 
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "model/categorized-sort-filter-proxy-model.h"
@@ -1801,7 +1801,11 @@ void CategorizedListView::currentChanged(const QModelIndex &current,
 }
 
 void CategorizedListView::dataChanged(const QModelIndex &topLeft,
-                                      const QModelIndex &bottomRight)
+                                      const QModelIndex &bottomRight
+#if QT_VERSION >= 0x050000
+                                      , const QVector<int> & = QVector<int>()
+#endif
+                                      )
 {
         QListView::dataChanged(topLeft, bottomRight);
 

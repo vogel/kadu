@@ -26,10 +26,10 @@
  */
 
 #include <QtCore/QLocale>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMenu>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

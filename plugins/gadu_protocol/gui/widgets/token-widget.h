@@ -28,7 +28,7 @@
 #ifndef TOKEN_WIDGET_H
 #define TOKEN_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QLabel;
 class QLineEdit;

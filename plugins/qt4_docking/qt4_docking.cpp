@@ -121,7 +121,7 @@ void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
 
 void Qt4TrayIcon::changeTrayTooltip(const QString &tooltip)
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	// checked on XP and 7
 	const int maxTooltipLength = 127;
 	const QString &truncatedTooltip = tooltip.length() > maxTooltipLength

@@ -48,7 +48,7 @@ void JabberVCardUploader::failed()
 
 void JabberVCardUploader::taskFinished()
 {
-	if (!Task || !Task.data()->success())
+	if (!Task || !Task->success())
 		failed();
 	else
 		done();
@@ -56,17 +56,17 @@ void JabberVCardUploader::taskFinished()
 
 void JabberVCardUploader::uploadVCard(const QString &id, XMPP::VCard vCard)
 {
-	if (!XmppClient || !XmppClient.data()->rootTask())
+	if (!XmppClient || !XmppClient->rootTask())
 	{
 		failed();
 		return;
 	}
 
-	Task = new XMPP::JT_VCard(XmppClient.data()->rootTask());
+	Task = new XMPP::JT_VCard(XmppClient->rootTask());
 
 	connect(Task.data(), SIGNAL(finished()), this, SLOT(taskFinished()));
-	Task.data()->set(id, vCard);
-	Task.data()->go(true);
+	Task->set(id, vCard);
+	Task->go(true);
 }
 
 #include "moc_jabber-vcard-uploader.cpp"

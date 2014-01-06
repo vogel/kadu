@@ -54,7 +54,7 @@ std::map<QString, PluginInfo> PluginInfoFinder::readPluginInfos(const QString &d
 		try
 		{
 			auto pluginName = entry.left(entry.length() - static_cast<int>(qstrlen(".desc")));
-			result.insert({pluginName, m_pluginInfoReader.data()->readPluginInfo(pluginName, QString{"%1/%2"}.arg(directory).arg(entry))});
+			result.insert({pluginName, m_pluginInfoReader->readPluginInfo(pluginName, QString{"%1/%2"}.arg(directory).arg(entry))});
 		}
 		catch (...)
 		{

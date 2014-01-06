@@ -57,7 +57,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	// that one more friend class wont do a difference
 	friend class TabWidget;
 
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	void createDefaultConfiguration();
 

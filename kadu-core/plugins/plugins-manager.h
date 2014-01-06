@@ -37,8 +37,9 @@
 
 #include <memory>
 #include <QtCore/QLibrary>
+#include <QtCore/QPointer>
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class PluginRootComponent;
 class PluginActivationService;
@@ -124,11 +125,11 @@ protected:
 	virtual void store();
 
 private:
-	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	QWeakPointer<PluginInfoFinder> m_pluginInfoFinder;
-	QWeakPointer<PluginInfoRepository> m_pluginInfoRepository;
-	QWeakPointer<PluginStateService> m_pluginStateService;
-	QWeakPointer<StoragePointFactory> m_storagePointFactory;
+	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginInfoFinder> m_pluginInfoFinder;
+	QPointer<PluginInfoRepository> m_pluginInfoRepository;
+	QPointer<PluginStateService> m_pluginStateService;
+	QPointer<StoragePointFactory> m_storagePointFactory;
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 

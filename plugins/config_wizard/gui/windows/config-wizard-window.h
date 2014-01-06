@@ -26,7 +26,7 @@
 #ifndef CONFIG_WIZARD_WINDOW_H
 #define CONFIG_WIZARD_WINDOW_H
 
-#include <QtGui/QWizard>
+#include <QtWidgets/QWizard>
 
 class ConfigWizardPage;
 

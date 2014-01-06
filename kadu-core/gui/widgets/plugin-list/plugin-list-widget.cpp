@@ -25,14 +25,14 @@
 
 #define MARGIN 5
 
-#include <QtGui/QApplication>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyleOptionViewItemV4>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
@@ -137,7 +137,7 @@ void PluginListWidget::applyChanges()
 	for (int i = 0; i < count; i++)
 	{
 		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
-		if (m_pluginActivationService.data()->isActive(pluginEntry->pluginName) != pluginEntry->checked)
+		if (m_pluginActivationService->isActive(pluginEntry->pluginName) != pluginEntry->checked)
 		{
 			if (pluginEntry->checked)
 				pluginsToActivate.append(pluginEntry->pluginName);
@@ -149,17 +149,17 @@ void PluginListWidget::applyChanges()
 	if (m_pluginsManager)
 	{
 		for (auto const &pluginName : pluginsToDeactivate)
-			m_pluginsManager.data()->deactivatePlugin(pluginName, PluginDeactivationReason::UserRequest);
+			m_pluginsManager->deactivatePlugin(pluginName, PluginDeactivationReason::UserRequest);
 
 		for (auto const &pluginName : pluginsToActivate)
-			m_pluginsManager.data()->activatePlugin(pluginName, PluginActivationReason::UserRequest);
+			m_pluginsManager->activatePlugin(pluginName, PluginActivationReason::UserRequest);
 	}
 
 	Model->loadPluginData();
 
 	if (pluginsToDeactivate.size() > 0 || pluginsToActivate.size() > 0)
 	{
-		m_pluginsManager.data()->storePluginStates();
+		m_pluginsManager->storePluginStates();
 		ConfigurationManager::instance()->flush();
 	}
 

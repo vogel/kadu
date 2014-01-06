@@ -21,7 +21,7 @@
 #ifndef FORMATTED_STRING_FORMATS_VISITOR_H
 #define FORMATTED_STRING_FORMATS_VISITOR_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "formatted-string/formatted-string-visitor.h"
 
@@ -44,8 +44,8 @@ class FormattedStringFormatsVisitor : public FormattedStringVisitor
 {
 	Q_DISABLE_COPY(FormattedStringFormatsVisitor);
 
-	QWeakPointer<ChatImageService> CurrentChatImageService;
-	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<ChatImageService> CurrentChatImageService;
+	QPointer<ImageStorageService> CurrentImageStorageService;
 
 	bool First;
 	unsigned short TextPosition;

@@ -20,13 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QPushButton>
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
@@ -70,7 +70,7 @@ NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
 void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 {
 	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifier,
-			qApp->translate("@default", notifier->description().toUtf8().constData()), notificationsGroupBox->widget());
+			QCoreApplication::translate("@default", notifier->description().toUtf8().constData()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(Notifier *, bool)), this, SLOT(notifierToggled(Notifier *, bool)));
 	if (!NotifierGui.contains(notifier))
 		NotifierGui.insert(notifier, NotifierConfigurationGuiItem());

@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QHBoxLayout>
 
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
 #include "configuration/chat-configuration-holder.h"

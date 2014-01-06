@@ -21,13 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QHeaderView>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHeaderView>
 #include <QtGui/QPainter>
 #include <QtGui/QTextDocument>
 #include <QtGui/QTextFrame>
 #include <QtGui/QTextFrameFormat>
-#include <QtGui/QTreeView>
+#include <QtWidgets/QTreeView>
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
@@ -41,11 +41,11 @@
 
 #include "talkable-painter.h"
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 #include <windows.h>
 #endif
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 bool TalkablePainter::useColorsWorkaround()
 {
 	static bool checked = false;
@@ -215,7 +215,7 @@ void TalkablePainter::computeCheckboxRect()
 	option.state = QStyle::State_Enabled;
 
 	QSize size = Style->sizeFromContents(QStyle::CT_CheckBox, &option, QSize());
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	size.setWidth(size.width() + Style->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, &option));
 #endif
 	CheckboxRect.setSize(size);

@@ -39,8 +39,8 @@ class KADUAPI FileTransfer : public SharedBase<FileTransferShared>
 
 public:
 	static FileTransfer create();
-	static FileTransfer loadStubFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
-	static FileTransfer loadFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
+	static FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint);
+	static FileTransfer loadFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint);
 	static FileTransfer null;
 
 	FileTransfer();

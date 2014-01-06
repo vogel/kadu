@@ -65,9 +65,9 @@ void ImageLinkConfigurator::configurationUpdated()
 	configuration.setShowVideos(config_file.readBoolEntry("Imagelink", "show_yt", true));
 
 	if (ImageExpander)
-		ImageExpander.data()->setConfiguration(configuration);
+		ImageExpander->setConfiguration(configuration);
 	if (VideoExpander)
-		VideoExpander.data()->setConfiguration(configuration);
+		VideoExpander->setConfiguration(configuration);
 }
 
 #include "moc_image-link-configurator.cpp"

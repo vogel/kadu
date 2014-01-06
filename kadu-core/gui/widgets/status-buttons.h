@@ -25,7 +25,7 @@
 #define STATUS_BUTTONS_H
 
 #include <QtCore/QMap>
-#include <QtGui/QToolBar>
+#include <QtWidgets/QToolBar>
 
 #include "status/status-container-aware-object.h"
 

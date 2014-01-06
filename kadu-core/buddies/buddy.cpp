@@ -47,12 +47,12 @@ Buddy Buddy::create()
 	return new BuddyShared();
 }
 
-Buddy Buddy::loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)
+Buddy Buddy::loadStubFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
 {
 	return BuddyShared::loadStubFromStorage(contactStoragePoint);
 }
 
-Buddy Buddy::loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)
+Buddy Buddy::loadFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
 {
 	return BuddyShared::loadFromStorage(contactStoragePoint);
 }

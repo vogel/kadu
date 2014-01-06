@@ -22,7 +22,7 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class SingleWindow;
 
@@ -44,6 +44,6 @@ public:
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
 
 private:
-	QWeakPointer<SingleWindow> m_singleWindow;
+	QPointer<SingleWindow> m_singleWindow;
 
 };

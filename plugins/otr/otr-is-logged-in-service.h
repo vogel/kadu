@@ -25,7 +25,7 @@
 #define OTR_IS_LOGGED_IN_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Account;
 class ContactManager;
@@ -34,7 +34,7 @@ class OtrIsLoggedInService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<ContactManager> CurrentContactManager;
+	QPointer<ContactManager> CurrentContactManager;
 
 public:
 	enum IsLoggedInStatus

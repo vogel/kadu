@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "configuration/configuration-file.h"
 
@@ -50,5 +50,5 @@ void StandardUrlExpanderConfigurator::configurationUpdated()
 	configuration.setFoldLink(config_file.readBoolEntry("Chat", "FoldLink"));
 	configuration.setFoldLinkThreshold(config_file.readNumEntry("Chat", "LinkFoldTreshold"));
 
-	ConfigurableStandardUrlExpander.data()->setConfiguration(configuration);
+	ConfigurableStandardUrlExpander->setConfiguration(configuration);
 }

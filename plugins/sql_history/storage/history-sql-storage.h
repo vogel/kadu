@@ -24,6 +24,7 @@
 #define HISTORY_SQL_STORAGE_H
 
 #include <QtCore/QMutex>
+#include <QtCore/QPointer>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 
@@ -48,7 +49,7 @@ class HistorySqlStorage : public HistoryStorage
 {
 	Q_OBJECT
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	QThread *InitializerThread;
 	ProgressWindow *ImportProgressWindow;

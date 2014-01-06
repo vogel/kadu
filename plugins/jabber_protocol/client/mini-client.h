@@ -29,8 +29,8 @@
 #ifndef MINICLIENT_H
 #define MINICLIENT_H
 
-#include <QObject>
-#include <QString>
+#include <QtCore/QObject>
+#include <QtCore/QString>
 #include <QtCrypto>
 
 #include "jid.h"

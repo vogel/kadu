@@ -23,11 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QInputDialog>
-#include <QtGui/QPushButton>
-#include <QtGui/QTableView>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QTableView>
 
 #include "gui/model/checkbox-styled-item-delegate.h"
 #include "gui/widgets/buddy-contacts-table-delegate.h"

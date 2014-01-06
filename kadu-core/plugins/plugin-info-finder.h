@@ -21,7 +21,7 @@
 
 #include <map>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class PluginInfo;
 class PluginInfoReader;
@@ -39,6 +39,6 @@ public:
 	std::map<QString, PluginInfo> readPluginInfos(const QString &directory) noexcept;
 
 private:
-	QWeakPointer<PluginInfoReader> m_pluginInfoReader;
+	QPointer<PluginInfoReader> m_pluginInfoReader;
 
 };

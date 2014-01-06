@@ -21,7 +21,7 @@
 #define OTR_MESSAGE_EVENT_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -35,7 +35,7 @@ class OtrMessageEventService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<ChatWidgetManager> CurrentChatWidgetManager;
+	QPointer<ChatWidgetManager> CurrentChatWidgetManager;
 
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;

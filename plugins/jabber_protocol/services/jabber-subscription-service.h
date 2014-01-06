@@ -41,7 +41,7 @@ class JabberSubscriptionService : public SubscriptionService
 	Q_OBJECT
 
 	JabberProtocol *Protocol;
-	QWeakPointer<Client> XmppClient;
+	QPointer<Client> XmppClient;
 
 private slots:
 	void subscription(const Jid &jid, const QString &type, const QString &nick);

@@ -28,7 +28,7 @@
 #ifndef MULTILOGON_WINDOW_H
 #define MULTILOGON_WINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "os/generic/desktop-aware-object.h"

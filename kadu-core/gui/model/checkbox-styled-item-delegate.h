@@ -20,7 +20,7 @@
 #ifndef CHECKBOX_STYLED_ITEM_DELETAGE_H
 #define CHECKBOX_STYLED_ITEM_DELETAGE_H
 
-#include <QtGui/QStyledItemDelegate>
+#include <QtWidgets/QStyledItemDelegate>
 
 /**
  * @addtogroup Gui

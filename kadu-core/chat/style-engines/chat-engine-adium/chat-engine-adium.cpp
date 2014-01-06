@@ -25,7 +25,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QString>
-#include <QtWebKit/QWebFrame>
+#include <QtWebKitWidgets/QWebFrame>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -549,7 +549,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	{
 		int light = 100;
 		bool doLight = false;
-		if (senderColorRegExp.numCaptures() >= 1)
+		if (senderColorRegExp.captureCount() >= 1)
 			light = senderColorRegExp.cap(1).toInt(&doLight);
 
 		if (doLight && lightColorName.isNull())

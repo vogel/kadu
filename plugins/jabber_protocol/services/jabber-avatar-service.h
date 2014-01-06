@@ -23,7 +23,7 @@
 #ifndef JABBER_AVATAR_SERVICE_H
 #define JABBER_AVATAR_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "protocols/services/avatar-service.h"
 
@@ -58,8 +58,8 @@ class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
 
-	QWeakPointer<JabberPepService> PepService;
-	QWeakPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberPepService> PepService;
+	QPointer<XMPP::JabberVCardService> VCardService;
 
 public:
 	/**

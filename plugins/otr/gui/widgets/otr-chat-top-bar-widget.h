@@ -22,7 +22,7 @@
 #ifndef OTR_CHAT_TOP_BAR_WIDGET_H
 #define OTR_CHAT_TOP_BAR_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "contacts/contact.h"
 
@@ -34,7 +34,7 @@ class OtrChatTopBarWidget : public QWidget
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
 
 	Contact MyContact;
 	QPushButton *OtrStatusButton;

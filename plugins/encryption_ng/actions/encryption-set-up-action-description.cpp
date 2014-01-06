@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "chat/chat.h"
 #include "gui/actions/action-context.h"

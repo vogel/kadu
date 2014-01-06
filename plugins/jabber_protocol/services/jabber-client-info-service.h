@@ -21,7 +21,7 @@
 #ifndef JABBER_CLIENT_INFO_SERVICE_H
 #define JABBER_CLIENT_INFO_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "xmpp_discoitem.h"
 
@@ -57,7 +57,7 @@ class JabberClientInfoService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<Client> XmppClient;
+	QPointer<Client> XmppClient;
 
 	QString calculateCapsVersion() const;
 

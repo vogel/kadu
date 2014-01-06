@@ -21,10 +21,10 @@
  */
 
 #include <QtCore/QTimeLine>
+#include <QtCore/QEvent>
+#include <QtGui/QPainter>
 
 #include "line-edit-clear-button.h"
-#include <QEvent>
-#include <QPainter>
 
 #define ANIMATION_FRAMES_COUNT 255
 

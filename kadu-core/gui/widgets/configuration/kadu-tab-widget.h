@@ -25,8 +25,8 @@
 #ifndef KADU_TAB_WIDGET_H
 #define KADU_TAB_WIDGET_H
 
-#include <QtGui/QTabBar>
-#include <QtGui/QTabWidget>
+#include <QtWidgets/QTabBar>
+#include <QtWidgets/QTabWidget>
 
 class KaduTabWidget : public QTabWidget
 {

@@ -26,14 +26,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QMimeData>
 #include <QtCore/QTextStream>
-#include <QtCore/QTimer>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QCursor>
 #include <QtGui/QDragEnterEvent>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QtGui/QPainter>
-#include <QtGui/QToolButton>
+#include <QtWidgets/QToolButton>
 #include <QtXml/QDomElement>
 
 #include "configuration/configuration-file.h"
@@ -108,8 +108,6 @@ ToolBar::ToolBar(QWidget *parent) :
 
 	setAcceptDrops(true);
 	setIconSize(IconsManager::instance()->getIconsSize());
-
-	setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
 
 	if (!watcher)
 		watcher = new DisabledActionsWatcher();
@@ -1085,7 +1083,7 @@ void ToolBar::paintEvent(QPaintEvent *event)
 {
 	QToolBar::paintEvent(event);
 	if (dropmarker.visible)
-		QTimer::singleShot(0, this, SLOT(paintDropMarker()));
+		paintDropMarker();
 }
 
 void ToolBar::paintDropMarker()

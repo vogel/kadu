@@ -26,7 +26,7 @@
 #define CHAT_DATA_WINDOW_H
 
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "chat/chat.h"
 #include "gui/widgets/modal-configuration-widget.h"

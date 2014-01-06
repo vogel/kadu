@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLineEdit>
 
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/kadu-paths.h"
@@ -43,7 +43,7 @@ AutoresponderConfigurationUiHolder::~AutoresponderConfigurationUiHolder()
 void AutoresponderConfigurationUiHolder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	QLineEdit *autoRespondTextLineEdit = qobject_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
-	autoRespondTextLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
+	autoRespondTextLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
 #include "moc_autoresponder-configuration-ui-handler.cpp"

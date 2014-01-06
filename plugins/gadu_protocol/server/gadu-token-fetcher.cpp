@@ -20,12 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QUrl>
-
-#include <libgadu.h>
-
-#include "debug.h"
-
 #include "gadu-token-fetcher.h"
 
 GaduTokenFetcher::GaduTokenFetcher(QObject *parent) :
@@ -39,49 +33,6 @@ GaduTokenFetcher::~GaduTokenFetcher()
 
 void GaduTokenFetcher::fetchToken()
 {
-	TokenId.clear();
-
-	QHttpRequestHeader header("POST", "/appsvc/regtoken.asp");
-	header.setValue("Host", GG_REGISTER_HOST);
-	header.setValue("User-Agent", GG_HTTP_USERAGENT);
-	header.setValue("Content-Type", "application/x-www-form-urlencoded");
-	header.setValue("Content-Length", "0");
-	header.setValue("Pragma", "no-cache");
-	Http.setHost(GG_REGISTER_HOST, GG_REGISTER_PORT);
-	Http.request(header);
-	connect(&Http, SIGNAL(requestFinished(int, bool)), this, SLOT(tokenReceivedSlot(int, bool)));
-}
-
-void GaduTokenFetcher::tokenReceivedSlot(int id, bool error)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(error)
-
-	QByteArray data = Http.readAll();
-	if (data.isEmpty())
-		return;
-
-	if (TokenId.isEmpty())
-	{
-		QStringList list = QString(data).split(QRegExp("[\r\n ]"), QString::SkipEmptyParts);
-		if (list.size() != 5)
-		{
-			kdebugm(KDEBUG_INFO, "Empty response. Retrying\n");
-			fetchToken();
-			return;
-		}
-		TokenId = list.at(3);
-		QString url = list.at(4);
-
-		Http.get(url + "?tokenid=" + TokenId);
-	}
-	else
-	{
-		QPixmap tokenImage;
-		tokenImage.loadFromData(data);
-		emit tokenFetched(TokenId, tokenImage);
-		TokenId.clear();
-	}
 }
 
 #include "moc_gadu-token-fetcher.cpp"

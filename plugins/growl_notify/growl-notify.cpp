@@ -31,7 +31,7 @@
 #include "growl-notify.h"
 #include "growlnotifier.h"
 
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QTextDocument>
 
 #include "avatars/avatar.h"

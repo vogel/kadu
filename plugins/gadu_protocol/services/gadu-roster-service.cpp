@@ -61,7 +61,7 @@ void GaduRosterService::setConnection(GaduConnection *connection)
 
 void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 {
-	if (!Connection || !Connection.data()->hasSession())
+	if (!Connection || !Connection->hasSession())
 		return;
 
 	RosterService::prepareRoster(contacts);
@@ -79,7 +79,7 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 
 	if (sendList.isEmpty())
 	{
-		auto writableSessionToken = Connection.data()->writableSessionToken();
+		auto writableSessionToken = Connection->writableSessionToken();
 		gg_notify_ex(writableSessionToken.rawSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
@@ -108,7 +108,7 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 		++i;
 	}
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
+	auto writableSessionToken = Connection->writableSessionToken();
 	gg_notify_ex(writableSessionToken.rawSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
@@ -134,7 +134,7 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 	// method, and also gg_add_notify_ex() or gg_remove_notify_ex() in updateFlag()
 	// could fail.
 
-	if (!Connection || !Connection.data()->hasSession())
+	if (!Connection || !Connection->hasSession())
 		return;
 
 	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
@@ -149,7 +149,7 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 
 	details->setGaduFlags(newFlags);
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
+	auto writableSessionToken = Connection->writableSessionToken();
 	updateFlag(writableSessionToken.rawSession(), uin, newFlags, oldFlags, 0x01);
 	updateFlag(writableSessionToken.rawSession(), uin, newFlags, oldFlags, 0x02);
 	updateFlag(writableSessionToken.rawSession(), uin, newFlags, oldFlags, 0x04);

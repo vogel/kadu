@@ -28,7 +28,7 @@
 #define MERGE_BUDDIES_DIALOG_WIDGET_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "buddies/buddy.h"
 #include "gui/widgets/dialog/dialog-widget.h"

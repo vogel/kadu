@@ -26,10 +26,11 @@
 #ifndef CUSTOM_PROPERITES_H
 #define CUSTOM_PROPERITES_H
 
+#include <memory>
+
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QSet>
-#include <QtCore/QSharedPointer>
 
 #include "exports.h"
 
@@ -122,7 +123,7 @@ public:
 	 * After that list of values stored in CustomProperty nodes is read. Each read property is marked
 	 * as @link CustomProperties::Storable @endlink by default.
 	 */
-	void loadFrom(const QSharedPointer<StoragePoint> &storagePoint);
+	void loadFrom(const std::shared_ptr<StoragePoint> &storagePoint);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -133,7 +134,7 @@ public:
 	 * All CustomProperty nodes that are not @link CustomProperties::Storable @endlink are removed from
 	 * given storagePoint.
 	 */
-	void storeTo(const QSharedPointer<StoragePoint> &storagePoint) const;
+	void storeTo(const std::shared_ptr<StoragePoint> &storagePoint) const;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

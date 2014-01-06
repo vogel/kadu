@@ -23,7 +23,7 @@
 #ifndef JABBER_AVATAR_UPLOADER_H
 #define JABBER_AVATAR_UPLOADER_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 #include <QtGui/QImage>
 
 #include "protocols/services/avatar-uploader.h"
@@ -56,8 +56,8 @@ class JabberAvatarUploader : public AvatarUploader
 {
 	Q_OBJECT
 
-	QWeakPointer<JabberPepService> PepService;
-	QWeakPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberPepService> PepService;
+	QPointer<XMPP::JabberVCardService> VCardService;
 
 	QString Id;
 	QString Password;

@@ -20,7 +20,7 @@
  */
 
 #include <QtGui/QMouseEvent>
-#include <QtGui/QTextEdit>
+#include <QtWidgets/QTextEdit>
 
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"

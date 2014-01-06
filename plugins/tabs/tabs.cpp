@@ -26,8 +26,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QMenu>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -66,9 +66,9 @@ static void disableNewTab(Action *action)
 	action->setEnabled(action->context()->chat());
 
 	if (config_file.readBoolEntry("Chat", "DefaultTabs"))
-		action->setText(qApp->translate("TabsManager", "Chat in New Window"));
+		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
 	else
-		action->setText(qApp->translate("TabsManager", "Chat in New Tab"));
+		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
 
 	kdebugf2();
 }
@@ -613,7 +613,7 @@ void TabsManager::store()
 
 		QDomElement window_elem = storageFile->createElement(point, "Tab");
 
-		window_elem.setAttribute("chat", chat.uuid());
+		window_elem.setAttribute("chat", chat.uuid().toString());
 		if (TabDialog->indexOf(chatWidget) != -1)
 			window_elem.setAttribute("type", "tab");
 		else if (DetachedChats.indexOf(chatWidget) != -1)

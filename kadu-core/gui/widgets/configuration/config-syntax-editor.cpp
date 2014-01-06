@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
 #include <QtXml/QDomElement>
 
 #include "gui/widgets/configuration/config-group-box.h"
@@ -51,13 +51,13 @@ void ConfigSyntaxEditor::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(qApp->translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
+	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 	}
 }
 

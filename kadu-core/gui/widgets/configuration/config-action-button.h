@@ -22,7 +22,7 @@
 #ifndef CONFIG_ACTION_BUTTON_H
 #define CONFIG_ACTION_BUTTON_H
 
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget.h"

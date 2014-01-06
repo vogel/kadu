@@ -115,15 +115,15 @@ private slots:
 	void markContactsDirty();
 
 protected:
-	virtual QSharedPointer<StoragePoint> createStoragePoint();
+	virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
 	virtual void load();
 	virtual void store();
 	virtual bool shouldStore();
 
 public:
-	static BuddyShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
-	static BuddyShared * loadFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
+	static BuddyShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
+	static BuddyShared * loadFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
 
 	explicit BuddyShared(const QUuid &uuid = QUuid());
 	virtual ~BuddyShared();

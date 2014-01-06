@@ -126,7 +126,7 @@ static void kadu_signal_handler(int signal)
 		_activateWindow(Core::instance()->kaduWindow());
 	}
 	else if (signal == SIGINT || signal == SIGTERM)
-		qApp->quit();
+		QCoreApplication::quit();
 }
 
 void enableSignalHandling()

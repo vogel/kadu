@@ -25,7 +25,7 @@
 #define OTR_INSTANCE_TAG_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -39,7 +39,7 @@ class OtrInstanceTagService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrUserStateService> UserStateService;
 
 	QString instanceTagsFileName() const;
 

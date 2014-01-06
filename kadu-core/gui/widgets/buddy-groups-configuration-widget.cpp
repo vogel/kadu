@@ -26,10 +26,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 
 #include "buddies/group.h"
 #include "contacts/contact.h"

@@ -116,8 +116,8 @@ void PluginsManager::loadPluginInfos()
 	if (!m_pluginInfoFinder || !m_pluginInfoRepository)
 		return;
 
-	auto pluginInfos = std::move(m_pluginInfoFinder.data()->readPluginInfos(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"}));
-	m_pluginInfoRepository.data()->setPluginInfos(std::move(pluginInfos));
+	auto pluginInfos = std::move(m_pluginInfoFinder->readPluginInfos(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"}));
+	m_pluginInfoRepository->setPluginInfos(std::move(pluginInfos));
 }
 
 void PluginsManager::loadPluginStates()
@@ -125,7 +125,7 @@ void PluginsManager::loadPluginStates()
 	if (!m_pluginStateService || !m_storagePointFactory)
 		return;
 
-	auto storagePoint = m_storagePointFactory.data()->createStoragePoint(QLatin1String{"Plugins"});
+	auto storagePoint = m_storagePointFactory->createStoragePoint(QLatin1String{"Plugins"});
 	if (!storagePoint)
 		return;
 
@@ -133,7 +133,7 @@ void PluginsManager::loadPluginStates()
 	storagePoint->storeAttribute("imported_from_09", true);
 
 	auto pluginStates = loadPluginStates(storagePoint.get(), importedFrom09);
-	m_pluginStateService.data()->setPluginStates(pluginStates);
+	m_pluginStateService->setPluginStates(pluginStates);
 }
 
 QMap<QString, PluginState> PluginsManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
@@ -150,12 +150,12 @@ void PluginsManager::storePluginStates()
 	if (!m_pluginStateService || !m_storagePointFactory)
 		return;
 
-	auto storagePoint = m_storagePointFactory.data()->createStoragePoint(QLatin1String{"Plugins"});
+	auto storagePoint = m_storagePointFactory->createStoragePoint(QLatin1String{"Plugins"});
 	if (!storagePoint)
 		return;
 
 	auto pluginStateStorage = PluginStateStorage{};
-	auto pluginStates = m_pluginStateService.data()->pluginStates();
+	auto pluginStates = m_pluginStateService->pluginStates();
 	pluginStateStorage.store(*storagePoint.get(), pluginStates);
 }
 
@@ -181,7 +181,7 @@ void PluginsManager::load()
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
-		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
+		m_pluginInfoRepository->removePluginInfo(pluginInDependency);
 
 	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 }
@@ -225,7 +225,7 @@ void PluginsManager::activateProtocolPlugins()
 
 		if (shouldActivate(pluginInfo.name()))
 		{
-			auto activationReason = (m_pluginStateService.data()->pluginState(pluginInfo.name()) == PluginState::New)
+			auto activationReason = (m_pluginStateService->pluginState(pluginInfo.name()) == PluginState::New)
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
@@ -261,7 +261,7 @@ void PluginsManager::activatePlugins()
 	for (auto const &pluginInfo : m_pluginInfoRepository.data())
 		if (shouldActivate(pluginInfo.name()))
 		{
-			auto activationReason = (m_pluginStateService.data()->pluginState(pluginInfo.name()) == PluginState::New)
+			auto activationReason = (m_pluginStateService->pluginState(pluginInfo.name()) == PluginState::New)
 					? PluginActivationReason::NewDefault
 					: PluginActivationReason::KnownDefault;
 
@@ -271,11 +271,11 @@ void PluginsManager::activatePlugins()
 
 	for (auto const &pluginToReplaceInfo : m_pluginInfoRepository.data())
 	{
-		if (m_pluginActivationService.data()->isActive(pluginToReplaceInfo.name()) || m_pluginStateService.data()->pluginState(pluginToReplaceInfo.name()) != PluginState::Enabled)
+		if (m_pluginActivationService->isActive(pluginToReplaceInfo.name()) || m_pluginStateService->pluginState(pluginToReplaceInfo.name()) != PluginState::Enabled)
 			continue;
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplaceInfo.name());
-		if (m_pluginStateService.data()->pluginState(replacementPlugin) == PluginState::New)
+		if (m_pluginStateService->pluginState(replacementPlugin) == PluginState::New)
 			if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
 				saveList = true; // list has changed
 	}
@@ -302,17 +302,17 @@ bool PluginsManager::shouldActivate(const QString &pluginName) const noexcept
 	if (!m_pluginStateService)
 		return false;
 
-	auto state = m_pluginStateService.data()->pluginState(pluginName);
+	auto state = m_pluginStateService->pluginState(pluginName);
 
 	if (PluginState::Enabled == state)
 		return true;
 	if (PluginState::Disabled == state)
 		return false;
 
-	if (!m_pluginInfoRepository || !m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
+	if (!m_pluginInfoRepository || !m_pluginInfoRepository->hasPluginInfo(pluginName))
 		return false;
 
-	return m_pluginInfoRepository.data()->pluginInfo(pluginName).loadByDefault();
+	return m_pluginInfoRepository->pluginInfo(pluginName).loadByDefault();
 }
 
 QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
@@ -321,7 +321,7 @@ QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) co
 		return {};
 
 	for (auto const &pluginInfo : m_pluginInfoRepository.data())
-		if (m_pluginInfoRepository.data()->pluginInfo(pluginInfo.name()).replaces().contains(pluginToReplace))
+		if (m_pluginInfoRepository->pluginInfo(pluginInfo.name()).replaces().contains(pluginToReplace))
 			return pluginInfo.name();
 
 	return {};
@@ -341,7 +341,7 @@ void PluginsManager::deactivatePlugins()
 	if (!m_pluginActivationService)
 		return;
 
-	for (auto const &pluginName : m_pluginActivationService.data()->activePlugins())
+	for (auto const &pluginName : m_pluginActivationService->activePlugins())
 	{
 		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(pluginName));
 		deactivatePlugin(pluginName, PluginDeactivationReason::Exiting);
@@ -359,9 +359,9 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 	if (feature.isEmpty() || !m_pluginActivationService || !m_pluginInfoRepository)
 		return {};
 
-	for (auto const &activePluginName : m_pluginActivationService.data()->activePlugins())
-		if (m_pluginInfoRepository.data()->hasPluginInfo(activePluginName))
-			if (m_pluginInfoRepository.data()->pluginInfo(activePluginName).provides() == feature)
+	for (auto const &activePluginName : m_pluginActivationService->activePlugins())
+		if (m_pluginInfoRepository->hasPluginInfo(activePluginName))
+			if (m_pluginInfoRepository->pluginInfo(activePluginName).provides() == feature)
 				return activePluginName;
 
 	return {};
@@ -399,12 +399,12 @@ bool PluginsManager::activatePlugin(const QString &pluginName, PluginActivationR
 	if (!m_pluginActivationService || !m_pluginInfoRepository)
 		return false;
 
-	if (m_pluginActivationService.data()->isActive(pluginName))
+	if (m_pluginActivationService->isActive(pluginName))
 		return true;
 
-	if (m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
+	if (m_pluginInfoRepository->hasPluginInfo(pluginName))
 	{
-		auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
+		auto conflict = findActiveProviding(m_pluginInfoRepository->pluginInfo(pluginName).provides());
 		if (!conflict.isEmpty())
 		{
 			activationError(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict), reason);
@@ -418,11 +418,11 @@ bool PluginsManager::activatePlugin(const QString &pluginName, PluginActivationR
 		auto actions = QVector<PluginActivationAction>{};
 		for (auto dependency : dependencies)
 		{
-			auto loadByDefault = m_pluginInfoRepository.data()->hasPluginInfo(dependency)
-					? m_pluginInfoRepository.data()->pluginInfo(dependency).loadByDefault()
+			auto loadByDefault = m_pluginInfoRepository->hasPluginInfo(dependency)
+					? m_pluginInfoRepository->pluginInfo(dependency).loadByDefault()
 					: false;
 			auto state = m_pluginStateService
-					? m_pluginStateService.data()->pluginState(dependency)
+					? m_pluginStateService->pluginState(dependency)
 					: PluginState::Disabled;
 
 			auto activationReason = PluginActivationReason{};
@@ -440,14 +440,14 @@ bool PluginsManager::activatePlugin(const QString &pluginName, PluginActivationR
 		{
 			for (auto const &action : actions)
 			{
-				m_pluginActivationService.data()->performActivationAction(action);
+				m_pluginActivationService->performActivationAction(action);
 				/* This is perfectly intentional. We have to set state to either enabled or disabled, as new
 				 * means that it was never loaded. If the only reason to load the plugin was because some other
 				 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
 				 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
 				 */
 				if (m_pluginStateService)
-					m_pluginStateService.data()->setPluginState(action.pluginName(), PluginState::Disabled);
+					m_pluginStateService->setPluginState(action.pluginName(), PluginState::Disabled);
 			}
 		}
 		catch (PluginActivationErrorException &e)
@@ -460,9 +460,9 @@ bool PluginsManager::activatePlugin(const QString &pluginName, PluginActivationR
 		{
 			if (m_pluginStateService)
 			{
-				auto state = m_pluginStateService.data()->pluginState(pluginName);
-				m_pluginActivationService.data()->performActivationAction({pluginName, reason, PluginState::New == state});
-				m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
+				auto state = m_pluginStateService->pluginState(pluginName);
+				m_pluginActivationService->performActivationAction({pluginName, reason, PluginState::New == state});
+				m_pluginStateService->setPluginState(pluginName, PluginState::Enabled);
 			}
 		}
 		catch (PluginActivationErrorException &e)
@@ -512,7 +512,7 @@ void PluginsManager::deactivatePlugin(const QString &pluginName, PluginDeactivat
 	if (!m_pluginActivationService)
 		return;
 
-	if (!m_pluginActivationService.data()->isActive(pluginName))
+	if (!m_pluginActivationService->isActive(pluginName))
 		return;
 
 	auto dependents = allDependents(pluginName);
@@ -523,9 +523,9 @@ void PluginsManager::deactivatePlugin(const QString &pluginName, PluginDeactivat
 
 	for (auto const &action : actions)
 	{
-		m_pluginActivationService.data()->performActivationAction(action);
+		m_pluginActivationService->performActivationAction(action);
 		if (PluginDeactivationReason::UserRequest == reason && m_pluginStateService)
-			m_pluginStateService.data()->setPluginState(action.pluginName(), PluginState::Disabled);
+			m_pluginStateService->setPluginState(action.pluginName(), PluginState::Disabled);
 	}
 }
 
@@ -543,14 +543,14 @@ void PluginsManager::setStateEnabledIfInactive(const QString &pluginName, bool e
 	if (!m_pluginActivationService || !m_pluginStateService)
 		return;
 
-	if (m_pluginActivationService.data()->isActive(pluginName))
+	if (m_pluginActivationService->isActive(pluginName))
 		return;
 
 	// It is necessary to not break firstLoad.
-	if (PluginState::New == m_pluginStateService.data()->pluginState(pluginName))
+	if (PluginState::New == m_pluginStateService->pluginState(pluginName))
 		return;
 
-	m_pluginStateService.data()->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
+	m_pluginStateService->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
 }
 
 #include "moc_plugins-manager.cpp"

@@ -25,8 +25,8 @@
 #define ENCRYPTION_CHAT_DATA_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
-#include <QtGui/QAction>
+#include <QtCore/QPointer>
+#include <QtWidgets/QAction>
 
 #include "chat/chat.h"
 
@@ -39,8 +39,8 @@ class EncryptionChatData : public QObject
 
 private:
 	Chat MyChat;
-	QWeakPointer<Encryptor> ChatEncryptor;
-	QWeakPointer<Decryptor> ChatDecryptor;
+	QPointer<Encryptor> ChatEncryptor;
+	QPointer<Decryptor> ChatDecryptor;
 
 	bool Encrypt;
 
@@ -57,10 +57,10 @@ public:
 	QString lastEncryptionProviderName() const;
 
 	void setEncryptor(Encryptor *encryptor);
-	Encryptor * encryptor() const { return ChatEncryptor.data(); }
+	Encryptor * encryptor() const;
 
 	void setDecryptor(Decryptor *decryptor);
-	Decryptor * decryptor() const { return ChatDecryptor.data(); }
+	Decryptor * decryptor() const;
 
 };
 

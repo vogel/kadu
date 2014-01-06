@@ -26,7 +26,7 @@
 #ifndef MODAL_CONFIGURATION_WIDGET_H
 #define MODAL_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include "exports.h"
 
 #include "configuration-value-state-notifier.h"

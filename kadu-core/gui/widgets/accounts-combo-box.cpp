@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "accounts/filter/abstract-account-filter.h"
 #include "accounts/model/accounts-model.h"

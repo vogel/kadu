@@ -23,7 +23,7 @@
 #ifndef CONFIG_SPIN_BOX_H
 #define CONFIG_SPIN_BOX_H
 
-#include <QtGui/QSpinBox>
+#include <QtWidgets/QSpinBox>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget-value.h"

@@ -20,7 +20,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QLocale>
 #include <QtCore/QString>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "os/generic/system-info.h"
 
@@ -113,16 +113,16 @@ while (length > NUM) \
 					switch (q)
 					{
 						case 1:
-							str += qApp->translate("AdiumTimeFormatter", "1st quarter");
+							str += QCoreApplication::translate("AdiumTimeFormatter", "1st quarter");
 							break;
 						case 2:
-							str += qApp->translate("AdiumTimeFormatter", "2nd quarter");
+							str += QCoreApplication::translate("AdiumTimeFormatter", "2nd quarter");
 							break;
 						case 3:
-							str += qApp->translate("AdiumTimeFormatter", "3rd quarter");
+							str += QCoreApplication::translate("AdiumTimeFormatter", "3rd quarter");
 							break;
 						case 4:
-							str += qApp->translate("AdiumTimeFormatter", "4th quarter");
+							str += QCoreApplication::translate("AdiumTimeFormatter", "4th quarter");
 							break;
 						default:
 							break;

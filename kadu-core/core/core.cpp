@@ -32,9 +32,11 @@
 #include <QtCore/QLocale>
 #include <QtCore/QSettings>
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
+#if QT_VERSION < 0x050000
 #include <QtCrypto>
+#endif
 
 #include "accounts/account-manager.h"
 #include "avatars/avatar-manager.h"
@@ -165,7 +167,10 @@ Core::Core() :
 		CurrentNotificationService(0), CurrentFormattedStringFactory(0),
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
-		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
+		ShowMainWindowOnStart(true)
+#if QT_VERSION < 0x050000
+		, QcaInit(new QCA::Initializer())
+#endif
 {
 	// must be created first
 	CurrentStoragePointFactory = new StoragePointFactory(this);
@@ -221,11 +226,12 @@ Core::~Core()
 
 	triggerAllAccountsUnregistered();
 
+#if QT_VERSION < 0x050000
 	// Sometimes it causes crash which I don't understand. For me 100% reproducible
 	// if Kadu was compiled with Clang and we logged in to a jabber account. --beevvy
-	// TODO: fix it
 	// delete QcaInit;
 	// QcaInit = 0;
+#endif
 }
 
 void Core::import_0_6_5_configuration()
@@ -286,7 +292,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	config_file.addVariable("General", "DescriptionHeight", 60);
 	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	config_file.addVariable("General", "HideMainWindowFromTaskbar", false);
 #endif
 	config_file.addVariable("General", "Language",  QLocale::system().name().left(2));
@@ -325,7 +331,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ChatContents", QString());
 	config_file.addVariable("Look", "ForceCustomChatFont", false);
 	QFont chatFont = qApp->font();
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	// On Windows default app font is often "MS Shell Dlg 2", and the default sans
 	// family (Arial, at least in Qt 4.8) is better. Though, on X11 the default
 	// sans family is the same while most users will have some nice default app
@@ -912,7 +918,7 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-const QSharedPointer<DefaultProvider<QWidget *> > & Core::mainWindowProvider() const
+const std::shared_ptr<DefaultProvider<QWidget *>> & Core::mainWindowProvider() const
 {
 	return MainWindowProvider;
 }

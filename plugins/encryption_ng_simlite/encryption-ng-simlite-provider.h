@@ -42,7 +42,7 @@ class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObjec
 	static EncryptioNgSimliteProvider *Instance;
 
 	QMap<Account, EncryptioNgSimliteDecryptor *> Decryptors;
-	QWeakPointer<EncryptionNgSimliteMessageFilter> MessageFilter;
+	QPointer<EncryptionNgSimliteMessageFilter> MessageFilter;
 
 	EncryptioNgSimliteProvider();
 	virtual ~EncryptioNgSimliteProvider();

@@ -28,8 +28,8 @@
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QList>
-#include <QtGui/QAbstractItemDelegate>
-#include <QtGui/QWidget>
+#include <QtWidgets/QAbstractItemDelegate>
+#include <QtWidgets/QWidget>
 
 #include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
 #include "model/categorized-sort-filter-proxy-model.h"
@@ -81,7 +81,7 @@ public:
 	void loadPluginData();
 
 private:
-	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginActivationService> m_pluginActivationService;
 	PluginListWidget *pluginSelector_d;
 	PluginsManager *Manager;
 	QList<PluginEntry> Plugins;

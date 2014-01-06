@@ -22,9 +22,9 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
-#include <QtGui/QComboBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QPushButton>
 
 #include "gui/windows/message-dialog.h"
 #include "misc/kadu-paths.h"

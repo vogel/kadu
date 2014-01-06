@@ -37,6 +37,7 @@ class AutoHide : public ConfigurationUiHandler, ConfigurationAwareObject, public
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	QTimer Timer;
 	int IdleTime;

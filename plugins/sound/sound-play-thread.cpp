@@ -21,7 +21,7 @@
  */
 
 #include <QtCore/QThread>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "debug.h"
 
@@ -55,7 +55,7 @@ void SoundPlayThread::start()
 			if (Player)
 			{
 				PlayingMutex.lock();
-				Player.data()->playSound(Path);
+				Player->playSound(Path);
 				PlayingMutex.unlock();
 			}
 

@@ -26,14 +26,14 @@
 
 #define MARGIN 5
 
-#include <QtGui/QApplication>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyleOptionViewItemV4>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
@@ -70,7 +70,7 @@ void PluginModel::loadPluginData()
                 pluginEntry.description = pluginInfo.description();
                 pluginEntry.author = pluginInfo.author();
                 pluginEntry.pluginName = pluginInfo.name();
-                pluginEntry.checked = m_pluginActivationService.data()->isActive(pluginInfo.name());
+                pluginEntry.checked = m_pluginActivationService->isActive(pluginInfo.name());
                 pluginEntry.isCheckable = true;
 
                 listToAdd.append(pluginEntry);
@@ -102,7 +102,9 @@ QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) c
 {
         Q_UNUSED(parent)
 
-        return createIndex(row, column, (row < Plugins.count()) ? (void*) &Plugins.at(row) : 0);
+        return createIndex(row, column, static_cast<void *>(row < Plugins.count()
+															? const_cast<PluginEntry *>(&Plugins.at(row))
+															: nullptr));
 }
 
 QVariant PluginModel::data(const QModelIndex &index, int role) const

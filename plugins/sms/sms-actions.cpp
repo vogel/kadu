@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -103,7 +103,7 @@ void SmsActions::newSms(const QString &mobile)
 {
 	SmsDialog *smsDialog = new SmsDialog();
 	if (m_smsDialogRepository)
-		m_smsDialogRepository.data()->addDialog(smsDialog);
+		m_smsDialogRepository->addDialog(smsDialog);
 
 	smsDialog->setRecipient(mobile);
 	smsDialog->show();

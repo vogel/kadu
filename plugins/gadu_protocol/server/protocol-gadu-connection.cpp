@@ -40,7 +40,7 @@ void ProtocolGaduConnection::setConnectionProtocol(GaduProtocol *protocol)
 bool ProtocolGaduConnection::hasSession()
 {
 	if (ConnectionProtocol)
-		return 0 != ConnectionProtocol.data()->gaduSession();
+		return 0 != ConnectionProtocol->gaduSession();
 	else
 		return false;
 }
@@ -48,7 +48,7 @@ bool ProtocolGaduConnection::hasSession()
 gg_session * ProtocolGaduConnection::rawSession()
 {
 	if (ConnectionProtocol)
-		return ConnectionProtocol.data()->gaduSession();
+		return ConnectionProtocol->gaduSession();
 	else
 		return 0;
 }
@@ -58,7 +58,7 @@ bool ProtocolGaduConnection::beginWrite()
 	if (!ConnectionProtocol)
 		return false;
 
-	ConnectionProtocol.data()->disableSocketNotifiers();
+	ConnectionProtocol->disableSocketNotifiers();
 	return true;
 }
 
@@ -67,7 +67,7 @@ bool ProtocolGaduConnection::endWrite()
 	if (!ConnectionProtocol)
 		return false;
 
-	ConnectionProtocol.data()->enableSocketNotifiers();
+	ConnectionProtocol->enableSocketNotifiers();
 	return true;
 }
 

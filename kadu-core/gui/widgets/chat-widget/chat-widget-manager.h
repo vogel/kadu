@@ -27,7 +27,7 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Chat;
 class ChatWidget;
@@ -78,9 +78,9 @@ public slots:
 	void closeChat(const Chat &chat);
 
 private:
-	QWeakPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QWeakPointer<ChatWidgetFactory> m_chatWidgetFactory;
+	QPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetFactory> m_chatWidgetFactory;
 
 	ChatWidget * getOrCreateChatWidget(const Chat &chat);
 

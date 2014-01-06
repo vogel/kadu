@@ -28,7 +28,7 @@
 #ifndef MESSAGE_DIALOG_H
 #define MESSAGE_DIALOG_H
 
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include "icons/kadu-icon.h"
 

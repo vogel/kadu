@@ -22,6 +22,8 @@
 #include "misc/graph/graph-algorithm.h"
 #include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 
+#include <QtCore/QString>
+
 PluginDependencyGraph::PluginDependencyGraph()
 {
 }

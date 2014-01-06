@@ -26,12 +26,12 @@
 #ifndef JABBER_ADD_ACCOUNT_WIDGET_H
 #define JABBER_ADD_ACCOUNT_WIDGET_H
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/identities-combo-box.h"

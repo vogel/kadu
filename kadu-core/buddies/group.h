@@ -37,8 +37,8 @@ class KADUAPI Group : public SharedBase<GroupShared>
 
 public:
 	static Group create();
-	static Group loadStubFromStorage(const QSharedPointer<StoragePoint> &storage);
-	static Group loadFromStorage(const QSharedPointer<StoragePoint> &storage);
+	static Group loadStubFromStorage(const std::shared_ptr<StoragePoint> &storage);
+	static Group loadFromStorage(const std::shared_ptr<StoragePoint> &storage);
 	static Group null;
 
 	Group();

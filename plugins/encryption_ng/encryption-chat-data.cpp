@@ -83,9 +83,19 @@ void EncryptionChatData::setEncryptor(Encryptor *encryptor)
 	ChatEncryptor = encryptor;
 }
 
+Encryptor * EncryptionChatData::encryptor() const
+{
+	return ChatEncryptor.data();
+}
+
 void EncryptionChatData::setDecryptor(Decryptor *decryptor)
 {
 	ChatDecryptor = decryptor;
+}
+
+Decryptor * EncryptionChatData::decryptor() const
+{
+	return ChatDecryptor.data();
 }
 
 #include "moc_encryption-chat-data.cpp"

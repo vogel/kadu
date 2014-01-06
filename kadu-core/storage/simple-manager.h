@@ -55,7 +55,7 @@
  * functions: @link itemAboutToBeAdded @endlink, @link itemAdded @endlink,
  * @link itemAboutToBeRemoved @endlink, @link itemRemoved @endlink to emit signals.
  *
- * Class Item must implement Item loadFromStorage(const QSharedPointer\<StoragePoint\> &) static method.
+ * Class Item must implement Item loadFromStorage(const std::shared_ptr\<StoragePoint\> &) static method.
  * Class Item must have static field Item null that represents unique NULL value.
  *
  * This class is thread-safe.
@@ -197,7 +197,7 @@ protected:
 
 		foreach (const QDomElement &itemElement, itemElements)
 		{
-			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), itemElement));
+			auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), itemElement);
 			QUuid uuid = storagePoint->point().attribute("uuid");
 			if (!uuid.isNull())
 			{

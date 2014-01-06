@@ -24,7 +24,7 @@
 #ifndef SQL_HISTORY_PLUGIN
 #define SQL_HISTORY_PLUGIN
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "plugins/plugin-root-component.h"
 
@@ -34,8 +34,9 @@ class SqlHistoryPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
-	QWeakPointer<HistorySqlStorage> Storage;
+	QPointer<HistorySqlStorage> Storage;
 
 public:
 	virtual ~SqlHistoryPlugin();

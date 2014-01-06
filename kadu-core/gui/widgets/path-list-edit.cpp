@@ -23,13 +23,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLineEdit>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "icons/kadu-icon.h"
@@ -51,7 +51,7 @@ void PathListEdit::showDialog()
 		Dialog = new PathListEditWindow(PathList);
 		connect(Dialog.data(), SIGNAL(changed(const QStringList &)), this, SLOT(pathListChanged(const QStringList &)));
 	}
-	Dialog.data()->show();
+	Dialog->show();
 }
 
 void PathListEdit::pathListChanged(const QStringList &pathList)
@@ -65,7 +65,7 @@ void PathListEdit::setPathList(const QStringList &pathList)
 	PathList = pathList;
 
 	if (Dialog)
-		Dialog.data()->setPathList(PathList);
+		Dialog->setPathList(PathList);
 }
 
 PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent)

@@ -26,7 +26,7 @@
 #define CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class QAction;
 
@@ -41,7 +41,7 @@ class ConfigWizardConfigurationUiHandler : public QObject
 
 	static ConfigWizardConfigurationUiHandler *Instance;
 
-	QWeakPointer<ConfigWizardWindow> Wizard;
+	QPointer<ConfigWizardWindow> Wizard;
 
 	ActionDescription *ShowConfigWizardActionDescription;
 

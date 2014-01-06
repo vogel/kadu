@@ -42,7 +42,7 @@ struct AspellConfig;
 #elif defined(HAVE_ENCHANT)
 typedef struct str_enchant_broker EnchantBroker;
 typedef struct str_enchant_dict EnchantDict;
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 class MacSpellChecker;
 #endif
 
@@ -55,18 +55,18 @@ public:
 	typedef QMap<QString, AspellSpeller *> Checkers;
 #elif defined(HAVE_ENCHANT)
 	typedef QMap<QString, EnchantDict *> Checkers;
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 	typedef QMap<QString, MacSpellChecker *> Checkers;
-#endif // Q_WS_MAC
+#endif // Q_OS_MAC
 
 private:
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 #if defined(HAVE_ASPELL)
 	AspellConfig *SpellConfig;
 #elif defined(HAVE_ENCHANT)
 	EnchantBroker *Broker;
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 	MacSpellChecker *MacSpellCheck;
 #endif
 

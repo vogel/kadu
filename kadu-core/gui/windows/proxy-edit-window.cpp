@@ -19,19 +19,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QPointer>
 #include <QtCore/QUrl>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QFormLayout>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLineEdit>
-#include <QtGui/QListView>
-#include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyle>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListView>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "model/action-filter-proxy-model.h"
@@ -240,7 +241,7 @@ void ProxyEditWindow::removeButtonClicked()
 
 	NetworkProxy proxy = selection.at(0).data(NetworkProxyRole).value<NetworkProxy>();
 
-	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
+	QPointer<QMessageBox> messageBox = new QMessageBox(this);
 	messageBox.data()->setWindowTitle(tr("Confirm proxy removal"));
 	messageBox.data()->setText(tr("Are you sure do you want to remove this proxy?"));
 

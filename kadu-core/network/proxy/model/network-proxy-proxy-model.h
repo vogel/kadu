@@ -25,7 +25,7 @@
 #ifndef NETWORK_PROXY_PROXY_MODEL_H
 #define NETWORK_PROXY_PROXY_MODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 class NetworkProxyProxyModel : public QSortFilterProxyModel
 {

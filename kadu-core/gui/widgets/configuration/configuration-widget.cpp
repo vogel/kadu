@@ -26,12 +26,12 @@
  */
 
 #include <QtCore/QFile>
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
 #include <QtXml/QDomElement>
 
 #include "configuration/configuration-file.h"
@@ -213,7 +213,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 	// Additional slash is needed so that QUrl would treat the rest as _path_, which is desired here.
 	if (iconPath.startsWith("datapath:///"))
 		iconPath = KaduPaths::instance()->dataPath() + iconPath.midRef(static_cast<int>(qstrlen("datapath:///")));
-	configSection(KaduIcon(iconPath), qApp->translate("@default", sectionName.toUtf8().constData()), true);
+	configSection(KaduIcon(iconPath), QCoreApplication::translate("@default", sectionName.toUtf8().constData()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
 	uint length = children.length();
@@ -432,12 +432,12 @@ ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, con
 	if (!s)
 		return 0;
 
-	return s->configGroupBox(qApp->translate("@default", tab.toUtf8().constData()), qApp->translate("@default", groupBox.toUtf8().constData()), create);
+	return s->configGroupBox(QCoreApplication::translate("@default", tab.toUtf8().constData()), QCoreApplication::translate("@default", groupBox.toUtf8().constData()), create);
 }
 
 ConfigSection * ConfigurationWidget::configSection(const QString &name)
 {
-	return ConfigSections.value(qApp->translate("@default", name.toUtf8().constData()));
+	return ConfigSections.value(QCoreApplication::translate("@default", name.toUtf8().constData()));
 }
 
 ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const QString &name, bool create)

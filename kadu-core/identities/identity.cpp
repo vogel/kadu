@@ -34,12 +34,12 @@ Identity Identity::create()
 	return new IdentityShared();
 }
 
-Identity Identity::loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint)
+Identity Identity::loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)
 {
 	return IdentityShared::loadStubFromStorage(accountStoragePoint);
 }
 
-Identity Identity::loadFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint)
+Identity Identity::loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)
 {
 	return IdentityShared::loadFromStorage(accountStoragePoint);
 }

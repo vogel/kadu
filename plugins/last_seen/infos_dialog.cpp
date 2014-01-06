@@ -24,12 +24,12 @@
  */
 
 #include <QtCore/QStringList>
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QMenu>
-#include <QtGui/QPushButton>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtNetwork/QHostAddress>
 
 #include "chat/type/chat-type-contact.h"

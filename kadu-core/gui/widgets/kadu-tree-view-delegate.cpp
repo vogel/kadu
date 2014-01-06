@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAbstractItemView>
+#include <QtWidgets/QAbstractItemView>
 
 #include "accounts/account-manager.h"
 #include "gui/widgets/talkable-painter.h"

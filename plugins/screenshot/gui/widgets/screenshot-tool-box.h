@@ -23,7 +23,7 @@
 #ifndef SCREENSHOT_TOOL_BOX_H
 #define SCREENSHOT_TOOL_BOX_H
 
-#include <QtGui/QFrame>
+#include <QtWidgets/QFrame>
 
 class QLabel;
 

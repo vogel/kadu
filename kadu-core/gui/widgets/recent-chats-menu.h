@@ -24,7 +24,7 @@
 #ifndef RECENT_CHATS_MENU_H
 #define RECENT_CHATS_MENU_H
 
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "exports.h"
 

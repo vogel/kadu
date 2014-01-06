@@ -34,7 +34,7 @@
 #include <QtCore/QMutexLocker>
 #include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"

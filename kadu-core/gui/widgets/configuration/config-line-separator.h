@@ -23,7 +23,7 @@
 #ifndef CONFIG_LINE_SEPARATOR_H
 #define CONFIG_LINE_SEPARATOR_H
 
-#include <QtGui/QFrame>
+#include <QtWidgets/QFrame>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget.h"

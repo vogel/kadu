@@ -29,8 +29,8 @@
 #ifndef BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
 #define BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
 
 
 #include "buddies/buddy.h"

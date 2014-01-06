@@ -21,7 +21,7 @@
 #ifndef CHAT_EDIT_WIDGET_H
 #define CHAT_EDIT_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "chat/chat.h"
 #include "gui/widgets/modal-configuration-widget.h"

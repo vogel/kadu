@@ -30,11 +30,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
@@ -676,6 +676,7 @@ void HintManager::import_0_6_5_configuration()
 
 void HintManager::createDefaultConfiguration()
 {
+	// TODO: this should be more like: if (plugins.loaded(freedesktop_notify) && this_is_first_time_we_are_loaded_or_whatever)
 #if !defined(Q_WS_X11)
 	config_file.addVariable("Notify", "ConnectionError_Hints", true);
 	config_file.addVariable("Notify", "NewChat_Hints", true);

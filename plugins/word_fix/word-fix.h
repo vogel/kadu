@@ -24,8 +24,9 @@ class WordFix : public ConfigurationUiHandler, PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
-	QWeakPointer<ChatWidgetRepository> chatWidgetRepository;
+	QPointer<ChatWidgetRepository> chatWidgetRepository;
 
 	/*!
 	 * \var QMap<QString,QString> wordsList

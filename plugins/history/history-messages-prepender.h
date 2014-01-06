@@ -23,7 +23,7 @@
 
 #include <QtCore/QFuture>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "message/message.h"
 
@@ -48,7 +48,7 @@ class HistoryMessagesPrepender : public QObject
 	Q_OBJECT
 
 	QFuture<QVector<Message> > Messages;
-	QWeakPointer<ChatMessagesView> MessagesView;
+	QPointer<ChatMessagesView> MessagesView;
 
 private slots:
 	void messagesAvailable();

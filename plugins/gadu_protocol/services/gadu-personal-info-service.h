@@ -34,7 +34,7 @@ class GaduPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduConnection> Connection;
+	QPointer<GaduConnection> Connection;
 
 	unsigned int FetchSeq;
 	unsigned int UpdateSeq;

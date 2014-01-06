@@ -20,7 +20,7 @@
 #ifndef PROTOCOL_GADU_CONNECTION_H
 #define PROTOCOL_GADU_CONNECTION_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "server/gadu-connection.h"
 
@@ -43,7 +43,7 @@ class ProtocolGaduConnection : public GaduConnection
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduProtocol> ConnectionProtocol;
+	QPointer<GaduProtocol> ConnectionProtocol;
 
 protected:
 	virtual gg_session * rawSession();

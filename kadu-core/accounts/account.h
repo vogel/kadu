@@ -44,8 +44,8 @@ class KADUAPI Account : public SharedBase<AccountShared>
 
 public:
 	static Account create(const QString &protocolName);
-	static Account loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
-	static Account loadFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
+	static Account loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
+	static Account loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
 	static Account null;
 
 	Account();
@@ -57,7 +57,7 @@ public:
 	StatusContainer * statusContainer() const;
 
 	KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
-	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
+	KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage)
 	KaduSharedBase_PropertyRead(QString, protocolName, ProtocolName)
 	KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
 	KaduSharedBase_PropertyRead(AccountDetails *, details, Details)

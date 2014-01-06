@@ -28,8 +28,9 @@
 #ifndef KADU_TEXT_BROWSER_H
 #define KADU_TEXT_BROWSER_H
 
+#include <QtCore/QPointer>
 #include <QtGui/QClipboard>
-#include <QtWebKit/QWebView>
+#include <QtWebKitWidgets/QWebView>
 
 #include "exports.h"
 
@@ -43,7 +44,7 @@ class KADUAPI KaduWebView : public QWebView
 {
 	Q_OBJECT
 
-	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<ImageStorageService> CurrentImageStorageService;
 
 	bool DraggingPossible;
 	bool IsLoading;

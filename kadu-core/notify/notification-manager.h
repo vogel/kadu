@@ -27,7 +27,7 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QTimer>
-#include <QtGui/QGroupBox>
+#include <QtWidgets/QGroupBox>
 
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-set.h"

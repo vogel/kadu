@@ -21,7 +21,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class ChatWidget;
 class ChatWidgetContainerHandler;
@@ -61,8 +61,8 @@ public:
 	ChatWidgetContainerHandler * chatWidgetContainerHandlerForWidget(ChatWidget *chatWidget) const;
 
 private:
-	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	QMap<ChatWidget *, ChatWidgetContainerHandler *> m_mapping;
 

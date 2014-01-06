@@ -105,7 +105,7 @@ int BuddyContactModel::contactIndex(Contact data)
 
 QModelIndex BuddyContactModel::contactModelIndex(Contact data)
 {
-	return createIndex(contactIndex(data), 0, 0);
+	return createIndex(contactIndex(data), 0);
 }
 
 void BuddyContactModel::contactAboutToBeAdded(Contact data)

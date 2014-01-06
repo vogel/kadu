@@ -33,7 +33,7 @@ class KADUAPI SystemInfo
 	QString OsName;
 	QString OsVersion;
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_OS_LINUX)
 	QString lsbRelease(const QStringList  &args);
 	QString linuxHeuristicDetect();
     #endif

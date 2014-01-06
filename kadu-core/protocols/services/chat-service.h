@@ -56,7 +56,7 @@ class KADUAPI ChatService : public AccountService
 {
 	Q_OBJECT
 
-	QWeakPointer<RawMessageTransformerService> CurrentRawMessageTransformerService;
+	QPointer<RawMessageTransformerService> CurrentRawMessageTransformerService;
 
 protected:
 	explicit ChatService(Account account, QObject *parent = 0);

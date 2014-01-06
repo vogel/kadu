@@ -62,9 +62,9 @@ void JabberServerInfoService::requestServerInfo()
 	if (!XmppClient)
 		return;
 
-	XMPP::JT_DiscoInfo *jt = new XMPP::JT_DiscoInfo(XmppClient.data()->rootTask());
+	XMPP::JT_DiscoInfo *jt = new XMPP::JT_DiscoInfo(XmppClient->rootTask());
 	connect(jt, SIGNAL(finished()), SLOT(requestFinished()));
-	jt->get(XmppClient.data()->jid().domain());
+	jt->get(XmppClient->jid().domain());
 	jt->go(true);
 }
 

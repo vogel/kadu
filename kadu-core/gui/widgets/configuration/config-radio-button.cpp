@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-radio-button.h"
@@ -44,11 +44,11 @@ void ConfigRadioButton::createWidgets()
 {
 	kdebugf();
 
-	setText(qApp->translate("@default", widgetCaption.toUtf8().constData()));
+	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
 	parentConfigGroupBox->addWidget(this, true);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
 void ConfigRadioButton::loadConfiguration()

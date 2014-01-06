@@ -42,14 +42,14 @@
 
 #include "buddy-shared.h"
 
-BuddyShared * BuddyShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint)
+BuddyShared * BuddyShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint)
 {
 	BuddyShared *result = loadFromStorage(buddyStoragePoint);
 	result->loadStub();
 	return result;
 }
 
-BuddyShared * BuddyShared::loadFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint)
+BuddyShared * BuddyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint)
 {
 	BuddyShared *result = new BuddyShared();
 	result->setStorage(buddyStoragePoint);
@@ -82,7 +82,11 @@ void BuddyShared::collectGarbage()
 
 	// 1 is for current Buddy
 	const int numberOfReferences = 1 + Contacts.length();
+#if QT_VERSION >= 0x050000
+	if (numberOfReferences != ref.load())
+#else
 	if (numberOfReferences != (int)ref)
+#endif
 	{
 		CollectingGarbage = false;
 		return;
@@ -94,7 +98,11 @@ void BuddyShared::collectGarbage()
 
 		// 1 is for current BuddyShared
 		const int contactNumberOfReferences = 1;
+#if QT_VERSION >= 0x050000
+		if (contactNumberOfReferences != contact.data()->ref.load())
+#else
 		if (contactNumberOfReferences != (int)(contact.data()->ref))
+#endif
 		{
 			CollectingGarbage = false;
 			return;
@@ -534,11 +542,11 @@ quint16 BuddyShared::unreadMessagesCount()
 	return result;
 }
 
-QSharedPointer<StoragePoint> BuddyShared::createStoragePoint()
+std::shared_ptr<StoragePoint> BuddyShared::createStoragePoint()
 {
 	// TODO: fix this, it is only a workaround for an empty buddy on list
 	if (Core::instance()->myself() == Buddy(this))
-		return QSharedPointer<StoragePoint>();
+		return {};
 	else
 		return Shared::createStoragePoint();
 }

@@ -58,8 +58,8 @@ class GaduChatImageService : public ChatImageService
 
 	QMap<ChatImageKey, QByteArray> ChatImages;
 
-	QWeakPointer<GaduConnection> Connection;
-	QWeakPointer<GaduChatService> CurrentChatService;
+	QPointer<GaduConnection> Connection;
+	QPointer<GaduChatService> CurrentChatService;
 
 	bool ReceiveImages;
 

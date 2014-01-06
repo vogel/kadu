@@ -46,6 +46,7 @@ class AutoResponder : public MessageFilter, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	AutoresponderConfigurationUiHolder *UiHandler;
 	AutoresponderConfigurator *Configurator;

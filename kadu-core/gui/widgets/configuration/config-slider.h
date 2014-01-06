@@ -22,7 +22,7 @@
 #ifndef CONFIG_SLIDER_H
 #define CONFIG_SLIDER_H
 
-#include <QtGui/QSlider>
+#include <QtWidgets/QSlider>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget-value.h"

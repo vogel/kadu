@@ -26,7 +26,7 @@
 #ifndef GROUP_PROPERTIES_WINDOW
 #define GROUP_PROPERTIES_WINDOW
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "buddies/group.h"
 #include "os/generic/desktop-aware-object.h"

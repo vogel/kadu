@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 
 #include "checkbox-styled-item-delegate.h"
 
@@ -35,7 +35,7 @@ CheckboxStyledItemDelegate::~CheckboxStyledItemDelegate()
 QRect CheckboxStyledItemDelegate::getCenteredComboBoxRect(const QStyleOptionViewItem &option) const
 {
 	QSize size = QApplication::style()->sizeFromContents(QStyle::CT_CheckBox, &option, QSize());
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	size.setWidth(size.width() + QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, &option));
 #endif
 

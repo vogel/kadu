@@ -22,7 +22,7 @@
 #ifndef OTR_PEER_IDENTITY_VERIFICATION_PROGRESS_PAGE_H
 #define OTR_PEER_IDENTITY_VERIFICATION_PROGRESS_PAGE_H
 
-#include <QtGui/QWizardPage>
+#include <QtWidgets/QWizardPage>
 
 #include "contacts/contact.h"
 
@@ -34,7 +34,7 @@ class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
 	Contact MyContact;
 	OtrPeerIdentityVerificationState State;

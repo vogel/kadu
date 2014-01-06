@@ -23,13 +23,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
-#include <QtGui/QGridLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QProgressBar>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QPushButton>
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
@@ -268,7 +268,7 @@ void FileTransferWidget::fileTransferUpdate()
 			StartButton->hide();
 	}
 
-	qApp->processEvents();
+	QCoreApplication::processEvents();
 }
 
 #include "moc_file-transfer-widget.cpp"

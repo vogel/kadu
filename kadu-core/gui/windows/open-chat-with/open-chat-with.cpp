@@ -23,15 +23,15 @@
 
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeView>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QGraphicsObject>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QGraphicsObject>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyle>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
@@ -157,7 +157,7 @@ bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
 					key == Qt::Key_Left ||
 					key == Qt::Key_Right)
 			{
-				qApp->sendEvent(BuddiesView, e);
+				QCoreApplication::sendEvent(BuddiesView, e);
 				return true;
 			}
 		}

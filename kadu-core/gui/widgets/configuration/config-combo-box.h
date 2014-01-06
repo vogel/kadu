@@ -22,7 +22,7 @@
 #ifndef CONFIG_COMBO_BOX_H
 #define CONFIG_COMBO_BOX_H
 
-#include <QtGui/QComboBox>
+#include <QtWidgets/QComboBox>
 
 #include "gui/widgets/configuration/config-widget-value.h"
 

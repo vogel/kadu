@@ -22,7 +22,7 @@
 #ifndef OTR_RAW_MESSAGE_TRANSFORMER_H
 #define OTR_RAW_MESSAGE_TRANSFORMER_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "protocols/services/raw-message-transformer.h"
 
@@ -42,10 +42,10 @@ class OtrRawMessageTransformer: public QObject, public RawMessageTransformer
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsService> AppOpsService;
-	QWeakPointer<OtrOpDataFactory> OpDataFactory;
-	QWeakPointer<OtrSessionService> SessionService;
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrAppOpsService> AppOpsService;
+	QPointer<OtrOpDataFactory> OpDataFactory;
+	QPointer<OtrSessionService> SessionService;
+	QPointer<OtrUserStateService> UserStateService;
 
 	bool EnableFragments;
 

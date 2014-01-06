@@ -25,9 +25,9 @@
 
 #include <QtCore/QString>
 #include <QtGui/QPixmap>
+#include <QtWidgets/QStyleOptionViewItemV4>
 
 class QModelIndex;
-class QStyleOptionViewItemV4;
 
 class TalkableDelegateConfiguration;
 

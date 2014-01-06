@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "chat/chat-manager.h"
 #include "configuration/configuration-aware-object.h"
@@ -81,7 +81,7 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	QSharedPointer<SimpleProvider<QWidget *>> m_windowProvider;
+	std::shared_ptr<SimpleProvider<QWidget *>> m_windowProvider;
 	SingleWindow *m_window;
 
 };

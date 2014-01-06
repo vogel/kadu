@@ -3,7 +3,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
@@ -15,6 +15,7 @@ class PCSpeaker : public Notifier, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	public:
 		PCSpeaker(QObject *parent = NULL);

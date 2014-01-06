@@ -19,7 +19,7 @@
  */
 
 #include <QtCore/QModelIndexList>
-#include <QtGui/QAbstractItemView>
+#include <QtWidgets/QAbstractItemView>
 
 #include "contacts/contact-set.h"
 #include "gui/widgets/talkable-tree-view.h"

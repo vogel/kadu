@@ -38,7 +38,7 @@ class GaduSearchService : public SearchService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduConnection> Connection;
+	QPointer<GaduConnection> Connection;
 	BuddySearchCriteria Query;
 	unsigned int SearchSeq;
 	unsigned int From;

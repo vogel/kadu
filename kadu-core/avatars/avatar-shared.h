@@ -52,8 +52,8 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	static AvatarShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
-	static AvatarShared * loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
+	static AvatarShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint);
+	static AvatarShared * loadFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint);
 
 	explicit AvatarShared(const QUuid &uuid = QUuid());
 	virtual ~AvatarShared();

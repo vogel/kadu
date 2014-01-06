@@ -27,14 +27,14 @@
 #ifndef JABBER_CREATE_ACCOUNT_WIDGET_H
 #define JABBER_CREATE_ACCOUNT_WIDGET_H
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "gui/widgets/account-create-widget.h"

@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
 
 #include "configuration/config-file-data-manager.h"
 #include "gui/widgets/color-button.h"
@@ -52,7 +52,7 @@ void BuddyListBackgroundColorsWidget::createGui(MainConfigurationWindow* mainWin
 
 	ConfigGroupBox *groupBox = mainWindow->widget()->configGroupBox("Look", "Buddies list", "Background");
 
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Background colors") + ':', this), this);
+	groupBox->addWidgets(new QLabel(QCoreApplication::translate("@default", "Background colors") + ':', this), this);
 }
 
 void BuddyListBackgroundColorsWidget::loadConfiguration()

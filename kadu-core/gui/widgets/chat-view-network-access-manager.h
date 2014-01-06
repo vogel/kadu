@@ -25,7 +25,7 @@
 #ifndef CHAT_VIEW_NETWORK_ACCESS_MANAGER
 #define CHAT_VIEW_NETWORK_ACCESS_MANAGER
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 #include <QtNetwork/QNetworkAccessManager>
 
 class ImageStorageService;
@@ -36,7 +36,7 @@ class ChatViewNetworkAccessManager : public QNetworkAccessManager
 {
 	Q_OBJECT
 
-	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<ImageStorageService> CurrentImageStorageService;
 
 public:
 	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = 0);

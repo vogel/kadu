@@ -26,7 +26,8 @@
 #ifndef KADU_CUSTOM_INPUT_H
 #define KADU_CUSTOM_INPUT_H
 
-#include <QtGui/QTextEdit>
+#include <QtCore/QPointer>
+#include <QtWidgets/QTextEdit>
 
 #include "chat/chat.h"
 
@@ -44,8 +45,8 @@ class KADUAPI CustomInput : public QTextEdit
 {
 	Q_OBJECT
 
-	QWeakPointer<ImageStorageService> CurrentImageStorageService;
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat CurrentChat;
 

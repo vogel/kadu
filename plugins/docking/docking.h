@@ -33,7 +33,7 @@
 #define DOCKING_H
 
 #include <QtCore/QMap>
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "configuration/configuration-aware-object.h"
 #include "status/status-container-aware-object.h"
@@ -62,7 +62,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	Docker *CurrentDocker;
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	bool KaduWindowLastTimeVisible;
 #endif
 	bool DockMenuNeedsUpdate;
@@ -73,7 +73,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	StatusMenu *AllAccountsMenu;
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	QAction *ShowKaduAction;
 	QAction *HideKaduAction;
 #endif

@@ -34,7 +34,7 @@ class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduConnection> Connection;
+	QPointer<GaduConnection> Connection;
 
 	void updateFlag(gg_session *session, int uin, int newFlags, int oldFlags, int flag) const;
 	void sendNewFlags(const Contact &contact, int newFlags) const;

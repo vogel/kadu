@@ -23,7 +23,7 @@
 #ifndef SELECTION_FRAME_ITEM_H
 #define SELECTION_FRAME_ITEM_H
 
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 
 class SelectionFrameItem : public QGraphicsItem
 {

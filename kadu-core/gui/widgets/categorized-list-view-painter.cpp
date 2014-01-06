@@ -19,9 +19,9 @@
   */
 
 
-#include <QApplication>
-#include <QPainter>
-#include <QStyleOption>
+#include <QtWidgets/QApplication>
+#include <QtGui/QPainter>
+#include <QtWidgets/QStyleOption>
 
 #include "gui/widgets/categorized-list-view.h"
 #include "model/categorized-sort-filter-proxy-model.h"

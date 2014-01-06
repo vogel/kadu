@@ -26,6 +26,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QRegExp>
 
 #include "chat/chat.h"
@@ -52,7 +53,7 @@ class Firewall : public MessageFilter, ConfigurationAwareObject, AccountsAwareOb
 	explicit Firewall();
 	virtual ~Firewall();
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;

@@ -20,7 +20,7 @@
 #ifndef ADD_ROOM_CHAT_WINDOW_H
 #define ADD_ROOM_CHAT_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "buddies/buddy-set.h"
 

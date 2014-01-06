@@ -22,6 +22,8 @@
 #ifndef OTR_BUDDY_CONFIGURATION_WIDGET_H
 #define OTR_BUDDY_CONFIGURATION_WIDGET_H
 
+#include <QtCore/QPointer>
+
 #include "gui/widgets/buddy-configuration-widget.h"
 
 class QCheckBox;
@@ -35,7 +37,7 @@ class OtrBuddyConfigurationWidget : public BuddyConfigurationWidget
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrPolicyService> PolicyService;
 
 	QCheckBox *UseAccountPolicyCheckBox;
 	QCheckBox *EnableCheckBox;

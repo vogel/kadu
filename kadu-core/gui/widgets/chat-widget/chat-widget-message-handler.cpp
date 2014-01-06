@@ -31,7 +31,7 @@
 #include "protocols/protocol.h"
 #include "services/notification-service.h"
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 ChatWidgetMessageHandler::ChatWidgetMessageHandler(QObject *parent) :
 		QObject{parent}

@@ -27,8 +27,8 @@
  */
 
 #include <QtGui/QKeyEvent>
-#include <QtGui/QTreeView>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QVBoxLayout>
 
 #include "gui/widgets/filter-widget.h"
 

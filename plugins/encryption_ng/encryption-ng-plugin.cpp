@@ -25,7 +25,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QtGlobal>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtCrypto>
 
 #include "gui/windows/message-dialog.h"

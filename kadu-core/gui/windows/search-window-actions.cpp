@@ -20,10 +20,10 @@
  */
 
 #include <QtCore/QList>
-#include <QtGui/QAction>
-#include <QtGui/QLineEdit>
-#include <QtGui/QRadioButton>
-#include <QtGui/QTreeWidget>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QRadioButton>
+#include <QtWidgets/QTreeWidget>
 
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"

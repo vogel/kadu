@@ -39,7 +39,7 @@ set (notify_MOC_SRCS
 
 if (WIN32)
     list (APPEND notify_SRCS "windows-screen-mode-checker.cpp")
-elseif (UNIX AND NOT APPLE)
+elseif (UNIX AND NOT APPLE AND NOT Qt5Core_FOUND)
     list (APPEND notify_SRCS "x11-screen-mode-checker.cpp")
 endif ()
 

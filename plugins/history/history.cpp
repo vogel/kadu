@@ -35,11 +35,11 @@
 
 #include <QtCore/QList>
 #include <QtCore/QMutex>
-#include <QtGui/QGridLayout>
+#include <QtWidgets/QGridLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QMenu>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QPushButton>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

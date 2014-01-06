@@ -28,12 +28,13 @@
 #include <QtCore/QBuffer>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QMimeData>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QUrl>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QImageReader>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -74,7 +75,7 @@ void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStr
 FormattedString * CustomInput::formattedString() const
 {
 	if (CurrentFormattedStringFactory)
-		return CurrentFormattedStringFactory.data()->fromTextDocument(document());
+		return CurrentFormattedStringFactory->fromTextDocument(document());
 	else
 		return 0;
 }
@@ -271,7 +272,7 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 	{
 		QUrl url = source->urls().first();
 		if (CurrentImageStorageService)
-			url = CurrentImageStorageService.data()->toFileUrl(url);
+			url = CurrentImageStorageService->toFileUrl(url);
 
 		if (!url.isEmpty() && url.scheme() == "file")
 		{
@@ -290,7 +291,7 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 		QString filename = "drop" + QString::number(QDateTime::currentDateTime().toTime_t()) + "." + ext;
 
 		if (CurrentImageStorageService)
-			path = CurrentImageStorageService.data()->fullPath(filename);
+			path = CurrentImageStorageService->fullPath(filename);
 		else
 			path = filename;
 

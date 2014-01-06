@@ -24,7 +24,7 @@
 #ifndef WINDOW_NOTIFIER_WINDOW_H
 #define WINDOW_NOTIFIER_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "os/generic/desktop-aware-object.h"
 

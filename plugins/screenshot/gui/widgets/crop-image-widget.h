@@ -24,7 +24,7 @@
 #ifndef CROP_IMAGE_WIDGET_H
 #define CROP_IMAGE_WIDGET_H
 
-#include <QtGui/QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 
 #include "gui/graphics-items/handler-rect-item.h"
 

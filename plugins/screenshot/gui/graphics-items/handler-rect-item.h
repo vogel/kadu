@@ -23,7 +23,7 @@
 #ifndef HANDLER_RECT_ITEM_H
 #define HANDLER_RECT_ITEM_H
 
-#include <QtGui/QGraphicsWidget>
+#include <QtWidgets/QGraphicsWidget>
 
 enum HandlerType
 {

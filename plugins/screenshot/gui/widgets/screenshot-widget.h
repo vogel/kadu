@@ -26,7 +26,7 @@
 #define SCREENSHOT_WIDGET_H
 
 #include <QtGui/QPixmap>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "screenshot-mode.h"
 

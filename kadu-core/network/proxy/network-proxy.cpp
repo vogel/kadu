@@ -33,12 +33,12 @@ NetworkProxy NetworkProxy::create()
 	return new NetworkProxyShared();
 }
 
-NetworkProxy NetworkProxy::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+NetworkProxy NetworkProxy::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	return NetworkProxyShared::loadStubFromStorage(storagePoint);
 }
 
-NetworkProxy NetworkProxy::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+NetworkProxy NetworkProxy::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	return NetworkProxyShared::loadFromStorage(storagePoint);
 }

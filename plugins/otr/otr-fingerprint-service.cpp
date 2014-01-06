@@ -67,7 +67,7 @@ void OtrFingerprintService::readFingerprints() const
 	if (!UserStateService)
 		return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
+	OtrlUserState userState = UserStateService->userState();
 	otrl_privkey_read_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data(), 0, 0);
 
 	emit fingerprintsUpdated();
@@ -78,7 +78,7 @@ void OtrFingerprintService::writeFingerprints() const
 	if (!UserStateService)
 		return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
+	OtrlUserState userState = UserStateService->userState();
 	otrl_privkey_write_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data());
 
 	emit fingerprintsUpdated();
@@ -89,7 +89,7 @@ void OtrFingerprintService::setContactFingerprintTrust(const Contact &contact, O
 	if (!ContextConverter)
 		return;
 
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	ConnContext *context = ContextConverter->contactToContextConverter(contact);
 	if (!context->active_fingerprint)
 		return;
 
@@ -102,7 +102,7 @@ OtrFingerprintService::Trust OtrFingerprintService::contactFingerprintTrust(cons
 	if (!ContextConverter)
 		return TrustNotVerified;
 
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	ConnContext *context = ContextConverter->contactToContextConverter(contact);
 	if (!context->active_fingerprint)
 		return TrustNotVerified;
 
@@ -115,7 +115,7 @@ QString OtrFingerprintService::extractAccountFingerprint(const Account &account)
 		return QString();
 
 	char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
-	char *result = otrl_privkey_fingerprint(UserStateService.data()->userState(), fingerprint,
+	char *result = otrl_privkey_fingerprint(UserStateService->userState(), fingerprint,
 											qPrintable(account.id()), qPrintable(account.protocolName()));
 
 	if (!result)
@@ -130,7 +130,7 @@ QString OtrFingerprintService::extractContactFingerprint(const Contact &contact)
 	if (!ContextConverter)
 		return QString();
 
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	ConnContext *context = ContextConverter->contactToContextConverter(contact);
 	if (!context->active_fingerprint)
 		return QString();
 

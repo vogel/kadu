@@ -36,11 +36,11 @@ QVariant CustomPropertiesVariantWrapper::get(const QVariant &defaultValue) const
 {
 	return MyCustomProperties.isNull()
 			? defaultValue
-			: MyCustomProperties.data()->property(Name, defaultValue);
+			: MyCustomProperties->property(Name, defaultValue);
 }
 
 void CustomPropertiesVariantWrapper::set(const QVariant &value)
 {
 	if (!MyCustomProperties.isNull())
-		MyCustomProperties.data()->addProperty(Name, value, Storability);
+		MyCustomProperties->addProperty(Name, value, Storability);
 }

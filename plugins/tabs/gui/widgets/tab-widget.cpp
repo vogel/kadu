@@ -29,8 +29,8 @@
 #include <QtCore/QPoint>
 #include <QtCore/QVariant>
 #include <QtGui/QDrag>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QMenu>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QMenu>
 
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
@@ -235,7 +235,7 @@ bool TabWidget::isChatWidgetActive(const ChatWidget *chatWidget)
 void TabWidget::closeEvent(QCloseEvent *e)
 {
 	// do not block window closing when session is about to close
-	if (Core::instance()->application()->sessionClosing())
+	if (Core::instance()->application()->isSavingSession())
 	{
 		QTabWidget::closeEvent(e);
 		return;
@@ -273,7 +273,7 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 		switchTabRight();
 	else if (HotKey::shortCut(e, "ShortCuts", "ReopenClosedTab"))
 		Manager->reopenClosedChat();
-	#if defined(Q_WS_WIN) || defined(Q_WS_MAC)
+	#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
 		#define TAB_SWITCH_MODIFIER "Ctrl"
 	#else
 		#define TAB_SWITCH_MODIFIER "Alt"

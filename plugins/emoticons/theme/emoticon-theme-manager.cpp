@@ -35,7 +35,7 @@
 
 QString EmoticonThemeManager::defaultTheme()
 {
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
 	return QLatin1String("penguins");
 #else
 	return QLatin1String("tango");

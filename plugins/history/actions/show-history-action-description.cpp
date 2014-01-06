@@ -19,8 +19,8 @@
  */
 
 #include <QtCore/QFutureWatcher>
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat.h"

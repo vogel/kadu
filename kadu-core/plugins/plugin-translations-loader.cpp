@@ -22,9 +22,9 @@
 #include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QLatin1String>
 #include <QtCore/QTranslator>
-#include <QtGui/QApplication>
 
 PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept
 {
@@ -33,12 +33,12 @@ PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) no
 	m_translator.reset(new QTranslator);
 
 	if (m_translator->load(pluginName + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
-		qApp->installTranslator(m_translator.data());
+		QCoreApplication::installTranslator(m_translator.data());
 	else
 		m_translator.reset();
 }
 
 PluginTranslationsLoader::~PluginTranslationsLoader() noexcept
 {
-	qApp->removeTranslator(m_translator.data());
+	QCoreApplication::removeTranslator(m_translator.data());
 }

@@ -24,7 +24,7 @@
 #ifndef ACCOUNT_EDIT_WIDGET_H
 #define ACCOUNT_EDIT_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "gui/widgets/account-configuration-widget.h"

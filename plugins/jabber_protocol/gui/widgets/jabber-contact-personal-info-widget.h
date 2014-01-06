@@ -29,7 +29,7 @@
 #ifndef JABBER_CONTACT_PERSONAL_INFO_WIDGET_H
 #define JABBER_CONTACT_PERSONAL_INFO_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "contacts/contact.h"
 

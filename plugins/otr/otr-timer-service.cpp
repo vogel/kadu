@@ -81,9 +81,9 @@ void OtrTimerService::otrTimerTimeout()
 	if (!AppOpsService || !OpDataFactory || !UserStateService)
 		return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
-	const OtrlMessageAppOps *ops = AppOpsService.data()->appOps();
-	OtrOpData opData = OpDataFactory.data()->opData();
+	OtrlUserState userState = UserStateService->userState();
+	const OtrlMessageAppOps *ops = AppOpsService->appOps();
+	OtrOpData opData = OpDataFactory->opData();
 
 	otrl_message_poll(userState, ops, &opData);
 }

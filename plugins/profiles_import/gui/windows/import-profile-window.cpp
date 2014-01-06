@@ -22,12 +22,12 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QFormLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/path-edit.h"

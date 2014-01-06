@@ -28,12 +28,12 @@
 #define TABS_TABWIDGET_H
 
 #include <QtGui/QCursor>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
-#include <QtGui/QTabBar>
-#include <QtGui/QTabWidget>
-#include <QtGui/QToolButton>
-#include <QtGui/QWidget>
+#include <QtWidgets/QTabBar>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QWidget>
 
 #include "gui/widgets/custom-input.h"
 

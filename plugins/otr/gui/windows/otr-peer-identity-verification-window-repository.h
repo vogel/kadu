@@ -35,7 +35,7 @@ class OtrPeerIdentityVerificationWindowRepository : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
+	QPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
 private slots:

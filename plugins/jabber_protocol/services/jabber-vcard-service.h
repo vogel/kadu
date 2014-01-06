@@ -21,7 +21,7 @@
 #ifndef JABBER_VCARD_SERVICE_H
 #define JABBER_VCARD_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class JabberVCardDownloader;
 class JabberVCardUploader;
@@ -51,7 +51,7 @@ class JabberVCardService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<XMPP::Client> XmppClient;
+	QPointer<XMPP::Client> XmppClient;
 
 public:
 	/**

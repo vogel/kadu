@@ -25,7 +25,7 @@
 #define OTR_TIMER_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class QTimer;
 
@@ -37,9 +37,9 @@ class OtrTimerService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsService> AppOpsService;
-	QWeakPointer<OtrOpDataFactory> OpDataFactory;
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrAppOpsService> AppOpsService;
+	QPointer<OtrOpDataFactory> OpDataFactory;
+	QPointer<OtrUserStateService> UserStateService;
 
 	QTimer *Timer;
 

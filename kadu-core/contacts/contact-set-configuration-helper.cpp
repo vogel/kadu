@@ -76,5 +76,5 @@ void ContactSetConfigurationHelper::saveToConfiguration(XmlConfigFile *configura
 		contactSetNode.removeChild(contactSetNode.childNodes().at(0));
 
 	foreach (const Contact &c, contactSet)
-		configurationStorage->appendTextNode(contactSetNode, "Contact", c.uuid());
+		configurationStorage->appendTextNode(contactSetNode, "Contact", c.uuid().toString());
 }

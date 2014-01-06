@@ -18,9 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include <QtGui/QPainter>
-#include <QtGui/QStyleOption>
+#include <QtWidgets/QStyleOption>
 
 #include "selection-frame-item.h"
 

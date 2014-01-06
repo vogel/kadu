@@ -23,7 +23,7 @@
  */
 
 #include <QtGui/QMouseEvent>
-#include <QtGui/QStyle>
+#include <QtWidgets/QStyle>
 
 #include "gui/widgets/line-edit-clear-button.h"
 #include "icons/kadu-icon.h"

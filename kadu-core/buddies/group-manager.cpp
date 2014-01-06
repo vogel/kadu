@@ -64,7 +64,7 @@ void GroupManager::importConfiguration()
 {
 	QMutexLocker locker(&mutex());
 
-	QSharedPointer<StoragePoint> sp(storage());
+	auto sp = storage();
 	if (!sp || !sp->storage())
 		return;
 

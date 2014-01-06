@@ -23,7 +23,7 @@
 #define OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "gui/widgets/chat-top-bar-widget-factory.h"
 
@@ -36,9 +36,9 @@ class OtrChatTopBarWidgetFactory : public QObject, public ChatTopBarWidgetFactor
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
-	QWeakPointer<OtrSessionService> SessionService;
-	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
+	QPointer<OtrSessionService> SessionService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
 	QList<OtrChatTopBarWidget *> Widgets;
 
 private slots:

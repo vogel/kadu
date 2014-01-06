@@ -87,7 +87,7 @@ KaduPaths::KaduPaths()
 
 void KaduPaths::initBasicPaths()
 {
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	DesktopFilePath = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DESKTOP_FILE_PATH_RELATIVE_TO_BIN);
 	DesktopFilePath = QFileInfo(DesktopFilePath).canonicalFilePath();
 #endif

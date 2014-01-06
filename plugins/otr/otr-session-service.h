@@ -23,7 +23,7 @@
 #define OTR_SESSION_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -42,12 +42,12 @@ class OtrSessionService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<MessageManager> CurrentMessageManager;
-	QWeakPointer<OtrAppOpsService> AppOpsService;
-	QWeakPointer<OtrOpDataFactory> OpDataFactory;
-	QWeakPointer<OtrPolicyService> PolicyService;
-	QWeakPointer<OtrTrustLevelService> TrustLevelService;
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<MessageManager> CurrentMessageManager;
+	QPointer<OtrAppOpsService> AppOpsService;
+	QPointer<OtrOpDataFactory> OpDataFactory;
+	QPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrUserStateService> UserStateService;
 
 public:
 	static void wrapperOtrGoneSecure(void *data, ConnContext *context);

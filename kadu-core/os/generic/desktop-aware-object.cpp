@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "misc/misc.h"
 #include "os/generic/desktop-aware-object-helper.h"

@@ -39,7 +39,7 @@
 
 #include "account-shared.h"
 
-AccountShared * AccountShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+AccountShared * AccountShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	AccountShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -47,7 +47,7 @@ AccountShared * AccountShared::loadStubFromStorage(const QSharedPointer<StorageP
 	return result;
 }
 
-AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+AccountShared * AccountShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	AccountShared *result = new AccountShared();
 	result->setStorage(storagePoint);

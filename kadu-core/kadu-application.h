@@ -35,7 +35,7 @@
 #ifndef KADU_APPLICATION_H
 #define KADU_APPLICATION_H
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
@@ -61,17 +61,22 @@ class KADUAPI KaduApplication : public QApplication
 	AEEventHandlerUPP m_appleEventProcessorUPP;
 #endif // Q_OS_MAC
 
-	bool SessionClosing;
+#if QT_VERSION < 0x050000
+	bool SavingSession;
+#endif
 
 public:
 	KaduApplication(int &argc, char *argv[]);
 
+#if QT_VERSION < 0x050000
 	virtual void commitData(QSessionManager &manager);
+
 #if defined(Q_WS_X11)
 	virtual bool x11EventFilter(XEvent *event);
 #endif // Q_WS_X11
 
-	bool sessionClosing() const;
+	bool isSavingSession() const;
+#endif
 
 };
 

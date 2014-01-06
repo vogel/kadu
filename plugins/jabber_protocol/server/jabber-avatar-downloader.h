@@ -23,7 +23,7 @@
 #ifndef JABBER_AVATAR_DOWNLOADER_H
 #define JABBER_AVATAR_DOWNLOADER_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "protocols/services/avatar-downloader.h"
 
@@ -53,8 +53,8 @@ class JabberAvatarDownloader : public AvatarDownloader
 	Q_OBJECT
 
 	QString Id;
-	QWeakPointer<JabberPepService> PepService;
-	QWeakPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberPepService> PepService;
+	QPointer<XMPP::JabberVCardService> VCardService;
 
 	void failed();
 

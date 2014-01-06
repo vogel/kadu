@@ -19,7 +19,7 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 #include <QtGui/QMovie>
 #include <QtGui/QResizeEvent>
 

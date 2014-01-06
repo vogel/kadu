@@ -24,7 +24,7 @@
 #define JABBER_CHAT_STATE_SERVICE_H
 
 #include <QtCore/QHash>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "chat/chat.h"
 
@@ -57,7 +57,7 @@ class JabberChatStateService : public ChatStateService
 		}
 	};
 
-	QWeakPointer<Client> XmppClient;
+	QPointer<Client> XmppClient;
 
 	QHash<Contact, ContactInfo> ContactInfos;
 

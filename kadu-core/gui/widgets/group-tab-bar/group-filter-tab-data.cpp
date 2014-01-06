@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QIcon>
 
 #include "icons/kadu-icon.h"
@@ -41,9 +41,9 @@ QString GroupFilterTabData::tabName() const
 		case GroupFilterRegular:
 			return Filter.group().showName() ? Filter.group().name() : QString();
 		case GroupFilterEverybody:
-			return qApp->translate("GroupFilterTabData", "Everybody");
+			return QCoreApplication::translate("GroupFilterTabData", "Everybody");
 		case GroupFilterUngroupped:
-			return qApp->translate("GroupFilterTabData", "Ungrouped");
+			return QCoreApplication::translate("GroupFilterTabData", "Ungrouped");
 		case GroupFilterInvalid:
 		default:
 			return QString();

@@ -93,6 +93,6 @@ void OtrPrivateKeyService::readPrivateKeys()
 	if (!UserStateService)
 		return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
+	OtrlUserState userState = UserStateService->userState();
 	otrl_privkey_read(userState, privateStoreFileName().toUtf8().data());
 }

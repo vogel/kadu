@@ -27,7 +27,7 @@
 #ifndef GADU_CREATE_ACCOUNT_WIDGET_H
 #define GADU_CREATE_ACCOUNT_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "gui/widgets/account-create-widget.h"

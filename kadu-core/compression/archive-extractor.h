@@ -24,7 +24,7 @@
 #ifndef ARCHIVE_EXTRACTOR_H
 #define ARCHIVE_EXTRACTOR_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "exports.h"
 

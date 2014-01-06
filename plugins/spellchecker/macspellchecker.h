@@ -27,8 +27,8 @@
 #ifndef MACSPELLCHECKER_H
 #define MACSPELLCHECKER_H
 
-#include <QString>
-#include <QStringList>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
 class MacSpellChecker : public QObject
 {

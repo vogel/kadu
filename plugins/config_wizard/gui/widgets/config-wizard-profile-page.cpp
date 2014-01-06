@@ -20,12 +20,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#include <QtGui/QFormLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -55,7 +55,7 @@ void ConfigWizardProfilePage::createGui()
 	setLanguages();
 	formLayout()->addRow(tr("Language") + ':', LanguagesCombo);
 
-	QLabel *restartInfo = new QLabel("<font size='-1'><i>" + (qApp->translate("@default",
+	QLabel *restartInfo = new QLabel("<font size='-1'><i>" + (QCoreApplication::translate("@default",
 			// NOTE: it's the same string as in varia/configuration/dialog.ui
 			"Kadu needs to be restarted before changes to the language settings will take effect.")) +
 			"</i></font>", this);

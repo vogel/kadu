@@ -26,7 +26,7 @@
 #ifndef EDIT_TALKABLE_ACTION_H
 #define EDIT_TALKABLE_ACTION_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "model/roles.h"
 

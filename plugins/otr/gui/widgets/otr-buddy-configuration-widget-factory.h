@@ -22,7 +22,7 @@
 #ifndef OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H
 #define OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "gui/widgets/buddy-configuration-widget-factory.h"
 
@@ -30,7 +30,7 @@ class OtrPolicyService;
 
 class OtrBuddyConfigurationWidgetFactory : public BuddyConfigurationWidgetFactory
 {
-	QWeakPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrPolicyService> PolicyService;
 
 public:
 	virtual ~OtrBuddyConfigurationWidgetFactory();

@@ -299,14 +299,29 @@ void Protocol::setChatService(ChatService * const chatService)
 	CurrentChatService = chatService;
 }
 
+ChatService * Protocol::chatService()
+{
+	return CurrentChatService.data();
+}
+
 void Protocol::setChatStateService(ChatStateService * const chatStateService)
 {
 	CurrentChatStateService = chatStateService;
 }
 
+ChatStateService * Protocol::chatStateService()
+{
+	return CurrentChatStateService.data();
+}
+
 void Protocol::setRosterService(RosterService * const rosterService)
 {
 	CurrentRosterService = rosterService;
+}
+
+RosterService * Protocol::rosterService() const
+{
+	return CurrentRosterService.data();
 }
 
 #include "moc_protocol.cpp"

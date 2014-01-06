@@ -22,13 +22,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QPushButton>
-#include <QtGui/QScrollArea>
-#include <QtGui/QStyle>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "file-transfer/file-transfer-manager.h"

@@ -78,14 +78,14 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 	struct gg_msg_richtext_image image;
 
 	QString imagePath = CurrentImageStorageService
-			? CurrentImageStorageService.data()->fullPath(formattedStringImageBlock->imagePath())
+			? CurrentImageStorageService->fullPath(formattedStringImageBlock->imagePath())
 			: formattedStringImageBlock->imagePath();
 	QFile imageFile(imagePath);
 
 	if (CurrentChatImageService && imageFile.open(QFile::ReadOnly))
 	{
 		QByteArray content = imageFile.readAll();
-		const ChatImageKey &chatImageKey = CurrentChatImageService.data()->prepareImageToBeSent(content);
+		const ChatImageKey &chatImageKey = CurrentChatImageService->prepareImageToBeSent(content);
 		imageFile.close();
 
 		image.unknown1 = 0x0109;

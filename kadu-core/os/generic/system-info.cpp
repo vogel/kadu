@@ -25,18 +25,18 @@
 #include <QtCore/QTextStream>
 #include <QtNetwork/QHostInfo>
 
-#if defined(Q_WS_X11) || defined(Q_WS_MAC)
+#ifdef Q_OS_UNIX
 #include <sys/utsname.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #endif
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 #include <windows.h>
 #endif
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
 #endif
 
@@ -51,7 +51,7 @@ SystemInfo * SystemInfo::instance()
 	return Instance;
 }
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_LINUX)
 QString SystemInfo::lsbRelease(const QStringList  &args)
 {
 	QStringList path = QString(qgetenv("PATH")).split(':');
@@ -197,7 +197,7 @@ SystemInfo::SystemInfo()
 	OsFullName = "Unknown";
 
 	// Detect
-#if defined(Q_WS_X11) || defined(Q_WS_MAC)
+#if defined(Q_OS_UNIX)
 	time_t x;
 	time(&x);
 	char str[256];
@@ -217,7 +217,6 @@ SystemInfo::SystemInfo()
 	if (strftime(str, sizeof(str), fmt, localtime(&x)) > 0)
 		Timezone = str;
 #endif
-#if defined(Q_WS_X11)
 	#if defined(Q_OS_FREEBSD)
 		OsName = "FreeBSD";
 	#elif defined(Q_OS_NETBSD)
@@ -233,8 +232,7 @@ SystemInfo::SystemInfo()
 
 		if (OsFullName.isEmpty())
 			OsFullName = linuxHeuristicDetect();
-	#endif
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 	SInt32 minor_version, major_version, bug_fix;
 	if (Gestalt(gestaltSystemVersionMajor, &major_version) == noErr &&
 		Gestalt(gestaltSystemVersionMinor, &minor_version) == noErr &&
@@ -251,7 +249,7 @@ SystemInfo::SystemInfo()
 	OsName = "MacOS X";
 #endif
 
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN32)
 	TIME_ZONE_INFORMATION i;
 	//GetTimeZoneInformation(&i);
 	//TimezoneOffset = (-i.Bias) / 60;

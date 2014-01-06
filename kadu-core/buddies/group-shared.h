@@ -49,8 +49,8 @@ protected:
 	virtual void store();
 
 public:
-	static GroupShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &groupStoragePoint);
-	static GroupShared * loadFromStorage(const QSharedPointer<StoragePoint> &groupStoragePoint);
+	static GroupShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &groupStoragePoint);
+	static GroupShared * loadFromStorage(const std::shared_ptr<StoragePoint> &groupStoragePoint);
 
 	explicit GroupShared(const QUuid &uuid = QUuid());
 	virtual ~GroupShared();

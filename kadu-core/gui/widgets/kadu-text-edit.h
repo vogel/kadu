@@ -20,7 +20,7 @@
 #ifndef KADU_TEXT_EDIT_H
 #define KADU_TEXT_EDIT_H
 
-#include <QtGui/QTextEdit>
+#include <QtWidgets/QTextEdit>
 
 /**
  * @addtogroup Gui

@@ -22,7 +22,7 @@
 #ifndef DEFAULT_PROXY_ACTION_H
 #define DEFAULT_PROXY_ACTION_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "gui/actions/action-description.h"
 

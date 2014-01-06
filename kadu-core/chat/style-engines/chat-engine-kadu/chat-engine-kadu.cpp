@@ -21,7 +21,7 @@
  */
 
 #include <QtCore/QFileInfo>
-#include <QtWebKit/QWebFrame>
+#include <QtWebKitWidgets/QWebFrame>
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"

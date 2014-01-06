@@ -22,7 +22,7 @@
 #ifndef CHANGE_STATUS_ACTION_H
 #define CHANGE_STATUS_ACTION_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "gui/actions/action-description.h"
 

@@ -25,7 +25,8 @@
 #ifndef PLUGIN_LIST_WIDGET_H
 #define PLUGIN_LIST_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
 
 class QLineEdit;
 
@@ -55,8 +56,8 @@ class PluginListWidget : public QWidget
 	friend class PluginModel;
 	friend class PluginProxyModel;
 
-	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	QWeakPointer<PluginsManager> m_pluginsManager;
+	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginsManager> m_pluginsManager;
 
 	FilterWidget *LineEdit;
 	CategorizedListView *ListView;

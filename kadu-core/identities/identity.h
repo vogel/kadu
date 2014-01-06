@@ -36,8 +36,8 @@ class KADUAPI Identity : public SharedBase<IdentityShared>
 
 public:
 	static Identity create();
-	static Identity loadStubFromStorage(const QSharedPointer<StoragePoint> &identityStoragePoint);
-	static Identity loadFromStorage(const QSharedPointer<StoragePoint> &identityStoragePoint);
+	static Identity loadStubFromStorage(const std::shared_ptr<StoragePoint> &identityStoragePoint);
+	static Identity loadFromStorage(const std::shared_ptr<StoragePoint> &identityStoragePoint);
 	static Identity null;
 
 	Identity();

@@ -55,7 +55,7 @@ class JabberAvatarVCardDownloader : public AvatarDownloader
 {
 	Q_OBJECT
 
-	QWeakPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<XMPP::JabberVCardService> VCardService;
 
 	void done(QImage avatar);
 	void failed();

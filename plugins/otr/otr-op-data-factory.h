@@ -25,7 +25,7 @@
 #define OTR_OP_DATA_FACTORY_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Contact;
 
@@ -47,18 +47,18 @@ class OtrOpDataFactory : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrErrorMessageService> ErrorMessageService;
-	QWeakPointer<OtrFingerprintService> FingerprintService;
-	QWeakPointer<OtrInstanceTagService> InstanceTagService;
-	QWeakPointer<OtrIsLoggedInService> IsLoggedInService;
-	QWeakPointer<OtrMessageEventService> MessageEventService;
-	QWeakPointer<OtrMessageService> MessageService;
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
-	QWeakPointer<OtrPolicyService> PolicyService;
-	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
-	QWeakPointer<OtrSessionService> SessionService;
-	QWeakPointer<OtrTimerService> TimerService;
-	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrErrorMessageService> ErrorMessageService;
+	QPointer<OtrFingerprintService> FingerprintService;
+	QPointer<OtrInstanceTagService> InstanceTagService;
+	QPointer<OtrIsLoggedInService> IsLoggedInService;
+	QPointer<OtrMessageEventService> MessageEventService;
+	QPointer<OtrMessageService> MessageService;
+	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrPrivateKeyService> PrivateKeyService;
+	QPointer<OtrSessionService> SessionService;
+	QPointer<OtrTimerService> TimerService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
 
 public:
 	explicit OtrOpDataFactory(QObject *parent = 0);

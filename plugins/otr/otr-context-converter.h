@@ -27,6 +27,7 @@ extern "C" {
 }
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 #include "storage/manager-common.h"
 
@@ -39,7 +40,7 @@ class OtrContextConverter : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrUserStateService> UserStateService;
 
 public:
 	explicit OtrContextConverter(QObject *parent = 0);

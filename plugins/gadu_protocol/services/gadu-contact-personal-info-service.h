@@ -34,7 +34,7 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduConnection> Connection;
+	QPointer<GaduConnection> Connection;
 	unsigned int FetchSeq;
 	QString Id;
 

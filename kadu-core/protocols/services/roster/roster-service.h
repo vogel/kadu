@@ -72,7 +72,7 @@ class KADUAPI RosterService : public AccountService
 {
 	Q_OBJECT
 
-	QWeakPointer<Protocol> CurrentProtocol;
+	QPointer<Protocol> CurrentProtocol;
 
 public:
 	/**

@@ -22,7 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QSystemTrayIcon>
+#include <QtWidgets/QSystemTrayIcon>
 
 #include "qt4-docking-notify.h"
 

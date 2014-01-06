@@ -41,12 +41,12 @@
  */
 
 #include <QtCore/QVariant>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QWidget>
 
 #ifdef Q_OS_MAC
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QMainWindow>
 #endif
 
 #include "misc/misc.h"

@@ -24,10 +24,10 @@
 #include "plugins/plugin-root-component.h"
 #include "debug.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QEvent>
 #include <QtCore/QLibrary>
 #include <QtCore/QPluginLoader>
-#include <QtGui/QApplication>
 
 #ifdef Q_OS_MAC
 	#define SO_PREFIX "lib"
@@ -64,7 +64,7 @@ PluginLoader::~PluginLoader() noexcept
 		// unloading the plugin and the event loop would try to delete objects
 		// belonging to already unloaded plugins, which can result in segfaults.
 
-		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+		QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 		m_pluginLoader->unload();
 	}
 }

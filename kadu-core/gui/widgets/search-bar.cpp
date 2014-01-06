@@ -19,13 +19,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QStyle>
-#include <QtGui/QToolButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QToolButton>
 
 #include "search-bar.h"
 
@@ -117,12 +117,12 @@ void SearchBar::showEvent(QShowEvent *event)
 void SearchBar::setSearchWidget(QWidget * const widget)
 {
 	if (SearchWidget)
-		SearchWidget.data()->removeEventFilter(this);
+		SearchWidget->removeEventFilter(this);
 
 	SearchWidget = widget;
 
 	if (SearchWidget)
-		SearchWidget.data()->installEventFilter(this);
+		SearchWidget->installEventFilter(this);
 }
 
 void SearchBar::setAutoVisibility(bool autoVisibility)
@@ -181,7 +181,7 @@ void SearchBar::close()
 		hide();
 
 	if (SearchWidget)
-		SearchWidget.data()->setFocus();
+		SearchWidget->setFocus();
 }
 
 void SearchBar::searchTextChanged(const QString &text)

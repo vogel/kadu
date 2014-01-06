@@ -72,7 +72,7 @@ signals:
 private:
 	static BuddyPreferredManager *m_instance;
 
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	BuddyPreferredManager();
 	~BuddyPreferredManager();

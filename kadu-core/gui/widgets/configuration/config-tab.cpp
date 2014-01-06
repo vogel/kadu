@@ -19,11 +19,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QGroupBox>
-#include <QtGui/QScrollArea>
-#include <QtGui/QTabWidget>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QScrollArea>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QVBoxLayout>
 
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-section.h"

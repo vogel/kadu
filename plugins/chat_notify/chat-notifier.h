@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "notify/notifier.h"
 
@@ -46,8 +46,8 @@ public:
 	virtual void notify(Notification *notification);
 
 private:
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QWeakPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 	void sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget);
 

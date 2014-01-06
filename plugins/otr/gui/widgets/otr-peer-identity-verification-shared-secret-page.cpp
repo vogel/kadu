@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "protocols/protocol-factory.h"

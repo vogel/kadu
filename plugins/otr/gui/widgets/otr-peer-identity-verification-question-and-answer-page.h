@@ -22,7 +22,7 @@
 #ifndef OTR_PEER_IDENTITY_VERIFICATION_QUESTION_AND_ANSWER_PAGE_H
 #define OTR_PEER_IDENTITY_VERIFICATION_QUESTION_AND_ANSWER_PAGE_H
 
-#include <QtGui/QWizardPage>
+#include <QtWidgets/QWizardPage>
 
 #include "contacts/contact.h"
 
@@ -32,7 +32,7 @@ class OtrPeerIdentityVerificationQuestionAndAnswerPage : public QWizardPage
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
 	Contact MyContact;
 

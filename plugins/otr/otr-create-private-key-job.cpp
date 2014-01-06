@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QThread>
+#include <QtCore/QThread>
 
 extern "C" {
 #   include <libotr/privkey.h>
@@ -41,8 +41,8 @@ OtrCreatePrivateKeyJob::~OtrCreatePrivateKeyJob()
 		return;
 
 	if (UserStateService)
-		otrl_privkey_generate_cancelled(UserStateService.data()->userState(), KeyPointer);
-	CreationThread.data()->wait();
+		otrl_privkey_generate_cancelled(UserStateService->userState(), KeyPointer);
+	CreationThread->wait();
 	KeyPointer = 0;
 }
 
@@ -69,7 +69,7 @@ void OtrCreatePrivateKeyJob::createPrivateKey()
 		return;
 	}
 
-	gcry_error_t err = otrl_privkey_generate_start(UserStateService.data()->userState(), MyAccount.id().toUtf8().data(),
+	gcry_error_t err = otrl_privkey_generate_start(UserStateService->userState(), MyAccount.id().toUtf8().data(),
 												   MyAccount.protocolName().toUtf8().data(), &KeyPointer);
 	if (err)
 	{
@@ -86,13 +86,13 @@ void OtrCreatePrivateKeyJob::createPrivateKey()
 	connect(worker, SIGNAL(finished(bool)), this, SLOT(workerFinished(bool)));
 	connect(worker, SIGNAL(finished(bool)), worker, SLOT(deleteLater()));
 
-	CreationThread.data()->start();
+	CreationThread->start();
 }
 
 void OtrCreatePrivateKeyJob::workerFinished(bool ok)
 {
 	if (CreationThread)
-		CreationThread.data()->quit();
+		CreationThread->quit();
 
 	if (!ok)
 	{
@@ -102,7 +102,7 @@ void OtrCreatePrivateKeyJob::workerFinished(bool ok)
 
 	Q_ASSERT(KeyPointer);
 
-	gcry_error_t err = otrl_privkey_generate_finish(UserStateService.data()->userState(), KeyPointer, PrivateStoreFileName.toUtf8().data());
+	gcry_error_t err = otrl_privkey_generate_finish(UserStateService->userState(), KeyPointer, PrivateStoreFileName.toUtf8().data());
 	KeyPointer = 0;
 
 	emit finished(MyAccount, 0 == err);

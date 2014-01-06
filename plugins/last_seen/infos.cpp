@@ -25,7 +25,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"

@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
 #include <QtXml/QDomElement>
 
 #include "configuration/configuration-window-data-manager.h"
@@ -78,7 +78,7 @@ void ConfigListWidget::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(qApp->translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
+	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
 
 	clear();
@@ -86,8 +86,8 @@ void ConfigListWidget::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 	}
 }
 
@@ -131,7 +131,7 @@ bool ConfigListWidget::fromDomElement(QDomElement domElement)
 			itemValues.append(element.attribute("value"));
 			itemCaptions.append(element.attribute("caption"));
 
-			addItem(qApp->translate("@default", element.attribute("caption").toUtf8().constData()));
+			addItem(QCoreApplication::translate("@default", element.attribute("caption").toUtf8().constData()));
 		}
 	}
 

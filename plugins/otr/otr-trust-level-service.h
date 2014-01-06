@@ -29,7 +29,7 @@ extern "C" {
 }
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Contact;
 
@@ -40,8 +40,8 @@ class OtrTrustLevelService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrContextConverter> ContextConverter;
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrContextConverter> ContextConverter;
+	QPointer<OtrUserStateService> UserStateService;
 
 public:
 	static void wrapperOtrUpdateContextList(void *data);

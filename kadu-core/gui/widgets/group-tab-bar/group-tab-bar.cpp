@@ -30,10 +30,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtCore/QMimeData>
+#include <QtWidgets/QApplication>
 #include <QtGui/QDragEnterEvent>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMenu>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMenu>
 
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/group-manager.h"

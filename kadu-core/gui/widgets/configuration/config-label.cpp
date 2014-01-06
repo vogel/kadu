@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-label.h"
@@ -43,12 +43,12 @@ void ConfigLabel::createWidgets()
 {
 	kdebugf();
 
-	setText(qApp->translate("@default", widgetCaption.toUtf8().constData()));
+	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
 	setWordWrap(true);
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
 void ConfigLabel::setText(const QString &text, bool defaultFormatting)

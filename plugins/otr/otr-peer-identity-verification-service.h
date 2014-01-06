@@ -24,7 +24,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -43,10 +43,10 @@ class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsService> AppOpsService;
-	QWeakPointer<OtrContextConverter> ContextConverter;
-	QWeakPointer<OtrOpDataFactory> OpDataFactory;
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrAppOpsService> AppOpsService;
+	QPointer<OtrContextConverter> ContextConverter;
+	QPointer<OtrOpDataFactory> OpDataFactory;
+	QPointer<OtrUserStateService> UserStateService;
 
 	void handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question);
 

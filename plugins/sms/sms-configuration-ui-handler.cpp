@@ -29,13 +29,13 @@
  */
 
 #include <QtCore/QProcess>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
-#include <QtGui/QTextEdit>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QTextEdit>
 
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"

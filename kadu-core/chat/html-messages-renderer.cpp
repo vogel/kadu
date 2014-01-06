@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWebKit/QWebFrame>
-#include <QtWebKit/QWebPage>
+#include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKitWidgets/QWebPage>
 
 #include "chat/chat-styles-manager.h"
 #include "chat/style-engines/chat-style-engine.h"

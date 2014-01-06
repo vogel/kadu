@@ -26,7 +26,7 @@
 #ifndef KADU_DIALOG_H
 #define KADU_DIALOG_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"

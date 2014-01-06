@@ -26,7 +26,7 @@
 #define JABBER_SERVER_INFO_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QString>
+#include <QtCore/QString>
 
 #include "xmpp_tasks.h"
 
@@ -39,7 +39,7 @@ class JabberServerInfoService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<Client> XmppClient;
+	QPointer<Client> XmppClient;
 	XMPP::Features ServerFeatures;
 	XMPP::DiscoItem::Identities ServerIdentities;
 

@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFormLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QProgressBar>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QProgressBar>
 
 #include "history-import-window.h"
 

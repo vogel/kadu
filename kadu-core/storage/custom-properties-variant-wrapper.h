@@ -23,7 +23,7 @@
 #define CUSTOM_PROPERTIES_VARIANT_WRAPPER_H
 
 #include <QtCore/QString>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "misc/variant-wrapper.h"
 #include "storage/custom-properties.h"
@@ -44,7 +44,7 @@
  */
 class KADUAPI CustomPropertiesVariantWrapper : public VariantWrapper
 {
-	QWeakPointer<CustomProperties> MyCustomProperties;
+	QPointer<CustomProperties> MyCustomProperties;
 	QString Name;
 	CustomProperties::Storability Storability;
 

@@ -84,12 +84,12 @@ void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
 	Q_UNUSED(id)
 
-	if (!Connection || !Connection.data()->hasSession())
+	if (!Connection || !Connection->hasSession())
 		return;
 
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
+	auto writableSessionToken = Connection->writableSessionToken();
 	FetchSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
 	//gg_pubdir50_free(req);
 }
@@ -98,7 +98,7 @@ void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 {
 	Q_UNUSED(id)
 
-	if (!Connection || !Connection.data()->hasSession())
+	if (!Connection || !Connection->hasSession())
 		return;
 
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
@@ -126,7 +126,7 @@ void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 	if (!buddy.familyCity().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
+	auto writableSessionToken = Connection->writableSessionToken();
 	UpdateSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
 	//gg_pubdir50_free(req);
 }

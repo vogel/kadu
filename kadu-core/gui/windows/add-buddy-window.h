@@ -25,7 +25,7 @@
 #ifndef ADD_BUDDY_WINDOW_H
 #define ADD_BUDDY_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"

@@ -20,7 +20,7 @@
 #ifndef CHAT_IMAGE_REQUEST_SERVICE_H
 #define CHAT_IMAGE_REQUEST_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "accounts/account.h"
 #include "protocols/services/chat-image-key.h"
@@ -56,9 +56,9 @@ class ChatImageRequestService : public QObject
 	static const quint32 ReceivedImageKeysPerMinuteLimit = 10;
 	quint32 ReceivedImageKeysCount;
 
-	QWeakPointer<ImageStorageService> CurrentImageStorageService;
-	QWeakPointer<AccountManager> CurrentAccountManager;
-	QWeakPointer<ContactManager> CurrentContactManager;
+	QPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<AccountManager> CurrentAccountManager;
+	QPointer<ContactManager> CurrentContactManager;
 
 	bool acceptImage(const Account &account, const QString &id, const ChatImageKey &imageKey) const;
 

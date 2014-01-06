@@ -33,12 +33,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QSessionManager>
-
-#ifdef Q_WS_WIN
-#include "configuration/configuration-manager.h"
-#endif
-
 #include "kadu-application.h"
 
 #if defined(Q_WS_X11)
@@ -53,12 +47,15 @@
 #endif // Q_WS_X11
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
-		QApplication(argc, argv), SessionClosing(false)
+		QApplication(argc, argv)
+#if QT_VERSION < 0x050000
+		, SavingSession(false)
+#endif
 {
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	// Fix for #2491
 	setStyleSheet("QToolBar{border:0px}");
 #endif
@@ -79,22 +76,14 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 #endif // Q_WS_X11
 }
 
+#if QT_VERSION < 0x050000
 void KaduApplication::commitData(QSessionManager &manager)
 {
-	SessionClosing = true;
+	SavingSession = true;
 
-#ifdef Q_WS_WIN
-	/* On Windows Kadu often (if not always) seems to crash when it is
-	 * opened at the time of closing or rebooting the system (when checking,
-	 * try with Kadu window both visible and hidden by docking).
-	 * This prevents configuration from being saved, and results in data loss.
-	 * TODO: Remove this if you think that all those crashes are fixed.
-	 */
-	ConfigurationManager::instance()->flush();
-#endif
 	QApplication::commitData(manager);
 
-	SessionClosing = false;
+	SavingSession = false;
 }
 
 #if defined(Q_WS_X11)
@@ -110,9 +99,10 @@ bool KaduApplication::x11EventFilter(XEvent *event)
 }
 #endif // Q_WS_X11
 
-bool KaduApplication::sessionClosing() const
+bool KaduApplication::isSavingSession() const
 {
-	return SessionClosing;
+	return SavingSession;
 }
+#endif
 
 #include "moc_kadu-application.cpp"

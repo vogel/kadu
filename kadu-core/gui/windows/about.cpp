@@ -36,16 +36,16 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 #include <QtCore/QUrl>
-#include <QtGui/QApplication>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyle>
-#include <QtGui/QTabWidget>
-#include <QtGui/QTextBrowser>
-#include <QtGui/QTextEdit>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"

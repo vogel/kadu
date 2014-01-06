@@ -26,7 +26,7 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 
 	static MediaPlayer *Instance;
 
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	MediaPlayerStatusChanger *Changer;
 	PlayerInfo *playerInfo;

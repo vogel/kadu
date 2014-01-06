@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "sms-translator.h"
 
@@ -36,7 +36,7 @@ SmsTranslator::~SmsTranslator()
 
 QScriptValue SmsTranslator::tr(const QString &text)
 {
-	return qApp->translate("@default", text.toUtf8().constData());
+	return QCoreApplication::translate("@default", text.toUtf8().constData());
 }
 
 #include "moc_sms-translator.cpp"

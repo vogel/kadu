@@ -21,7 +21,7 @@
 #ifndef KCATEGORIZEDVIEW_H
 #define KCATEGORIZEDVIEW_H
 
-#include <QtGui/QListView>
+#include <QtWidgets/QListView>
 
 class CategorizedListViewPrivate;
 
@@ -304,7 +304,11 @@ protected:
           * Reimplemented from QAbstractItemView.
           */
         virtual void dataChanged(const QModelIndex &topLeft,
-                                 const QModelIndex &bottomRight);
+                                 const QModelIndex &bottomRight
+#if QT_VERSION >= 0x050000
+                                 , const QVector<int> &
+#endif
+                                 );
 
         /**
           * Reimplemented from QAbstractItemView.
