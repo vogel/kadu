@@ -21,21 +21,21 @@
 
 #include "plugins-common.h"
 
-PluginStateService::PluginStateService(QObject *parent) :
+PluginStateService::PluginStateService(QObject *parent) noexcept :
 		QObject{parent}
 {
 }
 
-PluginStateService::~PluginStateService()
+PluginStateService::~PluginStateService() noexcept
 {
 }
 
-QMap<QString, PluginState> PluginStateService::pluginStates() const
+QMap<QString, PluginState> PluginStateService::pluginStates() const noexcept
 {
 	return m_pluginStates;
 }
 
-void PluginStateService::setPluginStates(const QMap<QString, PluginState> &pluginStates)
+void PluginStateService::setPluginStates(const QMap<QString, PluginState> &pluginStates) noexcept
 {
 	m_pluginStates = pluginStates;
 }
@@ -53,6 +53,11 @@ void PluginStateService::setPluginState(const QString &pluginName, PluginState s
 		m_pluginStates.remove(pluginName);
 	else
 		m_pluginStates.insert(pluginName, state);
+}
+
+QList<QString> PluginStateService::pluginsWithState(PluginState state) noexcept
+{
+	return m_pluginStates.keys(state);
 }
 
 #include "moc_plugin-state-service.cpp"

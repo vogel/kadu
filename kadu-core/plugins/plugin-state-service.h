@@ -31,14 +31,16 @@ class KADUAPI PluginStateService : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginStateService(QObject *parent = nullptr);
-	virtual ~PluginStateService();
+	explicit PluginStateService(QObject *parent = nullptr) noexcept;
+	virtual ~PluginStateService() noexcept;
 
-	QMap<QString, PluginState> pluginStates() const;
-	void setPluginStates(const QMap<QString, PluginState> &pluginStates);
+	QMap<QString, PluginState> pluginStates() const noexcept;
+	void setPluginStates(const QMap<QString, PluginState> &pluginStates) noexcept;
 
 	PluginState pluginState(const QString &pluginName) const noexcept;
 	void setPluginState(const QString &pluginName, PluginState state) noexcept;
+
+	QList<QString> pluginsWithState(PluginState state) noexcept;
 
 private:
 	QMap<QString, PluginState> m_pluginStates;

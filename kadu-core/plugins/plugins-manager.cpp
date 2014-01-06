@@ -207,19 +207,6 @@ QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const Plug
 	return result;
 }
 
-void PluginsManager::activateReplacementPlugins()
-{
-	for (auto const &pluginToReplaceInfo : m_pluginInfoRepository.data())
-	{
-		if (m_pluginActivationService.data()->isActive(pluginToReplaceInfo.name()) || m_pluginStateService.data()->pluginState(pluginToReplaceInfo.name()) != PluginState::Enabled)
-			continue;
-
-		auto replacementPlugin = findReplacementPlugin(pluginToReplaceInfo.name());
-		if (m_pluginStateService.data()->pluginState(replacementPlugin) == PluginState::New)
-			activatePluginWithDependencies(replacementPlugin);
-	}
-}
-
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Returns true if this plugin should be activated.
@@ -236,14 +223,33 @@ bool PluginsManager::shouldActivate(const PluginInfo &pluginInfo) const noexcept
 	if (!m_pluginStateService)
 		return false;
 
-	auto state = m_pluginStateService.data()->pluginState(pluginInfo.name());
+	switch (m_pluginStateService.data()->pluginState(pluginInfo.name()))
+	{
+		case PluginState::Enabled:
+			return true;
+		case PluginState::Disabled:
+			return false;
+		case PluginState::New:
+			return pluginInfo.loadByDefault();
+	}
 
-	if (PluginState::Enabled == state)
-		return true;
-	if (PluginState::Disabled == state)
-		return false;
+	return false;
+}
 
-	return pluginInfo.loadByDefault();
+void PluginsManager::activateReplacementPlugins()
+{
+	if (!m_pluginStateService)
+		return;
+
+	for (auto const &pluginToReplace : m_pluginStateService.data()->pluginsWithState(PluginState::Enabled))
+	{
+		if (m_pluginActivationService.data()->isActive(pluginToReplace))
+			continue;
+
+		auto replacementPlugin = findReplacementPlugin(pluginToReplace);
+		if (PluginState::New == m_pluginStateService.data()->pluginState(replacementPlugin))
+			activatePluginWithDependencies(replacementPlugin);
+	}
 }
 
 QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
