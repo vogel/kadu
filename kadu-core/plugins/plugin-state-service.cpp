@@ -40,14 +40,14 @@ void PluginStateService::setPluginStates(const QMap<QString, PluginState> &plugi
 	m_pluginStates = pluginStates;
 }
 
-PluginState PluginStateService::pluginState(const QString &pluginName) const noexcept
+PluginState PluginStateService::pluginState(const QString &pluginName) const
 {
 	return m_pluginStates.contains(pluginName)
 			? m_pluginStates.value(pluginName)
 			: PluginState::New;
 }
 
-void PluginStateService::setPluginState(const QString &pluginName, PluginState state) noexcept
+void PluginStateService::setPluginState(const QString &pluginName, PluginState state)
 {
 	if (PluginState::New == state)
 		m_pluginStates.remove(pluginName);

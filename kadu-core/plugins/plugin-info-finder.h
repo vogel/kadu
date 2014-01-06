@@ -31,12 +31,12 @@ class PluginInfoFinder : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginInfoFinder(QObject *parent = nullptr) noexcept;
-	virtual ~PluginInfoFinder() noexcept;
+	explicit PluginInfoFinder(QObject *parent = nullptr);
+	virtual ~PluginInfoFinder();
 
-	void setPluginInfoReader(PluginInfoReader *pluginInfoReader) noexcept;
+	void setPluginInfoReader(PluginInfoReader *pluginInfoReader);
 
-	std::map<QString, PluginInfo> readPluginInfos(const QString &directory) noexcept;
+	std::map<QString, PluginInfo> readPluginInfos(const QString &directory);
 
 private:
 	QPointer<PluginInfoReader> m_pluginInfoReader;

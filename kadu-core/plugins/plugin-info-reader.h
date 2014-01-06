@@ -28,9 +28,9 @@ class PluginInfoReader : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginInfoReader(QObject *parent = nullptr) noexcept;
-	virtual ~PluginInfoReader() noexcept;
+	explicit PluginInfoReader(QObject *parent = nullptr);
+	virtual ~PluginInfoReader();
 
-	PluginInfo readPluginInfo(QString name, const QString &filePath) noexcept(false);
+	PluginInfo readPluginInfo(QString name, const QString &filePath);
 
 };

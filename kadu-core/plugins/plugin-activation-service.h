@@ -39,15 +39,15 @@ public:
 	explicit PluginActivationService(QObject *parent = nullptr);
 	virtual ~PluginActivationService();
 
-	void performActivationAction(const PluginActivationAction &action) noexcept(false);
-	bool isActive(const QString &name) const noexcept;
-	QSet<QString> activePlugins() const noexcept;
+	void performActivationAction(const PluginActivationAction &action);
+	bool isActive(const QString &name) const;
+	QSet<QString> activePlugins() const;
 
 private:
 	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
 	map m_activePlugins;
 
-	void activatePlugin(const QString &name, bool firstTime) noexcept(false);
-	void deactivatePlugin(const QString &name) noexcept;
+	void activatePlugin(const QString &name, bool firstTime);
+	void deactivatePlugin(const QString &name);
 
 };

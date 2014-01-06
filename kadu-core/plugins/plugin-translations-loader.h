@@ -28,8 +28,8 @@ class PluginTranslationsLoader
 {
 
 public:
-	explicit PluginTranslationsLoader(const QString &pluginName) noexcept;
-	~PluginTranslationsLoader() noexcept;
+	explicit PluginTranslationsLoader(const QString &pluginName);
+	~PluginTranslationsLoader();
 
 private:
 	QScopedPointer<QTranslator> m_translator;

@@ -31,10 +31,10 @@ class PluginLoader : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginLoader(const QString &pluginName, QObject *parent = nullptr) noexcept(false);
-	virtual ~PluginLoader() noexcept;
+	explicit PluginLoader(const QString &pluginName, QObject *parent = nullptr);
+	virtual ~PluginLoader();
 
-	PluginRootComponent * instance() const noexcept;
+	PluginRootComponent * instance() const;
 
 private:
 	QScopedPointer<QPluginLoader> m_pluginLoader;

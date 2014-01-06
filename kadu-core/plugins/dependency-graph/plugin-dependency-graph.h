@@ -46,8 +46,8 @@ public:
 	QSet<QString> directDependents(const QString &pluginName) const;
 
 	QSet<QString> findPluginsInDependencyCycle() const;
-	QVector<QString> findDependencies(const QString &pluginName) const noexcept(false);
-	QVector<QString> findDependents(const QString &pluginName) const noexcept(false);
+	QVector<QString> findDependencies(const QString &pluginName) const;
+	QVector<QString> findDependents(const QString &pluginName) const;
 
 private:
 	Graph<QString, PluginDependencyTag, PluginDependentTag> m_graph;
@@ -56,6 +56,6 @@ private:
 	QSet<QString> directSuccessors(const QString &pluginName) const;
 
 	template<typename SuccessorTypeTag>
-	QVector<QString> findSuccessors(const QString &pluginName) const noexcept(false);
+	QVector<QString> findSuccessors(const QString &pluginName) const;
 
 };

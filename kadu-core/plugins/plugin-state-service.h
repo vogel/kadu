@@ -37,8 +37,8 @@ public:
 	QMap<QString, PluginState> pluginStates() const;
 	void setPluginStates(const QMap<QString, PluginState> &pluginStates);
 
-	PluginState pluginState(const QString &pluginName) const noexcept;
-	void setPluginState(const QString &pluginName, PluginState state) noexcept;
+	PluginState pluginState(const QString &pluginName) const;
+	void setPluginState(const QString &pluginName, PluginState state);
 
 private:
 	QMap<QString, PluginState> m_pluginStates;

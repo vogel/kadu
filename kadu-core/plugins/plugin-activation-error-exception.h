@@ -36,6 +36,6 @@ private:
 	QString m_pluginName;
 	QString m_errorMessage;
 
-	virtual const char * what() const noexcept { return "Plugin activation error"; }
+	virtual const char * what() const { return "Plugin activation error"; }
 
 };

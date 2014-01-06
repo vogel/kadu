@@ -27,16 +27,16 @@
 
 #include <QtCore/QFileInfo>
 
-PluginInfoReader::PluginInfoReader(QObject *parent) noexcept :
+PluginInfoReader::PluginInfoReader(QObject *parent) :
 		QObject(parent)
 {
 }
 
-PluginInfoReader::~PluginInfoReader() noexcept
+PluginInfoReader::~PluginInfoReader()
 {
 }
 
-PluginInfo PluginInfoReader::readPluginInfo(QString name, const QString &filePath) noexcept(false)
+PluginInfo PluginInfoReader::readPluginInfo(QString name, const QString &filePath)
 {
 	auto fileInfo = QFileInfo{filePath};
 	if (!fileInfo.exists() || !fileInfo.isReadable())

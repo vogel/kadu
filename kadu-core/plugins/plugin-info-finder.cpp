@@ -25,21 +25,21 @@
 #include <QtCore/QDir>
 #include <QtCore/QVector>
 
-PluginInfoFinder::PluginInfoFinder(QObject *parent) noexcept :
+PluginInfoFinder::PluginInfoFinder(QObject *parent) :
 		QObject{parent}
 {
 }
 
-PluginInfoFinder::~PluginInfoFinder() noexcept
+PluginInfoFinder::~PluginInfoFinder()
 {
 }
 
-void PluginInfoFinder::setPluginInfoReader(PluginInfoReader *pluginInfoReader) noexcept
+void PluginInfoFinder::setPluginInfoReader(PluginInfoReader *pluginInfoReader)
 {
 	m_pluginInfoReader = pluginInfoReader;
 }
 
-std::map<QString, PluginInfo> PluginInfoFinder::readPluginInfos(const QString &directory) noexcept
+std::map<QString, PluginInfo> PluginInfoFinder::readPluginInfos(const QString &directory)
 {
 	if (!m_pluginInfoReader)
 		return {};

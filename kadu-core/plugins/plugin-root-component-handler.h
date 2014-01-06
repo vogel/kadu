@@ -28,8 +28,8 @@ class PluginRootComponentHandler : QObject
 	Q_OBJECT
 
 public:
-	PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr) noexcept(false);
-	~PluginRootComponentHandler() noexcept;
+	PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr);
+	~PluginRootComponentHandler();
 
 private:
 	PluginRootComponent *m_pluginRootComponent;

@@ -136,11 +136,11 @@ private:
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 
 	QString findActiveProviding(const QString &feature) const;
-	QVector<QString> allDependencies(const QString &pluginName) noexcept;
-	QVector<QString> allDependents(const QString &pluginName) noexcept;
+	QVector<QString> allDependencies(const QString &pluginName);
+	QVector<QString> allDependents(const QString &pluginName);
 
-	bool shouldActivate(const QString &pluginName) const noexcept;
-	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
+	bool shouldActivate(const QString &pluginName) const;
+	QString findReplacementPlugin(const QString &pluginToReplace) const;
 
 	void activationError(const QString &pluginName, const QString &errorMessage, PluginActivationReason activationReason);
 

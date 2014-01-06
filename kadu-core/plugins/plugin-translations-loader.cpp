@@ -26,7 +26,7 @@
 #include <QtCore/QLatin1String>
 #include <QtCore/QTranslator>
 
-PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept
+PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName)
 {
 	auto const lang = config_file.readEntry("General", "Language");
 
@@ -38,7 +38,7 @@ PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) no
 		m_translator.reset();
 }
 
-PluginTranslationsLoader::~PluginTranslationsLoader() noexcept
+PluginTranslationsLoader::~PluginTranslationsLoader()
 {
 	QCoreApplication::removeTranslator(m_translator.data());
 }

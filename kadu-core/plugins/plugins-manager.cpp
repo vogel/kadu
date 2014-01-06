@@ -297,7 +297,7 @@ void PluginsManager::activatePlugins()
  *   <li>is either PluginState::Enabled or PluginState::New with PluginInfo::loadByDefault() set to true
  * </ul>
  */
-bool PluginsManager::shouldActivate(const QString &pluginName) const noexcept
+bool PluginsManager::shouldActivate(const QString &pluginName) const
 {
 	if (!m_pluginStateService)
 		return false;
@@ -315,7 +315,7 @@ bool PluginsManager::shouldActivate(const QString &pluginName) const noexcept
 	return m_pluginInfoRepository->pluginInfo(pluginName).loadByDefault();
 }
 
-QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
+QString PluginsManager::findReplacementPlugin(const QString &pluginToReplace) const
 {
 	if (!m_pluginInfoRepository)
 		return {};
@@ -367,12 +367,12 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 	return {};
 }
 
-QVector<QString> PluginsManager::allDependencies(const QString &pluginName) noexcept
+QVector<QString> PluginsManager::allDependencies(const QString &pluginName)
 {
 	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependencies(pluginName) : QVector<QString>{};
 }
 
-QVector<QString> PluginsManager::allDependents(const QString &pluginName) noexcept
+QVector<QString> PluginsManager::allDependents(const QString &pluginName)
 {
 	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependents(pluginName) : QVector<QString>{};
 }
