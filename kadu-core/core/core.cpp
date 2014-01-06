@@ -722,6 +722,7 @@ void Core::stopServices()
 void Core::activatePlugins()
 {
 	CurrentPluginsManager->activatePlugins();
+	CurrentPluginsManager->activateReplacementPlugins();
 	CurrentPluginsManager->storePluginStates();
 	ConfigurationManager::instance()->flush();
 }

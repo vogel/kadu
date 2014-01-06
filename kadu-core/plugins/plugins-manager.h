@@ -110,6 +110,7 @@ public:
 
 	void activateProtocolPlugins();
 	void activatePlugins();
+	void activateReplacementPlugins();
 	void deactivatePlugins();
 
 	void activatePluginWithDependencies(const QString &pluginName);

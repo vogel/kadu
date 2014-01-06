@@ -157,7 +157,6 @@ void PluginsManager::storePluginStates()
 
 void PluginsManager::prepareDependencyGraph()
 {
-
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
@@ -180,6 +179,20 @@ void PluginsManager::activateProtocolPlugins()
 		activatePluginWithDependencies(pluginName);
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Activate all plugins that are enabled.
+ *
+ * This method activates all plugins that are either enabled (PluginState::Enabled) or new (PluginState::New)
+ * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is searched
+ * (by checking Plugin::replaces()). Any found replacement plugin is activated.
+ */
+void PluginsManager::activatePlugins()
+{
+	for (const auto &pluginName : pluginsToActivate())
+		activatePluginWithDependencies(pluginName);
+}
+
 QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const PluginInfo &)> filter) const
 {
 	auto result = QVector<QString>{};
@@ -194,22 +207,8 @@ QVector<QString> PluginsManager::pluginsToActivate(std::function<bool(const Plug
 	return result;
 }
 
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Activate all plugins that are enabled.
- *
- * This method activates all plugins that are either enabled (PluginState::Enabled) or new (PluginState::New)
- * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is searched
- * (by checking Plugin::replaces()). Any found replacement plugin is activated.
- */
-void PluginsManager::activatePlugins()
+void PluginsManager::activateReplacementPlugins()
 {
-	if (!m_pluginActivationService || !m_pluginInfoRepository || !m_pluginStateService)
-		return;
-
-	for (const auto &pluginName : pluginsToActivate())
-		activatePluginWithDependencies(pluginName);
-
 	for (auto const &pluginToReplaceInfo : m_pluginInfoRepository.data())
 	{
 		if (m_pluginActivationService.data()->isActive(pluginToReplaceInfo.name()) || m_pluginStateService.data()->pluginState(pluginToReplaceInfo.name()) != PluginState::Enabled)
