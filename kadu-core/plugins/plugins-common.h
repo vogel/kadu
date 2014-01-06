@@ -46,15 +46,3 @@ enum class PluginState
 	 */
 	Enabled
 };
-
-enum class PluginActivationType
-{
-	Activation,
-	Deactivation
-};
-
-enum class PluginDeactivationReason
-{
-	UserRequest,
-	Exiting
-};

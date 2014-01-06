@@ -51,6 +51,7 @@
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-state-service.h"
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 
@@ -114,6 +115,11 @@ void PluginListWidget::setPluginActivationService(PluginActivationService *plugi
 	Model->loadPluginData();
 }
 
+void PluginListWidget::setPluginStateService(PluginStateService *pluginStateService)
+{
+	m_pluginStateService = pluginStateService;
+}
+
 void PluginListWidget::setPluginsManager(PluginsManager *pluginsManager)
 {
 	m_pluginsManager = pluginsManager;
@@ -149,7 +155,12 @@ void PluginListWidget::applyChanges()
 	if (m_pluginsManager)
 	{
 		for (auto const &pluginName : pluginsToDeactivate)
-			m_pluginsManager.data()->deactivatePluginWithDependents(pluginName, PluginDeactivationReason::UserRequest);
+		{
+			m_pluginsManager.data()->deactivatePluginWithDependents(pluginName);
+			if (m_pluginStateService)
+				for (auto const &dependentPlugin : m_pluginsManager.data()->withDependents(pluginName))
+					m_pluginStateService.data()->setPluginState(dependentPlugin, PluginState::Disabled);
+		}
 
 		for (auto const &pluginName : pluginsToActivate)
 			m_pluginsManager.data()->activatePluginWithDependencies(pluginName);

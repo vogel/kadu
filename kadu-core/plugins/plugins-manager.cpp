@@ -270,7 +270,7 @@ void PluginsManager::deactivatePlugins()
 	for (auto const &pluginName : m_pluginActivationService.data()->activePlugins())
 	{
 		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(pluginName));
-		deactivatePluginWithDependents(pluginName, PluginDeactivationReason::Exiting);
+		deactivatePluginWithDependents(pluginName);
 	}
 }
 
@@ -325,7 +325,7 @@ QVector<QString> PluginsManager::withDependents(const QString &pluginName) noexc
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-void PluginsManager::activatePluginWithDependencies(const QString &pluginName)
+void PluginsManager::activatePluginWithDependencies(const QString &pluginName) noexcept
 {
 	if (!m_pluginActivationService || !m_pluginInfoRepository || !m_pluginStateService)
 		return;
@@ -363,20 +363,13 @@ void PluginsManager::activatePlugin(const QString &pluginName)
 	m_pluginActivationService.data()->activatePlugin(pluginName, PluginState::New == state);
 }
 
-void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason)
+void PluginsManager::deactivatePluginWithDependents(const QString &pluginName) noexcept
 {
-	if (!m_pluginActivationService)
-		return;
-
-	if (!m_pluginActivationService.data()->isActive(pluginName))
+	if (!m_pluginActivationService || !m_pluginActivationService.data()->isActive(pluginName))
 		return;
 
 	for (auto const &plugin : withDependents(pluginName))
-	{
 		m_pluginActivationService.data()->deactivatePlugin(plugin);
-		if (PluginDeactivationReason::UserRequest == reason && m_pluginStateService)
-			m_pluginStateService.data()->setPluginState(plugin, PluginState::Disabled);
-	}
 }
 
 #include "moc_plugins-manager.cpp"

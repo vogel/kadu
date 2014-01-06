@@ -37,6 +37,7 @@ class PluginActivationService;
 class PluginModel;
 class PluginListWidgetItemDelegate;
 class PluginProxyModel;
+class PluginStateService;
 class PluginsManager;
 
 /**
@@ -56,6 +57,7 @@ class PluginListWidget : public QWidget
 	friend class PluginProxyModel;
 
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	QWeakPointer<PluginStateService> m_pluginStateService;
 	QWeakPointer<PluginsManager> m_pluginsManager;
 
 	FilterWidget *LineEdit;
@@ -74,6 +76,7 @@ public:
 	virtual ~PluginListWidget();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginStateService(PluginStateService *pluginStateService);
 	void setPluginsManager(PluginsManager *pluginsManager);
 
 	void applyChanges();

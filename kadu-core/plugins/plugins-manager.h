@@ -47,7 +47,6 @@ class PluginStateService;
 class StoragePoint;
 class StoragePointFactory;
 
-enum class PluginDeactivationReason;
 enum class PluginState;
 
 /**
@@ -103,8 +102,11 @@ public:
 	void activateReplacementPlugins();
 	void deactivatePlugins();
 
-	void activatePluginWithDependencies(const QString &pluginName);
-	void deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason);
+	QVector<QString> withDependencies(const QString &pluginName) noexcept;
+	QVector<QString> withDependents(const QString &pluginName) noexcept;
+
+	void activatePluginWithDependencies(const QString &pluginName) noexcept;
+	void deactivatePluginWithDependents(const QString &pluginName) noexcept;
 
 private:
 	QWeakPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
@@ -126,8 +128,6 @@ private:
 	void activatePlugin(const QString &pluginName) noexcept(false);
 
 	QString findActiveProviding(const QString &feature) const;
-	QVector<QString> withDependencies(const QString &pluginName) noexcept;
-	QVector<QString> withDependents(const QString &pluginName) noexcept;
 
 	bool shouldActivate(const PluginInfo &pluginInfo) const noexcept;
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
