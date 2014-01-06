@@ -58,7 +58,6 @@
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
-#include "plugins/plugins-manager.h"
 #include "protocols/protocols-manager.h"
 
 #include "icons/icons-manager.h"

@@ -30,7 +30,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugins-manager.h"
+#include "plugin-manager.h"
 
 #include "core/core.h"
 #include "misc/kadu-paths.h"
@@ -375,4 +375,4 @@ void PluginsManager::deactivatePluginWithDependents(const QString &pluginName) n
 		m_pluginActivationService.data()->deactivatePlugin(plugin);
 }
 
-#include "moc_plugins-manager.cpp"
+#include "moc_plugin-manager.cpp"

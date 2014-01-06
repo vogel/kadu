@@ -12,17 +12,16 @@ set (plugins_SRCS
 	plugin-info-reader.cpp
 	plugin-info-repository.cpp
 	plugin-loader.cpp
+	plugin-manager.cpp
 	plugin-root-component-handler.cpp
 	plugin-state-service.cpp
 	plugin-state-storage.cpp
 	plugin-state-storage-09.cpp
 	plugin-translations-loader.cpp
-	plugins-manager.cpp
 )
 
 set (plugins_MOC_SRCS
 	model/plugin-model.h
-	plugins-manager.h
 )
 
 kadu_subdirectory (plugins "${plugins_SRCS}" "${plugins_MOC_SRCS}" "")
