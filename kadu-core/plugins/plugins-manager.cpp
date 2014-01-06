@@ -237,7 +237,11 @@ void PluginsManager::activateReplacementPlugins()
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplace);
 		if (PluginState::New == m_pluginStateService.data()->pluginState(replacementPlugin))
-			activatePluginWithDependencies(replacementPlugin);
+			if (activatePluginWithDependencies(replacementPlugin))
+			{
+				m_pluginStateService.data()->setPluginState(pluginToReplace, PluginState::Disabled);
+				m_pluginStateService.data()->setPluginState(replacementPlugin, PluginState::Enabled);
+			}
 	}
 }
 
@@ -322,15 +326,12 @@ QVector<QString> PluginsManager::withDependents(const QString &pluginName) noexc
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-void PluginsManager::activatePluginWithDependencies(const QString &pluginName) noexcept
+bool PluginsManager::activatePluginWithDependencies(const QString &pluginName) noexcept
 {
 	kdebugm(KDEBUG_INFO, "activate plugin: %s\n", qPrintable(pluginName));
 
-	if (!m_pluginActivationService || !m_pluginInfoRepository || !m_pluginStateService)
-		return;
-
-	if (m_pluginActivationService.data()->isActive(pluginName))
-		return;
+	if (!m_pluginActivationService || !m_pluginInfoRepository || m_pluginActivationService.data()->isActive(pluginName))
+		return false;
 
 	try
 	{
@@ -343,14 +344,15 @@ void PluginsManager::activatePluginWithDependencies(const QString &pluginName) n
 
 		for (auto plugin : withDependencies(pluginName))
 			activatePlugin(plugin);
-
-		m_pluginStateService.data()->setPluginState(pluginName, PluginState::Enabled);
 	}
 	catch (PluginActivationErrorException &e)
 	{
 		if (m_pluginActivationErrorHandler)
 			m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
+		return false;
 	}
+
+	return true;
 }
 
 void PluginsManager::activatePlugin(const QString &pluginName)

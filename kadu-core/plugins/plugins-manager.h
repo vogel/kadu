@@ -105,7 +105,7 @@ public:
 	QVector<QString> withDependencies(const QString &pluginName) noexcept;
 	QVector<QString> withDependents(const QString &pluginName) noexcept;
 
-	void activatePluginWithDependencies(const QString &pluginName) noexcept;
+	bool activatePluginWithDependencies(const QString &pluginName) noexcept;
 	void deactivatePluginWithDependents(const QString &pluginName) noexcept;
 
 private:
