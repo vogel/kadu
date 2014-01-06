@@ -36,7 +36,6 @@
 #include "misc/kadu-paths.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugins/plugin-activation-action.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-activation-error-handler.h"
 #include "plugins/plugin-activation-service.h"
@@ -350,8 +349,11 @@ void PluginsManager::activatePluginWithDependencies(const QString &pluginName)
 
 void PluginsManager::activatePlugin(const QString &pluginName)
 {
+	if (!m_pluginStateService)
+		return;
+
 	auto state = m_pluginStateService.data()->pluginState(pluginName);
-	m_pluginActivationService.data()->performActivationAction({pluginName, PluginState::New == state});
+	m_pluginActivationService.data()->activatePlugin(pluginName, PluginState::New == state);
 }
 
 void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, PluginDeactivationReason reason)
@@ -362,17 +364,11 @@ void PluginsManager::deactivatePluginWithDependents(const QString &pluginName, P
 	if (!m_pluginActivationService.data()->isActive(pluginName))
 		return;
 
-	auto dependents = allDependents(pluginName);
-	auto actions = QVector<PluginActivationAction>{};
-	for (auto dependent : dependents)
-		actions.append({dependent, reason});
-	actions.append({pluginName, reason});
-
-	for (auto const &action : actions)
+	for (auto const &plugin : (allDependents(pluginName) + QVector<QString>{pluginName}))
 	{
-		m_pluginActivationService.data()->performActivationAction(action);
+		m_pluginActivationService.data()->deactivatePlugin(plugin);
 		if (PluginDeactivationReason::UserRequest == reason && m_pluginStateService)
-			m_pluginStateService.data()->setPluginState(action.pluginName(), PluginState::Disabled);
+			m_pluginStateService.data()->setPluginState(plugin, PluginState::Disabled);
 	}
 }
 

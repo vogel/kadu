@@ -22,7 +22,6 @@
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugins/active-plugin.h"
-#include "plugins/plugin-activation-action.h"
 #include "plugins/plugins-common.h"
 
 PluginActivationService::PluginActivationService(QObject *parent) :
@@ -34,18 +33,15 @@ PluginActivationService::~PluginActivationService()
 {
 }
 
-void PluginActivationService::performActivationAction(const PluginActivationAction &action) noexcept(false)
+void PluginActivationService::activatePlugin(const QString &name, bool firstTime) noexcept(false)
 {
-	switch (action.type())
-	{
-		case PluginActivationType::Activation:
-			activatePlugin(action.pluginName(), action.firstTime());
-			return;
+	if (!contains(m_activePlugins, name))
+		m_activePlugins.insert(std::make_pair(name, make_unique<ActivePlugin>(name, firstTime)));
+}
 
-		case PluginActivationType::Deactivation:
-			deactivatePlugin(action.pluginName());
-			return;
-	}
+void PluginActivationService::deactivatePlugin(const QString &name) noexcept
+{
+	m_activePlugins.erase(name);
 }
 
 bool PluginActivationService::isActive(const QString &name) const noexcept
@@ -67,15 +63,4 @@ QSet<QString> PluginActivationService::activePlugins() const noexcept
 	for (auto const &activePlugin : m_activePlugins)
 		result.insert(activePlugin.first);
 	return result;
-}
-
-void PluginActivationService::activatePlugin(const QString &name, bool firstTime) noexcept(false)
-{
-	if (!contains(m_activePlugins, name))
-		m_activePlugins.insert(std::make_pair(name, make_unique<ActivePlugin>(name, firstTime)));
-}
-
-void PluginActivationService::deactivatePlugin(const QString &name) noexcept
-{
-	m_activePlugins.erase(name);
 }
