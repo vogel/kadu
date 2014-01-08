@@ -19,10 +19,6 @@
 
 #include "active-plugin.h"
 
-#include "plugin/plugin-loader.h"
-#include "plugin/plugin-root-component-handler.h"
-#include "plugin/plugin-translations-loader.h"
-
 ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad)
 {
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).

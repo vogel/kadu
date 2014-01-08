@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include "plugin/plugin-loader.h"
-#include "plugin/plugin-root-component-handler.h"
-#include "plugin/plugin-translations-loader.h"
+#include "plugin/activation/plugin-loader.h"
+#include "plugin/activation/plugin-root-component-handler.h"
+#include "plugin/activation/plugin-translations-loader.h"
 
 #include <QtCore/QScopedPointer>
 
