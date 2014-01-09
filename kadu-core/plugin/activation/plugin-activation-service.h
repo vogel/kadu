@@ -28,6 +28,21 @@
 
 class ActivePlugin;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginActivationService
+ * @short Service for activating and deactivating plugin.
+ * @note This class is not thread safe.
+ *
+ * Service used for activating and deactivating plugins. It holds all active plugins as
+ * instances of @see ActivePlugin and allows for quering the list. Note that this service
+ * does not perform any dependency resolving, so it is only able to load plugins for which
+ * all dependencies were already loaded. For dependency resolving loading see @see PluginManager.
+ */
 class KADUAPI PluginActivationService : public QObject
 {
 	Q_OBJECT
@@ -36,10 +51,37 @@ public:
 	explicit PluginActivationService(QObject *parent = nullptr);
 	virtual ~PluginActivationService();
 
-	void activatePlugin(const QString &name, bool firstTime) noexcept(false);
-	void deactivatePlugin(const QString &name) noexcept;
+	/**
+	 * @short Activates plugin.
+	 * @param pluginName name of plugin to activate
+	 * @param firstTime if this plugin is activated for first firstTime
+	 * @throws PluginActivationErrorException
+	 *
+	 * Creates new instance of @see ActivePlugin and adds it to set of active plugins.
+	 * Throws @see PluginActivationErrorException. For more information about activation
+	 * process see @see ActivePlugin.
+	 */
+	void activatePlugin(const QString &pluginName, bool firstTime) noexcept(false);
 
-	bool isActive(const QString &name) const noexcept;
+	/**
+	 * @short Deactivates plugin.
+	 * @param pluginName name of plugin to deactivate
+	 *
+	 * Removes instance of @see ActivePlugin from set of active plugins. This triggers destruction
+	 * of ActivePlugin and unloads plugin from memory. For more information about deactivation
+	 * process see @see ActivePlugin.
+	 */
+	void deactivatePlugin(const QString &pluginName) noexcept;
+
+	/**
+	 * @param pluginName name of plugin to check
+	 * @short True if plugin with \p pluginName is active.
+	 */
+	bool isActive(const QString &pluginName) const noexcept;
+
+	/**
+	* @return Names of all currently active plugins.
+	*/
 	QSet<QString> activePlugins() const noexcept;
 
 private:
@@ -47,3 +89,7 @@ private:
 	map m_activePlugins;
 
 };
+
+/**
+ * @}
+ */

@@ -53,6 +53,7 @@ class ActivePlugin
 
 public:
 	/**
+	 * @short Loads all plugin data.
 	 * @throws PluginActivationErrorException
 	 *
 	 * Loads plugin transaltion for pluginName, then plugin library file. After that plugin root
