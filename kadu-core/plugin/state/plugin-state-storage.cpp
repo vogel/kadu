@@ -20,7 +20,7 @@
 #include "plugin-state-storage.h"
 
 #include "configuration/xml-configuration-file.h"
-#include "plugin/plugin-state.h"
+#include "plugin/state/plugin-state.h"
 #include "storage/storage-point.h"
 
 #include <QtCore/QVector>

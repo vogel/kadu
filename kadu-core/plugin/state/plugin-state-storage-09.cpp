@@ -21,7 +21,7 @@
 
 #include "configuration/configuration-file.h"
 #include "plugin/plugin-info-repository.h"
-#include "plugin/plugin-state.h"
+#include "plugin/state/plugin-state.h"
 
 #include <QtCore/QSet>
 
