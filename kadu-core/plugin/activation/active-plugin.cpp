@@ -19,10 +19,11 @@
 
 #include "active-plugin.h"
 
-ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad)
+#include "misc/memory.h"
+
+ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad) :
+		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginName)},
+		m_pluginLoader{make_unique<PluginLoader>(pluginName)},
+		m_pluginRootComponentHandler{make_unique<PluginRootComponentHandler>(pluginName, firstLoad, m_pluginLoader->instance())}
 {
-	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
-	m_pluginTranslationsLoader.reset(new PluginTranslationsLoader{pluginName});
-	m_pluginLoader.reset(new PluginLoader{pluginName});
-	m_pluginRootComponentHandler.reset(new PluginRootComponentHandler{pluginName, firstLoad, m_pluginLoader->instance()});
 }
