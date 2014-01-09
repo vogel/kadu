@@ -20,53 +20,53 @@
 #pragma once
 
 #include "misc/iterator.h"
-#include "plugin/plugin-info.h"
+#include "plugin/plugin-metadata.h"
 #include "exports.h"
 
 #include <map>
 #include <set>
 #include <QtCore/QObject>
 
-class PluginInfo;
+class PluginMetadata;
 
-class KADUAPI PluginInfoRepository : public QObject
+class KADUAPI PluginMetadataRepository : public QObject
 {
 	Q_OBJECT
 
-	using Storage = ::std::map<QString, PluginInfo>;
+	using Storage = ::std::map<QString, PluginMetadata>;
 	using WrappedIterator = Storage::iterator;
 
 public:
-	using Iterator = IteratorWrapper<WrappedIterator, PluginInfo>;
+	using Iterator = IteratorWrapper<WrappedIterator, PluginMetadata>;
 
-	explicit PluginInfoRepository(QObject *parent = nullptr);
-	virtual ~PluginInfoRepository();
+	explicit PluginMetadataRepository(QObject *parent = nullptr);
+	virtual ~PluginMetadataRepository();
 
 	Iterator begin();
 	Iterator end();
 
-	void setPluginInfos(std::map<QString, PluginInfo> &&pluginInfos);
-	void addPluginInfo(const QString &name, PluginInfo pluginInfo);
-	void removePluginInfo(const QString &name);
+	void setAllPluginMetadata(std::map<QString, PluginMetadata> &&pluginMetadatas);
+	void addPluginMetadata(const QString &name, PluginMetadata pluginMetadata);
+	void removePluginMetadata(const QString &name);
 
 	std::set<QString> pluginNames() const;
 
-	bool hasPluginInfo(const QString &name) const;
-	PluginInfo pluginInfo(const QString &name) const;
+	bool hasPluginMetadata(const QString &name) const;
+	PluginMetadata pluginMetadata(const QString &name) const;
 
 private:
-	static PluginInfo converter(WrappedIterator iterator);
+	static PluginMetadata converter(WrappedIterator iterator);
 
-	std::map<QString, PluginInfo> m_pluginInfos;
+	std::map<QString, PluginMetadata> m_pluginMetadatas;
 
 };
 
-inline PluginInfoRepository::Iterator begin(PluginInfoRepository *pluginRepository)
+inline PluginMetadataRepository::Iterator begin(PluginMetadataRepository *pluginRepository)
 {
 	return pluginRepository->begin();
 }
 
-inline PluginInfoRepository::Iterator end(PluginInfoRepository *pluginRepository)
+inline PluginMetadataRepository::Iterator end(PluginMetadataRepository *pluginRepository)
 {
 	return pluginRepository->end();
 }

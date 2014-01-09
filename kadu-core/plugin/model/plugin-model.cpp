@@ -46,8 +46,8 @@
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/plugin-info.h"
-#include "plugin/plugin-info-repository.h"
+#include "plugin/plugin-metadata.h"
+#include "plugin/plugin-metadata-repository.h"
 
 #include "plugin-model.h"
 
@@ -57,20 +57,20 @@ void PluginModel::loadPluginData()
         Plugins.clear();
         QList<PluginEntry> listToAdd;
 
-        for (auto const &pluginInfo : Core::instance()->pluginInfoRepository())
+        for (auto const &pluginMetadata : Core::instance()->pluginMetadataRepository())
         {
                 PluginEntry pluginEntry;
 
-                pluginEntry.category = !pluginInfo.category().isEmpty()
-                        ? pluginInfo.category()
+                pluginEntry.category = !pluginMetadata.category().isEmpty()
+                        ? pluginMetadata.category()
                         : "Misc";
-                pluginEntry.name = !pluginInfo.displayName().isEmpty()
-                        ? pluginInfo.displayName()
-                        : pluginInfo.name();
-                pluginEntry.description = pluginInfo.description();
-                pluginEntry.author = pluginInfo.author();
-                pluginEntry.pluginName = pluginInfo.name();
-                pluginEntry.checked = m_pluginActivationService.data()->isActive(pluginInfo.name());
+                pluginEntry.name = !pluginMetadata.displayName().isEmpty()
+                        ? pluginMetadata.displayName()
+                        : pluginMetadata.name();
+                pluginEntry.description = pluginMetadata.description();
+                pluginEntry.author = pluginMetadata.author();
+                pluginEntry.pluginName = pluginMetadata.name();
+                pluginEntry.checked = m_pluginActivationService.data()->isActive(pluginMetadata.name());
                 pluginEntry.isCheckable = true;
 
                 listToAdd.append(pluginEntry);

@@ -20,7 +20,7 @@
 #include "plugin-state-storage-09.h"
 
 #include "configuration/configuration-file.h"
-#include "plugin/plugin-info-repository.h"
+#include "plugin/plugin-metadata-repository.h"
 #include "plugin/state/plugin-state.h"
 
 #include <QtCore/QSet>
@@ -32,7 +32,7 @@
  * This method loads old configuration from depreceated configuration entries: General/EverLaoded,
  * General/LoadedModules and General/UnloadedModules.
  */
-QMap<QString, PluginState> PluginStateStorage09::load(PluginInfoRepository &pluginInfoRepository) const
+QMap<QString, PluginState> PluginStateStorage09::load(PluginMetadataRepository &pluginMetadataRepository) const
 {
 	auto result = QMap<QString, PluginState>{};
 
@@ -47,7 +47,7 @@ QMap<QString, PluginState> PluginStateStorage09::load(PluginInfoRepository &plug
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QSet<QString> oldPlugins;
 	for (auto pluginName : allPlugins)
-		if (!pluginInfoRepository.hasPluginInfo(pluginName) && !oldPlugins.contains(pluginName))
+		if (!pluginMetadataRepository.hasPluginMetadata(pluginName) && !oldPlugins.contains(pluginName))
 			oldPlugins.insert(pluginName);
 
 	if (loadedPlugins.contains("encryption"))
@@ -62,13 +62,13 @@ QMap<QString, PluginState> PluginStateStorage09::load(PluginInfoRepository &plug
 		loadedPlugins.insert("hints");
 	}
 
-	for (auto const &pluginInfo : pluginInfoRepository)
-		if (allPlugins.contains(pluginInfo.name()))
+	for (auto const &pluginMetadata : pluginMetadataRepository)
+		if (allPlugins.contains(pluginMetadata.name()))
 		{
-			if (loadedPlugins.contains(pluginInfo.name()))
-				result.insert(pluginInfo.name(), PluginState::Enabled);
-			else if (everLoaded.contains(pluginInfo.name()))
-				result.insert(pluginInfo.name(), PluginState::Disabled);
+			if (loadedPlugins.contains(pluginMetadata.name()))
+				result.insert(pluginMetadata.name(), PluginState::Enabled);
+			else if (everLoaded.contains(pluginMetadata.name()))
+				result.insert(pluginMetadata.name(), PluginState::Disabled);
 		}
 
 	for (auto pluginName : oldPlugins)

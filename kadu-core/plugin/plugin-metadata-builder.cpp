@@ -17,82 +17,82 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin-info-builder.h"
+#include "plugin-metadata-builder.h"
 
-#include "plugin/plugin-info.h"
+#include "plugin/plugin-metadata.h"
 
-PluginInfoBuilder::PluginInfoBuilder() :
+PluginMetadataBuilder::PluginMetadataBuilder() :
 		m_loadByDefault{true}
 {
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setName(const QString &name)
+PluginMetadataBuilder & PluginMetadataBuilder::setName(const QString &name)
 {
 	m_name = name;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setDisplayName(const QString &displayName)
+PluginMetadataBuilder & PluginMetadataBuilder::setDisplayName(const QString &displayName)
 {
 	m_displayName = displayName;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setCategory(const QString &category)
+PluginMetadataBuilder & PluginMetadataBuilder::setCategory(const QString &category)
 {
 	m_category = category;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setType(const QString &type)
+PluginMetadataBuilder & PluginMetadataBuilder::setType(const QString &type)
 {
 	m_type = type;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setDescription(const QString &description)
+PluginMetadataBuilder & PluginMetadataBuilder::setDescription(const QString &description)
 {
 	m_description = description;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setAuthor(const QString &author)
+PluginMetadataBuilder & PluginMetadataBuilder::setAuthor(const QString &author)
 {
 	m_author = author;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setVersion(const QString &version)
+PluginMetadataBuilder & PluginMetadataBuilder::setVersion(const QString &version)
 {
 	m_version = version;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setProvides(const QString &provides)
+PluginMetadataBuilder & PluginMetadataBuilder::setProvides(const QString &provides)
 {
 	m_provides = provides;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setDependencies(const QStringList &dependencies)
+PluginMetadataBuilder & PluginMetadataBuilder::setDependencies(const QStringList &dependencies)
 {
 	m_dependencies = dependencies;
 	return *this;
 }
 
-PluginInfoBuilder & PluginInfoBuilder::setReplaces(const QStringList &replaces)
+PluginMetadataBuilder & PluginMetadataBuilder::setReplaces(const QStringList &replaces)
 {
 	m_replaces = replaces;
 	return *this;
 }
 
-PluginInfoBuilder &PluginInfoBuilder::setLoadByDefault(bool loadByDefault)
+PluginMetadataBuilder &PluginMetadataBuilder::setLoadByDefault(bool loadByDefault)
 {
 	m_loadByDefault = loadByDefault;
 	return *this;
 }
 
-PluginInfo PluginInfoBuilder::create()
+PluginMetadata PluginMetadataBuilder::create()
 {
 	return
 	{

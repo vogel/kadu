@@ -47,8 +47,8 @@
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
-#include "plugin/plugin-info.h"
-#include "plugin/plugin-info-repository.h"
+#include "plugin/plugin-metadata.h"
+#include "plugin/plugin-metadata-repository.h"
 
 #include "plugin-list-widget-item-delegate.h"
 
@@ -263,15 +263,15 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 
         auto pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
 
-		if (Core::instance()->pluginInfoRepository()->hasPluginInfo(pluginEntry->pluginName))
+		if (Core::instance()->pluginMetadataRepository()->hasPluginMetadata(pluginEntry->pluginName))
 		{
-			auto const &pluginInfo = Core::instance()->pluginInfoRepository()->pluginInfo(pluginEntry->pluginName);
+			auto const &pluginMetadata = Core::instance()->pluginMetadataRepository()->pluginMetadata(pluginEntry->pluginName);
 
-			info += tr("Author: %1").arg(pluginInfo.author()) + "\n";
-			info += tr("Version: %1").arg(pluginInfo.version()) + "\n";
-			info += tr("Description: %1").arg(pluginInfo.description()) + "\n";
-			info += tr("Dependencies: %1").arg(pluginInfo.dependencies().join(", ")) + "\n";
-			info += tr("Provides: %1").arg(pluginInfo.provides());
+			info += tr("Author: %1").arg(pluginMetadata.author()) + "\n";
+			info += tr("Version: %1").arg(pluginMetadata.version()) + "\n";
+			info += tr("Description: %1").arg(pluginMetadata.description()) + "\n";
+			info += tr("Dependencies: %1").arg(pluginMetadata.dependencies().join(", ")) + "\n";
+			info += tr("Provides: %1").arg(pluginMetadata.provides());
 		}
 
         MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());

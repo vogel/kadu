@@ -33,7 +33,7 @@ enum class PluginState
 {
 	/**
 	 * Plugin has been never successfully activated before. May be activated automatically
-	 * if has PluginInfo::loadByDefault() set to true.
+	 * if has PluginMetadata::loadByDefault() set to true.
 	 */
 	New,
 	/**

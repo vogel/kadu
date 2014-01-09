@@ -19,9 +19,18 @@
 
 #pragma once
 
-#include <exception>
+#include <QtCore/QObject>
 
-class PluginInfoReaderException : public std::exception
+class PluginMetadata;
+
+class PluginMetadataReader : public QObject
 {
-	virtual const char *what() const noexcept { return "Unable to read plugin info"; }
+	Q_OBJECT
+
+public:
+	explicit PluginMetadataReader(QObject *parent = nullptr) noexcept;
+	virtual ~PluginMetadataReader() noexcept;
+
+	PluginMetadata readPluginMetadata(QString name, const QString &filePath) noexcept(false);
+
 };

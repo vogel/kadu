@@ -23,7 +23,7 @@
 
 #include <QtCore/QMap>
 
-class PluginInfoRepository;
+class PluginMetadataRepository;
 
 enum class PluginState;
 
@@ -31,6 +31,6 @@ class KADUAPI PluginStateStorage09
 {
 
 public:
-	QMap<QString, PluginState> load(PluginInfoRepository &pluginInfoRepository) const;
+	QMap<QString, PluginState> load(PluginMetadataRepository &pluginMetadataRepository) const;
 
 };

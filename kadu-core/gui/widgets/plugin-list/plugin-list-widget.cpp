@@ -50,8 +50,8 @@
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/plugin-info.h"
 #include "plugin/plugin-manager.h"
+#include "plugin/plugin-metadata.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
 

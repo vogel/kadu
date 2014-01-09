@@ -12,12 +12,12 @@ set (plugin_SRCS
 	state/plugin-state-service.cpp
 	state/plugin-state-storage.cpp
 	state/plugin-state-storage-09.cpp
-	plugin-info.cpp
-	plugin-info-builder.cpp
-	plugin-info-finder.cpp
-	plugin-info-reader.cpp
-	plugin-info-repository.cpp
 	plugin-manager.cpp
+	plugin-metadata.cpp
+	plugin-metadata-builder.cpp
+	plugin-metadata-finder.cpp
+	plugin-metadata-reader.cpp
+	plugin-metadata-repository.cpp
 )
 
 kadu_subdirectory (plugin "${plugin_SRCS}" "" "")

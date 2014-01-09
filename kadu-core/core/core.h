@@ -83,10 +83,10 @@ class NotificationService;
 class PluginActivationErrorHandler;
 class PluginActivationService;
 class PluginDependencyGraphBuilder;
-class PluginInfoFinder;
-class PluginInfoReader;
-class PluginInfoRepository;
 class PluginManager;
+class PluginMetadataFinder;
+class PluginMetadataReader;
+class PluginMetadataRepository;
 class PluginStateService;
 class RawMessageTransformerService;
 class RosterNotifier;
@@ -137,10 +137,10 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginActivationService *CurrentPluginActivationService;
 	PluginActivationErrorHandler *CurrentPluginActivationErrorHandler;
 	PluginDependencyGraphBuilder *CurrentPluginDependencyGraphBuilder;
-	PluginInfoFinder *CurrentPluginInfoFinder;
-	PluginInfoReader *CurrentPluginInfoReader;
+	PluginMetadataFinder *CurrentPluginMetadataFinder;
+	PluginMetadataReader *CurrentPluginMetadataReader;
 	PluginStateService *CurrentPluginStateService;
-	PluginInfoRepository *CurrentPluginInfoRepository;
+	PluginMetadataRepository *CurrentPluginMetadataRepository;
 	PluginManager *CurrentPluginManager;
 
 	KaduWindow *Window;
@@ -228,9 +228,9 @@ public:
 	PluginActivationErrorHandler * pluginActivationErrorHandler() const;
 	PluginActivationService * pluginActivationService() const;
 	PluginDependencyGraphBuilder * pluginDependencyGraphBuilder() const;
-	PluginInfoFinder * pluginInfoFinder() const;
-	PluginInfoReader * pluginInfoReader() const;
-	PluginInfoRepository * pluginInfoRepository() const;
+	PluginMetadataFinder * pluginMetadataFinder() const;
+	PluginMetadataReader * pluginMetadataReader() const;
+	PluginMetadataRepository * pluginMetadataRepository() const;
 	PluginManager * pluginManager() const;
 	PluginStateService * pluginStateService() const;
 

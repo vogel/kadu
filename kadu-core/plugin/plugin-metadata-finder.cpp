@@ -17,34 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin-info-finder.h"
+#include "plugin-metadata-finder.h"
 
-#include "plugin/plugin-info.h"
-#include "plugin/plugin-info-reader.h"
+#include "plugin/plugin-metadata.h"
+#include "plugin/plugin-metadata-reader.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QVector>
 
-PluginInfoFinder::PluginInfoFinder(QObject *parent) noexcept :
+PluginMetadataFinder::PluginMetadataFinder(QObject *parent) noexcept :
 		QObject{parent}
 {
 }
 
-PluginInfoFinder::~PluginInfoFinder() noexcept
+PluginMetadataFinder::~PluginMetadataFinder() noexcept
 {
 }
 
-void PluginInfoFinder::setPluginInfoReader(PluginInfoReader *pluginInfoReader) noexcept
+void PluginMetadataFinder::setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept
 {
-	m_pluginInfoReader = pluginInfoReader;
+	m_pluginMetadataReader = pluginMetadataReader;
 }
 
-std::map<QString, PluginInfo> PluginInfoFinder::readPluginInfos(const QString &directory) noexcept
+std::map<QString, PluginMetadata> PluginMetadataFinder::readAllPluginMetadata(const QString &directory) noexcept
 {
-	if (!m_pluginInfoReader)
+	if (!m_pluginMetadataReader)
 		return {};
 
-	auto result = std::map<QString, PluginInfo>{};
+	auto result = std::map<QString, PluginMetadata>{};
 
 	auto dir = QDir{directory, "*.desc"};
 	dir.setFilter(QDir::Files);
@@ -54,7 +54,7 @@ std::map<QString, PluginInfo> PluginInfoFinder::readPluginInfos(const QString &d
 		try
 		{
 			auto pluginName = entry.left(entry.length() - static_cast<int>(qstrlen(".desc")));
-			result.insert({pluginName, m_pluginInfoReader.data()->readPluginInfo(pluginName, QString{"%1/%2"}.arg(directory).arg(entry))});
+			result.insert({pluginName, m_pluginMetadataReader.data()->readPluginMetadata(pluginName, QString{"%1/%2"}.arg(directory).arg(entry))});
 		}
 		catch (...)
 		{

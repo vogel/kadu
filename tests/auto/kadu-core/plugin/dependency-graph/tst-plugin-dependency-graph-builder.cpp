@@ -21,9 +21,9 @@
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugin/plugin-info.h"
-#include "plugin/plugin-info-builder.h"
-#include "plugin/plugin-info-repository.h"
+#include "plugin/plugin-metadata.h"
+#include "plugin/plugin-metadata-builder.h"
+#include "plugin/plugin-metadata-repository.h"
 
 #include <algorithm>
 #include <QtTest/QtTest>
@@ -33,8 +33,8 @@ class tst_PluginDependencyGraphBuilder : public QObject
 	Q_OBJECT
 
 private:
-	std::unique_ptr<PluginInfoRepository> createPluginInfoRepository(const QVector<QPair<QString, QStringList>> &plugins);
-	PluginInfo createPluginInfo(const QPair<QString, QStringList> &plugin);
+	std::unique_ptr<PluginMetadataRepository> createPluginMetadataRepository(const QVector<QPair<QString, QStringList>> &plugins);
+	PluginMetadata createPluginMetadata(const QPair<QString, QStringList> &plugin);
 
 private slots:
 	void simpleDependencyTest();
@@ -42,17 +42,17 @@ private slots:
 
 };
 
-std::unique_ptr<PluginInfoRepository> tst_PluginDependencyGraphBuilder::createPluginInfoRepository(const QVector<QPair<QString, QStringList>> &plugins)
+std::unique_ptr<PluginMetadataRepository> tst_PluginDependencyGraphBuilder::createPluginMetadataRepository(const QVector<QPair<QString, QStringList>> &plugins)
 {
-	auto result = make_unique<PluginInfoRepository>();
+	auto result = make_unique<PluginMetadataRepository>();
 	for (auto const &plugin : plugins)
-		result.get()->addPluginInfo(plugin.first, createPluginInfo(plugin));
+		result.get()->addPluginMetadata(plugin.first, createPluginMetadata(plugin));
 	return result;
 }
 
-PluginInfo tst_PluginDependencyGraphBuilder::createPluginInfo(const QPair<QString, QStringList> &plugin)
+PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const QPair<QString, QStringList> &plugin)
 {
-	auto builder = PluginInfoBuilder{};
+	auto builder = PluginMetadataBuilder{};
 	return builder
 			.setName(plugin.first)
 			.setDependencies(plugin.second)
@@ -66,7 +66,7 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 	plugins.append(qMakePair(QString("p2"), QStringList() << "p3" << "p4"));
 	plugins.append(qMakePair(QString("p3"), QStringList() << "p4"));
 
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(*createPluginInfoRepository(plugins).get());
+	auto graph = PluginDependencyGraphBuilder{}.buildGraph(*createPluginMetadataRepository(plugins).get());
 
 	QCOMPARE(graph.get()->size(), 4);
 
@@ -109,7 +109,7 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 	auto plugins = QVector<QPair<QString, QStringList>>{};
 	plugins.append(qMakePair(QString("p1"), QStringList() << "p1"));
 
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(*createPluginInfoRepository(plugins).get());
+	auto graph = PluginDependencyGraphBuilder{}.buildGraph(*createPluginMetadataRepository(plugins).get());
 
 	QCOMPARE(graph.get()->size(), 1);
 

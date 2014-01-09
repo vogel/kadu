@@ -37,7 +37,7 @@
  */
 
 /**
- * @class PluginInfo
+ * @class PluginMetadata
  * @author Rafał 'Vogel' Malinowski
  * @short Information about plugin loaded from .desc files.
  * @todo Rewrite to use .desktop files
@@ -47,14 +47,14 @@
  * New instances of this class are created with existing file name as paremeters. Otherwise,
  * object will contain invalid (empty) data.
  */
-class KADUAPI PluginInfo
+class KADUAPI PluginMetadata
 {
 
 public:
-	PluginInfo(
+	PluginMetadata(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
 			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault);
-	~PluginInfo();
+	~PluginMetadata();
 
 	QString name() const;
 

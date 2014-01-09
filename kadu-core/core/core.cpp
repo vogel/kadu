@@ -88,10 +88,10 @@
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/plugin-info-finder.h"
-#include "plugin/plugin-info-reader.h"
-#include "plugin/plugin-info-repository.h"
 #include "plugin/plugin-manager.h"
+#include "plugin/plugin-metadata-finder.h"
+#include "plugin/plugin-metadata-reader.h"
+#include "plugin/plugin-metadata-repository.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state-storage.h"
 #include "protocols/protocol-factory.h"
@@ -682,20 +682,20 @@ void Core::runServices()
 	CurrentPluginActivationErrorHandler = new PluginActivationErrorHandler{this};
 	CurrentPluginActivationService = new PluginActivationService(this);
 
-	CurrentPluginInfoFinder = new PluginInfoFinder(this);
-	CurrentPluginInfoReader = new PluginInfoReader(this);
+	CurrentPluginMetadataFinder = new PluginMetadataFinder(this);
+	CurrentPluginMetadataReader = new PluginMetadataReader(this);
 	CurrentPluginStateService = new PluginStateService(this);
-	CurrentPluginInfoRepository = new PluginInfoRepository(this);
+	CurrentPluginMetadataRepository = new PluginMetadataRepository(this);
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 
-	CurrentPluginInfoFinder->setPluginInfoReader(CurrentPluginInfoReader);
+	CurrentPluginMetadataFinder->setPluginMetadataReader(CurrentPluginMetadataReader);
 
 	CurrentPluginManager = new PluginManager(this);
 	CurrentPluginManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
 	CurrentPluginManager->setPluginActivationService(CurrentPluginActivationService);
-	CurrentPluginManager->setPluginInfoFinder(CurrentPluginInfoFinder);
-	CurrentPluginManager->setPluginInfoRepository(CurrentPluginInfoRepository);
+	CurrentPluginManager->setPluginMetadataFinder(CurrentPluginMetadataFinder);
+	CurrentPluginManager->setPluginMetadataRepository(CurrentPluginMetadataRepository);
 	CurrentPluginManager->setPluginStateService(CurrentPluginStateService);
 	CurrentPluginManager->setStoragePointFactory(CurrentStoragePointFactory);
 
@@ -887,14 +887,14 @@ PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
 	return CurrentPluginDependencyGraphBuilder;
 }
 
-PluginInfoFinder * Core::pluginInfoFinder() const
+PluginMetadataFinder * Core::pluginMetadataFinder() const
 {
-	return CurrentPluginInfoFinder;
+	return CurrentPluginMetadataFinder;
 }
 
-PluginInfoReader * Core::pluginInfoReader() const
+PluginMetadataReader * Core::pluginMetadataReader() const
 {
-	return CurrentPluginInfoReader;
+	return CurrentPluginMetadataReader;
 }
 
 PluginStateService * Core::pluginStateService() const
@@ -902,9 +902,9 @@ PluginStateService * Core::pluginStateService() const
 	return CurrentPluginStateService;
 }
 
-PluginInfoRepository * Core::pluginInfoRepository() const
+PluginMetadataRepository * Core::pluginMetadataRepository() const
 {
-	return CurrentPluginInfoRepository;
+	return CurrentPluginMetadataRepository;
 }
 
 PluginManager * Core::pluginManager() const

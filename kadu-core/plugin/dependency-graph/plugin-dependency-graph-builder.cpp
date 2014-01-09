@@ -21,8 +21,8 @@
 
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
-#include "plugin/plugin-info.h"
-#include "plugin/plugin-info-repository.h"
+#include "plugin/plugin-metadata.h"
+#include "plugin/plugin-metadata-repository.h"
 
 PluginDependencyGraphBuilder::PluginDependencyGraphBuilder(QObject *parent) :
 		QObject{parent}
@@ -33,34 +33,34 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 {
 }
 
-std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(PluginInfoRepository &pluginInfoRepository) const
+std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(PluginMetadataRepository &pluginMetadataRepository) const
 {
 	auto result = make_unique<PluginDependencyGraph>();
 
-	auto pluginNames = getPluginNames(pluginInfoRepository);
+	auto pluginNames = getPluginNames(pluginMetadataRepository);
 	for (auto pluginName : pluginNames)
 		result.get()->addPlugin(pluginName);
 
 	for (auto pluginName : pluginNames)
 	{
-		if (!pluginInfoRepository.hasPluginInfo(pluginName))
+		if (!pluginMetadataRepository.hasPluginMetadata(pluginName))
 			continue;
 
-		auto pluginInfo = pluginInfoRepository.pluginInfo(pluginName);
-		for (auto const &dependency : pluginInfo.dependencies())
+		auto pluginMetadata = pluginMetadataRepository.pluginMetadata(pluginName);
+		for (auto const &dependency : pluginMetadata.dependencies())
 			result.get()->addDependency(pluginName, dependency);
 	}
 
 	return std::move(result);
 }
 
-std::set<QString> PluginDependencyGraphBuilder::getPluginNames(PluginInfoRepository &pluginInfoRepository) const
+std::set<QString> PluginDependencyGraphBuilder::getPluginNames(PluginMetadataRepository &pluginMetadataRepository) const
 {
 	auto pluginNames = std::set<QString>{};
-	for (auto pluginInfo : pluginInfoRepository)
+	for (auto pluginMetadata : pluginMetadataRepository)
 	{
-		pluginNames.insert(pluginInfo.name());
-		for (auto dependency : pluginInfo.dependencies())
+		pluginNames.insert(pluginMetadata.name());
+		for (auto dependency : pluginMetadata.dependencies())
 			pluginNames.insert(dependency);
 	}
 	return pluginNames;

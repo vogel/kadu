@@ -23,27 +23,27 @@
 
 #include <QtCore/QStringList>
 
-class PluginInfo;
+class PluginMetadata;
 
-class KADUAPI PluginInfoBuilder
+class KADUAPI PluginMetadataBuilder
 {
 
 public:
-	PluginInfoBuilder();
+	PluginMetadataBuilder();
 
-	PluginInfoBuilder & setName(const QString &name);
-	PluginInfoBuilder & setDisplayName(const QString &displayName);
-	PluginInfoBuilder & setCategory(const QString &category);
-	PluginInfoBuilder & setType(const QString &type);
-	PluginInfoBuilder & setDescription(const QString &description);
-	PluginInfoBuilder & setAuthor(const QString &author);
-	PluginInfoBuilder & setVersion(const QString &version);
-	PluginInfoBuilder & setProvides(const QString &provides);
-	PluginInfoBuilder & setDependencies(const QStringList &dependencies);
-	PluginInfoBuilder & setReplaces(const QStringList &replaces);
-	PluginInfoBuilder & setLoadByDefault(bool loadByDefault);
+	PluginMetadataBuilder & setName(const QString &name);
+	PluginMetadataBuilder & setDisplayName(const QString &displayName);
+	PluginMetadataBuilder & setCategory(const QString &category);
+	PluginMetadataBuilder & setType(const QString &type);
+	PluginMetadataBuilder & setDescription(const QString &description);
+	PluginMetadataBuilder & setAuthor(const QString &author);
+	PluginMetadataBuilder & setVersion(const QString &version);
+	PluginMetadataBuilder & setProvides(const QString &provides);
+	PluginMetadataBuilder & setDependencies(const QStringList &dependencies);
+	PluginMetadataBuilder & setReplaces(const QStringList &replaces);
+	PluginMetadataBuilder & setLoadByDefault(bool loadByDefault);
 
-	PluginInfo create();
+	PluginMetadata create();
 
 private:
 	QString m_name;

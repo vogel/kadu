@@ -40,9 +40,9 @@
 
 class PluginActivationErrorHandler;
 class PluginActivationService;
-class PluginInfo;
-class PluginInfoFinder;
-class PluginInfoRepository;
+class PluginMetadata;
+class PluginMetadataFinder;
+class PluginMetadataRepository;
 class PluginStateService;
 class StoragePoint;
 class StoragePointFactory;
@@ -89,8 +89,8 @@ public:
 
 	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
-	void setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder);
-	void setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository);
+	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
+	void setPluginMetadataRepository(PluginMetadataRepository *pluginMetadataRepository);
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
@@ -111,25 +111,25 @@ public:
 private:
 	QWeakPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	QWeakPointer<PluginInfoFinder> m_pluginInfoFinder;
-	QWeakPointer<PluginInfoRepository> m_pluginInfoRepository;
+	QWeakPointer<PluginMetadataFinder> m_pluginMetadataFinder;
+	QWeakPointer<PluginMetadataRepository> m_pluginMetadataRepository;
 	QWeakPointer<PluginStateService> m_pluginStateService;
 	QWeakPointer<StoragePointFactory> m_storagePointFactory;
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
-	void loadPluginInfos();
+	void loadAllPluginMetadata();
 	void loadPluginStates();
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 	void prepareDependencyGraph();
 
-	QVector<QString> pluginsToActivate(std::function<bool(const PluginInfo &)> filter = [](const PluginInfo &){ return true; }) const;
+	QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &){ return true; }) const;
 
 	void activatePlugin(const QString &pluginName) noexcept(false);
 
 	QString findActiveProviding(const QString &feature) const;
 
-	bool shouldActivate(const PluginInfo &pluginInfo) const noexcept;
+	bool shouldActivate(const PluginMetadata &pluginMetadata) const noexcept;
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
 };

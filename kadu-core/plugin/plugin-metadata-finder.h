@@ -23,22 +23,22 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
-class PluginInfo;
-class PluginInfoReader;
+class PluginMetadata;
+class PluginMetadataReader;
 
-class PluginInfoFinder : public QObject
+class PluginMetadataFinder : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit PluginInfoFinder(QObject *parent = nullptr) noexcept;
-	virtual ~PluginInfoFinder() noexcept;
+	explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
+	virtual ~PluginMetadataFinder() noexcept;
 
-	void setPluginInfoReader(PluginInfoReader *pluginInfoReader) noexcept;
+	void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 
-	std::map<QString, PluginInfo> readPluginInfos(const QString &directory) noexcept;
+	std::map<QString, PluginMetadata> readAllPluginMetadata(const QString &directory) noexcept;
 
 private:
-	QWeakPointer<PluginInfoReader> m_pluginInfoReader;
+	QWeakPointer<PluginMetadataReader> m_pluginMetadataReader;
 
 };

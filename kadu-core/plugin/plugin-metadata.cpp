@@ -18,9 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin-info.h"
+#include "plugin-metadata.h"
 
-PluginInfo::PluginInfo(
+PluginMetadata::PluginMetadata(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
 			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault) :
 		m_name(std::move(name)), m_displayName(std::move(displayName)), m_category(std::move(category)), m_type(std::move(type)),
@@ -29,61 +29,61 @@ PluginInfo::PluginInfo(
 {
 }
 
-PluginInfo::~PluginInfo()
+PluginMetadata::~PluginMetadata()
 {
 }
 
-QString PluginInfo::name() const
+QString PluginMetadata::name() const
 {
 	return m_name;
 }
 
-QString PluginInfo::displayName() const
+QString PluginMetadata::displayName() const
 {
 	return m_displayName;
 }
 
-QString PluginInfo::category() const
+QString PluginMetadata::category() const
 {
 	return m_category;
 }
 
-QString PluginInfo::type() const
+QString PluginMetadata::type() const
 {
 	return m_type;
 }
 
-QString PluginInfo::description() const
+QString PluginMetadata::description() const
 {
 	return m_description;
 }
 
-QString PluginInfo::author() const
+QString PluginMetadata::author() const
 {
 	return m_author;
 }
 
-QString PluginInfo::version() const
+QString PluginMetadata::version() const
 {
 	return m_version;
 }
 
-QString PluginInfo::provides() const
+QString PluginMetadata::provides() const
 {
 	return m_provides;
 }
 
-QStringList PluginInfo::dependencies() const
+QStringList PluginMetadata::dependencies() const
 {
 	return m_dependencies;
 }
 
-QStringList PluginInfo::replaces() const
+QStringList PluginMetadata::replaces() const
 {
 	return m_replaces;
 }
 
-bool PluginInfo::loadByDefault() const
+bool PluginMetadata::loadByDefault() const
 {
 	return m_loadByDefault;
 }

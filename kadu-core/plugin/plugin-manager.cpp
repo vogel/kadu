@@ -39,9 +39,9 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/plugin-info.h"
-#include "plugin/plugin-info-finder.h"
-#include "plugin/plugin-info-repository.h"
+#include "plugin/plugin-metadata.h"
+#include "plugin/plugin-metadata-finder.h"
+#include "plugin/plugin-metadata-repository.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state-storage.h"
@@ -59,9 +59,9 @@ PluginManager::~PluginManager()
 {
 }
 
-void PluginManager::setPluginInfoFinder(PluginInfoFinder *pluginInfoFinder)
+void PluginManager::setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder)
 {
-	m_pluginInfoFinder = pluginInfoFinder;
+	m_pluginMetadataFinder = pluginMetadataFinder;
 }
 
 void PluginManager::setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler)
@@ -74,9 +74,9 @@ void PluginManager::setPluginActivationService(PluginActivationService *pluginAc
 	m_pluginActivationService = pluginActivationService;
 }
 
-void PluginManager::setPluginInfoRepository(PluginInfoRepository *pluginInfoRepository)
+void PluginManager::setPluginMetadataRepository(PluginMetadataRepository *pluginMetadataRepository)
 {
-	m_pluginInfoRepository = pluginInfoRepository;
+	m_pluginMetadataRepository = pluginMetadataRepository;
 }
 
 void PluginManager::setPluginStateService(PluginStateService *pluginStateService)
@@ -91,18 +91,18 @@ void PluginManager::setStoragePointFactory(StoragePointFactory *storagePointFact
 
 void PluginManager::initialize()
 {
-	loadPluginInfos();
+	loadAllPluginMetadata();
 	loadPluginStates();
 	prepareDependencyGraph();
 }
 
-void PluginManager::loadPluginInfos()
+void PluginManager::loadAllPluginMetadata()
 {
-	if (!m_pluginInfoFinder || !m_pluginInfoRepository)
+	if (!m_pluginMetadataFinder || !m_pluginMetadataRepository)
 		return;
 
-	auto pluginInfos = std::move(m_pluginInfoFinder.data()->readPluginInfos(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"}));
-	m_pluginInfoRepository.data()->setPluginInfos(std::move(pluginInfos));
+	auto pluginMetadatas = std::move(m_pluginMetadataFinder.data()->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"}));
+	m_pluginMetadataRepository.data()->setAllPluginMetadata(std::move(pluginMetadatas));
 }
 
 void PluginManager::loadPluginStates()
@@ -125,8 +125,8 @@ QMap<QString, PluginState> PluginManager::loadPluginStates(StoragePoint *storage
 {
 	return importedFrom09
 			? PluginStateStorage{}.load(*storagePoint)
-			: m_pluginInfoRepository
-					? PluginStateStorage09{}.load(*m_pluginInfoRepository.data())
+			: m_pluginMetadataRepository
+					? PluginStateStorage09{}.load(*m_pluginMetadataRepository.data())
 					: QMap<QString, PluginState>{};
 }
 
@@ -146,12 +146,12 @@ void PluginManager::storePluginStates()
 
 void PluginManager::prepareDependencyGraph()
 {
-	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
+	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginMetadataRepository.data());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
-		m_pluginInfoRepository.data()->removePluginInfo(pluginInDependency);
+		m_pluginMetadataRepository.data()->removePluginMetadata(pluginInDependency);
 
-	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginInfoRepository.data());
+	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginMetadataRepository.data());
 }
 
 /**
@@ -164,7 +164,7 @@ void PluginManager::prepareDependencyGraph()
  */
 void PluginManager::activateProtocolPlugins()
 {
-	for (const auto &pluginName : pluginsToActivate([](const PluginInfo &pluginInfo){ return pluginInfo.type() == "protocol"; }))
+	for (const auto &pluginName : pluginsToActivate([](const PluginMetadata &pluginMetadata){ return pluginMetadata.type() == "protocol"; }))
 		activatePluginWithDependencies(pluginName);
 }
 
@@ -182,16 +182,16 @@ void PluginManager::activatePlugins()
 		activatePluginWithDependencies(pluginName);
 }
 
-QVector<QString> PluginManager::pluginsToActivate(std::function<bool(const PluginInfo &)> filter) const
+QVector<QString> PluginManager::pluginsToActivate(std::function<bool(const PluginMetadata &)> filter) const
 {
 	auto result = QVector<QString>{};
 
-	if (!m_pluginInfoRepository)
+	if (!m_pluginMetadataRepository)
 		return result;
 
-	for (auto const &pluginInfo : m_pluginInfoRepository.data())
-		if (filter(pluginInfo) && shouldActivate(pluginInfo))
-			result.append(pluginInfo.name());
+	for (auto const &pluginMetadata : m_pluginMetadataRepository.data())
+		if (filter(pluginMetadata) && shouldActivate(pluginMetadata))
+			result.append(pluginMetadata.name());
 
 	return result;
 }
@@ -204,22 +204,22 @@ QVector<QString> PluginManager::pluginsToActivate(std::function<bool(const Plugi
  * Module should be activated only if:
  * <ul>
  *   <li>it is valid (has .desc file associated with it)
- *   <li>is either PluginState::Enabled or PluginState::New with PluginInfo::loadByDefault() set to true
+ *   <li>is either PluginState::Enabled or PluginState::New with PluginMetadata::loadByDefault() set to true
  * </ul>
  */
-bool PluginManager::shouldActivate(const PluginInfo &pluginInfo) const noexcept
+bool PluginManager::shouldActivate(const PluginMetadata &pluginMetadata) const noexcept
 {
 	if (!m_pluginStateService)
 		return false;
 
-	switch (m_pluginStateService.data()->pluginState(pluginInfo.name()))
+	switch (m_pluginStateService.data()->pluginState(pluginMetadata.name()))
 	{
 		case PluginState::Enabled:
 			return true;
 		case PluginState::Disabled:
 			return false;
 		case PluginState::New:
-			return pluginInfo.loadByDefault();
+			return pluginMetadata.loadByDefault();
 	}
 
 	return false;
@@ -247,12 +247,12 @@ void PluginManager::activateReplacementPlugins()
 
 QString PluginManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
 {
-	if (!m_pluginInfoRepository)
+	if (!m_pluginMetadataRepository)
 		return {};
 
-	for (auto const &pluginInfo : m_pluginInfoRepository.data())
-		if (m_pluginInfoRepository.data()->pluginInfo(pluginInfo.name()).replaces().contains(pluginToReplace))
-			return pluginInfo.name();
+	for (auto const &pluginMetadata : m_pluginMetadataRepository.data())
+		if (m_pluginMetadataRepository.data()->pluginMetadata(pluginMetadata.name()).replaces().contains(pluginToReplace))
+			return pluginMetadata.name();
 
 	return {};
 }
@@ -334,9 +334,9 @@ void PluginManager::activatePlugin(const QString &pluginName) noexcept(false)
 	if (!m_pluginStateService)
 		return;
 
-	if (m_pluginInfoRepository && m_pluginInfoRepository.data()->hasPluginInfo(pluginName))
+	if (m_pluginMetadataRepository && m_pluginMetadataRepository.data()->hasPluginMetadata(pluginName))
 	{
-		auto conflict = findActiveProviding(m_pluginInfoRepository.data()->pluginInfo(pluginName).provides());
+		auto conflict = findActiveProviding(m_pluginMetadataRepository.data()->pluginMetadata(pluginName).provides());
 		if (!conflict.isEmpty())
 			throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
 	}
@@ -353,12 +353,12 @@ void PluginManager::activatePlugin(const QString &pluginName) noexcept(false)
  */
 QString PluginManager::findActiveProviding(const QString &feature) const
 {
-	if (feature.isEmpty() || !m_pluginActivationService || !m_pluginInfoRepository)
+	if (feature.isEmpty() || !m_pluginActivationService || !m_pluginMetadataRepository)
 		return {};
 
 	for (auto const &activePluginName : m_pluginActivationService.data()->activePlugins())
-		if (m_pluginInfoRepository.data()->hasPluginInfo(activePluginName))
-			if (m_pluginInfoRepository.data()->pluginInfo(activePluginName).provides() == feature)
+		if (m_pluginMetadataRepository.data()->hasPluginMetadata(activePluginName))
+			if (m_pluginMetadataRepository.data()->pluginMetadata(activePluginName).provides() == feature)
 				return activePluginName;
 
 	return {};

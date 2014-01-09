@@ -17,35 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin-info-reader.h"
+#include "plugin-metadata-reader.h"
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "plugin/plugin-info-builder.h"
-#include "plugin/plugin-info-reader-exception.h"
-#include "plugin/plugin-info.h"
+#include "plugin/plugin-metadata-builder.h"
+#include "plugin/plugin-metadata-reader-exception.h"
+#include "plugin/plugin-metadata.h"
 
 #include <QtCore/QFileInfo>
 
-PluginInfoReader::PluginInfoReader(QObject *parent) noexcept :
+PluginMetadataReader::PluginMetadataReader(QObject *parent) noexcept :
 		QObject(parent)
 {
 }
 
-PluginInfoReader::~PluginInfoReader() noexcept
+PluginMetadataReader::~PluginMetadataReader() noexcept
 {
 }
 
-PluginInfo PluginInfoReader::readPluginInfo(QString name, const QString &filePath) noexcept(false)
+PluginMetadata PluginMetadataReader::readPluginMetadata(QString name, const QString &filePath) noexcept(false)
 {
 	auto fileInfo = QFileInfo{filePath};
 	if (!fileInfo.exists() || !fileInfo.isReadable())
-		throw PluginInfoReaderException{};
+		throw PluginMetadataReaderException{};
 
 	auto const lang = config_file.readEntry("General", "Language");
 	PlainConfigFile file{filePath, "UTF-8"};
 
-	auto builder = PluginInfoBuilder{};
+	auto builder = PluginMetadataBuilder{};
 	return builder
 			.setName(name)
 			.setDisplayName(file.readEntry("Module", "DisplayName[" + lang + ']', file.readEntry("Module", "DisplayName")))
