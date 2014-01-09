@@ -23,15 +23,49 @@
 
 class PluginRootComponent;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginRootComponentHandler
+ * @short RAII class for handling plugin root object.
+ *
+ * This class handles plugin root object. It calls its init() method in constructor and
+ * done() method in destructor. done() method is called only when init() method returned
+ * true.
+ */
 class PluginRootComponentHandler : QObject
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @short Initialize plugin root object.
+	 * @param pluginName name of plugin
+	 * @param firstLoad parameter passed back to init() method of plugin root object
+	 * @param pluginRootComponent root object of plugin
+	 * @param parent Qt parent object
+	 * @throws PluginActivationErrorException
+	 *
+	 * If pluginRootComponent is nullptr a PluginActivationErrorException is thrown. If not, init() method
+	 * of this object is called. If its result is false, PluginActivationErrorException is thrown.
+	 */
 	PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr) noexcept(false);
+
+	/**
+	 * @short Finalize plugin root object.
+	 *
+	 * If stored @see PluginRootComponent is not done() method of this object is called.
+	 */
 	~PluginRootComponentHandler() noexcept;
 
 private:
 	PluginRootComponent *m_pluginRootComponent;
 
 };
+
+/**
+ * @}
+ */
