@@ -19,24 +19,58 @@
 
 #pragma once
 
+#include <memory>
 #include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
 
 class QPluginLoader;
 
 class PluginRootComponent;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginLoader
+ * @short RAII class for loading plugin dynamic library file.
+ * @note This class uses hard-coded path for dynamic library file.
+ *
+ * This class loads plugin dynamic library file for given plugin name. In destructor library file is
+ * unloaded.
+ *
+ * Root object of plugin is available by @see instance method.
+ */
 class PluginLoader : public QObject
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @short Load plugin dynamic library file.
+	 * @param pluginName name of plugin to load
+	 * @param parent Qt parent object
+	 * @throws PluginActivationErrorException
+	 *
+	 * Load plugin dynamic library file. In case load fails an @see PluginActivationErrorException exception is thrown.
+	 */
 	explicit PluginLoader(const QString &pluginName, QObject *parent = nullptr) noexcept(false);
+
+	/**
+	 * @short Unload plugin dynamic library file.
+	 */
 	virtual ~PluginLoader() noexcept;
 
+	/**
+	 * @return root object of plugin.
+	 */
 	PluginRootComponent * instance() const noexcept;
 
 private:
-	QScopedPointer<QPluginLoader> m_pluginLoader;
+	std::unique_ptr<QPluginLoader> m_pluginLoader;
 
 };
+
+/**
+ * @}
+ */
