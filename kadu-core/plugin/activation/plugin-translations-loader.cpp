@@ -21,24 +21,24 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
+#include "misc/memory.h"
 
 #include <QtCore/QLatin1String>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 
-PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept
+PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept :
+		m_translator{make_unique<QTranslator>()}
 {
 	auto const lang = config_file.readEntry("General", "Language");
 
-	m_translator.reset(new QTranslator{});
-
 	if (m_translator->load(pluginName + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String{"plugins/translations"}))
-		qApp->installTranslator(m_translator.data());
+		qApp->installTranslator(m_translator.get());
 	else
 		m_translator.reset();
 }
 
 PluginTranslationsLoader::~PluginTranslationsLoader() noexcept
 {
-	qApp->removeTranslator(m_translator.data());
+	qApp->removeTranslator(m_translator.get());
 }

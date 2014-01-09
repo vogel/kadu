@@ -19,19 +19,44 @@
 
 #pragma once
 
-#include <QtCore/QScopedPointer>
+#include <memory>
 
 class QString;
 class QTranslator;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginTranslationsLoader
+ * @short RAII class for handling plugin translation.
+ * @note This class uses hard-coded path for translation file.
+ */
 class PluginTranslationsLoader
 {
 
 public:
+	/**
+	 * @short Load plugin translation file.
+	 * @param pluginName name of plugin to load
+	 *
+	 * Loads and installs plugin translation file in application. If for some reason it
+	 * was impossible - this constructor does nothing.
+	 */
 	explicit PluginTranslationsLoader(const QString &pluginName) noexcept;
+
+	/**
+	 * @short Unload plugin translation file.
+	 */
 	~PluginTranslationsLoader() noexcept;
 
 private:
-	QScopedPointer<QTranslator> m_translator;
+	std::unique_ptr<QTranslator> m_translator;
 
 };
+
+/**
+ * @}
+ */
