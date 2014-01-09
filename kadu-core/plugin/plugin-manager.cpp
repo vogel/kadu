@@ -334,12 +334,15 @@ void PluginManager::activatePlugin(const QString &pluginName) noexcept(false)
 	if (!m_pluginStateService)
 		return;
 
-	if (m_pluginMetadataRepository && m_pluginMetadataRepository.data()->hasPluginMetadata(pluginName))
-	{
-		auto conflict = findActiveProviding(m_pluginMetadataRepository.data()->pluginMetadata(pluginName).provides());
-		if (!conflict.isEmpty())
-			throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
-	}
+	if (!m_pluginMetadataRepository)
+		return;
+
+	if (!m_pluginMetadataRepository.data()->hasPluginMetadata(pluginName))
+		throw PluginActivationErrorException(pluginName, tr("Plugin's %1 metadata not found").arg(pluginName));
+
+	auto conflict = findActiveProviding(m_pluginMetadataRepository.data()->pluginMetadata(pluginName).provides());
+	if (!conflict.isEmpty())
+		throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
 
 	auto state = m_pluginStateService.data()->pluginState(pluginName);
 	m_pluginActivationService.data()->activatePlugin(pluginName, PluginState::New == state);
