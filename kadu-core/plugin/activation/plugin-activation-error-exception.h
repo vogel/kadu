@@ -22,6 +22,18 @@
 #include <QtCore/QString>
 #include <exception>
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginActivationErrorException
+ * @short Exception thrown in case of plugin activation error.
+ *
+ * Exception is thrown in case of plugin activation error (like conflicting plugins, unable to find
+ * dynamic library file and so on). Exception holds plugin name and human-readable error message.
+ */
 class PluginActivationErrorException : public std::exception
 {
 
@@ -39,3 +51,7 @@ private:
 	virtual const char * what() const noexcept { return "Plugin activation error"; }
 
 };
+
+/**
+ * @}
+ */
