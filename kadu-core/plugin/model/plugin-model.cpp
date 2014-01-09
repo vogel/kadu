@@ -46,8 +46,8 @@
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/plugin-metadata.h"
-#include "plugin/plugin-metadata-repository.h"
+#include "plugin/metadata/plugin-metadata.h"
+#include "plugin/metadata/plugin-metadata-repository.h"
 
 #include "plugin-model.h"
 

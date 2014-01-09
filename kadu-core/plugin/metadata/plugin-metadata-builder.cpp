@@ -19,7 +19,7 @@
 
 #include "plugin-metadata-builder.h"
 
-#include "plugin/plugin-metadata.h"
+#include "plugin/metadata/plugin-metadata.h"
 
 PluginMetadataBuilder::PluginMetadataBuilder() :
 		m_loadByDefault{true}

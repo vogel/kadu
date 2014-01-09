@@ -19,8 +19,8 @@
 
 #include "plugin-metadata-finder.h"
 
-#include "plugin/plugin-metadata.h"
-#include "plugin/plugin-metadata-reader.h"
+#include "plugin/metadata/plugin-metadata.h"
+#include "plugin/metadata/plugin-metadata-reader.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QVector>

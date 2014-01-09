@@ -7,17 +7,17 @@ set (plugin_SRCS
 	activation/plugin-translations-loader.cpp
 	dependency-graph/plugin-dependency-graph.cpp
 	dependency-graph/plugin-dependency-graph-builder.cpp
+	metadata/plugin-metadata.cpp
+	metadata/plugin-metadata-builder.cpp
+	metadata/plugin-metadata-finder.cpp
+	metadata/plugin-metadata-reader.cpp
+	metadata/plugin-metadata-repository.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
 	state/plugin-state-service.cpp
 	state/plugin-state-storage.cpp
 	state/plugin-state-storage-09.cpp
 	plugin-manager.cpp
-	plugin-metadata.cpp
-	plugin-metadata-builder.cpp
-	plugin-metadata-finder.cpp
-	plugin-metadata-reader.cpp
-	plugin-metadata-repository.cpp
 )
 
 kadu_subdirectory (plugin "${plugin_SRCS}" "" "")

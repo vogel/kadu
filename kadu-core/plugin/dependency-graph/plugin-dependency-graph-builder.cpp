@@ -21,8 +21,8 @@
 
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
-#include "plugin/plugin-metadata.h"
-#include "plugin/plugin-metadata-repository.h"
+#include "plugin/metadata/plugin-metadata.h"
+#include "plugin/metadata/plugin-metadata-repository.h"
 
 PluginDependencyGraphBuilder::PluginDependencyGraphBuilder(QObject *parent) :
 		QObject{parent}

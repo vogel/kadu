@@ -21,9 +21,9 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "plugin/plugin-metadata-builder.h"
-#include "plugin/plugin-metadata-reader-exception.h"
-#include "plugin/plugin-metadata.h"
+#include "plugin/metadata/plugin-metadata-builder.h"
+#include "plugin/metadata/plugin-metadata-reader-exception.h"
+#include "plugin/metadata/plugin-metadata.h"
 
 #include <QtCore/QFileInfo>
 

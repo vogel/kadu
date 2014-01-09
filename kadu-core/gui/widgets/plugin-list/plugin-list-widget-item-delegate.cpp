@@ -44,11 +44,11 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
+#include "plugin/metadata/plugin-metadata.h"
+#include "plugin/metadata/plugin-metadata-repository.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
-#include "plugin/plugin-metadata.h"
-#include "plugin/plugin-metadata-repository.h"
 
 #include "plugin-list-widget-item-delegate.h"
 

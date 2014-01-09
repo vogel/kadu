@@ -20,7 +20,7 @@
 #include "plugin-state-storage-09.h"
 
 #include "configuration/configuration-file.h"
-#include "plugin/plugin-metadata-repository.h"
+#include "plugin/metadata/plugin-metadata-repository.h"
 #include "plugin/state/plugin-state.h"
 
 #include <QtCore/QSet>
