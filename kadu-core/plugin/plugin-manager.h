@@ -50,7 +50,7 @@ class StoragePointFactory;
 enum class PluginState;
 
 /**
- * @addtogroup Plugins
+ * @addtogroup Plugin
  * @{
  */
 

@@ -29,7 +29,7 @@
 #include <QtCore/QtPlugin>
 
 /**
- * @addtogroup Plugins
+ * @addtogroup Plugin
  * @{
  */
 

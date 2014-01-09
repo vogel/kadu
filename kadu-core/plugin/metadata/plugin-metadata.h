@@ -32,7 +32,7 @@
 #include <QtCore/QStringList>
 
 /**
- * @addtogroup Plugins
+ * @addtogroup Plugin
  * @{
  */
 
