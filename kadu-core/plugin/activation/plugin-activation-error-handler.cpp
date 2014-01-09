@@ -46,17 +46,6 @@ void PluginActivationErrorHandler::setPluginStateService(PluginStateService *plu
 	m_pluginStateService = pluginStateService;
 }
 
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @short Shows activation error to the user.
- * @param errorMessage error message that will be displayer to the user
- * @param activationReason plugin activation reason
- * @todo it really shouldn't call gui classes directly
- *
- * This method creates new PluginErrorDialog with message \p errorMessage and opens it. Depending on
- * \p activationReason, it also intructs the dialog wheter to offer the user choice wheter to try
- * to load this plugin automatically in future.
- */
 void PluginActivationErrorHandler::handleActivationError(const QString &pluginName, const QString &errorMessage)
 {
 	if (pluginName.isEmpty())
@@ -73,15 +62,6 @@ void PluginActivationErrorHandler::handleActivationError(const QString &pluginNa
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @short Sets state enablement of plugin if it is inactive.
- *
- * If this plugin is active or its state is PluginState::New, this method does nothing.
- *
- * Otherwise, this method sets its state to PluginState::Enabled if \p enable is true.
- * If \p enable is false, this method sets the plugin's state to PluginState::Disabled.
- */
 void PluginActivationErrorHandler::setStateEnabledIfInactive(const QString &pluginName, bool enable)
 {
 	if (!m_pluginActivationService || !m_pluginStateService)
