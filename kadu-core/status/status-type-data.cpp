@@ -22,16 +22,7 @@
 
 #include "status-type-data.h"
 
-StatusTypeData::StatusTypeData()
-{
-}
-
 StatusTypeData::StatusTypeData(StatusType type, const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup) :
 		Type(type), Name(name), DisplayName(displayName), IconName(iconName), TypeGroup(typeGroup)
-{
-}
-
-StatusTypeData::StatusTypeData(const StatusTypeData &copyMe) :
-		Type(copyMe.Type), Name(copyMe.Name), DisplayName(copyMe.DisplayName), IconName(copyMe.IconName), TypeGroup(copyMe.TypeGroup)
 {
 }

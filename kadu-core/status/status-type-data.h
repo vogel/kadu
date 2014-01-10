@@ -64,9 +64,6 @@ class KADUAPI StatusTypeData
 	StatusTypeData(StatusType type, const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup);
 
 public:
-	StatusTypeData();
-	StatusTypeData(const StatusTypeData &copyMe);
-
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns StatusType enum value associated with this object.

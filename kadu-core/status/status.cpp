@@ -38,16 +38,6 @@ Status::Status(StatusType statusType, const QString &description) :
 	setType(statusType);
 }
 
-Status::Status(const Status& copyme) :
-		Type(copyme.Type), Group(copyme.Group), Description(copyme.Description),
-		DisplayName(copyme.DisplayName)
-{
-}
-
-Status::~Status()
-{
-}
-
 void Status::setType(StatusType type)
 {
 	Type = type;

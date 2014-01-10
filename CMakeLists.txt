@@ -37,7 +37,7 @@ if (MSVC)
 	set (COMMON_COMPILE_FLAGS "/MP /Zc:wchar_t-")
 	list (APPEND DEFINITIONS _CRT_SECURE_NO_WARNINGS=1)
 else ()
-	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -fno-common")
+	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -Wdeprecated -fno-common")
 	set (C_FLAGS "-Wwrite-strings")
 	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++0x")
 	set (CMAKE_CXX_FLAGS "-std=c++0x")
@@ -51,7 +51,7 @@ else ()
 		# -pipe can speed up the build
 		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++
 		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
-		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -Wno-deprecated -pipe -ftrapv -fno-omit-frame-pointer")
+		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -pipe -ftrapv -fno-omit-frame-pointer")
 
 		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 			set (SANITIZE_OPTIONS "-fsanitize=integer -fsanitize=undefined-trap -fsanitize=unsigned-integer-overflow")

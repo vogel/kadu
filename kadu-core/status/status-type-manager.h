@@ -96,7 +96,7 @@ public:
 	 * Returns StatusTypeData instance for given StatusType enum value. If no valid StatusTypeData instance
 	 * is found, valud for StatusTypeOffline is returned.
 	 */
-	const StatusTypeData statusTypeData(const StatusType statusType);
+	const StatusTypeData & statusTypeData(StatusType statusType) const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

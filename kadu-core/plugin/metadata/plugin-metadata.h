@@ -52,7 +52,6 @@ public:
 	PluginMetadata(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
 			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault);
-	~PluginMetadata();
 
 	/**
 	 * @return Unique name of plugin.

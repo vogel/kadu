@@ -30,10 +30,6 @@ BuddySearchCriteria::BuddySearchCriteria() :
 {
 }
 
-BuddySearchCriteria::~BuddySearchCriteria()
-{
-}
-
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
 	// TODO ???

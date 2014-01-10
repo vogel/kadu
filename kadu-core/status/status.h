@@ -66,8 +66,6 @@ public:
 	 * Creates new status with given type and description.
 	 */
 	Status(StatusType statusType = StatusTypeOffline, const QString &description = QString());
-	Status(const Status &copyme);
-	~Status();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

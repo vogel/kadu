@@ -29,10 +29,6 @@ PluginMetadata::PluginMetadata(
 {
 }
 
-PluginMetadata::~PluginMetadata()
-{
-}
-
 QString PluginMetadata::name() const
 {
 	return m_name;

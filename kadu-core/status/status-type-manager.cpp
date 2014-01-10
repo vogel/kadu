@@ -22,6 +22,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdexcept>
+
 #include <QtCore/QtAlgorithms>
 #include <QtGui/QApplication>
 
@@ -71,11 +73,15 @@ StatusType StatusTypeManager::fromName(const QString &name)
 	return StatusTypeOffline;
 }
 
-const StatusTypeData StatusTypeManager::statusTypeData(StatusType statusType)
+const StatusTypeData & StatusTypeManager::statusTypeData(StatusType statusType) const
 {
-	if (StatusTypes.contains(statusType))
-		return StatusTypes.value(statusType);
-	return StatusTypes.value(StatusTypeOffline);
+	auto it = StatusTypes.find(statusType);
+	if (it == StatusTypes.end())
+		it = StatusTypes.find(StatusTypeOffline);
+	if (it == StatusTypes.end())
+		throw std::runtime_error{"StatusTypes do not contain offline"};
+
+	return it.value();
 }
 
 KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const Status &status)

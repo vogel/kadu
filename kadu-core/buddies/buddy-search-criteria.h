@@ -34,7 +34,6 @@ struct KADUAPI BuddySearchCriteria
 	bool IgnoreResults;
 
 	BuddySearchCriteria();
-	virtual ~BuddySearchCriteria();
 
 	void reqUin(Account account, const QString& uin);
 	void reqFirstName(const QString& firstName);
