@@ -22,22 +22,6 @@
 #include "misc/graph/graph-algorithm.h"
 #include "plugin/dependency-graph/plugin-dependency-cycle-exception.h"
 
-PluginDependencyGraph::PluginDependencyGraph()
-{
-}
-
-PluginDependencyGraph::PluginDependencyGraph(PluginDependencyGraph &&moveMe) :
-		m_graph{std::move(moveMe.m_graph)}
-{
-}
-
-PluginDependencyGraph & PluginDependencyGraph::operator = (PluginDependencyGraph &&moveMe)
-{
-	using std::swap;
-	swap(m_graph, moveMe.m_graph);
-	return *this;
-}
-
 void PluginDependencyGraph::addPlugin(const QString &pluginName)
 {
 	m_graph.addNode(pluginName);

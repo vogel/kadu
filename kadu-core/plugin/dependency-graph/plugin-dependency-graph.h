@@ -31,12 +31,12 @@ class KADUAPI PluginDependencyGraph
 	struct PluginDependentTag {};
 
 public:
-	PluginDependencyGraph();
-	PluginDependencyGraph(const PluginDependencyGraph &copyMe) = delete;
-	PluginDependencyGraph(PluginDependencyGraph &&moveMe);
+	PluginDependencyGraph() = default;
+	PluginDependencyGraph(const PluginDependencyGraph &) = delete;
+	PluginDependencyGraph(PluginDependencyGraph &&) = default;
 
-	PluginDependencyGraph & operator = (const PluginDependencyGraph &copyMe) = delete;
-	PluginDependencyGraph & operator = (PluginDependencyGraph &&moveMe);
+	PluginDependencyGraph & operator = (const PluginDependencyGraph &) = delete;
+	PluginDependencyGraph & operator = (PluginDependencyGraph &&) = default;
 
 	void addPlugin(const QString &pluginName);
 	void addDependency(const QString &dependentPluginName, const QString &dependencyPluginName);
