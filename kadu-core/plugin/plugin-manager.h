@@ -43,7 +43,6 @@ class PluginActivationErrorHandler;
 class PluginActivationService;
 class PluginMetadata;
 class PluginMetadataFinder;
-class PluginMetadataRepository;
 class PluginStateService;
 class StoragePoint;
 class StoragePointFactory;
@@ -91,7 +90,6 @@ public:
 	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
-	void setPluginMetadataRepository(PluginMetadataRepository *pluginMetadataRepository);
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
@@ -115,10 +113,10 @@ private:
 	QWeakPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
 	QWeakPointer<PluginMetadataFinder> m_pluginMetadataFinder;
-	QWeakPointer<PluginMetadataRepository> m_pluginMetadataRepository;
 	QWeakPointer<PluginStateService> m_pluginStateService;
 	QWeakPointer<StoragePointFactory> m_storagePointFactory;
 
+	std::map<QString, PluginMetadata> m_allPluginMetadata;
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
 	void loadAllPluginMetadata();
