@@ -79,6 +79,11 @@ void PluginManager::setPluginActivationService(PluginActivationService *pluginAc
 	m_pluginActivationService = pluginActivationService;
 }
 
+void PluginManager::setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder)
+{
+	m_pluginDependencyGraphBuilder = pluginDependencyGraphBuilder;
+}
+
 void PluginManager::setPluginStateService(PluginStateService *pluginStateService)
 {
 	m_pluginStateService = pluginStateService;
@@ -108,11 +113,11 @@ void PluginManager::initialize()
 
 void PluginManager::loadPluginMetadata()
 {
-	if (!m_pluginMetadataFinder)
+	if (!m_pluginDependencyGraphBuilder || !m_pluginMetadataFinder)
 		return;
 
 	auto pluginMetatada = m_pluginMetadataFinder.data()->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
-	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(pluginMetatada);
+	auto dependencyGraph = m_pluginDependencyGraphBuilder.data()->buildGraph(pluginMetatada);
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 
 	std::copy_if(std::begin(pluginMetatada), std::end(pluginMetatada), std::inserter(m_allPluginMetadata, m_allPluginMetadata.begin()),
@@ -121,7 +126,10 @@ void PluginManager::loadPluginMetadata()
 
 void PluginManager::prepareDependencyGraph()
 {
-	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(m_allPluginMetadata);
+	if (!m_pluginDependencyGraphBuilder)
+		return;
+
+	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder.data()->buildGraph(m_allPluginMetadata);
 }
 
 void PluginManager::loadPluginStates()

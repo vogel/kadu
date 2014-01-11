@@ -42,6 +42,7 @@
 
 class PluginActivationErrorHandler;
 class PluginActivationService;
+class PluginDependencyGraphBuilder;
 class PluginMetadata;
 class PluginMetadataFinder;
 class PluginStateService;
@@ -95,6 +96,7 @@ public:
 
 	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
 	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
@@ -125,6 +127,7 @@ private:
 
 	QWeakPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	QWeakPointer<PluginDependencyGraphBuilder> m_pluginDependencyGraphBuilder;
 	QWeakPointer<PluginMetadataFinder> m_pluginMetadataFinder;
 	QWeakPointer<PluginStateService> m_pluginStateService;
 	QWeakPointer<StoragePointFactory> m_storagePointFactory;

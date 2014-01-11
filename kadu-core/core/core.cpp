@@ -692,6 +692,7 @@ void Core::runServices()
 	CurrentPluginManager = new PluginManager(this);
 	CurrentPluginManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
 	CurrentPluginManager->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginManager->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
 	CurrentPluginManager->setPluginMetadataFinder(CurrentPluginMetadataFinder);
 	CurrentPluginManager->setPluginStateService(CurrentPluginStateService);
 	CurrentPluginManager->setStoragePointFactory(CurrentStoragePointFactory);
