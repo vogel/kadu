@@ -35,6 +35,7 @@
 #include "exports.h"
 
 #include <memory>
+#include <set>
 #include <QtCore/QMap>
 #include <QtCore/QWeakPointer>
 
@@ -96,6 +97,8 @@ public:
 
 	void initialize();
 	void storePluginStates();
+
+	std::set<QString> pluginNames() const;
 
 	void activateProtocolPlugins();
 	void activatePlugins();

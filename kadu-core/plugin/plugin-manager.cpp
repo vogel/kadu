@@ -126,7 +126,7 @@ QMap<QString, PluginState> PluginManager::loadPluginStates(StoragePoint *storage
 	return importedFrom09
 			? PluginStateStorage{}.load(*storagePoint)
 			: m_pluginMetadataRepository
-					? PluginStateStorage09{}.load(m_pluginMetadataRepository.data()->pluginNames())
+					? PluginStateStorage09{}.load(pluginNames())
 					: QMap<QString, PluginState>{};
 }
 
@@ -142,6 +142,19 @@ void PluginManager::storePluginStates()
 	auto pluginStateStorage = PluginStateStorage{};
 	auto pluginStates = m_pluginStateService.data()->pluginStates();
 	pluginStateStorage.store(*storagePoint.get(), pluginStates);
+}
+
+std::set<QString> PluginManager::pluginNames() const
+{
+	if (!m_pluginMetadataRepository)
+		return {};
+
+	auto result = std::set<QString>{};
+	std::transform(m_pluginMetadataRepository.data()->allPluginMetadata().begin(),
+				   m_pluginMetadataRepository.data()->allPluginMetadata().end(),
+				   std::inserter(result, result.begin()),
+		[](const std::map<QString, PluginMetadata>::value_type &v){ return v.first; });
+	return result;
 }
 
 void PluginManager::prepareDependencyGraph()

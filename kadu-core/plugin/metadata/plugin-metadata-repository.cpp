@@ -66,15 +66,6 @@ void PluginMetadataRepository::removePluginMetadata(const QString &name)
 	m_pluginMetadatas.erase(name);
 }
 
-std::set<QString> PluginMetadataRepository::pluginNames() const
-{
-	auto result = std::set<QString>{};
-	std::transform(m_pluginMetadatas.begin(), m_pluginMetadatas.end(), std::inserter(result, result.begin()), [](const Storage::value_type &v){
-		return v.first;
-	});
-	return result;
-}
-
 const ::std::map<QString, PluginMetadata> & PluginMetadataRepository::allPluginMetadata() const
 {
 	return m_pluginMetadatas;
