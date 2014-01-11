@@ -19,10 +19,10 @@
 
 #include "plugin-dependency-graph-builder.h"
 
+#include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/metadata/plugin-metadata.h"
-#include "plugin/metadata/plugin-metadata-repository.h"
 
 PluginDependencyGraphBuilder::PluginDependencyGraphBuilder(QObject *parent) :
 		QObject{parent}
@@ -33,20 +33,20 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 {
 }
 
-std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(PluginMetadataRepository &pluginMetadataRepository) const
+std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(const ::std::map<QString, PluginMetadata> &plugins) const
 {
 	auto result = make_unique<PluginDependencyGraph>();
 
-	auto pluginNames = getPluginNames(pluginMetadataRepository);
-	for (auto pluginName : pluginNames)
+	auto pluginNames = getPluginNames(plugins);
+	for (auto const &pluginName : pluginNames)
 		result.get()->addPlugin(pluginName);
 
-	for (auto pluginName : pluginNames)
+	for (auto const &pluginName : pluginNames)
 	{
-		if (!pluginMetadataRepository.hasPluginMetadata(pluginName))
+		if (!contains(plugins, pluginName))
 			continue;
 
-		auto pluginMetadata = pluginMetadataRepository.pluginMetadata(pluginName);
+		auto const &pluginMetadata = plugins.at(pluginName);
 		for (auto const &dependency : pluginMetadata.dependencies())
 			result.get()->addDependency(pluginName, dependency);
 	}
@@ -54,11 +54,12 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 	return std::move(result);
 }
 
-std::set<QString> PluginDependencyGraphBuilder::getPluginNames(PluginMetadataRepository &pluginMetadataRepository) const
+std::set<QString> PluginDependencyGraphBuilder::getPluginNames(const ::std::map<QString, PluginMetadata> &plugins) const
 {
 	auto pluginNames = std::set<QString>{};
-	for (auto pluginMetadata : pluginMetadataRepository)
+	for (auto const &plugin : plugins)
 	{
+		auto const &pluginMetadata = plugin.second;
 		pluginNames.insert(pluginMetadata.name());
 		for (auto dependency : pluginMetadata.dependencies())
 			pluginNames.insert(dependency);

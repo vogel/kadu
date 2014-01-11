@@ -26,6 +26,7 @@
 #include "plugin/metadata/plugin-metadata-repository.h"
 
 #include <algorithm>
+#include <map>
 #include <QtTest/QtTest>
 
 class tst_PluginDependencyGraphBuilder : public QObject
@@ -33,7 +34,7 @@ class tst_PluginDependencyGraphBuilder : public QObject
 	Q_OBJECT
 
 private:
-	std::unique_ptr<PluginMetadataRepository> createPluginMetadataRepository(const QVector<QPair<QString, QStringList>> &plugins);
+	::std::map<QString, PluginMetadata> createPlugins(const QVector<QPair<QString, QStringList>> &plugins);
 	PluginMetadata createPluginMetadata(const QPair<QString, QStringList> &plugin);
 
 private slots:
@@ -42,11 +43,11 @@ private slots:
 
 };
 
-std::unique_ptr<PluginMetadataRepository> tst_PluginDependencyGraphBuilder::createPluginMetadataRepository(const QVector<QPair<QString, QStringList>> &plugins)
+::std::map<QString, PluginMetadata> tst_PluginDependencyGraphBuilder::createPlugins(const QVector<QPair<QString, QStringList>> &plugins)
 {
-	auto result = make_unique<PluginMetadataRepository>();
+	auto result = ::std::map<QString, PluginMetadata>{};
 	for (auto const &plugin : plugins)
-		result.get()->addPluginMetadata(plugin.first, createPluginMetadata(plugin));
+		result.insert({plugin.first, createPluginMetadata(plugin)});
 	return result;
 }
 
@@ -66,7 +67,7 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 	plugins.append(qMakePair(QString("p2"), QStringList() << "p3" << "p4"));
 	plugins.append(qMakePair(QString("p3"), QStringList() << "p4"));
 
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(*createPluginMetadataRepository(plugins).get());
+	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(plugins));
 
 	QCOMPARE(graph.get()->size(), 4);
 
@@ -109,7 +110,7 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 	auto plugins = QVector<QPair<QString, QStringList>>{};
 	plugins.append(qMakePair(QString("p1"), QStringList() << "p1"));
 
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(*createPluginMetadataRepository(plugins).get());
+	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(plugins));
 
 	QCOMPARE(graph.get()->size(), 1);
 

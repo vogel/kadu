@@ -75,6 +75,11 @@ std::set<QString> PluginMetadataRepository::pluginNames() const
 	return result;
 }
 
+const ::std::map<QString, PluginMetadata> & PluginMetadataRepository::allPluginMetadata() const
+{
+	return m_pluginMetadatas;
+}
+
 bool PluginMetadataRepository::hasPluginMetadata(const QString &name) const
 {
 	return contains(m_pluginMetadatas, name);

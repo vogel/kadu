@@ -50,6 +50,7 @@ public:
 	void removePluginMetadata(const QString &name);
 
 	std::set<QString> pluginNames() const;
+	const ::std::map<QString, PluginMetadata> & allPluginMetadata() const;
 
 	bool hasPluginMetadata(const QString &name) const;
 	PluginMetadata pluginMetadata(const QString &name) const;

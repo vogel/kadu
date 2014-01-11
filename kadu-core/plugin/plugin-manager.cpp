@@ -146,12 +146,12 @@ void PluginManager::storePluginStates()
 
 void PluginManager::prepareDependencyGraph()
 {
-	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginMetadataRepository.data());
+	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(m_pluginMetadataRepository.data()->allPluginMetadata());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
 		m_pluginMetadataRepository.data()->removePluginMetadata(pluginInDependency);
 
-	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*m_pluginMetadataRepository.data());
+	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(m_pluginMetadataRepository.data()->allPluginMetadata());
 }
 
 /**
