@@ -31,6 +31,7 @@
 
 #pragma once
 
+#include "misc/iterator.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
 
@@ -83,7 +84,12 @@ class KADUAPI PluginManager : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(PluginManager)
 
+	using Storage = std::map<QString, PluginMetadata>;
+	using WrappedIterator = Storage::iterator;
+
 public:
+	using Iterator = IteratorWrapper<WrappedIterator, PluginMetadata>;
+
 	explicit PluginManager(QObject *parent = nullptr);
 	virtual ~PluginManager();
 
@@ -92,6 +98,9 @@ public:
 	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
+
+	Iterator begin();
+	Iterator end();
 
 	void initialize();
 	void storePluginStates();
@@ -110,6 +119,8 @@ public:
 	void deactivatePluginWithDependents(const QString &pluginName) noexcept;
 
 private:
+	static PluginMetadata converter(WrappedIterator iterator);
+
 	QWeakPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
 	QWeakPointer<PluginMetadataFinder> m_pluginMetadataFinder;
@@ -134,6 +145,16 @@ private:
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
 };
+
+inline PluginManager::Iterator begin(PluginManager *pluginManager)
+{
+	return pluginManager->begin();
+}
+
+inline PluginManager::Iterator end(PluginManager *pluginManager)
+{
+	return pluginManager->end();
+}
 
 /**
  * @}

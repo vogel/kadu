@@ -50,6 +50,11 @@
 #include "storage/storage-point-factory.h"
 #include "debug.h"
 
+PluginMetadata PluginManager::converter(PluginManager::WrappedIterator iterator)
+{
+	return iterator->second;
+}
+
 PluginManager::PluginManager(QObject *parent) :
 		QObject{parent}
 {
@@ -82,6 +87,16 @@ void PluginManager::setPluginStateService(PluginStateService *pluginStateService
 void PluginManager::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
 	m_storagePointFactory = storagePointFactory;
+}
+
+PluginManager::Iterator PluginManager::begin()
+{
+	return Iterator{m_allPluginMetadata.begin(), converter};
+}
+
+PluginManager::Iterator PluginManager::end()
+{
+	return Iterator{m_allPluginMetadata.end(), converter};
 }
 
 void PluginManager::initialize()
@@ -139,7 +154,7 @@ void PluginManager::storePluginStates()
 std::set<QString> PluginManager::pluginNames() const
 {
 	auto result = std::set<QString>{};
-	std::transform(begin(m_allPluginMetadata), end(m_allPluginMetadata), std::inserter(result, result.begin()),
+	std::transform(std::begin(m_allPluginMetadata), std::end(m_allPluginMetadata), std::inserter(result, result.begin()),
 		[](const std::map<QString, PluginMetadata>::value_type &v){ return v.first; });
 	return result;
 }
