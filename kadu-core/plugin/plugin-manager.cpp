@@ -126,7 +126,7 @@ QMap<QString, PluginState> PluginManager::loadPluginStates(StoragePoint *storage
 	return importedFrom09
 			? PluginStateStorage{}.load(*storagePoint)
 			: m_pluginMetadataRepository
-					? PluginStateStorage09{}.load(*m_pluginMetadataRepository.data())
+					? PluginStateStorage09{}.load(m_pluginMetadataRepository.data()->pluginNames())
 					: QMap<QString, PluginState>{};
 }
 

@@ -21,9 +21,10 @@
 
 #include "exports.h"
 
+#include <set>
 #include <QtCore/QMap>
 
-class PluginMetadataRepository;
+class QStringList;
 
 enum class PluginState;
 
@@ -31,6 +32,6 @@ class KADUAPI PluginStateStorage09
 {
 
 public:
-	QMap<QString, PluginState> load(PluginMetadataRepository &pluginMetadataRepository) const;
+	QMap<QString, PluginState> load(const ::std::set<QString> &existingPluginNames) const;
 
 };
