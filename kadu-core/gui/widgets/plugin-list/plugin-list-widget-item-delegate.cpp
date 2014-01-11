@@ -45,10 +45,10 @@
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/metadata/plugin-metadata.h"
-#include "plugin/metadata/plugin-metadata-repository.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
+#include "plugin/plugin-manager.h"
 
 #include "plugin-list-widget-item-delegate.h"
 
@@ -263,9 +263,9 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 
         auto pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
 
-		if (Core::instance()->pluginMetadataRepository()->hasPluginMetadata(pluginEntry->pluginName))
+		if (Core::instance()->pluginManager()->hasPluginMetadata(pluginEntry->pluginName))
 		{
-			auto const &pluginMetadata = Core::instance()->pluginMetadataRepository()->pluginMetadata(pluginEntry->pluginName);
+			auto const &pluginMetadata = Core::instance()->pluginManager()->pluginMetadata(pluginEntry->pluginName);
 
 			info += tr("Author: %1").arg(pluginMetadata.author()) + "\n";
 			info += tr("Version: %1").arg(pluginMetadata.version()) + "\n";
