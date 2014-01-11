@@ -86,7 +86,6 @@ class PluginDependencyGraphBuilder;
 class PluginManager;
 class PluginMetadataFinder;
 class PluginMetadataReader;
-class PluginMetadataRepository;
 class PluginStateService;
 class RawMessageTransformerService;
 class RosterNotifier;
@@ -140,7 +139,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginMetadataFinder *CurrentPluginMetadataFinder;
 	PluginMetadataReader *CurrentPluginMetadataReader;
 	PluginStateService *CurrentPluginStateService;
-	PluginMetadataRepository *CurrentPluginMetadataRepository;
 	PluginManager *CurrentPluginManager;
 
 	KaduWindow *Window;
@@ -230,7 +228,6 @@ public:
 	PluginDependencyGraphBuilder * pluginDependencyGraphBuilder() const;
 	PluginMetadataFinder * pluginMetadataFinder() const;
 	PluginMetadataReader * pluginMetadataReader() const;
-	PluginMetadataRepository * pluginMetadataRepository() const;
 	PluginManager * pluginManager() const;
 	PluginStateService * pluginStateService() const;
 

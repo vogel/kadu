@@ -23,7 +23,6 @@
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/metadata/plugin-metadata-builder.h"
-#include "plugin/metadata/plugin-metadata-repository.h"
 
 #include <algorithm>
 #include <map>

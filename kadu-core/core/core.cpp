@@ -90,7 +90,6 @@
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/metadata/plugin-metadata-reader.h"
-#include "plugin/metadata/plugin-metadata-repository.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state-storage.h"
@@ -685,7 +684,6 @@ void Core::runServices()
 	CurrentPluginMetadataFinder = new PluginMetadataFinder(this);
 	CurrentPluginMetadataReader = new PluginMetadataReader(this);
 	CurrentPluginStateService = new PluginStateService(this);
-	CurrentPluginMetadataRepository = new PluginMetadataRepository(this);
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 
@@ -899,11 +897,6 @@ PluginMetadataReader * Core::pluginMetadataReader() const
 PluginStateService * Core::pluginStateService() const
 {
 	return CurrentPluginStateService;
-}
-
-PluginMetadataRepository * Core::pluginMetadataRepository() const
-{
-	return CurrentPluginMetadataRepository;
 }
 
 PluginManager * Core::pluginManager() const

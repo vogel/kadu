@@ -11,7 +11,6 @@ set (plugin_SRCS
 	metadata/plugin-metadata-builder.cpp
 	metadata/plugin-metadata-finder.cpp
 	metadata/plugin-metadata-reader.cpp
-	metadata/plugin-metadata-repository.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
 	state/plugin-state-service.cpp
