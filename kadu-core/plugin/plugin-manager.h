@@ -106,6 +106,8 @@ public:
 	void storePluginStates();
 
 	std::set<QString> pluginNames() const;
+	bool hasPluginMetadata(const QString &pluginName) const;
+	PluginMetadata pluginMetadata(const QString &pluginName) const;
 
 	void activateProtocolPlugins();
 	void activatePlugins();

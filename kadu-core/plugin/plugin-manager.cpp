@@ -159,6 +159,16 @@ std::set<QString> PluginManager::pluginNames() const
 	return result;
 }
 
+bool PluginManager::hasPluginMetadata(const QString &pluginName) const
+{
+	return contains(m_allPluginMetadata, pluginName);
+}
+
+PluginMetadata PluginManager::pluginMetadata(const QString &pluginName) const
+{
+	return m_allPluginMetadata.at(pluginName);
+}
+
 void PluginManager::prepareDependencyGraph()
 {
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(m_allPluginMetadata);
