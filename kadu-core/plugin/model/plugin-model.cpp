@@ -47,7 +47,7 @@
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/metadata/plugin-metadata.h"
-#include "plugin/metadata/plugin-metadata-repository.h"
+#include "plugin/plugin-manager.h"
 
 #include "plugin-model.h"
 
@@ -57,7 +57,7 @@ void PluginModel::loadPluginData()
         Plugins.clear();
         QList<PluginEntry> listToAdd;
 
-        for (auto const &pluginMetadata : Core::instance()->pluginMetadataRepository())
+        for (auto const &pluginMetadata : Core::instance()->pluginManager())
         {
                 PluginEntry pluginEntry;
 
