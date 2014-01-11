@@ -132,10 +132,10 @@ private:
 	std::map<QString, PluginMetadata> m_allPluginMetadata;
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
-	void loadAllPluginMetadata();
+	void loadPluginMetadata();
+	void prepareDependencyGraph();
 	void loadPluginStates();
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
-	void prepareDependencyGraph();
 
 	QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &){ return true; }) const;
 

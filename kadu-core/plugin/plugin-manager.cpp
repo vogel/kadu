@@ -101,17 +101,27 @@ PluginManager::Iterator PluginManager::end()
 
 void PluginManager::initialize()
 {
-	loadAllPluginMetadata();
-	loadPluginStates();
+	loadPluginMetadata();
 	prepareDependencyGraph();
+	loadPluginStates();
 }
 
-void PluginManager::loadAllPluginMetadata()
+void PluginManager::loadPluginMetadata()
 {
 	if (!m_pluginMetadataFinder)
 		return;
 
-	m_allPluginMetadata = m_pluginMetadataFinder.data()->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
+	auto pluginMetatada = m_pluginMetadataFinder.data()->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
+	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(pluginMetatada);
+	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
+
+	std::copy_if(std::begin(pluginMetatada), std::end(pluginMetatada), std::inserter(m_allPluginMetadata, m_allPluginMetadata.begin()),
+		[&pluginsInDependencyCycle](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsInDependencyCycle, v.first); });
+}
+
+void PluginManager::prepareDependencyGraph()
+{
+	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(m_allPluginMetadata);
 }
 
 void PluginManager::loadPluginStates()
@@ -167,16 +177,6 @@ bool PluginManager::hasPluginMetadata(const QString &pluginName) const
 PluginMetadata PluginManager::pluginMetadata(const QString &pluginName) const
 {
 	return m_allPluginMetadata.at(pluginName);
-}
-
-void PluginManager::prepareDependencyGraph()
-{
-	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(m_allPluginMetadata);
-	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
-	for (auto &pluginInDependency : pluginsInDependencyCycle)
-		m_allPluginMetadata.erase(pluginInDependency);
-
-	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(m_allPluginMetadata);
 }
 
 /**
