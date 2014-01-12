@@ -48,6 +48,7 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create empty instance of RosterTask class.
+	 * @todo Remove!
 	 */
 	RosterTask();
 

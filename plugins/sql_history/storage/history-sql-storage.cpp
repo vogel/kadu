@@ -59,7 +59,6 @@
 #include "plugins/history/history-query-result.h"
 #include "plugins/history/history-query.h"
 #include "plugins/history/history.h"
-#include "plugins/history/search/history-search-parameters.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-chats-mapping.h"

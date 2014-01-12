@@ -45,7 +45,6 @@ public:
 	static QString createUniqueNonce();
 	static QString createTimestamp();
 
-	OAuthParameters();
 	OAuthParameters(const OAuthConsumer &consumer, const OAuthToken &token);
 
 	void setConsumer(const OAuthConsumer &consumer);

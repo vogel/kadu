@@ -9,7 +9,6 @@ class MEDIAPLAYERAPI PlayerInfo
 {
 
 public:
-	PlayerInfo() {}
 	virtual ~PlayerInfo() {}
 
 	/**

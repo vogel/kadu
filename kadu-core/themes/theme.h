@@ -34,9 +34,7 @@ class KADUAPI Theme
 	QString Name;
 
 public:
-	static Theme null;
-
-	Theme() {}
+	Theme() {} // TODO: Remove!
 	Theme(const QString &path, const QString &name);
 	Theme(const Theme &copyMe);
 

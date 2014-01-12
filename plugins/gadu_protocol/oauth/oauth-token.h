@@ -39,7 +39,7 @@ class OAuthToken
 	int TokenExpiresIn;
 
 public:
-	OAuthToken();
+	OAuthToken(); // TODO: Remove together with Valid field!
 	OAuthToken(const OAuthToken &copyMe);
 	OAuthToken(const QByteArray &token, const QByteArray &tokenSecret, int tokenExpiresIn);
 

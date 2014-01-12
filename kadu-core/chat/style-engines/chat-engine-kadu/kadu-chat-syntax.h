@@ -35,8 +35,8 @@ class KaduChatSyntax
 	QString WithoutHeader;
 
 public:
-	KaduChatSyntax() {};
-	KaduChatSyntax(const QString &syntax);
+	KaduChatSyntax() {}
+	explicit KaduChatSyntax(const QString &syntax);
 
 	void setSyntax(const QString &syntax);
 

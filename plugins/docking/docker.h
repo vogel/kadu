@@ -33,7 +33,6 @@ class KaduIcon;
 class Docker
 {
 public:
-	Docker() {}
 	virtual ~Docker() {}
 
 	virtual void changeTrayIcon(const KaduIcon &icon) = 0;

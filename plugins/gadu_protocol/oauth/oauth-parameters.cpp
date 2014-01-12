@@ -35,15 +35,6 @@ QString OAuthParameters::createTimestamp()
 	return QString::number(QDateTime::currentDateTime().toTime_t());
 }
 
-OAuthParameters::OAuthParameters()
-{
-	setHttpMethod("POST");
-	setNonce(createUniqueNonce());
-	setTimestamp(createTimestamp());
-	setSignatureMethod("HMAC-SHA1");
-	setVerison("1.0");
-}
-
 OAuthParameters::OAuthParameters(const OAuthConsumer &consumer, const OAuthToken &token) :
 		Consumer(consumer), Token(token)
 {

@@ -49,6 +49,7 @@ public:
 	/**
 	 * @short Create null emoticon.
 	 * @author Rafał 'Vogel' Malinowski
+	 * @todo Remove!
 	 */
 	Emoticon();
 

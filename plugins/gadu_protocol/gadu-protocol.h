@@ -51,8 +51,6 @@
 
 #include "server/gadu-servers-manager.h"
 #include "gadu-exports.h"
-#include "gadu-search-record.h"
-#include "gadu-search-result.h"
 
 #include "protocols/protocol.h"
 

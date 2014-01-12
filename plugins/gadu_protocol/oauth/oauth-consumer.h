@@ -32,7 +32,7 @@ class OAuthConsumer
 	QByteArray ConsumerSecret;
 
 public:
-	OAuthConsumer();
+	OAuthConsumer(); // TODO: Remove!
 	OAuthConsumer(const OAuthConsumer &copyMe);
 	OAuthConsumer(const QByteArray &key, const QByteArray &secret);
 

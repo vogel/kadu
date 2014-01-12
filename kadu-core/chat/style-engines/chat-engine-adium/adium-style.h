@@ -68,7 +68,7 @@ class AdiumStyle
 
 public:
 	AdiumStyle() { }
-	AdiumStyle(const QString &styleName);
+	explicit AdiumStyle(const QString &styleName);
 
 	static bool isStyleValid(const QString &stylePath);
 

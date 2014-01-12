@@ -41,7 +41,6 @@ class FormattedStringVisitor
 {
 
 protected:
-	FormattedStringVisitor() {}
 	virtual ~FormattedStringVisitor() {}
 
 public:

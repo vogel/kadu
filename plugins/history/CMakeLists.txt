@@ -34,7 +34,6 @@ set (SOURCES
 	model/history-query-results-model.cpp
 	model/history-query-results-proxy-model.cpp
 
-	search/history-search-parameters.cpp
 	storage/history-storage.cpp
 
 	buddy-history-delete-handler.cpp

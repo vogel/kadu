@@ -29,7 +29,7 @@ class GroupFilter
 	Group MyGroup;
 
 public:
-	GroupFilter();
+	GroupFilter(); // TODO: Remove!
 	explicit GroupFilter(GroupFilterType filterType);
 	explicit GroupFilter(const Group &group);
 
