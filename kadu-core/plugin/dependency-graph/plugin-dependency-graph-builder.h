@@ -27,6 +27,15 @@
 
 class PluginMetadata;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginDependencyGraphBuilder
+ * @short Build plugin dependency graph from @see PluginMetadata objects.
+ */
 class KADUAPI PluginDependencyGraphBuilder : public QObject
 {
 	Q_OBJECT
@@ -35,6 +44,17 @@ public:
 	explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
 	virtual ~PluginDependencyGraphBuilder();
 
+	/**
+	 * @short Build plugin dependency graph from @see PluginMetadata objects.
+	 * @param plugins List of @see PluginMetadata objects.
+	 *
+	 * Returns newly built @see PluginDependencyGraph that contains all relations that could
+	 * be read from \p plugins set of PluginMetadata objects.
+	 */
 	std::unique_ptr<PluginDependencyGraph> buildGraph(const ::std::map<QString, PluginMetadata> &plugins) const;
 
 };
+
+/**
+ * @}
+ */
