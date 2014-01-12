@@ -32,7 +32,6 @@
 class PluginActivationService;
 class PluginEntry;
 class PluginListWidget;
-class PluginManager;
 
 class PluginModel : public QAbstractListModel
 {
@@ -46,7 +45,7 @@ public:
 		CommentRole       = 0x19FC6DE2
 	};
 
-	explicit PluginModel(PluginListWidget *pluginSelector_d, QObject *parent = nullptr);
+	explicit PluginModel(PluginListWidget *pluginListWidget, QObject *parent = nullptr);
 	virtual ~PluginModel();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
@@ -60,9 +59,8 @@ public:
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	PluginListWidget *pluginSelector_d;
-	PluginManager *Manager;
-	QList<PluginEntry> Plugins;
+	PluginListWidget *m_pluginListWidget;
+	QList<PluginEntry> m_pluginEntries;
 
 };
 

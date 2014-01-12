@@ -55,7 +55,7 @@ void PluginModel::loadPluginData()
 {
 	beginResetModel();
 
-	Plugins.clear();
+	m_pluginEntries.clear();
 	QList<PluginEntry> listToAdd;
 
 	for (auto const &pluginMetadata : Core::instance()->pluginManager())
@@ -77,15 +77,15 @@ void PluginModel::loadPluginData()
 		listToAdd.append(pluginEntry);
 	}
 
-	Plugins << listToAdd;
+	m_pluginEntries << listToAdd;
 
 	endResetModel();
 
-	pluginSelector_d->Proxy->sort(0);
+	m_pluginListWidget->Proxy->sort(0);
 }
 
-PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent) :
-		QAbstractListModel{parent}, pluginSelector_d{pluginSelector_d}, Manager{Core::instance()->pluginManager()}
+PluginModel::PluginModel(PluginListWidget *pluginListWidget, QObject *parent) :
+		QAbstractListModel{parent}, m_pluginListWidget{pluginListWidget}
 {
 }
 
@@ -102,7 +102,7 @@ QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) c
 {
 	Q_UNUSED(parent)
 
-	return createIndex(row, column, (row < Plugins.count()) ? (void*) &Plugins.at(row) : nullptr);
+	return createIndex(row, column, (row < m_pluginEntries.count()) ? (void*) &m_pluginEntries.at(row) : nullptr);
 }
 
 QVariant PluginModel::data(const QModelIndex &index, int role) const
@@ -110,7 +110,7 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid() || !index.internalPointer())
 		return {};
 
-	if (index.row() < 0 || index.row() >= Plugins.count())
+	if (index.row() < 0 || index.row() >= m_pluginEntries.count())
 		return {};
 
 	PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
@@ -156,7 +156,7 @@ bool PluginModel::setData(const QModelIndex &index, const QVariant &value, int r
 
 int PluginModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Plugins.count();
+	return parent.isValid() ? 0 : m_pluginEntries.count();
 }
 
 #include "moc_plugin-model.cpp"
