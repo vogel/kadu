@@ -35,8 +35,8 @@ public:
 	explicit GraphCycleFinder(const GraphType &graph) : m_index{0}
 	{
 		for (auto &node : graph.nodes())
-			if (!isVisited(node.get()))
-				strongConnect(node.get());
+			if (!isVisited(node.second.get()))
+				strongConnect(node.second.get());
 	}
 
 	std::set<NodePointer> result() const

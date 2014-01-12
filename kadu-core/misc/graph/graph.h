@@ -19,10 +19,12 @@
 
 #pragma once
 
+#include "misc/algorithm.h"
 #include "misc/graph/graph-node.h"
 #include "misc/memory.h"
 #include "exports.h"
 
+#include <map>
 #include <memory>
 
 template<typename P, typename... SuccessorTypeTags>
@@ -38,57 +40,43 @@ public:
 
 	Graph() = default;
 	Graph(const Graph &) = delete;
-
-	Graph(Graph &&moveMe) :
-			m_nodes{std::move(moveMe.m_nodes)}
-	{
-	}
-
+	Graph(Graph &&) = default;
 	Graph & operator = (const Graph &) = delete;
+	Graph & operator = (Graph &&) = default;
 
-	Graph & operator = (Graph &&moveMe)
-	{
-		using std::swap;
-		swap(m_nodes, moveMe.m_nodes);
-		return *this;
-	}
-
-	const std::vector<std::unique_ptr<NodeType>> & nodes() const
+	const std::map<PayloadType, std::unique_ptr<NodeType>> & nodes() const
 	{
 		return m_nodes;
 	}
 
-	NodePointer addNode(P payload)
+	NodePointer addNode(PayloadType payload)
 	{
+		if (contains(m_nodes, payload))
+			return m_nodes.at(payload).get();
+
 		auto node = make_unique<NodeType>(payload);
 		auto result = node.get();
-		m_nodes.push_back(std::move(node));
+		m_nodes.insert(std::make_pair(payload, std::move(node)));
 		return result;
 	}
 
 	template<typename SuccessorTypeTag>
-	bool addEdge(const P &from, const P &to)
+	void addEdge(const PayloadType &from, const PayloadType &to)
 	{
-		auto nodeFrom = node(from);
-		auto nodeTo = node(to);
-
-		if (!nodeFrom || !nodeTo)
-			return false;
+		auto nodeFrom = addNode(from);
+		auto nodeTo = addNode(to);
 
 		nodeFrom->template addSuccessor<SuccessorTypeTag>(nodeTo);
-		return true;
 	}
 
-	NodePointer node(const P &payload) const
+	NodePointer node(const PayloadType &payload) const
 	{
-		auto match = [&payload](const std::unique_ptr<NodeType> &node) { return node.get()->payload() == payload; };
-		auto result = std::find_if(m_nodes.cbegin(), m_nodes.cend(), match);
-		return result != m_nodes.end()
-				? (*result).get()
+		return contains(m_nodes, payload)
+				? m_nodes.at(payload).get()
 				: nullptr;
 	}
 
 private:
-	std::vector<std::unique_ptr<NodeType>> m_nodes;
+	std::map<PayloadType, std::unique_ptr<NodeType>> m_nodes;
 
 };
