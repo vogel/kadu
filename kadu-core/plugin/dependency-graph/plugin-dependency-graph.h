@@ -99,18 +99,22 @@ public:
 	/**
 	 * @param pluginName name of plugin to find all dependencies for
 	 * @return return sorted list of dependencies for given plugin
+	 * @throws PluginDependencyCycleException
 	 *
 	 * This method returns topological-sorted list of dependencies for given plugin. It means that
-	 * plugins can be properly activated in order of this list.
+	 * plugins can be properly activated in order of this list. If such list could not be computed
+	 * due to cycle in graph, PluginDependencyCycleException is thrown.
 	 */
 	QVector<QString> findDependencies(const QString &pluginName) const noexcept(false);
 
 	/**
 	 * @param pluginName name of plugin to find all dependents for
 	 * @return return sorted list of dependents for given plugin
+	 * @throws PluginDependencyCycleException
 	 *
 	 * This method returns topological-sorted list of dependents for given plugin. It means that
-	 * plugins can be properly deactivated in order of this list.
+	 * plugins can be properly deactivated in order of this list. If such list could not be computed
+	 * due to cycle in graph, PluginDependencyCycleException is thrown.
 	 */
 	QVector<QString> findDependents(const QString &pluginName) const noexcept(false);
 

@@ -21,7 +21,20 @@
 
 #include <exception>
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginDependencyCycleException
+ * @short Exception thrown when cycle was found in plugin dependencies.
+ */
 class PluginDependencyCycleException : public std::exception
 {
 	virtual const char *what() const noexcept { return "Found cycle in plugin dependencies"; }
 };
+
+/**
+ * @}
+ */
