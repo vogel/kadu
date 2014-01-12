@@ -23,6 +23,15 @@
 
 class PluginMetadata;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginMetadataReader
+ * @short Reads PluginMetadata instance from .desc file.
+ */
 class PluginMetadataReader : public QObject
 {
 	Q_OBJECT
@@ -31,6 +40,18 @@ public:
 	explicit PluginMetadataReader(QObject *parent = nullptr) noexcept;
 	virtual ~PluginMetadataReader() noexcept;
 
-	PluginMetadata readPluginMetadata(QString name, const QString &filePath) noexcept(false);
+	/**
+	 * @short Reads PluginMetadata instance from .desc file.
+	 * @param name name of plugin do read data
+	 * @param filePath path to .desc file to read data from
+	 * @throws PluginMetadataReaderException
+	 *
+	 * If file \p filePath can not be read, a @see PluginMetadataReaderException exception is thrown.
+	 */
+	PluginMetadata readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false);
 
 };
+
+/**
+ * @}
+ */

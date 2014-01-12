@@ -36,7 +36,7 @@ PluginMetadataReader::~PluginMetadataReader() noexcept
 {
 }
 
-PluginMetadata PluginMetadataReader::readPluginMetadata(QString name, const QString &filePath) noexcept(false)
+PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false)
 {
 	auto fileInfo = QFileInfo{filePath};
 	if (!fileInfo.exists() || !fileInfo.isReadable())
@@ -47,7 +47,7 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(QString name, const QStr
 
 	auto builder = PluginMetadataBuilder{};
 	return builder
-			.setName(name)
+			.setName(pluginName)
 			.setDisplayName(file.readEntry("Module", "DisplayName[" + lang + ']', file.readEntry("Module", "DisplayName")))
 			.setCategory(file.readEntry("Module", "Category"))
 			.setType(file.readEntry("Module", "Type"))
