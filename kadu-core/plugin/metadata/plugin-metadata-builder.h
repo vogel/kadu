@@ -25,6 +25,18 @@
 
 class PluginMetadata;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginMetadataBuilder
+ * @short Builder of @see PluginMetadata objects.
+ *
+ * This class allows for building PluginMetadata objects without directly calling its big constructor.
+ * Each setXXX call affects all PluginMetadata objects created after it with create() method.
+ */
 class KADUAPI PluginMetadataBuilder
 {
 
@@ -43,6 +55,9 @@ public:
 	PluginMetadataBuilder & setReplaces(const QStringList &replaces);
 	PluginMetadataBuilder & setLoadByDefault(bool loadByDefault);
 
+	/**
+	 * @return New PluginMetadata object with properties set with setXXX calls.
+	 */
 	PluginMetadata create();
 
 private:
@@ -59,3 +74,7 @@ private:
 	bool m_loadByDefault;
 
 };
+
+/**
+ * @}
+ */
