@@ -20,8 +20,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
-#include <set>
 #include <QtCore/QObject>
 
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
@@ -38,8 +36,5 @@ public:
 	virtual ~PluginDependencyGraphBuilder();
 
 	std::unique_ptr<PluginDependencyGraph> buildGraph(const ::std::map<QString, PluginMetadata> &plugins) const;
-
-private:
-	std::set<QString> getPluginNames(const ::std::map<QString, PluginMetadata> &plugins) const;
 
 };

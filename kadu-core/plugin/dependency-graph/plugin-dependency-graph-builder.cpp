@@ -37,32 +37,12 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 {
 	auto result = make_unique<PluginDependencyGraph>();
 
-	auto pluginNames = getPluginNames(plugins);
-	for (auto const &pluginName : pluginNames)
-		result.get()->addPlugin(pluginName);
-
-	for (auto const &pluginName : pluginNames)
+	for (auto const &plugin : plugins)
 	{
-		if (!contains(plugins, pluginName))
-			continue;
-
-		auto const &pluginMetadata = plugins.at(pluginName);
-		for (auto const &dependency : pluginMetadata.dependencies())
-			result.get()->addDependency(pluginName, dependency);
+		result.get()->addPlugin(plugin.first);
+		for (auto const &dependency : plugin.second.dependencies())
+			result.get()->addDependency(plugin.first, dependency);
 	}
 
 	return std::move(result);
-}
-
-std::set<QString> PluginDependencyGraphBuilder::getPluginNames(const ::std::map<QString, PluginMetadata> &plugins) const
-{
-	auto pluginNames = std::set<QString>{};
-	for (auto const &plugin : plugins)
-	{
-		auto const &pluginMetadata = plugin.second;
-		pluginNames.insert(pluginMetadata.name());
-		for (auto dependency : pluginMetadata.dependencies())
-			pluginNames.insert(dependency);
-	}
-	return pluginNames;
 }
