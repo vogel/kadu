@@ -74,7 +74,7 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	ListView->setCategoryDrawer(CategoryDrawer);
 
 	Model = new PluginModel(this, this);
-	Proxy = new PluginProxyModel(this, this);
+	Proxy = new PluginProxyModel(this);
 	Proxy->setCategorizedModel(true);
 	Proxy->setSourceModel(Model);
 	ListView->setModel(Proxy);
@@ -88,7 +88,7 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 
 	LineEdit->setView(ListView);
 
-	connect(LineEdit, SIGNAL(textChanged(QString)), Proxy, SLOT(invalidate()));
+	connect(LineEdit, SIGNAL(textChanged(QString)), Proxy, SLOT(setFilterText(QString)));
 	connect(Delegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
 
 	layout->addWidget(LineEdit);

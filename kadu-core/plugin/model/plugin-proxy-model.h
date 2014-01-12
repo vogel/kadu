@@ -26,18 +26,21 @@
 
 #include "model/categorized-sort-filter-proxy-model.h"
 
-class PluginListWidget;
-
 class PluginProxyModel : public CategorizedSortFilterProxyModel
 {
-	PluginListWidget *pluginSelector_d;
 
 public:
-	explicit PluginProxyModel(PluginListWidget *pluginSelector_d, QObject *parent = nullptr);
+	explicit PluginProxyModel(QObject *parent = nullptr);
 	virtual ~PluginProxyModel();
+
+public slots:
+	void setFilterText(const QString &filterText);
 
 protected:
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 	virtual bool subSortLessThan(const QModelIndex &left, const QModelIndex &right) const override;
+
+private:
+	QString m_filterText;
 
 };

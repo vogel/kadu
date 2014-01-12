@@ -26,13 +26,10 @@
 
 #include "plugin-proxy-model.h"
 
-#include "gui/widgets/filter-widget.h"
-#include "gui/widgets/plugin-list/plugin-list-widget.h"
 #include "plugin/model/plugin-model.h"
 
-
-PluginProxyModel::PluginProxyModel(PluginListWidget *pluginSelector_d, QObject *parent) :
-		CategorizedSortFilterProxyModel{parent}, pluginSelector_d{pluginSelector_d}
+PluginProxyModel::PluginProxyModel(QObject *parent) :
+		CategorizedSortFilterProxyModel{parent}
 {
 	sort(0);
 }
@@ -41,21 +38,28 @@ PluginProxyModel::~PluginProxyModel()
 {
 }
 
+void PluginProxyModel::setFilterText(const QString &filterText)
+{
+	if (m_filterText == filterText)
+		return;
+
+	m_filterText = filterText;
+	invalidate();
+}
+
 bool PluginProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
 	Q_UNUSED(sourceParent)
 
-	if (!pluginSelector_d->LineEdit->filterText().isEmpty())
-	{
-		const QModelIndex index = sourceModel()->index(sourceRow, 0);
-		const PluginEntry *entry = static_cast<PluginEntry*>(index.internalPointer());
-		return entry->pluginName.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive) ||
-				entry->name.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive) ||
-				entry->description.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive) ||
-				entry->author.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive);
-	}
+	if (m_filterText.isEmpty())
+		return true;
 
-	return true;
+	auto index = sourceModel()->index(sourceRow, 0);
+	auto entry = static_cast<PluginEntry*>(index.internalPointer());
+	return entry->pluginName.contains(m_filterText, Qt::CaseInsensitive) ||
+			entry->name.contains(m_filterText, Qt::CaseInsensitive) ||
+			entry->description.contains(m_filterText, Qt::CaseInsensitive) ||
+			entry->author.contains(m_filterText, Qt::CaseInsensitive);
 }
 
 bool PluginProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
