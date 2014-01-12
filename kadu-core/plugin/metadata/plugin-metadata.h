@@ -43,9 +43,7 @@
  * @todo Rewrite to use .desktop files
  *
  * This class contains information about an installed plugin. Every installed plugin has
- * associated .desc file that contains info like plugin author, version ordependencies.
- * New instances of this class are created with existing file name as paremeters. Otherwise,
- * object will contain invalid (empty) data.
+ * associated .desc file that contains info like plugin author, version or dependencies.
  */
 class KADUAPI PluginMetadata
 {
@@ -56,67 +54,56 @@ public:
 			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault);
 	~PluginMetadata();
 
+	/**
+	 * @return Unique name of plugin.
+	 */
 	QString name() const;
 
+	/**
+	 * @return Translated user-visible name of plugin.
+	 */
 	QString displayName() const;
 
+	/**
+	 * @return Translated user-visible name of category of plugin.
+	 *
+	 * Categories can be used to sort plugins in widgets.
+	 */
 	QString category() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns type of plugin.
-	 * @return type of plugin
+	 * @return Type of plugin.
 	 *
-	 * Returns type of plugin. In Kadu 0.10.0 only one type of plugin is supported:
-	 * Protocol plugin. All plugins that are not protocols should have this field
-	 * empty.
-	 *
-	 * Plugins with type Protocol are activated before all other plugins (see
-	 * PluginManager::activateProtocolPlugins()).
+	 * Type of plugin can be empty. Kadu supports only one non-empty plugin type:
+	 * Protocol. Plugins with type Protocol are activated before all other plugins.
 	 */
 	QString type() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns description of plugin.
-	 * @return description of plugin
-	 *
-	 * Returns description of plugin. If no description in current system language is available
-	 * default one will be used.
+	 * @short Translated user-visible description of plugin.
 	 */
 	QString description() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns name of plugin's author.
-	 * @return name of plugin's author
-	 *
-	 * Returns name of plugin's author.
+	 * @return Name of plugin's author.
 	 */
 	QString author() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns plugin's version.
-	 * @return plugin's version
-	 *
-	 * Returns plugin's version.
+	 * @return Plugin's version.
 	 */
 	QString version() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns unique feature name of plugin.
-	 * @return unique feature name of plugin
+	 * @return Unique feature name of plugin.
 	 *
-	 * Two active plugins can not have the same provides string.
+	 * Two active plugins can not have the same unique feature string. For example, only
+	 * one sound driver can be loaded at a time.
 	 */
 	QString provides() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns list of dependencies of plugin.
-	 * @return list of dependencies of plugin
+	 * @return List of dependencies of plugin.
 	 *
 	 * Returns list of dependencies of plugin. This list contains names of plugins that have to be
 	 * activated before this plugin. If any of plugins in this list is not available or could not
@@ -125,20 +112,17 @@ public:
 	QStringList dependencies() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns list of plugins replaced by this one.
-	 * @return list of plugins replaced by this one
+	 * @return List of plugins that this replaces..
 	 *
 	 * Returns list of plugins replaced by this one. If plugin with name from this list was active in previous
 	 * run of Kadu and is no longer avilable, this plugin will be activated instead. This allows us to
-	 * change name of plugins and to create more generic plugins from less generic.
+	 * change name of plugins and to create more generic plugins from less generic (for example: MPRIS mediaplayer
+	 * replaces Amarok and other mediaplayer plugins)..
 	 */
 	QStringList replaces() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns load by default value for this plugin.
-	 * @return load by default value for this plugin
+	 * @return Load by default value for this plugin.
 	 *
 	 * Returns load by default value for this plugin. If plugin has load by default set
 	 * to true and it is new (was not known in previous run of Kadu) it will be activated
