@@ -53,39 +53,39 @@
 
 void PluginModel::loadPluginData()
 {
-        beginResetModel();
-        Plugins.clear();
-        QList<PluginEntry> listToAdd;
+	beginResetModel();
 
-        for (auto const &pluginMetadata : Core::instance()->pluginManager())
-        {
-                PluginEntry pluginEntry;
+	Plugins.clear();
+	QList<PluginEntry> listToAdd;
 
-                pluginEntry.category = !pluginMetadata.category().isEmpty()
-                        ? pluginMetadata.category()
-                        : "Misc";
-                pluginEntry.name = !pluginMetadata.displayName().isEmpty()
-                        ? pluginMetadata.displayName()
-                        : pluginMetadata.name();
-                pluginEntry.description = pluginMetadata.description();
-                pluginEntry.author = pluginMetadata.author();
-                pluginEntry.pluginName = pluginMetadata.name();
-                pluginEntry.checked = m_pluginActivationService.data()->isActive(pluginMetadata.name());
-                pluginEntry.isCheckable = true;
+	for (auto const &pluginMetadata : Core::instance()->pluginManager())
+	{
+		PluginEntry pluginEntry;
 
-                listToAdd.append(pluginEntry);
-        }
+		pluginEntry.category = !pluginMetadata.category().isEmpty()
+				? pluginMetadata.category()
+				: "Misc";
+		pluginEntry.name = !pluginMetadata.displayName().isEmpty()
+				? pluginMetadata.displayName()
+				: pluginMetadata.name();
+		pluginEntry.description = pluginMetadata.description();
+		pluginEntry.author = pluginMetadata.author();
+		pluginEntry.pluginName = pluginMetadata.name();
+		pluginEntry.checked = m_pluginActivationService.data()->isActive(pluginMetadata.name());
+		pluginEntry.isCheckable = true;
 
-        Plugins << listToAdd;
-        endResetModel();
+		listToAdd.append(pluginEntry);
+	}
 
-        pluginSelector_d->Proxy->sort(0);
+	Plugins << listToAdd;
+
+	endResetModel();
+
+	pluginSelector_d->Proxy->sort(0);
 }
 
-PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent)
-                : QAbstractListModel(parent)
-                , pluginSelector_d(pluginSelector_d)
-                , Manager(Core::instance()->pluginManager())
+PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent) :
+		QAbstractListModel{parent}, pluginSelector_d{pluginSelector_d}, Manager{Core::instance()->pluginManager()}
 {
 }
 
@@ -100,83 +100,66 @@ void PluginModel::setPluginActivationService(PluginActivationService *pluginActi
 
 QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) const
 {
-        Q_UNUSED(parent)
+	Q_UNUSED(parent)
 
-        return createIndex(row, column, (row < Plugins.count()) ? (void*) &Plugins.at(row) : 0);
+	return createIndex(row, column, (row < Plugins.count()) ? (void*) &Plugins.at(row) : nullptr);
 }
 
 QVariant PluginModel::data(const QModelIndex &index, int role) const
 {
-        if (!index.isValid() || !index.internalPointer())
-        {
-                return QVariant();
-        }
+	if (!index.isValid() || !index.internalPointer())
+		return {};
 
-        if (index.row() < 0 || index.row() >= Plugins.count())
-                return QVariant();
+	if (index.row() < 0 || index.row() >= Plugins.count())
+		return {};
 
-        PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
+	PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
 
-
-        switch (role)
-        {
-
-                case Qt::DisplayRole:
-                        return pluginEntry->name;
-
-                case PluginEntryRole:
-                        return QVariant::fromValue(pluginEntry);
-
-                case NameRole:
-                        return pluginEntry->pluginName;
-
-                case CommentRole:
-                        return pluginEntry->description;
-
-                case ServicesCountRole:
-
-                case IsCheckableRole:
-                        return true;
-
-                case Qt::CheckStateRole:
-                        return pluginEntry->checked;
-
-                case CategorizedSortFilterProxyModel::CategoryDisplayRole: // fall through
-
-                case CategorizedSortFilterProxyModel::CategorySortRole:
-                        return pluginEntry->category;
-
-                default:
-                        return QVariant();
-        }
+	switch (role)
+	{
+		case Qt::DisplayRole:
+			return pluginEntry->name;
+		case PluginEntryRole:
+			return QVariant::fromValue(pluginEntry);
+		case NameRole:
+			return pluginEntry->pluginName;
+		case CommentRole:
+			return pluginEntry->description;
+		case ServicesCountRole:
+		case IsCheckableRole:
+			return true;
+		case Qt::CheckStateRole:
+			return pluginEntry->checked;
+		case CategorizedSortFilterProxyModel::CategoryDisplayRole:
+		case CategorizedSortFilterProxyModel::CategorySortRole:
+			return pluginEntry->category;
+		default:
+			return {};
+	}
 }
 
 bool PluginModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-        if (!index.isValid())
-        {
-                return false;
-        }
+	if (!index.isValid())
+		return false;
 
-        bool ret = false;
+	bool ret = false;
 
-        if (role == Qt::CheckStateRole)
-        {
-                static_cast<PluginEntry*>(index.internalPointer())->checked = value.toBool();
-                ret = true;
-        }
+	if (role == Qt::CheckStateRole)
+	{
+		static_cast<PluginEntry*>(index.internalPointer())->checked = value.toBool();
+		ret = true;
+	}
 
-        if (ret)
-        {
-                emit dataChanged(index, index);
-        }
+	if (ret)
+		emit dataChanged(index, index);
 
-        return ret;
+	return ret;
 }
 
 int PluginModel::rowCount(const QModelIndex &parent) const
 {
-        return parent.isValid() ? 0 : Plugins.count();
+	return parent.isValid() ? 0 : Plugins.count();
 }
 
 #include "moc_plugin-model.cpp"

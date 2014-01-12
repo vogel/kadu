@@ -23,41 +23,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGIN_MODEL_H
-#define PLUGIN_MODEL_H
+#pragma once
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QList>
-#include <QtGui/QAbstractItemDelegate>
-#include <QtGui/QWidget>
+#include <QtCore/QWeakPointer>
 
-#include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
-#include "model/categorized-sort-filter-proxy-model.h"
-
-class QCheckBox;
-class QPushButton;
-class QAbstractItemView;
-
-class CategorizedListView;
-class CategorizedListViewPainter;
-// class FilterWidget;
-class PluginManager;
-class PluginListWidgetDelegate;
 class PluginActivationService;
 class PluginEntry;
 class PluginListWidget;
-
+class PluginManager;
 
 class PluginModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-	PluginModel(PluginListWidget *pluginSelector_d, QObject *parent = 0);
-	~PluginModel();
-
-	void setPluginActivationService(PluginActivationService *pluginActivationService);
-
 	enum ExtraRoles
 	{
 		PluginEntryRole   = 0x09386561,
@@ -73,10 +54,15 @@ public:
 		IsCheckableRole   = 0x0AC2AFF8
 	};
 
-	virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
+	explicit PluginModel(PluginListWidget *pluginSelector_d, QObject *parent = nullptr);
+	virtual ~PluginModel();
+
+	void setPluginActivationService(PluginActivationService *pluginActivationService);
+
+	virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex{}) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const;
 
 	void loadPluginData();
 
@@ -101,7 +87,7 @@ public:
 	bool checked;
 	bool isCheckable;
 
-	bool operator==(const PluginEntry &pe) const
+	bool operator == (const PluginEntry &pe) const
 	{
 		return name == pe.name;
 	}
@@ -109,6 +95,3 @@ public:
 };
 
 Q_DECLARE_METATYPE(PluginEntry*)
-
-
-#endif
