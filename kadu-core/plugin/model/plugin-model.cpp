@@ -125,9 +125,6 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 			return pluginEntry->pluginName;
 		case CommentRole:
 			return pluginEntry->description;
-		case ServicesCountRole:
-		case IsCheckableRole:
-			return true;
 		case Qt::CheckStateRole:
 			return pluginEntry->checked;
 		case CategorizedSortFilterProxyModel::CategoryDisplayRole:

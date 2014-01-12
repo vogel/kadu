@@ -42,16 +42,8 @@ public:
 	enum ExtraRoles
 	{
 		PluginEntryRole   = 0x09386561,
-		ServicesCountRole = 0x1422E2AA,
 		NameRole          = 0x0CBBBB00,
-		CommentRole       = 0x19FC6DE2,
-		AuthorRole        = 0x30861E10,
-		EmailRole         = 0x02BE3775,
-		WebsiteRole       = 0x13095A34,
-		VersionRole       = 0x0A0CB450,
-		LicenseRole       = 0x001F308A,
-		DependenciesRole  = 0x04CAB650,
-		IsCheckableRole   = 0x0AC2AFF8
+		CommentRole       = 0x19FC6DE2
 	};
 
 	explicit PluginModel(PluginListWidget *pluginSelector_d, QObject *parent = nullptr);

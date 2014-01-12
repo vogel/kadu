@@ -79,22 +79,13 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         xOffset += QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
 #endif
 
-        bool disabled = !index.model()->data(index, PluginModel::IsCheckableRole).toBool();
-
         painter->save();
 
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0);
 
         int iconSize = option.rect.height() - MARGIN * 2;
 
-        if (pluginSelector_d->ShowIcons)
-        {
-//         QPixmap pixmap = KIconLoader::global()->loadIcon(index.model()->data(index, Qt::DecorationRole).toString(),
-//                                                          KIconLoader::Desktop, iconSize, disabled ? KIconLoader::DisabledState : KIconLoader::DefaultState);
-
-//         painter->drawPixmap(QRect(pluginSelector_d->dependantLayoutValue(MARGIN + option.rect.left() + xOffset, iconSize, option.rect.width()), MARGIN + option.rect.top(), iconSize, iconSize), pixmap, QRect(0, 0, iconSize, iconSize));
-        }
-        else
+        if (!pluginSelector_d->ShowIcons)
         {
                 iconSize = -MARGIN;
         }
@@ -102,11 +93,6 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         QRect contentsRect(pluginSelector_d->dependantLayoutValue(MARGIN * 2 + iconSize + option.rect.left() + xOffset, option.rect.width() - MARGIN * 3 - iconSize - xOffset, option.rect.width()), MARGIN + option.rect.top(), option.rect.width() - MARGIN * 3 - iconSize - xOffset, option.rect.height() - MARGIN * 2);
 
         int lessHorizontalSpace = MARGIN * 2 + pushButton->sizeHint().width();
-
-        if (index.model()->data(index, PluginModel::ServicesCountRole).toBool())
-        {
-                lessHorizontalSpace += MARGIN + pushButton->sizeHint().width();
-        }
 
         contentsRect.setWidth(contentsRect.width() - lessHorizontalSpace);
 
@@ -118,15 +104,6 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         if (pluginSelector_d->ListView->layoutDirection() == Qt::RightToLeft)
         {
                 contentsRect.translate(lessHorizontalSpace, 0);
-        }
-
-        painter->save();
-
-        if (disabled)
-        {
-                QPalette pal(option.palette);
-                pal.setCurrentColorGroup(QPalette::Disabled);
-                painter->setPen(pal.text().color());
         }
 
         painter->save();
@@ -144,19 +121,12 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignVCenter, fmSubtitle.elidedText(index.model()->data(index, PluginModel::NameRole).toString(), Qt::ElideRight, contentsRect.width()));
 
         painter->restore();
-        painter->restore();
 }
 
 QSize PluginListWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
         int i = 5;
         int j = 1;
-
-        if (index.model()->data(index, PluginModel::ServicesCountRole).toBool())
-        {
-                i = 6;
-                j = 2;
-        }
 
         if (!pluginSelector_d->ShowIcons)
         {
@@ -233,10 +203,7 @@ void PluginListWidgetItemDelegate::updateItemWidgets(const QList<QWidget*> widge
         else
         {
                 checkBox->setChecked(index.model()->data(index, Qt::CheckStateRole).toBool());
-                checkBox->setEnabled(index.model()->data(index, PluginModel::IsCheckableRole).toBool());
 				configurePushButton->setVisible(false);
-                //configurePushButton->setVisible(index.model()->data(index, PluginModel::ServicesCountRole).toBool());
-                //configurePushButton->setEnabled(index.model()->data(index, Qt::CheckStateRole).toBool());
         }
 }
 
