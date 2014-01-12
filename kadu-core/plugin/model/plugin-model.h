@@ -32,6 +32,7 @@
 class PluginActivationService;
 class PluginEntry;
 class PluginListWidget;
+class PluginManager;
 
 class PluginModel : public QAbstractListModel
 {
@@ -49,6 +50,7 @@ public:
 	virtual ~PluginModel();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginManager(PluginManager *pluginManager);
 
 	virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex{}) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -59,6 +61,8 @@ public:
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
+	QWeakPointer<PluginManager> m_pluginManager;
+
 	PluginListWidget *m_pluginListWidget;
 	QList<PluginEntry> m_pluginEntries;
 
@@ -75,7 +79,6 @@ public:
 	QString description;
 	QString author;
 	bool checked;
-	bool isCheckable;
 
 	bool operator == (const PluginEntry &pe) const
 	{

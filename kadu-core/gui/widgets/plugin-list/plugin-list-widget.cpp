@@ -123,6 +123,8 @@ void PluginListWidget::setPluginStateService(PluginStateService *pluginStateServ
 void PluginListWidget::setPluginManager(PluginManager *pluginManager)
 {
 	m_pluginManager = pluginManager;
+	Model->setPluginManager(pluginManager);
+	Model->loadPluginData();
 }
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const

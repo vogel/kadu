@@ -24,65 +24,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define MARGIN 5
-
-#include <QtGui/QApplication>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyleOptionViewItemV4>
-
-#include "configuration/configuration-manager.h"
-#include "core/core.h"
-#include "gui/widgets/categorized-list-view-painter.h"
-#include "gui/widgets/categorized-list-view.h"
-#include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list/plugin-list-widget.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/kadu-icon.h"
-#include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/plugin-manager.h"
 
 #include "plugin-model.h"
-
-void PluginModel::loadPluginData()
-{
-	beginResetModel();
-
-	m_pluginEntries.clear();
-	QList<PluginEntry> listToAdd;
-
-	for (auto const &pluginMetadata : Core::instance()->pluginManager())
-	{
-		PluginEntry pluginEntry;
-
-		pluginEntry.category = !pluginMetadata.category().isEmpty()
-				? pluginMetadata.category()
-				: "Misc";
-		pluginEntry.name = !pluginMetadata.displayName().isEmpty()
-				? pluginMetadata.displayName()
-				: pluginMetadata.name();
-		pluginEntry.description = pluginMetadata.description();
-		pluginEntry.author = pluginMetadata.author();
-		pluginEntry.pluginName = pluginMetadata.name();
-		pluginEntry.checked = m_pluginActivationService.data()->isActive(pluginMetadata.name());
-		pluginEntry.isCheckable = true;
-
-		listToAdd.append(pluginEntry);
-	}
-
-	m_pluginEntries << listToAdd;
-
-	endResetModel();
-
-	m_pluginListWidget->Proxy->sort(0);
-}
 
 PluginModel::PluginModel(PluginListWidget *pluginListWidget, QObject *parent) :
 		QAbstractListModel{parent}, m_pluginListWidget{pluginListWidget}
@@ -96,6 +44,35 @@ PluginModel::~PluginModel()
 void PluginModel::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
 	m_pluginActivationService = pluginActivationService;
+}
+
+void PluginModel::setPluginManager(PluginManager *pluginManager)
+{
+	m_pluginManager = pluginManager;
+}
+
+void PluginModel::loadPluginData()
+{
+	if (!m_pluginActivationService || !m_pluginManager)
+		return;
+
+	beginResetModel();
+
+	m_pluginEntries.clear();
+
+	for (auto const &pluginMetadata : m_pluginManager.data())
+		m_pluginEntries.append({
+			!pluginMetadata.category().isEmpty() ? pluginMetadata.category() : "Misc",
+			!pluginMetadata.displayName().isEmpty() ? pluginMetadata.displayName() : pluginMetadata.name(),
+			pluginMetadata.description(),
+			pluginMetadata.author(),
+			pluginMetadata.name(),
+			m_pluginActivationService.data()->isActive(pluginMetadata.name())
+		});
+
+	endResetModel();
+
+	m_pluginListWidget->Proxy->sort(0);
 }
 
 QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) const
@@ -113,7 +90,7 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 	if (index.row() < 0 || index.row() >= m_pluginEntries.count())
 		return {};
 
-	PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
+	auto pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
 
 	switch (role)
 	{
@@ -137,21 +114,14 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 
 bool PluginModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (!index.isValid())
-		return false;
-
-	bool ret = false;
-
-	if (role == Qt::CheckStateRole)
+	if (index.isValid() && (role == Qt::CheckStateRole))
 	{
 		static_cast<PluginEntry*>(index.internalPointer())->checked = value.toBool();
-		ret = true;
+		emit dataChanged(index, index);
+		return true;
 	}
 
-	if (ret)
-		emit dataChanged(index, index);
-
-	return ret;
+	return false;
 }
 
 int PluginModel::rowCount(const QModelIndex &parent) const
