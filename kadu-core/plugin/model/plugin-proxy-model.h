@@ -22,26 +22,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGIN_PROXY_MODEL_H
-#define PLUGIN_PROXY_MODEL_H
+#pragma once
 
 #include "model/categorized-sort-filter-proxy-model.h"
 
 class PluginListWidget;
 
-
 class PluginProxyModel : public CategorizedSortFilterProxyModel
 {
-        PluginListWidget *pluginSelector_d;
+	PluginListWidget *pluginSelector_d;
 
 public:
-        PluginProxyModel(PluginListWidget *pluginSelector_d, QObject *parent = 0);
-        ~PluginProxyModel();
+	explicit PluginProxyModel(PluginListWidget *pluginSelector_d, QObject *parent = nullptr);
+	virtual ~PluginProxyModel();
 
 protected:
-        virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-        virtual bool subSortLessThan(const QModelIndex &left, const QModelIndex &right) const;
+	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+	virtual bool subSortLessThan(const QModelIndex &left, const QModelIndex &right) const override;
 
 };
-
-#endif
