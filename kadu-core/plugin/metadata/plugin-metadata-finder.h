@@ -26,6 +26,17 @@
 class PluginMetadata;
 class PluginMetadataReader;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginMetadataFinder
+ * @short Finds metadata .desc files and returns @see PluginMetadata instances from them.
+ *
+ * This class searchs directory for .desc files and reads metadata from them.
+ */
 class PluginMetadataFinder : public QObject
 {
 	Q_OBJECT
@@ -34,11 +45,27 @@ public:
 	explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
 	virtual ~PluginMetadataFinder() noexcept;
 
+	/**
+	 * @short Set PluginMetadataReader service instance.
+	 *
+	 * @see PluginMetadataReader is used to read metadata from .desc files.
+	 */
 	void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 
+	/**
+	 * @short Read metadata files from given directory.
+	 * @param directory directory to search for metadata files
+	 *
+	 * Scans \p directory for metadata files and reads. Result is a map of file name (that is also
+	 * a plugin name) to @see PluginMetadata objects read from these files.
+	 */
 	std::map<QString, PluginMetadata> readAllPluginMetadata(const QString &directory) noexcept;
 
 private:
 	QWeakPointer<PluginMetadataReader> m_pluginMetadataReader;
 
 };
+
+/**
+ * @}
+ */
