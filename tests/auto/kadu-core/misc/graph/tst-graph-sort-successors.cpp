@@ -45,17 +45,16 @@ void tst_GraphSortSuccessors::deterministicSortTest()
 {
 	auto graph = TestGraph{};
 
-	graph.addNode("p1");
-	auto p2 = graph.addNode("p2");
-	auto p3 = graph.addNode("p3");
-	auto p4 = graph.addNode("p4");
-
 	graph.addEdge<Tag1>("p1", "p2");
 	graph.addEdge<Tag1>("p1", "p3");
 	graph.addEdge<Tag1>("p1", "p4");
 	graph.addEdge<Tag1>("p2", "p3");
 	graph.addEdge<Tag1>("p2", "p4");
 	graph.addEdge<Tag1>("p3", "p4");
+
+	auto p2 = graph.node("p2");
+	auto p3 = graph.node("p3");
+	auto p4 = graph.node("p4");
 
 	QCOMPARE(graph_sort_successors<Tag1>(graph, "p1"), (std::vector<TestGraph::NodePointer>{p4, p3, p2}));
 	QCOMPARE(graph_sort_successors<Tag1>(graph, "p2"), (std::vector<TestGraph::NodePointer>{p4, p3}));
@@ -67,17 +66,16 @@ void tst_GraphSortSuccessors::nondeterministicSortTest()
 {
 	auto graph = TestGraph{};
 
-	graph.addNode("p1");
-	auto p2 = graph.addNode("p2");
-	auto p3 = graph.addNode("p3");
-	auto p4 = graph.addNode("p4");
-	auto p5 = graph.addNode("p5");
-
 	graph.addEdge<Tag1>("p1", "p2");
 	graph.addEdge<Tag1>("p2", "p3");
 	graph.addEdge<Tag1>("p2", "p4");
 	graph.addEdge<Tag1>("p3", "p5");
 	graph.addEdge<Tag1>("p4", "p5");
+
+	auto p2 = graph.node("p2");
+	auto p3 = graph.node("p3");
+	auto p4 = graph.node("p4");
+	auto p5 = graph.node("p5");
 
 	auto p1Successors = graph_sort_successors<Tag1>(graph, "p1");
 	QCOMPARE(p1Successors.size(), 4UL);
@@ -95,10 +93,6 @@ void tst_GraphSortSuccessors::nondeterministicSortTest()
 void tst_GraphSortSuccessors::cycleSortTest()
 {
 	auto graph = TestGraph{};
-
-	graph.addNode("p1");
-	graph.addNode("p2");
-	graph.addNode("p3");
 
 	graph.addEdge<Tag1>("p1", "p2");
 	graph.addEdge<Tag1>("p2", "p3");
