@@ -60,10 +60,6 @@ class OtrOpData
 
 public:
 	explicit OtrOpData();
-	OtrOpData(const OtrOpData &copyMe);
-	virtual ~OtrOpData();
-
-	OtrOpData & operator = (const OtrOpData &copyMe);
 
 	void setErrorMessageService(OtrErrorMessageService *errorMessageService);
 	OtrErrorMessageService * errorMessageService() const;

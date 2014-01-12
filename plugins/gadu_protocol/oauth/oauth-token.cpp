@@ -27,29 +27,9 @@ OAuthToken::OAuthToken() :
 {
 }
 
-OAuthToken::OAuthToken(const OAuthToken &copyMe)
-{
-	Consumer = copyMe.Consumer;
-	Valid = copyMe.Valid;
-	Token = copyMe.Token;
-	TokenSecret = copyMe.TokenSecret;
-	TokenExpiresIn = copyMe.TokenExpiresIn;
-}
-
 OAuthToken::OAuthToken(const QByteArray &token, const QByteArray &tokenSecret, int tokenExpiresIn) :
 		Valid(true), Token(token), TokenSecret(tokenSecret), TokenExpiresIn(tokenExpiresIn)
 {
-}
-
-OAuthToken & OAuthToken::operator = (const OAuthToken &copyMe)
-{
-	Consumer = copyMe.Consumer;
-	Valid = copyMe.Valid;
-	Token = copyMe.Token;
-	TokenSecret = copyMe.TokenSecret;
-	TokenExpiresIn = copyMe.TokenExpiresIn;
-
-	return *this;
 }
 
 bool OAuthToken::isValid() const

@@ -52,9 +52,6 @@ class EmoticonConfiguration
 
 public:
 	EmoticonConfiguration();
-	EmoticonConfiguration(const EmoticonConfiguration &copyMe);
-
-	EmoticonConfiguration & operator = (const EmoticonConfiguration &copyMe);
 
 	/**
 	 * @short Set value of enabled property.

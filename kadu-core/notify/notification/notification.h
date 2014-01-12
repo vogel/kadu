@@ -95,22 +95,6 @@ public:
 		const char *Signature;
 
 		Callback() : Slot(0), Signature(0) {}
-
-		Callback(const Callback &copy)
-		{
-			Caption = copy.Caption;
-			Slot = copy.Slot;
-			Signature = copy.Signature;
-		}
-
-		Callback & operator = (const Callback &copy)
-		{
-			Caption = copy.Caption;
-			Slot = copy.Slot;
-			Signature = copy.Signature;
-
-			return *this;
-		}
 	};
 
 private:

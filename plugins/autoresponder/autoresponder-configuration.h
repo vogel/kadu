@@ -55,9 +55,6 @@ class AutoresponderConfiguration
 
 public:
 	AutoresponderConfiguration();
-	AutoresponderConfiguration(const AutoresponderConfiguration &copyMe);
-
-	AutoresponderConfiguration & operator = (const AutoresponderConfiguration &copyMe);
 
 	/**
 	 * @short Set value of autoRespondText property.

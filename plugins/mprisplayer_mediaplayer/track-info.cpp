@@ -24,32 +24,6 @@ TrackInfo::TrackInfo() :
 {
 }
 
-TrackInfo::~TrackInfo()
-{
-}
-
-TrackInfo::TrackInfo(const TrackInfo &copyMe)
-{
-	Title = copyMe.Title;
-	Artist = copyMe.Artist;
-	Album = copyMe.Album;
-	TrackNumber = copyMe.TrackNumber;
-	File = copyMe.File;
-	Length = copyMe.Length;
-}
-
-TrackInfo & TrackInfo::operator = (const TrackInfo &copyMe)
-{
-	Title = copyMe.Title;
-	Artist = copyMe.Artist;
-	Album = copyMe.Album;
-	TrackNumber = copyMe.TrackNumber;
-	File = copyMe.File;
-	Length = copyMe.Length;
-
-	return *this;
-}
-
 void TrackInfo::setTitle(const QString &title)
 {
 	Title = title;

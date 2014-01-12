@@ -45,6 +45,8 @@
 **/
 class KADUAPI PlainConfigFile
 {
+	Q_DISABLE_COPY(PlainConfigFile)
+
 	void write() const;
 	bool changeEntry(const QString &group, const QString &name, const QString &value);
 	QString getEntry(const QString &group, const QString &name, bool *ok = 0);
@@ -54,8 +56,6 @@ class KADUAPI PlainConfigFile
 	QMap<QString, QMap<QString, QString> > groups;
 	mutable QString activeGroupName;
 	mutable QMap<QString, QString> activeGroup;
-	PlainConfigFile(const PlainConfigFile &);
-	PlainConfigFile &operator = (const PlainConfigFile &);
 
 	void changeActiveGroup(const QString &newGroup);
 

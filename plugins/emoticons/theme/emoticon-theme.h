@@ -64,15 +64,6 @@ public:
 	EmoticonTheme(const QVector<Emoticon> &emoticons, const QVector<Emoticon> &aliases);
 
 	/**
-	 * @short Creates a copy of emoticon theme.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe emoticon theme to copy
-	 */
-	EmoticonTheme(const EmoticonTheme &copyMe);
-
-	EmoticonTheme & operator = (const EmoticonTheme &copyMe);
-
-	/**
 	 * @short Return collection of emoticons.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return collection of emoticons

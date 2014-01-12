@@ -24,20 +24,6 @@ StandardUrlExpanderConfiguration::StandardUrlExpanderConfiguration() :
 {
 }
 
-StandardUrlExpanderConfiguration::StandardUrlExpanderConfiguration(const StandardUrlExpanderConfiguration &copyMe)
-{
-	FoldLink = copyMe.FoldLink;
-	FoldLinkThreshold = copyMe.FoldLinkThreshold;
-}
-
-StandardUrlExpanderConfiguration & StandardUrlExpanderConfiguration::operator = (const StandardUrlExpanderConfiguration &copyMe)
-{
-	FoldLink = copyMe.FoldLink;
-	FoldLinkThreshold = copyMe.FoldLinkThreshold;
-
-	return *this;
-}
-
 void StandardUrlExpanderConfiguration::setFoldLink(bool foldLink)
 {
 	FoldLink = foldLink;

@@ -50,9 +50,6 @@ public:
 	static OtrPolicy fromPolicy(OtrlPolicy otrPolicy);
 	static OtrPolicy fromString(const QString &policyString);
 
-	OtrPolicy(const OtrPolicy &copyFrom);
-
-	OtrPolicy & operator = (const OtrPolicy &copyFrom);
 	bool operator == (const OtrPolicy &compareTo) const;
 
 	OtrlPolicy toOtrPolicy() const;

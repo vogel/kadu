@@ -41,36 +41,6 @@ OtrOpData::OtrOpData()
 {
 }
 
-OtrOpData::OtrOpData(const OtrOpData &copyMe)
-{
-	*this = copyMe;
-}
-
-
-OtrOpData::~OtrOpData()
-{
-}
-
-OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
-{
-	ErrorMessageService = copyMe.ErrorMessageService;
-	FingerprintService = copyMe.FingerprintService;
-	InstanceTagService = copyMe.InstanceTagService;
-	IsLoggedInService = copyMe.IsLoggedInService;
-	MessageEventService = copyMe.MessageEventService;
-	MessageService = copyMe.MessageService;
-	PeerIdentityVerificationService = copyMe.PeerIdentityVerificationService;
-	PolicyService = copyMe.PolicyService;
-	PrivateKeyService = copyMe.PrivateKeyService;
-	SessionService = copyMe.SessionService;
-	TimerService = copyMe.TimerService;
-	TrustLevelService = copyMe.TrustLevelService;
-	MyContact = copyMe.MyContact;
-	PeerDisplay = copyMe.PeerDisplay;
-
-	return *this;
-}
-
 void OtrOpData::setErrorMessageService(OtrErrorMessageService *errorMessageService)
 {
 	ErrorMessageService = errorMessageService;

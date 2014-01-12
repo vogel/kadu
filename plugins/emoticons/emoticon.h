@@ -63,15 +63,6 @@ public:
 	Emoticon(const QString &triggerText, const QString &staticFilePath, const QString &animatedFilePath);
 
 	/**
-	 * @short Create copy of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe emoticon to copy
-	 */
-	Emoticon(const Emoticon &copyMe);
-
-	Emoticon & operator = (const Emoticon &copyMe);
-
-	/**
 	 * @short Check if emoticon is null.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return true, if emoticon is null

@@ -53,21 +53,6 @@ public:
 	Error(ErrorSeverity severity, const QString &message);
 
 	/**
-	 * @short Copy Error object.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe Error object to copy
-	 */
-	Error(const Error &copyMe);
-
-	/**
-	 * @short Copy Error object and return this object.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe Error object to copy
-	 * @return this object
-	 */
-	Error & operator = (const Error &copyMe);
-
-	/**
 	 * @short Return severity of this object.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return severity of this object

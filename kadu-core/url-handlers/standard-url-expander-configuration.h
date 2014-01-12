@@ -47,9 +47,6 @@ class StandardUrlExpanderConfiguration
 
 public:
 	StandardUrlExpanderConfiguration();
-	StandardUrlExpanderConfiguration(const StandardUrlExpanderConfiguration &copyMe);
-
-	StandardUrlExpanderConfiguration & operator = (const StandardUrlExpanderConfiguration &copyMe);
 
 	/**
 	 * @short Set value of foldLink property.

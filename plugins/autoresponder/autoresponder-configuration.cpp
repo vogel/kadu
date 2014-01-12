@@ -24,28 +24,6 @@ AutoresponderConfiguration::AutoresponderConfiguration() :
 {
 }
 
-AutoresponderConfiguration::AutoresponderConfiguration(const AutoresponderConfiguration &copyMe)
-{
-	AutoRespondText = copyMe.AutoRespondText;
-	RespondConferences = copyMe.RespondConferences;
-	RespondOnlyFirst = copyMe.RespondOnlyFirst;
-	StatusAvailable = copyMe.StatusAvailable;
-	StatusBusy = copyMe.StatusBusy;
-	StatusInvisible = copyMe.StatusInvisible;
-}
-
-AutoresponderConfiguration & AutoresponderConfiguration::operator = (const AutoresponderConfiguration &copyMe)
-{
-	AutoRespondText = copyMe.AutoRespondText;
-	RespondConferences = copyMe.RespondConferences;
-	RespondOnlyFirst = copyMe.RespondOnlyFirst;
-	StatusAvailable = copyMe.StatusAvailable;
-	StatusBusy = copyMe.StatusBusy;
-	StatusInvisible = copyMe.StatusInvisible;
-
-	return *this;
-}
-
 void AutoresponderConfiguration::setAutoRespondText(const QString &autoRespondText)
 {
 	AutoRespondText = autoRespondText;

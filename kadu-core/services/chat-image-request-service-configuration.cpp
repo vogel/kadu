@@ -24,22 +24,6 @@ ChatImageRequestServiceConfiguration::ChatImageRequestServiceConfiguration() :
 {
 }
 
-ChatImageRequestServiceConfiguration::ChatImageRequestServiceConfiguration(const ChatImageRequestServiceConfiguration &copyMe)
-{
-	LimitImageSize = copyMe.LimitImageSize;
-	MaximumImageSizeInKiloBytes = copyMe.MaximumImageSizeInKiloBytes;
-	AllowBiggerImagesAfterAsking = copyMe.AllowBiggerImagesAfterAsking;
-}
-
-ChatImageRequestServiceConfiguration & ChatImageRequestServiceConfiguration::operator = (const ChatImageRequestServiceConfiguration &copyMe)
-{
-	LimitImageSize = copyMe.LimitImageSize;
-	MaximumImageSizeInKiloBytes = copyMe.MaximumImageSizeInKiloBytes;
-	AllowBiggerImagesAfterAsking = copyMe.AllowBiggerImagesAfterAsking;
-
-	return *this;
-}
-
 void ChatImageRequestServiceConfiguration::setLimitImageSize (quint32 limitImageSize)
 {
 	LimitImageSize = limitImageSize;

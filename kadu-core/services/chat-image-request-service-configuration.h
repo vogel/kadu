@@ -50,9 +50,6 @@ class ChatImageRequestServiceConfiguration
 
 public:
 	ChatImageRequestServiceConfiguration();
-	ChatImageRequestServiceConfiguration(const ChatImageRequestServiceConfiguration &copyMe);
-
-	ChatImageRequestServiceConfiguration & operator = (const ChatImageRequestServiceConfiguration &copyMe);
 
 	/**
 	 * @short Set value of limitImageSize property.

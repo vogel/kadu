@@ -66,20 +66,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create copy of existing query.
-	 * @param copyMe existing query to copy
-	 */
-	HistoryQuery(const HistoryQuery &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Copy existing query into this query.
-	 * @param copyMe existing query to copy
-	 */
-	HistoryQuery & operator = (const HistoryQuery &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Sets talkable filter.
 	 * @param talkable talkable to filter
 	 *

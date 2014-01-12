@@ -60,20 +60,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create copy of existing query result.
-	 * @param copyMe existing query result to copy
-	 */
-	HistoryQueryResult(const HistoryQueryResult &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Copy existing query resylt into this query result.
-	 * @param copyMe existing query result to copy
-	 */
-	HistoryQueryResult & operator = (const HistoryQueryResult &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Sets originating talkable.
 	 * @param talkable originating talkable
 	 */

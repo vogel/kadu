@@ -31,20 +31,6 @@ EmoticonTheme::EmoticonTheme(const QVector<Emoticon> &emoticons, const QVector<E
 {
 }
 
-EmoticonTheme::EmoticonTheme(const EmoticonTheme &copyMe)
-{
-	Emoticons = copyMe.Emoticons;
-	Aliases = copyMe.Aliases;
-}
-
-EmoticonTheme & EmoticonTheme::operator = (const EmoticonTheme &copyMe)
-{
-	Emoticons = copyMe.Emoticons;
-	Aliases = copyMe.Aliases;
-
-	return *this;
-}
-
 QVector<Emoticon> EmoticonTheme::emoticons() const
 {
 	return Emoticons;

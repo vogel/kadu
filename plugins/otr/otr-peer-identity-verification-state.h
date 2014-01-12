@@ -39,10 +39,7 @@ private:
 	int PercentCompleted;
 
 public:
-	OtrPeerIdentityVerificationState(State state = StateNotStarted, int percentCompleted = 0);
-	OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe);
-
-	OtrPeerIdentityVerificationState & operator = (const OtrPeerIdentityVerificationState &copyMe);
+	explicit OtrPeerIdentityVerificationState(State state = StateNotStarted, int percentCompleted = 0);
 
 	bool isFinished() const;
 	State state() const;

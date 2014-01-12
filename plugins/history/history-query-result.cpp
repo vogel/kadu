@@ -24,24 +24,6 @@ HistoryQueryResult::HistoryQueryResult() :
 {
 }
 
-HistoryQueryResult::HistoryQueryResult(const HistoryQueryResult &copyMe)
-{
-	ResultTalkable = copyMe.ResultTalkable;
-	Date = copyMe.Date;
-	Title = copyMe.Title;
-	Count = copyMe.Count;
-}
-
-HistoryQueryResult & HistoryQueryResult::operator = (const HistoryQueryResult &copyMe)
-{
-	ResultTalkable = copyMe.ResultTalkable;
-	Date = copyMe.Date;
-	Title = copyMe.Title;
-	Count = copyMe.Count;
-
-	return *this;
-}
-
 void HistoryQueryResult::setTalkable(const Talkable &talkable)
 {
 	ResultTalkable = talkable;

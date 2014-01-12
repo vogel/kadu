@@ -27,30 +27,6 @@ HistoryQuery::HistoryQuery() :
 {
 }
 
-HistoryQuery::HistoryQuery (const HistoryQuery &copyMe)
-{
-	QueryTalkable = copyMe.QueryTalkable;
-	QueryString = copyMe.QueryString;
-	FromDate = copyMe.FromDate;
-	ToDate = copyMe.ToDate;
-	FromDateTime = copyMe.FromDateTime;
-	ToDateTime = copyMe.ToDateTime;
-	Limit = copyMe.Limit;
-}
-
-HistoryQuery & HistoryQuery::operator=(const HistoryQuery &copyMe)
-{
-	QueryTalkable = copyMe.QueryTalkable;
-	QueryString = copyMe.QueryString;
-	FromDate = copyMe.FromDate;
-	ToDate = copyMe.ToDate;
-	FromDateTime = copyMe.FromDateTime;
-	ToDateTime = copyMe.ToDateTime;
-	Limit = copyMe.Limit;
-
-	return *this;
-}
-
 void HistoryQuery::setTalkable(const Talkable &talkable)
 {
 	QueryTalkable = talkable;

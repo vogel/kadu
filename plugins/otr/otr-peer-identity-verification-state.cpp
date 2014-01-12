@@ -27,19 +27,6 @@ OtrPeerIdentityVerificationState::OtrPeerIdentityVerificationState(State state, 
 {
 }
 
-OtrPeerIdentityVerificationState::OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe)
-{
-	*this = copyMe;
-}
-
-OtrPeerIdentityVerificationState & OtrPeerIdentityVerificationState::operator = (const OtrPeerIdentityVerificationState &copyMe)
-{
-	MyState = copyMe.MyState;
-	PercentCompleted = copyMe.PercentCompleted;
-
-	return *this;
-}
-
 bool OtrPeerIdentityVerificationState::isFinished() const
 {
 	return (StateSucceeded == MyState) || (StateFailed == MyState);

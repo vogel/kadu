@@ -50,18 +50,6 @@ PlainConfigFile::PlainConfigFile(const QString &filename, const QString &codec) 
 	read();
 }
 
-PlainConfigFile::PlainConfigFile(const PlainConfigFile &c) : filename(c.filename), groups(c.groups), activeGroupName()
-{
-}
-
-PlainConfigFile &PlainConfigFile::operator=(const PlainConfigFile &c)
-{
-	filename = c.filename;
-	groups = c.groups;
-	activeGroupName.clear();;
-	return *this;
-}
-
 void PlainConfigFile::changeActiveGroup(const QString& newGroup)
 {
 	if (!activeGroupName.isEmpty())

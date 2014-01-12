@@ -29,24 +29,6 @@ ImageLinkConfiguration::ImageLinkConfiguration() :
 {
 }
 
-ImageLinkConfiguration::ImageLinkConfiguration(const ImageLinkConfiguration &copyMe)
-{
-	ShowImages = copyMe.ShowImages;
-	ShowVideos = copyMe.ShowVideos;
-}
-
-ImageLinkConfiguration::~ImageLinkConfiguration()
-{
-}
-
-ImageLinkConfiguration & ImageLinkConfiguration::operator = (const ImageLinkConfiguration &copyMe)
-{
-	ShowImages = copyMe.ShowImages;
-	ShowVideos = copyMe.ShowVideos;
-
-	return *this;
-}
-
 void ImageLinkConfiguration::setShowImages(bool showImages)
 {
 	ShowImages = showImages;

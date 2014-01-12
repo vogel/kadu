@@ -26,24 +26,6 @@ SmsGateway::SmsGateway() :
 {
 }
 
-SmsGateway::SmsGateway(const SmsGateway &copyMe)
-{
-	Name = copyMe.Name;
-	Id = copyMe.Id;
-	MaxLength = copyMe.MaxLength;
-	SignatureRequired = copyMe.SignatureRequired;
-}
-
-SmsGateway & SmsGateway::operator = (const SmsGateway &copyMe)
-{
-	Name = copyMe.Name;
-	Id = copyMe.Id;
-	MaxLength = copyMe.MaxLength;
-	SignatureRequired = copyMe.SignatureRequired;
-
-	return *this;
-}
-
 void SmsGateway::setName(const QString &name)
 {
 	Name = name;

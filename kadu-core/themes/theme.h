@@ -36,9 +36,7 @@ class KADUAPI Theme
 public:
 	Theme() {} // TODO: Remove!
 	Theme(const QString &path, const QString &name);
-	Theme(const Theme &copyMe);
 
-	Theme & operator = (const Theme &copyMe);
 	bool operator == (const Theme &compareTo);
 	bool operator != (const Theme &compareTo);
 

@@ -24,25 +24,9 @@
 
 #include "theme.h"
 
-Theme Theme::null("", "");
-
 Theme::Theme(const QString &path, const QString &name) :
 		Path(path), Name(name)
 {
-}
-
-Theme::Theme(const Theme &copyMe)
-{
-	Path = copyMe.Path;
-	Name = copyMe.Name;
-}
-
-Theme & Theme::operator = (const Theme &copyMe)
-{
-	Path = copyMe.Path;
-	Name = copyMe.Name;
-
-	return *this;
 }
 
 bool Theme::operator == (const Theme &compareTo)

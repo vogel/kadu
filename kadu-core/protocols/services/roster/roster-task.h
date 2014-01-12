@@ -62,20 +62,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Copy existing instance of RosterTask class.
-	 * @param copyMe instance to copy
-	 */
-	RosterTask(const RosterTask &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Copy existing instance of RosterTask class.
-	 * @param copyMe instance to copy
-	 */
-	RosterTask & operator = (const RosterTask &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Check if this instance is idenitcal to other one.
 	 * @param compare instance to compare with
 	 */

@@ -32,20 +32,6 @@ RosterTask::RosterTask(RosterTaskType type, const QString &id) :
 {
 }
 
-RosterTask::RosterTask(const RosterTask &copyMe)
-{
-	Type = copyMe.Type;
-	Id = copyMe.Id;
-}
-
-RosterTask & RosterTask::operator = (const RosterTask &copyMe)
-{
-	Type = copyMe.Type;
-	Id = copyMe.Id;
-
-	return *this;
-}
-
 bool RosterTask::operator == (const RosterTask &compare) const
 {
 	return Type == compare.Type && Id == compare.Id;

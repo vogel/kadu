@@ -30,10 +30,6 @@ class ImageLinkConfiguration
 
 public:
 	ImageLinkConfiguration();
-	ImageLinkConfiguration(const ImageLinkConfiguration &copyMe);
-	~ImageLinkConfiguration();
-
-	ImageLinkConfiguration & operator = (const ImageLinkConfiguration &copyMe);
 
 	void setShowImages(bool showImages);
 	bool showImages() const;

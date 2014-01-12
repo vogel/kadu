@@ -27,20 +27,6 @@ Error::Error(ErrorSeverity severity, const QString &message) :
 {
 }
 
-Error::Error(const Error &copyMe)
-{
-	Severity = copyMe.Severity;
-	Message = copyMe.Message;
-}
-
-Error & Error::operator = (const Error &copyMe)
-{
-	Severity = copyMe.Severity;
-	Message = copyMe.Message;
-
-	return *this;
-}
-
 ErrorSeverity Error::severity() const
 {
 	return Severity;

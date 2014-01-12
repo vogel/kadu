@@ -27,22 +27,6 @@ EmoticonConfiguration::EmoticonConfiguration() :
 {
 }
 
-EmoticonConfiguration::EmoticonConfiguration(const EmoticonConfiguration &copyMe)
-{
-	Enabled = copyMe.Enabled;
-	Animate = copyMe.Animate;
-	Emoticons = copyMe.Emoticons;
-}
-
-EmoticonConfiguration & EmoticonConfiguration::operator = (const EmoticonConfiguration &copyMe)
-{
-	Enabled = copyMe.Enabled;
-	Animate = copyMe.Animate;
-	Emoticons = copyMe.Emoticons;
-
-	return *this;
-}
-
 void EmoticonConfiguration::setEnabled(bool enabled)
 {
 	Enabled = enabled;

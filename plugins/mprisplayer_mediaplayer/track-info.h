@@ -33,11 +33,6 @@ class TrackInfo
 
 public:
 	TrackInfo();
-	~TrackInfo();
-
-	TrackInfo(const TrackInfo &copyMe);
-
-	TrackInfo & operator = (const TrackInfo &copyMe);
 
 	void setTitle(const QString &title);
 	QString title() const;

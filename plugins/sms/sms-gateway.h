@@ -33,9 +33,6 @@ class SmsGateway
 
 public:
 	SmsGateway();
-	SmsGateway(const SmsGateway &copyMe);
-
-	SmsGateway & operator = (const SmsGateway &copyMe);
 
 	void setName(const QString &name);
 	QString name() const;

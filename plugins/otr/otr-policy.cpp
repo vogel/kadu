@@ -55,19 +55,6 @@ OtrPolicy::OtrPolicy(OtrlPolicy otrPolicy, const QString &policyString)
 {
 }
 
-OtrPolicy::OtrPolicy(const OtrPolicy &copyFrom)
-{
-	*this = copyFrom;
-}
-
-OtrPolicy & OtrPolicy::operator = (const OtrPolicy &copyFrom)
-{
-	Policy = copyFrom.Policy;
-	PolicyString = copyFrom.PolicyString;
-
-	return *this;
-}
-
 bool OtrPolicy::operator == (const OtrPolicy &compareTo) const
 {
 	return PolicyString == compareTo.PolicyString;

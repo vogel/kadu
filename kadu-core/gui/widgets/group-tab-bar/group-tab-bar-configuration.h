@@ -34,9 +34,6 @@ class GroupTabBarConfiguration
 
 public:
 	GroupTabBarConfiguration();
-	GroupTabBarConfiguration(const GroupTabBarConfiguration &) = default;
-
-	GroupTabBarConfiguration & operator = (const GroupTabBarConfiguration &) = default;
 
 	void setDisplayGroupTabs(bool displayGroupTabs);
 	bool displayGroupTabs() const;

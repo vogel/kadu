@@ -31,22 +31,6 @@ Emoticon::Emoticon(const QString &triggerText, const QString &staticFilePath, co
 {
 }
 
-Emoticon::Emoticon(const Emoticon &copyMe)
-{
-	TriggerText = copyMe.TriggerText;
-	StaticFilePath = copyMe.StaticFilePath;
-	AnimatedFilePath = copyMe.AnimatedFilePath;
-}
-
-Emoticon & Emoticon::operator = (const Emoticon &copyMe)
-{
-	TriggerText = copyMe.TriggerText;
-	StaticFilePath = copyMe.StaticFilePath;
-	AnimatedFilePath = copyMe.AnimatedFilePath;
-
-	return *this;
-}
-
 bool Emoticon::isNull() const
 {
 	return TriggerText.isEmpty();
