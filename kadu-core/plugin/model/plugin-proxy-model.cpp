@@ -64,5 +64,7 @@ bool PluginProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
 
 bool PluginProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	return static_cast<PluginEntry*>(left.internalPointer())->name.compare(static_cast<PluginEntry*>(right.internalPointer())->name, Qt::CaseInsensitive) < 0;
+	auto leftEntry = static_cast<PluginEntry*>(left.internalPointer());
+	auto rightEntry = static_cast<PluginEntry*>(right.internalPointer());
+	return leftEntry->name.compare(rightEntry->name, Qt::CaseInsensitive) < 0;
 }
