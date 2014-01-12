@@ -21,7 +21,20 @@
 
 #include <exception>
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginMetadataReaderException
+ * @short Exception thrown when plugin metadata read failed.
+ */
 class PluginMetadataReaderException : public std::exception
 {
 	virtual const char *what() const noexcept { return "Unable to read plugin info"; }
 };
+
+/**
+ * @}
+ */
