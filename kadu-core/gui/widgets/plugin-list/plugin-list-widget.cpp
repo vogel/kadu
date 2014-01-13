@@ -59,7 +59,7 @@
 
 
 PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
-		QWidget(window), ListView(0), ShowIcons(false)
+		QWidget(window), ListView(0), ShowIcons(false), m_processingChange{false}
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setMargin(0);
@@ -74,6 +74,8 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	ListView->setCategoryDrawer(CategoryDrawer);
 
 	Model = new PluginModel(this, this);
+	connect(Model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
+
 	Proxy = new PluginProxyModel(this);
 	Proxy->setCategorizedModel(true);
 	Proxy->setSourceModel(Model);
@@ -189,6 +191,43 @@ QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState
 void PluginListWidget::configurationApplied()
 {
 	applyChanges();
+}
+
+void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+	if (m_processingChange)
+		return;
+
+	if (!m_pluginManager)
+		return;
+
+	// we do not know how to work with multiple rows!
+	if (topLeft.row() != bottomRight.row())
+		return;
+
+	m_processingChange = true;
+
+	auto pluginName = topLeft.data(PluginModel::NameRole).toString();
+	auto checked = topLeft.data(Qt::CheckStateRole).toBool();
+
+	auto otherPlugins = checked
+			? m_pluginManager.data()->withDependencies(pluginName)
+			: m_pluginManager.data()->withDependents(pluginName);
+	setAllChecked(otherPlugins, checked);
+
+	m_processingChange = false;
+}
+
+void PluginListWidget::setAllChecked(const QVector<QString> &plugins, bool checked)
+{
+	auto count = Model->rowCount();
+	for (auto i = 0; i < count; i++)
+	{
+		auto index = Model->index(i, 0);
+		auto pluginName = index.data(PluginModel::NameRole).toString();
+		if (contains(plugins, pluginName))
+			Model->setData(index, checked, Qt::CheckStateRole);
+	}
 }
 
 #include "moc_plugin-list-widget.cpp"

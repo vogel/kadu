@@ -29,6 +29,7 @@
 #include <QtGui/QWidget>
 
 class QLineEdit;
+class QModelIndex;
 
 class CategorizedListView;
 class CategorizedListViewPainter;
@@ -68,11 +69,14 @@ class PluginListWidget : public QWidget
 	PluginProxyModel *Proxy;
 	PluginListWidgetItemDelegate *Delegate;
 	bool ShowIcons;
+	bool m_processingChange;
 
 	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
+	void setAllChecked(const QVector<QString> &plugins, bool checked);
 
 private slots:
 	void configurationApplied();
+	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 public:
 	explicit PluginListWidget(MainConfigurationWindow *mainWindow);
