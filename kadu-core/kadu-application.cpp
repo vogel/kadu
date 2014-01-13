@@ -35,10 +35,6 @@
 
 #include <QtGui/QSessionManager>
 
-#ifdef Q_OS_WIN32
-#include "configuration/configuration-manager.h"
-#endif
-
 #include "kadu-application.h"
 
 #if defined(Q_WS_X11)
@@ -83,15 +79,6 @@ void KaduApplication::commitData(QSessionManager &manager)
 {
 	SessionClosing = true;
 
-#ifdef Q_OS_WIN32
-	/* On Windows Kadu often (if not always) seems to crash when it is
-	 * opened at the time of closing or rebooting the system (when checking,
-	 * try with Kadu window both visible and hidden by docking).
-	 * This prevents configuration from being saved, and results in data loss.
-	 * TODO: Remove this if you think that all those crashes are fixed.
-	 */
-	ConfigurationManager::instance()->flush();
-#endif
 	QApplication::commitData(manager);
 
 	SessionClosing = false;

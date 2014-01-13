@@ -23,6 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
+
 #include "configuration/toolbar-configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storable-object.h"
@@ -35,16 +37,20 @@ ConfigurationManager * ConfigurationManager::instance()
 {
 	if (!Instance)
 	{
-		Instance = new ConfigurationManager();
+		Instance = new ConfigurationManager(qApp);
 		Instance->load();
 	}
 
 	return Instance;
 }
 
-ConfigurationManager::ConfigurationManager()
+ConfigurationManager::ConfigurationManager(QObject *parent) :
+		QObject(parent)
 {
 	ToolbarConfiguration = new ToolbarConfigurationManager();
+
+	connect(qApp, SIGNAL(commitDataRequest(QSessionManager&)),
+			this, SLOT(flush()));
 }
 
 ConfigurationManager::~ConfigurationManager()
