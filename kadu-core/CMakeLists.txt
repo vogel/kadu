@@ -148,10 +148,12 @@ set (kadu_SUBDIRS
 	url-handlers
 )
 
-find_package (QCA2 REQUIRED)
-include_directories (${QCA2_INCLUDE_DIR})
-add_definitions (${QCA2_DEFINITIONS})
-list (APPEND ADDITIONAL_LIBRARIES ${QCA2_LIBRARIES})
+if (NOT Qt5Core_FOUND)
+	find_package (QCA2 REQUIRED)
+	include_directories (${QCA2_INCLUDE_DIR})
+	add_definitions (${QCA2_DEFINITIONS})
+	list (APPEND ADDITIONAL_LIBRARIES ${QCA2_LIBRARIES})
+endif ()
 
 find_package (LibArchive 2.6.0 REQUIRED)
 include (CheckLibraryExists)
