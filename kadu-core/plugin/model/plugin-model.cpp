@@ -64,9 +64,9 @@ void PluginModel::loadPluginData()
 		m_pluginEntries.append({
 			!pluginMetadata.category().isEmpty() ? pluginMetadata.category() : "Misc",
 			!pluginMetadata.displayName().isEmpty() ? pluginMetadata.displayName() : pluginMetadata.name(),
+			pluginMetadata.name(),
 			pluginMetadata.description(),
 			pluginMetadata.author(),
-			pluginMetadata.name(),
 			m_pluginActivationService->isActive(pluginMetadata.name())
 		});
 
