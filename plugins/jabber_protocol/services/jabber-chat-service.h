@@ -37,6 +37,8 @@ class ChatDetailsRoom;
 class FormattedStringFactory;
 class JabberProtocol;
 
+Q_DECLARE_METATYPE(XMPP::Status)
+
 namespace XMPP
 {
 
