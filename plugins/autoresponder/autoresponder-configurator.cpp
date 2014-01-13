@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtCore/QCoreApplication>
 
 #include "configuration/configuration-file.h"
 
@@ -36,7 +36,7 @@ void AutoresponderConfigurator::setAutoresponder(AutoResponder *autoresponder)
 
 void AutoresponderConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Autoresponder", "Autotext", qApp->tr("I am busy."));
+	config_file.addVariable("Autoresponder", "Autotext", QCoreApplication::translate("AutoresponderConfigurator", "I am busy."));
 	config_file.addVariable("Autoresponder", "OnlyFirstTime", true);
 	config_file.addVariable("Autoresponder", "RespondConf", true);
 	config_file.addVariable("Autoresponder", "StatusAvailable", false);

@@ -58,7 +58,7 @@ ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)
 {
 	commandLineEdit = new QLineEdit(this);
-	commandLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxTextNotify));
+	commandLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify));
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(commandLineEdit);

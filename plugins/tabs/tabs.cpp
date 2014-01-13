@@ -66,9 +66,9 @@ static void disableNewTab(Action *action)
 	action->setEnabled(action->context()->chat());
 
 	if (config_file.readBoolEntry("Chat", "DefaultTabs"))
-		action->setText(qApp->translate("TabsManager", "Chat in New Window"));
+		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
 	else
-		action->setText(qApp->translate("TabsManager", "Chat in New Tab"));
+		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
 
 	kdebugf2();
 }

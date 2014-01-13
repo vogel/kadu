@@ -222,8 +222,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
 	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
 
-	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
-	(static_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
+	widget()->widgetById("parseStatus")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
+	(static_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(QCoreApplication::translate("@default", SyntaxText));
 
 	userboxTransparency = static_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
 	userboxAlpha = static_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
@@ -335,7 +335,7 @@ void MainConfigurationWindow::setIconThemes()
 	foreach (const Theme &theme, IconsManager::instance()->themeManager()->themes())
 	{
 		values.append(theme.name());
-		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
+		captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	iconThemes->setItems(values, captions);
@@ -381,7 +381,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
 	{
-		captions << qApp->translate("@default", toolTipClass.toUtf8().constData());
+		captions << QCoreApplication::translate("@default", toolTipClass.toUtf8().constData());
 		values << toolTipClass;
 	}
 
@@ -395,9 +395,9 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
 		lookChatAdvanced.data()->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 
-		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
-		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", SyntaxText));
-		lookChatAdvanced.data()->widget()->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
+		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
+		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
+		lookChatAdvanced.data()->widget()->widgetById("conferenceSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
 
 		connect(ChatStylesManager::instance(), SIGNAL(previewSyntaxChanged(QString)), this, SLOT(chatPreviewSyntaxChanged(QString)));
 		if (ChatStylesManager::instance()->syntaxListCombo())

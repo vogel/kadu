@@ -44,19 +44,19 @@ StatusTypeManager * StatusTypeManager::instance()
 StatusTypeManager::StatusTypeManager()
 {
 	StatusTypes.insert(StatusTypeFreeForChat,
-	                   StatusTypeData(StatusTypeFreeForChat, "FreeForChat", qApp->translate("@default", "Free for chat"), "free_for_chat", StatusTypeGroupOnline));
+	                   StatusTypeData(StatusTypeFreeForChat, "FreeForChat", QCoreApplication::translate("@default", "Free for chat"), "free_for_chat", StatusTypeGroupOnline));
 	StatusTypes.insert(StatusTypeOnline,
-	                   StatusTypeData(StatusTypeOnline, "Online", qApp->translate("@default", "Online"), "online", StatusTypeGroupOnline));
+	                   StatusTypeData(StatusTypeOnline, "Online", QCoreApplication::translate("@default", "Online"), "online", StatusTypeGroupOnline));
 	StatusTypes.insert(StatusTypeAway,
-	                   StatusTypeData(StatusTypeAway, "Away", qApp->translate("@default", "Away"), "away", StatusTypeGroupAway));
+	                   StatusTypeData(StatusTypeAway, "Away", QCoreApplication::translate("@default", "Away"), "away", StatusTypeGroupAway));
 	StatusTypes.insert(StatusTypeNotAvailable,
-	                   StatusTypeData(StatusTypeNotAvailable, "NotAvailable", qApp->translate("@default", "Not available"), "not_available", StatusTypeGroupAway));
+	                   StatusTypeData(StatusTypeNotAvailable, "NotAvailable", QCoreApplication::translate("@default", "Not available"), "not_available", StatusTypeGroupAway));
 	StatusTypes.insert(StatusTypeDoNotDisturb,
-	                   StatusTypeData(StatusTypeDoNotDisturb, "DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupAway));
+	                   StatusTypeData(StatusTypeDoNotDisturb, "DoNotDisturb", QCoreApplication::translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupAway));
 	StatusTypes.insert(StatusTypeInvisible,
-	                   StatusTypeData(StatusTypeInvisible, "Invisible", qApp->translate("@default", "Invisible"), "invisible", StatusTypeGroupInvisible));
+	                   StatusTypeData(StatusTypeInvisible, "Invisible", QCoreApplication::translate("@default", "Invisible"), "invisible", StatusTypeGroupInvisible));
 	StatusTypes.insert(StatusTypeOffline,
-	                   StatusTypeData(StatusTypeOffline, "Offline", qApp->translate("@default", "Offline"), "offline", StatusTypeGroupOffline));
+	                   StatusTypeData(StatusTypeOffline, "Offline", QCoreApplication::translate("@default", "Offline"), "offline", StatusTypeGroupOffline));
 }
 
 StatusTypeManager::~StatusTypeManager()

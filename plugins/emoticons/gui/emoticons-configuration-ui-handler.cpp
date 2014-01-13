@@ -63,7 +63,7 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 	foreach (const Theme &theme, ThemeManager->themes())
 	{
 		values.append(theme.name());
-		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
+		captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
 
 		QPixmap combinedIcon(iconsNumber * 36, 36);
 		combinedIcon.fill(Qt::transparent);

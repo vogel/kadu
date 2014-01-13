@@ -281,8 +281,8 @@ void MediaPlayer::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 {
 	connect(mainConfigurationWindow->widget()->widgetById("mediaplayer/signature"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("mediaplayer/signatures"), SLOT(setEnabled(bool)));
-	mainConfigurationWindow->widget()->widgetById("mediaplayer/syntax")->setToolTip(qApp->translate("@default", MediaPlayerSyntaxText));
-	mainConfigurationWindow->widget()->widgetById("mediaplayer/chatShortcuts")->setToolTip(qApp->translate("@default", MediaPlayerChatShortCutsText));
+	mainConfigurationWindow->widget()->widgetById("mediaplayer/syntax")->setToolTip(QCoreApplication::translate("@default", MediaPlayerSyntaxText));
+	mainConfigurationWindow->widget()->widgetById("mediaplayer/chatShortcuts")->setToolTip(QCoreApplication::translate("@default", MediaPlayerChatShortCutsText));
 }
 
 void MediaPlayer::chatWidgetAdded(ChatWidget *chat)

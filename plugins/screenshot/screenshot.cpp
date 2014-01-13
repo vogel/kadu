@@ -22,10 +22,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
 
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
@@ -95,7 +95,7 @@ void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
 	screenshotWidget->setShotMode(Mode);
 	screenshotWidget->showFullScreen();
 	screenshotWidget->show();
-	QApplication::processEvents(); // ensure window was shown, otherwise it won't be activated
+	QCoreApplication::processEvents(); // ensure window was shown, otherwise it won't be activated
 	_activateWindow(screenshotWidget);
 }
 

@@ -179,7 +179,7 @@ NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &e
 
 	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 	setData(0, Qt::UserRole, QVariant(eventName));
-	setText(0, qApp->translate("@default", name));
+	setText(0, QCoreApplication::translate("@default", name));
 }
 
 NotifyTreeWidgetItem::NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent, const QString &eventName, const char *name, QStringList &notifiers)
@@ -189,7 +189,7 @@ NotifyTreeWidgetItem::NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent, const Q
 
 	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 	setData(0, Qt::UserRole, QVariant(eventName));
-	setText(0, qApp->translate("@default", name));
+	setText(0, QCoreApplication::translate("@default", name));
 }
 
 void NotifyTreeWidgetItem::notifierChecked(Notifier *notifier, bool checked)

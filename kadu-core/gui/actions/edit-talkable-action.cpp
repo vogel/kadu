@@ -76,7 +76,7 @@ Buddy EditTalkableAction::actionBuddy(ActionContext *context) const
 void EditTalkableAction::setChatActionTitleAndIcon(Action *action)
 {
 	action->setIcon(KaduIcon("x-office-address-book"));
-	action->setText(qApp->translate("KaduWindowActions", "View Chat Properties"));
+	action->setText(QCoreApplication::translate("KaduWindowActions", "View Chat Properties"));
 }
 
 void EditTalkableAction::setBuddyActionTitleAndIcon(Action *action)
@@ -85,12 +85,12 @@ void EditTalkableAction::setBuddyActionTitleAndIcon(Action *action)
 	if (buddy.isAnonymous() && 1 == action->context()->buddies().count())
 	{
 		action->setIcon(KaduIcon("contact-new"));
-		action->setText(qApp->translate("KaduWindowActions", "Add Buddy..."));
+		action->setText(QCoreApplication::translate("KaduWindowActions", "Add Buddy..."));
 	}
 	else
 	{
 		action->setIcon(KaduIcon("x-office-address-book"));
-		action->setText(qApp->translate("KaduWindowActions", "View Buddy Properties"));
+		action->setText(QCoreApplication::translate("KaduWindowActions", "View Buddy Properties"));
 	}
 }
 

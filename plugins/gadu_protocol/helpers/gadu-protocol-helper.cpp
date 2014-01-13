@@ -95,34 +95,34 @@ QString GaduProtocolHelper::connectionErrorMessage(GaduProtocol::GaduError error
 	switch (error)
 	{
 		case GaduProtocol::ConnectionServerNotFound:
-			return qApp->translate("@default", "Unable to connect, server has not been found");
+			return QCoreApplication::translate("@default", "Unable to connect, server has not been found");
 		case GaduProtocol::ConnectionCannotConnect:
-			return qApp->translate("@default", "Unable to connect");
+			return QCoreApplication::translate("@default", "Unable to connect");
 		case GaduProtocol::ConnectionNeedEmail:
-			return qApp->translate("@default", "Please change your email in \"Change password / email\" window. Leave new password field blank.");
+			return QCoreApplication::translate("@default", "Please change your email in \"Change password / email\" window. Leave new password field blank.");
 		case GaduProtocol::ConnectionInvalidData:
-			return qApp->translate("@default", "Unable to connect, server has returned unknown data");
+			return QCoreApplication::translate("@default", "Unable to connect, server has returned unknown data");
 		case GaduProtocol::ConnectionCannotRead:
-			return qApp->translate("@default", "Unable to connect, connection break during reading");
+			return QCoreApplication::translate("@default", "Unable to connect, connection break during reading");
 		case GaduProtocol::ConnectionCannotWrite:
-			return qApp->translate("@default", "Unable to connect, connection break during writing");
+			return QCoreApplication::translate("@default", "Unable to connect, connection break during writing");
 		case GaduProtocol::ConnectionIncorrectPassword:
-			return qApp->translate("@default", "Unable to connect, invalid password");
+			return QCoreApplication::translate("@default", "Unable to connect, invalid password");
 		case GaduProtocol::ConnectionTlsError:
-			return qApp->translate("@default", "Unable to connect, error of negotiation TLS");
+			return QCoreApplication::translate("@default", "Unable to connect, error of negotiation TLS");
 		case GaduProtocol::ConnectionIntruderError:
-			return qApp->translate("@default", "Too many connection attempts with bad password!");
+			return QCoreApplication::translate("@default", "Too many connection attempts with bad password!");
 		case GaduProtocol::ConnectionUnavailableError:
-			return qApp->translate("@default", "Unable to connect, servers are down");
+			return QCoreApplication::translate("@default", "Unable to connect, servers are down");
 		case GaduProtocol::ConnectionUnknow:
-			return qApp->translate("@default", "Connection broken");
+			return QCoreApplication::translate("@default", "Connection broken");
 		case GaduProtocol::ConnectionTimeout:
-			return qApp->translate("@default", "Connection timeout!");
+			return QCoreApplication::translate("@default", "Connection timeout!");
 		case GaduProtocol::Disconnected:
-			return qApp->translate("@default", "Disconnection has occurred");
+			return QCoreApplication::translate("@default", "Disconnection has occurred");
 		default:
 			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(error));
-			return qApp->translate("@default", "Connection broken");
+			return QCoreApplication::translate("@default", "Connection broken");
 	}
 }
 

@@ -157,7 +157,7 @@ bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
 					key == Qt::Key_Left ||
 					key == Qt::Key_Right)
 			{
-				qApp->sendEvent(BuddiesView, e);
+				QCoreApplication::sendEvent(BuddiesView, e);
 				return true;
 			}
 		}

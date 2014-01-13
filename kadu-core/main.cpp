@@ -261,10 +261,10 @@ int main(int argc, char *argv[])
 	xml_config_file = new XmlConfigFile();
 	if (!xml_config_file->isUsable())
 	{
-		QString errorMessage = qApp->translate("@default", "We're sorry, but Kadu cannot be loaded. "
+		QString errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
 				"Profile is inaccessible. Please check permissions in the '%1' directory.")
 				.arg(KaduPaths::instance()->profilePath().left(KaduPaths::instance()->profilePath().length() - 1));
-		QMessageBox::critical(0, qApp->translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
+		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
 		qFatal("%s", qPrintable(errorMessage));
 	}
 	config_file_ptr = new ConfigFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu.conf"));
@@ -279,8 +279,8 @@ int main(int argc, char *argv[])
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	kadu_qm.load("kadu_" + lang, KaduPaths::instance()->dataPath() + QLatin1String("translations"));
-	qApp->installTranslator(&qt_qm);
-	qApp->installTranslator(&kadu_qm);
+	QCoreApplication::installTranslator(&qt_qm);
+	QCoreApplication::installTranslator(&kadu_qm);
 
 	QtLocalPeer *peer = new QtLocalPeer(qApp, KaduPaths::instance()->profilePath());
 	if (peer->isClient())

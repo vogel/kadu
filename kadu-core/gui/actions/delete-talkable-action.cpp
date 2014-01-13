@@ -76,12 +76,12 @@ Buddy DeleteTalkableAction::actionBuddy(ActionContext *context) const
 
 void DeleteTalkableAction::setChatActionTitleAndIcon(Action *action)
 {
-	action->setText(qApp->translate("KaduWindowActions", "Delete Chat"));
+	action->setText(QCoreApplication::translate("KaduWindowActions", "Delete Chat"));
 }
 
 void DeleteTalkableAction::setBuddyActionTitleAndIcon(Action *action)
 {
-	action->setText(qApp->translate("KaduWindowActions", "Delete Buddy"));
+	action->setText(QCoreApplication::translate("KaduWindowActions", "Delete Buddy"));
 }
 
 void DeleteTalkableAction::updateChatActionState(Action *action)

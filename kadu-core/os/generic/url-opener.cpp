@@ -57,8 +57,8 @@ void UrlOpener::openUrl(const QByteArray &url)
 		browser = config_file.readEntry("Chat", "WebBrowser");
 
 	if (!openUrl(url, url, browser))
-		MessageDialog::show(KaduIcon("dialog-error"), qApp->translate("@default", QT_TR_NOOP("Kadu")),
-				qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
+		MessageDialog::show(KaduIcon("dialog-error"), QCoreApplication::translate("@default", QT_TR_NOOP("Kadu")),
+				QCoreApplication::translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
 }
 
 void UrlOpener::openEmail(const QByteArray &email)
@@ -83,6 +83,6 @@ void UrlOpener::openEmail(const QByteArray &email)
 	}
 
 	if (!openUrl(urlForDesktopServices, urlForApplication, client))
-		MessageDialog::show(KaduIcon("dialog-error"), qApp->translate("@default", QT_TR_NOOP("Kadu")),
-				qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")));
+		MessageDialog::show(KaduIcon("dialog-error"), QCoreApplication::translate("@default", QT_TR_NOOP("Kadu")),
+				QCoreApplication::translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")));
 }

@@ -43,7 +43,7 @@ AutoresponderConfigurationUiHolder::~AutoresponderConfigurationUiHolder()
 void AutoresponderConfigurationUiHolder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	QLineEdit *autoRespondTextLineEdit = qobject_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
-	autoRespondTextLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
+	autoRespondTextLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
 #include "moc_autoresponder-configuration-ui-handler.cpp"

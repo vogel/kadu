@@ -149,7 +149,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 void HintsConfigurationUiHandler::addHintsPreview()
 {
 	Notification *previewNotify = new Notification(QLatin1String("Preview"), KaduIcon("protocols/common/message"));
-	previewNotify->setText(qApp->translate("@default", "Hints position preview"));
+	previewNotify->setText(QCoreApplication::translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);
 	previewHints.append(previewHint);
@@ -299,8 +299,8 @@ void HintsConfigurationUiHandler::deleteAllHintsPreview()
 
 void HintsConfigurationUiHandler::toolTipClassesHighlighted(const QString &value)
 {
-	configureOverUserHint->setEnabled(value == qApp->translate("@default", "Hints"));
-	overUserConfigurationPreview->setEnabled(value == qApp->translate("@default", "Hints"));
+	configureOverUserHint->setEnabled(value == QCoreApplication::translate("@default", "Hints"));
+	overUserConfigurationPreview->setEnabled(value == QCoreApplication::translate("@default", "Hints"));
 }
 
 void HintsConfigurationUiHandler::showOverUserConfigurationWindow()

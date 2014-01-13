@@ -53,34 +53,34 @@ QString printDateTime(const QDateTime &datetime)
 		if (ChatConfigurationHolder::instance()->niceDateFormat())
 		{
 			if (delta == 1) // 1 day ago
-				ret.prepend(qApp->translate("@default", "Yesterday at "));
+				ret.prepend(QCoreApplication::translate("@default", "Yesterday at "));
 			else if (delta < 7) // less than week ago
 			{
-				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
+				ret.prepend(datetime.toString(QCoreApplication::translate("@default", "dddd at ")));
 				ret[0] = ret.at(0).toUpper(); // looks ugly lowercase ;)
 			}
 			else if ((delta > 7) && (delta < 14))
 			{
 				int tmp = delta % 7;
 				if (tmp == 0)
-					ret.prepend(qApp->translate("@default", "week ago at "));
+					ret.prepend(QCoreApplication::translate("@default", "week ago at "));
 				else if (tmp == 1)
-					ret.prepend(qApp->translate("@default", "week and day ago at "));
+					ret.prepend(QCoreApplication::translate("@default", "week and day ago at "));
 				else
-					ret.prepend(qApp->translate("@default", "week and %2 days ago at ").arg(delta%7));
+					ret.prepend(QCoreApplication::translate("@default", "week and %2 days ago at ").arg(delta%7));
 			}
 			else if (delta < 6*7)
 			{
 				int tmp = delta % 7;
 				if (tmp == 0)
-					ret.prepend(qApp->translate("@default", "%1 weeks ago at ").arg(delta/7));
+					ret.prepend(QCoreApplication::translate("@default", "%1 weeks ago at ").arg(delta/7));
 				else if (tmp == 1)
-					ret.prepend(qApp->translate("@default", "%1 weeks and day ago at ").arg(delta/7));
+					ret.prepend(QCoreApplication::translate("@default", "%1 weeks and day ago at ").arg(delta/7));
 				else
-					ret.prepend(qApp->translate("@default", "%1 weeks and %2 days ago at ").arg(delta/7).arg(delta%7));
+					ret.prepend(QCoreApplication::translate("@default", "%1 weeks and %2 days ago at ").arg(delta/7).arg(delta%7));
 			}
 			else
-				ret.prepend(datetime.toString(qApp->translate("@default", "d MMMM yyyy at ")));
+				ret.prepend(datetime.toString(QCoreApplication::translate("@default", "d MMMM yyyy at ")));
 		}
 		else
 			ret.append(datetime.toString(" (dd.MM.yyyy)"));

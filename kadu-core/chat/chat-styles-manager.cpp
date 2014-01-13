@@ -339,12 +339,12 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 
 	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Look", "Chat", "Style");
 //editor
-	QLabel *editorLabel = new QLabel(qApp->translate("@default", "Style") + ':');
-	editorLabel->setToolTip(qApp->translate("@default", "Choose style of chat window"));
+	QLabel *editorLabel = new QLabel(QCoreApplication::translate("@default", "Style") + ':');
+	editorLabel->setToolTip(QCoreApplication::translate("@default", "Choose style of chat window"));
 
 	QWidget  *editor = new QWidget(groupBox->widget());
 	editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	editor->setToolTip(qApp->translate("@default", "Choose style of chat window"));
+	editor->setToolTip(QCoreApplication::translate("@default", "Choose style of chat window"));
 	QHBoxLayout *editorLayout = new QHBoxLayout(editor);
 
 	SyntaxListCombo = new QComboBox(editor);
@@ -375,8 +375,8 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	connect(VariantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
 //
 	groupBox->addWidgets(editorLabel, editor);
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ':'), VariantListCombo);
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ':'), EnginePreview, Qt::AlignRight | Qt::AlignTop);
+	groupBox->addWidgets(new QLabel(QCoreApplication::translate("@default", "Style variant") + ':'), VariantListCombo);
+	groupBox->addWidgets(new QLabel(QCoreApplication::translate("@default", "Preview") + ':'), EnginePreview, Qt::AlignRight | Qt::AlignTop);
 
 	TurnOnTransparency = static_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
 	TurnOnTransparency->setEnabled(CompositingEnabled);

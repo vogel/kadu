@@ -20,15 +20,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtCore/QCoreApplication>
 
 #include "network-manager-ntrack.h"
 
 NetworkManagerNTrack::NetworkManagerNTrack()
 {
 	// fuck QtNtrack
-	int argc = qApp->argc();
-	char **argv = qApp->argv();
+	int argc = QCoreApplication::argc();
+	char **argv = QCoreApplication::argv();
 	QNtrack::instance()->init(&argc, &argv);
 
 	connect(QNtrack::instance(), SIGNAL(stateChanged(QNTrackState,QNTrackState)), this, SLOT(stateChanged(QNTrackState,QNTrackState)));

@@ -242,11 +242,11 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			++idx;
 
 			if (buddy && buddy.isBlocked())
-				pe.setContent(qApp->translate("@default", "Blocked"));
+				pe.setContent(QCoreApplication::translate("@default", "Blocked"));
 			else if (contact)
 			{
 				if (contact.isBlocking())
-					pe.setContent(qApp->translate("@default", "Blocking"));
+					pe.setContent(QCoreApplication::translate("@default", "Blocking"));
 				else
 				{
 					const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(contact.currentStatus().type());

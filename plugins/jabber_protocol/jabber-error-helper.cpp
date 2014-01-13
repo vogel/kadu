@@ -37,17 +37,17 @@ void JabberErrorHelper::getErrorInfo(int err, XMPP::AdvancedConnector *conn, XMP
 
 	if (err == -1)
 	{
-		str = qApp->translate("@default", "Disconnected");
+		str = QCoreApplication::translate("@default", "Disconnected");
 		reconn = true;
 	}
 	else if (err == XMPP::ClientStream::ErrParse)
 	{
-		str = qApp->translate("@default", "XML Parsing Error");
+		str = QCoreApplication::translate("@default", "XML Parsing Error");
 		reconn = true;
 	}
 	else if (err == XMPP::ClientStream::ErrProtocol)
 	{
-		str = qApp->translate("@default", "XMPP Protocol Error");
+		str = QCoreApplication::translate("@default", "XMPP Protocol Error");
 		reconn = true;
 	}
 	else if (err == XMPP::ClientStream::ErrStream)
@@ -67,33 +67,33 @@ void JabberErrorHelper::getErrorInfo(int err, XMPP::AdvancedConnector *conn, XMP
 		}
 
 		if (x == XMPP::Stream::GenericStreamError)
-			s = qApp->translate("@default", "Generic stream error");
+			s = QCoreApplication::translate("@default", "Generic stream error");
 		else if (x == XMPP::ClientStream::Conflict)
 		{
-			s = qApp->translate("@default", "Conflict(remote login replacing this one)");
+			s = QCoreApplication::translate("@default", "Conflict(remote login replacing this one)");
 			reconn = false;
 		}
 		else if (x == XMPP::ClientStream::ConnectionTimeout)
-			s = qApp->translate("@default", "Timed out from inactivity");
+			s = QCoreApplication::translate("@default", "Timed out from inactivity");
 		else if (x == XMPP::ClientStream::InternalServerError)
-			s = qApp->translate("@default", "Internal server error");
+			s = QCoreApplication::translate("@default", "Internal server error");
 		else if (x == XMPP::ClientStream::InvalidXml)
-			s = qApp->translate("@default", "Invalid XML");
+			s = QCoreApplication::translate("@default", "Invalid XML");
 		else if (x == XMPP::ClientStream::PolicyViolation)
 		{
-			s = qApp->translate("@default", "Policy violation");
+			s = QCoreApplication::translate("@default", "Policy violation");
 			reconn = false;
 		}
 		else if (x == XMPP::ClientStream::ResourceConstraint)
 		{
-			s = qApp->translate("@default", "Server out of resources");
+			s = QCoreApplication::translate("@default", "Server out of resources");
 			reconn = false;
 		}
 		else if (x == XMPP::ClientStream::SystemShutdown)
 		{
-			s = qApp->translate("@default", "Server is shutting down");
+			s = QCoreApplication::translate("@default", "Server is shutting down");
 		}
-		str = qApp->translate("@default", "XMPP Stream Error: %1").arg(s) + '\n' + detail;
+		str = QCoreApplication::translate("@default", "XMPP Stream Error: %1").arg(s) + '\n' + detail;
 	}
 	else if (err == XMPP::ClientStream::ErrConnection)
 	{
@@ -101,21 +101,21 @@ void JabberErrorHelper::getErrorInfo(int err, XMPP::AdvancedConnector *conn, XMP
 		QString s;
 		reconn = true;
 		if (x == XMPP::AdvancedConnector::ErrConnectionRefused)
-			s = qApp->translate("@default", "Unable to connect to server");
+			s = QCoreApplication::translate("@default", "Unable to connect to server");
 		else if (x == XMPP::AdvancedConnector::ErrHostNotFound)
-			s = qApp->translate("@default", "Host not found");
+			s = QCoreApplication::translate("@default", "Host not found");
 		else if (x == XMPP::AdvancedConnector::ErrProxyConnect)
-			s = qApp->translate("@default", "Error connecting to proxy");
+			s = QCoreApplication::translate("@default", "Error connecting to proxy");
 		else if (x == XMPP::AdvancedConnector::ErrProxyNeg)
-			s = qApp->translate("@default", "Error during proxy negotiation");
+			s = QCoreApplication::translate("@default", "Error during proxy negotiation");
 		else if (x == XMPP::AdvancedConnector::ErrProxyAuth)
 		{
-			s = qApp->translate("@default", "Proxy authentication failed");
+			s = QCoreApplication::translate("@default", "Proxy authentication failed");
 			reconn = false;
 		}
 		else if (x == XMPP::AdvancedConnector::ErrStream)
-			s = qApp->translate("@default", "Socket/stream error");
-		str = qApp->translate("@default", "Connection Error: %1").arg(s);
+			s = QCoreApplication::translate("@default", "Socket/stream error");
+		str = QCoreApplication::translate("@default", "Connection Error: %1").arg(s);
 	}
 	else if (err == XMPP::ClientStream::ErrNeg)
 	{
@@ -123,33 +123,33 @@ void JabberErrorHelper::getErrorInfo(int err, XMPP::AdvancedConnector *conn, XMP
 		int x = stream->errorCondition();
 		detail = stream->errorText();
 		if (x  == XMPP::ClientStream::HostGone)
-			s = qApp->translate("@default", "Host no longer hosted");
+			s = QCoreApplication::translate("@default", "Host no longer hosted");
 		else if (x == XMPP::ClientStream::HostUnknown)
-			s = qApp->translate("@default", "Host unknown");
+			s = QCoreApplication::translate("@default", "Host unknown");
 		else if (x == XMPP::ClientStream::RemoteConnectionFailed)
 		{
-			s = qApp->translate("@default", "A required remote connection failed");
+			s = QCoreApplication::translate("@default", "A required remote connection failed");
 			reconn = true;
 		}
 		else if (x == XMPP::ClientStream::SeeOtherHost)
-			s = qApp->translate("@default", "See other host: %1").arg(stream->errorText());
+			s = QCoreApplication::translate("@default", "See other host: %1").arg(stream->errorText());
 		else if (x == XMPP::ClientStream::UnsupportedVersion)
-			s = qApp->translate("@default", "Server does not support proper XMPP version");
-		str = qApp->translate("@default", "Stream Negotiation Error: %1").arg(s) + '\n' + detail;
+			s = QCoreApplication::translate("@default", "Server does not support proper XMPP version");
+		str = QCoreApplication::translate("@default", "Stream Negotiation Error: %1").arg(s) + '\n' + detail;
 	}
 	else if (err == XMPP::ClientStream::ErrTLS)
 	{
 		int x = stream->errorCondition();
 		QString s;
 		if (x == XMPP::ClientStream::TLSStart)
-			s = qApp->translate("@default", "Server rejected STARTTLS");
+			s = QCoreApplication::translate("@default", "Server rejected STARTTLS");
 		else if (x == XMPP::ClientStream::TLSFail)
 		{
 			int t = tlsHandler->tlsError();
 			if (t == QCA::TLS::ErrorHandshake)
-				s = qApp->translate("@default", "TLS handshake error");
+				s = QCoreApplication::translate("@default", "TLS handshake error");
 			else
-				s = qApp->translate("@default", "Broken security layer (TLS)");
+				s = QCoreApplication::translate("@default", "Broken security layer (TLS)");
 		}
 		str = s;
 	}
@@ -158,37 +158,37 @@ void JabberErrorHelper::getErrorInfo(int err, XMPP::AdvancedConnector *conn, XMP
 		int x = stream->errorCondition();
 		QString s;
 		if (x == XMPP::ClientStream::GenericAuthError)
-			s = qApp->translate("@default", "Unable to login");
+			s = QCoreApplication::translate("@default", "Unable to login");
 		else if (x == XMPP::ClientStream::NoMech)
 		{
-			s = qApp->translate("@default", "No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)");
+			s = QCoreApplication::translate("@default", "No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)");
 			s += '\n' + stream->errorText();
 		}
 		else if (x == XMPP::ClientStream::BadProto)
-			s = qApp->translate("@default", "Bad server response");
+			s = QCoreApplication::translate("@default", "Bad server response");
 		else if (x == XMPP::ClientStream::BadServ)
-			s = qApp->translate("@default", "Server failed mutual authentication");
+			s = QCoreApplication::translate("@default", "Server failed mutual authentication");
 		else if (x == XMPP::ClientStream::EncryptionRequired)
-			s = qApp->translate("@default", "Encryption required for chosen SASL mechanism");
+			s = QCoreApplication::translate("@default", "Encryption required for chosen SASL mechanism");
 		else if (x == XMPP::ClientStream::InvalidAuthzid)
-			s = qApp->translate("@default", "Invalid account information");
+			s = QCoreApplication::translate("@default", "Invalid account information");
 		else if (x == XMPP::ClientStream::InvalidMech)
-			s = qApp->translate("@default", "Invalid SASL mechanism");
+			s = QCoreApplication::translate("@default", "Invalid SASL mechanism");
 		else if (x == XMPP::ClientStream::InvalidRealm)
-			s = qApp->translate("@default", "Invalid realm");
+			s = QCoreApplication::translate("@default", "Invalid realm");
 		else if (x == XMPP::ClientStream::MechTooWeak)
-			s = qApp->translate("@default", "SASL mechanism too weak for this account");
+			s = QCoreApplication::translate("@default", "SASL mechanism too weak for this account");
 		else if (x == XMPP::ClientStream::NotAuthorized)
-			s = qApp->translate("@default", "Not authorized");
+			s = QCoreApplication::translate("@default", "Not authorized");
 		else if (x == XMPP::ClientStream::TemporaryAuthFailure)
-			s = qApp->translate("@default", "Temporary auth failure");
+			s = QCoreApplication::translate("@default", "Temporary auth failure");
 
-		str = qApp->translate("@default", "Authentication error: %1").arg(s);
+		str = QCoreApplication::translate("@default", "Authentication error: %1").arg(s);
 	}
 	else if (err == XMPP::ClientStream::ErrSecurityLayer)
-		str = qApp->translate("@default", "Broken security layer (SASL)");
+		str = QCoreApplication::translate("@default", "Broken security layer (SASL)");
 	else
-		str = qApp->translate("@default", "None");
+		str = QCoreApplication::translate("@default", "None");
 	//printf("str[%s], reconn=%d\n", str.latin1(), reconn);
 	*_str = str;
 	*_reconn = reconn;

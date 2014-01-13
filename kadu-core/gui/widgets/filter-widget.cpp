@@ -26,7 +26,7 @@
  * http://th30z.netsons.org/2008/08/qt4-mac-searchbox-wrapper/
  */
 
-#include <QtGui/QApplication>
+#include <QtCore/QCoreApplication>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
@@ -264,7 +264,7 @@ bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 		case Qt::Key_Up:
 		case Qt::Key_PageDown:
 		case Qt::Key_PageUp:
-			qApp->sendEvent(View, event);
+			QCoreApplication::sendEvent(View, event);
 			return true;
 	}
 

@@ -23,9 +23,9 @@
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QLatin1String>
 #include <QtCore/QTranslator>
-#include <QtGui/QApplication>
 
 PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept :
 		m_translator{make_unique<QTranslator>()}
@@ -33,12 +33,12 @@ PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) no
 	auto const lang = config_file.readEntry("General", "Language");
 
 	if (m_translator->load(pluginName + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String{"plugins/translations"}))
-		qApp->installTranslator(m_translator.get());
+		QCoreApplication::installTranslator(m_translator.get());
 	else
 		m_translator.reset();
 }
 
 PluginTranslationsLoader::~PluginTranslationsLoader() noexcept
 {
-	qApp->removeTranslator(m_translator.get());
+	QCoreApplication::removeTranslator(m_translator.get());
 }

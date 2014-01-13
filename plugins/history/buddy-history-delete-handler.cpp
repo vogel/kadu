@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtCore/QCoreApplication>
 
 #include "talkable/talkable.h"
 
@@ -65,7 +65,7 @@ QString BuddyHistoryDeleteHandler::name()
 
 QString BuddyHistoryDeleteHandler::displayName()
 {
-	return QApplication::tr("Chat history");
+	return QCoreApplication::translate("BuddyHistoryDeleteHandler", "Chat history");
 }
 
 void BuddyHistoryDeleteHandler::deleteBuddyAdditionalData(Buddy buddy)

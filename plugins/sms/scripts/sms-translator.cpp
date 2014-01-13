@@ -36,7 +36,7 @@ SmsTranslator::~SmsTranslator()
 
 QScriptValue SmsTranslator::tr(const QString &text)
 {
-	return qApp->translate("@default", text.toUtf8().constData());
+	return QCoreApplication::translate("@default", text.toUtf8().constData());
 }
 
 #include "moc_sms-translator.cpp"
