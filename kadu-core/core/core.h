@@ -99,8 +99,8 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	static Core *Instance;
 
-	QSharedPointer<SimpleProvider<QWidget *> > KaduWindowProvider;
-	QSharedPointer<DefaultProvider<QWidget *> > MainWindowProvider;
+	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
+	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
 	BuddyDataWindowRepository *CurrentBuddyDataWindowRepository;
 	ChatDataWindowRepository *CurrentChatDataWindowRepository;
@@ -239,7 +239,7 @@ public:
 	void initialized();
 	void setIcon(const KaduIcon &icon);
 
-	const QSharedPointer<DefaultProvider<QWidget *> > & mainWindowProvider() const;
+	const std::shared_ptr<DefaultProvider<QWidget *>> & mainWindowProvider() const;
 
 public slots:
 	void receivedSignal(const QString &signal);

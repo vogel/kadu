@@ -924,7 +924,7 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-const QSharedPointer<DefaultProvider<QWidget *> > & Core::mainWindowProvider() const
+const std::shared_ptr<DefaultProvider<QWidget *>> & Core::mainWindowProvider() const
 {
 	return MainWindowProvider;
 }

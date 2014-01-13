@@ -81,7 +81,7 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	QSharedPointer<SimpleProvider<QWidget *>> m_windowProvider;
+	std::shared_ptr<SimpleProvider<QWidget *>> m_windowProvider;
 	SingleWindow *m_window;
 
 };
