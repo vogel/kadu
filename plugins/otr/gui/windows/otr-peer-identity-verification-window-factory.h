@@ -25,6 +25,7 @@
 #define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
 
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 #include "contacts/contact.h"
 

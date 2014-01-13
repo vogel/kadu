@@ -36,12 +36,12 @@ Group Group::create()
 	return new GroupShared();
 }
 
-Group Group::loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)
+Group Group::loadStubFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
 {
 	return GroupShared::loadStubFromStorage(contactStoragePoint);
 }
 
-Group Group::loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)
+Group Group::loadFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
 {
 	return GroupShared::loadFromStorage(contactStoragePoint);
 }

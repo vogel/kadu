@@ -39,7 +39,7 @@ class MobileNumberManager : public StorableObject
 	virtual ~MobileNumberManager();
 
 protected:
-	virtual QSharedPointer<StoragePoint> createStoragePoint();
+	virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
 	virtual void load();
 	virtual void store();

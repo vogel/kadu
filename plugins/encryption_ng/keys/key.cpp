@@ -32,12 +32,12 @@ Key Key::create()
 	return new KeyShared();
 }
 
-Key Key::loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint)
+Key Key::loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint)
 {
 	return KeyShared::loadStubFromStorage(avatarStoragePoint);
 }
 
-Key Key::loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint)
+Key Key::loadFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint)
 {
 	return KeyShared::loadFromStorage(avatarStoragePoint);
 }

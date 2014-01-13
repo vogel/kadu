@@ -88,7 +88,7 @@ void RecentChatManager::load()
 
 	StorableObject::load();
 
-	QSharedPointer<StoragePoint> point(storage());
+	auto point = storage();
 	QDomNodeList chatElements = point->point().childNodes();
 
 	int count = chatElements.size();
@@ -128,7 +128,7 @@ void RecentChatManager::store()
 
 	StorableObject::store();
 
-	QSharedPointer<StoragePoint> point(storage());
+	auto point = storage();
 	QDomElement mainElement = point->point().toElement();
 	if (mainElement.isNull())
 		return;

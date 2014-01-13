@@ -27,6 +27,7 @@ extern "C" {
 }
 
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 #include "storage/manager-common.h"
 

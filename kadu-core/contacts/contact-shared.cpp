@@ -37,7 +37,7 @@
 
 #include "contact-shared.h"
 
-ContactShared * ContactShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+ContactShared * ContactShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	ContactShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -45,7 +45,7 @@ ContactShared * ContactShared::loadStubFromStorage(const QSharedPointer<StorageP
 	return result;
 }
 
-ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+ContactShared * ContactShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	ContactShared *result = new ContactShared();
 	result->setStorage(storagePoint);

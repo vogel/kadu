@@ -50,8 +50,8 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	static KeyShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
-	static KeyShared * loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
+	static KeyShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint);
+	static KeyShared * loadFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint);
 
 	explicit KeyShared(const QUuid &uuid = QUuid());
 	virtual ~KeyShared();

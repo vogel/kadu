@@ -31,7 +31,7 @@
 
 #include "key-shared.h"
 
-KeyShared * KeyShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+KeyShared * KeyShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	KeyShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -39,7 +39,7 @@ KeyShared * KeyShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &s
 	return result;
 }
 
-KeyShared * KeyShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+KeyShared * KeyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	KeyShared *result = new KeyShared();
 	result->setStorage(storagePoint);

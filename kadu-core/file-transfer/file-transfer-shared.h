@@ -54,8 +54,8 @@ protected:
 	virtual void store();
 
 public:
-	static FileTransferShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
-	static FileTransferShared * loadFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
+	static FileTransferShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint);
+	static FileTransferShared * loadFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint);
 
 	explicit FileTransferShared(const QUuid &uuid = QUuid());
 	virtual ~FileTransferShared();

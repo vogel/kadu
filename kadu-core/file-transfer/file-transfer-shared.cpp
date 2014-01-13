@@ -31,14 +31,14 @@
 
 #include "file-transfer-shared.h"
 
-FileTransferShared * FileTransferShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint)
+FileTransferShared * FileTransferShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint)
 {
 	FileTransferShared *result = loadFromStorage(fileTransferStoragePoint);
 	result->loadStub();
 	return result;
 }
 
-FileTransferShared * FileTransferShared::loadFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint)
+FileTransferShared * FileTransferShared::loadFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint)
 {
 	FileTransferShared *result = new FileTransferShared();
 	result->setStorage(fileTransferStoragePoint);

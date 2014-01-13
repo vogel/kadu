@@ -34,7 +34,7 @@
 
 #include "identity-shared.h"
 
-IdentityShared * IdentityShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+IdentityShared * IdentityShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	IdentityShared *identityShared = loadFromStorage(storagePoint);
 	identityShared->loadStub();
@@ -42,7 +42,7 @@ IdentityShared * IdentityShared::loadStubFromStorage(const QSharedPointer<Storag
 	return identityShared;
 }
 
-IdentityShared * IdentityShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+IdentityShared * IdentityShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	IdentityShared *identityShared = new IdentityShared();
 	identityShared->setStorage(storagePoint);

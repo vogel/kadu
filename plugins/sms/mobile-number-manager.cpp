@@ -82,9 +82,9 @@ void MobileNumberManager::unregisterNumber(QString number)
 		}
 }
 
-QSharedPointer<StoragePoint> MobileNumberManager::createStoragePoint()
+std::shared_ptr<StoragePoint> MobileNumberManager::createStoragePoint()
 {
-	return QSharedPointer<StoragePoint>(new StoragePoint(xml_config_file, xml_config_file->getNode("MobileNumbers")));
+	return std::make_shared<StoragePoint>(xml_config_file, xml_config_file->getNode("MobileNumbers"));
 }
 
 StorableObject * MobileNumberManager::storageParent()
@@ -110,7 +110,7 @@ void MobileNumberManager::load()
 		if (mobileNumberElement.isNull())
 			continue;
 
-		QSharedPointer<StoragePoint> numberStoragePoint(new StoragePoint(configurationStorage, mobileNumberElement));
+		auto numberStoragePoint = std::make_shared<StoragePoint>(configurationStorage, mobileNumberElement);
 		MobileNumber *number = new MobileNumber();
 		number->setStorage(numberStoragePoint);
 		number->setState(StateNotLoaded);

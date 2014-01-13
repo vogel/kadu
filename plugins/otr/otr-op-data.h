@@ -24,6 +24,8 @@
 #ifndef OTR_OP_DATA_H
 #define OTR_OP_DATA_H
 
+#include <QtCore/QWeakPointer>
+
 #include "contacts/contact.h"
 
 class OtrErrorMessageService;

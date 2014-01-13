@@ -61,7 +61,7 @@ void CustomProperties::loadFromModuleData(const QDomNode &node)
 	}
 }
 
-void CustomProperties::loadFrom(const QSharedPointer<StoragePoint> &storagePoint)
+void CustomProperties::loadFrom(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	if (!storagePoint)
 		return;
@@ -90,7 +90,7 @@ void CustomProperties::loadFrom(const QSharedPointer<StoragePoint> &storagePoint
 	}
 }
 
-void CustomProperties::storeTo(const QSharedPointer<StoragePoint> &storagePoint) const
+void CustomProperties::storeTo(const std::shared_ptr<StoragePoint> &storagePoint) const
 {
 	if (!storagePoint)
 		return;

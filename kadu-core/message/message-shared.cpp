@@ -39,7 +39,7 @@
 
 #include "message-shared.h"
 
-MessageShared * MessageShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
+MessageShared * MessageShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = loadFromStorage(messageStoragePoint);
 	result->setFormattedStringFactory(Core::instance()->formattedStringFactory());
@@ -47,7 +47,7 @@ MessageShared * MessageShared::loadStubFromStorage(const QSharedPointer<StorageP
 	return result;
 }
 
-MessageShared * MessageShared::loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
+MessageShared * MessageShared::loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = new MessageShared();
 	result->setFormattedStringFactory(Core::instance()->formattedStringFactory());

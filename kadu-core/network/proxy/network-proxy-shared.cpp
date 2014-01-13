@@ -24,7 +24,7 @@
 
 #include "network-proxy-shared.h"
 
-NetworkProxyShared * NetworkProxyShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+NetworkProxyShared * NetworkProxyShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	NetworkProxyShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -32,7 +32,7 @@ NetworkProxyShared * NetworkProxyShared::loadStubFromStorage(const QSharedPointe
 	return result;
 }
 
-NetworkProxyShared * NetworkProxyShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+NetworkProxyShared * NetworkProxyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	NetworkProxyShared *result = new NetworkProxyShared();
 	result->setStorage(storagePoint);

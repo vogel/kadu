@@ -26,7 +26,8 @@
 #ifndef STORABLE_OBJECT_H
 #define STORABLE_OBJECT_H
 
-#include <QtCore/QSharedPointer>
+#include <memory>
+
 #include <QtCore/QVariant>
 
 #include "configuration/xml-configuration-file.h"
@@ -133,7 +134,7 @@ public:
 	};
 
 private:
-	QSharedPointer<StoragePoint> Storage;
+	std::shared_ptr<StoragePoint> Storage;
 	StorableObjectState State;
 	CustomProperties *Properties;
 
@@ -154,7 +155,7 @@ protected:
 	 * If parent is NULL this method will return storage point that is child of
 	 * root node of XML configuration file.
 	 */
-	virtual QSharedPointer<StoragePoint> createStoragePoint();
+	virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -230,7 +231,7 @@ public:
 	 * Returns storage point for this object. If the storage point has not been specified
 	 * yet, it calls @link<createStoragePoint> createStoragePoint @endlink to create one.
 	 */
-	const QSharedPointer<StoragePoint> & storage();
+	const std::shared_ptr<StoragePoint> & storage();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -289,7 +290,7 @@ public:
 	 * state of object to StateNotLoaded, so it will be loaded after executing ensureLoaded
 	 * method.
 	 */
-	void setStorage(const QSharedPointer<StoragePoint> &storage);
+	void setStorage(const std::shared_ptr<StoragePoint> &storage);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

@@ -41,15 +41,13 @@ StorableObject::~StorableObject()
 	delete Properties;
 }
 
-QSharedPointer<StoragePoint> StorableObject::createStoragePoint()
+std::shared_ptr<StoragePoint> StorableObject::createStoragePoint()
 {
 	auto parent = storageParent();
-	auto result = Core::instance()->storagePointFactory()->createStoragePoint(storageNodeName(), parent ? parent->storage().data() : nullptr);
-
-	return QSharedPointer<StoragePoint>(result.release());
+	return Core::instance()->storagePointFactory()->createStoragePoint(storageNodeName(), parent ? parent->storage().get() : nullptr);
 }
 
-void StorableObject::setStorage(const QSharedPointer<StoragePoint> &storage)
+void StorableObject::setStorage(const std::shared_ptr<StoragePoint> &storage)
 {
 	State = StateNotLoaded;
 	Storage = storage;
@@ -60,7 +58,7 @@ bool StorableObject::isValidStorage()
 	return storage() && storage()->storage();
 }
 
-const QSharedPointer<StoragePoint> & StorableObject::storage()
+const std::shared_ptr<StoragePoint> & StorableObject::storage()
 {
 	if (!Storage)
 		Storage = createStoragePoint();
@@ -107,7 +105,7 @@ void StorableObject::removeFromStorage()
 		return;
 
 	Storage->point().parentNode().removeChild(Storage->point());
-	Storage.clear();
+	Storage.reset();
 }
 
 void StorableObject::storeValue(const QString &name, const QVariant value)

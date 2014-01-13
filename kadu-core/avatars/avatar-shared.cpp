@@ -32,7 +32,7 @@
 
 #include "avatar-shared.h"
 
-AvatarShared * AvatarShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+AvatarShared * AvatarShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	AvatarShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -40,7 +40,7 @@ AvatarShared * AvatarShared::loadStubFromStorage(const QSharedPointer<StoragePoi
 	return result;
 }
 
-AvatarShared * AvatarShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+AvatarShared * AvatarShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	AvatarShared *result = new AvatarShared();
 	result->setStorage(storagePoint);

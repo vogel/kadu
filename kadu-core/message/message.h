@@ -42,8 +42,8 @@ class KADUAPI Message : public SharedBase<MessageShared>
 
 public:
 	static Message create();
-	static Message loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
-	static Message loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
+	static Message loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
+	static Message loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
 	static Message null;
 
 	Message();

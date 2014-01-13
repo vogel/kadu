@@ -50,7 +50,7 @@ class KADUAPI UuidStorableObject : public StorableObject
 	QUuid Uuid;
 
 protected:
-	virtual QSharedPointer<StoragePoint> createStoragePoint();
+	virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
 public:
 	UuidStorableObject();

@@ -54,25 +54,24 @@ UuidStorableObject::UuidStorableObject()
  * If parent is NULL this method will return storage point that is child of
  * root node of XML configuration file.
  */
-QSharedPointer<StoragePoint> UuidStorableObject::createStoragePoint()
+std::shared_ptr<StoragePoint> UuidStorableObject::createStoragePoint()
 {
 	if (storageNodeName().isEmpty())
-		return QSharedPointer<StoragePoint>();
+		return {};
 
-	StorableObject *parent = storageParent();
-	if (!parent)
-		return QSharedPointer<StoragePoint>();
+	if (!storageParent())
+		return {};
 
-	QSharedPointer<StoragePoint> parentStoragePoint(storageParent()->storage());
+	auto parentStoragePoint = storageParent()->storage();
 	if (!parentStoragePoint)
-		return QSharedPointer<StoragePoint>();
+		return {};
 
 	QUuid id = uuid();
 	if (id.isNull())
-		return QSharedPointer<StoragePoint>();
+		return {};
 
 	QDomElement node = parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), storageNodeName(), id);
-	return QSharedPointer<StoragePoint>(new StoragePoint(parentStoragePoint->storage(), node));
+	return std::make_shared<StoragePoint>(parentStoragePoint->storage(), node);
 }
 
 /**

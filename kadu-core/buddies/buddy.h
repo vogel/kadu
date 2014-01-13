@@ -58,8 +58,8 @@ class KADUAPI Buddy : public SharedBase<BuddyShared>
 
 public:
 	static Buddy create();
-	static Buddy loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
-	static Buddy loadFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
+	static Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
+	static Buddy loadFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
 	static Buddy null;
 
 	static Buddy dummy();

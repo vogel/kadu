@@ -45,7 +45,7 @@ bool UnreadMessageRepository::importFromPendingMessages()
 	auto messageElements = xml_config_file->getNodes(pendingMessagesNode, "Message");
 	for (const auto &messageElement : messageElements)
 	{
-		auto storagePoint = QSharedPointer<StoragePoint>{new StoragePoint{storage()->storage(), messageElement}};
+		auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), messageElement);
 		auto uuid = QUuid{storagePoint->point().attribute("uuid")};
 		if (!uuid.isNull())
 		{
@@ -83,7 +83,7 @@ void UnreadMessageRepository::load()
 
 	for (const auto &itemElement : itemElements)
 	{
-		auto storagePoint = QSharedPointer<StoragePoint>{new StoragePoint{storage()->storage(), itemElement}};
+		auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), itemElement);
 		auto uuid = QUuid{storagePoint->point().attribute("uuid")};
 		if (!uuid.isNull())
 		{

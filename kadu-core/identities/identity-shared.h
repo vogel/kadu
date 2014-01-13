@@ -43,8 +43,8 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	static IdentityShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
-	static IdentityShared * loadFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
+	static IdentityShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
+	static IdentityShared * loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
 
 	explicit IdentityShared(const QUuid &uuid = QUuid());
 	virtual ~IdentityShared();

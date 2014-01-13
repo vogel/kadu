@@ -25,7 +25,7 @@
 
 #include "group-shared.h"
 
-GroupShared * GroupShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+GroupShared * GroupShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	GroupShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -33,7 +33,7 @@ GroupShared * GroupShared::loadStubFromStorage(const QSharedPointer<StoragePoint
 	return result;
 }
 
-GroupShared * GroupShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+GroupShared * GroupShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	GroupShared *result = new GroupShared();
 	result->setStorage(storagePoint);

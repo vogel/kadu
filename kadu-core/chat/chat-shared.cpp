@@ -39,7 +39,7 @@
 
 #include "chat-shared.h"
 
-ChatShared * ChatShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+ChatShared * ChatShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	ChatShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -55,7 +55,7 @@ ChatShared * ChatShared::loadStubFromStorage(const QSharedPointer<StoragePoint> 
  * Creates new object of ChatShared type and assigns storagePoint to it.
  * Object is lazy-loaded (it will be loaded when used first time).
  */
-ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
+ChatShared * ChatShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
 	ChatShared *result = new ChatShared();
 	result->setStorage(storagePoint);

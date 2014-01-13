@@ -60,8 +60,8 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	static MessageShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
-	static MessageShared * loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
+	static MessageShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
+	static MessageShared * loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
 
 	explicit MessageShared(const QUuid &uuid = QUuid());
 	virtual ~MessageShared();
