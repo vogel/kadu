@@ -40,7 +40,6 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/metadata/plugin-metadata.h"
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
