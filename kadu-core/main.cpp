@@ -198,11 +198,14 @@ int main(int argc, char *argv[])
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
-	for (int i = 1; i < qApp->argc(); ++i)
+	auto arguments = QCoreApplication::arguments();
+	for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
 	{
-		const QString param = qApp->argv()[i];
+		// do not parse program name
+		if (it == arguments.constBegin())
+			continue;
 
-		if (param == "--version")
+		if (*it == QLatin1String("--version"))
 		{
 			printVersion();
 			delete qApp;
@@ -211,7 +214,7 @@ int main(int argc, char *argv[])
 #endif
 			return 0;
 		}
-		else if (param == "--help")
+		else if (*it == QLatin1String("--help"))
 		{
 			printUsage();
 			printKaduOptions();
@@ -221,21 +224,20 @@ int main(int argc, char *argv[])
 #endif
 			return 0;
 		}
-		else if (argc > i + 1 && param == "--debug")
+		else if (*it == QLatin1String("--debug") && ++it != arguments.constEnd())
 		{
-			const QByteArray mask(qApp->argv()[++i]);
-			mask.toInt(&ok);
+			it->toInt(&ok);
 			if (ok)
-				qputenv("DEBUG_MASK", mask);
+				qputenv("DEBUG_MASK", it->toUtf8());
 			else
-				fprintf(stderr, "Ignoring invalid debug mask '%s'\n", mask.constData());
+				fprintf(stderr, "Ignoring invalid debug mask '%s'\n", it->toUtf8().constData());
 		}
-		else if (argc > i + 1 && param == "--config-dir")
-			qputenv("CONFIG_DIR", qApp->argv()[++i]);
-		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(param))
-			ids.append(param);
+		else if (*it == QLatin1String("--config-dir") && ++it != arguments.constEnd())
+			qputenv("CONFIG_DIR", it->toUtf8());
+		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(*it))
+			ids.append(*it);
 		else
-			fprintf(stderr, "Ignoring unknown parameter '%s'\n", qApp->argv()[i]);
+			fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
 	}
 
 	// It has to be called after putting CONFIG_DIR environment variable.
