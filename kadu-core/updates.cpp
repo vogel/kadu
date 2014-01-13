@@ -224,8 +224,6 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 		}
 	}
 
-	config_file.writeEntry("General", "LastUpdateCheck", QDateTime(QDate(1970, 1, 1)).secsTo(QDateTime::currentDateTime()));
-
 	deleteLater();
 }
 
