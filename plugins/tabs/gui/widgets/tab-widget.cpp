@@ -235,7 +235,7 @@ bool TabWidget::isChatWidgetActive(const ChatWidget *chatWidget)
 void TabWidget::closeEvent(QCloseEvent *e)
 {
 	// do not block window closing when session is about to close
-	if (Core::instance()->application()->sessionClosing())
+	if (Core::instance()->application()->isSavingSession())
 	{
 		QTabWidget::closeEvent(e);
 		return;

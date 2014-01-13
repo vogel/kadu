@@ -251,7 +251,7 @@ void SingleWindow::closeTab(int index)
 void SingleWindow::closeEvent(QCloseEvent *event)
 {
 	// do not block window closing when session is about to close
-	if (Core::instance()->application()->sessionClosing())
+	if (Core::instance()->application()->isSavingSession())
 	{
 		QWidget::closeEvent(event);
 		return;

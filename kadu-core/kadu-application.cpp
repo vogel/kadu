@@ -33,8 +33,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QSessionManager>
-
 #include "kadu-application.h"
 
 #if defined(Q_WS_X11)
@@ -49,7 +47,10 @@
 #endif // Q_WS_X11
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
-		QApplication(argc, argv), SessionClosing(false)
+		QApplication(argc, argv)
+#if QT_VERSION < 0x050000
+		, SavingSession(false)
+#endif
 {
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
@@ -75,13 +76,14 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 #endif // Q_WS_X11
 }
 
+#if QT_VERSION < 0x050000
 void KaduApplication::commitData(QSessionManager &manager)
 {
-	SessionClosing = true;
+	SavingSession = true;
 
 	QApplication::commitData(manager);
 
-	SessionClosing = false;
+	SavingSession = false;
 }
 
 #if defined(Q_WS_X11)
@@ -97,9 +99,10 @@ bool KaduApplication::x11EventFilter(XEvent *event)
 }
 #endif // Q_WS_X11
 
-bool KaduApplication::sessionClosing() const
+bool KaduApplication::isSavingSession() const
 {
-	return SessionClosing;
+	return SavingSession;
 }
+#endif
 
 #include "moc_kadu-application.cpp"
