@@ -43,15 +43,15 @@
 
 #include <errno.h>
 #include <time.h>
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN32
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <pwd.h>
 #include <unistd.h>
-#else // !Q_WS_WIN
+#else // !Q_OS_WIN32
 #include <winsock2.h>
-#endif // !Q_WS_WIN
+#endif // !Q_OS_WIN32
 
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
@@ -67,7 +67,7 @@
 #include "kadu-application.h"
 #include "kadu-config.h"
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN32
 #if HAVE_EXECINFO
 #include <execinfo.h>
 #endif
@@ -128,7 +128,7 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			break;
 	}
 }
-#endif // Q_WS_WIN
+#endif // !Q_OS_WIN32
 
 #ifdef DEBUG_OUTPUT_ENABLED
 extern KADUAPI bool showTimesInDebug;
@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
 	exitingTime = 0;
 	startTime = (sec % 1000) * 1000 + msec;
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN32
 	// We want some sensible LC_COLLATE (i.e., not "C", if possible) to make
 	// QString::localeAwareCompare() work as expected.
 	QByteArray langEnv = qgetenv("LANG");
@@ -188,11 +188,11 @@ int main(int argc, char *argv[])
 		qputenv("LC_COLLATE", "en_US");
 	else if (lcAllEnv.isEmpty())
 		qputenv("LC_COLLATE", langEnv);
-#else // !Q_WS_WIN
+#else // !Q_OS_WIN32
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 2;
-#endif // !Q_WS_WIN
+#endif // !Q_OS_WIN32
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
 	new KaduApplication(argc, argv);
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
 		{
 			printVersion();
 			delete qApp;
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 			WSACleanup();
 #endif
 			return 0;
@@ -216,7 +216,7 @@ int main(int argc, char *argv[])
 			printUsage();
 			printKaduOptions();
 			delete qApp;
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 			WSACleanup();
 #endif
 			return 0;
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
 			printf("logging all stderr output to file: %s\n", logFilePath.constData());
 	}
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN32
 	// Qt version is better on win32
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
@@ -292,7 +292,7 @@ int main(int argc, char *argv[])
 		delete config_file_ptr;
 		delete xml_config_file;
 		delete qApp;
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 		WSACleanup();
 #endif
 
@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
 	// so it's probably a bug in Qt. Sigh.
 	//delete qApp;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	WSACleanup();
 #endif
 

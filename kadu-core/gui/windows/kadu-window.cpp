@@ -33,7 +33,7 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 #include <windows.h>
 #endif
 
@@ -85,7 +85,7 @@ KaduWindow::KaduWindow() :
 {
 	setWindowRole("kadu-main");
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	HiddenParent = new QWidget();
 	setHiddenParent();
 #endif
@@ -373,7 +373,7 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 	MainWindow::keyPressEvent(e);
 }
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 /* On Windows the only way to not show a window in the taskbar without making it a toolwindow
  * is to turn off the WS_EX_APPWINDOW style and provide it with a parent (which will be hidden
  * in our case).
@@ -418,7 +418,7 @@ void KaduWindow::changeEvent(QEvent *event)
 		if (!_isActiveWindow(this))
 			Roster->clearFilter();
 	}
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	else if (event->type() == QEvent::WindowStateChange)
 	{
 		if (Docked && isMinimized() && config_file.readBoolEntry("General", "HideMainWindowFromTaskbar"))
@@ -434,7 +434,7 @@ void KaduWindow::changeEvent(QEvent *event)
 			// On Windows we reparent WindowParent, so we want it to be parentless now.
 			// BTW, if WindowParent would be really needed in future, it's quite easy to support it.
 			Q_ASSERT(!WindowParent || 0 == WindowParent->parentWidget());
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 			// Without QueuedConnection I hit infinite loop here.
 			QMetaObject::invokeMethod(this, "setHiddenParent", Qt::QueuedConnection);
 #endif
@@ -460,7 +460,7 @@ TalkableProxyModel * KaduWindow::talkableProxyModel()
 
 void KaduWindow::configurationUpdated()
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	hideWindowFromTaskbar();
 #endif
 

@@ -94,7 +94,7 @@ class TalkablePainter
 	void paintName(QPainter *painter);
 	void paintDescription(QPainter *painter);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	static bool useColorsWorkaround();
 #endif
 

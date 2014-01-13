@@ -39,7 +39,7 @@ class KADUAPI KaduPaths
 
 	static KaduPaths *Instance;
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	QString DesktopFilePath;
 #endif
 	QString ProfilePath;
@@ -76,7 +76,7 @@ public:
 	 */
 	static QString webKitPath(const QString &path);
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	/**
 	 * @short Returns absolute path to the .desktop file owned by Kadu.
 	 * @return absolute path to the .desktop file owned by Kadu

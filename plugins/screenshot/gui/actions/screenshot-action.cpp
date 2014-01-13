@@ -64,7 +64,7 @@ void ScreenshotAction::actionInstanceCreated(Action *action)
 	QMenu *menu = new QMenu();
 	menu->addAction(tr("Simple Shot"), this, SLOT(takeStandardShotSlot()))->setData(chatWidgetData);
 	menu->addAction(tr("With Chat Window Hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()))->setData(chatWidgetData);
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
 	menu->addAction(tr("Window Shot"), this, SLOT(takeWindowShotSlot()))->setData(chatWidgetData);
 #endif
 	action->setMenu(menu);

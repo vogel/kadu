@@ -36,7 +36,7 @@
 #include <aspell.h>
 #elif defined(HAVE_ENCHANT)
 #include <enchant.h>
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 #include "macspellchecker.h"
 #endif
 
@@ -107,7 +107,7 @@ SpellChecker::~SpellChecker()
 	foreach (EnchantDict *dict, MyCheckers)
 		enchant_broker_free_dict(Broker, dict);
 	enchant_broker_free(Broker);
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 	qDeleteAll(MyCheckers);
 #endif
 }
@@ -182,7 +182,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 		errorMsg = enchant_broker_get_error(Broker);
 		ok = false;
 	}
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 	MyCheckers.insert(name, new MacSpellChecker());
 #endif
 
@@ -212,7 +212,7 @@ void SpellChecker::removeCheckedLang(const QString &name)
 		delete_aspell_speller(checker.value());
 #elif defined(HAVE_ENCHANT)
 		enchant_broker_free_dict(Broker, checker.value());
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 		delete checker.value();
 #endif
 		MyCheckers.erase(checker);
@@ -227,7 +227,7 @@ void SpellChecker::buildCheckers()
 #elif defined(HAVE_ENCHANT)
 	foreach (EnchantDict *dict, MyCheckers)
 		enchant_broker_free_dict(Broker, dict);
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 	qDeleteAll(MyCheckers);
 #endif
 	MyCheckers.clear();
@@ -372,7 +372,7 @@ bool SpellChecker::checkWord(const QString &word)
 #elif defined(HAVE_ENCHANT)
 			QByteArray utf8Word = word.toUtf8();
 			if (0 == enchant_dict_check(it.value(), utf8Word.constData(), utf8Word.size()))
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 			if (it.value()->isCorrect(word.toUtf8().constData()))
 #endif
 			{
@@ -435,7 +435,7 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 
 			enchant_dict_free_string_list(it.value(), suggs);
 		}
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_MAC)
 		suggestWordList.append(it.value()->suggestions(word));
 #endif
 	}

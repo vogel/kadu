@@ -35,7 +35,7 @@
 
 #include <QtGui/QSessionManager>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 #include "configuration/configuration-manager.h"
 #endif
 
@@ -58,7 +58,7 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	// Fix for #2491
 	setStyleSheet("QToolBar{border:0px}");
 #endif
@@ -83,7 +83,7 @@ void KaduApplication::commitData(QSessionManager &manager)
 {
 	SessionClosing = true;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 	/* On Windows Kadu often (if not always) seems to crash when it is
 	 * opened at the time of closing or rebooting the system (when checking,
 	 * try with Kadu window both visible and hidden by docking).

@@ -75,7 +75,7 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         }
 
         int xOffset = checkBox->sizeHint().width();
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
         xOffset += QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
 #endif
 

@@ -31,10 +31,10 @@
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
 #endif
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 #include <QtCore/QLibrary>
 #include <windows.h>
 #undef MessageBox
@@ -227,7 +227,7 @@ Window PixmapGrabber::findRealWindow( Window w, int depth )
 // End of code copied from KSnapShot
 //////////////////////////////////////////////////////////////////
 
-#elif defined Q_WS_WIN
+#elif defined Q_OS_WIN32
 
 QPixmap PixmapGrabber::grabCurrent()
 {
@@ -293,7 +293,7 @@ QPixmap PixmapGrabber::grabCurrent()
 
 }
 
-#elif defined Q_WS_MAC
+#elif defined Q_OS_MAC
 
 QPixmap PixmapGrabber::grabCurrent()
 {

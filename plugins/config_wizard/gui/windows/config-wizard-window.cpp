@@ -61,7 +61,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	 */
 	setWizardStyle(QWizard::ClassicStyle);
 #else
-	#ifdef Q_WS_WIN
+	#ifdef Q_OS_WIN32
 		// NOTE: Workaround for bug #1912.
 		// TODO: Remove this as soon as QTBUG-10478 is fixed in
 		// a release we bundle in the Windows build.

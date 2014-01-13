@@ -48,11 +48,11 @@
 #define QTLOCKEDFILE_H
 
 #include <QtCore/QFile>
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WIN32
 #include <QtCore/QVector>
 #endif
 
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN32)
 #  if !defined(QT_QTLOCKEDFILE_EXPORT) && !defined(QT_QTLOCKEDFILE_IMPORT)
 #    define QT_QTLOCKEDFILE_EXPORT
 #  elif defined(QT_QTLOCKEDFILE_IMPORT)

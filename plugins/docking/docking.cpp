@@ -103,7 +103,7 @@ DockingManager::DockingManager() :
 {
 	kdebugf();
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	KaduWindowLastTimeVisible = true;
 #endif
 
@@ -133,7 +133,7 @@ DockingManager::DockingManager() :
 	MacDockMenu->setSeparatorsCollapsible(true);
 #endif
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	ShowKaduAction = new QAction(tr("&Restore"), this);
 	connect(ShowKaduAction, SIGNAL(triggered()), this, SLOT(showKaduWindow()));
 
@@ -146,7 +146,7 @@ DockingManager::DockingManager() :
 
 	configurationUpdated();
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	/* Fill context menu for the first time. It seems that Ubuntu panels, when at bottom
 	 * of the screen, set maximum height for menus to what their height was when they
 	 * were clicked for the first time. And normally we fill the menu in response to
@@ -427,7 +427,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		}
 
 		if (kadu->isMinimized() || !kadu->isVisible()
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN32
 				// NOTE: It won't work as expected on Windows since when you click on tray icon,
 				// the tray will become active and any other window will loose focus.
 				// See bug #1915.
@@ -502,7 +502,7 @@ void DockingManager::setDocker(Docker *docker)
 void DockingManager::contextMenuAboutToBeShown()
 {
 	if (DockMenuNeedsUpdate
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 			|| Core::instance()->kaduWindow()->window()->isVisible() != KaduWindowLastTimeVisible
 #endif
 			)
@@ -583,7 +583,7 @@ void DockingManager::doUpdateContextMenu()
 
 	DockMenu->addSeparator();
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	KaduWindowLastTimeVisible = Core::instance()->kaduWindow()->window()->isVisible();
 	DockMenu->addAction(KaduWindowLastTimeVisible ? HideKaduAction : ShowKaduAction);
 #endif
