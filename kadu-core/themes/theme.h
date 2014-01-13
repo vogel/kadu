@@ -48,7 +48,7 @@ public:
 	const QString & name() const { return Name; }
 
 	bool isValid() const;
-	operator bool() const;
+	explicit operator bool() const;
 
 };
 
