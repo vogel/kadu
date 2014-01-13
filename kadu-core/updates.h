@@ -27,22 +27,18 @@
 #define KADU_UPDATES_H
 
 #include <QtCore/QDateTime>
-#include <QtNetwork/QHttpResponseHeader>
 
 #include "accounts/accounts-aware-object.h"
 #include "protocols/protocol.h"
 
-class QHttp;
+class QNetworkReply;
 
 class Updates : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 
 	bool UpdateChecked;
-	QDateTime LastUpdateCheck;
-
 	QString Query;
-	QHttp *HttpClient;
 
 	void buildQuery();
 
@@ -50,7 +46,7 @@ class Updates : public QObject, AccountsAwareObject
 	static QString stripVersion(const QString &version);
 
 private slots:
-	void gotUpdatesInfo(const QHttpResponseHeader &responseHeader);
+	void gotUpdatesInfo(QNetworkReply *reply);
 	void run();
 
 protected:
