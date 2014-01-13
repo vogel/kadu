@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QString>
+
 #include "chat-image-key.h"
 
 ChatImageKey::ChatImageKey(quint32 size, quint32 crc32) :

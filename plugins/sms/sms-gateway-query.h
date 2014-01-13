@@ -2,7 +2,6 @@
 #define SMS_GATEWAY_QUERY_H
 
 #include <QtCore/QBuffer>
-#include <QtNetwork/QHttp>
 
 class SmsGatewayQuery : public QObject
 {

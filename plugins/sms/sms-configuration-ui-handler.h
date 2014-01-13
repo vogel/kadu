@@ -37,7 +37,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QWidget>
-#include <QtNetwork/QHttp>
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"

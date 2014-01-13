@@ -30,6 +30,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QMimeData>
 #include <QtGui/QApplication>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QInputDialog>

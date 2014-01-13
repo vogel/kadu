@@ -26,6 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QMimeData>
 #include <QtCore/QTextStream>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QCursor>
