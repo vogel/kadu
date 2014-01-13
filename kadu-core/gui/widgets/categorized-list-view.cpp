@@ -1801,7 +1801,11 @@ void CategorizedListView::currentChanged(const QModelIndex &current,
 }
 
 void CategorizedListView::dataChanged(const QModelIndex &topLeft,
-                                      const QModelIndex &bottomRight)
+                                      const QModelIndex &bottomRight
+#if QT_VERSION >= 0x050000
+                                      , const QVector<int> & = QVector<int>()
+#endif
+                                      )
 {
         QListView::dataChanged(topLeft, bottomRight);
 
