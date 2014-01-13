@@ -29,17 +29,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtGui/QPixmap>
-#include <QtNetwork/QHttp>
 
 class GaduTokenFetcher : public QObject
 {
 	Q_OBJECT
-
-	QHttp Http;
-	QString TokenId;
-
-private slots:
-	void tokenReceivedSlot(int id, bool error);
 
 public:
 	explicit GaduTokenFetcher(QObject *parent);
