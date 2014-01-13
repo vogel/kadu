@@ -63,7 +63,6 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/stuntransaction.cpp
 	libiris/src/irisnet/noncore/stuntypes.cpp
 	libiris/src/irisnet/noncore/stunutil.cpp
-	libiris/src/irisnet/noncore/processquit.cpp
 	libiris/src/irisnet/noncore/turnclient.cpp
 	libiris/src/irisnet/noncore/udpportreserver.cpp
 	libiris/src/irisnet/corelib/addressresolver.cpp
@@ -123,7 +122,6 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/stunallocate.h
 	libiris/src/irisnet/noncore/ice176.h
 	libiris/src/irisnet/noncore/icecomponent.h
-	libiris/src/irisnet/noncore/processquit.h
 	libiris/src/irisnet/noncore/icetransport.h
 	libiris/src/irisnet/noncore/iceturntransport.h
 	libiris/src/irisnet/noncore/icelocaltransport.h
