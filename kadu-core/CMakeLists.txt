@@ -228,11 +228,17 @@ if (FAST_LINKING)
 	endif ()
 endif ()
 
-target_link_libraries (libkadu LINK_PRIVATE ${QT_LIBRARIES} ${ADDITIONAL_LIBRARIES})
+qt4_use_modules (libkadu LINK_PRIVATE Core Gui Xml Network WebKit Declarative)
+if (UNIX AND NOT APPLE)
+	qt4_use_modules (libkadu LINK_PRIVATE DBus)
+endif ()
+
+target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBRARIES})
 
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
-target_link_libraries (kadu LINK_PRIVATE libkadu ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY})
+qt4_use_modules (kadu LINK_PRIVATE Core Gui Network Xml)
+target_link_libraries (kadu LINK_PRIVATE libkadu)
 if (NOT IS_ABSOLUTE "${KADU_INSTALL_LIB_DIR}")
 	set (install_full_lib_dir "${CMAKE_INSTALL_PREFIX}/${KADU_INSTALL_LIB_DIR}")
 else ()
@@ -258,9 +264,11 @@ if (WIN32)
 	kadu_set_flags (kadu_c)
 
 	set_property (TARGET kadu_c APPEND PROPERTY COMPILE_DEFINITIONS KADU_CONSOLE)
+	set_property (TARGET kadu_c PROPERTY QT4_NO_LINK_QTMAIN TRUE)
 
 	target_link_libraries (kadu LINK_PRIVATE ws2_32)
-	target_link_libraries (kadu_c LINK_PRIVATE libkadu ${QT_LIBRARIES} ws2_32)
+	qt4_use_modules (kadu_c LINK_PRIVATE Core Gui Network Xml)
+	target_link_libraries (kadu_c LINK_PRIVATE libkadu ws2_32)
 
 	install (TARGETS kadu_c DESTINATION ${KADU_INSTALL_BIN_DIR})
 

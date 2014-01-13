@@ -156,6 +156,7 @@ include_directories (
 
 add_library (3rdparty STATIC ${SOURCES_IRIS})
 kadu_set_flags (3rdparty)
+qt4_use_modules (3rdparty LINK_PUBLIC Core Gui Network Xml)
 set_property (TARGET 3rdparty PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 
 if (NOT MSVC)

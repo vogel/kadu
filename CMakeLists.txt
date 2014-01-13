@@ -1,6 +1,6 @@
 project (Kadu)
 
-cmake_minimum_required (VERSION 2.8.10)
+cmake_minimum_required (VERSION 2.8.11)
 
 # Options (some of them)
 
@@ -273,7 +273,7 @@ if (NOT WIN32)
 	endif ()
 endif ()
 
-include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
+include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core)
 
 add_subdirectory (kadu-core)
 add_subdirectory (varia)

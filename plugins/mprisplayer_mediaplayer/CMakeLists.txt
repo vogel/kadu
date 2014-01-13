@@ -31,10 +31,6 @@ if (UNIX AND NOT APPLE)
 		mpris_controller.h
 		mpris_mediaplayer.h
 	)
-
-	set (DBUS_LIBS
-		${QT_QTDBUS_LIBRARY}
-	)
 endif ()
 
 set (CONFIGURATION_FILES
