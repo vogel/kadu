@@ -37,7 +37,7 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 	EncryptorsGroup = new QActionGroup(this);
 	EncryptorsGroup->setExclusive(true);
 
-	connect(EncryptorsGroup, SIGNAL(selected(QAction*)), this, SLOT(encryptionMethodSelected(QAction*)));
+	connect(EncryptorsGroup, SIGNAL(triggered(QAction*)), this, SLOT(encryptionMethodSelected(QAction*)));
 	connect(this, SIGNAL(aboutToShow()), SLOT(aboutToShowSlot()));
 }
 
