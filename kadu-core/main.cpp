@@ -149,7 +149,7 @@ static void printVersion()
 
 static void printUsage()
 {
-	printf("Usage: kadu [Qt Options] [General Options] [Options]\n\n"
+	printf("Usage: kadu [General Options] [Options]\n\n"
 		"Kadu Instant Messenger\n");
 }
 
@@ -157,55 +157,11 @@ static void printKaduOptions()
 {
 	printf("\nGeneral Options:\n"
 		"  --help                     Print Kadu options\n"
-		"  --help-qt                  Print Qt options\n"
-		"  --help-all                 Print all options\n"
 		"  --version                  Print Kadu and Qt version\n"
 		"\nOptions:\n"
 		"  --debug <mask>             Set debugging mask\n"
 		"  --config-dir <path>        Set configuration directory\n"
 		"                             (overwrites CONFIG_DIR variable)\n");
-}
-
-static void printQtOptions()
-{
-	printf("\nQt Options:\n"
-#if defined(Q_WS_X11)
-		"  -display <displayname>     Use the X-server display 'displayname'\n"
-#elif defined(Q_WS_QWS)
-		"  -display <displayname>     Use the QWS display 'displayname'\n"
-#endif
-		"  -session <sessionId>       Restore the application for the given 'sessionId'\n"
-		"  -cmap                      Causes the application to install a private color\n"
-		"                             map on an 8-bit display\n"
-		"  -ncols <count>             Limits the number of colors allocated in the color\n"
-		"                             cube on an 8-bit display, if the application is\n"
-		"                             using the QApplication::ManyColor color \n"
-		"                             specification\n"
-		"  -nograb                    Tells Qt to never grab the mouse or the keyboard\n"
-		"  -dograb                    Running under a debugger can cause an implicit\n"
-		"                             -nograb, use -dograb to override\n"
-		"  -sync                      Switches to synchronous mode for debugging\n"
-		"  -fn, -font <fontname>      defines the application font\n"
-		"  -bg, -background <color>   Sets the default background color and an\n"
-		"                             application palette (light and dark shades are\n"
-		"                             calculated)\n"
-		"  -fg, -foreground <color>   Sets the default foreground color\n"
-		"  -btn, -button <color>      Sets the default button color\n"
-		"  -name <name>               Sets the application name\n"
-		"  -title <title>             Sets the application title (caption)\n"
-#ifdef Q_WS_X11
-		"  -visual TrueColor          Forces the application to use a TrueColor visual on\n"
-		"                             an 8-bit display\n"
-		"  -inputstyle <inputstyle>   Sets XIM (X Input Method) input style. Possible\n"
-		"                             values are onthespot, overthespot, offthespot and\n"
-		"                             root\n"
-		"  -im <XIM server>           Set XIM server\n"
-		"  -noxim                     Disable XIM\n"
-#endif
-#ifdef Q_WS_QWS
-		"  -qws                       Forces the application to run as QWS Server\n"
-#endif
-		"  -reverse                   Mirrors the whole layout of widgets\n");
 }
 
 int main(int argc, char *argv[])
@@ -259,27 +215,6 @@ int main(int argc, char *argv[])
 		{
 			printUsage();
 			printKaduOptions();
-			delete qApp;
-#ifdef Q_WS_WIN
-			WSACleanup();
-#endif
-			return 0;
-		}
-		else if (param == "--help-qt")
-		{
-			printUsage();
-			printQtOptions();
-			delete qApp;
-#ifdef Q_WS_WIN
-			WSACleanup();
-#endif
-			return 0;
-		}
-		else if (param == "--help-all")
-		{
-			printUsage();
-			printKaduOptions();
-			printQtOptions();
 			delete qApp;
 #ifdef Q_WS_WIN
 			WSACleanup();
