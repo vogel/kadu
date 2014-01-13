@@ -70,7 +70,7 @@ std::shared_ptr<StoragePoint> UuidStorableObject::createStoragePoint()
 	if (id.isNull())
 		return {};
 
-	QDomElement node = parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), storageNodeName(), id);
+	QDomElement node = parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), storageNodeName(), id.toString());
 	return std::make_shared<StoragePoint>(parentStoragePoint->storage(), node);
 }
 

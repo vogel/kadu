@@ -613,7 +613,7 @@ void TabsManager::store()
 
 		QDomElement window_elem = storageFile->createElement(point, "Tab");
 
-		window_elem.setAttribute("chat", chat.uuid());
+		window_elem.setAttribute("chat", chat.uuid().toString());
 		if (TabDialog->indexOf(chatWidget) != -1)
 			window_elem.setAttribute("type", "tab");
 		else if (DetachedChats.indexOf(chatWidget) != -1)

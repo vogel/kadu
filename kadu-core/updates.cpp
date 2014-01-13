@@ -65,7 +65,7 @@ void Updates::accountUnregistered(Account account)
 
 void Updates::buildQuery()
 {
-	Query = QString("/update-new.php?uuid=%1&version=%2").arg(ConfigurationManager::instance()->uuid()).arg(Core::version());
+	Query = QString("/update-new.php?uuid=%1&version=%2").arg(ConfigurationManager::instance()->uuid().toString()).arg(Core::version());
 
 	if (config_file.readBoolEntry("General", "SendSysInfo"), true)
 	{

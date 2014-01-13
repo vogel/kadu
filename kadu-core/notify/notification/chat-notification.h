@@ -42,7 +42,7 @@ public:
 
 	Chat chat() { return CurrentChat; }
 
-	virtual QString groupKey() const { return CurrentChat.uuid(); }
+	virtual QString groupKey() const { return CurrentChat.uuid().toString(); }
 
 public slots:
 	void openChat();
