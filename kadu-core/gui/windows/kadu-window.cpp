@@ -28,10 +28,10 @@
  */
 
 #include <QtGui/QCloseEvent>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QSplitter>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QVBoxLayout>
 
 #ifdef Q_OS_WIN32
 #include <windows.h>

@@ -33,11 +33,11 @@
 
 #include <QtCore/QEvent>
 #include <QtCore/QScopedArrayPointer>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QMouseEvent>
-#include <QtGui/QScrollBar>
+#include <QtWidgets/QScrollBar>
 
 #include "gui/emoticon-selector-button.h"
 #include "emoticon.h"

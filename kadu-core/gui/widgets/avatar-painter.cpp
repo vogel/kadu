@@ -25,7 +25,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
 #include <QtGui/QPixmapCache>
-#include <QtGui/QStyleOptionViewItem>
+#include <QtWidgets/QStyleOptionViewItem>
 
 #include "contacts/contact.h"
 #include "gui/widgets/talkable-delegate-configuration.h"

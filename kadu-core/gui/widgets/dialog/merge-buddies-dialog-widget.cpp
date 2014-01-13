@@ -19,10 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-#include <QtGui/QFormLayout>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QFormLayout>
 #include <QtGui/QIcon>
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"

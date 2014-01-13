@@ -21,7 +21,7 @@
 
 #include <QtCore/QProcess>
 #include <QtCore/QUrl>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QDesktopServices>
 
 #include "configuration/configuration-file.h"

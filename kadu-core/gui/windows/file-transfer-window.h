@@ -23,7 +23,7 @@
 #ifndef FILE_TRANSFER_WINDOW
 #define FILE_TRANSFER_WINDOW
 
-#include <QtGui/QFrame>
+#include <QtWidgets/QFrame>
 
 #include "file-transfer/file-transfer.h"
 #include "os/generic/desktop-aware-object.h"

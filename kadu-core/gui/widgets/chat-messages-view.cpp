@@ -25,8 +25,8 @@
  */
 
 #include <QtGui/QKeyEvent>
-#include <QtGui/QScrollBar>
-#include <QtWebKit/QWebFrame>
+#include <QtWidgets/QScrollBar>
+#include <QtWebKitWidgets/QWebFrame>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

@@ -25,7 +25,7 @@
 #ifndef BUDDY_LIST_BACKGROUND_COLORS_WIDGET_H
 #define BUDDY_LIST_BACKGROUND_COLORS_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class ColorButton;
 class MainConfigurationWindow;

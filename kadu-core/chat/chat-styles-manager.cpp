@@ -25,12 +25,12 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
 #include <QtGui/QPalette>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"

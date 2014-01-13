@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "accounts/account.h"
 #include "contacts/contact-set.h"

@@ -26,7 +26,7 @@
 #define PLUGIN_LIST_WIDGET_H
 
 #include <QtCore/QPointer>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QLineEdit;
 class QModelIndex;

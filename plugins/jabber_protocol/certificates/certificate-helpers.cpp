@@ -31,7 +31,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QStringList>
 #include <QtCore/QtDebug>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
 #include <QtCrypto>
 

@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QLabel>
-#include <QtGui/QProgressBar>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QVBoxLayout>
 
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-peer-identity-verification-service.h"

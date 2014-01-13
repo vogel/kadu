@@ -38,8 +38,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
 #include <QtCore/QTranslator>
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
 #include <errno.h>
 #include <time.h>

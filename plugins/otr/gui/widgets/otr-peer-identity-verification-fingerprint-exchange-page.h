@@ -23,7 +23,7 @@
 #define OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H
 
 #include <QtCore/QPointer>
-#include <QtGui/QWizardPage>
+#include <QtWidgets/QWizardPage>
 
 #include "contacts/contact.h"
 

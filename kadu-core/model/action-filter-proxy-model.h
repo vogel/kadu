@@ -20,7 +20,7 @@
 #ifndef ACTION_FILTER_PROXY_MODEL_H
 #define ACTION_FILTER_PROXY_MODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 class QAction;
 

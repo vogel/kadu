@@ -27,7 +27,7 @@
 #define SCREENSHOT_TAKER_H
 
 #include <QtGui/QPixmap>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QLabel;
 class QPushButton;

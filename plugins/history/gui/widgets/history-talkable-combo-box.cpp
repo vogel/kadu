@@ -19,7 +19,7 @@
  */
 
 #include <QtCore/QFutureWatcher>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "buddies/model/buddy-list-model.h"
 #include "chat/model/chat-list-model.h"

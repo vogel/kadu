@@ -22,7 +22,7 @@
 #ifndef ROSTER_WIDGET_H
 #define ROSTER_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/actions/action-context-provider.h"

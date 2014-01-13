@@ -31,10 +31,10 @@
  */
 
 #include <QtCore/QMimeData>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QDragEnterEvent>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMenu>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMenu>
 
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/group-manager.h"

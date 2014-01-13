@@ -23,7 +23,7 @@
 #ifndef INFOS_DIALOG_H
 #define INFOS_DIALOG_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
 

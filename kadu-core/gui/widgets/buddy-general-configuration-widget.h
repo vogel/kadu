@@ -29,7 +29,7 @@
 #ifndef BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 #define BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"

@@ -27,7 +27,7 @@
 #ifndef ACCOUNT_AVATAR_WIDGET_H
 #define ACCOUNT_AVATAR_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "exports.h"

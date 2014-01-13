@@ -27,7 +27,7 @@
 #define DIALOG_WIDGET_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 class QCheckBox;
 class QLineEdit;

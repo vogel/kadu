@@ -22,7 +22,7 @@
 #ifndef ACTIONS_COMBO_BOX_H
 #define ACTIONS_COMBO_BOX_H
 
-#include <QtGui/QComboBox>
+#include <QtWidgets/QComboBox>
 
 #include "exports.h"
 

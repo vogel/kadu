@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-#include <QtGui/QInputDialog>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QLineEdit>
 
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"

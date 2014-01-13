@@ -23,7 +23,7 @@
 #ifndef CHOOSE_IDENTITY_WIDGET_H
 #define CHOOSE_IDENTITY_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "exports.h"
 

@@ -30,7 +30,7 @@
 #include <QtCore/QProcess>
 #include <QtCore/QStack>
 #include <QtCore/QVariant>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QTextDocument>
 #include <QtNetwork/QHostAddress>
 

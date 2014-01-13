@@ -23,7 +23,7 @@
 #ifndef ADD_CONFERENCE_ACTION_H
 #define ADD_CONFERENCE_ACTION_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "gui/actions/action-description.h"
 

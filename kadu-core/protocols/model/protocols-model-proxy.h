@@ -27,7 +27,7 @@
 #ifndef PROTOCOLS_MODEL_PROXY
 #define PROTOCOLS_MODEL_PROXY
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 class AbstractProtocolFilter;
 

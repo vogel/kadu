@@ -27,11 +27,11 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QMenu>
-#include <QtGui/QTextEdit>
-#include <QtGui/QToolTip>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QToolTip>
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"

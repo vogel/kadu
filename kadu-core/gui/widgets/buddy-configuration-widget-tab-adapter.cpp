@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTabWidget>
+#include <QtWidgets/QTabWidget>
 
 #include "gui/widgets/buddy-configuration-widget.h"
 #include "gui/windows/buddy-data-window.h"

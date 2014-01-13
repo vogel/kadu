@@ -35,7 +35,7 @@
 
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPainter>
-#include <QtGui/QScrollBar>
+#include <QtWidgets/QScrollBar>
 
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "model/categorized-sort-filter-proxy-model.h"

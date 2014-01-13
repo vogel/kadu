@@ -4,7 +4,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 

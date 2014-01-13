@@ -34,7 +34,7 @@
 #define BUDDY_DATA_WINDOW_H
 
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "buddies/buddy.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"

@@ -23,7 +23,7 @@
 #ifndef CONFIG_LABEL_H
 #define CONFIG_LABEL_H
 
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget.h"

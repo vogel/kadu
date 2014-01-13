@@ -25,7 +25,7 @@
 #ifndef KADU_TREE_VIEW_H
 #define KADU_TREE_VIEW_H
 
-#include <QtGui/QTreeView>
+#include <QtWidgets/QTreeView>
 
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"

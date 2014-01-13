@@ -20,7 +20,7 @@
 #ifndef NOTIFIER_CONFIGURATION_WIDGET_H
 #define NOTIFIER_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "exports.h"
 

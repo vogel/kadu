@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "configuration/toolbar-configuration-manager.h"
 #include "configuration/xml-configuration-file.h"

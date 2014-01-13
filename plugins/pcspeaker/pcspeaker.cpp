@@ -33,8 +33,8 @@
 #include "notify/notification-manager.h"
 #include "notify/notification/notification.h"
 
-#include <QtGui/QLineEdit>
-#include <QtGui/QSlider>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QSlider>
 
 #ifdef Q_OS_WIN32
 #include <windows.h>

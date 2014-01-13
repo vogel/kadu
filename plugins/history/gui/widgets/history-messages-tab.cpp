@@ -23,12 +23,12 @@
  */
 
 #include <QtCore/QScopedPointer>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QMenu>
-#include <QtGui/QSplitter>
-#include <QtGui/QTreeView>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QVBoxLayout>
 
 #include "buddies/model/buddy-list-model.h"
 #include "chat/buddy-chat-manager.h"

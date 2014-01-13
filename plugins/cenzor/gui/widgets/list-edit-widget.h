@@ -24,7 +24,7 @@
 #define LIST_EDIT_WIDGET_H
 
 #include <QtCore/QModelIndex>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QLineEdit;
 class QListWidget;

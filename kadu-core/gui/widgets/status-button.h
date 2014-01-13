@@ -24,7 +24,7 @@
 #ifndef STATUS_BUTTON_H
 #define STATUS_BUTTON_H
 
-#include <QtGui/QToolButton>
+#include <QtWidgets/QToolButton>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"

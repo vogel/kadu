@@ -35,14 +35,14 @@
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QMimeData>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QIcon>
-#include <QtGui/QInputDialog>
+#include <QtWidgets/QInputDialog>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QShortcut>
-#include <QtGui/QSplitter>
-#include <QtGui/QToolBar>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QShortcut>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

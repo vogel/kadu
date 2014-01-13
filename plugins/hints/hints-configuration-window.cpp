@@ -22,7 +22,7 @@
  */
 
 #include <QtGui/QPalette>
-#include <QtGui/QSpinBox>
+#include <QtWidgets/QSpinBox>
 
 #include "configuration/notifier-configuration-data-manager.h"
 #include "gui/widgets/configuration/config-color-button.h"

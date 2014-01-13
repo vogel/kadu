@@ -23,13 +23,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLineEdit>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "icons/kadu-icon.h"

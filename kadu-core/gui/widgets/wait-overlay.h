@@ -24,7 +24,7 @@
 #ifndef WAIT_OVERLAY_H
 #define WAIT_OVERLAY_H
 
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "exports.h"
 

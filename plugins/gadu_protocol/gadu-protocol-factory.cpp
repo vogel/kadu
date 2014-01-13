@@ -26,7 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "core/core.h"
 #include "icons/kadu-icon.h"

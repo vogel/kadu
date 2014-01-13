@@ -26,14 +26,14 @@
 
 #define MARGIN 5
 
-#include <QtGui/QApplication>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyleOptionViewItemV4>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"

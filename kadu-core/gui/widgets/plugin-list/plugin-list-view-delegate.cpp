@@ -27,22 +27,22 @@
 #include <QtCore/QEvent>
 #include <QtCore/QSize>
 #include <QtCore/QTimer>
-#include <QtGui/QAbstractItemView>
-#include <QtGui/QAbstractProxyModel>
-#include <QtGui/QApplication>
+#include <QtWidgets/QAbstractItemView>
+#include <QtCore/QAbstractProxyModel>
+#include <QtWidgets/QApplication>
 #include <QtGui/QBitmap>
 #include <QtGui/QCursor>
 #include <QtGui/QFocusEvent>
 #include <QtGui/QHoverEvent>
 #include <QtGui/QIcon>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLayout>
+#include <QtWidgets/QLayout>
 #include <QtGui/QPaintEngine>
 #include <QtGui/QPainter>
-#include <QtGui/QScrollBar>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOption>
-#include <QtGui/QTreeView>
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOption>
+#include <QtWidgets/QTreeView>
 
 #include "gui/widgets/plugin-list/plugin-list-view-delegate-widgets.h"
 

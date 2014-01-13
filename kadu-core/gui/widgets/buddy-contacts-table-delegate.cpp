@@ -23,7 +23,7 @@
  */
 
 #include <QtCore/QEvent>
-#include <QtGui/QComboBox>
+#include <QtWidgets/QComboBox>
 
 #include "accounts/account.h"
 #include "gui/widgets/accounts-combo-box.h"

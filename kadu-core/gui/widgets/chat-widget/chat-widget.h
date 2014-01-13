@@ -31,7 +31,7 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 #include <QtGui/QIcon>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"

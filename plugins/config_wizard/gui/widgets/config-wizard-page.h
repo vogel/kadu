@@ -20,7 +20,7 @@
 #ifndef CONFIG_WIZARD_PAGE_H
 #define CONFIG_WIZARD_PAGE_H
 
-#include <QtGui/QWizardPage>
+#include <QtWidgets/QWizardPage>
 
 class QFormLayout;
 class QTextBrowser;

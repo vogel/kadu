@@ -19,10 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QScrollBar>
-#include <QtGui/QSplitter>
-#include <QtGui/QTreeView>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QVBoxLayout>
 
 #include "core/core.h"
 #include "gui/web-view-highlighter.h"

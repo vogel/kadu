@@ -22,7 +22,7 @@
 #ifndef SHOW_HISTORY_ACTION_DESCRIPTION_H
 #define SHOW_HISTORY_ACTION_DESCRIPTION_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "history_exports.h"
 

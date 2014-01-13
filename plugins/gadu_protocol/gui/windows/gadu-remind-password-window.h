@@ -25,7 +25,7 @@
 #ifndef GADU_REMIND_PASSWORD_WINDOW_H
 #define GADU_REMIND_PASSWORD_WINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "gadu-protocol.h" //for UinType
 

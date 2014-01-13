@@ -24,7 +24,7 @@
  */
 
 #include <Cocoa/Cocoa.h>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QIcon>
 
 #include "ApplicationServices/ApplicationServices.h"

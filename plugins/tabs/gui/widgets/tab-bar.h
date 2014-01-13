@@ -22,9 +22,9 @@
 #define TAB_BAR_H
 
 #include <QtCore/QPoint>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
-#include <QtGui/QTabBar>
+#include <QtWidgets/QTabBar>
 
 
 class TabBar: public QTabBar

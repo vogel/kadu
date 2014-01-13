@@ -25,7 +25,7 @@
 #define TIMELINE_CHAT_MESSAGES_VIEW_H
 
 #include <QtCore/QFutureWatcher>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QDate;
 class QSplitter;

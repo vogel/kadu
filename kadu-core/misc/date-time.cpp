@@ -22,7 +22,7 @@
  */
 
 #include <QtCore/QDateTime>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #ifdef Q_OS_WIN
 #include <sys/timeb.h>

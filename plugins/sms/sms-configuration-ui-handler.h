@@ -33,10 +33,10 @@
 
 #include <QtCore/QBuffer>
 #include <QtCore/QMap>
-#include <QtGui/QDialog>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QWidget>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QWidget>
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"

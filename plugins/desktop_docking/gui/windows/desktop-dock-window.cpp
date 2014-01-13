@@ -19,7 +19,7 @@
  */
 
 #include <QtGui/QBitmap>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
 
 #include "configuration/configuration-file.h"

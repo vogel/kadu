@@ -31,10 +31,10 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QUrl>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QImageReader>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"

@@ -25,7 +25,7 @@
 #ifndef LINE_EDIT_WITH_CLEAR_BUTTON_H
 #define LINE_EDIT_WITH_CLEAR_BUTTON_H
 
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLineEdit>
 
 #include "exports.h"
 

@@ -22,7 +22,7 @@
 #ifndef CONFIG_LIST_WIDGET_H
 #define CONFIG_LIST_WIDGET_H
 
-#include <QtGui/QListWidget>
+#include <QtWidgets/QListWidget>
 
 #include "gui/widgets/configuration/config-widget-value.h"
 

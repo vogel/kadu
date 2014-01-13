@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"

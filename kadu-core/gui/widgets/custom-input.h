@@ -27,7 +27,7 @@
 #define KADU_CUSTOM_INPUT_H
 
 #include <QtCore/QPointer>
-#include <QtGui/QTextEdit>
+#include <QtWidgets/QTextEdit>
 
 #include "chat/chat.h"
 

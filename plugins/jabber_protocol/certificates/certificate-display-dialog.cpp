@@ -25,8 +25,8 @@
  */
 
 #include <QtCore/QDateTime>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 #include <QtCrypto>
 
 #include "certificates/certificate-display-dialog.h"

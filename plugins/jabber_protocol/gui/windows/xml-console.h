@@ -25,7 +25,7 @@
 #ifndef XML_CONSOLE_H
 #define XML_CONSOLE_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 

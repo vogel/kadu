@@ -25,7 +25,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QString>
-#include <QtWebKit/QWebFrame>
+#include <QtWebKitWidgets/QWebFrame>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

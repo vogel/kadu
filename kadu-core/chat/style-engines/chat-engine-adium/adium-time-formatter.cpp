@@ -20,7 +20,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QLocale>
 #include <QtCore/QString>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "os/generic/system-info.h"
 

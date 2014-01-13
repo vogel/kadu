@@ -25,7 +25,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "protocols/services/raw-message-transformer.h"
 

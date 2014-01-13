@@ -22,9 +22,9 @@
 
 #include <QtCore/QBuffer>
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QMouseEvent>
 #ifdef Q_WS_X11
 #include <QtGui/QX11Info>

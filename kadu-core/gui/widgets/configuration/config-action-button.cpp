@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-group-box.h"

@@ -22,7 +22,7 @@
 #ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
 #define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
 
-#include <QtGui/QWizard>
+#include <QtWidgets/QWizard>
 
 #include "contacts/contact.h"
 

@@ -21,7 +21,7 @@
 #ifndef STATUS_WINDOW_DESCRIPTION_PROXY_MODEL_H
 #define STATUS_WINDOW_DESCRIPTION_PROXY_MODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 /**
  * @class StatusWindowDescriptionProxyModel

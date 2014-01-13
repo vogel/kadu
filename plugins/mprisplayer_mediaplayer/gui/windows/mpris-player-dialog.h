@@ -27,7 +27,7 @@
 #ifndef MPRIS_PLAYER_DIALOG_H
 #define MPRIS_PLAYER_DIALOG_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 class QDialogButtonBox;
 class QGridLayout;

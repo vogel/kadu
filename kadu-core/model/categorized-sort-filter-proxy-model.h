@@ -22,7 +22,7 @@
 #ifndef CATEGORIZEDSORT_FILTER_PROXY_MODEL_H
 #define CATEGORIZEDSORT_FILTER_PROXY_MODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 // class QItemSelection;
 

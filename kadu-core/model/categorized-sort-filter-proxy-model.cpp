@@ -23,7 +23,7 @@
 
 #include <limits.h>
 
-#include <QtGui/QItemSelection>
+#include <QtCore/QItemSelection>
 #include <QtCore/QSize>
 #include <QtCore/QStringList>
 

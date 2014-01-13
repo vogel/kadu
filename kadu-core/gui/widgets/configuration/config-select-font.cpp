@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
 
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-select-font.h"

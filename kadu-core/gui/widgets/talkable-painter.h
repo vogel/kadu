@@ -22,7 +22,7 @@
 #ifndef TALKABLE_PAINTER_H
 #define TALKABLE_PAINTER_H
 
-#include <QtGui/QStyleOption>
+#include <QtWidgets/QStyleOption>
 
 class QTextDocument;
 class QTreeView;

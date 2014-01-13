@@ -22,7 +22,7 @@
 #ifndef SCREENSHOT_ACTION_H
 #define SCREENSHOT_ACTION_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "gui/actions/action-description.h"
 

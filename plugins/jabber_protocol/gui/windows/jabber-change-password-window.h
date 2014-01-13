@@ -26,7 +26,7 @@
 #ifndef JABBER_CHANGE_PASSWORD_WINDOW_H
 #define JABBER_CHANGE_PASSWORD_WINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 

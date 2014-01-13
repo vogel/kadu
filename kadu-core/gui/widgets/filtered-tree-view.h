@@ -29,7 +29,7 @@
 #ifndef FILTERED_TREE_VIEW_H
 #define FILTERED_TREE_VIEW_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "exports.h"
 

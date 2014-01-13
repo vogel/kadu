@@ -24,8 +24,8 @@
  */
 
 #include <QtCore/QFileInfo>
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"

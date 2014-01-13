@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLineEdit>
 
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/talkable-tree-view.h"

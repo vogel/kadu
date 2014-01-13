@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"

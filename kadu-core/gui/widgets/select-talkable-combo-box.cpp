@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "gui/widgets/select-talkable-popup.h"
 #include "misc/misc.h"

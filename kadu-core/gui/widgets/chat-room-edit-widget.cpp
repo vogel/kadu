@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFormLayout>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLineEdit>
 
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"

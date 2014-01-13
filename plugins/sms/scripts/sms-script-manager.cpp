@@ -28,7 +28,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <QtScript/QScriptEngine>
 #if SMS_USE_DEBUGGER
 #include <QtScriptTools/QScriptEngineDebugger>

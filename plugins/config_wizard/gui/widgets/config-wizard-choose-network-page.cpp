@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFormLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QRadioButton>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QRadioButton>
 
 #include "accounts/account-manager.h"
 #include "gui/widgets/protocols-combo-box.h"

@@ -29,8 +29,8 @@
 #include <QtCore/QPoint>
 #include <QtCore/QVariant>
 #include <QtGui/QDrag>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QMenu>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QMenu>
 
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"

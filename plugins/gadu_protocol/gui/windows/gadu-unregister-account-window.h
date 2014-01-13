@@ -25,7 +25,7 @@
 #ifndef GADU_UNREGISTER_ACCOUNT_WINDOW_H
 #define GADU_UNREGISTER_ACCOUNT_WINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 

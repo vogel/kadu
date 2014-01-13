@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "chat/chat-manager.h"
 #include "configuration/configuration-aware-object.h"

@@ -27,10 +27,10 @@
  */
 
 #include <QtCore/QCoreApplication>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "gui/widgets/talkable-tree-view.h"

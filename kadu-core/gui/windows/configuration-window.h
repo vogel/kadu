@@ -26,7 +26,7 @@
 #ifndef CONFIGURATION_WINDOW_H
 #define CONFIGURATION_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "icons/icons-manager.h"

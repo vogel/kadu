@@ -22,7 +22,7 @@
 #ifndef DESKTOP_DOCK_WINDOW_H
 #define DESKTOP_DOCK_WINDOW_H
 
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "configuration/configuration-aware-object.h"
 

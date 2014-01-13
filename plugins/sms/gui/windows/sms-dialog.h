@@ -23,7 +23,7 @@
 #ifndef SMS_DIALOG_H
 #define SMS_DIALOG_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "buddies/buddy.h"
 #include "configuration/configuration-aware-object.h"

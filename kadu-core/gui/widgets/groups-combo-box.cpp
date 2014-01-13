@@ -20,10 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-#include <QtGui/QInputDialog>
-#include <QtGui/QLineEdit>
-#include <QtGui/QSortFilterProxyModel>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QLineEdit>
+#include <QtCore/QSortFilterProxyModel>
 
 #include "buddies/group-manager.h"
 #include "buddies/model/groups-model.h"

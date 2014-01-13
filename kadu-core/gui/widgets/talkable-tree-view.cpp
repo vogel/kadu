@@ -31,10 +31,10 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QTemporaryFile>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QImage>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "accounts/account.h"
 #include "buddies/buddy-list-mime-data-helper.h"

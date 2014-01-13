@@ -26,7 +26,7 @@
 #ifndef LEAVE_CHAT_ACTION_H
 #define LEAVE_CHAT_ACTION_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "gui/actions/action-description.h"
 

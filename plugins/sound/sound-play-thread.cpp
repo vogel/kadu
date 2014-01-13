@@ -21,7 +21,7 @@
  */
 
 #include <QtCore/QThread>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "debug.h"
 

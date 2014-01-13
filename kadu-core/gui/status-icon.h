@@ -23,7 +23,7 @@
 #ifndef STATUS_ICON_H
 #define STATUS_ICON_H
 
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"

@@ -29,7 +29,7 @@
 #define CERTIFICATE_ERROR_WINDOW_H
 
 #include <QtCore/QString>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 #include <QtCrypto>
 
 class QCheckBox;

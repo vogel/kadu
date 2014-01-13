@@ -21,14 +21,14 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 #include <QtGui/QPixmap>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyle>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QVBoxLayout>
 
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "icons/kadu-icon.h"

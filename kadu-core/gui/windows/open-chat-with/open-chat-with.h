@@ -23,7 +23,7 @@
 #ifndef OPEN_CHAT_WITH_H
 #define OPEN_CHAT_WITH_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "os/generic/desktop-aware-object.h"
 

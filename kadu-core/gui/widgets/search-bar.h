@@ -23,7 +23,7 @@
 #define SEARCH_BAR_H
 
 #include <QtCore/QPointer>
-#include <QtGui/QToolBar>
+#include <QtWidgets/QToolBar>
 
 #include "exports.h"
 

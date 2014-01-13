@@ -39,23 +39,23 @@
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtCore/QPointer>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QDrag>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 #include <QtGui/QImage>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
-#include <QtGui/QStyle>
+#include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtWebKit/QWebHistory>
-#include <QtWebKit/QWebHitTestResult>
-#include <QtWebKit/QWebPage>
+#include <QtWebKitWidgets/QWebHitTestResult>
+#include <QtWebKitWidgets/QWebPage>
 
 #ifdef DEBUG_ENABLED
-#	include <QtWebKit/QWebInspector>
+#	include <QtWebKitWidgets/QWebInspector>
 #endif
 
 #include "configuration/configuration-file.h"
