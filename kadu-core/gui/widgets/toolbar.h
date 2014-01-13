@@ -131,6 +131,8 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QMenu * createContextMenu(QWidget *widget);
 
+	void paintDropMarker();
+
 private slots:
 	/**
 		\fn void addButtonClicked()
@@ -170,8 +172,6 @@ private slots:
 	void slotContextTextRight();
 
 	void slotContextAboutToShow();
-
-	void paintDropMarker();
 
 protected:
 	/**
