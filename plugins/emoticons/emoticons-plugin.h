@@ -46,6 +46,7 @@ class EmoticonsPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	QScopedPointer<EmoticonsConfigurationUiHandler> ConfigurationUiHandler;
 	QScopedPointer<EmoticonExpanderDomVisitorProvider> ExpanderDomVisitorProvider;

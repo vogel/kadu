@@ -10,6 +10,7 @@ class AmarokMediaPlayer : public PlayerCommands, PlayerInfo, PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	QString getString(const QString &obj, const QString &func);
 	QStringList getStringList(const QString &obj, const QString &func);

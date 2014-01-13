@@ -51,6 +51,7 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject, public
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	AutoAwayStatusChanger *autoAwayStatusChanger;
 	QTimer *timer;

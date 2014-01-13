@@ -74,8 +74,17 @@ public:
 
 };
 
-Q_DECLARE_INTERFACE(PluginRootComponent, "im.kadu.PluginRootComponent/0.1")
+Q_DECLARE_INTERFACE(PluginRootComponent, "im.kadu.PluginRootComponent")
 
 /**
  * @}
  */
+
+#if QT_VERSION >= 0x050000
+#	ifdef Q_EXPORT_PLUGIN2
+#		undef Q_EXPORT_PLUGIN2
+#	endif
+#	define Q_EXPORT_PLUGIN2(function, plugin)
+#else
+#	define Q_PLUGIN_METADATA(x)
+#endif

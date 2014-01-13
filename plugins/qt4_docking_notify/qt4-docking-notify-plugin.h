@@ -35,6 +35,7 @@ class Qt4DockingNotifyPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	Qt4Notify *NotifierInstance;
 

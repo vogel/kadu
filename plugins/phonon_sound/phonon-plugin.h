@@ -32,6 +32,7 @@ class PhononPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
 	virtual ~PhononPlugin();
