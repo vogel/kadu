@@ -24,7 +24,7 @@
 #ifndef OTR_OP_DATA_H
 #define OTR_OP_DATA_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "contacts/contact.h"
 
@@ -43,18 +43,18 @@ class OtrTrustLevelService;
 
 class OtrOpData
 {
-	QWeakPointer<OtrErrorMessageService> ErrorMessageService;
-	QWeakPointer<OtrFingerprintService> FingerprintService;
-	QWeakPointer<OtrInstanceTagService> InstanceTagService;
-	QWeakPointer<OtrIsLoggedInService> IsLoggedInService;
-	QWeakPointer<OtrMessageEventService> MessageEventService;
-	QWeakPointer<OtrMessageService> MessageService;
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
-	QWeakPointer<OtrPolicyService> PolicyService;
-	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
-	QWeakPointer<OtrSessionService> SessionService;
-	QWeakPointer<OtrTimerService> TimerService;
-	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrErrorMessageService> ErrorMessageService;
+	QPointer<OtrFingerprintService> FingerprintService;
+	QPointer<OtrInstanceTagService> InstanceTagService;
+	QPointer<OtrIsLoggedInService> IsLoggedInService;
+	QPointer<OtrMessageEventService> MessageEventService;
+	QPointer<OtrMessageService> MessageService;
+	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrPrivateKeyService> PrivateKeyService;
+	QPointer<OtrSessionService> SessionService;
+	QPointer<OtrTimerService> TimerService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
 	Contact MyContact;
 	QString PeerDisplay;
 

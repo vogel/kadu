@@ -89,10 +89,10 @@ void OtrTrustLevelService::updateTrustLevels()
 	if (!ContextConverter || !UserStateService)
 		return;
 
-	ConnContext *context = UserStateService.data()->userState()->context_root;
+	ConnContext *context = UserStateService->userState()->context_root;
 	while (context)
 	{
-		Contact contact = ContextConverter.data()->connectionContextToContact(context);
+		Contact contact = ContextConverter->connectionContextToContact(context);
 		storeTrustLevelToContact(contact, trustLevelFromContext(context));
 
 		context = context->next;

@@ -1,7 +1,7 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "gui/windows/configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
@@ -59,7 +59,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 
 	static void instanceCreated();
 
-	QWeakPointer<ConfigurationWindow> lookChatAdvanced;
+	QPointer<ConfigurationWindow> lookChatAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
 	QLineEdit *onStartupSetDescription;

@@ -26,7 +26,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Account;
 
@@ -37,7 +37,7 @@ class OtrPrivateKeyService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrUserStateService> UserStateService;
 	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
 
 	QString privateStoreFileName() const;

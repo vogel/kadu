@@ -22,7 +22,7 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configuration.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Chat;
 class ChatWidget;
@@ -70,12 +70,12 @@ public:
 	void setConfiguration(ChatWidgetMessageHandlerConfiguration configuration);
 
 private:
-	QWeakPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
-	QWeakPointer<ChatWidgetManager> m_chatWidgetManager;
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QWeakPointer<MessageManager> m_messageManager;
-	QWeakPointer<NotificationService> m_notificationService;
-	QWeakPointer<UnreadMessageRepository> m_unreadMessageRepository;
+	QPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<MessageManager> m_messageManager;
+	QPointer<NotificationService> m_notificationService;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	ChatWidgetMessageHandlerConfiguration m_configuration;
 

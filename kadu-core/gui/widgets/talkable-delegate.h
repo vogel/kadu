@@ -33,7 +33,7 @@
 // for OS X
 #undef check
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "buddies/buddy.h"
 #include "gui/widgets/kadu-tree-view-delegate.h"
@@ -47,7 +47,7 @@ class TalkableDelegate : public KaduTreeViewDelegate
 {
 	Q_OBJECT
 
-	QWeakPointer<ModelChain> Chain;
+	QPointer<ModelChain> Chain;
 
 private slots:
 	void contactUpdated(const Contact &contact);

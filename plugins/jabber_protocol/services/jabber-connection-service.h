@@ -26,7 +26,7 @@
 #ifndef JABBER_CONNECTION_SERVICE_H
 #define JABBER_CONNECTION_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include <jid.h>
 #include <xmpp.h>
@@ -49,11 +49,11 @@ class JabberConnectionService : public QObject
 
 	QTimer *CleanUpTimer;
 	JabberProtocol *ParentProtocol;
-	QWeakPointer<XMPP::Client> XmppClient;
+	QPointer<XMPP::Client> XmppClient;
 
-	QWeakPointer<XMPP::AdvancedConnector> Connector;
-	QWeakPointer<XMPP::QCATLSHandler> TLSHandler;
-	QWeakPointer<XMPP::ClientStream> Stream;
+	QPointer<XMPP::AdvancedConnector> Connector;
+	QPointer<XMPP::QCATLSHandler> TLSHandler;
+	QPointer<XMPP::ClientStream> Stream;
 
 	XMPP::Jid MyJid;
 	QString Password;

@@ -25,7 +25,7 @@
 #ifndef JABBER_PEP_SERVICE_H
 #define JABBER_PEP_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "iris/xmpp_message.h"
 
@@ -44,7 +44,7 @@ class JabberPepService : public QObject
 
 	typedef XMPP::Message Message;
 
-	QWeakPointer<XMPP::Client> XmppClient;
+	QPointer<XMPP::Client> XmppClient;
 	bool Enabled;
 
 protected slots:

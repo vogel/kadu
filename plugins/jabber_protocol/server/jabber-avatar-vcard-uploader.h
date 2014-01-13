@@ -60,7 +60,7 @@ class JabberAvatarVCardUploader : public AvatarUploader
 	Q_OBJECT
 
 	XMPP::Jid MyJid;
-	QWeakPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<XMPP::JabberVCardService> VCardService;
 
 	QImage UploadedAvatar;
 

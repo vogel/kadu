@@ -63,14 +63,14 @@ const QList<MultilogonSession *> & GaduMultilogonService::sessions() const
 
 void GaduMultilogonService::killSession(MultilogonSession *session)
 {
-	if (!Connection || !Connection.data()->hasSession())
+	if (!Connection || !Connection->hasSession())
 		return;
 
 	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
 	if (!gaduSession)
 		return;
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
+	auto writableSessionToken = Connection->writableSessionToken();
 	gg_multilogon_disconnect(writableSessionToken.rawSession(), gaduSession->id());
 }
 

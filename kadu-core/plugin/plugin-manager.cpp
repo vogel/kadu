@@ -115,8 +115,8 @@ void PluginManager::loadPluginMetadata()
 	if (!m_pluginDependencyGraphBuilder || !m_pluginMetadataFinder)
 		return;
 
-	auto pluginMetatada = m_pluginMetadataFinder.data()->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
-	auto dependencyGraph = m_pluginDependencyGraphBuilder.data()->buildGraph(pluginMetatada);
+	auto pluginMetatada = m_pluginMetadataFinder->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
+	auto dependencyGraph = m_pluginDependencyGraphBuilder->buildGraph(pluginMetatada);
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 
 	std::copy_if(std::begin(pluginMetatada), std::end(pluginMetatada), std::inserter(m_allPluginMetadata, m_allPluginMetadata.begin()),
@@ -128,7 +128,7 @@ void PluginManager::prepareDependencyGraph()
 	if (!m_pluginDependencyGraphBuilder)
 		return;
 
-	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder.data()->buildGraph(m_allPluginMetadata);
+	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder->buildGraph(m_allPluginMetadata);
 }
 
 void PluginManager::loadPluginStates()
@@ -136,7 +136,7 @@ void PluginManager::loadPluginStates()
 	if (!m_pluginStateService || !m_storagePointFactory)
 		return;
 
-	auto storagePoint = m_storagePointFactory.data()->createStoragePoint(QLatin1String{"Plugins"});
+	auto storagePoint = m_storagePointFactory->createStoragePoint(QLatin1String{"Plugins"});
 	if (!storagePoint)
 		return;
 
@@ -144,7 +144,7 @@ void PluginManager::loadPluginStates()
 	storagePoint->storeAttribute("imported_from_09", true);
 
 	auto pluginStates = loadPluginStates(storagePoint.get(), importedFrom09);
-	m_pluginStateService.data()->setPluginStates(pluginStates);
+	m_pluginStateService->setPluginStates(pluginStates);
 }
 
 QMap<QString, PluginState> PluginManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
@@ -159,12 +159,12 @@ void PluginManager::storePluginStates()
 	if (!m_pluginStateService || !m_storagePointFactory)
 		return;
 
-	auto storagePoint = m_storagePointFactory.data()->createStoragePoint(QLatin1String{"Plugins"});
+	auto storagePoint = m_storagePointFactory->createStoragePoint(QLatin1String{"Plugins"});
 	if (!storagePoint)
 		return;
 
 	auto pluginStateStorage = PluginStateStorage{};
-	auto pluginStates = m_pluginStateService.data()->pluginStates();
+	auto pluginStates = m_pluginStateService->pluginStates();
 	pluginStateStorage.store(*storagePoint.get(), pluginStates);
 }
 
@@ -241,7 +241,7 @@ bool PluginManager::shouldActivate(const PluginMetadata &pluginMetadata) const n
 	if (!m_pluginStateService)
 		return false;
 
-	switch (m_pluginStateService.data()->pluginState(pluginMetadata.name()))
+	switch (m_pluginStateService->pluginState(pluginMetadata.name()))
 	{
 		case PluginState::Enabled:
 			return true;
@@ -259,17 +259,17 @@ void PluginManager::activateReplacementPlugins()
 	if (!m_pluginStateService)
 		return;
 
-	for (auto const &pluginToReplace : m_pluginStateService.data()->pluginsWithState(PluginState::Enabled))
+	for (auto const &pluginToReplace : m_pluginStateService->pluginsWithState(PluginState::Enabled))
 	{
-		if (m_pluginActivationService.data()->isActive(pluginToReplace))
+		if (m_pluginActivationService->isActive(pluginToReplace))
 			continue;
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplace);
-		if (PluginState::New == m_pluginStateService.data()->pluginState(replacementPlugin))
+		if (PluginState::New == m_pluginStateService->pluginState(replacementPlugin))
 			if (activatePluginWithDependencies(replacementPlugin))
 			{
-				m_pluginStateService.data()->setPluginState(pluginToReplace, PluginState::Disabled);
-				m_pluginStateService.data()->setPluginState(replacementPlugin, PluginState::Enabled);
+				m_pluginStateService->setPluginState(pluginToReplace, PluginState::Disabled);
+				m_pluginStateService->setPluginState(replacementPlugin, PluginState::Enabled);
 			}
 	}
 }
@@ -297,7 +297,7 @@ void PluginManager::deactivatePlugins()
 	if (!m_pluginActivationService)
 		return;
 
-	for (auto const &pluginName : m_pluginActivationService.data()->activePlugins())
+	for (auto const &pluginName : m_pluginActivationService->activePlugins())
 		deactivatePluginWithDependents(pluginName);
 }
 
@@ -337,7 +337,7 @@ bool PluginManager::activatePluginWithDependencies(const QString &pluginName) no
 {
 	kdebugm(KDEBUG_INFO, "activate plugin: %s\n", qPrintable(pluginName));
 
-	if (!m_pluginActivationService || m_pluginActivationService.data()->isActive(pluginName))
+	if (!m_pluginActivationService || m_pluginActivationService->isActive(pluginName))
 		return false;
 
 	try
@@ -348,7 +348,7 @@ bool PluginManager::activatePluginWithDependencies(const QString &pluginName) no
 	catch (PluginActivationErrorException &e)
 	{
 		if (m_pluginActivationErrorHandler)
-			m_pluginActivationErrorHandler.data()->handleActivationError(e.pluginName(), e.errorMessage());
+			m_pluginActivationErrorHandler->handleActivationError(e.pluginName(), e.errorMessage());
 		return false;
 	}
 
@@ -367,8 +367,8 @@ void PluginManager::activatePlugin(const QString &pluginName) noexcept(false)
 	if (!conflict.isEmpty())
 		throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
 
-	auto state = m_pluginStateService.data()->pluginState(pluginName);
-	m_pluginActivationService.data()->activatePlugin(pluginName, PluginState::New == state);
+	auto state = m_pluginStateService->pluginState(pluginName);
+	m_pluginActivationService->activatePlugin(pluginName, PluginState::New == state);
 }
 
 /**
@@ -382,7 +382,7 @@ QString PluginManager::findActiveProviding(const QString &feature) const
 	if (feature.isEmpty() || !m_pluginActivationService)
 		return {};
 
-	for (auto const &activePluginName : m_pluginActivationService.data()->activePlugins())
+	for (auto const &activePluginName : m_pluginActivationService->activePlugins())
 		if (contains(m_allPluginMetadata, activePluginName))
 			if (m_allPluginMetadata.at(activePluginName).provides() == feature)
 				return activePluginName;
@@ -394,11 +394,11 @@ void PluginManager::deactivatePluginWithDependents(const QString &pluginName) no
 {
 	kdebugm(KDEBUG_INFO, "deactivate plugin: %s\n", qPrintable(pluginName));
 
-	if (!m_pluginActivationService || !m_pluginActivationService.data()->isActive(pluginName))
+	if (!m_pluginActivationService || !m_pluginActivationService->isActive(pluginName))
 		return;
 
 	for (auto const &plugin : withDependents(pluginName))
-		m_pluginActivationService.data()->deactivatePlugin(plugin);
+		m_pluginActivationService->deactivatePlugin(plugin);
 }
 
 #include "moc_plugin-manager.cpp"

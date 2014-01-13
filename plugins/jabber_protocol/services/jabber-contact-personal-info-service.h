@@ -36,7 +36,7 @@ class JabberContactPersonalInfoService : public ContactPersonalInfoService
 {
 	Q_OBJECT
 
-	QWeakPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<XMPP::JabberVCardService> VCardService;
 	Buddy CurrentBuddy;
 
 private slots:

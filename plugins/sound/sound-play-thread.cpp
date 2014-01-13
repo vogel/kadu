@@ -55,7 +55,7 @@ void SoundPlayThread::start()
 			if (Player)
 			{
 				PlayingMutex.lock();
-				Player.data()->playSound(Path);
+				Player->playSound(Path);
 				PlayingMutex.unlock();
 			}
 

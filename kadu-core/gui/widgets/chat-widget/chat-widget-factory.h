@@ -21,7 +21,7 @@
 
 #include <memory>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "exports.h"
 
@@ -51,7 +51,7 @@ public:
 	std::unique_ptr<ChatWidget> createChatWidget(Chat chat);
 
 private:
-	QWeakPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 };
 

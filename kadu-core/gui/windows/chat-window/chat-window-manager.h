@@ -20,7 +20,7 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class ChatWidgetManager;
 class ChatWindowStorage;
@@ -42,8 +42,8 @@ public:
 	void storeOpenedChatWindows();
 
 private:
-	QWeakPointer<ChatWidgetManager> m_chatWidgetManager;
-	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
-	QWeakPointer<ChatWindowStorage> m_chatWindowStorage;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<ChatWindowRepository> m_chatWindowRepository;
+	QPointer<ChatWindowStorage> m_chatWindowStorage;
 
 };

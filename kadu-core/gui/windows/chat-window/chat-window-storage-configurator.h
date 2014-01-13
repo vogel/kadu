@@ -21,7 +21,7 @@
 
 #include "configuration/configuration-aware-object.h"
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class ChatWindowStorage;
 class ChatWindowStorageConfiguration;
@@ -39,7 +39,7 @@ protected:
 	virtual void configurationUpdated() override;
 
 private:
-	QWeakPointer<ChatWindowStorage> m_chatWindowStorage;
+	QPointer<ChatWindowStorage> m_chatWindowStorage;
 
 	void createDefaultConfiguration() const;
 

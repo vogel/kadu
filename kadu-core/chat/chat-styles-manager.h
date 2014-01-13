@@ -57,7 +57,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 
 	static ChatStylesManager *Instance;
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	ChatStylesManager();
 

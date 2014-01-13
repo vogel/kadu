@@ -23,7 +23,7 @@
 #ifndef HINTS_CONFIGURATION_UI_HANDLER_H
 #define HINTS_CONFIGURATION_UI_HANDLER_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "gui/windows/main-configuration-window.h"
 
@@ -37,7 +37,7 @@ class HintsConfigurationUiHandler : public ConfigurationUiHandler
 	Q_OBJECT
 
 private:
-	QWeakPointer<ConfigurationWindow> AdvancedWindow;
+	QPointer<ConfigurationWindow> AdvancedWindow;
 
 	QFrame *previewHintsFrame;
 	QVBoxLayout *previewHintsLayout;
@@ -52,7 +52,7 @@ private:
 	QComboBox *ownPositionCorner;
 	QComboBox *newHintUnder;
 	
-	QWeakPointer<HintOverUserConfigurationWindow> overUserConfigurationWindow;
+	QPointer<HintOverUserConfigurationWindow> overUserConfigurationWindow;
 	QFrame *overUserConfigurationPreview;
 	QLabel *overUserConfigurationTipLabel;
 	

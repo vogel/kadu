@@ -25,7 +25,7 @@
 #define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "contacts/contact.h"
 
@@ -38,9 +38,9 @@ class OtrPeerIdentityVerificationWindowFactory : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrFingerprintService> FingerprintService;
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
-	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrFingerprintService> FingerprintService;
+	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
 
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 

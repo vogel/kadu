@@ -24,7 +24,7 @@
 #ifndef PATH_LIST_EDIT_H
 #define PATH_LIST_EDIT_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 #include <QtGui/QPushButton>
 
 class QLineEdit;
@@ -36,7 +36,7 @@ class PathListEdit : public QPushButton
 {
 	Q_OBJECT
 
-	QWeakPointer<PathListEditWindow> Dialog;
+	QPointer<PathListEditWindow> Dialog;
 	QStringList PathList;
 
 private slots:

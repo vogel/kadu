@@ -117,12 +117,12 @@ void SearchBar::showEvent(QShowEvent *event)
 void SearchBar::setSearchWidget(QWidget * const widget)
 {
 	if (SearchWidget)
-		SearchWidget.data()->removeEventFilter(this);
+		SearchWidget->removeEventFilter(this);
 
 	SearchWidget = widget;
 
 	if (SearchWidget)
-		SearchWidget.data()->installEventFilter(this);
+		SearchWidget->installEventFilter(this);
 }
 
 void SearchBar::setAutoVisibility(bool autoVisibility)
@@ -181,7 +181,7 @@ void SearchBar::close()
 		hide();
 
 	if (SearchWidget)
-		SearchWidget.data()->setFocus();
+		SearchWidget->setFocus();
 }
 
 void SearchBar::searchTextChanged(const QString &text)

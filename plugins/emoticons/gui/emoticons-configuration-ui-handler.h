@@ -43,8 +43,8 @@ class EmoticonsConfigurationUiHandler : public ConfigurationUiHandler
 	Q_OBJECT
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
-	QWeakPointer<ConfigurationWidget> Widget;
-	QWeakPointer<ConfigListWidget> ThemesList;
+	QPointer<ConfigurationWidget> Widget;
+	QPointer<ConfigListWidget> ThemesList;
 
 private slots:
 	void updateEmoticonThemes();

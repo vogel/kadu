@@ -39,7 +39,7 @@
 #include <memory>
 #include <set>
 #include <QtCore/QMap>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class PluginActivationErrorHandler;
 class PluginActivationService;
@@ -125,12 +125,12 @@ public:
 private:
 	static PluginMetadata converter(WrappedIterator iterator);
 
-	QWeakPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
-	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	QWeakPointer<PluginDependencyGraphBuilder> m_pluginDependencyGraphBuilder;
-	QWeakPointer<PluginMetadataFinder> m_pluginMetadataFinder;
-	QWeakPointer<PluginStateService> m_pluginStateService;
-	QWeakPointer<StoragePointFactory> m_storagePointFactory;
+	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
+	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginDependencyGraphBuilder> m_pluginDependencyGraphBuilder;
+	QPointer<PluginMetadataFinder> m_pluginMetadataFinder;
+	QPointer<PluginStateService> m_pluginStateService;
+	QPointer<StoragePointFactory> m_storagePointFactory;
 
 	std::map<QString, PluginMetadata> m_allPluginMetadata;
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;

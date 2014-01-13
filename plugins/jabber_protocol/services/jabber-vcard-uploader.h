@@ -20,7 +20,7 @@
 #ifndef JABBER_VCARD_UPLOADER_H
 #define JABBER_VCARD_UPLOADER_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include <xmpp_vcard.h>
 
@@ -47,8 +47,8 @@ class JabberVCardUploader : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<XMPP::Client> XmppClient;
-	QWeakPointer<XMPP::JT_VCard> Task;
+	QPointer<XMPP::Client> XmppClient;
+	QPointer<XMPP::JT_VCard> Task;
 
 	void done();
 	void failed();

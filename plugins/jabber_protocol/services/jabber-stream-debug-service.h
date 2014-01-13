@@ -23,7 +23,7 @@
 #ifndef JABBER_STREAM_DEBUG_SERVICE_H
 #define JABBER_STREAM_DEBUG_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 namespace XMPP
 {
@@ -36,7 +36,7 @@ class JabberStreamDebugService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<XMPP::Client> XmppClient;
+	QPointer<XMPP::Client> XmppClient;
 
 	QString filterPrivateData(const QString &streamData);
 

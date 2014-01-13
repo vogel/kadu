@@ -109,10 +109,10 @@ void OtrSessionService::startSession(const Contact &contact)
 	if (!CurrentMessageManager || !PolicyService || !TrustLevelService)
 		return;
 
-	OtrTrustLevelService::TrustLevel level = TrustLevelService.data()->loadTrustLevelFromContact(contact);
+	OtrTrustLevelService::TrustLevel level = TrustLevelService->loadTrustLevelFromContact(contact);
 
 	Account account = contact.contactAccount();
-	OtrPolicy otrPolicy = PolicyService.data()->accountPolicy(account);
+	OtrPolicy otrPolicy = PolicyService->accountPolicy(account);
 	QString message = QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()));
 
 	if (level == OtrTrustLevelService::TrustLevelNotPrivate)
@@ -120,7 +120,7 @@ void OtrSessionService::startSession(const Contact &contact)
 	else
 		emit tryingToRefreshSession(contact);
 
-	CurrentMessageManager.data()->sendMessage(ChatTypeContact::findChat(contact, ActionCreateAndAdd), message, true);
+	CurrentMessageManager->sendMessage(ChatTypeContact::findChat(contact, ActionCreateAndAdd), message, true);
 }
 
 void OtrSessionService::endSession(const Contact &contact)
@@ -128,9 +128,9 @@ void OtrSessionService::endSession(const Contact &contact)
 	if (!AppOpsService || !OpDataFactory || !UserStateService)
 		return;
 
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
-	otrl_message_disconnect_all_instances(UserStateService.data()->userState(),
-										  AppOpsService.data()->appOps(), &opData,
+	OtrOpData opData = OpDataFactory->opDataForContact(contact);
+	otrl_message_disconnect_all_instances(UserStateService->userState(),
+										  AppOpsService->appOps(), &opData,
 										  qPrintable(contact.contactAccount().id()),
 										  qPrintable(contact.contactAccount().protocolName()),
 										  qPrintable(contact.id()));

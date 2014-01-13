@@ -22,6 +22,7 @@
 #ifndef OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H
 #define OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H
 
+#include <QtCore/QPointer>
 #include <QtGui/QWizardPage>
 
 #include "contacts/contact.h"
@@ -36,7 +37,7 @@ class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
 	Q_OBJECT
 
 	Contact MyContact;
-	QWeakPointer<OtrFingerprintService> FingerprintService;
+	QPointer<OtrFingerprintService> FingerprintService;
 
 	QLineEdit *OwnFingerprint;
 	QLineEdit *PeerFingerprint;

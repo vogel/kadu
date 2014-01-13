@@ -32,7 +32,7 @@ class OtrPeerIdentityVerificationSharedSecretPage : public QWizardPage
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
 	Contact MyContact;
 

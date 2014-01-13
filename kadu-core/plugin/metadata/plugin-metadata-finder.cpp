@@ -54,7 +54,7 @@ std::map<QString, PluginMetadata> PluginMetadataFinder::readAllPluginMetadata(co
 		try
 		{
 			auto pluginName = entry.left(entry.length() - static_cast<int>(qstrlen(".desc")));
-			result.insert({pluginName, m_pluginMetadataReader.data()->readPluginMetadata(pluginName, QString{"%1/%2"}.arg(directory).arg(entry))});
+			result.insert({pluginName, m_pluginMetadataReader->readPluginMetadata(pluginName, QString{"%1/%2"}.arg(directory).arg(entry))});
 		}
 		catch (...)
 		{

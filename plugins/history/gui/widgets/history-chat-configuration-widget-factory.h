@@ -22,7 +22,7 @@
 #ifndef HISTORY_CHAT_CONFIGURATION_WIDGET_FACTORY_H
 #define HISTORY_CHAT_CONFIGURATION_WIDGET_FACTORY_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "gui/widgets/chat-configuration-widget-factory.h"
 

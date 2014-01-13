@@ -23,7 +23,7 @@
 #define OTR_FINGERPRINT_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Account;
 class Contact;
@@ -34,8 +34,8 @@ class OtrFingerprintService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrContextConverter> ContextConverter;
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrContextConverter> ContextConverter;
+	QPointer<OtrUserStateService> UserStateService;
 
 	QString fingerprintsStoreFileName() const;
 

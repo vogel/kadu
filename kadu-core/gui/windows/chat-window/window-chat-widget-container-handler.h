@@ -22,7 +22,7 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class ChatWindow;
 class ChatWindowFactory;
@@ -47,8 +47,8 @@ public:
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
 
 private:
-	QWeakPointer<ChatWindowFactory> m_chatWindowFactory;
-	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
+	QPointer<ChatWindowFactory> m_chatWindowFactory;
+	QPointer<ChatWindowRepository> m_chatWindowRepository;
 
 private slots:
 	void chatWindowActivated(ChatWindow *chatWindow);

@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QPointer>
 #include <QtCore/QUrl>
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
@@ -240,7 +241,7 @@ void ProxyEditWindow::removeButtonClicked()
 
 	NetworkProxy proxy = selection.at(0).data(NetworkProxyRole).value<NetworkProxy>();
 
-	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
+	QPointer<QMessageBox> messageBox = new QMessageBox(this);
 	messageBox.data()->setWindowTitle(tr("Confirm proxy removal"));
 	messageBox.data()->setText(tr("Are you sure do you want to remove this proxy?"));
 

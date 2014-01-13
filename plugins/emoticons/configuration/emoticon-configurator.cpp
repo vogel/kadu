@@ -85,9 +85,9 @@ void EmoticonConfigurator::configurationUpdated()
 		Configuration.setEmoticonTheme(EmoticonTheme());
 
 	if (InsertAction)
-		InsertAction.data()->setConfiguration(Configuration);
+		InsertAction->setConfiguration(Configuration);
 	if (EmoticonExpanderProvider)
-		EmoticonExpanderProvider.data()->setConfiguration(Configuration);
+		EmoticonExpanderProvider->setConfiguration(Configuration);
 }
 
 #include "moc_emoticon-configurator.cpp"

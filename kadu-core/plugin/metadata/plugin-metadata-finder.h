@@ -21,7 +21,7 @@
 
 #include <map>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class PluginMetadata;
 class PluginMetadataReader;
@@ -62,7 +62,7 @@ public:
 	std::map<QString, PluginMetadata> readAllPluginMetadata(const QString &directory) noexcept;
 
 private:
-	QWeakPointer<PluginMetadataReader> m_pluginMetadataReader;
+	QPointer<PluginMetadataReader> m_pluginMetadataReader;
 
 };
 

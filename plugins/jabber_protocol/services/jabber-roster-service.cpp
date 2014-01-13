@@ -108,7 +108,7 @@ JT_Roster * JabberRosterService::createContactTask(const Contact &contact)
 	if (!XmppClient)
 		return 0;
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
 	connect(rosterTask, SIGNAL(finished()), this, SLOT(rosterTaskFinished()));
 	connect(rosterTask, SIGNAL(destroyed(QObject*)), this, SLOT(rosterTaskDeleted(QObject*)));
 
@@ -286,7 +286,7 @@ void JabberRosterService::prepareRoster(const QVector<Contact> &contacts)
 	setState(StateInitializing);
 	markContactsForDeletion();
 
-	XmppClient.data()->rosterRequest();
+	XmppClient->rosterRequest();
 }
 
 void JabberRosterService::rosterRequestFinished(bool success)

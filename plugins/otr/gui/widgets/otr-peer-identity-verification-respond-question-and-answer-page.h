@@ -34,7 +34,7 @@ class OtrPeerIdentityVerificationRespondQuestionAndAnswerPage : public QWizardPa
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
 	Contact MyContact;
 	QLabel *QuestionLabel;

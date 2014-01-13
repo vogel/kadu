@@ -25,7 +25,7 @@
 #define OTR_CREATE_PRIVATE_KEY_JOB_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Account;
 class OtrUserStateService;
@@ -34,11 +34,11 @@ class OtrCreatePrivateKeyJob : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrUserStateService> UserStateService;
+	QPointer<OtrUserStateService> UserStateService;
 
 	Account MyAccount;
 	QString PrivateStoreFileName;
-	QWeakPointer<QThread> CreationThread;
+	QPointer<QThread> CreationThread;
 	void *KeyPointer;
 
 private slots:

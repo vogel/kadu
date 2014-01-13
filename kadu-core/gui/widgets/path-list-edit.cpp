@@ -51,7 +51,7 @@ void PathListEdit::showDialog()
 		Dialog = new PathListEditWindow(PathList);
 		connect(Dialog.data(), SIGNAL(changed(const QStringList &)), this, SLOT(pathListChanged(const QStringList &)));
 	}
-	Dialog.data()->show();
+	Dialog->show();
 }
 
 void PathListEdit::pathListChanged(const QStringList &pathList)
@@ -65,7 +65,7 @@ void PathListEdit::setPathList(const QStringList &pathList)
 	PathList = pathList;
 
 	if (Dialog)
-		Dialog.data()->setPathList(PathList);
+		Dialog->setPathList(PathList);
 }
 
 PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent)

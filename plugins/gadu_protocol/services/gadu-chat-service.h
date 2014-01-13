@@ -57,11 +57,11 @@ class GaduChatService : public ChatService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduChatImageService> CurrentGaduChatImageService;
-	QWeakPointer<ImageStorageService> CurrentImageStorageService;
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<GaduChatImageService> CurrentGaduChatImageService;
+	QPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
-	QWeakPointer<GaduConnection> Connection;
+	QPointer<GaduConnection> Connection;
 
 	QHash<int, Message> UndeliveredMessages;
 

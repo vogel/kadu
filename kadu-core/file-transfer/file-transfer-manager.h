@@ -29,7 +29,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "accounts/accounts-aware-object.h"
 #include "file-transfer/file-transfer-enums.h"
@@ -50,7 +50,7 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 	static FileTransferManager * Instance;
 
 	FileTransferActions *Actions;
-	QWeakPointer<FileTransferWindow> Window;
+	QPointer<FileTransferWindow> Window;
 
 	FileTransferManager();
 	virtual ~FileTransferManager();

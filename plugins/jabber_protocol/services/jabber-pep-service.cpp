@@ -60,15 +60,15 @@ void JabberPepService::setEnabled(bool enabled)
 	Enabled = enabled;
 
 	// Publish support
-	if (Enabled && !XmppClient.data()->extensions().contains("ep"))
+	if (Enabled && !XmppClient->extensions().contains("ep"))
 	{
 		QStringList pepNodes;
 		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
 		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
-		XmppClient.data()->addExtension("ep", XMPP::Features(pepNodes));
+		XmppClient->addExtension("ep", XMPP::Features(pepNodes));
 	}
-	else if (!Enabled && XmppClient.data()->extensions().contains("ep"))
-		XmppClient.data()->removeExtension("ep");
+	else if (!Enabled && XmppClient->extensions().contains("ep"))
+		XmppClient->removeExtension("ep");
 }
 
 void JabberPepService::publish(const QString &node, const XMPP::PubSubItem &it, Access access)
@@ -76,7 +76,7 @@ void JabberPepService::publish(const QString &node, const XMPP::PubSubItem &it, 
 	if (!Enabled || !XmppClient)
 		return;
 
-	PEPPublishTask *tp = new PEPPublishTask(XmppClient.data()->rootTask(), node, it, access);
+	PEPPublishTask *tp = new PEPPublishTask(XmppClient->rootTask(), node, it, access);
 	connect(tp, SIGNAL(finished()), SLOT(publishFinished()));
 	tp->go(true);
 }
@@ -87,7 +87,7 @@ void JabberPepService::retract(const QString &node, const QString &id)
 	if (!Enabled || !XmppClient)
 		return;
 
-	PEPRetractTask* tp = new PEPRetractTask(XmppClient.data()->rootTask(), node, id);
+	PEPRetractTask* tp = new PEPRetractTask(XmppClient->rootTask(), node, id);
 	// FIXME: add notification of success/failure
 	tp->go(true);
 }
@@ -109,7 +109,7 @@ void JabberPepService::get(const XMPP::Jid &jid, const QString &node, const QStr
 	if (!Enabled || !XmppClient)
 		return;
 
-	PEPGetTask* g = new PEPGetTask(XmppClient.data()->rootTask(), jid.bare(), node, id);
+	PEPGetTask* g = new PEPGetTask(XmppClient->rootTask(), jid.bare(), node, id);
 	connect(g, SIGNAL(finished()), SLOT(getFinished()));
 	g->go(true);
 }

@@ -26,6 +26,7 @@
 #define SMS_ACTIONS_H
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 #include "chat/chat.h"
 #include "talkable/talkable.h"
@@ -43,7 +44,7 @@ class SmsActions : public QObject
 
 	static SmsActions *Instance;
 
-	QWeakPointer<SmsDialogRepository> m_smsDialogRepository;
+	QPointer<SmsDialogRepository> m_smsDialogRepository;
 
 	ActionDescription *sendSmsActionDescription;
 

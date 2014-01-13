@@ -24,7 +24,7 @@
 #define MESSAGE_HTML_RENDERER_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class DomProcessorService;
 class Message;
@@ -45,7 +45,7 @@ class MessageHtmlRendererService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<DomProcessorService> CurrentDomProcessorService;
+	QPointer<DomProcessorService> CurrentDomProcessorService;
 
 public:
 	explicit MessageHtmlRendererService(QObject *parent = 0);

@@ -101,7 +101,7 @@ void GaduFileTransferHandler::finished(bool ok)
 
 void GaduFileTransferHandler::socketNotifiersDeleted()
 {
-	// TODO: shouldn't socketNotAvailable() be called here? (btw, if not, we can use QWeakPointer for SocketNotifiers)
+	// TODO: shouldn't socketNotAvailable() be called here? (btw, if not, we can use QPointer for SocketNotifiers)
 	SocketNotifiers = 0;
 }
 

@@ -21,7 +21,7 @@
 
 #include "configuration/configuration-aware-object.h"
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class ChatWidgetMessageHandler;
 class ChatWidgetMessageHandlerConfiguration;
@@ -51,7 +51,7 @@ protected:
 	virtual void configurationUpdated() override;
 
 private:
-	QWeakPointer<ChatWidgetMessageHandler> m_chatWidgetMessageHandler;
+	QPointer<ChatWidgetMessageHandler> m_chatWidgetMessageHandler;
 
 	void createDefaultConfiguration() const;
 

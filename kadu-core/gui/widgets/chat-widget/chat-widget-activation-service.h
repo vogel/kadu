@@ -20,7 +20,7 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class ChatWidget;
 class ChatWidgetContainerHandler;
@@ -58,8 +58,8 @@ signals:
 	void chatWidgetActivated(ChatWidget *chatWidget);
 
 private:
-	QWeakPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
-	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+	QPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
+	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 
 private slots:
 	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);

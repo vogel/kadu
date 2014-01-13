@@ -35,7 +35,7 @@ class GaduChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduConnection> Connection;
+	QPointer<GaduConnection> Connection;
 
 	bool SendTypingNotifications;
 

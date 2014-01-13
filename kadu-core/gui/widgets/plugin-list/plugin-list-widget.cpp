@@ -144,19 +144,19 @@ void PluginListWidget::applyChanges()
 		for (auto const &pluginName : pluginsWithNewActiveState(false))
 		{
 			storeList = true;
-			m_pluginManager.data()->deactivatePluginWithDependents(pluginName);
+			m_pluginManager->deactivatePluginWithDependents(pluginName);
 			if (m_pluginStateService)
-				for (auto const &dependentPlugin : m_pluginManager.data()->withDependents(pluginName))
-					m_pluginStateService.data()->setPluginState(dependentPlugin, PluginState::Disabled);
+				for (auto const &dependentPlugin : m_pluginManager->withDependents(pluginName))
+					m_pluginStateService->setPluginState(dependentPlugin, PluginState::Disabled);
 		}
 
 		for (auto const &pluginName : pluginsWithNewActiveState(true))
-			if (m_pluginManager.data()->activatePluginWithDependencies(pluginName))
+			if (m_pluginManager->activatePluginWithDependencies(pluginName))
 			{
 				storeList = true;
 				if (m_pluginStateService)
-					for (auto const &dependencyPlugin : m_pluginManager.data()->withDependencies(pluginName))
-						m_pluginStateService.data()->setPluginState(dependencyPlugin, PluginState::Enabled);
+					for (auto const &dependencyPlugin : m_pluginManager->withDependencies(pluginName))
+						m_pluginStateService->setPluginState(dependencyPlugin, PluginState::Enabled);
 			}
 	}
 
@@ -164,7 +164,7 @@ void PluginListWidget::applyChanges()
 
 	if (storeList)
 	{
-		m_pluginManager.data()->storePluginStates();
+		m_pluginManager->storePluginStates();
 		ConfigurationManager::instance()->flush();
 	}
 
@@ -179,7 +179,7 @@ QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState
 	for (int i = 0; i < count; i++)
 	{
 		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
-		if ((m_pluginActivationService.data()->isActive(pluginEntry->pluginName) != pluginEntry->checked) && (newActiveState == pluginEntry->checked))
+		if ((m_pluginActivationService->isActive(pluginEntry->pluginName) != pluginEntry->checked) && (newActiveState == pluginEntry->checked))
 				result.append(pluginEntry->pluginName);
 	}
 

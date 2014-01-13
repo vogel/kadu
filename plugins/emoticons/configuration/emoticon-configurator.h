@@ -23,7 +23,7 @@
 #define EMOTICON_CONFIGURATOR
 
 #include <QtCore/QScopedPointer>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "configuration/emoticon-configuration.h"
 #include "theme/emoticon-theme-manager.h"
@@ -55,8 +55,8 @@ class EmoticonConfigurator : public ConfigurationHolder
 	EmoticonConfiguration Configuration;
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
-	QWeakPointer<InsertEmoticonAction> InsertAction;
-	QWeakPointer<EmoticonExpanderDomVisitorProvider> EmoticonExpanderProvider;
+	QPointer<InsertEmoticonAction> InsertAction;
+	QPointer<EmoticonExpanderDomVisitorProvider> EmoticonExpanderProvider;
 
 	void createDefaultConfiguration();
 

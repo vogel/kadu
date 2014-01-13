@@ -25,7 +25,7 @@
 #define JABBER_CHAT_SERVICE_H
 
 #include <QtCore/QMap>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include <im.h>
 #include <xmpp.h>
@@ -46,8 +46,8 @@ class JabberChatService : public ChatService
 {
 	Q_OBJECT
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-	QWeakPointer<Client> XmppClient;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<Client> XmppClient;
 
 	QMap<QString, QString> ContactMessageTypes;
 	QMap<QString, Chat> OpenedRoomChats;

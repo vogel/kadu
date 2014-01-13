@@ -37,7 +37,7 @@ class GaduMultilogonService : public MultilogonService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduConnection> Connection;
+	QPointer<GaduConnection> Connection;
 	QList<MultilogonSession *> Sessions;
 
 	friend class GaduProtocolSocketNotifiers;

@@ -37,7 +37,7 @@ class HistoryImportThread : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Account GaduAccount;
 	QString Path;

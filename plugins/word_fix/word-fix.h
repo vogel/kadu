@@ -25,7 +25,7 @@ class WordFix : public ConfigurationUiHandler, PluginRootComponent
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
 
-	QWeakPointer<ChatWidgetRepository> chatWidgetRepository;
+	QPointer<ChatWidgetRepository> chatWidgetRepository;
 
 	/*!
 	 * \var QMap<QString,QString> wordsList

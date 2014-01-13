@@ -51,10 +51,10 @@ void JabberVCardDownloader::failed()
 
 void JabberVCardDownloader::taskFinished()
 {
-	if (!Task || !Task.data()->success())
+	if (!Task || !Task->success())
 		failed();
 	else
-		done(Task.data()->vcard());
+		done(Task->vcard());
 }
 
 void JabberVCardDownloader::downloadVCard(const QString &id)
@@ -69,11 +69,11 @@ void JabberVCardDownloader::downloadVCard(const QString &id)
 		return;
 	}
 
-	Task = new XMPP::JT_VCard(XmppClient.data()->rootTask());
+	Task = new XMPP::JT_VCard(XmppClient->rootTask());
 
 	connect(Task.data(), SIGNAL(finished()), this, SLOT(taskFinished()));
-	Task.data()->get(id);
-	Task.data()->go(true);
+	Task->get(id);
+	Task->go(true);
 }
 
 #include "moc_jabber-vcard-downloader.cpp"

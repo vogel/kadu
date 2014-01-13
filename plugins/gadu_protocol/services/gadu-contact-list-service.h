@@ -38,8 +38,8 @@ class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
 
-	QWeakPointer<GaduConnection> Connection;
-	QWeakPointer<RosterNotifier> MyRosterNotifier;
+	QPointer<GaduConnection> Connection;
+	QPointer<RosterNotifier> MyRosterNotifier;
 	GaduContactListStateMachine *StateMachine;
 
 	friend class GaduProtocolSocketNotifiers;

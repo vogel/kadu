@@ -25,7 +25,7 @@
 #ifndef CHAT_IMAGE_REQUEST_SERVICE_CONFIGURATOR_H
 #define CHAT_IMAGE_REQUEST_SERVICE_CONFIGURATOR_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -46,7 +46,7 @@ class ChatImageRequestService;
  */
 class ChatImageRequestServiceConfigurator : private ConfigurationAwareObject
 {
-	QWeakPointer<ChatImageRequestService> Service;
+	QPointer<ChatImageRequestService> Service;
 
 protected:
 	virtual void configurationUpdated();

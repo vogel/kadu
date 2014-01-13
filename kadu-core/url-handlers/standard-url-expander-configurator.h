@@ -25,7 +25,7 @@
 #ifndef STANDARD_URL_EXPANDER_CONFIGURATOR_H
 #define STANDARD_URL_EXPANDER_CONFIGURATOR_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -46,7 +46,7 @@ class StandardUrlExpander;
  */
 class StandardUrlExpanderConfigurator : private ConfigurationAwareObject
 {
-	QWeakPointer<StandardUrlExpander> ConfigurableStandardUrlExpander;
+	QPointer<StandardUrlExpander> ConfigurableStandardUrlExpander;
 
 	void createDefaultConfiguration();
 

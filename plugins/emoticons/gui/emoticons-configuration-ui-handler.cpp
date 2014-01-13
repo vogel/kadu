@@ -51,7 +51,7 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 	if (!ThemesList)
 		return;
 
-	ThemeManager.data()->loadThemes();
+	ThemeManager->loadThemes();
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 
@@ -60,7 +60,7 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 	int iconsNumber = 4;
 
 	QList<QIcon> icons;
-	foreach (const Theme &theme, ThemeManager.data()->themes())
+	foreach (const Theme &theme, ThemeManager->themes())
 	{
 		values.append(theme.name());
 		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
@@ -82,18 +82,18 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 		icons.append(QIcon(combinedIcon));
 	}
 
-	ThemesList.data()->setItems(values, captions);
-	ThemesList.data()->setCurrentItem(ThemeManager.data()->currentTheme().name());
-	ThemesList.data()->setIconSize(QSize(iconsNumber * 36, 36));
-	ThemesList.data()->setIcons(icons);
+	ThemesList->setItems(values, captions);
+	ThemesList->setCurrentItem(ThemeManager->currentTheme().name());
+	ThemesList->setIconSize(QSize(iconsNumber * 36, 36));
+	ThemesList->setIcons(icons);
 }
 
 void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	Widget = mainConfigurationWindow->widget();
 
-	ThemesList = static_cast<ConfigListWidget *>(Widget.data()->widgetById("emoticonsTheme"));
-	connect(Widget.data()->widgetById("installEmoticonTheme"), SIGNAL(clicked()), this, SLOT(installEmoticonTheme()));
+	ThemesList = static_cast<ConfigListWidget *>(Widget->widgetById("emoticonsTheme"));
+	connect(Widget->widgetById("installEmoticonTheme"), SIGNAL(clicked()), this, SLOT(installEmoticonTheme()));
 
 	updateEmoticonThemes();
 }

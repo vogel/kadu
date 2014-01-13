@@ -22,7 +22,7 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class PluginStateService;
 class PluginActivationService;
@@ -74,8 +74,8 @@ public:
 	void handleActivationError(const QString &pluginName, const QString &errorMessage);
 
 private:
-	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	QWeakPointer<PluginStateService> m_pluginStateService;
+	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginStateService> m_pluginStateService;
 
 private slots:
 	/**

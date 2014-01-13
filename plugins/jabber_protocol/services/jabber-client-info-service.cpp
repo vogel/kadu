@@ -44,7 +44,7 @@ JabberClientInfoService::JabberClientInfoService(JabberProtocol *protocol) :
 	identity.name = "Kadu";
 
 	if (XmppClient)
-		XmppClient.data()->setIdentity(identity);
+		XmppClient->setIdentity(identity);
 }
 
 JabberClientInfoService::~JabberClientInfoService()
@@ -54,19 +54,19 @@ JabberClientInfoService::~JabberClientInfoService()
 void JabberClientInfoService::setClientName(const QString &clientName)
 {
 	if (XmppClient)
-		XmppClient.data()->setClientName(clientName);
+		XmppClient->setClientName(clientName);
 }
 
 void JabberClientInfoService::setClientVersion(const QString &clientVersion)
 {
 	if (XmppClient)
-		XmppClient.data()->setClientVersion(clientVersion);
+		XmppClient->setClientVersion(clientVersion);
 }
 
 void JabberClientInfoService::setOSName(const QString &osName)
 {
 	if (XmppClient)
-		XmppClient.data()->setOSName(osName);
+		XmppClient->setOSName(osName);
 }
 
 QString JabberClientInfoService::calculateCapsVersion() const
@@ -74,13 +74,13 @@ QString JabberClientInfoService::calculateCapsVersion() const
 	if (!XmppClient)
 		return QString();
 
-	QString result(XmppClient.data()->identity().category);
+	QString result(XmppClient->identity().category);
 	result.append('/');
-	result.append(XmppClient.data()->identity().type);
+	result.append(XmppClient->identity().type);
 	result.append("//");
-	result.append(XmppClient.data()->identity().name);
+	result.append(XmppClient->identity().name);
 	result.append('<');
-	result.append(XmppClient.data()->features().list().join(QLatin1String("<")));
+	result.append(XmppClient->features().list().join(QLatin1String("<")));
 	result.append('<');
 
 	return QString::fromAscii(QCryptographicHash::hash(result.toAscii(), QCryptographicHash::Sha1).toBase64());
@@ -90,8 +90,8 @@ void JabberClientInfoService::setCapsNode(const QString &capsNode)
 {
 	if (XmppClient)
 	{
-		XmppClient.data()->setCapsNode(capsNode);
-		XmppClient.data()->setCapsVersion(calculateCapsVersion());
+		XmppClient->setCapsNode(capsNode);
+		XmppClient->setCapsVersion(calculateCapsVersion());
 	}
 }
 
@@ -100,16 +100,16 @@ void JabberClientInfoService::fillStatusCapsData(XMPP::Status &status)
 	if (!XmppClient)
 		return;
 
-	status.setCapsNode(XmppClient.data()->capsNode());
-	status.setCapsVersion(XmppClient.data()->capsVersion());
+	status.setCapsNode(XmppClient->capsNode());
+	status.setCapsVersion(XmppClient->capsVersion());
 	status.setCapsHashAlgorithm(QLatin1String("sha-1"));
-	status.setCapsExt(XmppClient.data()->capsExt());
+	status.setCapsExt(XmppClient->capsExt());
 }
 
 void JabberClientInfoService::setIdentity(const DiscoItem::Identity &identity)
 {
 	if (XmppClient)
-		XmppClient.data()->setIdentity(identity);
+		XmppClient->setIdentity(identity);
 }
 
 void JabberClientInfoService::setFeatures(QStringList featureList)
@@ -123,8 +123,8 @@ void JabberClientInfoService::setFeatures(const Features &features)
 {
 	if (XmppClient)
 	{
-		XmppClient.data()->setFeatures(features);
-		XmppClient.data()->setCapsVersion(calculateCapsVersion());
+		XmppClient->setFeatures(features);
+		XmppClient->setCapsVersion(calculateCapsVersion());
 	}
 }
 

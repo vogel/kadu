@@ -38,7 +38,7 @@
 #include <QtCore/QString>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
@@ -255,7 +255,7 @@ void KaduWebView::saveImage()
 
 	QUrl imageUrl = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl();
 	if (CurrentImageStorageService)
-		imageUrl = CurrentImageStorageService.data()->toFileUrl(imageUrl);
+		imageUrl = CurrentImageStorageService->toFileUrl(imageUrl);
 
 	QString imageFullPath = imageUrl.toLocalFile();
 	if (imageFullPath.isEmpty())
@@ -277,22 +277,22 @@ void KaduWebView::saveImage()
 		}
 	}
 
-	QWeakPointer<QFileDialog> fd = new QFileDialog(this);
-	fd.data()->setFileMode(QFileDialog::AnyFile);
-	fd.data()->setAcceptMode(QFileDialog::AcceptSave);
-	fd.data()->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
-	fd.data()->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
-	fd.data()->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
-	fd.data()->setWindowTitle(tr("Save image"));
+	QPointer<QFileDialog> fd = new QFileDialog(this);
+	fd->setFileMode(QFileDialog::AnyFile);
+	fd->setAcceptMode(QFileDialog::AcceptSave);
+	fd->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
+	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
+	fd->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
+	fd->setWindowTitle(tr("Save image"));
 
 	do
 	{
-		if (fd.data()->exec() != QFileDialog::Accepted)
+		if (fd->exec() != QFileDialog::Accepted)
 			break;
-		if (fd.data()->selectedFiles().isEmpty())
+		if (fd->selectedFiles().isEmpty())
 			break;
 
-		QString file = fd.data()->selectedFiles().at(0);
+		QString file = fd->selectedFiles().at(0);
 		if (QFile::exists(file))
 		{
 			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("File already exists. Overwrite?"));
@@ -334,7 +334,7 @@ void KaduWebView::saveImage()
 			}
 		}
 
-		config_file.writeEntry("Chat", "LastImagePath", fd.data()->directory().absolutePath());
+		config_file.writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
 	} while (false);
 
 	delete fd.data();

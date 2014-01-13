@@ -50,5 +50,5 @@ void StandardUrlExpanderConfigurator::configurationUpdated()
 	configuration.setFoldLink(config_file.readBoolEntry("Chat", "FoldLink"));
 	configuration.setFoldLinkThreshold(config_file.readNumEntry("Chat", "LinkFoldTreshold"));
 
-	ConfigurableStandardUrlExpander.data()->setConfiguration(configuration);
+	ConfigurableStandardUrlExpander->setConfiguration(configuration);
 }

@@ -52,9 +52,9 @@ class KADUAPI MessageManager : public QObject, public AccountsAwareObject
 
 	static MessageManager * Instance;
 
-	QWeakPointer<MessageFilterService> CurrentMessageFilterService;
-	QWeakPointer<MessageTransformerService> CurrentMessageTransformerService;
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<MessageFilterService> CurrentMessageFilterService;
+	QPointer<MessageTransformerService> CurrentMessageTransformerService;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	MessageManager();
 	virtual ~MessageManager();

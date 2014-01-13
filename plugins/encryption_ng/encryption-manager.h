@@ -24,6 +24,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtGui/QAction>
 
 #include "protocols/services/raw-message-transformer.h"
@@ -66,7 +67,7 @@ public:
 private:
 	static EncryptionManager *m_instance;
 
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	QMap<Chat, EncryptionChatData *> m_chatEnryptions;
 	KeyGenerator *m_generator;

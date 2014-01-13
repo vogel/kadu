@@ -24,7 +24,7 @@
 #ifndef JABBER_AVATAR_PEP_UPLOADER_H
 #define JABBER_AVATAR_PEP_UPLOADER_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include <iris/xmpp_pubsubitem.h>
 #include <xmpp/jid/jid.h>
@@ -55,7 +55,7 @@ class JabberAvatarPepUploader : public AvatarUploader
 {
 	Q_OBJECT
 
-	QWeakPointer<JabberPepService> PepService;
+	QPointer<JabberPepService> PepService;
 
 	QImage UploadedAvatar;
 

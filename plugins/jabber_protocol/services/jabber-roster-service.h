@@ -24,7 +24,7 @@
 #ifndef JABBER_ROSTER_SERVICE_H
 #define JABBER_ROSTER_SERVICE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "protocols/services/roster/roster-service.h"
 
@@ -43,7 +43,7 @@ class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 
-	QWeakPointer<Client> XmppClient;
+	QPointer<Client> XmppClient;
 
 	QMap<JT_Roster *, Contact> ContactForTask;
 

@@ -22,6 +22,8 @@
 #ifndef OTR_ACCOUNT_CONFIGURATION_WIDGET_H
 #define OTR_ACCOUNT_CONFIGURATION_WIDGET_H
 
+#include <QtCore/QPointer>
+
 #include "gui/widgets/account-configuration-widget.h"
 
 class QCheckBox;
@@ -35,7 +37,7 @@ class OtrAccountConfigurationWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrPolicyService> PolicyService;
 
 	QCheckBox *EnableCheckBox;
 	QCheckBox *AutomaticallyInitiateCheckBox;

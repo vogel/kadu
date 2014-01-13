@@ -25,7 +25,7 @@
 #ifndef IMAGE_LINK_CONFIGURATOR_H
 #define IMAGE_LINK_CONFIGURATOR_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "configuration/configuration-holder.h"
 
@@ -36,8 +36,8 @@ class ImageLinkConfigurator : public ConfigurationHolder
 {
 	Q_OBJECT
 
-	QWeakPointer<ImageExpanderDomVisitorProvider> ImageExpander;
-	QWeakPointer<VideoExpanderDomVisitorProvider> VideoExpander;
+	QPointer<ImageExpanderDomVisitorProvider> ImageExpander;
+	QPointer<VideoExpanderDomVisitorProvider> VideoExpander;
 
 	void createDefaultConfiguration();
 

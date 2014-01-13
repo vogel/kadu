@@ -50,7 +50,7 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 {
 	Q_OBJECT
 
-	QWeakPointer<ChatImageRequestService> CurrentChatImageRequestService;
+	QPointer<ChatImageRequestService> CurrentChatImageRequestService;
 
 	Chat CurrentChat;
 	HtmlMessagesRenderer *Renderer;

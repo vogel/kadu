@@ -24,7 +24,7 @@
 #include <memory>
 #include <QtCore/QObject>
 #include <QtCore/QVector>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class Chat;
 class ChatManager;
@@ -67,8 +67,8 @@ public:
 	void storeChats(const QVector<Chat> &chats);
 
 private:
-	QWeakPointer<ChatManager> m_chatManager;
-	QWeakPointer<StoragePointFactory> m_storagePointFactory;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<StoragePointFactory> m_storagePointFactory;
 	ChatWindowStorageConfiguration m_configuration;
 
 	std::unique_ptr<StoragePoint> storagePoint() const;

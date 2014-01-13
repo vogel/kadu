@@ -119,31 +119,31 @@ void HintsConfigurationUiHandler::showAdvanced()
 	if (!AdvancedWindow)
 	{
 		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
-		AdvancedWindow.data()->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
+		AdvancedWindow->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
 
-		newHintUnder = static_cast<QComboBox *>(AdvancedWindow.data()->widget()->widgetById("hints/newHintUnder"));
+		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 
-		ownPosition = static_cast<QCheckBox *>(AdvancedWindow.data()->widget()->widgetById("hints/ownPosition"));
+		ownPosition = static_cast<QCheckBox *>(AdvancedWindow->widget()->widgetById("hints/ownPosition"));
 		connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
 
-		minimumWidth = static_cast<QSpinBox *>(AdvancedWindow.data()->widget()->widgetById("hints/minimumWidth"));
-		maximumWidth = static_cast<QSpinBox *>(AdvancedWindow.data()->widget()->widgetById("hints/maximumWidth"));
+		minimumWidth = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/minimumWidth"));
+		maximumWidth = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/maximumWidth"));
 		connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
 		connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
-		xPosition = static_cast<QSpinBox *>(AdvancedWindow.data()->widget()->widgetById("hints/ownPositionX"));
+		xPosition = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionX"));
 		connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-		yPosition = static_cast<QSpinBox *>(AdvancedWindow.data()->widget()->widgetById("hints/ownPositionY"));
+		yPosition = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionY"));
 		connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
 
-		ownPositionCorner = static_cast<QComboBox *>(AdvancedWindow.data()->widget()->widgetById("hints/ownPositionCorner"));
+		ownPositionCorner = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionCorner"));
 		connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
 
-		QPushButton *previewButton = static_cast<QPushButton *>(AdvancedWindow.data()->widget()->widgetById("hints/preview"));
+		QPushButton *previewButton = static_cast<QPushButton *>(AdvancedWindow->widget()->widgetById("hints/preview"));
 		connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
 	}
 
-	AdvancedWindow.data()->show();
+	AdvancedWindow->show();
 }
 
 void HintsConfigurationUiHandler::addHintsPreview()
@@ -311,7 +311,7 @@ void HintsConfigurationUiHandler::showOverUserConfigurationWindow()
 	{
 		overUserConfigurationWindow = new HintOverUserConfigurationWindow(Buddy::dummy());
 		connect(overUserConfigurationWindow.data(), SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
-		overUserConfigurationWindow.data()->show();
+		overUserConfigurationWindow->show();
 	}
 }
 

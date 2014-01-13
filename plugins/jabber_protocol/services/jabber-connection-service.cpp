@@ -60,7 +60,7 @@ void JabberConnectionService::cleanUp()
 
 	// Just deinit. JabberProtocols owns it.
 	if (XmppClient)
-		XmppClient.data()->close();
+		XmppClient->close();
 
 	// We need to delete iris objects immediately (normally we would do that
 	// with deleteLater()) because deferred deletion apparently does not
@@ -69,19 +69,19 @@ void JabberConnectionService::cleanUp()
 	if (Stream)
 	{
 		delete Stream.data();
-		Stream.clear();
+		Stream = nullptr;
 	}
 	if (TLSHandler)
 	{
-		Q_ASSERT(TLSHandler.data()->parent());
-		Q_ASSERT(this != TLSHandler.data()->parent());
-		delete TLSHandler.data()->parent();
-		TLSHandler.clear();
+		Q_ASSERT(TLSHandler->parent());
+		Q_ASSERT(this != TLSHandler->parent());
+		delete TLSHandler->parent();
+		TLSHandler = nullptr;
 	}
 	if (Connector)
 	{
 		delete Connector.data();
-		Connector.clear();
+		Connector = nullptr;
 	}
 
 	LocalAddress.clear();
@@ -208,10 +208,10 @@ void JabberConnectionService::tlsHandshaken()
 	QByteArray cert = details->tlsOverrideCert();
 
 	// TODO: use signal for checking certificates
-	if (CertificateHelpers::checkCertificate(TLSHandler.data()->tls(), TLSHandler.data(), domain,
+	if (CertificateHelpers::checkCertificate(TLSHandler->tls(), TLSHandler.data(), domain,
 			QString("%1: ").arg(ParentProtocol->account().accountIdentity().name()) + tr("security problem"), host,
 			false, this, SIGNAL(tlsCertificateAccepted())))
-		TLSHandler.data()->continueAfterHandshake();
+		TLSHandler->continueAfterHandshake();
 	else
 	{
 		cleanUp();
@@ -222,27 +222,27 @@ void JabberConnectionService::tlsHandshaken()
 void JabberConnectionService::streamNeedAuthParams(bool user, bool pass, bool realm)
 {
 	if (user)
-		Stream.data()->setUsername(MyJid.node());
+		Stream->setUsername(MyJid.node());
 
 	if (pass)
-		Stream.data()->setPassword(Password);
+		Stream->setPassword(Password);
 
 	if (realm)
-		Stream.data()->setRealm(MyJid.domain());
+		Stream->setRealm(MyJid.domain());
 
-	Stream.data()->continueAfterParams();
+	Stream->continueAfterParams();
 }
 
 void JabberConnectionService::streamAuthenticated()
 {
-	Connector.data()->changePollInterval(10); // for http poll, slow down after login
+	Connector->changePollInterval(10); // for http poll, slow down after login
 
 	// Update our jid(if necessary)
-	if (!Stream.data()->jid().isEmpty())
-		MyJid = Stream.data()->jid();
+	if (!Stream->jid().isEmpty())
+		MyJid = Stream->jid();
 
 	// get IP address
-	ByteStream *bs = Connector.data()->stream();
+	ByteStream *bs = Connector->stream();
 	if (!bs)
 	{
 		cleanUp();
@@ -254,11 +254,11 @@ void JabberConnectionService::streamAuthenticated()
 		LocalAddress = ((BSocket *)bs)->address().toString();
 
 	// start the client operation
-	XmppClient.data()->start(MyJid.domain(), MyJid.node(), Password, MyJid.resource());
+	XmppClient->start(MyJid.domain(), MyJid.node(), Password, MyJid.resource());
 
-	if (!Stream.data()->old())
+	if (!Stream->old())
 	{
-		XMPP::JT_Session *j = new XMPP::JT_Session(XmppClient.data()->rootTask());
+		XMPP::JT_Session *j = new XMPP::JT_Session(XmppClient->rootTask());
 		QObject::connect(j, SIGNAL(finished()), this, SLOT(streamSessionStarted()));
 		j->go(true);
 	}
@@ -286,12 +286,12 @@ void JabberConnectionService::streamWarning(int warning)
 		emit connectionClosed(tr("The server does not support TLS encryption."));
 	}
 	else
-		Stream.data()->continueAfterWarning();
+		Stream->continueAfterWarning();
 }
 
 void JabberConnectionService::streamError(int error)
 {
-	if ((error == XMPP::ClientStream::ErrAuth) && (Stream.data()->errorCondition() == XMPP::ClientStream::NotAuthorized))
+	if ((error == XMPP::ClientStream::ErrAuth) && (Stream->errorCondition() == XMPP::ClientStream::NotAuthorized))
 	{
 		cleanUp();
 		emit invalidPassword();
@@ -338,7 +338,7 @@ void JabberConnectionService::connectToServer()
 		connect(TLSHandler.data(), SIGNAL(tlsHandshaken()), SLOT(tlsHandshaken()));
 
 		QString host = details->useCustomHostPort() ? details->customHost() : XMPP::Jid(ParentProtocol->account().id()).domain();
-		TLSHandler.data()->startClient(host);
+		TLSHandler->startClient(host);
 	}
 
 	Stream = createClientStream(Connector.data(), TLSHandler.data());
@@ -349,7 +349,7 @@ void JabberConnectionService::connectToServer()
 	connect(Stream.data(), SIGNAL(warning(int)), this, SLOT(streamWarning(int)));
 	connect(Stream.data(), SIGNAL(error(int)), this, SLOT(streamError(int)));
 
-	XmppClient.data()->connectToServer(Stream.data(), MyJid, true);
+	XmppClient->connectToServer(Stream.data(), MyJid, true);
 }
 
 void JabberConnectionService::disconnectFromServer(const ::Status &status)
@@ -359,7 +359,7 @@ void JabberConnectionService::disconnectFromServer(const ::Status &status)
 		return;
 
 	XMPP::Status presence = IrisStatusAdapter::toIrisStatus(status);
-	XmppClient.data()->setPresence(presence);
+	XmppClient->setPresence(presence);
 
 	if (!CleanUpTimer)
 	{
@@ -379,7 +379,7 @@ Jid JabberConnectionService::jid() const
 QString JabberConnectionService::host() const
 {
 	if (Connector)
-		return Connector.data()->host();
+		return Connector->host();
 	return QString();
 }
 

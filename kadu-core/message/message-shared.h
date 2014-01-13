@@ -25,6 +25,7 @@
 #define MESSAGE_SHARED_H
 
 #include <QtCore/QDateTime>
+#include <QtCore/QPointer>
 #include <QtCore/QSharedData>
 
 #include "message/message-common.h"
@@ -40,7 +41,7 @@ class MessageShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageShared)
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat *MessageChat;
 	Contact *MessageSender;

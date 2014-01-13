@@ -20,7 +20,7 @@
 #ifndef GROUP_TAB_BAR_CONFIGURATOR_H
 #define GROUP_TAB_BAR_CONFIGURATOR_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -32,7 +32,7 @@ class GroupTabBarConfiguration;
 
 class GroupTabBarConfigurator : private ConfigurationAwareObject
 {
-	QWeakPointer<GroupTabBar> ConfigurableGroupTabBar;
+	QPointer<GroupTabBar> ConfigurableGroupTabBar;
 
 	void createDefaultConfiguration();
 

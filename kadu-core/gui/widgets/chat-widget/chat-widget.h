@@ -58,7 +58,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	friend class ChatWidgetManager;
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat CurrentChat;
 

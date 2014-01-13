@@ -51,7 +51,7 @@ void PluginActivationErrorHandler::handleActivationError(const QString &pluginNa
 	if (pluginName.isEmpty())
 		return;
 
-	auto state = m_pluginStateService ? m_pluginStateService.data()->pluginState(pluginName) : PluginState::Disabled;
+	auto state = m_pluginStateService ? m_pluginStateService->pluginState(pluginName) : PluginState::Disabled;
 	auto offerLoadInFutureChoice = PluginState::Enabled == state;
 
 	// TODO: set parent to MainConfigurationWindow is it exists
@@ -67,10 +67,10 @@ void PluginActivationErrorHandler::setStateEnabledIfInactive(const QString &plug
 	if (!m_pluginActivationService || !m_pluginStateService)
 		return;
 
-	if (m_pluginActivationService.data()->isActive(pluginName))
+	if (m_pluginActivationService->isActive(pluginName))
 		return;
 
-	m_pluginStateService.data()->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
+	m_pluginStateService->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
 }
 
 #include "moc_plugin-activation-error-handler.cpp"

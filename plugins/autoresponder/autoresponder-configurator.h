@@ -25,7 +25,7 @@
 #ifndef AUTORESPONDER_CONFIGURATOR_H
 #define AUTORESPONDER_CONFIGURATOR_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -46,7 +46,7 @@ class AutoResponder;
  */
 class AutoresponderConfigurator : private ConfigurationAwareObject
 {
-	QWeakPointer<AutoResponder> ConfigurableAutoresponder;
+	QPointer<AutoResponder> ConfigurableAutoresponder;
 
 	void createDefaultConfiguration();
 

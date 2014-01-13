@@ -60,7 +60,7 @@ public:
 #endif // Q_WS_MAC
 
 private:
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 #if defined(HAVE_ASPELL)
 	AspellConfig *SpellConfig;

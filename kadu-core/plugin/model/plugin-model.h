@@ -27,7 +27,7 @@
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QList>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class PluginActivationService;
 class PluginEntry;
@@ -60,8 +60,8 @@ public:
 	void loadPluginData();
 
 private:
-	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	QWeakPointer<PluginManager> m_pluginManager;
+	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginManager> m_pluginManager;
 
 	PluginListWidget *m_pluginListWidget;
 	QList<PluginEntry> m_pluginEntries;

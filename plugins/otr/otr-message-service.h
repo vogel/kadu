@@ -25,7 +25,7 @@
 #define OTR_MESSAGE_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -39,7 +39,7 @@ class OtrMessageService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<MessageManager> CurrentMessageManager;
+	QPointer<MessageManager> CurrentMessageManager;
 
 public:
 	static void wrapperOtrInjectMessage(void *data, const char *accountName, const char *protocol, const char *recipient, const char *message);

@@ -21,7 +21,7 @@
 #ifndef FORMATTED_STRING_FACTORY_H
 #define FORMATTED_STRING_FACTORY_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "exports.h"
 
@@ -48,7 +48,7 @@ class KADUAPI FormattedStringFactory : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<ImageStorageService> CurrentImageStorageService;
 
 	FormattedString * partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
 	FormattedString * partFromQTextImageFormat(const QTextImageFormat &textImageFormat);

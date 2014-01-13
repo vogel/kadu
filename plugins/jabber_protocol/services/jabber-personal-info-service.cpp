@@ -49,7 +49,7 @@ void JabberPersonalInfoService::fetchPersonalInfo(const QString &id)
 	if (!VCardService)
 		return;
 
-	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+	JabberVCardDownloader *vCardDownloader = VCardService->createVCardDownloader();
 	if (!vCardDownloader)
 		return;
 
@@ -111,7 +111,7 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 
 	vcard.setUrl(CurrentBuddy.website());
 
-	JabberVCardUploader *vCardUploader = VCardService.data()->createVCardUploader();
+	JabberVCardUploader *vCardUploader = VCardService->createVCardUploader();
 	if (!vCardUploader)
 	{
 		emit personalInfoUpdated(false);

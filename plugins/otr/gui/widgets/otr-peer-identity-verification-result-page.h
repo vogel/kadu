@@ -34,7 +34,7 @@ class OtrPeerIdentityVerificationResultPage : public QWizardPage
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
 
 	Contact MyContact;
 

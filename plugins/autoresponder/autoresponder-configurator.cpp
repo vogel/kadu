@@ -57,5 +57,5 @@ void AutoresponderConfigurator::configurationUpdated()
 	configuration.setStatusBusy(config_file.readBoolEntry("Autoresponder", "StatusBusy"));
 	configuration.setStatusInvisible(config_file.readBoolEntry("Autoresponder", "StatusInvisible"));
 
-	ConfigurableAutoresponder.data()->setConfiguration(configuration);
+	ConfigurableAutoresponder->setConfiguration(configuration);
 }

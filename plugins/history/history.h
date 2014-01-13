@@ -68,7 +68,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 
 	static History *Instance;
 
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	bool SaveChats;
 	bool SaveChatsWithAnonymous;

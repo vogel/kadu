@@ -82,7 +82,7 @@ bool RosterService::canPerformLocalUpdate() const
 	if (!CurrentProtocol)
 		return false;
 
-	return CurrentProtocol.data()->isConnected() && (StateInitializing != State && StateNonInitialized != State);
+	return CurrentProtocol->isConnected() && (StateInitializing != State && StateNonInitialized != State);
 }
 
 bool RosterService::canPerformRemoteUpdate(const Contact &contact) const

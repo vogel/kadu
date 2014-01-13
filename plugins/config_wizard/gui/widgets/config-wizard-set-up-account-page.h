@@ -22,7 +22,7 @@
 #ifndef CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
 #define CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
 
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 #include "accounts/account.h"
 #include "gui/widgets/config-wizard-page.h"
@@ -33,7 +33,7 @@ class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
-	QWeakPointer<ModalConfigurationWidget> AccountWidget;
+	QPointer<ModalConfigurationWidget> AccountWidget;
 	bool AccountSuccessfullyCreated;
 
 	void createGui();

@@ -22,7 +22,7 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtCore/QPointer>
 
 class TabsManager;
 class TabWidget;
@@ -46,7 +46,7 @@ public:
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
 
 public:
-	QWeakPointer<TabsManager> m_tabsManager;
-	QWeakPointer<TabWidget> m_tabWidget;
+	QPointer<TabsManager> m_tabsManager;
+	QPointer<TabWidget> m_tabWidget;
 
 };

@@ -39,7 +39,7 @@ class JabberServerInfoService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<Client> XmppClient;
+	QPointer<Client> XmppClient;
 	XMPP::Features ServerFeatures;
 	XMPP::DiscoItem::Identities ServerIdentities;
 

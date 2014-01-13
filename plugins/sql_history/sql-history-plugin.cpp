@@ -40,7 +40,7 @@ bool SqlHistoryPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	Storage = new HistorySqlStorage();
-	Storage.data()->setFormattedStringFactory(Core::instance()->formattedStringFactory());
+	Storage->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 
 	return true;
 }

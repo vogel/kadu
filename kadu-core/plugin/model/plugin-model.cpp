@@ -67,7 +67,7 @@ void PluginModel::loadPluginData()
 			pluginMetadata.description(),
 			pluginMetadata.author(),
 			pluginMetadata.name(),
-			m_pluginActivationService.data()->isActive(pluginMetadata.name())
+			m_pluginActivationService->isActive(pluginMetadata.name())
 		});
 
 	endResetModel();
