@@ -281,7 +281,7 @@ void KaduWebView::saveImage()
 	fd->setFileMode(QFileDialog::AnyFile);
 	fd->setAcceptMode(QFileDialog::AcceptSave);
 	fd->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
-	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
+	fd->setNameFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
 	fd->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
 	fd->setWindowTitle(tr("Save image"));
 
