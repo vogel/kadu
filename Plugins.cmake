@@ -48,11 +48,11 @@ set (DEFAULT_PLUGINS
 	# General sound plugin
 	sound
 	# Phonon sound support
-	phonon_sound
+	#phonon_sound
 	# External sound player support
 	ext_sound
 	# QtSound sound support
-	qt4_sound
+	#qt4_sound
 
 # mediaplayer
 	# Media players support plugin
@@ -62,9 +62,9 @@ set (DEFAULT_PLUGINS
 	# Antistring
 	antistring
 	# Auto away module
-	autoaway
+	#autoaway
 	# Auto hide Kadu window
-	auto_hide
+	#auto_hide
 	# Autoresponder plugin
 	autoresponder
 	# Autostatus
@@ -80,7 +80,7 @@ set (DEFAULT_PLUGINS
 	# Protection against unwanted chats
 	firewall
 	# Idle time counter
-	idle
+	#idle
 	# Shows image links and youtube links as images and videos in chat
 	imagelink
 	# Last status infos
@@ -88,7 +88,7 @@ set (DEFAULT_PLUGINS
 	# Imports profiles from old Kadu
 	profiles_import
 	# Easily take screenshots and send as images
-	screenshot
+	#screenshot
 	# Simple view - neww port for 0.11.0
 	simpleview
 	# Single window mode

@@ -23,16 +23,23 @@ if (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
 
 else (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
 
+  if (Qt5Core_FOUND)
+    set (QCA_QCA_NAME qca-qt5)
+    set (QCA_QCA2_NAME qca2-qt5)
+  else (Qt5Core_FOUND)
+    set (QCA_QCA_NAME qca)
+    set (QCA_QCA2_NAME qca2)
+  endif (Qt5Core_FOUND)
 
   if (NOT WIN32)
     find_package(PkgConfig)
-    pkg_check_modules(PC_QCA2 QUIET qca2)
+    pkg_check_modules(PC_QCA2 QUIET ${QCA_QCA2_NAME})
     set(QCA2_DEFINITIONS ${PC_QCA2_CFLAGS_OTHER})
   endif (NOT WIN32)
 
   find_library_with_debug(QCA2_LIBRARIES
                   WIN32_DEBUG_POSTFIX d
-                  NAMES qca qca2
+                  NAMES ${QCA_QCA_NAME} ${QCA_QCA2_NAME}
                   HINTS ${PC_QCA2_LIBDIR} ${PC_QCA2_LIBRARY_DIRS}
                   )
 

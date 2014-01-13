@@ -21,8 +21,14 @@ if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 endif ()
 
 # libraries
-set (QT_USE_IMPORTED_TARGETS TRUE)
-find_package (Qt4 4.8.0 REQUIRED)
+# TODO: support cmake parameters for this
+find_package (Qt5Core 5.1)
+if (Qt5Core_FOUND)
+	find_package (Qt5LinguistTools REQUIRED)
+else ()
+	set (QT_USE_IMPORTED_TARGETS TRUE)
+	find_package (Qt4 4.8 REQUIRED)
+endif()
 
 macro (kadu_numeric_version _version _result_variable)
 	# Remove non-digit suffixes like "-git".
@@ -144,7 +150,11 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 	endif ()
 
 	if (_translation_sources)
-		qt4_add_translation (_translation_files ${_translation_sources})
+		if (Qt5Core_FOUND)
+			qt5_add_translation (_translation_files ${_translation_sources})
+		else ()
+			qt4_add_translation (_translation_files ${_translation_sources})
+		endif ()
 
 		install (FILES ${_translation_files}
 			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/translations
@@ -173,12 +183,22 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 		endforeach ()
 	endif ()
 
-	qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE Core Gui Network Xml WebKit Declarative)
-	if (UNIX AND NOT APPLE)
-		qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE DBus)
-	endif ()
-	if (KADU_PLUGIN_ADDITIONAL_QT_MODULES)
-		qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_ADDITIONAL_QT_MODULES})
+	if (Qt5Core_FOUND)
+		qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE Core Gui Widgets Network Xml WebKit WebKitWidgets Declarative)
+		if (UNIX AND NOT APPLE)
+			qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE DBus)
+		endif ()
+		if (KADU_PLUGIN_ADDITIONAL_QT_MODULES)
+			qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_ADDITIONAL_QT_MODULES})
+		endif ()
+	else ()
+		qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE Core Gui Network Xml WebKit Declarative)
+		if (UNIX AND NOT APPLE)
+			qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE DBus)
+		endif ()
+		if (KADU_PLUGIN_ADDITIONAL_QT_MODULES)
+			qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_ADDITIONAL_QT_MODULES})
+		endif ()
 	endif ()
 
 	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE
