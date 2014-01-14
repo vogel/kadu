@@ -38,6 +38,7 @@ private slots:
 	void deterministicSortTest();
 	void nondeterministicSortTest();
 	void cycleSortTest();
+	void invalidNodeTest();
 
 };
 
@@ -99,6 +100,17 @@ void tst_GraphSortSuccessors::cycleSortTest()
 	graph.addEdge<Tag1>("p3", "p1");
 
 	expect<GraphCycleException>([&]{ graph_sort_successors<Tag1>(graph, "p1"); });
+}
+
+void tst_GraphSortSuccessors::invalidNodeTest()
+{
+	auto graph = TestGraph{};
+
+	graph.addEdge<Tag1>("p1", "p2");
+	graph.addEdge<Tag1>("p1", "p3");
+
+	auto p4Successors = graph_sort_successors<Tag1>(graph, "p4");
+	QCOMPARE(p4Successors.size(), 0UL);
 }
 
 QTEST_APPLESS_MAIN(tst_GraphSortSuccessors)
