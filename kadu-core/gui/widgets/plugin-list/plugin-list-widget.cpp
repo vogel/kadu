@@ -23,19 +23,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define MARGIN 5
-
-#include <QtGui/QApplication>
 #include <QtGui/QBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPainter>
-#include <QtGui/QPushButton>
 #include <QtGui/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
-#include "core/core.h"
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/configuration/config-section.h"
@@ -44,13 +35,9 @@
 #include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list/plugin-list-widget-item-delegate.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/kadu-icon.h"
-#include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/metadata/plugin-metadata.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
