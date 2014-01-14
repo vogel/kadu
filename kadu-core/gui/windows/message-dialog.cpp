@@ -41,7 +41,8 @@ MessageDialog * MessageDialog::create(const KaduIcon &icon, const QString &title
 
 void MessageDialog::show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
 {
-	new MessageDialog(icon, title, text, buttons, parent, f);
+	auto dialog = new MessageDialog(icon, title, text, buttons, parent, f);
+	dialog->exec();
 }
 
 MessageDialog::MessageDialog(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
