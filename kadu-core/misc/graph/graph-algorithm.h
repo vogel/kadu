@@ -136,7 +136,9 @@ class GraphSuccessorSorter
 public:
 	explicit GraphSuccessorSorter(const GraphType &graph, const PayloadType &payload) noexcept(false)
 	{
-		visitNode(graph.node(payload));
+		auto node = graph.node(payload);
+		if (node)
+			visitNode(node);
 	}
 
 	std::vector<NodePointer> result() const
