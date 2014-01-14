@@ -28,6 +28,7 @@
 
 class PluginProxyModel : public CategorizedSortFilterProxyModel
 {
+	Q_OBJECT
 
 public:
 	explicit PluginProxyModel(QObject *parent = nullptr);
