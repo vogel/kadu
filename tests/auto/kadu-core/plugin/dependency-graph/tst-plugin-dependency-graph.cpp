@@ -35,6 +35,8 @@ private:
 	PluginDependencyGraph cycleGraph();
 
 private slots:
+	void invalidDirectDependencyTest();
+	void invalidDependencyTest();
 	void linearDependencyCycleTest();
 	void linearDirectDependencyTest();
 	void linearDependencyTest();
@@ -104,6 +106,22 @@ PluginDependencyGraph tst_PluginDependencyGraph::cycleGraph()
 	graph.addDependency("p5", "p6");
 
 	return std::move(graph);
+}
+
+void tst_PluginDependencyGraph::invalidDirectDependencyTest()
+{
+	auto graph = linearGraph();
+
+	QCOMPARE(graph.directDependencies("p8"), {});
+	QCOMPARE(graph.directDependents("p8"), {});
+}
+
+void tst_PluginDependencyGraph::invalidDependencyTest()
+{
+	auto graph = linearGraph();
+
+	QCOMPARE(graph.findDependencies("p8"), {});
+	QCOMPARE(graph.findDependents("p8"), {});
 }
 
 void tst_PluginDependencyGraph::linearDependencyCycleTest()
