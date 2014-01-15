@@ -24,10 +24,16 @@
 #pragma once
 
 /**
- * @author Rafał 'Vogel' Malinowski
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @enum PluginState
  * @short Plugin state.
  *
- * Plugin state
+ * State of plugin selected by user. Plugin state is stored in configuration file and can be changed
+ * in plugin configuration window.
  */
 enum class PluginState
 {
@@ -36,13 +42,20 @@ enum class PluginState
 	 * if has PluginMetadata::loadByDefault() set to true.
 	 */
 	New,
+
 	/**
 	 * Plugin is normally disabled and will be activated only as dependency of other plugin
 	 * or at user request.
 	 */
 	Disabled,
+
 	/**
 	 * Plugin is enabled and will be activated at Kadu start automatically.
 	 */
 	Enabled
+
 };
+
+/**
+ * @}
+ */
