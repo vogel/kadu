@@ -39,6 +39,7 @@ private:
 private slots:
 	void simpleDependencyTest();
 	void selfDependencyTest();
+	void pluginOnlyAsDependencyTest();
 
 };
 
@@ -115,8 +116,29 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 
 	auto p1Dependencies = graph.get()->directDependencies("p1");
 	auto p1Dependents = graph.get()->directDependents("p1");
+
 	QCOMPARE(p1Dependencies.size(), 0);
 	QCOMPARE(p1Dependents.size(), 0);
+}
+
+void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
+{
+	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	{
+		qMakePair(QString{"p1"}, QStringList{"p2"})
+	}));
+
+	QCOMPARE(graph.get()->size(), 2);
+
+	auto p1Dependencies = graph.get()->directDependencies("p1");
+	auto p1Dependents = graph.get()->directDependents("p1");
+	auto p2Dependencies = graph.get()->directDependencies("p2");
+	auto p2Dependents = graph.get()->directDependents("p2");
+
+	QCOMPARE(p1Dependencies.size(), 1);
+	QCOMPARE(p1Dependents.size(), 0);
+	QCOMPARE(p2Dependencies.size(), 0);
+	QCOMPARE(p2Dependents.size(), 1);
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
