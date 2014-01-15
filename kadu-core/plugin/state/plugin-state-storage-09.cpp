@@ -32,7 +32,7 @@
  * This method loads old configuration from depreceated configuration entries: General/EverLaoded,
  * General/LoadedModules and General/UnloadedModules.
  */
-QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> &existingPluginNames) const
+QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> &installedPluginNames) const
 {
 	auto result = QMap<QString, PluginState>{};
 
@@ -47,7 +47,7 @@ QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QSet<QString> oldPlugins;
 	for (auto pluginName : allPlugins)
-		if (!contains(existingPluginNames, pluginName) && !oldPlugins.contains(pluginName))
+		if (!contains(installedPluginNames, pluginName) && !oldPlugins.contains(pluginName))
 			oldPlugins.insert(pluginName);
 
 	if (loadedPlugins.contains("encryption"))
@@ -62,7 +62,7 @@ QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> 
 		loadedPlugins.insert("hints");
 	}
 
-	for (auto const &pluginName : existingPluginNames)
+	for (auto const &pluginName : installedPluginNames)
 		if (allPlugins.contains(pluginName))
 		{
 			if (loadedPlugins.contains(pluginName))

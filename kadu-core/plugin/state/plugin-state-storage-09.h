@@ -28,10 +28,31 @@ class QStringList;
 
 enum class PluginState;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginStateStorage09
+ * @short Loads states of plugin from 0.9 format of configuration.
+ *
+ * All reads are done using global configuration API.
+ */
 class KADUAPI PluginStateStorage09
 {
 
 public:
-	QMap<QString, PluginState> load(const ::std::set<QString> &existingPluginNames) const;
+	/**
+	 * @param installedPluginNames list of known installed plugins
+	 * @return Plugin states loaded from 0.9 format of configuration.
+	 *
+	 * If configuration in 0.9 format is not available, empty map is returned.
+	 */
+	QMap<QString, PluginState> load(const ::std::set<QString> &installedPluginNames) const;
 
 };
+
+/**
+ * @}
+ */
