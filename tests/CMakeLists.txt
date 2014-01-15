@@ -31,4 +31,4 @@ function (kadu_add_test name_)
 	target_link_libraries (${name_} LINK_PRIVATE ${pluginName} libkadu ${QT_LIBRARIES} ${QT_QTTEST_LIBRARY})
 endfunction ()
 
-add_subdirectory (auto)
+add_subdirectory (unit)
