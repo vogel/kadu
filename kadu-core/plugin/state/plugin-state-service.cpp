@@ -38,6 +38,9 @@ QMap<QString, PluginState> PluginStateService::pluginStates() const noexcept
 void PluginStateService::setPluginStates(const QMap<QString, PluginState> &pluginStates) noexcept
 {
 	m_pluginStates = pluginStates;
+	auto newPlugins = m_pluginStates.keys(PluginState::New);
+	for (auto newPlugin : newPlugins)
+		m_pluginStates.remove(newPlugin);
 }
 
 PluginState PluginStateService::pluginState(const QString &pluginName) const noexcept
@@ -55,9 +58,9 @@ void PluginStateService::setPluginState(const QString &pluginName, PluginState s
 		m_pluginStates.insert(pluginName, state);
 }
 
-QList<QString> PluginStateService::pluginsWithState(PluginState state) noexcept
+QList<QString> PluginStateService::enabledPlugins() noexcept
 {
-	return m_pluginStates.keys(state);
+	return m_pluginStates.keys(PluginState::Enabled);
 }
 
 #include "moc_plugin-state-service.cpp"

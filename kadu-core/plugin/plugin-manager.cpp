@@ -259,7 +259,7 @@ void PluginManager::activateReplacementPlugins()
 	if (!m_pluginStateService)
 		return;
 
-	for (auto const &pluginToReplace : m_pluginStateService->pluginsWithState(PluginState::Enabled))
+	for (auto const &pluginToReplace : m_pluginStateService->enabledPlugins())
 	{
 		if (m_pluginActivationService->isActive(pluginToReplace))
 			continue;

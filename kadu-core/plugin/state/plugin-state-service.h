@@ -78,14 +78,17 @@ public:
 	 * @short Set new state for plugin.
 	 * @param pluginName name of plugin
 	 * @param state new state of plugin
+	 *
+	 * If new state is PluginState::New, entry is removed. Otherwise, if no state was known for this plugin
+	 * before, a new entry is added. Otherwise, existing entry is updated to match new value.
 	 */
 	void setPluginState(const QString &pluginName, PluginState state) noexcept;
 
 	/**
-	 * @return All plugin with given state.
+	 * @return All plugin with state PluginState::Enabled.
 	 * @param state state
 	 */
-	QList<QString> pluginsWithState(PluginState state) noexcept;
+	QList<QString> enabledPlugins() noexcept;
 
 private:
 	QMap<QString, PluginState> m_pluginStates;
