@@ -35,6 +35,7 @@ class tst_PluginDependencyGraphBuilder : public QObject
 private:
 	::std::map<QString, PluginMetadata> createPlugins(const QVector<QPair<QString, QStringList>> &plugins);
 	PluginMetadata createPluginMetadata(const QPair<QString, QStringList> &plugin);
+	void verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents);
 
 private slots:
 	void simpleDependencyTest();
@@ -60,6 +61,17 @@ PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const QPai
 			.create();
 }
 
+void tst_PluginDependencyGraphBuilder::verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents)
+{
+	auto graphDependencies = graph.directDependencies(pluginName);
+	auto graphDependents = graph.directDependents(pluginName);
+
+	QCOMPARE(graphDependencies.toList().toSet(), dependencies.toSet());
+	QCOMPARE(graphDependents.toList().toSet(), dependents.toSet());
+	QCOMPARE(graphDependencies.size(), dependencies.size());
+	QCOMPARE(graphDependents.size(), dependents.size());
+}
+
 void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(QVector<QPair<QString, QStringList>>
@@ -71,38 +83,10 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 
 	QCOMPARE(graph.get()->size(), 4);
 
-	auto p1Dependencies = graph.get()->directDependencies("p1");
-	auto p1Dependents = graph.get()->directDependents("p1");
-	auto p2Dependencies = graph.get()->directDependencies("p2");
-	auto p2Dependents = graph.get()->directDependents("p2");
-	auto p3Dependencies = graph.get()->directDependencies("p3");
-	auto p3Dependents = graph.get()->directDependents("p3");
-	auto p4Dependencies = graph.get()->directDependencies("p4");
-	auto p4Dependents = graph.get()->directDependents("p4");
-
-	QVERIFY(contains(p1Dependencies, "p2"));
-	QVERIFY(contains(p1Dependencies, "p3"));
-	QVERIFY(contains(p1Dependencies, "p4"));
-	QCOMPARE(p1Dependencies.size(), 3);
-	QCOMPARE(p1Dependents.size(), 0);
-
-	QVERIFY(contains(p2Dependencies, "p3"));
-	QVERIFY(contains(p2Dependencies, "p4"));
-	QVERIFY(contains(p2Dependents, "p1"));
-	QCOMPARE(p2Dependencies.size(), 2);
-	QCOMPARE(p2Dependents.size(), 1);
-
-	QVERIFY(contains(p3Dependencies, "p4"));
-	QVERIFY(contains(p3Dependents, "p1"));
-	QVERIFY(contains(p3Dependents, "p2"));
-	QCOMPARE(p3Dependencies.size(), 1);
-	QCOMPARE(p3Dependents.size(), 2);
-
-	QVERIFY(contains(p4Dependents, "p1"));
-	QVERIFY(contains(p4Dependents, "p2"));
-	QVERIFY(contains(p4Dependents, "p3"));
-	QCOMPARE(p4Dependencies.size(), 0);
-	QCOMPARE(p4Dependents.size(), 3);
+	verifyDependencies(*graph.get(), "p1", {"p2", "p3", "p4"}, {});
+	verifyDependencies(*graph.get(), "p2", {"p3", "p4"}, {"p1"});
+	verifyDependencies(*graph.get(), "p3", {"p4"}, {"p1", "p2"});
+	verifyDependencies(*graph.get(), "p4", {}, {"p1", "p2", "p3"});
 }
 
 void tst_PluginDependencyGraphBuilder::selfDependencyTest()
@@ -114,11 +98,7 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 
 	QCOMPARE(graph.get()->size(), 1);
 
-	auto p1Dependencies = graph.get()->directDependencies("p1");
-	auto p1Dependents = graph.get()->directDependents("p1");
-
-	QCOMPARE(p1Dependencies.size(), 0);
-	QCOMPARE(p1Dependents.size(), 0);
+	verifyDependencies(*graph.get(), "p1", {}, {});
 }
 
 void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
@@ -130,15 +110,8 @@ void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 
 	QCOMPARE(graph.get()->size(), 2);
 
-	auto p1Dependencies = graph.get()->directDependencies("p1");
-	auto p1Dependents = graph.get()->directDependents("p1");
-	auto p2Dependencies = graph.get()->directDependencies("p2");
-	auto p2Dependents = graph.get()->directDependents("p2");
-
-	QCOMPARE(p1Dependencies.size(), 1);
-	QCOMPARE(p1Dependents.size(), 0);
-	QCOMPARE(p2Dependencies.size(), 0);
-	QCOMPARE(p2Dependents.size(), 1);
+	verifyDependencies(*graph.get(), "p1", {"p2"}, {});
+	verifyDependencies(*graph.get(), "p2", {}, {"p1"});
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
