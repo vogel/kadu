@@ -61,12 +61,12 @@ PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const QPai
 
 void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 {
-	auto plugins = QVector<QPair<QString, QStringList>>{};
-	plugins.append(qMakePair(QString("p1"), QStringList() << "p2" << "p3" << "p4"));
-	plugins.append(qMakePair(QString("p2"), QStringList() << "p3" << "p4"));
-	plugins.append(qMakePair(QString("p3"), QStringList() << "p4"));
-
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(plugins));
+	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	{
+		qMakePair(QString{"p1"}, QStringList{"p2", "p3", "p4"}),
+		qMakePair(QString{"p2"}, QStringList{"p3", "p4"}),
+		qMakePair(QString{"p3"}, QStringList{"p4"})
+	}));
 
 	QCOMPARE(graph.get()->size(), 4);
 
@@ -106,10 +106,10 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 
 void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 {
-	auto plugins = QVector<QPair<QString, QStringList>>{};
-	plugins.append(qMakePair(QString("p1"), QStringList() << "p1"));
-
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(plugins));
+	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	{
+		qMakePair(QString{"p1"}, QStringList{"p1"})
+	}));
 
 	QCOMPARE(graph.get()->size(), 1);
 
