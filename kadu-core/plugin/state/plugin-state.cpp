@@ -17,21 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "plugin-state.h"
 
-#include "exports.h"
+#include <QtCore/QString>
 
-#include <QtCore/QMap>
-
-class StoragePoint;
-
-enum class PluginState;
-
-class KADUAPI PluginStateStorage
+QString pluginStateToString(PluginState pluginState)
 {
+	switch (pluginState)
+	{
+		case PluginState::Enabled:
+			return QLatin1String{"Loaded"};
+		case PluginState::Disabled:
+			return QLatin1String{"NotLoaded"};
+		default:
+			return {};
+	}
+}
 
-public:
-	QMap<QString, PluginState> load(StoragePoint &storagePoint) const;
-	void store(StoragePoint &storagePoint, const QMap<QString, PluginState> &pluginStates) const;
-
-};
+PluginState stringToPluginState(const QString &string)
+{
+	if (string == QLatin1String{"Loaded"})
+		return PluginState::Enabled;
+	else if (string == QLatin1String{"NotLoaded"})
+		return PluginState::Disabled;
+	else
+		return PluginState::New;
+}

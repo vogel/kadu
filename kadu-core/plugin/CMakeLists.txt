@@ -13,6 +13,7 @@ set (plugin_SRCS
 	metadata/plugin-metadata-reader.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
+	state/plugin-state.cpp
 	state/plugin-state-service.cpp
 	state/plugin-state-storage.cpp
 	state/plugin-state-storage-09.cpp

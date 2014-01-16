@@ -23,6 +23,10 @@
 
 #pragma once
 
+#include "exports.h"
+
+class QString;
+
 /**
  * @addtogroup Plugin
  * @{
@@ -55,6 +59,18 @@ enum class PluginState
 	Enabled
 
 };
+
+/**
+ * @short Translate plugin state enum to string.
+ */
+KADUAPI QString pluginStateToString(PluginState pluginState);
+
+/**
+ * @short Translate string to plugin state enum.
+ *
+ * In case of invalid string returns PluginState::New.
+ */
+KADUAPI PluginState stringToPluginState(const QString &string);
 
 /**
  * @}
