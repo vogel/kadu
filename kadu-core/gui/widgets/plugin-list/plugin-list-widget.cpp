@@ -40,6 +40,7 @@
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state.h"
+#include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
 
 #include "plugin-list-widget.h"
@@ -104,6 +105,11 @@ void PluginListWidget::setPluginActivationService(PluginActivationService *plugi
 	Model->loadPluginData();
 }
 
+void PluginListWidget::setPluginStateManager(PluginStateManager *pluginStateManager)
+{
+	m_pluginStateManager = pluginStateManager;
+}
+
 void PluginListWidget::setPluginStateService(PluginStateService *pluginStateService)
 {
 	m_pluginStateService = pluginStateService;
@@ -153,7 +159,7 @@ void PluginListWidget::applyChanges()
 
 	if (storeList)
 	{
-		m_pluginManager->storePluginStates();
+		m_pluginStateManager->storePluginStates();
 		ConfigurationManager::instance()->flush();
 	}
 

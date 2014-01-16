@@ -46,8 +46,6 @@ class PluginActivationService;
 class PluginDependencyGraphBuilder;
 class PluginMetadataFinder;
 class PluginStateService;
-class StoragePoint;
-class StoragePointFactory;
 
 enum class PluginState;
 
@@ -99,13 +97,11 @@ public:
 	void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
 	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
 	void setPluginStateService(PluginStateService *pluginStateService);
-	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 	Iterator begin();
 	Iterator end();
 
 	void initialize();
-	void storePluginStates();
 
 	std::set<QString> pluginNames() const;
 	bool hasPluginMetadata(const QString &pluginName) const;
@@ -130,15 +126,12 @@ private:
 	QPointer<PluginDependencyGraphBuilder> m_pluginDependencyGraphBuilder;
 	QPointer<PluginMetadataFinder> m_pluginMetadataFinder;
 	QPointer<PluginStateService> m_pluginStateService;
-	QPointer<StoragePointFactory> m_storagePointFactory;
 
 	std::map<QString, PluginMetadata> m_allPluginMetadata;
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
 	void loadPluginMetadata();
 	void prepareDependencyGraph();
-	void loadPluginStates();
-	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 
 	QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &){ return true; }) const;
 

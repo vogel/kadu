@@ -40,6 +40,7 @@ class PluginModel;
 class PluginListWidgetItemDelegate;
 class PluginManager;
 class PluginProxyModel;
+class PluginStateManager;
 class PluginStateService;
 
 /**
@@ -59,6 +60,7 @@ class PluginListWidget : public QWidget
 	friend class PluginProxyModel;
 
 	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginStateManager> m_pluginStateManager;
 	QPointer<PluginStateService> m_pluginStateService;
 	QPointer<PluginManager> m_pluginManager;
 
@@ -84,6 +86,7 @@ public:
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginManager(PluginManager *pluginManager);
+	void setPluginStateManager(PluginStateManager *pluginStateManager);
 	void setPluginStateService(PluginStateService *pluginStateService);
 
 	void applyChanges();

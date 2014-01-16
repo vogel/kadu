@@ -91,6 +91,7 @@
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/metadata/plugin-metadata-reader.h"
 #include "plugin/plugin-manager.h"
+#include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state-storage.h"
 #include "protocols/protocol-factory.h"
@@ -192,7 +193,7 @@ Core::~Core()
 {
 	IsClosing = true;
 
-	CurrentPluginManager->storePluginStates();
+	CurrentPluginStateManager->storePluginStates();
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
@@ -462,7 +463,7 @@ void Core::init()
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	CurrentPluginManager->activateProtocolPlugins();
-	CurrentPluginManager->storePluginStates();
+	CurrentPluginStateManager->storePluginStates();
 	ConfigurationManager::instance()->flush();
 
 	Myself.setAnonymous(false);
@@ -683,6 +684,7 @@ void Core::runServices()
 
 	CurrentPluginMetadataFinder = new PluginMetadataFinder(this);
 	CurrentPluginMetadataReader = new PluginMetadataReader(this);
+	CurrentPluginStateManager = new PluginStateManager(this);
 	CurrentPluginStateService = new PluginStateService(this);
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
@@ -695,12 +697,16 @@ void Core::runServices()
 	CurrentPluginManager->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
 	CurrentPluginManager->setPluginMetadataFinder(CurrentPluginMetadataFinder);
 	CurrentPluginManager->setPluginStateService(CurrentPluginStateService);
-	CurrentPluginManager->setStoragePointFactory(CurrentStoragePointFactory);
 
 	CurrentPluginActivationErrorHandler->setPluginActivationService(CurrentPluginActivationService);
 	CurrentPluginActivationErrorHandler->setPluginStateService(CurrentPluginStateService);
 
+	CurrentPluginStateManager->setPluginManager(CurrentPluginManager);
+	CurrentPluginStateManager->setPluginStateService(CurrentPluginStateService);
+	CurrentPluginStateManager->setStoragePointFactory(CurrentStoragePointFactory);
+
 	CurrentPluginManager->initialize();
+	CurrentPluginStateManager->loadPluginStates();
 }
 
 void Core::runGuiServices()
@@ -721,7 +727,7 @@ void Core::activatePlugins()
 {
 	CurrentPluginManager->activatePlugins();
 	CurrentPluginManager->activateReplacementPlugins();
-	CurrentPluginManager->storePluginStates();
+	CurrentPluginStateManager->storePluginStates();
 	ConfigurationManager::instance()->flush();
 }
 
@@ -893,6 +899,11 @@ PluginMetadataFinder * Core::pluginMetadataFinder() const
 PluginMetadataReader * Core::pluginMetadataReader() const
 {
 	return CurrentPluginMetadataReader;
+}
+
+PluginStateManager * Core::pluginStateManager() const
+{
+	return CurrentPluginStateManager;
 }
 
 PluginStateService * Core::pluginStateService() const

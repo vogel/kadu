@@ -234,6 +234,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	PluginList = new PluginListWidget(this);
 	PluginList->setPluginActivationService(Core::instance()->pluginActivationService());
 	PluginList->setPluginManager(Core::instance()->pluginManager());
+	PluginList->setPluginStateManager(Core::instance()->pluginStateManager());
 	PluginList->setPluginStateService(Core::instance()->pluginStateService());
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 
