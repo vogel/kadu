@@ -36,6 +36,7 @@ enum class PluginState;
 /**
  * @class PluginStateStorage09
  * @short Loads states of plugin from 0.9 format of configuration.
+ * @todo Split into two classes which can be unit-tested.
  *
  * All reads are done using global configuration API.
  */
