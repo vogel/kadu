@@ -87,11 +87,50 @@ public:
 	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	void setPluginStateService(PluginStateService *pluginStateService);
 
+	/**
+	 * @short Activate all protocols plugins that are enabled.
+	 *
+	 * This method activates all plugins with type "protocol" that are either enabled (PluginState::Enabled)
+	 * or new (PluginState::New) with attribute "load by default" set. This method is generally called before
+	 * any other activation to ensure that all protocols and accounts are available for other plugins.
+	 */
 	void activateProtocolPlugins();
+
+	/**
+	 * @short Activate all plugins that are enabled.
+	 *
+	 * This method activates all plugins that are either enabled (PluginState::Enabled) or new (PluginState::New)
+	 * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is searched
+	 * (by checking Plugin::replaces()). Any found replacement plugin is activated.
+	 */
 	void activatePlugins();
 	void activateReplacementPlugins();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Activate all plugins that are enabled.
+	 *
+	 * This method deactivated all active plugins. First iteration of deactivation check Plugin::usageCounter() value
+	 * to check if given plugin can be safely removed (no other active plugins depends on it). This procedure is
+	 * performed for all active plugins until no more plugins can be deactivated. Then second iteration is performed.
+	 * This time no checks are performed.
+	 */
 	void deactivatePlugins();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Activates given plugin and all its dependencies.
+	 * @param plugin plugin to activate
+	 * @return true, if plugin was successfully activated
+	 *
+	 * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
+	 * is found and all dependencies can be activated. In other case false is returned and plugin will not be activated.
+	 * Please note that no dependency plugin activated in this method will be automatically deactivated if
+	 * this method fails, so list of active plugins can be changed even if plugin could not be activated.
+	 *
+	 * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
+	 * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
+	 */
 	bool activatePluginWithDependencies(const QString &pluginName) noexcept;
 	void deactivatePluginWithDependents(const QString &pluginName) noexcept;
 
@@ -105,8 +144,25 @@ private:
 
 	void activatePlugin(const QString &pluginName) noexcept(false);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns name of active plugin that provides given feature.
+	 * @param feature feature to search
+	 * @return name of active plugins that conflicts provides given feature.
+	 */
 	QString findActiveProviding(const QString &feature) const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns true if this plugin should be activated.
+	 * @return true if this plugin should be activated
+	 *
+	 * Module should be activated only if:
+	 * <ul>
+	 *   <li>it is valid (has .desc file associated with it)
+	 *   <li>is either PluginState::Enabled or PluginState::New with PluginMetadata::loadByDefault() set to true
+	 * </ul>
+	 */
 	bool shouldActivate(const PluginMetadata &pluginMetadata) const noexcept;
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
