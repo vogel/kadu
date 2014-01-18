@@ -20,7 +20,6 @@
 #include "plugin-dependency-graph-builder.h"
 
 #include "misc/algorithm.h"
-#include "misc/graph/graph-algorithm.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/metadata/plugin-metadata.h"
 
@@ -36,17 +35,17 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const
 {
 	auto fullGraph = buildGraph(plugins);
-	auto pluginsInCycles = graph_find_cycles<PluginDependencyGraph::PluginDependencyTag>(fullGraph.m_graph);
+	auto pluginsInCycles = fullGraph.findPluginsInDependencyCycle();
 
 	std::map<QString, PluginMetadata> pluginsWithoutCycles = filtered(plugins, pluginsInCycles);
 	auto noCyclesGraph = buildGraph(pluginsWithoutCycles);
-	auto pluginsToRemove = std::set<QString>{};
+	auto pluginsToRemove = QSet<QString>{};
 
 	for (auto const &invalidPlugin : invalidPlugins(noCyclesGraph, plugins))
 	{
 		pluginsToRemove.insert(invalidPlugin);
-		for (auto dependent : graph_sort_successors<PluginDependencyGraph::PluginDependentTag>(fullGraph.m_graph, invalidPlugin))
-			pluginsToRemove.insert(dependent->payload());
+		for (auto dependent : noCyclesGraph.findDependents(invalidPlugin))
+			pluginsToRemove.insert(dependent);
 	}
 
 	std::map<QString, PluginMetadata> validPlugins = filtered(pluginsWithoutCycles, pluginsToRemove);
@@ -81,7 +80,7 @@ std::set<QString> PluginDependencyGraphBuilder::invalidPlugins(const PluginDepen
 	return result;
 }
 
-std::map<QString, PluginMetadata> PluginDependencyGraphBuilder::filtered(const std::map<QString, PluginMetadata> &original, const std::set<QString> &invalid) const
+std::map<QString, PluginMetadata> PluginDependencyGraphBuilder::filtered(const std::map<QString, PluginMetadata> &original, const QSet<QString> &invalid) const
 {
 	std::map<QString, PluginMetadata> result;
 	std::copy_if(std::begin(original), std::end(original), std::inserter(result, result.begin()),

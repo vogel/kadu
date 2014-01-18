@@ -45,8 +45,6 @@
  */
 class KADUAPI PluginDependencyGraph
 {
-	friend class PluginDependencyGraphBuilder;
-
 	struct PluginDependencyTag {};
 	struct PluginDependentTag {};
 
