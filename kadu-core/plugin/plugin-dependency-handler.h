@@ -120,7 +120,7 @@ public:
 	 * @param pluginName Plugin name to get list of dependencies for.
 	 * @return Tophographically sorted list of plugin with dependencies.
 	 *
-	 * If dependency graph was not created an empty list is returned. Else a list
+	 * If dependency graph was not created or plugin is not known an empty list is returned. Else a list
 	 * of tophographically sorted dependencies for plugin is returned (with provided plugin name
 	 * at the end).
 	 */
@@ -130,7 +130,7 @@ public:
 	 * @param pluginName Plugin name to get list of dependents for.
 	 * @return Tophographically sorted list of plugin with dependents.
 	 *
-	 * If dependency graph was not created an empty list is returned. Else a list
+	 * If dependency graph was not created or plugin is not known an empty list is returned. Else a list
 	 * of tophographically sorted dependents for plugin is returned (with provided plugin name
 	 * at the end).
 	 */
