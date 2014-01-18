@@ -106,20 +106,16 @@ PluginMetadata PluginDependencyHandler::pluginMetadata(const QString &pluginName
 
 QVector<QString> PluginDependencyHandler::withDependencies(const QString &pluginName) noexcept
 {
-	auto result = m_pluginDependencyDAG
-			? m_pluginDependencyDAG.get()->findDependencies(pluginName)
+	return m_pluginDependencyDAG
+			? m_pluginDependencyDAG.get()->findDependencies(pluginName) << pluginName
 			: QVector<QString>{};
-	result.append(pluginName);
-	return result;
 }
 
 QVector<QString> PluginDependencyHandler::withDependents(const QString &pluginName) noexcept
 {
-	auto result = m_pluginDependencyDAG
-			? m_pluginDependencyDAG.get()->findDependents(pluginName)
+	return m_pluginDependencyDAG
+			? m_pluginDependencyDAG.get()->findDependents(pluginName) << pluginName
 			: QVector<QString>{};
-	result.append(pluginName);
-	return result;
 }
 
 #include "moc_plugin-dependency-handler.cpp"

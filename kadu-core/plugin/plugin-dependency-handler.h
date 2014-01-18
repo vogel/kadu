@@ -32,6 +32,24 @@ class PluginDependencyGraphBuilder;
 class PluginMetadata;
 class PluginMetadataFinder;
 
+/**
+ * @addtogroup Plugin
+ * @{
+ */
+
+/**
+ * @class PluginDependencyHandler
+ * @short Handles dependencies of installed plugins.
+ * @todo Think if something like PluginMetadataRepository could be extracted from it.
+ *
+ * This service is used to compute dependency lists of all installed plugins. List of plugins
+ * is fetched from @see PluginMetadataFinder services. Then all plugins that form dependency cycles
+ * are removed from list and dependency graph is created from remaining ones.  Metadata for these
+ * plugins can be retrieived using for-range loop (as begin() and end() methods are implemented).
+ *
+ * Plugin list with all of its dependencies (or dependents) can be easily obrained by @see withDependencies
+ * and @see withDependents methods.
+ */
 class PluginDependencyHandler : public QObject
 {
 	Q_OBJECT
@@ -45,19 +63,77 @@ public:
 	explicit PluginDependencyHandler(QObject *parent = nullptr);
 	virtual ~PluginDependencyHandler();
 
+	/**
+	 * @short Set @see PluginDependencyGraphBuilder service.
+	 *
+	 * PluginDependencyGraphBuilder is used to create dependency graph from metadata loaded by
+	 * @see PluginMetadataFinder.
+	 */
 	void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
+
+	/**
+	 * @short Set @see PluginMetadataFinder service.
+	 *
+	 * PluginMetadataFinder is used to get list of all plugins available for application.
+	 */
 	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
 
+	/**
+	 * @return Return begin iterator for @see PluginMetadata list.
+	 */
 	Iterator begin();
+
+	/**
+	 * @return Return end iterator for @see PluginMetadata list.
+	 */
 	Iterator end();
 
+	/**
+	 * @short Initialize service data.
+	 *
+	 * This method must be called after all services were set.
+	 * List of plugin metadata is read and dependency graph is created.
+	 */
 	void initialize();
 
+	/**
+	 * @return Set of names of plugins that are not in dependency cycle.
+	 */
 	std::set<QString> pluginNames() const;
+
+	/**
+	 * @param pluginName Plugin name to check.
+	 * @return True if metadata for given plugin was loaded and this plugin is not in dependency cycle.
+	 */
 	bool hasPluginMetadata(const QString &pluginName) const;
+
+	/**
+	 * @param pluginName Plugin name to get metadata for.
+	 * @return Metadata for plugin with given name.
+	 * @throws std::out_of_range if plugin metadata not available.
+	 *
+	 * Before calling this method check that plugin metadata exists with @see hasPluginMetadata.
+	 */
 	PluginMetadata pluginMetadata(const QString &pluginName) const;
 
+	/**
+	 * @param pluginName Plugin name to get list of dependencies for.
+	 * @return Tophographically sorted list of plugin with dependencies.
+	 *
+	 * If dependency graph was not created an empty list is returned. Else a list
+	 * of tophographically sorted dependencies for plugin is returned (with provided plugin name
+	 * at the end).
+	 */
 	QVector<QString> withDependencies(const QString &pluginName) noexcept;
+
+	/**
+	 * @param pluginName Plugin name to get list of dependents for.
+	 * @return Tophographically sorted list of plugin with dependents.
+	 *
+	 * If dependency graph was not created an empty list is returned. Else a list
+	 * of tophographically sorted dependents for plugin is returned (with provided plugin name
+	 * at the end).
+	 */
 	QVector<QString> withDependents(const QString &pluginName) noexcept;
 
 private:
@@ -74,12 +150,22 @@ private:
 
 };
 
+/**
+ * @return Return begin iterator for @see PluginMetadata list stored in \p pluginDependencyHandler.
+ */
 inline PluginDependencyHandler::Iterator begin(PluginDependencyHandler *pluginDependencyHandler)
 {
 	return pluginDependencyHandler->begin();
 }
 
+/**
+ * @return Return end iterator for @see PluginMetadata list stored in \p pluginDependencyHandler.
+ */
 inline PluginDependencyHandler::Iterator end(PluginDependencyHandler *pluginDependencyHandler)
 {
 	return pluginDependencyHandler->end();
 }
+
+/**
+ * @}
+ */
