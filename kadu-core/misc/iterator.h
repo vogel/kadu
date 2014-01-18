@@ -28,7 +28,7 @@ class IteratorWrapper
 public:
 	using Converter = std::function<Type(Iterator)>;
 
-	inline explicit IteratorWrapper(Iterator iterator, Converter converter) : m_iterator{iterator}, m_converter{converter} {}
+	inline IteratorWrapper(Iterator iterator, Converter converter) : m_iterator{iterator}, m_converter{converter} {}
 
 	inline bool operator != (const IteratorWrapper &compareTo) const
 	{

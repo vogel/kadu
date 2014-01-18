@@ -19,7 +19,7 @@
 
 #include "plugin-state-manager.h"
 
-#include "plugin/plugin-manager.h"
+#include "plugin/plugin-dependency-handler.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state-storage.h"
 #include "plugin/state/plugin-state-storage-09.h"
@@ -35,9 +35,9 @@ PluginStateManager::~PluginStateManager()
 {
 }
 
-void PluginStateManager::setPluginManager(PluginManager *pluginManager)
+void PluginStateManager::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
-	m_pluginManager = pluginManager;
+	m_pluginDependencyHandler = pluginDependencyHandler;
 }
 
 void PluginStateManager::setPluginStateService(PluginStateService *pluginStateService)
@@ -52,7 +52,7 @@ void PluginStateManager::setStoragePointFactory(StoragePointFactory *storagePoin
 
 void PluginStateManager::loadPluginStates()
 {
-	if (!m_pluginManager || !m_pluginStateService || !m_storagePointFactory)
+	if (!m_pluginDependencyHandler || !m_pluginStateService || !m_storagePointFactory)
 		return;
 
 	auto storagePoint = m_storagePointFactory->createStoragePoint(QLatin1String{"Plugins"});
@@ -70,7 +70,7 @@ QMap<QString, PluginState> PluginStateManager::loadPluginStates(StoragePoint *st
 {
 	return importedFrom09
 			? PluginStateStorage{}.load(*storagePoint)
-			: PluginStateStorage09{}.load(m_pluginManager->pluginNames());
+			: PluginStateStorage09{}.load(m_pluginDependencyHandler->pluginNames());
 }
 
 void PluginStateManager::storePluginStates()

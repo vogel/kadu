@@ -30,9 +30,9 @@
 #include <QtCore/QPointer>
 
 class PluginActivationService;
+class PluginDependencyHandler;
 class PluginEntry;
 class PluginListWidget;
-class PluginManager;
 
 class PluginModel : public QAbstractListModel
 {
@@ -50,7 +50,7 @@ public:
 	virtual ~PluginModel();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
-	void setPluginManager(PluginManager *pluginManager);
+	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 
 	virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex{}) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -61,7 +61,7 @@ public:
 
 private:
 	QPointer<PluginActivationService> m_pluginActivationService;
-	QPointer<PluginManager> m_pluginManager;
+	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 
 	PluginListWidget *m_pluginListWidget;
 	QList<PluginEntry> m_pluginEntries;

@@ -24,7 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-class PluginManager;
+class PluginDependencyHandler;
 class PluginStateService;
 class StoragePoint;
 class StoragePointFactory;
@@ -52,7 +52,7 @@ public:
 	explicit PluginStateManager(QObject *parent = nullptr);
 	virtual ~PluginStateManager();
 
-	void setPluginManager(PluginManager *pluginManager);
+	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	void setPluginStateService(PluginStateService *pluginStateService);
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
@@ -75,7 +75,7 @@ public:
 	void storePluginStates();
 
 private:
-	QPointer<PluginManager> m_pluginManager;
+	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateService> m_pluginStateService;
 	QPointer<StoragePointFactory> m_storagePointFactory;
 

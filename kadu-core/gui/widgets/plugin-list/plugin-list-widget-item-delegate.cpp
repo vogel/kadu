@@ -48,7 +48,7 @@
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
-#include "plugin/plugin-manager.h"
+#include "plugin/plugin-dependency-handler.h"
 
 #include "plugin-list-widget-item-delegate.h"
 
@@ -230,9 +230,9 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 
         auto pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
 
-		if (Core::instance()->pluginManager()->hasPluginMetadata(pluginEntry->pluginName))
+		if (Core::instance()->pluginDependencyHandler()->hasPluginMetadata(pluginEntry->pluginName))
 		{
-			auto const &pluginMetadata = Core::instance()->pluginManager()->pluginMetadata(pluginEntry->pluginName);
+			auto const &pluginMetadata = Core::instance()->pluginDependencyHandler()->pluginMetadata(pluginEntry->pluginName);
 
 			info += tr("Author: %1").arg(pluginMetadata.author()) + "\n";
 			info += tr("Version: %1").arg(pluginMetadata.version()) + "\n";

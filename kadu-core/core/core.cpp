@@ -90,6 +90,7 @@
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/metadata/plugin-metadata-reader.h"
+#include "plugin/plugin-dependency-handler.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
@@ -691,21 +692,24 @@ void Core::runServices()
 
 	CurrentPluginMetadataFinder->setPluginMetadataReader(CurrentPluginMetadataReader);
 
+	CurrentPluginDependencyHandler = new PluginDependencyHandler(this);
+	CurrentPluginDependencyHandler->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
+	CurrentPluginDependencyHandler->setPluginMetadataFinder(CurrentPluginMetadataFinder);
+
 	CurrentPluginManager = new PluginManager(this);
 	CurrentPluginManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
 	CurrentPluginManager->setPluginActivationService(CurrentPluginActivationService);
-	CurrentPluginManager->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
-	CurrentPluginManager->setPluginMetadataFinder(CurrentPluginMetadataFinder);
+	CurrentPluginManager->setPluginDependencyHandler(CurrentPluginDependencyHandler);
 	CurrentPluginManager->setPluginStateService(CurrentPluginStateService);
 
 	CurrentPluginActivationErrorHandler->setPluginActivationService(CurrentPluginActivationService);
 	CurrentPluginActivationErrorHandler->setPluginStateService(CurrentPluginStateService);
 
-	CurrentPluginStateManager->setPluginManager(CurrentPluginManager);
+	CurrentPluginStateManager->setPluginDependencyHandler(CurrentPluginDependencyHandler);
 	CurrentPluginStateManager->setPluginStateService(CurrentPluginStateService);
 	CurrentPluginStateManager->setStoragePointFactory(CurrentStoragePointFactory);
 
-	CurrentPluginManager->initialize();
+	CurrentPluginDependencyHandler->initialize();
 	CurrentPluginStateManager->loadPluginStates();
 }
 
@@ -889,6 +893,11 @@ PluginActivationService * Core::pluginActivationService() const
 PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
 {
 	return CurrentPluginDependencyGraphBuilder;
+}
+
+PluginDependencyHandler * Core::pluginDependencyHandler() const
+{
+	return CurrentPluginDependencyHandler;
 }
 
 PluginMetadataFinder * Core::pluginMetadataFinder() const

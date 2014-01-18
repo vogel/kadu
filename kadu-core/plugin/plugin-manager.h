@@ -31,20 +31,15 @@
 
 #pragma once
 
-#include "misc/iterator.h"
-#include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "exports.h"
 
-#include <memory>
-#include <set>
-#include <QtCore/QMap>
 #include <QtCore/QPointer>
+#include <QtCore/QVector>
 
 class PluginActivationErrorHandler;
 class PluginActivationService;
-class PluginDependencyGraphBuilder;
-class PluginMetadataFinder;
+class PluginDependencyHandler;
 class PluginStateService;
 
 enum class PluginState;
@@ -83,55 +78,28 @@ class KADUAPI PluginManager : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(PluginManager)
 
-	using Storage = std::map<QString, PluginMetadata>;
-	using WrappedIterator = Storage::iterator;
-
 public:
-	using Iterator = IteratorWrapper<WrappedIterator, PluginMetadata>;
-
 	explicit PluginManager(QObject *parent = nullptr);
 	virtual ~PluginManager();
 
 	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
-	void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
-	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
+	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	void setPluginStateService(PluginStateService *pluginStateService);
-
-	Iterator begin();
-	Iterator end();
-
-	void initialize();
-
-	std::set<QString> pluginNames() const;
-	bool hasPluginMetadata(const QString &pluginName) const;
-	PluginMetadata pluginMetadata(const QString &pluginName) const;
 
 	void activateProtocolPlugins();
 	void activatePlugins();
 	void activateReplacementPlugins();
 	void deactivatePlugins();
 
-	QVector<QString> withDependencies(const QString &pluginName) noexcept;
-	QVector<QString> withDependents(const QString &pluginName) noexcept;
-
 	bool activatePluginWithDependencies(const QString &pluginName) noexcept;
 	void deactivatePluginWithDependents(const QString &pluginName) noexcept;
 
 private:
-	static PluginMetadata converter(WrappedIterator iterator);
-
 	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QPointer<PluginActivationService> m_pluginActivationService;
-	QPointer<PluginDependencyGraphBuilder> m_pluginDependencyGraphBuilder;
-	QPointer<PluginMetadataFinder> m_pluginMetadataFinder;
+	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateService> m_pluginStateService;
-
-	std::map<QString, PluginMetadata> m_allPluginMetadata;
-	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
-
-	void loadPluginMetadata();
-	void prepareDependencyGraph();
 
 	QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &){ return true; }) const;
 
@@ -143,16 +111,6 @@ private:
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
 };
-
-inline PluginManager::Iterator begin(PluginManager *pluginManager)
-{
-	return pluginManager->begin();
-}
-
-inline PluginManager::Iterator end(PluginManager *pluginManager)
-{
-	return pluginManager->end();
-}
 
 /**
  * @}

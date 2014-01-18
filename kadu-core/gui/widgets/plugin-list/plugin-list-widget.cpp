@@ -35,9 +35,11 @@
 #include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list/plugin-list-widget-item-delegate.h"
 #include "gui/windows/main-configuration-window.h"
+#include "misc/algorithm.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
+#include "plugin/plugin-dependency-handler.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-manager.h"
@@ -101,7 +103,14 @@ PluginListWidget::~PluginListWidget()
 void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
 	m_pluginActivationService = pluginActivationService;
-	Model->setPluginActivationService(pluginActivationService);
+	Model->setPluginActivationService(m_pluginActivationService);
+	Model->loadPluginData();
+}
+
+void PluginListWidget::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
+{
+	m_pluginDependencyHandler = pluginDependencyHandler;
+	Model->setPluginDependencyHandler(m_pluginDependencyHandler);
 	Model->loadPluginData();
 }
 
@@ -118,8 +127,6 @@ void PluginListWidget::setPluginStateService(PluginStateService *pluginStateServ
 void PluginListWidget::setPluginManager(PluginManager *pluginManager)
 {
 	m_pluginManager = pluginManager;
-	Model->setPluginManager(pluginManager);
-	Model->loadPluginData();
 }
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
@@ -140,8 +147,8 @@ void PluginListWidget::applyChanges()
 		{
 			storeList = true;
 			m_pluginManager->deactivatePluginWithDependents(pluginName);
-			if (m_pluginStateService)
-				for (auto const &dependentPlugin : m_pluginManager->withDependents(pluginName))
+			if (m_pluginDependencyHandler && m_pluginStateService)
+				for (auto const &dependentPlugin : m_pluginDependencyHandler->withDependents(pluginName))
 					m_pluginStateService->setPluginState(dependentPlugin, PluginState::Disabled);
 		}
 
@@ -149,8 +156,8 @@ void PluginListWidget::applyChanges()
 			if (m_pluginManager->activatePluginWithDependencies(pluginName))
 			{
 				storeList = true;
-				if (m_pluginStateService)
-					for (auto const &dependencyPlugin : m_pluginManager->withDependencies(pluginName))
+				if (m_pluginDependencyHandler && m_pluginStateService)
+					for (auto const &dependencyPlugin : m_pluginDependencyHandler->withDependencies(pluginName))
 						m_pluginStateService->setPluginState(dependencyPlugin, PluginState::Enabled);
 			}
 	}
@@ -204,8 +211,8 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 	auto checked = topLeft.data(Qt::CheckStateRole).toBool();
 
 	auto otherPlugins = checked
-			? m_pluginManager.data()->withDependencies(pluginName)
-			: m_pluginManager.data()->withDependents(pluginName);
+			? m_pluginDependencyHandler->withDependencies(pluginName)
+			: m_pluginDependencyHandler->withDependents(pluginName);
 	setAllChecked(otherPlugins, checked);
 
 	m_processingChange = false;

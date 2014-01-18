@@ -28,7 +28,7 @@
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/metadata/plugin-metadata.h"
-#include "plugin/plugin-manager.h"
+#include "plugin/plugin-dependency-handler.h"
 
 #include "plugin-model.h"
 
@@ -46,21 +46,21 @@ void PluginModel::setPluginActivationService(PluginActivationService *pluginActi
 	m_pluginActivationService = pluginActivationService;
 }
 
-void PluginModel::setPluginManager(PluginManager *pluginManager)
+void PluginModel::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
-	m_pluginManager = pluginManager;
+	m_pluginDependencyHandler = pluginDependencyHandler;
 }
 
 void PluginModel::loadPluginData()
 {
-	if (!m_pluginActivationService || !m_pluginManager)
+	if (!m_pluginActivationService || !m_pluginDependencyHandler)
 		return;
 
 	beginResetModel();
 
 	m_pluginEntries.clear();
 
-	for (auto const &pluginMetadata : m_pluginManager.data())
+	for (auto const &pluginMetadata : m_pluginDependencyHandler)
 		m_pluginEntries.append({
 			!pluginMetadata.category().isEmpty() ? pluginMetadata.category() : "Misc",
 			!pluginMetadata.displayName().isEmpty() ? pluginMetadata.displayName() : pluginMetadata.name(),
