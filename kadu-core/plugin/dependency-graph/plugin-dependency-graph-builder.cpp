@@ -20,6 +20,7 @@
 #include "plugin-dependency-graph-builder.h"
 
 #include "misc/algorithm.h"
+#include "misc/graph/graph-algorithm.h"
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/metadata/plugin-metadata.h"
@@ -33,7 +34,26 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 {
 }
 
-std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(const ::std::map<QString, PluginMetadata> &plugins) const
+std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const
+{
+	auto fullGraph = buildGraph(plugins);
+	auto pluginsInCycles = graph_find_cycles<PluginDependencyGraph::PluginDependencyTag>(fullGraph.get()->m_graph);
+
+	std::map<QString, PluginMetadata> pluginsWithoutCycles;
+	std::copy_if(std::begin(plugins), std::end(plugins), std::inserter(pluginsWithoutCycles, pluginsWithoutCycles.begin()),
+		[&pluginsInCycles](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsInCycles, v.first); });
+
+	auto noCyclesGraph = buildGraph(pluginsWithoutCycles);
+	auto pluginsToRemove = invalidPlugins(*fullGraph.get(), plugins);
+
+	std::map<QString, PluginMetadata> validPlugins;
+	std::copy_if(std::begin(pluginsWithoutCycles), std::end(pluginsWithoutCycles), std::inserter(validPlugins, validPlugins.begin()),
+		[&pluginsToRemove](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsToRemove, v.first); });
+
+	return buildGraph(validPlugins);
+}
+
+std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(const std::map<QString, PluginMetadata> &plugins) const
 {
 	auto result = make_unique<PluginDependencyGraph>();
 
@@ -45,4 +65,18 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 	}
 
 	return std::move(result);
+}
+
+std::set<QString> PluginDependencyGraphBuilder::invalidPlugins(const PluginDependencyGraph &graph, const std::map<QString, PluginMetadata> &plugins) const
+{
+	auto pluginInGraph = graph.plugins();
+	auto pluginsWithMetadata = std::set<QString>{};
+	std::transform(std::begin(plugins), std::end(plugins), std::inserter(pluginsWithMetadata, pluginsWithMetadata.begin()),
+		[](const std::map<QString, PluginMetadata>::value_type &v){ return v.first; }
+	);
+
+	auto result = std::set<QString>{};
+	std::set_difference(std::begin(pluginInGraph), std::end(pluginInGraph), std::begin(pluginsWithMetadata), std::end(pluginsWithMetadata),
+		std::inserter(result, result.begin()));
+	return result;
 }

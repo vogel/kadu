@@ -71,7 +71,7 @@ void PluginDependencyHandler::loadPluginMetadata()
 		return;
 
 	auto pluginMetatada = m_pluginMetadataFinder->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
-	auto dependencyGraph = m_pluginDependencyGraphBuilder->buildGraph(pluginMetatada);
+	auto dependencyGraph = m_pluginDependencyGraphBuilder->buildValidGraph(pluginMetatada);
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 
 	std::copy_if(std::begin(pluginMetatada), std::end(pluginMetatada), std::inserter(m_allPluginMetadata, m_allPluginMetadata.begin()),
@@ -83,7 +83,7 @@ void PluginDependencyHandler::prepareDependencyGraph()
 	if (!m_pluginDependencyGraphBuilder)
 		return;
 
-	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder->buildGraph(m_allPluginMetadata);
+	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder->buildValidGraph(m_allPluginMetadata);
 }
 
 std::set<QString> PluginDependencyHandler::pluginNames() const

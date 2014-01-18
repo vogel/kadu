@@ -20,6 +20,7 @@
 #pragma once
 
 #include <map>
+#include <set>
 #include <QtCore/QObject>
 
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
@@ -48,10 +49,16 @@ public:
 	 * @short Build plugin dependency graph from @see PluginMetadata objects.
 	 * @param plugins List of @see PluginMetadata objects.
 	 *
-	 * Returns newly built @see PluginDependencyGraph that contains all relations that could
-	 * be read from \p plugins set of PluginMetadata objects.
+	 * Plugin dependency graph is build from all all relations that could be read from \p plugins
+	 * parameter. In second phase all plugins that have to entry in \p plugins parameter are removed
+	 * from graph with all of their dependents. So resulting graph contains only valid entries with
+	 * associated metadata.
 	 */
-	std::unique_ptr<PluginDependencyGraph> buildGraph(const ::std::map<QString, PluginMetadata> &plugins) const;
+	std::unique_ptr<PluginDependencyGraph> buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const;
+
+private:
+	std::unique_ptr<PluginDependencyGraph> buildGraph(const std::map<QString, PluginMetadata> &plugins) const;
+	std::set<QString> invalidPlugins(const PluginDependencyGraph &graph, const std::map<QString, PluginMetadata> &plugins) const;
 
 };
 

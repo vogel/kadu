@@ -74,7 +74,7 @@ void tst_PluginDependencyGraphBuilder::verifyDependencies(const PluginDependency
 
 void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 {
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
 	{
 		qMakePair(QString{"p1"}, QStringList{"p2", "p3", "p4"}),
 		qMakePair(QString{"p2"}, QStringList{"p3", "p4"}),
@@ -91,7 +91,7 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 
 void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 {
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
 	{
 		qMakePair(QString{"p1"}, QStringList{"p1"})
 	}));
@@ -103,7 +103,7 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 
 void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 {
-	auto graph = PluginDependencyGraphBuilder{}.buildGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
 	{
 		qMakePair(QString{"p1"}, QStringList{"p2"})
 	}));
