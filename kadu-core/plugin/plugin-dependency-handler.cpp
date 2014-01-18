@@ -67,15 +67,10 @@ void PluginDependencyHandler::initialize()
 
 void PluginDependencyHandler::loadPluginMetadata()
 {
-	if (!m_pluginDependencyGraphBuilder || !m_pluginMetadataFinder)
+	if (!m_pluginMetadataFinder)
 		return;
 
-	auto pluginMetatada = m_pluginMetadataFinder->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
-	auto dependencyGraph = m_pluginDependencyGraphBuilder->buildValidGraph(pluginMetatada);
-	auto pluginsInDependencyCycle = dependencyGraph.findPluginsInDependencyCycle();
-
-	std::copy_if(std::begin(pluginMetatada), std::end(pluginMetatada), std::inserter(m_allPluginMetadata, m_allPluginMetadata.begin()),
-		[&pluginsInDependencyCycle](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsInDependencyCycle, v.first); });
+	m_allPluginMetadata = m_pluginMetadataFinder->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
 }
 
 void PluginDependencyHandler::prepareDependencyGraph()
