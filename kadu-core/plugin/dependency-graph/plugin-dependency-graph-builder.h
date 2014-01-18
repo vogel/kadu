@@ -54,10 +54,10 @@ public:
 	 * from graph with all of their dependents. So resulting graph contains only valid entries with
 	 * associated metadata.
 	 */
-	std::unique_ptr<PluginDependencyGraph> buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const;
+	PluginDependencyGraph buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const;
 
 private:
-	std::unique_ptr<PluginDependencyGraph> buildGraph(const std::map<QString, PluginMetadata> &plugins) const;
+	PluginDependencyGraph buildGraph(const std::map<QString, PluginMetadata> &plugins) const;
 	std::set<QString> invalidPlugins(const PluginDependencyGraph &graph, const std::map<QString, PluginMetadata> &plugins) const;
 
 };

@@ -81,12 +81,12 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 		qMakePair(QString{"p3"}, QStringList{"p4"})
 	}));
 
-	QCOMPARE(graph.get()->size(), 4);
+	QCOMPARE(graph.size(), 4);
 
-	verifyDependencies(*graph.get(), "p1", {"p2", "p3", "p4"}, {});
-	verifyDependencies(*graph.get(), "p2", {"p3", "p4"}, {"p1"});
-	verifyDependencies(*graph.get(), "p3", {"p4"}, {"p1", "p2"});
-	verifyDependencies(*graph.get(), "p4", {}, {"p1", "p2", "p3"});
+	verifyDependencies(graph, "p1", {"p2", "p3", "p4"}, {});
+	verifyDependencies(graph, "p2", {"p3", "p4"}, {"p1"});
+	verifyDependencies(graph, "p3", {"p4"}, {"p1", "p2"});
+	verifyDependencies(graph, "p4", {}, {"p1", "p2", "p3"});
 }
 
 void tst_PluginDependencyGraphBuilder::selfDependencyTest()
@@ -96,9 +96,9 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 		qMakePair(QString{"p1"}, QStringList{"p1"})
 	}));
 
-	QCOMPARE(graph.get()->size(), 1);
+	QCOMPARE(graph.size(), 1);
 
-	verifyDependencies(*graph.get(), "p1", {}, {});
+	verifyDependencies(graph, "p1", {}, {});
 }
 
 void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
@@ -108,10 +108,10 @@ void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 		qMakePair(QString{"p1"}, QStringList{"p2"})
 	}));
 
-	QCOMPARE(graph.get()->size(), 2);
+	QCOMPARE(graph.size(), 2);
 
-	verifyDependencies(*graph.get(), "p1", {"p2"}, {});
-	verifyDependencies(*graph.get(), "p2", {}, {"p1"});
+	verifyDependencies(graph, "p1", {"p2"}, {});
+	verifyDependencies(graph, "p2", {}, {"p1"});
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)

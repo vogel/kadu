@@ -20,6 +20,7 @@
 #pragma once
 
 #include "misc/iterator.h"
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
 
 #include <map>
 #include <memory>
@@ -27,7 +28,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-class PluginDependencyGraph;
 class PluginDependencyGraphBuilder;
 class PluginMetadata;
 class PluginMetadataFinder;
@@ -143,7 +143,7 @@ private:
 	QPointer<PluginMetadataFinder> m_pluginMetadataFinder;
 
 	std::map<QString, PluginMetadata> m_allPluginMetadata;
-	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
+	PluginDependencyGraph m_pluginDependencyDAG;
 
 	void loadPluginMetadata();
 	void prepareDependencyGraph();

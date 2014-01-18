@@ -21,7 +21,6 @@
 
 #include "misc/algorithm.h"
 #include "misc/graph/graph-algorithm.h"
-#include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/metadata/plugin-metadata.h"
 
@@ -34,17 +33,17 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 {
 }
 
-std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const
+PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const
 {
 	auto fullGraph = buildGraph(plugins);
-	auto pluginsInCycles = graph_find_cycles<PluginDependencyGraph::PluginDependencyTag>(fullGraph.get()->m_graph);
+	auto pluginsInCycles = graph_find_cycles<PluginDependencyGraph::PluginDependencyTag>(fullGraph.m_graph);
 
 	std::map<QString, PluginMetadata> pluginsWithoutCycles;
 	std::copy_if(std::begin(plugins), std::end(plugins), std::inserter(pluginsWithoutCycles, pluginsWithoutCycles.begin()),
 		[&pluginsInCycles](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsInCycles, v.first); });
 
 	auto noCyclesGraph = buildGraph(pluginsWithoutCycles);
-	auto pluginsToRemove = invalidPlugins(*fullGraph.get(), plugins);
+	auto pluginsToRemove = invalidPlugins(fullGraph, plugins);
 
 	std::map<QString, PluginMetadata> validPlugins;
 	std::copy_if(std::begin(pluginsWithoutCycles), std::end(pluginsWithoutCycles), std::inserter(validPlugins, validPlugins.begin()),
@@ -53,15 +52,15 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildValidG
 	return buildGraph(validPlugins);
 }
 
-std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(const std::map<QString, PluginMetadata> &plugins) const
+PluginDependencyGraph PluginDependencyGraphBuilder::buildGraph(const std::map<QString, PluginMetadata> &plugins) const
 {
-	auto result = make_unique<PluginDependencyGraph>();
+	auto result = PluginDependencyGraph{};
 
 	for (auto const &plugin : plugins)
 	{
-		result.get()->addPlugin(plugin.first);
+		result.addPlugin(plugin.first);
 		for (auto const &dependency : plugin.second.dependencies())
-			result.get()->addDependency(plugin.first, dependency);
+			result.addDependency(plugin.first, dependency);
 	}
 
 	return std::move(result);

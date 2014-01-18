@@ -72,7 +72,7 @@ void PluginDependencyHandler::loadPluginMetadata()
 
 	auto pluginMetatada = m_pluginMetadataFinder->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
 	auto dependencyGraph = m_pluginDependencyGraphBuilder->buildValidGraph(pluginMetatada);
-	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
+	auto pluginsInDependencyCycle = dependencyGraph.findPluginsInDependencyCycle();
 
 	std::copy_if(std::begin(pluginMetatada), std::end(pluginMetatada), std::inserter(m_allPluginMetadata, m_allPluginMetadata.begin()),
 		[&pluginsInDependencyCycle](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsInDependencyCycle, v.first); });
@@ -106,15 +106,15 @@ PluginMetadata PluginDependencyHandler::pluginMetadata(const QString &pluginName
 
 QVector<QString> PluginDependencyHandler::withDependencies(const QString &pluginName) noexcept
 {
-	return m_pluginDependencyDAG && hasPluginMetadata(pluginName)
-			? m_pluginDependencyDAG.get()->findDependencies(pluginName) << pluginName
+	return hasPluginMetadata(pluginName)
+			? m_pluginDependencyDAG.findDependencies(pluginName) << pluginName
 			: QVector<QString>{};
 }
 
 QVector<QString> PluginDependencyHandler::withDependents(const QString &pluginName) noexcept
 {
-	return m_pluginDependencyDAG && hasPluginMetadata(pluginName)
-			? m_pluginDependencyDAG.get()->findDependents(pluginName) << pluginName
+	return hasPluginMetadata(pluginName)
+			? m_pluginDependencyDAG.findDependents(pluginName) << pluginName
 			: QVector<QString>{};
 }
 
