@@ -41,6 +41,7 @@ private slots:
 	void simpleDependencyTest();
 	void selfDependencyTest();
 	void pluginOnlyAsDependencyTest();
+	void cycleDependencyTest();
 
 };
 
@@ -78,7 +79,8 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 	{
 		qMakePair(QString{"p1"}, QStringList{"p2", "p3", "p4"}),
 		qMakePair(QString{"p2"}, QStringList{"p3", "p4"}),
-		qMakePair(QString{"p3"}, QStringList{"p4"})
+		qMakePair(QString{"p3"}, QStringList{"p4"}),
+		qMakePair(QString{"p4"}, QStringList{})
 	}));
 
 	QCOMPARE(graph.size(), 4);
@@ -105,13 +107,23 @@ void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
 	{
-		qMakePair(QString{"p1"}, QStringList{"p2"})
+		qMakePair(QString{"p1"}, QStringList{"p2"}),
+		qMakePair(QString{"p2"}, QStringList{"p3"}),
+		qMakePair(QString{"p3"}, QStringList{"p4"})
 	}));
 
-	QCOMPARE(graph.size(), 2);
+	QCOMPARE(graph.size(), 0);
+}
 
-	verifyDependencies(graph, "p1", {"p2"}, {});
-	verifyDependencies(graph, "p2", {}, {"p1"});
+void tst_PluginDependencyGraphBuilder::cycleDependencyTest()
+{
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	{
+		qMakePair(QString{"p1"}, QStringList{"p2"}),
+		qMakePair(QString{"p2"}, QStringList{"p1"})
+	}));
+
+	QCOMPARE(graph.size(), 0);
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
