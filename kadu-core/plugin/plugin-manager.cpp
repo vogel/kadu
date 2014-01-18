@@ -166,11 +166,11 @@ bool PluginManager::activatePluginWithDependencies(const QString &pluginName) no
 	try
 	{
 		auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
+		if (withDependencies.isEmpty())
+			throw PluginActivationErrorException(pluginName, tr("Plugin's %1 not found").arg(pluginName));
+
 		for (auto plugin : withDependencies)
 		{
-			if (!m_pluginDependencyHandler->hasPluginMetadata(plugin))
-				throw PluginActivationErrorException(pluginName, tr("Plugin's %1 metadata not found").arg(plugin));
-
 			auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(pluginName).provides());
 			if (!conflict.isEmpty())
 				throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
