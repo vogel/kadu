@@ -40,7 +40,14 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 
 	std::map<QString, PluginMetadata> pluginsWithoutCycles = filtered(plugins, pluginsInCycles);
 	auto noCyclesGraph = buildGraph(pluginsWithoutCycles);
-	auto pluginsToRemove = invalidPlugins(noCyclesGraph, plugins);
+	auto pluginsToRemove = std::set<QString>{};
+
+	for (auto const &invalidPlugin : invalidPlugins(noCyclesGraph, plugins))
+	{
+		pluginsToRemove.insert(invalidPlugin);
+		for (auto dependent : graph_sort_successors<PluginDependencyGraph::PluginDependentTag>(fullGraph.m_graph, invalidPlugin))
+			pluginsToRemove.insert(dependent->payload());
+	}
 
 	std::map<QString, PluginMetadata> validPlugins = filtered(pluginsWithoutCycles, pluginsToRemove);
 	return buildGraph(validPlugins);
