@@ -22,6 +22,7 @@
 #include "misc/graph/graph.h"
 #include "exports.h"
 
+#include <set>
 #include <QtCore/QSet>
 #include <QtCore/QVector>
 
@@ -80,6 +81,11 @@ public:
 	int size() const;
 
 	/**
+	 * @return List of plugins in graph.
+	 */
+	std::set<QString> plugins() const;
+
+	/**
 	 * @param pluginName plugin to get dependencies for
 	 * @return Set of direct dependencies of given plugin.
 	 */
@@ -119,7 +125,8 @@ public:
 	QVector<QString> findDependents(const QString &pluginName) const noexcept(false);
 
 private:
-	Graph<QString, PluginDependencyTag, PluginDependentTag> m_graph;
+	using PluginGraph = Graph<QString, PluginDependencyTag, PluginDependentTag>;
+	PluginGraph m_graph;
 
 	template<typename SuccessorTypeTag>
 	QSet<QString> directSuccessors(const QString &pluginName) const;

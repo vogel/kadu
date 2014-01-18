@@ -46,6 +46,7 @@ private slots:
 	void cycleCycleTest();
 	void cycleDirectDependencyTest();
 	void cycleDependencyTest();
+	void pluginsTest();
 
 };
 
@@ -267,6 +268,44 @@ void tst_PluginDependencyGraph::cycleDependencyTest()
 	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p5"); });
 	QCOMPARE(graph.findDependencies("p6"), QVector<QString>{});
 	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p6"); });
+}
+
+void tst_PluginDependencyGraph::pluginsTest()
+{
+	auto graph = PluginDependencyGraph{};
+
+	QCOMPARE(graph.size(), 0);
+	QCOMPARE(graph.plugins(), {});
+
+	graph.addPlugin("p1");
+
+	QCOMPARE(graph.size(), 1);
+	QCOMPARE(graph.plugins(), {"p1"});
+
+	graph.addPlugin("p1");
+
+	QCOMPARE(graph.size(), 1);
+	QCOMPARE(graph.plugins(), {"p1"});
+
+	graph.addPlugin("p2");
+
+	QCOMPARE(graph.size(), 2);
+	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2"}));
+
+	graph.addDependency("p1", "p2");
+
+	QCOMPARE(graph.size(), 2);
+	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2"}));
+
+	graph.addDependency("p3", "p4");
+
+	QCOMPARE(graph.size(), 4);
+	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2", "p3", "p4"}));
+
+	graph.addDependency("p1", "p5");
+
+	QCOMPARE(graph.size(), 5);
+	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2", "p3", "p4", "p5"}));
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraph)

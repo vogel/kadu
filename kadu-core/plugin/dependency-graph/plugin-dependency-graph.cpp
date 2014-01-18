@@ -43,6 +43,14 @@ int PluginDependencyGraph::size() const
 	return m_graph.nodes().size();
 }
 
+std::set<QString> PluginDependencyGraph::plugins() const
+{
+	auto result = std::set<QString>{};
+	std::transform(std::begin(m_graph.nodes()), std::end(m_graph.nodes()), std::inserter(result, result.begin()),
+		[](const PluginGraph::Storage::value_type &value) { return value.first; });
+	return result;
+}
+
 QSet<QString> PluginDependencyGraph::directDependencies(const QString &pluginName) const
 {
 	return directSuccessors<PluginDependencyTag>(pluginName);

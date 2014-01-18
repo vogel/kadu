@@ -37,6 +37,7 @@ public:
 	using PayloadType = P;
 	using NodeType = GraphNode<P, SuccessorTypeTags...>;
 	using NodePointer = NodeType*;
+	using Storage = std::map<PayloadType, std::unique_ptr<NodeType>>;
 
 	Graph() = default;
 	Graph(const Graph &) = delete;
@@ -44,7 +45,7 @@ public:
 	Graph & operator = (const Graph &) = delete;
 	Graph & operator = (Graph &&) = default;
 
-	const std::map<PayloadType, std::unique_ptr<NodeType>> & nodes() const
+	const Storage & nodes() const
 	{
 		return m_nodes;
 	}
@@ -77,6 +78,6 @@ public:
 	}
 
 private:
-	std::map<PayloadType, std::unique_ptr<NodeType>> m_nodes;
+	Storage m_nodes;
 
 };
