@@ -160,12 +160,23 @@ bool PluginManager::activatePluginWithDependencies(const QString &pluginName) no
 {
 	kdebugm(KDEBUG_INFO, "activate plugin: %s\n", qPrintable(pluginName));
 
-	if (!m_pluginActivationService || m_pluginActivationService->isActive(pluginName) || !m_pluginDependencyHandler)
+	if (!m_pluginActivationService || m_pluginActivationService->isActive(pluginName) || !m_pluginDependencyHandler || !m_pluginStateService)
 		return false;
 
 	try
 	{
-		for (auto plugin : m_pluginDependencyHandler->withDependencies(pluginName))
+		auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
+		for (auto plugin : withDependencies)
+		{
+			if (!m_pluginDependencyHandler->hasPluginMetadata(plugin))
+				throw PluginActivationErrorException(pluginName, tr("Plugin's %1 metadata not found").arg(plugin));
+
+			auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(pluginName).provides());
+			if (!conflict.isEmpty())
+				throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
+		}
+
+		for (auto plugin : withDependencies)
 			activatePlugin(plugin);
 	}
 	catch (PluginActivationErrorException &e)
@@ -180,16 +191,6 @@ bool PluginManager::activatePluginWithDependencies(const QString &pluginName) no
 
 void PluginManager::activatePlugin(const QString &pluginName) noexcept(false)
 {
-	if (!m_pluginStateService || !m_pluginDependencyHandler)
-		return;
-
-	if (!m_pluginDependencyHandler->hasPluginMetadata(pluginName))
-		throw PluginActivationErrorException(pluginName, tr("Plugin's %1 metadata not found").arg(pluginName));
-
-	auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(pluginName).provides());
-	if (!conflict.isEmpty())
-		throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
-
 	auto state = m_pluginStateService->pluginState(pluginName);
 	m_pluginActivationService->activatePlugin(pluginName, PluginState::New == state);
 }
