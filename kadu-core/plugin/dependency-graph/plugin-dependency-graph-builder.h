@@ -59,6 +59,7 @@ public:
 private:
 	PluginDependencyGraph buildGraph(const std::map<QString, PluginMetadata> &plugins) const;
 	std::set<QString> invalidPlugins(const PluginDependencyGraph &graph, const std::map<QString, PluginMetadata> &plugins) const;
+	std::map<QString, PluginMetadata> filtered(const std::map<QString, PluginMetadata> &original, const std::set<QString> &invalid) const;
 
 };
 

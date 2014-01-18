@@ -38,17 +38,11 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 	auto fullGraph = buildGraph(plugins);
 	auto pluginsInCycles = graph_find_cycles<PluginDependencyGraph::PluginDependencyTag>(fullGraph.m_graph);
 
-	std::map<QString, PluginMetadata> pluginsWithoutCycles;
-	std::copy_if(std::begin(plugins), std::end(plugins), std::inserter(pluginsWithoutCycles, pluginsWithoutCycles.begin()),
-		[&pluginsInCycles](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsInCycles, v.first); });
-
+	std::map<QString, PluginMetadata> pluginsWithoutCycles = filtered(plugins, pluginsInCycles);
 	auto noCyclesGraph = buildGraph(pluginsWithoutCycles);
-	auto pluginsToRemove = invalidPlugins(fullGraph, plugins);
+	auto pluginsToRemove = invalidPlugins(noCyclesGraph, plugins);
 
-	std::map<QString, PluginMetadata> validPlugins;
-	std::copy_if(std::begin(pluginsWithoutCycles), std::end(pluginsWithoutCycles), std::inserter(validPlugins, validPlugins.begin()),
-		[&pluginsToRemove](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(pluginsToRemove, v.first); });
-
+	std::map<QString, PluginMetadata> validPlugins = filtered(pluginsWithoutCycles, pluginsToRemove);
 	return buildGraph(validPlugins);
 }
 
@@ -77,5 +71,13 @@ std::set<QString> PluginDependencyGraphBuilder::invalidPlugins(const PluginDepen
 	auto result = std::set<QString>{};
 	std::set_difference(std::begin(pluginInGraph), std::end(pluginInGraph), std::begin(pluginsWithMetadata), std::end(pluginsWithMetadata),
 		std::inserter(result, result.begin()));
+	return result;
+}
+
+std::map<QString, PluginMetadata> PluginDependencyGraphBuilder::filtered(const std::map<QString, PluginMetadata> &original, const std::set<QString> &invalid) const
+{
+	std::map<QString, PluginMetadata> result;
+	std::copy_if(std::begin(original), std::end(original), std::inserter(result, result.begin()),
+		[&invalid](const std::map<QString, PluginMetadata>::value_type &v){ return !contains(invalid, v.first); });
 	return result;
 }
