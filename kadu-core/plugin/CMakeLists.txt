@@ -10,6 +10,7 @@ set (plugin_SRCS
 	metadata/plugin-metadata.cpp
 	metadata/plugin-metadata-builder.cpp
 	metadata/plugin-metadata-finder.cpp
+	metadata/plugin-metadata-provider.cpp
 	metadata/plugin-metadata-reader.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp

@@ -20,10 +20,9 @@
 #include "plugin-dependency-handler.h"
 
 #include "misc/algorithm.h"
-#include "misc/kadu-paths.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/metadata/plugin-metadata.h"
-#include "plugin/metadata/plugin-metadata-finder.h"
+#include "plugin/metadata/plugin-metadata-provider.h"
 
 PluginMetadata PluginDependencyHandler::converter(WrappedIterator iterator)
 {
@@ -44,9 +43,9 @@ void PluginDependencyHandler::setPluginDependencyGraphBuilder(PluginDependencyGr
 	m_pluginDependencyGraphBuilder = pluginDependencyGraphBuilder;
 }
 
-void PluginDependencyHandler::setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder)
+void PluginDependencyHandler::setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider)
 {
-	m_pluginMetadataFinder = pluginMetadataFinder;
+	m_pluginMetadataProvider = pluginMetadataProvider;
 }
 
 PluginDependencyHandler::Iterator PluginDependencyHandler::begin()
@@ -67,10 +66,10 @@ void PluginDependencyHandler::initialize()
 
 void PluginDependencyHandler::loadPluginMetadata()
 {
-	if (!m_pluginMetadataFinder)
+	if (!m_pluginMetadataProvider)
 		return;
 
-	m_allPluginMetadata = m_pluginMetadataFinder->readAllPluginMetadata(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
+	m_allPluginMetadata = m_pluginMetadataProvider->provide();
 }
 
 void PluginDependencyHandler::prepareDependencyGraph()

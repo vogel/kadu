@@ -690,11 +690,12 @@ void Core::runServices()
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 
+	CurrentPluginMetadataFinder->setDirectory(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
 	CurrentPluginMetadataFinder->setPluginMetadataReader(CurrentPluginMetadataReader);
 
 	CurrentPluginDependencyHandler = new PluginDependencyHandler(this);
 	CurrentPluginDependencyHandler->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
-	CurrentPluginDependencyHandler->setPluginMetadataFinder(CurrentPluginMetadataFinder);
+	CurrentPluginDependencyHandler->setPluginMetadataProvider(CurrentPluginMetadataFinder);
 
 	CurrentPluginManager = new PluginManager(this);
 	CurrentPluginManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
@@ -900,7 +901,7 @@ PluginDependencyHandler * Core::pluginDependencyHandler() const
 	return CurrentPluginDependencyHandler;
 }
 
-PluginMetadataFinder * Core::pluginMetadataFinder() const
+PluginMetadataProvider * Core::pluginMetadataProvider() const
 {
 	return CurrentPluginMetadataFinder;
 }

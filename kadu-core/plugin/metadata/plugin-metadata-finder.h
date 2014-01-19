@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <map>
-#include <QtCore/QObject>
+#include "plugin/metadata/plugin-metadata-provider.h"
+
 #include <QtCore/QPointer>
 
 class PluginMetadata;
@@ -37,13 +37,20 @@ class PluginMetadataReader;
  *
  * This class searchs directory for .desc files and reads metadata from them.
  */
-class PluginMetadataFinder : public QObject
+class PluginMetadataFinder : public PluginMetadataProvider
 {
 	Q_OBJECT
 
 public:
 	explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
 	virtual ~PluginMetadataFinder() noexcept;
+
+
+	/**
+	 * @short Set directory to search for metadata files.
+	 * @param directory directory to search for metadata files.
+	 */
+	void setDirectory(QString directory);
 
 	/**
 	 * @short Set PluginMetadataReader service instance.
@@ -53,15 +60,16 @@ public:
 	void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 
 	/**
-	 * @short Read metadata files from given directory.
-	 * @param directory directory to search for metadata files
+	 * @short Read metadata files from configured directory.
 	 *
-	 * Scans \p directory for metadata files and reads. Result is a map of file name (that is also
+	 * Scans configured directory for metadata files and reads. Result is a map of file name (that is also
 	 * a plugin name) to @see PluginMetadata objects read from these files.
+	 * If directory is not valid, empty map is returned.
 	 */
-	std::map<QString, PluginMetadata> readAllPluginMetadata(const QString &directory) noexcept;
+	std::map<QString, PluginMetadata> provide() noexcept override;
 
 private:
+	QString m_directory;
 	QPointer<PluginMetadataReader> m_pluginMetadataReader;
 
 };

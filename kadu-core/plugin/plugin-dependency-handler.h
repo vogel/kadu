@@ -30,7 +30,7 @@
 
 class PluginDependencyGraphBuilder;
 class PluginMetadata;
-class PluginMetadataFinder;
+class PluginMetadataProvider;
 
 /**
  * @addtogroup Plugin
@@ -43,7 +43,7 @@ class PluginMetadataFinder;
  * @todo Think if something like PluginMetadataRepository could be extracted from it.
  *
  * This service is used to compute dependency lists of all installed plugins. List of plugins
- * is fetched from @see PluginMetadataFinder services. Then all plugins that form dependency cycles
+ * is fetched from @see PluginMetadataProvider services. Then all plugins that form dependency cycles
  * are removed from list and dependency graph is created from remaining ones.  Metadata for these
  * plugins can be retrieived using for-range loop (as begin() and end() methods are implemented).
  *
@@ -67,16 +67,16 @@ public:
 	 * @short Set @see PluginDependencyGraphBuilder service.
 	 *
 	 * PluginDependencyGraphBuilder is used to create dependency graph from metadata loaded by
-	 * @see PluginMetadataFinder.
+	 * @see PluginMetadataProvider.
 	 */
 	void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
 
 	/**
-	 * @short Set @see PluginMetadataFinder service.
+	 * @short Set @see PluginMetadataProvider service.
 	 *
-	 * PluginMetadataFinder is used to get list of all plugins available for application.
+	 * PluginMetadataProvider is used to get list of all plugins available for application.
 	 */
-	void setPluginMetadataFinder(PluginMetadataFinder *pluginMetadataFinder);
+	void setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider);
 
 	/**
 	 * @return Return begin iterator for @see PluginMetadata list.
@@ -140,7 +140,7 @@ private:
 	static PluginMetadata converter(WrappedIterator iterator);
 
 	QPointer<PluginDependencyGraphBuilder> m_pluginDependencyGraphBuilder;
-	QPointer<PluginMetadataFinder> m_pluginMetadataFinder;
+	QPointer<PluginMetadataProvider> m_pluginMetadataProvider;
 
 	std::map<QString, PluginMetadata> m_allPluginMetadata;
 	PluginDependencyGraph m_pluginDependencyDAG;

@@ -86,6 +86,7 @@ class PluginDependencyGraphBuilder;
 class PluginDependencyHandler;
 class PluginManager;
 class PluginMetadataFinder;
+class PluginMetadataProvider;
 class PluginMetadataReader;
 class PluginStateManager;
 class PluginStateService;
@@ -231,7 +232,7 @@ public:
 	PluginActivationService * pluginActivationService() const;
 	PluginDependencyGraphBuilder * pluginDependencyGraphBuilder() const;
 	PluginDependencyHandler * pluginDependencyHandler() const;
-	PluginMetadataFinder * pluginMetadataFinder() const;
+	PluginMetadataProvider * pluginMetadataProvider() const;
 	PluginMetadataReader * pluginMetadataReader() const;
 	PluginManager * pluginManager() const;
 	PluginStateManager * pluginStateManager() const;
