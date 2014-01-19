@@ -60,24 +60,16 @@ PluginDependencyHandler::Iterator PluginDependencyHandler::end()
 
 void PluginDependencyHandler::initialize()
 {
-	loadPluginMetadata();
-	prepareDependencyGraph();
-}
-
-void PluginDependencyHandler::loadPluginMetadata()
-{
-	if (!m_pluginMetadataProvider)
+	if (!m_pluginDependencyGraphBuilder || !m_pluginMetadataProvider)
 		return;
 
-	m_allPluginMetadata = m_pluginMetadataProvider->provide();
-}
+	auto metadata = m_pluginMetadataProvider->provide();
+	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder->buildValidGraph(metadata);
+	auto pluginsInDAG = m_pluginDependencyDAG.plugins(); // expensive method
 
-void PluginDependencyHandler::prepareDependencyGraph()
-{
-	if (!m_pluginDependencyGraphBuilder)
-		return;
-
-	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder->buildValidGraph(m_allPluginMetadata);
+	std::copy_if(metadata.begin(), metadata.end(), std::inserter(m_allPluginMetadata, m_allPluginMetadata.begin()),
+		[&pluginsInDAG](const std::map<QString, PluginMetadata>::value_type &v){ return contains(pluginsInDAG, v.first); }
+	);
 }
 
 std::set<QString> PluginDependencyHandler::pluginNames() const

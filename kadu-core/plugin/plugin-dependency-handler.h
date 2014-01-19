@@ -146,9 +146,6 @@ private:
 	std::map<QString, PluginMetadata> m_allPluginMetadata;
 	PluginDependencyGraph m_pluginDependencyDAG;
 
-	void loadPluginMetadata();
-	void prepareDependencyGraph();
-
 };
 
 /**
