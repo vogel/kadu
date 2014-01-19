@@ -21,6 +21,7 @@
 
 #include "misc/iterator.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
+#include "exports.h"
 
 #include <map>
 #include <memory>
@@ -50,7 +51,7 @@ class PluginMetadataProvider;
  * Plugin list with all of its dependencies (or dependents) can be easily obrained by @see withDependencies
  * and @see withDependents methods.
  */
-class PluginDependencyHandler : public QObject
+class KADUAPI PluginDependencyHandler : public QObject
 {
 	Q_OBJECT
 

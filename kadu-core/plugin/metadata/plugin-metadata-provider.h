@@ -19,12 +19,14 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <map>
 #include <QtCore/QObject>
 
 class PluginMetadata;
 
-class PluginMetadataProvider : public QObject
+class KADUAPI PluginMetadataProvider : public QObject
 {
 	Q_OBJECT
 
