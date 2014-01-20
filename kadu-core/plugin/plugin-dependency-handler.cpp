@@ -21,7 +21,6 @@
 
 #include "misc/algorithm.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugin/metadata/plugin-metadata.h"
 #include "plugin/metadata/plugin-metadata-provider.h"
 
 PluginMetadata PluginDependencyHandler::converter(WrappedIterator iterator)

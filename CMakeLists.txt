@@ -47,6 +47,13 @@ else ()
 		set (CXX_FLAGS "${CXX_FLAGS} -fvisibility-inlines-hidden")
 	endif ()
 
+	# Qt 4.8.5 cannot detect Clang's C++11 features, it depends on
+	# detected GCC version, anc Clang mimics GCC 4.2.1. Let's mimic
+	# GCC 4.8.1.
+	if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -U__GNUC_MINOR__ -D__GNUC_MINOR__=8")
+	endif ()
+
 	if (ENABLE_DEVELOPER_BUILD)
 		# -pipe can speed up the build
 		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++

@@ -21,6 +21,7 @@
 
 #include "misc/iterator.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
+#include "plugin/metadata/plugin-metadata.h"
 #include "exports.h"
 
 #include <map>
@@ -30,7 +31,6 @@
 #include <QtCore/QPointer>
 
 class PluginDependencyGraphBuilder;
-class PluginMetadata;
 class PluginMetadataProvider;
 
 /**
