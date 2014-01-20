@@ -152,14 +152,15 @@ void PluginListWidget::applyChanges()
 					m_pluginStateService->setPluginState(dependentPlugin, PluginState::Disabled);
 		}
 
+		auto activatedPlugins = QVector<QString>{};
 		for (auto const &pluginName : pluginsWithNewActiveState(true))
-			if (m_pluginManager->activatePluginWithDependencies(pluginName))
-			{
-				storeList = true;
-				if (m_pluginDependencyHandler && m_pluginStateService)
-					for (auto const &dependencyPlugin : m_pluginDependencyHandler->withDependencies(pluginName))
-						m_pluginStateService->setPluginState(dependencyPlugin, PluginState::Enabled);
-			}
+			activatedPlugins += m_pluginManager->activatePluginWithDependencies(pluginName);
+
+		storeList |= !activatedPlugins.isEmpty();
+
+		if (m_pluginStateService)
+			for (auto const &activatedPlugin : activatedPlugins)
+				m_pluginStateService->setPluginState(activatedPlugin, PluginState::Enabled);
 	}
 
 	Model->loadPluginData();

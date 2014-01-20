@@ -127,7 +127,7 @@ void PluginManager::activateReplacementPlugins()
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplace);
 		if (PluginState::New == m_pluginStateService->pluginState(replacementPlugin))
-			if (activatePluginWithDependencies(replacementPlugin))
+			if (activatePluginWithDependencies(replacementPlugin).contains(replacementPlugin))
 			{
 				m_pluginStateService->setPluginState(pluginToReplace, PluginState::Disabled);
 				m_pluginStateService->setPluginState(replacementPlugin, PluginState::Enabled);
@@ -156,13 +156,14 @@ void PluginManager::deactivatePlugins()
 		deactivatePluginWithDependents(pluginName);
 }
 
-bool PluginManager::activatePluginWithDependencies(const QString &pluginName) noexcept
+QVector<QString> PluginManager::activatePluginWithDependencies(const QString &pluginName) noexcept
 {
 	kdebugm(KDEBUG_INFO, "activate plugin: %s\n", qPrintable(pluginName));
 
 	if (!m_pluginActivationService || m_pluginActivationService->isActive(pluginName) || !m_pluginDependencyHandler || !m_pluginStateService)
-		return false;
+		return {};
 
+	auto result = QVector<QString>{};
 	try
 	{
 		auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
@@ -177,16 +178,18 @@ bool PluginManager::activatePluginWithDependencies(const QString &pluginName) no
 		}
 
 		for (auto plugin : withDependencies)
+		{
 			activatePlugin(plugin);
+			result.append(plugin);
+		}
 	}
 	catch (PluginActivationErrorException &e)
 	{
 		if (m_pluginActivationErrorHandler)
 			m_pluginActivationErrorHandler->handleActivationError(e.pluginName(), e.errorMessage());
-		return false;
 	}
 
-	return true;
+	return result;
 }
 
 void PluginManager::activatePlugin(const QString &pluginName) noexcept(false)

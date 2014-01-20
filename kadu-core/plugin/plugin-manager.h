@@ -120,18 +120,15 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Activates given plugin and all its dependencies.
-	 * @param plugin plugin to activate
-	 * @return true, if plugin was successfully activated
+	 * @param pluginName plugin to activate
+	 * @return list of activated plugins
 	 *
 	 * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
-	 * is found and all dependencies can be activated. In other case false is returned and plugin will not be activated.
-	 * Please note that no dependency plugin activated in this method will be automatically deactivated if
-	 * this method fails, so list of active plugins can be changed even if plugin could not be activated.
-	 *
-	 * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
-	 * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
+	 * is found and all dependencies can be activated. Returned vector contains list of all plugins that were
+	 * in dependency set of given plugin (including this plugin) and were either already active or were successfully
+	 * activated.
 	 */
-	bool activatePluginWithDependencies(const QString &pluginName) noexcept;
+	QVector<QString> activatePluginWithDependencies(const QString &pluginName) noexcept;
 	void deactivatePluginWithDependents(const QString &pluginName) noexcept;
 
 private:
