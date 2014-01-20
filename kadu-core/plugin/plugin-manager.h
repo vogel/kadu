@@ -129,7 +129,7 @@ public:
 	 * activated.
 	 */
 	QVector<QString> activatePluginWithDependencies(const QString &pluginName) noexcept;
-	void deactivatePluginWithDependents(const QString &pluginName) noexcept;
+	QVector<QString> deactivatePluginWithDependents(const QString &pluginName) noexcept;
 
 private:
 	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;

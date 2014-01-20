@@ -211,15 +211,18 @@ QString PluginManager::findActiveProviding(const QString &feature) const
 	return {};
 }
 
-void PluginManager::deactivatePluginWithDependents(const QString &pluginName) noexcept
+QVector<QString> PluginManager::deactivatePluginWithDependents(const QString &pluginName) noexcept
 {
 	kdebugm(KDEBUG_INFO, "deactivate plugin: %s\n", qPrintable(pluginName));
 
 	if (!m_pluginActivationService || !m_pluginActivationService->isActive(pluginName) || !m_pluginDependencyHandler)
-		return;
+		return {};
 
-	for (auto const &plugin : m_pluginDependencyHandler->withDependents(pluginName))
+	auto result = m_pluginDependencyHandler->withDependents(pluginName);
+	for (auto const &plugin : result)
 		m_pluginActivationService->deactivatePlugin(plugin);
+
+	return result;
 }
 
 #include "moc_plugin-manager.cpp"

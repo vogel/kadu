@@ -139,37 +139,32 @@ int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth)
 
 void PluginListWidget::applyChanges()
 {
-	auto storeList = false;
-
 	if (m_pluginManager)
 	{
+		auto deactivatedPlugins = QVector<QString>{};
 		for (auto const &pluginName : pluginsWithNewActiveState(false))
-		{
-			storeList = true;
-			m_pluginManager->deactivatePluginWithDependents(pluginName);
-			if (m_pluginDependencyHandler && m_pluginStateService)
-				for (auto const &dependentPlugin : m_pluginDependencyHandler->withDependents(pluginName))
-					m_pluginStateService->setPluginState(dependentPlugin, PluginState::Disabled);
-		}
+			deactivatedPlugins += m_pluginManager->deactivatePluginWithDependents(pluginName);
 
 		auto activatedPlugins = QVector<QString>{};
 		for (auto const &pluginName : pluginsWithNewActiveState(true))
 			activatedPlugins += m_pluginManager->activatePluginWithDependencies(pluginName);
 
-		storeList |= !activatedPlugins.isEmpty();
-
 		if (m_pluginStateService)
+		{
+			for (auto const &deactivatedPlugin : deactivatedPlugins)
+				m_pluginStateService->setPluginState(deactivatedPlugin, PluginState::Disabled);
 			for (auto const &activatedPlugin : activatedPlugins)
 				m_pluginStateService->setPluginState(activatedPlugin, PluginState::Enabled);
+
+			if (m_pluginStateManager && (!activatedPlugins.isEmpty() || !deactivatedPlugins.isEmpty()))
+			{
+				m_pluginStateManager->storePluginStates();
+				ConfigurationManager::instance()->flush();
+			}
+		}
 	}
 
 	Model->loadPluginData();
-
-	if (storeList)
-	{
-		m_pluginStateManager->storePluginStates();
-		ConfigurationManager::instance()->flush();
-	}
 
 	emit changed(false);
 }
