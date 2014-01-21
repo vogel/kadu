@@ -35,6 +35,7 @@
 #include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list/plugin-list-widget-item-delegate.h"
 #include "gui/windows/main-configuration-window.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/algorithm.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
@@ -206,10 +207,35 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 	auto pluginName = topLeft.data(PluginModel::NameRole).toString();
 	auto checked = topLeft.data(Qt::CheckStateRole).toBool();
 
-	auto otherPlugins = checked
-			? m_pluginDependencyHandler->withDependencies(pluginName)
-			: m_pluginDependencyHandler->withDependents(pluginName);
-	setAllChecked(otherPlugins, checked);
+	if (checked)
+		setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
+	else
+	{
+		auto withDependents = m_pluginDependencyHandler->withDependents(pluginName);
+		auto dependents = decltype(withDependents){};
+		std::copy_if(std::begin(withDependents), std::end(withDependents), std::back_inserter(dependents),
+				[=,&pluginName](QString const &dependentName)
+				{
+					return dependentName != pluginName && m_pluginActivationService->isActive(dependentName);
+				}
+		);
+
+		if (!dependents.isEmpty())
+		{
+			MessageDialog *dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
+					tr("Following dependend plugins will also be deactivated: %1.").arg(
+						QStringList{dependents.toList()}.join(", ")), this);
+			dialog->addButton(QMessageBox::Yes, tr("Deactivate dependend plugins"));
+			dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+			if (dialog->ask())
+				setAllChecked(withDependents, false);
+			else
+				setAllChecked({pluginName}, true);
+		}
+		else
+			setAllChecked(withDependents, false);
+	}
 
 	m_processingChange = false;
 }
