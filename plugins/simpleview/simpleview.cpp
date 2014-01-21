@@ -68,7 +68,7 @@ SimpleView::SimpleView() :
 	configurationUpdated();
 
 	DiffRect = config_file.readRectEntry("Look", "SimpleViewGeometry");
-	if (!DiffRect.isNull())
+	if (DiffRect != QRect(0,0,0,0))
 		simpleViewToggle(true);
 }
 
@@ -125,7 +125,7 @@ void SimpleView::simpleViewToggle(bool activate)
 
 		if (SimpleViewActive)
 		{
-			if (DiffRect.isNull())
+			if (DiffRect == QRect(0,0,0,0))
 			{
 				if (KeepSize)
 				{
@@ -138,7 +138,13 @@ void SimpleView::simpleViewToggle(bool activate)
 				DiffRect.setRect(mr.x() - r.x(), mr.y() - r.y(), mr.width() - r.width(), mr.height() - r.height());
 			}
 			else
-				r.setRect(mr.x() - DiffRect.x(), mr.y() - DiffRect.y(), mr.width() - DiffRect.width(), mr.height() - DiffRect.height());
+				/* Since latest changes main window position is stored into the config
+				 * BEFORE the plugins are done(). It means the modified position is stored
+				 * instead original one.
+				 * r.setRect(mr.x() - DiffRect.x(), mr.y() - DiffRect.y(), mr.width() - DiffRect.width(), mr.height() - DiffRect.height());
+				 * So now simply use unchanged window position.
+				 */
+				 r = mr;
 
 			if (Borderless)
 				BuddiesListViewStyle = TalkableTreeViewHandle->styleSheet();
