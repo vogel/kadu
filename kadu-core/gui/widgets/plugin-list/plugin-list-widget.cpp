@@ -104,13 +104,15 @@ PluginListWidget::~PluginListWidget()
 void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
 	m_pluginActivationService = pluginActivationService;
-	Model->setPluginActivationService(m_pluginActivationService);
-	Model->loadPluginData();
+
+	if (m_pluginActivationService)
+		Model->setActivePlugins(m_pluginActivationService->activePlugins());
 }
 
 void PluginListWidget::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
+
 	Model->setPluginDependencyHandler(m_pluginDependencyHandler);
 	Model->loadPluginData();
 }
@@ -178,7 +180,9 @@ QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState
 	for (int i = 0; i < count; i++)
 	{
 		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
-		if ((m_pluginActivationService->isActive(pluginEntry->pluginName) != pluginEntry->checked) && (newActiveState == pluginEntry->checked))
+		bool isActive = m_pluginActivationService->isActive(pluginEntry->pluginName);
+		bool isChecked = Model->activePlugins().contains(pluginEntry->pluginName);
+		if ((isActive != isChecked) && (newActiveState == isChecked))
 				result.append(pluginEntry->pluginName);
 	}
 

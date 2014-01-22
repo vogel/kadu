@@ -28,8 +28,8 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QList>
 #include <QtCore/QPointer>
+#include <QtCore/QSet>
 
-class PluginActivationService;
 class PluginDependencyHandler;
 class PluginEntry;
 class PluginListWidget;
@@ -49,7 +49,6 @@ public:
 	explicit PluginModel(PluginListWidget *pluginListWidget, QObject *parent = nullptr);
 	virtual ~PluginModel();
 
-	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 
 	virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex{}) const;
@@ -57,14 +56,17 @@ public:
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const;
 
+	void setActivePlugins(QSet<QString> activePlugins);
+	const QSet<QString> & activePlugins() const;
+
 	void loadPluginData();
 
 private:
-	QPointer<PluginActivationService> m_pluginActivationService;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 
 	PluginListWidget *m_pluginListWidget;
 	QList<PluginEntry> m_pluginEntries;
+	QSet<QString> m_activePlugins;
 
 };
 
@@ -78,7 +80,6 @@ public:
 	QString pluginName;
 	QString description;
 	QString author;
-	bool checked;
 
 	bool operator == (const PluginEntry &pe) const
 	{

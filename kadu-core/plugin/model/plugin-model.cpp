@@ -26,7 +26,6 @@
 
 #include "gui/widgets/plugin-list/plugin-list-widget.h"
 #include "plugin/model/plugin-proxy-model.h"
-#include "plugin/activation/plugin-activation-service.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/plugin-dependency-handler.h"
 
@@ -41,19 +40,25 @@ PluginModel::~PluginModel()
 {
 }
 
-void PluginModel::setPluginActivationService(PluginActivationService *pluginActivationService)
-{
-	m_pluginActivationService = pluginActivationService;
-}
-
 void PluginModel::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
 }
 
+void PluginModel::setActivePlugins(QSet<QString> activePlugins)
+{
+	m_activePlugins = std::move(activePlugins);
+	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
+}
+
+const QSet<QString> & PluginModel::activePlugins() const
+{
+	return m_activePlugins;
+}
+
 void PluginModel::loadPluginData()
 {
-	if (!m_pluginActivationService || !m_pluginDependencyHandler)
+	if (!m_pluginDependencyHandler)
 		return;
 
 	beginResetModel();
@@ -66,8 +71,7 @@ void PluginModel::loadPluginData()
 			!pluginMetadata.displayName().isEmpty() ? pluginMetadata.displayName() : pluginMetadata.name(),
 			pluginMetadata.name(),
 			pluginMetadata.description(),
-			pluginMetadata.author(),
-			m_pluginActivationService->isActive(pluginMetadata.name())
+			pluginMetadata.author()
 		});
 
 	endResetModel();
@@ -103,7 +107,7 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 		case CommentRole:
 			return pluginEntry->description;
 		case Qt::CheckStateRole:
-			return pluginEntry->checked;
+			return m_activePlugins.contains(pluginEntry->pluginName);
 		case CategorizedSortFilterProxyModel::CategoryDisplayRole:
 		case CategorizedSortFilterProxyModel::CategorySortRole:
 			return pluginEntry->category;
@@ -116,7 +120,11 @@ bool PluginModel::setData(const QModelIndex &index, const QVariant &value, int r
 {
 	if (index.isValid() && (role == Qt::CheckStateRole))
 	{
-		static_cast<PluginEntry*>(index.internalPointer())->checked = value.toBool();
+		auto pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
+		if (value.toBool())
+			m_activePlugins.insert(pluginEntry->pluginName);
+		else
+			m_activePlugins.remove(pluginEntry->pluginName);
 		emit dataChanged(index, index);
 		return true;
 	}
