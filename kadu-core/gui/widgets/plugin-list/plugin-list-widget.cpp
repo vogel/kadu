@@ -64,7 +64,7 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	CategoryDrawer = new CategorizedListViewPainter(ListView);
 	ListView->setCategoryDrawer(CategoryDrawer);
 
-	Model = new PluginModel(this, this);
+	Model = new PluginModel{this};
 	connect(Model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
 
 	Proxy = new PluginProxyModel(this);
@@ -113,8 +113,15 @@ void PluginListWidget::setPluginDependencyHandler(PluginDependencyHandler *plugi
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
 
-	Model->setPluginDependencyHandler(m_pluginDependencyHandler);
-	Model->loadPluginData();
+	if (!m_pluginDependencyHandler)
+		return;
+
+	auto pluginEntries = QVector<PluginMetadata>{};
+	for (auto pluginMetadata : m_pluginDependencyHandler)
+		pluginEntries.append(pluginMetadata);
+	Model->setPluginEntries(pluginEntries);
+
+	Proxy->sort(0);
 }
 
 void PluginListWidget::setPluginStateManager(PluginStateManager *pluginStateManager)
@@ -166,8 +173,6 @@ void PluginListWidget::applyChanges()
 			}
 		}
 	}
-
-	Model->loadPluginData();
 
 	emit changed(false);
 }

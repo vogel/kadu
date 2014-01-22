@@ -24,15 +24,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/plugin-list/plugin-list-widget.h"
-#include "plugin/model/plugin-proxy-model.h"
-#include "plugin/metadata/plugin-metadata.h"
-#include "plugin/plugin-dependency-handler.h"
-
 #include "plugin-model.h"
 
-PluginModel::PluginModel(PluginListWidget *pluginListWidget, QObject *parent) :
-		QAbstractListModel{parent}, m_pluginListWidget{pluginListWidget}
+#include "model/categorized-sort-filter-proxy-model.h"
+#include "plugin/metadata/plugin-metadata.h"
+
+PluginModel::PluginModel(QObject *parent) :
+		QAbstractListModel{parent}
 {
 }
 
@@ -40,9 +38,11 @@ PluginModel::~PluginModel()
 {
 }
 
-void PluginModel::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
+void PluginModel::setPluginEntries(QVector<PluginMetadata> pluginEntries)
 {
-	m_pluginDependencyHandler = pluginDependencyHandler;
+	beginResetModel();
+	m_pluginEntries = std::move(pluginEntries);
+	endResetModel();
 }
 
 void PluginModel::setActivePlugins(QSet<QString> activePlugins)
@@ -54,20 +54,6 @@ void PluginModel::setActivePlugins(QSet<QString> activePlugins)
 const QSet<QString> & PluginModel::activePlugins() const
 {
 	return m_activePlugins;
-}
-
-void PluginModel::loadPluginData()
-{
-	if (!m_pluginDependencyHandler)
-		return;
-
-	beginResetModel();
-	m_pluginEntries.clear();
-	for (auto pluginMetadata : m_pluginDependencyHandler)
-		m_pluginEntries.append(pluginMetadata);
-	endResetModel();
-
-	m_pluginListWidget->Proxy->sort(0);
 }
 
 QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) const
