@@ -179,11 +179,11 @@ QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState
 	int count = Model->rowCount();
 	for (int i = 0; i < count; i++)
 	{
-		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
-		bool isActive = m_pluginActivationService->isActive(pluginEntry->pluginName);
-		bool isChecked = Model->activePlugins().contains(pluginEntry->pluginName);
+		auto pluginName = Model->index(i, 0).data(PluginModel::NameRole).toString();
+		bool isActive = m_pluginActivationService->isActive(pluginName);
+		bool isChecked = Model->activePlugins().contains(pluginName);
 		if ((isActive != isChecked) && (newActiveState == isChecked))
-				result.append(pluginEntry->pluginName);
+				result.append(pluginName);
 	}
 
 	return result;

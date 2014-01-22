@@ -55,16 +55,14 @@ bool PluginProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
 		return true;
 
 	auto index = sourceModel()->index(sourceRow, 0);
-	auto entry = static_cast<PluginEntry*>(index.internalPointer());
-	return entry->pluginName.contains(m_filterText, Qt::CaseInsensitive) ||
-			entry->name.contains(m_filterText, Qt::CaseInsensitive) ||
-			entry->description.contains(m_filterText, Qt::CaseInsensitive) ||
-			entry->author.contains(m_filterText, Qt::CaseInsensitive);
+	auto metadata = index.data(PluginModel::MetadataRole).value<PluginMetadata>();
+	return metadata.displayName().contains(m_filterText, Qt::CaseInsensitive) ||
+			metadata.name().contains(m_filterText, Qt::CaseInsensitive) ||
+			metadata.description().contains(m_filterText, Qt::CaseInsensitive) ||
+			metadata.author().contains(m_filterText, Qt::CaseInsensitive);
 }
 
 bool PluginProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	auto leftEntry = static_cast<PluginEntry*>(left.internalPointer());
-	auto rightEntry = static_cast<PluginEntry*>(right.internalPointer());
-	return leftEntry->name.compare(rightEntry->name, Qt::CaseInsensitive) < 0;
+	return left.data(Qt::DisplayRole).toString().compare(right.data(Qt::DisplayRole).toString()) < 0;
 }

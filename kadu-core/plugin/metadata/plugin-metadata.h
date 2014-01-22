@@ -28,6 +28,7 @@
 
 #include "exports.h"
 
+#include <QtCore/QMetaType>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
@@ -49,6 +50,7 @@ class KADUAPI PluginMetadata
 {
 
 public:
+	PluginMetadata();
 	PluginMetadata(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
 			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault);
@@ -146,6 +148,8 @@ private:
 	bool m_loadByDefault;
 
 };
+
+Q_DECLARE_METATYPE(PluginMetadata);
 
 /**
  * @}

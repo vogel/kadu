@@ -62,18 +62,9 @@ void PluginModel::loadPluginData()
 		return;
 
 	beginResetModel();
-
 	m_pluginEntries.clear();
-
-	for (auto const &pluginMetadata : m_pluginDependencyHandler)
-		m_pluginEntries.append({
-			!pluginMetadata.category().isEmpty() ? pluginMetadata.category() : "Misc",
-			!pluginMetadata.displayName().isEmpty() ? pluginMetadata.displayName() : pluginMetadata.name(),
-			pluginMetadata.name(),
-			pluginMetadata.description(),
-			pluginMetadata.author()
-		});
-
+	for (auto pluginMetadata : m_pluginDependencyHandler)
+		m_pluginEntries.append(pluginMetadata);
 	endResetModel();
 
 	m_pluginListWidget->Proxy->sort(0);
@@ -83,34 +74,31 @@ QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) c
 {
 	Q_UNUSED(parent)
 
-	return createIndex(row, column, (row < m_pluginEntries.count()) ? (void*) &m_pluginEntries.at(row) : nullptr);
+	return createIndex(row, column, (row < m_pluginEntries.count()) ? row : 0);
 }
 
 QVariant PluginModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || !index.internalPointer())
+	if (!index.isValid() || index.row() < 0 || index.row() >= m_pluginEntries.count())
 		return {};
 
-	if (index.row() < 0 || index.row() >= m_pluginEntries.count())
-		return {};
-
-	auto pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
+	auto pluginMetadata = m_pluginEntries.at(index.row());
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return pluginEntry->name;
-		case PluginEntryRole:
-			return QVariant::fromValue(pluginEntry);
+			return !pluginMetadata.displayName().isEmpty() ? pluginMetadata.displayName() : pluginMetadata.name();
+		case MetadataRole:
+			return QVariant::fromValue(pluginMetadata);
 		case NameRole:
-			return pluginEntry->pluginName;
+			return pluginMetadata.name();
 		case CommentRole:
-			return pluginEntry->description;
+			return pluginMetadata.description();
 		case Qt::CheckStateRole:
-			return m_activePlugins.contains(pluginEntry->pluginName);
+			return m_activePlugins.contains(pluginMetadata.name());
 		case CategorizedSortFilterProxyModel::CategoryDisplayRole:
 		case CategorizedSortFilterProxyModel::CategorySortRole:
-			return pluginEntry->category;
+			return !pluginMetadata.category().isEmpty() ? pluginMetadata.category() : "Misc";
 		default:
 			return {};
 	}
@@ -120,11 +108,11 @@ bool PluginModel::setData(const QModelIndex &index, const QVariant &value, int r
 {
 	if (index.isValid() && (role == Qt::CheckStateRole))
 	{
-		auto pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
+		auto pluginName = index.data(NameRole).toString();
 		if (value.toBool())
-			m_activePlugins.insert(pluginEntry->pluginName);
+			m_activePlugins.insert(pluginName);
 		else
-			m_activePlugins.remove(pluginEntry->pluginName);
+			m_activePlugins.remove(pluginName);
 		emit dataChanged(index, index);
 		return true;
 	}

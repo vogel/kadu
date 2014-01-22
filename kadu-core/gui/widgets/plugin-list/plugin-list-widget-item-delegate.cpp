@@ -222,26 +222,20 @@ void PluginListWidgetItemDelegate::emitChanged()
 
 void PluginListWidgetItemDelegate::slotAboutClicked()
 {
-        const QModelIndex index = focusedIndex();
-        const QAbstractItemModel *model = index.model();
+	const QModelIndex index = focusedIndex();
+	const QAbstractItemModel *model = index.model();
 
-        QString info;
-        info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()) + "\n";
+	QString info;
+	info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()) + "\n";
 
-        auto pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
+	auto pluginMetadata = model->data(index, PluginModel::MetadataRole).value<PluginMetadata>();
+	info += tr("Author: %1").arg(pluginMetadata.author()) + "\n";
+	info += tr("Version: %1").arg(pluginMetadata.version()) + "\n";
+	info += tr("Description: %1").arg(pluginMetadata.description()) + "\n";
+	info += tr("Dependencies: %1").arg(pluginMetadata.dependencies().join(", ")) + "\n";
+	info += tr("Provides: %1").arg(pluginMetadata.provides());
 
-		if (Core::instance()->pluginDependencyHandler()->hasPluginMetadata(pluginEntry->pluginName))
-		{
-			auto const &pluginMetadata = Core::instance()->pluginDependencyHandler()->pluginMetadata(pluginEntry->pluginName);
-
-			info += tr("Author: %1").arg(pluginMetadata.author()) + "\n";
-			info += tr("Version: %1").arg(pluginMetadata.version()) + "\n";
-			info += tr("Description: %1").arg(pluginMetadata.description()) + "\n";
-			info += tr("Dependencies: %1").arg(pluginMetadata.dependencies().join(", ")) + "\n";
-			info += tr("Provides: %1").arg(pluginMetadata.provides());
-		}
-
-        MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
+	MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
 }
 
 void PluginListWidgetItemDelegate::slotConfigureClicked()

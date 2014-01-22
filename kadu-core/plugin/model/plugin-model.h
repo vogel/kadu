@@ -25,13 +25,14 @@
 
 #pragma once
 
+#include "plugin/metadata/plugin-metadata.h"
+
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QList>
 #include <QtCore/QPointer>
 #include <QtCore/QSet>
 
 class PluginDependencyHandler;
-class PluginEntry;
 class PluginListWidget;
 
 class PluginModel : public QAbstractListModel
@@ -41,9 +42,9 @@ class PluginModel : public QAbstractListModel
 public:
 	enum ExtraRoles
 	{
-		PluginEntryRole   = 0x09386561,
-		NameRole          = 0x0CBBBB00,
-		CommentRole       = 0x19FC6DE2
+		MetadataRole = 0x09386561,
+		NameRole = 0x0CBBBB00,
+		CommentRole = 0x19FC6DE2
 	};
 
 	explicit PluginModel(PluginListWidget *pluginListWidget, QObject *parent = nullptr);
@@ -65,27 +66,7 @@ private:
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 
 	PluginListWidget *m_pluginListWidget;
-	QList<PluginEntry> m_pluginEntries;
+	QList<PluginMetadata> m_pluginEntries;
 	QSet<QString> m_activePlugins;
 
 };
-
-
-class PluginEntry
-{
-
-public:
-	QString category;
-	QString name;
-	QString pluginName;
-	QString description;
-	QString author;
-
-	bool operator == (const PluginEntry &pe) const
-	{
-		return name == pe.name;
-	}
-
-};
-
-Q_DECLARE_METATYPE(PluginEntry*)
