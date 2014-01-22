@@ -220,7 +220,7 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 		std::copy_if(std::begin(withDependents), std::end(withDependents), std::back_inserter(dependents),
 				[=,&pluginName](QString const &dependentName)
 				{
-					return dependentName != pluginName && m_pluginActivationService->isActive(dependentName);
+					return dependentName != pluginName && Model->activePlugins().contains(dependentName);
 				}
 		);
 
