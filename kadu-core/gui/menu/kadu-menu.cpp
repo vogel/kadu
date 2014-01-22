@@ -77,7 +77,7 @@ KaduMenu * KaduMenu::addAction(ActionDescription *actionDescription, KaduMenu::M
 	return this;
 }
 
-void KaduMenu::removeAction(ActionDescription *actionDescription)
+KaduMenu * KaduMenu::removeAction(ActionDescription *actionDescription)
 {
 	QList<MenuItem*>::iterator i = Items.begin();
 
@@ -88,6 +88,8 @@ void KaduMenu::removeAction(ActionDescription *actionDescription)
 		else
 			++i;
 	}
+
+	return this;
 }
 
 bool KaduMenu::lessThan(const MenuItem *a, const MenuItem *b)

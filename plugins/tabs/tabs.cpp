@@ -105,7 +105,8 @@ TabsManager::TabsManager(QObject *parent) :
 
 	MenuInventory::instance()
 		->menu("buddy-list")
-		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20);
+		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20)
+		->update();
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
@@ -123,7 +124,8 @@ TabsManager::~TabsManager()
 
 	MenuInventory::instance()
 		->menu("buddy-list")
-		->removeAction(OpenInNewTabActionDescription);
+		->removeAction(OpenInNewTabActionDescription)
+		->update();
 
 	Timer.stop();
 	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);

@@ -84,7 +84,7 @@ public:
 	bool empty() const;
 
 	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
-	void removeAction(ActionDescription *actionDescription);
+	KaduMenu * removeAction(ActionDescription *actionDescription);
 	void updateGuiMenuLater();
 	void update();
 

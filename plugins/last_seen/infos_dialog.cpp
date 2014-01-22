@@ -156,6 +156,7 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 	QScopedPointer<QMenu> menu(new QMenu());
 	MenuInventory::instance()->menu("buddy-list")->attachToMenu(menu.data());
 	MenuInventory::instance()->menu("buddy-list")->applyTo(menu.data(), &actionContext);
+	MenuInventory::instance()->menu("buddy-list")->update();
 	menu->exec(QCursor::pos());
 }
 

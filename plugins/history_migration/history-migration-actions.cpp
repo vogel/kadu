@@ -60,7 +60,8 @@ HistoryMigrationActions::HistoryMigrationActions() :
 
 		MenuInventory::instance()
 			->menu("tools")
-			->addAction(ImportHistoryActionDescription, KaduMenu::SectionTools);
+			->addAction(ImportHistoryActionDescription, KaduMenu::SectionTools)
+			->update();
 	}
 }
 
@@ -68,7 +69,8 @@ HistoryMigrationActions::~HistoryMigrationActions()
 {
 	MenuInventory::instance()
 		->menu("tools")
-		->removeAction(ImportHistoryActionDescription);
+		->removeAction(ImportHistoryActionDescription)
+		->update();
 }
 
 void HistoryMigrationActions::importHistoryActionActivated(QAction *sender, bool toggled)

@@ -49,14 +49,16 @@ SimliteSendPublicKeyActionDescription::SimliteSendPublicKeyActionDescription(QOb
 
 	MenuInventory::instance()
 		->menu("buddy-list")
-		->addAction(this, KaduMenu::SectionActions, 200);
+		->addAction(this, KaduMenu::SectionActions, 200)
+		->update();
 }
 
 SimliteSendPublicKeyActionDescription::~SimliteSendPublicKeyActionDescription()
 {
 	MenuInventory::instance()
 		->menu("buddy-list")
-		->removeAction(this);
+		->removeAction(this)
+		->update();
 }
 
 void SimliteSendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggled)

@@ -98,7 +98,8 @@ Infos::Infos(QObject *parent) :
 
 	MenuInventory::instance()
 		->menu("tools")
-		->addAction(lastSeenActionDescription, KaduMenu::SectionTools, 3);
+		->addAction(lastSeenActionDescription, KaduMenu::SectionTools, 3)
+		->update();
 
 	kdebugf2();
 }
@@ -129,7 +130,8 @@ Infos::~Infos()
 
 	MenuInventory::instance()
 		->menu("tools")
-		->removeAction(lastSeenActionDescription);
+		->removeAction(lastSeenActionDescription)
+		->update();
 
 	kdebugf2();
 }

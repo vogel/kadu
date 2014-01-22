@@ -61,14 +61,16 @@ void AutostatusActions::registerActions()
 
 	MenuInventory::instance()
 		->menu("main")
-		->addAction(AutostatusActionDescription, KaduMenu::SectionMiscTools, 2);
+		->addAction(AutostatusActionDescription, KaduMenu::SectionMiscTools, 2)
+		->update();
 }
 
 void AutostatusActions::unregisterActions()
 {
 	MenuInventory::instance()
 		->menu("main")
-		->removeAction(AutostatusActionDescription);
+		->removeAction(AutostatusActionDescription)
+		->update();
 
 	delete AutostatusActionDescription;
 	AutostatusActionDescription = 0;

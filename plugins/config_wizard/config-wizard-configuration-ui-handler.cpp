@@ -65,14 +65,16 @@ ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler()
 
 	MenuInventory::instance()
 		->menu("tools")
-		->addAction(ShowConfigWizardActionDescription, KaduMenu::SectionTools);
+		->addAction(ShowConfigWizardActionDescription, KaduMenu::SectionTools)
+		->update();
 }
 
 ConfigWizardConfigurationUiHandler::~ConfigWizardConfigurationUiHandler()
 {
 	MenuInventory::instance()
 		->menu("tools")
-		->removeAction(ShowConfigWizardActionDescription);
+		->removeAction(ShowConfigWizardActionDescription)
+		->update();
 
 	delete Wizard.data();
 }

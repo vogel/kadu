@@ -76,10 +76,12 @@ SmsActions::SmsActions()
 
 	MenuInventory::instance()
 		->menu("buddy-list")
-		->addAction(sendSmsActionDescription, KaduMenu::SectionSend, 10);
+		->addAction(sendSmsActionDescription, KaduMenu::SectionSend, 10)
+		->update();
 	MenuInventory::instance()
 		->menu("buddy")
-		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5);
+		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5)
+		->update();
 }
 
 SmsActions::~SmsActions()
@@ -88,10 +90,12 @@ SmsActions::~SmsActions()
 
 	MenuInventory::instance()
 		->menu("buddy-list")
-		->removeAction(sendSmsActionDescription);
+		->removeAction(sendSmsActionDescription)
+		->update();
 	MenuInventory::instance()
 		->menu("buddy")
-		->removeAction(sendSmsActionDescription);
+		->removeAction(sendSmsActionDescription)
+		->update();
 }
 
 void SmsActions::setSmsDialogRepository(SmsDialogRepository *smsDialogRepository)

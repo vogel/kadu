@@ -72,7 +72,8 @@ SoundActions::SoundActions()
 
 	MenuInventory::instance()
 		->menu("main")
-		->addAction(MuteActionDescription, KaduMenu::SectionMiscTools, 7);
+		->addAction(MuteActionDescription, KaduMenu::SectionMiscTools, 7)
+		->update();
 
 	setMuteActionState();
 
@@ -83,7 +84,8 @@ SoundActions::~SoundActions()
 {
 	MenuInventory::instance()
 		->menu("main")
-		->removeAction(MuteActionDescription);
+		->removeAction(MuteActionDescription)
+		->update();
 }
 
 void SoundActions::setMuteActionState()

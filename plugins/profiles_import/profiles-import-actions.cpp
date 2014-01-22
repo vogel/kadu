@@ -63,7 +63,8 @@ ProfilesImportActions::ProfilesImportActions() :
 
 		MenuInventory::instance()
 			->menu("tools")
-			->addAction(ImportProfiles, KaduMenu::SectionTools);
+			->addAction(ImportProfiles, KaduMenu::SectionTools)
+			->update();
 
 		// The last ActionDescription will send actionLoaded() signal.
 		Actions::instance()->unblockSignals();
@@ -75,17 +76,20 @@ ProfilesImportActions::ProfilesImportActions() :
 
 	MenuInventory::instance()
 		->menu("tools")
-		->addAction(ImportExternalProfile, KaduMenu::SectionTools);
+		->addAction(ImportExternalProfile, KaduMenu::SectionTools)
+		->update();
 }
 
 ProfilesImportActions::~ProfilesImportActions()
 {
 	MenuInventory::instance()
 		->menu("tools")
-		->removeAction(ImportProfiles);
+		->removeAction(ImportProfiles)
+		->update();
 	MenuInventory::instance()
 		->menu("tools")
-		->removeAction(ImportExternalProfile);
+		->removeAction(ImportExternalProfile)
+		->update();
 }
 
 void ProfilesImportActions::updateActions()
@@ -94,7 +98,8 @@ void ProfilesImportActions::updateActions()
 	{
 		MenuInventory::instance()
 			->menu("tools")
-			->removeAction(ImportProfiles);
+			->removeAction(ImportProfiles)
+			->update();
 	}
 }
 

@@ -74,6 +74,7 @@ void EncryptionSetUpMenu::aboutToShowSlot()
 	{
 		addSeparator();
 		additionalItems->appendTo(this, MenuAction->context());
+		additionalItems->update();
 	}
 }
 
