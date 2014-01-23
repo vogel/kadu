@@ -44,6 +44,10 @@ private slots:
 	void selfDependencyTest();
 	void pluginOnlyAsDependencyTest();
 	void cycleDependencyTest();
+	void singleProvidesTest();
+	void noConflictingProvidesTest();
+	void conflictingProvidesTest();
+	void conflictingWithCyclesProvidesTest();
 
 };
 
@@ -127,6 +131,76 @@ void tst_PluginDependencyGraphBuilder::cycleDependencyTest()
 	}));
 
 	QCOMPARE(graph.size(), 0);
+}
+
+void tst_PluginDependencyGraphBuilder::singleProvidesTest()
+{
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
+	{
+		std::make_tuple(QString{"p1"}, QString{}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QString{}, QStringList{"p3"}),
+		std::make_tuple(QString{"p3"}, QString{"feature3"}, QStringList{})
+	}));
+
+	QCOMPARE(graph.size(), 3);
+
+	verifyDependencies(graph, "p1", {"p2"}, {});
+	verifyDependencies(graph, "p2", {"p3"}, {"p1"});
+	verifyDependencies(graph, "p3", {}, {"p2"});
+}
+
+void tst_PluginDependencyGraphBuilder::noConflictingProvidesTest()
+{
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
+	{
+		std::make_tuple(QString{"p1"}, QString{"feature1"}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QString{"feature2"}, QStringList{"p3"}),
+		std::make_tuple(QString{"p3"}, QString{"feature3"}, QStringList{})
+	}));
+
+	QCOMPARE(graph.size(), 3);
+
+	verifyDependencies(graph, "p1", {"p2"}, {});
+	verifyDependencies(graph, "p2", {"p3"}, {"p1"});
+	verifyDependencies(graph, "p3", {}, {"p2"});
+}
+
+void tst_PluginDependencyGraphBuilder::conflictingProvidesTest()
+{
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
+	{
+		std::make_tuple(QString{"p1"}, QString{"feature12"}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QString{"feature12"}, QStringList{"p5"}),
+		std::make_tuple(QString{"p3"}, QString{"feature3"}, QStringList{"p4"}),
+		std::make_tuple(QString{"p4"}, QString{"feature4"}, QStringList{"p5"}),
+		std::make_tuple(QString{"p5"}, QString{"feature5"}, QStringList{})
+	}));
+
+	QCOMPARE(graph.size(), 4);
+
+	verifyDependencies(graph, "p2", {"p5"}, {});
+	verifyDependencies(graph, "p3", {"p4"}, {});
+	verifyDependencies(graph, "p4", {"p5"}, {"p3"});
+	verifyDependencies(graph, "p5", {}, {"p2", "p4"});
+}
+
+void tst_PluginDependencyGraphBuilder::conflictingWithCyclesProvidesTest()
+{
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
+	{
+		std::make_tuple(QString{"p1"}, QString{"feature12"}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QString{"feature12"}, QStringList{"p5"}),
+		std::make_tuple(QString{"p3"}, QString{"feature3"}, QStringList{"p4"}),
+		std::make_tuple(QString{"p4"}, QString{"feature47"}, QStringList{"p6"}),
+		std::make_tuple(QString{"p5"}, QString{"feature5"}, QStringList{}),
+		std::make_tuple(QString{"p5"}, QString{"feature6"}, QStringList{"p7"}),
+		std::make_tuple(QString{"p7"}, QString{"feature47"}, QStringList{"p8"}),
+		std::make_tuple(QString{"p8"}, QString{}, QStringList{"p3"})
+	}));
+
+	QCOMPARE(graph.size(), 1);
+
+	verifyDependencies(graph, "p5", {}, {});
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
