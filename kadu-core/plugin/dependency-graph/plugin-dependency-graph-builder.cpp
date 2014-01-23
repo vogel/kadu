@@ -45,15 +45,11 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 	{
 		auto pluginsToRemove = QSet<QString>{};
 		for (auto const &invalidPlugin : invalidPlugins(graph, plugins))
-		{
-			pluginsToRemove.insert(invalidPlugin);
-			for (auto dependent : graph.findDependents(invalidPlugin))
-				pluginsToRemove.insert(dependent);
-		}
+			pluginsToRemove = setWithDependents(pluginsToRemove, graph, invalidPlugin);
 		return pluginsToRemove;
 	};
 
-	auto findInvalidProvides = [&plugins](PluginDependencyGraph &graph)
+	auto findInvalidProvides = [this,&plugins](PluginDependencyGraph &graph)
 	{
 		auto pluginsToRemove = QSet<QString>{};
 		auto data = std::map<QString, std::tuple<int, std::set<QString>>>{};
@@ -78,11 +74,7 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 			if (!provides.isEmpty())
 			{
 				if (contains(std::get<1>(entry), provides))
-				{
-					pluginsToRemove.insert(plugin);
-					for (auto dependent : graph.findDependents(plugin))
-						pluginsToRemove.insert(dependent);
-				}
+					pluginsToRemove = setWithDependents(pluginsToRemove, graph, plugin);
 				for (auto dependent : dependents)
 					std::get<1>(data.at(dependent)).insert(provides);
 			}
@@ -102,6 +94,14 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 	};
 
 	return applyFilters(plugins, {findCycles, findInvalidPlugins, findInvalidProvides});
+}
+
+QSet<QString> PluginDependencyGraphBuilder::setWithDependents(QSet<QString> set, const PluginDependencyGraph &graph, const QString &pluginName) const
+{
+	set.insert(pluginName);
+	for (auto dependent : graph.findDependents(pluginName))
+		set.insert(dependent);
+	return std::move(set);
 }
 
 PluginDependencyGraph PluginDependencyGraphBuilder::applyFilters(const std::map<QString, PluginMetadata> &plugins, std::vector<PluginFilter> filters) const

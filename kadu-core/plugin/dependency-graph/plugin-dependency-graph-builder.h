@@ -59,6 +59,8 @@ public:
 private:
 	using PluginFilter = std::function<QSet<QString>(PluginDependencyGraph &)>;
 
+	QSet<QString> setWithDependents(QSet<QString> set, const PluginDependencyGraph &graph, const QString &pluginName) const;
+
 	PluginDependencyGraph buildGraph(const std::map<QString, PluginMetadata> &plugins) const;
 	std::set<QString> invalidPlugins(const PluginDependencyGraph &graph, const std::map<QString, PluginMetadata> &plugins) const;
 
