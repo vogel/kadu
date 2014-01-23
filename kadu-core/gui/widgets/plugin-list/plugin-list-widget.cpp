@@ -217,7 +217,58 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 	auto checked = topLeft.data(Qt::CheckStateRole).toBool();
 
 	if (checked)
-		setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
+	{
+		auto withDependencies = m_pluginDependencyHandler->withDependents(pluginName);
+		auto withoutChecked = decltype(withDependencies){};
+		std::copy_if(std::begin(withDependencies), std::end(withDependencies), std::back_inserter(withoutChecked),
+				[=,&pluginName](QString const &dependentName)
+				{
+					return dependentName == pluginName || !Model->activePlugins().contains(dependentName);
+				}
+		);
+
+		auto provides = QMap<QString, QString>{};
+		auto count = Model->rowCount();
+		for (auto i = 0; i < count; i++)
+		{
+			auto index = Model->index(i);
+			auto metadata = index.data(PluginModel::MetadataRole).value<PluginMetadata>();
+
+			if (!index.data(Qt::CheckStateRole).toBool())
+				continue;
+
+			if (metadata.name() != pluginName && !metadata.provides().isEmpty())
+				provides.insert(metadata.provides(), metadata.name());
+		}
+
+		auto pluginsToDeactivate = QSet<QString>{};
+		for (auto pluginName : withoutChecked)
+		{
+			auto metadata = m_pluginDependencyHandler->pluginMetadata(pluginName);
+			if (!metadata.provides().isEmpty() && provides.contains(metadata.provides()))
+			{
+				auto pluginToDeactivate = provides.value(metadata.provides());
+				for (auto dependentPluginToDeactivate : m_pluginDependencyHandler->withDependents(pluginToDeactivate))
+					pluginsToDeactivate.insert(dependentPluginToDeactivate);
+			}
+		}
+
+		if (!pluginsToDeactivate.isEmpty())
+		{
+			MessageDialog *dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
+					tr("Following dependend plugins will be deactivated because of conflict: %1.").arg(
+						QStringList{pluginsToDeactivate.toList()}.join(", ")), this);
+			dialog->addButton(QMessageBox::Yes, tr("Deactivate conflicting plugins"));
+			dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+			if (dialog->ask())
+				setAllChecked(pluginsToDeactivate, false);
+			else
+				setAllChecked(QVector<QString>{pluginName}, false);
+		}
+		else
+			setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
+	}
 	else
 	{
 		auto withDependents = m_pluginDependencyHandler->withDependents(pluginName);
@@ -240,7 +291,7 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 			if (dialog->ask())
 				setAllChecked(withDependents, false);
 			else
-				setAllChecked({pluginName}, true);
+				setAllChecked(QVector<QString>{pluginName}, true);
 		}
 		else
 			setAllChecked(withDependents, false);
@@ -249,7 +300,8 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 	m_processingChange = false;
 }
 
-void PluginListWidget::setAllChecked(const QVector<QString> &plugins, bool checked)
+template<template<class> class T>
+void PluginListWidget::setAllChecked(const T<QString> &plugins, bool checked)
 {
 	auto count = Model->rowCount();
 	for (auto i = 0; i < count; i++)

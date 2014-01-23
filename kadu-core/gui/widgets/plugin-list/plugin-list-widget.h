@@ -76,7 +76,9 @@ class PluginListWidget : public QWidget
 	bool m_processingChange;
 
 	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
-	void setAllChecked(const QVector<QString> &plugins, bool checked);
+
+	template<template<class> class T>
+	void setAllChecked(const T<QString> &plugins, bool checked);
 
 private slots:
 	void configurationApplied();
