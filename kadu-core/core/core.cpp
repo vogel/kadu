@@ -90,6 +90,7 @@
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/metadata/plugin-metadata-reader.h"
+#include "plugin/plugin-conflict-resolver.h"
 #include "plugin/plugin-dependency-handler.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state-manager.h"
@@ -697,6 +698,9 @@ void Core::runServices()
 	CurrentPluginDependencyHandler->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
 	CurrentPluginDependencyHandler->setPluginMetadataProvider(CurrentPluginMetadataFinder);
 
+	CurrentPluginConflictResolver = new PluginConflictResolver{this};
+	CurrentPluginConflictResolver->setPluginDependencyHandler(CurrentPluginDependencyHandler);
+
 	CurrentPluginActivationService->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
 	CurrentPluginActivationService->setPluginDependencyHandler(CurrentPluginDependencyHandler);
 	CurrentPluginActivationService->setPluginStateService(CurrentPluginStateService);
@@ -892,6 +896,11 @@ PluginActivationErrorHandler * Core::pluginActivationErrorHandler() const
 PluginActivationService * Core::pluginActivationService() const
 {
 	return CurrentPluginActivationService;
+}
+
+PluginConflictResolver * Core::pluginConflictResolver() const
+{
+	return CurrentPluginConflictResolver;
 }
 
 PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const

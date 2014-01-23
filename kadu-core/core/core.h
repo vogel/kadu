@@ -82,6 +82,7 @@ class MessageTransformerService;
 class NotificationService;
 class PluginActivationErrorHandler;
 class PluginActivationService;
+class PluginConflictResolver;
 class PluginDependencyGraphBuilder;
 class PluginDependencyHandler;
 class PluginManager;
@@ -138,6 +139,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	StoragePointFactory *CurrentStoragePointFactory;
 	PluginActivationService *CurrentPluginActivationService;
 	PluginActivationErrorHandler *CurrentPluginActivationErrorHandler;
+	PluginConflictResolver *CurrentPluginConflictResolver;
 	PluginDependencyGraphBuilder *CurrentPluginDependencyGraphBuilder;
 	PluginDependencyHandler *CurrentPluginDependencyHandler;
 	PluginMetadataFinder *CurrentPluginMetadataFinder;
@@ -230,6 +232,7 @@ public:
 	StoragePointFactory * storagePointFactory() const;
 	PluginActivationErrorHandler * pluginActivationErrorHandler() const;
 	PluginActivationService * pluginActivationService() const;
+	PluginConflictResolver * pluginConflictResolver() const;
 	PluginDependencyGraphBuilder * pluginDependencyGraphBuilder() const;
 	PluginDependencyHandler * pluginDependencyHandler() const;
 	PluginMetadataProvider * pluginMetadataProvider() const;

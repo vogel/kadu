@@ -3,6 +3,7 @@ kadu_add_test (misc/graph/tst-graph-find-cycles misc/graph/tst-graph-find-cycles
 kadu_add_test (misc/graph/tst-graph-sort-successors misc/graph/tst-graph-sort-successors.cpp)
 kadu_add_test (plugin/dependency-graph/tst-plugin-dependency-graph plugin/dependency-graph/tst-plugin-dependency-graph.cpp)
 kadu_add_test (plugin/dependency-graph/tst-plugin-dependency-graph-builder plugin/dependency-graph/tst-plugin-dependency-graph-builder.cpp)
+kadu_add_test (plugin/tst-plugin-conflict-resolver plugin/tst-plugin-conflict-resolver.cpp)
 kadu_add_test (plugin/tst-plugin-dependency-handler plugin/tst-plugin-dependency-handler.cpp)
 kadu_add_test (plugin/state/tst-plugin-state plugin/state/tst-plugin-state.cpp)
 kadu_add_test (plugin/state/tst-plugin-state-service plugin/state/tst-plugin-state-service.cpp)

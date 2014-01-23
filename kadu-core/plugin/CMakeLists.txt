@@ -19,6 +19,7 @@ set (plugin_SRCS
 	state/plugin-state-service.cpp
 	state/plugin-state-storage.cpp
 	state/plugin-state-storage-09.cpp
+	plugin-conflict-resolver.cpp
 	plugin-dependency-handler.cpp
 	plugin-manager.cpp
 )
