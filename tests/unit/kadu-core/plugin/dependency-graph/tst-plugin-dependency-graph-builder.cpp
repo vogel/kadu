@@ -33,7 +33,7 @@ class tst_PluginDependencyGraphBuilder : public QObject
 	Q_OBJECT
 
 private:
-	using PluginTuple = std::tuple<QString, QStringList>;
+	using PluginTuple = std::tuple<QString, QString, QStringList>;
 
 	std::map<QString, PluginMetadata> createPlugins(const QVector<PluginTuple> &plugins);
 	PluginMetadata createPluginMetadata(const PluginTuple &plugin);
@@ -60,7 +60,8 @@ PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const Plug
 	auto builder = PluginMetadataBuilder{};
 	return builder
 			.setName(std::get<0>(plugin))
-			.setDependencies(std::get<1>(plugin))
+			.setProvides(std::get<1>(plugin))
+			.setDependencies(std::get<2>(plugin))
 			.create();
 }
 
@@ -79,10 +80,10 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		std::make_tuple(QString{"p1"}, QStringList{"p2", "p3", "p4"}),
-		std::make_tuple(QString{"p2"}, QStringList{"p3", "p4"}),
-		std::make_tuple(QString{"p3"}, QStringList{"p4"}),
-		std::make_tuple(QString{"p4"}, QStringList{})
+		std::make_tuple(QString{"p1"}, QString{}, QStringList{"p2", "p3", "p4"}),
+		std::make_tuple(QString{"p2"}, QString{}, QStringList{"p3", "p4"}),
+		std::make_tuple(QString{"p3"}, QString{}, QStringList{"p4"}),
+		std::make_tuple(QString{"p4"}, QString{}, QStringList{})
 	}));
 
 	QCOMPARE(graph.size(), 4);
@@ -97,7 +98,7 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		std::make_tuple(QString{"p1"}, QStringList{"p1"})
+		std::make_tuple(QString{"p1"}, QString{}, QStringList{"p1"})
 	}));
 
 	QCOMPARE(graph.size(), 1);
@@ -109,9 +110,9 @@ void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		std::make_tuple(QString{"p1"}, QStringList{"p2"}),
-		std::make_tuple(QString{"p2"}, QStringList{"p3"}),
-		std::make_tuple(QString{"p3"}, QStringList{"p4"})
+		std::make_tuple(QString{"p1"}, QString{}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QString{}, QStringList{"p3"}),
+		std::make_tuple(QString{"p3"}, QString{}, QStringList{"p4"})
 	}));
 
 	QCOMPARE(graph.size(), 0);
@@ -121,8 +122,8 @@ void tst_PluginDependencyGraphBuilder::cycleDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		std::make_tuple(QString{"p1"}, QStringList{"p2"}),
-		std::make_tuple(QString{"p2"}, QStringList{"p1"})
+		std::make_tuple(QString{"p1"}, QString{}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QString{}, QStringList{"p1"})
 	}));
 
 	QCOMPARE(graph.size(), 0);
