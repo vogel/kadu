@@ -40,6 +40,7 @@
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
+#include "plugin/plugin-conflict-resolver.h"
 #include "plugin/plugin-dependency-handler.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state.h"
@@ -107,6 +108,11 @@ void PluginListWidget::setPluginActivationService(PluginActivationService *plugi
 
 	if (m_pluginActivationService)
 		Model->setActivePlugins(m_pluginActivationService->activePlugins());
+}
+
+void PluginListWidget::setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver)
+{
+	m_pluginConflictResolver = pluginConflictResolver;
 }
 
 void PluginListWidget::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
@@ -196,7 +202,7 @@ void PluginListWidget::configurationApplied()
 
 void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	if (m_processingChange || !m_pluginActivationService || !m_pluginDependencyHandler)
+	if (m_processingChange || !m_pluginActivationService || !m_pluginConflictResolver ||  !m_pluginDependencyHandler)
 		return;
 
 	// we do not know how to work with multiple rows!
@@ -210,51 +216,24 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 
 	if (checked)
 	{
-		auto withDependencies = m_pluginDependencyHandler->withDependents(pluginName);
-		auto withoutChecked = decltype(withDependencies){};
-		std::copy_if(std::begin(withDependencies), std::end(withDependencies), std::back_inserter(withoutChecked),
-				[=,&pluginName](QString const &dependentName)
-				{
-					return dependentName == pluginName || !Model->activePlugins().contains(dependentName);
-				}
-		);
+		auto activePlugins = std::set<QString>{};
+		auto modelActivePlugins = Model->activePlugins();
+		modelActivePlugins.remove(pluginName);
+		std::copy(std::begin(modelActivePlugins), std::end(modelActivePlugins), std::inserter(activePlugins, activePlugins.begin()));
 
-		auto provides = QMap<QString, QString>{};
-		auto count = Model->rowCount();
-		for (auto i = 0; i < count; i++)
+		auto conflictingPlugins = m_pluginConflictResolver->conflictingPlugins(activePlugins, pluginName);
+
+		if (!conflictingPlugins.empty())
 		{
-			auto index = Model->index(i);
-			auto metadata = index.data(PluginModel::MetadataRole).value<PluginMetadata>();
-
-			if (!index.data(Qt::CheckStateRole).toBool())
-				continue;
-
-			if (metadata.name() != pluginName && !metadata.provides().isEmpty())
-				provides.insert(metadata.provides(), metadata.name());
-		}
-
-		auto pluginsToDeactivate = QSet<QString>{};
-		for (auto pluginName : withoutChecked)
-		{
-			auto metadata = m_pluginDependencyHandler->pluginMetadata(pluginName);
-			if (!metadata.provides().isEmpty() && provides.contains(metadata.provides()))
-			{
-				auto pluginToDeactivate = provides.value(metadata.provides());
-				for (auto dependentPluginToDeactivate : m_pluginDependencyHandler->withDependents(pluginToDeactivate))
-					pluginsToDeactivate.insert(dependentPluginToDeactivate);
-			}
-		}
-
-		if (!pluginsToDeactivate.isEmpty())
-		{
+			auto list = QStringList{};
+			std::copy(std::begin(conflictingPlugins), std::end(conflictingPlugins), std::back_inserter(list));
 			MessageDialog *dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
-					tr("Following dependend plugins will be deactivated because of conflict: %1.").arg(
-						QStringList{pluginsToDeactivate.toList()}.join(", ")), this);
+					tr("Following dependend plugins will be deactivated because of conflict: %1.").arg(list.join(", ")), this);
 			dialog->addButton(QMessageBox::Yes, tr("Deactivate conflicting plugins"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
 
 			if (dialog->ask())
-				setAllChecked(pluginsToDeactivate, false);
+				setAllChecked(list.toVector(), false);
 			else
 				setAllChecked(QVector<QString>{pluginName}, false);
 		}

@@ -36,6 +36,7 @@ class CategorizedListViewPainter;
 class FilterWidget;
 class MainConfigurationWindow;
 class PluginActivationService;
+class PluginConflictResolver;
 class PluginDependencyHandler;
 class PluginModel;
 class PluginListWidgetItemDelegate;
@@ -60,6 +61,7 @@ class PluginListWidget : public QWidget
 	friend class PluginProxyModel;
 
 	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginConflictResolver> m_pluginConflictResolver;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateManager> m_pluginStateManager;
 	QPointer<PluginStateService> m_pluginStateService;
@@ -87,6 +89,7 @@ public:
 	virtual ~PluginListWidget();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
+	void setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver);
 	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	void setPluginStateManager(PluginStateManager *pluginStateManager);
 	void setPluginStateService(PluginStateService *pluginStateService);
