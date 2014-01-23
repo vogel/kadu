@@ -68,7 +68,7 @@ SimpleView::SimpleView() :
 	configurationUpdated();
 
 	DiffRect = config_file.readRectEntry("Look", "SimpleViewGeometry");
-	if (!DiffRect.isNull())
+	if (DiffRect != QRect(0,0,0,0))
 		simpleViewToggle(true);
 }
 
@@ -125,7 +125,7 @@ void SimpleView::simpleViewToggle(bool activate)
 
 		if (SimpleViewActive)
 		{
-			if (DiffRect.isNull())
+			if (DiffRect == QRect(0,0,0,0))
 			{
 				if (KeepSize)
 				{
