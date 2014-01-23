@@ -198,9 +198,10 @@ void tst_PluginDependencyGraphBuilder::conflictingWithCyclesProvidesTest()
 		std::make_tuple(QString{"p8"}, QString{}, QStringList{"p3"})
 	}));
 
-	QCOMPARE(graph.size(), 1);
+	QCOMPARE(graph.size(), 2);
 
-	verifyDependencies(graph, "p5", {}, {});
+	verifyDependencies(graph, "p2", {"p5"}, {});
+	verifyDependencies(graph, "p5", {}, {"p2"});
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)

@@ -22,6 +22,7 @@
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/metadata/plugin-metadata.h"
 
+#include <queue>
 #include <QtCore/QSet>
 
 PluginDependencyGraphBuilder::PluginDependencyGraphBuilder(QObject *parent) :
@@ -35,7 +36,11 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 
 PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const
 {
-	auto findCycles = [](PluginDependencyGraph &graph){ return graph.findPluginsInDependencyCycle(); };
+	auto findCycles = [](PluginDependencyGraph &graph)
+	{
+		return graph.findPluginsInDependencyCycle();
+	};
+
 	auto findInvalidPlugins = [this,&plugins](PluginDependencyGraph &graph)
 	{
 		auto pluginsToRemove = QSet<QString>{};
@@ -48,7 +53,55 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 		return pluginsToRemove;
 	};
 
-	return applyFilters(plugins, {findCycles, findInvalidPlugins});
+	auto findInvalidProvides = [&plugins](PluginDependencyGraph &graph)
+	{
+		auto pluginsToRemove = QSet<QString>{};
+		auto data = std::map<QString, std::tuple<int, std::set<QString>>>{};
+		for (auto const &plugin : graph.plugins())
+			data.insert({plugin, std::make_tuple(graph.directDependencies(plugin).size(), std::set<QString>{})});
+
+		auto readyToCompute = std::queue<QString>{};
+		for (auto const &entry : data)
+			if (std::get<0>(entry.second) == 0)
+				readyToCompute.push(entry.first);
+
+		while (!readyToCompute.empty())
+		{
+			auto plugin = readyToCompute.front();
+			readyToCompute.pop();
+
+			auto &entry = data.at(plugin);
+			auto &metadata = plugins.at(plugin);
+			auto provides = metadata.provides();
+			auto dependents = graph.directDependents(plugin);
+
+			if (!provides.isEmpty())
+			{
+				if (contains(std::get<1>(entry), provides))
+				{
+					pluginsToRemove.insert(plugin);
+					for (auto dependent : graph.findDependents(plugin))
+						pluginsToRemove.insert(dependent);
+				}
+				for (auto dependent : dependents)
+					std::get<1>(data.at(dependent)).insert(provides);
+			}
+
+			for (auto dependent : dependents)
+			{
+				auto &currentProvides = std::get<1>(entry);
+				auto &dependentEntry = data.at(dependent);
+				auto &dependentProvides = std::get<1>(dependentEntry);
+				std::copy(std::begin(currentProvides), std::end(currentProvides), std::inserter(dependentProvides, dependentProvides.begin()));
+				if (--std::get<0>(dependentEntry) == 0)
+					readyToCompute.push(dependent);
+			}
+		}
+
+		return pluginsToRemove;
+	};
+
+	return applyFilters(plugins, {findCycles, findInvalidPlugins, findInvalidProvides});
 }
 
 PluginDependencyGraph PluginDependencyGraphBuilder::applyFilters(const std::map<QString, PluginMetadata> &plugins, std::vector<PluginFilter> filters) const
