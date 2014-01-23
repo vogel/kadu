@@ -697,8 +697,11 @@ void Core::runServices()
 	CurrentPluginDependencyHandler->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
 	CurrentPluginDependencyHandler->setPluginMetadataProvider(CurrentPluginMetadataFinder);
 
+	CurrentPluginActivationService->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
+	CurrentPluginActivationService->setPluginDependencyHandler(CurrentPluginDependencyHandler);
+	CurrentPluginActivationService->setPluginStateService(CurrentPluginStateService);
+
 	CurrentPluginManager = new PluginManager(this);
-	CurrentPluginManager->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
 	CurrentPluginManager->setPluginActivationService(CurrentPluginActivationService);
 	CurrentPluginManager->setPluginDependencyHandler(CurrentPluginDependencyHandler);
 	CurrentPluginManager->setPluginStateService(CurrentPluginStateService);

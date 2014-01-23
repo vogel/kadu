@@ -39,7 +39,6 @@ class PluginActivationService;
 class PluginDependencyHandler;
 class PluginModel;
 class PluginListWidgetItemDelegate;
-class PluginManager;
 class PluginProxyModel;
 class PluginStateManager;
 class PluginStateService;
@@ -64,7 +63,6 @@ class PluginListWidget : public QWidget
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateManager> m_pluginStateManager;
 	QPointer<PluginStateService> m_pluginStateService;
-	QPointer<PluginManager> m_pluginManager;
 
 	FilterWidget *LineEdit;
 	CategorizedListView *ListView;
@@ -90,7 +88,6 @@ public:
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	void setPluginManager(PluginManager *pluginManager);
 	void setPluginStateManager(PluginStateManager *pluginStateManager);
 	void setPluginStateService(PluginStateService *pluginStateService);
 

@@ -134,11 +134,6 @@ void PluginListWidget::setPluginStateService(PluginStateService *pluginStateServ
 	m_pluginStateService = pluginStateService;
 }
 
-void PluginListWidget::setPluginManager(PluginManager *pluginManager)
-{
-	m_pluginManager = pluginManager;
-}
-
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
 {
 	if (ListView->layoutDirection() == Qt::LeftToRight)
@@ -149,15 +144,15 @@ int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth)
 
 void PluginListWidget::applyChanges()
 {
-	if (m_pluginManager)
+	if (m_pluginActivationService)
 	{
 		auto deactivatedPlugins = QVector<QString>{};
 		for (auto const &pluginName : pluginsWithNewActiveState(false))
-			deactivatedPlugins += m_pluginManager->deactivatePluginWithDependents(pluginName);
+			deactivatedPlugins += m_pluginActivationService->deactivatePluginWithDependents(pluginName);
 
 		auto activatedPlugins = QVector<QString>{};
 		for (auto const &pluginName : pluginsWithNewActiveState(true))
-			activatedPlugins += m_pluginManager->activatePluginWithDependencies(pluginName);
+			activatedPlugins += m_pluginActivationService->activatePluginWithDependencies(pluginName);
 
 		if (m_pluginStateService)
 		{
@@ -201,10 +196,7 @@ void PluginListWidget::configurationApplied()
 
 void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	if (m_processingChange)
-		return;
-
-	if (!m_pluginManager)
+	if (m_processingChange || !m_pluginActivationService || !m_pluginDependencyHandler)
 		return;
 
 	// we do not know how to work with multiple rows!

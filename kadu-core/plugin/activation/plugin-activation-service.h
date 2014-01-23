@@ -22,11 +22,15 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QSet>
 #include <map>
 #include <memory>
 
 class ActivePlugin;
+class PluginActivationErrorHandler;
+class PluginDependencyHandler;
+class PluginStateService;
 
 /**
  * @addtogroup Plugin
@@ -40,8 +44,7 @@ class ActivePlugin;
  *
  * Service used for activating and deactivating plugins. It holds all active plugins as
  * instances of @see ActivePlugin and allows for quering the list. Note that this service
- * does not perform any dependency resolving, so it is only able to load plugins for which
- * all dependencies were already loaded. For dependency resolving loading see @see PluginManager.
+ * perform full dependency resolving, so it also loads/unloads dependencies/dependents.
  */
 class KADUAPI PluginActivationService : public QObject
 {
@@ -50,6 +53,52 @@ class KADUAPI PluginActivationService : public QObject
 public:
 	explicit PluginActivationService(QObject *parent = nullptr);
 	virtual ~PluginActivationService();
+
+	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
+	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	void setPluginStateService(PluginStateService *pluginStateService);
+
+	/**
+	 * @short Activates given plugin and all its dependencies.
+	 * @param pluginName plugin to activate
+	 * @return list of activated plugins
+	 *
+	 * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
+	 * is found and all dependencies can be activated. Returned vector contains list of all plugins that were
+	 * in dependency set of given plugin (including this plugin) and were either already active or were successfully
+	 * activated.
+	 */
+	QVector<QString> activatePluginWithDependencies(const QString &pluginName);
+
+	/**
+	 * @short Deactivates given plugin and all its dependents.
+	 * @param pluginName plugin to deactivate
+	 * @return list of deactivated plugins
+	 *
+	 * This method deactivates given plugin and all its dependents. Returned vector contains list of all plugins that were
+	 * in dependents set of given plugin (including this plugin) and were either already inactive or were deactivated.
+	 */
+	QVector<QString> deactivatePluginWithDependents(const QString &pluginName);
+
+	/**
+	 * @param pluginName name of plugin to check
+	 * @short True if plugin with \p pluginName is active.
+	 */
+	bool isActive(const QString &pluginName) const;
+
+	/**
+	* @return Names of all currently active plugins.
+	*/
+	QSet<QString> activePlugins() const;
+
+private:
+	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
+
+	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
+	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+	QPointer<PluginStateService> m_pluginStateService;
+
+	map m_activePlugins;
 
 	/**
 	 * @short Activates plugin.
@@ -61,7 +110,7 @@ public:
 	 * Throws @see PluginActivationErrorException. For more information about activation
 	 * process see @see ActivePlugin.
 	 */
-	void activatePlugin(const QString &pluginName, bool firstTime) noexcept(false);
+	void activatePlugin(const QString &pluginName, bool firstTime);
 
 	/**
 	 * @short Deactivates plugin.
@@ -71,22 +120,14 @@ public:
 	 * of ActivePlugin and unloads plugin from memory. For more information about deactivation
 	 * process see @see ActivePlugin.
 	 */
-	void deactivatePlugin(const QString &pluginName) noexcept;
+	void deactivatePlugin(const QString &pluginName);
 
 	/**
-	 * @param pluginName name of plugin to check
-	 * @short True if plugin with \p pluginName is active.
+	 * @short Returns name of active plugin that provides given feature.
+	 * @param feature feature to search
+	 * @return name of active plugins that conflicts provides given feature.
 	 */
-	bool isActive(const QString &pluginName) const noexcept;
-
-	/**
-	* @return Names of all currently active plugins.
-	*/
-	QSet<QString> activePlugins() const noexcept;
-
-private:
-	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
-	map m_activePlugins;
+	QString findActiveProviding(const QString &feature) const;
 
 };
 

@@ -37,7 +37,6 @@
 #include <QtCore/QPointer>
 #include <QtCore/QVector>
 
-class PluginActivationErrorHandler;
 class PluginActivationService;
 class PluginDependencyHandler;
 class PluginStateService;
@@ -82,7 +81,6 @@ public:
 	explicit PluginManager(QObject *parent = nullptr);
 	virtual ~PluginManager();
 
-	void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	void setPluginStateService(PluginStateService *pluginStateService);
@@ -117,37 +115,12 @@ public:
 	 */
 	void deactivatePlugins();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Activates given plugin and all its dependencies.
-	 * @param pluginName plugin to activate
-	 * @return list of activated plugins
-	 *
-	 * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
-	 * is found and all dependencies can be activated. Returned vector contains list of all plugins that were
-	 * in dependency set of given plugin (including this plugin) and were either already active or were successfully
-	 * activated.
-	 */
-	QVector<QString> activatePluginWithDependencies(const QString &pluginName) noexcept;
-	QVector<QString> deactivatePluginWithDependents(const QString &pluginName) noexcept;
-
 private:
-	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QPointer<PluginActivationService> m_pluginActivationService;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateService> m_pluginStateService;
 
 	QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &){ return true; }) const;
-
-	void activatePlugin(const QString &pluginName) noexcept(false);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns name of active plugin that provides given feature.
-	 * @param feature feature to search
-	 * @return name of active plugins that conflicts provides given feature.
-	 */
-	QString findActiveProviding(const QString &feature) const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
