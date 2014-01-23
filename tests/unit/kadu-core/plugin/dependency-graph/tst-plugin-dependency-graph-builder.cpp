@@ -33,8 +33,10 @@ class tst_PluginDependencyGraphBuilder : public QObject
 	Q_OBJECT
 
 private:
-	::std::map<QString, PluginMetadata> createPlugins(const QVector<QPair<QString, QStringList>> &plugins);
-	PluginMetadata createPluginMetadata(const QPair<QString, QStringList> &plugin);
+	using PluginTuple = std::tuple<QString, QStringList>;
+
+	std::map<QString, PluginMetadata> createPlugins(const QVector<PluginTuple> &plugins);
+	PluginMetadata createPluginMetadata(const PluginTuple &plugin);
 	void verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents);
 
 private slots:
@@ -45,20 +47,20 @@ private slots:
 
 };
 
-::std::map<QString, PluginMetadata> tst_PluginDependencyGraphBuilder::createPlugins(const QVector<QPair<QString, QStringList>> &plugins)
+::std::map<QString, PluginMetadata> tst_PluginDependencyGraphBuilder::createPlugins(const QVector<PluginTuple> &plugins)
 {
 	auto result = ::std::map<QString, PluginMetadata>{};
 	for (auto const &plugin : plugins)
-		result.insert({plugin.first, createPluginMetadata(plugin)});
+		result.insert({std::get<0>(plugin), createPluginMetadata(plugin)});
 	return result;
 }
 
-PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const QPair<QString, QStringList> &plugin)
+PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const PluginTuple &plugin)
 {
 	auto builder = PluginMetadataBuilder{};
 	return builder
-			.setName(plugin.first)
-			.setDependencies(plugin.second)
+			.setName(std::get<0>(plugin))
+			.setDependencies(std::get<1>(plugin))
 			.create();
 }
 
@@ -75,12 +77,12 @@ void tst_PluginDependencyGraphBuilder::verifyDependencies(const PluginDependency
 
 void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 {
-	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		qMakePair(QString{"p1"}, QStringList{"p2", "p3", "p4"}),
-		qMakePair(QString{"p2"}, QStringList{"p3", "p4"}),
-		qMakePair(QString{"p3"}, QStringList{"p4"}),
-		qMakePair(QString{"p4"}, QStringList{})
+		std::make_tuple(QString{"p1"}, QStringList{"p2", "p3", "p4"}),
+		std::make_tuple(QString{"p2"}, QStringList{"p3", "p4"}),
+		std::make_tuple(QString{"p3"}, QStringList{"p4"}),
+		std::make_tuple(QString{"p4"}, QStringList{})
 	}));
 
 	QCOMPARE(graph.size(), 4);
@@ -93,9 +95,9 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 
 void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 {
-	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		qMakePair(QString{"p1"}, QStringList{"p1"})
+		std::make_tuple(QString{"p1"}, QStringList{"p1"})
 	}));
 
 	QCOMPARE(graph.size(), 1);
@@ -105,11 +107,11 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 
 void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 {
-	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		qMakePair(QString{"p1"}, QStringList{"p2"}),
-		qMakePair(QString{"p2"}, QStringList{"p3"}),
-		qMakePair(QString{"p3"}, QStringList{"p4"})
+		std::make_tuple(QString{"p1"}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QStringList{"p3"}),
+		std::make_tuple(QString{"p3"}, QStringList{"p4"})
 	}));
 
 	QCOMPARE(graph.size(), 0);
@@ -117,10 +119,10 @@ void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 
 void tst_PluginDependencyGraphBuilder::cycleDependencyTest()
 {
-	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<QPair<QString, QStringList>>
+	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
-		qMakePair(QString{"p1"}, QStringList{"p2"}),
-		qMakePair(QString{"p2"}, QStringList{"p1"})
+		std::make_tuple(QString{"p1"}, QStringList{"p2"}),
+		std::make_tuple(QString{"p2"}, QStringList{"p1"})
 	}));
 
 	QCOMPARE(graph.size(), 0);
