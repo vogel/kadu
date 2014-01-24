@@ -84,7 +84,7 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	layout->addWidget(filterEdit);
 	layout->addWidget(m_listView);
 
-	ConfigSection *pluginsSection = window->widget()->configSection("Plugins");
+	auto pluginsSection = window->widget()->configSection("Plugins");
 	if (pluginsSection)
 		pluginsSection->addFullPageWidget("Plugins", this);
 
