@@ -93,8 +93,6 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 
 PluginListWidget::~PluginListWidget()
 {
-	delete m_listView->itemDelegate();
-	delete m_listView;
 }
 
 void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
