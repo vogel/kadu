@@ -49,44 +49,43 @@
 
 #include "plugin-list-widget.h"
 
-
 PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
-		QWidget(window), ListView(0), ShowIcons(false), m_processingChange{false}
+		QWidget{window}, m_listView{0}, m_showIcons{false}, m_processingChange{false}
 {
-	QVBoxLayout *layout = new QVBoxLayout;
+	auto layout = new QVBoxLayout;
 	layout->setMargin(0);
 	setLayout(layout);
 
-	LineEdit = new FilterWidget(this);
-	LineEdit->setAutoVisibility(false);
-	ListView = new CategorizedListView(this);
-	ListView->setVerticalScrollMode(QListView::ScrollPerPixel);
-	ListView->setAlternatingRowColors(true);
-	CategoryDrawer = new CategorizedListViewPainter(ListView);
-	ListView->setCategoryDrawer(CategoryDrawer);
+	m_filterEdit = new FilterWidget{this};
+	m_filterEdit->setAutoVisibility(false);
+	m_listView = new CategorizedListView{this};
+	m_listView->setVerticalScrollMode(QListView::ScrollPerPixel);
+	m_listView->setAlternatingRowColors(true);
+	m_painter = new CategorizedListViewPainter{m_listView};
+	m_listView->setCategoryDrawer(m_painter);
 
-	Model = new PluginModel{this};
-	connect(Model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
+	m_model = new PluginModel{this};
+	connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
 
-	Proxy = new PluginProxyModel(this);
-	Proxy->setCategorizedModel(true);
-	Proxy->setSourceModel(Model);
-	ListView->setModel(Proxy);
-	ListView->setAlternatingRowColors(true);
+	m_proxyModel = new PluginProxyModel{this};
+	m_proxyModel->setCategorizedModel(true);
+	m_proxyModel->setSourceModel(m_model);
+	m_listView->setModel(m_proxyModel);
+	m_listView->setAlternatingRowColors(true);
 
-	Delegate = new PluginListWidgetItemDelegate(this, this);
-	ListView->setItemDelegate(Delegate);
+	m_delegate = new PluginListWidgetItemDelegate{this, this};
+	m_listView->setItemDelegate(m_delegate);
 
-	ListView->setMouseTracking(true);
-	ListView->viewport()->setAttribute(Qt::WA_Hover);
+	m_listView->setMouseTracking(true);
+	m_listView->viewport()->setAttribute(Qt::WA_Hover);
 
-	LineEdit->setView(ListView);
+	m_filterEdit->setView(m_listView);
 
-	connect(LineEdit, SIGNAL(textChanged(QString)), Proxy, SLOT(setFilterText(QString)));
-	connect(Delegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
+	connect(m_filterEdit, SIGNAL(textChanged(QString)), m_proxyModel, SLOT(setFilterText(QString)));
+	connect(m_delegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
 
-	layout->addWidget(LineEdit);
-	layout->addWidget(ListView);
+	layout->addWidget(m_filterEdit);
+	layout->addWidget(m_listView);
 
 	ConfigSection *pluginsSection = window->widget()->configSection("Plugins");
 	if (pluginsSection)
@@ -97,9 +96,9 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 
 PluginListWidget::~PluginListWidget()
 {
-	delete ListView->itemDelegate();
-	delete ListView;
-	delete CategoryDrawer;
+	delete m_listView->itemDelegate();
+	delete m_listView;
+	delete m_painter;
 }
 
 void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
@@ -107,7 +106,7 @@ void PluginListWidget::setPluginActivationService(PluginActivationService *plugi
 	m_pluginActivationService = pluginActivationService;
 
 	if (m_pluginActivationService)
-		Model->setActivePlugins(m_pluginActivationService->activePlugins());
+		m_model->setActivePlugins(m_pluginActivationService->activePlugins());
 }
 
 void PluginListWidget::setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver)
@@ -125,9 +124,9 @@ void PluginListWidget::setPluginDependencyHandler(PluginDependencyHandler *plugi
 	auto pluginEntries = QVector<PluginMetadata>{};
 	for (auto pluginMetadata : m_pluginDependencyHandler)
 		pluginEntries.append(pluginMetadata);
-	Model->setPluginEntries(pluginEntries);
+	m_model->setPluginEntries(pluginEntries);
 
-	Proxy->sort(0);
+	m_proxyModel->sort(0);
 }
 
 void PluginListWidget::setPluginStateManager(PluginStateManager *pluginStateManager)
@@ -142,7 +141,7 @@ void PluginListWidget::setPluginStateService(PluginStateService *pluginStateServ
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
 {
-	if (ListView->layoutDirection() == Qt::LeftToRight)
+	if (m_listView->layoutDirection() == Qt::LeftToRight)
 		return value;
 
 	return totalWidth - width - value;
@@ -182,12 +181,12 @@ QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState
 {
 	auto result = QVector<QString>{};
 
-	int count = Model->rowCount();
-	for (int i = 0; i < count; i++)
+	auto count = m_model->rowCount();
+	for (auto i = 0; i < count; i++)
 	{
-		auto pluginName = Model->index(i, 0).data(PluginModel::NameRole).toString();
-		bool isActive = m_pluginActivationService->isActive(pluginName);
-		bool isChecked = Model->activePlugins().contains(pluginName);
+		auto pluginName = m_model->index(i, 0).data(PluginModel::NameRole).toString();
+		auto isActive = m_pluginActivationService->isActive(pluginName);
+		auto isChecked = m_model->activePlugins().contains(pluginName);
 		if ((isActive != isChecked) && (newActiveState == isChecked))
 				result.append(pluginName);
 	}
@@ -217,7 +216,7 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 	if (checked)
 	{
 		auto activePlugins = std::set<QString>{};
-		auto modelActivePlugins = Model->activePlugins();
+		auto modelActivePlugins = m_model->activePlugins();
 		modelActivePlugins.remove(pluginName);
 		std::copy(std::begin(modelActivePlugins), std::end(modelActivePlugins), std::inserter(activePlugins, activePlugins.begin()));
 
@@ -227,7 +226,7 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 		{
 			auto list = QStringList{};
 			std::copy(std::begin(conflictingPlugins), std::end(conflictingPlugins), std::back_inserter(list));
-			MessageDialog *dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
+			auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
 					tr("Following dependend plugins will be deactivated because of conflict: %1.").arg(list.join(", ")), this);
 			dialog->addButton(QMessageBox::Yes, tr("Deactivate conflicting plugins"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
@@ -247,13 +246,13 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 		std::copy_if(std::begin(withDependents), std::end(withDependents), std::back_inserter(dependents),
 				[=,&pluginName](QString const &dependentName)
 				{
-					return dependentName != pluginName && Model->activePlugins().contains(dependentName);
+					return dependentName != pluginName && m_model->activePlugins().contains(dependentName);
 				}
 		);
 
 		if (!dependents.isEmpty())
 		{
-			MessageDialog *dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
+			auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
 					tr("Following dependend plugins will also be deactivated: %1.").arg(
 						QStringList{dependents.toList()}.join(", ")), this);
 			dialog->addButton(QMessageBox::Yes, tr("Deactivate dependend plugins"));
@@ -274,13 +273,13 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 template<template<class> class T>
 void PluginListWidget::setAllChecked(const T<QString> &plugins, bool checked)
 {
-	auto count = Model->rowCount();
+	auto count = m_model->rowCount();
 	for (auto i = 0; i < count; i++)
 	{
-		auto index = Model->index(i, 0);
+		auto index = m_model->index(i, 0);
 		auto pluginName = index.data(PluginModel::NameRole).toString();
 		if (contains(plugins, pluginName))
-			Model->setData(index, checked, Qt::CheckStateRole);
+			m_model->setData(index, checked, Qt::CheckStateRole);
 	}
 }
 

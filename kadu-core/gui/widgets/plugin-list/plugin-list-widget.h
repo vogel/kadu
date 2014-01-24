@@ -22,8 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGIN_LIST_WIDGET_H
-#define PLUGIN_LIST_WIDGET_H
+#pragma once
 
 #include <QtCore/QPointer>
 #include <QtGui/QWidget>
@@ -56,34 +55,6 @@ class PluginListWidget : public QWidget
 {
 	Q_OBJECT
 
-	friend class PluginListWidgetItemDelegate;
-	friend class PluginModel;
-	friend class PluginProxyModel;
-
-	QPointer<PluginActivationService> m_pluginActivationService;
-	QPointer<PluginConflictResolver> m_pluginConflictResolver;
-	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
-	QPointer<PluginStateManager> m_pluginStateManager;
-	QPointer<PluginStateService> m_pluginStateService;
-
-	FilterWidget *LineEdit;
-	CategorizedListView *ListView;
-	CategorizedListViewPainter *CategoryDrawer;
-	PluginModel *Model;
-	PluginProxyModel *Proxy;
-	PluginListWidgetItemDelegate *Delegate;
-	bool ShowIcons;
-	bool m_processingChange;
-
-	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
-
-	template<template<class> class T>
-	void setAllChecked(const T<QString> &plugins, bool checked);
-
-private slots:
-	void configurationApplied();
-	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
 public:
 	explicit PluginListWidget(MainConfigurationWindow *mainWindow);
 	virtual ~PluginListWidget();
@@ -104,6 +75,33 @@ signals:
 	 */
 	void changed(bool hasChanged);
 
-};
+private:
+	friend class PluginListWidgetItemDelegate;
+	friend class PluginModel;
+	friend class PluginProxyModel;
 
-#endif // PLUGIN_LIST_WIDGET_H
+	QPointer<PluginActivationService> m_pluginActivationService;
+	QPointer<PluginConflictResolver> m_pluginConflictResolver;
+	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+	QPointer<PluginStateManager> m_pluginStateManager;
+	QPointer<PluginStateService> m_pluginStateService;
+
+	FilterWidget *m_filterEdit;
+	CategorizedListView *m_listView;
+	CategorizedListViewPainter *m_painter;
+	PluginListWidgetItemDelegate *m_delegate;
+	PluginModel *m_model;
+	PluginProxyModel *m_proxyModel;
+	bool m_showIcons;
+	bool m_processingChange;
+
+	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
+
+	template<template<class> class T>
+	void setAllChecked(const T<QString> &plugins, bool checked);
+
+private slots:
+	void configurationApplied();
+	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+
+};

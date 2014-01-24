@@ -53,7 +53,7 @@
 #include "plugin-list-widget-item-delegate.h"
 
 PluginListWidgetItemDelegate::PluginListWidgetItemDelegate(PluginListWidget *pluginSelector_d, QObject *parent)
-                : PluginListWidgetDelegate(pluginSelector_d->ListView, parent)
+                : PluginListWidgetDelegate(pluginSelector_d->m_listView, parent)
                 , checkBox(new QCheckBox)
                 , pushButton(new QPushButton)
                 , pluginSelector_d(pluginSelector_d)
@@ -85,7 +85,7 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
 
         int iconSize = option.rect.height() - MARGIN * 2;
 
-        if (!pluginSelector_d->ShowIcons)
+        if (!pluginSelector_d->m_showIcons)
         {
                 iconSize = -MARGIN;
         }
@@ -101,7 +101,7 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
                 painter->setPen(option.palette.highlightedText().color());
         }
 
-        if (pluginSelector_d->ListView->layoutDirection() == Qt::RightToLeft)
+        if (pluginSelector_d->m_listView->layoutDirection() == Qt::RightToLeft)
         {
                 contentsRect.translate(lessHorizontalSpace, 0);
         }
@@ -128,7 +128,7 @@ QSize PluginListWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option,
         int i = 5;
         int j = 1;
 
-        if (!pluginSelector_d->ShowIcons)
+        if (!pluginSelector_d->m_showIcons)
         {
                 i--;
         }
