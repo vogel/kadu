@@ -86,7 +86,6 @@ private:
 	CategorizedListView *m_listView;
 	PluginModel *m_model;
 	PluginProxyModel *m_proxyModel;
-	bool m_showIcons;
 	bool m_processingChange;
 
 	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;

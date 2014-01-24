@@ -83,12 +83,7 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
 
         QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0);
 
-        int iconSize = option.rect.height() - MARGIN * 2;
-
-        if (!pluginSelector_d->m_showIcons)
-        {
-                iconSize = -MARGIN;
-        }
+        int iconSize = -MARGIN;
 
         QRect contentsRect(pluginSelector_d->dependantLayoutValue(MARGIN * 2 + iconSize + option.rect.left() + xOffset, option.rect.width() - MARGIN * 3 - iconSize - xOffset, option.rect.width()), MARGIN + option.rect.top(), option.rect.width() - MARGIN * 3 - iconSize - xOffset, option.rect.height() - MARGIN * 2);
 
@@ -125,13 +120,8 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
 
 QSize PluginListWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-        int i = 5;
+        int i = 4;
         int j = 1;
-
-        if (!pluginSelector_d->m_showIcons)
-        {
-                i--;
-        }
 
         QFont font = titleFont(option.font);
 

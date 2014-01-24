@@ -50,7 +50,7 @@
 #include "plugin-list-widget.h"
 
 PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
-		QWidget{window}, m_listView{0}, m_showIcons{false}, m_processingChange{false}
+		QWidget{window}, m_listView{0}, m_processingChange{false}
 {
 	auto layout = new QVBoxLayout;
 	layout->setMargin(0);
