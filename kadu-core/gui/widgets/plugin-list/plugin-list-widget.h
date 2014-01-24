@@ -31,14 +31,11 @@ class QLineEdit;
 class QModelIndex;
 
 class CategorizedListView;
-class CategorizedListViewPainter;
-class FilterWidget;
 class MainConfigurationWindow;
 class PluginActivationService;
 class PluginConflictResolver;
 class PluginDependencyHandler;
 class PluginModel;
-class PluginListWidgetItemDelegate;
 class PluginProxyModel;
 class PluginStateManager;
 class PluginStateService;
@@ -86,10 +83,7 @@ private:
 	QPointer<PluginStateManager> m_pluginStateManager;
 	QPointer<PluginStateService> m_pluginStateService;
 
-	FilterWidget *m_filterEdit;
 	CategorizedListView *m_listView;
-	CategorizedListViewPainter *m_painter;
-	PluginListWidgetItemDelegate *m_delegate;
 	PluginModel *m_model;
 	PluginProxyModel *m_proxyModel;
 	bool m_showIcons;

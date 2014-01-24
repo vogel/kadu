@@ -56,13 +56,13 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	layout->setMargin(0);
 	setLayout(layout);
 
-	m_filterEdit = new FilterWidget{this};
-	m_filterEdit->setAutoVisibility(false);
+	auto filterEdit = new FilterWidget{this};
+	filterEdit->setAutoVisibility(false);
 	m_listView = new CategorizedListView{this};
 	m_listView->setVerticalScrollMode(QListView::ScrollPerPixel);
 	m_listView->setAlternatingRowColors(true);
-	m_painter = new CategorizedListViewPainter{m_listView};
-	m_listView->setCategoryDrawer(m_painter);
+	auto painter = new CategorizedListViewPainter{m_listView};
+	m_listView->setCategoryDrawer(painter);
 
 	m_model = new PluginModel{this};
 	connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
@@ -73,18 +73,18 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	m_listView->setModel(m_proxyModel);
 	m_listView->setAlternatingRowColors(true);
 
-	m_delegate = new PluginListWidgetItemDelegate{this, this};
-	m_listView->setItemDelegate(m_delegate);
+	auto delegate = new PluginListWidgetItemDelegate{this, this};
+	m_listView->setItemDelegate(delegate);
 
 	m_listView->setMouseTracking(true);
 	m_listView->viewport()->setAttribute(Qt::WA_Hover);
 
-	m_filterEdit->setView(m_listView);
+	filterEdit->setView(m_listView);
 
-	connect(m_filterEdit, SIGNAL(textChanged(QString)), m_proxyModel, SLOT(setFilterText(QString)));
-	connect(m_delegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
+	connect(filterEdit, SIGNAL(textChanged(QString)), m_proxyModel, SLOT(setFilterText(QString)));
+	connect(delegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
 
-	layout->addWidget(m_filterEdit);
+	layout->addWidget(filterEdit);
 	layout->addWidget(m_listView);
 
 	ConfigSection *pluginsSection = window->widget()->configSection("Plugins");
@@ -98,7 +98,6 @@ PluginListWidget::~PluginListWidget()
 {
 	delete m_listView->itemDelegate();
 	delete m_listView;
-	delete m_painter;
 }
 
 void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
