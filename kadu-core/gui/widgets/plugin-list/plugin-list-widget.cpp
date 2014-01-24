@@ -23,8 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QBoxLayout>
-#include <QtGui/QStyleOptionViewItemV4>
+#include "plugin-list-widget.h"
 
 #include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view-painter.h"
@@ -36,18 +35,16 @@
 #include "gui/widgets/plugin-list/plugin-list-widget-item-delegate.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/algorithm.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/plugin-conflict-resolver.h"
 #include "plugin/plugin-dependency-handler.h"
-#include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
 
-#include "plugin-list-widget.h"
+#include <QtGui/QBoxLayout>
 
 PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 		QWidget{window}, m_listView{0}, m_processingChange{false}
