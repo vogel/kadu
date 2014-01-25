@@ -22,48 +22,47 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGIN_LIST_WIDGET_DELEGATE_H
-#define PLUGIN_LIST_WIDGET_DELEGATE_H
+#pragma once
 
 #include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
+
+#include <memory>
 
 class QCheckBox;
 class QPushButton;
 
 class PluginListWidget;
 
-
 class PluginListWidgetItemDelegate : public PluginListWidgetDelegate
 {
-        Q_OBJECT
+	Q_OBJECT
 
-        QCheckBox *checkBox;
-        QPushButton *pushButton;
-        PluginListWidget *pluginSelector_d;
-
-        QFont titleFont(const QFont &baseFont) const;
-        QFont subtitleFont(const QFont &baseFont) const;
 public:
-        PluginListWidgetItemDelegate(PluginListWidget *pluginSelector_d, QObject *parent = 0);
-        ~PluginListWidgetItemDelegate();
+	explicit PluginListWidgetItemDelegate(PluginListWidget *pluginSelector, QObject *parent = nullptr);
+	virtual ~PluginListWidgetItemDelegate();
 
-        void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-        QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
-Q_SIGNALS:
-        void changed(bool hasChanged);
+signals:
+	void changed(bool hasChanged);
 
 protected:
-        virtual QList<QWidget*> createItemWidgets() const;
-        virtual void updateItemWidgets(const QList<QWidget*> widgets,
-                                       const QStyleOptionViewItem &option,
-                                       const QPersistentModelIndex &index) const;
+	virtual QList<QWidget *> createItemWidgets() const override;
+	virtual void updateItemWidgets(const QList<QWidget *> widgets, const QStyleOptionViewItem &option, const QPersistentModelIndex &index) const override;
 
-private Q_SLOTS:
-        void slotStateChanged(bool state);
-        void emitChanged();
-        void slotAboutClicked();
-        void slotConfigureClicked();
+private:
+	std::unique_ptr<QCheckBox> m_checkBox;
+	std::unique_ptr<QPushButton> m_pushButton;
+	PluginListWidget *m_pluginSelector;
+
+	QFont titleFont(const QFont &baseFont) const;
+	QFont subtitleFont(const QFont &baseFont) const;
+
+private slots:
+	void slotStateChanged(bool state);
+	void emitChanged();
+	void slotAboutClicked();
+	void slotConfigureClicked();
+
 };
-
-#endif

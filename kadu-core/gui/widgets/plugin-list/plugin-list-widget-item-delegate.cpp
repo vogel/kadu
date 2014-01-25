@@ -24,16 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define MARGIN 5
-
-#include <QtGui/QApplication>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyleOptionViewItemV4>
+#include "plugin-list-widget-item-delegate.h"
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
@@ -50,172 +41,168 @@
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/plugin-dependency-handler.h"
 
-#include "plugin-list-widget-item-delegate.h"
+#include <QtGui/QApplication>
+#include <QtGui/QBoxLayout>
+#include <QtGui/QCheckBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPainter>
+#include <QtGui/QPushButton>
+#include <QtGui/QStyleOptionViewItemV4>
 
-PluginListWidgetItemDelegate::PluginListWidgetItemDelegate(PluginListWidget *pluginSelector_d, QObject *parent)
-                : PluginListWidgetDelegate(pluginSelector_d->m_listView, parent)
-                , checkBox(new QCheckBox)
-                , pushButton(new QPushButton)
-                , pluginSelector_d(pluginSelector_d)
+#define MARGIN 5
+
+PluginListWidgetItemDelegate::PluginListWidgetItemDelegate(PluginListWidget *pluginSelector, QObject *parent) :
+		PluginListWidgetDelegate{pluginSelector->m_listView, parent}, m_checkBox{make_unique<QCheckBox>()},
+		m_pushButton{make_unique<QPushButton>()}, m_pluginSelector{pluginSelector}
 {
-        pushButton->setIcon(KaduIcon("preferences-other").icon()); // only for getting size matters
+	m_pushButton->setIcon(KaduIcon("preferences-other").icon()); // only for getting size matters
 }
 
 PluginListWidgetItemDelegate::~PluginListWidgetItemDelegate()
 {
-        delete checkBox;
-        delete pushButton;
 }
 
 void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-        if (!index.isValid())
-        {
-                return;
-        }
+	if (!index.isValid())
+		return;
 
-        int xOffset = checkBox->sizeHint().width();
+	auto xOffset = m_checkBox->sizeHint().width();
+
 #ifdef Q_OS_WIN32
-        xOffset += QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
+	xOffset += QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
 #endif
 
-        painter->save();
+	painter->save();
 
-        QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0);
+	QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, 0);
 
-        int iconSize = -MARGIN;
+	auto contentsRect = QRect{m_pluginSelector->dependantLayoutValue(option.rect.left() + MARGIN + xOffset,
+			option.rect.width() - MARGIN * 2 - xOffset, option.rect.width()),
+			MARGIN + option.rect.top(), option.rect.width() - MARGIN * 2 - xOffset, option.rect.height() - MARGIN * 2};
 
-        QRect contentsRect(pluginSelector_d->dependantLayoutValue(MARGIN * 2 + iconSize + option.rect.left() + xOffset, option.rect.width() - MARGIN * 3 - iconSize - xOffset, option.rect.width()), MARGIN + option.rect.top(), option.rect.width() - MARGIN * 3 - iconSize - xOffset, option.rect.height() - MARGIN * 2);
+	auto lessHorizontalSpace = MARGIN * 2 + m_pushButton->sizeHint().width();
 
-        int lessHorizontalSpace = MARGIN * 2 + pushButton->sizeHint().width();
+	contentsRect.setWidth(contentsRect.width() - lessHorizontalSpace);
 
-        contentsRect.setWidth(contentsRect.width() - lessHorizontalSpace);
+	if (option.state & QStyle::State_Selected)
+		painter->setPen(option.palette.highlightedText().color());
 
-        if (option.state & QStyle::State_Selected)
-        {
-                painter->setPen(option.palette.highlightedText().color());
-        }
+	if (m_pluginSelector->m_listView->layoutDirection() == Qt::RightToLeft)
+		contentsRect.translate(lessHorizontalSpace, 0);
 
-        if (pluginSelector_d->m_listView->layoutDirection() == Qt::RightToLeft)
-        {
-                contentsRect.translate(lessHorizontalSpace, 0);
-        }
+	{
+		painter->save();
+		auto font = titleFont(option.font);
+		auto fmTitle = QFontMetrics{font};
+		painter->setFont(font);
+		painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignTop, fmTitle.elidedText(index.model()->data(index, Qt::DisplayRole).toString(), Qt::ElideRight, contentsRect.width()));
+		painter->restore();
+	}
 
-        painter->save();
+	painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignBottom, option.fontMetrics.elidedText(index.model()->data(index, PluginModel::CommentRole).toString(), Qt::ElideRight, contentsRect.width()));
 
-        QFont font = titleFont(option.font);
-        QFontMetrics fmTitle(font);
-        painter->setFont(font);
-        painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignTop, fmTitle.elidedText(index.model()->data(index, Qt::DisplayRole).toString(), Qt::ElideRight, contentsRect.width()));
-        painter->restore();
-        painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignBottom, option.fontMetrics.elidedText(index.model()->data(index, PluginModel::CommentRole).toString(), Qt::ElideRight, contentsRect.width()));
+	auto subfont = subtitleFont(option.font);
+	auto fmSubtitle = QFontMetrics{subfont};
+	painter->setFont(subfont);
+	painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignVCenter, fmSubtitle.elidedText(index.model()->data(index, PluginModel::NameRole).toString(), Qt::ElideRight, contentsRect.width()));
 
-        QFont subfont = subtitleFont(option.font);
-        QFontMetrics fmSubtitle(subfont);
-        painter->setFont(subfont);
-        painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignVCenter, fmSubtitle.elidedText(index.model()->data(index, PluginModel::NameRole).toString(), Qt::ElideRight, contentsRect.width()));
-
-        painter->restore();
+	painter->restore();
 }
 
 QSize PluginListWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-        int i = 4;
-        int j = 1;
+	auto i = 4;
+	auto j = 1;
 
-        QFont font = titleFont(option.font);
+	auto font = titleFont(option.font);
+	auto fmTitle = QFontMetrics{font};
 
-        QFontMetrics fmTitle(font);
-
-        return QSize(qMax(fmTitle.width(index.model()->data(index, Qt::DisplayRole).toString()),
-                          option.fontMetrics.width(index.model()->data(index, PluginModel::CommentRole).toString())) +
-			  + MARGIN * i + pushButton->sizeHint().width() * j,
-                     qMax(MARGIN * 2, fmTitle.height() * 2 + option.fontMetrics.height() + MARGIN * 2));
+	return QSize(qMax(fmTitle.width(index.model()->data(index, Qt::DisplayRole).toString()),
+			option.fontMetrics.width(index.model()->data(index, PluginModel::CommentRole).toString())) +
+			+ MARGIN * i + m_pushButton->sizeHint().width() * j,
+			qMax(MARGIN * 2, fmTitle.height() * 2 + option.fontMetrics.height() + MARGIN * 2));
 }
 
-QList<QWidget*> PluginListWidgetItemDelegate::createItemWidgets() const
+QList<QWidget *> PluginListWidgetItemDelegate::createItemWidgets() const
 {
-        QList<QWidget*> widgetList;
+	auto enabledCheckBox = new QCheckBox;
+	connect(enabledCheckBox, SIGNAL(clicked(bool)), this, SLOT(slotStateChanged(bool)));
+	connect(enabledCheckBox, SIGNAL(clicked(bool)), this, SLOT(emitChanged()));
 
-        QCheckBox *enabledCheckBox = new QCheckBox;
-        connect(enabledCheckBox, SIGNAL(clicked(bool)), this, SLOT(slotStateChanged(bool)));
-        connect(enabledCheckBox, SIGNAL(clicked(bool)), this, SLOT(emitChanged()));
+	auto aboutPushButton = new QPushButton;
+	aboutPushButton->setIcon(KaduIcon("help-contents").icon());
+	connect(aboutPushButton, SIGNAL(clicked(bool)), this, SLOT(slotAboutClicked()));
 
-        QPushButton *aboutPushButton = new QPushButton;
-        aboutPushButton->setIcon(KaduIcon("help-contents").icon());
-        connect(aboutPushButton, SIGNAL(clicked(bool)), this, SLOT(slotAboutClicked()));
+	auto configurePushButton = new QPushButton;
+	configurePushButton->setIcon(KaduIcon("preferences-other").icon());
+	connect(configurePushButton, SIGNAL(clicked(bool)), this, SLOT(slotConfigureClicked()));
 
-        QPushButton *configurePushButton = new QPushButton;
-        configurePushButton->setIcon(KaduIcon("preferences-other").icon());
-        connect(configurePushButton, SIGNAL(clicked(bool)), this, SLOT(slotConfigureClicked()));
+	setBlockedEventTypes(enabledCheckBox, QList<QEvent::Type>() << QEvent::MouseButtonPress
+			<< QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
+			<< QEvent::KeyPress << QEvent::KeyRelease);
 
-        setBlockedEventTypes(enabledCheckBox, QList<QEvent::Type>() << QEvent::MouseButtonPress
-                             << QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
-                             << QEvent::KeyPress << QEvent::KeyRelease);
+	setBlockedEventTypes(aboutPushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress
+			<< QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
+			<< QEvent::KeyPress << QEvent::KeyRelease);
 
-        setBlockedEventTypes(aboutPushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress
-                             << QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
-                             << QEvent::KeyPress << QEvent::KeyRelease);
+	setBlockedEventTypes(configurePushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress
+			<< QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
+			<< QEvent::KeyPress << QEvent::KeyRelease);
 
-        setBlockedEventTypes(configurePushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress
-                             << QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
-                             << QEvent::KeyPress << QEvent::KeyRelease);
-
-        widgetList << enabledCheckBox << configurePushButton << aboutPushButton;
-
-        return widgetList;
+	return {enabledCheckBox, configurePushButton, aboutPushButton};
 }
 
-void PluginListWidgetItemDelegate::updateItemWidgets(const QList<QWidget*> widgets,
-                const QStyleOptionViewItem &option,
-                const QPersistentModelIndex &index) const
+void PluginListWidgetItemDelegate::updateItemWidgets(const QList<QWidget *> widgets, const QStyleOptionViewItem &option,
+		const QPersistentModelIndex &index) const
 {
-        QCheckBox *checkBox = static_cast<QCheckBox*>(widgets[0]);
-        checkBox->resize(checkBox->sizeHint());
-        checkBox->move(pluginSelector_d->dependantLayoutValue(MARGIN, checkBox->sizeHint().width(), option.rect.width()), option.rect.height() / 2 - checkBox->sizeHint().height() / 2);
+	auto checkBox = static_cast<QCheckBox*>(widgets[0]);
+	checkBox->resize(checkBox->sizeHint());
+	checkBox->move(m_pluginSelector->dependantLayoutValue(MARGIN, checkBox->sizeHint().width(), option.rect.width()), option.rect.height() / 2 - checkBox->sizeHint().height() / 2);
 
-        QPushButton *aboutPushButton = static_cast<QPushButton*>(widgets[2]);
-        QSize aboutPushButtonSizeHint = aboutPushButton->sizeHint();
-        aboutPushButton->resize(aboutPushButtonSizeHint);
-        aboutPushButton->move(pluginSelector_d->dependantLayoutValue(option.rect.width() - MARGIN - aboutPushButtonSizeHint.width(), aboutPushButtonSizeHint.width(), option.rect.width()), option.rect.height() / 2 - aboutPushButtonSizeHint.height() / 2);
+	auto aboutPushButton = static_cast<QPushButton*>(widgets[2]);
+	auto aboutPushButtonSizeHint = aboutPushButton->sizeHint();
+	aboutPushButton->resize(aboutPushButtonSizeHint);
+	aboutPushButton->move(m_pluginSelector->dependantLayoutValue(option.rect.width() - MARGIN - aboutPushButtonSizeHint.width(), aboutPushButtonSizeHint.width(), option.rect.width()), option.rect.height() / 2 - aboutPushButtonSizeHint.height() / 2);
 
-        QPushButton *configurePushButton = static_cast<QPushButton*>(widgets[1]);
-        QSize configurePushButtonSizeHint = configurePushButton->sizeHint();
-        configurePushButton->resize(configurePushButtonSizeHint);
-        configurePushButton->move(pluginSelector_d->dependantLayoutValue(option.rect.width() - MARGIN * 2 - configurePushButtonSizeHint.width() - aboutPushButtonSizeHint.width(), configurePushButtonSizeHint.width(), option.rect.width()), option.rect.height() / 2 - configurePushButtonSizeHint.height() / 2);
+	auto configurePushButton = static_cast<QPushButton*>(widgets[1]);
+	auto configurePushButtonSizeHint = configurePushButton->sizeHint();
+	configurePushButton->resize(configurePushButtonSizeHint);
+	configurePushButton->move(m_pluginSelector->dependantLayoutValue(option.rect.width() - MARGIN * 2 - configurePushButtonSizeHint.width() - aboutPushButtonSizeHint.width(), configurePushButtonSizeHint.width(), option.rect.width()), option.rect.height() / 2 - configurePushButtonSizeHint.height() / 2);
 
-        if (!index.isValid() || !index.internalPointer())
-        {
-                checkBox->setVisible(false);
-                aboutPushButton->setVisible(false);
-                configurePushButton->setVisible(false);
-        }
-        else
-        {
-                checkBox->setChecked(index.model()->data(index, Qt::CheckStateRole).toBool());
-				configurePushButton->setVisible(false);
-        }
+	if (!index.isValid() || !index.internalPointer())
+	{
+		checkBox->setVisible(false);
+		aboutPushButton->setVisible(false);
+		configurePushButton->setVisible(false);
+	}
+	else
+	{
+		checkBox->setChecked(index.model()->data(index, Qt::CheckStateRole).toBool());
+		configurePushButton->setVisible(false);
+	}
 }
 
 void PluginListWidgetItemDelegate::slotStateChanged(bool state)
 {
-        if (!focusedIndex().isValid())
-                return;
+	if (!focusedIndex().isValid())
+		return;
 
-        const_cast<QAbstractItemModel*>(focusedIndex().model())->setData(focusedIndex(), state, Qt::CheckStateRole);
+	const_cast<QAbstractItemModel *>(focusedIndex().model())->setData(focusedIndex(), state, Qt::CheckStateRole);
 }
 
 void PluginListWidgetItemDelegate::emitChanged()
 {
-        emit changed(true);
+	emit changed(true);
 }
 
 void PluginListWidgetItemDelegate::slotAboutClicked()
 {
-	const QModelIndex index = focusedIndex();
-	const QAbstractItemModel *model = index.model();
+	auto const index = focusedIndex();
+	auto const model = index.model();
 
-	QString info;
+	auto info = QString{};
 	info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()) + "\n";
 
 	auto pluginMetadata = model->data(index, PluginModel::MetadataRole).value<PluginMetadata>();
@@ -234,19 +221,19 @@ void PluginListWidgetItemDelegate::slotConfigureClicked()
 
 QFont PluginListWidgetItemDelegate::titleFont(const QFont &baseFont) const
 {
-        QFont retFont(baseFont);
-        retFont.setBold(true);
+	auto retFont = baseFont;
+	retFont.setBold(true);
 
-        return retFont;
+	return retFont;
 }
 
 QFont PluginListWidgetItemDelegate::subtitleFont(const QFont &baseFont) const
 {
-        QFont retFont(baseFont);
-        retFont.setItalic(true);
+	auto retFont = baseFont;
+	retFont.setItalic(true);
 	retFont.setPointSize(baseFont.pointSize()-2);
 
-        return retFont;
+	return retFont;
 }
 
 #include "moc_plugin-list-widget-item-delegate.cpp"
