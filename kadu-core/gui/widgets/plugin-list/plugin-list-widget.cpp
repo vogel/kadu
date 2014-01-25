@@ -142,29 +142,29 @@ int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth)
 
 void PluginListWidget::applyChanges()
 {
-	if (m_pluginActivationService)
+	if (!m_pluginActivationService)
+		return;
+
+	auto deactivatedPlugins = QVector<QString>{};
+	for (auto const &pluginName : pluginsWithNewActiveState(false))
+		deactivatedPlugins += m_pluginActivationService->deactivatePluginWithDependents(pluginName);
+
+	auto activatedPlugins = QVector<QString>{};
+	for (auto const &pluginName : pluginsWithNewActiveState(true))
+		activatedPlugins += m_pluginActivationService->activatePluginWithDependencies(pluginName);
+
+	if (!m_pluginStateService)
+		return;
+
+	for (auto const &deactivatedPlugin : deactivatedPlugins)
+		m_pluginStateService->setPluginState(deactivatedPlugin, PluginState::Disabled);
+	for (auto const &activatedPlugin : activatedPlugins)
+		m_pluginStateService->setPluginState(activatedPlugin, PluginState::Enabled);
+
+	if (m_pluginStateManager && (!activatedPlugins.isEmpty() || !deactivatedPlugins.isEmpty()))
 	{
-		auto deactivatedPlugins = QVector<QString>{};
-		for (auto const &pluginName : pluginsWithNewActiveState(false))
-			deactivatedPlugins += m_pluginActivationService->deactivatePluginWithDependents(pluginName);
-
-		auto activatedPlugins = QVector<QString>{};
-		for (auto const &pluginName : pluginsWithNewActiveState(true))
-			activatedPlugins += m_pluginActivationService->activatePluginWithDependencies(pluginName);
-
-		if (m_pluginStateService)
-		{
-			for (auto const &deactivatedPlugin : deactivatedPlugins)
-				m_pluginStateService->setPluginState(deactivatedPlugin, PluginState::Disabled);
-			for (auto const &activatedPlugin : activatedPlugins)
-				m_pluginStateService->setPluginState(activatedPlugin, PluginState::Enabled);
-
-			if (m_pluginStateManager && (!activatedPlugins.isEmpty() || !deactivatedPlugins.isEmpty()))
-			{
-				m_pluginStateManager->storePluginStates();
-				ConfigurationManager::instance()->flush();
-			}
-		}
+		m_pluginStateManager->storePluginStates();
+		ConfigurationManager::instance()->flush();
 	}
 }
 
@@ -179,7 +179,7 @@ QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState
 		auto isActive = m_pluginActivationService->isActive(pluginName);
 		auto isChecked = m_model->activePlugins().contains(pluginName);
 		if ((isActive != isChecked) && (newActiveState == isChecked))
-				result.append(pluginName);
+			result.append(pluginName);
 	}
 
 	return result;
@@ -192,7 +192,7 @@ void PluginListWidget::configurationApplied()
 
 void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	if (m_processingChange || !m_pluginActivationService || !m_pluginConflictResolver ||  !m_pluginDependencyHandler)
+	if (m_processingChange || !m_pluginConflictResolver ||  !m_pluginDependencyHandler)
 		return;
 
 	// we do not know how to work with multiple rows!
@@ -203,27 +203,29 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 
 	auto pluginName = topLeft.data(PluginModel::NameRole).toString();
 	auto checked = topLeft.data(Qt::CheckStateRole).toBool();
+	auto modelActivePlugins = activePluginsBeforeChange(pluginName, checked);
 
 	if (checked)
 	{
 		auto activePlugins = std::set<QString>{};
-		auto modelActivePlugins = m_model->activePlugins();
-		modelActivePlugins.remove(pluginName);
 		std::copy(std::begin(modelActivePlugins), std::end(modelActivePlugins), std::inserter(activePlugins, activePlugins.begin()));
 
 		auto conflictingPlugins = m_pluginConflictResolver->conflictingPlugins(activePlugins, pluginName);
 
 		if (!conflictingPlugins.empty())
 		{
-			auto list = QStringList{};
-			std::copy(std::begin(conflictingPlugins), std::end(conflictingPlugins), std::back_inserter(list));
+			auto conflictingVector = QVector<QString>{};
+			std::copy(std::begin(conflictingPlugins), std::end(conflictingPlugins), std::back_inserter(conflictingVector));
 			auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
-					tr("Following dependend plugins will be deactivated because of conflict: %1.").arg(list.join(", ")), this);
+					tr("Following dependend plugins will be deactivated because of conflict: %1.").arg(vectorToString(conflictingVector)), this);
 			dialog->addButton(QMessageBox::Yes, tr("Deactivate conflicting plugins"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
 
 			if (dialog->ask())
-				setAllChecked(list.toVector(), false);
+			{
+				setAllChecked(conflictingVector, false);
+				setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
+			}
 			else
 				setAllChecked(QVector<QString>{pluginName}, false);
 		}
@@ -232,37 +234,56 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 	}
 	else
 	{
-		auto withDependents = m_pluginDependencyHandler->withDependents(pluginName);
-		auto dependents = decltype(withDependents){};
-		std::copy_if(std::begin(withDependents), std::end(withDependents), std::back_inserter(dependents),
-				[=,&pluginName](QString const &dependentName)
-				{
-					return dependentName != pluginName && m_model->activePlugins().contains(dependentName);
-				}
-		);
+		auto dependents = m_pluginDependencyHandler->findDependents(pluginName);
+		auto activeDependents = decltype(dependents){};
+		std::copy_if(std::begin(dependents), std::end(dependents), std::back_inserter(activeDependents),
+				[=,&pluginName](QString const &dependentName){ return modelActivePlugins.contains(dependentName); });
 
-		if (!dependents.isEmpty())
+		if (!activeDependents.isEmpty())
 		{
 			auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
-					tr("Following dependend plugins will also be deactivated: %1.").arg(
-						QStringList{dependents.toList()}.join(", ")), this);
+					tr("Following dependend plugins will also be deactivated: %1.").arg(vectorToString(activeDependents)), this);
 			dialog->addButton(QMessageBox::Yes, tr("Deactivate dependend plugins"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
 
 			if (dialog->ask())
-				setAllChecked(withDependents, false);
+				setAllChecked(dependents, false);
 			else
 				setAllChecked(QVector<QString>{pluginName}, true);
 		}
 		else
-			setAllChecked(withDependents, false);
+			setAllChecked(dependents, false);
 	}
 
 	m_processingChange = false;
 }
 
-template<template<class> class T>
-void PluginListWidget::setAllChecked(const T<QString> &plugins, bool checked)
+QSet<QString> PluginListWidget::activePluginsBeforeChange(const QString &changedPluginName, bool changedPluginChecked) const
+{
+	auto result = m_model->activePlugins();
+	if (changedPluginChecked)
+		result.remove(changedPluginName);
+	else
+		result.insert(changedPluginName);
+	return result;
+}
+
+QString PluginListWidget::vectorToString(const QVector<QString> &plugins)
+{
+	auto result = QString{};
+	auto first = true;
+	for (auto const &plugin : plugins)
+	{
+		if (first)
+			first = false;
+		else
+			result += ", ";
+		result += plugin;
+	}
+	return result;
+}
+
+void PluginListWidget::setAllChecked(const QVector<QString> &plugins, bool checked)
 {
 	auto count = m_model->rowCount();
 	for (auto i = 0; i < count; i++)

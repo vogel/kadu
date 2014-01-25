@@ -82,6 +82,7 @@ private:
 	PluginProxyModel *m_proxyModel;
 	bool m_processingChange;
 
+	QSet<QString> activePluginsBeforeChange(const QString &changedPluginName, bool changedPluginChecked) const;
 	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
 
 	void setAllChecked(const QVector<QString> &plugins, bool checked);

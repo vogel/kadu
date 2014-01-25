@@ -89,17 +89,31 @@ PluginMetadata PluginDependencyHandler::pluginMetadata(const QString &pluginName
 	return m_allPluginMetadata.at(pluginName);
 }
 
-QVector<QString> PluginDependencyHandler::withDependencies(const QString &pluginName) noexcept
+QVector<QString> PluginDependencyHandler::withDependencies(const QString &pluginName) const
 {
 	return hasPluginMetadata(pluginName)
 			? m_pluginDependencyDAG.findDependencies(pluginName) << pluginName
 			: QVector<QString>{};
 }
 
-QVector<QString> PluginDependencyHandler::withDependents(const QString &pluginName) noexcept
+QVector<QString> PluginDependencyHandler::findDependencies(const QString &pluginName) const
+{
+	return hasPluginMetadata(pluginName)
+			? m_pluginDependencyDAG.findDependencies(pluginName)
+			: QVector<QString>{};
+}
+
+QVector<QString> PluginDependencyHandler::withDependents(const QString &pluginName) const
 {
 	return hasPluginMetadata(pluginName)
 			? m_pluginDependencyDAG.findDependents(pluginName) << pluginName
+			: QVector<QString>{};
+}
+
+QVector<QString> PluginDependencyHandler::findDependents(const QString &pluginName) const
+{
+	return hasPluginMetadata(pluginName)
+			? m_pluginDependencyDAG.findDependents(pluginName)
 			: QVector<QString>{};
 }
 
