@@ -39,9 +39,9 @@
 #include <QtGui/QInputEvent>
 #include <QtGui/QWidget>
 
-#include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
+#include "plugin/gui/plugin-list/plugin-list-view-delegate.h"
 
-#include "gui/widgets/plugin-list/plugin-list-view-delegate-widgets.h"
+#include "plugin/gui/plugin-list/plugin-list-view-delegate-widgets.h"
 
 Q_DECLARE_METATYPE(QModelIndex);
 

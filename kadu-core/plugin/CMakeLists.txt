@@ -7,6 +7,11 @@ set (plugin_SRCS
 	activation/plugin-translations-loader.cpp
 	dependency-graph/plugin-dependency-graph.cpp
 	dependency-graph/plugin-dependency-graph-builder.cpp
+	gui/plugin-error-dialog.cpp
+	gui/plugin-list/plugin-list-widget.cpp
+	gui/plugin-list/plugin-list-view-delegate.cpp
+	gui/plugin-list/plugin-list-view-delegate-widgets.cpp
+	gui/plugin-list/plugin-list-widget-item-delegate.cpp
 	metadata/plugin-metadata.cpp
 	metadata/plugin-metadata-builder.cpp
 	metadata/plugin-metadata-finder.cpp

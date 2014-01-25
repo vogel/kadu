@@ -20,8 +20,8 @@
 
 #include "plugin-activation-error-handler.h"
 
-#include "gui/windows/plugin-error-dialog.h"
 #include "plugin/activation/plugin-activation-service.h"
+#include "plugin/gui/plugin-error-dialog.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
 

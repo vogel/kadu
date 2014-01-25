@@ -39,11 +39,6 @@ set (gui_SRCS
 	widgets/group-tab-bar/group-tab-bar-configuration.cpp
 	widgets/group-tab-bar/group-tab-bar-configurator.cpp
 
-	widgets/plugin-list/plugin-list-widget.cpp
-	widgets/plugin-list/plugin-list-view-delegate.cpp
-	widgets/plugin-list/plugin-list-view-delegate-widgets.cpp
-	widgets/plugin-list/plugin-list-widget-item-delegate.cpp
-
 	widgets/account-add-widget.cpp
 	widgets/account-avatar-widget.cpp
 	widgets/account-buddy-list-widget.cpp
@@ -193,7 +188,6 @@ set (gui_SRCS
 	windows/main-window.cpp
 	windows/message-dialog.cpp
 	windows/multilogon-window.cpp
-	windows/plugin-error-dialog.cpp
 	windows/progress-window.cpp
 	windows/proxy-action-context.cpp
 	windows/proxy-edit-window.cpp
@@ -375,7 +369,6 @@ set (gui_MOC_SRCS
 	windows/main-window.h
 	windows/message-dialog.h
 	windows/multilogon-window.h
-	windows/plugin-error-dialog.h
 	windows/progress-window.h
 	windows/proxy-action-context.h
 	windows/proxy-edit-window.h

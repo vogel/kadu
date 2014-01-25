@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
+#include "plugin/gui/plugin-list/plugin-list-view-delegate.h"
 
 #include <memory>
 
