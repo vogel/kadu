@@ -129,15 +129,10 @@ QList<QWidget *> PluginListWidgetItemDelegate::createItemWidgets() const
 {
 	auto enabledCheckBox = new QCheckBox;
 	connect(enabledCheckBox, SIGNAL(clicked(bool)), this, SLOT(slotStateChanged(bool)));
-	connect(enabledCheckBox, SIGNAL(clicked(bool)), this, SLOT(emitChanged()));
 
 	auto aboutPushButton = new QPushButton;
 	aboutPushButton->setIcon(KaduIcon("help-contents").icon());
 	connect(aboutPushButton, SIGNAL(clicked(bool)), this, SLOT(slotAboutClicked()));
-
-	auto configurePushButton = new QPushButton;
-	configurePushButton->setIcon(KaduIcon("preferences-other").icon());
-	connect(configurePushButton, SIGNAL(clicked(bool)), this, SLOT(slotConfigureClicked()));
 
 	setBlockedEventTypes(enabledCheckBox, QList<QEvent::Type>() << QEvent::MouseButtonPress
 			<< QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
@@ -147,11 +142,7 @@ QList<QWidget *> PluginListWidgetItemDelegate::createItemWidgets() const
 			<< QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
 			<< QEvent::KeyPress << QEvent::KeyRelease);
 
-	setBlockedEventTypes(configurePushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress
-			<< QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
-			<< QEvent::KeyPress << QEvent::KeyRelease);
-
-	return {enabledCheckBox, configurePushButton, aboutPushButton};
+	return {enabledCheckBox, aboutPushButton};
 }
 
 void PluginListWidgetItemDelegate::updateItemWidgets(const QList<QWidget *> widgets, const QStyleOptionViewItem &option,
@@ -161,27 +152,18 @@ void PluginListWidgetItemDelegate::updateItemWidgets(const QList<QWidget *> widg
 	checkBox->resize(checkBox->sizeHint());
 	checkBox->move(m_pluginSelector->dependantLayoutValue(MARGIN, checkBox->sizeHint().width(), option.rect.width()), option.rect.height() / 2 - checkBox->sizeHint().height() / 2);
 
-	auto aboutPushButton = static_cast<QPushButton*>(widgets[2]);
+	auto aboutPushButton = static_cast<QPushButton*>(widgets[1]);
 	auto aboutPushButtonSizeHint = aboutPushButton->sizeHint();
 	aboutPushButton->resize(aboutPushButtonSizeHint);
 	aboutPushButton->move(m_pluginSelector->dependantLayoutValue(option.rect.width() - MARGIN - aboutPushButtonSizeHint.width(), aboutPushButtonSizeHint.width(), option.rect.width()), option.rect.height() / 2 - aboutPushButtonSizeHint.height() / 2);
-
-	auto configurePushButton = static_cast<QPushButton*>(widgets[1]);
-	auto configurePushButtonSizeHint = configurePushButton->sizeHint();
-	configurePushButton->resize(configurePushButtonSizeHint);
-	configurePushButton->move(m_pluginSelector->dependantLayoutValue(option.rect.width() - MARGIN * 2 - configurePushButtonSizeHint.width() - aboutPushButtonSizeHint.width(), configurePushButtonSizeHint.width(), option.rect.width()), option.rect.height() / 2 - configurePushButtonSizeHint.height() / 2);
 
 	if (!index.isValid() || !index.internalPointer())
 	{
 		checkBox->setVisible(false);
 		aboutPushButton->setVisible(false);
-		configurePushButton->setVisible(false);
 	}
 	else
-	{
 		checkBox->setChecked(index.model()->data(index, Qt::CheckStateRole).toBool());
-		configurePushButton->setVisible(false);
-	}
 }
 
 void PluginListWidgetItemDelegate::slotStateChanged(bool state)
@@ -190,11 +172,6 @@ void PluginListWidgetItemDelegate::slotStateChanged(bool state)
 		return;
 
 	const_cast<QAbstractItemModel *>(focusedIndex().model())->setData(focusedIndex(), state, Qt::CheckStateRole);
-}
-
-void PluginListWidgetItemDelegate::emitChanged()
-{
-	emit changed(true);
 }
 
 void PluginListWidgetItemDelegate::slotAboutClicked()
@@ -213,10 +190,6 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 	info += tr("Provides: %1").arg(pluginMetadata.provides());
 
 	MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
-}
-
-void PluginListWidgetItemDelegate::slotConfigureClicked()
-{
 }
 
 QFont PluginListWidgetItemDelegate::titleFont(const QFont &baseFont) const

@@ -79,7 +79,6 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	filterEdit->setView(m_listView);
 
 	connect(filterEdit, SIGNAL(textChanged(QString)), m_proxyModel, SLOT(setFilterText(QString)));
-	connect(delegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
 
 	layout->addWidget(filterEdit);
 	layout->addWidget(m_listView);
@@ -167,8 +166,6 @@ void PluginListWidget::applyChanges()
 			}
 		}
 	}
-
-	emit changed(false);
 }
 
 QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState) const

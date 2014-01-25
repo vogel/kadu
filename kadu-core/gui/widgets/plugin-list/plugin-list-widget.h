@@ -66,12 +66,6 @@ public:
 
 	int dependantLayoutValue(int value, int width, int totalWidth) const;
 
-signals:
-	/**
-	 * Tells you whether the configuration is changed or not.
-	 */
-	void changed(bool hasChanged);
-
 private:
 	friend class PluginListWidgetItemDelegate;
 	friend class PluginModel;

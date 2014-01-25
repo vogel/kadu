@@ -44,9 +44,6 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
-signals:
-	void changed(bool hasChanged);
-
 protected:
 	virtual QList<QWidget *> createItemWidgets() const override;
 	virtual void updateItemWidgets(const QList<QWidget *> widgets, const QStyleOptionViewItem &option, const QPersistentModelIndex &index) const override;
@@ -61,8 +58,6 @@ private:
 
 private slots:
 	void slotStateChanged(bool state);
-	void emitChanged();
 	void slotAboutClicked();
-	void slotConfigureClicked();
 
 };
