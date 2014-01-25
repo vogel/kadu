@@ -84,8 +84,8 @@ private:
 
 	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
 
-	template<template<class> class T>
-	void setAllChecked(const T<QString> &plugins, bool checked);
+	void setAllChecked(const QVector<QString> &plugins, bool checked);
+	QString vectorToString(const QVector<QString> &plugins);
 
 private slots:
 	void configurationApplied();
