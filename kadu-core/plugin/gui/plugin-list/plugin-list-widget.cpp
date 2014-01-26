@@ -32,7 +32,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-dialog.h"
+#include "gui/windows/string-list-dialog.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
@@ -216,12 +216,11 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 		{
 			auto conflictingVector = QVector<QString>{};
 			std::copy(std::begin(conflictingPlugins), std::end(conflictingPlugins), std::back_inserter(conflictingVector));
-			auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
-					tr("Following dependend plugins will be deactivated because of conflict: %1.").arg(vectorToString(conflictingVector)), this);
-			dialog->addButton(QMessageBox::Yes, tr("Deactivate conflicting plugins"));
-			dialog->addButton(QMessageBox::No, tr("Cancel"));
+			auto conflictingList = QStringList{conflictingVector.toList()};
 
-			if (dialog->ask())
+			auto message = QString{"Following plugins will be deactivated because of conflict:"};
+			auto dialog = new StringListDialog{message, tr("Deactivate"), conflictingList, this};
+			if (QDialog::Accepted == dialog->exec())
 			{
 				setAllChecked(conflictingVector, false);
 				setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
@@ -238,15 +237,14 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 		auto activeDependents = decltype(dependents){};
 		std::copy_if(std::begin(dependents), std::end(dependents), std::back_inserter(activeDependents),
 				[=,&pluginName](QString const &dependentName){ return modelActivePlugins.contains(dependentName); });
+		auto activeDependentsList = QStringList{activeDependents.toList()};
 
 		if (!activeDependents.isEmpty())
 		{
-			auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"),
-					tr("Following dependend plugins will also be deactivated: %1.").arg(vectorToString(activeDependents)), this);
-			dialog->addButton(QMessageBox::Yes, tr("Deactivate dependend plugins"));
-			dialog->addButton(QMessageBox::No, tr("Cancel"));
+			auto message = QString{"Following plugins will be deactivated because of dependencies:"};
+			auto dialog = new StringListDialog{message, tr("Deactivate"), activeDependentsList, this};
 
-			if (dialog->ask())
+			if (QDialog::Accepted == dialog->exec())
 				setAllChecked(dependents, false);
 			else
 				setAllChecked(QVector<QString>{pluginName}, true);
