@@ -206,54 +206,72 @@ void PluginListWidget::modelDataChanged(const QModelIndex &topLeft, const QModel
 	auto modelActivePlugins = activePluginsBeforeChange(pluginName, checked);
 
 	if (checked)
-	{
-		auto activePlugins = std::set<QString>{};
-		std::copy(std::begin(modelActivePlugins), std::end(modelActivePlugins), std::inserter(activePlugins, activePlugins.begin()));
-
-		auto conflictingPlugins = m_pluginConflictResolver->conflictingPlugins(activePlugins, pluginName);
-
-		if (!conflictingPlugins.empty())
-		{
-			auto conflictingVector = QVector<QString>{};
-			std::copy(std::begin(conflictingPlugins), std::end(conflictingPlugins), std::back_inserter(conflictingVector));
-			auto conflictingList = QStringList{conflictingVector.toList()};
-
-			auto message = QString{"Following plugins will be deactivated because of conflict:"};
-			auto dialog = new StringListDialog{message, tr("Deactivate"), conflictingList, this};
-			if (QDialog::Accepted == dialog->exec())
-			{
-				setAllChecked(conflictingVector, false);
-				setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
-			}
-			else
-				setAllChecked(QVector<QString>{pluginName}, false);
-		}
-		else
-			setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
-	}
+		handleCheckedPlugin(pluginName, modelActivePlugins);
 	else
-	{
-		auto dependents = m_pluginDependencyHandler->findDependents(pluginName);
-		auto activeDependents = decltype(dependents){};
-		std::copy_if(std::begin(dependents), std::end(dependents), std::back_inserter(activeDependents),
-				[=,&pluginName](QString const &dependentName){ return modelActivePlugins.contains(dependentName); });
-		auto activeDependentsList = QStringList{activeDependents.toList()};
-
-		if (!activeDependents.isEmpty())
-		{
-			auto message = QString{"Following plugins will be deactivated because of dependencies:"};
-			auto dialog = new StringListDialog{message, tr("Deactivate"), activeDependentsList, this};
-
-			if (QDialog::Accepted == dialog->exec())
-				setAllChecked(dependents, false);
-			else
-				setAllChecked(QVector<QString>{pluginName}, true);
-		}
-		else
-			setAllChecked(dependents, false);
-	}
+		handleUncheckedPlugin(pluginName, modelActivePlugins);
 
 	m_processingChange = false;
+}
+
+void PluginListWidget::handleCheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins)
+{
+	auto activePlugins = std::set<QString>{};
+	std::copy(std::begin(modelActivePlugins), std::end(modelActivePlugins), std::inserter(activePlugins, activePlugins.begin()));
+
+	auto conflictingPlugins = m_pluginConflictResolver->conflictingPlugins(activePlugins, pluginName);
+
+	if (conflictingPlugins.empty())
+	{
+		setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
+		return;
+	}
+
+	auto conflictingVector = QVector<QString>{};
+	std::copy(std::begin(conflictingPlugins), std::end(conflictingPlugins), std::back_inserter(conflictingVector));
+
+	auto conflictingDisplayNames = QStringList{};
+	std::transform(std::begin(conflictingVector), std::end(conflictingVector), std::back_inserter(conflictingDisplayNames),
+		[this](const QString &pluginName){ return m_pluginDependencyHandler->pluginMetadata(pluginName).displayName(); });
+
+	auto message = QString{"Following plugins will be deactivated because of conflict:"};
+	auto dialog = new StringListDialog{message, tr("Deactivate"), conflictingDisplayNames, this};
+	dialog->setWindowTitle(tr("Plugin activation"));
+
+	if (QDialog::Accepted == dialog->exec())
+	{
+		setAllChecked(conflictingVector, false);
+		setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
+	}
+	else
+		setAllChecked(QVector<QString>{pluginName}, false);
+}
+
+void PluginListWidget::handleUncheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins)
+{
+	auto dependents = m_pluginDependencyHandler->findDependents(pluginName);
+	auto activeDependents = decltype(dependents){};
+	std::copy_if(std::begin(dependents), std::end(dependents), std::back_inserter(activeDependents),
+			[=,&pluginName](QString const &dependentName){ return modelActivePlugins.contains(dependentName); });
+
+	if (activeDependents.isEmpty())
+	{
+		setAllChecked(dependents, false);
+		return;
+	}
+
+	auto activeDependentsNames = QStringList{};
+	std::transform(std::begin(activeDependents), std::end(activeDependents), std::back_inserter(activeDependentsNames),
+		[this](const QString &pluginName){ return m_pluginDependencyHandler->pluginMetadata(pluginName).displayName(); });
+
+	auto message = QString{"Following plugins will be deactivated because of dependencies:"};
+	auto dialog = new StringListDialog{message, tr("Deactivate"), activeDependentsNames, this};
+	dialog->setWindowTitle(tr("Plugin deactivation"));
+
+	if (QDialog::Accepted == dialog->exec())
+		setAllChecked(dependents, false);
+	else
+		setAllChecked(QVector<QString>{pluginName}, true);
+
 }
 
 QSet<QString> PluginListWidget::activePluginsBeforeChange(const QString &changedPluginName, bool changedPluginChecked) const

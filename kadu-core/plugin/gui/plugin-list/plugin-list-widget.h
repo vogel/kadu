@@ -85,6 +85,9 @@ private:
 	QSet<QString> activePluginsBeforeChange(const QString &changedPluginName, bool changedPluginChecked) const;
 	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
 
+	void handleCheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins);
+	void handleUncheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins);
+
 	void setAllChecked(const QVector<QString> &plugins, bool checked);
 	QString vectorToString(const QVector<QString> &plugins);
 
