@@ -19,7 +19,10 @@
 
 #include "plugin-state-service.h"
 
+#include "misc/change-notifier.h"
 #include "plugin/state/plugin-state.h"
+
+#include <QtCore/QSet>
 
 PluginStateService::PluginStateService(QObject *parent) noexcept :
 		QObject{parent}
@@ -35,12 +38,18 @@ QMap<QString, PluginState> PluginStateService::pluginStates() const noexcept
 	return m_pluginStates;
 }
 
-void PluginStateService::setPluginStates(const QMap<QString, PluginState> &pluginStates) noexcept
+void PluginStateService::setPluginStates(QMap<QString, PluginState> pluginStates) noexcept
 {
-	m_pluginStates = pluginStates;
-	auto newPlugins = m_pluginStates.keys(PluginState::New);
-	for (auto newPlugin : newPlugins)
-		m_pluginStates.remove(newPlugin);
+	auto setToNew = QSet<QString>{};
+	for (auto &plugin : m_pluginStates.keys())
+		if (!pluginStates.contains(plugin))
+			setToNew.insert(plugin);
+
+	for (auto &plugin : setToNew)
+		setPluginState(plugin, PluginState::New);
+
+	for (auto &plugin : pluginStates.keys())
+		setPluginState(plugin, pluginStates.value(plugin));
 }
 
 PluginState PluginStateService::pluginState(const QString &pluginName) const noexcept
@@ -53,14 +62,33 @@ PluginState PluginStateService::pluginState(const QString &pluginName) const noe
 void PluginStateService::setPluginState(const QString &pluginName, PluginState state) noexcept
 {
 	if (PluginState::New == state)
-		m_pluginStates.remove(pluginName);
+	{
+		if (m_pluginStates.contains(pluginName))
+		{
+			m_pluginStates.remove(pluginName);
+			m_changeNotifier.notify();
+			emit pluginStateChanged(pluginName, state);
+		}
+	}
 	else
-		m_pluginStates.insert(pluginName, state);
+	{
+		if (m_pluginStates.value(pluginName) != state)
+		{
+			m_pluginStates.insert(pluginName, state);
+			m_changeNotifier.notify();
+			emit pluginStateChanged(pluginName, state);
+		}
+	}
 }
 
 QList<QString> PluginStateService::enabledPlugins() noexcept
 {
 	return m_pluginStates.keys(PluginState::Enabled);
+}
+
+ChangeNotifier & PluginStateService::changeNotifier()
+{
+	return m_changeNotifier;
 }
 
 #include "moc_plugin-state-service.cpp"

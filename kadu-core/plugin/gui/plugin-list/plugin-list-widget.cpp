@@ -25,7 +25,6 @@
 
 #include "plugin-list-widget.h"
 
-#include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/configuration/config-section.h"
@@ -33,6 +32,7 @@
 #include "gui/widgets/filter-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/string-list-dialog.h"
+#include "misc/change-notifier-lock.h"
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/activation/plugin-activation-service.h"
@@ -156,16 +156,11 @@ void PluginListWidget::applyChanges()
 	if (!m_pluginStateService)
 		return;
 
+	auto changeNotifierLock = ChangeNotifierLock{&m_pluginStateService->changeNotifier()};
 	for (auto const &deactivatedPlugin : deactivatedPlugins)
 		m_pluginStateService->setPluginState(deactivatedPlugin, PluginState::Disabled);
 	for (auto const &activatedPlugin : activatedPlugins)
 		m_pluginStateService->setPluginState(activatedPlugin, PluginState::Enabled);
-
-	if (m_pluginStateManager && (!activatedPlugins.isEmpty() || !deactivatedPlugins.isEmpty()))
-	{
-		m_pluginStateManager->storePluginStates();
-		ConfigurationManager::instance()->flush();
-	}
 }
 
 QVector<QString> PluginListWidget::pluginsWithNewActiveState(bool newActiveState) const

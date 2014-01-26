@@ -19,6 +19,8 @@
 
 #include "plugin-state-manager.h"
 
+#include "configuration/configuration-manager.h"
+#include "misc/change-notifier-lock.h"
 #include "plugin/plugin-dependency-handler.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state-storage.h"
@@ -43,6 +45,9 @@ void PluginStateManager::setPluginDependencyHandler(PluginDependencyHandler *plu
 void PluginStateManager::setPluginStateService(PluginStateService *pluginStateService)
 {
 	m_pluginStateService = pluginStateService;
+
+	if (m_pluginStateService)
+		connect(&m_pluginStateService.data()->changeNotifier(), SIGNAL(changed()), this, SLOT(storePluginStatesAndFlush()));
 }
 
 void PluginStateManager::setStoragePointFactory(StoragePointFactory *storagePointFactory)
@@ -63,6 +68,7 @@ void PluginStateManager::loadPluginStates()
 	storagePoint->storeAttribute("imported_from_09", true);
 
 	auto pluginStates = loadPluginStates(storagePoint.get(), importedFrom09);
+	auto changeNotifierLock = ChangeNotifierLock{&m_pluginStateService->changeNotifier(), ChangeNotifierLock::ModeForget};
 	m_pluginStateService->setPluginStates(pluginStates);
 }
 
@@ -71,6 +77,12 @@ QMap<QString, PluginState> PluginStateManager::loadPluginStates(StoragePoint *st
 	return importedFrom09
 			? PluginStateStorage{}.load(*storagePoint)
 			: PluginStateStorage09{}.load(m_pluginDependencyHandler->pluginNames());
+}
+
+void PluginStateManager::storePluginStatesAndFlush()
+{
+	storePluginStates();
+	ConfigurationManager::instance()->flush();
 }
 
 void PluginStateManager::storePluginStates()

@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "misc/change-notifier.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
@@ -63,8 +64,11 @@ public:
 	 * @param pluginState new map of known plugin states
 	 *
 	 * This method removes all currently stored data and replaces it with \p pluginStates value.
+	 * Signal pluginStateChanged is emited for each plugin with new state different than previous.
+	 * It is also emited for removed plugins (with PluginState::New). In such cases @see changeNotifier()
+	 * is also notified.
 	 */
-	void setPluginStates(const QMap<QString, PluginState> &pluginStates) noexcept;
+	void setPluginStates(QMap<QString, PluginState> pluginStates) noexcept;
 
 	/**
 	 * @param pluginName name of plugin
@@ -81,6 +85,9 @@ public:
 	 *
 	 * If new state is PluginState::New, entry is removed. Otherwise, if no state was known for this plugin
 	 * before, a new entry is added. Otherwise, existing entry is updated to match new value.
+	 *
+	 * If new state is different than previous, signal pluginStateChanged is emited and @see changeNotifier()
+	 * it notified.
 	 */
 	void setPluginState(const QString &pluginName, PluginState state) noexcept;
 
@@ -90,8 +97,24 @@ public:
 	 */
 	QList<QString> enabledPlugins() noexcept;
 
+	/**
+	 * @return Change notifier called each time a plugin state changes.
+	 */
+	ChangeNotifier & changeNotifier();
+
+signals:
+	/**
+	 * @short Signal emited when plugin state changes for one plugin.
+	 * @param pluginName name of plugin with changed state
+	 * @param state new state of plugin
+	 *
+	 * This signal is not invoked after calling setPluginState with state equal to current state of plugin.
+	 */
+	void pluginStateChanged(const QString &pluginName, PluginState state);
+
 private:
 	QMap<QString, PluginState> m_pluginStates;
+	ChangeNotifier m_changeNotifier;
 
 };
 

@@ -81,6 +81,9 @@ private:
 
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 
+private slots:
+	void storePluginStatesAndFlush();
+
 };
 
 /**

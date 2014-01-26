@@ -81,6 +81,7 @@
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
 #include "message/unread-message-repository.h"
+#include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
@@ -464,9 +465,10 @@ void Core::init()
 
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
-	CurrentPluginManager->activateProtocolPlugins();
-	CurrentPluginStateManager->storePluginStates();
-	ConfigurationManager::instance()->flush();
+	{
+		auto changeNotifierLock = ChangeNotifierLock{&CurrentPluginStateService->changeNotifier()};
+		CurrentPluginManager->activateProtocolPlugins();
+	}
 
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
@@ -737,10 +739,9 @@ void Core::stopServices()
 
 void Core::activatePlugins()
 {
+	auto changeNotifierLock = ChangeNotifierLock{&CurrentPluginStateService->changeNotifier()};
 	CurrentPluginManager->activatePlugins();
 	CurrentPluginManager->activateReplacementPlugins();
-	CurrentPluginStateManager->storePluginStates();
-	ConfigurationManager::instance()->flush();
 }
 
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
