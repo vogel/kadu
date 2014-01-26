@@ -156,7 +156,7 @@ void PluginListWidget::applyChanges()
 	if (!m_pluginStateService)
 		return;
 
-	auto changeNotifierLock = ChangeNotifierLock{&m_pluginStateService->changeNotifier()};
+	auto changeNotifierLock = ChangeNotifierLock{m_pluginStateService->changeNotifier()};
 	for (auto const &deactivatedPlugin : deactivatedPlugins)
 		m_pluginStateService->setPluginState(deactivatedPlugin, PluginState::Disabled);
 	for (auto const &activatedPlugin : activatedPlugins)

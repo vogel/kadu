@@ -621,7 +621,7 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 {
 	kdebugf();
 
-	ChangeNotifierLock lock(MyChangeNotifier, ChangeNotifierLock::ModeForget);
+	ChangeNotifierLock lock(*MyChangeNotifier, ChangeNotifierLock::ModeForget);
 
 //	QString align = toolbar_element.attribute("align");
 //	if (align == "right")

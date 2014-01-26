@@ -212,7 +212,7 @@ void ChatDataWindow::createButtons(QVBoxLayout *layout)
 
 void ChatDataWindow::updateChat()
 {
-	ChangeNotifierLock lock(MyChat.changeNotifier());
+	ChangeNotifierLock lock(*MyChat.changeNotifier());
 
 	if (EditWidget)
 		EditWidget->apply();

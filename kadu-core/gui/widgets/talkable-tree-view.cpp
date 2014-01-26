@@ -269,7 +269,7 @@ void TalkableTreeView::updateContext()
 
 	ModelIndexListConverter converter(selectedIndexes());
 
-	ChangeNotifierLock lock(Context->changeNotifier());
+	ChangeNotifierLock lock(*Context->changeNotifier());
 
 	Context->setRoles(converter.roles());
 	Context->setBuddies(converter.buddies());

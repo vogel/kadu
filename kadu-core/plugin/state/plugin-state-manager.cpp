@@ -68,7 +68,7 @@ void PluginStateManager::loadPluginStates()
 	storagePoint->storeAttribute("imported_from_09", true);
 
 	auto pluginStates = loadPluginStates(storagePoint.get(), importedFrom09);
-	auto changeNotifierLock = ChangeNotifierLock{&m_pluginStateService->changeNotifier(), ChangeNotifierLock::ModeForget};
+	auto changeNotifierLock = ChangeNotifierLock{m_pluginStateService->changeNotifier(), ChangeNotifierLock::ModeForget};
 	m_pluginStateService->setPluginStates(pluginStates);
 }
 

@@ -152,7 +152,7 @@ void GroupPropertiesWindow::selectIcon()
 
 void GroupPropertiesWindow::applyClicked()
 {
-	ChangeNotifierLock lock(group.changeNotifier());
+	ChangeNotifierLock lock(*group.changeNotifier());
 
 	group.setShowName(nameCheckBox->isChecked());
 	group.setShowIcon(iconCheckBox->isChecked());

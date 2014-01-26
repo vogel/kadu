@@ -17,28 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/change-notifier.h"
-
 #include "change-notifier-lock.h"
 
-ChangeNotifierLock::ChangeNotifierLock(ChangeNotifier *notifier, Mode mode)
-		: Notifier(notifier), NotifierMode(mode)
+#include "misc/change-notifier.h"
+
+ChangeNotifierLock::ChangeNotifierLock(ChangeNotifier &notifier, Mode mode)
+		: m_notifier(notifier), m_notifierMode{mode}
 {
-	if (Notifier)
-		Notifier->block();
+	m_notifier.block();
 }
 
 ChangeNotifierLock::~ChangeNotifierLock()
 {
-	if (!Notifier)
-		return;
-
-	if (ModeForget == NotifierMode)
-		Notifier->forget();
-	Notifier->unblock();
+	if (ModeForget == m_notifierMode)
+		m_notifier.forget();
+	m_notifier.unblock();
 }
 
-void ChangeNotifierLock::setMode(ChangeNotifierLock::Mode mode)
+void ChangeNotifierLock::setMode(Mode mode)
 {
-	NotifierMode = mode;
+	m_notifierMode = mode;
 }

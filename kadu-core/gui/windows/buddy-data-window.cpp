@@ -234,7 +234,7 @@ void BuddyDataWindow::updateBuddy()
 	if (ValueStateNotifier->state() == StateChangedDataInvalid)
 		return;
 
-	ChangeNotifierLock lock(MyBuddy.changeNotifier());
+	ChangeNotifierLock lock(*MyBuddy.changeNotifier());
 
 	applyBuddyConfigurationWidgets();
 

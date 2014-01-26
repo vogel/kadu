@@ -466,7 +466,7 @@ void Core::init()
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	{
-		auto changeNotifierLock = ChangeNotifierLock{&CurrentPluginStateService->changeNotifier()};
+		auto changeNotifierLock = ChangeNotifierLock{CurrentPluginStateService->changeNotifier()};
 		CurrentPluginManager->activateProtocolPlugins();
 	}
 
@@ -739,7 +739,7 @@ void Core::stopServices()
 
 void Core::activatePlugins()
 {
-	auto changeNotifierLock = ChangeNotifierLock{&CurrentPluginStateService->changeNotifier()};
+	auto changeNotifierLock = ChangeNotifierLock{CurrentPluginStateService->changeNotifier()};
 	CurrentPluginManager->activatePlugins();
 	CurrentPluginManager->activateReplacementPlugins();
 }
