@@ -535,14 +535,11 @@ public:
 	 * @short Return ChangeNotifier instance for this object.
 	 * @return ChangeNotifier instance for this object
 	 *
-	 * This method can return null value for null object.
+	 * Id object is null, this method has undefined behavior.
 	 */
-	ChangeNotifier * changeNotifier() const
+	ChangeNotifier & changeNotifier() const
 	{
-		if (!isNull())
-			return Data->changeNotifier();
-		else
-			return 0;
+		return Data->changeNotifier();
 	}
 
 	KaduSharedBase_Property(QUuid, uuid, Uuid)

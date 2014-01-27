@@ -61,7 +61,7 @@ MessageShared::MessageShared(const QUuid &uuid) :
 	MessageChat = new Chat();
 	MessageSender = new Contact();
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 MessageShared::~MessageShared()
@@ -146,7 +146,7 @@ void MessageShared::setStatus(MessageStatus status)
 	{
 		MessageStatus oldStatus = Status;
 		Status = status;
-		changeNotifier()->notify();
+		changeNotifier().notify();
 		emit statusChanged(oldStatus);
 	}
 }

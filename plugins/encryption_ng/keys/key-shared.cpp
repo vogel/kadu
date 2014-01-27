@@ -53,7 +53,7 @@ KeyShared::KeyShared(const QUuid &uuid) :
 	KeysDir = KaduPaths::instance()->profilePath() + QLatin1String("keys/");
 	KeyContact = new Contact();
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 KeyShared::~KeyShared()

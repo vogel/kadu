@@ -21,16 +21,16 @@
 #include "base-action-context.h"
 
 BaseActionContext::BaseActionContext() :
-		MyChangeNotifier(new ChangeNotifier(this)), CurrentStatusContainer(0)
+		CurrentStatusContainer(0)
 {
-	connect(MyChangeNotifier, SIGNAL(changed()), this, SIGNAL(changed()));
+	connect(&MyChangeNotifier, SIGNAL(changed()), this, SIGNAL(changed()));
 }
 
 BaseActionContext::~BaseActionContext()
 {
 }
 
-ChangeNotifier * BaseActionContext::changeNotifier()
+ChangeNotifier & BaseActionContext::changeNotifier()
 {
 	return MyChangeNotifier;
 }
@@ -45,7 +45,7 @@ void BaseActionContext::setContacts(const ContactSet &contacts)
 	if (Contacts != contacts)
 	{
 		Contacts = contacts;
-		MyChangeNotifier->notify();
+		MyChangeNotifier.notify();
 	}
 }
 
@@ -59,7 +59,7 @@ void BaseActionContext::setBuddies(const BuddySet &buddies)
 	if (Buddies != buddies)
 	{
 		Buddies = buddies;
-		MyChangeNotifier->notify();
+		MyChangeNotifier.notify();
 	}
 }
 
@@ -73,7 +73,7 @@ void BaseActionContext::setChat(const Chat &chat)
 	if (CurrentChat != chat)
 	{
 		CurrentChat = chat;
-		MyChangeNotifier->notify();
+		MyChangeNotifier.notify();
 	}
 }
 
@@ -87,7 +87,7 @@ void BaseActionContext::setStatusContainer(StatusContainer *statusContainer)
 	if (CurrentStatusContainer != statusContainer)
 	{
 		CurrentStatusContainer = statusContainer;
-		MyChangeNotifier->notify();
+		MyChangeNotifier.notify();
 	}
 }
 
@@ -101,7 +101,7 @@ void BaseActionContext::setRoles(const RoleSet &roles)
 	if (Roles != roles)
 	{
 		Roles = roles;
-		MyChangeNotifier->notify();
+		MyChangeNotifier.notify();
 	}
 }
 

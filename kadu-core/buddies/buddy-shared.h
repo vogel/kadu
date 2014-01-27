@@ -43,7 +43,7 @@
 #include "exports.h"
 
 #define BuddyShared_PropertyDirtyWrite(type, name, capitalized_name) \
-	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier()->notify(); markContactsDirty(); } }
+	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier().notify(); markContactsDirty(); } }
 
 #define BuddyShared_PropertyDirty(type, name, capitalized_name) \
 	KaduShared_PropertyRead(type, name, capitalized_name) \
@@ -53,10 +53,10 @@
 	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; }
 
 #define BuddyShared_PropertySubscriptionWrite(capitalized_name) \
-	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name;  buddySubscriptionChanged(); changeNotifier()->notify(); } }
+	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name;  buddySubscriptionChanged(); changeNotifier().notify(); } }
 
 #define BuddyShared_PropertySubscriptionDirtyWrite(capitalized_name) \
-	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name;  buddySubscriptionChanged(); changeNotifier()->notify(); markContactsDirty(); } }
+	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name;  buddySubscriptionChanged(); changeNotifier().notify(); markContactsDirty(); } }
 
 #define BuddyShared_PropertySubscription(capitalized_name) \
 	BuddyShared_PropertySubscriptionRead(capitalized_name) \

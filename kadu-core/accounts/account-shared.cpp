@@ -77,7 +77,7 @@ AccountShared::AccountShared(const QString &protocolName) :
 			protocolRegistered(factory);
 	}
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 AccountShared::~AccountShared()
@@ -411,7 +411,7 @@ void AccountShared::setAccountIdentity(const Identity &accountIdentity)
 
 	doSetAccountIdentity(accountIdentity);
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void AccountShared::doSetId(const QString &id)
@@ -429,7 +429,7 @@ void AccountShared::setId(const QString &id)
 
 	doSetId(id);
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 Contact AccountShared::accountContact()

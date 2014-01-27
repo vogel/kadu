@@ -59,10 +59,10 @@
  * Defines setter for given property of @link StorableObject @endlink. Value of property will not be
  * ovveriden by load, because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Setter is called set##capitalized_name).
- * Calls @link changeNotifier()->notify @endlink method after data is changed.
+ * Calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyWrite(type, name, capitalized_name) \
-	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier()->notify(); } }
+	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier().notify(); } }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -74,7 +74,7 @@
  * Defines both getter and setter for given property of @link StorableObject @endlink. Value of property will
  * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Getter is called name, setter is called set##capitalized_name).
- * Setter calls @link changeNotifier()->notify @endlink method after data is changed.
+ * Setter calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_Property(type, name, capitalized_name) \
 	KaduShared_PropertyRead(type, name, capitalized_name) \
@@ -101,10 +101,10 @@
  * Defines setter for given property of @link StorableObject @endlink. Value of property will not be
  * ovveriden by load, because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Setter is called set##capitalized_name).
- * Calls @link changeNotifier()->notify @endlink method after data is changed.
+ * Calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyBoolWrite(capitalized_name) \
-	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier()->notify(); } }
+	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier().notify(); } }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -114,7 +114,7 @@
  * Defines both getter and setter for given property of @link StorableObject @endlink. Value of property will
  * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Getter is called is##capitlized_name, setter is called set##capitalized_name).
- * Setter calls @link changeNotifier()->notify @endlink method after data is changed.
+ * Setter calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyBool(capitalized_name) \
 	KaduShared_PropertyBoolRead(capitalized_name) \
@@ -184,10 +184,10 @@
  * Defines setter for given pointed property of @link StorableObject @endlink. Value of property will not be
  * ovveriden by load, because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Setter is called set##capitalized_name).
- * Calls @link changeNotifier()->notify @endlink method after data is changed.
+ * Calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyPtrWriteDef(class_name, type, name, capitalized_name) \
-	void class_name::set##capitalized_name(type name) { ensureLoaded(); if (*capitalized_name != name) { *capitalized_name = name; changeNotifier()->notify(); } }
+	void class_name::set##capitalized_name(type name) { ensureLoaded(); if (*capitalized_name != name) { *capitalized_name = name; changeNotifier().notify(); } }
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -200,14 +200,12 @@
  * Defines both getter and setter for given pointed property of @link StorableObject @endlink. Value of property will
  * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Getter is called name, setter is called set##capitalized_name).
- * Setter calls @link changeNotifier()->notify @endlink method after data is changed.
+ * Setter calls @link changeNotifier().notify @endlink method after data is changed.
  * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduShared_PropertyPtrDefCRW(class_name, type, name, capitalized_name) \
 	KaduShared_PropertyPtrReadDef(class_name, type, name, capitalized_name) \
 	KaduShared_PropertyPtrWriteDef(class_name, const type &, name, capitalized_name)
-
-class ChangeNotifier;
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -231,7 +229,7 @@ class ChangeNotifier;
  */
 class KADUAPI Shared : public UuidStorableObject, public QSharedData
 {
-	ChangeNotifier *MyChangeNotifier;
+	ChangeNotifier MyChangeNotifier;
 
 protected:
 	virtual void load();
@@ -251,7 +249,7 @@ public:
 	 *
 	 * This method never returns null value.
 	 */
-	ChangeNotifier * changeNotifier() const;
+	ChangeNotifier & changeNotifier();
 
 };
 

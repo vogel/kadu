@@ -53,7 +53,7 @@ FileTransferShared::FileTransferShared(const QUuid &uuid) :
 {
 	Peer = new Contact();
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 FileTransferShared::~FileTransferShared()
@@ -115,7 +115,7 @@ void FileTransferShared::setTransferStatus(FileTransferStatus transferStatus)
 
 	TransferStatus = transferStatus;
 	emit statusChanged();
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void FileTransferShared::setTransferError(FileTransferError transferError)
@@ -128,7 +128,7 @@ void FileTransferShared::setTransferError(FileTransferError transferError)
 	TransferStatus = StatusNotConnected;
 	TransferError = transferError;
 	emit statusChanged();
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void FileTransferShared::setHandler(FileTransferHandler *handler)
@@ -144,7 +144,7 @@ void FileTransferShared::setHandler(FileTransferHandler *handler)
 	if (Handler)
 		connect(Handler, SIGNAL(destroyed()), this, SLOT(handlerDestroyed()));
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void FileTransferShared::createHandler()
@@ -166,7 +166,7 @@ void FileTransferShared::createHandler()
 void FileTransferShared::handlerDestroyed()
 {
 	Handler = 0;
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 KaduShared_PropertyPtrDefCRW(FileTransferShared, Contact, peer, Peer)

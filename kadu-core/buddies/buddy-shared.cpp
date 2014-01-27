@@ -63,7 +63,7 @@ BuddyShared::BuddyShared(const QUuid &uuid) :
 {
 	BuddyAvatar = new Avatar();
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 BuddyShared::~BuddyShared()
@@ -322,7 +322,7 @@ void BuddyShared::addContact(const Contact &contact)
 
 	emit contactAdded(contact);
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void BuddyShared::removeContact(const Contact &contact)
@@ -338,7 +338,7 @@ void BuddyShared::removeContact(const Contact &contact)
 
 	normalizePriorities();
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 QVector<Contact> BuddyShared::contacts(const Account &account)
@@ -391,7 +391,7 @@ void BuddyShared::normalizePriorities()
 
 void BuddyShared::avatarUpdated()
 {
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
@@ -403,7 +403,7 @@ void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
 		disconnect(*BuddyAvatar, 0, this, 0);
 
 	*BuddyAvatar = buddyAvatar;
-	changeNotifier()->notify();
+	changeNotifier().notify();
 
 	if (*BuddyAvatar)
 		connect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
@@ -416,7 +416,7 @@ void BuddyShared::setDisplay(const QString &display)
 	if (Display != display)
 	{
 		Display = display;
-		changeNotifier()->notify();
+		changeNotifier().notify();
 		markContactsDirty();
 
 		emit displayUpdated();
@@ -439,7 +439,7 @@ void BuddyShared::setGroups(const QSet<Group> &groups)
 	foreach (const Group &group, groupsToRemove)
 		doRemoveFromGroup(group);
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 	markContactsDirty();
 }
 
@@ -489,7 +489,7 @@ void BuddyShared::addToGroup(const Group &group)
 
 	if (doAddToGroup(group))
 	{
-		changeNotifier()->notify();
+		changeNotifier().notify();
 		markContactsDirty();
 	}
 }
@@ -500,7 +500,7 @@ void BuddyShared::removeFromGroup(const Group &group)
 
 	if (doRemoveFromGroup(group))
 	{
-		changeNotifier()->notify();
+		changeNotifier().notify();
 		markContactsDirty();
 	}
 }

@@ -68,7 +68,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 	Context = static_cast<BaseActionContext *>(actionContext());
 
-	ChangeNotifierLock lock(*Context->changeNotifier());
+	ChangeNotifierLock lock(Context->changeNotifier());
 
 	RoleSet roles;
 	if (CurrentChat.contacts().size() > 1)

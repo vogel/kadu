@@ -23,10 +23,9 @@
 
 #include <QtCore/QObject>
 
+#include "misc/change-notifier.h"
 #include "protocols/services/roster/roster-entry-state.h"
 #include "exports.h"
-
-class ChangeNotifier;
 
 /**
  * @addtogroup Protocol
@@ -50,7 +49,7 @@ class KADUAPI RosterEntry : public QObject
 	RosterEntryState State;
 	bool Detached;
 	bool RemotelyDeleted;
-	ChangeNotifier *MyChangeNotifier;
+	ChangeNotifier MyChangeNotifier;
 
 public:
 	/**
@@ -112,7 +111,7 @@ public:
 	 *
 	 * Each time a property of this object changes returned ChangeNotifier will emit changed() signal.
 	 */
-	ChangeNotifier * changeNotifier() const;
+	ChangeNotifier & changeNotifier();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

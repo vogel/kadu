@@ -35,7 +35,7 @@ class KADUAPI BaseActionContext : public ActionContext
 {
 	Q_OBJECT
 
-	ChangeNotifier *MyChangeNotifier;
+	ChangeNotifier MyChangeNotifier;
 
 	ContactSet Contacts;
 	BuddySet Buddies;
@@ -47,7 +47,7 @@ public:
 	BaseActionContext();
 	virtual ~BaseActionContext();
 
-	ChangeNotifier * changeNotifier();
+	ChangeNotifier & changeNotifier();
 
 	virtual ContactSet contacts();
 	void setContacts(const ContactSet &contacts);

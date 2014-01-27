@@ -56,12 +56,7 @@ void RosterService::disconnected()
 
 void RosterService::contactUpdated()
 {
-	// TODO abstraction leak
-	Q_ASSERT(sender()); // ChangeNotifier
-	Q_ASSERT(sender()->parent()); // RosterEntry
-	Q_ASSERT(sender()->parent()->parent()); // ContactShared
-
-	Contact contact(sender()->parent()->parent());
+	Contact contact(sender());
 
 	Q_ASSERT(contact);
 	Q_ASSERT(Contacts.contains(contact));
@@ -155,12 +150,12 @@ void RosterService::setContacts(const QVector<Contact> &contacts)
 
 void RosterService::connectContact(const Contact &contact)
 {
-	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 void RosterService::disconnectContact(const Contact &contact)
 {
-	disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 void RosterService::addTask(const RosterTask &task)

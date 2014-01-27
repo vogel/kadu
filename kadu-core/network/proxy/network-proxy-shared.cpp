@@ -43,7 +43,7 @@ NetworkProxyShared * NetworkProxyShared::loadFromStorage(const std::shared_ptr<S
 NetworkProxyShared::NetworkProxyShared(const QUuid &uuid) :
 		Shared(uuid), Port(0)
 {
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 NetworkProxyShared::~NetworkProxyShared()

@@ -27,7 +27,7 @@
 #include "roster-entry.h"
 
 RosterEntry::RosterEntry(QObject *parent) :
-		QObject(parent), State(RosterEntryUnknown), Detached(false), RemotelyDeleted(false), MyChangeNotifier(new ChangeNotifier(this))
+		QObject(parent), State(RosterEntryUnknown), Detached(false), RemotelyDeleted(false)
 {
 }
 
@@ -41,7 +41,7 @@ void RosterEntry::setState(RosterEntryState state)
 		return;
 
 	State = state;
-	MyChangeNotifier->notify();
+	MyChangeNotifier.notify();
 }
 
 RosterEntryState RosterEntry::state() const
@@ -55,7 +55,7 @@ void RosterEntry::setDetached(bool detached)
 		return;
 
 	Detached = detached;
-	MyChangeNotifier->notify();
+	MyChangeNotifier.notify();
 }
 
 bool RosterEntry::detached() const
@@ -69,7 +69,7 @@ void RosterEntry::setRemotelyDeleted(bool remotelyDeleted)
 		return;
 
 	RemotelyDeleted = remotelyDeleted;
-	MyChangeNotifier->notify();
+	MyChangeNotifier.notify();
 }
 
 bool RosterEntry::remotelyDeleted() const
@@ -77,7 +77,7 @@ bool RosterEntry::remotelyDeleted() const
 	return RemotelyDeleted;
 }
 
-ChangeNotifier * RosterEntry::changeNotifier() const
+ChangeNotifier & RosterEntry::changeNotifier()
 {
 	return MyChangeNotifier;
 }

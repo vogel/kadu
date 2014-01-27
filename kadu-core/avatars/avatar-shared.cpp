@@ -53,7 +53,7 @@ AvatarShared::AvatarShared(const QUuid &uuid) :
 {
 	AvatarsDir = KaduPaths::instance()->profilePath() + QLatin1String("avatars/");
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 AvatarShared::~AvatarShared()
@@ -101,7 +101,7 @@ void AvatarShared::setFilePath(const QString &filePath)
 
 		ensureSmallPixmapExists();
 
-		changeNotifier()->notify();
+		changeNotifier().notify();
 		emit pixmapUpdated();
 	}
 }
@@ -222,7 +222,7 @@ void AvatarShared::setPixmap(const QPixmap &pixmap)
 	ensureLoaded();
 
 	Pixmap = pixmap;
-	changeNotifier()->notify();
+	changeNotifier().notify();
 	emit pixmapUpdated();
 }
 

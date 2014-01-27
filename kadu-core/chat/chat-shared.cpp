@@ -78,7 +78,7 @@ ChatShared::ChatShared(const QUuid &uuid) :
 {
 	ChatAccount = new Account();
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 /**
@@ -384,7 +384,7 @@ void ChatShared::setGroups(const QSet<Group> &groups)
 	foreach (const Group &group, groupsToRemove)
 		doRemoveFromGroup(group);
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 bool ChatShared::isInGroup(const Group &group)
@@ -431,7 +431,7 @@ void ChatShared::addToGroup(const Group &group)
 	ensureLoaded();
 
 	if (doAddToGroup(group))
-		changeNotifier()->notify();
+		changeNotifier().notify();
 }
 
 void ChatShared::removeFromGroup(const Group &group)
@@ -439,7 +439,7 @@ void ChatShared::removeFromGroup(const Group &group)
 	ensureLoaded();
 
 	if (doRemoveFromGroup(group))
-		changeNotifier()->notify();
+		changeNotifier().notify();
 }
 
 void ChatShared::groupAboutToBeRemoved()

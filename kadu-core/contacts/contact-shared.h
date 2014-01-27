@@ -74,6 +74,7 @@ private slots:
 	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
 
 	void avatarUpdated();
+	void changeNotifierChanged();
 
 protected:
 	virtual void load();

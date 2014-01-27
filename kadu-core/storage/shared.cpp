@@ -32,8 +32,7 @@
  * Contructs empty object with given uuid. When uuid is invalid (NULL)
  * new uuid is created and assigned to object.
  */
-Shared::Shared(const QUuid &uuid) :
-		MyChangeNotifier(new ChangeNotifier())
+Shared::Shared(const QUuid &uuid)
 {
 	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
 }
@@ -58,8 +57,6 @@ Shared::Shared(const QUuid &uuid) :
 Shared::~Shared()
 {
 	ref.ref();
-
-	delete MyChangeNotifier;
 }
 
 /**
@@ -129,7 +126,7 @@ void Shared::aboutToBeRemoved()
 {
 }
 
-ChangeNotifier * Shared::changeNotifier() const
+ChangeNotifier & Shared::changeNotifier()
 {
 	return MyChangeNotifier;
 }

@@ -59,7 +59,7 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
 	Entry = new RosterEntry(this);
-	connect(Entry->changeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
+	connect(&Entry->changeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
 
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
@@ -70,7 +70,8 @@ ContactShared::ContactShared(const QUuid &uuid) :
 	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
 
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&Entry->changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
 }
 
 ContactShared::~ContactShared()
@@ -142,7 +143,7 @@ void ContactShared::aboutToBeRemoved()
 
 	deleteDetails();
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void ContactShared::store()
@@ -220,7 +221,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	addToBuddy();
 
 	Entry->setState(RosterEntryDesynchronized);
-	changeNotifier()->notify();
+	changeNotifier().notify();
 	emit buddyUpdated();
 }
 
@@ -239,7 +240,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
@@ -257,7 +258,7 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 
 	Details->ensureLoaded();
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 
 	ContactManager::instance()->registerItem(this);
 	addToBuddy();
@@ -278,7 +279,7 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 
 	deleteDetails();
 
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 void ContactShared::deleteDetails()
@@ -309,7 +310,7 @@ void ContactShared::setId(const QString &id)
 	Id = id;
 
 	Entry->setState(RosterEntryDesynchronized);
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 RosterEntry * ContactShared::rosterEntry()
@@ -337,7 +338,12 @@ RosterEntry * ContactShared::rosterEntry()
 
 void ContactShared::avatarUpdated()
 {
-	changeNotifier()->notify();
+	changeNotifier().notify();
+}
+
+void ContactShared::changeNotifierChanged()
+{
+	emit updated();
 }
 
 void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
@@ -370,7 +376,7 @@ void ContactShared::setContactAvatar(const Avatar &contactAvatar)
 		return;
 
 	doSetContactAvatar(contactAvatar);
-	changeNotifier()->notify();
+	changeNotifier().notify();
 }
 
 bool ContactShared::isAnonymous()

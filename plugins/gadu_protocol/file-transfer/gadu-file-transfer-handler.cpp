@@ -46,7 +46,7 @@ GaduFileTransferHandler::~GaduFileTransferHandler()
 
 void GaduFileTransferHandler::updateFileInfo()
 {
-	ChangeNotifierLock lock(*transfer().changeNotifier());
+	ChangeNotifierLock lock(transfer().changeNotifier());
 
 	if (SocketNotifiers)
 	{

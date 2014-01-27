@@ -47,7 +47,7 @@ GroupShared::GroupShared(const QUuid &uuid) :
 		OfflineToGroup(false), ShowIcon(false), ShowName(false),
 		TabPosition(-1)
 {
-	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 GroupShared::~GroupShared()
@@ -125,7 +125,7 @@ void GroupShared::setName(const QString &name)
 	if (Name != name)
 	{
 		Name = name;
-		changeNotifier()->notify();
+		changeNotifier().notify();
 		emit nameChanged();
 	}
 }

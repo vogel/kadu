@@ -32,6 +32,7 @@
 #include <QtGui/QToolBar>
 
 #include "configuration/configuration-aware-object.h"
+#include "misc/change-notifier.h"
 
 #include "exports.h"
 
@@ -39,7 +40,6 @@ class QDomElement;
 class QMenu;
 class QToolButton;
 
-class ChangeNotifier;
 class ToolBarSeparator;
 class ToolBarSpacer;
 
@@ -77,7 +77,7 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	friend class DisabledActionsWatcher;
 
-	ChangeNotifier *MyChangeNotifier;
+	ChangeNotifier MyChangeNotifier;
 
 	// TODO: ugly hack
 	QWidget *currentWidget;
