@@ -27,8 +27,8 @@
 ChatConfigurationWidgetTabAdapter::ChatConfigurationWidgetTabAdapter(ChatDataWindow *chatDataWindow, QTabWidget *tabWidget, QObject *parent) :
 		QObject(parent), MyChatDataWindow(chatDataWindow), MyTabWidget(tabWidget)
 {
-	Q_ASSERT(MyChatDataWindow);
-	Q_ASSERT(MyTabWidget);
+	if (!MyChatDataWindow || !MyTabWidget)
+		return;
 
 	connect(MyChatDataWindow, SIGNAL(widgetAdded(ChatConfigurationWidget*)), this, SLOT(widgetAdded(ChatConfigurationWidget*)));
 

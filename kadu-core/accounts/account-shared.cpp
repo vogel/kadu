@@ -329,7 +329,8 @@ void AccountShared::setDisconnectStatus()
 
 void AccountShared::protocolRegistered(ProtocolFactory *factory)
 {
-	Q_ASSERT(factory);
+	if (!factory)
+		return;
 
 	ensureLoaded();
 
@@ -337,12 +338,12 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 		return;
 
 	ProtocolHandler = factory->createProtocolHandler(this);
-	Q_ASSERT(ProtocolHandler);
+	if (!ProtocolHandler)
+		return;
 
 	Details = factory->createAccountDetails(this);
-	Q_ASSERT(Details);
-
-	details()->ensureLoaded();
+	if (Details)
+		details()->ensureLoaded();
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
@@ -361,7 +362,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 
 void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 {
-	Q_ASSERT(factory);
+	if (!factory)
+		return;
 
 	ensureLoaded();
 

@@ -83,15 +83,14 @@ TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configurat
 		DescriptionDocument(0)
 {
 	Widget = static_cast<const QTreeView *>(option.widget);
-	Q_ASSERT(Widget);
 
-	Style = Widget->style();
+	Style = Widget ? Widget->style() : nullptr;
 
 	int minHFrameMargin = 4;
 	int minVFrameMargin = 2;
 
-	int qStyleHFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
-	int qStyleVFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
+	int qStyleHFrameMargin = Style ? Style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget) : 0;
+	int qStyleVFrameMargin = Style ? Style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget) : 0;
 
 	HFrameMargin = qMax(minHFrameMargin, qStyleHFrameMargin);
 	VFrameMargin = qMax(minVFrameMargin, qStyleVFrameMargin);

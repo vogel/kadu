@@ -186,6 +186,8 @@ bool X11_isFreeDesktopCompatible( Display *display )
 	std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 	if( resolution == desktopsize ) // one desktop only, so we don't have to care
 		return true;
+	if (resolution.first == 0)
+		return false;
 	if( ( desktopsize.first % resolution.first != 0 ) || ( desktopsize.second % resolution.second != 0 ) ) // virtual resolution
 		return true;
 	// not FreeDesktop compatible :(
@@ -222,6 +224,8 @@ uint32_t X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
 		X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_VIEWPORT", &dy, 1 );
 		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 		std::pair<int,int> resolution = X11_getResolution( display );
+		if (resolution.second == 0)
+			return 0;
 		uint32_t desktop = static_cast<uint32_t>(( static_cast<int>(dy) / resolution.second ) * ( desktopsize.first / resolution.first ) + ( static_cast<int>(dx) / resolution.first ));
 		return desktop;
 	}

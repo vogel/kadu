@@ -254,9 +254,8 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 		return;
 
 	Details = protocolFactory->createContactDetails(this);
-	Q_ASSERT(Details);
-
-	Details->ensureLoaded();
+	if (Details)
+		Details->ensureLoaded();
 
 	changeNotifier().notify();
 

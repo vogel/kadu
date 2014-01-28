@@ -37,8 +37,8 @@
 Action::Action(ActionDescription *description, ActionContext *context, QObject *parent) :
 		QAction(parent), Description(description), Context(context)
 {
-	Q_ASSERT(0 != description);
-	Q_ASSERT(0 != context);
+	if (!description || !context)
+		throw std::exception{}; // TODO: needs improvement
 
 	setText(Description->Text);
 

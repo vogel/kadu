@@ -27,8 +27,8 @@
 BuddyConfigurationWidgetTabAdapter::BuddyConfigurationWidgetTabAdapter(BuddyDataWindow *buddyDataWindow, QTabWidget *tabWidget, QObject *parent) :
 		QObject(parent), MyBuddyDataWindow(buddyDataWindow), MyTabWidget(tabWidget)
 {
-	Q_ASSERT(MyBuddyDataWindow);
-	Q_ASSERT(MyTabWidget);
+	if (!MyBuddyDataWindow || !MyTabWidget)
+		return;
 
 	connect(MyBuddyDataWindow, SIGNAL(widgetAdded(BuddyConfigurationWidget*)), this, SLOT(widgetAdded(BuddyConfigurationWidget*)));
 

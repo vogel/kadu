@@ -450,6 +450,9 @@ bool CategorizedListViewPrivate::hasGrid() const
 
 QString CategorizedListViewPrivate::categoryForIndex(const QModelIndex &index) const
 {
+        if (!index.model())
+                return {};
+
         const QModelIndex categoryIndex = index.model()->index(index.row(), proxyModel->sortColumn(), index.parent());
         return categoryIndex.data(CategorizedSortFilterProxyModel::CategoryDisplayRole).toString();
 }
@@ -1218,7 +1221,7 @@ void CategorizedListView::mouseMoveEvent(QMouseEvent *event)
                                 *d->hoveredBlock = block;
                                 d->hoveredCategory = it.key();
                         }
-                        else
+                        else if (d->categoryDrawer)
                         {
                                 d->categoryDrawer->mouseMoved(categoryIndex, option.rect, event);
                         }

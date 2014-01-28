@@ -193,7 +193,8 @@ void SingleWindow::removeChatWidget(ChatWidget *chatWidget)
 
 void SingleWindow::updateTabIcon(ChatWidget *chatWidget)
 {
-	Q_ASSERT(chatWidget);
+	if (!chatWidget)
+		return;
 
 	const int i = m_tabs->indexOf(chatWidget);
 	if (-1 == i)
@@ -208,6 +209,9 @@ void SingleWindow::updateTabIcon(ChatWidget *chatWidget)
 // TODO: share with tabs
 void SingleWindow::updateTabName(ChatWidget *chatWidget)
 {
+	if (!chatWidget)
+		return;
+
 	const int i = m_tabs->indexOf(chatWidget);
 	if (-1 == i)
 		return;

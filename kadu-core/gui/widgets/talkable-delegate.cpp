@@ -89,8 +89,8 @@ void TalkableDelegate::messageStatusChanged(Message message)
 bool TalkableDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
                                    const QModelIndex &index)
 {
-	Q_ASSERT(event);
-	Q_ASSERT(model);
+	if (!event || !model)
+		return false;
 
 	Qt::ItemFlags flags = model->flags(index);
 	if (!(flags & Qt::ItemIsUserCheckable) || !(option.state & QStyle::State_Enabled) || !(flags & Qt::ItemIsEnabled))

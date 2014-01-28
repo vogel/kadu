@@ -176,7 +176,8 @@ PluginListWidgetDelegate::PluginListWidgetDelegate(QAbstractItemView *v, QObject
                 , model(0)
                 , viewDestroyed(false)
 {
-        Q_ASSERT(v);
+        if (!v)
+                return;
 
         v->setMouseTracking(true);
         v->viewport()->setAttribute(Qt::WA_Hover);
@@ -227,6 +228,9 @@ QPersistentModelIndex PluginListWidgetDelegate::focusedIndex() const
 
 bool PluginListWidgetDelegate::eventFilter(QObject *watched, QEvent *event)
 {
+        if (!ItemView)
+                return false;
+
         if (event->type() == QEvent::Destroy)
         {
                 // we care for the view since it deletes the widgets (parentage).
@@ -240,8 +244,6 @@ bool PluginListWidgetDelegate::eventFilter(QObject *watched, QEvent *event)
 
                 return false;
         }
-
-        Q_ASSERT(ItemView);
 
         if (model != ItemView->model())
         {

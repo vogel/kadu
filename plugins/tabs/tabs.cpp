@@ -664,6 +664,9 @@ void TabsManager::updateTabTextAndTooltip(int index, const QString &text, const 
 // TODO: share with single_window
 void TabsManager::updateTabName(ChatWidget *chatWidget)
 {
+	if (!chatWidget)
+		return;
+
 	auto const index = TabDialog->indexOf(chatWidget);
 	if (-1 == index)
 		return;
@@ -697,7 +700,8 @@ QString TabsManager::shortChatTitle(const QString &chatTitle) const
 
 void TabsManager::updateTabIcon(ChatWidget *chatWidget)
 {
-	Q_ASSERT(chatWidget);
+	if (!chatWidget)
+		return;
 
 	const int i = TabDialog->indexOf(chatWidget);
 	if (-1 == i)
@@ -747,7 +751,8 @@ void TabsManager::createDefaultConfiguration()
 
 void TabsManager::unreadMessagesCountChanged(ChatWidget *chatWidget)
 {
-	Q_ASSERT(chatWidget);
+	if (!chatWidget)
+		return;
 
 	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);

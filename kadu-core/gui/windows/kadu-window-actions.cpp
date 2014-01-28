@@ -146,8 +146,10 @@ void disableNoEMail(Action *action)
 
 void disableIfContactSelected(Action *action)
 {
-	if (action && action->context())
-		action->setEnabled(!action->context()->roles().contains(ContactRole) && !action->context()->buddies().isEmpty());
+	if (!action || action->context())
+		return;
+
+	action->setEnabled(!action->context()->roles().contains(ContactRole) && !action->context()->buddies().isEmpty());
 
 	if (action->context()->buddies().contains(Core::instance()->myself()))
 		action->setEnabled(false);

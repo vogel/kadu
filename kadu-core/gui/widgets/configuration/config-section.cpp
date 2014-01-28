@@ -123,8 +123,8 @@ void ConfigSection::configTabDestroyed(QObject *obj)
 	if (TabWidget)
 		TabWidget->removeTab(TabWidget->indexOf((*i)->widget()));
 	ConfigTabs.erase(i);
-
-	TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
+	if (TabWidget)
+		TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
 
 	if (ConfigTabs.isEmpty())
 		deleteLater();

@@ -278,7 +278,8 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 	if (!Details)
 	{
 		Details = chatType->createChatDetails(this);
-		Q_ASSERT(Details);
+		if (!Details)
+			return;
 
 		connect(Details, SIGNAL(connected()), this, SIGNAL(connected()));
 		connect(Details, SIGNAL(disconnected()), this, SIGNAL(disconnected()));

@@ -26,8 +26,8 @@
 AccountConfigurationWidgetTabAdapter::AccountConfigurationWidgetTabAdapter(AccountEditWidget *accountEditWidget, QTabWidget *tabWidget, QObject *parent) :
 		QObject(parent), MyAccountEditWidget(accountEditWidget), MyTabWidget(tabWidget)
 {
-	Q_ASSERT(MyAccountEditWidget);
-	Q_ASSERT(MyTabWidget);
+	if (!MyAccountEditWidget || !MyTabWidget)
+		return;
 
 	connect(MyAccountEditWidget, SIGNAL(widgetAdded(AccountConfigurationWidget*)), this, SLOT(widgetAdded(AccountConfigurationWidget*)));
 
