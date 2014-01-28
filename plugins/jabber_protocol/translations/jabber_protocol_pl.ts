@@ -1262,14 +1262,6 @@ Szczegóły: %1</translation>
         <translation>Nadawca musi zapewnić odpowiednie uprawnienia przed dopuszczeniem do wykonywania czynności, lub dostarczył niewłaściwych poświadczeń.</translation>
     </message>
     <message>
-        <source>Payment required</source>
-        <translation>Wymagana płatność</translation>
-    </message>
-    <message>
-        <source>The requesting entity is not authorized to access the requested service because payment is required.</source>
-        <translation>Dostęp nie jest dany do wybranej usługi, ponieważ wymaga płatności.</translation>
-    </message>
-    <message>
         <source>Recipient unavailable</source>
         <translation>Odbiorca nieosiągalny</translation>
     </message>

@@ -87,6 +87,13 @@
     </message>
 </context>
 <context>
+    <name>BuddyHistoryDeleteHandler</name>
+    <message>
+        <source>Chat history</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
@@ -196,13 +203,6 @@
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Chat history</source>
         <translation type="unfinished"/>
     </message>
 </context>

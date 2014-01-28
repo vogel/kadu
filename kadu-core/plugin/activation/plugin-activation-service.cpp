@@ -62,7 +62,7 @@ QVector<QString> PluginActivationService::activatePluginWithDependencies(const Q
 	{
 		auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
 		if (withDependencies.isEmpty())
-			throw PluginActivationErrorException(pluginName, tr("Plugin's %1 not found").arg(pluginName));
+			throw PluginActivationErrorException(pluginName, tr("Plugin %1 not found").arg(pluginName));
 
 		for (auto plugin : withDependencies)
 		{

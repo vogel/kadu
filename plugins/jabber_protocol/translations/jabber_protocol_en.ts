@@ -1262,14 +1262,6 @@ Details: %1</translation>
         <translation>The sender must provide proper credentials before being allowed to perform the action, or has provided improper credentials.</translation>
     </message>
     <message>
-        <source>Payment required</source>
-        <translation>Payment required</translation>
-    </message>
-    <message>
-        <source>The requesting entity is not authorized to access the requested service because payment is required.</source>
-        <translation>The requesting entity is not authorized to access the requested service because payment is required.</translation>
-    </message>
-    <message>
         <source>Recipient unavailable</source>
         <translation>Recipient unavailable</translation>
     </message>

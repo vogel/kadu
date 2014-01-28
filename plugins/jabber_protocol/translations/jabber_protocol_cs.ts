@@ -91,83 +91,83 @@
     </message>
     <message>
         <source>A required remote connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Požadované vzdálené spojení se nezdařilo</translation>
     </message>
     <message>
         <source>See other host: %1</source>
-        <translation type="unfinished"/>
+        <translation>Podívejte se na jiného hostitele: %1</translation>
     </message>
     <message>
         <source>Server does not support proper XMPP version</source>
-        <translation type="unfinished"/>
+        <translation>Server nepodporuje správnou verzi XMPP</translation>
     </message>
     <message>
         <source>Stream Negotiation Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při vyjednání proudu: %1</translation>
     </message>
     <message>
         <source>Server rejected STARTTLS</source>
-        <translation type="unfinished"/>
+        <translation>Server odmítl STARTTLS</translation>
     </message>
     <message>
         <source>TLS handshake error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při potřesení rukou TLS</translation>
     </message>
     <message>
         <source>Broken security layer (TLS)</source>
-        <translation type="unfinished"/>
+        <translation>Poškozená bezpečnostní vrstva (TLS)</translation>
     </message>
     <message>
         <source>Unable to login</source>
-        <translation type="unfinished"/>
+        <translation>Nelze se přihlásit</translation>
     </message>
     <message>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
-        <translation type="unfinished"/>
+        <translation>Pro daná bezpečnostní nastavení není dostupný žádný vhodný mechanismus (např. knihovna SASL je příliš slabá, nebo ověření prostým textem není povoleno)</translation>
     </message>
     <message>
         <source>Bad server response</source>
-        <translation type="unfinished"/>
+        <translation>Špatná odpověď serveru</translation>
     </message>
     <message>
         <source>Server failed mutual authentication</source>
-        <translation type="unfinished"/>
+        <translation>Serveru se nepodařilo vzájemné ověření</translation>
     </message>
     <message>
         <source>Encryption required for chosen SASL mechanism</source>
-        <translation type="unfinished"/>
+        <translation>Pro vybraný mechanismus SASL je požadováno šifrování</translation>
     </message>
     <message>
         <source>Invalid account information</source>
-        <translation type="unfinished"/>
+        <translation>Neplatné informace o účtu</translation>
     </message>
     <message>
         <source>Invalid SASL mechanism</source>
-        <translation type="unfinished"/>
+        <translation>Neplatný mechanismus SASL</translation>
     </message>
     <message>
         <source>Invalid realm</source>
-        <translation type="unfinished"/>
+        <translation>Neplatný prostor</translation>
     </message>
     <message>
         <source>SASL mechanism too weak for this account</source>
-        <translation type="unfinished"/>
+        <translation>Mechanismus SASL je pro tento účet příliš slabý</translation>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished"/>
+        <translation>Neoprávněno</translation>
     </message>
     <message>
         <source>Temporary auth failure</source>
-        <translation type="unfinished"/>
+        <translation>Dočasné selhání ověřování pravosti</translation>
     </message>
     <message>
         <source>Authentication error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při ověřování pravosti: %1</translation>
     </message>
     <message>
         <source>Broken security layer (SASL)</source>
-        <translation type="unfinished"/>
+        <translation>Poškozená bezpečnostní vrstva (SASL)</translation>
     </message>
     <message>
         <source>None</source>
@@ -183,11 +183,11 @@
     </message>
     <message>
         <source>XMPP/Jabber</source>
-        <translation type="unfinished"/>
+        <translation>XMPP/Jabber</translation>
     </message>
     <message>
         <source>Port for data transfers</source>
-        <translation type="unfinished"/>
+        <translation>Přípojka (port) pro přenosy dat</translation>
     </message>
 </context>
 <context>
@@ -754,7 +754,7 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Use computer name as a resource</source>
-        <translation type="unfinished"/>
+        <translation>Použít jméno počítače jako zdroj</translation>
     </message>
     <message>
         <source>Enable composing events</source>
@@ -766,15 +766,15 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Enable chat activity events</source>
-        <translation type="unfinished"/>
+        <translation>Povolit události činnosti rozhovoru</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you suspend or end conversation. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Účastník vašeho hovoru bude upozorněn, když rozhovor pozastavíte nebo ukončíte. A naopak.</translation>
     </message>
     <message>
         <source>Others can see your system name/version</source>
-        <translation type="unfinished"/>
+        <translation>Ostatní mohou vidět název/verzi vašeho systému</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
@@ -860,7 +860,7 @@ Nyní, prosím, přidejte své přátele do seznamu kamarádů.</translation>
     </message>
     <message>
         <source>Registering new XMPP account</source>
-        <translation type="unfinished"/>
+        <translation>Zaregistrování nového účtu XMPP</translation>
     </message>
 </context>
 <context>
@@ -1144,7 +1144,7 @@ Opravte, prosím, a zkuste to znovu..</translation>
     </message>
     <message>
         <source>TLS certificate not accepted</source>
-        <translation type="unfinished"/>
+        <translation>Certifikát TLS nepřijat</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -1152,7 +1152,7 @@ Opravte, prosím, a zkuste to znovu..</translation>
     </message>
     <message>
         <source>The server does not support TLS encryption.</source>
-        <translation type="unfinished"/>
+        <translation>Server nepodporuje šifrování TLS.</translation>
     </message>
     <message>
         <source>Connection error.
@@ -1168,7 +1168,7 @@ Podrobnosti: %1</translation>
     </message>
     <message>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>
-        <translation type="unfinished"/>
+        <translation>Podporu SSL se nepodařilo spustit pro účet %1. Nejpravděpodobněji je to proto, že přídavný modul QCA TLS není nainstalován ve vašem systému.</translation>
     </message>
 </context>
 <context>
@@ -1260,14 +1260,6 @@ Podrobnosti: %1</translation>
     <message>
         <source>The sender must provide proper credentials before being allowed to perform the action, or has provided improper credentials.</source>
         <translation>Zasílatel musí poskytnout správné osobní údaje, dříve než mu bude umožněno provést činnost, nebo poskytl nesprávné osobní údaje.</translation>
-    </message>
-    <message>
-        <source>Payment required</source>
-        <translation>Platba požadována</translation>
-    </message>
-    <message>
-        <source>The requesting entity is not authorized to access the requested service because payment is required.</source>
-        <translation>Žádající bytí není oprávněno přistupovat k požadované službě, protože je požadována platba.</translation>
     </message>
     <message>
         <source>Recipient unavailable</source>

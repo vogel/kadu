@@ -3,15 +3,15 @@
     <name>@default</name>
     <message>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>défaut</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Apparence</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation type="unfinished"/>
+        <translation>Icônes</translation>
     </message>
     <message>
         <source>Emoticons</source>

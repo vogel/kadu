@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>%1 weeks and %2 days ago at </source>
-        <translation type="unfinished"/>
+        <translation>il y %1 semaines et %2 jours de  </translation>
     </message>
     <message>
         <source>%1 weeks and day ago at </source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>week and day ago at </source>
-        <translation type="unfinished"/>
+        <translation>il y semaine et un jour de </translation>
     </message>
     <message>
         <source>week and %2 days ago at </source>
@@ -1094,6 +1094,26 @@ changes upon establishing connection to the server</source>
         <source>Always show tab Ungroupped</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Roster</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Import from server succeeded</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Import from server failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Export to server succeeded</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Export to server failed</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1278,10 +1298,6 @@ changes upon establishing connection to the server</source>
     <message>
         <source>Account is not selected</source>
         <translation>Le compte n&apos;est pas sélectionné</translation>
-    </message>
-    <message>
-        <source>You must be connected to add contacts to this account</source>
-        <translation>vous devez être connecté pour ajouter des contacts à ce compte</translation>
     </message>
     <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
@@ -3083,30 +3099,28 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
-    <name>Plugin</name>
+    <name>PluginActivationService</name>
     <message>
-        <source>Cannot find required object in module %1.
-Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <source>Plugin %1 conflicts with: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Cannot load %1 plugin library:
-%2</source>
+        <source>Plugin %1 not found</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>PluginErrorDialog</name>
+    <name>PluginListWidget</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <source>Deactivate</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Try to load this plugin on next Kadu run</source>
+        <source>Plugin activation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Plugin deactivation</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3133,30 +3147,11 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
         <translation>Dependences : %1</translation>
     </message>
     <message>
-        <source>Conflicts: %1</source>
-        <translation>Conflits : %1</translation>
-    </message>
-    <message>
         <source>Plugin information</source>
         <translation>Informations sur l&apos;extension</translation>
     </message>
-</context>
-<context>
-    <name>PluginsManager</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Required plugin %1 was not found</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Plugin %1 conflicts with: %2</source>
-        <translation>L&apos;extension %1 est en confit avec : %2</translation>
-    </message>
-    <message>
-        <source>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</source>
+        <source>Provides: %1</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3289,6 +3284,21 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
 </context>
 <context>
+    <name>QCoreApplication</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>RecentChatsAction</name>
     <message>
         <source>Recent Chats</source>
@@ -3299,6 +3309,29 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <name>RecentChatsMenu</name>
     <message>
         <source>Recent chats</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>RosterNotifier</name>
+    <message>
+        <source>Roster</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1: roster import succeded</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1: roster import failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1: roster export succeded</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1: roster export failed</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3758,21 +3791,6 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
-    </message>
-</context>
-<context>
-    <name>UrlOpener</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>

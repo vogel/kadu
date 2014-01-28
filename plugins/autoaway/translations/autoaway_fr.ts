@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"/>
+        <translation>Comportement</translation>
     </message>
     <message>
         <source>Inactivity</source>
@@ -59,7 +59,7 @@
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minute(s)</numerusform><numerusform>%n minute(s)</numerusform></translation>
     </message>
     <message>
         <source>Switch to &apos;auto extended away&apos;</source>

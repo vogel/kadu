@@ -63,15 +63,15 @@
     </message>
     <message>
         <source>yesterday</source>
-        <translation type="unfinished"/>
+        <translation>hier</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation type="unfinished"/>
+        <translation>la semaine dernière</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation type="unfinished"/>
+        <translation>mois dernier</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
@@ -79,11 +79,18 @@
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"/>
+        <translation>Comportement</translation>
     </message>
     <message>
         <source>Chat window</source>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>BuddyHistoryDeleteHandler</name>
+    <message>
+        <source>Chat history</source>
+        <translation>Historique des conversations</translation>
     </message>
 </context>
 <context>
@@ -104,7 +111,7 @@
     <name>HistoryBuddyConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Histoire</translation>
     </message>
     <message>
         <source>Store history</source>
@@ -115,7 +122,7 @@
     <name>HistoryChatConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Histoire</translation>
     </message>
     <message>
         <source>Store history</source>
@@ -197,13 +204,6 @@
     <message>
         <source>SMS</source>
         <translation>SMS</translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Chat history</source>
-        <translation>Historique des conversations</translation>
     </message>
 </context>
 <context>

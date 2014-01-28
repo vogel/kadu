@@ -1095,6 +1095,26 @@ ihned po zřízení spojení se serverem</translation>
         <source>Always show tab Ungroupped</source>
         <translation>Vždy ukázat kartu Neseskupeno</translation>
     </message>
+    <message>
+        <source>Roster</source>
+        <translation>Seznam spojení</translation>
+    </message>
+    <message>
+        <source>Import from server succeeded</source>
+        <translation>Zavedení ze serveru se podařilo</translation>
+    </message>
+    <message>
+        <source>Import from server failed</source>
+        <translation>Zavedení ze serveru se nezdařilo</translation>
+    </message>
+    <message>
+        <source>Export to server succeeded</source>
+        <translation>Vyvedení na server se podařilo</translation>
+    </message>
+    <message>
+        <source>Export to server failed</source>
+        <translation>Vyvedení na server se nezdařilo</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1281,10 +1301,6 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Účet není vybrán</translation>
     </message>
     <message>
-        <source>You must be connected to add contacts to this account</source>
-        <translation>Pro přidání spojení do tohoto účtu musíte být připojen</translation>
-    </message>
-    <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Toto spojení je již dostupné jako &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
@@ -1364,7 +1380,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Enter a name for this conference if you want to have it on roster</source>
-        <translation>Zadat název pro tuto poradu, pokud ji chcete mít na soupisce</translation>
+        <translation>Zadat název pro tuto poradu, pokud ji chcete mít v seznamu spojení</translation>
     </message>
     <message>
         <source>Start Conference</source>
@@ -1392,7 +1408,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Enter visible name to add this conference to roster</source>
-        <translation>Zadejte viditelný název pro přidání této porady na soupisku</translation>
+        <translation>Zadejte viditelný název pro přidání této porady do seznamu spojení</translation>
     </message>
 </context>
 <context>
@@ -1429,11 +1445,11 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Enter a name for this conference if you want to have it on roster</source>
-        <translation>Zadejte název pro tuto poradu, pokud ji chcete mít na soupisce</translation>
+        <translation>Zadejte název pro tuto poradu, pokud ji chcete mít v seznamu spojení</translation>
     </message>
     <message>
         <source>Room:</source>
-        <translation>Místnost</translation>
+        <translation>Místnost:</translation>
     </message>
     <message>
         <source>Nick:</source>
@@ -1477,7 +1493,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Enter visible name to add this room chat to roster</source>
-        <translation>Zadejte viditelný název pro přidání této místnosti na soupisku</translation>
+        <translation>Zadejte viditelný název pro přidání této místnosti do seznamu spojení</translation>
     </message>
 </context>
 <context>
@@ -3089,33 +3105,29 @@ poradu</translation>
     </message>
 </context>
 <context>
-    <name>Plugin</name>
+    <name>PluginActivationService</name>
     <message>
-        <source>Cannot find required object in module %1.
-Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation>Nelze najít požadovaný předmět v modulu %1.
-Možná že to není přídavný modul slučitelný s Kadu.</translation>
+        <source>Plugin %1 conflicts with: %2</source>
+        <translation>Přídavný modul %1 se střetává s: %2</translation>
     </message>
     <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation>Běžný postup pro zapnutí modulu pro %1 selhal.</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 plugin library:
-%2</source>
-        <translation>Nelze nahrát %1 knihovnu přídavného modulu:
-%2</translation>
+        <source>Plugin %1 not found</source>
+        <translation>Přídavný modul %1 nebyl nalezen</translation>
     </message>
 </context>
 <context>
-    <name>PluginErrorDialog</name>
+    <name>PluginListWidget</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <source>Deactivate</source>
+        <translation>Vypnout</translation>
     </message>
     <message>
-        <source>Try to load this plugin on next Kadu run</source>
-        <translation>Tento přídavný modul se pokusit nahrát při dalším běhu Kadu</translation>
+        <source>Plugin activation</source>
+        <translation>Zapnutí přídavného modulu</translation>
+    </message>
+    <message>
+        <source>Plugin deactivation</source>
+        <translation>Vypnutí přídavného modulu</translation>
     </message>
 </context>
 <context>
@@ -3141,31 +3153,12 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
         <translation>Závislosti: %1</translation>
     </message>
     <message>
-        <source>Conflicts: %1</source>
-        <translation>Střety: %1</translation>
-    </message>
-    <message>
         <source>Plugin information</source>
         <translation>Informace o přídavném modulu</translation>
     </message>
-</context>
-<context>
-    <name>PluginsManager</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Required plugin %1 was not found</source>
-        <translation>Požadovaný přídavný modul %1 nebyl nalezen</translation>
-    </message>
-    <message>
-        <source>Plugin %1 conflicts with: %2</source>
-        <translation>Přídavný modul %1 je ve střetu s: %2</translation>
-    </message>
-    <message>
-        <source>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</source>
-        <translation>Přídavný modul %1 nelze vypnout, protože je používán následujícími přídavnými moduly:%2</translation>
+        <source>Provides: %1</source>
+        <translation>Poskytuje: %1</translation>
     </message>
 </context>
 <context>
@@ -3297,6 +3290,21 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
     </message>
 </context>
 <context>
+    <name>QCoreApplication</name>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation>Nepodařilo se dát vzniknout procesu internetového prohlížeče. Ověřte, zda je internetový prohlížeč funkční</translation>
+    </message>
+    <message>
+        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
+        <translation>Nepodařilo se dát vzniknout procesu klienta elektronické pošty. Ověřte, zda je klient elektronické pošty funkční</translation>
+    </message>
+</context>
+<context>
     <name>RecentChatsAction</name>
     <message>
         <source>Recent Chats</source>
@@ -3308,6 +3316,29 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
     <message>
         <source>Recent chats</source>
         <translation>Poslední rozhovory</translation>
+    </message>
+</context>
+<context>
+    <name>RosterNotifier</name>
+    <message>
+        <source>Roster</source>
+        <translation>Seznam spojení</translation>
+    </message>
+    <message>
+        <source>%1: roster import succeded</source>
+        <translation>%1: zavedení seznamu spojení se podařilo</translation>
+    </message>
+    <message>
+        <source>%1: roster import failed</source>
+        <translation>%1: zavedení seznamu spojení se nezdařilo</translation>
+    </message>
+    <message>
+        <source>%1: roster export succeded</source>
+        <translation>%1: vyvedení seznamu spojení se podařilo</translation>
+    </message>
+    <message>
+        <source>%1: roster export failed</source>
+        <translation>%1: vyvedení seznamu spojení se nezdařilo</translation>
     </message>
 </context>
 <context>
@@ -3766,21 +3797,6 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
     <message>
         <source>Ok</source>
         <translation>OK</translation>
-    </message>
-</context>
-<context>
-    <name>UrlOpener</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Nepodařilo se dát vznik procesu internetového prohlížeče. Ověřte, zda je internetový prohlížeč funkční</translation>
-    </message>
-    <message>
-        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation>Nepodařilo se dát vznik procesu klienta elektronické pošty. Ověřte, zda je klient elektronické pošty funkční</translation>
     </message>
 </context>
 <context>

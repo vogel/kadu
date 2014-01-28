@@ -1091,6 +1091,26 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Always show tab Ungroupped</source>
         <translation>Zawsze pokazuj kartę Niepogrupowani</translation>
     </message>
+    <message>
+        <source>Roster</source>
+        <translation>Roster</translation>
+    </message>
+    <message>
+        <source>Import from server succeeded</source>
+        <translation>Import z serwera udany</translation>
+    </message>
+    <message>
+        <source>Import from server failed</source>
+        <translation>Import z serwera nieudany</translation>
+    </message>
+    <message>
+        <source>Export to server succeeded</source>
+        <translation>Eksport do serwera udany</translation>
+    </message>
+    <message>
+        <source>Export to server failed</source>
+        <translation>Eksport do serwera nieudany</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1281,10 +1301,6 @@ Klient: %3</translation>
     <message>
         <source>Account is not selected</source>
         <translation>Konto nie jest wybrane</translation>
-    </message>
-    <message>
-        <source>You must be connected to add contacts to this account</source>
-        <translation>Musisz być połączony, aby dodawać kontakty dla tego konta</translation>
     </message>
     <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
@@ -3089,33 +3105,29 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>Plugin</name>
+    <name>PluginActivationService</name>
     <message>
-        <source>Cannot find required object in module %1.
-Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation>Wtyczka %1 nie zawiera wymaganych funkcji.
-Być może nie jest zgodna z Kadu.</translation>
+        <source>Plugin %1 conflicts with: %2</source>
+        <translation>Wtyczka %1 jest w konflikcie z: %2</translation>
     </message>
     <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation>Inicjalizacja wtyczki %1 nieudana.</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 plugin library:
-%2</source>
-        <translation>Nie można załadować wtyczki %1:
-%2</translation>
+        <source>Plugin %1 not found</source>
+        <translation>Nie znaleziono wtyczki %1</translation>
     </message>
 </context>
 <context>
-    <name>PluginErrorDialog</name>
+    <name>PluginListWidget</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <source>Deactivate</source>
+        <translation>Deaktywuj</translation>
     </message>
     <message>
-        <source>Try to load this plugin on next Kadu run</source>
-        <translation>Próbuj załadować tę wtyczkę przy następnym uruchomieniu Kadu</translation>
+        <source>Plugin activation</source>
+        <translation>Aktywacja wtyczki</translation>
+    </message>
+    <message>
+        <source>Plugin deactivation</source>
+        <translation>Deaktywacja wtyczki</translation>
     </message>
 </context>
 <context>
@@ -3141,31 +3153,12 @@ Być może nie jest zgodna z Kadu.</translation>
         <translation>Zależności: %1</translation>
     </message>
     <message>
-        <source>Conflicts: %1</source>
-        <translation>Konflikty: %1</translation>
-    </message>
-    <message>
         <source>Plugin information</source>
         <translation>Informacje o wtyczce</translation>
     </message>
-</context>
-<context>
-    <name>PluginsManager</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Required plugin %1 was not found</source>
-        <translation>Wymagana wtyczka %1 nie została znaleziona</translation>
-    </message>
-    <message>
-        <source>Plugin %1 conflicts with: %2</source>
-        <translation>Wtyczka %1 jest w konflikcie z: %2</translation>
-    </message>
-    <message>
-        <source>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</source>
-        <translation>Wtyczka %1 nie może zostać wyładowana ponieważ jest wykorzystywana przez:%2</translation>
+        <source>Provides: %1</source>
+        <translation>Dostarcza: %1</translation>
     </message>
 </context>
 <context>
@@ -3297,6 +3290,21 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
 </context>
 <context>
+    <name>QCoreApplication</name>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation>Nie udało się uruchomić przeglądarki. Upewnij się, że przeglądarka jest funkcjonalna.</translation>
+    </message>
+    <message>
+        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
+        <translation>Nie udało się uruchomić programu pocztowego. Upewnij się, że program pocztowy jest funkcjonalny.</translation>
+    </message>
+</context>
+<context>
     <name>RecentChatsAction</name>
     <message>
         <source>Recent Chats</source>
@@ -3308,6 +3316,29 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>Recent chats</source>
         <translation>Ostatnie rozmowy</translation>
+    </message>
+</context>
+<context>
+    <name>RosterNotifier</name>
+    <message>
+        <source>Roster</source>
+        <translation>Roster</translation>
+    </message>
+    <message>
+        <source>%1: roster import succeded</source>
+        <translation>%1: import rostera udany</translation>
+    </message>
+    <message>
+        <source>%1: roster import failed</source>
+        <translation>%1: import rostera nieudany</translation>
+    </message>
+    <message>
+        <source>%1: roster export succeded</source>
+        <translation>%1: export rostera udany</translation>
+    </message>
+    <message>
+        <source>%1: roster export failed</source>
+        <translation>%1: export rostera nieudany</translation>
     </message>
 </context>
 <context>
@@ -3766,21 +3797,6 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
-    </message>
-</context>
-<context>
-    <name>UrlOpener</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Nie można uruchomić przeglądarki. Sprawdź czy Twoja przeglądarka działa poprawnie</translation>
-    </message>
-    <message>
-        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation>Nie można uruchomić klienta poczty. Sprawdź czy Twój klient poczty działa poprawnie</translation>
     </message>
 </context>
 <context>

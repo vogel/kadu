@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Général</translation>
     </message>
     <message>
         <source>Encryption</source>
@@ -60,7 +60,7 @@
     <name>SimliteSendPublicKeyActionDescription</name>
     <message>
         <source>Send My Public Key (Simlite)</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer la clef publique (Simlite)</translation>
     </message>
     <message>
         <source>Encryption</source>
@@ -76,11 +76,11 @@
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"/>
+        <translation>Oui</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"/>
+        <translation>Non</translation>
     </message>
     <message>
         <source>Error generating key</source>

@@ -1255,14 +1255,6 @@ Details: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Payment required</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>The requesting entity is not authorized to access the requested service because payment is required.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Recipient unavailable</source>
         <translation type="unfinished"/>
     </message>

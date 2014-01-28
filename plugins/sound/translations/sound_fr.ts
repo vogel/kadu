@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Enable sound notifications</source>
-        <translation type="unfinished"/>
+        <translation>Activer les notifications sonores</translation>
     </message>
 </context>
 <context>

@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Create private key finished</source>
-        <translation type="unfinished"/>
+        <translation>La création de la clef privée s&apos;est terminée</translation>
     </message>
 </context>
 <context>
@@ -100,15 +100,15 @@
     </message>
     <message>
         <source>Unverified</source>
-        <translation type="unfinished"/>
+        <translation>Non vérifié</translation>
     </message>
     <message>
         <source>Private</source>
-        <translation type="unfinished"/>
+        <translation>Privée</translation>
     </message>
     <message>
         <source>Not Private</source>
-        <translation type="unfinished"/>
+        <translation>Non Privé</translation>
     </message>
 </context>
 <context>
@@ -289,7 +289,7 @@
     </message>
     <message>
         <source>Answer:</source>
-        <translation type="unfinished"/>
+        <translation>Résposne:</translation>
     </message>
 </context>
 <context>
@@ -308,11 +308,11 @@
     </message>
     <message>
         <source>%1 question:</source>
-        <translation type="unfinished"/>
+        <translation>%1 question:</translation>
     </message>
     <message>
         <source>Answer:</source>
-        <translation type="unfinished"/>
+        <translation>Réponse :</translation>
     </message>
 </context>
 <context>

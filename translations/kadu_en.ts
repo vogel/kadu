@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -596,7 +594,7 @@
         <translation>Status Change</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</translation>
@@ -631,17 +629,11 @@ changes upon establishing connection to the server</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minute</numerusform>
-            <numerusform>%n minutes</numerusform>
-        </translation>
+        <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n second</numerusform>
-            <numerusform>%n seconds</numerusform>
-        </translation>
+        <translation><numerusform>%n second</numerusform><numerusform>%n seconds</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>
@@ -1097,11 +1089,31 @@ changes upon establishing connection to the server</translation>
     </message>
     <message>
         <source>Show tab Everybody</source>
-        <translation type="unfinished"></translation>
+        <translation>Show tab Everybody</translation>
     </message>
     <message>
         <source>Always show tab Ungroupped</source>
-        <translation type="unfinished"></translation>
+        <translation>Always show tab Ungroupped</translation>
+    </message>
+    <message>
+        <source>Roster</source>
+        <translation>Roster</translation>
+    </message>
+    <message>
+        <source>Import from server succeeded</source>
+        <translation>Import from server succeeded</translation>
+    </message>
+    <message>
+        <source>Import from server failed</source>
+        <translation>Import from server failed</translation>
+    </message>
+    <message>
+        <source>Export to server succeeded</source>
+        <translation>Export to server succeeded</translation>
+    </message>
+    <message>
+        <source>Export to server failed</source>
+        <translation>Export to server failed</translation>
     </message>
 </context>
 <context>
@@ -1287,10 +1299,6 @@ changes upon establishing connection to the server</translation>
     <message>
         <source>Account is not selected</source>
         <translation>Account is not selected</translation>
-    </message>
-    <message>
-        <source>You must be connected to add contacts to this account</source>
-        <translation>You must be connected to add contacts to this account</translation>
     </message>
     <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
@@ -2316,11 +2324,11 @@ Do you want to accept this image anyway?</translation>
     <name>GroupFilterTabData</name>
     <message>
         <source>Ungrouped</source>
-        <translation type="unfinished">Ungrouped</translation>
+        <translation>Ungrouped</translation>
     </message>
     <message>
         <source>Everybody</source>
-        <translation type="unfinished"></translation>
+        <translation>Everybody</translation>
     </message>
 </context>
 <context>
@@ -3095,33 +3103,29 @@ from now on. Are you sure you want to leave this conference?</translation>
     </message>
 </context>
 <context>
-    <name>Plugin</name>
+    <name>PluginActivationService</name>
     <message>
-        <source>Cannot find required object in module %1.
-Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation>Cannot find required object in module %1.
-Maybe it&apos;s not Kadu-compatible plugin.</translation>
+        <source>Plugin %1 conflicts with: %2</source>
+        <translation>Plugin %1 conflicts with: %2</translation>
     </message>
     <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation>Module initialization routine for %1 failed.</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 plugin library:
-%2</source>
-        <translation>Cannot load %1 plugin library:
-%2</translation>
+        <source>Plugin %1 not found</source>
+        <translation>Plugin %1 not found</translation>
     </message>
 </context>
 <context>
-    <name>PluginErrorDialog</name>
+    <name>PluginListWidget</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <source>Deactivate</source>
+        <translation>Deactivate</translation>
     </message>
     <message>
-        <source>Try to load this plugin on next Kadu run</source>
-        <translation>Try to load this plugin on next Kadu run</translation>
+        <source>Plugin activation</source>
+        <translation>Plugin activation</translation>
+    </message>
+    <message>
+        <source>Plugin deactivation</source>
+        <translation>Plugin deactivation</translation>
     </message>
 </context>
 <context>
@@ -3147,31 +3151,12 @@ Maybe it&apos;s not Kadu-compatible plugin.</translation>
         <translation>Dependencies: %1</translation>
     </message>
     <message>
-        <source>Conflicts: %1</source>
-        <translation>Conflicts: %1</translation>
-    </message>
-    <message>
         <source>Plugin information</source>
         <translation>Plugin information</translation>
     </message>
-</context>
-<context>
-    <name>PluginsManager</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Required plugin %1 was not found</source>
-        <translation>Required plugin %1 was not found</translation>
-    </message>
-    <message>
-        <source>Plugin %1 conflicts with: %2</source>
-        <translation>Plugin %1 conflicts with: %2</translation>
-    </message>
-    <message>
-        <source>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</source>
-        <translation>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</translation>
+        <source>Provides: %1</source>
+        <translation>Provides: %1</translation>
     </message>
 </context>
 <context>
@@ -3303,6 +3288,21 @@ Maybe it&apos;s not Kadu-compatible plugin.</translation>
     </message>
 </context>
 <context>
+    <name>QCoreApplication</name>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation>Could not spawn Web browser process. Check if the Web browser is functional</translation>
+    </message>
+    <message>
+        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
+        <translation>Could not spawn Mail client process. Check if the Mail client is functional</translation>
+    </message>
+</context>
+<context>
     <name>RecentChatsAction</name>
     <message>
         <source>Recent Chats</source>
@@ -3314,6 +3314,29 @@ Maybe it&apos;s not Kadu-compatible plugin.</translation>
     <message>
         <source>Recent chats</source>
         <translation>Recent chats</translation>
+    </message>
+</context>
+<context>
+    <name>RosterNotifier</name>
+    <message>
+        <source>Roster</source>
+        <translation>Roster</translation>
+    </message>
+    <message>
+        <source>%1: roster import succeded</source>
+        <translation>%1: roster import succeded</translation>
+    </message>
+    <message>
+        <source>%1: roster import failed</source>
+        <translation>%1: roster import failed</translation>
+    </message>
+    <message>
+        <source>%1: roster export succeded</source>
+        <translation>%1: roster export succeded</translation>
+    </message>
+    <message>
+        <source>%1: roster export failed</source>
+        <translation>%1: roster export failed</translation>
     </message>
 </context>
 <context>
@@ -3772,21 +3795,6 @@ Maybe it&apos;s not Kadu-compatible plugin.</translation>
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
-    </message>
-</context>
-<context>
-    <name>UrlOpener</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Could not spawn Web browser process. Check if the Web browser is functional</translation>
-    </message>
-    <message>
-        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation>Could not spawn Mail client process. Check if the Mail client is functional</translation>
     </message>
 </context>
 <context>
