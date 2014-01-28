@@ -40,6 +40,7 @@ class PluginActivationErrorException : public std::exception
 public:
 	PluginActivationErrorException(QString pluginName, QString errorMessage) :
 			m_pluginName{std::move(pluginName)}, m_errorMessage{std::move(errorMessage)} {}
+	virtual ~PluginActivationErrorException() noexcept {}
 
 	QString pluginName() const { return m_pluginName; }
 	QString errorMessage() const { return m_errorMessage; }
