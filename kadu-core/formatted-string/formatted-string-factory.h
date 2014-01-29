@@ -21,6 +21,7 @@
 #ifndef FORMATTED_STRING_FACTORY_H
 #define FORMATTED_STRING_FACTORY_H
 
+#include <memory>
 #include <QtCore/QPointer>
 
 #include "exports.h"
@@ -50,10 +51,10 @@ class KADUAPI FormattedStringFactory : public QObject
 
 	QPointer<ImageStorageService> CurrentImageStorageService;
 
-	FormattedString * partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
-	FormattedString * partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
-	FormattedString * partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
-	QList<FormattedString *> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
+	std::unique_ptr<FormattedString> partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
+	std::unique_ptr<FormattedString> partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
+	std::unique_ptr<FormattedString> partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
+	std::vector<std::unique_ptr<FormattedString>> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
 
 public:
 	/**

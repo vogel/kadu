@@ -50,6 +50,11 @@ class KADUAPI FormattedStringImageBlock : public FormattedString
 
 public:
 	/**
+	 * @short Create empty FormattedStringImageBlock.
+	 */
+	FormattedStringImageBlock();
+
+	/**
 	 * @short Create FormattedStringImageBlock with image with given path.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param imagePath path to image

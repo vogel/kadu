@@ -23,6 +23,7 @@
 #ifndef COMPOSITE_FORMATTED_STRING_H
 #define COMPOSITE_FORMATTED_STRING_H
 
+#include <memory>
 #include <QtCore/QVector>
 #include <QtGui/QColor>
 
@@ -44,7 +45,7 @@ class KADUAPI CompositeFormattedString : public FormattedString
 {
 	Q_DISABLE_COPY(CompositeFormattedString)
 
-	QVector<FormattedString *> Items;
+	std::vector<std::unique_ptr<FormattedString>> Items;
 
 public:
 	/**
@@ -52,7 +53,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param items items of composite FormattedString
 	 */
-	explicit CompositeFormattedString(QVector<FormattedString *> items);
+	explicit CompositeFormattedString(std::vector<std::unique_ptr<FormattedString>> &&items);
 	virtual ~CompositeFormattedString();
 
 	virtual bool operator == (const FormattedString &compareTo);
@@ -78,7 +79,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return all items that compose this CompositeFormattedString
 	 */
-	QVector<FormattedString *> items() const;
+	const std::vector<std::unique_ptr<FormattedString>> & items() const;
 
 };
 

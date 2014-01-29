@@ -225,7 +225,7 @@ bool GaduChatService::ignoreRichText(Contact sender)
 	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
-FormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
+std::unique_ptr<FormattedString> GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
 {
 	return richText
 			? GaduFormatter::createMessage(content, (unsigned char *)e->event.msg.formats, e->event.msg.formats_length)
@@ -263,11 +263,11 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (rawMessageTransformerService())
 		rawContent = rawMessageTransformerService()->transform(rawContent, message);
 
-	QScopedPointer<FormattedString> formattedString(createFormattedString(e, QString::fromUtf8(rawContent), !ignoreRichText(sender)));
+	auto formattedString = createFormattedString(e, QString::fromUtf8(rawContent), !ignoreRichText(sender));
 	if (formattedString->isEmpty())
 		return;
 
-	message.setContent(formattedString.take());
+	message.setContent(formattedString.release());
 
 	if (MessageTypeReceived == type)
 	{

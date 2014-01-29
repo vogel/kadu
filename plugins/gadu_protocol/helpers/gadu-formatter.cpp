@@ -28,6 +28,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-text-block.h"
+#include "misc/memory.h"
 
 #include "gadu-formatter.h"
 
@@ -92,7 +93,7 @@ static QList<FormatAttribute> createFormatList(const unsigned char *formats, uns
 	return formatList;
 }
 
-static FormattedString * imagePart(const gg_msg_richtext_image &image)
+static std::unique_ptr<FormattedString> imagePart(const gg_msg_richtext_image &image)
 {
 	quint32 size = gg_fix32(image.size);
 	quint32 crc32 = gg_fix32(image.crc32);
@@ -101,10 +102,10 @@ static FormattedString * imagePart(const gg_msg_richtext_image &image)
 		return 0;
 
 	ChatImageKey key(size, crc32);
-	return new FormattedStringImageBlock(key);
+	return make_unique<FormattedStringImageBlock>(key);
 }
 
-static FormattedString * messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
+static std::unique_ptr<FormattedString> messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
 {
 	QColor textColor;
 	if (format.font & GG_FONT_COLOR)
@@ -114,12 +115,12 @@ static FormattedString * messagePart(const QString &content, const gg_msg_richte
 		textColor.setBlue(color.blue);
 	}
 
-	return new FormattedStringTextBlock(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
+	return make_unique<FormattedStringTextBlock>(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
-FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
+std::unique_ptr<FormattedString> createMessage(const QString &content, const unsigned char *formats, unsigned int size)
 {
-	QVector<FormattedString *> items;
+	auto items = std::vector<std::unique_ptr<FormattedString>>{};
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
 
 	// Initial value is 0 so that we will not loose any text potentially not covered by any formats.
@@ -133,7 +134,7 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 				: static_cast<quint16>(content.length());
 
 		if (hasStrayText && strayTextPosition < textPosition)
-			items.append(new FormattedStringTextBlock(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
+			items.push_back(make_unique<FormattedStringTextBlock>(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
 		hasStrayText = false;
 
 		if (i >= len)
@@ -145,10 +146,10 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 
 		if (format.format.font & GG_FONT_IMAGE)
 		{
-			FormattedString *formattedImage = imagePart(format.image);
-			if (formattedImage)
+			auto formattedImage = imagePart(format.image);
+			if (!formattedImage->isEmpty())
 			{
-				items.append(formattedImage);
+				items.push_back(std::move(formattedImage));
 
 				// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
 				strayTextPosition = textPosition + 1;
@@ -161,11 +162,11 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 					? formatList.at(i + 1).format.position
 					: static_cast<quint16>(content.length());
 
-			items.append(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
+			items.push_back(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
 		}
 	}
 
-	return new CompositeFormattedString(items);
+	return make_unique<CompositeFormattedString>(std::move(items));
 }
 
 } // namespace

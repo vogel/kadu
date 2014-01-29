@@ -26,13 +26,15 @@
 #ifndef GADU_FORMATTER_H
 #define GADU_FORMATTER_H
 
+#include "formatted-string/formatted-string.h"
+#include "misc/memory.h"
 #include "../gadu-exports.h"
 
 class QString;
 
 namespace GaduFormatter
 {
-	GADUAPI FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size);
+	GADUAPI std::unique_ptr<FormattedString> createMessage(const QString &content, const unsigned char *formats, unsigned int size);
 
 }
 

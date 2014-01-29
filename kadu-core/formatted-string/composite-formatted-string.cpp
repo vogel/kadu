@@ -35,14 +35,13 @@
 
 #include "composite-formatted-string.h"
 
-CompositeFormattedString::CompositeFormattedString(QVector<FormattedString *> items) :
-		Items(items)
+CompositeFormattedString::CompositeFormattedString(std::vector<std::unique_ptr<FormattedString>> &&items) :
+		Items{std::move(items)}
 {
 }
 
 CompositeFormattedString::~CompositeFormattedString()
 {
-	qDeleteAll(Items);
 }
 
 bool CompositeFormattedString::operator == (const FormattedString &compareTo)
@@ -66,20 +65,20 @@ void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
 {
 	visitor->beginVisit(this);
 
-	foreach (FormattedString *item, Items)
+	for (auto &&item : Items)
 		item->accept(visitor);
 
 	visitor->endVisit(this);
 }
 
-QVector<FormattedString *> CompositeFormattedString::items() const
+const std::vector<std::unique_ptr<FormattedString>> & CompositeFormattedString::items() const
 {
 	return Items;
 }
 
 bool CompositeFormattedString::isEmpty() const
 {
-	foreach (FormattedString *item, Items)
+	for (auto &&item : Items)
 		if (!item->isEmpty())
 			return false;
 

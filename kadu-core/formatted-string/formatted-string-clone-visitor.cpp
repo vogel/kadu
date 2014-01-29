@@ -53,17 +53,18 @@ void FormattedStringCloneVisitor::endVisit(const CompositeFormattedString * cons
 {
 	Q_UNUSED(compositeFormattedString);
 
-	QList<FormattedString *> items;
+	std::vector<std::unique_ptr<FormattedString>> items;
 	while (!ItemsStack.isEmpty())
 	{
 		FormattedString *item = ItemsStack.pop();
 		if (item)
-			items.prepend(item);
+			items.push_back(std::unique_ptr<FormattedString>(item));
 		else
 			break;
 	}
+	std::reverse(std::begin(items), std::end(items));
 
-	CompositeFormattedString *cloned = new CompositeFormattedString(items.toVector());
+	CompositeFormattedString *cloned = new CompositeFormattedString(std::move(items));
 
 	ItemsStack.push(cloned);
 }

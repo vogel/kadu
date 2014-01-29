@@ -28,6 +28,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-text-block.h"
+#include "misc/memory.h"
 #include "services/image-storage-service.h"
 
 #include "formatted-string-factory.h"
@@ -42,17 +43,14 @@ FormattedString * FormattedStringFactory::fromPlainText(const QString& plainText
 	return new FormattedStringTextBlock(plainText, false, false, false, QColor());
 }
 
-FormattedString * FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
+std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
-	if (text.isEmpty())
-		return 0;
-
 	QString replacedNewLine = text;
 	replacedNewLine.replace(QChar::LineSeparator, '\n');
-	return new FormattedStringTextBlock(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
+	return make_unique<FormattedStringTextBlock>(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
-FormattedString * FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
+std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
 {
 	QString filePath = textImageFormat.name();
 	QFileInfo fileInfo(filePath);
@@ -63,14 +61,11 @@ FormattedString * FormattedStringFactory::partFromQTextImageFormat(const QTextIm
 	if (CurrentImageStorageService)
 		filePath = CurrentImageStorageService.data()->storeImage(filePath);
 
-	return new FormattedStringImageBlock(filePath);
+	return make_unique<FormattedStringImageBlock>(filePath);
 }
 
-FormattedString * FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
+std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
 {
-	if (!textFragment.isValid())
-		return 0;
-
 	QTextCharFormat format = textFragment.charFormat();
 	if (!format.isImageFormat())
 		return partFromQTextCharFormat(format, prependNewLine ? '\n' + textFragment.text() : textFragment.text());
@@ -78,17 +73,20 @@ FormattedString * FormattedStringFactory::partFromQTextFragment(const QTextFragm
 		return partFromQTextImageFormat(format.toImageFormat());
 }
 
-QList<FormattedString *> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
+std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
 {
-	QList<FormattedString *> result;
+	auto result = std::vector<std::unique_ptr<FormattedString>>{};
 
 	bool firstFragment = true;
 	for (QTextBlock::iterator it = textBlock.begin(); !it.atEnd(); ++it)
 	{
-		FormattedString *part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
+		if (!it.fragment().isValid())
+			continue;
+
+		auto part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
 		if (part && !part->isEmpty())
 		{
-			result.append(part);
+			result.push_back(std::move(part));
 			firstFragment = false;
 		}
 	}
@@ -106,22 +104,21 @@ FormattedString * FormattedStringFactory::fromHtml(const QString &html)
 
 FormattedString * FormattedStringFactory::fromTextDocument(QTextDocument *textDocument)
 {
-	bool firstBlock = true;
-
-	QVector<FormattedString *> items;
+	auto firstBlock = true;
+	auto items = std::vector<std::unique_ptr<FormattedString>>{};
 
 	QTextBlock block = textDocument->firstBlock();
 	while (block.isValid())
 	{
-		QList<FormattedString *> parts = partsFromQTextBlock(block, firstBlock);
-		foreach (FormattedString *part, parts)
-			items.append(part);
+		auto parts = partsFromQTextBlock(block, firstBlock);
+		for (auto &&part : parts)
+			items.push_back(std::move(part));
 
 		block = block.next();
 		firstBlock = false;
 	}
 
-	return new CompositeFormattedString(items);
+	return new CompositeFormattedString(std::move(items));
 }
 
 FormattedString * FormattedStringFactory::fromText(const QString &text)

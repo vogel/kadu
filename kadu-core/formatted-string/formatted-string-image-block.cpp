@@ -22,6 +22,11 @@
 
 #include "formatted-string-image-block.h"
 
+FormattedStringImageBlock::FormattedStringImageBlock() :
+		ImageKey(0, 0)
+{
+}
+
 FormattedStringImageBlock::FormattedStringImageBlock(const QString &imagePath) :
 		ImagePath(imagePath), ImageKey(0, 0)
 {
