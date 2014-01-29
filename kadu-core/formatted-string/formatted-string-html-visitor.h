@@ -42,8 +42,6 @@ class KADUAPI FormattedStringHtmlVisitor : public FormattedStringVisitor
 {
 	Q_DISABLE_COPY(FormattedStringHtmlVisitor);
 
-	QString Result;
-
 public:
 	FormattedStringHtmlVisitor();
 	virtual ~FormattedStringHtmlVisitor();
@@ -59,6 +57,12 @@ public:
 	* @return HTML view of visited FormattedString
 	*/
 	QString result() const;
+
+protected:
+	void append(QString content);
+
+private:
+	QString m_result;
 
 };
 

@@ -46,6 +46,7 @@ set (SOURCES
 	gui/windows/gadu-unregister-account-window.cpp
 	gui/windows/gadu-wait-for-account-register-window.cpp
 
+	helpers/formatted-string-gadu-html-visitor.cpp
 	helpers/formatted-string-image-key-received-visitor.cpp
 	helpers/gadu-formatter.cpp
 	helpers/gadu-imported-contact-xml-receiver.cpp

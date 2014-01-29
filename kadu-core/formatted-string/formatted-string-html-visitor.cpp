@@ -48,7 +48,8 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const f
 {
 	QString imagePath = formattedStringImageBlock->imagePath();
 	ChatImageKey imageKey = formattedStringImageBlock->imageKey();
-	Result.append(QFileInfo(imagePath).isAbsolute()
+
+	append(QFileInfo(imagePath).isAbsolute()
 			? QString("<img class=\"scalable\" src=\"file://%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString())
 			: imagePath.startsWith("kaduimg:///")
 			? QString("<img class=\"scalable\" src=\"%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString())
@@ -61,7 +62,7 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const fo
 
 	if (!formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline() && !formattedStringTextBlock->color().isValid())
 	{
-		Result.append(content);
+		append(content);
 		return;
 	}
 
@@ -80,10 +81,15 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const fo
 
 	span += "\">";
 
-	Result.append(span + content + "</span>");
+	append(span + content + "</span>");
+}
+
+void FormattedStringHtmlVisitor::append(QString content)
+{
+	m_result.append(std::move(content));
 }
 
 QString FormattedStringHtmlVisitor::result() const
 {
-	return Result;
+	return m_result;
 }

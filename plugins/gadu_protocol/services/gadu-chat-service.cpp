@@ -34,7 +34,6 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
@@ -42,6 +41,7 @@
 #include "status/status-type.h"
 #include "debug.h"
 
+#include "helpers/formatted-string-gadu-html-visitor.h"
 #include "helpers/formatted-string-image-key-received-visitor.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
@@ -130,7 +130,7 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
-	FormattedStringHtmlVisitor htmlVisitor;
+	FormattedStringGaduHtmlVisitor htmlVisitor(CurrentGaduChatImageService, CurrentImageStorageService);
 	message.content()->accept(&htmlVisitor);
 
 	QByteArray rawMessage = htmlVisitor.result().toUtf8();
