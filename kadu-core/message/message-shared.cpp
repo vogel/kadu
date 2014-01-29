@@ -151,9 +151,9 @@ void MessageShared::setStatus(MessageStatus status)
 	}
 }
 
-void MessageShared::setContent(FormattedString *content)
+void MessageShared::setContent(std::unique_ptr<FormattedString> &&content)
 {
-	Content.reset(content);
+	Content = std::move(content);
 
 	if (!Content)
 	{
@@ -175,7 +175,7 @@ void MessageShared::setContent(FormattedString *content)
 
 FormattedString * MessageShared::content() const
 {
-	return Content.data();
+	return Content.get();
 }
 
 KaduShared_PropertyPtrDefCRW(MessageShared, Chat, messageChat, MessageChat)

@@ -38,9 +38,9 @@ void FormattedStringFactory::setImageStorageService(ImageStorageService *imageSt
 	CurrentImageStorageService = imageStorageService;
 }
 
-FormattedString * FormattedStringFactory::fromPlainText(const QString& plainText)
+std::unique_ptr<FormattedString> FormattedStringFactory::fromPlainText(const QString& plainText)
 {
-	return new FormattedStringTextBlock(plainText, false, false, false, QColor());
+	return make_unique<FormattedStringTextBlock>(plainText, false, false, false, QColor{});
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
@@ -94,7 +94,7 @@ std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQ
 	return result;
 }
 
-FormattedString * FormattedStringFactory::fromHtml(const QString &html)
+std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const QString &html)
 {
 	QTextDocument document;
 	document.setHtml(html);
@@ -102,7 +102,7 @@ FormattedString * FormattedStringFactory::fromHtml(const QString &html)
 	return fromTextDocument(&document);
 }
 
-FormattedString * FormattedStringFactory::fromTextDocument(QTextDocument *textDocument)
+std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(QTextDocument *textDocument)
 {
 	auto firstBlock = true;
 	auto items = std::vector<std::unique_ptr<FormattedString>>{};
@@ -118,10 +118,10 @@ FormattedString * FormattedStringFactory::fromTextDocument(QTextDocument *textDo
 		firstBlock = false;
 	}
 
-	return new CompositeFormattedString(std::move(items));
+	return make_unique<CompositeFormattedString>(std::move(items));
 }
 
-FormattedString * FormattedStringFactory::fromText(const QString &text)
+std::unique_ptr<FormattedString> FormattedStringFactory::fromText(const QString &text)
 {
 	QScopedPointer<QTextDocument> document(new QTextDocument());
 	if (isHtml(text))

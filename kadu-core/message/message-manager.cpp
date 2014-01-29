@@ -113,29 +113,27 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &content, bool 
 	return sendMessage(chat, CurrentFormattedStringFactory.data()->fromText(content), silent);
 }
 
-Message MessageManager::createOutgoingMessage(const Chat &chat, FormattedString *content)
+Message MessageManager::createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content)
 {
 	Message message = Message::create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
 	message.setStatus(MessageStatusSent);
-	message.setContent(content);
+	message.setContent(std::move(content));
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
 	return message;
 }
 
-bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, bool silent)
+bool MessageManager::sendMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content, bool silent)
 {
-	QScopedPointer<FormattedString> scopedContent(content);
-
 	Protocol *protocol = chat.chatAccount().protocolHandler();
 	if (!protocol || !protocol->chatService())
 		return false;
 
-	Message message = createOutgoingMessage(chat, scopedContent.take());
+	Message message = createOutgoingMessage(chat, std::move(content));
 	if (CurrentMessageFilterService && !CurrentMessageFilterService.data()->acceptMessage(message))
 		return false;
 

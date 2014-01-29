@@ -168,11 +168,11 @@ void WordFix::sendRequest(ChatWidget* chat)
 	if (!config_file.readBoolEntry("PowerKadu", "enable_word_fix", false))
 		return;
 
-	QScopedPointer<FormattedString> formattedString(chat->edit()->formattedString());
+	auto formattedString = chat->edit()->formattedString();
 	WordFixFormattedStringVisitor fixVisitor(wordsList);
 	formattedString->accept(&fixVisitor);
 
-	QScopedPointer<FormattedString> fixedString(fixVisitor.result());
+	auto fixedString = fixVisitor.result();
 	FormattedStringHtmlVisitor htmlVisitor;
 	fixedString->accept(&htmlVisitor);
 

@@ -24,6 +24,7 @@
 #include <memory>
 #include <QtCore/QPointer>
 
+#include "formatted-string/formatted-string.h"
 #include "exports.h"
 
 class QTextBlock;
@@ -32,7 +33,6 @@ class QTextDocument;
 class QTextFragment;
 class QTextImageFormat;
 
-class FormattedString;
 class ImageStorageService;
 
 /**
@@ -77,7 +77,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	FormattedString * fromPlainText(const QString &plainText);
+	std::unique_ptr<FormattedString> fromPlainText(const QString &plainText);
 
 	/**
 	 * @short Create FormattedString instance from HTML.
@@ -89,7 +89,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	FormattedString * fromHtml(const QString &html);
+	std::unique_ptr<FormattedString> fromHtml(const QString &html);
 
 	/**
 	 * @short Create FormattedString instance from text document.
@@ -100,7 +100,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	FormattedString * fromTextDocument(QTextDocument *textDocument);
+	std::unique_ptr<FormattedString> fromTextDocument(QTextDocument *textDocument);
 
 	/**
 	 * @short Create FormattedString instance from HTML or plain text.
@@ -112,7 +112,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	FormattedString * fromText(const QString &text);
+	std::unique_ptr<FormattedString> fromText(const QString &text);
 
 	/**
 	 * @short Check if given text is in HTML format.

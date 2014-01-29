@@ -72,7 +72,7 @@ void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStr
 	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
-FormattedString * CustomInput::formattedString() const
+std::unique_ptr<FormattedString> CustomInput::formattedString() const
 {
 	if (CurrentFormattedStringFactory)
 		return CurrentFormattedStringFactory->fromTextDocument(document());

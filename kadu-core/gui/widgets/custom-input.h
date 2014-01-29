@@ -103,7 +103,7 @@ public:
 	void setImageStorageService(ImageStorageService *imageStorageService);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	FormattedString * formattedString() const;
+	std::unique_ptr<FormattedString> formattedString() const;
 
 public slots:
 	/**

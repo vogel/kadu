@@ -29,6 +29,9 @@
 #include "formatted-string/formatted-string.h"
 #include "misc/memory.h"
 #include "../gadu-exports.h"
+#include "formatted-string/formatted-string.h"
+
+#include <memory>
 
 class QString;
 

@@ -73,7 +73,14 @@ Message::~Message()
 
 KaduSharedBase_PropertyDefCRW(Message, Chat, messageChat, MessageChat, Chat::null)
 KaduSharedBase_PropertyDefCRW(Message, Contact, messageSender, MessageSender, Contact::null)
-KaduSharedBase_PropertyDef(Message, FormattedString *, content, Content, 0)
+
+void Message::setContent(std::unique_ptr<FormattedString> &&content) const
+{
+	if (!isNull())
+		data()->setContent(std::move(content));
+}
+
+KaduSharedBase_PropertyReadDef(Message, FormattedString *, content, Content, 0)
 KaduSharedBase_PropertyReadDef(Message, QString, plainTextContent, PlainTextContent, QString())
 KaduSharedBase_PropertyReadDef(Message, QString, htmlContent, HtmlContent, QString())
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, receiveDate, ReceiveDate, QDateTime())

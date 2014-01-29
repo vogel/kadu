@@ -267,7 +267,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (formattedString->isEmpty())
 		return;
 
-	message.setContent(formattedString.release());
+	message.setContent(std::move(formattedString));
 
 	if (MessageTypeReceived == type)
 	{

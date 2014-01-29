@@ -646,7 +646,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			QString title;
 			if (CurrentFormattedStringFactory)
 			{
-				QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHtml(message));
+				auto formattedString = CurrentFormattedStringFactory.data()->fromHtml(message);
 
 				FormattedStringPlainTextVisitor plainTextVisitor;
 				formattedString->accept(&plainTextVisitor);

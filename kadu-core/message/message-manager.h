@@ -65,7 +65,7 @@ class KADUAPI MessageManager : public QObject, public AccountsAwareObject
 	 * @param chat chat of outgoing message
 	 * @param content content of outgoing message
 	 */
-	Message createOutgoingMessage(const Chat &chat, FormattedString *content);
+	Message createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content);
 
 private slots:
 	/**
@@ -136,10 +136,8 @@ public:
 	 * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
-	 *
-	 * This method takes ownership of content parameter and deletes it at the end.
 	 */
-	bool sendMessage(const Chat &chat, FormattedString *content, bool silent = false);
+	bool sendMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content, bool silent = false);
 
 	/**
 	 * @short Send new raw message to given chat.

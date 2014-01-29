@@ -119,7 +119,7 @@ public:
 	Chat chat() const { return CurrentChat; }
 
 	void appendSystemMessage(const QString &content);
-	void appendSystemMessage(FormattedString *content);
+	void appendSystemMessage(std::unique_ptr<FormattedString> &&content);
 
 	void repaintMessages();
 

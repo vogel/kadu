@@ -45,7 +45,7 @@ class MessageShared : public QObject, public Shared
 
 	Chat *MessageChat;
 	Contact *MessageSender;
-	QScopedPointer<FormattedString> Content;
+	std::unique_ptr<FormattedString> Content;
 	QString PlainTextContent;
 	QString HtmlContent;
 	QDateTime ReceiveDate;
@@ -74,7 +74,7 @@ public:
 
 	void setStatus(MessageStatus status);
 
-	void setContent(FormattedString *content);
+	void setContent(std::unique_ptr<FormattedString> &&content);
 	FormattedString * content() const;
 
 	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)

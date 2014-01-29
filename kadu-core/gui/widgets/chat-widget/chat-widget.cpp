@@ -505,12 +505,12 @@ void ChatWidget::appendSystemMessage(const QString &content)
 	appendSystemMessage(formattedStringFactory->fromText(content));
 }
 
-void ChatWidget::appendSystemMessage(FormattedString *content)
+void ChatWidget::appendSystemMessage(std::unique_ptr<FormattedString> &&content)
 {
 	Message message = Message::create();
 	message.setMessageChat(CurrentChat);
 	message.setType(MessageTypeSystem);
-	message.setContent(content);
+	message.setContent(std::move(content));
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setStatus(MessageStatusReceived);
