@@ -18,6 +18,7 @@
  */
 
 #include "formatted-string/formatted-string-text-block.h"
+#include "misc/memory.h"
 
 #include "word-fix-formatted-string-visitor.h"
 
@@ -84,7 +85,7 @@ QString WordFixFormattedStringVisitor::fixWords(const QString &content)
 
 void WordFixFormattedStringVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	cloned(new FormattedStringTextBlock(
+	cloned(make_unique<FormattedStringTextBlock>(
 		fixWords(formattedStringTextBlock->content()),
 		formattedStringTextBlock->bold(),
 		formattedStringTextBlock->italic(),

@@ -23,6 +23,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-text-block.h"
+#include "misc/memory.h"
 #include "misc/misc.h"
 
 #include "formatted-string-clone-visitor.h"
@@ -33,20 +34,18 @@ FormattedStringCloneVisitor::FormattedStringCloneVisitor()
 
 FormattedStringCloneVisitor::~FormattedStringCloneVisitor()
 {
-	// in case something is left
-	qDeleteAll(ItemsStack);
 }
 
-void FormattedStringCloneVisitor::cloned(FormattedString *clonedFormattedString)
+void FormattedStringCloneVisitor::cloned(std::unique_ptr<FormattedString> &&clonedFormattedString)
 {
-	ItemsStack.push(clonedFormattedString);
+	ItemsStack.push(std::move(clonedFormattedString));
 }
 
 void FormattedStringCloneVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
 {
 	Q_UNUSED(compositeFormattedString);
 
-	ItemsStack.push(0); // mark composite begin
+	ItemsStack.push(nullptr); // mark composite begin
 }
 
 void FormattedStringCloneVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
@@ -54,31 +53,30 @@ void FormattedStringCloneVisitor::endVisit(const CompositeFormattedString * cons
 	Q_UNUSED(compositeFormattedString);
 
 	std::vector<std::unique_ptr<FormattedString>> items;
-	while (!ItemsStack.isEmpty())
+	while (!ItemsStack.empty())
 	{
-		FormattedString *item = ItemsStack.pop();
+		auto item = std::move(ItemsStack.top());
+		ItemsStack.pop();
+
 		if (item)
-			items.push_back(std::unique_ptr<FormattedString>(item));
+			items.push_back(std::move(item));
 		else
 			break;
 	}
 	std::reverse(std::begin(items), std::end(items));
-
-	CompositeFormattedString *cloned = new CompositeFormattedString(std::move(items));
-
-	ItemsStack.push(cloned);
+	ItemsStack.push(make_unique<CompositeFormattedString>(std::move(items)));
 }
 
 void FormattedStringCloneVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
 {
 	cloned(formattedStringImageBlock->imageKey().isNull()
-			? new FormattedStringImageBlock(formattedStringImageBlock->imagePath())
-			: new FormattedStringImageBlock(formattedStringImageBlock->imageKey()));
+			? make_unique<FormattedStringImageBlock>(formattedStringImageBlock->imagePath())
+			: make_unique<FormattedStringImageBlock>(formattedStringImageBlock->imageKey()));
 }
 
 void FormattedStringCloneVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	cloned(new FormattedStringTextBlock(
+	cloned(make_unique<FormattedStringTextBlock>(
 		formattedStringTextBlock->content(),
 		formattedStringTextBlock->bold(),
 		formattedStringTextBlock->italic(),
@@ -87,9 +85,11 @@ void FormattedStringCloneVisitor::visit(const FormattedStringTextBlock * const f
 	));
 }
 
-FormattedString * FormattedStringCloneVisitor::result()
+std::unique_ptr<FormattedString> FormattedStringCloneVisitor::result()
 {
 	Q_ASSERT(ItemsStack.size() == 1);
 
-	return ItemsStack.pop();
+	auto result = std::move(ItemsStack.top());
+	ItemsStack.pop();
+	return std::move(result);
 }

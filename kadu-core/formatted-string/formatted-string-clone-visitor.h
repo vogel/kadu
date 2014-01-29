@@ -21,6 +21,8 @@
 #ifndef FORMATTED_STRING_CLONE_VISITOR_H
 #define FORMATTED_STRING_CLONE_VISITOR_H
 
+#include <memory>
+#include <stack>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QStack>
 #include <QtCore/QString>
@@ -46,10 +48,10 @@ class KADUAPI FormattedStringCloneVisitor : public FormattedStringVisitor
 {
 	Q_DISABLE_COPY(FormattedStringCloneVisitor);
 
-	QStack<FormattedString *> ItemsStack;
+	std::stack<std::unique_ptr<FormattedString>> ItemsStack;
 
 protected:
-	void cloned(FormattedString *clonedFormattedString);
+	void cloned(std::unique_ptr<FormattedString> &&clonedFormattedString);
 
 public:
 	FormattedStringCloneVisitor();
@@ -67,7 +69,7 @@ public:
 	*
 	* Caller gains ownership of the returned object. This method can only be called once.
 	*/
-	FormattedString * result();
+	std::unique_ptr<FormattedString> result();
 
 };
 
