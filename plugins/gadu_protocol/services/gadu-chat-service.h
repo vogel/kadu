@@ -29,7 +29,7 @@
 
 #include "message/message-common.h"
 #include "protocols/protocol.h"
-#include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image.h"
 
 #include "protocols/services/chat-service.h"
 
@@ -126,7 +126,7 @@ public slots:
 	void handleEventAck(struct gg_event *e);
 
 signals:
-	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
 
 };
 

@@ -69,9 +69,9 @@ void FormattedStringCloneVisitor::endVisit(const CompositeFormattedString * cons
 
 void FormattedStringCloneVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
 {
-	cloned(formattedStringImageBlock->imageKey().isNull()
+	cloned(formattedStringImageBlock->image().isNull()
 			? make_unique<FormattedStringImageBlock>(formattedStringImageBlock->imagePath())
-			: make_unique<FormattedStringImageBlock>(formattedStringImageBlock->imageKey()));
+			: make_unique<FormattedStringImageBlock>(formattedStringImageBlock->image()));
 }
 
 void FormattedStringCloneVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)

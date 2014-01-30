@@ -23,7 +23,7 @@
 
 #include <QtCore/QObject>
 
-#include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image.h"
 
 #include "formatted-string/formatted-string-visitor.h"
 
@@ -67,9 +67,9 @@ signals:
 	 * @short Signal emitted each time this object visits FormattedStringImageBlock instance.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param id id passed in constructor
-	 * @param imageKey imageKey from visited FormattedStringImageBlock
+	 * @param chatImage chatImage from visited FormattedStringImageBlock
 	 */
-	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
 
 };
 

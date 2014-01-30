@@ -97,7 +97,6 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByt
 		return -1;
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-
 	unsigned int uinsCount = contacts.count();
 	if (uinsCount > 1)
 	{
@@ -257,8 +256,8 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		emit messageReceived(message);
 
 		FormattedStringImageKeyReceivedVisitor imageKeyReceivedVisitor(sender.id());
-		connect(&imageKeyReceivedVisitor, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
-		        this, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)));
+		connect(&imageKeyReceivedVisitor, SIGNAL(chatImageKeyReceived(QString,ChatImage)),
+		        this, SIGNAL(chatImageKeyReceived(QString,ChatImage)));
 
 		message.content()->accept(&imageKeyReceivedVisitor);
 	}

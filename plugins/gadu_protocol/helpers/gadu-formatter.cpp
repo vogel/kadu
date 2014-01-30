@@ -101,8 +101,10 @@ static std::unique_ptr<FormattedString> imagePart(const gg_msg_richtext_image &i
 	if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 		return 0;
 
-	ChatImageKey key(size, crc32);
-	return make_unique<FormattedStringImageBlock>(key);
+	auto key = (static_cast<uint64_t>(crc32) << 32) | size;
+	auto stringKey = QString{"%1"}.arg(key, 16, 16);
+
+	return make_unique<FormattedStringImageBlock>(ChatImage{stringKey, size});
 }
 
 static std::unique_ptr<FormattedString> messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)

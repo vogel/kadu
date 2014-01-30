@@ -20,32 +20,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-image.h"
+
 #include <QtCore/QString>
 
-#include "chat-image-key.h"
-
-ChatImageKey::ChatImageKey(quint32 size, quint32 crc32) :
-		QPair<quint32, quint32>(size, crc32)
+ChatImage::ChatImage() :
+		m_size{}
 {
 }
 
-bool ChatImageKey::isNull() const
+ChatImage::ChatImage(QString key, quint32 size) :
+		m_key{std::move(key)}, m_size{size}
 {
-	return 0 == first && 0 == second;
 }
 
-QString ChatImageKey::toString() const
+bool ChatImage::operator == (const ChatImage &compareTo) const
 {
-	auto value = (static_cast<uint64_t>(crc32()) << 32) | size();
-	return QString{"%1"}.arg(value, 16, 16);
+	if (m_size != compareTo.m_size)
+		return false;
+	if (m_key != compareTo.m_key)
+		return false;
+	return true;
 }
 
-quint32 ChatImageKey::size() const
+bool ChatImage::operator < (const ChatImage &compareTo) const
 {
-	return first;
+	if (m_size < compareTo.m_size)
+		return true;
+	if (m_size > compareTo.m_size)
+		return false;
+	return m_key < compareTo.m_key;
 }
 
-quint32 ChatImageKey::crc32() const
+bool ChatImage::isNull() const
 {
-	return second;
+	return m_key.isEmpty() || m_size == 0;
+}
+
+QString ChatImage::key() const
+{
+	return m_key;
+}
+
+quint32 ChatImage::size() const
+{
+	return m_size;
 }

@@ -109,7 +109,7 @@ void ChatMessagesView::setChatImageRequestService(ChatImageRequestService *chatI
 	CurrentChatImageRequestService = chatImageRequestService;
 
 	if (CurrentChatImageRequestService)
-		connect(CurrentChatImageRequestService.data(), SIGNAL(chatImageStored(ChatImageKey,QString)), this, SLOT(chatImageStored(ChatImageKey,QString)));
+		connect(CurrentChatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
 }
 
 void ChatMessagesView::mouseReleaseEvent(QMouseEvent *e)
@@ -201,9 +201,9 @@ void ChatMessagesView::pageDown()
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::chatImageStored(const ChatImageKey &imageKey, const QString &fullFilePath)
+void ChatMessagesView::chatImageStored(const ChatImage &chatImage, const QString &fullFilePath)
 {
-	Renderer->chatImageAvailable(imageKey, fullFilePath);
+	Renderer->chatImageAvailable(chatImage, fullFilePath);
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()

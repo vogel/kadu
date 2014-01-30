@@ -46,13 +46,16 @@ void FormattedStringHtmlVisitor::endVisit(const CompositeFormattedString * const
 
 void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
 {
-	QString imagePath = formattedStringImageBlock->imagePath();
+	auto imagePath = formattedStringImageBlock->imagePath();
+	auto escapedImagePath = Qt::escape(imagePath);
+	auto imageKey = formattedStringImageBlock->image().key();
+	auto escapedImageKey = imageKey;
 
 	append(QFileInfo(imagePath).isAbsolute()
-			? QString("<img class=\"scalable\" src=\"file://%1\" name=\"%2\" />").arg(imagePath).arg(imagePath)
+			? QString("<img class=\"scalable\" src=\"file://%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey)
 			: imagePath.startsWith("kaduimg:///")
-			? QString("<img class=\"scalable\" src=\"%1\" name=\"%2\" />").arg(imagePath).arg(imagePath)
-			: QString("<img class=\"scalable\" src=\"kaduimg:///%1\" name=\"%2\" />").arg(imagePath).arg(imagePath));
+			? QString("<img class=\"scalable\" src=\"%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey)
+			: QString("<img class=\"scalable\" src=\"kaduimg:///%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey));
 }
 
 void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)

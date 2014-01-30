@@ -29,7 +29,7 @@
 #include <QtCore/QObject>
 
 #include "protocols/services/account-service.h"
-#include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image.h"
 #include "exports.h"
 
 class Error;
@@ -49,7 +49,7 @@ class Error;
  * Before inserting image into chat a check should be made to see if this image can be received on the other end.
  * To do that use checkImageSize() method.
  *
- * After that use createChatImageKey() to get ChatImageKey for given image contet. Thats will store information
+ * After that use prepareImageToBeSent() to get ChatImage for given image contet. Thats will store information
  * about image that will be send in this service. Resulting key object have toString() method that can be used to
  * create placeholder in HTML version of message for given message.
  *
@@ -80,14 +80,14 @@ public:
 	virtual Error checkImageSize(qint64 size) const = 0;
 
 	/**
-	 * @short Prepare image to be sent and create ChatImageKey for it.
+	 * @short Prepare image to be sent and create ChatImage for it.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param imageData content of image to be sent
-	 * @return ChatImageKey corresponding to given imageData
+	 * @return ChatImage corresponding to given imageData
 	 *
 	 * Call this method to prepare image to be sent to a peer.
 	 */
-	virtual ChatImageKey prepareImageToBeSent(const QByteArray &imageData) = 0;
+	virtual ChatImage prepareImageToBeSent(const QByteArray &imageData) = 0;
 
 	/**
 	 * @short Request chat image from peer.
@@ -98,27 +98,27 @@ public:
 	 * Call this method after receiving chatImageKeyReceived() if given image is accepted by user. Then wait for
 	 * chatImageAvailable() signal to get image content.
 	 */
-	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey) = 0;
+	virtual void requestChatImage(const QString &id, const ChatImage &chatImage) = 0;
 
 signals:
 	/**
 	 * @short Signal emitted when image key was received from a peer.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param id sender id
-	 * @param imageKey received key
+	 * @param chatImage received key
 	 *
 	 * After receiving this signal requestChatImage() may be called to request image data from a peer. If image data is not
 	 * needed then this signal can be safely ignored.
 	 */
-	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
 
 	/**
 	 * @short Signal emitted when image with given key was received and saved on disc.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageKey key of received image
+	 * @param chatImage key of received image
 	 * @param imageData data of received image
 	 */
-	void chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData);
+	void chatImageAvailable(const ChatImage &chatImage, const QByteArray &imageData);
 
 };
 

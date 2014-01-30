@@ -49,15 +49,7 @@ void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringImageBlo
 	if (formattedStringImageBlock->imagePath().length() != 16)
 		return;
 
-	bool ok;
-	auto imageKey = formattedStringImageBlock->imagePath().toULongLong(&ok, 16);
-	if (!ok)
-		return;
-
-	auto crc32 = static_cast<uint32_t>(imageKey >> 32);
-	auto size = static_cast<uint32_t>(imageKey & 0x0000FFFF);
-
-	emit chatImageKeyReceived(Id, ChatImageKey(size, crc32));
+	emit chatImageKeyReceived(Id, formattedStringImageBlock->image());
 }
 
 void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)

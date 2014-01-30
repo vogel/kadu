@@ -114,9 +114,9 @@ void KaduChatStyleEngine::contactActivityChanged(HtmlMessagesRenderer *renderer,
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
 }
 
-void KaduChatStyleEngine::chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImageKey &imageKey, const QString &fileName)
+void KaduChatStyleEngine::chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImage &chatImage, const QString &fileName)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(imageKey.toString()).arg(fileName));
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
 }
 
 QString KaduChatStyleEngine::isStyleValid(QString stylePath)

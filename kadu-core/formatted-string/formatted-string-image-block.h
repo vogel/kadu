@@ -23,7 +23,7 @@
 
 #include <QtCore/QString>
 
-#include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image.h"
 
 #include "exports.h"
 
@@ -46,7 +46,7 @@ class KADUAPI FormattedStringImageBlock : public FormattedString
 	Q_DISABLE_COPY(FormattedStringImageBlock);
 
 	QString ImagePath;
-	ChatImageKey ImageKey;
+	ChatImage Image;
 
 public:
 	/**
@@ -59,17 +59,17 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param imagePath path to image
 	 */
-	explicit FormattedStringImageBlock(const QString &imagePath);
+	explicit FormattedStringImageBlock(QString imagePath);
 
 	/**
 	 * @short Create FormattedStringImageBlock with image with given chat image key.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param chatImageKey chat image get of image
 	 *
-	 * Relative path of image will be generatted automatically from toString() method of passed ChatImageKey instance. This path can be invalid
+	 * Relative path of image will be generatted automatically from toString() method of passed ChatImage instance. This path can be invalid
 	 * if image was not downloaded from peer.
 	 */
-	explicit FormattedStringImageBlock(const ChatImageKey &chatImageKey);
+	explicit FormattedStringImageBlock(ChatImage image);
 
 	virtual ~FormattedStringImageBlock();
 
@@ -100,7 +100,7 @@ public:
 	 *
 	 * If chat image key was not provided at construction time then empty chat image key will be returned.
 	 */
-	ChatImageKey imageKey() const;
+	ChatImage image() const;
 
 };
 

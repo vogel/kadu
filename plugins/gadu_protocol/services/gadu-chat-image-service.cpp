@@ -52,8 +52,8 @@ void GaduChatImageService::setGaduChatService(GaduChatService *gaduChatService)
 
 	CurrentChatService = gaduChatService;
 	if (CurrentChatService)
-		connect(CurrentChatService.data(), SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
-		        this, SLOT(chatImageKeyReceivedSlot(QString,ChatImageKey)));
+		connect(CurrentChatService.data(), SIGNAL(chatImageKeyReceived(QString,ChatImage)),
+		        this, SLOT(chatImageKeyReceivedSlot(QString,ChatImage)));
 }
 
 void GaduChatImageService::setReceiveImages(bool receiveImages)
@@ -69,16 +69,16 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 	if (!Connection || !Connection.data()->hasSession())
 		return;
 
-	ChatImageKey key(e->event.image_request.size, e->event.image_request.crc32);
-	if (!ChatImages.contains(key))
+	auto image = chatImageFromSizeCrc32(e->event.image_request.size, e->event.image_request.crc32);
+	if (!ChatImages.contains(image))
 		return;
 
-	QByteArray content = ChatImages.value(key);
+	QByteArray content = ChatImages.value(image);
 	if (content.isEmpty())
 		return;
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_image_reply(writableSessionToken.rawSession(), e->event.image_request.sender, key.toString().toUtf8().constData(),
+	gg_image_reply(writableSessionToken.rawSession(), e->event.image_request.sender, image.key().toUtf8().constData(),
 			content.constData(), content.length());
 }
 
@@ -88,38 +88,54 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			.arg(e->event.image_reply.sender).arg(e->event.image_reply.size)
 			.arg(e->event.image_reply.crc32).arg(e->event.image_reply.filename)));
 
-	ChatImageKey key(e->event.image_reply.size, e->event.image_reply.crc32);
+	auto image = chatImageFromSizeCrc32(e->event.image_reply.size, e->event.image_reply.crc32);
 	QByteArray imageData(e->event.image_reply.image, e->event.image_reply.size);
 
-	if (key.isNull() || imageData.isEmpty())
+	if (image.isNull() || imageData.isEmpty())
 		return;
 
-	emit chatImageAvailable(key, imageData);
+	emit chatImageAvailable(image, imageData);
 }
 
-void GaduChatImageService::chatImageKeyReceivedSlot(const QString &id, const ChatImageKey &imageKey)
+ChatImage GaduChatImageService::chatImageFromSizeCrc32(quint32 size, quint32 crc32) const
+{
+	auto key = (static_cast<uint64_t>(crc32) << 32) | size;
+	auto stringKey = QString{"%1"}.arg(key, 16, 16);
+
+	return {stringKey, size};
+}
+
+void GaduChatImageService::chatImageKeyReceivedSlot(const QString &id, const ChatImage &chatImage)
 {
 	if (ReceiveImages)
-		emit chatImageKeyReceived(id, imageKey);
+		emit chatImageKeyReceived(id, chatImage);
 }
 
-void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKey &imageKey)
+void GaduChatImageService::requestChatImage(const QString &id, const ChatImage &chatImage)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return;
 
-	if (id.isEmpty() || imageKey.isNull())
+	if (id.isEmpty() || chatImage.key().length() != 16)
 		return;
 
+	bool ok;
+	auto imageKey = chatImage.key().toULongLong(&ok, 16);
+	if (!ok)
+		return;
+
+	auto crc32 = static_cast<uint32_t>(imageKey >> 32);
+	auto size = static_cast<uint32_t>(imageKey & 0x0000FFFF);
+
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_image_request(writableSessionToken.rawSession(), id.toUInt(), imageKey.size(), imageKey.crc32());
+	gg_image_request(writableSessionToken.rawSession(), id.toUInt(), size, crc32);
 }
 
-ChatImageKey GaduChatImageService::prepareImageToBeSent(const QByteArray &imageData)
+ChatImage GaduChatImageService::prepareImageToBeSent(const QByteArray &imageData)
 {
 	quint32 crc32 = imageData.isEmpty() ? 0 : gg_crc32(0, (const unsigned char*)imageData.constData(), imageData.length());
 
-	ChatImageKey result(imageData.size(), crc32);
+	auto result = chatImageFromSizeCrc32(imageData.size(), crc32);
 	ChatImages.insert(result, imageData);
 	return result;
 }

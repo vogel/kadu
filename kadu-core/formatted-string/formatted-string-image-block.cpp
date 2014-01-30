@@ -22,21 +22,20 @@
 
 #include "formatted-string-image-block.h"
 
-FormattedStringImageBlock::FormattedStringImageBlock() :
-		ImageKey(0, 0)
+FormattedStringImageBlock::FormattedStringImageBlock()
 {
 }
 
-FormattedStringImageBlock::FormattedStringImageBlock(const QString &imagePath) :
-		ImagePath(imagePath), ImageKey(0, 0)
+FormattedStringImageBlock::FormattedStringImageBlock(QString imagePath) :
+		ImagePath{std::move(imagePath)}, Image{imagePath, 0}
 {
 }
 
-FormattedStringImageBlock::FormattedStringImageBlock(const ChatImageKey &chatImageKey) :
-		ImageKey(chatImageKey)
+FormattedStringImageBlock::FormattedStringImageBlock(ChatImage image) :
+		Image{std::move(image)}
 {
-	if (!ImageKey.isNull())
-		ImagePath = ImageKey.toString();
+	if (!Image.isNull())
+		ImagePath = Image.key();
 }
 
 FormattedStringImageBlock::~FormattedStringImageBlock()
@@ -50,7 +49,7 @@ bool FormattedStringImageBlock::operator == (const FormattedString &compareTo)
 		return false;
 
 	return ImagePath == compareToPointer->ImagePath
-	    && ImageKey == compareToPointer->ImageKey;
+	    && Image == compareToPointer->Image;
 }
 
 void FormattedStringImageBlock::accept(FormattedStringVisitor *visitor) const
@@ -60,7 +59,7 @@ void FormattedStringImageBlock::accept(FormattedStringVisitor *visitor) const
 
 bool FormattedStringImageBlock::isEmpty() const
 {
-	return ImagePath.isEmpty() && ImageKey.isNull();
+	return ImagePath.isEmpty() && Image.isNull();
 }
 
 QString FormattedStringImageBlock::imagePath() const
@@ -68,7 +67,7 @@ QString FormattedStringImageBlock::imagePath() const
 	return ImagePath;
 }
 
-ChatImageKey FormattedStringImageBlock::imageKey() const
+ChatImage FormattedStringImageBlock::image() const
 {
-	return ImageKey;
+	return Image;
 }

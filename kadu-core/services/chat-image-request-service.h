@@ -23,7 +23,7 @@
 #include <QtCore/QPointer>
 
 #include "accounts/account.h"
-#include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image.h"
 #include "services/chat-image-request-service-configuration.h"
 
 class AccountManager;
@@ -60,14 +60,14 @@ class ChatImageRequestService : public QObject
 	QPointer<AccountManager> CurrentAccountManager;
 	QPointer<ContactManager> CurrentContactManager;
 
-	bool acceptImage(const Account &account, const QString &id, const ChatImageKey &imageKey) const;
+	bool acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const;
 
 private slots:
 	void accountRegistered(Account account);
 	void accountUnregistered(Account account);
 
-	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
-    void chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData);
+	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
+    void chatImageAvailable(const ChatImage &chatImage, const QByteArray &imageData);
 
 	void resetReceivedImageKeysCount();
 
@@ -124,7 +124,7 @@ signals:
 	 * @param imageKey key of stored image
 	 * @param fullFilePath full file path of stored image
 	 */
-	void chatImageStored(const ChatImageKey &imageKey, const QString &fullFilePath);
+	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
 
 };
 

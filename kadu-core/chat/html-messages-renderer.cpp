@@ -135,9 +135,9 @@ void HtmlMessagesRenderer::refresh()
 	ChatStylesManager::instance()->currentEngine()->refreshView(this);
 }
 
-void HtmlMessagesRenderer::chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName)
+void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	ChatStylesManager::instance()->currentEngine()->chatImageAvailable(this, imageKey, fileName);
+	ChatStylesManager::instance()->currentEngine()->chatImageAvailable(this, chatImage, fileName);
 }
 
 void HtmlMessagesRenderer::updateBackgroundsAndColors()

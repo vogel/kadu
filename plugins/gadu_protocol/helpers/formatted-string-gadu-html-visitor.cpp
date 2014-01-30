@@ -46,9 +46,8 @@ void FormattedStringGaduHtmlVisitor::visit(const FormattedStringImageBlock * con
 		return;
 
 	auto content = imageFile.readAll();
-	auto imageKey = m_chatImageService->prepareImageToBeSent(content);
+	auto image = m_chatImageService->prepareImageToBeSent(content);
 	imageFile.close();
 
-	auto name = (static_cast<uint64_t>(imageKey.crc32()) << 32) | imageKey.size();
-	append(QString{"<img name=\"%1\">"}.arg(name, 16, 16));
+	append(QString{"<img name=\"%1\">"}.arg(image.key()));
 }

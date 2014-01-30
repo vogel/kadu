@@ -48,10 +48,10 @@ void FormattedStringDomVisitor::endVisit(const CompositeFormattedString * const 
 void FormattedStringDomVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
 {
 	QString imagePath = formattedStringImageBlock->imagePath();
-	ChatImageKey imageKey = formattedStringImageBlock->imageKey();
+	ChatImage image = formattedStringImageBlock->image();
 
 	QDomElement img = Result.createElement("img");
-	img.setAttribute("id", imageKey.toString());
+	img.setAttribute("name", image.key());
 	img.setAttribute("class", "scalable");
 
 	if (QFileInfo(imagePath).isAbsolute())

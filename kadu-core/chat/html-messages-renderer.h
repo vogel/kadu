@@ -32,7 +32,7 @@
 class QWebPage;
 
 class Chat;
-class ChatImageKey;
+class ChatImage;
 class MessageRenderInfo;
 
 class HtmlMessagesRenderer : public QObject
@@ -74,7 +74,7 @@ public:
 	void setLastMessage(MessageRenderInfo *message);
 
 	void refresh();
-	void chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName);
+	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(Message message, MessageStatus status);
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);

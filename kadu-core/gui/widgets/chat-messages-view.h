@@ -30,7 +30,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "message/message.h"
 #include "protocols/protocol.h"
-#include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/services/chat-state-service.h"
 
@@ -67,7 +67,7 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 
 private slots:
 	void repaintMessages();
-	void chatImageStored(const ChatImageKey &imageKey, const QString &fullFilePath);
+	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
 	void sentMessageStatusChanged(const Message &message);
 
 protected:

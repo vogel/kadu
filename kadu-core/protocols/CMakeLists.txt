@@ -6,7 +6,7 @@ set (protocols_SRCS
 
 	services/account-service.cpp
 	services/avatar-service.cpp
-	services/chat-image-key.cpp
+	services/chat-image.cpp
 	services/chat-image-service.cpp
 	services/chat-service.cpp
 	services/chat-state-service.cpp

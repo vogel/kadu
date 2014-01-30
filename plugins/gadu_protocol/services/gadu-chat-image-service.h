@@ -28,7 +28,7 @@
 #define GADU_CHAT_IMAGE_SERVICE
 
 #include "protocols/protocol.h"
-#include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image.h"
 
 #include "protocols/services/chat-image-service.h"
 
@@ -56,7 +56,7 @@ class GaduChatImageService : public ChatImageService
 
 	static const qint64 RECOMMENDED_MAXIMUM_SIZE = 255 * 1024;
 
-	QMap<ChatImageKey, QByteArray> ChatImages;
+	QMap<ChatImage, QByteArray> ChatImages;
 
 	QPointer<GaduConnection> Connection;
 	QPointer<GaduChatService> CurrentChatService;
@@ -67,8 +67,10 @@ class GaduChatImageService : public ChatImageService
 	void handleEventImageRequest(struct gg_event *e);
 	void handleEventImageReply(struct gg_event *e);
 
+	ChatImage chatImageFromSizeCrc32(quint32 size, quint32 crc32) const;
+
 private slots:
-	void chatImageKeyReceivedSlot(const QString &id, const ChatImageKey &imageKey);
+	void chatImageKeyReceivedSlot(const QString &id, const ChatImage &chatImage);
 
 public:
 	/**
@@ -106,8 +108,8 @@ public:
 	void setReceiveImages(bool receiveImages);
 
 	virtual Error checkImageSize(qint64 size) const;
-	virtual ChatImageKey prepareImageToBeSent(const QByteArray &imageData);
-	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey);
+	virtual ChatImage prepareImageToBeSent(const QByteArray &imageData);
+	virtual void requestChatImage(const QString &id, const ChatImage &chatImage);
 
 };
 
