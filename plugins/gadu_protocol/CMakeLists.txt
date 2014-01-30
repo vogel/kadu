@@ -48,7 +48,6 @@ set (SOURCES
 
 	helpers/formatted-string-gadu-html-visitor.cpp
 	helpers/formatted-string-image-key-received-visitor.cpp
-	helpers/gadu-formatter.cpp
 	helpers/gadu-imported-contact-xml-receiver.cpp
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
