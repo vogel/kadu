@@ -22,194 +22,67 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QFormLayout>
-#include <QtGui/QIntValidator>
+#include "gadu-create-account-widget.h"
+#include "os/generic/url-opener.h"
+
 #include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QRadioButton>
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/identities-combo-box.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "identities/identity-manager.h"
-#include "protocols/protocols-manager.h"
-#include "url-handlers/url-handler-manager.h"
-
-#include "gui/windows/gadu-wait-for-account-register-window.h"
-#include "server/gadu-server-register-account.h"
-#include "gadu-account-details.h"
-#include "gadu-protocol-factory.h"
-#include "token-widget.h"
-
-#include "gadu-create-account-widget.h"
-
-GaduCreateAccountWidget::GaduCreateAccountWidget(bool showButtons, QWidget *parent) :
-		AccountCreateWidget(parent)
+GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
+		AccountCreateWidget{parent}
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	createGui(showButtons);
-	resetGui();
+	createGui();
 }
 
 GaduCreateAccountWidget::~GaduCreateAccountWidget()
 {
 }
 
-void GaduCreateAccountWidget::createGui(bool showButtons)
+void GaduCreateAccountWidget::createGui()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	auto mainLayout = new QVBoxLayout{this};
 
-	QWidget *formWidget = new QWidget(this);
-	mainLayout->addWidget(formWidget);
+	auto registerAccountLabel = new QLabel(QString("<a href='register'>%1</a>").arg(tr("Register Account")));
+	registerAccountLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	mainLayout->addWidget(registerAccountLabel);
+	connect(registerAccountLabel, SIGNAL(linkActivated(QString)), this, SLOT(registerAccount()));
 
-	QFormLayout *layout = new QFormLayout(formWidget);
+	auto remindUinLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind GG number")));
+	remindUinLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	mainLayout->addWidget(remindUinLabel);
+	connect(remindUinLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindUin()));
 
-	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
-	NewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Password") + ':', NewPassword);
-
-	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
-	ReNewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Retype Password") + ':', ReNewPassword);
-
-	RememberPassword = new QCheckBox(tr("Remember password"), this);
-	layout->addWidget(RememberPassword);
-
-	EMail = new QLineEdit(this);
-	connect(EMail, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("E-Mail Address") + ':', EMail);
-
-	IdentityCombo = new IdentitiesComboBox(this);
-	connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
-
-	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	layout->addRow(0, infoLabel);
-
-	MyTokenWidget = new TokenWidget(this);
-	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Characters") + ':', MyTokenWidget);
-
-	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	layout->addRow(0, infoLabel);
+	auto remindPasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind Password")));
+	remindPasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	mainLayout->addWidget(remindPasswordLabel);
+	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPassword()));
 
 	mainLayout->addStretch(100);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-	mainLayout->addWidget(buttons);
-
-	RegisterAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Regster Account"), this);
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
-
-	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-
-	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
-
-	if (!showButtons)
-		buttons->hide();
 }
 
-void GaduCreateAccountWidget::resetGui()
+void GaduCreateAccountWidget::registerAccount()
 {
-	NewPassword->clear();
-	ReNewPassword->clear();
-	RememberPassword->setChecked(true);
-	EMail->clear();
-	IdentityManager::instance()->removeUnused();
-	IdentityCombo->setCurrentIndex(0);
-	MyTokenWidget->setTokenValue(QString());
-	RegisterAccountButton->setEnabled(false);
-
-	simpleStateNotifier()->setState(StateNotChanged);
+	UrlOpener::openUrl("https://login.gg.pl/createGG/step1/?id=frame_1");
 }
 
-void GaduCreateAccountWidget::dataChanged()
+void GaduCreateAccountWidget::remindUin()
 {
-	bool valid = !NewPassword->text().isEmpty()
-			&& !ReNewPassword->text().isEmpty()
-			&& UrlHandlerManager::instance()->mailRegExp().exactMatch(EMail->text())
-			&& !MyTokenWidget->tokenValue().isEmpty()
-			&& IdentityCombo->currentIdentity();
+	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/?id=frame_1");
+}
 
-	RegisterAccountButton->setEnabled(valid);
-
-	if (NewPassword->text().isEmpty()
-			&& ReNewPassword->text().isEmpty()
-			&& RememberPassword->isChecked()
-			&& EMail->text().isEmpty()
-			&& 0 == IdentityCombo->currentIndex()
-			&& MyTokenWidget->tokenValue().isEmpty())
-		simpleStateNotifier()->setState(StateNotChanged);
-	else
-		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
+void GaduCreateAccountWidget::remindPassword()
+{
+	UrlOpener::openUrl("https://login.gg.pl/account/remindPassword/?id=frame_1");
 }
 
 void GaduCreateAccountWidget::apply()
 {
-	if (NewPassword->text() != ReNewPassword->text())
-	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Error data typed in required fields.\n\n"
-			"Passwords typed in both fields (\"Password\" and \"Retype Password\") "
-			"must be the same!"));
-		return;
-	}
-
-	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(EMail->text(), NewPassword->text(),
-			MyTokenWidget->tokenId(), MyTokenWidget->tokenValue());
-
-	GaduWaitForAccountRegisterWindow *window = new GaduWaitForAccountRegisterWindow(gsra);
-	connect(window, SIGNAL(uinRegistered(UinType)), this, SLOT(uinRegistered(UinType)));
-	window->exec();
 }
 
 void GaduCreateAccountWidget::cancel()
 {
-	resetGui();
-}
-
-void GaduCreateAccountWidget::uinRegistered(UinType uin)
-{
-	// in any case that token will not be valid anymore
-	MyTokenWidget->refreshToken();
-
-	if (!uin)
-	{
-		emit accountCreated(Account());
-		return;
-	}
-
-	Account gaduAccount = Account::create("gadu");
-	gaduAccount.setAccountIdentity(IdentityCombo->currentIdentity());
-	gaduAccount.setId(QString::number(uin));
-	gaduAccount.setHasPassword(true);
-	gaduAccount.setPassword(NewPassword->text());
-	gaduAccount.setRememberPassword(RememberPassword->isChecked());
-
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(gaduAccount.details());
-	if (details)
-		details->setState(StorableObject::StateNew);
-
-	resetGui(); // don't need that data anymore
-
-	emit accountCreated(gaduAccount);
 }
 
 #include "moc_gadu-create-account-widget.cpp"

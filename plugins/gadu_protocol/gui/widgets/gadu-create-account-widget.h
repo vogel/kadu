@@ -24,52 +24,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_CREATE_ACCOUNT_WIDGET_H
-#define GADU_CREATE_ACCOUNT_WIDGET_H
+#pragma once
 
-#include <QtGui/QWidget>
-
-#include "accounts/account.h"
 #include "gui/widgets/account-create-widget.h"
-#include "protocols/protocol.h"
-
-class QCheckBox;
-class QGridLayout;
-class QLineEdit;
-class QPushButton;
-
-class GaduServerRegisterAccount;
-class IdentitiesComboBox;
-class TokenWidget;
 
 class GaduCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
-	QLineEdit *NewPassword;
-	QLineEdit *ReNewPassword;
-	QCheckBox *RememberPassword;
-	QLineEdit *EMail;
-	IdentitiesComboBox *IdentityCombo;
-	TokenWidget *MyTokenWidget;
-	QPushButton *RegisterAccountButton;
-
-	void createGui(bool showButtons);
-	void resetGui();
-
-private slots:
-	void dataChanged();
-
-	void uinRegistered(UinType uin);
-
 public:
-	explicit GaduCreateAccountWidget(bool showButtons, QWidget *parent = 0);
+	explicit GaduCreateAccountWidget(QWidget *parent = nullptr);
 	virtual ~GaduCreateAccountWidget();
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+	virtual void apply() override;
+	virtual void cancel() override;
+
+private:
+	void createGui();
+
+private slots:
+	void registerAccount();
+	void remindUin();
+	void remindPassword();
 
 };
-
-#endif // GADU_CREATE_ACCOUNT_WIDGET_H

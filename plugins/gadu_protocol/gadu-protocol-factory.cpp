@@ -93,9 +93,9 @@ AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QW
 	return result;
 }
 
-AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
+AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget *parent)
 {
-	GaduCreateAccountWidget *result = new GaduCreateAccountWidget(showButtons, parent);
+	GaduCreateAccountWidget *result = new GaduCreateAccountWidget(parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
