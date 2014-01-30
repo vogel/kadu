@@ -36,7 +36,8 @@ bool ChatImageKey::isNull() const
 
 QString ChatImageKey::toString() const
 {
-	return QString("chat-image-%1-%2").arg(first).arg(second);
+	auto value = (static_cast<uint64_t>(crc32()) << 32) | size();
+	return QString{"%1"}.arg(value, 16, 16);
 }
 
 quint32 ChatImageKey::size() const

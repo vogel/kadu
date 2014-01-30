@@ -46,7 +46,18 @@ void FormattedStringImageKeyReceivedVisitor::endVisit(const CompositeFormattedSt
 
 void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
 {
-	emit chatImageKeyReceived(Id, formattedStringImageBlock->imageKey());
+	if (formattedStringImageBlock->imagePath().length() != 16)
+		return;
+
+	bool ok;
+	auto imageKey = formattedStringImageBlock->imagePath().toULongLong(&ok, 16);
+	if (!ok)
+		return;
+
+	auto crc32 = static_cast<uint32_t>(imageKey >> 32);
+	auto size = static_cast<uint32_t>(imageKey & 0x0000FFFF);
+
+	emit chatImageKeyReceived(Id, ChatImageKey(size, crc32));
 }
 
 void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)

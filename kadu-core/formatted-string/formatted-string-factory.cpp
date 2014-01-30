@@ -55,9 +55,6 @@ std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageForma
 	QString filePath = textImageFormat.name();
 	QFileInfo fileInfo(filePath);
 
-	if (!filePath.startsWith("kaduimg:///") && (!fileInfo.isAbsolute() || !fileInfo.exists() || !fileInfo.isFile()))
-		return 0;
-
 	if (CurrentImageStorageService)
 		filePath = CurrentImageStorageService.data()->storeImage(filePath);
 

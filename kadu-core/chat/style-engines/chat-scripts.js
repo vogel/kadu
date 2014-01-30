@@ -35,12 +35,12 @@ function adium_contactActivityChanged(state, message, name)
 		contactActivityChanged(state, message, name);
 }
 
-function adium_chatImageAvailable(id, src)
+function adium_chatImageAvailable(name, src)
 {
-	if (typeof(id) == 'undefined' || typeof(src) == 'undefined')
+	if (typeof(name) == 'undefined' || typeof(src) == 'undefined')
 		return;
 
-	var image = document.getElementById(id);
+	var image = document.getElementByName(name);
 	if (!image)
 		return;
 
@@ -141,12 +141,12 @@ function kadu_contactActivityChanged(state, message, name)
 		contactActivityChanged(state, message, name);
 }
 
-function kadu_chatImageAvailable(id, src)
+function kadu_chatImageAvailable(name, src)
 {
-	if (typeof(id) == 'undefined' || typeof(src) == 'undefined')
+	if (typeof(name) == 'undefined' || typeof(src) == 'undefined')
 		return;
 
-	var image = document.getElementById(id);
+	var image = document.getElementByName(name);
 	if (!image)
 		return;
 
