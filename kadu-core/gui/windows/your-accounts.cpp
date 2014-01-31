@@ -159,7 +159,6 @@ void YourAccounts::createGui()
 void YourAccounts::switchToCreateMode()
 {
 	MainAccountLabel->setText(tr("<font size='+2'><b>Create New Account</b></font>"));
-	MainAccountGroupBox->setTitle(tr("Create New Account"));
 
 	CanRegisterFilter->setEnabled(true);
 
@@ -176,7 +175,6 @@ void YourAccounts::switchToCreateMode()
 void YourAccounts::switchToAddMode()
 {
 	MainAccountLabel->setText(tr("<font size='+2'><b>Add Existing Account</b></font>"));
-	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 
 	CanRegisterFilter->setEnabled(false);
 
@@ -202,7 +200,7 @@ void YourAccounts::createAccountWidget()
 	MainAccountLabel = new QLabel();
 	newAccountLayout->addWidget(MainAccountLabel);
 
-	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), CreateAddAccountContainer);
+	QGroupBox *selectNetworkGroupbox = new QGroupBox(CreateAddAccountContainer);
 	selectNetworkGroupbox->setFlat(true);
 
 	QFormLayout *selectNetworkLayout = new QFormLayout(selectNetworkGroupbox);
