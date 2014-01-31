@@ -40,7 +40,6 @@
 #include "os/generic/url-opener.h"
 #include "protocols/protocols-manager.h"
 
-#include "server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"

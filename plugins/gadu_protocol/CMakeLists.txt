@@ -61,10 +61,6 @@ set (SOURCES
 
 	server/gadu-avatar-downloader.cpp
 	server/gadu-avatar-uploader.cpp
-	server/gadu-server-change-password.cpp
-	server/gadu-server-register-account.cpp
-	server/gadu-server-remind-password.cpp
-	server/gadu-server-unregister-account.cpp
 	server/gadu-servers-manager.cpp
 	server/gadu-writable-session-token.cpp
 	server/protocol-gadu-connection.cpp
@@ -121,10 +117,6 @@ set (MOC_SOURCES
 	server/gadu-avatar-downloader.h
 	server/gadu-avatar-uploader.h
 	server/gadu-connection.h
-	server/gadu-server-change-password.h
-	server/gadu-server-register-account.h
-	server/gadu-server-remind-password.h
-	server/gadu-server-unregister-account.h
 	server/protocol-gadu-connection.h
 
 	services/gadu-avatar-service.h
