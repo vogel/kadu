@@ -137,10 +137,7 @@ void SearchBar::setAutoVisibility(bool autoVisibility)
 
 bool SearchBar::eventFilter(QObject *object, QEvent *event)
 {
-	Q_UNUSED(object)
-	Q_ASSERT(object == SearchWidget.data());
-
-	if (QEvent::KeyPress != event->type())
+	if (QEvent::KeyPress != event->type() || object != SearchWidget.data())
 		return false;
 
 	QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
