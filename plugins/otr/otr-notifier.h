@@ -25,8 +25,10 @@
 #define OTR_NOTIFIER_H
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 class Account;
+class ChatWidgetRepository;
 class Contact;
 class NotifyEvent;
 
@@ -35,31 +37,23 @@ class OtrNotifier : public QObject
 	Q_OBJECT
 
 	static QString OtrNotifyTopic;
-	static QString TryingToStartSessionNotifyTopic;
-	static QString TryingToRefreshSessionNotifyTopic;
-	static QString PeerClosedSessionNotifyTopic;
-	static QString GoneSecureNotifyTopic;
-	static QString GoneInsecureNotifyTopic;
-	static QString StillSecureNotifyTopic;
 	static QString CreatePrivateKeyStartedNotifyTopic;
 	static QString CreatePrivateKeyFinishedNotifyTopic;
 
+	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
+
 	QScopedPointer<NotifyEvent> OtrNotifyEvent;
-	QScopedPointer<NotifyEvent> TryingToStartSessionNotifyEvent;
-	QScopedPointer<NotifyEvent> TryingToRefreshSessionNotifyEvent;
-	QScopedPointer<NotifyEvent> PeerClosedSessionNotifyEvent;
-	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
-	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
-	QScopedPointer<NotifyEvent> StillSecureNotifyEvent;
 	QScopedPointer<NotifyEvent> CreatePrivateKeyStartedNotifyEvent;
 	QScopedPointer<NotifyEvent> CreatePrivateKeyFinishedNotifyEvent;
 
 	void notify(const QString &topic, const Account &account, const QString &message);
-	void notify(const QString &topic, const Contact &contact, const QString &message);
+	void notify(const Contact &contact, const QString &message);
 
 public:
 	explicit OtrNotifier(QObject *parent = 0);
 	virtual ~OtrNotifier();
+
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	QList<NotifyEvent *> notifyEvents();
 

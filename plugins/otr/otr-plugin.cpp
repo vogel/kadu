@@ -364,6 +364,8 @@ bool OtrPlugin::init(bool firstLoad)
 
 	MessageService->setMessageManager(MessageManager::instance());
 
+	Notifier->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+
 	OpDataFactory->setErrorMessageService(ErrorMessageService.data());
 	OpDataFactory->setFingerprintService(FingerprintService.data());
 	OpDataFactory->setInstanceTagService(InstanceTagService.data());
