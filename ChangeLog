@@ -3,6 +3,7 @@
 * gadu: #2728 fixed: replace code for registering account/password reminding with WWW calls (Vogel)
 * gadu: require libgadu 1.12.x (Vogel)
 * sms: #2675 fixed: new code for T-Mobile gateway (Vogel)
+* history: #2672 fixed: crash in history (Vogel)
 
 +++ version 1.0-alpha3
 * gadu: #2710 fixed: sending images works again (Vogel)

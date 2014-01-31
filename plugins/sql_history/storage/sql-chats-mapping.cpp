@@ -35,7 +35,7 @@
 #include "sql-chats-mapping.h"
 
 SqlChatsMapping::SqlChatsMapping(const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, SqlContactsMapping *contactsMapping, QObject *parent) :
-		QObject(parent), Database(database), AccountsMapping(accountsMapping), ContactsMapping(contactsMapping)
+		QObject(parent), Database(database), Mutex(QMutex::Recursive), AccountsMapping(accountsMapping), ContactsMapping(contactsMapping)
 {
 	Q_ASSERT(AccountsMapping);
 	Q_ASSERT(ContactsMapping);
@@ -51,6 +51,8 @@ SqlChatsMapping::~SqlChatsMapping()
 
 void SqlChatsMapping::chatUpdated(const Chat &chat)
 {
+	QMutexLocker locker(&Mutex);
+
 	if (idByChat(chat, false) <= 0)
 		return;
 
@@ -64,12 +66,16 @@ void SqlChatsMapping::chatUpdated(const Chat &chat)
 
 void SqlChatsMapping::addMapping(int id, const Chat &chat)
 {
+	QMutexLocker locker(&Mutex);
+
 	chat.addProperty("sql_history:id", id, CustomProperties::NonStorable);
 	ChatMapping.insert(id, chat);
 }
 
 void SqlChatsMapping::loadMappingsFromDatabase()
 {
+	QMutexLocker locker(&Mutex);
+
 	QSqlQuery query(Database);
 	query.prepare("SELECT id, account_id, chat FROM kadu_chats");
 
@@ -93,6 +99,8 @@ void SqlChatsMapping::loadMappingsFromDatabase()
 
 Chat SqlChatsMapping::chatById(int sqlId) const
 {
+	QMutexLocker locker(&Mutex);
+
 	if (ChatMapping.contains(sqlId))
 		return ChatMapping.value(sqlId);
 	else
@@ -101,6 +109,8 @@ Chat SqlChatsMapping::chatById(int sqlId) const
 
 int SqlChatsMapping::idByChat(const Chat &chat, bool create)
 {
+	QMutexLocker locker(&Mutex);
+
 	int id = chat.property("sql_history:id", 0).toInt();
 	if (!create || id > 0)
 		return id;
@@ -123,6 +133,8 @@ int SqlChatsMapping::idByChat(const Chat &chat, bool create)
 
 void SqlChatsMapping::removeChat(const Chat &chat)
 {
+	QMutexLocker locker(&Mutex);
+
 	int id = idByChat(chat, false);
 	chat.removeProperty("sql_history:id");
 
@@ -132,6 +144,8 @@ void SqlChatsMapping::removeChat(const Chat &chat)
 
 const QMap<int, Chat> & SqlChatsMapping::mapping() const
 {
+	QMutexLocker locker(&Mutex);
+
 	return ChatMapping;
 }
 

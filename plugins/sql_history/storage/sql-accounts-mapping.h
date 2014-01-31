@@ -21,6 +21,7 @@
 #define SQL_ACCOUNTS_MAPPING_H
 
 #include <QtCore/QMap>
+#include <QtCore/QMutex>
 #include <QtCore/QObject>
 #include <QtSql/QSqlDatabase>
 
@@ -56,6 +57,7 @@ class SqlAccountsMapping : public QObject, AccountsAwareObject
 	Q_OBJECT
 
 	const QSqlDatabase &Database;
+	mutable QMutex Mutex;
 	QMap<int, Account> AccountMapping;
 
 	/**

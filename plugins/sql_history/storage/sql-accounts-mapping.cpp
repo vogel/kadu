@@ -26,7 +26,7 @@
 #include "sql-accounts-mapping.h"
 
 SqlAccountsMapping::SqlAccountsMapping(const QSqlDatabase &database, QObject *parent) :
-		QObject(parent), Database(database)
+		QObject(parent), Database(database), Mutex(QMutex::Recursive)
 {
 	loadMappingsFromDatabase();
 
@@ -41,6 +41,8 @@ SqlAccountsMapping::~SqlAccountsMapping()
 
 void SqlAccountsMapping::accountAdded(Account account)
 {
+	QMutexLocker locker(&Mutex);
+
 	if (idByAccount(account) > 0)
 		return;
 
@@ -55,6 +57,8 @@ void SqlAccountsMapping::accountAdded(Account account)
 
 void SqlAccountsMapping::accountRemoved(Account account)
 {
+	QMutexLocker locker(&Mutex);
+
 	if (idByAccount(account) <= 0)
 		return;
 
@@ -66,6 +70,8 @@ void SqlAccountsMapping::accountRemoved(Account account)
 
 void SqlAccountsMapping::accountUpdated(const Account &account)
 {
+	QMutexLocker locker(&Mutex);
+
 	if (idByAccount(account) <= 0)
 		return;
 
@@ -79,12 +85,16 @@ void SqlAccountsMapping::accountUpdated(const Account &account)
 
 void SqlAccountsMapping::addMapping(int id, const Account &account)
 {
+	QMutexLocker locker(&Mutex);
+
 	account.addProperty("sql_history:id", id, CustomProperties::NonStorable);
 	AccountMapping.insert(id, account);
 }
 
 void SqlAccountsMapping::loadMappingsFromDatabase()
 {
+	QMutexLocker locker(&Mutex);
+
 	QSqlQuery query(Database);
 	query.prepare("SELECT id, protocol, account FROM kadu_accounts");
 
@@ -108,6 +118,8 @@ void SqlAccountsMapping::loadMappingsFromDatabase()
 
 Account SqlAccountsMapping::accountById(int sqlId) const
 {
+	QMutexLocker locker(&Mutex);
+
 	if (AccountMapping.contains(sqlId))
 		return AccountMapping.value(sqlId);
 	else

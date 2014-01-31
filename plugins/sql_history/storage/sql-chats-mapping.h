@@ -21,6 +21,7 @@
 #define SQL_CHATS_MAPPING_H
 
 #include <QtCore/QMap>
+#include <QtCore/QMutex>
 #include <QtCore/QObject>
 #include <QtSql/QSqlDatabase>
 
@@ -60,6 +61,7 @@ class SqlChatsMapping : public QObject
 	Q_OBJECT
 
 	const QSqlDatabase &Database;
+	mutable QMutex Mutex;
 	SqlAccountsMapping *AccountsMapping;
 	SqlContactsMapping *ContactsMapping;
 	QMap<int, Chat> ChatMapping;
