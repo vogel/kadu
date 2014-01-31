@@ -66,23 +66,28 @@ EraGatewaySmsSender.prototype = {
 		}
 
 		var gateway = this.callbackObject.readFromConfiguration("SMS", "EraGateway", "Sponsored");
+		var getUrl = "http://www.eraomnix.pl/msg/api/do/tinker/";
+		var login = this.callbackObject.readFromConfiguration("SMS", "EraGateway_" + gateway + "_User", "");
+		var password = this.callbackObject.readFromConfiguration("SMS", "EraGateway_" + gateway + "_Password", "");
 
-		var postUrl = "http://www.eraomnix.pl/msg/api/do/tinker/";
+		if (login == "" || password == "") {
+			this.failure(translator.tr("Login or password not provided"));
+			return;
+		}
 
-		var postData =
-			"&message=" + signature + ":" + content +
-			"&password=" + this.callbackObject.readFromConfiguration("SMS", "EraGateway_" + gateway + "_Password", "") +
-			"&login=" + this.callbackObject.readFromConfiguration("SMS", "EraGateway_" + gateway + "_User", "") +
-			"&success=OK&failure=ERROR" +
+		var getData =
+			"?number=" + encodeURIComponent(recipient) +
+			"&message=" + encodeURIComponent(signature + ":" + content) +
+			"&login=" + encodeURIComponent(login) +
+			"&password=" + encodeURIComponent(password) +
+			"&failure=http://www.t-mobile.pl&success=http://rozrywka.t-mobile.pl" +
 			"&mms=false";
 
 		if (gateway == "Sponsored") {
-			postUrl += "sponsored";
-			postData +=	"&number=" + recipient;
+			getUrl += "sponsored";
 		}
 		else if (gateway == "OmnixMultimedia") {
-			postUrl += "omnix"
-			postData +=	"&numbers=" + recipient;
+			getUrl += "omnix"
 		}
 		else {
 			this.failure("Invalid gateway type");
@@ -90,8 +95,7 @@ EraGatewaySmsSender.prototype = {
 		}
 
 		network.setUtf8(false);
-		network.setHeader("Content-Type", "application/x-www-form-urlencoded");
-		this.reply = network.post(postUrl, postData);
+		this.reply = network.get(getUrl + getData);
 		this.reply.finished.connect(this, this.smsSent);
 	},
 
@@ -113,14 +117,16 @@ EraGatewaySmsSender.prototype = {
 
 	smsSent: function() {
 		var content = this.reply.redirect();
-		if (content.indexOf("error?") >= 0) {
-			var message = translator.tr("An error occured");
-			if (content.match(/error\?X-ERA-error=([0-9]+)/)) {
+		if (content.match(/X-ERA-error=([0-9]+)/)) {
+			var errorCode = RegExp.$1;
+			if (errorCode != 0) {
+				var message = translator.tr("An error occured");
 				message += ": " + this.errorToString(RegExp.$1);
+				this.failure(message);
 			}
-			this.failure(message);
-		} else if (content.indexOf("ok?") >= 0)
-			this.finished();
+			else
+				this.finished();
+		}
 		else
 			this.failure(translator.tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 	}
