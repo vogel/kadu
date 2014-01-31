@@ -91,9 +91,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 private slots:
 	virtual void removeAccount();
 	void dataChanged();
-	void remindPasssword();
-	void changePasssword();
-	void passwordChanged(const QString &newPassword);
+	void remindPassword();
 	void showStatusToEveryoneToggled(bool toggled);
 	void stateChangedSlot(ConfigurationValueState state);
 
