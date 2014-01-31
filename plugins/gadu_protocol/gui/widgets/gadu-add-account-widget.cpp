@@ -37,9 +37,9 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
+#include "os/generic/url-opener.h"
 #include "protocols/protocols-manager.h"
 
-#include "gui/windows/gadu-remind-password-window.h"
 #include "server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
@@ -85,10 +85,10 @@ void GaduAddAccountWidget::createGui(bool showButtons)
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	layout->addRow(0, RememberPassword);
 
-	RemindPassword = new QLabel();
-	RemindPassword->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
-	layout->addRow(0, RemindPassword);
-	connect(RemindPassword, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
+	auto remindPasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind Password")));
+	remindPasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	layout->addRow(0, remindPasswordLabel);
+	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPassword()));
 
 	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
@@ -155,17 +155,6 @@ void GaduAddAccountWidget::cancel()
 
 void GaduAddAccountWidget::dataChanged()
 {
-	if (AccountId->text().isEmpty())
-	{
-		RemindPassword->setText(tr("Forgot Your Password?"));
-		RemindPassword->setEnabled(false);
-	}
-	else
-	{
-		RemindPassword->setText(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
-		RemindPassword->setEnabled(true);
-	}
-
 	bool valid = !AccountId->text().isEmpty()
 			&& !AccountPassword->text().isEmpty()
 			&& !AccountManager::instance()->byId("gadu", AccountId->text())
@@ -182,12 +171,9 @@ void GaduAddAccountWidget::dataChanged()
 		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
-void GaduAddAccountWidget::remindPasssword()
+void GaduAddAccountWidget::remindPassword()
 {
-	bool ok;
-	UinType uin = AccountId->text().toUInt(&ok);
-	if (ok)
-		(new GaduRemindPasswordWindow(uin))->show();
+	UrlOpener::openUrl("https://login.gg.pl/account/remindPassword/?id=frame_1");
 }
 
 #include "moc_gadu-add-account-widget.cpp"
