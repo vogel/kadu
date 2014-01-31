@@ -54,7 +54,6 @@
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
 
-#include "gui/windows/gadu-unregister-account-window.h"
 #include "services/gadu-contact-list-service.h"
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
@@ -458,7 +457,6 @@ void GaduEditAccountWidget::removeAccount()
 				.arg(account().accountIdentity().name())
 				.arg(account().id()));
 	dialog->addButton(QMessageBox::Yes, tr("Remove account"));
-	dialog->addButton(QMessageBox::YesToAll, tr("Remove account and unregister from server"));
 	dialog->addButton(QMessageBox::Cancel, tr("Cancel"));
 	dialog->setDefaultButton(QMessageBox::Cancel);
 	int decision = dialog->exec();
@@ -468,8 +466,6 @@ void GaduEditAccountWidget::removeAccount()
 		AccountManager::instance()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
-	else if (decision == QMessageBox::YesToAll)
-		(new GaduUnregisterAccountWindow(account()))->show();
 }
 
 void GaduEditAccountWidget::remindUin()

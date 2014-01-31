@@ -40,8 +40,6 @@ set (SOURCES
 	gui/widgets/gadu-contact-personal-info-widget.cpp
 	gui/widgets/gadu-edit-account-widget.cpp
 	gui/widgets/gadu-personal-info-widget.cpp
-	gui/widgets/token-widget.cpp
-	gui/windows/gadu-unregister-account-window.cpp
 
 	helpers/formatted-string-gadu-html-visitor.cpp
 	helpers/formatted-string-image-key-received-visitor.cpp
@@ -68,7 +66,6 @@ set (SOURCES
 	server/gadu-server-remind-password.cpp
 	server/gadu-server-unregister-account.cpp
 	server/gadu-servers-manager.cpp
-	server/gadu-token-fetcher.cpp
 	server/gadu-writable-session-token.cpp
 	server/protocol-gadu-connection.cpp
 
@@ -112,8 +109,6 @@ set (MOC_SOURCES
 	gui/widgets/gadu-create-account-widget.h
 	gui/widgets/gadu-edit-account-widget.h
 	gui/widgets/gadu-personal-info-widget.h
-	gui/widgets/token-widget.h
-	gui/windows/gadu-unregister-account-window.h
 
 	helpers/formatted-string-image-key-received-visitor.h
 	helpers/gadu-importer.h
@@ -130,7 +125,6 @@ set (MOC_SOURCES
 	server/gadu-server-register-account.h
 	server/gadu-server-remind-password.h
 	server/gadu-server-unregister-account.h
-	server/gadu-token-fetcher.h
 	server/protocol-gadu-connection.h
 
 	services/gadu-avatar-service.h

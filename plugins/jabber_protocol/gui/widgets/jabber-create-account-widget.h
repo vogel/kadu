@@ -46,7 +46,6 @@ class QPushButton;
 
 class ChooseIdentityWidget;
 class JabberServerRegisterAccount;
-class TokenWidget;
 
 class JabberCreateAccountWidget : public AccountCreateWidget
 {

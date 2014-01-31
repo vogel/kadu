@@ -44,7 +44,6 @@
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
-#include "token-widget.h"
 
 #include "gadu-add-account-widget.h"
 
