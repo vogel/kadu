@@ -49,32 +49,12 @@ void GaduCreateAccountWidget::createGui()
 	mainLayout->addWidget(registerAccountLabel);
 	connect(registerAccountLabel, SIGNAL(linkActivated(QString)), this, SLOT(registerAccount()));
 
-	auto remindUinLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind GG number")));
-	remindUinLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
-	mainLayout->addWidget(remindUinLabel);
-	connect(remindUinLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindUin()));
-
-	auto remindPasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind Password")));
-	remindPasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
-	mainLayout->addWidget(remindPasswordLabel);
-	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPassword()));
-
 	mainLayout->addStretch(100);
 }
 
 void GaduCreateAccountWidget::registerAccount()
 {
 	UrlOpener::openUrl("https://login.gg.pl/createGG/step1/?id=frame_1");
-}
-
-void GaduCreateAccountWidget::remindUin()
-{
-	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/?id=frame_1");
-}
-
-void GaduCreateAccountWidget::remindPassword()
-{
-	UrlOpener::openUrl("https://login.gg.pl/account/remindPassword/?id=frame_1");
 }
 
 void GaduCreateAccountWidget::apply()

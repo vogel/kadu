@@ -45,7 +45,5 @@ private:
 
 private slots:
 	void registerAccount();
-	void remindUin();
-	void remindPassword();
 
 };

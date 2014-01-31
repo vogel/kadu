@@ -85,6 +85,11 @@ void GaduAddAccountWidget::createGui(bool showButtons)
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	layout->addRow(0, RememberPassword);
 
+	auto remindUinLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind GG number")));
+	remindUinLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	layout->addRow(0, remindUinLabel);
+	connect(remindUinLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindUin()));
+
 	auto remindPasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind Password")));
 	remindPasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
 	layout->addRow(0, remindPasswordLabel);
@@ -169,6 +174,11 @@ void GaduAddAccountWidget::dataChanged()
 		simpleStateNotifier()->setState(StateNotChanged);
 	else
 		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
+}
+
+void GaduAddAccountWidget::remindUin()
+{
+	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/?id=frame_1");
 }
 
 void GaduAddAccountWidget::remindPassword()

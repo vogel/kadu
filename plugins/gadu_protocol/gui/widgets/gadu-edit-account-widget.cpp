@@ -137,6 +137,11 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	connect(RememberPassword, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 
+	auto remindUinLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind GG number")));
+	remindUinLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	formLayout->addRow(0, remindUinLabel);
+	connect(remindUinLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindUin()));
+
 	auto remindPasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Remind Password")));
 	remindPasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
 	formLayout->addRow(0, remindPasswordLabel);
@@ -465,6 +470,11 @@ void GaduEditAccountWidget::removeAccount()
 	}
 	else if (decision == QMessageBox::YesToAll)
 		(new GaduUnregisterAccountWindow(account()))->show();
+}
+
+void GaduEditAccountWidget::remindUin()
+{
+	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/?id=frame_1");
 }
 
 void GaduEditAccountWidget::remindPassword()
