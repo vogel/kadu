@@ -246,7 +246,7 @@ AccountCreateWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *prot
 		Q_ASSERT(widget);
 
 		CreateWidgets.insert(protocol, widget);
-		connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		connect(widget, SIGNAL(accountCreated(bool,Account)), this, SLOT(accountCreated(bool,Account)));
 		CreateAddStack->addWidget(widget);
 
 		return widget;
@@ -266,7 +266,7 @@ AccountAddWidget * YourAccounts::getAccountAddWidget(ProtocolFactory *protocol)
 		Q_ASSERT(widget);
 
 		AddWidgets.insert(protocol, widget);
-		connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		connect(widget, SIGNAL(accountCreated(bool,Account)), this, SLOT(accountCreated(bool,Account)));
 		CreateAddStack->addWidget(widget);
 
 		return widget;
@@ -423,9 +423,9 @@ bool YourAccounts::canChangeWidget()
 	return true;
 }
 
-void YourAccounts::accountCreated(Account account)
+void YourAccounts::accountCreated(bool ok, Account account)
 {
-	if (!account)
+	if (!account || !ok)
 		return;
 
 	AccountManager::instance()->addItem(account);

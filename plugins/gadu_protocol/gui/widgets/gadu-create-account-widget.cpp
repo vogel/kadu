@@ -23,6 +23,8 @@
  */
 
 #include "gadu-create-account-widget.h"
+
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "os/generic/url-opener.h"
 
 #include <QtGui/QLabel>
@@ -32,6 +34,7 @@ GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
 		AccountCreateWidget{parent}
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	simpleStateNotifier()->setState(StateChangedDataValid); // always OK
 
 	createGui();
 }
@@ -59,6 +62,7 @@ void GaduCreateAccountWidget::registerAccount()
 
 void GaduCreateAccountWidget::apply()
 {
+	emit accountCreated(true, {});
 }
 
 void GaduCreateAccountWidget::cancel()

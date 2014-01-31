@@ -39,7 +39,7 @@ class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 	void createGui();
 
 private slots:
-	void accountCreated(Account account);
+	void accountCreated(bool ok, Account account);
 
 public:
 	explicit ConfigWizardSetUpAccountPage(QWidget *parent = 0);

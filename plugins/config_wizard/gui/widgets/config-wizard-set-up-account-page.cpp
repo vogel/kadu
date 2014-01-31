@@ -76,7 +76,7 @@ void ConfigWizardSetUpAccountPage::initializePage()
 			connect(AccountWidget.data()->stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SIGNAL(completeChanged()));
 		// NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
 		// but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
-		connect(AccountWidget.data(), SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		connect(AccountWidget.data(), SIGNAL(accountCreated(bool,Account)), this, SLOT(accountCreated(bool,Account)));
 		// Same as above, window() is QWizard.
 		connect(AccountWidget.data(), SIGNAL(destroyed()), window(), SLOT(back()));
 	}
@@ -106,16 +106,19 @@ bool ConfigWizardSetUpAccountPage::validatePage()
 	return AccountSuccessfullyCreated;
 }
 
-void ConfigWizardSetUpAccountPage::accountCreated(Account account)
+void ConfigWizardSetUpAccountPage::accountCreated(bool ok, Account account)
 {
-	if (!account)
+	if (!ok)
 	{
 		AccountSuccessfullyCreated = false;
 		return;
 	}
 
-	AccountManager::instance()->addItem(account);
-	account.accountContact().setOwnerBuddy(Core::instance()->myself());
+	if (account) // in case of gadu-gadu ok can be true but account can be null
+	{
+		AccountManager::instance()->addItem(account);
+		account.accountContact().setOwnerBuddy(Core::instance()->myself());
+	}
 
 	AccountSuccessfullyCreated = true;
 
