@@ -34,7 +34,6 @@
 
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
-#include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
@@ -93,11 +92,9 @@ AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QW
 	return result;
 }
 
-AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget *parent)
+AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget *)
 {
-	GaduCreateAccountWidget *result = new GaduCreateAccountWidget(parent);
-	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
-	return result;
+	return nullptr;
 }
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
@@ -121,6 +118,11 @@ QValidator::State GaduProtocolFactory::validateId(QString id)
 {
 	int pos = 0;
 	return GaduIdValidator::instance()->validate(id, pos);
+}
+
+bool GaduProtocolFactory::canRegister()
+{
+	return false;
 }
 
 QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)

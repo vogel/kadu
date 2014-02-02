@@ -70,7 +70,7 @@ public:
 	virtual StatusAdapter * statusAdapter() = 0;
 	virtual QString idLabel() = 0;
 	virtual QValidator::State validateId(QString id) = 0;
-	virtual bool canRegister() { return true; }
+	virtual bool canRegister() = 0;
 	virtual bool canRemoveAvatar() { return true; } // this is so lame for gadu-gadu, so so lame ...
 
 	virtual QString name() = 0;

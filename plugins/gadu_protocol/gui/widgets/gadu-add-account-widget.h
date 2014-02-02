@@ -51,6 +51,7 @@ class GaduAddAccountWidget : public AccountAddWidget
 
 private slots:
 	void dataChanged();
+	void registerAccount();
 	void remindUin();
 	void remindPassword();
 

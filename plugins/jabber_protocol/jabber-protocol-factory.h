@@ -58,6 +58,7 @@ public:
 	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter; }
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
+	virtual bool canRegister();
 	virtual bool allowChangeServer();
 	virtual QString defaultServer();
 	virtual QString whatIsMyUsername() { return QString(); }

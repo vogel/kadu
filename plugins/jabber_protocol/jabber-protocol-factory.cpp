@@ -124,6 +124,11 @@ QValidator::State JabberProtocolFactory::validateId(QString id)
 	return JabberIdValidator::instance()->validate(id, pos);
 }
 
+bool JabberProtocolFactory::canRegister()
+{
+	return true;
+}
+
 bool JabberProtocolFactory::allowChangeServer()
 {
 	return true;

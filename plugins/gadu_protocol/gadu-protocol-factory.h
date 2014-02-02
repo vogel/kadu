@@ -59,6 +59,7 @@ public:
 	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter; }
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
+	virtual bool canRegister();
 	virtual bool canRemoveAvatar() { return false; } // this is so lame for gadu-gadu, so so lame ...
 
 	virtual QString name() { return "gadu"; }
