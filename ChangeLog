@@ -4,6 +4,7 @@
 * gadu: require libgadu 1.12.x (Vogel)
 * sms: #2675 fixed: new code for T-Mobile gateway (Vogel)
 * history: #2672 fixed: crash in history (Vogel)
+* history: #2745 implemented: enter in query field performs search (Vogel)
 
 +++ version 1.0-alpha3
 * gadu: #2710 fixed: sending images works again (Vogel)

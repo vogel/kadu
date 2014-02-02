@@ -82,6 +82,8 @@ void SearchTab::createGui()
 	Query->setMinimumWidth(200);
 	queryFormLayout->addRow(tr("Search for:"), Query);
 
+	connect(Query, SIGNAL(returnPressed()), this, SLOT(performSearch()));
+
 	SearchInChats = new QRadioButton(tr("Chats"), queryFormWidget);
 	SearchInChats->setChecked(true);
 	SelectChat = new HistoryTalkableComboBox(queryFormWidget);
