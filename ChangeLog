@@ -1,3 +1,5 @@
++++ version 1.0-alpha5
+
 +++ version 1.0-alpha4
 * gadu: #2730 implemented: image sending is done using new version of protocol (Vogel)
 * gadu: #2728 fixed: replace code for registering account/password reminding with WWW calls (Vogel)
