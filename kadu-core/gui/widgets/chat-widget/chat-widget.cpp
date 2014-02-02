@@ -480,7 +480,7 @@ void ChatWidget::appendMessages(const QVector<Message> &messages)
 	foreach (const Message &message, messages)
 	{
 		messageRenderInfos.append(new MessageRenderInfo(message));
-		unread = unread || message.status() == MessageStatusReceived;
+		unread = unread || message.type() == MessageTypeReceived || message.type() == MessageTypeSystem;
 	}
 
 	MessagesView->appendMessages(messageRenderInfos);
@@ -492,7 +492,7 @@ void ChatWidget::appendMessage(const Message &message)
 {
 	MessagesView->appendMessage(new MessageRenderInfo(message));
 
-	if (message.type() != MessageTypeReceived)
+	if (message.type() != MessageTypeReceived && message.type() != MessageTypeSystem)
 		return;
 
 	LastReceivedMessageTime = QDateTime::currentDateTime();
@@ -513,7 +513,6 @@ void ChatWidget::appendSystemMessage(std::unique_ptr<FormattedString> &&content)
 	message.setContent(std::move(content));
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
-	message.setStatus(MessageStatusReceived);
 
 	MessagesView->appendMessage(message);
 }
@@ -830,7 +829,6 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 		message.setMessageChat(CurrentChat);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
-		message.setStatus(MessageStatusReceived);
 		message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(msg));
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());

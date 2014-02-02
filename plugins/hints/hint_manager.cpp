@@ -330,10 +330,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 			{
 				auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(hint->chat());
 				foreach (const Message &message, unreadMessages)
-				{
-					message.setStatus(MessageStatusRead);
 					Core::instance()->unreadMessageRepository()->removeUnreadMessage(message);
-				}
 			}
 
 			hint->discardNotification();

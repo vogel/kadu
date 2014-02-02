@@ -119,7 +119,6 @@ Message MessageManager::createOutgoingMessage(const Chat &chat, std::unique_ptr<
 	message.setMessageChat(chat);
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
-	message.setStatus(MessageStatusSent);
 	message.setContent(std::move(content));
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());

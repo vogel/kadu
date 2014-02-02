@@ -225,7 +225,6 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	message.setMessageChat(chat);
 	message.setType(type);
 	message.setMessageSender(sender);
-	message.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
 	message.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	message.setReceiveDate(QDateTime::currentDateTime());
 

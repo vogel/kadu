@@ -163,9 +163,7 @@ void UnreadMessageRepository::markMessagesAsRead(const QVector<Message> &message
 	for (const auto &message : messages)
 		if (m_unreadMessages.removeAll(message) > 0)
 		{
-			message.setStatus(MessageStatusRead);
 			message.data()->removeFromStorage();
-
 			emit unreadMessageRemoved(message);
 		}
 }

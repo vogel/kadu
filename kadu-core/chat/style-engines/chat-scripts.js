@@ -2,9 +2,6 @@
 
 // MessageStatus enum vaules identical with those defined in kadu-core/chat/message/message-common.h
 StatusUnknown = 0;
-StatusReceived = 1;
-StatusRead = 2;
-StatusSent = 3;
 StatusDelivered = 4;
 StatusWontDeliver = 5;
 
