@@ -62,7 +62,6 @@ public:
 	KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)
 	KaduSharedBase_Property(MessageStatus, status, Status)
 	KaduSharedBase_Property(MessageType, type, Type)
-	KaduSharedBase_PropertyBool(Pending)
 	KaduSharedBase_PropertyCRW(QString, id, Id)
 
 };

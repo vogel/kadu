@@ -56,7 +56,7 @@ MessageShared * MessageShared::loadFromStorage(const std::shared_ptr<StoragePoin
 }
 
 MessageShared::MessageShared(const QUuid &uuid) :
-		Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown), Pending(false)
+		Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown)
 {
 	MessageChat = new Chat();
 	MessageSender = new Contact();
@@ -104,7 +104,6 @@ void MessageShared::load()
 	SendDate = loadValue<QDateTime>("SendDate");
 	Status = (MessageStatus)loadValue<int>("Status");
 	Type = (MessageType)loadValue<int>("Type");
-	Pending = loadValue<bool>("Pending");
 	Id = loadValue<QString>("Id");
 }
 
@@ -122,7 +121,6 @@ void MessageShared::store()
 	storeValue("SendDate", SendDate);
 	storeValue("Status", (int)Status);
 	storeValue("Type", (int)Type);
-	storeValue("Pending", Pending);
 	storeValue("Id", Id);
 }
 
@@ -134,8 +132,7 @@ bool MessageShared::shouldStore()
 	// all other messages are stored by history plugin
 	return UuidStorableObject::shouldStore()
 			&& !MessageSender->uuid().isNull()
-			&& !MessageChat->uuid().isNull()
-			&& Pending;
+			&& !MessageChat->uuid().isNull();
 }
 
 void MessageShared::setStatus(MessageStatus status)

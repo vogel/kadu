@@ -52,7 +52,6 @@ class MessageShared : public QObject, public Shared
 	QDateTime SendDate;
 	MessageStatus Status;
 	MessageType Type;
-	bool Pending;
 	QString Id;
 
 protected:
@@ -85,7 +84,6 @@ public:
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)
 	KaduShared_PropertyRead(MessageStatus, status, Status)
 	KaduShared_Property(MessageType, type, Type)
-	KaduShared_PropertyBool(Pending)
 	KaduShared_Property(const QString &, id, Id)
 
 signals:

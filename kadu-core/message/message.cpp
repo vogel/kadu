@@ -87,5 +87,4 @@ KaduSharedBase_PropertyDefCRW(Message, QDateTime, receiveDate, ReceiveDate, QDat
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, sendDate, SendDate, QDateTime())
 KaduSharedBase_PropertyDef(Message, MessageStatus, status, Status, MessageStatusUnknown)
 KaduSharedBase_PropertyDef(Message, MessageType, type, Type, MessageTypeUnknown)
-KaduSharedBase_PropertyBoolDef(Message, Pending, false)
 KaduSharedBase_PropertyDefCRW(Message, QString, id, Id, QString())

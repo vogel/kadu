@@ -109,7 +109,6 @@ void UnreadMessageRepository::addUnreadMessage(const Message &message)
 	// todo: rethink this one
 	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
-	message.setPending(true);
 	m_unreadMessages.append(message);
 
 	emit unreadMessageAdded(message);
@@ -118,7 +117,6 @@ void UnreadMessageRepository::addUnreadMessage(const Message &message)
 void UnreadMessageRepository::removeUnreadMessage(const Message &message)
 {
 	m_unreadMessages.removeAll(message);
-	message.setPending(false);
 	message.data()->removeFromStorage();
 
 	emit unreadMessageRemoved(message);
@@ -166,7 +164,6 @@ void UnreadMessageRepository::markMessagesAsRead(const QVector<Message> &message
 		if (m_unreadMessages.removeAll(message) > 0)
 		{
 			message.setStatus(MessageStatusRead);
-			message.setPending(false);
 			message.data()->removeFromStorage();
 
 			emit unreadMessageRemoved(message);
