@@ -68,12 +68,12 @@ QVector<QString> PluginActivationService::activatePluginWithDependencies(const Q
 		{
 			auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(pluginName).provides());
 			if (!conflict.isEmpty())
-				throw PluginActivationErrorException(pluginName, tr("Plugin %1 conflicts with: %2").arg(pluginName, conflict));
+				throw PluginActivationErrorException(plugin, tr("Plugin %1 conflicts with: %2").arg(plugin, conflict));
 		}
 
 		for (auto plugin : withDependencies)
 		{
-			activatePlugin(pluginName, PluginState::New == m_pluginStateService->pluginState(pluginName));
+			activatePlugin(plugin, PluginState::New == m_pluginStateService->pluginState(plugin));
 			result.append(plugin);
 		}
 	}
