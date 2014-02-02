@@ -153,7 +153,7 @@ void GaduAddAccountWidget::apply()
 
 	resetGui();
 
-	emit accountCreated(true, gaduAccount);
+	emit accountCreated(gaduAccount);
 }
 
 void GaduAddAccountWidget::cancel()

@@ -111,7 +111,7 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareOb
 private slots:
 	void protocolChanged();
 
-	void accountCreated(bool ok, Account account);
+	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 	void okClicked();

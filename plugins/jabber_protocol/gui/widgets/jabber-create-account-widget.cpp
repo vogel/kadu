@@ -341,7 +341,7 @@ void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString 
 {
 	if (jid.isEmpty())
 	{
-		emit accountCreated(false, {});
+		emit accountCreated(Account());
 		return;
 	}
 
@@ -361,7 +361,7 @@ void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString 
 
 	resetGui();
 
-	emit accountCreated(true, jabberAccount);
+	emit accountCreated(jabberAccount);
 }
 
 #include "moc_jabber-create-account-widget.cpp"

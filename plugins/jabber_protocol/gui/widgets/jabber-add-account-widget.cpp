@@ -203,7 +203,7 @@ void JabberAddAccountWidget::apply()
 
 	resetGui();
 
-	emit accountCreated(true, jabberAccount);
+	emit accountCreated(jabberAccount);
 }
 
 void JabberAddAccountWidget::cancel()

@@ -48,7 +48,7 @@ public:
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 
 signals:
-	void accountCreated(bool ok, Account account);
+	void accountCreated(Account account);
 
 };
 
