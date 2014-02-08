@@ -33,7 +33,8 @@ public:
 	explicit FormattedStringGaduHtmlVisitor(ChatImageService *chatImageService, ImageStorageService *imageStorageService);
 	virtual ~FormattedStringGaduHtmlVisitor();
 
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
+	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) override;
+	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock) override;
 
 private:
 	ChatImageService *m_chatImageService;

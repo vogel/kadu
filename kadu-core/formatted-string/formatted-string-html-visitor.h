@@ -46,10 +46,10 @@ public:
 	FormattedStringHtmlVisitor();
 	virtual ~FormattedStringHtmlVisitor();
 
-	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
+	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString) override;
+	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString) override;
+	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) override;
+	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock) override;
 
 	/**
 	* @short Returns HTML view of visited FormattedString.

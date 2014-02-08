@@ -51,3 +51,8 @@ void FormattedStringGaduHtmlVisitor::visit(const FormattedStringImageBlock * con
 
 	append(QString{"<img name=\"%1\">"}.arg(image.key()));
 }
+
+void FormattedStringGaduHtmlVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
+{
+	FormattedStringHtmlVisitor::visit(formattedStringTextBlock);
+}
