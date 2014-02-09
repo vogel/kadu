@@ -49,7 +49,8 @@
 #include "debug.h"
 
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler(parent), notificationsGroupBox(0)
+		ConfigurationUiHandler{parent}, allUsers{}, notifiedUsers{}, notificationsGroupBox{},
+		useCustomSettingsCheckBox{}, notifyTreeWidget{}
 {
 	connect(NotificationManager::instance(), SIGNAL(notiferRegistered(Notifier *)),
 			this, SLOT(notifierRegistered(Notifier *)));
