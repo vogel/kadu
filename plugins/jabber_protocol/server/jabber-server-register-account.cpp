@@ -61,18 +61,19 @@ void JabberServerRegisterAccount::sendRegistrationData()
 	if (reg->success()) {
 		XMPP::XData xdata;
 	//TODO: upewnić się, że to to jest potrzebne tak jak jest
+		bool old;
 		if (reg->hasXData()) {
-			isOld_ = false;
+			old = false;
 			xdata = reg->xdata();
 		}
 		else {
-			isOld_ = true;
+			old = true;
 			xdata = convertToXData(reg->form());
 		}
 	//
 		XMPP::JT_Register *reg = new XMPP::JT_Register(Client->client()->rootTask());
 		connect(reg, SIGNAL(finished()), this, SLOT(actionFinished()));
-		if (isOld_) {
+		if (old) {
 			XMPP::Form form = convertFromXData(fields);
 			form.setJid(Server);
 			reg->setForm(form);

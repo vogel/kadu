@@ -44,9 +44,6 @@ class JabberServerRegisterAccount : public QObject
 	QString Jid;
 	MiniClient *Client;
 
-	//UserAccount::SSLFlag ssl_;
-	bool isOld_;
-
 	XMPP::XData fields;
 
 	XMPP::Form convertFromXData(const XMPP::XData& xdata);
