@@ -50,7 +50,8 @@ AvatarManager * AvatarManager::instance()
 	return Instance;
 }
 
-AvatarManager::AvatarManager()
+AvatarManager::AvatarManager() :
+		UpdateTimer{nullptr}
 {
 }
 
