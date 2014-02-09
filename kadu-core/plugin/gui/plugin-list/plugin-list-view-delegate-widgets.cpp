@@ -47,7 +47,7 @@ Q_DECLARE_METATYPE(QModelIndex);
 
 
 PluginListWidgetDelegateWidgets::PluginListWidgetDelegateWidgets(PluginListWidgetDelegate *delegate)
-		: delegate(delegate), eventListener(new PluginListWidgetDelegateEventListener(this))
+		: delegate(delegate), eventListener(new PluginListWidgetDelegateEventListener(this)), clearing{false}
 {
 }
 
