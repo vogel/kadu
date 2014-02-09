@@ -49,7 +49,8 @@ RecentChatManager * RecentChatManager::instance()
 	return Instance;
 }
 
-RecentChatManager::RecentChatManager()
+RecentChatManager::RecentChatManager() :
+		RecentChatsTimeout{0}
 {
 }
 
