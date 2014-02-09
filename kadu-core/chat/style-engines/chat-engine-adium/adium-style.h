@@ -67,7 +67,7 @@ class AdiumStyle
 	void performTemplateHtmlWorkarounds(QString &html);
 
 public:
-	AdiumStyle() { }
+	AdiumStyle();
 	AdiumStyle(const QString &styleName);
 
 	static bool isStyleValid(const QString &stylePath);

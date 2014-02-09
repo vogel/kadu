@@ -94,8 +94,13 @@ bool plistReadFunction(QIODevice &device, QSettings::SettingsMap &map)
 
 QSettings::Format AdiumStyle::plistFormat = QSettings::registerFormat("plist", plistReadFunction, plistWriteFunction);
 
+AdiumStyle::AdiumStyle() :
+		StyleViewVersion{0}, DefaultBackgroundIsTransparent{false}, UsesCustomTemplateHtml{false}
+{
+}
+
 AdiumStyle::AdiumStyle(const QString &styleName) :
-		Name(styleName)
+		Name{styleName}, StyleViewVersion{0}, DefaultBackgroundIsTransparent{false}, UsesCustomTemplateHtml{false}
 {
 	QDir dir;
 	BaseHref = KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
