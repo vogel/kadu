@@ -80,7 +80,6 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
-#include "message/message-render-info.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "parser/parser.h"
@@ -474,23 +473,18 @@ void ChatWidget::appendMessages(const QVector<Message> &messages)
 	if (messages.isEmpty())
 		return;
 
-	bool unread = false;
+	auto unread = std::any_of(std::begin(messages), std::end(messages), [](const Message &message){
+		return message.type() == MessageTypeReceived || message.type() == MessageTypeSystem;
+	});
 
-	QList<MessageRenderInfo *> messageRenderInfos;
-	foreach (const Message &message, messages)
-	{
-		messageRenderInfos.append(new MessageRenderInfo(message));
-		unread = unread || message.type() == MessageTypeReceived || message.type() == MessageTypeSystem;
-	}
-
-	MessagesView->appendMessages(messageRenderInfos);
+	MessagesView->appendMessages(messages);
 	if (unread)
 		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendMessage(const Message &message)
 {
-	MessagesView->appendMessage(new MessageRenderInfo(message));
+	MessagesView->appendMessage(message);
 
 	if (message.type() != MessageTypeReceived && message.type() != MessageTypeSystem)
 		return;

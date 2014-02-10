@@ -62,6 +62,9 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 
 	bool AtBottom;
 
+	void appendMessage(MessageRenderInfo *message);
+	void appendMessages(const QList<MessageRenderInfo *> &messages);
+
 	bool sameMessage(const Message &left, const Message &right);
 	Message firstNonSystemMessage(const QList<MessageRenderInfo *> &messages);
 
@@ -87,10 +90,7 @@ public:
 	void prependMessages(const QVector<Message> &messages);
 
 	void appendMessage(const Message &message);
-	void appendMessage(MessageRenderInfo *message);
-
 	void appendMessages(const QVector<Message> &messages);
-	void appendMessages(const QList<MessageRenderInfo *> &messages);
 
 	int countMessages();
 
