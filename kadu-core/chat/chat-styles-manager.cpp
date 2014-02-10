@@ -42,10 +42,10 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/preview.h"
+#include "gui/widgets/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-render-info.h"
 #include "misc/kadu-paths.h"
@@ -117,7 +117,7 @@ void ChatStylesManager::unregisterChatStyleEngine(const QString &name)
 	}
 }
 
-void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
+void ChatStylesManager::chatViewCreated(WebkitMessagesView *view)
 {
 	if (0 != view)
 	{
@@ -128,7 +128,7 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	}
 }
 
-void ChatStylesManager::chatViewDestroyed(ChatMessagesView *view)
+void ChatStylesManager::chatViewDestroyed(WebkitMessagesView *view)
 {
 	if (ChatViews.contains(view))
 		ChatViews.removeAll(view);
@@ -246,7 +246,7 @@ QString ChatStylesManager::fixedVariantName(const QString &styleName, QString va
 void ChatStylesManager::compositingEnabled()
 {
 	CompositingEnabled = true;
-	foreach (ChatMessagesView *view, ChatViews)
+	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		view->updateBackgroundsAndColors();
 
@@ -261,7 +261,7 @@ void ChatStylesManager::compositingEnabled()
 void ChatStylesManager::compositingDisabled()
 {
 	CompositingEnabled = false;
-	foreach (ChatMessagesView *view, ChatViews)
+	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		view->updateBackgroundsAndColors();
 

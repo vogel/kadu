@@ -72,7 +72,6 @@ set (gui_SRCS
 	widgets/chat-edit-box.cpp
 	widgets/chat-edit-box-size-manager.cpp
 	widgets/chat-edit-widget.cpp
-	widgets/chat-messages-view.cpp
 	widgets/chat-room-edit-widget.cpp
 	widgets/chat-top-bar-container-widget.cpp
 	widgets/chat-top-bar-widget-factory-repository.cpp
@@ -123,6 +122,7 @@ set (gui_SRCS
 	widgets/toolbar.cpp
 	widgets/tool-tip-class-manager.cpp
 	widgets/wait-overlay.cpp
+	widgets/webkit-messages-view.cpp
 
 	widgets/configuration/buddy-list-background-colors-widget.cpp
 	widgets/configuration/config-action-button.cpp
@@ -267,7 +267,6 @@ set (gui_MOC_SRCS
 	widgets/chat-edit-box.h
 	widgets/chat-edit-box-size-manager.h
 	widgets/chat-edit-widget.h
-	widgets/chat-messages-view.h
 	widgets/chat-room-edit-widget.h
 	widgets/chat-view-network-access-manager.h
 	widgets/choose-identity-widget.h

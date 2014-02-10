@@ -66,7 +66,6 @@
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
-#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -75,6 +74,7 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/webkit-messages-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -199,7 +199,7 @@ void ChatWidget::createGui()
 	frameLayout->setMargin(0);
 	frameLayout->setSpacing(0);
 
-	MessagesView = new ChatMessagesView(frame);
+	MessagesView = new WebkitMessagesView(frame);
 	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
 	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 

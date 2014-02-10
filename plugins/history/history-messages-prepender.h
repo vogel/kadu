@@ -27,7 +27,7 @@
 
 #include "message/message.h"
 
-class ChatMessagesView;
+class WebkitMessagesView;
 
 
 /**
@@ -41,14 +41,14 @@ class ChatMessagesView;
  * @short Class responsible for prepending history messages to chat messages view.
  *
  * This class is used for asynchronous prepending history messages to chat messages view. It takes care of
- * handling destroyed event of used ChatMessagesView. It also destroys itself after its work is done.
+ * handling destroyed event of used WebkitMessagesView. It also destroys itself after its work is done.
  */
 class HistoryMessagesPrepender : public QObject
 {
 	Q_OBJECT
 
 	QFuture<QVector<Message> > Messages;
-	QPointer<ChatMessagesView> MessagesView;
+	QPointer<WebkitMessagesView> MessagesView;
 
 private slots:
 	void messagesAvailable();
@@ -64,7 +64,7 @@ public:
 	 * messages from QFuture are available. If chatMessagesView is destroyed before that, nothing will happen.
 	 * After this class finishes its work (successfully or not) it deletes itself.
 	 */
-	HistoryMessagesPrepender(QFuture<QVector<Message> > messages, ChatMessagesView *chatMessagesView);
+	HistoryMessagesPrepender(QFuture<QVector<Message> > messages, WebkitMessagesView *chatMessagesView);
 	virtual ~HistoryMessagesPrepender();
 
 };

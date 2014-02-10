@@ -46,9 +46,9 @@
 
 #include "debug.h"
 
-#include "chat-messages-view.h"
+#include "webkit-messages-view.h"
 
-ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
+WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
@@ -94,14 +94,14 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	ChatStylesManager::instance()->chatViewCreated(this);
 }
 
-ChatMessagesView::~ChatMessagesView()
+WebkitMessagesView::~WebkitMessagesView()
 {
  	ChatStylesManager::instance()->chatViewDestroyed(this);
 
 	disconnectChat();
 }
 
-void ChatMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
+void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
 {
 	if (CurrentChatImageRequestService)
 		disconnect(CurrentChatImageRequestService.data(), 0, this, 0);
@@ -112,31 +112,31 @@ void ChatMessagesView::setChatImageRequestService(ChatImageRequestService *chatI
 		connect(CurrentChatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
 }
 
-void ChatMessagesView::mouseReleaseEvent(QMouseEvent *e)
+void WebkitMessagesView::mouseReleaseEvent(QMouseEvent *e)
 {
 	updateAtBottom();
 	KaduWebView::mouseReleaseEvent(e);
 }
 
-void ChatMessagesView::resizeEvent(QResizeEvent *e)
+void WebkitMessagesView::resizeEvent(QResizeEvent *e)
 {
 	QWebView::resizeEvent(e);
 
 	scrollToBottom();
 }
 
-void ChatMessagesView::wheelEvent(QWheelEvent* e)
+void WebkitMessagesView::wheelEvent(QWheelEvent* e)
 {
 	updateAtBottom();
 	QWebView::wheelEvent(e);
 }
 
-void ChatMessagesView::updateAtBottom()
+void WebkitMessagesView::updateAtBottom()
 {
 	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
 }
 
-void ChatMessagesView::connectChat()
+void WebkitMessagesView::connectChat()
 {
 	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
 		return;
@@ -150,7 +150,7 @@ void ChatMessagesView::connectChat()
 		        this, SLOT(sentMessageStatusChanged(const Message &)));
 }
 
-void ChatMessagesView::disconnectChat()
+void WebkitMessagesView::disconnectChat()
 {
 	if (CurrentChat.isNull())
 		return;
@@ -170,7 +170,7 @@ void ChatMessagesView::disconnectChat()
 		disconnect(chatService, 0, this, 0);
 }
 
-void ChatMessagesView::setChat(const Chat &chat)
+void WebkitMessagesView::setChat(const Chat &chat)
 {
 	disconnectChat();
 	CurrentChat = chat;
@@ -179,39 +179,39 @@ void ChatMessagesView::setChat(const Chat &chat)
 	Renderer->setChat(CurrentChat);
 }
 
-void ChatMessagesView::refresh()
+void WebkitMessagesView::refresh()
 {
 	Renderer->refresh();
 }
 
-void ChatMessagesView::setForcePruneDisabled(bool disable)
+void WebkitMessagesView::setForcePruneDisabled(bool disable)
 {
 	Renderer->setForcePruneDisabled(disable);
 }
 
-void ChatMessagesView::pageUp()
+void WebkitMessagesView::pageUp()
 {
 	QKeyEvent event(QEvent::KeyPress, Qt::Key_PageUp, Qt::NoModifier);
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::pageDown()
+void WebkitMessagesView::pageDown()
 {
 	QKeyEvent event(QEvent::KeyPress, Qt::Key_PageDown, Qt::NoModifier);
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::chatImageStored(const ChatImage &chatImage, const QString &fullFilePath)
+void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QString &fullFilePath)
 {
 	Renderer->chatImageAvailable(chatImage, fullFilePath);
 }
 
-void ChatMessagesView::updateBackgroundsAndColors()
+void WebkitMessagesView::updateBackgroundsAndColors()
 {
 	Renderer->updateBackgroundsAndColors();
 }
 
-void ChatMessagesView::repaintMessages()
+void WebkitMessagesView::repaintMessages()
 {
 	setUpdatesEnabled(false);
 
@@ -222,7 +222,7 @@ void ChatMessagesView::repaintMessages()
 	setUpdatesEnabled(true);
 }
 
-bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
+bool WebkitMessagesView::sameMessage(const Message &left, const Message &right)
 {
 	if (left.isNull() && right.isNull())
 		return true;
@@ -251,7 +251,7 @@ bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
 	return true;
 }
 
-Message ChatMessagesView::firstNonSystemMessage(const QList<MessageRenderInfo *> &messages)
+Message WebkitMessagesView::firstNonSystemMessage(const QList<MessageRenderInfo *> &messages)
 {
 	foreach (MessageRenderInfo *message, messages)
 		if (message->message().type() != MessageTypeSystem)
@@ -260,7 +260,7 @@ Message ChatMessagesView::firstNonSystemMessage(const QList<MessageRenderInfo *>
 	return Message::null;
 }
 
-void ChatMessagesView::prependMessages(const QVector<Message> &messages)
+void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 {
 	if (messages.empty())
 		return;
@@ -298,13 +298,13 @@ void ChatMessagesView::prependMessages(const QVector<Message> &messages)
 	emit messagesUpdated();
 }
 
-void ChatMessagesView::appendMessage(const Message &message)
+void WebkitMessagesView::appendMessage(const Message &message)
 {
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 	appendMessage(messageRenderInfo);
 }
 
-void ChatMessagesView::appendMessage(MessageRenderInfo *message)
+void WebkitMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
@@ -317,7 +317,7 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 	emit messagesUpdated();
 }
 
-void ChatMessagesView::appendMessages(const QVector<Message> &messages)
+void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 {
 	kdebugf2();
 
@@ -333,7 +333,7 @@ void ChatMessagesView::appendMessages(const QVector<Message> &messages)
 	appendMessages(rendererMessages);
 }
 
-void ChatMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages)
+void WebkitMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages)
 {
 	kdebugf2();
 
@@ -346,7 +346,7 @@ void ChatMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages
 	emit messagesUpdated();
 }
 
-void ChatMessagesView::clearMessages()
+void WebkitMessagesView::clearMessages()
 {
 	setUpdatesEnabled(false);
 
@@ -358,44 +358,44 @@ void ChatMessagesView::clearMessages()
 	AtBottom = true;
 }
 
-int ChatMessagesView::countMessages()
+int WebkitMessagesView::countMessages()
 {
 	return Renderer->messages().count();
 }
 
-void ChatMessagesView::sentMessageStatusChanged(const Message &message)
+void WebkitMessagesView::sentMessageStatusChanged(const Message &message)
 {
 	if (CurrentChat != message.messageChat())
 		return;
 	Renderer->messageStatusChanged(message, message.status());
 }
 
-void ChatMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::State state)
+void WebkitMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
 	Renderer->contactActivityChanged(contact, state);
 }
 
-void ChatMessagesView::scrollToTop()
+void WebkitMessagesView::scrollToTop()
 {
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, 0);
 	updateAtBottom();
 }
 
-void ChatMessagesView::scrollToBottom()
+void WebkitMessagesView::scrollToBottom()
 {
 	if (AtBottom)
 		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
 }
 
-void ChatMessagesView::forceScrollToBottom()
+void WebkitMessagesView::forceScrollToBottom()
 {
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
 	updateAtBottom();
 }
 
-void ChatMessagesView::configurationUpdated()
+void WebkitMessagesView::configurationUpdated()
 {
 	setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
 }
 
-#include "moc_chat-messages-view.cpp"
+#include "moc_webkit-messages-view.cpp"

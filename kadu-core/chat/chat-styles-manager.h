@@ -36,7 +36,7 @@ class QComboBox;
 class QPushButton;
 
 class AdiumChatStyleEngine;
-class ChatMessagesView;
+class WebkitMessagesView;
 class ChatStyleEngine;
 class FormattedStringFactory;
 class KaduChatStyleEngine;
@@ -64,7 +64,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	void init();
 
 	QMap<QString, ChatStyleEngine *> RegisteredEngines;
-	QList<ChatMessagesView *> ChatViews;
+	QList<WebkitMessagesView *> ChatViews;
 	QMap<QString, StyleInfo> AvailableStyles;
 
 	ChatStyleEngine *CurrentEngine;
@@ -115,8 +115,8 @@ public:
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	void chatViewCreated(ChatMessagesView * view);
-	void chatViewDestroyed(ChatMessagesView * view);
+	void chatViewCreated(WebkitMessagesView * view);
+	void chatViewDestroyed(WebkitMessagesView * view);
 	void registerChatStyleEngine(const QString &name, ChatStyleEngine *engine);
 	void unregisterChatStyleEngine(const QString &name);
 

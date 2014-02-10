@@ -31,7 +31,7 @@ class QDate;
 class QSplitter;
 class QTreeView;
 
-class ChatMessagesView;
+class WebkitMessagesView;
 class HistoryQueryResult;
 class HistoryQueryResultsModel;
 class HistoryQueryResultsProxyModel;
@@ -65,7 +65,7 @@ class TimelineChatMessagesView : public QWidget
 	HistoryQueryResultsModel *ResultsModel;
 	HistoryQueryResultsProxyModel *ResultsProxyModel;
 	WebViewHighlighter *Highlighter;
-	ChatMessagesView *MessagesView;
+	WebkitMessagesView *MessagesView;
 	SearchBar *MessagesSearchBar;
 
 	QFutureWatcher<QVector<HistoryQueryResult> > *ResultsFutureWatcher;
@@ -104,7 +104,7 @@ public:
 	 * @short Returns chat messages view widget.
 	 * @return chat messages view widget
 	 */
-	ChatMessagesView * messagesView() const { return MessagesView; }
+	WebkitMessagesView * messagesView() const { return MessagesView; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

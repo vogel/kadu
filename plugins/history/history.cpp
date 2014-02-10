@@ -223,7 +223,7 @@ void History::chatWidgetAdded(ChatWidget *chatWidget)
 	if (!CurrentStorage)
 		return;
 
-	ChatMessagesView *chatMessagesView = chatWidget->chatMessagesView();
+	WebkitMessagesView *chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
 		return;
 

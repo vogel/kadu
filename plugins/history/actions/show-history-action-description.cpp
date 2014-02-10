@@ -27,8 +27,8 @@
 #include "configuration/configuration-file.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/webkit-messages-view.h"
 
 #include "gui/windows/history-window.h"
 #include "history-messages-prepender.h"
@@ -137,7 +137,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 		return;
 	}
 
-	ChatMessagesView *chatMessagesView = chatWidget->chatMessagesView();
+	WebkitMessagesView *chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
 	{
 		HistoryWindow::show(actionChat);

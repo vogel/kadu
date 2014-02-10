@@ -22,8 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_MESSAGES_VIEW_H
-#define CHAT_MESSAGES_VIEW_H
+#pragma once
 
 #include <QtCore/QList>
 
@@ -46,7 +45,7 @@ class ChatWidget;
 class HtmlMessagesRenderer;
 class MessageRenderInfo;
 
-class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareObject
+class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -80,8 +79,8 @@ protected:
 	virtual void wheelEvent(QWheelEvent *e);
 
 public:
-	explicit ChatMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
-	virtual ~ChatMessagesView();
+	explicit WebkitMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
+	virtual ~WebkitMessagesView();
 
 	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
 
@@ -119,5 +118,3 @@ signals:
 	void messagesUpdated();
 
 };
-
-#endif // CHAT_MESSAGES_VIEW_H

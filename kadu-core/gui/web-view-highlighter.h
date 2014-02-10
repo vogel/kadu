@@ -26,7 +26,7 @@
 
 #include "exports.h"
 
-class ChatMessagesView;
+class WebkitMessagesView;
 
 /**
  * @addtogroup Gui
@@ -36,10 +36,10 @@ class ChatMessagesView;
 /**
  * @class WebViewHighlighter
  * @author Rafał 'Vogel' Malinowski
- * @short This class is a highlighter for given ChatMessagesView instance.
+ * @short This class is a highlighter for given WebkitMessagesView instance.
  *
- * This class is a highlighter for given ChatMessagesView instance. It is able to highlight any instance
- * of given text in ChatMessagesView as well as select any other text and go throught web view content
+ * This class is a highlighter for given WebkitMessagesView instance. It is able to highlight any instance
+ * of given text in WebkitMessagesView as well as select any other text and go throught web view content
  * and selecting next/previous instance of it. Please note that highlighting is independend from
  * selection.
  */
@@ -50,18 +50,18 @@ class KADUAPI WebViewHighlighter : public QObject
 	bool AutoUpdate;
 	QString HighlightString;
 
-	ChatMessagesView * chatMessagesView() const;
+	WebkitMessagesView * chatMessagesView() const;
 
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new WebViewHighlighter on given ChatMessagesView.
-	 * @param parent ChatMessagesView parent of new highlighter
+	 * @short Creates new WebViewHighlighter on given WebkitMessagesView.
+	 * @param parent WebkitMessagesView parent of new highlighter
 	 *
-	 * Page in main frame of parent ChatMessagesView will have given string highlighted.
+	 * Page in main frame of parent WebkitMessagesView will have given string highlighted.
 	 * Use setHighlight() to set text to highlight.
 	 */
-	explicit WebViewHighlighter(ChatMessagesView *parent);
+	explicit WebViewHighlighter(WebkitMessagesView *parent);
 	virtual ~WebViewHighlighter();
 
 	/**
@@ -87,16 +87,16 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Updates highlighting on ChatMessagesView.
+	 * @short Updates highlighting on WebkitMessagesView.
 	 *
 	 * When auto udpate is set to true this method is called automatically when content size of parent
-	 * ChatMessagesView changes or when highlight string changes.
+	 * WebkitMessagesView changes or when highlight string changes.
 	 */
 	void updateHighlighting();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clears highlighting on ChatMessagesView.
+	 * @short Clears highlighting on WebkitMessagesView.
 	 *
 	 * Temporary removes highlighting from web view. If auto update is set to true then any change in
 	 * content of web view will redo highligting. Use setHighlight(QString()) to remove highlighting
@@ -106,7 +106,7 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Select next found text in ChatMessagesView.
+	 * @short Select next found text in WebkitMessagesView.
 	 * @param select text to select
 	 *
 	 * This method moves selection to next found instance of select string. If there is no selection,
@@ -116,7 +116,7 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Select previous found text in ChatMessagesView.
+	 * @short Select previous found text in WebkitMessagesView.
 	 * @param select text to select
 	 *
 	 * This method moves selection to previous found instance of select string. If there is no selection,
@@ -126,7 +126,7 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clears found text in ChatMessagesView.
+	 * @short Clears found text in WebkitMessagesView.
 	 *
 	 * This method clears selection in web view.
 	 */

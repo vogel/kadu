@@ -20,11 +20,11 @@
 
 #include <QtCore/QFutureWatcher>
 
-#include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/webkit-messages-view.h"
 
 #include "history-messages-prepender.h"
 
-HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > messages, ChatMessagesView *chatMessagesView) :
+HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > messages, WebkitMessagesView *chatMessagesView) :
 		Messages(messages), MessagesView(chatMessagesView)
 {
 	Q_ASSERT(MessagesView);

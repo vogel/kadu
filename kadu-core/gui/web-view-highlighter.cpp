@@ -21,11 +21,11 @@
 
 #include <QtWebKit/QWebFrame>
 
-#include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/webkit-messages-view.h"
 
 #include "web-view-highlighter.h"
 
-WebViewHighlighter::WebViewHighlighter(ChatMessagesView *parent) :
+WebViewHighlighter::WebViewHighlighter(WebkitMessagesView *parent) :
 		QObject(parent), AutoUpdate(false)
 {
 }
@@ -34,9 +34,9 @@ WebViewHighlighter::~WebViewHighlighter()
 {
 }
 
-ChatMessagesView * WebViewHighlighter::chatMessagesView() const
+WebkitMessagesView * WebViewHighlighter::chatMessagesView() const
 {
-	return static_cast<ChatMessagesView *>(parent());
+	return static_cast<WebkitMessagesView *>(parent());
 }
 
 void WebViewHighlighter::setAutoUpdate(const bool autoUpdate)

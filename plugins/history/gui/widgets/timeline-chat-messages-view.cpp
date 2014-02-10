@@ -26,7 +26,7 @@
 
 #include "core/core.h"
 #include "gui/web-view-highlighter.h"
-#include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/webkit-messages-view.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/wait-overlay.h"
 #include "model/roles.h"
@@ -78,7 +78,7 @@ void TimelineChatMessagesView::createGui()
 	frameLayout->setMargin(0);
 	frameLayout->setSpacing(0);
 
-	MessagesView = new ChatMessagesView(Chat::null, false, frame);
+	MessagesView = new WebkitMessagesView(Chat::null, false, frame);
 	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
 	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 

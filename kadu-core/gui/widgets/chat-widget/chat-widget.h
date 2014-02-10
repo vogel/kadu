@@ -42,7 +42,7 @@
 class QSplitter;
 
 class ChatEditBox;
-class ChatMessagesView;
+class WebkitMessagesView;
 class ChatTopBarContainerWidget;
 class ChatWidget;
 class CustomInput;
@@ -63,7 +63,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	Chat CurrentChat;
 
 	ChatTopBarContainerWidget *TopBarContainer;
-	ChatMessagesView *MessagesView;
+	WebkitMessagesView *MessagesView;
 	FilteredTreeView *BuddiesWidget;
 	TalkableProxyModel *ProxyModel;
 	ChatEditBox *InputBox;
@@ -126,7 +126,7 @@ public:
 	CustomInput * edit() const;
 	TalkableProxyModel * talkableProxyModel() const;
 	ChatEditBox * getChatEditBox() const { return InputBox; }
-	ChatMessagesView * chatMessagesView() const { return MessagesView; }
+	WebkitMessagesView * chatMessagesView() const { return MessagesView; }
 
 	virtual void dragEnterEvent(QDragEnterEvent *e);
 	virtual void dropEvent(QDropEvent *e);
