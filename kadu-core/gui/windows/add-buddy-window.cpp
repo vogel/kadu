@@ -54,6 +54,7 @@
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-talkable-combo-box.h"
+#include "gui/scoped-updates-disabler.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -447,7 +448,7 @@ void AddBuddyWindow::setAddContactEnabled()
 
 void AddBuddyWindow::mergeToggled(bool toggled)
 {
-	setUpdatesEnabled(false);
+	ScopedUpdatesDisabler updatesDisabler{*this};
 
 	foreach (QWidget *widget, NonMergeWidgets)
 	{
@@ -473,8 +474,6 @@ void AddBuddyWindow::mergeToggled(bool toggled)
 		AddContactButton->setText(tr("Merge with buddy"));
 	else
 		AddContactButton->setText(tr("Add buddy"));
-
-	setUpdatesEnabled(true);
 }
 
 bool AddBuddyWindow::addContact()

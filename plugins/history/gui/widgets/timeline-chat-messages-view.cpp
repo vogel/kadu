@@ -25,6 +25,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "core/core.h"
+#include "gui/scoped-updates-disabler.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/webkit-messages-view.h"
 #include "gui/widgets/search-bar.h"
@@ -166,13 +167,11 @@ void TimelineChatMessagesView::setFutureResults(const QFuture<QVector<HistoryQue
 
 void TimelineChatMessagesView::setMessages(const QVector<Message> &messages)
 {
-	MessagesView->setUpdatesEnabled(false);
+	ScopedUpdatesDisabler updatesDisabler{*MessagesView};
 
 	MessagesView->clearMessages();
 	MessagesView->appendMessages(messages);
 	MessagesView->refresh();
-
-	MessagesView->setUpdatesEnabled(true);
 
 	emit messagesDisplayed();
 }

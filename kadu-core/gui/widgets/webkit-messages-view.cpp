@@ -38,6 +38,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string.h"
+#include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/services/chat-image-service.h"
@@ -213,13 +214,10 @@ void WebkitMessagesView::updateBackgroundsAndColors()
 
 void WebkitMessagesView::repaintMessages()
 {
-	setUpdatesEnabled(false);
-
+	ScopedUpdatesDisabler updatesDisabler{*this};
 	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
 	Renderer->refresh();
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
-
-	setUpdatesEnabled(true);
 }
 
 bool WebkitMessagesView::sameMessage(const Message &left, const Message &right)
@@ -288,13 +286,9 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 	foreach (const MessageRenderInfo *renderInfo, copyOfRendererMessages)
 		newMessages.append(new MessageRenderInfo(renderInfo->message()));
 
-	setUpdatesEnabled(false);
-
+	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->clearMessages();
 	Renderer->appendMessages(newMessages);
-
-	setUpdatesEnabled(true);
-
 	emit messagesUpdated();
 }
 
@@ -308,12 +302,8 @@ void WebkitMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
-	setUpdatesEnabled(false);
-
+	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->appendMessage(message);
-
-	setUpdatesEnabled(true);
-
 	emit messagesUpdated();
 }
 
@@ -337,23 +327,15 @@ void WebkitMessagesView::appendMessages(const QList<MessageRenderInfo *> &messag
 {
 	kdebugf2();
 
-	setUpdatesEnabled(false);
-
+	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->appendMessages(messages);
-
-	setUpdatesEnabled(true);
-
 	emit messagesUpdated();
 }
 
 void WebkitMessagesView::clearMessages()
 {
-	setUpdatesEnabled(false);
-
+	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->clearMessages();
-
-	setUpdatesEnabled(true);
-
 	emit messagesUpdated();
 	AtBottom = true;
 }
