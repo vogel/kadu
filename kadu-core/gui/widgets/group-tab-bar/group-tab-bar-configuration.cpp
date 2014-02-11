@@ -20,7 +20,7 @@
 #include "group-tab-bar-configuration.h"
 
 GroupTabBarConfiguration::GroupTabBarConfiguration() :
-		DisplayGroupTabs(true), ShowGroupTabEverybody(true), AlwaysShowGroupTabUngroupped(false)
+		DisplayGroupTabs{true}, ShowGroupTabEverybody{true}, AlwaysShowGroupTabUngroupped{false}, CurrentGroupTab{0}
 {
 }
 void GroupTabBarConfiguration::setDisplayGroupTabs(bool displayGroupTabs)
