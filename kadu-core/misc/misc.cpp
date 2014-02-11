@@ -88,7 +88,7 @@ QRect properGeometry(const QRect &rect)
 	if (geometry.topLeft().x() < availableGeometry.x())
 		geometry.moveLeft(availableGeometry.x());
 	if (geometry.topLeft().y() < availableGeometry.y())
-		geometry.moveTop(availableGeometry.x());
+		geometry.moveTop(availableGeometry.y());
 
 #ifdef Q_OS_MAC
 	// looks like QDesktopWidget::availableGeometry() does not work correctly on Mac OS X, so we need a workaround
