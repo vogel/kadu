@@ -72,8 +72,11 @@ ChatStylesManager * ChatStylesManager::instance()
 }
 
 ChatStylesManager::ChatStylesManager() :
-		CurrentEngine(0), SyntaxListCombo(0),
-		VariantListCombo(0), TurnOnTransparency(0), EnginePreview(0)
+		CurrentEngine{},
+		CompositingEnabled{}, CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{},
+		CfgNoHeaderInterval{}, ParagraphSeparator{}, Prune{}, NoServerTime{},
+		NoServerTimeDiff{}, KaduEngine{}, AdiumEngine{}, SyntaxListCombo{},
+		VariantListCombo{}, TurnOnTransparency{}, EnginePreview{}
 {
 }
 
