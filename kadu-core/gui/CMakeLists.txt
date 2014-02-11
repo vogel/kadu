@@ -386,6 +386,7 @@ set (gui_MOC_SRCS
 	windows/open-chat-with/open-chat-with-runner-manager.h
 
 	hot-key.h
+	scoped-updates-disabler.cpp
 	status-icon.h
 	web-view-highlighter.h
 	window-manager.h
