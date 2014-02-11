@@ -95,17 +95,24 @@ void HtmlMessagesRenderer::pruneMessages()
 	MyChatMessages.erase(start, stop);
 }
 
-void HtmlMessagesRenderer::appendMessage(MessageRenderInfo *message)
+void HtmlMessagesRenderer::appendMessage(const Message &message)
 {
-	MyChatMessages.append(message);
+	auto messageRenderInfo = new MessageRenderInfo(message);
+	MyChatMessages.append(messageRenderInfo);
 	pruneMessages();
 
-	ChatStylesManager::instance()->currentEngine()->appendMessage(this, message);
+	ChatStylesManager::instance()->currentEngine()->appendMessage(this, messageRenderInfo);
 }
 
-void HtmlMessagesRenderer::appendMessages(const QList<MessageRenderInfo *> &messages)
+void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 {
-	MyChatMessages.append(messages);
+	auto engineMessages = QList<MessageRenderInfo *>{};
+	for (auto message : messages)
+	{
+		auto engineMessage = new MessageRenderInfo(message);
+		engineMessages.append(engineMessage);
+		MyChatMessages.append(engineMessage);
+	}
 
 //  Do not prune messages here. When we are adding many massages to renderer, probably
 //  we want all of them to be visible on message view. This also fixes crash from
@@ -113,7 +120,7 @@ void HtmlMessagesRenderer::appendMessages(const QList<MessageRenderInfo *> &mess
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	ChatStylesManager::instance()->currentEngine()->appendMessages(this, messages);
+	ChatStylesManager::instance()->currentEngine()->appendMessages(this, engineMessages);
 }
 
 void HtmlMessagesRenderer::clearMessages()

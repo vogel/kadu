@@ -272,19 +272,19 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 
 	// case #2: some prepended messages are already rendered
 	const Message &firstRenderedMessage = firstNonSystemMessage(copyOfRendererMessages);
-	QList<MessageRenderInfo *> newMessages;
+	QVector<Message> newMessages;
 	foreach (const Message &message, messages)
 	{
 		if (sameMessage(firstRenderedMessage, message))
 			break; // we already have this and following messages in our window
 
-		newMessages.append(new MessageRenderInfo(message));
+		newMessages.append(message);
 	}
 
 	// we need to make new instances of MessageRenderInfo here
 	// clearMessages will destroy existing ones
 	foreach (const MessageRenderInfo *renderInfo, copyOfRendererMessages)
-		newMessages.append(new MessageRenderInfo(renderInfo->message()));
+		newMessages.append(renderInfo->message());
 
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->clearMessages();
@@ -294,13 +294,6 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 
 void WebkitMessagesView::appendMessage(const Message &message)
 {
-	appendMessage(new MessageRenderInfo(message));
-}
-
-void WebkitMessagesView::appendMessage(MessageRenderInfo *message)
-{
-	kdebugf();
-
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->appendMessage(message);
 	emit messagesUpdated();
@@ -308,21 +301,6 @@ void WebkitMessagesView::appendMessage(MessageRenderInfo *message)
 
 void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 {
-	kdebugf2();
-
-	QList<MessageRenderInfo *> rendererMessages;
-	rendererMessages.reserve(messages.size());
-
-	foreach (const Message &message, messages)
-		rendererMessages.append(new MessageRenderInfo(message));
-
-	appendMessages(rendererMessages);
-}
-
-void WebkitMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages)
-{
-	kdebugf2();
-
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->appendMessages(messages);
 	emit messagesUpdated();

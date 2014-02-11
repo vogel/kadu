@@ -61,9 +61,6 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	bool AtBottom;
 
-	void appendMessage(MessageRenderInfo *message);
-	void appendMessages(const QList<MessageRenderInfo *> &messages);
-
 	bool sameMessage(const Message &left, const Message &right);
 	Message firstNonSystemMessage(const QList<MessageRenderInfo *> &messages);
 
