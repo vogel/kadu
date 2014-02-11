@@ -294,8 +294,7 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 
 void WebkitMessagesView::appendMessage(const Message &message)
 {
-	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-	appendMessage(messageRenderInfo);
+	appendMessage(new MessageRenderInfo(message));
 }
 
 void WebkitMessagesView::appendMessage(MessageRenderInfo *message)
@@ -315,10 +314,7 @@ void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 	rendererMessages.reserve(messages.size());
 
 	foreach (const Message &message, messages)
-	{
-		MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-		rendererMessages.append(messageRenderInfo);
-	}
+		rendererMessages.append(new MessageRenderInfo(message));
 
 	appendMessages(rendererMessages);
 }
