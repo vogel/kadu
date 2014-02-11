@@ -62,7 +62,6 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *OpenSearch;
 	ActionDescription *Help;
 	ActionDescription *Bugs;
-	ActionDescription *Support;
 	ActionDescription *GetInvolved;
 	ActionDescription *About;
 	ActionDescription *Translate;
