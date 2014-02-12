@@ -74,9 +74,9 @@
 #define DATE_TITLE_LENGTH 120
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
-		HistoryStorage(parent), ImportProgressWindow(0),
-		AccountsMapping(0), ContactsMapping(0), ChatsMapping(0),
-		DatabaseMutex(QMutex::NonRecursive)
+		HistoryStorage(parent), InitializerThread{}, ImportProgressWindow{},
+		AccountsMapping{}, ContactsMapping{}, ChatsMapping{}, DatabaseMutex{QMutex::NonRecursive},
+		ChatStorage{}, StatusStorage{}, SmsStorage{}
 {
 	kdebugf();
 
