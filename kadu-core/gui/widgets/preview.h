@@ -33,6 +33,7 @@
 #define PREVIEW_DEFAULT_HEIGHT 250
 
 class KaduWebView;
+class Message;
 class MessageRenderInfo;
 
 class Preview : public QFrame, public ConfigurationAwareObject
@@ -50,7 +51,7 @@ public:
 	explicit Preview(QWidget *parent = 0);
 	virtual ~Preview();
 
-	void addMessage(MessageRenderInfo *messageRenderInfo);
+	void addMessage(const Message &message);
 	const QList<MessageRenderInfo *> & messages() const;
 
 	KaduWebView * webView() const;

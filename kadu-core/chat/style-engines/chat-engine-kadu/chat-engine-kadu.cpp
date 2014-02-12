@@ -94,7 +94,7 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 
 	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage('" + html + "')");
 
-	renderer->setLastMessage(message);
+	renderer->setLastMessage(message->message());
 }
 
 void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
@@ -213,7 +213,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().constBegin()) : Contact();
 	text += Parser::parse(CurrentChatSyntax.top(), Talkable(contact), true);
 
-	MessageRenderInfo *prevMessage = 0;
+	Message prevMessage = Message::null;
 	foreach (MessageRenderInfo *message, renderer->messages())
 	{
 		QString messageText;
@@ -223,7 +223,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 			messageText = QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, prevMessage));
 		messageText = scriptsAtEnd(messageText);
 		text += messageText;
-		prevMessage = message;
+		prevMessage = message->message();
 	}
 	renderer->setLastMessage(prevMessage);
 

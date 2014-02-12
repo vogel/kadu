@@ -48,7 +48,7 @@ public:
 
 	Message();
 	Message(MessageShared *data);
-	Message(QObject *data);
+	explicit Message(QObject *data);
 	Message(const Message &copy);
 	virtual ~Message();
 

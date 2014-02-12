@@ -415,9 +415,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
-	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(sentMessage);
-	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addMessage(messageRenderInfo);
+	preview->addMessage(sentMessage);
 
 	Message receivedMessage = Message::create();
 	receivedMessage.setMessageChat(chat);
@@ -427,9 +425,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 
-	messageRenderInfo = new MessageRenderInfo(receivedMessage);
-	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addMessage(messageRenderInfo);
+	preview->addMessage(receivedMessage);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

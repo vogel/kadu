@@ -23,6 +23,7 @@
 
 #include <QtGui/QHBoxLayout>
 
+#include "chat/chat-styles-manager.h"
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
@@ -59,9 +60,11 @@ Preview::~Preview()
 	qDeleteAll(Messages);
 }
 
-void Preview::addMessage(MessageRenderInfo *messageRenderInfo)
+void Preview::addMessage(const Message &message)
 {
-	 Messages.append(messageRenderInfo);
+	auto messageRenderInfo = new MessageRenderInfo(message);
+	messageRenderInfo->setSeparatorSize(ChatStylesManager::instance()->cfgHeaderSeparatorHeight());
+	Messages.append(messageRenderInfo);
 }
 
 const QList<MessageRenderInfo *> & Preview::messages() const
@@ -92,6 +95,7 @@ void Preview::syntaxChanged(const QString &content)
 		for (MessageRenderInfo *message : Messages)
 		{
 			message->updateBackgroundsAndColors();
+			message->setSeparatorSize(ChatStylesManager::instance()->cfgHeaderSeparatorHeight());
 			text += Parser::parse(syntax.withHeader(), Talkable(message->message().messageSender()), message);
 		}
 	}

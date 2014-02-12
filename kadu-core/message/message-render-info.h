@@ -53,7 +53,7 @@ public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
-	MessageRenderInfo(const Message &msg);
+	explicit MessageRenderInfo(const Message &msg);
 	virtual ~MessageRenderInfo();
 
 	const Message & message() const { return MyMessage; }
