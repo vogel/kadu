@@ -79,29 +79,15 @@ KaduWebView * Preview::webView() const
 
 void Preview::syntaxChanged(const QString &content)
 {
-	// this method is used only with Kadu styles
+	if (!Messages.isEmpty())
+		return;
+
+	// this method is used only with hints syntax
 
 	QString syntax = content;
 	emit needSyntaxFixup(syntax);
 
-	QString text;
-
-	if (!Messages.isEmpty())
-	{
-		KaduChatSyntax syntax(content);
-
-		text = Parser::parse(syntax.top(), Talkable(), true);
-
-		for (MessageRenderInfo *message : Messages)
-		{
-			message->updateBackgroundsAndColors();
-			message->setSeparatorSize(ChatStylesManager::instance()->cfgHeaderSeparatorHeight());
-			text += Parser::parse(syntax.withHeader(), Talkable(message->message().messageSender()), message);
-		}
-	}
-	else
-		text = Parser::parse(syntax, Talkable(Buddy::dummy()));
-
+	QString text = Parser::parse(syntax, Talkable(Buddy::dummy()));
 	emit needFixup(text);
 
 	WebView->setHtml(text);
