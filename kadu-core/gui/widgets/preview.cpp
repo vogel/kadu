@@ -89,8 +89,11 @@ void Preview::syntaxChanged(const QString &content)
 
 		text = Parser::parse(syntax.top(), Talkable(), true);
 
-		foreach (MessageRenderInfo *message, Messages)
+		for (MessageRenderInfo *message : Messages)
+		{
+			message->updateBackgroundsAndColors();
 			text += Parser::parse(syntax.withHeader(), Talkable(message->message().messageSender()), message);
+		}
 	}
 	else
 		text = Parser::parse(syntax, Talkable(Buddy::dummy()));

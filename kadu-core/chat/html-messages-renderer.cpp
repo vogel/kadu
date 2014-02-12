@@ -147,32 +147,6 @@ void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const 
 	ChatStylesManager::instance()->currentEngine()->chatImageAvailable(this, chatImage, fileName);
 }
 
-void HtmlMessagesRenderer::updateBackgroundsAndColors()
-{
-	foreach (MessageRenderInfo *message, MyChatMessages)
-	{
-		switch (message->message().type())
-		{
-			case MessageTypeSent:
-				message->setBackgroundColor(ChatConfigurationHolder::instance()->myBackgroundColor())
-					.setNickColor(ChatConfigurationHolder::instance()->myNickColor())
-					.setFontColor(ChatConfigurationHolder::instance()->myFontColor());
-				break;
-
-			case MessageTypeReceived:
-				message->setBackgroundColor(ChatConfigurationHolder::instance()->usrBackgroundColor())
-					.setNickColor(ChatConfigurationHolder::instance()->usrNickColor())
-					.setFontColor(ChatConfigurationHolder::instance()->usrFontColor());
-				break;
-
-			default:
-				// do nothing
-				break;
-		}
-
-	}
-}
-
 void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
 	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);

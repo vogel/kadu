@@ -251,8 +251,6 @@ void ChatStylesManager::compositingEnabled()
 	CompositingEnabled = true;
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
-		view->updateBackgroundsAndColors();
-
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
 		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
@@ -266,8 +264,6 @@ void ChatStylesManager::compositingDisabled()
 	CompositingEnabled = false;
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
-		view->updateBackgroundsAndColors();
-
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
 		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}

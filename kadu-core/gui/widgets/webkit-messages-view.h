@@ -90,8 +90,6 @@ public:
 
 	int countMessages();
 
-	void updateBackgroundsAndColors();
-
 	void setForcePruneDisabled(bool disable);
 
 	Chat chat() const { return CurrentChat; }

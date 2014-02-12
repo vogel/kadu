@@ -74,6 +74,8 @@ public:
 	MessageRenderInfo & setNickColor(const QString &nickColor);
 	const QString & nickColor() const { return NickColor; }
 
+	void updateBackgroundsAndColors();
+
 };
 
 #endif // MESSAGE_RENDER_INFO

@@ -206,4 +206,26 @@ MessageRenderInfo & MessageRenderInfo::setNickColor(const QString &nickColor)
 	return *this;
 }
 
+void MessageRenderInfo::updateBackgroundsAndColors()
+{
+	switch (message().type())
+	{
+		case MessageTypeSent:
+			setBackgroundColor(ChatConfigurationHolder::instance()->myBackgroundColor())
+				.setNickColor(ChatConfigurationHolder::instance()->myNickColor())
+				.setFontColor(ChatConfigurationHolder::instance()->myFontColor());
+			break;
+
+		case MessageTypeReceived:
+			setBackgroundColor(ChatConfigurationHolder::instance()->usrBackgroundColor())
+				.setNickColor(ChatConfigurationHolder::instance()->usrNickColor())
+				.setFontColor(ChatConfigurationHolder::instance()->usrFontColor());
+			break;
+
+		default:
+			// do nothing
+			break;
+	}
+}
+
 #include "moc_message-render-info.cpp"

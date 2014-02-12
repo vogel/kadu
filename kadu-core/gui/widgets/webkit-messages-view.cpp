@@ -207,11 +207,6 @@ void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QStri
 	Renderer->chatImageAvailable(chatImage, fullFilePath);
 }
 
-void WebkitMessagesView::updateBackgroundsAndColors()
-{
-	Renderer->updateBackgroundsAndColors();
-}
-
 void WebkitMessagesView::repaintMessages()
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};

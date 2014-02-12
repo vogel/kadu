@@ -148,6 +148,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, const Mes
 	bool includeHeader;
 
 	Message msg = message->message();
+	message->updateBackgroundsAndColors();
 
 	if (msg.type() == MessageTypeSystem)
 	{
