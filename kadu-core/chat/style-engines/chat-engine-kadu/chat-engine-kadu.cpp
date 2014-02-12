@@ -83,7 +83,7 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 		return;
 	}
 
-	QString html(replacedNewLine(formatMessage(message, renderer->lastMessage()), QLatin1String(" ")));
+	QString html(replacedNewLine(formatMessage(message->message(), renderer->lastMessage()), QLatin1String(" ")));
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));
 	if (!message->message().id().isEmpty())
@@ -141,24 +141,24 @@ void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &var
 	CurrentStyleName = styleName;
 }
 
-QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, const Message &after)
+QString KaduChatStyleEngine::formatMessage(const Message &message, const Message &after)
 {
 	int separatorSize;
 	QString format;
 	bool includeHeader;
 
-	Message msg = message->message();
-	message->updateBackgroundsAndColors();
+	MessageRenderInfo info{message};
+	info.updateBackgroundsAndColors();
 
-	if (msg.type() == MessageTypeSystem)
+	if (message.type() == MessageTypeSystem)
 	{
 		separatorSize = ChatStylesManager::instance()->paragraphSeparator();
 		format = CurrentChatSyntax.withHeader();
 
-		message->setSeparatorSize(separatorSize);
+		info.setSeparatorSize(separatorSize);
 
-		Contact sender = msg.messageSender();
-		return Parser::parse(format, Talkable(sender), message, true);
+		Contact sender = message.messageSender();
+		return Parser::parse(format, Talkable(sender), &info, true);
 	}
 	else
 	{
@@ -166,13 +166,13 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, const Mes
 
 		if (after && !includeHeader)
 		{
-			if (msg.receiveDate().toTime_t() < after.receiveDate().toTime_t())
+			if (message.receiveDate().toTime_t() < after.receiveDate().toTime_t())
 				qWarning("New message has earlier date than last message");
 
 			includeHeader =
 				(after.type() == MessageTypeSystem) ||
-				((static_cast<int>(msg.receiveDate().toTime_t() - after.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-				 (msg.messageSender() != after.messageSender()));
+				((static_cast<int>(message.receiveDate().toTime_t() - after.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
+				 (message.messageSender() != after.messageSender()));
 		}
 
 		if (includeHeader)
@@ -186,11 +186,11 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, const Mes
 			format = CurrentChatSyntax.withoutHeader();
 		}
 
-		message->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
-		message->setSeparatorSize(separatorSize);
+		info.setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
+		info.setSeparatorSize(separatorSize);
 
-		Contact sender = msg.messageSender();
-		return Parser::parse(format, Talkable(sender), message, true);
+		Contact sender = message.messageSender();
+		return Parser::parse(format, Talkable(sender), &info, true);
 	}
 }
 
@@ -218,9 +218,9 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 	{
 		QString messageText;
 		if (!message->message().id().isEmpty())
-			messageText = QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message->message().id()).arg(formatMessage(message, prevMessage));
+			messageText = QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message->message().id()).arg(formatMessage(message->message(), prevMessage));
 		else
-			messageText = QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, prevMessage));
+			messageText = QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message->message(), prevMessage));
 		messageText = scriptsAtEnd(messageText);
 		text += messageText;
 		prevMessage = message->message();

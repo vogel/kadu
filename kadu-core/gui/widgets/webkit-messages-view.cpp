@@ -282,7 +282,6 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 		newMessages.append(message);
 	}
 
-	// we need to make new instances of MessageRenderInfo here
 	// clearMessages will destroy existing ones
 	for (auto const &message : rendererMessages)
 		newMessages.append(message);

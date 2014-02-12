@@ -42,7 +42,7 @@ class KaduChatStyleEngine : public QObject, public ChatStyleEngine
 	KaduChatSyntax CurrentChatSyntax;
 	QString jsCode;
 
-	QString formatMessage(MessageRenderInfo *message, const Message &after);
+	QString formatMessage(const Message &message, const Message &after);
 	void repaintMessages(HtmlMessagesRenderer *page);
 	QString scriptsAtEnd(const QString &html);
 

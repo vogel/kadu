@@ -43,7 +43,6 @@ class Chat;
 class ChatImageRequestService;
 class ChatWidget;
 class HtmlMessagesRenderer;
-class MessageRenderInfo;
 
 class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject
 {
