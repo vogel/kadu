@@ -59,7 +59,8 @@ void AntistringConfigurationUiHandler::unregisterUiHandler()
 	}
 }
 
-AntistringConfigurationUiHandler::AntistringConfigurationUiHandler()
+AntistringConfigurationUiHandler::AntistringConfigurationUiHandler() :
+		ConditionListWidget{}, ConditionWidget{}, FactorWidget{}
 {
 }
 
