@@ -96,7 +96,7 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
 	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
 
-	void appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message, const QString &nickColor);
+	void appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message);
 
 private slots:
 	void refreshHackFinished(HtmlMessagesRenderer *);

@@ -34,6 +34,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
+#include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -86,7 +87,7 @@ void RefreshViewHack::loadFinished()
 	Renderer->setLastMessage(Message::null);
 
 	foreach (MessageRenderInfo *message, Renderer->messages())
-		Engine->appendChatMessage(Renderer, message->message(), message->nickColor());
+		Engine->appendChatMessage(Renderer, message->message());
 
 	deleteLater();
 }
@@ -220,12 +221,12 @@ void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const 
 		clearMessages(renderer);
 
 		foreach (MessageRenderInfo *message, renderer->messages())
-			appendChatMessage(renderer, message->message(), message->nickColor());
+			appendChatMessage(renderer, message->message());
 		return;
 	}
 
 	foreach (MessageRenderInfo *message, messages)
-		appendChatMessage(renderer, message->message(), message->nickColor());
+		appendChatMessage(renderer, message->message());
 }
 
 void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
@@ -238,14 +239,14 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 		clearMessages(renderer);
 
 		foreach (MessageRenderInfo *message, renderer->messages())
-			appendChatMessage(renderer, message->message(), message->nickColor());
+			appendChatMessage(renderer, message->message());
 		return;
 	}
 
-	appendChatMessage(renderer, message->message(), message->nickColor());
+	appendChatMessage(renderer, message->message());
 }
 
-void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message, const QString &nickColor)
+void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message)
 {
 	if (CurrentRefreshHacks.contains(renderer))
 		return;
@@ -296,6 +297,10 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, con
 		default:
 			break;
 	}
+
+	QString nickColor = message.type() == MessageTypeSent
+			? ChatConfigurationHolder::instance()->myNickColor()
+			: ChatConfigurationHolder::instance()->usrNickColor();
 
 	formattedMessageHtml = replacedNewLine(replaceKeywords(CurrentStyle.baseHref(), formattedMessageHtml, message, nickColor), QLatin1String(" "));
 	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
