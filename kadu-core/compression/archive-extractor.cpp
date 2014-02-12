@@ -127,7 +127,6 @@ bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPat
 
 	archive_write_disk_set_options(writer.data(), flags);
 
-	bool skipAll = false; // Whether to skip all files
 	struct archive_entry *entry;
 
 	QString fileBeingRenamed;
@@ -187,14 +186,6 @@ bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPat
 			archive_entry_copy_pathname(entry, QFile::encodeName(truncatedFilename).constData());
 
 			entryFI = QFileInfo(truncatedFilename);
-		}
-
-		//now check if the file about to be written already exists
-		if (!entryIsDir && entryFI.exists() && skipAll)
-		{
-			archive_read_data_skip(arch.data());
-			archive_entry_clear(entry);
-			continue;
 		}
 
 		//if there is an already existing directory:
