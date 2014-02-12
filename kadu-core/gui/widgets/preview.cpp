@@ -28,10 +28,11 @@
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "gui/widgets/kadu-web-view.h"
-#include "message/message-render-info.h"
 #include "parser/parser.h"
 
 #include "preview.h"
+
+#define PREVIEW_DEFAULT_HEIGHT 250
 
 Preview::Preview(QWidget *parent) :
 		QFrame(parent)
@@ -62,12 +63,10 @@ Preview::~Preview()
 
 void Preview::addMessage(const Message &message)
 {
-	auto messageRenderInfo = new MessageRenderInfo(message);
-	messageRenderInfo->setSeparatorSize(ChatStylesManager::instance()->cfgHeaderSeparatorHeight());
-	Messages.append(messageRenderInfo);
+	Messages.append(message);
 }
 
-const QList<MessageRenderInfo *> & Preview::messages() const
+const QVector<Message> & Preview::messages() const
 {
 	return Messages;
 }

@@ -29,12 +29,9 @@
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-
-#define PREVIEW_DEFAULT_HEIGHT 250
+#include "message/message.h"
 
 class KaduWebView;
-class Message;
-class MessageRenderInfo;
 
 class Preview : public QFrame, public ConfigurationAwareObject
 {
@@ -42,7 +39,7 @@ class Preview : public QFrame, public ConfigurationAwareObject
 
 	KaduWebView *WebView;
 
-	QList<MessageRenderInfo *> Messages;
+	QVector<Message> Messages;
 
 protected:
 	virtual void configurationUpdated();
@@ -52,7 +49,7 @@ public:
 	virtual ~Preview();
 
 	void addMessage(const Message &message);
-	const QList<MessageRenderInfo *> & messages() const;
+	const QVector<Message> & messages() const;
 
 	KaduWebView * webView() const;
 

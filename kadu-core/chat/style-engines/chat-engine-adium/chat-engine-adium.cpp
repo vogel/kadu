@@ -117,24 +117,26 @@ void PreviewHack::loadFinished()
 	if (!Engine || !CurrentPreview)
 		return;
 
-	MessageRenderInfo *message = CurrentPreview->messages().at(0);
-	message->updateBackgroundsAndColors();
+	auto message = CurrentPreview->messages().at(0);
+	MessageRenderInfo info1{message};
+	info1.updateBackgroundsAndColors();
 
-	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message->message(), message->nickColor()), QLatin1String(" ")));
+	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message, info1.nickColor()), QLatin1String(" ")));
 	outgoingHtml.replace('\'', QLatin1String("\\'"));
-	if (!message->message().id().isEmpty())
-		outgoingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	if (!message.id().isEmpty())
+		outgoingHtml.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
 	else
 		outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = CurrentPreview->messages().at(1);
-	message->updateBackgroundsAndColors();
-	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message->message(), message->nickColor()), QLatin1String(" ")));
+	MessageRenderInfo info2{message};
+	info2.updateBackgroundsAndColors();
+	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message, info2.nickColor()), QLatin1String(" ")));
 	incomingHtml.replace('\'', QLatin1String("\\'"));
-	if (!message->message().id().isEmpty())
-		incomingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	if (!message.id().isEmpty())
+		incomingHtml.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
 	else
 		incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
@@ -391,12 +393,9 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	if (preview->messages().count() != 2)
 		return;
 
-	MessageRenderInfo *message = preview->messages().at(0);
-	if (!message)
-		return;
-	Message msg = message->message();
+	auto message = preview->messages().at(0);
 
-	QString styleBaseHtml = preprocessStyleBaseHtml(style, message->message().messageChat());
+	QString styleBaseHtml = preprocessStyleBaseHtml(style, message.messageChat());
 
 	PreviewHack *previousHack = CurrentPreviewHack.data();
 	CurrentPreviewHack = new PreviewHack(this, preview, style.baseHref(), style.outgoingHtml(), style.incomingHtml(), this);

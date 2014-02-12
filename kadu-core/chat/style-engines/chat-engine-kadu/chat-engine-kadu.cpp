@@ -269,12 +269,14 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 	int count = preview->messages().count();
 	if (count)
 	{
-		MessageRenderInfo *message;
 		for (int i = 0; i < count; i++)
 		{
-			message = preview->messages().at(i);
-			Contact sender = message->message().messageSender();
-			text += Parser::parse(syntax.withHeader(), Talkable(sender), message);
+			auto message = preview->messages().at(i);
+			MessageRenderInfo info{message};
+			info.setSeparatorSize(ChatStylesManager::instance()->cfgHeaderSeparatorHeight());
+			info.updateBackgroundsAndColors();
+
+			text += Parser::parse(syntax.withHeader(), Talkable(message.messageSender()), &info);
 		}
 	}
 	preview->webView()->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
