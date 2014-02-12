@@ -32,7 +32,7 @@
 #include "html-messages-renderer.h"
 
 HtmlMessagesRenderer::HtmlMessagesRenderer(const Chat &chat, QObject *parent) :
-		QObject(parent), MyChat(chat), LastMessage(0), PruneEnabled(true), ForcePruneDisabled(false)
+		QObject(parent), MyChat(chat), PruneEnabled(true), ForcePruneDisabled(false)
 {
 	MyWebPage = new QWebPage(this);
 	MyWebPage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
@@ -128,11 +128,11 @@ void HtmlMessagesRenderer::clearMessages()
 	qDeleteAll(MyChatMessages);
 	MyChatMessages.clear();
 
-	LastMessage = 0;
+	LastMessage = Message::null;
 	ChatStylesManager::instance()->currentEngine()->clearMessages(this);
 }
 
-void HtmlMessagesRenderer::setLastMessage(MessageRenderInfo *message)
+void HtmlMessagesRenderer::setLastMessage(Message message)
 {
 	LastMessage = message;
 }

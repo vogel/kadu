@@ -48,7 +48,6 @@ class ChatWidget;
 class CustomInput;
 class FilteredTreeView;
 class FormattedStringFactory;
-class MessageRenderInfo;
 class Protocol;
 class TalkableProxyModel;
 

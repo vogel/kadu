@@ -141,7 +141,7 @@ void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &var
 	CurrentStyleName = styleName;
 }
 
-QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRenderInfo *after)
+QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, const Message &after)
 {
 	int separatorSize;
 	QString format;
@@ -165,14 +165,13 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 
 		if (after && !includeHeader)
 		{
-			Message aft = after->message();
-			if (msg.receiveDate().toTime_t() < aft.receiveDate().toTime_t())
+			if (msg.receiveDate().toTime_t() < after.receiveDate().toTime_t())
 				qWarning("New message has earlier date than last message");
 
 			includeHeader =
-				(aft.type() == MessageTypeSystem) ||
-				((static_cast<int>(msg.receiveDate().toTime_t() - aft.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-				 (msg.messageSender() != aft.messageSender()));
+				(after.type() == MessageTypeSystem) ||
+				((static_cast<int>(msg.receiveDate().toTime_t() - after.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
+				 (msg.messageSender() != after.messageSender()));
 		}
 
 		if (includeHeader)

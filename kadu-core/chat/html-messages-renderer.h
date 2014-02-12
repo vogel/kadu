@@ -41,7 +41,7 @@ class HtmlMessagesRenderer : public QObject
 
 	Chat MyChat;
 	QList<MessageRenderInfo *> MyChatMessages;
-	MessageRenderInfo *LastMessage;
+	Message LastMessage;
 	QWebPage *MyWebPage;
 
 	bool PruneEnabled;
@@ -70,8 +70,8 @@ public:
 	void appendMessages(const QVector<Message> &messages);
 	void clearMessages();
 
-	MessageRenderInfo * lastMessage() { return LastMessage; }
-	void setLastMessage(MessageRenderInfo *message);
+	Message lastMessage() { return LastMessage; }
+	void setLastMessage(Message message);
 
 	void refresh();
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);

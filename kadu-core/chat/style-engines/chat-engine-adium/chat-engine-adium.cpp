@@ -83,10 +83,10 @@ void RefreshViewHack::loadFinished()
 
 	emit finished(Renderer);
 
-	Renderer->setLastMessage(0);
+	Renderer->setLastMessage(Message::null);
 
 	foreach (MessageRenderInfo *message, Renderer->messages())
-		Engine->appendChatMessage(Renderer, message);
+		Engine->appendChatMessage(Renderer, message->message(), message->nickColor());
 
 	deleteLater();
 }
@@ -118,7 +118,7 @@ void PreviewHack::loadFinished()
 
 	MessageRenderInfo *message = CurrentPreview->messages().at(0);
 
-	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message), QLatin1String(" ")));
+	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message->message(), message->nickColor()), QLatin1String(" ")));
 	outgoingHtml.replace('\'', QLatin1String("\\'"));
 	if (!message->message().id().isEmpty())
 		outgoingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
@@ -128,7 +128,7 @@ void PreviewHack::loadFinished()
 	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = CurrentPreview->messages().at(1);
-	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message), QLatin1String(" ")));
+	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message->message(), message->nickColor()), QLatin1String(" ")));
 	incomingHtml.replace('\'', QLatin1String("\\'"));
 	if (!message->message().id().isEmpty())
 		incomingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
@@ -220,12 +220,12 @@ void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const 
 		clearMessages(renderer);
 
 		foreach (MessageRenderInfo *message, renderer->messages())
-			appendChatMessage(renderer, message);
+			appendChatMessage(renderer, message->message(), message->nickColor());
 		return;
 	}
 
 	foreach (MessageRenderInfo *message, messages)
-		appendChatMessage(renderer, message);
+		appendChatMessage(renderer, message->message(), message->nickColor());
 }
 
 void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
@@ -238,14 +238,14 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 		clearMessages(renderer);
 
 		foreach (MessageRenderInfo *message, renderer->messages())
-			appendChatMessage(renderer, message);
+			appendChatMessage(renderer, message->message(), message->nickColor());
 		return;
 	}
 
-	appendChatMessage(renderer, message);
+	appendChatMessage(renderer, message->message(), message->nickColor());
 }
 
-void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
+void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message, const QString &nickColor)
 {
 	if (CurrentRefreshHacks.contains(renderer))
 		return;
@@ -253,25 +253,23 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 	QString formattedMessageHtml;
 	bool includeHeader = true;
 
-	MessageRenderInfo *lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
+	Message lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
 			? renderer->lastMessage()
-			: 0;
-
-	Message msg = message->message();
+			: Message::null;
 
 	if (lastMessage)
 	{
-		Message last = lastMessage->message();
-		if (msg.receiveDate().toTime_t() < last.receiveDate().toTime_t())
+		if (message.receiveDate().toTime_t() < lastMessage.receiveDate().toTime_t())
 			qWarning("New message has earlier date than last message");
 
 		includeHeader =
-			msg.type() == MessageTypeSystem ||
-			last.type() == MessageTypeSystem ||
-			msg.messageSender() != last.messageSender() ||
-			static_cast<int>(msg.receiveDate().toTime_t() - last.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
+			message.type() == MessageTypeSystem ||
+			lastMessage.type() == MessageTypeSystem ||
+			message.messageSender() != lastMessage.messageSender() ||
+			static_cast<int>(message.receiveDate().toTime_t() - lastMessage.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
 	}
-	switch (msg.type())
+
+	switch (message.type())
 	{
 		case MessageTypeReceived:
 		{
@@ -299,11 +297,11 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 			break;
 	}
 
-	formattedMessageHtml = replacedNewLine(replaceKeywords(CurrentStyle.baseHref(), formattedMessageHtml, message), QLatin1String(" "));
+	formattedMessageHtml = replacedNewLine(replaceKeywords(CurrentStyle.baseHref(), formattedMessageHtml, message, nickColor), QLatin1String(" "));
 	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
 	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
-	if (!message->message().id().isEmpty())
-		formattedMessageHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	if (!message.id().isEmpty())
+		formattedMessageHtml.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
 	else
 		formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
@@ -470,31 +468,29 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 	return result;
 }
 
-QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QString &source, MessageRenderInfo *message)
+QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor)
 {
 	QString result = source;
 
-	Message msg = message->message();
-
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), msg.messageSender().display(true));
+	result.replace(QString("%sender%"), message.messageSender().display(true));
 	// Replace %screenName% (contact ID)
-	result.replace(QString("%senderScreenName%"), msg.messageSender().id());
+	result.replace(QString("%senderScreenName%"), message.messageSender().id());
 	// Replace service name (protocol name)
-	if (msg.messageChat().chatAccount().protocolHandler() && msg.messageChat().chatAccount().protocolHandler()->protocolFactory())
+	if (message.messageChat().chatAccount().protocolHandler() && message.messageChat().chatAccount().protocolHandler()->protocolFactory())
 	{
-		result.replace(QString("%service%"), msg.messageChat().chatAccount().protocolHandler()->protocolFactory()->displayName());
+		result.replace(QString("%service%"), message.messageChat().chatAccount().protocolHandler()->protocolFactory()->displayName());
 		// Replace protocolIcon (sender statusIcon). TODO:
-		result.replace(QString("%senderStatusIcon%"), msg.messageChat().chatAccount().protocolHandler()->protocolFactory()->icon().fullPath());
+		result.replace(QString("%senderStatusIcon%"), message.messageChat().chatAccount().protocolHandler()->protocolFactory()->icon().fullPath());
 	}
 	else
 	{
-		result.replace(QString("%service%"), msg.messageChat().chatAccount().accountIdentity().name());
+		result.replace(QString("%service%"), message.messageChat().chatAccount().accountIdentity().name());
 		result.remove("%senderStatusIcon%");
 	}
 
 	// Replace time
-	QDateTime time = msg.sendDate().isNull() ? msg.receiveDate(): msg.sendDate();
+	QDateTime time = message.sendDate().isNull() ? message.receiveDate(): message.sendDate();
 	result.replace(QString("%time%"), printDateTime(time));
 	// Look for %time{X}%
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
@@ -513,20 +509,20 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 
 	// Replace userIconPath
 	QString photoPath;
-	if (msg.type() == MessageTypeReceived)
+	if (message.type() == MessageTypeReceived)
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		const Avatar &avatar = msg.messageSender().avatar(true);
+		const Avatar &avatar = message.messageSender().avatar(true);
 		if (!avatar.isEmpty())
 			photoPath = KaduPaths::webKitPath(avatar.smallFilePath());
 		else
 			photoPath = KaduPaths::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
-	else if (msg.type() == MessageTypeSent)
+	else if (message.type() == MessageTypeSent)
 	{
 		result.replace(QString("%messageClasses%"), "message outgoing");
-		const Avatar &avatar = msg.messageChat().chatAccount().accountContact().avatar(true);
+		const Avatar &avatar = message.messageChat().chatAccount().accountContact().avatar(true);
 		if (!avatar.isEmpty())
 			photoPath = KaduPaths::webKitPath(avatar.smallFilePath());
 		else
@@ -541,7 +537,6 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	result.replace(QString("%messageDirection%"), "ltr");
 
 	// Replace contact's color
-	const QString colorName = message->nickColor();
 	QString lightColorName;
 	QRegExp senderColorRegExp("%senderColor(?:\\{([^}]*)\\})?%");
 	textPos = 0;
@@ -553,23 +548,23 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 			light = senderColorRegExp.cap(1).toInt(&doLight);
 
 		if (doLight && lightColorName.isNull())
-			lightColorName = QColor(colorName).light(light).name();
+			lightColorName = QColor(nickColor).light(light).name();
 
-		result.replace(textPos, senderColorRegExp.cap(0).length(), doLight ? lightColorName : colorName);
+		result.replace(textPos, senderColorRegExp.cap(0).length(), doLight ? lightColorName : nickColor);
 	}
 
 	QString messageText = CurrentMessageHtmlRendererService
-			? CurrentMessageHtmlRendererService.data()->renderMessage(message->message())
-			: message->message().htmlContent();
+			? CurrentMessageHtmlRendererService.data()->renderMessage(message)
+			: message.htmlContent();
 
-	if (!message->message().id().isEmpty())
-		messageText.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	if (!message.id().isEmpty())
+		messageText.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
 	else
 		messageText.prepend("<span>");
 	messageText.append("</span>");
 
-	result.replace(QString("%messageId%"), message->message().id());
-	result.replace(QString("%messageStatus%"), QString::number(message->message().status()));
+	result.replace(QString("%messageId%"), message.id());
+	result.replace(QString("%messageStatus%"), QString::number(message.status()));
 
 	result.replace(QString("%message%"), messageText);
 
