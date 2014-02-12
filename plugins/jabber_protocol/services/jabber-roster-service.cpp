@@ -201,7 +201,7 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 
 	RosterTaskType rosterTaskType = taskType(contact.id());
-	if (RosterTaskNone == rosterTaskType && RosterTaskDelete == rosterTaskType)
+	if (RosterTaskNone == rosterTaskType || RosterTaskDelete == rosterTaskType)
 	{
 		contact.rosterEntry()->setState(RosterEntrySynchronizing);
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
