@@ -249,13 +249,14 @@ bool WebkitMessagesView::sameMessage(const Message &left, const Message &right)
 	return true;
 }
 
-Message WebkitMessagesView::firstNonSystemMessage(const QList<MessageRenderInfo *> &messages)
+Message WebkitMessagesView::firstNonSystemMessage(const std::vector<Message> &messages)
 {
-	foreach (MessageRenderInfo *message, messages)
-		if (message->message().type() != MessageTypeSystem)
-			return message->message();
-
-	return Message::null;
+	auto it = std::find_if(std::begin(messages), std::end(messages),
+		[](const Message &message){ return message.type() != MessageTypeSystem; }
+	);
+	return it != std::end(messages)
+			? *it
+			: Message::null;
 }
 
 void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
@@ -263,17 +264,22 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 	if (messages.empty())
 		return;
 
+	auto rendererMessages = std::vector<Message>{};
+	for (auto info : Renderer->messages())
+		rendererMessages.push_back(info->message());
+
 	// case #1: all prepended messages are already rendered
-	const Message &firstMessage = messages.at(0);
-	QList<MessageRenderInfo *> copyOfRendererMessages = Renderer->messages();
-	foreach (const MessageRenderInfo *renderInfo, copyOfRendererMessages)
-		if (sameMessage(renderInfo->message(), firstMessage))
-			return;
+	auto const &firstMessage = messages.at(0);
+	auto hasFirstMessage = std::any_of(std::begin(rendererMessages), std::end(rendererMessages),
+		[&firstMessage,this](const Message &message){ return sameMessage(message, firstMessage); }
+	);
+	if (hasFirstMessage)
+		return;
 
 	// case #2: some prepended messages are already rendered
-	const Message &firstRenderedMessage = firstNonSystemMessage(copyOfRendererMessages);
-	QVector<Message> newMessages;
-	foreach (const Message &message, messages)
+	auto const &firstRenderedMessage = firstNonSystemMessage(rendererMessages);
+	auto newMessages = QVector<Message>{};
+	for (auto const &message : messages)
 	{
 		if (sameMessage(firstRenderedMessage, message))
 			break; // we already have this and following messages in our window
@@ -283,8 +289,8 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 
 	// we need to make new instances of MessageRenderInfo here
 	// clearMessages will destroy existing ones
-	foreach (const MessageRenderInfo *renderInfo, copyOfRendererMessages)
-		newMessages.append(renderInfo->message());
+	for (auto const &message : rendererMessages)
+		newMessages.append(message);
 
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->clearMessages();
