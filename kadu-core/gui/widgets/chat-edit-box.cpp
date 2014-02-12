@@ -323,9 +323,10 @@ void ChatEditBox::changeColor(const QColor &newColor)
 
 void ChatEditBox::setColorFromCurrentText(bool force)
 {
-// 	Action *action = Core::instance()->chatWidgetActions()->colorSelector()->action(this);
+	Q_UNUSED(force);
 
-	Action *action = 0;
+/*
+	Action *action = Core::instance()->chatWidgetActions()->colorSelector()->action(this);
 	if (!action || (!force && (InputBox->textColor() == CurrentColor)))
 		return;
 
@@ -343,6 +344,7 @@ void ChatEditBox::setColorFromCurrentText(bool force)
 	p.fill(CurrentColor);
 
 	action->QAction::setIcon(p);
+*/
 }
 
 void ChatEditBox::insertPlainText(const QString &plainText)
