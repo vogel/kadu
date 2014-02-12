@@ -108,12 +108,12 @@ void FileTransferManager::removeFileTransferService(Account account)
 
 void FileTransferManager::fileTransferServiceRegistered()
 {
-	addFileTransferService(sender());
+	addFileTransferService(Account{sender()});
 }
 
 void FileTransferManager::fileTransferServiceUnregistered()
 {
-	removeFileTransferService(sender());
+	removeFileTransferService(Account{sender()});
 }
 
 void FileTransferManager::accountRegistered(Account account)

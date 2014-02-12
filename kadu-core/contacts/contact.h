@@ -56,7 +56,7 @@ public:
 
 	Contact();
 	Contact(ContactShared *data);
-	Contact(QObject *data);
+	explicit Contact(QObject *data);
 	Contact(const Contact &copy);
 	virtual ~Contact();
 

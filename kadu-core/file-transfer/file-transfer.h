@@ -45,7 +45,7 @@ public:
 
 	FileTransfer();
 	FileTransfer(FileTransferShared *data);
-	FileTransfer(QObject *data);
+	explicit FileTransfer(QObject *data);
 	FileTransfer(const FileTransfer &copy);
 	virtual ~FileTransfer();
 

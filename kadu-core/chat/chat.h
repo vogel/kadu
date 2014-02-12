@@ -59,7 +59,7 @@ public:
 
 	Chat();
 	Chat(ChatShared *data);
-	Chat(QObject *data);
+	explicit Chat(QObject *data);
 	Chat(const Chat &copy);
 
 	virtual ~Chat();

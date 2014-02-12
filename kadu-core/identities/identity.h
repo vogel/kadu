@@ -42,7 +42,7 @@ public:
 
 	Identity();
 	Identity(IdentityShared *data);
-	Identity(QObject *data);
+	explicit Identity(QObject *data);
 	Identity(const Identity &copy);
 	virtual ~Identity();
 

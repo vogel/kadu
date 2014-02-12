@@ -45,7 +45,7 @@ public:
 
 	Key();
 	Key(KeyShared *data);
-	Key(QObject *data);
+	explicit Key(QObject *data);
 	Key(const Key &copy);
 	virtual ~Key();
 

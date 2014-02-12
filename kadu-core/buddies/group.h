@@ -43,7 +43,7 @@ public:
 
 	Group();
 	Group(GroupShared *data);
-	Group(QObject *data);
+	explicit Group(QObject *data);
 	Group(const Group &copy);
 
 	virtual ~Group();

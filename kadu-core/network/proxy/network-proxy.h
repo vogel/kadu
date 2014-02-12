@@ -37,7 +37,7 @@ public:
 
 	NetworkProxy();
 	NetworkProxy(NetworkProxyShared *data);
-	NetworkProxy(QObject *data);
+	explicit NetworkProxy(QObject *data);
 	NetworkProxy(const NetworkProxy &copy);
 
 	virtual ~NetworkProxy();

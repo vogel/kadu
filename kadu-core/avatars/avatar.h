@@ -46,7 +46,7 @@ public:
 
 	Avatar();
 	Avatar(AvatarShared *data);
-	Avatar(QObject *data);
+	explicit Avatar(QObject *data);
 	Avatar(const Avatar &copy);
 	virtual ~Avatar();
 

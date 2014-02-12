@@ -199,7 +199,7 @@ void ChatWidget::createGui()
 	frameLayout->setMargin(0);
 	frameLayout->setSpacing(0);
 
-	MessagesView = new WebkitMessagesView(frame);
+	MessagesView = new WebkitMessagesView(Chat::null, true, frame);
 	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
 	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 

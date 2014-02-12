@@ -45,7 +45,7 @@ void GroupEventListener::groupAdded(const Group &group)
 
 void GroupEventListener::groupUpdated()
 {
-	Group group = sender();
+	Group group{sender()};
 	if (group.isNull())
 		return;
 

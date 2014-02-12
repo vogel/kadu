@@ -50,7 +50,7 @@ public:
 
 	Account();
 	Account(AccountShared *data);
-	Account(QObject *data);
+	explicit Account(QObject *data);
 	Account(const Account &copy);
 	virtual ~Account();
 

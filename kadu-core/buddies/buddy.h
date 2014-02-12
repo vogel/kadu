@@ -66,7 +66,7 @@ public:
 
 	Buddy();
 	Buddy(BuddyShared *data);
-	Buddy(QObject *data);
+	explicit Buddy(QObject *data);
 	Buddy(const Buddy &copy);
 	virtual ~Buddy();
 
