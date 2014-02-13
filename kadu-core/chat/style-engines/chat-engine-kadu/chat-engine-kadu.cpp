@@ -147,7 +147,7 @@ QString KaduChatStyleEngine::formatMessage(const Message &message, const Message
 	QString format;
 	bool includeHeader;
 
-	MessageRenderInfo info{message};
+	auto info = MessageRenderInfo{message};
 	info.updateBackgroundsAndColors();
 
 	if (message.type() == MessageTypeSystem)
@@ -272,7 +272,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		for (int i = 0; i < count; i++)
 		{
 			auto message = preview->messages().at(i);
-			MessageRenderInfo info{message};
+			auto info = MessageRenderInfo{message};
 			info.setSeparatorSize(ChatStylesManager::instance()->cfgHeaderSeparatorHeight());
 			info.updateBackgroundsAndColors();
 

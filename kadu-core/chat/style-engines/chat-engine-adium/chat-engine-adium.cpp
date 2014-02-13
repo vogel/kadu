@@ -118,7 +118,7 @@ void PreviewHack::loadFinished()
 		return;
 
 	auto message = CurrentPreview->messages().at(0);
-	MessageRenderInfo info1{message};
+	auto info1 = MessageRenderInfo{message};
 	info1.updateBackgroundsAndColors();
 
 	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message, info1.nickColor()), QLatin1String(" ")));
@@ -131,7 +131,7 @@ void PreviewHack::loadFinished()
 	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = CurrentPreview->messages().at(1);
-	MessageRenderInfo info2{message};
+	auto info2 = MessageRenderInfo{message};
 	info2.updateBackgroundsAndColors();
 	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message, info2.nickColor()), QLatin1String(" ")));
 	incomingHtml.replace('\'', QLatin1String("\\'"));
