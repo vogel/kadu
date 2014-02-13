@@ -47,7 +47,6 @@
 #include "gui/widgets/preview.h"
 #include "gui/widgets/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
-#include "message/message-render-info.h"
 #include "misc/kadu-paths.h"
 #include "protocols/protocols-manager.h"
 

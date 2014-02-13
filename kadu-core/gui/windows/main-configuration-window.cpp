@@ -62,7 +62,6 @@
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "message/message-render-info.h"
 #include "misc/kadu-paths.h"
 #include "network/proxy/network-proxy.h"
 #include "plugin/gui/plugin-list/plugin-list-widget.h"

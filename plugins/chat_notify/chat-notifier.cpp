@@ -26,7 +26,6 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
-#include "message/message-render-info.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notification/chat-notification.h"
 
