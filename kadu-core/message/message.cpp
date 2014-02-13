@@ -24,6 +24,7 @@
 
 #include "chat/chat.h"
 #include "contacts/contact.h"
+#include "formatted-string/formatted-string.h"
 
 #include "message.h"
 
@@ -88,3 +89,32 @@ KaduSharedBase_PropertyDefCRW(Message, QDateTime, sendDate, SendDate, QDateTime(
 KaduSharedBase_PropertyDef(Message, MessageStatus, status, Status, MessageStatusUnknown)
 KaduSharedBase_PropertyDef(Message, MessageType, type, Type, MessageTypeUnknown)
 KaduSharedBase_PropertyDefCRW(Message, QString, id, Id, QString())
+
+bool sameMessage(const Message &left, const Message &right)
+{
+	if (left.isNull() && right.isNull())
+		return true;
+
+	if (left.isNull() || right.isNull()) // one is null, second one is not
+		return false;
+
+	if (left.type() != right.type())
+		return false;
+
+	// In our SQL history we store datetime with accuracy to one second,
+	// while for received XMPP messages we have a millisecond accuracy.
+	// So to have proper results, we need to truncate those additional milliseconds.
+	if (left.sendDate().toTime_t() != right.sendDate().toTime_t())
+		return false;
+
+	if (left.messageChat() != right.messageChat())
+		return false;
+
+	if (left.messageSender() != right.messageSender())
+		return false;
+
+	if (*left.content() != *right.content())
+		return false;
+
+	return true;
+}

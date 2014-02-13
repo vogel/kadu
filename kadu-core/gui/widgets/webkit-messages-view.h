@@ -60,7 +60,6 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	bool AtBottom;
 
-	bool sameMessage(const Message &left, const Message &right);
 	Message firstNonSystemMessage(const QVector<Message> &messages);
 
 private slots:

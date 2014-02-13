@@ -214,35 +214,6 @@ void WebkitMessagesView::repaintMessages()
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
 
-bool WebkitMessagesView::sameMessage(const Message &left, const Message &right)
-{
-	if (left.isNull() && right.isNull())
-		return true;
-
-	if (left.isNull() || right.isNull()) // one is null, second one is not
-		return false;
-
-	if (left.type() != right.type())
-		return false;
-
-	// In our SQL history we store datetime with accuracy to one second,
-	// while for received XMPP messages we have a millisecond accuracy.
-	// So to have proper results, we need to truncate those additional milliseconds.
-	if (left.sendDate().toTime_t() != right.sendDate().toTime_t())
-		return false;
-
-	if (left.messageChat() != right.messageChat())
-		return false;
-
-	if (left.messageSender() != right.messageSender())
-		return false;
-
-	if (*left.content() != *right.content())
-		return false;
-
-	return true;
-}
-
 Message WebkitMessagesView::firstNonSystemMessage(const QVector<Message> &messages)
 {
 	auto it = std::find_if(std::begin(messages), std::end(messages),
@@ -263,7 +234,7 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 	// case #1: all prepended messages are already rendered
 	auto const &firstMessage = messages.at(0);
 	auto hasFirstMessage = std::any_of(std::begin(rendererMessages), std::end(rendererMessages),
-		[&firstMessage,this](const Message &message){ return sameMessage(message, firstMessage); }
+		[&firstMessage](const Message &message){ return sameMessage(message, firstMessage); }
 	);
 	if (hasFirstMessage)
 		return;
