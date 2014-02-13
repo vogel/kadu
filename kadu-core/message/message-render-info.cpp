@@ -39,79 +39,79 @@
 
 #include "message-render-info.h"
 
-static QString getMessage(const QObject * const object)
+static QString getMessage(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return Core::instance()->messageHtmlRendererService()->renderMessage(messageRenderInfo->message());
 	else
 		return QString();
 }
 
-static QString getMessageId(const QObject * const object)
+static QString getMessageId(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return messageRenderInfo->message().id();
 	return QString();
 }
 
-static QString getMessageStatus(const QObject * const object)
+static QString getMessageStatus(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return QString::number(messageRenderInfo->message().status());
 	return QString();
 }
 
-static QString getBackgroundColor(const QObject * const object)
+static QString getBackgroundColor(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return messageRenderInfo->backgroundColor();
 	else
 		return QString();
 }
 
-static QString getFontColor(const QObject * const object)
+static QString getFontColor(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return messageRenderInfo->fontColor();
 	else
 		return QString();
 }
 
-static QString getNickColor(const QObject * const object)
+static QString getNickColor(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return messageRenderInfo->nickColor();
 	else
 		return QString();
 }
 
-static QString getSentDate(const QObject * const object)
+static QString getSentDate(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo && messageRenderInfo->showServerTime())
 		return printDateTime(messageRenderInfo->message().sendDate());
 	else
 		return QString();
 }
 
-static QString getReceivedDate(const QObject * const object)
+static QString getReceivedDate(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return printDateTime(messageRenderInfo->message().receiveDate());
 	else
 		return QString();
 }
 
-static QString getSeparator(const QObject * const object)
+static QString getSeparator(const ParserData * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (!messageRenderInfo)
 		return QString();
 

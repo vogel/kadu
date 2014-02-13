@@ -23,23 +23,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_RENDER_INFO
-#define MESSAGE_RENDER_INFO
+#pragma once
 
-#include <QtCore/QDateTime>
-#include <QtCore/QString>
+#include "parser/parser-data.h"
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy.h"
 #include "message/message.h"
 #include "protocols/protocol.h"
-
 #include "exports.h"
 
-class KADUAPI MessageRenderInfo : public QObject
-{
-	Q_OBJECT
+#include <QtCore/QString>
 
+class KADUAPI MessageRenderInfo : public ParserData
+{
 	Message MyMessage;
 
 	QString BackgroundColor;
@@ -77,5 +74,3 @@ public:
 	void updateBackgroundsAndColors();
 
 };
-
-#endif // MESSAGE_RENDER_INFO

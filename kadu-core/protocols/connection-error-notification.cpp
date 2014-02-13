@@ -33,18 +33,18 @@
 
 NotifyEvent *ConnectionErrorNotification::ConnectionErrorNotifyEvent = 0;
 
-static QString getErrorMessage(const QObject * const object)
+static QString getErrorMessage(const ParserData * const object)
 {
-	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(object);
+	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
 	if (connectionErrorNotification)
 		return connectionErrorNotification->errorMessage();
 	else
 		return QString();
 }
 
-static QString getErrorServer(const QObject * const object)
+static QString getErrorServer(const ParserData * const object)
 {
-	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(object);
+	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
 	if (connectionErrorNotification)
 		return connectionErrorNotification->errorServer();
 	else

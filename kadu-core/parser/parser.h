@@ -35,11 +35,12 @@
 
 template<typename T> class QStack;
 
+class ParserData;
 class ParserToken;
 
 class KADUAPI Parser
 {
-	using ObjectTagCallback = std::function<QString(const QObject * const)>;
+	using ObjectTagCallback = std::function<QString(const ParserData * const)>;
 	using TalkableTagCallback = std::function<QString(Talkable)>;
 
 	static QMap<QString, TalkableTagCallback> RegisteredTalkableTags;
@@ -58,15 +59,15 @@ public:
 
 	static QString escape(const QString &string);
 
-	static QString parse(const QString &s, const QObject * const object, bool htmlEscape = true)
+	static QString parse(const QString &s, const ParserData * const parserData, bool htmlEscape = true)
 	{
-		return parse(s, Talkable(), object, htmlEscape);
+		return parse(s, Talkable(), parserData, htmlEscape);
 	}
 	static QString parse(const QString &s, Talkable talkable, bool htmlEscape = true)
 	{
 		return parse(s, talkable, 0, htmlEscape);
 	}
-	static QString parse(const QString &s, Talkable talkable, const QObject * const object, bool escape = true);
+	static QString parse(const QString &s, Talkable talkable, const ParserData * const parserData, bool escape = true);
 
 	static bool registerTag(const QString &name, TalkableTagCallback);
 	static bool unregisterTag(const QString &name);

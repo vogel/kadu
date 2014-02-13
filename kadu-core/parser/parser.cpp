@@ -490,7 +490,7 @@ QString Parser::joinParserTokens(const ContainerClass &parseStack)
 	return joined;
 }
 
-QString Parser::parse(const QString &s, Talkable talkable, const QObject * const object, bool htmlEscape)
+QString Parser::parse(const QString &s, Talkable talkable, const ParserData * const parserData, bool htmlEscape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s htmlEscape=%i\n", qPrintable(s), htmlEscape);
 
@@ -741,8 +741,8 @@ QString Parser::parse(const QString &s, Talkable talkable, const QObject * const
 
 						if (RegisteredTalkableTags.contains(content))
 							pe.setContent(RegisteredTalkableTags[content](talkable));
-						else if (object && RegisteredObjectTags.contains(content))
-							pe.setContent(RegisteredObjectTags[content](object));
+						else if (parserData && RegisteredObjectTags.contains(content))
+							pe.setContent(RegisteredObjectTags[content](parserData));
 						else
 						{
 							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.decodedContent()));

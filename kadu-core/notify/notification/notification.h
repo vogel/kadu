@@ -29,6 +29,7 @@
 
 #include "buddies/buddy-set.h"
 #include "icons/kadu-icon.h"
+#include "parser/parser-data.h"
 #include "exports.h"
 
 class QTimer;
@@ -83,7 +84,7 @@ class Notifier;
 
 	Notyfikacja, co do kt�rej pewna akcja zosta�a wykonana, wywo�uje sygna� closed().
  **/
-class KADUAPI Notification : public QObject
+class KADUAPI Notification : public QObject, public ParserData
 {
 	Q_OBJECT
 
@@ -243,7 +244,7 @@ public:
 		@return ikona zdarzenia
 	 **/
 	virtual const KaduIcon & icon() const { return Icon; }
-	
+
 	/**
 		Lista akcji.
 

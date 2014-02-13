@@ -30,11 +30,11 @@
 
 #include "notification.h"
 
-static QString getNotificationTitle(const QObject * const object)
+static QString getNotificationTitle(const ParserData * const object)
 {
 	kdebugf();
 
-	const Notification * const notification = qobject_cast<const Notification * const>(object);
+	const Notification * const notification = dynamic_cast<const Notification * const>(object);
 	if (notification)
 		return notification->title();
 	else
