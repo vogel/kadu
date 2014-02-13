@@ -25,6 +25,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <functional>
 #include <QtCore/QMap>
 
 #include "parser/parser-token-type.h"
@@ -38,8 +39,8 @@ class ParserToken;
 
 class KADUAPI Parser
 {
-	typedef QString (*ObjectTagCallback)(const QObject * const);
-	typedef QString (*TalkableTagCallback)(Talkable);
+	using ObjectTagCallback = std::function<QString(const QObject * const)>;
+	using TalkableTagCallback = std::function<QString(Talkable)>;
 
 	static QMap<QString, TalkableTagCallback> RegisteredTalkableTags;
 	static QMap<QString, ObjectTagCallback> RegisteredObjectTags;
