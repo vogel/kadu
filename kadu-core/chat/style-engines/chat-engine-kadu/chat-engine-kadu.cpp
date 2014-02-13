@@ -63,7 +63,7 @@ void KaduChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
 		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
-void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const QList<MessageRenderInfo *> &messages)
+void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const QVector<Message> &messages)
 {
 	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
 	{
@@ -71,11 +71,11 @@ void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const Q
 		return;
 	}
 
-	foreach (MessageRenderInfo *message, messages)
+	for (auto const &message : messages)
 		appendMessage(renderer, message);
 }
 
-void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
+void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, const Message &message)
 {
 	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
 	{
@@ -83,18 +83,18 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 		return;
 	}
 
-	QString html(replacedNewLine(formatMessage(message->message(), renderer->lastMessage()), QLatin1String(" ")));
+	QString html(replacedNewLine(formatMessage(message, renderer->lastMessage()), QLatin1String(" ")));
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));
-	if (!message->message().id().isEmpty())
-		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(message->message().id()));
+	if (!message.id().isEmpty())
+		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(message.id()));
 	else
 		html.prepend("<span class=\"kadu_message\">");
 	html.append("</span>");
 
 	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage('" + html + "')");
 
-	renderer->setLastMessage(message->message());
+	renderer->setLastMessage(message);
 }
 
 void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
@@ -213,17 +213,17 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().constBegin()) : Contact();
 	text += Parser::parse(CurrentChatSyntax.top(), Talkable(contact), true);
 
-	Message prevMessage = Message::null;
-	foreach (MessageRenderInfo *message, renderer->messages())
+	auto prevMessage = Message::null;
+	for (auto const &message : renderer->messages())
 	{
 		QString messageText;
-		if (!message->message().id().isEmpty())
-			messageText = QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message->message().id()).arg(formatMessage(message->message(), prevMessage));
+		if (!message.id().isEmpty())
+			messageText = QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message.id()).arg(formatMessage(message, prevMessage));
 		else
-			messageText = QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message->message(), prevMessage));
+			messageText = QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, prevMessage));
 		messageText = scriptsAtEnd(messageText);
 		text += messageText;
-		prevMessage = message->message();
+		prevMessage = message;
 	}
 	renderer->setLastMessage(prevMessage);
 

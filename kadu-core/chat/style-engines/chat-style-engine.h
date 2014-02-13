@@ -31,7 +31,6 @@
 
 class ChatImage;
 class HtmlMessagesRenderer;
-class MessageRenderInfo;
 class Preview;
 
 class ChatStyleEngine
@@ -53,8 +52,8 @@ public:
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
 	virtual void clearMessages(HtmlMessagesRenderer *) = 0;
-	virtual void appendMessages(HtmlMessagesRenderer *, const QList<MessageRenderInfo *> &) = 0;
-	virtual void appendMessage(HtmlMessagesRenderer *, MessageRenderInfo *) = 0;
+	virtual void appendMessages(HtmlMessagesRenderer *, const QVector<Message> &) = 0;
+	virtual void appendMessage(HtmlMessagesRenderer *, const Message &) = 0;
 	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
 	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) = 0;
 	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, MessageStatus) = 0;

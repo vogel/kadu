@@ -84,34 +84,29 @@ void HtmlMessagesRenderer::pruneMessages()
 
 	PruneEnabled = true;
 
-	QList<MessageRenderInfo *>::iterator start = MyChatMessages.begin();
-	QList<MessageRenderInfo *>::iterator stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
-	for (QList<MessageRenderInfo *>::iterator it = start; it != stop; ++it)
-	{
-		delete *it;
+	auto start = MyChatMessages.begin();
+	auto stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
+	for (auto it = start; it != stop; ++it)
 		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
-	}
 
 	MyChatMessages.erase(start, stop);
 }
 
 void HtmlMessagesRenderer::appendMessage(const Message &message)
 {
-	auto messageRenderInfo = new MessageRenderInfo(message);
-	MyChatMessages.append(messageRenderInfo);
+	MyChatMessages.append(message);
 	pruneMessages();
 
-	ChatStylesManager::instance()->currentEngine()->appendMessage(this, messageRenderInfo);
+	ChatStylesManager::instance()->currentEngine()->appendMessage(this, message);
 }
 
 void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 {
-	auto engineMessages = QList<MessageRenderInfo *>{};
+	auto engineMessages = QVector<Message>{};
 	for (auto message : messages)
 	{
-		auto engineMessage = new MessageRenderInfo(message);
-		engineMessages.append(engineMessage);
-		MyChatMessages.append(engineMessage);
+		engineMessages.append(message);
+		MyChatMessages.append(message);
 	}
 
 //  Do not prune messages here. When we are adding many massages to renderer, probably

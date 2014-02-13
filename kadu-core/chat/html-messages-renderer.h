@@ -33,14 +33,13 @@ class QWebPage;
 
 class Chat;
 class ChatImage;
-class MessageRenderInfo;
 
 class HtmlMessagesRenderer : public QObject
 {
 	Q_OBJECT
 
 	Chat MyChat;
-	QList<MessageRenderInfo *> MyChatMessages;
+	QVector<Message> MyChatMessages;
 	Message LastMessage;
 	QWebPage *MyWebPage;
 
@@ -65,7 +64,7 @@ public:
 
 	QString content();
 
-	const QList<MessageRenderInfo *> & messages() const { return MyChatMessages; }
+	const QVector<Message> & messages() const { return MyChatMessages; }
 	void appendMessage(const Message &message);
 	void appendMessages(const QVector<Message> &messages);
 	void clearMessages();

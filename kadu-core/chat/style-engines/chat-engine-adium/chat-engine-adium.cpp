@@ -86,8 +86,8 @@ void RefreshViewHack::loadFinished()
 
 	Renderer->setLastMessage(Message::null);
 
-	foreach (MessageRenderInfo *message, Renderer->messages())
-		Engine->appendChatMessage(Renderer, message->message());
+	for (auto const &message : Renderer->messages())
+		Engine->appendChatMessage(Renderer, message);
 
 	deleteLater();
 }
@@ -215,7 +215,7 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 	return dir.entryList();
 }
 
-void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const QList<MessageRenderInfo *> &messages)
+void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const QVector<Message> &messages)
 {
 	if (CurrentRefreshHacks.contains(renderer))
 		return;
@@ -224,16 +224,16 @@ void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const 
 	{
 		clearMessages(renderer);
 
-		foreach (MessageRenderInfo *message, renderer->messages())
-			appendChatMessage(renderer, message->message());
+		for (auto const &oldMessage : renderer->messages())
+			appendChatMessage(renderer, oldMessage);
 		return;
 	}
 
-	foreach (MessageRenderInfo *message, messages)
-		appendChatMessage(renderer, message->message());
+	for (auto const &message : messages)
+		appendChatMessage(renderer, message);
 }
 
-void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
+void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, const Message &message)
 {
 	if (CurrentRefreshHacks.contains(renderer))
 		return;
@@ -242,12 +242,12 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 	{
 		clearMessages(renderer);
 
-		foreach (MessageRenderInfo *message, renderer->messages())
-			appendChatMessage(renderer, message->message());
+		for (auto const &oldMessage : renderer->messages())
+			appendChatMessage(renderer, oldMessage);
 		return;
 	}
 
-	appendChatMessage(renderer, message->message());
+	appendChatMessage(renderer, message);
 }
 
 void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message)

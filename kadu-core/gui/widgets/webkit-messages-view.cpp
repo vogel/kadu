@@ -244,7 +244,7 @@ bool WebkitMessagesView::sameMessage(const Message &left, const Message &right)
 	return true;
 }
 
-Message WebkitMessagesView::firstNonSystemMessage(const std::vector<Message> &messages)
+Message WebkitMessagesView::firstNonSystemMessage(const QVector<Message> &messages)
 {
 	auto it = std::find_if(std::begin(messages), std::end(messages),
 		[](const Message &message){ return message.type() != MessageTypeSystem; }
@@ -259,9 +259,7 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 	if (messages.empty())
 		return;
 
-	auto rendererMessages = std::vector<Message>{};
-	for (auto info : Renderer->messages())
-		rendererMessages.push_back(info->message());
+	auto const &rendererMessages = Renderer->messages();
 
 	// case #1: all prepended messages are already rendered
 	auto const &firstMessage = messages.at(0);
