@@ -68,7 +68,7 @@ class AdiumStyle
 
 public:
 	AdiumStyle();
-	AdiumStyle(const QString &styleName);
+	explicit AdiumStyle(const QString &styleName);
 
 	static bool isStyleValid(const QString &stylePath);
 
@@ -89,7 +89,7 @@ public:
 	PROPERTY(bool, usesCustomTemplateHtml, UsesCustomTemplateHtml)
 	PROPERTY(int, styleViewVersion, StyleViewVersion)
 
-	QString	templateHtml();
+	QString templateHtml();
 
 	const QStringList & styleVariants() const { return StyleVariants; }
 
