@@ -41,7 +41,7 @@
 #include "chat-engine-kadu.h"
 
 KaduChatStyleEngine::KaduChatStyleEngine(QObject *parent) :
-	QObject(parent)
+		QObject(parent)
 {
 	EngineName = "Kadu";
 	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList("chat"));
@@ -241,27 +241,6 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		}
 	}
 	preview->webView()->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
-}
-
-void KaduChatStyleEngine::chatSyntaxFixup(QString &syntax)
-{
-	syntax.remove("<kadu:header>");
-	syntax.remove("</kadu:header>");
-}
-
-void KaduChatStyleEngine::chatFixup(QString &syntax)
-{
-	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), syntax);
-}
-
-void KaduChatStyleEngine::validateStyleName(const QString &name, bool &valid)
-{
-	valid = !ChatStylesManager::instance()->hasChatStyle(name) || (ChatStylesManager::instance()->hasChatStyle(name) && syntaxList->contains(name));
-}
-
-void KaduChatStyleEngine::syntaxAdded(const QString &syntaxName)
-{
-	ChatStylesManager::instance()->addStyle(syntaxName, this);
 }
 
 #include "moc_chat-engine-kadu.cpp"

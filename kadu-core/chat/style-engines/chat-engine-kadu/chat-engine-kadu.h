@@ -46,12 +46,6 @@ class KaduChatStyleEngine : public QObject, public ChatStyleEngine
 	void repaintMessages(HtmlMessagesRenderer *page);
 	QString scriptsAtEnd(const QString &html);
 
-private slots:
-	void chatSyntaxFixup(QString &syntax);
-	void chatFixup(QString &syntax);
-	void validateStyleName(const QString &name, bool &valid);
-	void syntaxAdded(const QString &syntaxName);
-
 public:
 	explicit KaduChatStyleEngine(QObject *parent = 0);
 	virtual ~KaduChatStyleEngine();
