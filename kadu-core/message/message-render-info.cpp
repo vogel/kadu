@@ -23,21 +23,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QRegExp>
+#include "message-render-info.h"
 
-#include "configuration/chat-configuration-holder.h"
-#include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "icons/kadu-icon.h"
 #include "message/message-html-renderer-service.h"
 #include "misc/date-time.h"
-#include "misc/misc.h"
 #include "parser/parser.h"
-#include "protocols/services/chat-image-service.h"
-#include "url-handlers/url-handler-manager.h"
-
-#include "message-render-info.h"
 
 static QString getMessage(const ParserData * const object)
 {
@@ -148,84 +139,48 @@ void MessageRenderInfo::unregisterParserTags()
 	Parser::unregisterObjectTag("separator");
 }
 
-MessageRenderInfo::MessageRenderInfo(const Message &msg) :
-		MyMessage(msg), ShowServerTime(true)
+MessageRenderInfo::MessageRenderInfo(Message message, QString backgroundColor, QString fontColor, QString nickColor,
+			bool includeHeader, int separatorSize, bool showServerTime) :
+		m_message{std::move(message)}, m_backgroundColor{std::move(backgroundColor)}, m_fontColor{std::move(fontColor)}, m_nickColor{std::move(nickColor)},
+		m_includeHeader(includeHeader), m_separatorSize{separatorSize}, m_showServerTime{showServerTime}
 {
-	switch (msg.type())
-	{
-		case MessageTypeSent:
-			BackgroundColor = ChatConfigurationHolder::instance()->myBackgroundColor();
-			NickColor = ChatConfigurationHolder::instance()->myNickColor();
-			FontColor = ChatConfigurationHolder::instance()->myFontColor();
-			break;
-
-		case MessageTypeReceived:
-			BackgroundColor = ChatConfigurationHolder::instance()->usrBackgroundColor();
-			NickColor = ChatConfigurationHolder::instance()->usrNickColor();
-			FontColor = ChatConfigurationHolder::instance()->usrFontColor();
-			break;
-
-		default:
-			// do nothing
-			break;
-	}
 }
 
 MessageRenderInfo::~MessageRenderInfo()
 {
 }
 
-MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)
+Message MessageRenderInfo::message() const
 {
-	ShowServerTime = (MyMessage.sendDate().isValid()
-			&& (!noServerTime || (abs(static_cast<int>(MyMessage.receiveDate().toTime_t()) - static_cast<int>(MyMessage.sendDate().toTime_t()))) > noServerTimeDiff));
-	return *this;
+	return m_message;
 }
 
-MessageRenderInfo & MessageRenderInfo::setSeparatorSize(int separatorSize)
+QString MessageRenderInfo::backgroundColor() const
 {
-	SeparatorSize = separatorSize;
-	return *this;
+	return m_backgroundColor;
 }
 
-MessageRenderInfo & MessageRenderInfo::setBackgroundColor(const QString &backgroundColor)
+QString MessageRenderInfo::fontColor() const
 {
-	BackgroundColor = backgroundColor;
-	return *this;
+	return m_fontColor;
 }
 
-MessageRenderInfo & MessageRenderInfo::setFontColor(const QString &fontColor)
+QString MessageRenderInfo::nickColor() const
 {
-	FontColor = fontColor;
-	return *this;
+	return m_nickColor;
 }
 
-MessageRenderInfo & MessageRenderInfo::setNickColor(const QString &nickColor)
+bool MessageRenderInfo::includeHeader() const
 {
-	NickColor = nickColor;
-	return *this;
+	return m_includeHeader;
 }
 
-void MessageRenderInfo::updateBackgroundsAndColors()
+int MessageRenderInfo::separatorSize() const
 {
-	switch (message().type())
-	{
-		case MessageTypeSent:
-			setBackgroundColor(ChatConfigurationHolder::instance()->myBackgroundColor())
-				.setNickColor(ChatConfigurationHolder::instance()->myNickColor())
-				.setFontColor(ChatConfigurationHolder::instance()->myFontColor());
-			break;
-
-		case MessageTypeReceived:
-			setBackgroundColor(ChatConfigurationHolder::instance()->usrBackgroundColor())
-				.setNickColor(ChatConfigurationHolder::instance()->usrNickColor())
-				.setFontColor(ChatConfigurationHolder::instance()->usrFontColor());
-			break;
-
-		default:
-			// do nothing
-			break;
-	}
+	return m_separatorSize;
 }
 
-#include "moc_message-render-info.cpp"
+bool MessageRenderInfo::showServerTime() const
+{
+	return m_showServerTime;
+}

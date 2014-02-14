@@ -80,6 +80,7 @@
 #include "message/message-html-renderer-service.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
+#include "message/message-render-info-factory.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
@@ -720,6 +721,8 @@ void Core::runServices()
 	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
+	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
+	CurrentMessageRenderInfoFactory->setChatStylesManager(ChatStylesManager::instance());
 
 	CurrentPluginActivationErrorHandler = new PluginActivationErrorHandler{this};
 	CurrentPluginActivationService = new PluginActivationService(this);
@@ -815,6 +818,11 @@ MessageFilterService * Core::messageFilterService() const
 MessageHtmlRendererService * Core::messageHtmlRendererService() const
 {
 	return CurrentMessageHtmlRendererService;
+}
+
+MessageRenderInfoFactory * Core::messageRenderInfoFactory() const
+{
+	return CurrentMessageRenderInfoFactory;
 }
 
 MessageTransformerService * Core::messageTransformerService() const

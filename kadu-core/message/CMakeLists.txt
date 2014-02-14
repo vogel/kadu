@@ -4,6 +4,8 @@ set (message_SRCS
 	message-html-renderer-service.cpp
 	message-manager.cpp
 	message-render-info.cpp
+	message-render-info-builder.cpp
+	message-render-info-factory.cpp
 	message-shared.cpp
 	unread-message-repository.cpp
 )
@@ -12,7 +14,6 @@ set (message_MOC_SRCS
 	message-filter.h
 	message-html-renderer-service.h
 	message-manager.h
-	message-render-info.h
 	message-shared.h
 )
 

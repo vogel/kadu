@@ -37,40 +37,30 @@
 
 class KADUAPI MessageRenderInfo : public ParserData
 {
-	Message MyMessage;
-
-	QString BackgroundColor;
-	QString FontColor;
-	QString NickColor;
-
-	int SeparatorSize;
-	bool ShowServerTime;
 
 public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
-	explicit MessageRenderInfo(const Message &msg);
+	MessageRenderInfo(Message message, QString backgroundColor, QString fontColor, QString nickColor,
+			bool includeHeader, int separatorSize, bool showServerTime);
 	virtual ~MessageRenderInfo();
 
-	const Message & message() const { return MyMessage; }
-	Message & message() { return MyMessage; }
+	Message message() const;
+	QString backgroundColor() const;
+	QString fontColor() const;
+	QString nickColor() const;
+	bool includeHeader() const;
+	int separatorSize() const;
+	bool showServerTime() const;
 
-	MessageRenderInfo & setSeparatorSize(int separatorSize);
-	int separatorSize() const { return SeparatorSize; }
-
-	MessageRenderInfo & setShowServerTime(bool noServerTime, int noServerTimeDiff);
-	bool showServerTime() const { return ShowServerTime; }
-
-	MessageRenderInfo & setBackgroundColor(const QString &backgroundColor);
-	const QString & backgroundColor() const { return BackgroundColor; }
-
-	MessageRenderInfo & setFontColor(const QString &fontColor);
-	const QString & fontColor() const { return FontColor; }
-
-	MessageRenderInfo & setNickColor(const QString &nickColor);
-	const QString & nickColor() const { return NickColor; }
-
-	void updateBackgroundsAndColors();
+private:
+	Message m_message;
+	QString m_backgroundColor;
+	QString m_fontColor;
+	QString m_nickColor;
+	bool m_includeHeader;
+	int m_separatorSize;
+	bool m_showServerTime;
 
 };

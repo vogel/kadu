@@ -78,6 +78,7 @@ class KaduWindow;
 class Message;
 class MessageFilterService;
 class MessageHtmlRendererService;
+class MessageRenderInfoFactory;
 class MessageTransformerService;
 class NotificationService;
 class PluginActivationErrorHandler;
@@ -113,6 +114,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ImageStorageService *CurrentImageStorageService;
 	MessageFilterService *CurrentMessageFilterService;
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
+	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;
 	NotificationService *CurrentNotificationService;
 	FormattedStringFactory *CurrentFormattedStringFactory;
@@ -207,6 +209,7 @@ public:
 	ImageStorageService * imageStorageService() const;
 	MessageFilterService * messageFilterService() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
+	MessageRenderInfoFactory * messageRenderInfoFactory() const;
 	MessageTransformerService * messageTransformerService() const;
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;

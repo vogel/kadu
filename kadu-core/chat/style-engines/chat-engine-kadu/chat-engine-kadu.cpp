@@ -27,10 +27,12 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
+#include "core/core.h"
 #include "gui/widgets/preview.h"
 #include "gui/widgets/webkit-messages-view.h"
 #include "icons/kadu-icon.h"
 #include "message/message-render-info.h"
+#include "message/message-render-info-factory.h"
 #include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
@@ -143,55 +145,14 @@ void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &var
 
 QString KaduChatStyleEngine::formatMessage(const Message &message, const Message &after)
 {
-	int separatorSize;
-	QString format;
-	bool includeHeader;
+	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
+	auto info = messageRenderInfoFactory->messageRenderInfo(after, message);
+	auto sender = message.messageSender();
+	auto format = info.includeHeader()
+			? CurrentChatSyntax.withHeader()
+			: CurrentChatSyntax.withoutHeader();
 
-	auto info = MessageRenderInfo{message};
-	info.updateBackgroundsAndColors();
-
-	if (message.type() == MessageTypeSystem)
-	{
-		separatorSize = ChatStylesManager::instance()->paragraphSeparator();
-		format = CurrentChatSyntax.withHeader();
-
-		info.setSeparatorSize(separatorSize);
-
-		Contact sender = message.messageSender();
-		return Parser::parse(format, Talkable(sender), &info, true);
-	}
-	else
-	{
-		includeHeader = (!ChatStylesManager::instance()->cfgNoHeaderRepeat() || !after);
-
-		if (after && !includeHeader)
-		{
-			if (message.receiveDate().toTime_t() < after.receiveDate().toTime_t())
-				qWarning("New message has earlier date than last message");
-
-			includeHeader =
-				(after.type() == MessageTypeSystem) ||
-				((static_cast<int>(message.receiveDate().toTime_t() - after.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-				 (message.messageSender() != after.messageSender()));
-		}
-
-		if (includeHeader)
-		{
-			separatorSize = ChatStylesManager::instance()->cfgHeaderSeparatorHeight();
-			format = CurrentChatSyntax.withHeader();
-		}
-		else
-		{
-			separatorSize = ChatStylesManager::instance()->paragraphSeparator();
-			format = CurrentChatSyntax.withoutHeader();
-		}
-
-		info.setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
-		info.setSeparatorSize(separatorSize);
-
-		Contact sender = message.messageSender();
-		return Parser::parse(format, Talkable(sender), &info, true);
-	}
+	return Parser::parse(format, Talkable{sender}, &info, true);
 }
 
 void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
@@ -269,12 +230,12 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 	int count = preview->messages().count();
 	if (count)
 	{
+		auto previous = Message::null;
 		for (int i = 0; i < count; i++)
 		{
 			auto message = preview->messages().at(i);
-			auto info = MessageRenderInfo{message};
-			info.setSeparatorSize(ChatStylesManager::instance()->cfgHeaderSeparatorHeight());
-			info.updateBackgroundsAndColors();
+			auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(previous, message);
+			previous = message;
 
 			text += Parser::parse(syntax.withHeader(), Talkable(message.messageSender()), &info);
 		}

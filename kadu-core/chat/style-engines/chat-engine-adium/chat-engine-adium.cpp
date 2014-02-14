@@ -37,6 +37,7 @@
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/webkit-messages-view.h"
 #include "gui/widgets/preview.h"
@@ -44,6 +45,7 @@
 #include "identities/identity.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-render-info.h"
+#include "message/message-render-info-factory.h"
 #include "misc/date-time.h"
 #include "misc/kadu-paths.h"
 #include "misc/misc.h"
@@ -117,9 +119,9 @@ void PreviewHack::loadFinished()
 	if (!Engine || !CurrentPreview)
 		return;
 
+	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
 	auto message = CurrentPreview->messages().at(0);
-	auto info1 = MessageRenderInfo{message};
-	info1.updateBackgroundsAndColors();
+	auto info1 = messageRenderInfoFactory->messageRenderInfo(Message::null, message);
 
 	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message, info1.nickColor()), QLatin1String(" ")));
 	outgoingHtml.replace('\'', QLatin1String("\\'"));
@@ -131,8 +133,8 @@ void PreviewHack::loadFinished()
 	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = CurrentPreview->messages().at(1);
-	auto info2 = MessageRenderInfo{message};
-	info2.updateBackgroundsAndColors();
+	auto info2 = messageRenderInfoFactory->messageRenderInfo(Message::null, message);
+
 	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message, info2.nickColor()), QLatin1String(" ")));
 	incomingHtml.replace('\'', QLatin1String("\\'"));
 	if (!message.id().isEmpty())
