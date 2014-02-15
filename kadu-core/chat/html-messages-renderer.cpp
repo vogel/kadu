@@ -39,7 +39,6 @@ HtmlMessagesRenderer::HtmlMessagesRenderer(const Chat &chat, QObject *parent) :
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
 {
-	qDeleteAll(MyChatMessages);
 	MyChatMessages.clear();
 }
 
