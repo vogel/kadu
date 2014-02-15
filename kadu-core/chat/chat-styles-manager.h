@@ -23,9 +23,11 @@
 #ifndef CHAT_STYLES_MANAGER_H
 #define CHAT_STYLES_MANAGER_H
 
+#include <memory>
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include "chat/style-engines/chat-messages-renderer.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
@@ -68,6 +70,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	QMap<QString, StyleInfo> AvailableStyles;
 
 	ChatStyleEngine *CurrentEngine;
+	std::unique_ptr<ChatMessagesRenderer> m_messagesRenderer;
 
 	bool CompositingEnabled;
 
@@ -124,6 +127,7 @@ public:
 	StyleInfo chatStyleInfo(const QString &name);
 
 	ChatStyleEngine * currentEngine() { return CurrentEngine; }
+	ChatMessagesRenderer * currentRenderer() { return m_messagesRenderer.get(); }
 
 	void loadStyles();
 
@@ -144,9 +148,6 @@ public:
 
 	void preparePreview(Preview *preview);
 	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
-
-public slots:
-	void syntaxUpdated(const QString &syntaxName);
 
 signals:
 	void previewSyntaxChanged(const QString &syntaxName);

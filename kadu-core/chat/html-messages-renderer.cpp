@@ -24,7 +24,7 @@
 #include <QtWebKit/QWebPage>
 
 #include "chat/chat-styles-manager.h"
-#include "chat/style-engines/chat-style-engine.h"
+#include "chat/style-engines/chat-messages-renderer.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 
@@ -86,7 +86,7 @@ void HtmlMessagesRenderer::pruneMessages()
 	auto start = MyChatMessages.begin();
 	auto stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
 	for (auto it = start; it != stop; ++it)
-		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
+		ChatStylesManager::instance()->currentRenderer()->pruneMessage(this);
 
 	MyChatMessages.erase(start, stop);
 }
@@ -96,7 +96,7 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	MyChatMessages.append(message);
 	pruneMessages();
 
-	ChatStylesManager::instance()->currentEngine()->appendMessage(this, message);
+	ChatStylesManager::instance()->currentRenderer()->appendMessage(this, message);
 }
 
 void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
@@ -114,7 +114,7 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	ChatStylesManager::instance()->currentEngine()->appendMessages(this, engineMessages);
+	ChatStylesManager::instance()->currentRenderer()->appendMessages(this, engineMessages);
 }
 
 void HtmlMessagesRenderer::clearMessages()
@@ -123,7 +123,7 @@ void HtmlMessagesRenderer::clearMessages()
 	MyChatMessages.clear();
 
 	LastMessage = Message::null;
-	ChatStylesManager::instance()->currentEngine()->clearMessages(this);
+	ChatStylesManager::instance()->currentRenderer()->clearMessages(this);
 }
 
 void HtmlMessagesRenderer::setLastMessage(Message message)
@@ -133,17 +133,17 @@ void HtmlMessagesRenderer::setLastMessage(Message message)
 
 void HtmlMessagesRenderer::refresh()
 {
-	ChatStylesManager::instance()->currentEngine()->refreshView(this);
+	ChatStylesManager::instance()->currentRenderer()->refreshView(this);
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	ChatStylesManager::instance()->currentEngine()->chatImageAvailable(this, chatImage, fileName);
+	ChatStylesManager::instance()->currentRenderer()->chatImageAvailable(this, chatImage, fileName);
 }
 
 void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
-	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);
+	ChatStylesManager::instance()->currentRenderer()->messageStatusChanged(this, message, status);
 }
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
@@ -170,7 +170,7 @@ void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatSt
 			message = tr("%1 has paused composing").arg(display);
 			break;
 	}
-	ChatStylesManager::instance()->currentEngine()->contactActivityChanged(this, state, message, display);
+	ChatStylesManager::instance()->currentRenderer()->contactActivityChanged(this, state, message, display);
 }
 
 #include "moc_html-messages-renderer.cpp"

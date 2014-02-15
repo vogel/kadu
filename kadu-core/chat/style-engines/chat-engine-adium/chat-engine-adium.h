@@ -28,6 +28,7 @@
 #include "../chat-style-engine.h"
 #include "adium-style.h"
 
+class AdiumChatMessagesRenderer;
 class AdiumChatStyleEngine;
 class Chat;
 class MessageHtmlRendererService;
@@ -39,11 +40,11 @@ class RefreshViewHack : public QObject
 {
 	Q_OBJECT
 
-	AdiumChatStyleEngine *Engine;
+	AdiumChatMessagesRenderer *Engine;
 	HtmlMessagesRenderer *Renderer;
 
 public:
-	explicit RefreshViewHack(AdiumChatStyleEngine *engine, HtmlMessagesRenderer *renderer, QObject *parent = 0);
+	explicit RefreshViewHack(AdiumChatMessagesRenderer *engine, HtmlMessagesRenderer *renderer, QObject *parent = 0);
 	virtual ~RefreshViewHack();
 
 public slots:
@@ -58,7 +59,7 @@ class PreviewHack : public QObject
 {
 	Q_OBJECT
 
-	AdiumChatStyleEngine *Engine;
+	AdiumChatMessagesRenderer *Engine;
 	Preview *CurrentPreview;
 	QString BaseHref;
 	QString OutgoingHtml;
@@ -68,7 +69,7 @@ private slots:
 	void cancel();
 
 public:
-	explicit PreviewHack(AdiumChatStyleEngine *engine, Preview *preview, const QString &baseHref, const QString &outgoingHtml,
+	explicit PreviewHack(AdiumChatMessagesRenderer *engine, Preview *preview, const QString &baseHref, const QString &outgoingHtml,
 	                     const QString &incomingHtml, QObject *parent = 0);
 	virtual ~PreviewHack();
 
@@ -87,7 +88,6 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
 
 	AdiumStyle CurrentStyle;
-	QMap<HtmlMessagesRenderer *, RefreshViewHack *> CurrentRefreshHacks;
 	QPointer<PreviewHack> CurrentPreviewHack;
 
 	QString jsCode;
@@ -96,16 +96,15 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
 	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
 
-	void appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message);
-
-private slots:
-	void refreshHackFinished(HtmlMessagesRenderer *);
+	std::unique_ptr<AdiumChatMessagesRenderer> m_renderer;
 
 public:
 	explicit AdiumChatStyleEngine(QObject *parent = 0);
 	virtual ~AdiumChatStyleEngine();
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
+
+	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName);
 
 	virtual bool supportVariants() { return true; }
 	virtual QString isStyleValid(QString styleName);
@@ -115,20 +114,8 @@ public:
 	virtual QStringList styleVariants(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName);
 
-	virtual void clearMessages(HtmlMessagesRenderer *renderer);
-	virtual void appendMessages(HtmlMessagesRenderer *renderer, const QVector<Message> &messages);
-	virtual void appendMessage(HtmlMessagesRenderer *renderer, const Message &message);
-	virtual void pruneMessage(HtmlMessagesRenderer *renderer);
-	virtual void refreshView(HtmlMessagesRenderer *renderer, bool useTransparency = false);
-	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status);
-	virtual void contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::State state, const QString &message, const QString &name);
-	virtual void chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImage &chatImage, const QString &fileName);
-
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
-
 	virtual void configurationUpdated() {}
-
-	virtual void loadStyle(const QString &styleName, const QString &variantName);
 
 };
 

@@ -24,9 +24,6 @@
 #define CHAT_ENGINE_KADU_H
 
 #include <QtCore/QObject>
-#include <QtCore/QSharedPointer>
-
-#include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
 
 #include "chat/style-engines/chat-style-engine.h"
 
@@ -39,13 +36,6 @@ class KaduChatStyleEngine : public QObject, public ChatStyleEngine
 
 	QSharedPointer<SyntaxList> syntaxList;
 
-	KaduChatSyntax CurrentChatSyntax;
-	QString jsCode;
-
-	QString formatMessage(const Message &message, const Message &after);
-	void repaintMessages(HtmlMessagesRenderer *page);
-	QString scriptsAtEnd(const QString &html);
-
 public:
 	explicit KaduChatStyleEngine(QObject *parent = 0);
 	virtual ~KaduChatStyleEngine();
@@ -57,20 +47,8 @@ public:
 		return false;
 	}
 
-	virtual void clearMessages(HtmlMessagesRenderer *renderer);
-	virtual void appendMessages(HtmlMessagesRenderer *renderer, const QVector<Message> &messages);
-	virtual void appendMessage(HtmlMessagesRenderer *renderer, const Message &message);
-	virtual void pruneMessage(HtmlMessagesRenderer *renderer);
-	virtual void refreshView(HtmlMessagesRenderer *renderer, bool useTransparency = false);
-	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status);
-	virtual void contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::State state, const QString &message, const QString &name);
-	virtual void chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImage &chatImage, const QString &fileName);
-
+	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName);
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
-
-	virtual void configurationUpdated();
-
-	virtual void loadStyle(const QString &styleName, const QString &variantName);
 
 };
 

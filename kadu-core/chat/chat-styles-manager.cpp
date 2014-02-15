@@ -126,7 +126,7 @@ void ChatStylesManager::chatViewCreated(WebkitMessagesView *view)
 		ChatViews.append(view);
 
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		CurrentEngine->refreshView(view->renderer(), useTransparency);
+		m_messagesRenderer.get()->refreshView(view->renderer(), useTransparency);
 	}
 }
 
@@ -213,7 +213,8 @@ void ChatStylesManager::configurationUpdated()
 		CurrentEngine = AvailableStyles.value(newStyleName).engine;
 		newVariantName = fixedVariantName(newStyleName, newVariantName);
 
-		CurrentEngine->loadStyle(newStyleName, newVariantName);
+		m_messagesRenderer = CurrentEngine->createRenderer(newStyleName, newVariantName);
+		// CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
 	else
 		CurrentEngine->configurationUpdated();
@@ -251,7 +252,8 @@ void ChatStylesManager::compositingEnabled()
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		CurrentEngine->refreshView(view->renderer(), useTransparency);
+		m_messagesRenderer.get()->refreshView(view->renderer(), useTransparency);
+		//CurrentEngine->refreshView();
 	}
 
 	if (TurnOnTransparency)
@@ -264,7 +266,8 @@ void ChatStylesManager::compositingDisabled()
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		CurrentEngine->refreshView(view->renderer(), useTransparency);
+		// CurrentEngine->refreshView(view->renderer(), useTransparency);
+		m_messagesRenderer.get()->refreshView(view->renderer(), useTransparency);
 	}
 
 	if (TurnOnTransparency)
@@ -459,18 +462,6 @@ void ChatStylesManager::variantChangedSlot(const QString &variantName)
 		return;
 
 	AvailableStyles.value(styleName).engine->prepareStylePreview(EnginePreview, styleName, variantName);
-}
-
-void ChatStylesManager::syntaxUpdated(const QString &syntaxName)
-{
-	if (!AvailableStyles.contains(syntaxName))
-		return;
-
-	if (SyntaxListCombo && SyntaxListCombo->currentText() == syntaxName)
-		styleChangedSlot(syntaxName);
-
-	if (CurrentEngine->currentStyleName() == syntaxName)
-		CurrentEngine->loadStyle(syntaxName, VariantListCombo->currentText());
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)

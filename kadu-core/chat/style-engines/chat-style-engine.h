@@ -30,6 +30,7 @@
 #include "protocols/services/chat-state-service.h"
 
 class ChatImage;
+class ChatMessagesRenderer;
 class HtmlMessagesRenderer;
 class Preview;
 
@@ -51,20 +52,10 @@ public:
 	virtual QString isStyleValid(QString) = 0; //return QString(), if style is not valid
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
-	virtual void clearMessages(HtmlMessagesRenderer *) = 0;
-	virtual void appendMessages(HtmlMessagesRenderer *, const QVector<Message> &) = 0;
-	virtual void appendMessage(HtmlMessagesRenderer *, const Message &) = 0;
-	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
-	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) = 0;
-	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, MessageStatus) = 0;
-	virtual void contactActivityChanged(HtmlMessagesRenderer *, ChatStateService::State, const QString &, const QString &) = 0;
-	virtual void chatImageAvailable(HtmlMessagesRenderer *, const ChatImage &chatImage, const QString &fileName) = 0;
-
+	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName) = 0;
 	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
 
-	virtual void configurationUpdated() = 0;
-
-	virtual void loadStyle(const QString &, const QString &) = 0;
+	virtual void configurationUpdated() {};
 
 };
 

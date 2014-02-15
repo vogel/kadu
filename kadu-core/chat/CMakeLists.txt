@@ -19,7 +19,9 @@ set (chat_SRCS
 	style-engines/chat-engine-adium/adium-style.cpp
 	style-engines/chat-engine-adium/adium-time-formatter.cpp
 	style-engines/chat-engine-adium/chat-engine-adium.cpp
+	style-engines/chat-engine-adium/adium-chat-messages-renderer.cpp
 	style-engines/chat-engine-kadu/chat-engine-kadu.cpp
+	style-engines/chat-engine-kadu/kadu-chat-messages-renderer.cpp
 	style-engines/chat-engine-kadu/kadu-chat-syntax.cpp
 
 	type/chat-type.cpp

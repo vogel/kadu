@@ -36,7 +36,7 @@ class KaduChatSyntax
 
 public:
 	KaduChatSyntax() {};
-	KaduChatSyntax(const QString &syntax);
+	explicit KaduChatSyntax(const QString &syntax);
 
 	void setSyntax(const QString &syntax);
 

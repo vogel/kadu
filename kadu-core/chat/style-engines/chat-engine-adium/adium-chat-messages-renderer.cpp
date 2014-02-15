@@ -1,11 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Marcel Zięba (marseel@gmail.com)
- * Copyright 2009, 2010, 2010, 2011, 2012 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2009, 2010, 2011, 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010, 2011, 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -22,193 +17,168 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDateTime>
-#include <QtCore/QDir>
-#include <QtCore/QString>
-#include <QtWebKit/QWebFrame>
+#include "adium-chat-messages-renderer.h"
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
 #include "avatars/avatar.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/buddy-set.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
+#include "chat/style-engines/chat-engine-adium/adium-time-formatter.h"
+#include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
-#include "contacts/contact.h"
-#include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/webkit-messages-view.h"
-#include "gui/widgets/preview.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "message/message-html-renderer-service.h"
-#include "message/message-render-info.h"
-#include "message/message-render-info-factory.h"
 #include "misc/date-time.h"
 #include "misc/kadu-paths.h"
 #include "misc/misc.h"
-#include <misc/memory.h>
-#include "parser/parser.h"
+#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/services/chat-image.h"
 
-#include "adium-style.h"
-#include "adium-time-formatter.h"
+#include <QtCore/QFile>
+#include <QtWebKit/QWebPage>
+#include <QtWebKit/QWebFrame>
 
-#include "chat-engine-adium.h"
-#include "adium-chat-messages-renderer.h"
-
-RefreshViewHack::RefreshViewHack(AdiumChatMessagesRenderer *engine, HtmlMessagesRenderer *renderer, QObject *parent) :
-		QObject(parent), Engine(engine), Renderer(renderer)
-{
-	connect(Engine, SIGNAL(destroyed()), this, SLOT(cancel()));
-	connect(Renderer, SIGNAL(destroyed()), this, SLOT(cancel()));
-}
-
-RefreshViewHack::~RefreshViewHack()
-{
-}
-
-void RefreshViewHack::cancel()
-{
-	Engine = 0;
-	Renderer = 0;
-
-	deleteLater();
-}
-
-void RefreshViewHack::loadFinished()
-{
-	if (!Engine || !Renderer)
-	{
-		deleteLater();
-		return;
-	}
-
-	emit finished(Renderer);
-
-	Renderer->setLastMessage(Message::null);
-
-	for (auto const &message : Renderer->messages())
-		Engine->appendChatMessage(Renderer, message);
-
-	deleteLater();
-}
-
-PreviewHack::PreviewHack(AdiumChatMessagesRenderer *engine, Preview *preview, const QString &baseHref, const QString &outgoingHtml,
-                         const QString &incomingHtml, QObject *parent) :
-		QObject(parent), Engine(engine), CurrentPreview(preview), BaseHref(baseHref), OutgoingHtml(outgoingHtml), IncomingHtml(incomingHtml)
-{
-	connect(Engine, SIGNAL(destroyed()), this, SLOT(cancel()));
-	connect(CurrentPreview, SIGNAL(destroyed()), this, SLOT(cancel()));
-}
-
-PreviewHack::~PreviewHack()
-{
-}
-
-void PreviewHack::cancel()
-{
-	Engine = 0;
-	CurrentPreview = 0;
-
-	deleteLater();
-}
-
-void PreviewHack::loadFinished()
-{
-	if (!Engine || !CurrentPreview)
-		return;
-
-	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-	auto message = CurrentPreview->messages().at(0);
-	auto info1 = messageRenderInfoFactory->messageRenderInfo(Message::null, message);
-
-	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message, info1.nickColor()), QLatin1String(" ")));
-	outgoingHtml.replace('\'', QLatin1String("\\'"));
-	if (!message.id().isEmpty())
-		outgoingHtml.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
-	else
-		outgoingHtml.prepend("<span>");
-	outgoingHtml.append("</span>");
-	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
-
-	message = CurrentPreview->messages().at(1);
-	auto info2 = messageRenderInfoFactory->messageRenderInfo(Message::null, message);
-
-	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message, info2.nickColor()), QLatin1String(" ")));
-	incomingHtml.replace('\'', QLatin1String("\\'"));
-	if (!message.id().isEmpty())
-		incomingHtml.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
-	else
-		incomingHtml.prepend("<span>");
-	incomingHtml.append("</span>");
-	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
-
-	/* in Qt 4.6.3 / WebKit there is a bug making the following call not working */
-	/* according to: https://bugs.webkit.org/show_bug.cgi?id=35633 */
-	/* the proper refreshing behaviour should occur once the bug is fixed */
-	/* possible temporary solution: use QWebElements API to randomly change */
-	/* URLs in the HTML/CSS content. */
-	CurrentPreview->webView()->page()->triggerAction(QWebPage::ReloadAndBypassCache, false);
-
-	deleteLater();
-}
-
-
-AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
-		QObject(parent)
+AdiumChatMessagesRenderer::AdiumChatMessagesRenderer(AdiumStyle style) :
+		m_style{style}
 {
 	// Load required javascript functions
 	QFile file(KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js"));
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-		jsCode = file.readAll();
+		m_jsCode = file.readAll();
 }
 
-AdiumChatStyleEngine::~AdiumChatStyleEngine()
+void AdiumChatMessagesRenderer::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
 {
+	m_messageHtmlRendererService = messageHtmlRendererService;
 }
 
-void AdiumChatStyleEngine::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
+void AdiumChatMessagesRenderer::pruneMessage(HtmlMessagesRenderer *renderer)
 {
-	CurrentMessageHtmlRendererService = messageHtmlRendererService;
+	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
+		renderer->webPage()->mainFrame()->evaluateJavaScript("adium_removeFirstMessage()");
 }
 
-QString AdiumChatStyleEngine::isStyleValid(QString stylePath)
+void AdiumChatMessagesRenderer::clearMessages(HtmlMessagesRenderer *renderer)
 {
-	return AdiumStyle::isStyleValid(stylePath) ? QDir(stylePath).dirName() : QString();
+	renderer->webPage()->mainFrame()->evaluateJavaScript("adium_clearMessages()");
 }
 
-bool AdiumChatStyleEngine::styleUsesTransparencyByDefault(QString styleName)
+void AdiumChatMessagesRenderer::appendMessages(HtmlMessagesRenderer *renderer, const QVector<Message> &messages)
 {
-	AdiumStyle style(styleName);
-	return style.defaultBackgroundIsTransparent();
+	if (m_refreshHacks.contains(renderer))
+		return;
+
+	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
+	{
+		clearMessages(renderer);
+
+		for (auto const &oldMessage : renderer->messages())
+			appendChatMessage(renderer, oldMessage);
+		return;
+	}
+
+	for (auto const &message : messages)
+		appendChatMessage(renderer, message);
 }
 
-QString AdiumChatStyleEngine::defaultVariant(const QString &styleName)
+void AdiumChatMessagesRenderer::appendMessage(HtmlMessagesRenderer *renderer, const Message &message)
 {
-	AdiumStyle style(styleName);
-	return style.defaultVariant();
+	if (m_refreshHacks.contains(renderer))
+		return;
+
+	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
+	{
+		clearMessages(renderer);
+
+		for (auto const &oldMessage : renderer->messages())
+			appendChatMessage(renderer, oldMessage);
+		return;
+	}
+
+	appendChatMessage(renderer, message);
 }
 
-QString AdiumChatStyleEngine::currentStyleVariant()
+void AdiumChatMessagesRenderer::appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message)
 {
-	return CurrentStyle.currentVariant();
+	if (m_refreshHacks.contains(renderer))
+		return;
+
+	QString formattedMessageHtml;
+	bool includeHeader = true;
+
+	Message lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
+			? renderer->lastMessage()
+			: Message::null;
+
+	if (lastMessage)
+	{
+		if (message.receiveDate().toTime_t() < lastMessage.receiveDate().toTime_t())
+			qWarning("New message has earlier date than last message");
+
+		includeHeader =
+			message.type() == MessageTypeSystem ||
+			lastMessage.type() == MessageTypeSystem ||
+			message.messageSender() != lastMessage.messageSender() ||
+			static_cast<int>(message.receiveDate().toTime_t() - lastMessage.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
+	}
+
+	switch (message.type())
+	{
+		case MessageTypeReceived:
+		{
+			if (includeHeader)
+				formattedMessageHtml = m_style.incomingHtml();
+			else
+				formattedMessageHtml = m_style.nextIncomingHtml();
+			break;
+		}
+		case MessageTypeSent:
+		{
+			if (includeHeader)
+				formattedMessageHtml = m_style.outgoingHtml();
+			else
+				formattedMessageHtml = m_style.nextOutgoingHtml();
+			break;
+		}
+		case MessageTypeSystem:
+		{
+			formattedMessageHtml = m_style.statusHtml();
+			break;
+		}
+
+		default:
+			break;
+	}
+
+	QString nickColor = message.type() == MessageTypeSent
+			? ChatConfigurationHolder::instance()->myNickColor()
+			: ChatConfigurationHolder::instance()->usrNickColor();
+
+	formattedMessageHtml = replacedNewLine(replaceKeywords(m_style.baseHref(), formattedMessageHtml, message, nickColor), QLatin1String(" "));
+	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
+	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
+	if (!message.id().isEmpty())
+		formattedMessageHtml.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
+	else
+		formattedMessageHtml.prepend("<span>");
+	formattedMessageHtml.append("</span>");
+
+	if (includeHeader)
+		renderer->webPage()->mainFrame()->evaluateJavaScript("appendMessage('"+ formattedMessageHtml +"')");
+	else
+		renderer->webPage()->mainFrame()->evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
+
+	renderer->setLastMessage(message);
 }
 
-QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
+void AdiumChatMessagesRenderer::refreshHackFinished(HtmlMessagesRenderer *renderer)
 {
-	QDir dir;
-	QString styleBaseHref = KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
-	if (!dir.exists(styleBaseHref))
-		styleBaseHref = KaduPaths::instance()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
-	dir.setPath(styleBaseHref);
-	dir.setNameFilters(QStringList("*.css"));
-	return dir.entryList();
+	m_refreshHacks.remove(renderer);
 }
 
-QString AdiumChatStyleEngine::preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat)
+QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat)
 {
 	QString styleBaseHtml = style.templateHtml();
 	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, KaduPaths::webKitPath(style.baseHref()));
@@ -231,49 +201,34 @@ QString AdiumChatStyleEngine::preprocessStyleBaseHtml(AdiumStyle &style, const C
 	return styleBaseHtml;
 }
 
-std::unique_ptr<ChatMessagesRenderer> AdiumChatStyleEngine::createRenderer(const QString &styleName, const QString &variantName)
+void AdiumChatMessagesRenderer::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
 {
-	CurrentStyle = AdiumStyle(styleName);
-	CurrentStyle.setCurrentVariant(variantName);
-	CurrentStyleName = styleName;
+	QString styleBaseHtml = preprocessStyleBaseHtml(m_style, renderer->chat());
 
-	m_renderer = make_unique<AdiumChatMessagesRenderer>(CurrentStyle);
-	m_renderer.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
+	if (useTransparency && !m_style.defaultBackgroundIsTransparent())
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
-	auto result = make_unique<AdiumChatMessagesRenderer>(CurrentStyle);
-	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
-	return std::move(result);
-}
+	if (m_refreshHacks.contains(renderer))
+		m_refreshHacks.value(renderer)->cancel();
 
-void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
-{
-	AdiumStyle style(styleName);
-
-	style.setCurrentVariant(variantName);
-	if (preview->messages().count() != 2)
-		return;
-
-	auto message = preview->messages().at(0);
-
-	QString styleBaseHtml = preprocessStyleBaseHtml(style, message.messageChat());
-
-	PreviewHack *previousHack = CurrentPreviewHack.data();
-	CurrentPreviewHack = new PreviewHack(m_renderer.get(), preview, style.baseHref(), style.outgoingHtml(), style.incomingHtml(), this);
-	delete previousHack;
+	RefreshViewHack *currentHack = new RefreshViewHack(this, renderer, this);
+	m_refreshHacks.insert(renderer, currentHack);
+	connect(currentHack, SIGNAL(finished(HtmlMessagesRenderer*)),
+			this, SLOT(refreshHackFinished(HtmlMessagesRenderer *)));
 
 	// lets wait a while for all javascript to resolve and execute
 	// we dont want to get to the party too early
-	connect(preview->webView()->page()->mainFrame(), SIGNAL(loadFinished(bool)),
-	        CurrentPreviewHack.data(), SLOT(loadFinished()),  Qt::QueuedConnection);
+	connect(renderer->webPage()->mainFrame(), SIGNAL(loadFinished(bool)),
+			currentHack, SLOT(loadFinished()), Qt::QueuedConnection);
 
-	preview->webView()->page()->mainFrame()->setHtml(styleBaseHtml);
-	preview->webView()->page()->mainFrame()->evaluateJavaScript(jsCode);
+	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
+	renderer->webPage()->mainFrame()->evaluateJavaScript(m_jsCode);
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
-	preview->webView()->page()->mainFrame()->evaluateJavaScript("initStyle()");
+	renderer->webPage()->mainFrame()->evaluateJavaScript("initStyle()");
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
-QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style)
+QString AdiumChatMessagesRenderer::replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style)
 {
 	if (!chat)
 		return QString();
@@ -334,7 +289,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 	return result;
 }
 
-QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor)
+QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor)
 {
 	QString result = source;
 
@@ -419,8 +374,8 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 		result.replace(textPos, senderColorRegExp.cap(0).length(), doLight ? lightColorName : nickColor);
 	}
 
-	QString messageText = CurrentMessageHtmlRendererService
-			? CurrentMessageHtmlRendererService.data()->renderMessage(message)
+	QString messageText = m_messageHtmlRendererService
+			? m_messageHtmlRendererService.data()->renderMessage(message)
 			: message.htmlContent();
 
 	if (!message.id().isEmpty())
@@ -437,4 +392,19 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	return result;
 }
 
-#include "moc_chat-engine-adium.cpp"
+void AdiumChatMessagesRenderer::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
+}
+
+void AdiumChatMessagesRenderer::contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::State state, const QString &message, const QString &name)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
+}
+
+void AdiumChatMessagesRenderer::chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImage &chatImage, const QString &fileName)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
+}
+
+#include "moc_adium-chat-messages-renderer.cpp"
