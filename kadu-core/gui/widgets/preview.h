@@ -26,35 +26,17 @@
 
 #include <QtGui/QFrame>
 
-#include "chat/style-engine/chat-messages-renderer.h"
-#include "configuration/configuration-aware-object.h"
-#include "contacts/contact-set.h"
-#include "contacts/contact.h"
-#include "message/message.h"
-
 class KaduWebView;
 
-class Preview : public QFrame, public ConfigurationAwareObject
+class Preview : public QFrame
 {
 	Q_OBJECT
 
 	KaduWebView *WebView;
 
-	HtmlMessagesRenderer *HtmlRenderer;
-	std::unique_ptr<ChatMessagesRenderer> Renderer;
-	QVector<Message> Messages;
-
-protected:
-	virtual void configurationUpdated();
-
 public:
 	explicit Preview(QWidget *parent = 0);
 	virtual ~Preview();
-
-	void setRenderer(std::unique_ptr<ChatMessagesRenderer> renderer);
-
-	void addMessage(const Message &message);
-	const QVector<Message> & messages() const;
 
 	KaduWebView * webView() const;
 

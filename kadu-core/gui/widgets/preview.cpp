@@ -23,11 +23,6 @@
 
 #include <QtGui/QHBoxLayout>
 
-#include "chat/chat-styles-manager.h"
-#include "chat/html-messages-renderer.h"
-#include "chat/style-engine/kadu-style-engine/kadu-chat-syntax.h"
-#include "chat/type/chat-type-contact.h"
-#include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "parser/parser.h"
@@ -43,47 +38,20 @@ Preview::Preview(QWidget *parent) :
 	setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-	HtmlRenderer = new HtmlMessagesRenderer(Chat::null, this);
-
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	WebView = new KaduWebView(this);
-	WebView->setPage(HtmlRenderer->webPage());
-	WebView->setImageStorageService(Core::instance()->imageStorageService());
 	layout->addWidget(WebView);
 
 	QPalette p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);
 	WebView->page()->setPalette(p);
 	WebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
-	configurationUpdated();
 }
 
 Preview::~Preview()
 {
-	qDeleteAll(Messages);
-}
-
-void Preview::setRenderer(std::unique_ptr<ChatMessagesRenderer> renderer)
-{
-	Renderer = std::move(renderer);
-	Renderer.get()->clearMessages(HtmlRenderer);
-	Renderer.get()->refreshView(HtmlRenderer);
-}
-
-void Preview::addMessage(const Message &message)
-{
-	if (!HtmlRenderer->chat())
-		HtmlRenderer->setChat(ChatTypeContact::findChat(message.messageSender(), ActionCreate));
-	HtmlRenderer->appendMessage(message);
-	Messages.append(message);
-}
-
-const QVector<Message> & Preview::messages() const
-{
-	return Messages;
 }
 
 KaduWebView * Preview::webView() const
@@ -93,21 +61,11 @@ KaduWebView * Preview::webView() const
 
 void Preview::syntaxChanged(const QString &content)
 {
-	if (!Messages.isEmpty())
-		return;
-
-	// this method is used only with hints syntax
-
 	QString syntax = content;
 	QString text = Parser::parse(syntax, Talkable(Buddy::dummy()));
 	emit needFixup(text);
 
 	WebView->setHtml(text);
-}
-
-void Preview::configurationUpdated()
-{
-	WebView->setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
 }
 
 #include "moc_preview.cpp"

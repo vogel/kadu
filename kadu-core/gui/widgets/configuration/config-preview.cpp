@@ -22,6 +22,7 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QLabel>
+#include <QtXml/QDomDocument>
 
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-preview.h"
