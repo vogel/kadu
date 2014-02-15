@@ -26,7 +26,7 @@
 
 #include <QtGui/QFrame>
 
-#include "chat/style-engines/chat-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer.h"
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"

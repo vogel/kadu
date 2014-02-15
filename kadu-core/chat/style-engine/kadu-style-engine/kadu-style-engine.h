@@ -22,20 +22,18 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-
-#include "chat/style-engines/chat-style-engine.h"
+#include "chat/style-engine/chat-style-engine.h"
 
 class Preview;
 class SyntaxList;
 
-class KaduChatStyleEngine : public ChatStyleEngine
+class KaduStyleEngine : public ChatStyleEngine
 {
 	QSharedPointer<SyntaxList> syntaxList;
 
 public:
-	explicit KaduChatStyleEngine();
-	virtual ~KaduChatStyleEngine();
+	explicit KaduStyleEngine();
+	virtual ~KaduStyleEngine();
 	virtual bool supportVariants() { return false; }
 	virtual QString isStyleValid(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName)

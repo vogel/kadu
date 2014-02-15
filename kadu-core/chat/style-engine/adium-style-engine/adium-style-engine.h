@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "chat/style-engines/chat-style-engine.h"
+#include "chat/style-engine/chat-style-engine.h"
 
 #include "adium-style.h"
 
@@ -52,14 +52,14 @@ signals:
 	void finished(HtmlMessagesRenderer *);
 };
 
-class AdiumChatStyleEngine : public ChatStyleEngine
+class AdiumStyleEngine : public ChatStyleEngine
 {
 	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
 	AdiumStyle CurrentStyle;
 
 public:
-	explicit AdiumChatStyleEngine();
-	virtual ~AdiumChatStyleEngine();
+	explicit AdiumStyleEngine();
+	virtual ~AdiumStyleEngine();
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 

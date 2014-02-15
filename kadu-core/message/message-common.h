@@ -26,7 +26,7 @@
 #ifndef MESSAGE_COMMON_H
 #define MESSAGE_COMMON_H
 
-// MessageStatus enum vaules identical with those defined in kadu-core/chat/style-engines/chat-scripts.js
+// MessageStatus enum vaules identical with those defined in kadu-core/chat/style-engine/chat-scripts.js
 enum MessageStatus
 {
 	MessageStatusUnknown = 0,

@@ -55,7 +55,7 @@ public:
 	/**
 	 * @enum State
 	 * @short This enum represent state of chat.
-	 * @note Values in this enum must be identical with those defined in kadu-core/chat/style-engines/chat-scripts.js
+	 * @note Values in this enum must be identical with those defined in kadu-core/chat/style-engine/chat-scripts.js
 	 */
 	enum State
 	{

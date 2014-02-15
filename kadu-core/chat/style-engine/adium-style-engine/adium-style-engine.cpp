@@ -22,10 +22,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-engine-adium.h"
+#include "adium-style-engine.h"
 
 #include "chat/html-messages-renderer.h"
-#include "chat/style-engines/chat-engine-adium/adium-chat-messages-renderer.h"
+#include "chat/style-engine/adium-style-engine/adium-chat-messages-renderer.h"
 #include "message/message-html-renderer-service.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
@@ -69,42 +69,42 @@ void RefreshViewHack::loadFinished()
 	deleteLater();
 }
 
-AdiumChatStyleEngine::AdiumChatStyleEngine()
+AdiumStyleEngine::AdiumStyleEngine()
 {
 }
 
-AdiumChatStyleEngine::~AdiumChatStyleEngine()
+AdiumStyleEngine::~AdiumStyleEngine()
 {
 }
 
-void AdiumChatStyleEngine::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
+void AdiumStyleEngine::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
 {
 	CurrentMessageHtmlRendererService = messageHtmlRendererService;
 }
 
-QString AdiumChatStyleEngine::isStyleValid(QString stylePath)
+QString AdiumStyleEngine::isStyleValid(QString stylePath)
 {
 	return AdiumStyle::isStyleValid(stylePath) ? QDir(stylePath).dirName() : QString();
 }
 
-bool AdiumChatStyleEngine::styleUsesTransparencyByDefault(QString styleName)
+bool AdiumStyleEngine::styleUsesTransparencyByDefault(QString styleName)
 {
 	AdiumStyle style(styleName);
 	return style.defaultBackgroundIsTransparent();
 }
 
-QString AdiumChatStyleEngine::defaultVariant(const QString &styleName)
+QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 {
 	AdiumStyle style(styleName);
 	return style.defaultVariant();
 }
 
-QString AdiumChatStyleEngine::currentStyleVariant()
+QString AdiumStyleEngine::currentStyleVariant()
 {
 	return CurrentStyle.currentVariant();
 }
 
-QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
+QStringList AdiumStyleEngine::styleVariants(QString styleName)
 {
 	QDir dir;
 	QString styleBaseHref = KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
@@ -115,7 +115,7 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 	return dir.entryList();
 }
 
-std::unique_ptr<ChatMessagesRenderer> AdiumChatStyleEngine::createRenderer(const QString &styleName, const QString &variantName)
+std::unique_ptr<ChatMessagesRenderer> AdiumStyleEngine::createRenderer(const QString &styleName, const QString &variantName)
 {
 	CurrentStyle = AdiumStyle(styleName);
 	CurrentStyle.setCurrentVariant(variantName);
@@ -126,4 +126,4 @@ std::unique_ptr<ChatMessagesRenderer> AdiumChatStyleEngine::createRenderer(const
 	return std::move(result);
 }
 
-#include "moc_chat-engine-adium.cpp"
+#include "moc_adium-style-engine.cpp"

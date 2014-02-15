@@ -24,7 +24,7 @@
 #include <QtWebKit/QWebPage>
 
 #include "chat/chat-styles-manager.h"
-#include "chat/style-engines/chat-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 

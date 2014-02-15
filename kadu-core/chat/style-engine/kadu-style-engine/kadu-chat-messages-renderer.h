@@ -19,24 +19,16 @@
 
 #pragma once
 
-#include "chat/style-engines/chat-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer.h"
 
-#include "chat/style-engines/chat-engine-adium/adium-style.h"
+#include "chat/style-engine/kadu-style-engine/kadu-chat-syntax.h"
 
-class MessageHtmlRendererService;
-class RefreshViewHack;
-
-class AdiumChatMessagesRenderer : public QObject, public ChatMessagesRenderer
+class KaduChatMessagesRenderer : public ChatMessagesRenderer
 {
-	Q_OBJECT
-
-	friend class RefreshViewHack;
 
 public:
-	explicit AdiumChatMessagesRenderer(AdiumStyle style);
-	virtual ~AdiumChatMessagesRenderer() {}
-
-	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
+	explicit KaduChatMessagesRenderer(KaduChatSyntax syntax);
+	virtual ~KaduChatMessagesRenderer() {}
 
 	virtual void clearMessages(HtmlMessagesRenderer *) override;
 	virtual void appendMessages(HtmlMessagesRenderer *, const QVector<Message> &) override;
@@ -48,18 +40,11 @@ public:
 	virtual void chatImageAvailable(HtmlMessagesRenderer *, const ChatImage &chatImage, const QString &fileName) override;
 
 private:
-	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
-
-	AdiumStyle m_style;
+	KaduChatSyntax m_syntax;
 	QString m_jsCode;
-	QMap<HtmlMessagesRenderer *, RefreshViewHack *> m_refreshHacks;
 
-	void appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message);
-	QString replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style);
-	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
-	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
-
-private slots:
-	void refreshHackFinished(HtmlMessagesRenderer *);
+	QString formatMessage(const Message &message, const Message &after);
+	void repaintMessages(HtmlMessagesRenderer *page);
+	QString scriptsAtEnd(const QString &html);
 
 };

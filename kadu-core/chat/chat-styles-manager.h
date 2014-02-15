@@ -27,7 +27,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
-#include "chat/style-engines/chat-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"

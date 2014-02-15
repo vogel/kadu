@@ -33,7 +33,7 @@
 #include "chat/chat-styles-manager.h"
 #include "chat/chat.h"
 #include "chat/html-messages-renderer.h"
-#include "chat/style-engines/chat-style-engine.h"
+#include "chat/style-engine/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"

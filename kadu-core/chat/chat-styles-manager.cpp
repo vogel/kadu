@@ -36,8 +36,8 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
 #include "chat/html-messages-renderer.h"
-#include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
-#include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
+#include "chat/style-engine/adium-style-engine/adium-style-engine.h"
+#include "chat/style-engine/kadu-style-engine/kadu-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -94,9 +94,9 @@ void ChatStylesManager::setFormattedStringFactory(FormattedStringFactory *format
 
 void ChatStylesManager::init()
 {
-	registerChatStyleEngine("Kadu", make_unique<KaduChatStyleEngine>());
+	registerChatStyleEngine("Kadu", make_unique<KaduStyleEngine>());
 
-	auto adiumStyleEngine = make_unique<AdiumChatStyleEngine>();
+	auto adiumStyleEngine = make_unique<AdiumStyleEngine>();
 	adiumStyleEngine.get()->setMessageHtmlRendererService(Core::instance()->messageHtmlRendererService());
 	registerChatStyleEngine("Adium", std::move(adiumStyleEngine));
 

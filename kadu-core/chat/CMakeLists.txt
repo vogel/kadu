@@ -16,13 +16,13 @@ set (chat_SRCS
 	model/chat-list-model.cpp
 	model/chat-manager-adapter.cpp
 
-	style-engines/chat-engine-adium/adium-style.cpp
-	style-engines/chat-engine-adium/adium-time-formatter.cpp
-	style-engines/chat-engine-adium/chat-engine-adium.cpp
-	style-engines/chat-engine-adium/adium-chat-messages-renderer.cpp
-	style-engines/chat-engine-kadu/chat-engine-kadu.cpp
-	style-engines/chat-engine-kadu/kadu-chat-messages-renderer.cpp
-	style-engines/chat-engine-kadu/kadu-chat-syntax.cpp
+	style-engine/adium-style-engine/adium-style.cpp
+	style-engine/adium-style-engine/adium-time-formatter.cpp
+	style-engine/adium-style-engine/adium-style-engine.cpp
+	style-engine/adium-style-engine/adium-chat-messages-renderer.cpp
+	style-engine/kadu-style-engine/kadu-style-engine.cpp
+	style-engine/kadu-style-engine/kadu-chat-messages-renderer.cpp
+	style-engine/kadu-style-engine/kadu-chat-syntax.cpp
 
 	type/chat-type.cpp
 	type/chat-type-aware-object.cpp

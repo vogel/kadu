@@ -20,11 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-engine-kadu.h"
+#include "kadu-style-engine.h"
 
 #include "chat/chat-styles-manager.h"
 #include "core/core.h"
-#include "chat/style-engines/chat-engine-kadu/kadu-chat-messages-renderer.h"
+#include "chat/style-engine/kadu-style-engine/kadu-chat-messages-renderer.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "gui/widgets/preview.h"
 #include "message/message-render-info.h"
@@ -35,24 +35,24 @@
 
 #include <QtCore/QFileInfo>
 
-KaduChatStyleEngine::KaduChatStyleEngine()
+KaduStyleEngine::KaduStyleEngine()
 {
 	EngineName = "Kadu";
 	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList("chat"));
 }
 
-KaduChatStyleEngine::~KaduChatStyleEngine()
+KaduStyleEngine::~KaduStyleEngine()
 {
 }
 
-QString KaduChatStyleEngine::isStyleValid(QString stylePath)
+QString KaduStyleEngine::isStyleValid(QString stylePath)
 {
 	QFileInfo fi;
 	fi.setFile(stylePath);
 	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString();
 }
 
-std::unique_ptr<ChatMessagesRenderer> KaduChatStyleEngine::createRenderer(const QString &styleName, const QString &variantName)
+std::unique_ptr<ChatMessagesRenderer> KaduStyleEngine::createRenderer(const QString &styleName, const QString &variantName)
 {
 	Q_UNUSED(variantName)
 
@@ -66,5 +66,3 @@ std::unique_ptr<ChatMessagesRenderer> KaduChatStyleEngine::createRenderer(const 
 	CurrentStyleName = styleName;
 	return make_unique<KaduChatMessagesRenderer>(KaduChatSyntax{chatSyntax});
 }
-
-#include "moc_chat-engine-kadu.cpp"

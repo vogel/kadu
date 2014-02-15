@@ -25,7 +25,7 @@
 
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
-#include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
+#include "chat/style-engine/kadu-style-engine/kadu-chat-syntax.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
