@@ -24,7 +24,9 @@
 #include <QtGui/QHBoxLayout>
 
 #include "chat/chat-styles-manager.h"
+#include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
+#include "chat/type/chat-type-contact.h"
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "gui/widgets/kadu-web-view.h"
@@ -41,10 +43,13 @@ Preview::Preview(QWidget *parent) :
 	setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
+	HtmlRenderer = new HtmlMessagesRenderer(Chat::null, this);
+
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	WebView = new KaduWebView(this);
+	WebView->setPage(HtmlRenderer->webPage());
 	WebView->setImageStorageService(Core::instance()->imageStorageService());
 	layout->addWidget(WebView);
 
@@ -61,8 +66,18 @@ Preview::~Preview()
 	qDeleteAll(Messages);
 }
 
+void Preview::setRenderer(std::unique_ptr<ChatMessagesRenderer> renderer)
+{
+	Renderer = std::move(renderer);
+	Renderer.get()->clearMessages(HtmlRenderer);
+	Renderer.get()->refreshView(HtmlRenderer);
+}
+
 void Preview::addMessage(const Message &message)
 {
+	if (!HtmlRenderer->chat())
+		HtmlRenderer->setChat(ChatTypeContact::findChat(message.messageSender(), ActionCreate));
+	HtmlRenderer->appendMessage(message);
 	Messages.append(message);
 }
 

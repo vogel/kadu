@@ -26,6 +26,7 @@
 
 #include <QtGui/QFrame>
 
+#include "chat/style-engines/chat-messages-renderer.h"
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -39,6 +40,8 @@ class Preview : public QFrame, public ConfigurationAwareObject
 
 	KaduWebView *WebView;
 
+	HtmlMessagesRenderer *HtmlRenderer;
+	std::unique_ptr<ChatMessagesRenderer> Renderer;
 	QVector<Message> Messages;
 
 protected:
@@ -47,6 +50,8 @@ protected:
 public:
 	explicit Preview(QWidget *parent = 0);
 	virtual ~Preview();
+
+	void setRenderer(std::unique_ptr<ChatMessagesRenderer> renderer);
 
 	void addMessage(const Message &message);
 	const QVector<Message> & messages() const;

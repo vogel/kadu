@@ -447,9 +447,9 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 		VariantListCombo->insertItem(0, currentVariant);
 
 	VariantListCombo->setCurrentIndex(VariantListCombo->findText(currentVariant));
-
 	VariantListCombo->setEnabled(engine->supportVariants());
-	engine->prepareStylePreview(EnginePreview, styleName, VariantListCombo->currentText());
+
+	EnginePreview->setRenderer(engine->createRenderer(styleName, VariantListCombo->currentText()));
 	TurnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 
 	emit previewSyntaxChanged(styleName);
@@ -461,7 +461,7 @@ void ChatStylesManager::variantChangedSlot(const QString &variantName)
 	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
 		return;
 
-	AvailableStyles.value(styleName).engine->prepareStylePreview(EnginePreview, styleName, variantName);
+	EnginePreview->setRenderer(AvailableStyles.value(styleName).engine->createRenderer(styleName, variantName));
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)
