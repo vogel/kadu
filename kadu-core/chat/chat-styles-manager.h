@@ -121,7 +121,6 @@ public:
 	bool hasChatStyle(const QString &name) { return  AvailableStyles.contains(name); }
 	StyleInfo chatStyleInfo(const QString &name);
 
-	ChatStyleEngine * currentEngine() { return CurrentEngine; }
 	ChatMessagesRenderer * currentRenderer() { return m_messagesRenderer.get(); }
 
 	void loadStyles();
