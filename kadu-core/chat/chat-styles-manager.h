@@ -39,8 +39,8 @@ class QPushButton;
 
 class WebkitMessagesView;
 class ChatStyleEngine;
+class ChatStylePreview;
 class FormattedStringFactory;
-class Preview;
 
 //TODO: review
 struct StyleInfo
@@ -89,7 +89,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	QComboBox *VariantListCombo;
 	QCheckBox *TurnOnTransparency;
 
-	Preview *EnginePreview;
+	ChatStylePreview *EnginePreview;
 
 	void compositingEnabled();
 	void compositingDisabled();
@@ -140,7 +140,6 @@ public:
 	void mainConfigurationWindowCreated(MainConfigurationWindow *window);
 	QComboBox * syntaxListCombo() { return SyntaxListCombo; }
 
-	void preparePreview(Preview *preview);
 	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
 
 signals:

@@ -73,6 +73,7 @@ set (gui_SRCS
 	widgets/chat-edit-box-size-manager.cpp
 	widgets/chat-edit-widget.cpp
 	widgets/chat-room-edit-widget.cpp
+	widgets/chat-style-preview.cpp
 	widgets/chat-top-bar-container-widget.cpp
 	widgets/chat-top-bar-widget-factory-repository.cpp
 	widgets/chat-view-network-access-manager.cpp

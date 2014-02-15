@@ -44,7 +44,7 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/preview.h"
+#include "gui/widgets/chat-style-preview.h"
 #include "gui/widgets/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/algorithm.h"
@@ -353,9 +353,8 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 
 	editorLayout->addWidget(SyntaxListCombo, 100);
 //preview
-	EnginePreview = new Preview();
+	EnginePreview = new ChatStylePreview();
 
-	preparePreview(EnginePreview);
 //variants
 	VariantListCombo = new QComboBox();
 	VariantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
@@ -386,49 +385,6 @@ void ChatStylesManager::configurationApplied()
 {
 	config_file.writeEntry("Look", "Style", SyntaxListCombo->currentText());
 	config_file.writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
-}
-
-void ChatStylesManager::preparePreview(Preview *preview)
-{
-	if (!CurrentFormattedStringFactory)
-		return;
-
-	Buddy example = Buddy::dummy();
-	if (example.isNull())
-		return;
-
-	Chat chat = Chat::create();
-	chat.setType("Contact");
-
-	ChatDetailsContact *details = dynamic_cast<ChatDetailsContact *>(chat.details());
-	details->setState(StorableObject::StateNew);
-	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
-
-	auto buddy = Buddy::create();
-	buddy.setDisplay(Core::instance()->myself().display());
-	auto contact = Contact::create();
-	contact.setId("id@network");
-	contact.setOwnerBuddy(buddy);
-
-	Message sentMessage = Message::create();
-	sentMessage.setMessageChat(chat);
-	sentMessage.setType(MessageTypeSent);
-	sentMessage.setMessageSender(contact);
-	sentMessage.setContent(CurrentFormattedStringFactory.data()->fromPlainText(tr("Your message")));
-	sentMessage.setReceiveDate(QDateTime::currentDateTime());
-	sentMessage.setSendDate(QDateTime::currentDateTime());
-
-	preview->addMessage(sentMessage);
-
-	Message receivedMessage = Message::create();
-	receivedMessage.setMessageChat(chat);
-	receivedMessage.setType(MessageTypeReceived);
-	receivedMessage.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
-	receivedMessage.setContent(CurrentFormattedStringFactory.data()->fromPlainText(tr("Message from Your friend")));
-	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
-	receivedMessage.setSendDate(QDateTime::currentDateTime());
-
-	preview->addMessage(receivedMessage);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)
