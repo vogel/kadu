@@ -21,6 +21,7 @@
 
 #include "chat/style-engine/chat-messages-renderer.h"
 #include "configuration/configuration-aware-object.h"
+#include "misc/memory.h"
 
 #include <QtGui/QFrame>
 
@@ -40,8 +41,8 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	KaduWebView *m_view;
-	HtmlMessagesRenderer *m_htmlMessagesRenderer;
+	qobject_ptr<KaduWebView> m_view;
+	qobject_ptr<HtmlMessagesRenderer> m_htmlMessagesRenderer;
 	std::unique_ptr<ChatMessagesRenderer> m_messagesRenderer;
 
 	void preparePreview();

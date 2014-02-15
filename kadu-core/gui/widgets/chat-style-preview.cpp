@@ -36,15 +36,15 @@ ChatStylePreview::ChatStylePreview(QWidget *parent) :
 	setFixedHeight(250);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-	m_htmlMessagesRenderer = new HtmlMessagesRenderer{Chat::null, this};
+	m_htmlMessagesRenderer = make_qobject<HtmlMessagesRenderer>(Chat::null, this);
 
-	auto layout = new QHBoxLayout{this};
+	auto layout = make_qobject<QHBoxLayout>(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 
-	m_view = new KaduWebView{this};
+	m_view = make_qobject<KaduWebView>(this);
 	m_view->setPage(m_htmlMessagesRenderer->webPage());
 	m_view->setImageStorageService(Core::instance()->imageStorageService());
-	layout->addWidget(m_view);
+	layout->addWidget(m_view.get());
 
 	auto p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);
@@ -62,8 +62,8 @@ ChatStylePreview::~ChatStylePreview()
 void ChatStylePreview::setRenderer(std::unique_ptr<ChatMessagesRenderer> renderer)
 {
 	m_messagesRenderer = std::move(renderer);
-	m_messagesRenderer.get()->clearMessages(m_htmlMessagesRenderer);
-	m_messagesRenderer.get()->refreshView(m_htmlMessagesRenderer);
+	m_messagesRenderer.get()->clearMessages(m_htmlMessagesRenderer.get());
+	m_messagesRenderer.get()->refreshView(m_htmlMessagesRenderer.get());
 }
 
 void ChatStylePreview::preparePreview()
