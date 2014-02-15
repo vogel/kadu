@@ -37,11 +37,9 @@ class QCheckBox;
 class QComboBox;
 class QPushButton;
 
-class AdiumChatStyleEngine;
 class WebkitMessagesView;
 class ChatStyleEngine;
 class FormattedStringFactory;
-class KaduChatStyleEngine;
 class Preview;
 
 //TODO: review
@@ -65,7 +63,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 
 	void init();
 
-	QMap<QString, ChatStyleEngine *> RegisteredEngines;
+	std::map<QString, std::unique_ptr<ChatStyleEngine>> RegisteredEngines;
 	QList<WebkitMessagesView *> ChatViews;
 	QMap<QString, StyleInfo> AvailableStyles;
 
@@ -85,9 +83,6 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	int NoServerTimeDiff; /*!< Maximal time difference between server time and local time, for which server time will be removed */
 
 	QString MainStyle;
-
-	KaduChatStyleEngine *KaduEngine;
-	AdiumChatStyleEngine *AdiumEngine;
 
 	//configuration
 	QComboBox *SyntaxListCombo;
@@ -120,7 +115,7 @@ public:
 
 	void chatViewCreated(WebkitMessagesView * view);
 	void chatViewDestroyed(WebkitMessagesView * view);
-	void registerChatStyleEngine(const QString &name, ChatStyleEngine *engine);
+	void registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine>);
 	void unregisterChatStyleEngine(const QString &name);
 
 	bool hasChatStyle(const QString &name) { return  AvailableStyles.contains(name); }

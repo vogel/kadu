@@ -47,7 +47,9 @@
 #include "gui/widgets/preview.h"
 #include "gui/widgets/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
+#include "misc/algorithm.h"
 #include "misc/kadu-paths.h"
+#include "misc/memory.h"
 #include "protocols/protocols-manager.h"
 
 #include "chat-styles-manager.h"
@@ -74,7 +76,7 @@ ChatStylesManager::ChatStylesManager() :
 		CurrentEngine{},
 		CompositingEnabled{}, CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{},
 		CfgNoHeaderInterval{}, ParagraphSeparator{}, Prune{}, NoServerTime{},
-		NoServerTimeDiff{}, KaduEngine{}, AdiumEngine{}, SyntaxListCombo{},
+		NoServerTimeDiff{}, SyntaxListCombo{},
 		VariantListCombo{}, TurnOnTransparency{}, EnginePreview{}
 {
 }
@@ -92,31 +94,25 @@ void ChatStylesManager::setFormattedStringFactory(FormattedStringFactory *format
 
 void ChatStylesManager::init()
 {
-	//FIXME:
-	KaduEngine = new KaduChatStyleEngine();
-	registerChatStyleEngine("Kadu", KaduEngine);
+	registerChatStyleEngine("Kadu", make_unique<KaduChatStyleEngine>());
 
-	AdiumEngine = new AdiumChatStyleEngine();
-	AdiumEngine->setMessageHtmlRendererService(Core::instance()->messageHtmlRendererService());
-	registerChatStyleEngine("Adium", AdiumEngine);
+	auto adiumStyleEngine = make_unique<AdiumChatStyleEngine>();
+	adiumStyleEngine.get()->setMessageHtmlRendererService(Core::instance()->messageHtmlRendererService());
+	registerChatStyleEngine("Adium", std::move(adiumStyleEngine));
 
 	loadStyles();
 	configurationUpdated();
 }
 
-void ChatStylesManager::registerChatStyleEngine(const QString &name, ChatStyleEngine *engine)
+void ChatStylesManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
 {
-	if (0 != engine && !RegisteredEngines.contains(name))
-		RegisteredEngines.insert(name, engine);
+	if (engine && !contains(RegisteredEngines, name))
+		RegisteredEngines.insert(std::make_pair(name, std::move(engine)));
 }
 
 void ChatStylesManager::unregisterChatStyleEngine(const QString &name)
 {
-	if (RegisteredEngines.contains(name))
-	{
-		delete RegisteredEngines.value(name);
-		RegisteredEngines.remove(name);
-	}
+	RegisteredEngines.erase(name);
 }
 
 void ChatStylesManager::chatViewCreated(WebkitMessagesView *view)
@@ -294,12 +290,12 @@ void ChatStylesManager::loadStyles()
 		fi.setFile(path + file);
 		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			foreach (ChatStyleEngine *engine, RegisteredEngines)
+			for (auto &&engine : RegisteredEngines)
 			{
-				StyleName = engine->isStyleValid(path + file);
+				StyleName = engine.second->isStyleValid(path + file);
 				if (!StyleName.isNull())
 				{
-					AvailableStyles[StyleName].engine = engine;
+					AvailableStyles[StyleName].engine = engine.second.get();
 					AvailableStyles[StyleName].global = false;
 					break;
 				}
@@ -317,12 +313,12 @@ void ChatStylesManager::loadStyles()
 		fi.setFile(path + file);
 		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			foreach (ChatStyleEngine *engine, RegisteredEngines)
+			for (auto &&engine : RegisteredEngines)
 			{
-				StyleName = engine->isStyleValid(path + file);
+				StyleName = engine.second->isStyleValid(path + file);
 				if (!StyleName.isNull())
 				{
-					AvailableStyles[StyleName].engine = engine;
+					AvailableStyles[StyleName].engine = engine.second.get();
 					AvailableStyles[StyleName].global = true;
 					break;
 				}
