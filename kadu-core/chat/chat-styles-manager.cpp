@@ -398,17 +398,22 @@ void ChatStylesManager::preparePreview(Preview *preview)
 		return;
 
 	Chat chat = Chat::create();
-	chat.setChatAccount(BuddyPreferredManager::instance()->preferredAccount(example));
 	chat.setType("Contact");
 
 	ChatDetailsContact *details = dynamic_cast<ChatDetailsContact *>(chat.details());
 	details->setState(StorableObject::StateNew);
 	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
 
+	auto buddy = Buddy::create();
+	buddy.setDisplay(Core::instance()->myself().display());
+	auto contact = Contact::create();
+	contact.setId("id@network");
+	contact.setOwnerBuddy(buddy);
+
 	Message sentMessage = Message::create();
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
-	sentMessage.setMessageSender(chat.chatAccount().accountContact());
+	sentMessage.setMessageSender(contact);
 	sentMessage.setContent(CurrentFormattedStringFactory.data()->fromPlainText(tr("Your message")));
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
