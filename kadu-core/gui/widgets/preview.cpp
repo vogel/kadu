@@ -84,8 +84,6 @@ void Preview::syntaxChanged(const QString &content)
 	// this method is used only with hints syntax
 
 	QString syntax = content;
-	emit needSyntaxFixup(syntax);
-
 	QString text = Parser::parse(syntax, Talkable(Buddy::dummy()));
 	emit needFixup(text);
 

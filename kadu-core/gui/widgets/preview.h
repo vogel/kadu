@@ -57,7 +57,6 @@ public slots:
 	void syntaxChanged(const QString &content);
 
 signals:
-	void needSyntaxFixup(QString &syntax);
 	void needFixup(QString &syntax);
 
 };
