@@ -69,8 +69,7 @@ void RefreshViewHack::loadFinished()
 	deleteLater();
 }
 
-AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
-		QObject(parent)
+AdiumChatStyleEngine::AdiumChatStyleEngine()
 {
 }
 

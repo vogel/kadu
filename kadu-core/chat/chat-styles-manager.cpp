@@ -93,10 +93,10 @@ void ChatStylesManager::setFormattedStringFactory(FormattedStringFactory *format
 void ChatStylesManager::init()
 {
 	//FIXME:
-	KaduEngine = new KaduChatStyleEngine(this);
+	KaduEngine = new KaduChatStyleEngine();
 	registerChatStyleEngine("Kadu", KaduEngine);
 
-	AdiumEngine = new AdiumChatStyleEngine(this);
+	AdiumEngine = new AdiumChatStyleEngine();
 	AdiumEngine->setMessageHtmlRendererService(Core::instance()->messageHtmlRendererService());
 	registerChatStyleEngine("Adium", AdiumEngine);
 

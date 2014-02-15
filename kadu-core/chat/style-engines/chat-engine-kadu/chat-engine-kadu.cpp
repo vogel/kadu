@@ -35,8 +35,7 @@
 
 #include <QtCore/QFileInfo>
 
-KaduChatStyleEngine::KaduChatStyleEngine(QObject *parent) :
-		QObject(parent)
+KaduChatStyleEngine::KaduChatStyleEngine()
 {
 	EngineName = "Kadu";
 	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList("chat"));

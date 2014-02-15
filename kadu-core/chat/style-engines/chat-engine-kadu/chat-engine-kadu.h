@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_ENGINE_KADU_H
-#define CHAT_ENGINE_KADU_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -30,14 +29,12 @@
 class Preview;
 class SyntaxList;
 
-class KaduChatStyleEngine : public QObject, public ChatStyleEngine
+class KaduChatStyleEngine : public ChatStyleEngine
 {
-	Q_OBJECT
-
 	QSharedPointer<SyntaxList> syntaxList;
 
 public:
-	explicit KaduChatStyleEngine(QObject *parent = 0);
+	explicit KaduChatStyleEngine();
 	virtual ~KaduChatStyleEngine();
 	virtual bool supportVariants() { return false; }
 	virtual QString isStyleValid(QString styleName);
@@ -50,5 +47,3 @@ public:
 	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName);
 
 };
-
-#endif // CHAT_ENGINE_KADU_H

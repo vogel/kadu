@@ -49,9 +49,6 @@ set (chat_MOC_SRCS
 	model/chat-list-model.h
 	model/chat-manager-adapter.h
 
-	style-engines/chat-engine-adium/chat-engine-adium.h
-	style-engines/chat-engine-kadu/chat-engine-kadu.h
-
 	type/chat-type.h
 	type/chat-type-buddy.h
 	type/chat-type-contact.h

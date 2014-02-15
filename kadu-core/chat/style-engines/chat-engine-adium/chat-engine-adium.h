@@ -52,15 +52,13 @@ signals:
 	void finished(HtmlMessagesRenderer *);
 };
 
-class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
+class AdiumChatStyleEngine : public ChatStyleEngine
 {
-	Q_OBJECT
-
 	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
 	AdiumStyle CurrentStyle;
 
 public:
-	explicit AdiumChatStyleEngine(QObject *parent = 0);
+	explicit AdiumChatStyleEngine();
 	virtual ~AdiumChatStyleEngine();
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
