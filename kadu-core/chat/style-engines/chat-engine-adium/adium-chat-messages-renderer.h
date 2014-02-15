@@ -30,7 +30,6 @@ class AdiumChatMessagesRenderer : public QObject, public ChatMessagesRenderer
 {
 	Q_OBJECT
 
-	friend class PreviewHack;
 	friend class RefreshViewHack;
 
 public:

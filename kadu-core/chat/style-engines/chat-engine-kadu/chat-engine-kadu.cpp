@@ -68,28 +68,4 @@ std::unique_ptr<ChatMessagesRenderer> KaduChatStyleEngine::createRenderer(const 
 	return make_unique<KaduChatMessagesRenderer>(KaduChatSyntax{chatSyntax});
 }
 
-void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
-{
-	Q_UNUSED(variantName)
-
-	KaduChatSyntax syntax(SyntaxList::readSyntax("chat", styleName, QString()));
-
-	QString text = Parser::parse(syntax.top(), Talkable(), true);
-
-	int count = preview->messages().count();
-	if (count)
-	{
-		auto previous = Message::null;
-		for (int i = 0; i < count; i++)
-		{
-			auto message = preview->messages().at(i);
-			auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(previous, message);
-			previous = message;
-
-			text += Parser::parse(syntax.withHeader(), Talkable(message.messageSender()), &info);
-		}
-	}
-	preview->webView()->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
-}
-
 #include "moc_chat-engine-kadu.cpp"

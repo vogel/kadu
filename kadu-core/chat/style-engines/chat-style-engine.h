@@ -53,7 +53,6 @@ public:
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
 	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName) = 0;
-	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
 
 	virtual void configurationUpdated() {};
 

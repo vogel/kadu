@@ -20,19 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_ENGINE_ADIUM_H
-#define CHAT_ENGINE_ADIUM_H
+#pragma once
+
+#include "chat/style-engines/chat-style-engine.h"
+
+#include "adium-style.h"
 
 #include <QtCore/QPointer>
 
-#include "../chat-style-engine.h"
-#include "adium-style.h"
-
 class AdiumChatMessagesRenderer;
-class AdiumChatStyleEngine;
-class Chat;
 class MessageHtmlRendererService;
-class Preview;
 
 // What a ugly hack!
 // TODO: remove
@@ -55,48 +52,12 @@ signals:
 	void finished(HtmlMessagesRenderer *);
 };
 
-class PreviewHack : public QObject
-{
-	Q_OBJECT
-
-	AdiumChatMessagesRenderer *Engine;
-	Preview *CurrentPreview;
-	QString BaseHref;
-	QString OutgoingHtml;
-	QString IncomingHtml;
-
-private slots:
-	void cancel();
-
-public:
-	explicit PreviewHack(AdiumChatMessagesRenderer *engine, Preview *preview, const QString &baseHref, const QString &outgoingHtml,
-	                     const QString &incomingHtml, QObject *parent = 0);
-	virtual ~PreviewHack();
-
-public slots:
-	void loadFinished();
-
-};
-
 class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 {
 	Q_OBJECT
 
-	friend class RefreshViewHack;
-	friend class PreviewHack;
-
 	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
-
 	AdiumStyle CurrentStyle;
-	QPointer<PreviewHack> CurrentPreviewHack;
-
-	QString jsCode;
-
-	QString replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style);
-	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
-	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
-
-	std::unique_ptr<AdiumChatMessagesRenderer> m_renderer;
 
 public:
 	explicit AdiumChatStyleEngine(QObject *parent = 0);
@@ -114,9 +75,4 @@ public:
 	virtual QStringList styleVariants(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName);
 
-	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
-	virtual void configurationUpdated() {}
-
 };
-
-#endif // CHAT_ENGINE_ADIUM_H

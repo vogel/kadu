@@ -48,7 +48,6 @@ public:
 	}
 
 	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName);
-	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 
 };
 
