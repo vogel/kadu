@@ -412,8 +412,6 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 
 	EnginePreview->setRenderer(engine->createRenderer(styleName, VariantListCombo->currentText()));
 	TurnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
-
-	emit previewSyntaxChanged(styleName);
 }
 
 void ChatStylesManager::variantChangedSlot(const QString &variantName)

@@ -399,33 +399,9 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
 		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
 		lookChatAdvanced.data()->widget()->widgetById("conferenceSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
-
-		connect(ChatStylesManager::instance(), SIGNAL(previewSyntaxChanged(QString)), this, SLOT(chatPreviewSyntaxChanged(QString)));
-		if (ChatStylesManager::instance()->syntaxListCombo())
-			chatPreviewSyntaxChanged(ChatStylesManager::instance()->syntaxListCombo()->currentText());
 	}
 
 	lookChatAdvanced.data()->show();
-}
-
-void MainConfigurationWindow::chatPreviewSyntaxChanged(const QString &syntaxName)
-{
-	if (!lookChatAdvanced)
-		return;
-
-	StyleInfo styleInfo = ChatStylesManager::instance()->chatStyleInfo(syntaxName);
-	if (!styleInfo.engine)
-	{
-		lookChatAdvanced.data()->deleteLater();
-		return;
-	}
-
-	bool enableKaduFeatures = styleInfo.engine->engineName() == "Kadu";
-
-	lookChatAdvanced.data()->widget()->widgetById("chatHeaderSeparatorsHeight")->setEnabled(enableKaduFeatures);
-	lookChatAdvanced.data()->widget()->widgetById("messageSeparatorsHeight")->setEnabled(enableKaduFeatures);
-	lookChatAdvanced.data()->widget()->widgetById("removeServerTime")->setEnabled(enableKaduFeatures);
-	lookChatAdvanced.data()->widget()->widgetById("maxTimeDifference")->setEnabled(enableKaduFeatures);
 }
 
 #include "moc_main-configuration-window.cpp"

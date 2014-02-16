@@ -87,8 +87,6 @@ private slots:
 	void installIconTheme();
 	void setIconThemes();
 
-	void chatPreviewSyntaxChanged(const QString &syntaxName);
-
 public:
 	static MainConfigurationWindow * instance();
 	static bool hasInstance();

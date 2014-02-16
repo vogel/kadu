@@ -144,9 +144,6 @@ public:
 
 	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
 
-signals:
-	void previewSyntaxChanged(const QString &syntaxName);
-
 };
 
 #endif
