@@ -51,11 +51,9 @@ QString KaduStyleEngine::isStyleValid(QString stylePath)
 	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString();
 }
 
-std::unique_ptr<ChatMessagesRenderer> KaduStyleEngine::createRenderer(const QString &styleName, const QString &variantName)
+std::unique_ptr<ChatMessagesRenderer> KaduStyleEngine::createRenderer(const ChatStyle &chatStyle)
 {
-	Q_UNUSED(variantName)
-
-	QString chatSyntax = SyntaxList::readSyntax("chat", styleName,
+	QString chatSyntax = SyntaxList::readSyntax("chat", chatStyle.name(),
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
 		  "<font color=\"#{fontColor}\"><kadu:header><b><font color=\"#{nickColor}\">%a</font> :: "
 			"#{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>"

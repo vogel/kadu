@@ -42,6 +42,6 @@ public:
 		return false;
 	}
 
-	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName);
+	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const ChatStyle &chatStyle);
 
 };

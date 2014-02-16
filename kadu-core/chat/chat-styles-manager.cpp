@@ -216,7 +216,7 @@ void ChatStylesManager::configurationUpdated()
 		auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
 		m_currentChatStyle = {newStyleName, newVariantName};
 
-		Core::instance()->configuredChatMessagesRendererProvider()->setChatMessagesRenderer(CurrentEngine->createRenderer(newStyleName, newVariantName));
+		Core::instance()->configuredChatMessagesRendererProvider()->setChatMessagesRenderer(CurrentEngine->createRenderer(m_currentChatStyle));
 	}
 
 	triggerCompositingStateChanged();
@@ -408,7 +408,7 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	VariantListCombo->setCurrentIndex(VariantListCombo->findText(currentVariant));
 	VariantListCombo->setEnabled(engine->supportVariants());
 
-	EnginePreview->setRenderer(engine->createRenderer(styleName, VariantListCombo->currentText()));
+	EnginePreview->setRenderer(engine->createRenderer({styleName, VariantListCombo->currentText()}));
 	TurnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 }
 
@@ -418,7 +418,7 @@ void ChatStylesManager::variantChangedSlot(const QString &variantName)
 	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
 		return;
 
-	EnginePreview->setRenderer(AvailableStyles.value(styleName).engine->createRenderer(styleName, variantName));
+	EnginePreview->setRenderer(AvailableStyles.value(styleName).engine->createRenderer({styleName, variantName}));
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)

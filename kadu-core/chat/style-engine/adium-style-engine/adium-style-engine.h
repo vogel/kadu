@@ -63,7 +63,7 @@ public:
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
-	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName);
+	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const ChatStyle &chatStyle);
 
 	virtual bool supportVariants() { return true; }
 	virtual QString isStyleValid(QString styleName);

@@ -31,6 +31,7 @@
 
 class ChatImage;
 class ChatMessagesRenderer;
+class ChatStyle;
 class HtmlMessagesRenderer;
 class Preview;
 
@@ -46,7 +47,7 @@ public:
 	virtual QString isStyleValid(QString) = 0; //return QString(), if style is not valid
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
-	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName) = 0;
+	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const ChatStyle &chatStyle) = 0;
 
 };
 
