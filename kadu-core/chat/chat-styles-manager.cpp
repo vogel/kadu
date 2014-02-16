@@ -37,6 +37,7 @@
 #include "chat/chat-details-contact.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engine/adium-style-engine/adium-style-engine.h"
+#include "chat/style-engine/configured-chat-messages-renderer-provider.h"
 #include "chat/style-engine/kadu-style-engine/kadu-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
@@ -87,6 +88,12 @@ ChatStylesManager::~ChatStylesManager()
 	unregisterChatStyleEngine("Adium");
 }
 
+void ChatStylesManager::setConfiguredChatMessagesRendererProvider(ConfiguredChatMessagesRendererProvider *configuredChatMessagesRendererProvider)
+{
+	CurrentConfiguredChatMessagesRendererProvider = configuredChatMessagesRendererProvider;
+	configurationUpdated();
+}
+
 void ChatStylesManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	CurrentFormattedStringFactory = formattedStringFactory;
@@ -101,7 +108,6 @@ void ChatStylesManager::init()
 	registerChatStyleEngine("Adium", std::move(adiumStyleEngine));
 
 	loadStyles();
-	configurationUpdated();
 }
 
 void ChatStylesManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
@@ -122,7 +128,7 @@ void ChatStylesManager::chatViewCreated(WebkitMessagesView *view)
 		ChatViews.append(view);
 
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		m_messagesRenderer.get()->refreshView(view->renderer(), useTransparency);
+		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(view->renderer(), useTransparency);
 	}
 }
 
@@ -202,6 +208,7 @@ void ChatStylesManager::configurationUpdated()
 
 	QString newStyleName = config_file.readEntry("Look", "Style");
 	QString newVariantName = config_file.readEntry("Look", "ChatStyleVariant");
+
 	// if Style was changed, load new Style
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
@@ -209,8 +216,7 @@ void ChatStylesManager::configurationUpdated()
 		CurrentEngine = AvailableStyles.value(newStyleName).engine;
 		newVariantName = fixedVariantName(newStyleName, newVariantName);
 
-		m_messagesRenderer = CurrentEngine->createRenderer(newStyleName, newVariantName);
-		// CurrentEngine->loadStyle(newStyleName, newVariantName);
+		Core::instance()->configuredChatMessagesRendererProvider()->setChatMessagesRenderer(CurrentEngine->createRenderer(newStyleName, newVariantName));
 	}
 	else
 		CurrentEngine->configurationUpdated();
@@ -248,8 +254,7 @@ void ChatStylesManager::compositingEnabled()
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		m_messagesRenderer.get()->refreshView(view->renderer(), useTransparency);
-		//CurrentEngine->refreshView();
+		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(view->renderer(), useTransparency);
 	}
 
 	if (TurnOnTransparency)
@@ -262,8 +267,7 @@ void ChatStylesManager::compositingDisabled()
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		// CurrentEngine->refreshView(view->renderer(), useTransparency);
-		m_messagesRenderer.get()->refreshView(view->renderer(), useTransparency);
+		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(view->renderer(), useTransparency);
 	}
 
 	if (TurnOnTransparency)

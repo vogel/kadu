@@ -43,6 +43,8 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-styles-manager.h"
+#include "chat/style-engine/chat-messages-renderer-provider.h"
+#include "chat/style-engine/configured-chat-messages-renderer-provider.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
@@ -762,6 +764,10 @@ void Core::runServices()
 
 	CurrentPluginDependencyHandler->initialize();
 	CurrentPluginStateManager->loadPluginStates();
+
+	CurrentChatMessagesRendererProvider = make_qobject<ConfiguredChatMessagesRendererProvider>(this);
+
+	ChatStylesManager::instance()->setConfiguredChatMessagesRendererProvider(CurrentChatMessagesRendererProvider.get());
 }
 
 void Core::runGuiServices()
@@ -983,6 +989,16 @@ PluginStateService * Core::pluginStateService() const
 PluginManager * Core::pluginManager() const
 {
 	return CurrentPluginManager;
+}
+
+ChatMessagesRendererProvider * Core::chatMessagesRendererProvider() const
+{
+	return CurrentChatMessagesRendererProvider.get();
+}
+
+ConfiguredChatMessagesRendererProvider * Core::configuredChatMessagesRendererProvider() const
+{
+	return CurrentChatMessagesRendererProvider.get();
 }
 
 void Core::showMainWindow()

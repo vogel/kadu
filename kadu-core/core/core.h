@@ -36,6 +36,7 @@
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
+#include "misc/memory.h"
 #include "provider/simple-provider.h"
 #include "status/status.h"
 
@@ -56,6 +57,7 @@ class ChatConfigurationWidgetFactoryRepository;
 class ChatDataWindowRepository;
 class ChatImageRequestService;
 class ChatTopBarWidgetFactoryRepository;
+class ChatMessagesRendererProvider;
 class ChatWidgetActions;
 class ChatWidgetActivationService;
 class ChatWidgetContainerHandlerMapper;
@@ -69,6 +71,7 @@ class ChatWindowManager;
 class ChatWindowStorage;
 class ChatWindowRepository;
 class ClipboardHtmlTransformerService;
+class ConfiguredChatMessagesRendererProvider;
 class DomProcessorService;
 class FormattedStringFactory;
 class ImageStorageService;
@@ -149,6 +152,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginStateManager *CurrentPluginStateManager;
 	PluginStateService *CurrentPluginStateService;
 	PluginManager *CurrentPluginManager;
+	qobject_ptr<ConfiguredChatMessagesRendererProvider> CurrentChatMessagesRendererProvider;
 
 	KaduWindow *Window;
 
@@ -243,6 +247,8 @@ public:
 	PluginManager * pluginManager() const;
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
+	ChatMessagesRendererProvider * chatMessagesRendererProvider() const;
+	ConfiguredChatMessagesRendererProvider * configuredChatMessagesRendererProvider() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

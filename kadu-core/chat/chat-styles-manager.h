@@ -40,6 +40,7 @@ class QPushButton;
 class WebkitMessagesView;
 class ChatStyleEngine;
 class ChatStylePreview;
+class ConfiguredChatMessagesRendererProvider;
 class FormattedStringFactory;
 
 //TODO: review
@@ -58,6 +59,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	static ChatStylesManager *Instance;
 
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<ConfiguredChatMessagesRendererProvider> CurrentConfiguredChatMessagesRendererProvider;
 
 	ChatStylesManager();
 
@@ -68,7 +70,6 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	QMap<QString, StyleInfo> AvailableStyles;
 
 	ChatStyleEngine *CurrentEngine;
-	std::unique_ptr<ChatMessagesRenderer> m_messagesRenderer;
 
 	bool CompositingEnabled;
 
@@ -111,6 +112,7 @@ public:
 
 	~ChatStylesManager();
 
+	void setConfiguredChatMessagesRendererProvider(ConfiguredChatMessagesRendererProvider *configuredChatMessagesRendererProvider);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void chatViewCreated(WebkitMessagesView * view);
@@ -120,8 +122,6 @@ public:
 
 	bool hasChatStyle(const QString &name) { return  AvailableStyles.contains(name); }
 	StyleInfo chatStyleInfo(const QString &name);
-
-	ChatMessagesRenderer * currentRenderer() { return m_messagesRenderer.get(); }
 
 	void loadStyles();
 
