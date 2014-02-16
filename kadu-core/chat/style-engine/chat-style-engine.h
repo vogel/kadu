@@ -36,12 +36,9 @@ class Preview;
 
 class ChatStyleEngine
 {
-protected:
-	QString EngineName;
 
 public:
 	virtual ~ChatStyleEngine() {}
-	virtual const QString & engineName() const { return EngineName; }
 	virtual QString defaultVariant(const QString &) { return "Default"; }
 	virtual QStringList styleVariants(QString) { return QStringList(); }
 
@@ -50,8 +47,6 @@ public:
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
 	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const QString &styleName, const QString &variantName) = 0;
-
-	virtual void configurationUpdated() {};
 
 };
 

@@ -218,8 +218,6 @@ void ChatStylesManager::configurationUpdated()
 
 		Core::instance()->configuredChatMessagesRendererProvider()->setChatMessagesRenderer(CurrentEngine->createRenderer(newStyleName, newVariantName));
 	}
-	else
-		CurrentEngine->configurationUpdated();
 
 	triggerCompositingStateChanged();
 }

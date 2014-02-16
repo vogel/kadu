@@ -37,7 +37,6 @@
 
 KaduStyleEngine::KaduStyleEngine()
 {
-	EngineName = "Kadu";
 	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList("chat"));
 }
 
