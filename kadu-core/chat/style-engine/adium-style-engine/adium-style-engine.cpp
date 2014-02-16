@@ -90,19 +90,14 @@ QString AdiumStyleEngine::isStyleValid(QString stylePath)
 
 bool AdiumStyleEngine::styleUsesTransparencyByDefault(QString styleName)
 {
-	AdiumStyle style(styleName);
+	auto style = AdiumStyle{styleName};
 	return style.defaultBackgroundIsTransparent();
 }
 
 QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 {
-	AdiumStyle style(styleName);
+	auto style = AdiumStyle{styleName};
 	return style.defaultVariant();
-}
-
-QString AdiumStyleEngine::currentStyleVariant()
-{
-	return CurrentStyle.currentVariant();
 }
 
 QStringList AdiumStyleEngine::styleVariants(QString styleName)
@@ -118,10 +113,10 @@ QStringList AdiumStyleEngine::styleVariants(QString styleName)
 
 std::unique_ptr<ChatMessagesRenderer> AdiumStyleEngine::createRenderer(const ChatStyle &chatStyle)
 {
-	CurrentStyle = AdiumStyle(chatStyle.name());
-	CurrentStyle.setCurrentVariant(chatStyle.variant());
+	auto style = AdiumStyle{chatStyle.name()};
+	style.setCurrentVariant(chatStyle.variant());
 
-	auto result = make_unique<AdiumChatMessagesRenderer>(CurrentStyle);
+	auto result = make_unique<AdiumChatMessagesRenderer>(style);
 	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
 	return std::move(result);
 }

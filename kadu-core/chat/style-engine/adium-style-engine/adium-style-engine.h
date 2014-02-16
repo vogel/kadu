@@ -24,8 +24,6 @@
 
 #include "chat/style-engine/chat-style-engine.h"
 
-#include "adium-style.h"
-
 #include <QtCore/QPointer>
 
 class AdiumChatMessagesRenderer;
@@ -55,7 +53,6 @@ signals:
 class AdiumStyleEngine : public ChatStyleEngine
 {
 	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
-	AdiumStyle CurrentStyle;
 
 public:
 	explicit AdiumStyleEngine();
@@ -67,7 +64,6 @@ public:
 
 	virtual bool supportVariants() { return true; }
 	virtual QString isStyleValid(QString styleName);
-	virtual QString currentStyleVariant();
 	virtual QString defaultVariant(const QString &styleName);
 
 	virtual QStringList styleVariants(QString styleName);
