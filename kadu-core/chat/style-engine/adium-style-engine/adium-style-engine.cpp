@@ -119,7 +119,6 @@ std::unique_ptr<ChatMessagesRenderer> AdiumStyleEngine::createRenderer(const QSt
 {
 	CurrentStyle = AdiumStyle(styleName);
 	CurrentStyle.setCurrentVariant(variantName);
-	CurrentStyleName = styleName;
 
 	auto result = make_unique<AdiumChatMessagesRenderer>(CurrentStyle);
 	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);

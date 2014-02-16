@@ -38,13 +38,10 @@ class ChatStyleEngine
 {
 protected:
 	QString EngineName;
-	QString CurrentStyleName;
 
 public:
 	virtual ~ChatStyleEngine() {}
 	virtual const QString & engineName() const { return EngineName; }
-	virtual const QString & currentStyleName() const { return CurrentStyleName; }
-	virtual QString currentStyleVariant() { return "Default"; }
 	virtual QString defaultVariant(const QString &) { return "Default"; }
 	virtual QStringList styleVariants(QString) { return QStringList(); }
 

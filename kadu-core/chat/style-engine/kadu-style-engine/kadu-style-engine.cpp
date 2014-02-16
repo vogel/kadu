@@ -63,6 +63,5 @@ std::unique_ptr<ChatMessagesRenderer> KaduStyleEngine::createRenderer(const QStr
 		"#{message}</font></p>"
 	);
 
-	CurrentStyleName = styleName;
 	return make_unique<KaduChatMessagesRenderer>(KaduChatSyntax{chatSyntax});
 }
