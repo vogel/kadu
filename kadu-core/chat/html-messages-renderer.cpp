@@ -118,7 +118,6 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 
 void HtmlMessagesRenderer::clearMessages()
 {
-	qDeleteAll(MyChatMessages);
 	MyChatMessages.clear();
 
 	LastMessage = Message::null;
