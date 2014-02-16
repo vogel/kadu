@@ -27,6 +27,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include "chat/chat-style.h"
 #include "chat/style-engine/chat-messages-renderer.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
@@ -66,6 +67,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	void init();
 
 	std::map<QString, std::unique_ptr<ChatStyleEngine>> RegisteredEngines;
+	ChatStyle m_currentChatStyle;
 	QList<WebkitMessagesView *> ChatViews;
 	QMap<QString, StyleInfo> AvailableStyles;
 

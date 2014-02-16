@@ -206,15 +206,15 @@ void ChatStylesManager::configurationUpdated()
 	NoServerTime = config_file.readBoolEntry("Look", "NoServerTime");
 	NoServerTimeDiff = config_file.readNumEntry("Look", "NoServerTimeDiff");
 
-	QString newStyleName = config_file.readEntry("Look", "Style");
-	QString newVariantName = config_file.readEntry("Look", "ChatStyleVariant");
+	auto newChatStyle = ChatStyle{config_file.readEntry("Look", "Style"), config_file.readEntry("Look", "ChatStyleVariant")};
 
 	// if Style was changed, load new Style
-	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
+	if (!CurrentEngine || newChatStyle != m_currentChatStyle)
 	{
-		newStyleName = fixedStyleName(newStyleName);
+		auto newStyleName = fixedStyleName(newChatStyle.name());
 		CurrentEngine = AvailableStyles.value(newStyleName).engine;
-		newVariantName = fixedVariantName(newStyleName, newVariantName);
+		auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
+		m_currentChatStyle = {newStyleName, newVariantName};
 
 		Core::instance()->configuredChatMessagesRendererProvider()->setChatMessagesRenderer(CurrentEngine->createRenderer(newStyleName, newVariantName));
 	}
@@ -352,7 +352,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	QStringList styleNames = AvailableStyles.keys();
 	qSort(styleNames.begin(), styleNames.end(), caseInsensitiveLessThan);
 	SyntaxListCombo->addItems(styleNames);
-	SyntaxListCombo->setCurrentIndex(SyntaxListCombo->findText(CurrentEngine->currentStyleName()));
+	SyntaxListCombo->setCurrentIndex(SyntaxListCombo->findText(m_currentChatStyle.name()));
 	connect(SyntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(styleChangedSlot(const QString &)));
 
 	editorLayout->addWidget(SyntaxListCombo, 100);
@@ -361,14 +361,14 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 
 //variants
 	VariantListCombo = new QComboBox();
-	VariantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
-	QString defaultVariant = CurrentEngine->defaultVariant(CurrentEngine->currentStyleName());
+	VariantListCombo->addItems(CurrentEngine->styleVariants(m_currentChatStyle.name()));
+	QString defaultVariant = CurrentEngine->defaultVariant(m_currentChatStyle.name());
 	if (!defaultVariant.isEmpty() && VariantListCombo->findText(defaultVariant) == -1)
 		VariantListCombo->insertItem(0, defaultVariant);
 
-	QString newVariant = CurrentEngine->currentStyleVariant().isEmpty()
+	QString newVariant = m_currentChatStyle.variant().isEmpty()
 			? defaultVariant
-			: CurrentEngine->currentStyleVariant();
+			: m_currentChatStyle.variant();
 	variantChangedSlot(newVariant);
 	VariantListCombo->setCurrentIndex(VariantListCombo->findText(newVariant));
 	VariantListCombo->setEnabled(CurrentEngine->supportVariants());
