@@ -25,7 +25,7 @@
 
 #include <QtGui/QFrame>
 
-class KaduWebView;
+class WebkitMessagesView;
 
 class ChatStylePreview : public QFrame, public ConfigurationAwareObject
 {
@@ -41,10 +41,8 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	qobject_ptr<KaduWebView> m_view;
-	qobject_ptr<HtmlMessagesRenderer> m_htmlMessagesRenderer;
-	std::unique_ptr<ChatMessagesRenderer> m_messagesRenderer;
+	qobject_ptr<WebkitMessagesView> m_view;
 
-	void preparePreview();
+	qobject_ptr<WebkitMessagesView> preparePreview();
 
 };

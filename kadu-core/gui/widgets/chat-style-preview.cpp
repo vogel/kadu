@@ -21,12 +21,11 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
-#include "chat/html-messages-renderer.h"
 #include "chat/style-engine/chat-messages-renderer-provider.h"
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "gui/widgets/kadu-web-view.h"
+#include "gui/widgets/webkit-messages-view.h"
 
 #include <QtGui/QHBoxLayout>
 
@@ -40,19 +39,10 @@ ChatStylePreview::ChatStylePreview(QWidget *parent) :
 	auto layout = make_qobject<QHBoxLayout>(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 
-	m_view = make_qobject<KaduWebView>(this);
-	m_view->setImageStorageService(Core::instance()->imageStorageService());
+	m_view = preparePreview();
+
 	layout->addWidget(m_view.get());
 
-	m_htmlMessagesRenderer = make_qobject<HtmlMessagesRenderer>(Chat::null, m_view->page());
-	m_htmlMessagesRenderer.get()->setChatMessagesRenderer(Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer());
-
-	auto p = palette();
-	p.setBrush(QPalette::Base, Qt::transparent);
-	m_view->page()->setPalette(p);
-	m_view->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
-	preparePreview();
 	configurationUpdated();
 }
 
@@ -62,12 +52,10 @@ ChatStylePreview::~ChatStylePreview()
 
 void ChatStylePreview::setRenderer(std::unique_ptr<ChatMessagesRenderer> renderer)
 {
-	m_messagesRenderer = std::move(renderer);
-	m_messagesRenderer.get()->clearMessages(m_htmlMessagesRenderer.get());
-	m_messagesRenderer.get()->refreshView(m_htmlMessagesRenderer.get());
+	m_view.get()->setChatMessagesRenderer(std::move(renderer));
 }
 
-void ChatStylePreview::preparePreview()
+qobject_ptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 {
 	auto example = Buddy::dummy();
 
@@ -100,9 +88,12 @@ void ChatStylePreview::preparePreview()
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 
-	m_htmlMessagesRenderer->setChat(chat);
-	m_htmlMessagesRenderer->appendMessage(sentMessage);
-	m_htmlMessagesRenderer->appendMessage(receivedMessage);
+	auto result = make_qobject<WebkitMessagesView>(chat, false, this);
+	result->setImageStorageService(Core::instance()->imageStorageService());
+	result->appendMessage(sentMessage);
+	result->appendMessage(receivedMessage);
+	result->setChatMessagesRenderer(Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer());
+	return std::move(result);
 }
 
 void ChatStylePreview::configurationUpdated()

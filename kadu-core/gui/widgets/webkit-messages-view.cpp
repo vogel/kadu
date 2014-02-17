@@ -281,6 +281,7 @@ void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 void WebkitMessagesView::setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer)
 {
 	Renderer->setChatMessagesRenderer(chatMessagesRenderer);
+	Renderer->refresh();
 }
 
 void WebkitMessagesView::clearMessages()
