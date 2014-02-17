@@ -41,7 +41,6 @@ class HtmlMessagesRenderer : public QObject
 	Chat MyChat;
 	QVector<Message> MyChatMessages;
 	Message LastMessage;
-	QWebPage *MyWebPage;
 
 	bool PruneEnabled;
 	bool ForcePruneDisabled;
@@ -49,13 +48,13 @@ class HtmlMessagesRenderer : public QObject
 	void pruneMessages();
 
 public:
-	explicit HtmlMessagesRenderer(const Chat &chat, QObject *parent = 0);
+	explicit HtmlMessagesRenderer(const Chat &chat, QWebPage *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
 	Chat  chat() { return MyChat; }
 	void setChat(const Chat &chat);
 
-	QWebPage * webPage() { return MyWebPage; }
+	QWebPage * webPage() const;
 
 	bool pruneEnabled();
 

@@ -51,7 +51,7 @@
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
-	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
+	Renderer = make_qobject<HtmlMessagesRenderer>(CurrentChat, page());
 
 	QNetworkAccessManager *oldManager = Renderer->webPage()->networkAccessManager();
 	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);
@@ -63,7 +63,6 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 	setStyleSheet("QWidget { }");
 	setFocusPolicy(Qt::NoFocus);
 	setMinimumSize(QSize(100,100));
-	setPage(Renderer->webPage());
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 	settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 

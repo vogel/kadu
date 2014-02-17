@@ -32,11 +32,10 @@
 
 #include "html-messages-renderer.h"
 
-HtmlMessagesRenderer::HtmlMessagesRenderer(const Chat &chat, QObject *parent) :
+HtmlMessagesRenderer::HtmlMessagesRenderer(const Chat &chat, QWebPage *parent) :
 		QObject(parent), MyChat(chat), PruneEnabled(true), ForcePruneDisabled(false)
 {
-	MyWebPage = new QWebPage(this);
-	MyWebPage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+	parent->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 }
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
@@ -49,6 +48,11 @@ void HtmlMessagesRenderer::setChat(const Chat &chat)
 	MyChat = chat;
 }
 
+QWebPage * HtmlMessagesRenderer::webPage() const
+{
+	return static_cast<QWebPage *>(parent());
+}
+
 void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 {
 	ForcePruneDisabled = forcePruneDisabled;
@@ -57,7 +61,7 @@ void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 
 QString HtmlMessagesRenderer::content()
 {
-	return MyWebPage->mainFrame()->toHtml();
+	return webPage()->mainFrame()->toHtml();
 }
 
 bool HtmlMessagesRenderer::pruneEnabled()

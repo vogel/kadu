@@ -28,6 +28,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "message/message.h"
+#include "misc/memory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image.h"
 #include "protocols/services/chat-service.h"
@@ -51,7 +52,7 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 	QPointer<ChatImageRequestService> CurrentChatImageRequestService;
 
 	Chat CurrentChat;
-	HtmlMessagesRenderer *Renderer;
+	qobject_ptr<HtmlMessagesRenderer> Renderer;
 
 	bool SupportTransparency;
 
@@ -79,7 +80,7 @@ public:
 
 	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
 
-	HtmlMessagesRenderer * renderer() { return Renderer; }
+	HtmlMessagesRenderer * renderer() { return Renderer.get(); }
 
 	void prependMessages(const QVector<Message> &messages);
 

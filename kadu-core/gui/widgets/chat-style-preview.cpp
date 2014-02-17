@@ -36,15 +36,14 @@ ChatStylePreview::ChatStylePreview(QWidget *parent) :
 	setFixedHeight(250);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-	m_htmlMessagesRenderer = make_qobject<HtmlMessagesRenderer>(Chat::null, this);
-
 	auto layout = make_qobject<QHBoxLayout>(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	m_view = make_qobject<KaduWebView>(this);
-	m_view->setPage(m_htmlMessagesRenderer->webPage());
 	m_view->setImageStorageService(Core::instance()->imageStorageService());
 	layout->addWidget(m_view.get());
+
+	m_htmlMessagesRenderer = make_qobject<HtmlMessagesRenderer>(Chat::null, m_view->page());
 
 	auto p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);
