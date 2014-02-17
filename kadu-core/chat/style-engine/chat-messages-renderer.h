@@ -37,7 +37,7 @@ public:
 	virtual void clearMessages(QWebFrame &frame) = 0;
 	virtual void appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) = 0;
 	virtual void appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) = 0;
-	virtual void pruneMessage(QWebFrame &frame) = 0;
+	virtual void removeFirstMessage(QWebFrame &frame) = 0;
 	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) = 0;
 	virtual void messageStatusChanged(QWebFrame &frame, Message, MessageStatus) = 0;
 	virtual void contactActivityChanged(QWebFrame &frame, ChatStateService::State, const QString &, const QString &) = 0;

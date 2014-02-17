@@ -54,10 +54,9 @@ void AdiumChatMessagesRenderer::setMessageHtmlRendererService(MessageHtmlRendere
 	m_messageHtmlRendererService = messageHtmlRendererService;
 }
 
-void AdiumChatMessagesRenderer::pruneMessage(QWebFrame &frame)
+void AdiumChatMessagesRenderer::removeFirstMessage(QWebFrame &frame)
 {
-	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
-		frame.evaluateJavaScript("adium_removeFirstMessage()");
+	frame.evaluateJavaScript("adium_removeFirstMessage()");
 }
 
 void AdiumChatMessagesRenderer::clearMessages(QWebFrame &frame)

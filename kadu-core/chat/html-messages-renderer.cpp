@@ -74,7 +74,7 @@ bool HtmlMessagesRenderer::pruneEnabled()
 
 void HtmlMessagesRenderer::pruneMessages()
 {
-	if (m_forcePruneDisabled)
+	if (m_forcePruneDisabled || ChatStylesManager::instance()->cfgNoHeaderRepeat())
 		return;
 
 	if (ChatStylesManager::instance()->prune() == 0)
@@ -96,7 +96,7 @@ void HtmlMessagesRenderer::pruneMessages()
 
 	if (m_chatMessagesRenderer && webPage()->mainFrame())
 		for (auto it = start; it != stop; ++it)
-			m_chatMessagesRenderer->pruneMessage(*webPage()->mainFrame());
+			m_chatMessagesRenderer->removeFirstMessage(*webPage()->mainFrame());
 
 	m_messages.erase(start, stop);
 }

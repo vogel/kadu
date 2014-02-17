@@ -46,10 +46,9 @@ void KaduChatMessagesRenderer::clearMessages(QWebFrame &frame)
 	frame.evaluateJavaScript("kadu_clearMessages()");
 }
 
-void KaduChatMessagesRenderer::pruneMessage(QWebFrame &frame)
+void KaduChatMessagesRenderer::removeFirstMessage(QWebFrame &frame)
 {
-	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
-		frame.evaluateJavaScript("kadu_removeFirstMessage()");
+	frame.evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
 void KaduChatMessagesRenderer::appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled)
