@@ -189,6 +189,11 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 	Renderer->setForcePruneDisabled(disable);
 }
 
+void WebkitMessagesView::refreshView(bool useTransparency)
+{
+	renderer()->refreshView(useTransparency);
+}
+
 void WebkitMessagesView::pageUp()
 {
 	QKeyEvent event(QEvent::KeyPress, Qt::Key_PageUp, Qt::NoModifier);

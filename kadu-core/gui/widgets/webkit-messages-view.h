@@ -89,6 +89,7 @@ public:
 	int countMessages();
 
 	void setForcePruneDisabled(bool disable);
+	void refreshView(bool useTransparency);
 
 	Chat chat() const { return CurrentChat; }
 	void setChat(const Chat &chat);

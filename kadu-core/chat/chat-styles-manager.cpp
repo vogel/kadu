@@ -128,7 +128,7 @@ void ChatStylesManager::chatViewCreated(WebkitMessagesView *view)
 		ChatViews.append(view);
 
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(view->renderer(), useTransparency);
+		view->refreshView(useTransparency);
 	}
 }
 
@@ -252,7 +252,7 @@ void ChatStylesManager::compositingEnabled()
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(view->renderer(), useTransparency);
+		view->refreshView(useTransparency);
 	}
 
 	if (TurnOnTransparency)
@@ -265,7 +265,7 @@ void ChatStylesManager::compositingDisabled()
 	foreach (WebkitMessagesView *view, ChatViews)
 	{
 		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(view->renderer(), useTransparency);
+		view->refreshView(useTransparency);
 	}
 
 	if (TurnOnTransparency)

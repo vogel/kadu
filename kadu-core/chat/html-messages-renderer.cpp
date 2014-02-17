@@ -136,6 +136,11 @@ void HtmlMessagesRenderer::refresh()
 	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(this);
 }
 
+void HtmlMessagesRenderer::refreshView(bool useTransparency)
+{
+	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(this, useTransparency);
+}
+
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
 	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->chatImageAvailable(this, chatImage, fileName);

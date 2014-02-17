@@ -73,6 +73,7 @@ public:
 	void setLastMessage(Message message);
 
 	void refresh();
+	void refreshView(bool useTransparency);
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(Message message, MessageStatus status);
