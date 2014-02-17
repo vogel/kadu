@@ -34,45 +34,6 @@
 #include <QtCore/QDir>
 #include <QtWebKit/QWebFrame>
 
-RefreshViewHack::RefreshViewHack(QVector<Message> messages, AdiumChatMessagesRenderer *engine, QWebFrame *webFrame, QObject *parent) :
-		QObject(parent), Messages(messages), Engine(engine), WebFrame(webFrame)
-{
-	connect(Engine, SIGNAL(destroyed()), this, SLOT(cancel()));
-	connect(WebFrame, SIGNAL(destroyed()), this, SLOT(cancel()));
-}
-
-RefreshViewHack::~RefreshViewHack()
-{
-}
-
-void RefreshViewHack::cancel()
-{
-	Engine = 0;
-	WebFrame = 0;
-
-	deleteLater();
-}
-
-void RefreshViewHack::loadFinished()
-{
-	if (!Engine || !WebFrame)
-	{
-		deleteLater();
-		return;
-	}
-
-	emit finished(WebFrame);
-
-	auto lastMessage = Message::null;
-	for (auto const &message : Messages)
-	{
-		Engine->appendChatMessage(*WebFrame, message, lastMessage);
-		lastMessage = message;
-	}
-
-	deleteLater();
-}
-
 AdiumStyleEngine::AdiumStyleEngine()
 {
 }

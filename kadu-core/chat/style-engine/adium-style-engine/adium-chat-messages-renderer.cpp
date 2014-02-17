@@ -68,9 +68,6 @@ void AdiumChatMessagesRenderer::appendMessages(QWebFrame &frame, const Chat &cha
 {
 	Q_UNUSED(chat);
 
-	if (m_refreshHacks.contains(std::addressof(frame)))
-		return;
-
 	if (pruneEnabled)
 	{
 		clearMessages(frame);
@@ -96,9 +93,6 @@ void AdiumChatMessagesRenderer::appendMessage(QWebFrame &frame, const Chat &chat
 {
 	Q_UNUSED(chat);
 
-	if (m_refreshHacks.contains(std::addressof(frame)))
-		return;
-
 	if (pruneEnabled)
 	{
 		clearMessages(frame);
@@ -117,9 +111,6 @@ void AdiumChatMessagesRenderer::appendMessage(QWebFrame &frame, const Chat &chat
 
 void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage)
 {
-	if (m_refreshHacks.contains(std::addressof(frame)))
-		return;
-
 	QString formattedMessageHtml;
 	bool includeHeader = true;
 
@@ -183,11 +174,6 @@ void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Messag
 		frame.evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
 }
 
-void AdiumChatMessagesRenderer::refreshHackFinished(QWebFrame *renderer)
-{
-	m_refreshHacks.remove(renderer);
-}
-
 QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat)
 {
 	QString styleBaseHtml = style.templateHtml();
@@ -213,22 +199,12 @@ QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(AdiumStyle &style, co
 
 void AdiumChatMessagesRenderer::refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency)
 {
+	Q_UNUSED(allMessages);
+
 	QString styleBaseHtml = preprocessStyleBaseHtml(m_style, chat);
 
 	if (useTransparency && !m_style.defaultBackgroundIsTransparent())
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
-
-	if (m_refreshHacks.contains(std::addressof(frame)))
-		m_refreshHacks.value(std::addressof(frame))->cancel();
-
-	RefreshViewHack *currentHack = new RefreshViewHack(allMessages, this, std::addressof(frame), this);
-	m_refreshHacks.insert(std::addressof(frame), currentHack);
-	connect(currentHack, SIGNAL(finished(QWebFrame*)),
-			this, SLOT(refreshHackFinished(QWebFrame *)));
-
-	// lets wait a while for all javascript to resolve and execute
-	// we dont want to get to the party too early
-	connect(std::addressof(frame), SIGNAL(loadFinished(bool)), currentHack, SLOT(loadFinished()), Qt::QueuedConnection);
 
 	frame.setHtml(styleBaseHtml);
 	frame.evaluateJavaScript(m_jsCode);

@@ -24,13 +24,10 @@
 #include "chat/style-engine/adium-style-engine/adium-style.h"
 
 class MessageHtmlRendererService;
-class RefreshViewHack;
 
 class AdiumChatMessagesRenderer : public QObject, public ChatMessagesRenderer
 {
 	Q_OBJECT
-
-	friend class RefreshViewHack;
 
 public:
 	explicit AdiumChatMessagesRenderer(AdiumStyle style);
@@ -52,14 +49,10 @@ private:
 
 	AdiumStyle m_style;
 	QString m_jsCode;
-	QMap<QWebFrame *, RefreshViewHack *> m_refreshHacks;
 
 	void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage);
 	QString replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style);
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
 	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
-
-private slots:
-	void refreshHackFinished(QWebFrame *);
 
 };

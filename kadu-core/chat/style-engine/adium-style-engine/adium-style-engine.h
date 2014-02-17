@@ -30,28 +30,6 @@ class AdiumChatMessagesRenderer;
 class MessageHtmlRendererService;
 class QWebFrame;
 
-// What a ugly hack!
-// TODO: remove
-class RefreshViewHack : public QObject
-{
-	Q_OBJECT
-
-	QVector<Message> Messages;
-	AdiumChatMessagesRenderer *Engine;
-	QWebFrame *WebFrame;
-
-public:
-	explicit RefreshViewHack(QVector<Message> messages, AdiumChatMessagesRenderer *engine, QWebFrame *webFrame, QObject *parent = 0);
-	virtual ~RefreshViewHack();
-
-public slots:
-	void cancel();
-	void loadFinished();
-
-signals:
-	void finished(QWebFrame *);
-};
-
 class AdiumStyleEngine : public ChatStyleEngine
 {
 	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
