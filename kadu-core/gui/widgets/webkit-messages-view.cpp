@@ -33,6 +33,7 @@
 #include "chat/chat-styles-manager.h"
 #include "chat/chat.h"
 #include "chat/html-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer-provider.h"
 #include "chat/style-engine/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
@@ -52,6 +53,11 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
 	Renderer = make_qobject<HtmlMessagesRenderer>(CurrentChat, page());
+
+	auto provider = Core::instance()->chatMessagesRendererProvider();
+	Renderer.get()->setChatMessagesRenderer(provider->chatMessagesRenderer());
+	connect(provider, SIGNAL(chatMessagesRendererChanged(std::shared_ptr<ChatMessagesRenderer>)),
+			Renderer.get(), SLOT(setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer>)));
 
 	QNetworkAccessManager *oldManager = Renderer->webPage()->networkAccessManager();
 	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);

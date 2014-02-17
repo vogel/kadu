@@ -22,6 +22,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
 #include "chat/html-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer-provider.h"
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -44,6 +45,7 @@ ChatStylePreview::ChatStylePreview(QWidget *parent) :
 	layout->addWidget(m_view.get());
 
 	m_htmlMessagesRenderer = make_qobject<HtmlMessagesRenderer>(Chat::null, m_view->page());
+	m_htmlMessagesRenderer.get()->setChatMessagesRenderer(Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer());
 
 	auto p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);

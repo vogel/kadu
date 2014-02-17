@@ -25,7 +25,6 @@
 
 #include "chat/chat-styles-manager.h"
 #include "chat/style-engine/chat-messages-renderer.h"
-#include "chat/style-engine/chat-messages-renderer-provider.h"
 #include "core/core.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
@@ -40,6 +39,11 @@ HtmlMessagesRenderer::HtmlMessagesRenderer(Chat chat, QWebPage *parent) :
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
 {
+}
+
+void HtmlMessagesRenderer::setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer)
+{
+	m_chatMessagesRenderer = std::move(chatMessagesRenderer);
 }
 
 void HtmlMessagesRenderer::setChat(Chat chat)
@@ -89,8 +93,10 @@ void HtmlMessagesRenderer::pruneMessages()
 
 	auto start = m_messages.begin();
 	auto stop = m_messages.end() - ChatStylesManager::instance()->prune();
-	for (auto it = start; it != stop; ++it)
-		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->pruneMessage(this);
+
+	if (m_chatMessagesRenderer)
+		for (auto it = start; it != stop; ++it)
+			m_chatMessagesRenderer->pruneMessage(this);
 
 	m_messages.erase(start, stop);
 }
@@ -100,7 +106,8 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	m_messages.append(message);
 	pruneMessages();
 
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->appendMessage(this, message);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->appendMessage(this, message);
 }
 
 void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
@@ -118,7 +125,8 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->appendMessages(this, engineMessages);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->appendMessages(this, engineMessages);
 }
 
 void HtmlMessagesRenderer::clearMessages()
@@ -126,7 +134,8 @@ void HtmlMessagesRenderer::clearMessages()
 	m_messages.clear();
 
 	m_lastMessage = Message::null;
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->clearMessages(this);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->clearMessages(this);
 }
 
 void HtmlMessagesRenderer::setLastMessage(Message message)
@@ -136,26 +145,33 @@ void HtmlMessagesRenderer::setLastMessage(Message message)
 
 void HtmlMessagesRenderer::refresh()
 {
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(this);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->refreshView(this);
 }
 
 void HtmlMessagesRenderer::refreshView(bool useTransparency)
 {
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->refreshView(this, useTransparency);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->refreshView(this, useTransparency);
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->chatImageAvailable(this, chatImage, fileName);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->chatImageAvailable(this, chatImage, fileName);
 }
 
 void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->messageStatusChanged(this, message, status);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->messageStatusChanged(this, message, status);
 }
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
+	if (!m_chatMessagesRenderer)
+		return;
+
 	auto display = contact.display(true);
 	auto message = QString{};
 	switch (state)
@@ -178,7 +194,7 @@ void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatSt
 			message = tr("%1 has paused composing").arg(display);
 			break;
 	}
-	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->contactActivityChanged(this, state, message, display);
+	m_chatMessagesRenderer->contactActivityChanged(this, state, message, display);
 }
 
 #include "moc_html-messages-renderer.cpp"

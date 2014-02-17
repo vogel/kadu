@@ -29,6 +29,7 @@
 #include <QtCore/QObject>
 
 class ChatImage;
+class ChatMessagesRenderer;
 
 class QWebPage;
 
@@ -67,10 +68,14 @@ public:
 	void messageStatusChanged(Message message, MessageStatus status);
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 
+public slots:
+	void setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
+
 private:
 	Chat m_chat;
 	QVector<Message> m_messages;
 	Message m_lastMessage;
+	std::shared_ptr<ChatMessagesRenderer> m_chatMessagesRenderer;
 
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;
