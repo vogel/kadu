@@ -75,6 +75,11 @@ void KaduChatMessagesRenderer::appendMessage(QWebFrame &frame, const Chat &chat,
 		return;
 	}
 
+	appendChatMessage(frame, newMessage, lastMessage);
+}
+
+void KaduChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage)
+{
 	QString html(replacedNewLine(formatMessage(newMessage, lastMessage), QLatin1String(" ")));
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));

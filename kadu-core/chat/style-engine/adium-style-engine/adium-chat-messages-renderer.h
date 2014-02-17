@@ -38,6 +38,7 @@ public:
 	virtual void clearMessages(QWebFrame &frame) override;
 	virtual void appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
 	virtual void appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
+	virtual void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage) override;
 	virtual void paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages) override;
 	virtual void removeFirstMessage(QWebFrame &frame) override;
 	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) override;
@@ -51,7 +52,6 @@ private:
 	AdiumStyle m_style;
 	QString m_jsCode;
 
-	void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage);
 	QString replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style);
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
 	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
