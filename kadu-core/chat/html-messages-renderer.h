@@ -41,6 +41,8 @@ public:
 	explicit HtmlMessagesRenderer(Chat chat, QWebPage *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
+	void setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
+
 	Chat  chat() { return m_chat; }
 	void setChat(Chat chat);
 
@@ -67,9 +69,6 @@ public:
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(Message message, MessageStatus status);
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
-
-public slots:
-	void setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
 
 private:
 	Chat m_chat;
