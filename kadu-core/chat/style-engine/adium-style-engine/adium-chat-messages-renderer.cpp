@@ -26,9 +26,12 @@
 #include "chat/style-engine/adium-style-engine/adium-time-formatter.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "message/message-html-renderer-service.h"
+#include "message/message-render-info.h"
+#include "message/message-render-info-factory.h"
 #include "misc/date-time.h"
 #include "misc/kadu-paths.h"
 #include "misc/misc.h"
@@ -79,27 +82,16 @@ void AdiumChatMessagesRenderer::paintMessages(QWebFrame &frame, const Chat &chat
 
 void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage)
 {
+	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
+	auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage, newMessage);
+
 	QString formattedMessageHtml;
-	bool includeHeader = true;
-
-	if (lastMessage)
-	{
-		if (newMessage.receiveDate().toTime_t() < lastMessage.receiveDate().toTime_t())
-			qWarning("New message has earlier date than last message");
-
-		includeHeader =
-			!ChatStylesManager::instance()->cfgNoHeaderRepeat() ||
-			newMessage.type() == MessageTypeSystem ||
-			lastMessage.type() == MessageTypeSystem ||
-			newMessage.messageSender() != lastMessage.messageSender() ||
-			static_cast<int>(newMessage.receiveDate().toTime_t() - lastMessage.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
-	}
 
 	switch (newMessage.type())
 	{
 		case MessageTypeReceived:
 		{
-			if (includeHeader)
+			if (info.includeHeader())
 				formattedMessageHtml = m_style.incomingHtml();
 			else
 				formattedMessageHtml = m_style.nextIncomingHtml();
@@ -107,7 +99,7 @@ void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Messag
 		}
 		case MessageTypeSent:
 		{
-			if (includeHeader)
+			if (info.includeHeader())
 				formattedMessageHtml = m_style.outgoingHtml();
 			else
 				formattedMessageHtml = m_style.nextOutgoingHtml();
@@ -123,11 +115,7 @@ void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Messag
 			break;
 	}
 
-	QString nickColor = newMessage.type() == MessageTypeSent
-			? ChatConfigurationHolder::instance()->myNickColor()
-			: ChatConfigurationHolder::instance()->usrNickColor();
-
-	formattedMessageHtml = replacedNewLine(replaceKeywords(m_style.baseHref(), formattedMessageHtml, newMessage, nickColor), QLatin1String(" "));
+	formattedMessageHtml = replacedNewLine(replaceKeywords(m_style.baseHref(), formattedMessageHtml, newMessage, info.nickColor()), QLatin1String(" "));
 	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
 	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
 	if (!newMessage.id().isEmpty())
@@ -136,7 +124,7 @@ void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Messag
 		formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
 
-	if (includeHeader)
+	if (info.includeHeader())
 		frame.evaluateJavaScript("appendMessage('"+ formattedMessageHtml +"')");
 	else
 		frame.evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
