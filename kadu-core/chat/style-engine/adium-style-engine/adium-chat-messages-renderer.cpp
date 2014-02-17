@@ -64,37 +64,6 @@ void AdiumChatMessagesRenderer::clearMessages(QWebFrame &frame)
 	frame.evaluateJavaScript("adium_clearMessages()");
 }
 
-void AdiumChatMessagesRenderer::appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled)
-{
-	Q_UNUSED(chat);
-
-	if (pruneEnabled)
-	{
-		paintMessages(frame, chat, allMessages);
-		return;
-	}
-
-	auto newLastMessage = lastMessage;
-	for (auto const &message : newMessages)
-	{
-		appendChatMessage(frame, message, newLastMessage);
-		newLastMessage = message;
-	}
-}
-
-void AdiumChatMessagesRenderer::appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled)
-{
-	Q_UNUSED(chat);
-
-	if (pruneEnabled)
-	{
-		paintMessages(frame, chat, allMessages);
-		return;
-	}
-
-	appendChatMessage(frame, newMessage, lastMessage);
-}
-
 void AdiumChatMessagesRenderer::paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages)
 {
 	Q_UNUSED(chat);

@@ -35,8 +35,6 @@ public:
 	virtual ~ChatMessagesRenderer() {}
 
 	virtual void clearMessages(QWebFrame &frame) = 0;
-	virtual void appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) = 0;
-	virtual void appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) = 0;
 	virtual void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage) = 0;
 	virtual void paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages) = 0;
 	virtual void removeFirstMessage(QWebFrame &frame) = 0;

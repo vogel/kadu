@@ -107,7 +107,15 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	pruneMessages();
 
 	if (m_chatMessagesRenderer && webPage()->mainFrame())
-		m_chatMessagesRenderer->appendMessage(*webPage()->mainFrame(), m_chat, message, m_lastMessage, m_messages, ChatStylesManager::instance()->cfgNoHeaderRepeat() && pruneEnabled());
+	{
+		if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && pruneEnabled())
+		{
+			m_chatMessagesRenderer->paintMessages(*webPage()->mainFrame(), m_chat, m_messages);
+			return;
+		}
+		else
+			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, m_lastMessage);
+	}
 
 	m_lastMessage = message;
 }
@@ -131,7 +139,14 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //	pruneMessages();
 
 	if (m_chatMessagesRenderer && webPage()->mainFrame())
-		m_chatMessagesRenderer->appendMessages(*webPage()->mainFrame(), m_chat, messages, m_lastMessage, engineMessages, false);
+	{
+		auto newLastMessage = m_lastMessage;
+		for (auto const &message : messages)
+		{
+			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, newLastMessage);
+			newLastMessage = message;
+		}
+	}
 
 	m_lastMessage = messages.last();
 }

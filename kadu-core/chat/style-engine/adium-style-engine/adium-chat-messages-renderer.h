@@ -36,8 +36,6 @@ public:
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
 	virtual void clearMessages(QWebFrame &frame) override;
-	virtual void appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
-	virtual void appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
 	virtual void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage) override;
 	virtual void paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages) override;
 	virtual void removeFirstMessage(QWebFrame &frame) override;

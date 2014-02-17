@@ -51,33 +51,6 @@ void KaduChatMessagesRenderer::removeFirstMessage(QWebFrame &frame)
 	frame.evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
-void KaduChatMessagesRenderer::appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled)
-{
-	if (pruneEnabled)
-	{
-		paintMessages(frame, chat, allMessages);
-		return;
-	}
-
-	auto newLastMessage = lastMessage;
-	for (auto const &message : newMessages)
-	{
-		appendMessage(frame, chat, message, newLastMessage, allMessages, pruneEnabled);
-		newLastMessage = message;
-	}
-}
-
-void KaduChatMessagesRenderer::appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled)
-{
-	if (pruneEnabled)
-	{
-		paintMessages(frame, chat, allMessages);
-		return;
-	}
-
-	appendChatMessage(frame, newMessage, lastMessage);
-}
-
 void KaduChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage)
 {
 	QString html(replacedNewLine(formatMessage(newMessage, lastMessage), QLatin1String(" ")));
