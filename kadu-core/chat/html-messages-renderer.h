@@ -20,55 +20,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HTML_MESSAGES_RENDERER_H
-#define HTML_MESSAGES_RENDERER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "chat/chat.h"
 #include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
-class QWebPage;
+#include <QtCore/QObject>
 
-class Chat;
 class ChatImage;
+
+class QWebPage;
 
 class HtmlMessagesRenderer : public QObject
 {
 	Q_OBJECT
 
-	Chat MyChat;
-	QVector<Message> MyChatMessages;
-	Message LastMessage;
-
-	bool PruneEnabled;
-	bool ForcePruneDisabled;
-
-	void pruneMessages();
-
 public:
-	explicit HtmlMessagesRenderer(const Chat &chat, QWebPage *parent = nullptr);
+	explicit HtmlMessagesRenderer(Chat chat, QWebPage *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
-	Chat  chat() { return MyChat; }
-	void setChat(const Chat &chat);
+	Chat  chat() { return m_chat; }
+	void setChat(Chat chat);
 
 	QWebPage * webPage() const;
 
 	bool pruneEnabled();
 
-	bool forcePruneDisabled() { return ForcePruneDisabled; }
+	bool forcePruneDisabled() { return m_forcePruneDisabled; }
 	void setForcePruneDisabled(bool forcePruneDisabled);
 
 	QString content();
 
-	const QVector<Message> & messages() const { return MyChatMessages; }
+	const QVector<Message> & messages() const { return m_messages; }
 	void appendMessage(const Message &message);
 	void appendMessages(const QVector<Message> &messages);
 	void clearMessages();
 
-	Message lastMessage() { return LastMessage; }
+	Message lastMessage() { return m_lastMessage; }
 	void setLastMessage(Message message);
 
 	void refresh();
@@ -78,6 +67,14 @@ public:
 	void messageStatusChanged(Message message, MessageStatus status);
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 
-};
+private:
+	Chat m_chat;
+	QVector<Message> m_messages;
+	Message m_lastMessage;
 
-#endif // HTML_MESSAGES_RENDERER_H
+	bool m_pruneEnabled;
+	bool m_forcePruneDisabled;
+
+	void pruneMessages();
+
+};

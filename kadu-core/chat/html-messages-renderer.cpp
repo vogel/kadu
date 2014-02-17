@@ -32,20 +32,19 @@
 
 #include "html-messages-renderer.h"
 
-HtmlMessagesRenderer::HtmlMessagesRenderer(const Chat &chat, QWebPage *parent) :
-		QObject(parent), MyChat(chat), PruneEnabled(true), ForcePruneDisabled(false)
+HtmlMessagesRenderer::HtmlMessagesRenderer(Chat chat, QWebPage *parent) :
+		QObject{parent}, m_chat{std::move(chat)}, m_pruneEnabled{true}, m_forcePruneDisabled{false}
 {
 	parent->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 }
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
 {
-	MyChatMessages.clear();
 }
 
-void HtmlMessagesRenderer::setChat(const Chat &chat)
+void HtmlMessagesRenderer::setChat(Chat chat)
 {
-	MyChat = chat;
+	m_chat = std::move(chat);
 }
 
 QWebPage * HtmlMessagesRenderer::webPage() const
@@ -55,7 +54,7 @@ QWebPage * HtmlMessagesRenderer::webPage() const
 
 void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 {
-	ForcePruneDisabled = forcePruneDisabled;
+	m_forcePruneDisabled = forcePruneDisabled;
 	pruneMessages();
 }
 
@@ -66,39 +65,39 @@ QString HtmlMessagesRenderer::content()
 
 bool HtmlMessagesRenderer::pruneEnabled()
 {
-	return !ForcePruneDisabled && PruneEnabled;
+	return !m_forcePruneDisabled && m_pruneEnabled;
 }
 
 void HtmlMessagesRenderer::pruneMessages()
 {
-	if (ForcePruneDisabled)
+	if (m_forcePruneDisabled)
 		return;
 
 	if (ChatStylesManager::instance()->prune() == 0)
 	{
-		PruneEnabled = false;
+		m_pruneEnabled = false;
 		return;
 	}
 
-	if (MyChatMessages.count() <= ChatStylesManager::instance()->prune())
+	if (m_messages.count() <= ChatStylesManager::instance()->prune())
 	{
-		PruneEnabled = false;
+		m_pruneEnabled = false;
 		return;
 	}
 
-	PruneEnabled = true;
+	m_pruneEnabled = true;
 
-	auto start = MyChatMessages.begin();
-	auto stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
+	auto start = m_messages.begin();
+	auto stop = m_messages.end() - ChatStylesManager::instance()->prune();
 	for (auto it = start; it != stop; ++it)
 		Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->pruneMessage(this);
 
-	MyChatMessages.erase(start, stop);
+	m_messages.erase(start, stop);
 }
 
 void HtmlMessagesRenderer::appendMessage(const Message &message)
 {
-	MyChatMessages.append(message);
+	m_messages.append(message);
 	pruneMessages();
 
 	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->appendMessage(this, message);
@@ -110,7 +109,7 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 	for (auto message : messages)
 	{
 		engineMessages.append(message);
-		MyChatMessages.append(message);
+		m_messages.append(message);
 	}
 
 //  Do not prune messages here. When we are adding many massages to renderer, probably
@@ -124,15 +123,15 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 
 void HtmlMessagesRenderer::clearMessages()
 {
-	MyChatMessages.clear();
+	m_messages.clear();
 
-	LastMessage = Message::null;
+	m_lastMessage = Message::null;
 	Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer()->clearMessages(this);
 }
 
 void HtmlMessagesRenderer::setLastMessage(Message message)
 {
-	LastMessage = message;
+	m_lastMessage = message;
 }
 
 void HtmlMessagesRenderer::refresh()
@@ -157,8 +156,8 @@ void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus s
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	QString display = contact.display(true);
-	QString message;
+	auto display = contact.display(true);
+	auto message = QString{};
 	switch (state)
 	{
 		case ChatStateService::StateActive:
