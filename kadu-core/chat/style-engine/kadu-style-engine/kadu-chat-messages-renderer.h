@@ -33,6 +33,7 @@ public:
 	virtual void clearMessages(QWebFrame &frame) override;
 	virtual void appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
 	virtual void appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
+	virtual void paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages) override;
 	virtual void removeFirstMessage(QWebFrame &frame) override;
 	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) override;
 	virtual void messageStatusChanged(QWebFrame &frame, Message, MessageStatus) override;
@@ -44,7 +45,6 @@ private:
 	QString m_jsCode;
 
 	QString formatMessage(const Message &message, const Message &after);
-	void repaintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages);
 	QString scriptsAtEnd(const QString &html);
 
 };

@@ -55,7 +55,7 @@ void KaduChatMessagesRenderer::appendMessages(QWebFrame &frame, const Chat &chat
 {
 	if (pruneEnabled)
 	{
-		repaintMessages(frame, chat, allMessages);
+		paintMessages(frame, chat, allMessages);
 		return;
 	}
 
@@ -71,7 +71,7 @@ void KaduChatMessagesRenderer::appendMessage(QWebFrame &frame, const Chat &chat,
 {
 	if (pruneEnabled)
 	{
-		repaintMessages(frame, chat, allMessages);
+		paintMessages(frame, chat, allMessages);
 		return;
 	}
 
@@ -91,7 +91,7 @@ void KaduChatMessagesRenderer::refreshView(QWebFrame &frame, const Chat &chat, c
 {
 	Q_UNUSED(useTransparency)
 
-	repaintMessages(frame, chat, allMessages);
+	paintMessages(frame, chat, allMessages);
 }
 
 void KaduChatMessagesRenderer::messageStatusChanged(QWebFrame &frame, Message message, MessageStatus status)
@@ -121,7 +121,7 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 	return Parser::parse(format, Talkable{sender}, &info, true);
 }
 
-void KaduChatMessagesRenderer::repaintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages)
+void KaduChatMessagesRenderer::paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages)
 {
 	QString text = QString(
 		"<html>"
