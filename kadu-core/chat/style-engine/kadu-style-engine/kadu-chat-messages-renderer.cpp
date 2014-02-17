@@ -51,13 +51,13 @@ void KaduChatMessagesRenderer::removeFirstMessage(QWebFrame &frame)
 	frame.evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
-void KaduChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage)
+void KaduChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
-	QString html(replacedNewLine(formatMessage(newMessage, lastMessage), QLatin1String(" ")));
+	QString html(replacedNewLine(formatMessage(message, messageRenderInfo), QLatin1String(" ")));
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));
-	if (!newMessage.id().isEmpty())
-		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(newMessage.id()));
+	if (!message.id().isEmpty())
+		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(message.id()));
 	else
 		html.prepend("<span class=\"kadu_message\">");
 	html.append("</span>");
@@ -87,16 +87,14 @@ void KaduChatMessagesRenderer::chatImageAvailable(QWebFrame &frame, const ChatIm
 	frame.evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
 }
 
-QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Message &after)
+QString KaduChatMessagesRenderer::formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
-	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-	auto info = messageRenderInfoFactory->messageRenderInfo(after, message);
 	auto sender = message.messageSender();
-	auto format = info.includeHeader()
+	auto format = messageRenderInfo.includeHeader()
 			? m_syntax.withHeader()
 			: m_syntax.withoutHeader();
 
-	return Parser::parse(format, Talkable{sender}, &info, true);
+	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, true);
 }
 
 void KaduChatMessagesRenderer::paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages)
@@ -117,14 +115,14 @@ void KaduChatMessagesRenderer::paintMessages(QWebFrame &frame, const Chat &chat,
 			: Contact{};
 	text += Parser::parse(m_syntax.top(), Talkable(contact), true);
 
+	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
 	auto prevMessage = Message::null;
 	for (auto const &message : allMessages)
 	{
-		QString messageText;
-		if (!message.id().isEmpty())
-			messageText = QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message.id()).arg(formatMessage(message, prevMessage));
-		else
-			messageText = QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, prevMessage));
+		auto info = messageRenderInfoFactory->messageRenderInfo(prevMessage, message);
+		auto messageText = message.id().isEmpty()
+				? QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, info))
+				: QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message.id()).arg(formatMessage(message, info));
 		messageText = scriptsAtEnd(messageText);
 		text += messageText;
 		prevMessage = message;

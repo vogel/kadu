@@ -28,6 +28,8 @@
 #include "core/core.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
+#include "message/message-render-info.h"
+#include "message/message-render-info-factory.h"
 
 #include "html-messages-renderer.h"
 
@@ -114,7 +116,12 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 			return;
 		}
 		else
-			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, m_lastMessage);
+		{
+			auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
+			auto info = messageRenderInfoFactory->messageRenderInfo(m_lastMessage, message);
+
+			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, info);
+		}
 	}
 
 	m_lastMessage = message;
@@ -138,12 +145,14 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
+	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
 	if (m_chatMessagesRenderer && webPage()->mainFrame())
 	{
 		auto newLastMessage = m_lastMessage;
 		for (auto const &message : messages)
 		{
-			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, newLastMessage);
+			auto info = messageRenderInfoFactory->messageRenderInfo(newLastMessage, message);
+			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, info);
 			newLastMessage = message;
 		}
 	}

@@ -25,6 +25,7 @@
 #include <QtCore/QVector>
 
 class ChatImage;
+class MessageRenderInfo;
 
 class QWebFrame;
 
@@ -35,7 +36,7 @@ public:
 	virtual ~ChatMessagesRenderer() {}
 
 	virtual void clearMessages(QWebFrame &frame) = 0;
-	virtual void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage) = 0;
+	virtual void appendChatMessage(QWebFrame &frame, const Message &message, const MessageRenderInfo &messageRenderInfo) = 0;
 	virtual void paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages) = 0;
 	virtual void removeFirstMessage(QWebFrame &frame) = 0;
 	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) = 0;

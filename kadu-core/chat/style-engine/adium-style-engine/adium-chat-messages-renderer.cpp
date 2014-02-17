@@ -73,25 +73,25 @@ void AdiumChatMessagesRenderer::paintMessages(QWebFrame &frame, const Chat &chat
 
 	clearMessages(frame);
 	auto lastMessage = Message::null;
+	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
+
 	for (auto const &oldMessage : messages)
 	{
-		appendChatMessage(frame, oldMessage, lastMessage);
+		auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage, oldMessage);
+		appendChatMessage(frame, oldMessage, info);
 		lastMessage = oldMessage;
 	}
 }
 
-void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage)
+void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
-	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-	auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage, newMessage);
-
 	QString formattedMessageHtml;
 
-	switch (newMessage.type())
+	switch (message.type())
 	{
 		case MessageTypeReceived:
 		{
-			if (info.includeHeader())
+			if (messageRenderInfo.includeHeader())
 				formattedMessageHtml = m_style.incomingHtml();
 			else
 				formattedMessageHtml = m_style.nextIncomingHtml();
@@ -99,7 +99,7 @@ void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Messag
 		}
 		case MessageTypeSent:
 		{
-			if (info.includeHeader())
+			if (messageRenderInfo.includeHeader())
 				formattedMessageHtml = m_style.outgoingHtml();
 			else
 				formattedMessageHtml = m_style.nextOutgoingHtml();
@@ -115,16 +115,16 @@ void AdiumChatMessagesRenderer::appendChatMessage(QWebFrame &frame, const Messag
 			break;
 	}
 
-	formattedMessageHtml = replacedNewLine(replaceKeywords(m_style.baseHref(), formattedMessageHtml, newMessage, info.nickColor()), QLatin1String(" "));
+	formattedMessageHtml = replacedNewLine(replaceKeywords(m_style.baseHref(), formattedMessageHtml, message, messageRenderInfo.nickColor()), QLatin1String(" "));
 	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
 	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
-	if (!newMessage.id().isEmpty())
-		formattedMessageHtml.prepend(QString("<span id=\"message_%1\">").arg(newMessage.id()));
+	if (!message.id().isEmpty())
+		formattedMessageHtml.prepend(QString("<span id=\"message_%1\">").arg(message.id()));
 	else
 		formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
 
-	if (info.includeHeader())
+	if (messageRenderInfo.includeHeader())
 		frame.evaluateJavaScript("appendMessage('"+ formattedMessageHtml +"')");
 	else
 		frame.evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");

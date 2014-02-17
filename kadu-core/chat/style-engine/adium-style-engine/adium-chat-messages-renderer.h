@@ -36,7 +36,7 @@ public:
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
 	virtual void clearMessages(QWebFrame &frame) override;
-	virtual void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage) override;
+	virtual void appendChatMessage(QWebFrame &frame, const Message &message, const MessageRenderInfo &messageRenderInfo) override;
 	virtual void paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages) override;
 	virtual void removeFirstMessage(QWebFrame &frame) override;
 	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) override;
