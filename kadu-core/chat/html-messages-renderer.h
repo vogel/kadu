@@ -31,22 +31,20 @@
 class ChatImage;
 class ChatMessagesRenderer;
 
-class QWebPage;
+class QWebFrame;
 
 class HtmlMessagesRenderer : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit HtmlMessagesRenderer(Chat chat, QWebPage *parent = nullptr);
+	explicit HtmlMessagesRenderer(Chat chat, QWebFrame *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
 	void setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
 
 	Chat  chat() { return m_chat; }
 	void setChat(Chat chat);
-
-	QWebPage * webPage() const;
 
 	bool pruneEnabled();
 
@@ -79,6 +77,7 @@ private:
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;
 
+	QWebFrame * webFrame() const;
 	void pruneMessages();
 
 };

@@ -33,10 +33,12 @@
 
 #include "html-messages-renderer.h"
 
-HtmlMessagesRenderer::HtmlMessagesRenderer(Chat chat, QWebPage *parent) :
+HtmlMessagesRenderer::HtmlMessagesRenderer(Chat chat, QWebFrame *parent) :
 		QObject{parent}, m_chat{std::move(chat)}, m_pruneEnabled{true}, m_forcePruneDisabled{false}
 {
-	parent->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+	Q_ASSERT(parent);
+
+	parent->page()->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 }
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
@@ -53,9 +55,9 @@ void HtmlMessagesRenderer::setChat(Chat chat)
 	m_chat = std::move(chat);
 }
 
-QWebPage * HtmlMessagesRenderer::webPage() const
+QWebFrame * HtmlMessagesRenderer::webFrame() const
 {
-	return static_cast<QWebPage *>(parent());
+	return static_cast<QWebFrame *>(parent());
 }
 
 void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
@@ -66,7 +68,7 @@ void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 
 QString HtmlMessagesRenderer::content()
 {
-	return webPage()->mainFrame()->toHtml();
+	return webFrame()->toHtml();
 }
 
 bool HtmlMessagesRenderer::pruneEnabled()
@@ -96,9 +98,9 @@ void HtmlMessagesRenderer::pruneMessages()
 	auto start = m_messages.begin();
 	auto stop = m_messages.end() - ChatStylesManager::instance()->prune();
 
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
+	if (m_chatMessagesRenderer)
 		for (auto it = start; it != stop; ++it)
-			m_chatMessagesRenderer->removeFirstMessage(*webPage()->mainFrame());
+			m_chatMessagesRenderer->removeFirstMessage(*webFrame());
 
 	m_messages.erase(start, stop);
 }
@@ -108,11 +110,11 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	m_messages.append(message);
 	pruneMessages();
 
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
+	if (m_chatMessagesRenderer)
 	{
 		if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && pruneEnabled())
 		{
-			m_chatMessagesRenderer->paintMessages(*webPage()->mainFrame(), m_chat, m_messages);
+			m_chatMessagesRenderer->paintMessages(*webFrame(), m_chat, m_messages);
 			return;
 		}
 		else
@@ -120,7 +122,7 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 			auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
 			auto info = messageRenderInfoFactory->messageRenderInfo(m_lastMessage, message);
 
-			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, info);
+			m_chatMessagesRenderer->appendChatMessage(*webFrame(), message, info);
 		}
 	}
 
@@ -146,13 +148,13 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //	pruneMessages();
 
 	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
+	if (m_chatMessagesRenderer)
 	{
 		auto newLastMessage = m_lastMessage;
 		for (auto const &message : messages)
 		{
 			auto info = messageRenderInfoFactory->messageRenderInfo(newLastMessage, message);
-			m_chatMessagesRenderer->appendChatMessage(*webPage()->mainFrame(), message, info);
+			m_chatMessagesRenderer->appendChatMessage(*webFrame(), message, info);
 			newLastMessage = message;
 		}
 	}
@@ -165,8 +167,8 @@ void HtmlMessagesRenderer::clearMessages()
 	m_messages.clear();
 
 	m_lastMessage = Message::null;
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
-		m_chatMessagesRenderer->clearMessages(*webPage()->mainFrame());
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->clearMessages(*webFrame());
 }
 
 void HtmlMessagesRenderer::setLastMessage(Message message)
@@ -176,31 +178,31 @@ void HtmlMessagesRenderer::setLastMessage(Message message)
 
 void HtmlMessagesRenderer::refresh()
 {
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
-		m_chatMessagesRenderer->refreshView(*webPage()->mainFrame(), m_chat, m_messages);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->refreshView(*webFrame(), m_chat, m_messages);
 }
 
 void HtmlMessagesRenderer::refreshView(bool useTransparency)
 {
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
-		m_chatMessagesRenderer->refreshView(*webPage()->mainFrame(), m_chat, m_messages, useTransparency);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->refreshView(*webFrame(), m_chat, m_messages, useTransparency);
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
-		m_chatMessagesRenderer->chatImageAvailable(*webPage()->mainFrame(), chatImage, fileName);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->chatImageAvailable(*webFrame(), chatImage, fileName);
 }
 
 void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
-	if (m_chatMessagesRenderer && webPage()->mainFrame())
-		m_chatMessagesRenderer->messageStatusChanged(*webPage()->mainFrame(), message, status);
+	if (m_chatMessagesRenderer)
+		m_chatMessagesRenderer->messageStatusChanged(*webFrame(), message, status);
 }
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	if (!m_chatMessagesRenderer || !webPage()->mainFrame())
+	if (!m_chatMessagesRenderer)
 		return;
 
 	auto display = contact.display(true);
@@ -225,7 +227,7 @@ void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatSt
 			message = tr("%1 has paused composing").arg(display);
 			break;
 	}
-	m_chatMessagesRenderer->contactActivityChanged(*webPage()->mainFrame(), state, message, display);
+	m_chatMessagesRenderer->contactActivityChanged(*webFrame(), state, message, display);
 }
 
 #include "moc_html-messages-renderer.cpp"

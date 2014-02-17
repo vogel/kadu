@@ -51,12 +51,12 @@
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
-	Renderer = make_qobject<HtmlMessagesRenderer>(CurrentChat, page());
+	Renderer = make_qobject<HtmlMessagesRenderer>(CurrentChat, page()->mainFrame());
 
-	QNetworkAccessManager *oldManager = Renderer->webPage()->networkAccessManager();
+	QNetworkAccessManager *oldManager = page()->networkAccessManager();
 	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);
 	newManager->setImageStorageService(Core::instance()->imageStorageService());
-	Renderer->webPage()->setNetworkAccessManager(newManager);
+	page()->setNetworkAccessManager(newManager);
 
 	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
 	// maybe Qt bug?
