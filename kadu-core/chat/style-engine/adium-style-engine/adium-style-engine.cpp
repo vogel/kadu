@@ -32,12 +32,13 @@
 #include "misc/memory.h"
 
 #include <QtCore/QDir>
+#include <QtWebKit/QWebFrame>
 
-RefreshViewHack::RefreshViewHack(AdiumChatMessagesRenderer *engine, HtmlMessagesRenderer *renderer, QObject *parent) :
-		QObject(parent), Engine(engine), Renderer(renderer)
+RefreshViewHack::RefreshViewHack(QVector<Message> messages, AdiumChatMessagesRenderer *engine, QWebFrame *webFrame, QObject *parent) :
+		QObject(parent), Messages(messages), Engine(engine), WebFrame(webFrame)
 {
 	connect(Engine, SIGNAL(destroyed()), this, SLOT(cancel()));
-	connect(Renderer, SIGNAL(destroyed()), this, SLOT(cancel()));
+	connect(WebFrame, SIGNAL(destroyed()), this, SLOT(cancel()));
 }
 
 RefreshViewHack::~RefreshViewHack()
@@ -47,25 +48,27 @@ RefreshViewHack::~RefreshViewHack()
 void RefreshViewHack::cancel()
 {
 	Engine = 0;
-	Renderer = 0;
+	WebFrame = 0;
 
 	deleteLater();
 }
 
 void RefreshViewHack::loadFinished()
 {
-	if (!Engine || !Renderer)
+	if (!Engine || !WebFrame)
 	{
 		deleteLater();
 		return;
 	}
 
-	emit finished(Renderer);
+	emit finished(WebFrame);
 
-	Renderer->setLastMessage(Message::null);
-
-	for (auto const &message : Renderer->messages())
-		Engine->appendChatMessage(Renderer, message);
+	auto lastMessage = Message::null;
+	for (auto const &message : Messages)
+	{
+		Engine->appendChatMessage(*WebFrame, message, lastMessage);
+		lastMessage = message;
+	}
 
 	deleteLater();
 }

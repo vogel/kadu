@@ -25,7 +25,8 @@
 #include <QtCore/QVector>
 
 class ChatImage;
-class HtmlMessagesRenderer;
+
+class QWebFrame;
 
 class ChatMessagesRenderer
 {
@@ -33,13 +34,13 @@ class ChatMessagesRenderer
 public:
 	virtual ~ChatMessagesRenderer() {}
 
-	virtual void clearMessages(HtmlMessagesRenderer *) = 0;
-	virtual void appendMessages(HtmlMessagesRenderer *, const QVector<Message> &) = 0;
-	virtual void appendMessage(HtmlMessagesRenderer *, const Message &) = 0;
-	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
-	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) = 0;
-	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, MessageStatus) = 0;
-	virtual void contactActivityChanged(HtmlMessagesRenderer *, ChatStateService::State, const QString &, const QString &) = 0;
-	virtual void chatImageAvailable(HtmlMessagesRenderer *, const ChatImage &chatImage, const QString &fileName) = 0;
+	virtual void clearMessages(QWebFrame &frame) = 0;
+	virtual void appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) = 0;
+	virtual void appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) = 0;
+	virtual void pruneMessage(QWebFrame &frame) = 0;
+	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) = 0;
+	virtual void messageStatusChanged(QWebFrame &frame, Message, MessageStatus) = 0;
+	virtual void contactActivityChanged(QWebFrame &frame, ChatStateService::State, const QString &, const QString &) = 0;
+	virtual void chatImageAvailable(QWebFrame &frame, const ChatImage &chatImage, const QString &fileName) = 0;
 
 };

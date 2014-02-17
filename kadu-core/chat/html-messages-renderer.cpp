@@ -94,9 +94,9 @@ void HtmlMessagesRenderer::pruneMessages()
 	auto start = m_messages.begin();
 	auto stop = m_messages.end() - ChatStylesManager::instance()->prune();
 
-	if (m_chatMessagesRenderer)
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
 		for (auto it = start; it != stop; ++it)
-			m_chatMessagesRenderer->pruneMessage(this);
+			m_chatMessagesRenderer->pruneMessage(*webPage()->mainFrame());
 
 	m_messages.erase(start, stop);
 }
@@ -106,12 +106,17 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	m_messages.append(message);
 	pruneMessages();
 
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->appendMessage(this, message);
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
+		m_chatMessagesRenderer->appendMessage(*webPage()->mainFrame(), m_chat, message, m_lastMessage, m_messages, ChatStylesManager::instance()->cfgNoHeaderRepeat() && pruneEnabled());
+
+	m_lastMessage = message;
 }
 
 void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 {
+	if (messages.empty())
+		return;
+
 	auto engineMessages = QVector<Message>{};
 	for (auto message : messages)
 	{
@@ -125,8 +130,10 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->appendMessages(this, engineMessages);
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
+		m_chatMessagesRenderer->appendMessages(*webPage()->mainFrame(), m_chat, messages, m_lastMessage, engineMessages, false);
+
+	m_lastMessage = messages.last();
 }
 
 void HtmlMessagesRenderer::clearMessages()
@@ -134,8 +141,8 @@ void HtmlMessagesRenderer::clearMessages()
 	m_messages.clear();
 
 	m_lastMessage = Message::null;
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->clearMessages(this);
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
+		m_chatMessagesRenderer->clearMessages(*webPage()->mainFrame());
 }
 
 void HtmlMessagesRenderer::setLastMessage(Message message)
@@ -145,31 +152,31 @@ void HtmlMessagesRenderer::setLastMessage(Message message)
 
 void HtmlMessagesRenderer::refresh()
 {
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->refreshView(this);
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
+		m_chatMessagesRenderer->refreshView(*webPage()->mainFrame(), m_chat, m_messages);
 }
 
 void HtmlMessagesRenderer::refreshView(bool useTransparency)
 {
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->refreshView(this, useTransparency);
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
+		m_chatMessagesRenderer->refreshView(*webPage()->mainFrame(), m_chat, m_messages, useTransparency);
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->chatImageAvailable(this, chatImage, fileName);
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
+		m_chatMessagesRenderer->chatImageAvailable(*webPage()->mainFrame(), chatImage, fileName);
 }
 
 void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->messageStatusChanged(this, message, status);
+	if (m_chatMessagesRenderer && webPage()->mainFrame())
+		m_chatMessagesRenderer->messageStatusChanged(*webPage()->mainFrame(), message, status);
 }
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	if (!m_chatMessagesRenderer)
+	if (!m_chatMessagesRenderer || !webPage()->mainFrame())
 		return;
 
 	auto display = contact.display(true);
@@ -194,7 +201,7 @@ void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatSt
 			message = tr("%1 has paused composing").arg(display);
 			break;
 	}
-	m_chatMessagesRenderer->contactActivityChanged(this, state, message, display);
+	m_chatMessagesRenderer->contactActivityChanged(*webPage()->mainFrame(), state, message, display);
 }
 
 #include "moc_html-messages-renderer.cpp"

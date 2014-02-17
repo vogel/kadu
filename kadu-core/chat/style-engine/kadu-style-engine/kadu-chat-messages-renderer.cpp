@@ -20,7 +20,6 @@
 #include "kadu-chat-messages-renderer.h"
 
 #include "chat/chat-styles-manager.h"
-#include "chat/html-messages-renderer.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "message/message-render-info.h"
@@ -42,71 +41,73 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(KaduChatSyntax syntax) :
 		m_jsCode = file.readAll();
 }
 
-void KaduChatMessagesRenderer::clearMessages(HtmlMessagesRenderer *renderer)
+void KaduChatMessagesRenderer::clearMessages(QWebFrame &frame)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_clearMessages()");
+	frame.evaluateJavaScript("kadu_clearMessages()");
 }
 
-void KaduChatMessagesRenderer::pruneMessage(HtmlMessagesRenderer *renderer)
+void KaduChatMessagesRenderer::pruneMessage(QWebFrame &frame)
 {
 	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
-		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");
+		frame.evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
-void KaduChatMessagesRenderer::appendMessages(HtmlMessagesRenderer *renderer, const QVector<Message> &messages)
+void KaduChatMessagesRenderer::appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled)
 {
-	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
+	if (pruneEnabled)
 	{
-		repaintMessages(renderer);
+		repaintMessages(frame, chat, allMessages);
 		return;
 	}
 
-	for (auto const &message : messages)
-		appendMessage(renderer, message);
+	auto newLastMessage = lastMessage;
+	for (auto const &message : newMessages)
+	{
+		appendMessage(frame, chat, message, newLastMessage, allMessages, pruneEnabled);
+		newLastMessage = message;
+	}
 }
 
-void KaduChatMessagesRenderer::appendMessage(HtmlMessagesRenderer *renderer, const Message &message)
+void KaduChatMessagesRenderer::appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled)
 {
-	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
+	if (pruneEnabled)
 	{
-		repaintMessages(renderer);
+		repaintMessages(frame, chat, allMessages);
 		return;
 	}
 
-	QString html(replacedNewLine(formatMessage(message, renderer->lastMessage()), QLatin1String(" ")));
+	QString html(replacedNewLine(formatMessage(newMessage, lastMessage), QLatin1String(" ")));
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));
-	if (!message.id().isEmpty())
-		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(message.id()));
+	if (!newMessage.id().isEmpty())
+		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(newMessage.id()));
 	else
 		html.prepend("<span class=\"kadu_message\">");
 	html.append("</span>");
 
-	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage('" + html + "')");
-
-	renderer->setLastMessage(message);
+	frame.evaluateJavaScript("kadu_appendMessage('" + html + "')");
 }
 
-void KaduChatMessagesRenderer::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
+void KaduChatMessagesRenderer::refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency)
 {
 	Q_UNUSED(useTransparency)
 
-	repaintMessages(renderer);
+	repaintMessages(frame, chat, allMessages);
 }
 
-void KaduChatMessagesRenderer::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status)
+void KaduChatMessagesRenderer::messageStatusChanged(QWebFrame &frame, Message message, MessageStatus status)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
+	frame.evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
 
-void KaduChatMessagesRenderer::contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::State state, const QString &message, const QString &name)
+void KaduChatMessagesRenderer::contactActivityChanged(QWebFrame &frame, ChatStateService::State state, const QString &message, const QString &name)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
+	frame.evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
 }
 
-void KaduChatMessagesRenderer::chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImage &chatImage, const QString &fileName)
+void KaduChatMessagesRenderer::chatImageAvailable(QWebFrame &frame, const ChatImage &chatImage, const QString &fileName)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
+	frame.evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
 }
 
 QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Message &after)
@@ -121,11 +122,8 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 	return Parser::parse(format, Talkable{sender}, &info, true);
 }
 
-void KaduChatMessagesRenderer::repaintMessages(HtmlMessagesRenderer *renderer)
+void KaduChatMessagesRenderer::repaintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages)
 {
-	if (!renderer)
-		return;
-
 	QString text = QString(
 		"<html>"
 		"	<head>"
@@ -137,11 +135,13 @@ void KaduChatMessagesRenderer::repaintMessages(HtmlMessagesRenderer *renderer)
 
 	text += QString("<script>%1</script>").arg(m_jsCode);
 
-	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().constBegin()) : Contact();
+	auto contact = chat.contacts().count() == 1
+			? *(chat.contacts().constBegin())
+			: Contact{};
 	text += Parser::parse(m_syntax.top(), Talkable(contact), true);
 
 	auto prevMessage = Message::null;
-	for (auto const &message : renderer->messages())
+	for (auto const &message : allMessages)
 	{
 		QString messageText;
 		if (!message.id().isEmpty())
@@ -152,11 +152,10 @@ void KaduChatMessagesRenderer::repaintMessages(HtmlMessagesRenderer *renderer)
 		text += messageText;
 		prevMessage = message;
 	}
-	renderer->setLastMessage(prevMessage);
 
 	text += "</body></html>";
 
-	renderer->webPage()->mainFrame()->setHtml(text);
+	frame.setHtml(text);
 }
 
 QString KaduChatMessagesRenderer::scriptsAtEnd(const QString &html)

@@ -28,6 +28,7 @@
 
 class AdiumChatMessagesRenderer;
 class MessageHtmlRendererService;
+class QWebFrame;
 
 // What a ugly hack!
 // TODO: remove
@@ -35,11 +36,12 @@ class RefreshViewHack : public QObject
 {
 	Q_OBJECT
 
+	QVector<Message> Messages;
 	AdiumChatMessagesRenderer *Engine;
-	HtmlMessagesRenderer *Renderer;
+	QWebFrame *WebFrame;
 
 public:
-	explicit RefreshViewHack(AdiumChatMessagesRenderer *engine, HtmlMessagesRenderer *renderer, QObject *parent = 0);
+	explicit RefreshViewHack(QVector<Message> messages, AdiumChatMessagesRenderer *engine, QWebFrame *webFrame, QObject *parent = 0);
 	virtual ~RefreshViewHack();
 
 public slots:
@@ -47,7 +49,7 @@ public slots:
 	void loadFinished();
 
 signals:
-	void finished(HtmlMessagesRenderer *);
+	void finished(QWebFrame *);
 };
 
 class AdiumStyleEngine : public ChatStyleEngine

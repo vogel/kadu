@@ -38,28 +38,28 @@ public:
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
-	virtual void clearMessages(HtmlMessagesRenderer *) override;
-	virtual void appendMessages(HtmlMessagesRenderer *, const QVector<Message> &) override;
-	virtual void appendMessage(HtmlMessagesRenderer *, const Message &) override;
-	virtual void pruneMessage(HtmlMessagesRenderer *) override;
-	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) override;
-	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, MessageStatus) override;
-	virtual void contactActivityChanged(HtmlMessagesRenderer *, ChatStateService::State, const QString &, const QString &) override;
-	virtual void chatImageAvailable(HtmlMessagesRenderer *, const ChatImage &chatImage, const QString &fileName) override;
+	virtual void clearMessages(QWebFrame &frame) override;
+	virtual void appendMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &newMessages, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
+	virtual void appendMessage(QWebFrame &frame, const Chat &chat, const Message &newMessage, const Message &lastMessage, const QVector<Message> &allMessages, bool pruneEnabled) override;
+	virtual void pruneMessage(QWebFrame &frame) override;
+	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) override;
+	virtual void messageStatusChanged(QWebFrame &frame, Message, MessageStatus) override;
+	virtual void contactActivityChanged(QWebFrame &frame, ChatStateService::State, const QString &, const QString &) override;
+	virtual void chatImageAvailable(QWebFrame &frame, const ChatImage &chatImage, const QString &fileName) override;
 
 private:
 	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
 
 	AdiumStyle m_style;
 	QString m_jsCode;
-	QMap<HtmlMessagesRenderer *, RefreshViewHack *> m_refreshHacks;
+	QMap<QWebFrame *, RefreshViewHack *> m_refreshHacks;
 
-	void appendChatMessage(HtmlMessagesRenderer *renderer, const Message &message);
+	void appendChatMessage(QWebFrame &frame, const Message &newMessage, const Message &lastMessage);
 	QString replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style);
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
 	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
 
 private slots:
-	void refreshHackFinished(HtmlMessagesRenderer *);
+	void refreshHackFinished(QWebFrame *);
 
 };
