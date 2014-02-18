@@ -52,7 +52,7 @@
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
-	Renderer = make_qobject<HtmlMessagesRenderer>(CurrentChat, page()->mainFrame());
+	Renderer = make_qobject<HtmlMessagesRenderer>(page()->mainFrame());
 
 	QNetworkAccessManager *oldManager = page()->networkAccessManager();
 	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);
@@ -176,7 +176,16 @@ void WebkitMessagesView::setChat(const Chat &chat)
 	CurrentChat = chat;
 	connectChat();
 
-	Renderer->setChat(CurrentChat);
+	recreateRenderer();
+}
+
+void WebkitMessagesView::recreateRenderer()
+{
+	if (!m_chatMessagesRendererFactory)
+		return;
+
+	Renderer->setChatMessagesRenderer(m_chatMessagesRendererFactory.get()->createChatMessagesRenderer(chat(), *page()->mainFrame()));
+	Renderer->refresh();
 }
 
 void WebkitMessagesView::refresh()
@@ -281,8 +290,9 @@ void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 
 void WebkitMessagesView::setChatMessagesRendererFactory(std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory)
 {
-	Renderer->setChatMessagesRenderer(chatMessagesRendererFactory.get()->createChatMessagesRenderer(chat(), *page()->mainFrame()));
-	Renderer->refresh();
+	m_chatMessagesRendererFactory = chatMessagesRendererFactory;
+
+	recreateRenderer();
 }
 
 void WebkitMessagesView::clearMessages()

@@ -54,6 +54,7 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	Chat CurrentChat;
 	qobject_ptr<HtmlMessagesRenderer> Renderer;
+	std::shared_ptr<ChatMessagesRendererFactory> m_chatMessagesRendererFactory;
 
 	bool SupportTransparency;
 
@@ -63,6 +64,7 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 	bool AtBottom;
 
 	Message firstNonSystemMessage(const QVector<Message> &messages);
+	void recreateRenderer();
 
 private slots:
 	void repaintMessages();

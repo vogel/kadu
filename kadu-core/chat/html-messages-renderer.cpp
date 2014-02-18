@@ -33,8 +33,8 @@
 
 #include "html-messages-renderer.h"
 
-HtmlMessagesRenderer::HtmlMessagesRenderer(Chat chat, QWebFrame *parent) :
-		QObject{parent}, m_chat{std::move(chat)}, m_pruneEnabled{true}, m_forcePruneDisabled{false}
+HtmlMessagesRenderer::HtmlMessagesRenderer(QWebFrame *parent) :
+		QObject{parent}, m_pruneEnabled{true}, m_forcePruneDisabled{false}
 {
 	Q_ASSERT(parent);
 
@@ -48,11 +48,6 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 void HtmlMessagesRenderer::setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer)
 {
 	m_chatMessagesRenderer = std::move(chatMessagesRenderer);
-}
-
-void HtmlMessagesRenderer::setChat(Chat chat)
-{
-	m_chat = std::move(chat);
 }
 
 QWebFrame * HtmlMessagesRenderer::webFrame() const

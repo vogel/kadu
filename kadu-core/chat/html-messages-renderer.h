@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "chat/chat.h"
 #include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
@@ -38,13 +37,10 @@ class HtmlMessagesRenderer : public QObject
 	Q_OBJECT
 
 public:
-	explicit HtmlMessagesRenderer(Chat chat, QWebFrame *parent = nullptr);
+	explicit HtmlMessagesRenderer(QWebFrame *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
 	void setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
-
-	Chat  chat() { return m_chat; }
-	void setChat(Chat chat);
 
 	bool pruneEnabled();
 
@@ -69,7 +65,6 @@ public:
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 
 private:
-	Chat m_chat;
 	QVector<Message> m_messages;
 	Message m_lastMessage;
 	std::shared_ptr<ChatMessagesRenderer> m_chatMessagesRenderer;
