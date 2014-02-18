@@ -104,10 +104,7 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 
 void KaduChatMessagesRenderer::initialize()
 {
-	auto contact = m_chat.contacts().count() == 1
-			? *(m_chat.contacts().constBegin())
-			: Contact{};
-	auto top = Parser::parse(m_style->top(), Talkable(contact), true);
+	auto top = Parser::parse(m_style->top(), Talkable(m_chat.contacts().toContact()), true);
 
 	auto html = QString{
 		"<html>"
