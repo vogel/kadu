@@ -179,8 +179,6 @@ bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 			return lessThan(left.data(BuddyRole).value<Buddy>(), right.data(BuddyRole).value<Buddy>());
 		case ContactRole:
 			return lessThan(left.data(ContactRole).value<Contact>().ownerBuddy(), right.data(ContactRole).value<Contact>().ownerBuddy());
-		default:
-			Q_ASSERT(false);
 	}
 
 	return QSortFilterProxyModel::lessThan(left, right);

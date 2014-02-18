@@ -38,7 +38,7 @@ class GaduProtocolFactory : public ProtocolFactory
 	static GaduProtocolFactory *Instance;
 	QList<StatusType> SupportedStatusTypes;
 
-	StatusAdapter *MyStatusAdapter;
+	std::unique_ptr<StatusAdapter> MyStatusAdapter;
 
 	GaduProtocolFactory();
 
@@ -56,7 +56,7 @@ public:
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent);
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
 	virtual QList<StatusType> supportedStatusTypes();
-	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter; }
+	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter.get(); }
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
 	virtual bool canRegister();

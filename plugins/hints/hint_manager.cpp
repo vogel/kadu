@@ -417,45 +417,38 @@ Hint *HintManager::addHint(Notification *notification)
 {
 	kdebugf();
 
-	Hint *hint;
-
 	if (DisplayedNotifications.contains(notification->identifier()))
 	{
-		foreach (Hint *h, hints)
-			if (h->getNotification()->identifier() == notification->identifier())
+		for (auto hint : hints)
+			if (hint->getNotification()->identifier() == notification->identifier())
 			{
-				hint = h;
 				//hope this refreshes this hint
 				hint->notificationUpdated();
-				break;
+				return hint;
 			}
 	}
-	else
-	{
-		notification->acquire(this);
 
-		connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
+	notification->acquire(this);
 
-		hint = new Hint(frame, notification);
-		hints.append(hint);
+	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 
-		setLayoutDirection();
-		layout->addWidget(hint);
+	auto hint = new Hint(frame, notification);
+	hints.append(hint);
 
-		connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
-		connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
-		connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
-		connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
-		connect(hint, SIGNAL(updated(Hint *)), this, SLOT(hintUpdated()));
-		setHint();
+	setLayoutDirection();
+	layout->addWidget(hint);
 
-		if (!hint_timer->isActive())
-			hint_timer->start(1000);
+	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
+	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
+	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
+	connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
+	connect(hint, SIGNAL(updated(Hint *)), this, SLOT(hintUpdated()));
+	setHint();
 
-		DisplayedNotifications.append(notification->identifier());
-	}
+	if (!hint_timer->isActive())
+		hint_timer->start(1000);
 
-	kdebugf2();
+	DisplayedNotifications.append(notification->identifier());
 
 	return hint;
 }

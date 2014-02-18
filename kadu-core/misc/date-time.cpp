@@ -59,7 +59,7 @@ QString printDateTime(const QDateTime &datetime)
 				ret.prepend(datetime.toString(QCoreApplication::translate("@default", "dddd at ")));
 				ret[0] = ret.at(0).toUpper(); // looks ugly lowercase ;)
 			}
-			else if ((delta > 7) && (delta < 14))
+			else if (delta < 14)
 			{
 				int tmp = delta % 7;
 				if (tmp == 0)

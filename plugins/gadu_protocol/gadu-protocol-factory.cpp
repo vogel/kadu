@@ -59,7 +59,7 @@ void GaduProtocolFactory::destroyInstance()
 
 GaduProtocolFactory::GaduProtocolFactory()
 {
-	MyStatusAdapter = new GaduStatusAdapter();
+	MyStatusAdapter = make_unique<GaduStatusAdapter>();
 
 	// already sorted
 	SupportedStatusTypes.append(StatusTypeFreeForChat);

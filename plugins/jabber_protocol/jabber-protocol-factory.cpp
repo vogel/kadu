@@ -56,7 +56,7 @@ void JabberProtocolFactory::destroyInstance()
 
 JabberProtocolFactory::JabberProtocolFactory()
 {
-	MyStatusAdapter = new JabberStatusAdapter();
+	MyStatusAdapter = make_unique<JabberStatusAdapter>();
 
 	// already sorted
 	SupportedStatusTypes.append(StatusTypeFreeForChat);
