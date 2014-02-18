@@ -33,6 +33,7 @@
 #include "chat/chat-styles-manager.h"
 #include "chat/chat.h"
 #include "chat/html-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer-factory.h"
 #include "chat/style-engine/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
@@ -278,9 +279,9 @@ void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 	emit messagesUpdated();
 }
 
-void WebkitMessagesView::setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer)
+void WebkitMessagesView::setChatMessagesRendererFactory(std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory)
 {
-	Renderer->setChatMessagesRenderer(chatMessagesRenderer);
+	Renderer->setChatMessagesRenderer(chatMessagesRendererFactory.get()->createChatMessagesRenderer(chat(), *page()->mainFrame()));
 	Renderer->refresh();
 }
 

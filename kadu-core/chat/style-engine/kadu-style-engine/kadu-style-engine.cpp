@@ -24,11 +24,13 @@
 
 #include "chat/chat-styles-manager.h"
 #include "core/core.h"
-#include "chat/style-engine/kadu-style-engine/kadu-chat-messages-renderer.h"
+#include "chat/style-engine/kadu-style-engine/kadu-chat-messages-renderer-factory.h"
+#include "chat/style-engine/kadu-style-engine/kadu-chat-syntax.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "gui/widgets/preview.h"
 #include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
+#include "misc/kadu-paths.h"
 #include "misc/memory.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
@@ -51,7 +53,7 @@ QString KaduStyleEngine::isStyleValid(QString stylePath)
 	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString();
 }
 
-std::unique_ptr<ChatMessagesRenderer> KaduStyleEngine::createRenderer(const ChatStyle &chatStyle)
+std::unique_ptr<ChatMessagesRendererFactory> KaduStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", chatStyle.name(),
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
@@ -60,5 +62,10 @@ std::unique_ptr<ChatMessagesRenderer> KaduStyleEngine::createRenderer(const Chat
 		"#{message}</font></p>"
 	);
 
-	return make_unique<KaduChatMessagesRenderer>(KaduChatSyntax{chatSyntax});
+	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	auto jsCode = file.open(QIODevice::ReadOnly | QIODevice::Text)
+			? file.readAll()
+			: QString{};
+
+	return make_unique<KaduChatMessagesRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax), jsCode);
 }

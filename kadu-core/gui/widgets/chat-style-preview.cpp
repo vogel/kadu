@@ -21,7 +21,7 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
-#include "chat/style-engine/chat-messages-renderer-provider.h"
+#include "chat/style-engine/chat-messages-renderer-factory-provider.h"
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -50,9 +50,9 @@ ChatStylePreview::~ChatStylePreview()
 {
 }
 
-void ChatStylePreview::setRenderer(std::unique_ptr<ChatMessagesRenderer> renderer)
+void ChatStylePreview::setRendererFactory(std::unique_ptr<ChatMessagesRendererFactory> rendererFactory)
 {
-	m_view.get()->setChatMessagesRenderer(std::move(renderer));
+	m_view.get()->setChatMessagesRendererFactory(std::move(rendererFactory));
 }
 
 qobject_ptr<WebkitMessagesView> ChatStylePreview::preparePreview()
@@ -92,7 +92,7 @@ qobject_ptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	result->setImageStorageService(Core::instance()->imageStorageService());
 	result->appendMessage(sentMessage);
 	result->appendMessage(receivedMessage);
-	result->setChatMessagesRenderer(Core::instance()->chatMessagesRendererProvider()->chatMessagesRenderer());
+	result->setChatMessagesRendererFactory(Core::instance()->chatMessagesRendererFactoryProvider()->chatMessagesRendererFactory());
 	return std::move(result);
 }
 

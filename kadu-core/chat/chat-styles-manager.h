@@ -41,7 +41,7 @@ class QPushButton;
 class WebkitMessagesView;
 class ChatStyleEngine;
 class ChatStylePreview;
-class ConfiguredChatMessagesRendererProvider;
+class ConfiguredChatMessagesRendererFactoryProvider;
 class FormattedStringFactory;
 
 //TODO: review
@@ -60,7 +60,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	static ChatStylesManager *Instance;
 
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-	QPointer<ConfiguredChatMessagesRendererProvider> CurrentConfiguredChatMessagesRendererProvider;
+	QPointer<ConfiguredChatMessagesRendererFactoryProvider> CurrentConfiguredChatMessagesRendererFactoryProvider;
 
 	ChatStylesManager();
 
@@ -114,7 +114,7 @@ public:
 
 	~ChatStylesManager();
 
-	void setConfiguredChatMessagesRendererProvider(ConfiguredChatMessagesRendererProvider *configuredChatMessagesRendererProvider);
+	void setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void chatViewCreated(WebkitMessagesView * view);

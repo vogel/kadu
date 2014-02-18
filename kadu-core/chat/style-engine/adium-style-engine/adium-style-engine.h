@@ -40,7 +40,7 @@ public:
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
-	virtual std::unique_ptr<ChatMessagesRenderer> createRenderer(const ChatStyle &chatStyle);
+	virtual std::unique_ptr<ChatMessagesRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
 
 	virtual bool supportVariants() { return true; }
 	virtual QString isStyleValid(QString styleName);

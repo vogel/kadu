@@ -17,22 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "kadu-chat-messages-renderer-factory.h"
 
-#include "chat/style-engine/chat-messages-renderer-provider.h"
+#include "chat/style-engine/kadu-style-engine/kadu-chat-messages-renderer.h"
+#include "misc/memory.h"
 
-class ConfiguredChatMessagesRendererProvider : public ChatMessagesRendererProvider
+KaduChatMessagesRendererFactory::KaduChatMessagesRendererFactory(std::shared_ptr<KaduChatSyntax> style, QString jsCode) :
+		m_style{std::move(style)},
+		m_jsCode{jsCode}
 {
-	Q_OBJECT
+}
 
-public:
-	explicit ConfiguredChatMessagesRendererProvider(QObject *parent = nullptr);
-	virtual ~ConfiguredChatMessagesRendererProvider();
+KaduChatMessagesRendererFactory::~KaduChatMessagesRendererFactory()
+{
+}
 
-	virtual std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer() const override;
-	void setChatMessagesRenderer(std::unique_ptr<ChatMessagesRenderer> chatMessagesRenderer);
-
-private:
-	std::shared_ptr<ChatMessagesRenderer> m_chatMessagesRenderer;
-
-};
+std::unique_ptr<ChatMessagesRenderer> KaduChatMessagesRendererFactory::createChatMessagesRenderer(Chat chat, QWebFrame &frame)
+{
+	return make_unique<KaduChatMessagesRenderer>(chat, frame, m_style, m_jsCode);
+}

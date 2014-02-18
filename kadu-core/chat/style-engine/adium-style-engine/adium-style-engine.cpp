@@ -26,7 +26,8 @@
 
 #include "chat/chat-style.h"
 #include "chat/html-messages-renderer.h"
-#include "chat/style-engine/adium-style-engine/adium-chat-messages-renderer.h"
+#include "chat/style-engine/adium-style-engine/adium-chat-messages-renderer-factory.h"
+#include "chat/style-engine/adium-style-engine/adium-style.h"
 #include "message/message-html-renderer-service.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
@@ -75,12 +76,17 @@ QStringList AdiumStyleEngine::styleVariants(QString styleName)
 	return dir.entryList();
 }
 
-std::unique_ptr<ChatMessagesRenderer> AdiumStyleEngine::createRenderer(const ChatStyle &chatStyle)
+std::unique_ptr<ChatMessagesRendererFactory> AdiumStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
-	auto style = AdiumStyle{chatStyle.name()};
-	style.setCurrentVariant(chatStyle.variant());
+	auto style = std::make_shared<AdiumStyle>(chatStyle.name());
+	style->setCurrentVariant(chatStyle.variant());
 
-	auto result = make_unique<AdiumChatMessagesRenderer>(style);
+	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	auto jsCode = file.open(QIODevice::ReadOnly | QIODevice::Text)
+			? file.readAll()
+			: QString{};
+
+	auto result = make_unique<AdiumChatMessagesRendererFactory>(style, jsCode);
 	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
 	return std::move(result);
 }

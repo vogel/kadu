@@ -19,30 +19,22 @@
 
 #pragma once
 
-#include "chat/style-engine/chat-messages-renderer-factory.h"
-#include "configuration/configuration-aware-object.h"
-#include "misc/memory.h"
+#include <memory>
+#include <QtCore/QObject>
 
-#include <QtGui/QFrame>
+class ChatMessagesRendererFactory;
 
-class WebkitMessagesView;
-
-class ChatStylePreview : public QFrame, public ConfigurationAwareObject
+class ChatMessagesRendererFactoryProvider : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ChatStylePreview(QWidget *parent = nullptr);
-	virtual ~ChatStylePreview();
+	explicit ChatMessagesRendererFactoryProvider(QObject *parent = nullptr);
+	virtual ~ChatMessagesRendererFactoryProvider();
 
-	void setRendererFactory(std::unique_ptr<ChatMessagesRendererFactory> rendererFactory);
+	virtual std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory() const = 0;
 
-protected:
-	virtual void configurationUpdated();
-
-private:
-	qobject_ptr<WebkitMessagesView> m_view;
-
-	qobject_ptr<WebkitMessagesView> preparePreview();
+signals:
+	void chatMessagesRendererFactoryChanged(std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRenderer);
 
 };

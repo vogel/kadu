@@ -21,37 +21,41 @@
 
 #include "chat/style-engine/chat-messages-renderer.h"
 
+#include "chat/chat.h"
 #include "chat/style-engine/adium-style-engine/adium-style.h"
 
 class MessageHtmlRendererService;
+class QWebFrame;
 
 class AdiumChatMessagesRenderer : public QObject, public ChatMessagesRenderer
 {
 	Q_OBJECT
 
 public:
-	explicit AdiumChatMessagesRenderer(AdiumStyle style);
-	virtual ~AdiumChatMessagesRenderer() {}
+	explicit AdiumChatMessagesRenderer(Chat chat, QWebFrame &frame, std::shared_ptr<AdiumStyle> style, QString jsCode);
+	virtual ~AdiumChatMessagesRenderer();
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
-	virtual void clearMessages(QWebFrame &frame) override;
-	virtual void appendChatMessage(QWebFrame &frame, const Message &message, const MessageRenderInfo &messageRenderInfo) override;
-	virtual void paintMessages(QWebFrame &frame, const Chat &chat, const QVector<Message> &messages) override;
-	virtual void removeFirstMessage(QWebFrame &frame) override;
-	virtual void refreshView(QWebFrame &frame, const Chat &chat, const QVector<Message> &allMessages, bool useTransparency = false) override;
-	virtual void messageStatusChanged(QWebFrame &frame, Message, MessageStatus) override;
-	virtual void contactActivityChanged(QWebFrame &frame, ChatStateService::State, const QString &, const QString &) override;
-	virtual void chatImageAvailable(QWebFrame &frame, const ChatImage &chatImage, const QString &fileName) override;
+	virtual void clearMessages() override;
+	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
+	virtual void paintMessages(const QVector<Message> &messages) override;
+	virtual void removeFirstMessage() override;
+	virtual void refreshView(const QVector<Message> &allMessages, bool useTransparency = false) override;
+	virtual void messageStatusChanged(Message, MessageStatus) override;
+	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) override;
+	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) override;
 
 private:
 	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
 
-	AdiumStyle m_style;
+	Chat m_chat;
+	QWebFrame &m_frame;
+	std::shared_ptr<AdiumStyle> m_style;
 	QString m_jsCode;
 
-	QString replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style);
+	QString replaceKeywords(const QString &styleHref, const QString &style);
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
-	QString preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat);
+	QString preprocessStyleBaseHtml();
 
 };

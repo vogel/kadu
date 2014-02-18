@@ -19,27 +19,23 @@
 
 #pragma once
 
-#include "message/message.h"
-#include "protocols/services/chat-state-service.h"
+#include "chat/style-engine/chat-messages-renderer-factory.h"
 
-#include <QtCore/QVector>
+#include <QtCore/QString>
 
-class ChatImage;
-class MessageRenderInfo;
+class KaduChatSyntax;
 
-class ChatMessagesRenderer
+class KaduChatMessagesRendererFactory : public ChatMessagesRendererFactory
 {
 
 public:
-	virtual ~ChatMessagesRenderer() {}
+	explicit KaduChatMessagesRendererFactory(std::shared_ptr<KaduChatSyntax> style, QString jsCode);
+	virtual ~KaduChatMessagesRendererFactory();
 
-	virtual void clearMessages() = 0;
-	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) = 0;
-	virtual void paintMessages(const QVector<Message> &messages) = 0;
-	virtual void removeFirstMessage() = 0;
-	virtual void refreshView(const QVector<Message> &allMessages, bool useTransparency = false) = 0;
-	virtual void messageStatusChanged(Message, MessageStatus) = 0;
-	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) = 0;
-	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) = 0;
+	virtual std::unique_ptr<ChatMessagesRenderer> createChatMessagesRenderer(Chat chat, QWebFrame &frame) override;
+
+private:
+	std::shared_ptr<KaduChatSyntax> m_style;
+	QString m_jsCode;
 
 };

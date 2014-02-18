@@ -19,22 +19,29 @@
 
 #pragma once
 
-#include <memory>
-#include <QtCore/QObject>
+#include "chat/style-engine/chat-messages-renderer-factory.h"
 
-class ChatMessagesRenderer;
+#include <QtCore/QPointer>
 
-class ChatMessagesRendererProvider : public QObject
+class AdiumStyle;
+class MessageHtmlRendererService;
+class QString;
+
+class AdiumChatMessagesRendererFactory : public ChatMessagesRendererFactory
 {
-	Q_OBJECT
 
 public:
-	explicit ChatMessagesRendererProvider(QObject *parent = nullptr);
-	virtual ~ChatMessagesRendererProvider();
+	AdiumChatMessagesRendererFactory(std::shared_ptr<AdiumStyle> style, QString jsCode);
+	virtual ~AdiumChatMessagesRendererFactory();
 
-	virtual std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer() const = 0;
+	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
-signals:
-	void chatMessagesRendererChanged(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
+	virtual std::unique_ptr<ChatMessagesRenderer> createChatMessagesRenderer(Chat chat, QWebFrame &frame) override;
+
+private:
+	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
+
+	std::shared_ptr<AdiumStyle> m_style;
+	QString m_jsCode;
 
 };

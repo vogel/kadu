@@ -37,7 +37,7 @@
 #include "chat/chat-details-contact.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engine/adium-style-engine/adium-style-engine.h"
-#include "chat/style-engine/configured-chat-messages-renderer-provider.h"
+#include "chat/style-engine/configured-chat-messages-renderer-factory-provider.h"
 #include "chat/style-engine/kadu-style-engine/kadu-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
@@ -88,9 +88,9 @@ ChatStylesManager::~ChatStylesManager()
 	unregisterChatStyleEngine("Adium");
 }
 
-void ChatStylesManager::setConfiguredChatMessagesRendererProvider(ConfiguredChatMessagesRendererProvider *configuredChatMessagesRendererProvider)
+void ChatStylesManager::setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider)
 {
-	CurrentConfiguredChatMessagesRendererProvider = configuredChatMessagesRendererProvider;
+	CurrentConfiguredChatMessagesRendererFactoryProvider = configuredChatMessagesRendererFactoryProvider;
 	configurationUpdated();
 }
 
@@ -216,7 +216,7 @@ void ChatStylesManager::configurationUpdated()
 		auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
 		m_currentChatStyle = {newStyleName, newVariantName};
 
-		Core::instance()->configuredChatMessagesRendererProvider()->setChatMessagesRenderer(CurrentEngine->createRenderer(m_currentChatStyle));
+		Core::instance()->configuredChatMessagesRendererFactoryProvider()->setChatMessagesRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
 	}
 
 	triggerCompositingStateChanged();
@@ -408,7 +408,7 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	VariantListCombo->setCurrentIndex(VariantListCombo->findText(currentVariant));
 	VariantListCombo->setEnabled(engine->supportVariants());
 
-	EnginePreview->setRenderer(engine->createRenderer({styleName, VariantListCombo->currentText()}));
+	EnginePreview->setRendererFactory(engine->createRendererFactory({styleName, VariantListCombo->currentText()}));
 	TurnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 }
 
@@ -418,7 +418,7 @@ void ChatStylesManager::variantChangedSlot(const QString &variantName)
 	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
 		return;
 
-	EnginePreview->setRenderer(AvailableStyles.value(styleName).engine->createRenderer({styleName, variantName}));
+	EnginePreview->setRendererFactory(AvailableStyles.value(styleName).engine->createRendererFactory({styleName, variantName}));
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)

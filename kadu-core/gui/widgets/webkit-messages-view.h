@@ -42,7 +42,7 @@ class QResizeEvent;
 
 class Chat;
 class ChatImageRequestService;
-class ChatMessagesRenderer;
+class ChatMessagesRendererFactory;
 class ChatWidget;
 class HtmlMessagesRenderer;
 
@@ -100,7 +100,7 @@ public:
 	bool supportTransparency() { return SupportTransparency; }
 
 public slots:
-	void setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
+	void setChatMessagesRendererFactory(std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory);
 
 	void clearMessages();
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);

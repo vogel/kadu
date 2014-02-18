@@ -50,7 +50,7 @@
 #include "buddies/buddy.h"
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
-#include "chat/style-engine/chat-messages-renderer-provider.h"
+#include "chat/style-engine/chat-messages-renderer-factory-provider.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
@@ -204,10 +204,10 @@ void ChatWidget::createGui()
 	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
 	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 
-	auto provider = Core::instance()->chatMessagesRendererProvider();
-	MessagesView->setChatMessagesRenderer(provider->chatMessagesRenderer());
-	connect(provider, SIGNAL(chatMessagesRendererChanged(std::shared_ptr<ChatMessagesRenderer>)),
-			MessagesView, SLOT(setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer>)));
+	auto provider = Core::instance()->chatMessagesRendererFactoryProvider();
+	MessagesView->setChatMessagesRendererFactory(provider->chatMessagesRendererFactory());
+	connect(provider, SIGNAL(chatMessagesRendererFactoryChanged(std::shared_ptr<ChatMessagesRendererFactory>)),
+			MessagesView, SLOT(setChatMessagesRendererFactory(std::shared_ptr<ChatMessagesRendererFactory>)));
 
 	if (CurrentChat)
 	{
