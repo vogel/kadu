@@ -120,11 +120,10 @@ void KaduChatMessagesRenderer::paintMessages(const QVector<Message> &allMessages
 			: Contact{};
 	text += Parser::parse(m_style->top(), Talkable(contact), true);
 
-	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
 	auto prevMessage = Message::null;
 	for (auto const &message : allMessages)
 	{
-		auto info = messageRenderInfoFactory->messageRenderInfo(prevMessage, message);
+		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(prevMessage, message);
 		auto messageText = message.id().isEmpty()
 				? QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, info))
 				: QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message.id()).arg(formatMessage(message, info));

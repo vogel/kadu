@@ -174,6 +174,7 @@ Core::Core() :
 		CurrentImageStorageService{nullptr},
 		CurrentMessageFilterService{nullptr},
 		CurrentMessageHtmlRendererService{nullptr},
+		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
 		CurrentNotificationService{nullptr},
 		CurrentFormattedStringFactory{nullptr},

@@ -237,9 +237,9 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 	auto const &rendererMessages = Renderer->messages();
 
 	// case #1: all prepended messages are already rendered
-	auto const &firstMessage = messages.at(0);
+	auto firstMessage = messages.at(0);
 	auto hasFirstMessage = std::any_of(std::begin(rendererMessages), std::end(rendererMessages),
-		[&firstMessage](const Message &message){ return sameMessage(message, firstMessage); }
+		[firstMessage](const Message &message){ return sameMessage(message, firstMessage); }
 	);
 	if (hasFirstMessage)
 		return;

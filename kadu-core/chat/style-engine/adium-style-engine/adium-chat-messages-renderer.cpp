@@ -74,11 +74,10 @@ void AdiumChatMessagesRenderer::paintMessages(const QVector<Message> &messages)
 {
 	clearMessages();
 	auto lastMessage = Message::null;
-	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
 
 	for (auto const &oldMessage : messages)
 	{
-		auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage, oldMessage);
+		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(lastMessage, oldMessage);
 		appendChatMessage(oldMessage, info);
 		lastMessage = oldMessage;
 	}

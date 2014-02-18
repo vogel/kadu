@@ -62,7 +62,7 @@ qobject_ptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	auto chat = Chat::create();
 	chat.setType("Contact");
 
-	auto details = dynamic_cast<ChatDetailsContact *>(chat.details());
+	auto details = static_cast<ChatDetailsContact *>(chat.details());
 	details->setState(StorableObject::StateNew);
 	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
 

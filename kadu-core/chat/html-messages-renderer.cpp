@@ -147,13 +147,12 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
 	if (m_chatMessagesRenderer)
 	{
 		auto newLastMessage = m_lastMessage;
 		for (auto const &message : messages)
 		{
-			auto info = messageRenderInfoFactory->messageRenderInfo(newLastMessage, message);
+			auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(newLastMessage, message);
 			m_chatMessagesRenderer->appendChatMessage(message, info);
 			newLastMessage = message;
 		}
