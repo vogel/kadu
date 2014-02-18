@@ -73,13 +73,13 @@ void AdiumChatMessagesRenderer::clearMessages()
 void AdiumChatMessagesRenderer::paintMessages(const QVector<Message> &messages)
 {
 	clearMessages();
-	auto lastMessage = Message::null;
 
-	for (auto const &oldMessage : messages)
+	auto prevMessage = Message::null;
+	for (auto const &message : messages)
 	{
-		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(lastMessage, oldMessage);
-		appendChatMessage(oldMessage, info);
-		lastMessage = oldMessage;
+		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(prevMessage, message);
+		appendChatMessage(message, info);
+		prevMessage = message;
 	}
 }
 
@@ -151,6 +151,10 @@ QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml()
 	}
 
 	return styleBaseHtml;
+}
+
+void AdiumChatMessagesRenderer::initialize()
+{
 }
 
 void AdiumChatMessagesRenderer::refreshView(const QVector<Message> &allMessages, bool useTransparency)

@@ -35,6 +35,7 @@ public:
 	explicit ChatMessagesRenderer(QObject *parent = nullptr);
 	virtual ~ChatMessagesRenderer();
 
+	virtual void initialize() = 0;
 	virtual void clearMessages() = 0;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) = 0;
 	virtual void paintMessages(const QVector<Message> &messages) = 0;

@@ -102,39 +102,47 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, true);
 }
 
-void KaduChatMessagesRenderer::paintMessages(const QVector<Message> &allMessages)
+void KaduChatMessagesRenderer::initialize()
 {
-	QString text = QString(
-		"<html>"
-		"	<head>"
-		"		<style type='text/css'>") +
-		ChatStylesManager::instance()->mainStyle() +
-		"		</style>"
-		"	</head>"
-		"	<body>";
-
-	text += QString("<script>%1</script>").arg(m_jsCode);
-
 	auto contact = m_chat.contacts().count() == 1
 			? *(m_chat.contacts().constBegin())
 			: Contact{};
-	text += Parser::parse(m_style->top(), Talkable(contact), true);
+	auto top = Parser::parse(m_style->top(), Talkable(contact), true);
+
+	auto html = QString{
+		"<html>"
+		"	<head>"
+		"		<style type='text/css'>"
+		"			%1"
+		"		</style>"
+		"	</head>"
+		"	<body>"
+		"		<script>"
+		"			%2"
+		"		</script>"
+		"		%3"
+		"	</body>"
+		"</html>"
+	};
+
+	m_frame.setHtml(html
+		.arg(ChatStylesManager::instance()->mainStyle())
+		.arg(m_jsCode)
+		.arg(top)
+	);
+}
+
+void KaduChatMessagesRenderer::paintMessages(const QVector<Message> &messages)
+{
+	initialize();
 
 	auto prevMessage = Message::null;
-	for (auto const &message : allMessages)
+	for (auto const &message : messages)
 	{
 		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(prevMessage, message);
-		auto messageText = message.id().isEmpty()
-				? QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, info))
-				: QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message.id()).arg(formatMessage(message, info));
-		messageText = scriptsAtEnd(messageText);
-		text += messageText;
+		appendChatMessage(message, info);
 		prevMessage = message;
 	}
-
-	text += "</body></html>";
-
-	m_frame.setHtml(text);
 }
 
 QString KaduChatMessagesRenderer::scriptsAtEnd(const QString &html)
