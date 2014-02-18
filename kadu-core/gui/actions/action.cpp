@@ -37,9 +37,6 @@
 Action::Action(ActionDescription *description, ActionContext *context, QObject *parent) :
 		QAction(parent), Description(description), Context(context)
 {
-	if (!description || !context)
-		throw std::exception{}; // TODO: needs improvement
-
 	setText(Description->Text);
 
 	if (!Description->icon().isNull())
