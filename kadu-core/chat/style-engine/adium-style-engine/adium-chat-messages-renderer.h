@@ -27,7 +27,7 @@
 class MessageHtmlRendererService;
 class QWebFrame;
 
-class AdiumChatMessagesRenderer : public QObject, public ChatMessagesRenderer
+class AdiumChatMessagesRenderer : public ChatMessagesRenderer
 {
 	Q_OBJECT
 

@@ -28,6 +28,7 @@ class QWebFrame;
 
 class KaduChatMessagesRenderer : public ChatMessagesRenderer
 {
+	Q_OBJECT
 
 public:
 	explicit KaduChatMessagesRenderer(Chat chat, QWebFrame &frame, std::shared_ptr<KaduChatSyntax> style, QString jsCode);

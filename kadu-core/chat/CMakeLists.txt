@@ -28,6 +28,7 @@ set (chat_SRCS
 	style-engine/kadu-style-engine/kadu-chat-messages-renderer-factory.cpp
 	style-engine/kadu-style-engine/kadu-chat-syntax.cpp
 
+	style-engine/chat-messages-renderer.cpp
 	style-engine/chat-messages-renderer-factory-provider.cpp
 	style-engine/configured-chat-messages-renderer-factory-provider.cpp
 

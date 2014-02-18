@@ -155,3 +155,5 @@ QString KaduChatMessagesRenderer::scriptsAtEnd(const QString &html)
 	html2.remove(scriptRegexp);
 	return html2 + scripts;
 }
+
+#include "moc_kadu-chat-messages-renderer.cpp"

@@ -27,11 +27,13 @@
 class ChatImage;
 class MessageRenderInfo;
 
-class ChatMessagesRenderer
+class ChatMessagesRenderer : public QObject
 {
+	Q_OBJECT
 
 public:
-	virtual ~ChatMessagesRenderer() {}
+	explicit ChatMessagesRenderer(QObject *parent = nullptr);
+	virtual ~ChatMessagesRenderer();
 
 	virtual void clearMessages() = 0;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) = 0;
