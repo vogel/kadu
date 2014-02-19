@@ -76,10 +76,10 @@ EraGatewaySmsSender.prototype = {
 		}
 
 		var getData =
-			"?number=" + encodeURIComponent(recipient) +
-			"&message=" + encodeURIComponent(signature + ":" + content) +
-			"&login=" + encodeURIComponent(login) +
-			"&password=" + encodeURIComponent(password) +
+			"?number=" + encodeURI(recipient) +
+			"&message=" + encodeURI(signature + ":" + content) +
+			"&login=" + encodeURI(login) +
+			"&password=" + encodeURI(password) +
 			"&failure=http://www.t-mobile.pl&success=http://rozrywka.t-mobile.pl" +
 			"&mms=false";
 
