@@ -68,7 +68,6 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 	void recreateRenderer();
 
 private slots:
-	void repaintMessages();
 	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
 	void sentMessageStatusChanged(const Message &message);
 
@@ -97,7 +96,6 @@ public:
 	int countMessages();
 
 	void setForcePruneDisabled(bool disable);
-	void refreshView();
 
 	Chat chat() const { return CurrentChat; }
 	void setChat(const Chat &chat);
@@ -110,6 +108,7 @@ public slots:
 	void clearMessages();
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 	void updateAtBottom();
+	void refreshView();
 
 	void pageUp();
 	void pageDown();

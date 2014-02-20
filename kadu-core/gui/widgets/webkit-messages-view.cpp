@@ -139,7 +139,7 @@ void WebkitMessagesView::connectChat()
 		return;
 
 	foreach (const Contact &contact, CurrentChat.contacts())
-		connect(contact, SIGNAL(buddyUpdated()), this, SLOT(repaintMessages()));
+		connect(contact, SIGNAL(buddyUpdated()), this, SLOT(refreshView()));
 
 	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
@@ -191,6 +191,9 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 
 void WebkitMessagesView::refreshView()
 {
+	ScopedUpdatesDisabler updatesDisabler{*this};
+	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
+
 	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
@@ -200,6 +203,8 @@ void WebkitMessagesView::refreshView()
 
 	renderer()->setChatMessagesRenderer(m_chatMessagesRendererFactory->createChatMessagesRenderer(std::move(configuration)));
 	renderer()->refreshView();
+
+	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
 
 void WebkitMessagesView::pageUp()
@@ -217,14 +222,6 @@ void WebkitMessagesView::pageDown()
 void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QString &fullFilePath)
 {
 	Renderer->chatImageAvailable(chatImage, fullFilePath);
-}
-
-void WebkitMessagesView::repaintMessages()
-{
-	ScopedUpdatesDisabler updatesDisabler{*this};
-	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
-	refreshView();
-	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
 
 Message WebkitMessagesView::firstNonSystemMessage(const QVector<Message> &messages)
