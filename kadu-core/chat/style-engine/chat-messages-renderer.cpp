@@ -19,13 +19,18 @@
 
 #include "chat-messages-renderer.h"
 
-ChatMessagesRenderer::ChatMessagesRenderer(QObject *parent) :
-		QObject{parent}
+ChatMessagesRenderer::ChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, QObject *parent) :
+		QObject{parent}, m_configuration{std::move(configuration)}
 {
 }
 
 ChatMessagesRenderer::~ChatMessagesRenderer()
 {
+}
+
+const ChatMessagesRendererConfiguration & ChatMessagesRenderer::configuration() const
+{
+	return m_configuration;
 }
 
 #include "moc_chat-messages-renderer.cpp"

@@ -81,12 +81,7 @@ std::unique_ptr<ChatMessagesRendererFactory> AdiumStyleEngine::createRendererFac
 	auto style = std::make_shared<AdiumStyle>(chatStyle.name());
 	style->setCurrentVariant(chatStyle.variant());
 
-	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
-	auto jsCode = file.open(QIODevice::ReadOnly | QIODevice::Text)
-			? file.readAll()
-			: QString{};
-
-	auto result = make_unique<AdiumChatMessagesRendererFactory>(style, jsCode);
+	auto result = make_unique<AdiumChatMessagesRendererFactory>(style);
 	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
 	return std::move(result);
 }

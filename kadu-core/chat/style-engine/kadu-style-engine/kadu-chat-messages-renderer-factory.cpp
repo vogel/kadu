@@ -20,11 +20,9 @@
 #include "kadu-chat-messages-renderer-factory.h"
 
 #include "chat/style-engine/kadu-style-engine/kadu-chat-messages-renderer.h"
-#include "misc/memory.h"
 
-KaduChatMessagesRendererFactory::KaduChatMessagesRendererFactory(std::shared_ptr<KaduChatSyntax> style, QString jsCode) :
-		m_style{std::move(style)},
-		m_jsCode{jsCode}
+KaduChatMessagesRendererFactory::KaduChatMessagesRendererFactory(std::shared_ptr<KaduChatSyntax> style) :
+		m_style{std::move(style)}
 {
 }
 
@@ -32,7 +30,8 @@ KaduChatMessagesRendererFactory::~KaduChatMessagesRendererFactory()
 {
 }
 
-std::unique_ptr<ChatMessagesRenderer> KaduChatMessagesRendererFactory::createChatMessagesRenderer(Chat chat, QWebFrame &frame)
+qobject_ptr<ChatMessagesRenderer> KaduChatMessagesRendererFactory::createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration)
 {
-	return make_unique<KaduChatMessagesRenderer>(chat, frame, m_style, m_jsCode);
+	auto renderer = make_qobject<KaduChatMessagesRenderer>(std::move(configuration), m_style);
+	return qobject_ptr<ChatMessagesRenderer>{renderer.release()};
 }

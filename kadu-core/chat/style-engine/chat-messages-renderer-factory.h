@@ -19,12 +19,10 @@
 
 #pragma once
 
-#include <memory>
+#include "misc/memory.h"
 
-class Chat;
 class ChatMessagesRenderer;
-
-class QWebFrame;
+class ChatMessagesRendererConfiguration;
 
 class ChatMessagesRendererFactory
 {
@@ -32,6 +30,6 @@ class ChatMessagesRendererFactory
 public:
 	virtual ~ChatMessagesRendererFactory() {}
 
-	virtual std::unique_ptr<ChatMessagesRenderer> createChatMessagesRenderer(Chat chat, QWebFrame &frame) = 0;
+	virtual qobject_ptr<ChatMessagesRenderer> createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration) = 0;
 
 };

@@ -33,11 +33,9 @@
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebPage>
 
-KaduChatMessagesRenderer::KaduChatMessagesRenderer(Chat chat, QWebFrame &frame, std::shared_ptr<KaduChatSyntax> style, QString jsCode) :
-		m_chat{std::move(chat)},
-		m_frame(frame),
-		m_style{std::move(style)},
-		m_jsCode{jsCode}
+KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
+		ChatMessagesRenderer{std::move(configuration), parent},
+		m_style{std::move(style)}
 {
 }
 
@@ -47,12 +45,12 @@ KaduChatMessagesRenderer::~KaduChatMessagesRenderer()
 
 void KaduChatMessagesRenderer::clearMessages()
 {
-	m_frame.evaluateJavaScript("kadu_clearMessages()");
+	configuration().webFrame().evaluateJavaScript("kadu_clearMessages()");
 }
 
 void KaduChatMessagesRenderer::removeFirstMessage()
 {
-	m_frame.evaluateJavaScript("kadu_removeFirstMessage()");
+	configuration().webFrame().evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
 void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
@@ -66,29 +64,27 @@ void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const M
 		html.prepend("<span class=\"kadu_message\">");
 	html.append("</span>");
 
-	m_frame.evaluateJavaScript("kadu_appendMessage('" + html + "')");
+	configuration().webFrame().evaluateJavaScript("kadu_appendMessage('" + html + "')");
 }
 
-void KaduChatMessagesRenderer::refreshView(const QVector<Message> &allMessages, bool useTransparency)
+void KaduChatMessagesRenderer::refreshView(const QVector<Message> &allMessages)
 {
-	Q_UNUSED(useTransparency)
-
 	paintMessages(allMessages);
 }
 
 void KaduChatMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
-	m_frame.evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
+	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
 
 void KaduChatMessagesRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
 {
-	m_frame.evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
+	configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
 }
 
 void KaduChatMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	m_frame.evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
+	configuration().webFrame().evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
 }
 
 QString KaduChatMessagesRenderer::formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
@@ -103,7 +99,7 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 
 void KaduChatMessagesRenderer::initialize()
 {
-	auto top = Parser::parse(m_style->top(), Talkable(m_chat.contacts().toContact()), true);
+	auto top = Parser::parse(m_style->top(), Talkable(configuration().chat().contacts().toContact()), true);
 
 	auto html = QString{
 		"<html>"
@@ -121,9 +117,9 @@ void KaduChatMessagesRenderer::initialize()
 		"</html>"
 	};
 
-	m_frame.setHtml(html
+	configuration().webFrame().setHtml(html
 		.arg(ChatStylesManager::instance()->mainStyle())
-		.arg(m_jsCode)
+		.arg(configuration().javaScript())
 		.arg(top)
 	);
 }

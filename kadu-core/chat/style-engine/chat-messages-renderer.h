@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "chat/style-engine/chat-messages-renderer-configuration.h"
 #include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
@@ -32,17 +33,22 @@ class ChatMessagesRenderer : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatMessagesRenderer(QObject *parent = nullptr);
+	explicit ChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, QObject *parent = nullptr);
 	virtual ~ChatMessagesRenderer();
+
+	const ChatMessagesRendererConfiguration & configuration() const;
 
 	virtual void initialize() = 0;
 	virtual void clearMessages() = 0;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) = 0;
 	virtual void paintMessages(const QVector<Message> &messages) = 0;
 	virtual void removeFirstMessage() = 0;
-	virtual void refreshView(const QVector<Message> &allMessages, bool useTransparency = false) = 0;
+	virtual void refreshView(const QVector<Message> &allMessages = {}) = 0;
 	virtual void messageStatusChanged(Message, MessageStatus) = 0;
 	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) = 0;
 	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) = 0;
+
+private:
+	ChatMessagesRendererConfiguration m_configuration;
 
 };

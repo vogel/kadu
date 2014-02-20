@@ -25,23 +25,21 @@
 
 class AdiumStyle;
 class MessageHtmlRendererService;
-class QString;
 
 class AdiumChatMessagesRendererFactory : public ChatMessagesRendererFactory
 {
 
 public:
-	AdiumChatMessagesRendererFactory(std::shared_ptr<AdiumStyle> style, QString jsCode);
+	AdiumChatMessagesRendererFactory(std::shared_ptr<AdiumStyle> style);
 	virtual ~AdiumChatMessagesRendererFactory();
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
-	virtual std::unique_ptr<ChatMessagesRenderer> createChatMessagesRenderer(Chat chat, QWebFrame &frame) override;
+	virtual qobject_ptr<ChatMessagesRenderer> createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration) override;
 
 private:
 	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
 
 	std::shared_ptr<AdiumStyle> m_style;
-	QString m_jsCode;
 
 };

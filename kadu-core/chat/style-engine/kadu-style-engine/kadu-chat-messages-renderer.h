@@ -21,7 +21,6 @@
 
 #include "chat/style-engine/chat-messages-renderer.h"
 
-#include "chat/chat.h"
 #include "chat/style-engine/kadu-style-engine/kadu-chat-syntax.h"
 
 class QWebFrame;
@@ -31,7 +30,7 @@ class KaduChatMessagesRenderer : public ChatMessagesRenderer
 	Q_OBJECT
 
 public:
-	explicit KaduChatMessagesRenderer(Chat chat, QWebFrame &frame, std::shared_ptr<KaduChatSyntax> style, QString jsCode);
+	explicit KaduChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent = nullptr);
 	virtual ~KaduChatMessagesRenderer();
 
 	virtual void initialize() override;
@@ -39,16 +38,13 @@ public:
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
 	virtual void paintMessages(const QVector<Message> &messages) override;
 	virtual void removeFirstMessage() override;
-	virtual void refreshView(const QVector<Message> &allMessages, bool useTransparency = false) override;
+	virtual void refreshView(const QVector<Message> &allMessages) override;
 	virtual void messageStatusChanged(Message, MessageStatus) override;
 	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) override;
 	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) override;
 
 private:
-	Chat m_chat;
-	QWebFrame &m_frame;
 	std::shared_ptr<KaduChatSyntax> m_style;
-	QString m_jsCode;
 
 	QString formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo);
 	QString scriptsAtEnd(const QString &html);

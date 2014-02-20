@@ -30,7 +30,6 @@
 #include "gui/widgets/preview.h"
 #include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
-#include "misc/kadu-paths.h"
 #include "misc/memory.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
@@ -62,10 +61,5 @@ std::unique_ptr<ChatMessagesRendererFactory> KaduStyleEngine::createRendererFact
 		"#{message}</font></p>"
 	);
 
-	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
-	auto jsCode = file.open(QIODevice::ReadOnly | QIODevice::Text)
-			? file.readAll()
-			: QString{};
-
-	return make_unique<KaduChatMessagesRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax), jsCode);
+	return make_unique<KaduChatMessagesRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
 }

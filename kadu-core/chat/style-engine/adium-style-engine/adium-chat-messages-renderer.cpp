@@ -43,12 +43,19 @@
 #include <QtWebKit/QWebPage>
 #include <QtWebKit/QWebFrame>
 
-AdiumChatMessagesRenderer::AdiumChatMessagesRenderer(Chat chat, QWebFrame &frame, std::shared_ptr<AdiumStyle> style, QString jsCode) :
-		m_chat{std::move(chat)},
-		m_frame(frame),
-		m_style{std::move(style)},
-		m_jsCode{jsCode}
+AdiumChatMessagesRenderer::AdiumChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent) :
+		ChatMessagesRenderer{std::move(configuration), parent},
+		m_style{std::move(style)}
 {
+	QString styleBaseHtml = preprocessStyleBaseHtml();
+
+	if (this->configuration().useTransparency() && !m_style->defaultBackgroundIsTransparent())
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
+
+	this->configuration().webFrame().setHtml(styleBaseHtml);
+	this->configuration().webFrame().evaluateJavaScript(this->configuration().javaScript());
+	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
+	this->configuration().webFrame().evaluateJavaScript("initStyle()");
 }
 
 AdiumChatMessagesRenderer::~AdiumChatMessagesRenderer()
@@ -62,12 +69,12 @@ void AdiumChatMessagesRenderer::setMessageHtmlRendererService(MessageHtmlRendere
 
 void AdiumChatMessagesRenderer::removeFirstMessage()
 {
-	m_frame.evaluateJavaScript("adium_removeFirstMessage()");
+	configuration().webFrame().evaluateJavaScript("adium_removeFirstMessage()");
 }
 
 void AdiumChatMessagesRenderer::clearMessages()
 {
-	m_frame.evaluateJavaScript("adium_clearMessages()");
+	configuration().webFrame().evaluateJavaScript("adium_clearMessages()");
 }
 
 void AdiumChatMessagesRenderer::paintMessages(const QVector<Message> &messages)
@@ -125,9 +132,9 @@ void AdiumChatMessagesRenderer::appendChatMessage(const Message &message, const 
 	formattedMessageHtml.append("</span>");
 
 	if (messageRenderInfo.includeHeader())
-		m_frame.evaluateJavaScript("appendMessage('"+ formattedMessageHtml +"')");
+		configuration().webFrame().evaluateJavaScript("appendMessage('"+ formattedMessageHtml +"')");
 	else
-		m_frame.evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
+		configuration().webFrame().evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
 }
 
 QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml()
@@ -157,47 +164,37 @@ void AdiumChatMessagesRenderer::initialize()
 {
 }
 
-void AdiumChatMessagesRenderer::refreshView(const QVector<Message> &allMessages, bool useTransparency)
+void AdiumChatMessagesRenderer::refreshView(const QVector<Message> &allMessages)
 {
 	Q_UNUSED(allMessages);
-
-	QString styleBaseHtml = preprocessStyleBaseHtml();
-
-	if (useTransparency && !m_style->defaultBackgroundIsTransparent())
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
-
-	m_frame.setHtml(styleBaseHtml);
-	m_frame.evaluateJavaScript(m_jsCode);
-	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
-	m_frame.evaluateJavaScript("initStyle()");
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
 QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, const QString &style)
 {
-	if (!m_chat)
+	if (!configuration().chat())
 		return {};
 
 	QString result = style;
 
 	//TODO: get Chat name (contacts' nicks?)
 	//Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-	int contactsCount = m_chat.contacts().count();
+	int contactsCount = configuration().chat().contacts().count();
 
 	QString chatName;
-	if (!m_chat.display().isEmpty())
-		chatName = m_chat.display();
+	if (!configuration().chat().display().isEmpty())
+		chatName = configuration().chat().display();
 	else if (contactsCount > 1)
 		chatName = tr("Conference [%1]").arg(contactsCount);
 	else
-		chatName = m_chat.name();
+		chatName = configuration().chat().name();
 
 	result.replace(QString("%chatName%"), chatName);
 
 	// Replace %sourceName%
-	result.replace(QString("%sourceName%"), m_chat.chatAccount().accountIdentity().name());
+	result.replace(QString("%sourceName%"), configuration().chat().chatAccount().accountIdentity().name());
 	// Replace %destinationName%
-	result.replace(QString("%destinationName%"), m_chat.name());
+	result.replace(QString("%destinationName%"), configuration().chat().name());
 	// For %timeOpened%, display the date and time. TODO: get real time
 	result.replace(QString("%timeOpened%"), printDateTime(QDateTime::currentDateTime()));
 
@@ -210,10 +207,10 @@ QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, con
 	QString photoIncoming;
 	QString photoOutgoing;
 
-	int contactsSize = m_chat.contacts().size();
+	int contactsSize = configuration().chat().contacts().size();
 	if (contactsSize == 1)
 	{
-		const Avatar &avatar = m_chat.contacts().toContact().avatar(true);
+		const Avatar &avatar = configuration().chat().contacts().toContact().avatar(true);
 		if (!avatar.isEmpty())
 			photoIncoming = KaduPaths::webKitPath(avatar.smallFilePath());
 		else
@@ -222,7 +219,7 @@ QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, con
 	else
 		photoIncoming = KaduPaths::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 
-	const Avatar &avatar = m_chat.chatAccount().accountContact().avatar(true);
+	const Avatar &avatar = configuration().chat().chatAccount().accountContact().avatar(true);
 	if (!avatar.isEmpty())
 		photoOutgoing = KaduPaths::webKitPath(avatar.smallFilePath());
 	else
@@ -339,17 +336,17 @@ QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, con
 
 void AdiumChatMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
-	m_frame.evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
+	configuration().webFrame().evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
 
 void AdiumChatMessagesRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
 {
-	m_frame.evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
+	configuration().webFrame().evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
 }
 
 void AdiumChatMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	m_frame.evaluateJavaScript(QString("adium_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
+	configuration().webFrame().evaluateJavaScript(QString("adiuconfiguration().chat()ImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
 }
 
 #include "moc_adium-chat-messages-renderer.cpp"

@@ -23,6 +23,7 @@
 #pragma once
 
 #include "message/message.h"
+#include "misc/memory.h"
 #include "protocols/services/chat-state-service.h"
 
 #include <QtCore/QObject>
@@ -40,7 +41,7 @@ public:
 	explicit HtmlMessagesRenderer(QWebFrame *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
-	void setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer);
+	void setChatMessagesRenderer(qobject_ptr<ChatMessagesRenderer> chatMessagesRenderer);
 
 	bool pruneEnabled();
 
@@ -57,7 +58,7 @@ public:
 	Message lastMessage() { return m_lastMessage; }
 	void setLastMessage(Message message);
 
-	void refreshView(bool useTransparency);
+	void refreshView();
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(Message message, MessageStatus status);
@@ -66,7 +67,7 @@ public:
 private:
 	QVector<Message> m_messages;
 	Message m_lastMessage;
-	std::shared_ptr<ChatMessagesRenderer> m_chatMessagesRenderer;
+	qobject_ptr<ChatMessagesRenderer> m_chatMessagesRenderer;
 
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;

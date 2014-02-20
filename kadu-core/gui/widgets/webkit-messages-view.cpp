@@ -41,6 +41,7 @@
 #include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
+#include "misc/kadu-paths.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
@@ -180,7 +181,6 @@ void WebkitMessagesView::recreateRenderer()
 	if (!m_chatMessagesRendererFactory)
 		return;
 
-	Renderer->setChatMessagesRenderer(m_chatMessagesRendererFactory.get()->createChatMessagesRenderer(chat(), *page()->mainFrame()));
 	refreshView();
 }
 
@@ -191,7 +191,15 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 
 void WebkitMessagesView::refreshView()
 {
-	renderer()->refreshView(ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled());
+	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
+			? file.readAll()
+			: QString{};
+	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
+	auto configuration = ChatMessagesRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
+
+	renderer()->setChatMessagesRenderer(m_chatMessagesRendererFactory->createChatMessagesRenderer(std::move(configuration)));
+	renderer()->refreshView();
 }
 
 void WebkitMessagesView::pageUp()

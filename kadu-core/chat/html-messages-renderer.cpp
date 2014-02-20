@@ -45,7 +45,7 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 {
 }
 
-void HtmlMessagesRenderer::setChatMessagesRenderer(std::shared_ptr<ChatMessagesRenderer> chatMessagesRenderer)
+void HtmlMessagesRenderer::setChatMessagesRenderer(qobject_ptr<ChatMessagesRenderer> chatMessagesRenderer)
 {
 	m_chatMessagesRenderer = std::move(chatMessagesRenderer);
 }
@@ -170,10 +170,10 @@ void HtmlMessagesRenderer::setLastMessage(Message message)
 	m_lastMessage = message;
 }
 
-void HtmlMessagesRenderer::refreshView(bool useTransparency)
+void HtmlMessagesRenderer::refreshView()
 {
 	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->refreshView(m_messages, useTransparency);
+		m_chatMessagesRenderer->refreshView(m_messages);
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)

@@ -21,11 +21,9 @@
 
 #include "chat/style-engine/adium-style-engine/adium-chat-messages-renderer.h"
 #include "message/message-html-renderer-service.h"
-#include "misc/memory.h"
 
-AdiumChatMessagesRendererFactory::AdiumChatMessagesRendererFactory(std::shared_ptr<AdiumStyle> style, QString jsCode) :
-		m_style{std::move(style)},
-		m_jsCode{jsCode}
+AdiumChatMessagesRendererFactory::AdiumChatMessagesRendererFactory(std::shared_ptr<AdiumStyle> style) :
+		m_style{std::move(style)}
 {
 }
 
@@ -38,9 +36,9 @@ void AdiumChatMessagesRendererFactory::setMessageHtmlRendererService(MessageHtml
 	m_messageHtmlRendererService = messageHtmlRendererService;
 }
 
-std::unique_ptr<ChatMessagesRenderer> AdiumChatMessagesRendererFactory::createChatMessagesRenderer(Chat chat, QWebFrame &frame)
+qobject_ptr<ChatMessagesRenderer> AdiumChatMessagesRendererFactory::createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration)
 {
-	auto result = make_unique<AdiumChatMessagesRenderer>(chat, frame, m_style, m_jsCode);
-	result->setMessageHtmlRendererService(m_messageHtmlRendererService);
-	return std::move(result);
+	auto renderer = make_qobject<AdiumChatMessagesRenderer>(std::move(configuration), m_style);
+	renderer->setMessageHtmlRendererService(m_messageHtmlRendererService);
+	return qobject_ptr<ChatMessagesRenderer>{renderer.release()};
 }

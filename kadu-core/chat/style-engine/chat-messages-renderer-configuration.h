@@ -19,20 +19,28 @@
 
 #pragma once
 
-#include "chat/style-engine/chat-messages-renderer-factory.h"
+#include "chat/chat.h"
 
-class KaduChatSyntax;
+class QWebFrame;
 
-class KaduChatMessagesRendererFactory : public ChatMessagesRendererFactory
+class ChatMessagesRendererConfiguration
 {
 
 public:
-	explicit KaduChatMessagesRendererFactory(std::shared_ptr<KaduChatSyntax> style);
-	virtual ~KaduChatMessagesRendererFactory();
+	ChatMessagesRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency);
 
-	virtual qobject_ptr<ChatMessagesRenderer> createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration) override;
+	Chat chat() const;
+	QWebFrame & webFrame() const;
+	QString javaScript() const;
+	bool useTransparency() const;
 
 private:
-	std::shared_ptr<KaduChatSyntax> m_style;
+	Chat m_chat;
+	QWebFrame &m_webFrame;
+	QString m_javaScript;
+	bool m_useTransparency;
 
 };
+
+bool operator == (const ChatMessagesRendererConfiguration &left, const ChatMessagesRendererConfiguration &right);
+bool operator != (const ChatMessagesRendererConfiguration &left, const ChatMessagesRendererConfiguration &right);
