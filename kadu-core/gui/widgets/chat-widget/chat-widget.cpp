@@ -212,7 +212,7 @@ void ChatWidget::createGui()
 	if (CurrentChat)
 	{
 		MessagesView->setChat(CurrentChat);
-		MessagesView->refresh();
+		MessagesView->refreshView();
 	}
 
 	frameLayout->addWidget(MessagesView);

@@ -46,7 +46,6 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/chat-style-preview.h"
-#include "gui/widgets/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/algorithm.h"
 #include "misc/kadu-paths.h"
@@ -119,23 +118,6 @@ void ChatStylesManager::registerChatStyleEngine(const QString &name, std::unique
 void ChatStylesManager::unregisterChatStyleEngine(const QString &name)
 {
 	RegisteredEngines.erase(name);
-}
-
-void ChatStylesManager::chatViewCreated(WebkitMessagesView *view)
-{
-	if (0 != view)
-	{
-		ChatViews.append(view);
-
-		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		view->refreshView(useTransparency);
-	}
-}
-
-void ChatStylesManager::chatViewDestroyed(WebkitMessagesView *view)
-{
-	if (ChatViews.contains(view))
-		ChatViews.removeAll(view);
 }
 
 void ChatStylesManager::configurationUpdated()
@@ -249,12 +231,6 @@ QString ChatStylesManager::fixedVariantName(const QString &styleName, QString va
 void ChatStylesManager::compositingEnabled()
 {
 	CompositingEnabled = true;
-	foreach (WebkitMessagesView *view, ChatViews)
-	{
-		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		view->refreshView(useTransparency);
-	}
-
 	if (TurnOnTransparency)
 		TurnOnTransparency->setEnabled(true);
 }
@@ -262,12 +238,6 @@ void ChatStylesManager::compositingEnabled()
 void ChatStylesManager::compositingDisabled()
 {
 	CompositingEnabled = false;
-	foreach (WebkitMessagesView *view, ChatViews)
-	{
-		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
-		view->refreshView(useTransparency);
-	}
-
 	if (TurnOnTransparency)
 		TurnOnTransparency->setEnabled(false);
 }

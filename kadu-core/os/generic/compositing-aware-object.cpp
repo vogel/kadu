@@ -53,3 +53,8 @@ void CompositingAwareObject::triggerCompositingStateChanged()
 	else
 		compositingDisabled();
 }
+
+bool CompositingAwareObject::isCompositingEnabled() const
+{
+	return CompositingEnabled;
+}

@@ -170,12 +170,6 @@ void HtmlMessagesRenderer::setLastMessage(Message message)
 	m_lastMessage = message;
 }
 
-void HtmlMessagesRenderer::refresh()
-{
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->refreshView(m_messages);
-}
-
 void HtmlMessagesRenderer::refreshView(bool useTransparency)
 {
 	if (m_chatMessagesRenderer)

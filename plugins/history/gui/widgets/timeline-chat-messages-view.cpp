@@ -177,7 +177,7 @@ void TimelineChatMessagesView::setMessages(const QVector<Message> &messages)
 
 	MessagesView->clearMessages();
 	MessagesView->appendMessages(messages);
-	MessagesView->refresh();
+	MessagesView->refreshView();
 
 	emit messagesDisplayed();
 }

@@ -41,7 +41,6 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(Chat chat, QWebFrame &frame, 
 {
 }
 
-
 KaduChatMessagesRenderer::~KaduChatMessagesRenderer()
 {
 }

@@ -177,7 +177,7 @@ void SearchTab::setChatStorage(HistoryMessagesStorage *storage)
 		TimelineView->setResults(QVector<HistoryQueryResult>());
 		TimelineView->messagesView()->setChat(Chat::null);
 		TimelineView->messagesView()->clearMessages();
-		TimelineView->messagesView()->refresh();
+		TimelineView->messagesView()->refreshView();
 	}
 }
 
@@ -198,7 +198,7 @@ void SearchTab::setStatusStorage(HistoryMessagesStorage *storage)
 		TimelineView->setResults(QVector<HistoryQueryResult>());
 		TimelineView->messagesView()->setChat(Chat::null);
 		TimelineView->messagesView()->clearMessages();
-		TimelineView->messagesView()->refresh();
+		TimelineView->messagesView()->refreshView();
 	}
 }
 
@@ -219,7 +219,7 @@ void SearchTab::setSmsStorage(HistoryMessagesStorage *storage)
 		TimelineView->setResults(QVector<HistoryQueryResult>());
 		TimelineView->messagesView()->setChat(Chat::null);
 		TimelineView->messagesView()->clearMessages();
-		TimelineView->messagesView()->refresh();
+		TimelineView->messagesView()->refreshView();
 	}
 }
 

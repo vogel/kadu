@@ -68,7 +68,6 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 
 	std::map<QString, std::unique_ptr<ChatStyleEngine>> RegisteredEngines;
 	ChatStyle m_currentChatStyle;
-	QList<WebkitMessagesView *> ChatViews;
 	QMap<QString, StyleInfo> AvailableStyles;
 
 	ChatStyleEngine *CurrentEngine;
@@ -117,8 +116,6 @@ public:
 	void setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	void chatViewCreated(WebkitMessagesView * view);
-	void chatViewDestroyed(WebkitMessagesView * view);
 	void registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine>);
 	void unregisterChatStyleEngine(const QString &name);
 

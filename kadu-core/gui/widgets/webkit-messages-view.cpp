@@ -30,9 +30,9 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "chat/chat-styles-manager.h"
 #include "chat/chat.h"
 #include "chat/html-messages-renderer.h"
+#include "chat/style-engine/chat-messages-renderer.h"
 #include "chat/style-engine/chat-messages-renderer-factory.h"
 #include "chat/style-engine/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
@@ -90,14 +90,10 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 	connectChat();
 
 	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
-
-	ChatStylesManager::instance()->chatViewCreated(this);
 }
 
 WebkitMessagesView::~WebkitMessagesView()
 {
- 	ChatStylesManager::instance()->chatViewDestroyed(this);
-
 	disconnectChat();
 }
 
@@ -185,12 +181,7 @@ void WebkitMessagesView::recreateRenderer()
 		return;
 
 	Renderer->setChatMessagesRenderer(m_chatMessagesRendererFactory.get()->createChatMessagesRenderer(chat(), *page()->mainFrame()));
-	Renderer->refresh();
-}
-
-void WebkitMessagesView::refresh()
-{
-	Renderer->refresh();
+	refreshView();
 }
 
 void WebkitMessagesView::setForcePruneDisabled(bool disable)
@@ -198,9 +189,9 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 	Renderer->setForcePruneDisabled(disable);
 }
 
-void WebkitMessagesView::refreshView(bool useTransparency)
+void WebkitMessagesView::refreshView()
 {
-	renderer()->refreshView(useTransparency);
+	renderer()->refreshView(ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled());
 }
 
 void WebkitMessagesView::pageUp()
@@ -224,7 +215,7 @@ void WebkitMessagesView::repaintMessages()
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
-	Renderer->refresh();
+	refreshView();
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
 
@@ -341,6 +332,17 @@ void WebkitMessagesView::forceScrollToBottom()
 void WebkitMessagesView::configurationUpdated()
 {
 	setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
+	refreshView();
+}
+
+void WebkitMessagesView::compositingEnabled()
+{
+	refreshView();
+}
+
+void WebkitMessagesView::compositingDisabled()
+{
+	refreshView();
 }
 
 #include "moc_webkit-messages-view.cpp"

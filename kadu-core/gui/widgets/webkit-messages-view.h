@@ -29,6 +29,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "message/message.h"
 #include "misc/memory.h"
+#include "os/generic/compositing-aware-object.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image.h"
 #include "protocols/services/chat-service.h"
@@ -46,7 +47,7 @@ class ChatMessagesRendererFactory;
 class ChatWidget;
 class HtmlMessagesRenderer;
 
-class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject
+class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -77,6 +78,9 @@ protected:
 	virtual void resizeEvent(QResizeEvent *e);
 	virtual void wheelEvent(QWheelEvent *e);
 
+	virtual void compositingEnabled();
+	virtual void compositingDisabled();
+
 public:
 	explicit WebkitMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
 	virtual ~WebkitMessagesView();
@@ -93,11 +97,10 @@ public:
 	int countMessages();
 
 	void setForcePruneDisabled(bool disable);
-	void refreshView(bool useTransparency);
+	void refreshView();
 
 	Chat chat() const { return CurrentChat; }
 	void setChat(const Chat &chat);
-	void refresh();
 
 	bool supportTransparency() { return SupportTransparency; }
 

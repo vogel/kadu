@@ -57,7 +57,6 @@ public:
 	Message lastMessage() { return m_lastMessage; }
 	void setLastMessage(Message message);
 
-	void refresh();
 	void refreshView(bool useTransparency);
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void updateBackgroundsAndColors();
