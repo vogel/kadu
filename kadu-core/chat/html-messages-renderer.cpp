@@ -109,7 +109,7 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	{
 		if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && pruneEnabled())
 		{
-			m_chatMessagesRenderer->paintMessages(m_messages);
+			repaintMessages();
 			return;
 		}
 		else
@@ -122,6 +122,23 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	}
 
 	m_lastMessage = message;
+}
+
+void HtmlMessagesRenderer::repaintMessages()
+{
+	if (!m_chatMessagesRenderer)
+		return;
+
+	m_chatMessagesRenderer->clearMessages();
+
+	auto prevMessage = Message::null;
+	for (auto const &message : m_messages)
+	{
+		auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
+		auto info = messageRenderInfoFactory->messageRenderInfo(prevMessage, message);
+		m_chatMessagesRenderer->appendChatMessage(message, info);
+		prevMessage = message;
+	}
 }
 
 void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
@@ -172,8 +189,7 @@ void HtmlMessagesRenderer::setLastMessage(Message message)
 
 void HtmlMessagesRenderer::refreshView()
 {
-	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->refreshView(m_messages);
+	repaintMessages();
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)

@@ -71,19 +71,6 @@ void AdiumChatMessagesRenderer::clearMessages()
 	configuration().webFrame().evaluateJavaScript("adium_clearMessages()");
 }
 
-void AdiumChatMessagesRenderer::paintMessages(const QVector<Message> &messages)
-{
-	clearMessages();
-
-	auto prevMessage = Message::null;
-	for (auto const &message : messages)
-	{
-		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(prevMessage, message);
-		appendChatMessage(message, info);
-		prevMessage = message;
-	}
-}
-
 void AdiumChatMessagesRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
 	QString formattedMessageHtml;
@@ -155,11 +142,6 @@ QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(bool useTransparency)
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
 	return styleBaseHtml;
-}
-
-void AdiumChatMessagesRenderer::refreshView(const QVector<Message> &allMessages)
-{
-	Q_UNUSED(allMessages);
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)

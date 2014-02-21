@@ -90,11 +90,6 @@ void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const M
 	configuration().webFrame().evaluateJavaScript("kadu_appendMessage('" + html + "')");
 }
 
-void KaduChatMessagesRenderer::refreshView(const QVector<Message> &allMessages)
-{
-	paintMessages(allMessages);
-}
-
 void KaduChatMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
@@ -118,19 +113,6 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 			: m_style->withoutHeader();
 
 	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, true);
-}
-
-void KaduChatMessagesRenderer::paintMessages(const QVector<Message> &messages)
-{
-	clearMessages();
-
-	auto prevMessage = Message::null;
-	for (auto const &message : messages)
-	{
-		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(prevMessage, message);
-		appendChatMessage(message, info);
-		prevMessage = message;
-	}
 }
 
 QString KaduChatMessagesRenderer::scriptsAtEnd(const QString &html)
