@@ -33,7 +33,6 @@ public:
 	explicit KaduChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent = nullptr);
 	virtual ~KaduChatMessagesRenderer();
 
-	virtual void initialize() override;
 	virtual void clearMessages() override;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
 	virtual void paintMessages(const QVector<Message> &messages) override;

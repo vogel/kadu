@@ -157,10 +157,6 @@ QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(bool useTransparency)
 	return styleBaseHtml;
 }
 
-void AdiumChatMessagesRenderer::initialize()
-{
-}
-
 void AdiumChatMessagesRenderer::refreshView(const QVector<Message> &allMessages)
 {
 	Q_UNUSED(allMessages);

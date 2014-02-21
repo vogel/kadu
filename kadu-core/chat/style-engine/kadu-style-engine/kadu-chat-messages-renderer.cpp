@@ -37,6 +37,29 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfigura
 		ChatMessagesRenderer{std::move(configuration), parent},
 		m_style{std::move(style)}
 {
+	auto top = Parser::parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), true);
+
+	auto html = QString{
+		"<html>"
+		"	<head>"
+		"		<style type='text/css'>"
+		"			%1"
+		"		</style>"
+		"	</head>"
+		"	<body>"
+		"		<script>"
+		"			%2"
+		"		</script>"
+		"		%3"
+		"	</body>"
+		"</html>"
+	};
+
+	this->configuration().webFrame().setHtml(html
+		.arg(ChatStylesManager::instance()->mainStyle())
+		.arg(this->configuration().javaScript())
+		.arg(top)
+	);
 }
 
 KaduChatMessagesRenderer::~KaduChatMessagesRenderer()
@@ -97,36 +120,9 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, true);
 }
 
-void KaduChatMessagesRenderer::initialize()
-{
-	auto top = Parser::parse(m_style->top(), Talkable(configuration().chat().contacts().toContact()), true);
-
-	auto html = QString{
-		"<html>"
-		"	<head>"
-		"		<style type='text/css'>"
-		"			%1"
-		"		</style>"
-		"	</head>"
-		"	<body>"
-		"		<script>"
-		"			%2"
-		"		</script>"
-		"		%3"
-		"	</body>"
-		"</html>"
-	};
-
-	configuration().webFrame().setHtml(html
-		.arg(ChatStylesManager::instance()->mainStyle())
-		.arg(configuration().javaScript())
-		.arg(top)
-	);
-}
-
 void KaduChatMessagesRenderer::paintMessages(const QVector<Message> &messages)
 {
-	initialize();
+	clearMessages();
 
 	auto prevMessage = Message::null;
 	for (auto const &message : messages)
