@@ -47,14 +47,8 @@ AdiumChatMessagesRenderer::AdiumChatMessagesRenderer(ChatMessagesRendererConfigu
 		ChatMessagesRenderer{std::move(configuration), parent},
 		m_style{std::move(style)}
 {
-	QString styleBaseHtml = preprocessStyleBaseHtml();
-
-	if (this->configuration().useTransparency() && !m_style->defaultBackgroundIsTransparent())
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
-
-	this->configuration().webFrame().setHtml(styleBaseHtml);
+	this->configuration().webFrame().setHtml(preprocessStyleBaseHtml(this->configuration().useTransparency()));
 	this->configuration().webFrame().evaluateJavaScript(this->configuration().javaScript());
-	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
 	this->configuration().webFrame().evaluateJavaScript("initStyle()");
 }
 
@@ -137,7 +131,7 @@ void AdiumChatMessagesRenderer::appendChatMessage(const Message &message, const 
 		configuration().webFrame().evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
 }
 
-QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml()
+QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(bool useTransparency)
 {
 	QString styleBaseHtml = m_style->templateHtml();
 	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, KaduPaths::webKitPath(m_style->baseHref()));
@@ -156,6 +150,9 @@ QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml()
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (m_style->styleViewVersion() < 3 && m_style->defaultVariant() == m_style->currentVariant()) ? m_style->mainHref() : "Variants/" + m_style->currentVariant());
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (m_style->styleViewVersion() < 3) ? QString() : QString("@import url( \"" + m_style->mainHref() + "\" );"));
 	}
+
+	if (useTransparency && !m_style->defaultBackgroundIsTransparent())
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
 	return styleBaseHtml;
 }

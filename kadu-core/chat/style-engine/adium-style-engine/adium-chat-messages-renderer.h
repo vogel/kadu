@@ -53,6 +53,6 @@ private:
 
 	QString replaceKeywords(const QString &styleHref, const QString &style);
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
-	QString preprocessStyleBaseHtml();
+	QString preprocessStyleBaseHtml(bool useTransparency);
 
 };
