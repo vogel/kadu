@@ -191,6 +191,9 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 
 void WebkitMessagesView::refreshView()
 {
+	if (!renderer() || !m_chatMessagesRendererFactory)
+		return;
+
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
 
