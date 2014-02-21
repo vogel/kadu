@@ -47,7 +47,16 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 
 void HtmlMessagesRenderer::setChatMessagesRenderer(qobject_ptr<ChatMessagesRenderer> chatMessagesRenderer)
 {
+	if (m_chatMessagesRenderer)
+		disconnect(m_chatMessagesRenderer.get(), SIGNAL(ready()), this, SLOT(ready()));
 	m_chatMessagesRenderer = std::move(chatMessagesRenderer);
+	if (m_chatMessagesRenderer)
+		connect(m_chatMessagesRenderer.get(), SIGNAL(ready()), this, SLOT(ready()));
+}
+
+void HtmlMessagesRenderer::ready()
+{
+	refreshView();
 }
 
 QWebFrame * HtmlMessagesRenderer::webFrame() const

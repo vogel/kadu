@@ -51,6 +51,8 @@ AdiumChatMessagesRenderer::AdiumChatMessagesRenderer(ChatMessagesRendererConfigu
 	this->configuration().webFrame().setHtml(preprocessStyleBaseHtml(this->configuration().useTransparency()));
 	this->configuration().webFrame().evaluateJavaScript(this->configuration().javaScript());
 	this->configuration().webFrame().evaluateJavaScript("initStyle()");
+
+	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(setReady()));
 }
 
 AdiumChatMessagesRenderer::~AdiumChatMessagesRenderer()

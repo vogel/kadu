@@ -20,7 +20,7 @@
 #include "chat-messages-renderer.h"
 
 ChatMessagesRenderer::ChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, QObject *parent) :
-		QObject{parent}, m_configuration{std::move(configuration)}
+		QObject{parent}, m_configuration{std::move(configuration)}, m_ready{false}
 {
 }
 
@@ -31,6 +31,20 @@ ChatMessagesRenderer::~ChatMessagesRenderer()
 const ChatMessagesRendererConfiguration & ChatMessagesRenderer::configuration() const
 {
 	return m_configuration;
+}
+
+bool ChatMessagesRenderer::isReady() const
+{
+	return m_ready;
+}
+
+void ChatMessagesRenderer::setReady()
+{
+	if (m_ready)
+		return;
+
+	m_ready = true;
+	emit ready();
 }
 
 #include "moc_chat-messages-renderer.cpp"

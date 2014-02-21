@@ -76,4 +76,7 @@ private:
 	QWebFrame * webFrame() const;
 	void pruneMessages();
 
+private slots:
+	void ready();
+
 };

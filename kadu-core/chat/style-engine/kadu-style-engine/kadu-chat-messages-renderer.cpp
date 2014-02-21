@@ -39,7 +39,6 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfigura
 		m_style{std::move(style)}
 {
 	auto top = Parser::parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
-
 	auto html = QString{
 		"<html>"
 		"	<head>"
@@ -61,6 +60,8 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfigura
 		.arg(this->configuration().javaScript())
 		.arg(top)
 	);
+
+	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(setReady()));
 }
 
 KaduChatMessagesRenderer::~KaduChatMessagesRenderer()

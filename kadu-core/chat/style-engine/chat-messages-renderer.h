@@ -37,6 +37,7 @@ public:
 	virtual ~ChatMessagesRenderer();
 
 	const ChatMessagesRendererConfiguration & configuration() const;
+	bool isReady() const;
 
 	virtual void clearMessages() = 0;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) = 0;
@@ -45,7 +46,14 @@ public:
 	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) = 0;
 	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) = 0;
 
+signals:
+	void ready();
+
+protected slots:
+	void setReady();
+
 private:
 	ChatMessagesRendererConfiguration m_configuration;
+	bool m_ready;
 
 };

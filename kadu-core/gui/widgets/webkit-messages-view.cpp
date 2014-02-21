@@ -205,7 +205,6 @@ void WebkitMessagesView::refreshView()
 	auto configuration = ChatMessagesRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 
 	renderer()->setChatMessagesRenderer(m_chatMessagesRendererFactory->createChatMessagesRenderer(std::move(configuration)));
-	renderer()->refreshView();
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
