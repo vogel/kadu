@@ -30,6 +30,7 @@
 #include "protocols/services/chat-image.h"
 
 #include <QtCore/QFile>
+#include <QtGui/QTextDocument>
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebPage>
 
@@ -56,7 +57,7 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfigura
 	};
 
 	this->configuration().webFrame().setHtml(html
-		.arg(ChatStylesManager::instance()->mainStyle())
+		.arg(Qt::escape(ChatStylesManager::instance()->mainStyle()))
 		.arg(this->configuration().javaScript())
 		.arg(top)
 	);
@@ -82,7 +83,7 @@ void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const M
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));
 	if (!message.id().isEmpty())
-		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(message.id()));
+		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(Qt::escape(message.id())));
 	else
 		html.prepend("<span class=\"kadu_message\">");
 	html.append("</span>");
@@ -92,17 +93,17 @@ void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const M
 
 void KaduChatMessagesRenderer::messageStatusChanged(const QString &id, MessageStatus status)
 {
-	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(id).arg(static_cast<int>(status)));
+	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
 void KaduChatMessagesRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
 {
-	configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
+	configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
 }
 
 void KaduChatMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	configuration().webFrame().evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(chatImage.key()).arg(fileName));
+	configuration().webFrame().evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
 }
 
 QString KaduChatMessagesRenderer::formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
