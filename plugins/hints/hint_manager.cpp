@@ -489,7 +489,7 @@ void HintManager::setLayoutDirection()
 
 void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable)
 {
-	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), talkable);
+	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), talkable, ParserEscape::HtmlEscape);
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://

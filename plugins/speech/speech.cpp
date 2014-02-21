@@ -252,10 +252,10 @@ void Speech::notify(Notification *notification)
 		if (chat)
 		{
 			Contact contact = *chat.contacts().begin();
-			text = Parser::parse(syntax, Talkable(contact), notification);
+			text = Parser::parse(syntax, Talkable(contact), notification, ParserEscape::HtmlEscape);
 		}
 		else
-			text= Parser::parse(syntax, notification);
+			text= Parser::parse(syntax, notification, ParserEscape::HtmlEscape);
 	}
 
 	QTextDocument document;

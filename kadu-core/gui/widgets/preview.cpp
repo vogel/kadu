@@ -62,7 +62,7 @@ KaduWebView * Preview::webView() const
 void Preview::syntaxChanged(const QString &content)
 {
 	QString syntax = content;
-	QString text = Parser::parse(syntax, Talkable(Buddy::dummy()));
+	QString text = Parser::parse(syntax, Talkable(Buddy::dummy()), ParserEscape::HtmlEscape);
 	emit needFixup(text);
 
 	WebView->setHtml(text);

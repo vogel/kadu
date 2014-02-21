@@ -93,10 +93,10 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 		if (chatNotification)
 		{
 			Contact contact = *chatNotification->chat().contacts().constBegin();
-			ret = Parser::parse(text, Talkable(contact), notification);
+			ret = Parser::parse(text, Talkable(contact), notification, ParserEscape::HtmlEscape);
 		}
 		else
-			ret = Parser::parse(text, notification);
+			ret = Parser::parse(text, notification, ParserEscape::HtmlEscape);
 
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());

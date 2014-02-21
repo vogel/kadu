@@ -295,7 +295,7 @@ void StatusWindow::applyStatus()
 	DescriptionManager::instance()->addDescription(description);
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = Parser::parse(description, Talkable(Core::instance()->myself()), false);
+		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
 
 	foreach (StatusContainer *container, Container->subStatusContainers())
 	{

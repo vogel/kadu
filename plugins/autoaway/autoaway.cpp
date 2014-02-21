@@ -250,7 +250,7 @@ void AutoAway::descriptionChangeChanged(int index)
 QString AutoAway::parseDescription(const QString &parseDescription)
 {
 	if (parseAutoStatus)
-		return (Parser::parse(parseDescription, Talkable(Core::instance()->myself()), true));
+		return (Parser::parse(parseDescription, Talkable(Core::instance()->myself()), ParserEscape::HtmlEscape));
 	else
 		return parseDescription;
 }

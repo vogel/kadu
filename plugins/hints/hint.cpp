@@ -173,10 +173,10 @@ void Hint::updateText()
 		if (CurrentChat)
 		{
 			Contact contact = *CurrentChat.contacts().constBegin();
-			text = Parser::parse(syntax, Talkable(contact), notification);
+			text = Parser::parse(syntax, Talkable(contact), notification, ParserEscape::HtmlEscape);
 		}
 		else
-			text = Parser::parse(syntax, notification);
+			text = Parser::parse(syntax, notification, ParserEscape::HtmlEscape);
 
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.
 		 * for compatibility with other syntaxes we're allowing to put the file://

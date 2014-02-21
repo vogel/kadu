@@ -109,7 +109,7 @@ bool AutoResponder::acceptMessage(const Message &message)
 			|| (Configuration.statusBusy() && protocol->status().group() == StatusTypeGroupAway))
 	{
 		MessageManager::instance()->sendMessage(message.messageChat(), tr("KADU AUTORESPONDER:") + '\n'
-				+ Parser::parse(Configuration.autoRespondText(), Talkable(message.messageSender())), true);
+				+ Parser::parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape), true);
 
 		RepliedChats.insert(message.messageChat());
 	}

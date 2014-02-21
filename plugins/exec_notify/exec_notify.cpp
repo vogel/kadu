@@ -239,11 +239,11 @@ void ExecNotify::notify(Notification *notification)
 
 		Contact contact = *contacts.constBegin();
 		foreach (QString it, s)
-			result.append(Parser::parse(it.replace("%ids", sendersString), Talkable(contact), notification));
+			result.append(Parser::parse(it.replace("%ids", sendersString), Talkable(contact), notification, ParserEscape::HtmlEscape));
 	}
 	else
 		foreach (const QString &it, s)
-			result.append(Parser::parse(it, notification));
+			result.append(Parser::parse(it, notification, ParserEscape::HtmlEscape));
 
 	run(result);
 }

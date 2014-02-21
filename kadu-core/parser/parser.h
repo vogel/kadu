@@ -38,6 +38,12 @@ template<typename T> class QStack;
 class ParserData;
 class ParserToken;
 
+enum class ParserEscape
+{
+	NoEscape,
+	HtmlEscape
+};
+
 class KADUAPI Parser
 {
 	using ObjectTagCallback = std::function<QString(const ParserData * const)>;
@@ -49,7 +55,7 @@ class KADUAPI Parser
 	static QString executeCmd(const QString &cmd);
 
 	static bool isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens);
-	static ParserToken parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, bool escape);
+	static ParserToken parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, ParserEscape escape);
 
 	template<typename ContainerClass>
 	static QString joinParserTokens(const ContainerClass &parseStack);
@@ -59,15 +65,15 @@ public:
 
 	static QString escape(const QString &string);
 
-	static QString parse(const QString &s, const ParserData * const parserData, bool htmlEscape = true)
+	static QString parse(const QString &s, const ParserData * const parserData, ParserEscape escape)
 	{
-		return parse(s, Talkable(), parserData, htmlEscape);
+		return parse(s, Talkable(), parserData, escape);
 	}
-	static QString parse(const QString &s, Talkable talkable, bool htmlEscape = true)
+	static QString parse(const QString &s, Talkable talkable, ParserEscape escape)
 	{
-		return parse(s, talkable, 0, htmlEscape);
+		return parse(s, talkable, 0, escape);
 	}
-	static QString parse(const QString &s, Talkable talkable, const ParserData * const parserData, bool escape = true);
+	static QString parse(const QString &s, Talkable talkable, const ParserData * const parserData, ParserEscape escape);
 
 	static bool registerTag(const QString &name, TalkableTagCallback);
 	static bool unregisterTag(const QString &name);

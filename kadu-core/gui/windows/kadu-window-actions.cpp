@@ -785,7 +785,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 			+ Parser::escape(tr("Mobile:")) + " %m\n]";
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
 	foreach (Contact contact, contacts)
-		infoList.append(Parser::parse(copyPersonalDataSyntax, Talkable(contact), false));
+		infoList.append(Parser::parse(copyPersonalDataSyntax, Talkable(contact), ParserEscape::NoEscape));
 
 	QString info = infoList.join("\n");
 	if (info.isEmpty())

@@ -202,7 +202,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	}
 
 	QDomDocument domDocument;
-	domDocument.setContent(Template.arg(Parser::parse(Syntax, item)));
+	domDocument.setContent(Template.arg(Parser::parse(Syntax, item, ParserEscape::HtmlEscape)));
 
 	Core::instance()->domProcessorService()->process(domDocument);
 

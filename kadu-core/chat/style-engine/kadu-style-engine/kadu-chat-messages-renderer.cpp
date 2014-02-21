@@ -37,7 +37,7 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfigura
 		ChatMessagesRenderer{std::move(configuration), parent},
 		m_style{std::move(style)}
 {
-	auto top = Parser::parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), true);
+	auto top = Parser::parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
 
 	auto html = QString{
 		"<html>"
@@ -112,7 +112,7 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 			? m_style->withHeader()
 			: m_style->withoutHeader();
 
-	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, true);
+	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
 }
 
 QString KaduChatMessagesRenderer::scriptsAtEnd(const QString &html)
