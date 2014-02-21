@@ -64,7 +64,7 @@ class AdiumStyle
 	void loadHtmlFiles();
 	void loadVariants();
 
-	void performTemplateHtmlWorkarounds(QString &html);
+	QString performTemplateHtmlWorkarounds(QString html);
 
 public:
 	AdiumStyle();

@@ -221,13 +221,10 @@ QString AdiumStyle::readStylePart(const QString &part)
 
 QString AdiumStyle::templateHtml()
 {
-	QString styleHtml = readStylePart(TemplateHref);
-	//fix some known bugs in styles Template.hml
-	performTemplateHtmlWorkarounds(styleHtml);
-	return styleHtml;
+	return performTemplateHtmlWorkarounds(readStylePart(TemplateHref));
 }
 
-void AdiumStyle::performTemplateHtmlWorkarounds(QString &html)
+QString AdiumStyle::performTemplateHtmlWorkarounds(QString html)
 {
 	if (Name.contains("renkoo") || Name.contains("Renkoo"))
 	{
@@ -236,4 +233,6 @@ void AdiumStyle::performTemplateHtmlWorkarounds(QString &html)
 		html.replace(html.indexOf("alignChat(true);", index), 16, "alignChat(shouldScroll);");
 		html.replace(html.indexOf("alignChat(true);", index), 16, "alignChat(shouldScroll);");
 	}
+
+	return html;
 }
