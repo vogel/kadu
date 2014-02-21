@@ -308,7 +308,7 @@ void WebkitMessagesView::sentMessageStatusChanged(const Message &message)
 {
 	if (CurrentChat != message.messageChat())
 		return;
-	Renderer->messageStatusChanged(message, message.status());
+	Renderer->messageStatusChanged(message.id(), message.status());
 }
 
 void WebkitMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::State state)

@@ -309,9 +309,9 @@ QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, con
 	return result;
 }
 
-void AdiumChatMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
+void AdiumChatMessagesRenderer::messageStatusChanged(const QString &id, MessageStatus status)
 {
-	configuration().webFrame().evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
+	configuration().webFrame().evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(id).arg(static_cast<int>(status)));
 }
 
 void AdiumChatMessagesRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)

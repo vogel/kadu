@@ -34,7 +34,7 @@ public:
 	virtual void clearMessages() override;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
 	virtual void removeFirstMessage() override;
-	virtual void messageStatusChanged(Message, MessageStatus) override;
+	virtual void messageStatusChanged(const QString &id, MessageStatus) override;
 	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) override;
 	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) override;
 

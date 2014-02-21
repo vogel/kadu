@@ -62,7 +62,7 @@ public:
 	void refreshView();
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void updateBackgroundsAndColors();
-	void messageStatusChanged(Message message, MessageStatus status);
+	void messageStatusChanged(const QString &id, MessageStatus status);
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 
 private:

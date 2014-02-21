@@ -41,7 +41,7 @@ public:
 	virtual void clearMessages() = 0;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) = 0;
 	virtual void removeFirstMessage() = 0;
-	virtual void messageStatusChanged(Message, MessageStatus) = 0;
+	virtual void messageStatusChanged(const QString &id, MessageStatus) = 0;
 	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) = 0;
 	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) = 0;
 

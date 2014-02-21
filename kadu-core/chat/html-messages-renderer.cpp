@@ -198,10 +198,10 @@ void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const 
 		m_chatMessagesRenderer->chatImageAvailable(chatImage, fileName);
 }
 
-void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
+void HtmlMessagesRenderer::messageStatusChanged(const QString &id, MessageStatus status)
 {
 	if (m_chatMessagesRenderer)
-		m_chatMessagesRenderer->messageStatusChanged(message, status);
+		m_chatMessagesRenderer->messageStatusChanged(id, status);
 }
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)

@@ -90,9 +90,9 @@ void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const M
 	configuration().webFrame().evaluateJavaScript("kadu_appendMessage('" + html + "')");
 }
 
-void KaduChatMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
+void KaduChatMessagesRenderer::messageStatusChanged(const QString &id, MessageStatus status)
 {
-	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
+	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(id).arg(static_cast<int>(status)));
 }
 
 void KaduChatMessagesRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
