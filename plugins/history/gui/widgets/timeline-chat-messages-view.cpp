@@ -24,7 +24,7 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/style-engine/chat-messages-renderer-factory-provider.h"
+#include "chat-style/engine/chat-messages-renderer-factory-provider.h"
 #include "core/core.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/web-view-highlighter.h"

@@ -24,7 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-class ChatStylesManager;
+class ChatStyleManager;
 class Message;
 class MessageRenderInfo;
 
@@ -36,12 +36,12 @@ public:
 	explicit MessageRenderInfoFactory(QObject *parent = nullptr);
 	virtual ~MessageRenderInfoFactory();
 
-	void setChatStylesManager(ChatStylesManager *chatStylesManager);
+	void setChatStyleManager(ChatStyleManager *chatStylesManager);
 
 	MessageRenderInfo messageRenderInfo(const Message &previous, const Message &message);
 
 private:
-	QPointer<ChatStylesManager> m_chatStylesManager;
+	QPointer<ChatStyleManager> m_chatStylesManager;
 
 	QString backgroundColor(const Message &message) const;
 	QString nickColor(const Message &message) const;

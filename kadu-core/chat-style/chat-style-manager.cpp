@@ -35,10 +35,10 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
-#include "chat/html-messages-renderer.h"
-#include "chat/style-engine/adium-style-engine/adium-style-engine.h"
-#include "chat/style-engine/configured-chat-messages-renderer-factory-provider.h"
-#include "chat/style-engine/kadu-style-engine/kadu-style-engine.h"
+#include "chat-style/html-messages-renderer.h"
+#include "chat-style/engine/adium-style-engine/adium-style-engine.h"
+#include "chat-style/engine/configured-chat-messages-renderer-factory-provider.h"
+#include "chat-style/engine/kadu-style-engine/kadu-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -52,27 +52,27 @@
 #include "misc/memory.h"
 #include "protocols/protocols-manager.h"
 
-#include "chat-styles-manager.h"
+#include "chat-style-manager.h"
 
 static bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
 {
 	return s1.toLower() < s2.toLower();
 }
 
-ChatStylesManager * ChatStylesManager::Instance = 0;
+ChatStyleManager * ChatStyleManager::Instance = 0;
 
-ChatStylesManager * ChatStylesManager::instance()
+ChatStyleManager * ChatStyleManager::instance()
 {
 	if (0 == Instance)
 	{
-		Instance = new ChatStylesManager();
+		Instance = new ChatStyleManager();
 		Instance->init();
 	}
 
 	return Instance;
 }
 
-ChatStylesManager::ChatStylesManager() :
+ChatStyleManager::ChatStyleManager() :
 		CurrentEngine{},
 		CompositingEnabled{}, CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{},
 		CfgNoHeaderInterval{}, ParagraphSeparator{}, Prune{}, NoServerTime{},
@@ -81,24 +81,24 @@ ChatStylesManager::ChatStylesManager() :
 {
 }
 
-ChatStylesManager::~ChatStylesManager()
+ChatStyleManager::~ChatStyleManager()
 {
 	unregisterChatStyleEngine("Kadu");
 	unregisterChatStyleEngine("Adium");
 }
 
-void ChatStylesManager::setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider)
+void ChatStyleManager::setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider)
 {
 	CurrentConfiguredChatMessagesRendererFactoryProvider = configuredChatMessagesRendererFactoryProvider;
 	configurationUpdated();
 }
 
-void ChatStylesManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+void ChatStyleManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
-void ChatStylesManager::init()
+void ChatStyleManager::init()
 {
 	registerChatStyleEngine("Kadu", make_unique<KaduStyleEngine>());
 
@@ -109,18 +109,18 @@ void ChatStylesManager::init()
 	loadStyles();
 }
 
-void ChatStylesManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
+void ChatStyleManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
 {
 	if (engine && !contains(RegisteredEngines, name))
 		RegisteredEngines.insert(std::make_pair(name, std::move(engine)));
 }
 
-void ChatStylesManager::unregisterChatStyleEngine(const QString &name)
+void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 {
 	RegisteredEngines.erase(name);
 }
 
-void ChatStylesManager::configurationUpdated()
+void ChatStyleManager::configurationUpdated()
 {
 	if (config_file.readBoolEntry("Chat", "ChatPrune"))
 		Prune = config_file.readNumEntry("Chat", "ChatPruneLen");
@@ -204,7 +204,7 @@ void ChatStylesManager::configurationUpdated()
 	triggerCompositingStateChanged();
 }
 
-QString ChatStylesManager::fixedStyleName(QString styleName)
+QString ChatStyleManager::fixedStyleName(QString styleName)
 {
 	if (!AvailableStyles.contains(styleName))
 	{
@@ -220,7 +220,7 @@ QString ChatStylesManager::fixedStyleName(QString styleName)
 	return styleName;
 }
 
-QString ChatStylesManager::fixedVariantName(const QString &styleName, QString variantName)
+QString ChatStyleManager::fixedVariantName(const QString &styleName, QString variantName)
 {
 	if (!CurrentEngine->styleVariants(styleName).contains(variantName))
 		return CurrentEngine->defaultVariant(styleName);
@@ -228,14 +228,14 @@ QString ChatStylesManager::fixedVariantName(const QString &styleName, QString va
 	return variantName;
 }
 
-void ChatStylesManager::compositingEnabled()
+void ChatStyleManager::compositingEnabled()
 {
 	CompositingEnabled = true;
 	if (TurnOnTransparency)
 		TurnOnTransparency->setEnabled(true);
 }
 
-void ChatStylesManager::compositingDisabled()
+void ChatStyleManager::compositingDisabled()
 {
 	CompositingEnabled = false;
 	if (TurnOnTransparency)
@@ -243,7 +243,7 @@ void ChatStylesManager::compositingDisabled()
 }
 
 //any better ideas?
-void ChatStylesManager::loadStyles()
+void ChatStyleManager::loadStyles()
 {
 	QDir dir;
 	QString path, StyleName;
@@ -299,7 +299,7 @@ void ChatStylesManager::loadStyles()
 	}
 }
 
-void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *window)
+void ChatStyleManager::mainConfigurationWindowCreated(MainConfigurationWindow *window)
 {
 	connect(window, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
 	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
@@ -353,13 +353,13 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	help->setVisible(!CompositingEnabled);
 }
 
-void ChatStylesManager::configurationApplied()
+void ChatStyleManager::configurationApplied()
 {
 	config_file.writeEntry("Look", "Style", SyntaxListCombo->currentText());
 	config_file.writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
 }
 
-void ChatStylesManager::styleChangedSlot(const QString &styleName)
+void ChatStyleManager::styleChangedSlot(const QString &styleName)
 {
 	if (!AvailableStyles.contains(styleName))
 		return;
@@ -382,7 +382,7 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	TurnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 }
 
-void ChatStylesManager::variantChangedSlot(const QString &variantName)
+void ChatStyleManager::variantChangedSlot(const QString &variantName)
 {
 	QString styleName = SyntaxListCombo->currentText();
 	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
@@ -391,7 +391,7 @@ void ChatStylesManager::variantChangedSlot(const QString &variantName)
 	EnginePreview->setRendererFactory(AvailableStyles.value(styleName).engine->createRendererFactory({styleName, variantName}));
 }
 
-void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)
+void ChatStyleManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)
 {
 	if (AvailableStyles.contains(syntaxName))
 		return;
@@ -403,7 +403,7 @@ void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *eng
 		SyntaxListCombo->addItem(syntaxName);
 }
 
-StyleInfo ChatStylesManager::chatStyleInfo(const QString &name)
+StyleInfo ChatStyleManager::chatStyleInfo(const QString &name)
 {
 	if (AvailableStyles.contains(name))
 		return AvailableStyles.value(name);
@@ -411,11 +411,11 @@ StyleInfo ChatStylesManager::chatStyleInfo(const QString &name)
 		return StyleInfo();
 }
 
-void ChatStylesManager::configurationWindowDestroyed()
+void ChatStyleManager::configurationWindowDestroyed()
 {
 	SyntaxListCombo = 0;
 	VariantListCombo = 0;
 	TurnOnTransparency = 0;
 }
 
-#include "moc_chat-styles-manager.cpp"
+#include "moc_chat-style-manager.cpp"

@@ -19,7 +19,7 @@
 
 #include "configured-chat-messages-renderer-factory-provider.h"
 
-#include "chat/style-engine/chat-messages-renderer-factory.h"
+#include "chat-style/engine/chat-messages-renderer-factory.h"
 
 ConfiguredChatMessagesRendererFactoryProvider::ConfiguredChatMessagesRendererFactoryProvider(QObject *parent) :
 		ChatMessagesRendererFactoryProvider{parent}

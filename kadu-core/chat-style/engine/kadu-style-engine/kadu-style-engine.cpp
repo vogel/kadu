@@ -22,10 +22,10 @@
 
 #include "kadu-style-engine.h"
 
-#include "chat/chat-styles-manager.h"
+#include "chat-style/chat-style-manager.h"
 #include "core/core.h"
-#include "chat/style-engine/kadu-style-engine/kadu-chat-messages-renderer-factory.h"
-#include "chat/style-engine/kadu-style-engine/kadu-chat-syntax.h"
+#include "chat-style/engine/kadu-style-engine/kadu-chat-messages-renderer-factory.h"
+#include "chat-style/engine/kadu-style-engine/kadu-chat-syntax.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "gui/widgets/preview.h"
 #include "message/message-render-info.h"

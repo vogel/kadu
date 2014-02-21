@@ -42,9 +42,9 @@
 #include "buddies/group-manager.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/chat-styles-manager.h"
-#include "chat/style-engine/chat-messages-renderer-factory-provider.h"
-#include "chat/style-engine/configured-chat-messages-renderer-factory-provider.h"
+#include "chat-style/chat-style-manager.h"
+#include "chat-style/engine/chat-messages-renderer-factory-provider.h"
+#include "chat-style/engine/configured-chat-messages-renderer-factory-provider.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
@@ -721,11 +721,11 @@ void Core::runServices()
 
 	CurrentFormattedStringFactory->setImageStorageService(CurrentImageStorageService);
 
-	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
+	ChatStyleManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
 	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
-	CurrentMessageRenderInfoFactory->setChatStylesManager(ChatStylesManager::instance());
+	CurrentMessageRenderInfoFactory->setChatStyleManager(ChatStyleManager::instance());
 
 	CurrentPluginActivationErrorHandler = new PluginActivationErrorHandler{this};
 	CurrentPluginActivationService = new PluginActivationService(this);
@@ -768,7 +768,7 @@ void Core::runServices()
 
 	CurrentChatMessagesRendererFactoryProvider = make_qobject<ConfiguredChatMessagesRendererFactoryProvider>(this);
 
-	ChatStylesManager::instance()->setConfiguredChatMessagesRendererFactoryProvider(CurrentChatMessagesRendererFactoryProvider.get());
+	ChatStyleManager::instance()->setConfiguredChatMessagesRendererFactoryProvider(CurrentChatMessagesRendererFactoryProvider.get());
 }
 
 void Core::runGuiServices()

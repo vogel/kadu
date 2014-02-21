@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "chat/style-engine/chat-messages-renderer-factory.h"
+#include "chat-style/engine/chat-messages-renderer-factory.h"
 #include "configuration/configuration-aware-object.h"
 #include "misc/memory.h"
 

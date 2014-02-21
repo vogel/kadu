@@ -17,28 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "adium-chat-messages-renderer-factory.h"
+#include "kadu-chat-messages-renderer-factory.h"
 
-#include "chat/style-engine/adium-style-engine/adium-chat-messages-renderer.h"
-#include "message/message-html-renderer-service.h"
+#include "chat-style/engine/kadu-style-engine/kadu-chat-messages-renderer.h"
 
-AdiumChatMessagesRendererFactory::AdiumChatMessagesRendererFactory(std::shared_ptr<AdiumStyle> style) :
+KaduChatMessagesRendererFactory::KaduChatMessagesRendererFactory(std::shared_ptr<KaduChatSyntax> style) :
 		m_style{std::move(style)}
 {
 }
 
-AdiumChatMessagesRendererFactory::~AdiumChatMessagesRendererFactory()
+KaduChatMessagesRendererFactory::~KaduChatMessagesRendererFactory()
 {
 }
 
-void AdiumChatMessagesRendererFactory::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
+qobject_ptr<ChatMessagesRenderer> KaduChatMessagesRendererFactory::createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration)
 {
-	m_messageHtmlRendererService = messageHtmlRendererService;
-}
-
-qobject_ptr<ChatMessagesRenderer> AdiumChatMessagesRendererFactory::createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration)
-{
-	auto renderer = make_qobject<AdiumChatMessagesRenderer>(std::move(configuration), m_style);
-	renderer->setMessageHtmlRendererService(m_messageHtmlRendererService);
+	auto renderer = make_qobject<KaduChatMessagesRenderer>(std::move(configuration), m_style);
 	return qobject_ptr<ChatMessagesRenderer>{renderer.release()};
 }

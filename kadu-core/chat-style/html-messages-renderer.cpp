@@ -23,8 +23,8 @@
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebPage>
 
-#include "chat/chat-styles-manager.h"
-#include "chat/style-engine/chat-messages-renderer.h"
+#include "chat-style/chat-style-manager.h"
+#include "chat-style/engine/chat-messages-renderer.h"
 #include "core/core.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
@@ -82,16 +82,16 @@ bool HtmlMessagesRenderer::pruneEnabled()
 
 void HtmlMessagesRenderer::pruneMessages()
 {
-	if (m_forcePruneDisabled || ChatStylesManager::instance()->cfgNoHeaderRepeat())
+	if (m_forcePruneDisabled || ChatStyleManager::instance()->cfgNoHeaderRepeat())
 		return;
 
-	if (ChatStylesManager::instance()->prune() == 0)
+	if (ChatStyleManager::instance()->prune() == 0)
 	{
 		m_pruneEnabled = false;
 		return;
 	}
 
-	if (m_messages.count() <= ChatStylesManager::instance()->prune())
+	if (m_messages.count() <= ChatStyleManager::instance()->prune())
 	{
 		m_pruneEnabled = false;
 		return;
@@ -100,7 +100,7 @@ void HtmlMessagesRenderer::pruneMessages()
 	m_pruneEnabled = true;
 
 	auto start = m_messages.begin();
-	auto stop = m_messages.end() - ChatStylesManager::instance()->prune();
+	auto stop = m_messages.end() - ChatStyleManager::instance()->prune();
 
 	if (m_chatMessagesRenderer)
 		for (auto it = start; it != stop; ++it)
@@ -116,7 +116,7 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 
 	if (m_chatMessagesRenderer)
 	{
-		if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && pruneEnabled())
+		if (ChatStyleManager::instance()->cfgNoHeaderRepeat() && pruneEnabled())
 		{
 			repaintMessages();
 			return;

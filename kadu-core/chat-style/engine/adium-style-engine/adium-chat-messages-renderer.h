@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include "chat/style-engine/chat-messages-renderer.h"
+#include "chat-style/engine/chat-messages-renderer.h"
 
-#include "chat/style-engine/adium-style-engine/adium-style.h"
+#include "chat-style/engine/adium-style-engine/adium-style.h"
 
 class MessageHtmlRendererService;
 class QWebFrame;

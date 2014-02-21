@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include "chat/style-engine/chat-messages-renderer.h"
+#include "chat-style/engine/chat-messages-renderer.h"
 
-#include "chat/style-engine/kadu-style-engine/kadu-chat-syntax.h"
+#include "chat-style/engine/kadu-style-engine/kadu-chat-syntax.h"
 
 class KaduChatMessagesRenderer : public ChatMessagesRenderer
 {

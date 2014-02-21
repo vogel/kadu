@@ -119,6 +119,7 @@ set (kadu_SUBDIRS
 	avatars
 	buddies
 	chat
+	chat-style
 	compression
 	configuration
 	contacts
@@ -284,7 +285,7 @@ if (UNIX AND NOT APPLE)
 	install (FILES hi256-app-kadu.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif ()
 
-install (FILES "chat/style-engine/chat-scripts.js" DESTINATION "${KADU_INSTALL_DATA_DIR}/scripts")
+install (FILES "chat-style/engine/chat-scripts.js" DESTINATION "${KADU_INSTALL_DATA_DIR}/scripts")
 
 # install api headers
 # how to get list: find . -name '*.h' -exec dirname {} +|sort|uniq|sed -e 's|\./||' -e 's|^|\t|'
@@ -300,8 +301,8 @@ kadu_api_directories (kadu-core
 	chat
 	chat/model
 	chat/style-engine
-	chat/style-engine/chat-engine-adium
-	chat/style-engine/chat-engine-kadu
+	chat-style/engine/chat-engine-adium
+	chat-style/engine/chat-engine-kadu
 	chat/type
 	compression
 	configuration

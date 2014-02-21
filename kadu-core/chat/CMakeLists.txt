@@ -8,30 +8,11 @@ set (chat_SRCS
 	chat-list-mime-data-helper.cpp
 	chat-manager.cpp
 	chat-shared.cpp
-	chat-style.cpp
-	chat-styles-manager.cpp
-	html-messages-renderer.cpp
 	recent-chat-manager.cpp
 
 	model/chat-data-extractor.cpp
 	model/chat-list-model.cpp
 	model/chat-manager-adapter.cpp
-
-	style-engine/adium-style-engine/adium-chat-messages-renderer.cpp
-	style-engine/adium-style-engine/adium-chat-messages-renderer-factory.cpp
-	style-engine/adium-style-engine/adium-style.cpp
-	style-engine/adium-style-engine/adium-time-formatter.cpp
-	style-engine/adium-style-engine/adium-style-engine.cpp
-
-	style-engine/kadu-style-engine/kadu-style-engine.cpp
-	style-engine/kadu-style-engine/kadu-chat-messages-renderer.cpp
-	style-engine/kadu-style-engine/kadu-chat-messages-renderer-factory.cpp
-	style-engine/kadu-style-engine/kadu-chat-syntax.cpp
-
-	style-engine/chat-messages-renderer.cpp
-	style-engine/chat-messages-renderer-configuration.cpp
-	style-engine/chat-messages-renderer-factory-provider.cpp
-	style-engine/configured-chat-messages-renderer-factory-provider.cpp
 
 	type/chat-type.cpp
 	type/chat-type-aware-object.cpp
@@ -51,8 +32,6 @@ set (chat_MOC_SRCS
 	chat-details-room.h
 	chat-manager.h
 	chat-shared.h
-	chat-styles-manager.h
-	html-messages-renderer.h
 	recent-chat-manager.h
 
 	model/chat-list-model.h

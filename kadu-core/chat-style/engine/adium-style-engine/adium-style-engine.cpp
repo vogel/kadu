@@ -24,10 +24,10 @@
 
 #include "adium-style-engine.h"
 
-#include "chat/chat-style.h"
-#include "chat/html-messages-renderer.h"
-#include "chat/style-engine/adium-style-engine/adium-chat-messages-renderer-factory.h"
-#include "chat/style-engine/adium-style-engine/adium-style.h"
+#include "chat-style/chat-style.h"
+#include "chat-style/html-messages-renderer.h"
+#include "chat-style/engine/adium-style-engine/adium-chat-messages-renderer-factory.h"
+#include "chat-style/engine/adium-style-engine/adium-style.h"
 #include "message/message-html-renderer-service.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"

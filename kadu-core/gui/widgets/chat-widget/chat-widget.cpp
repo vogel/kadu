@@ -50,7 +50,7 @@
 #include "buddies/buddy.h"
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
-#include "chat/style-engine/chat-messages-renderer-factory-provider.h"
+#include "chat-style/engine/chat-messages-renderer-factory-provider.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"

@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "chat/style-engine/chat-style-engine.h"
+#include "chat-style/engine/chat-style-engine.h"
 
 class Preview;
 class SyntaxList;

@@ -27,8 +27,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
-#include "chat/chat-style.h"
-#include "chat/style-engine/chat-messages-renderer.h"
+#include "chat-style/chat-style.h"
+#include "chat-style/engine/chat-messages-renderer.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
@@ -53,16 +53,16 @@ struct StyleInfo
 	StyleInfo() : global(false), engine(0) {}
 };
 
-class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
+class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
-	static ChatStylesManager *Instance;
+	static ChatStyleManager *Instance;
 
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QPointer<ConfiguredChatMessagesRendererFactoryProvider> CurrentConfiguredChatMessagesRendererFactoryProvider;
 
-	ChatStylesManager();
+	ChatStyleManager();
 
 	void init();
 
@@ -109,9 +109,9 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static ChatStylesManager * instance();
+	static ChatStyleManager * instance();
 
-	~ChatStylesManager();
+	~ChatStyleManager();
 
 	void setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);

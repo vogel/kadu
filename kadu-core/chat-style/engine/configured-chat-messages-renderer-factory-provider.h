@@ -17,21 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "kadu-chat-messages-renderer-factory.h"
+#pragma once
 
-#include "chat/style-engine/kadu-style-engine/kadu-chat-messages-renderer.h"
+#include "chat-style/engine/chat-messages-renderer-factory-provider.h"
 
-KaduChatMessagesRendererFactory::KaduChatMessagesRendererFactory(std::shared_ptr<KaduChatSyntax> style) :
-		m_style{std::move(style)}
+class ConfiguredChatMessagesRendererFactoryProvider : public ChatMessagesRendererFactoryProvider
 {
-}
+	Q_OBJECT
 
-KaduChatMessagesRendererFactory::~KaduChatMessagesRendererFactory()
-{
-}
+public:
+	explicit ConfiguredChatMessagesRendererFactoryProvider(QObject *parent = nullptr);
+	virtual ~ConfiguredChatMessagesRendererFactoryProvider();
 
-qobject_ptr<ChatMessagesRenderer> KaduChatMessagesRendererFactory::createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration)
-{
-	auto renderer = make_qobject<KaduChatMessagesRenderer>(std::move(configuration), m_style);
-	return qobject_ptr<ChatMessagesRenderer>{renderer.release()};
-}
+	virtual std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory() const override;
+	void setChatMessagesRendererFactory(std::unique_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory);
+
+private:
+	std::shared_ptr<ChatMessagesRendererFactory> m_chatMessagesRendererFactory;
+
+};

@@ -19,7 +19,7 @@
 
 #include "message-render-info-factory.h"
 
-#include "chat/chat-styles-manager.h"
+#include "chat-style/chat-style-manager.h"
 #include "configuration/chat-configuration-holder.h"
 #include "message/message.h"
 #include "message/message-render-info.h"
@@ -34,7 +34,7 @@ MessageRenderInfoFactory::~MessageRenderInfoFactory()
 {
 }
 
-void MessageRenderInfoFactory::setChatStylesManager(ChatStylesManager *chatStylesManager)
+void MessageRenderInfoFactory::setChatStyleManager(ChatStyleManager *chatStylesManager)
 {
 	m_chatStylesManager = chatStylesManager;
 }
