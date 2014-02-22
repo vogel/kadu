@@ -48,36 +48,16 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 void HtmlMessagesRenderer::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer)
 {
 	if (m_chatStyleRenderer)
-		disconnect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(ready()));
+		disconnect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(refreshView()));
 	m_chatStyleRenderer = std::move(chatStyleRenderer);
 	if (m_chatStyleRenderer)
-		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(ready()));
-}
-
-void HtmlMessagesRenderer::ready()
-{
-	refreshView();
-}
-
-QWebFrame * HtmlMessagesRenderer::webFrame() const
-{
-	return static_cast<QWebFrame *>(parent());
+		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(refreshView()));
 }
 
 void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 {
 	m_forcePruneDisabled = forcePruneDisabled;
 	pruneMessages();
-}
-
-QString HtmlMessagesRenderer::content()
-{
-	return webFrame()->toHtml();
-}
-
-bool HtmlMessagesRenderer::pruneEnabled()
-{
-	return !m_forcePruneDisabled && m_pruneEnabled;
 }
 
 void HtmlMessagesRenderer::pruneMessages()
@@ -116,9 +96,9 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 
 	if (m_chatStyleRenderer)
 	{
-		if (ChatStyleManager::instance()->cfgNoHeaderRepeat() && pruneEnabled())
+		if (ChatStyleManager::instance()->cfgNoHeaderRepeat() && !m_forcePruneDisabled && m_pruneEnabled)
 		{
-			repaintMessages();
+			refreshView();
 			return;
 		}
 		else
@@ -133,7 +113,7 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 	m_lastMessage = message;
 }
 
-void HtmlMessagesRenderer::repaintMessages()
+void HtmlMessagesRenderer::refreshView()
 {
 	if (!m_chatStyleRenderer)
 		return;
@@ -189,16 +169,6 @@ void HtmlMessagesRenderer::clearMessages()
 	m_lastMessage = Message::null;
 	if (m_chatStyleRenderer)
 		m_chatStyleRenderer->clearMessages();
-}
-
-void HtmlMessagesRenderer::setLastMessage(Message message)
-{
-	m_lastMessage = message;
-}
-
-void HtmlMessagesRenderer::refreshView()
-{
-	repaintMessages();
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)

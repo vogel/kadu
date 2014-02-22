@@ -43,27 +43,20 @@ public:
 
 	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer);
 
-	bool pruneEnabled();
-
-	bool forcePruneDisabled() { return m_forcePruneDisabled; }
 	void setForcePruneDisabled(bool forcePruneDisabled);
-
-	QString content();
 
 	const QVector<Message> & messages() const { return m_messages; }
 	void appendMessage(const Message &message);
 	void appendMessages(const QVector<Message> &messages);
 	void clearMessages();
 
-	Message lastMessage() { return m_lastMessage; }
-	void setLastMessage(Message message);
-
-	void repaintMessages();
-	void refreshView();
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(const QString &id, MessageStatus status);
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
+
+public slots:
+	void refreshView();
 
 private:
 	QVector<Message> m_messages;
@@ -73,10 +66,6 @@ private:
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;
 
-	QWebFrame * webFrame() const;
 	void pruneMessages();
-
-private slots:
-	void ready();
 
 };
