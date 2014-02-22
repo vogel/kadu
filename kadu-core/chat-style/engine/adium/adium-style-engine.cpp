@@ -25,7 +25,6 @@
 #include "adium-style-engine.h"
 
 #include "chat-style/chat-style.h"
-#include "chat-style/html-messages-renderer.h"
 #include "chat-style/engine/adium/adium-style.h"
 #include "chat-style/engine/adium/adium-style-renderer-factory.h"
 #include "message/message-html-renderer-service.h"

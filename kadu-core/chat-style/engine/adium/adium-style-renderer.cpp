@@ -21,7 +21,6 @@
 
 #include "avatars/avatar.h"
 #include "chat-style/chat-style-manager.h"
-#include "chat-style/html-messages-renderer.h"
 #include "chat-style/engine/adium/adium-style-engine.h"
 #include "chat-style/engine/adium/adium-time-formatter.h"
 #include "configuration/chat-configuration-holder.h"

@@ -35,7 +35,6 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
-#include "chat-style/html-messages-renderer.h"
 #include "chat-style/engine/adium/adium-style-engine.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/kadu/kadu-style-engine.h"

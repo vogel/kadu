@@ -1,7 +1,6 @@
 set (chat-style_SRCS
 	chat-style.cpp
 	chat-style-manager.cpp
-	html-messages-renderer.cpp
 
 	engine/adium/adium-style-renderer.cpp
 	engine/adium/adium-style-renderer-factory.cpp
