@@ -22,8 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_CHAT_SYNTAX_H
-#define KADU_CHAT_SYNTAX_H
+#pragma once
 
 #include <QtCore/QString>
 
@@ -46,5 +45,3 @@ public:
 	const QString & withoutHeader() { return WithoutHeader; };
 
 };
-
-#endif // KADU_CHAT_SYNTAX_H

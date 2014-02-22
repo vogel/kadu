@@ -23,18 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPalette>
-#include <QtGui/QPushButton>
+#include "chat-style-manager.h"
 
-#include "accounts/account-manager.h"
-#include "buddies/buddy-preferred-manager.h"
-#include "chat/chat-details-contact.h"
 #include "chat-style/engine/adium/adium-style-engine.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/kadu/kadu-style-engine.h"
@@ -42,16 +32,20 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "gui/widgets/chat-style-preview.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/chat-style-preview.h"
-#include "gui/windows/message-dialog.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/algorithm.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
-#include "protocols/protocols-manager.h"
 
-#include "chat-style-manager.h"
+#include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 
 static bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
 {

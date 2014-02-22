@@ -22,17 +22,11 @@
 
 #include "kadu-style-engine.h"
 
-#include "chat-style/chat-style-manager.h"
-#include "core/core.h"
+#include "chat-style/chat-style.h"
+#include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/kadu/kadu-style-renderer-factory.h"
 #include "chat-style/engine/kadu/kadu-chat-syntax.h"
-#include "gui/widgets/kadu-web-view.h"
-#include "gui/widgets/preview.h"
-#include "message/message-render-info.h"
-#include "message/message-render-info-factory.h"
-#include "misc/memory.h"
 #include "misc/syntax-list.h"
-#include "parser/parser.h"
 
 #include <QtCore/QFileInfo>
 

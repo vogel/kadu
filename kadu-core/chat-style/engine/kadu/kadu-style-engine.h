@@ -24,7 +24,8 @@
 
 #include "chat-style/engine/chat-style-engine.h"
 
-class Preview;
+#include <QtCore/QSharedPointer>
+
 class SyntaxList;
 
 class KaduStyleEngine : public ChatStyleEngine

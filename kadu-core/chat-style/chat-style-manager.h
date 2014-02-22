@@ -20,29 +20,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_STYLES_MANAGER_H
-#define CHAT_STYLES_MANAGER_H
+#pragma once
 
+#include "chat-style/chat-style.h"
+#include "configuration/configuration-aware-object.h"
+#include "os/generic/compositing-aware-object.h"
+
+#include <map>
 #include <memory>
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QStringList>
+#include <QtGui/QColor>
 
-#include "chat-style/chat-style.h"
-#include "chat-style/engine/chat-style-renderer.h"
-#include "configuration/configuration-aware-object.h"
-#include "gui/windows/main-configuration-window.h"
-#include "os/generic/compositing-aware-object.h"
-#include "exports.h"
-
-class QCheckBox;
-class QComboBox;
-class QPushButton;
-
-class WebkitMessagesView;
 class ChatStyleEngine;
 class ChatStylePreview;
 class ConfiguredChatStyleRendererFactoryProvider;
 class FormattedStringFactory;
+class MainConfigurationWindow;
+
+class QCheckBox;
+class QComboBox;
 
 //TODO: review
 struct StyleInfo
@@ -111,7 +110,7 @@ protected:
 public:
 	static ChatStyleManager * instance();
 
-	~ChatStyleManager();
+	virtual ~ChatStyleManager();
 
 	void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
@@ -142,5 +141,3 @@ public:
 	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
 
 };
-
-#endif

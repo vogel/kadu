@@ -19,17 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QIODevice>
-#include <QtCore/QSettings>
-#include <QtCore/QTextCodec>
-#include <QtCore/QTextStream>
-#include <QtXml/QDomElement>
-#include <QtXml/QDomNode>
+#include "adium-style.h"
 
 #include "misc/kadu-paths.h"
 
-#include "adium-style.h"
+#include <QtCore/QDir>
+#include <QtCore/QTextCodec>
+#include <QtCore/QTextStream>
+#include <QtXml/QDomNode>
 
 //Functions to parse plist format are borrowed from pluginsystem.cpp from qutIM instant messenger (see: http://www.qutim.org/)
 QSettings::SettingsMap parseDict(const QDomNode &rootElement)

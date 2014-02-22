@@ -21,10 +21,10 @@
 
 #include "chat-style/engine/chat-style-renderer.h"
 
-#include "chat-style/engine/adium/adium-style.h"
+#include <QtCore/QPointer>
 
+class AdiumStyle;
 class MessageHtmlRendererService;
-class QWebFrame;
 
 class AdiumStyleRenderer : public ChatStyleRenderer
 {

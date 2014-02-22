@@ -20,28 +20,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_STYLE_ENGINE_H
-#define CHAT_STYLE_ENGINE_H
+#pragma once
 
+#include <memory>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include "message/message.h"
-#include "protocols/services/chat-state-service.h"
-
-class ChatImage;
-class ChatStyleRendererFactory;
 class ChatStyle;
-class HtmlMessagesRenderer;
-class Preview;
+class ChatStyleRendererFactory;
 
 class ChatStyleEngine
 {
 
 public:
 	virtual ~ChatStyleEngine() {}
-	virtual QString defaultVariant(const QString &) { return "Default"; }
-	virtual QStringList styleVariants(QString) { return QStringList(); }
+	virtual QString defaultVariant(const QString &) { return {"Default"}; }
+	virtual QStringList styleVariants(QString) { return {}; }
 
 	virtual bool supportVariants() = 0;
 	virtual QString isStyleValid(QString) = 0; //return QString(), if style is not valid
@@ -50,5 +44,3 @@ public:
 	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle) = 0;
 
 };
-
-#endif // CHAT_STYLE_ENGINE_H

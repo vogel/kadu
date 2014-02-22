@@ -32,7 +32,6 @@
 #include "misc/memory.h"
 
 #include <QtCore/QDir>
-#include <QtWebKit/QWebFrame>
 
 AdiumStyleEngine::AdiumStyleEngine()
 {

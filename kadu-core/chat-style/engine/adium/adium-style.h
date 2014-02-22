@@ -19,11 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADIUM_STYLE_H
-#define ADIUM_STYLE_H
+#pragma once
 
 #include <QtCore/QSettings>
-#include <QtCore/QStringList>
 #include <QtGui/QColor>
 
 #undef PROPERTY
@@ -94,5 +92,3 @@ public:
 	const QStringList & styleVariants() const { return StyleVariants; }
 
 };
-
-#endif // ADIUM_STYLE_H

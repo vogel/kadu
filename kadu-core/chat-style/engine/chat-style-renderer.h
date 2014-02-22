@@ -20,12 +20,13 @@
 #pragma once
 
 #include "chat-style/engine/chat-style-renderer-configuration.h"
-#include "message/message.h"
+#include "message/message-common.h"
 #include "protocols/services/chat-state-service.h"
 
 #include <QtCore/QVector>
 
 class ChatImage;
+class Message;
 class MessageRenderInfo;
 
 class ChatStyleRenderer : public QObject

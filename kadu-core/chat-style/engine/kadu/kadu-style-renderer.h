@@ -21,7 +21,7 @@
 
 #include "chat-style/engine/chat-style-renderer.h"
 
-#include "chat-style/engine/kadu/kadu-chat-syntax.h"
+class KaduChatSyntax;
 
 class KaduStyleRenderer : public ChatStyleRenderer
 {

@@ -16,8 +16,7 @@
  ***************************************************************************
 *****************************************************************************/
 
-#ifndef ADIUM_TIME_FORMATTER_H
-#define ADIUM_TIME_FORMATTER_H
+#pragma once
 
 #include <QtCore/QDate>
 
@@ -48,5 +47,3 @@ namespace AdiumTimeFormatter
 	QString convertTimeDate(const QString &mac_format, const QDateTime &datetime);
 
 }
-
-#endif // ADIUM_TIME_FORMATTER_H

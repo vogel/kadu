@@ -20,9 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QRegExp>
 
 #include "kadu-chat-syntax.h"
+
+#include <QtCore/QRegExp>
 
 KaduChatSyntax::KaduChatSyntax(const QString &syntax)
 {

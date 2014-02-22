@@ -16,15 +16,12 @@
  ***************************************************************************
 *****************************************************************************/
 
-#include <QtCore/QChar>
-#include <QtCore/QDateTime>
-#include <QtCore/QLocale>
-#include <QtCore/QString>
-#include <QtGui/QApplication>
+#include "adium-time-formatter.h"
 
 #include "os/generic/system-info.h"
 
-#include "adium-time-formatter.h"
+#include <QtCore/QCoreApplication>
+#include <QtCore/QLocale>
 
 namespace AdiumTimeFormatter
 {
@@ -404,4 +401,4 @@ while (length > NUM) \
 		return str;
 	}
 
-} // namespace AdiumTimeFormatter
+}

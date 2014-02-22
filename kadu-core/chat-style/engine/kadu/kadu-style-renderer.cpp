@@ -19,20 +19,16 @@
 
 #include "kadu-style-renderer.h"
 
+#include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "chat-style/chat-style-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "message/message-render-info.h"
-#include "message/message-render-info-factory.h"
-#include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-image.h"
 
-#include <QtCore/QFile>
 #include <QtGui/QTextDocument>
 #include <QtWebKit/QWebFrame>
-#include <QtWebKit/QWebPage>
 
 KaduStyleRenderer::KaduStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
 		ChatStyleRenderer{std::move(configuration), parent},

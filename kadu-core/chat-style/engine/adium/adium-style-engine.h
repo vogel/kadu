@@ -26,9 +26,7 @@
 
 #include <QtCore/QPointer>
 
-class AdiumChatStyleRenderer;
 class MessageHtmlRendererService;
-class QWebFrame;
 
 class AdiumStyleEngine : public ChatStyleEngine
 {
