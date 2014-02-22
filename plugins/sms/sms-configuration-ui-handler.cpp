@@ -81,7 +81,16 @@ void SmsConfigurationUiHandler::unregisterConfigurationUi()
 	}
 }
 
-SmsConfigurationUiHandler::SmsConfigurationUiHandler()
+SmsConfigurationUiHandler::SmsConfigurationUiHandler() :
+	useBuiltIn{},
+	customApp{},
+	useCustomString{},
+	customString{},
+	EraGatewayComboBox{},
+	EraSponsoredUser{},
+	EraSponsoredPassword{},
+	EraOmnixUser{},
+	EraOmnixPassword{}
 {
 	createDefaultConfiguration();
 }

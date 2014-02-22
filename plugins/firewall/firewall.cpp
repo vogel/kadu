@@ -489,10 +489,12 @@ void Firewall::writeLog(const Contact &contact, const QString &message)
 		logFile.close();
 	}
 
-	logFile.open(QIODevice::WriteOnly | QIODevice::Append);
-	QTextStream stream(&logFile);
-	stream << QDateTime::currentDateTime().toString() << " :: " << contact.display(true) << " :: " << message << "\n";
-	logFile.close();
+	if (logFile.open(QIODevice::WriteOnly | QIODevice::Append))
+	{
+		QTextStream stream(&logFile);
+		stream << QDateTime::currentDateTime().toString() << " :: " << contact.display(true) << " :: " << message << "\n";
+		logFile.close();
+	}
 
 	kdebugf2();
 }

@@ -108,7 +108,12 @@ void PCSpeaker::beep(int pitch, int duration)
 }
 #endif
 
-PCSpeaker::PCSpeaker(QObject *parent) : Notifier("PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low"), parent)
+PCSpeaker::PCSpeaker(QObject *parent) :
+		Notifier{"PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low"), parent},
+#ifdef Q_WS_X11
+		xdisplay{},
+#endif
+		configWidget{}
 {
 	Instance = this;
 }

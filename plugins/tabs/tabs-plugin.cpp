@@ -30,6 +30,13 @@
 
 #include "tabs-plugin.h"
 
+TabsPlugin::TabsPlugin(QObject *parent) :
+		QObject{parent},
+		TabsManagerInstance{}
+{
+}
+
+
 TabsPlugin::~TabsPlugin()
 {
 }

@@ -29,7 +29,8 @@
 #include "screen-shot-saver.h"
 
 ScreenShotSaver::ScreenShotSaver(QObject *parent) :
-		QObject(parent)
+		QObject{parent},
+		Size{}
 {
 }
 

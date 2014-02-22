@@ -34,7 +34,7 @@ class Status;
 
 namespace IrisStatusAdapter
 {
-	Status fromIrisStatus(XMPP::Status status);
+	Status fromIrisStatus(const XMPP::Status &status);
 	XMPP::Status toIrisStatus(Status status);
 
 	bool statusesEqual(Status status1, Status status2);

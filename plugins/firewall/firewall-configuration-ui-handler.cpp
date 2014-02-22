@@ -62,7 +62,11 @@ void FirewallConfigurationUiHandler::unregisterUiHandler()
 	}
 }
 
-FirewallConfigurationUiHandler::FirewallConfigurationUiHandler()
+FirewallConfigurationUiHandler::FirewallConfigurationUiHandler() :
+		AllList{},
+		SecureList{},
+		QuestionEdit{},
+		AnswerEdit{}
 {
 }
 

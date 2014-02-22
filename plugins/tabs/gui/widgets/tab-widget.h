@@ -59,9 +59,6 @@ class TabWidget : public QTabWidget, CompositingAwareObject
 
 	TabsManager *Manager;
 
-	/**
-	* Zmienna konfiguracyjna
-	*/
 	bool config_oldStyleClosing;
 
 	void closeTab(QWidget *tabWidget);

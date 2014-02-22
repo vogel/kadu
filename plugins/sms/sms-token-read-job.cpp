@@ -28,7 +28,8 @@
 #include "sms-token-read-job.h"
 
 SmsTokenReadJob::SmsTokenReadJob(QObject *parent) :
-		QObject(parent)
+		QObject{parent},
+		TokenNetworkReply{}
 {
 }
 

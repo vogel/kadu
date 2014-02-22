@@ -43,7 +43,9 @@
 #include "screenshot.h"
 
 ScreenShot::ScreenShot(ChatWidget *chatWidget) :
-		MyChatWidget(chatWidget)
+		Mode{},
+		MyScreenshotTaker{},
+		MyChatWidget{chatWidget}
 {
 	kdebugf();
 

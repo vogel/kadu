@@ -144,6 +144,8 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 
 	RightCornerWidget->setLayout(rightCornerWidgetLayout);
 	setCornerWidget(RightCornerWidget, Qt::TopRightCorner);
+
+	configurationUpdated();
 }
 
 TabWidget::~TabWidget()

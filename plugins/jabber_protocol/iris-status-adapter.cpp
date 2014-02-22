@@ -27,7 +27,7 @@
 
 namespace IrisStatusAdapter
 {
-	Status fromIrisStatus(XMPP::Status status)
+	Status fromIrisStatus(const XMPP::Status &status)
 	{
 		Status newstatus;
 		if (status.isAvailable())

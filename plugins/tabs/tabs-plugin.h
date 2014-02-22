@@ -43,6 +43,7 @@ class TabsPlugin : public QObject, public PluginRootComponent
 	QScopedPointer<TabsChatWidgetContainerHandler> ChatWidgetContainerHandler;
 
 public:
+	explicit TabsPlugin(QObject *parent = nullptr);
 	virtual ~TabsPlugin();
 
 	virtual bool init(bool firstLoad);
