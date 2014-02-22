@@ -30,15 +30,15 @@ ConfiguredChatStyleRendererFactoryProvider::~ConfiguredChatStyleRendererFactoryP
 {
 }
 
-std::shared_ptr<ChatStyleRendererFactory> ConfiguredChatStyleRendererFactoryProvider::chatMessagesRendererFactory() const
+std::shared_ptr<ChatStyleRendererFactory> ConfiguredChatStyleRendererFactoryProvider::chatStyleRendererFactory() const
 {
-	return m_chatMessagesRendererFactory;
+	return m_chatStyleRendererFactory;
 }
 
-void ConfiguredChatStyleRendererFactoryProvider::setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory)
+void ConfiguredChatStyleRendererFactoryProvider::setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatStyleRendererFactory)
 {
-	m_chatMessagesRendererFactory = std::move(chatMessagesRendererFactory);
-	emit chatMessagesRendererFactoryChanged(m_chatMessagesRendererFactory);
+	m_chatStyleRendererFactory = std::move(chatStyleRendererFactory);
+	emit chatStyleRendererFactoryChanged(m_chatStyleRendererFactory);
 }
 
 #include "moc_configured-chat-style-renderer-factory-provider.cpp"

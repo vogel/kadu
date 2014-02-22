@@ -32,9 +32,9 @@ public:
 	explicit ChatStyleRendererFactoryProvider(QObject *parent = nullptr);
 	virtual ~ChatStyleRendererFactoryProvider();
 
-	virtual std::shared_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory() const = 0;
+	virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const = 0;
 
 signals:
-	void chatMessagesRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory> chatMessagesRenderer);
+	void chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory> chatStyleRenderer);
 
 };

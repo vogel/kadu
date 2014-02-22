@@ -247,7 +247,7 @@ public:
 	PluginManager * pluginManager() const;
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
-	ChatStyleRendererFactoryProvider * chatMessagesRendererFactoryProvider() const;
+	ChatStyleRendererFactoryProvider * chatStyleRendererFactoryProvider() const;
 	ConfiguredChatStyleRendererFactoryProvider * configuredChatStyleRendererFactoryProvider() const;
 
 	void setShowMainWindowOnStart(bool show);

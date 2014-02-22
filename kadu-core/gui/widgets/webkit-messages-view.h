@@ -55,7 +55,7 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	Chat CurrentChat;
 	qobject_ptr<HtmlMessagesRenderer> Renderer;
-	std::shared_ptr<ChatStyleRendererFactory> m_chatMessagesRendererFactory;
+	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
 
 	bool SupportTransparency;
 
@@ -103,7 +103,7 @@ public:
 	bool supportTransparency() { return SupportTransparency; }
 
 public slots:
-	void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory);
+	void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
 
 	void clearMessages();
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);

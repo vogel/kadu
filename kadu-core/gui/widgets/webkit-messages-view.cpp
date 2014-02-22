@@ -178,7 +178,7 @@ void WebkitMessagesView::setChat(const Chat &chat)
 
 void WebkitMessagesView::recreateRenderer()
 {
-	if (!m_chatMessagesRendererFactory)
+	if (!m_chatStyleRendererFactory)
 		return;
 
 	refreshView();
@@ -191,7 +191,7 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 
 void WebkitMessagesView::refreshView()
 {
-	if (!renderer() || !m_chatMessagesRendererFactory)
+	if (!renderer() || !m_chatStyleRendererFactory)
 		return;
 
 	ScopedUpdatesDisabler updatesDisabler{*this};
@@ -204,7 +204,7 @@ void WebkitMessagesView::refreshView()
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
 	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 
-	renderer()->setChatStyleRenderer(m_chatMessagesRendererFactory->createChatStyleRenderer(std::move(configuration)));
+	renderer()->setChatStyleRenderer(m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration)));
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
@@ -286,9 +286,9 @@ void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 	emit messagesUpdated();
 }
 
-void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory)
+void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory)
 {
-	m_chatMessagesRendererFactory = chatMessagesRendererFactory;
+	m_chatStyleRendererFactory = chatStyleRendererFactory;
 
 	recreateRenderer();
 }

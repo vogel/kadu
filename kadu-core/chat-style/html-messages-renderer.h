@@ -41,7 +41,7 @@ public:
 	explicit HtmlMessagesRenderer(QWebFrame *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
-	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatMessagesRenderer);
+	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer);
 
 	bool pruneEnabled();
 
@@ -68,7 +68,7 @@ public:
 private:
 	QVector<Message> m_messages;
 	Message m_lastMessage;
-	qobject_ptr<ChatStyleRenderer> m_chatMessagesRenderer;
+	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
 
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;

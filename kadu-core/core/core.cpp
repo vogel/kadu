@@ -992,7 +992,7 @@ PluginManager * Core::pluginManager() const
 	return CurrentPluginManager;
 }
 
-ChatStyleRendererFactoryProvider * Core::chatMessagesRendererFactoryProvider() const
+ChatStyleRendererFactoryProvider * Core::chatStyleRendererFactoryProvider() const
 {
 	return CurrentChatStyleRendererFactoryProvider.get();
 }

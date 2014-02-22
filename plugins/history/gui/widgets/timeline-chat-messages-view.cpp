@@ -84,9 +84,9 @@ void TimelineChatMessagesView::createGui()
 	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
 	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 
-	auto provider = Core::instance()->chatMessagesRendererFactoryProvider();
-	MessagesView->setChatStyleRendererFactory(provider->chatMessagesRendererFactory());
-	connect(provider, SIGNAL(chatMessagesRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)),
+	auto provider = Core::instance()->chatStyleRendererFactoryProvider();
+	MessagesView->setChatStyleRendererFactory(provider->chatStyleRendererFactory());
+	connect(provider, SIGNAL(chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)),
 			MessagesView, SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
 
 	MessagesView->setFocusPolicy(Qt::StrongFocus);

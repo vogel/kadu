@@ -29,10 +29,10 @@ public:
 	explicit ConfiguredChatStyleRendererFactoryProvider(QObject *parent = nullptr);
 	virtual ~ConfiguredChatStyleRendererFactoryProvider();
 
-	virtual std::shared_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory() const override;
-	void setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory);
+	virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const override;
+	void setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
 
 private:
-	std::shared_ptr<ChatStyleRendererFactory> m_chatMessagesRendererFactory;
+	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
 
 };
