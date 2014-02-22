@@ -25,7 +25,7 @@
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "gui/widgets/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 
 #include <QtGui/QHBoxLayout>
 

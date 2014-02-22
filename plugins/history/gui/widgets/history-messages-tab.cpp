@@ -41,7 +41,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "gui/widgets/wait-overlay.h"
-#include "gui/widgets/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/merged-proxy-model-factory.h"

@@ -35,7 +35,7 @@
 #include "protocols/services/chat-service.h"
 #include "protocols/services/chat-state-service.h"
 
-#include "kadu-web-view.h"
+#include "gui/widgets/kadu-web-view.h"
 
 #include "exports.h"
 

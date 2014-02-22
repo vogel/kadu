@@ -75,7 +75,7 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "gui/widgets/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"

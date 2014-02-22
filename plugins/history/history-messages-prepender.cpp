@@ -20,7 +20,7 @@
 
 #include <QtCore/QFutureWatcher>
 
-#include "gui/widgets/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 
 #include "history-messages-prepender.h"
 

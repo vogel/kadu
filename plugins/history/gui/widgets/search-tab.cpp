@@ -34,7 +34,7 @@
 
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/search-bar.h"
-#include "gui/widgets/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"

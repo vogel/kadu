@@ -123,7 +123,7 @@ set (gui_SRCS
 	widgets/toolbar.cpp
 	widgets/tool-tip-class-manager.cpp
 	widgets/wait-overlay.cpp
-	widgets/webkit-messages-view.cpp
+	widgets/webkit-messages-view/webkit-messages-view.cpp
 
 	widgets/configuration/buddy-list-background-colors-widget.cpp
 	widgets/configuration/config-action-button.cpp

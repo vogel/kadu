@@ -43,7 +43,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
-#include "gui/widgets/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
