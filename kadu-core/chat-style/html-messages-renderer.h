@@ -58,12 +58,12 @@ public slots:
 
 private:
 	QVector<Message> m_messages;
-	Message m_lastMessage;
 	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
 
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;
 
+	Message lastMessage() const;
 	void pruneMessages();
 
 };

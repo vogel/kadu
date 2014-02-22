@@ -98,13 +98,18 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 		else
 		{
 			auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-			auto info = messageRenderInfoFactory->messageRenderInfo(m_lastMessage, message);
+			auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage(), message);
 
 			m_chatStyleRenderer->appendChatMessage(message, info);
 		}
 	}
+}
 
-	m_lastMessage = message;
+Message HtmlMessagesRenderer::lastMessage() const
+{
+	return m_messages.isEmpty()
+			? Message{}
+			: m_messages.last();
 }
 
 void HtmlMessagesRenderer::refreshView()
@@ -144,7 +149,7 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 
 	if (m_chatStyleRenderer)
 	{
-		auto newLastMessage = m_lastMessage;
+		auto newLastMessage = lastMessage();
 		for (auto const &message : messages)
 		{
 			auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(newLastMessage, message);
@@ -152,15 +157,12 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 			newLastMessage = message;
 		}
 	}
-
-	m_lastMessage = messages.last();
 }
 
 void HtmlMessagesRenderer::clearMessages()
 {
 	m_messages.clear();
 
-	m_lastMessage = Message::null;
 	if (m_chatStyleRenderer)
 		m_chatStyleRenderer->clearMessages();
 }
