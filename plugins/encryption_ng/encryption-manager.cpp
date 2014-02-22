@@ -40,8 +40,8 @@ void EncryptionManager::createInstance()
 {
 	if (!m_instance)
 	{
-		new EncryptionManager();
-		m_instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+		auto manager = new EncryptionManager();
+		manager->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	}
 }
 

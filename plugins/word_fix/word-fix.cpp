@@ -53,7 +53,13 @@
 
 
 WordFix::WordFix(QObject *parent) :
-		ConfigurationUiHandler(parent)
+		ConfigurationUiHandler(parent),
+		changeButton{},
+		deleteButton{},
+		addButton{},
+		wordEdit{},
+		valueEdit{},
+		list{}
 {
 	kdebugf();
 

@@ -51,7 +51,9 @@ void CenzorConfigurationUiHandler::unregisterConfigurationUi()
 	}
 }
 
-CenzorConfigurationUiHandler::CenzorConfigurationUiHandler()
+CenzorConfigurationUiHandler::CenzorConfigurationUiHandler() :
+		SwearwordsWidget{},
+		ExclusionsWidget{}
 {
 }
 

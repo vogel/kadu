@@ -58,7 +58,15 @@
  */
 
 AutoAway::AutoAway() :
-		StatusChanged(false)
+		autoAwayStatusChanger{},
+		timer{},
+		StatusChanged{false},
+		autoAwaySpinBox{},
+		autoExtendedAwaySpinBox{},
+		autoInvisibleSpinBox{},
+		autoOfflineSpinBox{},
+		autoRefreshSpinBox{},
+		descriptionTextLineEdit{}
 {
 	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 

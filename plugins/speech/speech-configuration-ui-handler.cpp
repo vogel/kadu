@@ -58,7 +58,15 @@ void SpeechConfigurationUiHandler::unregisterUiHandler()
 	}
 }
 
-SpeechConfigurationUiHandler::SpeechConfigurationUiHandler()
+SpeechConfigurationUiHandler::SpeechConfigurationUiHandler() :
+	frequencySlider{},
+	tempoSlider{},
+	baseFrequencySlider{},
+	dspDeviceLineEdit{},
+	klattSyntCheckBox{},
+	melodyCheckBox{},
+	programSelectFile{},
+	soundSystemComboBox{}
 {
 }
 
@@ -91,6 +99,9 @@ void SpeechConfigurationUiHandler::soundSystemChanged(int index)
 void SpeechConfigurationUiHandler::testSpeech()
 {
 	kdebugf();
+
+	if (!programSelectFile)
+		return;
 
 	QString program = programSelectFile->file();
 	// TODO: mo�e u�ywa� jakiego� normalnego tekstu ?

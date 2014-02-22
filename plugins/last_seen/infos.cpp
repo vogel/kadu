@@ -39,7 +39,8 @@
 #include "infos_dialog.h"
 
 Infos::Infos(QObject *parent) :
-	QObject(parent)
+		QObject{parent},
+		menuID{}
 {
 	kdebugf();
 

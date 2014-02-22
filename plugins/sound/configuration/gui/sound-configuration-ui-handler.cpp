@@ -65,7 +65,10 @@ SoundConfigurationUiHandler * SoundConfigurationUiHandler::instance()
 }
 
 SoundConfigurationUiHandler::SoundConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler(), ConfigurationWidget(0), ThemesComboBox(0)
+		ConfigurationUiHandler{},
+		ConfigurationWidget{},
+		ThemesComboBox{},
+		ThemesPaths{}
 {
 	Q_UNUSED(parent)
 }

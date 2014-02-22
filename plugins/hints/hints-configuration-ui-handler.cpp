@@ -48,7 +48,19 @@
 #include "hints-configuration-ui-handler.h"
 
 HintsConfigurationUiHandler::HintsConfigurationUiHandler(const QString &style, QObject *parent):
-		ConfigurationUiHandler(parent)
+		ConfigurationUiHandler(parent),
+		previewHintsFrame{},
+		previewHintsLayout{},
+		minimumWidth{},
+		maximumWidth{},
+		xPosition{},
+		yPosition{},
+		ownPosition{},
+		ownPositionCorner{},
+		newHintUnder{},
+		overUserConfigurationPreview{},
+		overUserConfigurationTipLabel{},
+		configureOverUserHint{}
 {
 #ifdef Q_OS_MAC
 	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
