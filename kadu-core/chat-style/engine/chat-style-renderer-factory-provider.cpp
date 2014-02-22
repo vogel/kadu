@@ -17,30 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "chat-style-renderer-factory-provider.h"
 
-#include "chat/chat.h"
-
-class QWebFrame;
-
-class ChatMessagesRendererConfiguration
+ChatStyleRendererFactoryProvider::ChatStyleRendererFactoryProvider(QObject *parent) :
+		QObject{parent}
 {
+}
 
-public:
-	ChatMessagesRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency);
+ChatStyleRendererFactoryProvider::~ChatStyleRendererFactoryProvider()
+{
+}
 
-	Chat chat() const;
-	QWebFrame & webFrame() const;
-	QString javaScript() const;
-	bool useTransparency() const;
-
-private:
-	Chat m_chat;
-	QWebFrame &m_webFrame;
-	QString m_javaScript;
-	bool m_useTransparency;
-
-};
-
-bool operator == (const ChatMessagesRendererConfiguration &left, const ChatMessagesRendererConfiguration &right);
-bool operator != (const ChatMessagesRendererConfiguration &left, const ChatMessagesRendererConfiguration &right);
+#include "moc_chat-style-renderer-factory-provider.cpp"

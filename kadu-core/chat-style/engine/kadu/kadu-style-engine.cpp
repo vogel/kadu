@@ -24,8 +24,8 @@
 
 #include "chat-style/chat-style-manager.h"
 #include "core/core.h"
-#include "chat-style/engine/kadu-style-engine/kadu-chat-messages-renderer-factory.h"
-#include "chat-style/engine/kadu-style-engine/kadu-chat-syntax.h"
+#include "chat-style/engine/kadu/kadu-style-renderer-factory.h"
+#include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "gui/widgets/preview.h"
 #include "message/message-render-info.h"
@@ -52,7 +52,7 @@ QString KaduStyleEngine::isStyleValid(QString stylePath)
 	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString();
 }
 
-std::unique_ptr<ChatMessagesRendererFactory> KaduStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
+std::unique_ptr<ChatStyleRendererFactory> KaduStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", chatStyle.name(),
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
@@ -61,5 +61,5 @@ std::unique_ptr<ChatMessagesRendererFactory> KaduStyleEngine::createRendererFact
 		"#{message}</font></p>"
 	);
 
-	return make_unique<KaduChatMessagesRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
+	return make_unique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
 }

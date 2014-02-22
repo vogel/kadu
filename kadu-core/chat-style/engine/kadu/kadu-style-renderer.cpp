@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "kadu-chat-messages-renderer.h"
+#include "kadu-style-renderer.h"
 
 #include "chat-style/chat-style-manager.h"
 #include "contacts/contact-set.h"
@@ -34,8 +34,8 @@
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebPage>
 
-KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
-		ChatMessagesRenderer{std::move(configuration), parent},
+KaduStyleRenderer::KaduStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
+		ChatStyleRenderer{std::move(configuration), parent},
 		m_style{std::move(style)}
 {
 	auto top = Parser::parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
@@ -64,21 +64,21 @@ KaduChatMessagesRenderer::KaduChatMessagesRenderer(ChatMessagesRendererConfigura
 	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(setReady()));
 }
 
-KaduChatMessagesRenderer::~KaduChatMessagesRenderer()
+KaduStyleRenderer::~KaduStyleRenderer()
 {
 }
 
-void KaduChatMessagesRenderer::clearMessages()
+void KaduStyleRenderer::clearMessages()
 {
 	configuration().webFrame().evaluateJavaScript("kadu_clearMessages()");
 }
 
-void KaduChatMessagesRenderer::removeFirstMessage()
+void KaduStyleRenderer::removeFirstMessage()
 {
 	configuration().webFrame().evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
-void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
+void KaduStyleRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
 	QString html(replacedNewLine(formatMessage(message, messageRenderInfo), QLatin1String(" ")));
 	html.replace('\\', QLatin1String("\\\\"));
@@ -92,22 +92,22 @@ void KaduChatMessagesRenderer::appendChatMessage(const Message &message, const M
 	configuration().webFrame().evaluateJavaScript("kadu_appendMessage('" + html + "')");
 }
 
-void KaduChatMessagesRenderer::messageStatusChanged(const QString &id, MessageStatus status)
+void KaduStyleRenderer::messageStatusChanged(const QString &id, MessageStatus status)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
-void KaduChatMessagesRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
+void KaduStyleRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
 }
 
-void KaduChatMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
+void KaduStyleRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
 }
 
-QString KaduChatMessagesRenderer::formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
+QString KaduStyleRenderer::formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
 	auto sender = message.messageSender();
 	auto format = messageRenderInfo.includeHeader()
@@ -117,4 +117,4 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
 }
 
-#include "moc_kadu-chat-messages-renderer.cpp"
+#include "moc_kadu-style-renderer.cpp"

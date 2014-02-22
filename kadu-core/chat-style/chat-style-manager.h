@@ -28,7 +28,7 @@
 #include <QtCore/QObject>
 
 #include "chat-style/chat-style.h"
-#include "chat-style/engine/chat-messages-renderer.h"
+#include "chat-style/engine/chat-style-renderer.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
@@ -41,7 +41,7 @@ class QPushButton;
 class WebkitMessagesView;
 class ChatStyleEngine;
 class ChatStylePreview;
-class ConfiguredChatMessagesRendererFactoryProvider;
+class ConfiguredChatStyleRendererFactoryProvider;
 class FormattedStringFactory;
 
 //TODO: review
@@ -60,7 +60,7 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject, Compo
 	static ChatStyleManager *Instance;
 
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-	QPointer<ConfiguredChatMessagesRendererFactoryProvider> CurrentConfiguredChatMessagesRendererFactoryProvider;
+	QPointer<ConfiguredChatStyleRendererFactoryProvider> CurrentConfiguredChatStyleRendererFactoryProvider;
 
 	ChatStyleManager();
 
@@ -113,7 +113,7 @@ public:
 
 	~ChatStyleManager();
 
-	void setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider);
+	void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine>);

@@ -57,7 +57,7 @@ class ChatConfigurationWidgetFactoryRepository;
 class ChatDataWindowRepository;
 class ChatImageRequestService;
 class ChatTopBarWidgetFactoryRepository;
-class ChatMessagesRendererFactoryProvider;
+class ChatStyleRendererFactoryProvider;
 class ChatWidgetActions;
 class ChatWidgetActivationService;
 class ChatWidgetContainerHandlerMapper;
@@ -71,7 +71,7 @@ class ChatWindowManager;
 class ChatWindowStorage;
 class ChatWindowRepository;
 class ClipboardHtmlTransformerService;
-class ConfiguredChatMessagesRendererFactoryProvider;
+class ConfiguredChatStyleRendererFactoryProvider;
 class DomProcessorService;
 class FormattedStringFactory;
 class ImageStorageService;
@@ -152,7 +152,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginStateManager *CurrentPluginStateManager;
 	PluginStateService *CurrentPluginStateService;
 	PluginManager *CurrentPluginManager;
-	qobject_ptr<ConfiguredChatMessagesRendererFactoryProvider> CurrentChatMessagesRendererFactoryProvider;
+	qobject_ptr<ConfiguredChatStyleRendererFactoryProvider> CurrentChatStyleRendererFactoryProvider;
 
 	KaduWindow *Window;
 
@@ -247,8 +247,8 @@ public:
 	PluginManager * pluginManager() const;
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
-	ChatMessagesRendererFactoryProvider * chatMessagesRendererFactoryProvider() const;
-	ConfiguredChatMessagesRendererFactoryProvider * configuredChatMessagesRendererFactoryProvider() const;
+	ChatStyleRendererFactoryProvider * chatMessagesRendererFactoryProvider() const;
+	ConfiguredChatStyleRendererFactoryProvider * configuredChatStyleRendererFactoryProvider() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

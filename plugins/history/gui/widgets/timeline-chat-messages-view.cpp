@@ -24,7 +24,7 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
-#include "chat-style/engine/chat-messages-renderer-factory-provider.h"
+#include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "core/core.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/web-view-highlighter.h"
@@ -85,9 +85,9 @@ void TimelineChatMessagesView::createGui()
 	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 
 	auto provider = Core::instance()->chatMessagesRendererFactoryProvider();
-	MessagesView->setChatMessagesRendererFactory(provider->chatMessagesRendererFactory());
-	connect(provider, SIGNAL(chatMessagesRendererFactoryChanged(std::shared_ptr<ChatMessagesRendererFactory>)),
-			MessagesView, SLOT(setChatMessagesRendererFactory(std::shared_ptr<ChatMessagesRendererFactory>)));
+	MessagesView->setChatStyleRendererFactory(provider->chatMessagesRendererFactory());
+	connect(provider, SIGNAL(chatMessagesRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)),
+			MessagesView, SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
 
 	MessagesView->setFocusPolicy(Qt::StrongFocus);
 	MessagesView->setForcePruneDisabled(true);

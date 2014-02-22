@@ -19,20 +19,20 @@
 
 #pragma once
 
-#include "chat-style/engine/chat-messages-renderer.h"
+#include "chat-style/engine/chat-style-renderer.h"
 
-#include "chat-style/engine/adium-style-engine/adium-style.h"
+#include "chat-style/engine/adium/adium-style.h"
 
 class MessageHtmlRendererService;
 class QWebFrame;
 
-class AdiumChatMessagesRenderer : public ChatMessagesRenderer
+class AdiumStyleRenderer : public ChatStyleRenderer
 {
 	Q_OBJECT
 
 public:
-	explicit AdiumChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
-	virtual ~AdiumChatMessagesRenderer();
+	explicit AdiumStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
+	virtual ~AdiumStyleRenderer();
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 

@@ -24,7 +24,7 @@
 #include <QtWebKit/QWebPage>
 
 #include "chat-style/chat-style-manager.h"
-#include "chat-style/engine/chat-messages-renderer.h"
+#include "chat-style/engine/chat-style-renderer.h"
 #include "core/core.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
@@ -45,7 +45,7 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 {
 }
 
-void HtmlMessagesRenderer::setChatMessagesRenderer(qobject_ptr<ChatMessagesRenderer> chatMessagesRenderer)
+void HtmlMessagesRenderer::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatMessagesRenderer)
 {
 	if (m_chatMessagesRenderer)
 		disconnect(m_chatMessagesRenderer.get(), SIGNAL(ready()), this, SLOT(ready()));

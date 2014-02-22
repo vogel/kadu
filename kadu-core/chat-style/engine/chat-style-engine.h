@@ -30,7 +30,7 @@
 #include "protocols/services/chat-state-service.h"
 
 class ChatImage;
-class ChatMessagesRendererFactory;
+class ChatStyleRendererFactory;
 class ChatStyle;
 class HtmlMessagesRenderer;
 class Preview;
@@ -47,7 +47,7 @@ public:
 	virtual QString isStyleValid(QString) = 0; //return QString(), if style is not valid
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
-	virtual std::unique_ptr<ChatMessagesRendererFactory> createRendererFactory(const ChatStyle &chatStyle) = 0;
+	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle) = 0;
 
 };
 

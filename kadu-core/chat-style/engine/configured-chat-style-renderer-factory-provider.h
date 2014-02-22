@@ -19,20 +19,20 @@
 
 #pragma once
 
-#include "chat-style/engine/chat-messages-renderer-factory-provider.h"
+#include "chat-style/engine/chat-style-renderer-factory-provider.h"
 
-class ConfiguredChatMessagesRendererFactoryProvider : public ChatMessagesRendererFactoryProvider
+class ConfiguredChatStyleRendererFactoryProvider : public ChatStyleRendererFactoryProvider
 {
 	Q_OBJECT
 
 public:
-	explicit ConfiguredChatMessagesRendererFactoryProvider(QObject *parent = nullptr);
-	virtual ~ConfiguredChatMessagesRendererFactoryProvider();
+	explicit ConfiguredChatStyleRendererFactoryProvider(QObject *parent = nullptr);
+	virtual ~ConfiguredChatStyleRendererFactoryProvider();
 
-	virtual std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory() const override;
-	void setChatMessagesRendererFactory(std::unique_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory);
+	virtual std::shared_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory() const override;
+	void setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory);
 
 private:
-	std::shared_ptr<ChatMessagesRendererFactory> m_chatMessagesRendererFactory;
+	std::shared_ptr<ChatStyleRendererFactory> m_chatMessagesRendererFactory;
 
 };

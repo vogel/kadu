@@ -43,8 +43,8 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat-style/chat-style-manager.h"
-#include "chat-style/engine/chat-messages-renderer-factory-provider.h"
-#include "chat-style/engine/configured-chat-messages-renderer-factory-provider.h"
+#include "chat-style/engine/chat-style-renderer-factory-provider.h"
+#include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
@@ -766,9 +766,9 @@ void Core::runServices()
 	CurrentPluginDependencyHandler->initialize();
 	CurrentPluginStateManager->loadPluginStates();
 
-	CurrentChatMessagesRendererFactoryProvider = make_qobject<ConfiguredChatMessagesRendererFactoryProvider>(this);
+	CurrentChatStyleRendererFactoryProvider = make_qobject<ConfiguredChatStyleRendererFactoryProvider>(this);
 
-	ChatStyleManager::instance()->setConfiguredChatMessagesRendererFactoryProvider(CurrentChatMessagesRendererFactoryProvider.get());
+	ChatStyleManager::instance()->setConfiguredChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
 }
 
 void Core::runGuiServices()
@@ -992,14 +992,14 @@ PluginManager * Core::pluginManager() const
 	return CurrentPluginManager;
 }
 
-ChatMessagesRendererFactoryProvider * Core::chatMessagesRendererFactoryProvider() const
+ChatStyleRendererFactoryProvider * Core::chatMessagesRendererFactoryProvider() const
 {
-	return CurrentChatMessagesRendererFactoryProvider.get();
+	return CurrentChatStyleRendererFactoryProvider.get();
 }
 
-ConfiguredChatMessagesRendererFactoryProvider * Core::configuredChatMessagesRendererFactoryProvider() const
+ConfiguredChatStyleRendererFactoryProvider * Core::configuredChatStyleRendererFactoryProvider() const
 {
-	return CurrentChatMessagesRendererFactoryProvider.get();
+	return CurrentChatStyleRendererFactoryProvider.get();
 }
 
 void Core::showMainWindow()

@@ -36,9 +36,9 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
 #include "chat-style/html-messages-renderer.h"
-#include "chat-style/engine/adium-style-engine/adium-style-engine.h"
-#include "chat-style/engine/configured-chat-messages-renderer-factory-provider.h"
-#include "chat-style/engine/kadu-style-engine/kadu-style-engine.h"
+#include "chat-style/engine/adium/adium-style-engine.h"
+#include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
+#include "chat-style/engine/kadu/kadu-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -87,9 +87,9 @@ ChatStyleManager::~ChatStyleManager()
 	unregisterChatStyleEngine("Adium");
 }
 
-void ChatStyleManager::setConfiguredChatMessagesRendererFactoryProvider(ConfiguredChatMessagesRendererFactoryProvider *configuredChatMessagesRendererFactoryProvider)
+void ChatStyleManager::setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider)
 {
-	CurrentConfiguredChatMessagesRendererFactoryProvider = configuredChatMessagesRendererFactoryProvider;
+	CurrentConfiguredChatStyleRendererFactoryProvider = configuredChatStyleRendererFactoryProvider;
 	configurationUpdated();
 }
 
@@ -198,7 +198,7 @@ void ChatStyleManager::configurationUpdated()
 		auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
 		m_currentChatStyle = {newStyleName, newVariantName};
 
-		Core::instance()->configuredChatMessagesRendererFactoryProvider()->setChatMessagesRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
+		Core::instance()->configuredChatStyleRendererFactoryProvider()->setChatStyleRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
 	}
 
 	triggerCompositingStateChanged();

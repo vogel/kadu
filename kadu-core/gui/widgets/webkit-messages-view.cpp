@@ -32,8 +32,8 @@
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "chat-style/html-messages-renderer.h"
-#include "chat-style/engine/chat-messages-renderer.h"
-#include "chat-style/engine/chat-messages-renderer-factory.h"
+#include "chat-style/engine/chat-style-renderer.h"
+#include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
@@ -202,9 +202,9 @@ void WebkitMessagesView::refreshView()
 			? file.readAll()
 			: QString{};
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
-	auto configuration = ChatMessagesRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
+	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 
-	renderer()->setChatMessagesRenderer(m_chatMessagesRendererFactory->createChatMessagesRenderer(std::move(configuration)));
+	renderer()->setChatStyleRenderer(m_chatMessagesRendererFactory->createChatStyleRenderer(std::move(configuration)));
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
@@ -286,7 +286,7 @@ void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 	emit messagesUpdated();
 }
 
-void WebkitMessagesView::setChatMessagesRendererFactory(std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory)
+void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory)
 {
 	m_chatMessagesRendererFactory = chatMessagesRendererFactory;
 

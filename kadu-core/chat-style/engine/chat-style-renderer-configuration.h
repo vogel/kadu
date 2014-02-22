@@ -19,17 +19,28 @@
 
 #pragma once
 
-#include "misc/memory.h"
+#include "chat/chat.h"
 
-class ChatMessagesRenderer;
-class ChatMessagesRendererConfiguration;
+class QWebFrame;
 
-class ChatMessagesRendererFactory
+class ChatStyleRendererConfiguration
 {
 
 public:
-	virtual ~ChatMessagesRendererFactory() {}
+	ChatStyleRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency);
 
-	virtual qobject_ptr<ChatMessagesRenderer> createChatMessagesRenderer(ChatMessagesRendererConfiguration configuration) = 0;
+	Chat chat() const;
+	QWebFrame & webFrame() const;
+	QString javaScript() const;
+	bool useTransparency() const;
+
+private:
+	Chat m_chat;
+	QWebFrame &m_webFrame;
+	QString m_javaScript;
+	bool m_useTransparency;
 
 };
+
+bool operator == (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);
+bool operator != (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);

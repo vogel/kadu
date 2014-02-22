@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "chat-style/engine/chat-messages-renderer-factory.h"
+#include "chat-style/engine/chat-style-renderer-factory.h"
 #include "configuration/configuration-aware-object.h"
 #include "misc/memory.h"
 
@@ -35,7 +35,7 @@ public:
 	explicit ChatStylePreview(QWidget *parent = nullptr);
 	virtual ~ChatStylePreview();
 
-	void setRendererFactory(std::unique_ptr<ChatMessagesRendererFactory> rendererFactory);
+	void setRendererFactory(std::unique_ptr<ChatStyleRendererFactory> rendererFactory);
 
 protected:
 	virtual void configurationUpdated();

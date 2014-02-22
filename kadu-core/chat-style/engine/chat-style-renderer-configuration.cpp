@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-messages-renderer-configuration.h"
+#include "chat-style-renderer-configuration.h"
 
-ChatMessagesRendererConfiguration::ChatMessagesRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency) :
+ChatStyleRendererConfiguration::ChatStyleRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency) :
 		m_chat{std::move(chat)},
 		m_webFrame(webFrame),
 		m_javaScript{std::move(javaScript)},
@@ -27,27 +27,27 @@ ChatMessagesRendererConfiguration::ChatMessagesRendererConfiguration(Chat chat, 
 {
 }
 
-Chat ChatMessagesRendererConfiguration::chat() const
+Chat ChatStyleRendererConfiguration::chat() const
 {
 	return m_chat;
 }
 
-QWebFrame & ChatMessagesRendererConfiguration::webFrame() const
+QWebFrame & ChatStyleRendererConfiguration::webFrame() const
 {
 	return m_webFrame;
 }
 
-QString ChatMessagesRendererConfiguration::javaScript() const
+QString ChatStyleRendererConfiguration::javaScript() const
 {
 	return m_javaScript;
 }
 
-bool ChatMessagesRendererConfiguration::useTransparency() const
+bool ChatStyleRendererConfiguration::useTransparency() const
 {
 	return m_useTransparency;
 }
 
-bool operator == (const ChatMessagesRendererConfiguration &left, const ChatMessagesRendererConfiguration &right)
+bool operator == (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right)
 {
 	if (left.useTransparency() != right.useTransparency())
 		return false;
@@ -60,7 +60,7 @@ bool operator == (const ChatMessagesRendererConfiguration &left, const ChatMessa
 	return true;
 }
 
-bool operator != (const ChatMessagesRendererConfiguration &left, const ChatMessagesRendererConfiguration &right)
+bool operator != (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right)
 {
 	return !(left == right);
 }

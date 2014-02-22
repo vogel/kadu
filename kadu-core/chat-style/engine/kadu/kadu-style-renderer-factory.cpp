@@ -17,24 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "kadu-style-renderer-factory.h"
 
-#include <memory>
-#include <QtCore/QObject>
+#include "chat-style/engine/kadu/kadu-style-renderer.h"
 
-class ChatMessagesRendererFactory;
-
-class ChatMessagesRendererFactoryProvider : public QObject
+KaduStyleRendererFactory::KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style) :
+		m_style{std::move(style)}
 {
-	Q_OBJECT
+}
 
-public:
-	explicit ChatMessagesRendererFactoryProvider(QObject *parent = nullptr);
-	virtual ~ChatMessagesRendererFactoryProvider();
+KaduStyleRendererFactory::~KaduStyleRendererFactory()
+{
+}
 
-	virtual std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory() const = 0;
-
-signals:
-	void chatMessagesRendererFactoryChanged(std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRenderer);
-
-};
+qobject_ptr<ChatStyleRenderer> KaduStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
+{
+	auto renderer = make_qobject<KaduStyleRenderer>(std::move(configuration), m_style);
+	return qobject_ptr<ChatStyleRenderer>{renderer.release()};
+}

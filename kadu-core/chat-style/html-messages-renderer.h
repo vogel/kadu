@@ -29,7 +29,7 @@
 #include <QtCore/QObject>
 
 class ChatImage;
-class ChatMessagesRenderer;
+class ChatStyleRenderer;
 
 class QWebFrame;
 
@@ -41,7 +41,7 @@ public:
 	explicit HtmlMessagesRenderer(QWebFrame *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
-	void setChatMessagesRenderer(qobject_ptr<ChatMessagesRenderer> chatMessagesRenderer);
+	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatMessagesRenderer);
 
 	bool pruneEnabled();
 
@@ -68,7 +68,7 @@ public:
 private:
 	QVector<Message> m_messages;
 	Message m_lastMessage;
-	qobject_ptr<ChatMessagesRenderer> m_chatMessagesRenderer;
+	qobject_ptr<ChatStyleRenderer> m_chatMessagesRenderer;
 
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;

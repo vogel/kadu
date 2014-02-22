@@ -17,28 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configured-chat-messages-renderer-factory-provider.h"
+#include "configured-chat-style-renderer-factory-provider.h"
 
-#include "chat-style/engine/chat-messages-renderer-factory.h"
+#include "chat-style/engine/chat-style-renderer-factory.h"
 
-ConfiguredChatMessagesRendererFactoryProvider::ConfiguredChatMessagesRendererFactoryProvider(QObject *parent) :
-		ChatMessagesRendererFactoryProvider{parent}
+ConfiguredChatStyleRendererFactoryProvider::ConfiguredChatStyleRendererFactoryProvider(QObject *parent) :
+		ChatStyleRendererFactoryProvider{parent}
 {
 }
 
-ConfiguredChatMessagesRendererFactoryProvider::~ConfiguredChatMessagesRendererFactoryProvider()
+ConfiguredChatStyleRendererFactoryProvider::~ConfiguredChatStyleRendererFactoryProvider()
 {
 }
 
-std::shared_ptr<ChatMessagesRendererFactory> ConfiguredChatMessagesRendererFactoryProvider::chatMessagesRendererFactory() const
+std::shared_ptr<ChatStyleRendererFactory> ConfiguredChatStyleRendererFactoryProvider::chatMessagesRendererFactory() const
 {
 	return m_chatMessagesRendererFactory;
 }
 
-void ConfiguredChatMessagesRendererFactoryProvider::setChatMessagesRendererFactory(std::unique_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory)
+void ConfiguredChatStyleRendererFactoryProvider::setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory)
 {
 	m_chatMessagesRendererFactory = std::move(chatMessagesRendererFactory);
 	emit chatMessagesRendererFactoryChanged(m_chatMessagesRendererFactory);
 }
 
-#include "moc_configured-chat-messages-renderer-factory-provider.cpp"
+#include "moc_configured-chat-style-renderer-factory-provider.cpp"

@@ -19,17 +19,17 @@
 
 #pragma once
 
-#include "chat-style/engine/chat-messages-renderer.h"
+#include "chat-style/engine/chat-style-renderer.h"
 
-#include "chat-style/engine/kadu-style-engine/kadu-chat-syntax.h"
+#include "chat-style/engine/kadu/kadu-chat-syntax.h"
 
-class KaduChatMessagesRenderer : public ChatMessagesRenderer
+class KaduStyleRenderer : public ChatStyleRenderer
 {
 	Q_OBJECT
 
 public:
-	explicit KaduChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent = nullptr);
-	virtual ~KaduChatMessagesRenderer();
+	explicit KaduStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent = nullptr);
+	virtual ~KaduStyleRenderer();
 
 	virtual void clearMessages() override;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;

@@ -17,15 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-messages-renderer-factory-provider.h"
+#pragma once
 
-ChatMessagesRendererFactoryProvider::ChatMessagesRendererFactoryProvider(QObject *parent) :
-		QObject{parent}
+#include "misc/memory.h"
+
+class ChatStyleRenderer;
+class ChatStyleRendererConfiguration;
+
+class ChatStyleRendererFactory
 {
-}
 
-ChatMessagesRendererFactoryProvider::~ChatMessagesRendererFactoryProvider()
-{
-}
+public:
+	virtual ~ChatStyleRendererFactory() {}
 
-#include "moc_chat-messages-renderer-factory-provider.cpp"
+	virtual qobject_ptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) = 0;
+
+};

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "chat-style/engine/chat-messages-renderer-configuration.h"
+#include "chat-style/engine/chat-style-renderer-configuration.h"
 #include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
@@ -28,15 +28,15 @@
 class ChatImage;
 class MessageRenderInfo;
 
-class ChatMessagesRenderer : public QObject
+class ChatStyleRenderer : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, QObject *parent = nullptr);
-	virtual ~ChatMessagesRenderer();
+	explicit ChatStyleRenderer(ChatStyleRendererConfiguration configuration, QObject *parent = nullptr);
+	virtual ~ChatStyleRenderer();
 
-	const ChatMessagesRendererConfiguration & configuration() const;
+	const ChatStyleRendererConfiguration & configuration() const;
 	bool isReady() const;
 
 	virtual void clearMessages() = 0;
@@ -53,7 +53,7 @@ protected slots:
 	void setReady();
 
 private:
-	ChatMessagesRendererConfiguration m_configuration;
+	ChatStyleRendererConfiguration m_configuration;
 	bool m_ready;
 
 };

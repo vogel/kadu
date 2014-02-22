@@ -17,28 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-messages-renderer.h"
+#include "chat-style-renderer.h"
 
-ChatMessagesRenderer::ChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, QObject *parent) :
+ChatStyleRenderer::ChatStyleRenderer(ChatStyleRendererConfiguration configuration, QObject *parent) :
 		QObject{parent}, m_configuration{std::move(configuration)}, m_ready{false}
 {
 }
 
-ChatMessagesRenderer::~ChatMessagesRenderer()
+ChatStyleRenderer::~ChatStyleRenderer()
 {
 }
 
-const ChatMessagesRendererConfiguration & ChatMessagesRenderer::configuration() const
+const ChatStyleRendererConfiguration & ChatStyleRenderer::configuration() const
 {
 	return m_configuration;
 }
 
-bool ChatMessagesRenderer::isReady() const
+bool ChatStyleRenderer::isReady() const
 {
 	return m_ready;
 }
 
-void ChatMessagesRenderer::setReady()
+void ChatStyleRenderer::setReady()
 {
 	if (m_ready)
 		return;
@@ -47,4 +47,4 @@ void ChatMessagesRenderer::setReady()
 	emit ready();
 }
 
-#include "moc_chat-messages-renderer.cpp"
+#include "moc_chat-style-renderer.cpp"

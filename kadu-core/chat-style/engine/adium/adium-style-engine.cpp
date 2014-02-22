@@ -26,8 +26,8 @@
 
 #include "chat-style/chat-style.h"
 #include "chat-style/html-messages-renderer.h"
-#include "chat-style/engine/adium-style-engine/adium-chat-messages-renderer-factory.h"
-#include "chat-style/engine/adium-style-engine/adium-style.h"
+#include "chat-style/engine/adium/adium-style.h"
+#include "chat-style/engine/adium/adium-style-renderer-factory.h"
 #include "message/message-html-renderer-service.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
@@ -76,12 +76,12 @@ QStringList AdiumStyleEngine::styleVariants(QString styleName)
 	return dir.entryList();
 }
 
-std::unique_ptr<ChatMessagesRendererFactory> AdiumStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
+std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
 	auto style = std::make_shared<AdiumStyle>(chatStyle.name());
 	style->setCurrentVariant(chatStyle.variant());
 
-	auto result = make_unique<AdiumChatMessagesRendererFactory>(style);
+	auto result = make_unique<AdiumStyleRendererFactory>(style);
 	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
 	return std::move(result);
 }

@@ -17,13 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "adium-chat-messages-renderer.h"
+#include "adium-style-renderer.h"
 
 #include "avatars/avatar.h"
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/html-messages-renderer.h"
-#include "chat-style/engine/adium-style-engine/adium-style-engine.h"
-#include "chat-style/engine/adium-style-engine/adium-time-formatter.h"
+#include "chat-style/engine/adium/adium-style-engine.h"
+#include "chat-style/engine/adium/adium-time-formatter.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -44,8 +44,8 @@
 #include <QtWebKit/QWebPage>
 #include <QtWebKit/QWebFrame>
 
-AdiumChatMessagesRenderer::AdiumChatMessagesRenderer(ChatMessagesRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent) :
-		ChatMessagesRenderer{std::move(configuration), parent},
+AdiumStyleRenderer::AdiumStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent) :
+		ChatStyleRenderer{std::move(configuration), parent},
 		m_style{std::move(style)}
 {
 	this->configuration().webFrame().setHtml(preprocessStyleBaseHtml(this->configuration().useTransparency()));
@@ -55,26 +55,26 @@ AdiumChatMessagesRenderer::AdiumChatMessagesRenderer(ChatMessagesRendererConfigu
 	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(setReady()));
 }
 
-AdiumChatMessagesRenderer::~AdiumChatMessagesRenderer()
+AdiumStyleRenderer::~AdiumStyleRenderer()
 {
 }
 
-void AdiumChatMessagesRenderer::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
+void AdiumStyleRenderer::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
 {
 	m_messageHtmlRendererService = messageHtmlRendererService;
 }
 
-void AdiumChatMessagesRenderer::removeFirstMessage()
+void AdiumStyleRenderer::removeFirstMessage()
 {
 	configuration().webFrame().evaluateJavaScript("adium_removeFirstMessage()");
 }
 
-void AdiumChatMessagesRenderer::clearMessages()
+void AdiumStyleRenderer::clearMessages()
 {
 	configuration().webFrame().evaluateJavaScript("adium_clearMessages()");
 }
 
-void AdiumChatMessagesRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
+void AdiumStyleRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
 	QString formattedMessageHtml;
 
@@ -121,7 +121,7 @@ void AdiumChatMessagesRenderer::appendChatMessage(const Message &message, const 
 		configuration().webFrame().evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
 }
 
-QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(bool useTransparency)
+QString AdiumStyleRenderer::preprocessStyleBaseHtml(bool useTransparency)
 {
 	QString styleBaseHtml = m_style->templateHtml();
 	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, Qt::escape(KaduPaths::webKitPath(m_style->baseHref())));
@@ -148,7 +148,7 @@ QString AdiumChatMessagesRenderer::preprocessStyleBaseHtml(bool useTransparency)
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
-QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, const QString &style)
+QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QString &style)
 {
 	if (!configuration().chat())
 		return {};
@@ -209,7 +209,7 @@ QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, con
 	return result;
 }
 
-QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor)
+QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor)
 {
 	QString result = source;
 
@@ -312,19 +312,19 @@ QString AdiumChatMessagesRenderer::replaceKeywords(const QString &styleHref, con
 	return result;
 }
 
-void AdiumChatMessagesRenderer::messageStatusChanged(const QString &id, MessageStatus status)
+void AdiumStyleRenderer::messageStatusChanged(const QString &id, MessageStatus status)
 {
 	configuration().webFrame().evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
-void AdiumChatMessagesRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
+void AdiumStyleRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
 {
 	configuration().webFrame().evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
 }
 
-void AdiumChatMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
+void AdiumStyleRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
 	configuration().webFrame().evaluateJavaScript(QString("adiuconfiguration().chat()ImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
 }
 
-#include "moc_adium-chat-messages-renderer.cpp"
+#include "moc_adium-style-renderer.cpp"

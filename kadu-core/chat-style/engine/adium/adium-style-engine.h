@@ -1,9 +1,9 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2009, 2010, 2010, 2011, 2012 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009, 2010, 2011, 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2010, 2011, 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,24 +24,29 @@
 
 #include "chat-style/engine/chat-style-engine.h"
 
-class Preview;
-class SyntaxList;
+#include <QtCore/QPointer>
 
-class KaduStyleEngine : public ChatStyleEngine
+class AdiumChatStyleRenderer;
+class MessageHtmlRendererService;
+class QWebFrame;
+
+class AdiumStyleEngine : public ChatStyleEngine
 {
-	QSharedPointer<SyntaxList> syntaxList;
+	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
 
 public:
-	explicit KaduStyleEngine();
-	virtual ~KaduStyleEngine();
-	virtual bool supportVariants() { return false; }
-	virtual QString isStyleValid(QString styleName);
-	virtual bool styleUsesTransparencyByDefault(QString styleName)
-	{
-		Q_UNUSED(styleName)
-		return false;
-	}
+	explicit AdiumStyleEngine();
+	virtual ~AdiumStyleEngine();
 
-	virtual std::unique_ptr<ChatMessagesRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
+	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
+
+	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
+
+	virtual bool supportVariants() { return true; }
+	virtual QString isStyleValid(QString styleName);
+	virtual QString defaultVariant(const QString &styleName);
+
+	virtual QStringList styleVariants(QString styleName);
+	virtual bool styleUsesTransparencyByDefault(QString styleName);
 
 };

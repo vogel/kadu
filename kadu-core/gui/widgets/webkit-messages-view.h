@@ -43,7 +43,7 @@ class QResizeEvent;
 
 class Chat;
 class ChatImageRequestService;
-class ChatMessagesRendererFactory;
+class ChatStyleRendererFactory;
 class ChatWidget;
 class HtmlMessagesRenderer;
 
@@ -55,7 +55,7 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	Chat CurrentChat;
 	qobject_ptr<HtmlMessagesRenderer> Renderer;
-	std::shared_ptr<ChatMessagesRendererFactory> m_chatMessagesRendererFactory;
+	std::shared_ptr<ChatStyleRendererFactory> m_chatMessagesRendererFactory;
 
 	bool SupportTransparency;
 
@@ -103,7 +103,7 @@ public:
 	bool supportTransparency() { return SupportTransparency; }
 
 public slots:
-	void setChatMessagesRendererFactory(std::shared_ptr<ChatMessagesRendererFactory> chatMessagesRendererFactory);
+	void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatMessagesRendererFactory);
 
 	void clearMessages();
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
