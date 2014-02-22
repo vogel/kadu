@@ -117,23 +117,4 @@ QString KaduChatMessagesRenderer::formatMessage(const Message &message, const Me
 	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
 }
 
-QString KaduChatMessagesRenderer::scriptsAtEnd(const QString &html)
-{
-	QString html2 = html;
-	QString scripts;
-	QRegExp scriptRegexp("<script[^>]*>.*</script>", Qt::CaseInsensitive);
-	scriptRegexp.setMinimal(true);
-	int k = 0;
-	while (true)
-	{
-		k = html2.indexOf(scriptRegexp, k);
-		if (k == -1)
-			break;
-		scripts += scriptRegexp.cap();
-		k += scriptRegexp.matchedLength();
-	}
-	html2.remove(scriptRegexp);
-	return html2 + scripts;
-}
-
 #include "moc_kadu-chat-messages-renderer.cpp"

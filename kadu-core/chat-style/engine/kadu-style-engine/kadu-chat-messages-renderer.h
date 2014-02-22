@@ -42,6 +42,5 @@ private:
 	std::shared_ptr<KaduChatSyntax> m_style;
 
 	QString formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo);
-	QString scriptsAtEnd(const QString &html);
 
 };
