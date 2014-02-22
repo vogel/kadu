@@ -31,14 +31,12 @@
 class ChatImage;
 class ChatStyleRenderer;
 
-class QWebFrame;
-
 class HtmlMessagesRenderer : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit HtmlMessagesRenderer(QWebFrame *parent = nullptr);
+	explicit HtmlMessagesRenderer(QObject *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
 
 	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer);

@@ -20,9 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWebKit/QWebFrame>
-#include <QtWebKit/QWebPage>
-
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer.h"
 #include "core/core.h"
@@ -33,12 +30,9 @@
 
 #include "html-messages-renderer.h"
 
-HtmlMessagesRenderer::HtmlMessagesRenderer(QWebFrame *parent) :
+HtmlMessagesRenderer::HtmlMessagesRenderer(QObject *parent) :
 		QObject{parent}, m_pruneEnabled{true}, m_forcePruneDisabled{false}
 {
-	Q_ASSERT(parent);
-
-	parent->page()->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 }
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
