@@ -67,6 +67,7 @@ public:
 };
 
 bool sameMessage(const Message &left, const Message &right);
+bool previousMessage(const Message &left, const Message &right);
 
 Q_DECLARE_METATYPE(Message)
 

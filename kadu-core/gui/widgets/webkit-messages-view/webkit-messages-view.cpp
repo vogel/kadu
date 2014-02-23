@@ -226,12 +226,12 @@ void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QStri
 	Renderer->chatImageAvailable(chatImage, fullFilePath);
 }
 
-Message WebkitMessagesView::firstNonSystemMessage(const QVector<Message> &messages)
+Message WebkitMessagesView::firstNonSystemMessage(const SortedMessages &messages)
 {
-	auto it = std::find_if(std::begin(messages), std::end(messages),
+	auto it = std::find_if(begin(messages), end(messages),
 		[](const Message &message){ return message.type() != MessageTypeSystem; }
 	);
-	return it != std::end(messages)
+	return it != end(messages)
 			? *it
 			: Message::null;
 }
@@ -245,7 +245,7 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 
 	// case #1: all prepended messages are already rendered
 	auto firstMessage = messages.at(0);
-	auto hasFirstMessage = std::any_of(std::begin(rendererMessages), std::end(rendererMessages),
+	auto hasFirstMessage = std::any_of(begin(rendererMessages), end(rendererMessages),
 		[firstMessage](const Message &message){ return sameMessage(message, firstMessage); }
 	);
 	if (hasFirstMessage)
@@ -268,14 +268,14 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->clearMessages();
-	Renderer->appendMessages(newMessages);
+	Renderer->add(SortedMessages{newMessages.toStdVector()});
 	emit messagesUpdated();
 }
 
 void WebkitMessagesView::appendMessage(const Message &message)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->appendMessage(message);
+	Renderer->add(message);
 	Renderer->pruneMessages();
 	emit messagesUpdated();
 }
@@ -283,7 +283,7 @@ void WebkitMessagesView::appendMessage(const Message &message)
 void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->appendMessages(messages);
+	Renderer->add(SortedMessages{messages.toStdVector()});
 	emit messagesUpdated();
 }
 
@@ -304,7 +304,7 @@ void WebkitMessagesView::clearMessages()
 
 int WebkitMessagesView::countMessages()
 {
-	return Renderer->messages().count();
+	return Renderer->messages().size();
 }
 
 void WebkitMessagesView::sentMessageStatusChanged(const Message &message)

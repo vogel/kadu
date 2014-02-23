@@ -118,3 +118,14 @@ bool sameMessage(const Message &left, const Message &right)
 
 	return true;
 }
+
+bool previousMessage(const Message &left, const Message &right)
+{
+	if (left == right)
+		return false;
+
+	if (left.sendDate().toTime_t() < right.sendDate().toTime_t())
+		return true;
+
+	return false;
+}

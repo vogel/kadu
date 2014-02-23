@@ -46,6 +46,7 @@ class ChatImageRequestService;
 class ChatStyleRendererFactory;
 class ChatWidget;
 class HtmlMessagesRenderer;
+class SortedMessages;
 
 class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject, CompositingAwareObject
 {
@@ -64,7 +65,7 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	bool AtBottom;
 
-	Message firstNonSystemMessage(const QVector<Message> &messages);
+	Message firstNonSystemMessage(const SortedMessages &messages);
 	void recreateRenderer();
 
 private slots:

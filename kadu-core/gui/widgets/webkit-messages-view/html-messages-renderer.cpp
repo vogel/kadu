@@ -70,7 +70,7 @@ void HtmlMessagesRenderer::pruneMessages()
 		return;
 	}
 
-	if (m_messages.count() <= ChatStyleManager::instance()->prune())
+	if (m_messages.size() <= static_cast<decltype(m_messages.size())>(ChatStyleManager::instance()->prune()))
 	{
 		m_pruneEnabled = false;
 		return;
@@ -78,19 +78,21 @@ void HtmlMessagesRenderer::pruneMessages()
 
 	m_pruneEnabled = true;
 
-	auto start = m_messages.begin();
-	auto stop = m_messages.end() - ChatStyleManager::instance()->prune();
+	auto messages = m_messages.messages();
+	auto start = messages.begin();
+	auto stop = messages.end() - ChatStyleManager::instance()->prune();
 
 	if (m_chatStyleRenderer)
 		for (auto it = start; it != stop; ++it)
 			m_chatStyleRenderer->removeFirstMessage();
 
-	m_messages.erase(start, stop);
+	messages.erase(start, stop);
+	m_messages = SortedMessages{messages};
 }
 
-void HtmlMessagesRenderer::appendMessage(const Message &message)
+void HtmlMessagesRenderer::add(const Message &message)
 {
-	m_messages.append(message);
+	m_messages.add(message);
 
 	if (!isReady())
 		return;
@@ -111,7 +113,7 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 
 Message HtmlMessagesRenderer::lastMessage() const
 {
-	return m_messages.isEmpty()
+	return m_messages.empty()
 			? Message{}
 			: m_messages.last();
 }
@@ -133,17 +135,12 @@ void HtmlMessagesRenderer::refreshView()
 	}
 }
 
-void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
+void HtmlMessagesRenderer::add(const SortedMessages &messages)
 {
 	if (messages.empty())
 		return;
 
-	auto engineMessages = QVector<Message>{};
-	for (auto message : messages)
-	{
-		engineMessages.append(message);
-		m_messages.append(message);
-	}
+	m_messages.add(messages);
 
 //  Do not prune messages here. When we are adding many massages to renderer, probably
 //  we want all of them to be visible on message view. This also fixes crash from

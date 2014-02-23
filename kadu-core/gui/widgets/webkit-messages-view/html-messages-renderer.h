@@ -23,6 +23,7 @@
 #pragma once
 
 #include "message/message.h"
+#include "message/sorted-messages.h"
 #include "misc/memory.h"
 #include "protocols/services/chat-state-service.h"
 
@@ -43,9 +44,9 @@ public:
 
 	void setForcePruneDisabled(bool forcePruneDisabled);
 
-	const QVector<Message> & messages() const { return m_messages; }
-	void appendMessage(const Message &message);
-	void appendMessages(const QVector<Message> &messages);
+	const SortedMessages & messages() const { return m_messages; }
+	void add(const Message &message);
+	void add(const SortedMessages &messages);
 	void clearMessages();
 	void pruneMessages();
 
@@ -57,7 +58,7 @@ public slots:
 	void refreshView();
 
 private:
-	QVector<Message> m_messages;
+	SortedMessages m_messages;
 	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
 
 	bool m_pruneEnabled;
