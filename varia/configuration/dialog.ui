@@ -141,7 +141,8 @@
 					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)."
 					id="ignoreFormattingFromAnonymous" parent-widget="ignoreMessagesFromAnonymous" state-dependency="reversed" />
 				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
-					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window" />
+					min-value="0" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window"
+					special-value="Unlimited" />
 				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink"
 					tool-tip="Shorten ugly, long links to save space in chat window" />
 				<check-box caption="Use descriptive date format" config-section="Look" config-item="NiceDateFormat"

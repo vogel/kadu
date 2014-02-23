@@ -115,11 +115,7 @@ void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 
 void ChatStyleManager::configurationUpdated()
 {
-	if (config_file.readBoolEntry("Chat", "ChatPrune"))
-		Prune = config_file.readNumEntry("Chat", "ChatPruneLen");
-	else
-		Prune = 0;
-
+	Prune = config_file.readNumEntry("Chat", "ChatPruneLen");
 	ParagraphSeparator = config_file.readNumEntry("Look", "ParagraphSeparator");
 
 	QFont font = config_file.readFontEntry("Look","ChatFont");
