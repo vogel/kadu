@@ -484,14 +484,14 @@ void ChatWidget::appendMessages(const SortedMessages &messages)
 		return message.type() == MessageTypeReceived || message.type() == MessageTypeSystem;
 	});
 
-	MessagesView->appendMessages(messages);
+	MessagesView->add(messages);
 	if (unread)
 		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendMessage(const Message &message)
 {
-	MessagesView->appendMessage(message);
+	MessagesView->add(message);
 
 	if (message.type() != MessageTypeReceived && message.type() != MessageTypeSystem)
 		return;
@@ -515,7 +515,7 @@ void ChatWidget::appendSystemMessage(std::unique_ptr<FormattedString> &&content)
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 
-	MessagesView->appendMessage(message);
+	MessagesView->add(message);
 }
 
 void ChatWidget::resetEditBox()
@@ -834,7 +834,7 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
-		MessagesView->appendMessage(message);
+		MessagesView->add(message);
 	}
 }
 

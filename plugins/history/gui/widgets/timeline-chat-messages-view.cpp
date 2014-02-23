@@ -177,7 +177,7 @@ void TimelineChatMessagesView::setMessages(const SortedMessages &messages)
 	ScopedUpdatesDisabler updatesDisabler{*MessagesView};
 
 	MessagesView->clearMessages();
-	MessagesView->appendMessages(messages);
+	MessagesView->add(messages);
 	MessagesView->refreshView();
 
 	emit messagesDisplayed();

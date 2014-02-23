@@ -49,7 +49,7 @@ void HistoryMessagesPrepender::messagesAvailable()
 	if (!m_messagesView)
 		return;
 
-	m_messagesView->prependMessages(m_messages.result());
+	m_messagesView->add(m_messages.result());
 	m_messagesView = nullptr;
 	deleteLater();
 }

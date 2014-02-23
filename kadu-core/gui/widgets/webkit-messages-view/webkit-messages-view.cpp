@@ -236,43 +236,7 @@ Message WebkitMessagesView::firstNonSystemMessage(const SortedMessages &messages
 			: Message::null;
 }
 
-void WebkitMessagesView::prependMessages(const SortedMessages &messages)
-{
-	if (messages.empty())
-		return;
-/*
-	auto const &rendererMessages = Renderer->messages();
-
-	// case #1: all prepended messages are already rendered
-	auto firstMessage = messages.at(0);
-	auto hasFirstMessage = std::any_of(begin(rendererMessages), end(rendererMessages),
-		[firstMessage](const Message &message){ return sameMessage(message, firstMessage); }
-	);
-	if (hasFirstMessage)
-		return;
-
-	// case #2: some prepended messages are already rendered
-	auto const &firstRenderedMessage = firstNonSystemMessage(rendererMessages);
-	auto newMessages = SortedMessages{};
-	for (auto const &message : messages)
-	{
-		if (sameMessage(firstRenderedMessage, message))
-			break; // we already have this and following messages in our window
-
-		newMessages.append(message);
-	}
-
-	// clearMessages will destroy existing ones
-	for (auto const &message : rendererMessages)
-		newMessages.append(message);
-*/
-	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->clearMessages();
-	Renderer->add(messages);
-	emit messagesUpdated();
-}
-
-void WebkitMessagesView::appendMessage(const Message &message)
+void WebkitMessagesView::add(const Message &message)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->add(message);
@@ -280,7 +244,7 @@ void WebkitMessagesView::appendMessage(const Message &message)
 	emit messagesUpdated();
 }
 
-void WebkitMessagesView::appendMessages(const SortedMessages &messages)
+void WebkitMessagesView::add(const SortedMessages &messages)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->add(messages);

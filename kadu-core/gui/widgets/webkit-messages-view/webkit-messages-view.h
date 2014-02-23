@@ -89,10 +89,8 @@ public:
 
 	HtmlMessagesRenderer * renderer() { return Renderer.get(); }
 
-	void prependMessages(const SortedMessages &messages);
-
-	void appendMessage(const Message &message);
-	void appendMessages(const SortedMessages &messages);
+	void add(const Message &message);
+	void add(const SortedMessages &messages);
 
 	int countMessages();
 
