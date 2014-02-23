@@ -178,7 +178,6 @@ void TimelineChatMessagesView::setMessages(const SortedMessages &messages)
 
 	MessagesView->clearMessages();
 	MessagesView->add(messages);
-	MessagesView->refreshView();
 
 	emit messagesDisplayed();
 }

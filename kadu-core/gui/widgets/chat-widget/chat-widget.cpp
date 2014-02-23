@@ -211,10 +211,7 @@ void ChatWidget::createGui()
 			MessagesView, SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
 
 	if (CurrentChat)
-	{
 		MessagesView->setChat(CurrentChat);
-		MessagesView->refreshView();
-	}
 
 	frameLayout->addWidget(MessagesView);
 
