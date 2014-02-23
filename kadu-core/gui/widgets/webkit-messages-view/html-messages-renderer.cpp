@@ -54,6 +54,11 @@ void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 	pruneMessages();
 }
 
+bool HtmlMessagesRenderer::isReady() const
+{
+	return m_chatStyleRenderer && m_chatStyleRenderer->isReady();
+}
+
 void HtmlMessagesRenderer::pruneMessages()
 {
 	if (m_forcePruneDisabled || ChatStyleManager::instance()->cfgNoHeaderRepeat())
@@ -87,20 +92,20 @@ void HtmlMessagesRenderer::appendMessage(const Message &message)
 {
 	m_messages.append(message);
 
-	if (m_chatStyleRenderer)
-	{
-		if (ChatStyleManager::instance()->cfgNoHeaderRepeat() && !m_forcePruneDisabled && m_pruneEnabled)
-		{
-			refreshView();
-			return;
-		}
-		else
-		{
-			auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-			auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage(), message);
+	if (!isReady())
+		return;
 
-			m_chatStyleRenderer->appendChatMessage(message, info);
-		}
+	if (ChatStyleManager::instance()->cfgNoHeaderRepeat() && !m_forcePruneDisabled && m_pruneEnabled)
+	{
+		refreshView();
+		return;
+	}
+	else
+	{
+		auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
+		auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage(), message);
+
+		m_chatStyleRenderer->appendChatMessage(message, info);
 	}
 }
 
@@ -113,7 +118,7 @@ Message HtmlMessagesRenderer::lastMessage() const
 
 void HtmlMessagesRenderer::refreshView()
 {
-	if (!m_chatStyleRenderer)
+	if (!isReady())
 		return;
 
 	m_chatStyleRenderer->clearMessages();
@@ -146,15 +151,15 @@ void HtmlMessagesRenderer::appendMessages(const QVector<Message> &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	if (m_chatStyleRenderer)
+	if (!isReady())
+		return;
+
+	auto newLastMessage = lastMessage();
+	for (auto const &message : messages)
 	{
-		auto newLastMessage = lastMessage();
-		for (auto const &message : messages)
-		{
-			auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(newLastMessage, message);
-			m_chatStyleRenderer->appendChatMessage(message, info);
-			newLastMessage = message;
-		}
+		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(newLastMessage, message);
+		m_chatStyleRenderer->appendChatMessage(message, info);
+		newLastMessage = message;
 	}
 }
 
@@ -162,25 +167,25 @@ void HtmlMessagesRenderer::clearMessages()
 {
 	m_messages.clear();
 
-	if (m_chatStyleRenderer)
+	if (isReady())
 		m_chatStyleRenderer->clearMessages();
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	if (m_chatStyleRenderer)
+	if (isReady())
 		m_chatStyleRenderer->chatImageAvailable(chatImage, fileName);
 }
 
 void HtmlMessagesRenderer::messageStatusChanged(const QString &id, MessageStatus status)
 {
-	if (m_chatStyleRenderer)
+	if (isReady())
 		m_chatStyleRenderer->messageStatusChanged(id, status);
 }
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	if (!m_chatStyleRenderer)
+	if (!isReady())
 		return;
 
 	auto display = contact.display(true);

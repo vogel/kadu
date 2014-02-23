@@ -63,6 +63,7 @@ private:
 	bool m_pruneEnabled;
 	bool m_forcePruneDisabled;
 
+	bool isReady() const;
 	Message lastMessage() const;
 
 };
