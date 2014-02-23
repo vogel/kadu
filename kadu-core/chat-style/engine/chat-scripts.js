@@ -153,8 +153,6 @@ function kadu_chatImageAvailable(name, src)
 	image.src = src;
 }
 
-
-
 function toggleImageScaling() {
 	var node = event.target;
 	if (!node || !node.className)
