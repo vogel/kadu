@@ -49,10 +49,8 @@ AdiumStyleRenderer::AdiumStyleRenderer(ChatStyleRendererConfiguration configurat
 		m_style{std::move(style)}
 {
 	this->configuration().webFrame().setHtml(preprocessStyleBaseHtml(this->configuration().useTransparency()));
-	this->configuration().webFrame().evaluateJavaScript(this->configuration().javaScript());
-	this->configuration().webFrame().evaluateJavaScript("initStyle()");
 
-	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(setReady()));
+	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(pageLoaded()));
 }
 
 AdiumStyleRenderer::~AdiumStyleRenderer()
@@ -62,6 +60,14 @@ AdiumStyleRenderer::~AdiumStyleRenderer()
 void AdiumStyleRenderer::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
 {
 	m_messageHtmlRendererService = messageHtmlRendererService;
+}
+
+void AdiumStyleRenderer::pageLoaded()
+{
+	configuration().webFrame().evaluateJavaScript(configuration().javaScript());
+	configuration().webFrame().evaluateJavaScript("initStyle()");
+
+	setReady();
 }
 
 void AdiumStyleRenderer::removeFirstMessage()

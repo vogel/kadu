@@ -52,4 +52,7 @@ private:
 	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
 	QString preprocessStyleBaseHtml(bool useTransparency);
 
+private slots:
+	void pageLoaded();
+
 };
