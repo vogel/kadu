@@ -47,6 +47,7 @@ public:
 	void appendMessage(const Message &message);
 	void appendMessages(const QVector<Message> &messages);
 	void clearMessages();
+	void pruneMessages();
 
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void messageStatusChanged(const QString &id, MessageStatus status);
@@ -63,6 +64,5 @@ private:
 	bool m_forcePruneDisabled;
 
 	Message lastMessage() const;
-	void pruneMessages();
 
 };

@@ -86,7 +86,6 @@ void HtmlMessagesRenderer::pruneMessages()
 void HtmlMessagesRenderer::appendMessage(const Message &message)
 {
 	m_messages.append(message);
-	pruneMessages();
 
 	if (m_chatStyleRenderer)
 	{

@@ -276,6 +276,7 @@ void WebkitMessagesView::appendMessage(const Message &message)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->appendMessage(message);
+	Renderer->pruneMessages();
 	emit messagesUpdated();
 }
 
