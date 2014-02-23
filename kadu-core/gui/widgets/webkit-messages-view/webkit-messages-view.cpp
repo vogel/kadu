@@ -226,16 +226,6 @@ void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QStri
 	Renderer->chatImageAvailable(chatImage, fullFilePath);
 }
 
-Message WebkitMessagesView::firstNonSystemMessage(const SortedMessages &messages)
-{
-	auto it = std::find_if(begin(messages), end(messages),
-		[](const Message &message){ return message.type() != MessageTypeSystem; }
-	);
-	return it != end(messages)
-			? *it
-			: Message::null;
-}
-
 void WebkitMessagesView::add(const Message &message)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};

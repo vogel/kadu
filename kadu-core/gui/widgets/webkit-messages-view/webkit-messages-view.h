@@ -65,7 +65,6 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	bool AtBottom;
 
-	Message firstNonSystemMessage(const SortedMessages &messages);
 	void recreateRenderer();
 
 private slots:
