@@ -35,9 +35,9 @@ public:
 	explicit SqlMessagesSmsStorage(HistorySqlStorage *sqlStorage);
 	virtual ~SqlMessagesSmsStorage();
 
-	virtual QFuture<QVector<Talkable> > talkables();
-	virtual QFuture<QVector<HistoryQueryResult> > dates(const HistoryQuery &historyQuery);
-	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery);
+	virtual QFuture<QVector<Talkable>> talkables();
+	virtual QFuture<QVector<HistoryQueryResult>> dates(const HistoryQuery &historyQuery);
+	virtual QFuture<SortedMessages> messages(const HistoryQuery &historyQuery);
 
 	virtual void deleteMessages(const Talkable &talkable, const QDate &date = QDate());
 

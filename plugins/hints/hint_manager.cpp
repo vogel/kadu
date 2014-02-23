@@ -43,6 +43,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "message/message-manager.h"
+#include "message/sorted-messages.h"
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
@@ -329,7 +330,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 			if (hint->chat() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
 			{
 				auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(hint->chat());
-				foreach (const Message &message, unreadMessages)
+				for (auto const &message : unreadMessages)
 					Core::instance()->unreadMessageRepository()->removeUnreadMessage(message);
 			}
 

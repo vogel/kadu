@@ -81,6 +81,7 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
+#include "message/sorted-messages.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "parser/parser.h"
@@ -474,12 +475,12 @@ QIcon ChatWidget::icon()
 	return KaduIcon("internet-group-chat").icon();
 }
 
-void ChatWidget::appendMessages(const QVector<Message> &messages)
+void ChatWidget::appendMessages(const SortedMessages &messages)
 {
-	if (messages.isEmpty())
+	if (messages.empty())
 		return;
 
-	auto unread = std::any_of(std::begin(messages), std::end(messages), [](const Message &message){
+	auto unread = std::any_of(begin(messages), end(messages), [](const Message &message){
 		return message.type() == MessageTypeReceived || message.type() == MessageTypeSystem;
 	});
 

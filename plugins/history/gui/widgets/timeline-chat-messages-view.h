@@ -37,6 +37,7 @@ class HistoryQueryResultsModel;
 class HistoryQueryResultsProxyModel;
 class Message;
 class SearchBar;
+class SortedMessages;
 class WaitOverlay;
 class WebViewHighlighter;
 
@@ -69,7 +70,7 @@ class TimelineChatMessagesView : public QWidget
 	SearchBar *MessagesSearchBar;
 
 	QFutureWatcher<QVector<HistoryQueryResult> > *ResultsFutureWatcher;
-	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
+	QFutureWatcher<SortedMessages> *MessagesFutureWatcher;
 
 	void createGui();
 
@@ -151,7 +152,7 @@ public:
 	 * If received list will be empty, displayForDate() will be called with invalid date to ensure
 	 * that view is cleared.
 	 */
-	void setFutureResults(const QFuture<QVector<HistoryQueryResult> > &futureResults);
+	void setFutureResults(const QFuture<QVector<HistoryQueryResult>> &futureResults);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -160,7 +161,7 @@ public:
 	 *
 	 * This methods sets list of messages to display in message view widget.
 	 */
-	void setMessages(const QVector<Message> &messages);
+	void setMessages(const SortedMessages &messages);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -170,7 +171,7 @@ public:
 	 * This methods sets list of future messages to display in message view widget. This widget will
 	 * be blocked by WaitOverlay until messages are available.
 	 */
-	void setFutureMessages(const QFuture<QVector<Message> > &futureMessages);
+	void setFutureMessages(const QFuture<SortedMessages> &futureMessages);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

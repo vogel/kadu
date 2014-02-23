@@ -124,7 +124,7 @@ protected:
 	 * This methods sets list of future talkable items to display in tree view. Whole tab will
 	 * be blocked by WaitOverlay until talkables are available.
 	 */
-	void setFutureTalkables(const QFuture<QVector<Talkable> > &futureTalkables);
+	void setFutureTalkables(const QFuture<QVector<Talkable>> &futureTalkables);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

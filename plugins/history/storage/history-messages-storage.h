@@ -32,6 +32,7 @@
 #include "../history_exports.h"
 
 class HistoryQuery;
+class SortedMessages;
 
 /**
  * @addtogroup History
@@ -74,7 +75,7 @@ public:
 	 * This methods returns list of available talkables in asynchronous way. Refer to QFuture
 	 * documentation for more information.
 	 */
-	virtual QFuture<QVector<Talkable> > talkables() = 0;
+	virtual QFuture<QVector<Talkable>> talkables() = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -85,7 +86,7 @@ public:
 	 * This methods returns list of available dates for given talkabel in asynchronous way. Refer to QFuture
 	 * documentation for more information. Limit query parametr is ignored for this method.
 	 */
-	virtual QFuture<QVector<HistoryQueryResult> > dates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult>> dates(const HistoryQuery &historyQuery) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -99,7 +100,7 @@ public:
 	 * Query string parameter is ignored for this method. Limit query parameter can be ignored in
 	 * implementations of this method.
 	 */
-	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<SortedMessages> messages(const HistoryQuery &historyQuery) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

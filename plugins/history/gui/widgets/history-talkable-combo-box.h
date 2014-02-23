@@ -94,7 +94,7 @@ public:
 	 * Widget will be populated when future value will become available. Thenhis list will be split
 	 * into chats and buddies before displaying. Buddies will be extracted from single-buddy chats.
 	 */
-	void setFutureTalkables(const QFuture<QVector<Talkable> > &talkables);
+	void setFutureTalkables(const QFuture<QVector<Talkable>> &talkables);
 
 };
 

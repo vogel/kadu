@@ -32,6 +32,7 @@ class ChatWidgetRepository;
 class Message;
 class MessageManager;
 class NotificationService;
+class SortedMessages;
 class UnreadMessageRepository;
 
 /**
@@ -80,7 +81,7 @@ private:
 	ChatWidgetMessageHandlerConfiguration m_configuration;
 
 	void appendAllUnreadMessages(ChatWidget *chatWidget);
-	QVector<Message> loadAllUnreadMessages(const Chat &chat) const;
+	SortedMessages loadAllUnreadMessages(const Chat &chat) const;
 	bool shouldOpenChatWidget(const Chat &chat) const;
 
 private slots:

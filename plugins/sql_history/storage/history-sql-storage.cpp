@@ -50,6 +50,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
 #include "message/message.h"
+#include "message/sorted-messages.h"
 #include "misc/misc.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
@@ -501,7 +502,7 @@ QVector<Talkable> HistorySqlStorage::syncChats()
 	return talkables;
 }
 
-QFuture<QVector<Talkable> > HistorySqlStorage::chats()
+QFuture<QVector<Talkable>> HistorySqlStorage::chats()
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncChats);
 }
@@ -534,7 +535,7 @@ QVector<Talkable> HistorySqlStorage::syncStatusBuddies()
 	return result;
 }
 
-QFuture<QVector<Talkable> > HistorySqlStorage::statusBuddies()
+QFuture<QVector<Talkable>> HistorySqlStorage::statusBuddies()
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddies);
 }
@@ -562,7 +563,7 @@ QVector<Talkable> HistorySqlStorage::syncSmsRecipients()
 	return result;
 }
 
-QFuture<QVector<Talkable> > HistorySqlStorage::smsRecipients()
+QFuture<QVector<Talkable>> HistorySqlStorage::smsRecipients()
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipients);
 }
@@ -760,7 +761,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 	return dates;
 }
 
-QFuture<QVector<HistoryQueryResult> > HistorySqlStorage::statusDates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult>> HistorySqlStorage::statusDates(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusDates, historyQuery);
 }
@@ -830,15 +831,15 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 	return dates;
 }
 
-QFuture<QVector<HistoryQueryResult> > HistorySqlStorage::smsRecipientDates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult>> HistorySqlStorage::smsRecipientDates(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, historyQuery);
 }
 
-QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuery)
+SortedMessages HistorySqlStorage::syncMessages(const HistoryQuery &historyQuery)
 {
 	if (!waitForDatabase())
-		return QVector<Message>();
+		return SortedMessages();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -884,36 +885,23 @@ QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuer
 	if (historyQuery.limit() > 0)
 		query.bindValue(":limit", historyQuery.limit());
 
-	QVector<Message> messages;
+	SortedMessages messages;
 
 	executeQuery(query);
-	messages = messagesFromQuery(query);
-
-	if (historyQuery.limit() > 0)
-	{
-		// see comment above
-		QVector<Message> inverted;
-		inverted.reserve(messages.size());
-
-		for (int i = messages.size() - 1; i >= 0; --i)
-			inverted.append(messages.at(i));
-		return inverted;
-	}
-
-	return messages;
+	return messagesFromQuery(query);
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::messages(const HistoryQuery &historyQuery)
+QFuture<SortedMessages> HistorySqlStorage::messages(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, historyQuery);
 }
 
-QVector<Message> HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuery)
+SortedMessages HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuery)
 {
 	const Talkable &talkable = historyQuery.talkable();
 
 	if (!waitForDatabase())
-		return QVector<Message>();
+		return SortedMessages();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -927,7 +915,7 @@ QVector<Message> HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuer
 
 	queryString += " ORDER BY set_time ASC";
 
-	QVector<Message> statuses;
+	SortedMessages statuses;
 	query.prepare(queryString);
 
 	if (historyQuery.fromDate().isValid())
@@ -941,17 +929,17 @@ QVector<Message> HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuer
 	return statuses;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::statuses(const HistoryQuery &historyQuery)
+QFuture<SortedMessages> HistorySqlStorage::statuses(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncStatuses, historyQuery);
 }
 
-QVector<Message> HistorySqlStorage::syncSmses(const HistoryQuery &historyQuery)
+SortedMessages HistorySqlStorage::syncSmses(const HistoryQuery &historyQuery)
 {
 	const Talkable &talkable = historyQuery.talkable();
 
 	if (!waitForDatabase())
-		return QVector<Message>();
+		return SortedMessages();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -979,12 +967,12 @@ QVector<Message> HistorySqlStorage::syncSmses(const HistoryQuery &historyQuery)
 
 	executeQuery(query);
 
-	QVector<Message> result = smsFromQuery(query);
+	SortedMessages result = smsFromQuery(query);
 
 	return result;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::smses(const HistoryQuery &historyQuery)
+QFuture<SortedMessages> HistorySqlStorage::smses(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmses, historyQuery);
 }
@@ -1024,12 +1012,12 @@ QString HistorySqlStorage::stripAllScriptTags(const QString &string)
 	return afterReplace;
 }
 
-QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
+SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
-	QVector<Message> messages;
 	if (!CurrentFormattedStringFactory)
-		return messages;
+		return {};
 
+	auto messages = std::vector<Message>{};
 	while (query.next())
 	{
 		bool outgoing = query.value(5).toBool();
@@ -1046,7 +1034,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 			sender.setOwnerBuddy(senderBuddy);
 		}
 
-		Message message = Message::create();
+		auto message = Message::create();
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
@@ -1056,24 +1044,24 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		if (outgoing)
 			message.setStatus(MessageStatusDelivered);
 
-		messages.append(message);
+		messages.push_back(message);
 	}
 
-	return messages;
+	return SortedMessages{messages};
 }
 
-QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QSqlQuery &query)
+SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSqlQuery &query)
 {
-	QVector<Message> statuses;
 	if (!CurrentFormattedStringFactory)
-		return statuses;
+		return {};
 
+	auto statuses = std::vector<Message>{};
 	while (query.next())
 	{
 		StatusType type = StatusTypeManager::instance()->fromName(query.value(1).toString());
 		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(type);
 
-		Message message = Message::create();
+		auto message = Message::create();
 
 		const QString description = query.value(2).toString();
 		const QString htmlContent = description.isEmpty()
@@ -1086,30 +1074,30 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QS
 		message.setReceiveDate(query.value(3).toDateTime());
 		message.setSendDate(query.value(3).toDateTime());
 
-		statuses.append(message);
+		statuses.push_back(message);
 	}
 
-	return statuses;
+	return SortedMessages{statuses};
 }
 
-QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
+SortedMessages HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 {
-	QVector<Message> messages;
 	if (!CurrentFormattedStringFactory)
-		return messages;
+		return {};
 
+	auto messages = std::vector<Message>{};
 	while (query.next())
 	{
-		Message message = Message::create();
+		auto message = Message::create();
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
 		message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(Qt::escape(query.value(0).toString())));
 
-		messages.append(message);
+		messages.push_back(message);
 	}
 
-	return messages;
+	return SortedMessages{messages};
 }
 
 HistoryMessagesStorage * HistorySqlStorage::chatStorage()

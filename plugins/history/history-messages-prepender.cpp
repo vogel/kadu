@@ -21,10 +21,11 @@
 #include "history-messages-prepender.h"
 
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "message/sorted-messages.h"
 
 #include <QtCore/QFutureWatcher>
 
-HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > messages, WebkitMessagesView *chatMessagesView, QObject *parent) :
+HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<SortedMessages> messages, WebkitMessagesView *chatMessagesView, QObject *parent) :
 		QObject{parent},
 		m_messages{std::move(messages)},
 		m_messagesView(chatMessagesView)
@@ -33,7 +34,7 @@ HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > me
 
 	connect(m_messagesView, SIGNAL(destroyed()), this, SLOT(deleteLater()));
 
-	auto futureWatcher = new QFutureWatcher<QVector<Message>>(this);
+	auto futureWatcher = new QFutureWatcher<SortedMessages>(this);
 	connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesAvailable()));
 
 	futureWatcher->setFuture(m_messages);

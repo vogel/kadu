@@ -31,6 +31,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/wait-overlay.h"
+#include "message/sorted-messages.h"
 #include "model/roles.h"
 
 #include "model/history-query-results-model.h"
@@ -154,7 +155,7 @@ void TimelineChatMessagesView::futureResultsCanceled()
 	ResultsFutureWatcher = 0;
 }
 
-void TimelineChatMessagesView::setFutureResults(const QFuture<QVector<HistoryQueryResult> > &futureResults)
+void TimelineChatMessagesView::setFutureResults(const QFuture<QVector<HistoryQueryResult>> &futureResults)
 {
 	if (ResultsFutureWatcher)
 	{
@@ -171,7 +172,7 @@ void TimelineChatMessagesView::setFutureResults(const QFuture<QVector<HistoryQue
 	showTimelineWaitOverlay();
 }
 
-void TimelineChatMessagesView::setMessages(const QVector<Message> &messages)
+void TimelineChatMessagesView::setMessages(const SortedMessages &messages)
 {
 	ScopedUpdatesDisabler updatesDisabler{*MessagesView};
 
@@ -208,7 +209,7 @@ void TimelineChatMessagesView::futureMessagesCanceled()
 	MessagesFutureWatcher = 0;
 }
 
-void TimelineChatMessagesView::setFutureMessages(const QFuture<QVector<Message> > &futureMessages)
+void TimelineChatMessagesView::setFutureMessages(const QFuture<SortedMessages> &futureMessages)
 {
 	if (MessagesFutureWatcher)
 	{
@@ -216,7 +217,7 @@ void TimelineChatMessagesView::setFutureMessages(const QFuture<QVector<Message> 
 		MessagesFutureWatcher->deleteLater();
 	}
 
-	MessagesFutureWatcher = new QFutureWatcher<QVector<Message> >(this);
+	MessagesFutureWatcher = new QFutureWatcher<SortedMessages>(this);
 	connect(MessagesFutureWatcher, SIGNAL(finished()), this, SLOT(futureMessagesAvailable()));
 	connect(MessagesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureMessagesCanceled()));
 

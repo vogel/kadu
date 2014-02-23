@@ -349,7 +349,7 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 		else
 			++it;
 
-	foreach (const Message &message, removedMessages)
+	for (auto const &message : removedMessages)
 	{
 		message.setStatus(MessageStatusWontDeliver);
 		emit sentMessageStatusChanged(message);

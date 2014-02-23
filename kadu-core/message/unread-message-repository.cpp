@@ -23,6 +23,7 @@
 #include "chat/chat.h"
 #include "chat/chat-details-buddy.h"
 #include "message/message.h"
+#include "message/sorted-messages.h"
 
 UnreadMessageRepository::UnreadMessageRepository(QObject *parent) :
 		QObject{parent}
@@ -127,9 +128,8 @@ const QList<Message> & UnreadMessageRepository::allUnreadMessages() const
 	return m_unreadMessages;
 }
 
-QVector<Message> UnreadMessageRepository::unreadMessagesForChat(const Chat &chat) const
+SortedMessages UnreadMessageRepository::unreadMessagesForChat(const Chat &chat) const
 {
-	auto result = QVector<Message>{};
 	auto chats = QSet<Chat>{};
 
 	auto details = chat.details();
@@ -141,11 +141,12 @@ QVector<Message> UnreadMessageRepository::unreadMessagesForChat(const Chat &chat
 	else
 		chats.insert(chat);
 
-	for (const auto &message : m_unreadMessages)
-		if (chats.contains(message.messageChat()))
-			result.append(message);
+	auto messages = std::vector<Message>{};
+	std::copy_if(std::begin(m_unreadMessages), std::end(m_unreadMessages), std::back_inserter(messages),
+			[&chats](const Message &message){ return chats.contains(message.messageChat()); }
+	);
 
-	return result;
+	return SortedMessages{messages};
 }
 
 bool UnreadMessageRepository::hasUnreadMessages() const
@@ -158,7 +159,7 @@ int UnreadMessageRepository::unreadMessagesCount() const
 	return m_unreadMessages.count();
 }
 
-void UnreadMessageRepository::markMessagesAsRead(const QVector<Message> &messages)
+void UnreadMessageRepository::markMessagesAsRead(const SortedMessages &messages)
 {
 	for (const auto &message : messages)
 		if (m_unreadMessages.removeAll(message) > 0)

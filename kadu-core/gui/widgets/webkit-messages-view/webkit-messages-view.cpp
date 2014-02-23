@@ -236,11 +236,11 @@ Message WebkitMessagesView::firstNonSystemMessage(const SortedMessages &messages
 			: Message::null;
 }
 
-void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
+void WebkitMessagesView::prependMessages(const SortedMessages &messages)
 {
 	if (messages.empty())
 		return;
-
+/*
 	auto const &rendererMessages = Renderer->messages();
 
 	// case #1: all prepended messages are already rendered
@@ -253,7 +253,7 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 
 	// case #2: some prepended messages are already rendered
 	auto const &firstRenderedMessage = firstNonSystemMessage(rendererMessages);
-	auto newMessages = QVector<Message>{};
+	auto newMessages = SortedMessages{};
 	for (auto const &message : messages)
 	{
 		if (sameMessage(firstRenderedMessage, message))
@@ -265,10 +265,10 @@ void WebkitMessagesView::prependMessages(const QVector<Message> &messages)
 	// clearMessages will destroy existing ones
 	for (auto const &message : rendererMessages)
 		newMessages.append(message);
-
+*/
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->clearMessages();
-	Renderer->add(SortedMessages{newMessages.toStdVector()});
+	Renderer->add(messages);
 	emit messagesUpdated();
 }
 
@@ -280,10 +280,10 @@ void WebkitMessagesView::appendMessage(const Message &message)
 	emit messagesUpdated();
 }
 
-void WebkitMessagesView::appendMessages(const QVector<Message> &messages)
+void WebkitMessagesView::appendMessages(const SortedMessages &messages)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->add(SortedMessages{messages.toStdVector()});
+	Renderer->add(messages);
 	emit messagesUpdated();
 }
 

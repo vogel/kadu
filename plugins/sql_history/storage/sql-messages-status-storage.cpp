@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "message/sorted-messages.h"
 #include "storage/history-sql-storage.h"
 
 #include "sql-messages-status-storage.h"
@@ -32,17 +33,17 @@ SqlMessagesStatusStorage::~SqlMessagesStatusStorage()
 {
 }
 
-QFuture<QVector<Talkable> > SqlMessagesStatusStorage::talkables()
+QFuture<QVector<Talkable>> SqlMessagesStatusStorage::talkables()
 {
 	return SqlStorage->statusBuddies();
 }
 
-QFuture<QVector<HistoryQueryResult> > SqlMessagesStatusStorage::dates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult>> SqlMessagesStatusStorage::dates(const HistoryQuery &historyQuery)
 {
 	return SqlStorage->statusDates(historyQuery);
 }
 
-QFuture<QVector<Message> > SqlMessagesStatusStorage::messages(const HistoryQuery &historyQuery)
+QFuture<SortedMessages> SqlMessagesStatusStorage::messages(const HistoryQuery &historyQuery)
 {
 	return SqlStorage->statuses(historyQuery);
 }

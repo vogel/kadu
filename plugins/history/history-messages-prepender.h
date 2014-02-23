@@ -26,6 +26,7 @@
 
 #include "message/message.h"
 
+class SortedMessages;
 class WebkitMessagesView;
 
 /**
@@ -56,11 +57,11 @@ public:
 	 * messages from QFuture are available. If chatMessagesView is destroyed before that, nothing will happen.
 	 * After this class finishes its work (successfully or not) it deletes itself.
 	 */
-	HistoryMessagesPrepender(QFuture<QVector<Message>> messages, WebkitMessagesView *chatMessagesView, QObject *parent = nullptr);
+	HistoryMessagesPrepender(QFuture<SortedMessages> messages, WebkitMessagesView *chatMessagesView, QObject *parent = nullptr);
 	virtual ~HistoryMessagesPrepender();
 
 private:
-	QFuture<QVector<Message>> m_messages;
+	QFuture<SortedMessages> m_messages;
 	QPointer<WebkitMessagesView> m_messagesView;
 
 private slots:

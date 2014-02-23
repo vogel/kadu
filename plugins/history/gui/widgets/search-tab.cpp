@@ -36,6 +36,7 @@
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "icons/kadu-icon.h"
+#include "message/sorted-messages.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "activate.h"
@@ -315,7 +316,7 @@ void SearchTab::currentDateChanged()
 		TimelineView->setFutureMessages((*SearchedStorage)->messages(query));
 	}
 	else
-		TimelineView->setMessages(QVector<Message>());
+		TimelineView->setMessages(SortedMessages());
 }
 
 void SearchTab::messagesDisplayed()

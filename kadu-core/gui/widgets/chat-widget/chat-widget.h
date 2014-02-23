@@ -49,6 +49,7 @@ class CustomInput;
 class FilteredTreeView;
 class FormattedStringFactory;
 class Protocol;
+class SortedMessages;
 class TalkableProxyModel;
 
 class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
@@ -156,7 +157,7 @@ public:
 	int unreadMessagesCount() const;
 
 public slots:
-	void appendMessages(const QVector<Message> &messages);
+	void appendMessages(const SortedMessages &messages);
 	void appendMessage(const Message &message);
 
 	void sendMessage();

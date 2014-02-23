@@ -89,10 +89,10 @@ public:
 
 	HtmlMessagesRenderer * renderer() { return Renderer.get(); }
 
-	void prependMessages(const QVector<Message> &messages);
+	void prependMessages(const SortedMessages &messages);
 
 	void appendMessage(const Message &message);
-	void appendMessages(const QVector<Message> &messages);
+	void appendMessages(const SortedMessages &messages);
 
 	int countMessages();
 

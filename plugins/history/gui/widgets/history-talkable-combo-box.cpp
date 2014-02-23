@@ -68,7 +68,7 @@ void HistoryTalkableComboBox::setTalkables(const QVector<Talkable> &talkables)
 	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
 }
 
-void HistoryTalkableComboBox::setFutureTalkables(const QFuture<QVector<Talkable> > &talkables)
+void HistoryTalkableComboBox::setFutureTalkables(const QFuture<QVector<Talkable>> &talkables)
 {
 	if (TalkablesFutureWatcher)
 		delete TalkablesFutureWatcher;

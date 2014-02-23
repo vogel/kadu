@@ -29,6 +29,7 @@ class Buddy;
 class Chat;
 class Contact;
 class Message;
+class SortedMessages;
 
 /**
  * @addtogroup Message
@@ -72,7 +73,7 @@ public:
 	 *
 	 * Returns list of all unread messages for given chat.
 	 */
-	QVector<Message> unreadMessagesForChat(const Chat &chat) const;
+	SortedMessages unreadMessagesForChat(const Chat &chat) const;
 
 	/**
 	 * @short Returns true if there is any unread message in manager.
@@ -101,7 +102,7 @@ public:
 	 * are updated to MessageStatusRead and its pending statues are set to false.
 	 * Signal unreadMessageRemoved is emited for each changed message.
 	 */
-	void markMessagesAsRead(const QVector<Message> &messages);
+	void markMessagesAsRead(const SortedMessages &messages);
 
 	/**
 	 * @short Returns one of unread messages.

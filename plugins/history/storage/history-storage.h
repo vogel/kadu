@@ -38,6 +38,7 @@ class HistoryQuery;
 class HistoryQueryResult;
 class HistoryMessagesStorage;
 class Message;
+class SortedMessages;
 class Status;
 class Talkable;
 class TimedStatus;
@@ -54,17 +55,17 @@ public:
 	explicit HistoryStorage(QObject *parent) : QObject(parent) {}
 	virtual ~HistoryStorage() {}
 
-	virtual QFuture<QVector<Talkable> > chats() = 0;
-	virtual QFuture<QVector<Talkable> > statusBuddies() = 0;
-	virtual QFuture<QVector<Talkable> > smsRecipients() = 0;
+	virtual QFuture<QVector<Talkable>> chats() = 0;
+	virtual QFuture<QVector<Talkable>> statusBuddies() = 0;
+	virtual QFuture<QVector<Talkable>> smsRecipients() = 0;
 
-	virtual QFuture<QVector<HistoryQueryResult> > chatDates(const HistoryQuery &historyQuery) = 0;
-	virtual QFuture<QVector<HistoryQueryResult> > statusDates(const HistoryQuery &historyQuery) = 0;
-	virtual QFuture<QVector<HistoryQueryResult> > smsRecipientDates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult>> chatDates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult>> statusDates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult>> smsRecipientDates(const HistoryQuery &historyQuery) = 0;
 
-	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery) = 0;
-	virtual QFuture<QVector<Message> > statuses(const HistoryQuery &historyQuery) = 0;
-	virtual QFuture<QVector<Message> > smses(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<SortedMessages> messages(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<SortedMessages> statuses(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<SortedMessages> smses(const HistoryQuery &historyQuery) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime()) = 0;

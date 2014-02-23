@@ -61,6 +61,7 @@
 #include "gui/windows/message-dialog.h"
 #include "message/message-manager.h"
 #include "message/message.h"
+#include "message/sorted-messages.h"
 #include "protocols/services/chat-service.h"
 #include "debug.h"
 

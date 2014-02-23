@@ -44,6 +44,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
+#include "message/sorted-messages.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
 #include "talkable/filter/hide-temporary-talkable-filter.h"
@@ -240,7 +241,7 @@ void HistoryMessagesTab::futureTalkablesCanceled()
 	TalkablesFutureWatcher = 0;
 }
 
-void HistoryMessagesTab::setFutureTalkables(const QFuture<QVector<Talkable> > &futureTalkables)
+void HistoryMessagesTab::setFutureTalkables(const QFuture<QVector<Talkable>> &futureTalkables)
 {
 	if (TalkablesFutureWatcher)
 	{
@@ -268,7 +269,7 @@ void HistoryMessagesTab::currentDateChanged()
 
 	if (!Storage || !date.isValid())
 	{
-		TimelineView->setMessages(QVector<Message>());
+		TimelineView->setMessages(SortedMessages());
 		return;
 	}
 

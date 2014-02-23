@@ -20,8 +20,9 @@
 #pragma once
 
 #include "message/message.h"
+#include "exports.h"
 
-class SortedMessages
+class KADUAPI SortedMessages
 {
 
 public:
@@ -44,5 +45,5 @@ private:
 
 };
 
-std::vector<Message>::const_iterator begin(const SortedMessages &sortedMessages);
-std::vector<Message>::const_iterator end(const SortedMessages &sortedMessages);
+KADUAPI std::vector<Message>::const_iterator begin(const SortedMessages &sortedMessages);
+KADUAPI std::vector<Message>::const_iterator end(const SortedMessages &sortedMessages);

@@ -27,6 +27,7 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/windows/kadu-window.h"
 #include "message/message-manager.h"
+#include "message/sorted-messages.h"
 #include "message/unread-message-repository.h"
 #include "protocols/protocol.h"
 #include "services/notification-service.h"
@@ -140,7 +141,7 @@ void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 	}
 }
 
-QVector<Message> ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &chat) const
+SortedMessages ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &chat) const
 {
 	// TODO: BuddyChatManager cannot be injected here, because it crashes, find out why
 	auto buddyChat = BuddyChatManager::instance()->buddyChat(chat);
@@ -210,7 +211,7 @@ void ChatWidgetMessageHandler::handleUnreadMessageChange(const Message &message)
 	auto chat = message.messageChat();
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
 	if (chatWidget)
-		chatWidget->setUnreadMessagesCount(m_unreadMessageRepository.data()->unreadMessagesForChat(chat).count());
+		chatWidget->setUnreadMessagesCount(m_unreadMessageRepository.data()->unreadMessagesForChat(chat).size());
 }
 
 #include "moc_chat-widget-message-handler.cpp"
