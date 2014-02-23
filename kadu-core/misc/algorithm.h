@@ -42,3 +42,26 @@ bool precedes(const C &c, const T &v1, const T &v2)
 
 	return it1 < it2;
 }
+
+template <typename InputIterator1, typename InputIterator2>
+std::pair<InputIterator1, InputIterator2> sequence_difference(InputIterator1 first1, InputIterator1 last1,
+		InputIterator2 first2, InputIterator2 last2)
+{
+	if (first1 == last1 || first2 == last2)
+		return std::make_pair(last1, first2);
+
+	auto result1 = std::find(first1, last1, *first2);
+	if (result1 == last1)
+		return std::make_pair(last1, first2);
+
+	auto it1 = result1;
+	auto it2 = first2;
+	while (it1 != last1 && it2 != last2)
+		if (*it1++ != *it2++)
+			break;
+
+	if (it1 == last1)
+		return std::make_pair(result1, it2);
+	else
+		return std::make_pair(last1, first2);
+}
