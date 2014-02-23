@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_MESSAGES_PREPENDER_H
-#define HISTORY_MESSAGES_PREPENDER_H
+#pragma once
 
 #include <QtCore/QFuture>
 #include <QtCore/QObject>
@@ -28,7 +27,6 @@
 #include "message/message.h"
 
 class WebkitMessagesView;
-
 
 /**
  * @addtogroup History
@@ -47,12 +45,6 @@ class HistoryMessagesPrepender : public QObject
 {
 	Q_OBJECT
 
-	QFuture<QVector<Message> > Messages;
-	QPointer<WebkitMessagesView> MessagesView;
-
-private slots:
-	void messagesAvailable();
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -64,13 +56,18 @@ public:
 	 * messages from QFuture are available. If chatMessagesView is destroyed before that, nothing will happen.
 	 * After this class finishes its work (successfully or not) it deletes itself.
 	 */
-	HistoryMessagesPrepender(QFuture<QVector<Message> > messages, WebkitMessagesView *chatMessagesView);
+	HistoryMessagesPrepender(QFuture<QVector<Message>> messages, WebkitMessagesView *chatMessagesView, QObject *parent = nullptr);
 	virtual ~HistoryMessagesPrepender();
+
+private:
+	QFuture<QVector<Message>> m_messages;
+	QPointer<WebkitMessagesView> m_messagesView;
+
+private slots:
+	void messagesAvailable();
 
 };
 
 /**
  * @}
  */
-
-#endif // HISTORY_MESSAGES_PREPENDER_H

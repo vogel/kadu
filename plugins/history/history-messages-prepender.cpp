@@ -18,23 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFutureWatcher>
+#include "history-messages-prepender.h"
 
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 
-#include "history-messages-prepender.h"
+#include <QtCore/QFutureWatcher>
 
-HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > messages, WebkitMessagesView *chatMessagesView) :
-		Messages(messages), MessagesView(chatMessagesView)
+HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > messages, WebkitMessagesView *chatMessagesView, QObject *parent) :
+		QObject{parent},
+		m_messages{std::move(messages)},
+		m_messagesView(chatMessagesView)
 {
-	Q_ASSERT(MessagesView);
+	Q_ASSERT(m_messagesView);
 
-	connect(MessagesView, SIGNAL(destroyed()), this, SLOT(deleteLater()));
+	connect(m_messagesView, SIGNAL(destroyed()), this, SLOT(deleteLater()));
 
-	QFutureWatcher<QVector<Message> > *futureWatcher = new QFutureWatcher<QVector<Message> >(this);
+	auto futureWatcher = new QFutureWatcher<QVector<Message>>(this);
 	connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesAvailable()));
 
-	futureWatcher->setFuture(Messages);
+	futureWatcher->setFuture(m_messages);
 }
 
 HistoryMessagesPrepender::~HistoryMessagesPrepender()
@@ -43,11 +45,11 @@ HistoryMessagesPrepender::~HistoryMessagesPrepender()
 
 void HistoryMessagesPrepender::messagesAvailable()
 {
-	if (!MessagesView)
+	if (!m_messagesView)
 		return;
 
-	MessagesView->prependMessages(Messages.result());
-	MessagesView = nullptr;
+	m_messagesView->prependMessages(m_messages.result());
+	m_messagesView = nullptr;
 	deleteLater();
 }
 
