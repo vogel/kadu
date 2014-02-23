@@ -33,8 +33,13 @@ SortedMessages::SortedMessages(std::vector<Message> messages) :
 
 void SortedMessages::add(Message message)
 {
+	if (m_messages.empty())
+		m_messages.emplace_back(std::move(message));
+
 	auto upperBound = std::upper_bound(std::begin(m_messages), std::end(m_messages), message, previousMessage);
-	m_messages.emplace(upperBound, std::move(message));
+	auto previous = *(upperBound - 1);
+	if (!sameMessage(previous, message))
+		m_messages.emplace(upperBound, std::move(message));
 }
 
 void SortedMessages::add(const SortedMessages &sortedMessages)
@@ -44,6 +49,7 @@ void SortedMessages::add(const SortedMessages &sortedMessages)
 	std::merge(std::begin(m_messages), std::end(m_messages),
 		std::begin(sortedMessages.m_messages), std::end(sortedMessages.m_messages),
 		std::back_inserter(result), previousMessage);
+	result.erase(std::unique(std::begin(result), std::end(result), sameMessage), std::end(result));
 
 	m_messages = std::move(result);
 }
