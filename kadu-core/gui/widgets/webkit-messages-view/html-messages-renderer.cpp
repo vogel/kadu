@@ -27,11 +27,12 @@
 #include "configuration/configuration-file.h"
 #include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
+#include "misc/algorithm.h"
 
 #include "html-messages-renderer.h"
 
 HtmlMessagesRenderer::HtmlMessagesRenderer(QObject *parent) :
-		QObject{parent}, m_pruneEnabled{true}, m_forcePruneDisabled{false}
+		QObject{parent}, m_forcePruneDisabled{false}
 {
 }
 
@@ -61,54 +62,33 @@ bool HtmlMessagesRenderer::isReady() const
 
 void HtmlMessagesRenderer::pruneMessages()
 {
-	if (m_forcePruneDisabled || ChatStyleManager::instance()->cfgNoHeaderRepeat())
+	if (m_forcePruneDisabled || ChatStyleManager::instance()->cfgNoHeaderRepeat() || m_messages.empty())
 		return;
 
-	if (ChatStyleManager::instance()->prune() == 0)
-	{
-		m_pruneEnabled = false;
-		return;
-	}
+	m_messages = limitMessages(m_messages, ChatStyleManager::instance()->prune());
+	if (isReady())
+		updateDisplayedMessages(m_messages);
+}
 
-	if (m_messages.size() <= static_cast<decltype(m_messages.size())>(ChatStyleManager::instance()->prune()))
-	{
-		m_pruneEnabled = false;
-		return;
-	}
+SortedMessages HtmlMessagesRenderer::limitMessages(const SortedMessages &sortedMessages, int limit)
+{
+	if (limit <= 0)
+		return sortedMessages;
 
-	m_pruneEnabled = true;
+	if (sortedMessages.size() <= static_cast<decltype(sortedMessages.size())>(limit))
+		return sortedMessages;
 
-	auto messages = m_messages.messages();
-	auto start = messages.begin();
-	auto stop = messages.end() - ChatStyleManager::instance()->prune();
-
-	if (m_chatStyleRenderer)
-		for (auto it = start; it != stop; ++it)
-			m_chatStyleRenderer->removeFirstMessage();
-
-	messages.erase(start, stop);
-	m_messages = SortedMessages{messages};
+	auto messages = decltype(sortedMessages.messages()){};
+	std::copy(end(sortedMessages) - limit, end(sortedMessages), std::back_inserter(messages));
+	return SortedMessages{messages};
 }
 
 void HtmlMessagesRenderer::add(const Message &message)
 {
 	m_messages.add(message);
 
-	if (!isReady())
-		return;
-
-	if (ChatStyleManager::instance()->cfgNoHeaderRepeat() && !m_forcePruneDisabled && m_pruneEnabled)
-	{
-		refreshView();
-		return;
-	}
-	else
-	{
-		auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-		auto info = messageRenderInfoFactory->messageRenderInfo(lastMessage(), message);
-
-		m_chatStyleRenderer->appendChatMessage(message, info);
-	}
+	if (isReady())
+		updateDisplayedMessages(m_messages);
 }
 
 Message HtmlMessagesRenderer::lastMessage() const
@@ -120,18 +100,10 @@ Message HtmlMessagesRenderer::lastMessage() const
 
 void HtmlMessagesRenderer::refreshView()
 {
-	if (!isReady())
-		return;
-
-	m_chatStyleRenderer->clearMessages();
-
-	auto prevMessage = Message::null;
-	for (auto const &message : m_messages)
+	if (isReady())
 	{
-		auto messageRenderInfoFactory = Core::instance()->messageRenderInfoFactory();
-		auto info = messageRenderInfoFactory->messageRenderInfo(prevMessage, message);
-		m_chatStyleRenderer->appendChatMessage(message, info);
-		prevMessage = message;
+		updateDisplayedMessages({});
+		updateDisplayedMessages(m_messages);
 	}
 }
 
@@ -148,16 +120,33 @@ void HtmlMessagesRenderer::add(const SortedMessages &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	if (!isReady())
-		return;
+	if (isReady())
+		updateDisplayedMessages(m_messages);
+}
 
-	auto newLastMessage = lastMessage();
-	for (auto const &message : messages)
+void HtmlMessagesRenderer::updateDisplayedMessages(SortedMessages messages)
+{
+	auto difference = sequence_difference(begin(m_displayedMessages), end(m_displayedMessages), begin(messages), end(messages));
+	auto lastMessage = Message::null;
+
+	if (end(m_displayedMessages) != difference.first)
 	{
-		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(newLastMessage, message);
-		m_chatStyleRenderer->appendChatMessage(message, info);
-		newLastMessage = message;
+		auto toRemove = std::distance(end(m_displayedMessages), difference.first);
+		for (auto i = 0; i < toRemove; i++)
+			m_chatStyleRenderer->removeFirstMessage();
+		lastMessage = m_displayedMessages.last();
 	}
+	else
+		m_chatStyleRenderer->clearMessages();
+
+	for (auto it = difference.second; it != end(messages); ++it)
+	{
+		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(lastMessage, *it);
+		m_chatStyleRenderer->appendChatMessage(*it, info);
+		lastMessage = *it;
+	}
+
+	m_displayedMessages = std::move(messages);
 }
 
 void HtmlMessagesRenderer::clearMessages()
@@ -165,7 +154,7 @@ void HtmlMessagesRenderer::clearMessages()
 	m_messages.clear();
 
 	if (isReady())
-		m_chatStyleRenderer->clearMessages();
+		updateDisplayedMessages(m_messages);
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)

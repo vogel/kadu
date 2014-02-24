@@ -58,13 +58,16 @@ public slots:
 	void refreshView();
 
 private:
-	SortedMessages m_messages;
 	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
 
-	bool m_pruneEnabled;
+	SortedMessages m_displayedMessages;
+	SortedMessages m_messages;
+
 	bool m_forcePruneDisabled;
 
 	bool isReady() const;
 	Message lastMessage() const;
+	SortedMessages limitMessages(const SortedMessages &sortedMessages, int limit);
+	void updateDisplayedMessages(SortedMessages messages);
 
 };
