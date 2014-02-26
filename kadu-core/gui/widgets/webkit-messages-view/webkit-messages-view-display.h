@@ -21,7 +21,10 @@
 
 #include "message/sorted-messages.h"
 
+#include <QtCore/QPointer>
+
 class ChatStyleRenderer;
+class MessageRenderInfoFactory;
 
 class WebkitMessagesViewDisplay
 {
@@ -29,9 +32,13 @@ class WebkitMessagesViewDisplay
 public:
 	explicit WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
 
+	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
+
 	void displayMessages(SortedMessages messages);
 
 private:
+	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
+
 	ChatStyleRenderer &m_chatStyleRenderer;
 	SortedMessages m_currentMessages;
 

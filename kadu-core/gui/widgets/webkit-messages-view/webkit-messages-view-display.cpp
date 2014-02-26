@@ -20,7 +20,6 @@
 #include "webkit-messages-view-display.h"
 
 #include "chat-style/engine/chat-style-renderer.h"
-#include "core/core.h"
 #include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
 #include "misc/algorithm.h"
@@ -30,8 +29,16 @@ WebkitMessagesViewDisplay::WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyl
 {
 }
 
+void WebkitMessagesViewDisplay::setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory)
+{
+	m_messageRenderInfoFactory = messageRenderInfoFactory;
+}
+
 void WebkitMessagesViewDisplay::displayMessages(SortedMessages messages)
 {
+	if (!m_messageRenderInfoFactory)
+		return;
+
 	auto difference = sequence_difference(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
 	auto lastMessage = Message::null;
 
@@ -47,7 +54,7 @@ void WebkitMessagesViewDisplay::displayMessages(SortedMessages messages)
 
 	for (auto it = difference.second; it != end(messages); ++it)
 	{
-		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(lastMessage, *it);
+		auto info = m_messageRenderInfoFactory->messageRenderInfo(lastMessage, *it);
 		m_chatStyleRenderer.appendChatMessage(*it, info);
 		lastMessage = *it;
 	}

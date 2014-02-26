@@ -60,6 +60,7 @@ void HtmlMessagesRenderer::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> c
 void HtmlMessagesRenderer::rendererReady()
 {
 	m_messagesDisplay = make_unique<WebkitMessagesViewDisplay>(*m_chatStyleRenderer.get());
+	m_messagesDisplay->setMessageRenderInfoFactory(Core::instance()->messageRenderInfoFactory());
 	displayMessages(m_messages);
 }
 
