@@ -25,6 +25,7 @@
 #include "core/core.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
 #include "misc/algorithm.h"
@@ -43,10 +44,29 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 void HtmlMessagesRenderer::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer)
 {
 	if (m_chatStyleRenderer)
-		disconnect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(refreshView()));
+		disconnect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
 	m_chatStyleRenderer = std::move(chatStyleRenderer);
-	if (m_chatStyleRenderer)
-		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(refreshView()));
+
+	m_messagesDisplay.reset();
+	if (!m_chatStyleRenderer)
+		return;
+
+	if (m_chatStyleRenderer->isReady())
+		rendererReady();
+	else
+		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
+}
+
+void HtmlMessagesRenderer::rendererReady()
+{
+	m_messagesDisplay = make_unique<WebkitMessagesViewDisplay>(*m_chatStyleRenderer.get());
+	displayMessages(m_messages);
+}
+
+void HtmlMessagesRenderer::displayMessages(const SortedMessages &messages)
+{
+	if (m_messagesDisplay)
+		m_messagesDisplay->displayMessages(messages);
 }
 
 void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
@@ -66,8 +86,7 @@ void HtmlMessagesRenderer::pruneMessages()
 		return;
 
 	m_messages = limitMessages(m_messages, ChatStyleManager::instance()->prune());
-	if (isReady())
-		updateDisplayedMessages(m_messages);
+	displayMessages(m_messages);
 }
 
 SortedMessages HtmlMessagesRenderer::limitMessages(const SortedMessages &sortedMessages, int limit)
@@ -86,9 +105,7 @@ SortedMessages HtmlMessagesRenderer::limitMessages(const SortedMessages &sortedM
 void HtmlMessagesRenderer::add(const Message &message)
 {
 	m_messages.add(message);
-
-	if (isReady())
-		updateDisplayedMessages(m_messages);
+	displayMessages(m_messages);
 }
 
 Message HtmlMessagesRenderer::lastMessage() const
@@ -100,10 +117,10 @@ Message HtmlMessagesRenderer::lastMessage() const
 
 void HtmlMessagesRenderer::refreshView()
 {
-	if (isReady())
+	if (m_messagesDisplay)
 	{
-		updateDisplayedMessages({});
-		updateDisplayedMessages(m_messages);
+		displayMessages({});
+		displayMessages(m_messages);
 	}
 }
 
@@ -120,41 +137,13 @@ void HtmlMessagesRenderer::add(const SortedMessages &messages)
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 
-	if (isReady())
-		updateDisplayedMessages(m_messages);
-}
-
-void HtmlMessagesRenderer::updateDisplayedMessages(SortedMessages messages)
-{
-	auto difference = sequence_difference(begin(m_displayedMessages), end(m_displayedMessages), begin(messages), end(messages));
-	auto lastMessage = Message::null;
-
-	if (end(m_displayedMessages) != difference.first)
-	{
-		auto toRemove = std::distance(end(m_displayedMessages), difference.first);
-		for (auto i = 0; i < toRemove; i++)
-			m_chatStyleRenderer->removeFirstMessage();
-		lastMessage = m_displayedMessages.last();
-	}
-	else
-		m_chatStyleRenderer->clearMessages();
-
-	for (auto it = difference.second; it != end(messages); ++it)
-	{
-		auto info = Core::instance()->messageRenderInfoFactory()->messageRenderInfo(lastMessage, *it);
-		m_chatStyleRenderer->appendChatMessage(*it, info);
-		lastMessage = *it;
-	}
-
-	m_displayedMessages = std::move(messages);
+	displayMessages(m_messages);
 }
 
 void HtmlMessagesRenderer::clearMessages()
 {
 	m_messages.clear();
-
-	if (isReady())
-		updateDisplayedMessages(m_messages);
+	displayMessages(m_messages);
 }
 
 void HtmlMessagesRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)

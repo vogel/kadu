@@ -31,6 +31,7 @@
 
 class ChatImage;
 class ChatStyleRenderer;
+class WebkitMessagesViewDisplay;
 
 class HtmlMessagesRenderer : public QObject
 {
@@ -59,8 +60,8 @@ public slots:
 
 private:
 	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
+	std::unique_ptr<WebkitMessagesViewDisplay> m_messagesDisplay;
 
-	SortedMessages m_displayedMessages;
 	SortedMessages m_messages;
 
 	bool m_forcePruneDisabled;
@@ -68,6 +69,9 @@ private:
 	bool isReady() const;
 	Message lastMessage() const;
 	SortedMessages limitMessages(const SortedMessages &sortedMessages, int limit);
-	void updateDisplayedMessages(SortedMessages messages);
+	void displayMessages(const SortedMessages &messages);
+
+private slots:
+	void rendererReady();
 
 };

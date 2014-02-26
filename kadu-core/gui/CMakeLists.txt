@@ -125,6 +125,7 @@ set (gui_SRCS
 	widgets/wait-overlay.cpp
 	widgets/webkit-messages-view/html-messages-renderer.cpp
 	widgets/webkit-messages-view/webkit-messages-view.cpp
+	widgets/webkit-messages-view/webkit-messages-view-display.cpp
 
 	widgets/configuration/buddy-list-background-colors-widget.cpp
 	widgets/configuration/config-action-button.cpp
