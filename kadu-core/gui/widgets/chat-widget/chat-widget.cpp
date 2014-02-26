@@ -481,6 +481,7 @@ void ChatWidget::appendMessages(const SortedMessages &messages)
 		return message.type() == MessageTypeReceived || message.type() == MessageTypeSystem;
 	});
 
+	MessagesView->setForcePruneDisabled(true);
 	MessagesView->add(messages);
 	if (unread)
 		LastReceivedMessageTime = QDateTime::currentDateTime();
@@ -544,6 +545,7 @@ void ChatWidget::clearChatWindow()
 	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
+		MessagesView->setForcePruneDisabled(false);
 		activateWindow();
 	}
 

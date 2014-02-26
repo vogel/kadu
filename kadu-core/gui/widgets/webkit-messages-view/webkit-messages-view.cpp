@@ -34,6 +34,7 @@
 #include "chat-style/engine/chat-style-renderer.h"
 #include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/chat-style-engine.h"
+#include <chat-style/chat-style-manager.h>
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -49,6 +50,7 @@
 #include "debug.h"
 
 #include "webkit-messages-view.h"
+#include "messages-limiter.h"
 
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
@@ -86,11 +88,14 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 		"XMLHttpRequest.prototype.send = function() { return false; };"
 	);
 
+	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
+	connect(ChatStyleManager::instance(), SIGNAL(chatStyleConfigurationUpdated()),
+			this, SLOT(chatStyleConfigurationUpdated()));
+
 	configurationUpdated();
+	setForcePruneDisabled(false);
 
 	connectChat();
-
-	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
 }
 
 WebkitMessagesView::~WebkitMessagesView()
@@ -186,7 +191,19 @@ void WebkitMessagesView::recreateRenderer()
 
 void WebkitMessagesView::setForcePruneDisabled(bool disable)
 {
-	Renderer->setForcePruneDisabled(disable);
+	if (disable)
+		Renderer->setMessagesLimiter({});
+	else
+	{
+		Renderer->setMessagesLimiter(make_unique<MessagesLimiter>());
+		chatStyleConfigurationUpdated();
+	}
+}
+
+void WebkitMessagesView::chatStyleConfigurationUpdated()
+{
+	if (Renderer->messagesLimiter())
+		Renderer->messagesLimiter()->setLimit(ChatStyleManager::instance()->prune());
 }
 
 void WebkitMessagesView::refreshView()
@@ -230,7 +247,6 @@ void WebkitMessagesView::add(const Message &message)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	Renderer->add(message);
-	Renderer->pruneMessages();
 	emit messagesUpdated();
 }
 

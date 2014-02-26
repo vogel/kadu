@@ -42,15 +42,18 @@ void WebkitMessagesViewDisplay::displayMessages(SortedMessages messages)
 	auto difference = sequence_difference(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
 	auto lastMessage = Message::null;
 
-	if (end(m_currentMessages) != difference.first)
+	if (!m_currentMessages.empty())
 	{
-		auto toRemove = std::distance(end(m_currentMessages), difference.first);
-		for (auto i = 0; i < toRemove; i++)
-			m_chatStyleRenderer.removeFirstMessage();
-		lastMessage = m_currentMessages.last();
+		if (end(m_currentMessages) == difference.first)
+			m_chatStyleRenderer.clearMessages();
+		else if (begin(m_currentMessages) != difference.first)
+		{
+			auto toRemove = std::distance(begin(m_currentMessages), difference.first);
+			for (auto i = 0; i < toRemove; i++)
+				m_chatStyleRenderer.removeFirstMessage();
+			lastMessage = m_currentMessages.last();
+		}
 	}
-	else
-		m_chatStyleRenderer.clearMessages();
 
 	for (auto it = difference.second; it != end(messages); ++it)
 	{

@@ -49,6 +49,7 @@ void HistoryMessagesPrepender::messagesAvailable()
 	if (!m_messagesView)
 		return;
 
+	m_messagesView->setForcePruneDisabled(true);
 	m_messagesView->add(m_messages.result());
 	m_messagesView = nullptr;
 	deleteLater();

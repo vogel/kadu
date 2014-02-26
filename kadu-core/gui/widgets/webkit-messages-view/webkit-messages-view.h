@@ -71,6 +71,7 @@ private slots:
 	void refreshView();
 	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
 	void sentMessageStatusChanged(const Message &message);
+	void chatStyleConfigurationUpdated();
 
 protected:
 	virtual void configurationUpdated();

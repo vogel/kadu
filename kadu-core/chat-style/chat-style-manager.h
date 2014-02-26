@@ -140,4 +140,7 @@ public:
 
 	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
 
+signals:
+	void chatStyleConfigurationUpdated();
+
 };

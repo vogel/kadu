@@ -31,6 +31,7 @@
 
 class ChatImage;
 class ChatStyleRenderer;
+class MessagesLimiter;
 class WebkitMessagesViewDisplay;
 
 class HtmlMessagesRenderer : public QObject
@@ -42,14 +43,13 @@ public:
 	virtual ~HtmlMessagesRenderer();
 
 	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer);
-
-	void setForcePruneDisabled(bool forcePruneDisabled);
+	void setMessagesLimiter(std::unique_ptr<MessagesLimiter> messagesLimiter);
+	MessagesLimiter * messagesLimiter() const;
 
 	const SortedMessages & messages() const { return m_messages; }
 	void add(const Message &message);
 	void add(const SortedMessages &messages);
 	void clearMessages();
-	void pruneMessages();
 
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void messageStatusChanged(const QString &id, MessageStatus status);
@@ -60,14 +60,13 @@ public slots:
 
 private:
 	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
+	std::unique_ptr<MessagesLimiter> m_messagesLimiter;
 	std::unique_ptr<WebkitMessagesViewDisplay> m_messagesDisplay;
 
 	SortedMessages m_messages;
 
-	bool m_forcePruneDisabled;
-
 	bool isReady() const;
-	SortedMessages limitMessages(const SortedMessages &sortedMessages, int limit);
+	SortedMessages limitMessages(SortedMessages messages) const;
 	void displayMessages(const SortedMessages &messages);
 
 private slots:

@@ -20,20 +20,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer.h"
 #include "core/core.h"
-#include "configuration/chat-configuration-holder.h"
-#include "configuration/configuration-file.h"
+#include "gui/widgets/webkit-messages-view/messages-limiter.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
-#include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
 #include "misc/algorithm.h"
 
 #include "html-messages-renderer.h"
 
 HtmlMessagesRenderer::HtmlMessagesRenderer(QObject *parent) :
-		QObject{parent}, m_forcePruneDisabled{false}
+		QObject{parent}
 {
 }
 
@@ -57,6 +54,17 @@ void HtmlMessagesRenderer::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> c
 		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
 }
 
+void HtmlMessagesRenderer::setMessagesLimiter(std::unique_ptr<MessagesLimiter> messagesLimiter)
+{
+	m_messagesLimiter = std::move(messagesLimiter);
+	m_messages = limitMessages(m_messages);
+}
+
+MessagesLimiter * HtmlMessagesRenderer::messagesLimiter() const
+{
+	return m_messagesLimiter.get();
+}
+
 void HtmlMessagesRenderer::rendererReady()
 {
 	m_messagesDisplay = make_unique<WebkitMessagesViewDisplay>(*m_chatStyleRenderer.get());
@@ -70,42 +78,22 @@ void HtmlMessagesRenderer::displayMessages(const SortedMessages &messages)
 		m_messagesDisplay->displayMessages(messages);
 }
 
-void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
-{
-	m_forcePruneDisabled = forcePruneDisabled;
-	pruneMessages();
-}
-
 bool HtmlMessagesRenderer::isReady() const
 {
 	return m_chatStyleRenderer && m_chatStyleRenderer->isReady();
 }
 
-void HtmlMessagesRenderer::pruneMessages()
+SortedMessages HtmlMessagesRenderer::limitMessages(SortedMessages messages) const
 {
-	if (m_forcePruneDisabled || ChatStyleManager::instance()->cfgNoHeaderRepeat() || m_messages.empty())
-		return;
-
-	m_messages = limitMessages(m_messages, ChatStyleManager::instance()->prune());
-	displayMessages(m_messages);
-}
-
-SortedMessages HtmlMessagesRenderer::limitMessages(const SortedMessages &sortedMessages, int limit)
-{
-	if (limit <= 0)
-		return sortedMessages;
-
-	if (sortedMessages.size() <= static_cast<decltype(sortedMessages.size())>(limit))
-		return sortedMessages;
-
-	auto messages = decltype(sortedMessages.messages()){};
-	std::copy(end(sortedMessages) - limit, end(sortedMessages), std::back_inserter(messages));
-	return SortedMessages{messages};
+	return m_messagesLimiter
+			? m_messagesLimiter->limitMessages(messages)
+			: messages;
 }
 
 void HtmlMessagesRenderer::add(const Message &message)
 {
 	m_messages.add(message);
+	m_messages = limitMessages(m_messages);
 	displayMessages(m_messages);
 }
 
@@ -124,13 +112,7 @@ void HtmlMessagesRenderer::add(const SortedMessages &messages)
 		return;
 
 	m_messages.add(messages);
-
-//  Do not prune messages here. When we are adding many massages to renderer, probably
-//  we want all of them to be visible on message view. This also fixes crash from
-//  bug #1963 . This crash occured, when we are trying to
-//  cite more messages from history, than our message pruning setting
-//	pruneMessages();
-
+	m_messages = limitMessages(m_messages);
 	displayMessages(m_messages);
 }
 

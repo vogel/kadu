@@ -191,6 +191,7 @@ void ChatStyleManager::configurationUpdated()
 	}
 
 	triggerCompositingStateChanged();
+	emit chatStyleConfigurationUpdated();
 }
 
 QString ChatStyleManager::fixedStyleName(QString styleName)
