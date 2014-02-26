@@ -93,17 +93,19 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 {
 	Account result = Account::create("gadu");
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(result.details());
-	accountDetails->setState(StorableObject::StateNew);
-
 	result.setId(readEntry(xmlQuery, "General", "UIN").toString());
 	result.setPassword(pwHash(readEntry(xmlQuery, "General", "Password").toString()));
 	result.setRememberPassword(true);
 	result.setHasPassword(!result.password().isEmpty());
 	result.setPrivateStatus(readEntry(xmlQuery, "General", "PrivateStatus").toBool());
-	accountDetails->setAllowDcc(readEntry(xmlQuery, "Network", "AllowDCC").toBool());
 
-	accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(result.details());
+	if (accountDetails)
+	{
+		accountDetails->setState(StorableObject::StateNew);
+		accountDetails->setAllowDcc(readEntry(xmlQuery, "Network", "AllowDCC").toBool());
+		accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
+	}
 
 	QString address = readEntry(xmlQuery, "Network", "ProxyHost").toString();
 	if (!address.isEmpty())

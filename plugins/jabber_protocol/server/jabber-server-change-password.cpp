@@ -37,7 +37,10 @@ void JabberServerChangePassword::performAction()
 {
 	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyAccount.protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
+	{
 		emit finished(this);
+		return;
+	}
 
 	XMPP::JT_Register *task = new XMPP::JT_Register(jabberProtocol->xmppClient()->rootTask());
 	QObject::connect(task, SIGNAL(finished()),

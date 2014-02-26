@@ -481,9 +481,8 @@ void Firewall::writeLog(const Contact &contact, const QString &message)
 
 	QFile logFile(LogFilePath);
 
-	if (!logFile.exists())
+	if (!logFile.exists() && logFile.open(QIODevice::WriteOnly))
 	{
-		logFile.open(QIODevice::WriteOnly);
 		QTextStream stream(&logFile);
 		stream << tr("      DATA AND TIME      ::   ID      :: MESSAGE\n") << "----------------------------------------------------\n";
 		logFile.close();

@@ -43,7 +43,8 @@ void AutostatusActions::destroyInstance()
 	Instance = 0;
 }
 
-AutostatusActions::AutostatusActions()
+AutostatusActions::AutostatusActions() :
+		AutostatusActionDescription{}
 {
 }
 

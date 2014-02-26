@@ -137,7 +137,7 @@ void GaduFileTransferHandler::send()
 	WaitingForSocketNotifiers = true;
 
 	if (gaduProtocol->fileTransferService())
-		dynamic_cast<GaduFileTransferService *>(gaduProtocol->fileTransferService())->attachSendFileTransferSocket(this);
+		static_cast<GaduFileTransferService *>(gaduProtocol->fileTransferService())->attachSendFileTransferSocket(this);
 }
 
 void GaduFileTransferHandler::stop()

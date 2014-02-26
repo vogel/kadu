@@ -33,7 +33,7 @@
 #include "jabber-account-details.h"
 
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
-		AccountDetails(data), AutoResource(false), UseCustomHostPort(false), CustomPort(5222),
+		AccountDetails(data), AutoResource(false), Priority{}, UseCustomHostPort(false), CustomPort(5222),
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS),
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {

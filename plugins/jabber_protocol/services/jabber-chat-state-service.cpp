@@ -89,7 +89,7 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 		return;
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails->sendGoneNotification() && (state == XMPP::StateGone || state == XMPP::StateInactive))
+	if (jabberAccountDetails && !jabberAccountDetails->sendGoneNotification() && (state == XMPP::StateGone || state == XMPP::StateInactive))
 		state = XMPP::StatePaused;
 
 	ContactInfo &info = ContactInfos[contact];

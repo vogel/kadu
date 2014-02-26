@@ -113,7 +113,8 @@ PCSpeaker::PCSpeaker(QObject *parent) :
 #ifdef Q_WS_X11
 		xdisplay{},
 #endif
-		configWidget{}
+		configWidget{},
+		volume{}
 {
 	Instance = this;
 }
@@ -202,10 +203,12 @@ void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 			}
 			if (tmp>=0) {
 				tmp*=8;
+				bool alreadyHalf = false;
 				if (line[i+1]=='#')
 				{						//for halftone
 					tmp+=8;					//set offset
 					++i;					//go forward
+					alreadyHalf = true;
 				}
 				if ((line[i+1]>='0') && (line[i+1]<='7'))
 				{
@@ -214,7 +217,8 @@ void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 				}
 				if (line[i+1]=='#')
 				{						//for halftone
-					tmp+=8;					//set offset
+					if (!alreadyHalf)
+						tmp+=8;					//set offset
 					++i;					//go forward
 				}
 				tab[k]=sounds[tmp];				//store sound frequency

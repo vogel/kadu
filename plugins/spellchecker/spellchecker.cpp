@@ -74,7 +74,9 @@ static void enchantDictDescribe(const char * const langTag, const char * const p
 #endif
 
 SpellChecker::SpellChecker(QObject *parent) :
-		ConfigurationUiHandler(parent)
+		ConfigurationUiHandler{parent},
+		AvailableLanguagesList{},
+		CheckedLanguagesList{}
 {
 #if defined(HAVE_ASPELL)
 	// prepare configuration of spellchecker

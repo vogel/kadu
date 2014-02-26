@@ -27,7 +27,9 @@
 #include "gadu-avatar-downloader.h"
 
 GaduAvatarDownloader::GaduAvatarDownloader(QObject *parent) :
-		AvatarDownloader(parent), RedirectCount(0)
+		AvatarDownloader{parent},
+		Reply{},
+		RedirectCount{0}
 {
 	NetworkAccessManager = new QNetworkAccessManager(this);
 }

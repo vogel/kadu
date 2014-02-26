@@ -253,7 +253,8 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 				Contact contact = Contact::create();
 				contact.setContactAccount(account);
 				GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
-				details->setState(StorableObject::StateNew);
+				if (details)
+					details->setState(StorableObject::StateNew);
 				contact.setId(numberElement.text());
 				contact.data()->setState(StorableObject::StateNew);
 				contact.setOwnerBuddy(buddy);
@@ -315,7 +316,8 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 			contact.setContactAccount(account);
 			contact.setId(QString::number(uin));
 			GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
-			details->setState(StorableObject::StateNew);
+			if (details)
+				details->setState(StorableObject::StateNew);
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
 
@@ -387,7 +389,8 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			contact.setContactAccount(account);
 			contact.setId(QString::number(uin));
 			GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
-			details->setState(StorableObject::StateNew);
+			if (details)
+				details->setState(StorableObject::StateNew);
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
 
