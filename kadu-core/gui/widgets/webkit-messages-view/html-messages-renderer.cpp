@@ -109,13 +109,6 @@ void HtmlMessagesRenderer::add(const Message &message)
 	displayMessages(m_messages);
 }
 
-Message HtmlMessagesRenderer::lastMessage() const
-{
-	return m_messages.empty()
-			? Message{}
-			: m_messages.last();
-}
-
 void HtmlMessagesRenderer::refreshView()
 {
 	if (m_messagesDisplay)

@@ -67,7 +67,6 @@ private:
 	bool m_forcePruneDisabled;
 
 	bool isReady() const;
-	Message lastMessage() const;
 	SortedMessages limitMessages(const SortedMessages &sortedMessages, int limit);
 	void displayMessages(const SortedMessages &messages);
 
