@@ -43,7 +43,7 @@ void WebkitMessagesViewClearingDisplay::displayMessages(SortedMessages messages)
 		displayMessagesRange(begin(messages), end(messages), previousMessage, MessageRenderHeaderBehavior::RenderWhenRequired);
 	}
 	else
-		displayMessagesRange(difference.second, end(messages), previousMessage, MessageRenderHeaderBehavior::RenderWhenRequired);
+		displayMessagesRange(difference.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::RenderWhenRequired);
 
 	m_currentMessages = std::move(messages);
 }

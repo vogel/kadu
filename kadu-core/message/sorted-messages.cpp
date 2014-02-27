@@ -61,7 +61,9 @@ const std::vector<Message> & SortedMessages::messages() const
 
 Message SortedMessages::last() const
 {
-	return m_messages.back();
+	return m_messages.empty()
+			? Message::null
+			: m_messages.back();
 }
 
 bool SortedMessages::empty() const
