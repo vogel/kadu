@@ -157,7 +157,8 @@ QList<ConfigWidget *>  ConfigurationWidget::processUiFile(const QString &fileNam
 	QFile file(fileName);
 
 	QDomDocument uiFile;
-	file.open(QIODevice::ReadOnly);
+	if (!file.open(QIODevice::ReadOnly))
+		return result;
 
 	if (!uiFile.setContent(&file))
 	{

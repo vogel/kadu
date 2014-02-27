@@ -75,8 +75,11 @@ Chat ChatTypeContactSet::findChat(const ContactSet &contacts, NotFoundAction not
 	chat.setType("ContactSet");
 
 	ChatDetailsContactSet *chatDetailsContactSet = dynamic_cast<ChatDetailsContactSet *>(chat.details());
-	chatDetailsContactSet->setState(StorableObject::StateNew);
-	chatDetailsContactSet->setContacts(contacts);
+	if (chatDetailsContactSet)
+	{
+		chatDetailsContactSet->setState(StorableObject::StateNew);
+		chatDetailsContactSet->setContacts(contacts);
+	}
 
 	if (ActionCreateAndAdd == notFoundAction)
 		ChatManager::instance()->addItem(chat);

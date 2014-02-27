@@ -25,7 +25,7 @@
 #include "chat-edit-widget.h"
 
 ChatEditWidget::ChatEditWidget(Chat chat, QWidget *parent) :
-		ModalConfigurationWidget(parent), MyChat(chat)
+		ModalConfigurationWidget(parent), StateNotifier{new SimpleConfigurationValueStateNotifier{this}}, MyChat(chat)
 {
 }
 

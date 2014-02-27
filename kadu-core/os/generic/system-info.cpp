@@ -163,8 +163,8 @@ QString SystemInfo::linuxHeuristicDetect()
 			char buffer[128];
 
 			QFile f(osInfo[i].file);
-			f.open(QIODevice::ReadOnly);
-			f.readLine(buffer, 128);
+			if (f.open(QIODevice::ReadOnly))
+				f.readLine(buffer, 128);
 			QString desc(buffer);
 
 			desc = desc.simplified();//stripWhiteSpace ();

@@ -135,7 +135,7 @@ AdvancedConnector::Proxy JabberConnectionService::createProxyConfiguration(Netwo
 		proxySettings.setPollInterval(2);
 	}
 
-	if (!proxy.user().isEmpty())
+	if (proxySettings.type() != XMPP::AdvancedConnector::Proxy::None && !proxy.user().isEmpty())
 		proxySettings.setUserPass(proxy.user(), proxy.password());
 
 	return proxySettings;

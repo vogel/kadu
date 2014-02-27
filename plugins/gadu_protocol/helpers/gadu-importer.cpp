@@ -161,9 +161,6 @@ void GaduImporter::importAccounts()
 
 	Account defaultGaduGadu = Account::create("gadu");
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
-	accountDetails->setState(StorableObject::StateNew);
-
 	if (!IdentityManager::instance()->items().isEmpty())
 		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items().at(0));
 
@@ -172,9 +169,14 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu.setRememberPassword(true);
 	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
 	defaultGaduGadu.setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
-	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
-	accountDetails->setReceiveImagesDuringInvisibility(config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
+	if (accountDetails)
+	{
+		accountDetails->setState(StorableObject::StateNew);
+		accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
+		accountDetails->setReceiveImagesDuringInvisibility(config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
+	}
 
 	QString address = config_file.readEntry("Network", "ProxyHost");
 	if (!address.isEmpty())

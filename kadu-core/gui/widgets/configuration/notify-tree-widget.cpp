@@ -202,7 +202,7 @@ void NotifyTreeWidgetItem::notifierChecked(Notifier *notifier, bool checked)
 	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 
 	for (int i = 0; i < childCount(); ++i)
-		dynamic_cast<NotifyTreeWidgetItem *>(child(i))->parentNotifierChecked();
+		static_cast<NotifyTreeWidgetItem *>(child(i))->parentNotifierChecked();
 }
 
 void NotifyTreeWidgetItem::useCustomSettingsChecked(bool checked)

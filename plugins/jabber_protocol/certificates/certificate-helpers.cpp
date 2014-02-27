@@ -203,7 +203,7 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 
 	if (result == QCA::TLS::Valid)
 		return true;
-		
+
 	if (false == tlsHandler->certMatchesHostname())
 	{
 		QList<QString> subjectInfo = certificate.subjectInfo().values(QCA::CommonName);
@@ -235,16 +235,4 @@ QStringList CertificateHelpers::getCertificateStoreDirs()
 	QStringList l;
 	l += KaduPaths::instance()->profilePath() + QLatin1String("certs");
 	return l;
-}
-
-QString CertificateHelpers::getCertificateStoreSaveDir()
-{
-	QDir certsave(KaduPaths::instance()->profilePath() + QLatin1String("certs"));
-	if (!certsave.exists())
-	{
-		QDir home(KaduPaths::instance()->profilePath());
-		home.mkdir("certs");
-	}
-
-	return certsave.path();
 }

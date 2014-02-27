@@ -22,7 +22,9 @@
 
 #include "status-type-data.h"
 
-StatusTypeData::StatusTypeData()
+StatusTypeData::StatusTypeData() :
+		Type{},
+		TypeGroup{}
 {
 }
 

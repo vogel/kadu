@@ -23,7 +23,7 @@
 #include "configuration/configuration-file.h"
 
 #include "spellchecker-plugin.h"
-#include "spellchecker.h" 
+#include "spellchecker.h"
 
 #include "spellchecker-configuration.h"
 
@@ -51,7 +51,14 @@ void SpellcheckerConfiguration::destroyInstance()
 }
 
 SpellcheckerConfiguration::SpellcheckerConfiguration() :
-		FullyLoaded(false)
+		FullyLoaded{},
+		Bold{},
+		Italic{},
+		Underline{},
+		Accents{},
+		Case{},
+		Suggester{},
+		SuggesterWordCount{}
 {
 	createDefaultConfiguration();
 }

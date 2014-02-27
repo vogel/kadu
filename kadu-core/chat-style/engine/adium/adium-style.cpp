@@ -204,14 +204,14 @@ QString AdiumStyle::readStylePart(const QString &part)
 	QString resultHtml;
 	if (QFile::exists(part))
 	{
-
 		fileAccess.setFileName(part);
-		fileAccess.open(QIODevice::ReadOnly);
-		QTextStream stream(&fileAccess);
-		stream.setCodec(QTextCodec::codecForName("UTF-8"));
-		resultHtml = stream.readAll();
-
-		fileAccess.close();
+		if (fileAccess.open(QIODevice::ReadOnly))
+		{
+			QTextStream stream(&fileAccess);
+			stream.setCodec(QTextCodec::codecForName("UTF-8"));
+			resultHtml = stream.readAll();
+			fileAccess.close();
+		}
 	}
 	return resultHtml;
 }

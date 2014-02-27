@@ -48,6 +48,9 @@
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication(argc, argv)
+#if defined(Q_WS_X11)
+		, net_wm_state{}
+#endif // Q_WS_X11
 #if QT_VERSION < 0x050000
 		, SavingSession(false)
 #endif

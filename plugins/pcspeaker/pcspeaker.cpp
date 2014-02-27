@@ -172,7 +172,7 @@ void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 	{
 		for (i=0; i<length; ++i)					//for each sound
 		{
-			if (k == 20) break;
+			if (k >= 20) break;
 			znak=line[i].toLatin1();
 			switch (znak) {						//calculate offset in sound table
 				case 'C':  tmp=0;	break;
@@ -221,18 +221,22 @@ void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 						tmp+=8;					//set offset
 					++i;					//go forward
 				}
-				tab[k]=sounds[tmp];				//store sound frequency
-				if (line[i+1]=='/')
+
+				if (tmp >= 0 && tmp < 96)
 				{
-						//set duration
-						if (line[i+2]=='F') tmp3=16;
-						else if ((line[i+2]>='1') && (line[i+2]<='8')) tmp3=line[i+2].toLatin1()-48;
-						else tmp3=1;
-						tab2[k]=(1000/tmp3);
-						i+=2;
+					tab[k]=sounds[tmp];				//store sound frequency
+					if (line[i+1]=='/')
+					{
+							//set duration
+							if (line[i+2]=='F') tmp3=16;
+							else if ((line[i+2]>='1') && (line[i+2]<='8')) tmp3=line[i+2].toLatin1()-48;
+							else tmp3=1;
+							tab2[k]=(1000/tmp3);
+							i+=2;
+					}
+					else tab2[k]=1000;				//if not given use 1000
+					++k;						//move to the next sound
 				}
-				else tab2[k]=1000;				//if not given use 1000
-				++k;						//move to the next sound
 			}
 		}
 	}

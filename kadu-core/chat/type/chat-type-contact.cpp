@@ -58,8 +58,11 @@ Chat ChatTypeContact::findChat(const Contact &contact, NotFoundAction notFoundAc
 	chat.setType("Contact");
 
 	ChatDetailsContact *chatDetailsContact = dynamic_cast<ChatDetailsContact *>(chat.details());
-	chatDetailsContact->setState(StorableObject::StateNew);
-	chatDetailsContact->setContact(contact);
+	if (chatDetailsContact)
+	{
+		chatDetailsContact->setState(StorableObject::StateNew);
+		chatDetailsContact->setContact(contact);
+	}
 
 	if (ActionCreateAndAdd == notFoundAction)
 		ChatManager::instance()->addItem(chat);

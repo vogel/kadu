@@ -37,7 +37,16 @@ ChatConfigurationHolder * ChatConfigurationHolder::instance()
 	return Instance;
 }
 
-ChatConfigurationHolder::ChatConfigurationHolder()
+ChatConfigurationHolder::ChatConfigurationHolder() :
+		AutoSend{},
+		NiceDateFormat{},
+		ChatTextCustomColors{},
+		ForceCustomChatFont{},
+		ChatBgFilled{},
+		UseTransparency{},
+		ContactStateChats{},
+		ContactStateWindowTitle{},
+		ContactStateWindowTitlePosition{}
 {
 }
 
