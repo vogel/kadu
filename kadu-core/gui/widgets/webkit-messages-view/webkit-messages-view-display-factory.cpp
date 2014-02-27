@@ -19,7 +19,8 @@
 
 #include "webkit-messages-view-display-factory.h"
 
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-clearing-display.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-removing-display.h"
 #include "message/message-render-info-factory.h"
 #include "misc/memory.h"
 
@@ -39,7 +40,7 @@ void WebkitMessagesViewDisplayFactory::setMessageRenderInfoFactory(MessageRender
 
 std::unique_ptr<WebkitMessagesViewDisplay> WebkitMessagesViewDisplayFactory::createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer)
 {
-	auto result = make_unique<WebkitMessagesViewDisplay>(chatStyleRenderer);
+	auto result = make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
 	result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
 
 	return std::move(result);

@@ -22,10 +22,13 @@
 #include "chat-style/engine/chat-style-renderer.h"
 #include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
-#include "misc/algorithm.h"
 
 WebkitMessagesViewDisplay::WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer) :
 		m_chatStyleRenderer(chatStyleRenderer)
+{
+}
+
+WebkitMessagesViewDisplay::~WebkitMessagesViewDisplay()
 {
 }
 
@@ -34,33 +37,17 @@ void WebkitMessagesViewDisplay::setMessageRenderInfoFactory(MessageRenderInfoFac
 	m_messageRenderInfoFactory = messageRenderInfoFactory;
 }
 
-void WebkitMessagesViewDisplay::displayMessages(SortedMessages messages)
+ChatStyleRenderer & WebkitMessagesViewDisplay::chatStyleRenderer() const
 {
-	if (!m_messageRenderInfoFactory)
-		return;
+	return m_chatStyleRenderer;
+}
 
-	auto difference = sequence_difference(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
-	auto lastMessage = Message::null;
-
-	if (!m_currentMessages.empty())
+void WebkitMessagesViewDisplay::displayMessagesRange(I from, I to, Message previousMessage) const
+{
+	for (auto it = from; it != to; ++it)
 	{
-		if (end(m_currentMessages) == difference.first)
-			m_chatStyleRenderer.clearMessages();
-		else if (begin(m_currentMessages) != difference.first)
-		{
-			auto toRemove = std::distance(begin(m_currentMessages), difference.first);
-			for (auto i = 0; i < toRemove; i++)
-				m_chatStyleRenderer.removeFirstMessage();
-			lastMessage = m_currentMessages.last();
-		}
+		auto info = m_messageRenderInfoFactory->messageRenderInfo(previousMessage, *it);
+		chatStyleRenderer().appendChatMessage(*it, info);
+		previousMessage = *it;
 	}
-
-	for (auto it = difference.second; it != end(messages); ++it)
-	{
-		auto info = m_messageRenderInfoFactory->messageRenderInfo(lastMessage, *it);
-		m_chatStyleRenderer.appendChatMessage(*it, info);
-		lastMessage = *it;
-	}
-
-	m_currentMessages = std::move(messages);
 }

@@ -19,33 +19,20 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 
 #include "message/sorted-messages.h"
 
-class ChatStyleRenderer;
-class MessageRenderInfoFactory;
-
-class WebkitMessagesViewDisplay
+class WebkitMessagesViewRemovingDisplay : public WebkitMessagesViewDisplay
 {
 
 public:
-	explicit WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
-	virtual ~WebkitMessagesViewDisplay();
+	explicit WebkitMessagesViewRemovingDisplay(ChatStyleRenderer &chatStyleRenderer);
+	virtual ~WebkitMessagesViewRemovingDisplay();
 
-	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
-
-	virtual void displayMessages(SortedMessages messages) = 0;
-
-protected:
-	ChatStyleRenderer & chatStyleRenderer() const;
-
-	using I = decltype(begin(std::declval<SortedMessages>()));
-	void displayMessagesRange(I from, I to, Message previousMessage) const;
+	virtual void displayMessages(SortedMessages messages) override;
 
 private:
-	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
-
-	ChatStyleRenderer &m_chatStyleRenderer;
+	SortedMessages m_currentMessages;
 
 };
