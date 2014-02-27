@@ -67,6 +67,7 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
@@ -769,6 +770,9 @@ void Core::runServices()
 	CurrentChatStyleRendererFactoryProvider = make_qobject<ConfiguredChatStyleRendererFactoryProvider>(this);
 
 	ChatStyleManager::instance()->setConfiguredChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
+
+	CurrentWebkitMessagesViewDisplayFactory = make_qobject<WebkitMessagesViewDisplayFactory>(this);
+	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(CurrentMessageRenderInfoFactory);
 }
 
 void Core::runGuiServices()
@@ -1000,6 +1004,11 @@ ChatStyleRendererFactoryProvider * Core::chatStyleRendererFactoryProvider() cons
 ConfiguredChatStyleRendererFactoryProvider * Core::configuredChatStyleRendererFactoryProvider() const
 {
 	return CurrentChatStyleRendererFactoryProvider.get();
+}
+
+WebkitMessagesViewDisplayFactory * Core::webkitMessagesViewDisplayFactory() const
+{
+	return CurrentWebkitMessagesViewDisplayFactory.get();
 }
 
 void Core::showMainWindow()

@@ -56,6 +56,7 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
 	Renderer = make_qobject<HtmlMessagesRenderer>(page()->mainFrame());
+	Renderer->setWebkitMessagesViewDisplayFactory(Core::instance()->webkitMessagesViewDisplayFactory());
 
 	QNetworkAccessManager *oldManager = page()->networkAccessManager();
 	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);

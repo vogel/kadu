@@ -33,6 +33,7 @@ class ChatImage;
 class ChatStyleRenderer;
 class MessagesLimiter;
 class WebkitMessagesViewDisplay;
+class WebkitMessagesViewDisplayFactory;
 
 class HtmlMessagesRenderer : public QObject
 {
@@ -41,6 +42,8 @@ class HtmlMessagesRenderer : public QObject
 public:
 	explicit HtmlMessagesRenderer(QObject *parent = nullptr);
 	virtual ~HtmlMessagesRenderer();
+
+	void setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory);
 
 	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer);
 	void setMessagesLimiter(std::unique_ptr<MessagesLimiter> messagesLimiter);
@@ -59,6 +62,8 @@ public slots:
 	void refreshView();
 
 private:
+	QPointer<WebkitMessagesViewDisplayFactory> m_webkitMessagesViewDisplayFactory;
+
 	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
 	std::unique_ptr<MessagesLimiter> m_messagesLimiter;
 	std::unique_ptr<WebkitMessagesViewDisplay> m_messagesDisplay;

@@ -21,11 +21,9 @@
  */
 
 #include "chat-style/engine/chat-style-renderer.h"
-#include "core/core.h"
 #include "gui/widgets/webkit-messages-view/messages-limiter.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
-#include "message/message-render-info-factory.h"
-#include "misc/algorithm.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 
 #include "html-messages-renderer.h"
 
@@ -36,6 +34,11 @@ HtmlMessagesRenderer::HtmlMessagesRenderer(QObject *parent) :
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
 {
+}
+
+void HtmlMessagesRenderer::setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory)
+{
+	m_webkitMessagesViewDisplayFactory = webkitMessagesViewDisplayFactory;
 }
 
 void HtmlMessagesRenderer::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer)
@@ -67,8 +70,8 @@ MessagesLimiter * HtmlMessagesRenderer::messagesLimiter() const
 
 void HtmlMessagesRenderer::rendererReady()
 {
-	m_messagesDisplay = make_unique<WebkitMessagesViewDisplay>(*m_chatStyleRenderer.get());
-	m_messagesDisplay->setMessageRenderInfoFactory(Core::instance()->messageRenderInfoFactory());
+	if (m_webkitMessagesViewDisplayFactory)
+		m_messagesDisplay = m_webkitMessagesViewDisplayFactory->createWebkitMessagesViewDisplay(*m_chatStyleRenderer.get());
 	displayMessages(m_messages);
 }
 
