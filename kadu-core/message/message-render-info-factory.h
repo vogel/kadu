@@ -28,6 +28,8 @@ class ChatStyleManager;
 class Message;
 class MessageRenderInfo;
 
+enum class MessageRenderHeaderBehavior;
+
 class KADUAPI MessageRenderInfoFactory : public QObject
 {
 	Q_OBJECT
@@ -38,7 +40,7 @@ public:
 
 	void setChatStyleManager(ChatStyleManager *chatStylesManager);
 
-	MessageRenderInfo messageRenderInfo(const Message &previous, const Message &message);
+	MessageRenderInfo messageRenderInfo(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior);
 
 private:
 	QPointer<ChatStyleManager> m_chatStylesManager;
@@ -46,7 +48,7 @@ private:
 	QString backgroundColor(const Message &message) const;
 	QString nickColor(const Message &message) const;
 	QString fontColor(const Message &message) const;
-	bool includeHeader(const Message &previous, const Message &message) const;
+	bool includeHeader(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const;
 	int separatorSize(bool includeHeader) const;
 	bool showServerTime(const Message &message) const;
 

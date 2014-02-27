@@ -42,11 +42,11 @@ ChatStyleRenderer & WebkitMessagesViewDisplay::chatStyleRenderer() const
 	return m_chatStyleRenderer;
 }
 
-void WebkitMessagesViewDisplay::displayMessagesRange(I from, I to, Message previousMessage) const
+void WebkitMessagesViewDisplay::displayMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const
 {
 	for (auto it = from; it != to; ++it)
 	{
-		auto info = m_messageRenderInfoFactory->messageRenderInfo(previousMessage, *it);
+		auto info = m_messageRenderInfoFactory->messageRenderInfo(previousMessage, *it, headerBehavior);
 		chatStyleRenderer().appendChatMessage(*it, info);
 		previousMessage = *it;
 	}

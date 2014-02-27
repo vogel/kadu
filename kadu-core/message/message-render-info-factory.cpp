@@ -22,6 +22,7 @@
 #include "chat-style/chat-style-manager.h"
 #include "configuration/chat-configuration-holder.h"
 #include "message/message.h"
+#include "message/message-render-header-behavior.h"
 #include "message/message-render-info.h"
 #include "message/message-render-info-builder.h"
 
@@ -39,17 +40,19 @@ void MessageRenderInfoFactory::setChatStyleManager(ChatStyleManager *chatStylesM
 	m_chatStylesManager = chatStylesManager;
 }
 
-MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(const Message &previous, const Message &message)
+MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior)
 {
 	auto builder = MessageRenderInfoBuilder{};
-	auto header = includeHeader(previous, message);
+	auto header = includeHeader(previous, message, renderHeaderBehavior);
 	return builder
 			.setMessage(message)
 			.setBackgroundColor(backgroundColor(message))
 			.setNickColor(nickColor(message))
 			.setFontColor(fontColor(message))
 			.setIncludeHeader(header)
-			.setSeparatorSize(header)
+			.setSeparatorSize(header
+					? ChatStyleManager::instance()->cfgHeaderSeparatorHeight()
+					: ChatStyleManager::instance()->paragraphSeparator())
 			.setShowServerTime(showServerTime(message))
 			.create();
 }
@@ -75,9 +78,11 @@ QString MessageRenderInfoFactory::fontColor(const Message &message) const
 			: ChatConfigurationHolder::instance()->usrFontColor();
 }
 
-bool MessageRenderInfoFactory::includeHeader(const Message &previous, const Message &message) const
+bool MessageRenderInfoFactory::includeHeader(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const
 {
-	if (!previous || !m_chatStylesManager->cfgNoHeaderRepeat() || previous.type() == MessageTypeSystem || message.type() == MessageTypeSystem)
+	if (renderHeaderBehavior == MessageRenderHeaderBehavior::RenderAlways)
+		return true;
+	if (!previous || previous.type() == MessageTypeSystem || message.type() == MessageTypeSystem)
 		return true;
 	if (message.messageSender() != previous.messageSender())
 		return true;

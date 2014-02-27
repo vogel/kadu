@@ -26,6 +26,8 @@
 class ChatStyleRenderer;
 class MessageRenderInfoFactory;
 
+enum class MessageRenderHeaderBehavior;
+
 class WebkitMessagesViewDisplay
 {
 
@@ -41,7 +43,7 @@ protected:
 	ChatStyleRenderer & chatStyleRenderer() const;
 
 	using I = decltype(begin(std::declval<SortedMessages>()));
-	void displayMessagesRange(I from, I to, Message previousMessage) const;
+	void displayMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const;
 
 private:
 	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;

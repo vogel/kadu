@@ -20,6 +20,7 @@
 #include "webkit-messages-view-removing-display.h"
 
 #include "chat-style/engine/chat-style-renderer.h"
+#include "message/message-render-header-behavior.h"
 #include "misc/algorithm.h"
 
 WebkitMessagesViewRemovingDisplay::WebkitMessagesViewRemovingDisplay(ChatStyleRenderer &chatStyleRenderer) :
@@ -49,6 +50,6 @@ void WebkitMessagesViewRemovingDisplay::displayMessages(SortedMessages messages)
 		}
 	}
 
-	displayMessagesRange(difference.second, end(messages), previousMessage);
+	displayMessagesRange(difference.second, end(messages), previousMessage, MessageRenderHeaderBehavior::RenderAlways);
 	m_currentMessages = std::move(messages);
 }

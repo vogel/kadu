@@ -19,6 +19,7 @@
 
 #include "webkit-messages-view-display-factory.h"
 
+#include "chat-style/chat-style-manager.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-clearing-display.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-removing-display.h"
 #include "message/message-render-info-factory.h"
@@ -40,8 +41,17 @@ void WebkitMessagesViewDisplayFactory::setMessageRenderInfoFactory(MessageRender
 
 std::unique_ptr<WebkitMessagesViewDisplay> WebkitMessagesViewDisplayFactory::createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer)
 {
-	auto result = make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
-	result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
+	if (ChatStyleManager::instance()->cfgNoHeaderRepeat())
+	{
+		auto result = make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
+		result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
+		return std::move(result);
+	}
+	else
+	{
+		auto result = make_unique<WebkitMessagesViewRemovingDisplay>(chatStyleRenderer);
+		result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
+		return std::move(result);
+	}
 
-	return std::move(result);
 }

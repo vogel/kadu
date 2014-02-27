@@ -20,6 +20,7 @@
 #include "webkit-messages-view-clearing-display.h"
 
 #include "chat-style/engine/chat-style-renderer.h"
+#include "message/message-render-header-behavior.h"
 #include "misc/algorithm.h"
 
 WebkitMessagesViewClearingDisplay::WebkitMessagesViewClearingDisplay(ChatStyleRenderer &chatStyleRenderer) :
@@ -39,10 +40,10 @@ void WebkitMessagesViewClearingDisplay::displayMessages(SortedMessages messages)
 	if (!m_currentMessages.empty() && begin(m_currentMessages) != difference.first)
 	{
 		chatStyleRenderer().clearMessages();
-		displayMessagesRange(begin(messages), end(messages), previousMessage);
+		displayMessagesRange(begin(messages), end(messages), previousMessage, MessageRenderHeaderBehavior::RenderWhenRequired);
 	}
 	else
-		displayMessagesRange(difference.second, end(messages), previousMessage);
+		displayMessagesRange(difference.second, end(messages), previousMessage, MessageRenderHeaderBehavior::RenderWhenRequired);
 
 	m_currentMessages = std::move(messages);
 }
