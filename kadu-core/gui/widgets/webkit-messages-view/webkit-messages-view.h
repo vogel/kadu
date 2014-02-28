@@ -65,8 +65,6 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 
 	bool AtBottom;
 
-	void recreateRenderer();
-
 private slots:
 	void refreshView();
 	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
@@ -87,8 +85,6 @@ public:
 	virtual ~WebkitMessagesView();
 
 	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
-
-	WebkitMessagesViewHandler * renderer() { return Renderer.get(); }
 
 	void add(const Message &message);
 	void add(const SortedMessages &messages);

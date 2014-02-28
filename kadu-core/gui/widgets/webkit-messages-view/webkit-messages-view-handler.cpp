@@ -26,8 +26,8 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 
-WebkitMessagesViewHandler::WebkitMessagesViewHandler(QObject *parent) :
-		QObject{parent}
+WebkitMessagesViewHandler::WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent) :
+		QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)}
 {
 }
 
@@ -38,17 +38,6 @@ WebkitMessagesViewHandler::~WebkitMessagesViewHandler()
 void WebkitMessagesViewHandler::setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory)
 {
 	m_webkitMessagesViewDisplayFactory = webkitMessagesViewDisplayFactory;
-}
-
-void WebkitMessagesViewHandler::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer)
-{
-	if (m_chatStyleRenderer)
-		disconnect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
-	m_chatStyleRenderer = std::move(chatStyleRenderer);
-
-	m_messagesDisplay.reset();
-	if (!m_chatStyleRenderer)
-		return;
 
 	if (m_chatStyleRenderer->isReady())
 		rendererReady();

@@ -55,9 +55,6 @@
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
-	Renderer = make_qobject<WebkitMessagesViewHandler>(page()->mainFrame());
-	Renderer->setWebkitMessagesViewDisplayFactory(Core::instance()->webkitMessagesViewDisplayFactory());
-
 	QNetworkAccessManager *oldManager = page()->networkAccessManager();
 	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);
 	newManager->setImageStorageService(Core::instance()->imageStorageService());
@@ -94,8 +91,6 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 			this, SLOT(chatStyleConfigurationUpdated()));
 
 	configurationUpdated();
-	setForcePruneDisabled(false);
-
 	connectChat();
 }
 
@@ -179,14 +174,6 @@ void WebkitMessagesView::setChat(const Chat &chat)
 	CurrentChat = chat;
 	connectChat();
 
-	recreateRenderer();
-}
-
-void WebkitMessagesView::recreateRenderer()
-{
-	if (!m_chatStyleRendererFactory)
-		return;
-
 	refreshView();
 }
 
@@ -208,7 +195,7 @@ void WebkitMessagesView::chatStyleConfigurationUpdated()
 
 void WebkitMessagesView::refreshView()
 {
-	if (!renderer() || !m_chatStyleRendererFactory)
+	if (!m_chatStyleRendererFactory)
 		return;
 
 	ScopedUpdatesDisabler updatesDisabler{*this};
@@ -220,12 +207,20 @@ void WebkitMessagesView::refreshView()
 			: QString{};
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
 	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
+	auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration));
+	auto messages = Renderer
+			? Renderer->messages()
+			: SortedMessages{};
 
-	renderer()->setMessageLimit(ChatStyleManager::instance()->prune());
-	renderer()->setMessageLimitPolicy(0 == ChatStyleManager::instance()->prune()
+	Renderer = make_qobject<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), page()->mainFrame());
+	Renderer->setWebkitMessagesViewDisplayFactory(Core::instance()->webkitMessagesViewDisplayFactory());
+
+	Renderer->setMessageLimit(ChatStyleManager::instance()->prune());
+	Renderer->setMessageLimitPolicy(0 == ChatStyleManager::instance()->prune()
 			? MessageLimitPolicy::None
 			: MessageLimitPolicy::Value);
-	renderer()->setChatStyleRenderer(m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration)));
+
+	Renderer->add(messages);
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
@@ -265,7 +260,8 @@ void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRe
 {
 	m_chatStyleRendererFactory = chatStyleRendererFactory;
 
-	recreateRenderer();
+	refreshView();
+	setForcePruneDisabled(false);
 }
 
 void WebkitMessagesView::clearMessages()

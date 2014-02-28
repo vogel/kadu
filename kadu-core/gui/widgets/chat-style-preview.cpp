@@ -90,9 +90,9 @@ qobject_ptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 
 	auto result = make_qobject<WebkitMessagesView>(chat, false, this);
 	result->setImageStorageService(Core::instance()->imageStorageService());
+	result->setChatStyleRendererFactory(Core::instance()->chatStyleRendererFactoryProvider()->chatStyleRendererFactory());
 	result->add(sentMessage);
 	result->add(receivedMessage);
-	result->setChatStyleRendererFactory(Core::instance()->chatStyleRendererFactoryProvider()->chatStyleRendererFactory());
 	return std::move(result);
 }
 

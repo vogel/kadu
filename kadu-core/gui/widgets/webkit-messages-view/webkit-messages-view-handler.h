@@ -43,12 +43,10 @@ class WebkitMessagesViewHandler : public QObject
 	Q_OBJECT
 
 public:
-	explicit WebkitMessagesViewHandler(QObject *parent = nullptr);
+	explicit WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewHandler();
 
 	void setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory);
-
-	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer);
 
 	void setMessageLimit(unsigned limit);
 	void setMessageLimitPolicy(MessageLimitPolicy messageLimitPolicy);
