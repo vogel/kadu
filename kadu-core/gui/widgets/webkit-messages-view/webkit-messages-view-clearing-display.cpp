@@ -35,12 +35,11 @@ WebkitMessagesViewClearingDisplay::~WebkitMessagesViewClearingDisplay()
 void WebkitMessagesViewClearingDisplay::displayMessages(SortedMessages messages)
 {
 	auto difference = sequence_difference(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
-	auto previousMessage = Message::null;
 
 	if (!m_currentMessages.empty() && begin(m_currentMessages) != difference.first)
 	{
 		chatStyleRenderer().clearMessages();
-		displayMessagesRange(begin(messages), end(messages), previousMessage, MessageRenderHeaderBehavior::RenderWhenRequired);
+		displayMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::RenderWhenRequired);
 	}
 	else
 		displayMessagesRange(difference.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::RenderWhenRequired);
