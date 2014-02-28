@@ -24,25 +24,19 @@
 
 #include "chat-style/engine/chat-style-renderer.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 
-WebkitMessagesViewHandler::WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent) :
-		QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)}
+WebkitMessagesViewHandler::WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer,
+	std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay, QObject *parent) :
+		QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)}, m_messagesDisplay{std::move(messagesDisplay)}
 {
-}
-
-WebkitMessagesViewHandler::~WebkitMessagesViewHandler()
-{
-}
-
-void WebkitMessagesViewHandler::setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory)
-{
-	m_webkitMessagesViewDisplayFactory = webkitMessagesViewDisplayFactory;
-
 	if (m_chatStyleRenderer->isReady())
 		rendererReady();
 	else
 		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
+}
+
+WebkitMessagesViewHandler::~WebkitMessagesViewHandler()
+{
 }
 
 void WebkitMessagesViewHandler::setMessageLimit(unsigned int limit)
@@ -61,8 +55,6 @@ void WebkitMessagesViewHandler::setMessageLimitPolicy(MessageLimitPolicy message
 
 void WebkitMessagesViewHandler::rendererReady()
 {
-	if (m_webkitMessagesViewDisplayFactory)
-		m_messagesDisplay = m_webkitMessagesViewDisplayFactory->createWebkitMessagesViewDisplay(*m_chatStyleRenderer.get());
 	displayMessages(m_messages);
 }
 
@@ -70,11 +62,6 @@ void WebkitMessagesViewHandler::displayMessages(const SortedMessages &messages)
 {
 	if (m_messagesDisplay)
 		m_messagesDisplay->displayMessages(messages);
-}
-
-bool WebkitMessagesViewHandler::isReady() const
-{
-	return m_chatStyleRenderer && m_chatStyleRenderer->isReady();
 }
 
 SortedMessages WebkitMessagesViewHandler::limitMessages(SortedMessages messages) const
@@ -116,19 +103,19 @@ void WebkitMessagesViewHandler::clear()
 
 void WebkitMessagesViewHandler::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
-	if (isReady())
+	if (m_chatStyleRenderer->isReady())
 		m_chatStyleRenderer->chatImageAvailable(chatImage, fileName);
 }
 
 void WebkitMessagesViewHandler::messageStatusChanged(const QString &id, MessageStatus status)
 {
-	if (isReady())
+	if (m_chatStyleRenderer->isReady())
 		m_chatStyleRenderer->messageStatusChanged(id, status);
 }
 
 void WebkitMessagesViewHandler::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	if (!isReady())
+	if (!m_chatStyleRenderer->isReady())
 		return;
 
 	auto display = contact.display(true);

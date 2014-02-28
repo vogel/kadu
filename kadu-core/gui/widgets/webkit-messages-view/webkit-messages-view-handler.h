@@ -43,7 +43,8 @@ class WebkitMessagesViewHandler : public QObject
 	Q_OBJECT
 
 public:
-	explicit WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent = nullptr);
+	explicit WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer,
+			std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay, QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewHandler();
 
 	void setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory);
@@ -72,7 +73,6 @@ private:
 	MessageLimiter m_messagesLimiter;
 	SortedMessages m_messages;
 
-	bool isReady() const;
 	SortedMessages limitMessages(SortedMessages messages) const;
 	void displayMessages(const SortedMessages &messages);
 

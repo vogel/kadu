@@ -42,6 +42,8 @@
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "gui/widgets/webkit-messages-view/message-limit-policy.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "misc/kadu-paths.h"
 #include "protocols/services/chat-image-service.h"
@@ -211,9 +213,9 @@ void WebkitMessagesView::refreshView()
 	auto messages = Renderer
 			? Renderer->messages()
 			: SortedMessages{};
+	auto messagesDisplay = Core::instance()->webkitMessagesViewDisplayFactory()->createWebkitMessagesViewDisplay(*chatStyleRenderer.get());
 
-	Renderer = make_qobject<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), page()->mainFrame());
-	Renderer->setWebkitMessagesViewDisplayFactory(Core::instance()->webkitMessagesViewDisplayFactory());
+	Renderer = make_qobject<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(messagesDisplay), page()->mainFrame());
 
 	Renderer->setMessageLimit(ChatStyleManager::instance()->prune());
 	Renderer->setMessageLimitPolicy(0 == ChatStyleManager::instance()->prune()
