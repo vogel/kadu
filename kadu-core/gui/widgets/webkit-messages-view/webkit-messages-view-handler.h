@@ -38,13 +38,13 @@ class WebkitMessagesViewDisplayFactory;
 
 enum class MessageLimitPolicy;
 
-class HtmlMessagesRenderer : public QObject
+class WebkitMessagesViewHandler : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit HtmlMessagesRenderer(QObject *parent = nullptr);
-	virtual ~HtmlMessagesRenderer();
+	explicit WebkitMessagesViewHandler(QObject *parent = nullptr);
+	virtual ~WebkitMessagesViewHandler();
 
 	void setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory);
 

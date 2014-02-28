@@ -41,8 +41,8 @@
 #include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
-#include "gui/widgets/webkit-messages-view/html-messages-renderer.h"
 #include "gui/widgets/webkit-messages-view/message-limit-policy.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "misc/kadu-paths.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/chat-image-request-service.h"
@@ -55,7 +55,7 @@
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
-	Renderer = make_qobject<HtmlMessagesRenderer>(page()->mainFrame());
+	Renderer = make_qobject<WebkitMessagesViewHandler>(page()->mainFrame());
 	Renderer->setWebkitMessagesViewDisplayFactory(Core::instance()->webkitMessagesViewDisplayFactory());
 
 	QNetworkAccessManager *oldManager = page()->networkAccessManager();

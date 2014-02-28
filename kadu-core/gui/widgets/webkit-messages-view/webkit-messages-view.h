@@ -45,7 +45,7 @@ class Chat;
 class ChatImageRequestService;
 class ChatStyleRendererFactory;
 class ChatWidget;
-class HtmlMessagesRenderer;
+class WebkitMessagesViewHandler;
 class SortedMessages;
 
 class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject, CompositingAwareObject
@@ -55,7 +55,7 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 	QPointer<ChatImageRequestService> CurrentChatImageRequestService;
 
 	Chat CurrentChat;
-	qobject_ptr<HtmlMessagesRenderer> Renderer;
+	qobject_ptr<WebkitMessagesViewHandler> Renderer;
 	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
 
 	bool SupportTransparency;
@@ -88,7 +88,7 @@ public:
 
 	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
 
-	HtmlMessagesRenderer * renderer() { return Renderer.get(); }
+	WebkitMessagesViewHandler * renderer() { return Renderer.get(); }
 
 	void add(const Message &message);
 	void add(const SortedMessages &messages);
