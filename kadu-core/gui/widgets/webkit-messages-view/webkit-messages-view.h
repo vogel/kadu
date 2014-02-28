@@ -24,27 +24,19 @@
 
 #pragma once
 
-#include <QtCore/QList>
-
-#include "configuration/configuration-aware-object.h"
-#include "message/message.h"
-#include "misc/memory.h"
-#include "os/generic/compositing-aware-object.h"
-#include "protocols/protocol.h"
-#include "protocols/services/chat-image.h"
-#include "protocols/services/chat-service.h"
-#include "protocols/services/chat-state-service.h"
-
 #include "gui/widgets/kadu-web-view.h"
 
+#include "chat/chat.h"
+#include "configuration/configuration-aware-object.h"
+#include "misc/memory.h"
+#include "os/generic/compositing-aware-object.h"
+#include "protocols/services/chat-state-service.h"
 #include "exports.h"
 
-class QResizeEvent;
-
-class Chat;
+class ChatImage;
 class ChatImageRequestService;
 class ChatStyleRendererFactory;
-class ChatWidget;
+class Message;
 class WebkitMessagesViewHandler;
 class SortedMessages;
 
@@ -52,36 +44,8 @@ class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAware
 {
 	Q_OBJECT
 
-	QPointer<ChatImageRequestService> CurrentChatImageRequestService;
-
-	Chat CurrentChat;
-	qobject_ptr<WebkitMessagesViewHandler> Renderer;
-	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
-
-	bool SupportTransparency;
-
-	void connectChat();
-	void disconnectChat();
-
-	bool AtBottom;
-
-private slots:
-	void refreshView();
-	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
-	void sentMessageStatusChanged(const Message &message);
-	void chatStyleConfigurationUpdated();
-
-protected:
-	virtual void configurationUpdated();
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-	virtual void resizeEvent(QResizeEvent *e);
-	virtual void wheelEvent(QWheelEvent *e);
-
-	virtual void compositingEnabled();
-	virtual void compositingDisabled();
-
 public:
-	explicit WebkitMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
+	explicit WebkitMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = nullptr);
 	virtual ~WebkitMessagesView();
 
 	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
@@ -93,10 +57,10 @@ public:
 
 	void setForcePruneDisabled(bool disable);
 
-	Chat chat() const { return CurrentChat; }
+	Chat chat() const { return m_chat; }
 	void setChat(const Chat &chat);
 
-	bool supportTransparency() { return SupportTransparency; }
+	bool supportTransparency() { return m_supportTransparency; }
 
 public slots:
 	void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
@@ -113,5 +77,34 @@ public slots:
 
 signals:
 	void messagesUpdated();
+
+protected:
+	virtual void configurationUpdated() override;
+	virtual void mouseReleaseEvent(QMouseEvent *e) override;
+	virtual void resizeEvent(QResizeEvent *e) override;
+	virtual void wheelEvent(QWheelEvent *e) override;
+
+	virtual void compositingEnabled() override;
+	virtual void compositingDisabled() override;
+
+private:
+	QPointer<ChatImageRequestService> m_chatImageRequestService;
+
+	Chat m_chat;
+	qobject_ptr<WebkitMessagesViewHandler> m_handler;
+	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
+
+	bool m_supportTransparency;
+	bool m_atBottom;
+
+	void connectChat();
+	void disconnectChat();
+
+
+private slots:
+	void refreshView();
+	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
+	void sentMessageStatusChanged(const Message &message);
+	void chatStyleConfigurationUpdated();
 
 };

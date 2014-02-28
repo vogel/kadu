@@ -24,43 +24,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QKeyEvent>
-#include <QtGui/QScrollBar>
-#include <QtWebKit/QWebFrame>
+#include "webkit-messages-view.h"
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "chat/chat.h"
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer.h"
+#include "chat-style/engine/chat-style-renderer-configuration.h"
 #include "chat-style/engine/chat-style-renderer-factory.h"
-#include "chat-style/engine/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "gui/widgets/webkit-messages-view/message-limit-policy.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "misc/kadu-paths.h"
+#include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
+#include "protocols/services/chat-service.h"
 #include "services/chat-image-request-service.h"
-#include "services/image-storage-service.h"
 
-#include "debug.h"
-
-#include "webkit-messages-view.h"
+#include <QtGui/QKeyEvent>
+#include <QtWebKit/QWebFrame>
 
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
-		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
+		KaduWebView{parent},
+		m_chat{chat},
+		m_supportTransparency{supportTransparency},
+		m_atBottom{true}
 {
-	QNetworkAccessManager *oldManager = page()->networkAccessManager();
-	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);
+	auto oldManager = page()->networkAccessManager();
+	auto newManager = make_qobject<ChatViewNetworkAccessManager>(oldManager, this);
 	newManager->setImageStorageService(Core::instance()->imageStorageService());
-	page()->setNetworkAccessManager(newManager);
+	page()->setNetworkAccessManager(newManager.get());
 
 	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
 	// maybe Qt bug?
@@ -70,7 +67,7 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 	settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
-	QPalette p = palette();
+	auto p = palette();
 
 	// This widget never has focus anyway, so there's no need for distinction
 	// between active and inactive, and active highlight colors have way better
@@ -103,13 +100,13 @@ WebkitMessagesView::~WebkitMessagesView()
 
 void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
 {
-	if (CurrentChatImageRequestService)
-		disconnect(CurrentChatImageRequestService.data(), 0, this, 0);
+	if (m_chatImageRequestService)
+		disconnect(m_chatImageRequestService.data(), nullptr, this, nullptr);
 
-	CurrentChatImageRequestService = chatImageRequestService;
+	m_chatImageRequestService = chatImageRequestService;
 
-	if (CurrentChatImageRequestService)
-		connect(CurrentChatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
+	if (m_chatImageRequestService)
+		connect(m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
 }
 
 void WebkitMessagesView::mouseReleaseEvent(QMouseEvent *e)
@@ -133,18 +130,18 @@ void WebkitMessagesView::wheelEvent(QWheelEvent* e)
 
 void WebkitMessagesView::updateAtBottom()
 {
-	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
+	m_atBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
 }
 
 void WebkitMessagesView::connectChat()
 {
-	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
+	if (m_chat.isNull() || m_chat.chatAccount().isNull() || !m_chat.chatAccount().protocolHandler())
 		return;
 
-	foreach (const Contact &contact, CurrentChat.contacts())
+	for (auto const &contact : m_chat.contacts())
 		connect(contact, SIGNAL(buddyUpdated()), this, SLOT(refreshView()));
 
-	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
+	auto chatService = m_chat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
 		connect(chatService, SIGNAL(sentMessageStatusChanged(const Message &)),
 		        this, SLOT(sentMessageStatusChanged(const Message &)));
@@ -152,28 +149,28 @@ void WebkitMessagesView::connectChat()
 
 void WebkitMessagesView::disconnectChat()
 {
-	if (CurrentChat.isNull())
+	if (m_chat.isNull())
 		return;
 
-	foreach (const Contact &contact, CurrentChat.contacts())
-		disconnect(contact, 0, this, 0);
+	for (auto const &contact : m_chat.contacts())
+		disconnect(contact, nullptr, this, nullptr);
 
-	if (CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
+	if (m_chat.chatAccount().isNull() || !m_chat.chatAccount().protocolHandler())
 		return;
 
-	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
+	auto chatImageService = m_chat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
-		disconnect(chatImageService, 0, this, 0);
+		disconnect(chatImageService, nullptr, this, nullptr);
 
-	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
+	auto chatService = m_chat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
-		disconnect(chatService, 0, this, 0);
+		disconnect(chatService, nullptr, this, nullptr);
 }
 
 void WebkitMessagesView::setChat(const Chat &chat)
 {
 	disconnectChat();
-	CurrentChat = chat;
+	m_chat = chat;
 	connectChat();
 
 	refreshView();
@@ -182,17 +179,17 @@ void WebkitMessagesView::setChat(const Chat &chat)
 void WebkitMessagesView::setForcePruneDisabled(bool disable)
 {
 	if (disable)
-		Renderer->setMessageLimitPolicy(MessageLimitPolicy::None);
+		m_handler->setMessageLimitPolicy(MessageLimitPolicy::None);
 	else
 	{
-		Renderer->setMessageLimitPolicy(MessageLimitPolicy::Value);
+		m_handler->setMessageLimitPolicy(MessageLimitPolicy::Value);
 		chatStyleConfigurationUpdated();
 	}
 }
 
 void WebkitMessagesView::chatStyleConfigurationUpdated()
 {
-	Renderer->setMessageLimit(ChatStyleManager::instance()->prune());
+	m_handler->setMessageLimit(ChatStyleManager::instance()->prune());
 }
 
 void WebkitMessagesView::refreshView()
@@ -201,7 +198,7 @@ void WebkitMessagesView::refreshView()
 		return;
 
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
+	auto scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
 
 	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
@@ -210,51 +207,51 @@ void WebkitMessagesView::refreshView()
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
 	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 	auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration));
-	auto messages = Renderer
-			? Renderer->messages()
+	auto messages = m_handler
+			? m_handler->messages()
 			: SortedMessages{};
 	auto messagesDisplay = Core::instance()->webkitMessagesViewDisplayFactory()->createWebkitMessagesViewDisplay(*chatStyleRenderer.get());
 
-	Renderer = make_qobject<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(messagesDisplay), page()->mainFrame());
+	m_handler = make_qobject<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(messagesDisplay), page()->mainFrame());
 
-	Renderer->setMessageLimit(ChatStyleManager::instance()->prune());
-	Renderer->setMessageLimitPolicy(0 == ChatStyleManager::instance()->prune()
+	m_handler->setMessageLimit(ChatStyleManager::instance()->prune());
+	m_handler->setMessageLimitPolicy(0 == ChatStyleManager::instance()->prune()
 			? MessageLimitPolicy::None
 			: MessageLimitPolicy::Value);
 
-	Renderer->add(messages);
+	m_handler->add(messages);
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
 
 void WebkitMessagesView::pageUp()
 {
-	QKeyEvent event(QEvent::KeyPress, Qt::Key_PageUp, Qt::NoModifier);
+	auto event = QKeyEvent{QEvent::KeyPress, Qt::Key_PageUp, Qt::NoModifier};
 	keyPressEvent(&event);
 }
 
 void WebkitMessagesView::pageDown()
 {
-	QKeyEvent event(QEvent::KeyPress, Qt::Key_PageDown, Qt::NoModifier);
+	auto event = QKeyEvent{QEvent::KeyPress, Qt::Key_PageDown, Qt::NoModifier};
 	keyPressEvent(&event);
 }
 
 void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QString &fullFilePath)
 {
-	Renderer->chatImageAvailable(chatImage, fullFilePath);
+	m_handler->chatImageAvailable(chatImage, fullFilePath);
 }
 
 void WebkitMessagesView::add(const Message &message)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->add(message);
+	m_handler->add(message);
 	emit messagesUpdated();
 }
 
 void WebkitMessagesView::add(const SortedMessages &messages)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->add(messages);
+	m_handler->add(messages);
 	emit messagesUpdated();
 }
 
@@ -269,26 +266,26 @@ void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRe
 void WebkitMessagesView::clearMessages()
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->clear();
+	m_handler->clear();
 	emit messagesUpdated();
-	AtBottom = true;
+	m_atBottom = true;
 }
 
 int WebkitMessagesView::countMessages()
 {
-	return Renderer->messages().size();
+	return m_handler->messages().size();
 }
 
 void WebkitMessagesView::sentMessageStatusChanged(const Message &message)
 {
-	if (CurrentChat != message.messageChat())
+	if (m_chat != message.messageChat())
 		return;
-	Renderer->messageStatusChanged(message.id(), message.status());
+	m_handler->messageStatusChanged(message.id(), message.status());
 }
 
 void WebkitMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	Renderer->contactActivityChanged(contact, state);
+	m_handler->contactActivityChanged(contact, state);
 }
 
 void WebkitMessagesView::scrollToTop()
@@ -299,7 +296,7 @@ void WebkitMessagesView::scrollToTop()
 
 void WebkitMessagesView::scrollToBottom()
 {
-	if (AtBottom)
+	if (m_atBottom)
 		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
 }
 
