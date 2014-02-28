@@ -19,19 +19,8 @@
 
 #pragma once
 
-#include "message/sorted-messages.h"
-
-class MessagesLimiter
+enum class MessageLimitPolicy
 {
-
-public:
-	MessagesLimiter();
-
-	void setLimit(unsigned limit);
-
-	SortedMessages limitMessages(SortedMessages sortedMessages);
-
-private:
-	unsigned m_limit;
-
+	None,
+	Value
 };

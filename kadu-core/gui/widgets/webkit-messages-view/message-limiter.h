@@ -17,24 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "messages-limiter.h"
+#pragma once
 
-MessagesLimiter::MessagesLimiter() :
-		m_limit{0}
+#include "message/sorted-messages.h"
+
+enum class MessageLimitPolicy;
+
+class MessageLimiter
 {
-}
 
-void MessagesLimiter::setLimit(unsigned int limit)
-{
-	m_limit = limit;
-}
+public:
+	MessageLimiter();
 
-SortedMessages MessagesLimiter::limitMessages(SortedMessages sortedMessages)
-{
-	if (m_limit == 0 || sortedMessages.size() <= m_limit)
-		return sortedMessages;
+	void setLimit(unsigned limit);
+	void setLimitPolicy(MessageLimitPolicy messageLimitPolicy);
 
-	auto messages = decltype(sortedMessages.messages()){};
-	std::copy(end(sortedMessages) - m_limit, end(sortedMessages), std::back_inserter(messages));
-	return SortedMessages{messages};
-}
+	SortedMessages limitMessages(SortedMessages sortedMessages) const;
+
+private:
+	unsigned m_limit;
+	MessageLimitPolicy m_messageLimitPolicy;
+
+};

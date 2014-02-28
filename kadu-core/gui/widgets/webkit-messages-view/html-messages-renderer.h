@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "gui/widgets/webkit-messages-view/message-limiter.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
 #include "misc/memory.h"
@@ -31,9 +32,11 @@
 
 class ChatImage;
 class ChatStyleRenderer;
-class MessagesLimiter;
+class MessageLimiter;
 class WebkitMessagesViewDisplay;
 class WebkitMessagesViewDisplayFactory;
+
+enum class MessageLimitPolicy;
 
 class HtmlMessagesRenderer : public QObject
 {
@@ -46,13 +49,14 @@ public:
 	void setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory);
 
 	void setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> chatStyleRenderer);
-	void setMessagesLimiter(std::unique_ptr<MessagesLimiter> messagesLimiter);
-	MessagesLimiter * messagesLimiter() const;
+
+	void setMessageLimit(unsigned limit);
+	void setMessageLimitPolicy(MessageLimitPolicy messageLimitPolicy);
 
 	const SortedMessages & messages() const { return m_messages; }
 	void add(const Message &message);
 	void add(const SortedMessages &messages);
-	void clearMessages();
+	void clear();
 
 	void chatImageAvailable(const ChatImage &chatImage, const QString &fileName);
 	void messageStatusChanged(const QString &id, MessageStatus status);
@@ -65,9 +69,9 @@ private:
 	QPointer<WebkitMessagesViewDisplayFactory> m_webkitMessagesViewDisplayFactory;
 
 	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
-	std::unique_ptr<MessagesLimiter> m_messagesLimiter;
 	std::unique_ptr<WebkitMessagesViewDisplay> m_messagesDisplay;
 
+	MessageLimiter m_messagesLimiter;
 	SortedMessages m_messages;
 
 	bool isReady() const;

@@ -31,10 +31,10 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer.h"
 #include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/chat-style-engine.h"
-#include <chat-style/chat-style-manager.h>
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -42,6 +42,7 @@
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "gui/widgets/webkit-messages-view/html-messages-renderer.h"
+#include "gui/widgets/webkit-messages-view/message-limit-policy.h"
 #include "misc/kadu-paths.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/chat-image-request-service.h"
@@ -50,7 +51,6 @@
 #include "debug.h"
 
 #include "webkit-messages-view.h"
-#include "messages-limiter.h"
 
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
@@ -193,18 +193,17 @@ void WebkitMessagesView::recreateRenderer()
 void WebkitMessagesView::setForcePruneDisabled(bool disable)
 {
 	if (disable)
-		Renderer->setMessagesLimiter({});
+		Renderer->setMessageLimitPolicy(MessageLimitPolicy::None);
 	else
 	{
-		Renderer->setMessagesLimiter(make_unique<MessagesLimiter>());
+		Renderer->setMessageLimitPolicy(MessageLimitPolicy::Value);
 		chatStyleConfigurationUpdated();
 	}
 }
 
 void WebkitMessagesView::chatStyleConfigurationUpdated()
 {
-	if (Renderer->messagesLimiter())
-		Renderer->messagesLimiter()->setLimit(ChatStyleManager::instance()->prune());
+	Renderer->setMessageLimit(ChatStyleManager::instance()->prune());
 }
 
 void WebkitMessagesView::refreshView()
@@ -222,6 +221,10 @@ void WebkitMessagesView::refreshView()
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
 	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 
+	renderer()->setMessageLimit(ChatStyleManager::instance()->prune());
+	renderer()->setMessageLimitPolicy(0 == ChatStyleManager::instance()->prune()
+			? MessageLimitPolicy::None
+			: MessageLimitPolicy::Value);
 	renderer()->setChatStyleRenderer(m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration)));
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
@@ -268,7 +271,7 @@ void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRe
 void WebkitMessagesView::clearMessages()
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
-	Renderer->clearMessages();
+	Renderer->clear();
 	emit messagesUpdated();
 	AtBottom = true;
 }

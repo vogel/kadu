@@ -124,7 +124,7 @@ set (gui_SRCS
 	widgets/tool-tip-class-manager.cpp
 	widgets/wait-overlay.cpp
 	widgets/webkit-messages-view/html-messages-renderer.cpp
-	widgets/webkit-messages-view/messages-limiter.cpp
+	widgets/webkit-messages-view/message-limiter.cpp
 	widgets/webkit-messages-view/webkit-messages-view.cpp
 	widgets/webkit-messages-view/webkit-messages-view-clearing-display.cpp
 	widgets/webkit-messages-view/webkit-messages-view-display.cpp

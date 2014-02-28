@@ -21,7 +21,6 @@
  */
 
 #include "chat-style/engine/chat-style-renderer.h"
-#include "gui/widgets/webkit-messages-view/messages-limiter.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 
@@ -57,15 +56,18 @@ void HtmlMessagesRenderer::setChatStyleRenderer(qobject_ptr<ChatStyleRenderer> c
 		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
 }
 
-void HtmlMessagesRenderer::setMessagesLimiter(std::unique_ptr<MessagesLimiter> messagesLimiter)
+void HtmlMessagesRenderer::setMessageLimit(unsigned int limit)
 {
-	m_messagesLimiter = std::move(messagesLimiter);
-	m_messages = limitMessages(m_messages);
+	m_messagesLimiter.setLimit(limit);
+	m_messages = m_messagesLimiter.limitMessages(m_messages);
+	displayMessages(m_messages);
 }
 
-MessagesLimiter * HtmlMessagesRenderer::messagesLimiter() const
+void HtmlMessagesRenderer::setMessageLimitPolicy(MessageLimitPolicy messageLimitPolicy)
 {
-	return m_messagesLimiter.get();
+	m_messagesLimiter.setLimitPolicy(messageLimitPolicy);
+	m_messages = m_messagesLimiter.limitMessages(m_messages);
+	displayMessages(m_messages);
 }
 
 void HtmlMessagesRenderer::rendererReady()
@@ -88,9 +90,7 @@ bool HtmlMessagesRenderer::isReady() const
 
 SortedMessages HtmlMessagesRenderer::limitMessages(SortedMessages messages) const
 {
-	return m_messagesLimiter
-			? m_messagesLimiter->limitMessages(messages)
-			: messages;
+	return m_messagesLimiter.limitMessages(messages);
 }
 
 void HtmlMessagesRenderer::add(const Message &message)
@@ -119,7 +119,7 @@ void HtmlMessagesRenderer::add(const SortedMessages &messages)
 	displayMessages(m_messages);
 }
 
-void HtmlMessagesRenderer::clearMessages()
+void HtmlMessagesRenderer::clear()
 {
 	m_messages.clear();
 	displayMessages(m_messages);
