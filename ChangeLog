@@ -1,4 +1,5 @@
 +++ version 1.0-alpha5
+* gui: #2614 fixed: problems with displaying unread messages (Vogel)
 
 +++ version 1.0-alpha4
 * gadu: #2730 implemented: image sending is done using new version of protocol (Vogel)
