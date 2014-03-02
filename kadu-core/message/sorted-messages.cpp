@@ -81,7 +81,7 @@ void SortedMessages::add(const SortedMessages &sortedMessages)
 	m_messages.add(sortedMessages.messages());
 }
 
-const sorted_vector<Message, SortedMessages::precedes, SortedMessages::same> & SortedMessages::messages() const
+const sorted_unique_vector<Message, SortedMessages::precedes, SortedMessages::same> & SortedMessages::messages() const
 {
 	return m_messages;
 }

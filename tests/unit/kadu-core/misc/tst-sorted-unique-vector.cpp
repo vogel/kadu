@@ -17,11 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/sorted_vector.h"
+#include "misc/sorted-unique-vector.h"
 
 #include <QtTest/QtTest>
 
-class tst_SortedVector : public QObject
+class tst_SortedUniqueVector : public QObject
 {
 	Q_OBJECT
 
@@ -35,7 +35,7 @@ class tst_SortedVector : public QObject
 		return left == right;
 	}
 
-	using Vector = sorted_vector<int, tst_SortedVector::compareInt, tst_SortedVector::equalInt>;
+	using Vector = sorted_unique_vector<int, tst_SortedUniqueVector::compareInt, tst_SortedUniqueVector::equalInt>;
 
 private slots:
 	void emptyTest();
@@ -57,7 +57,7 @@ private slots:
 
 };
 
-void tst_SortedVector::emptyTest()
+void tst_SortedUniqueVector::emptyTest()
 {
 	auto data = Vector{};
 
@@ -66,7 +66,7 @@ void tst_SortedVector::emptyTest()
 	QCOMPARE(data.content(), (std::vector<int>{}));
 }
 
-void tst_SortedVector::clearTest()
+void tst_SortedUniqueVector::clearTest()
 {
 	auto data = Vector{std::vector<int>{1, 4, 5, 2}};
 
@@ -79,7 +79,7 @@ void tst_SortedVector::clearTest()
 	QCOMPARE(data.size(), 0ul);
 }
 
-void tst_SortedVector::conversionFromUnsortedTest()
+void tst_SortedUniqueVector::conversionFromUnsortedTest()
 {
 	auto data = Vector{std::vector<int>{1, 4, 5, 2}};
 
@@ -88,7 +88,7 @@ void tst_SortedVector::conversionFromUnsortedTest()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
 }
 
-void tst_SortedVector::conversionFromSortedTest()
+void tst_SortedUniqueVector::conversionFromSortedTest()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 
@@ -97,7 +97,7 @@ void tst_SortedVector::conversionFromSortedTest()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
 }
 
-void tst_SortedVector::addLessThanSmallest()
+void tst_SortedUniqueVector::addLessThanSmallest()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	data.add(0);
@@ -107,7 +107,7 @@ void tst_SortedVector::addLessThanSmallest()
 	QCOMPARE(data.content(), (std::vector<int>{0, 1, 2, 4, 5}));
 }
 
-void tst_SortedVector::addSmallest()
+void tst_SortedUniqueVector::addSmallest()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	data.add(1);
@@ -117,7 +117,7 @@ void tst_SortedVector::addSmallest()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
 }
 
-void tst_SortedVector::addMiddle()
+void tst_SortedUniqueVector::addMiddle()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	data.add(3);
@@ -127,7 +127,7 @@ void tst_SortedVector::addMiddle()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 3, 4, 5}));
 }
 
-void tst_SortedVector::addLargest()
+void tst_SortedUniqueVector::addLargest()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	data.add(5);
@@ -137,7 +137,7 @@ void tst_SortedVector::addLargest()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
 }
 
-void tst_SortedVector::addGreaterThanLargest()
+void tst_SortedUniqueVector::addGreaterThanLargest()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	data.add(6);
@@ -147,7 +147,7 @@ void tst_SortedVector::addGreaterThanLargest()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5, 6}));
 }
 
-void tst_SortedVector::addCopy()
+void tst_SortedUniqueVector::addCopy()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	data.add(data);
@@ -157,7 +157,7 @@ void tst_SortedVector::addCopy()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
 }
 
-void tst_SortedVector::addListOfLessUnique()
+void tst_SortedUniqueVector::addListOfLessUnique()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{0, -1, -2}};
@@ -168,7 +168,7 @@ void tst_SortedVector::addListOfLessUnique()
 	QCOMPARE(data.content(), (std::vector<int>{-2, -1, 0, 1, 2, 4, 5}));
 }
 
-void tst_SortedVector::addListOfLessAndEqual()
+void tst_SortedUniqueVector::addListOfLessAndEqual()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{1, 0, -1, -2}};
@@ -179,7 +179,7 @@ void tst_SortedVector::addListOfLessAndEqual()
 	QCOMPARE(data.content(), (std::vector<int>{-2, -1, 0, 1, 2, 4, 5}));
 }
 
-void tst_SortedVector::addListOfMisc()
+void tst_SortedUniqueVector::addListOfMisc()
 {
 	auto data = Vector{std::vector<int>{0, 5, 10, 1, 3, 2}};
 	auto dataToAdd = Vector{std::vector<int>{-1, 17, 2, 3, 4, 5}};
@@ -190,7 +190,7 @@ void tst_SortedVector::addListOfMisc()
 	QCOMPARE(data.content(), (std::vector<int>{-1, 0, 1, 2, 3, 4, 5, 10, 17}));
 }
 
-void tst_SortedVector::addListOfMiscUnique()
+void tst_SortedUniqueVector::addListOfMiscUnique()
 {
 	auto data = Vector{std::vector<int>{0, 5, 10, 1, 3, 2}};
 	auto dataToAdd = Vector{std::vector<int>{-1, 17, 4}};
@@ -201,7 +201,7 @@ void tst_SortedVector::addListOfMiscUnique()
 	QCOMPARE(data.content(), (std::vector<int>{-1, 0, 1, 2, 3, 4, 5, 10, 17}));
 }
 
-void tst_SortedVector::addListOfGraterAndEqual()
+void tst_SortedUniqueVector::addListOfGraterAndEqual()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{7, 8, 6}};
@@ -212,7 +212,7 @@ void tst_SortedVector::addListOfGraterAndEqual()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5, 6, 7, 8}));
 }
 
-void tst_SortedVector::addListOfGraterUnique()
+void tst_SortedUniqueVector::addListOfGraterUnique()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{7, 5, 6}};
@@ -223,5 +223,5 @@ void tst_SortedVector::addListOfGraterUnique()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5, 6, 7}));
 }
 
-QTEST_APPLESS_MAIN(tst_SortedVector)
-#include "tst-sorted-vector.moc"
+QTEST_APPLESS_MAIN(tst_SortedUniqueVector)
+#include "tst-sorted-unique-vector.moc"

@@ -26,16 +26,16 @@
 #include <vector>
 
 template<typename T, bool (*LessThanComparator)(const T &, const T &), bool (*EqualityComparator)(const T &, const T &)>
-class KADUAPI sorted_vector
+class KADUAPI sorted_unique_vector
 {
 
 public:
-	using This = sorted_vector<T, LessThanComparator, EqualityComparator>;
+	using This = sorted_unique_vector<T, LessThanComparator, EqualityComparator>;
 	using Storage = std::vector<T>;
 	using size_type = typename Storage::size_type;
 
-	sorted_vector() {}
-	sorted_vector(Storage content) :
+	sorted_unique_vector() {}
+	sorted_unique_vector(Storage content) :
 			m_content{std::move(content)}
 	{
 		std::stable_sort(std::begin(m_content), std::end(m_content), LessThanComparator);
@@ -92,13 +92,13 @@ private:
 };
 
 template<typename T, bool (*LessThanComparator)(const T &, const T &), bool (*EqualityComparator)(const T &, const T &)>
-KADUAPI typename sorted_vector<T, LessThanComparator, EqualityComparator>::Storage::const_iterator begin(const sorted_vector<T, LessThanComparator, EqualityComparator> &sortedVector)
+KADUAPI typename sorted_unique_vector<T, LessThanComparator, EqualityComparator>::Storage::const_iterator begin(const sorted_unique_vector<T, LessThanComparator, EqualityComparator> &sortedVector)
 {
 	return std::begin(sortedVector.content());
 }
 
 template<typename T, bool (*LessThanComparator)(const T &, const T &), bool (*EqualityComparator)(const T &, const T &)>
-KADUAPI typename sorted_vector<T, LessThanComparator, EqualityComparator>::Storage::const_iterator end(const sorted_vector<T, LessThanComparator, EqualityComparator> &sortedVector)
+KADUAPI typename sorted_unique_vector<T, LessThanComparator, EqualityComparator>::Storage::const_iterator end(const sorted_unique_vector<T, LessThanComparator, EqualityComparator> &sortedVector)
 {
 	return std::end(sortedVector.content());
 }

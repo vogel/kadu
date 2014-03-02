@@ -20,7 +20,7 @@
 #pragma once
 
 #include "message/message.h"
-#include "misc/sorted_vector.h"
+#include "misc/sorted-unique-vector.h"
 #include "exports.h"
 
 class KADUAPI SortedMessages
@@ -36,16 +36,16 @@ public:
 	void add(Message message);
 	void add(const SortedMessages &sortedMessages);
 
-	const sorted_vector<Message, SortedMessages::precedes, SortedMessages::same> & messages() const;
+	const sorted_unique_vector<Message, SortedMessages::precedes, SortedMessages::same> & messages() const;
 	Message last() const;
 
 	bool empty() const;
-	sorted_vector<Message, SortedMessages::precedes, SortedMessages::same>::size_type size() const;
+	sorted_unique_vector<Message, SortedMessages::precedes, SortedMessages::same>::size_type size() const;
 
 	void clear();
 
 private:
-	sorted_vector<Message, SortedMessages::precedes, SortedMessages::same> m_messages;
+	sorted_unique_vector<Message, SortedMessages::precedes, SortedMessages::same> m_messages;
 
 };
 
