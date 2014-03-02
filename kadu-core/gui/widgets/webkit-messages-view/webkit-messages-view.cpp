@@ -50,6 +50,7 @@
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView{parent},
 		m_chat{chat},
+		m_forcePruneDisabled{},
 		m_supportTransparency{supportTransparency},
 		m_atBottom{true}
 {
@@ -182,6 +183,7 @@ void WebkitMessagesView::setChat(const Chat &chat)
 
 void WebkitMessagesView::setForcePruneDisabled(bool disable)
 {
+	m_forcePruneDisabled = disable;
 	if (disable)
 		m_handler->setMessageLimitPolicy(MessageLimitPolicy::None);
 	else
@@ -216,6 +218,7 @@ void WebkitMessagesView::refreshView()
 			? m_handler->messages()
 			: SortedMessages{};
 	m_handler = m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(std::move(chatStyleRenderer), page()->mainFrame());
+	setForcePruneDisabled(m_forcePruneDisabled);
 	m_handler->add(messages);
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);

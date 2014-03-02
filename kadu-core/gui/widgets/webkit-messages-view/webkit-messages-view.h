@@ -96,6 +96,7 @@ private:
 
 	Chat m_chat;
 	qobject_ptr<WebkitMessagesViewHandler> m_handler;
+	bool m_forcePruneDisabled;
 	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
 
 	bool m_supportTransparency;
