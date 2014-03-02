@@ -37,8 +37,7 @@
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "gui/widgets/webkit-messages-view/message-limit-policy.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "misc/kadu-paths.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
@@ -107,6 +106,11 @@ void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *cha
 
 	if (m_chatImageRequestService)
 		connect(m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
+}
+
+void WebkitMessagesView::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
+{
+	m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
 }
 
 void WebkitMessagesView::mouseReleaseEvent(QMouseEvent *e)
@@ -194,7 +198,7 @@ void WebkitMessagesView::chatStyleConfigurationUpdated()
 
 void WebkitMessagesView::refreshView()
 {
-	if (!m_chatStyleRendererFactory)
+	if (!m_chatStyleRendererFactory || !m_webkitMessagesViewHandlerFactory)
 		return;
 
 	ScopedUpdatesDisabler updatesDisabler{*this};
@@ -207,18 +211,11 @@ void WebkitMessagesView::refreshView()
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
 	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 	auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration));
+
 	auto messages = m_handler
 			? m_handler->messages()
 			: SortedMessages{};
-	auto messagesDisplay = Core::instance()->webkitMessagesViewDisplayFactory()->createWebkitMessagesViewDisplay(*chatStyleRenderer.get());
-
-	m_handler = make_qobject<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(messagesDisplay), page()->mainFrame());
-
-	m_handler->setMessageLimit(ChatStyleManager::instance()->prune());
-	m_handler->setMessageLimitPolicy(0 == ChatStyleManager::instance()->prune()
-			? MessageLimitPolicy::None
-			: MessageLimitPolicy::Value);
-
+	m_handler = m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(std::move(chatStyleRenderer), page()->mainFrame());
 	m_handler->add(messages);
 
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
@@ -260,7 +257,6 @@ void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRe
 	m_chatStyleRendererFactory = chatStyleRendererFactory;
 
 	refreshView();
-	setForcePruneDisabled(false);
 }
 
 void WebkitMessagesView::clearMessages()
@@ -273,7 +269,9 @@ void WebkitMessagesView::clearMessages()
 
 int WebkitMessagesView::countMessages()
 {
-	return m_handler->messages().size();
+	return m_handler
+			? m_handler->messages().size()
+			: 0;
 }
 
 void WebkitMessagesView::sentMessageStatusChanged(const Message &message)

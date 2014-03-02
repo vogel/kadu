@@ -22,8 +22,9 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 
 #include "message/sorted-messages.h"
+#include "exports.h"
 
-class WebkitMessagesViewClearingDisplay : public WebkitMessagesViewDisplay
+class KADUAPI WebkitMessagesViewClearingDisplay : public WebkitMessagesViewDisplay
 {
 
 public:

@@ -27,6 +27,8 @@
 #include <QtCore/QFutureWatcher>
 #include <QtGui/QWidget>
 
+#include "misc/memory.h"
+
 class QDate;
 class QSplitter;
 class QTreeView;
@@ -66,7 +68,7 @@ class TimelineChatMessagesView : public QWidget
 	HistoryQueryResultsModel *ResultsModel;
 	HistoryQueryResultsProxyModel *ResultsProxyModel;
 	WebViewHighlighter *Highlighter;
-	WebkitMessagesView *MessagesView;
+	qobject_ptr<WebkitMessagesView> MessagesView;
 	SearchBar *MessagesSearchBar;
 
 	QFutureWatcher<QVector<HistoryQueryResult> > *ResultsFutureWatcher;
@@ -105,7 +107,7 @@ public:
 	 * @short Returns chat messages view widget.
 	 * @return chat messages view widget
 	 */
-	WebkitMessagesView * messagesView() const { return MessagesView; }
+	WebkitMessagesView * messagesView() const { return MessagesView.get(); }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

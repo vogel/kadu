@@ -38,6 +38,7 @@ class ChatImageRequestService;
 class ChatStyleRendererFactory;
 class Message;
 class WebkitMessagesViewHandler;
+class WebkitMessagesViewHandlerFactory;
 class SortedMessages;
 
 class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject, CompositingAwareObject
@@ -49,6 +50,7 @@ public:
 	virtual ~WebkitMessagesView();
 
 	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
+	void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 
 	void add(const Message &message);
 	void add(const SortedMessages &messages);
@@ -64,6 +66,7 @@ public:
 
 public slots:
 	void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
+	void refreshView();
 
 	void clearMessages();
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
@@ -89,6 +92,7 @@ protected:
 
 private:
 	QPointer<ChatImageRequestService> m_chatImageRequestService;
+	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
 
 	Chat m_chat;
 	qobject_ptr<WebkitMessagesViewHandler> m_handler;
@@ -100,9 +104,7 @@ private:
 	void connectChat();
 	void disconnectChat();
 
-
 private slots:
-	void refreshView();
 	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
 	void sentMessageStatusChanged(const Message &message);
 	void chatStyleConfigurationUpdated();

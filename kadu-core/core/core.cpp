@@ -68,6 +68,8 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
@@ -773,6 +775,15 @@ void Core::runServices()
 
 	CurrentWebkitMessagesViewDisplayFactory = make_qobject<WebkitMessagesViewDisplayFactory>(this);
 	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(CurrentMessageRenderInfoFactory);
+
+	CurrentWebkitMessagesViewHandlerFactory = make_qobject<WebkitMessagesViewHandlerFactory>(this);
+	CurrentWebkitMessagesViewHandlerFactory->setChatStyleManager(ChatStyleManager::instance());
+	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(CurrentWebkitMessagesViewDisplayFactory.get());
+
+	CurrentWebkitMessagesViewFactory = make_qobject<WebkitMessagesViewFactory>(this);
+	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
+	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
+	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
 }
 
 void Core::runGuiServices()
@@ -1009,6 +1020,16 @@ ConfiguredChatStyleRendererFactoryProvider * Core::configuredChatStyleRendererFa
 WebkitMessagesViewDisplayFactory * Core::webkitMessagesViewDisplayFactory() const
 {
 	return CurrentWebkitMessagesViewDisplayFactory.get();
+}
+
+WebkitMessagesViewFactory * Core::webkitMessagesViewFactory() const
+{
+	return CurrentWebkitMessagesViewFactory.get();
+}
+
+WebkitMessagesViewHandlerFactory * Core::webkitMessagesViewHandlerFactory() const
+{
+	return CurrentWebkitMessagesViewHandlerFactory.get();
 }
 
 void Core::showMainWindow()

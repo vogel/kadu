@@ -100,6 +100,8 @@ class RosterNotifier;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class WebkitMessagesViewDisplayFactory;
+class WebkitMessagesViewFactory;
+class WebkitMessagesViewHandlerFactory;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -155,6 +157,8 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginManager *CurrentPluginManager;
 	qobject_ptr<ConfiguredChatStyleRendererFactoryProvider> CurrentChatStyleRendererFactoryProvider;
 	qobject_ptr<WebkitMessagesViewDisplayFactory> CurrentWebkitMessagesViewDisplayFactory;
+	qobject_ptr<WebkitMessagesViewFactory> CurrentWebkitMessagesViewFactory;
+	qobject_ptr<WebkitMessagesViewHandlerFactory> CurrentWebkitMessagesViewHandlerFactory;
 
 	KaduWindow *Window;
 
@@ -252,6 +256,8 @@ public:
 	ChatStyleRendererFactoryProvider * chatStyleRendererFactoryProvider() const;
 	ConfiguredChatStyleRendererFactoryProvider * configuredChatStyleRendererFactoryProvider() const;
 	WebkitMessagesViewDisplayFactory * webkitMessagesViewDisplayFactory() const;
+	WebkitMessagesViewFactory * webkitMessagesViewFactory() const;
+	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

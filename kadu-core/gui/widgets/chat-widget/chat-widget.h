@@ -36,6 +36,7 @@
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "message/message.h"
+#include "misc/memory.h"
 #include "protocols/services/chat-state-service.h"
 #include "exports.h"
 
@@ -63,7 +64,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	Chat CurrentChat;
 
 	ChatTopBarContainerWidget *TopBarContainer;
-	WebkitMessagesView *MessagesView;
+	qobject_ptr<WebkitMessagesView> MessagesView;
 	FilteredTreeView *BuddiesWidget;
 	TalkableProxyModel *ProxyModel;
 	ChatEditBox *InputBox;
@@ -126,7 +127,7 @@ public:
 	CustomInput * edit() const;
 	TalkableProxyModel * talkableProxyModel() const;
 	ChatEditBox * getChatEditBox() const { return InputBox; }
-	WebkitMessagesView * chatMessagesView() const { return MessagesView; }
+	WebkitMessagesView * chatMessagesView() const { return MessagesView.get(); }
 
 	virtual void dragEnterEvent(QDragEnterEvent *e);
 	virtual void dropEvent(QDropEvent *e);

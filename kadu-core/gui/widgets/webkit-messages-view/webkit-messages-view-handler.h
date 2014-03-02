@@ -27,6 +27,7 @@
 #include "message/sorted-messages.h"
 #include "misc/memory.h"
 #include "protocols/services/chat-state-service.h"
+#include "exports.h"
 
 #include <QtCore/QObject>
 
@@ -38,7 +39,7 @@ class WebkitMessagesViewDisplayFactory;
 
 enum class MessageLimitPolicy;
 
-class WebkitMessagesViewHandler : public QObject
+class KADUAPI WebkitMessagesViewHandler : public QObject
 {
 	Q_OBJECT
 

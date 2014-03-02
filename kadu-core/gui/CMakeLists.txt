@@ -128,7 +128,9 @@ set (gui_SRCS
 	widgets/webkit-messages-view/webkit-messages-view-clearing-display.cpp
 	widgets/webkit-messages-view/webkit-messages-view-display.cpp
 	widgets/webkit-messages-view/webkit-messages-view-display-factory.cpp
+	widgets/webkit-messages-view/webkit-messages-view-factory.cpp
 	widgets/webkit-messages-view/webkit-messages-view-handler.cpp
+	widgets/webkit-messages-view/webkit-messages-view-handler-factory.cpp
 	widgets/webkit-messages-view/webkit-messages-view-removing-display.cpp
 
 	widgets/configuration/buddy-list-background-colors-widget.cpp

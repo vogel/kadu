@@ -19,36 +19,32 @@
 
 #pragma once
 
-#include "message/sorted-messages.h"
+#include "misc/memory.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 
+class ChatStyleManager;
 class ChatStyleRenderer;
-class MessageRenderInfoFactory;
+class WebkitMessagesViewDisplayFactory;
+class WebkitMessagesViewHandler;
 
-enum class MessageRenderHeaderBehavior;
-
-class KADUAPI WebkitMessagesViewDisplay
+class KADUAPI WebkitMessagesViewHandlerFactory : public QObject
 {
+	Q_OBJECT
 
 public:
-	explicit WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
-	virtual ~WebkitMessagesViewDisplay();
+	explicit WebkitMessagesViewHandlerFactory(QObject *parent = nullptr);
+	virtual ~WebkitMessagesViewHandlerFactory();
 
-	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
+	void setChatStyleManager(ChatStyleManager *chatStyleManager);
+	void setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory);
 
-	virtual void displayMessages(SortedMessages messages) = 0;
-
-protected:
-	ChatStyleRenderer & chatStyleRenderer() const;
-
-	using I = decltype(begin(std::declval<SortedMessages>()));
-	void displayMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const;
+	qobject_ptr<WebkitMessagesViewHandler> createWebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent);
 
 private:
-	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
-
-	ChatStyleRenderer &m_chatStyleRenderer;
+	QPointer<ChatStyleManager> m_chatStyleManager;
+	QPointer<WebkitMessagesViewDisplayFactory> m_webkitMessagesViewDisplayFactory;
 
 };

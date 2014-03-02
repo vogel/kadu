@@ -76,6 +76,7 @@
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include <gui/widgets/webkit-messages-view/webkit-messages-view-factory.h>
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -201,21 +202,11 @@ void ChatWidget::createGui()
 	frameLayout->setMargin(0);
 	frameLayout->setSpacing(0);
 
-	MessagesView = new WebkitMessagesView(Chat::null, true, frame);
-	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
-	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
+	MessagesView = Core::instance()->webkitMessagesViewFactory()->createWebkitMessagesView(CurrentChat, true, frame);
 
-	auto provider = Core::instance()->chatStyleRendererFactoryProvider();
-	MessagesView->setChatStyleRendererFactory(provider->chatStyleRendererFactory());
-	connect(provider, SIGNAL(chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)),
-			MessagesView, SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
+	frameLayout->addWidget(MessagesView.get());
 
-	if (CurrentChat)
-		MessagesView->setChat(CurrentChat);
-
-	frameLayout->addWidget(MessagesView);
-
-	WebViewHighlighter *highligher = new WebViewHighlighter(MessagesView);
+	WebViewHighlighter *highligher = new WebViewHighlighter(MessagesView.get());
 
 	SearchBar *messagesSearchBar = new SearchBar(frame);
 	frameLayout->addWidget(messagesSearchBar);
@@ -226,16 +217,16 @@ void ChatWidget::createGui()
 	connect(highligher, SIGNAL(somethingFound(bool)), messagesSearchBar, SLOT(somethingFound(bool)));
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
-	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
+	connect(shortcut, SIGNAL(activated()), MessagesView.get(), SLOT(pageUp()));
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
-	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
+	connect(shortcut, SIGNAL(activated()), MessagesView.get(), SLOT(pageDown()));
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::ControlModifier), this);
-	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
+	connect(shortcut, SIGNAL(activated()), MessagesView.get(), SLOT(pageUp()));
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::ControlModifier), this);
-	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
+	connect(shortcut, SIGNAL(activated()), MessagesView.get(), SLOT(pageDown()));
 	HorizontalSplitter->addWidget(frame);
 
 	InputBox = new ChatEditBox(CurrentChat, this);
@@ -614,7 +605,7 @@ int ChatWidget::countMessages() const
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 {
-	if (!event->mimeData()->hasUrls() || event->source() == MessagesView)
+	if (!event->mimeData()->hasUrls() || event->source() == MessagesView.get())
 		return false;
 
 	QList<QUrl> urls = event->mimeData()->urls();

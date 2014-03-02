@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <memory>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -27,7 +29,7 @@ class ChatStyleRenderer;
 class MessageRenderInfoFactory;
 class WebkitMessagesViewDisplay;
 
-class WebkitMessagesViewDisplayFactory : public QObject
+class KADUAPI WebkitMessagesViewDisplayFactory : public QObject
 {
 	Q_OBJECT
 

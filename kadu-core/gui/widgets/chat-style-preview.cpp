@@ -26,6 +26,7 @@
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 
 #include <QtGui/QHBoxLayout>
 
@@ -88,9 +89,7 @@ qobject_ptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 
-	auto result = make_qobject<WebkitMessagesView>(chat, false, this);
-	result->setImageStorageService(Core::instance()->imageStorageService());
-	result->setChatStyleRendererFactory(Core::instance()->chatStyleRendererFactoryProvider()->chatStyleRendererFactory());
+	auto result = Core::instance()->webkitMessagesViewFactory()->createWebkitMessagesView(chat, false, this);
 	result->add(sentMessage);
 	result->add(receivedMessage);
 	return std::move(result);

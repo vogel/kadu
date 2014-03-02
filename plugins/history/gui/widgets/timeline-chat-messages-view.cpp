@@ -29,6 +29,7 @@
 #include "gui/scoped-updates-disabler.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/wait-overlay.h"
 #include "message/sorted-messages.h"
@@ -81,24 +82,16 @@ void TimelineChatMessagesView::createGui()
 	frameLayout->setMargin(0);
 	frameLayout->setSpacing(0);
 
-	MessagesView = new WebkitMessagesView(Chat::null, false, frame);
-	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
-	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
-
-	auto provider = Core::instance()->chatStyleRendererFactoryProvider();
-	MessagesView->setChatStyleRendererFactory(provider->chatStyleRendererFactory());
-	connect(provider, SIGNAL(chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)),
-			MessagesView, SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
-
+	MessagesView = Core::instance()->webkitMessagesViewFactory()->createWebkitMessagesView(Chat::null, false, frame);
 	MessagesView->setFocusPolicy(Qt::StrongFocus);
 	MessagesView->setForcePruneDisabled(true);
 
-	frameLayout->addWidget(MessagesView);
+	frameLayout->addWidget(MessagesView.get());
 
 	MessagesSearchBar = new SearchBar(this);
-	MessagesSearchBar->setSearchWidget(MessagesView);
+	MessagesSearchBar->setSearchWidget(MessagesView.get());
 
-	Highlighter = new WebViewHighlighter(MessagesView);
+	Highlighter = new WebViewHighlighter(MessagesView.get());
 	Highlighter->setAutoUpdate(true);
 
 	connect(MessagesSearchBar, SIGNAL(searchPrevious(QString)), Highlighter, SLOT(selectPrevious(QString)));
@@ -242,7 +235,7 @@ void TimelineChatMessagesView::hideTimelineWaitOverlay()
 void TimelineChatMessagesView::showMessagesViewWaitOverlay()
 {
 	if (!MessagesViewWaitOverlay)
-		MessagesViewWaitOverlay = new WaitOverlay(MessagesView);
+		MessagesViewWaitOverlay = new WaitOverlay(MessagesView.get());
 	else
 		MessagesViewWaitOverlay->show();
 }

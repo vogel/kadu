@@ -20,10 +20,11 @@
 #pragma once
 
 #include "message/sorted-messages.h"
+#include "exports.h"
 
 enum class MessageLimitPolicy;
 
-class MessageLimiter
+class KADUAPI MessageLimiter
 {
 
 public:
