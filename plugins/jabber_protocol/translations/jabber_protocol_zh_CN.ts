@@ -1348,11 +1348,4 @@ Details: %1</source>
         <translation>断开</translation>
     </message>
 </context>
-<context>
-    <name>XmlConsole</name>
-    <message>
-        <source>XML Console - %1</source>
-        <translation>XML 控制台 - %1</translation>
-    </message>
-</context>
 </TS>

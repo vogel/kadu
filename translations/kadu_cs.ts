@@ -1115,6 +1115,10 @@ ihned po zřízení spojení se serverem</translation>
         <source>Export to server failed</source>
         <translation>Vyvedení na server se nezdařilo</translation>
     </message>
+    <message>
+        <source>Unlimited</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1497,7 +1501,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
-    <name>AdiumChatStyleEngine</name>
+    <name>AdiumStyleRenderer</name>
     <message>
         <source>Conference [%1]</source>
         <translation>Porada [%1]</translation>
@@ -1891,7 +1895,7 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
 </context>
 <context>
-    <name>ChatStylesManager</name>
+    <name>ChatStylePreview</name>
     <message>
         <source>Your message</source>
         <translation>Vaše zpráva</translation>
@@ -2505,29 +2509,6 @@ Chcete přesto tento obrázek přijmout?</translation>
     <message>
         <source> - Do not add - </source>
         <translation> - Nepřidávat - </translation>
-    </message>
-</context>
-<context>
-    <name>HtmlMessagesRenderer</name>
-    <message>
-        <source>%1 is active</source>
-        <translation>%1 je činný</translation>
-    </message>
-    <message>
-        <source>%1 is composing...</source>
-        <translation>%1 skládá...</translation>
-    </message>
-    <message>
-        <source>%1 is gone</source>
-        <translation>%1 je hotov</translation>
-    </message>
-    <message>
-        <source>%1 is inactive</source>
-        <translation>%1 je nečinný</translation>
-    </message>
-    <message>
-        <source>%1 has paused composing</source>
-        <translation>%1 pozastavil skládání</translation>
     </message>
 </context>
 <context>
@@ -3800,6 +3781,29 @@ poradu</translation>
     </message>
 </context>
 <context>
+    <name>WebkitMessagesViewHandler</name>
+    <message>
+        <source>%1 is active</source>
+        <translation>%1 je činný</translation>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation>%1 skládá...</translation>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation>%1 is gone</translation>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation>%1 je nečinný</translation>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation>%1 pozastavil skládání</translation>
+    </message>
+</context>
+<context>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
@@ -3829,20 +3833,8 @@ poradu</translation>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Vytvořit nový účet&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Create New Account</source>
-        <translation>Vytvořit nový účet</translation>
-    </message>
-    <message>
         <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Přidat stávající účet&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Setup an Existing Account</source>
-        <translation>Nastavit stávající účet</translation>
-    </message>
-    <message>
-        <source>Choose a network</source>
-        <translation>Vybrat síť</translation>
     </message>
     <message>
         <source>IM Network</source>

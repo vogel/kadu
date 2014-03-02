@@ -1330,11 +1330,4 @@ Details: %1</source>
         <translation type="unfinished"/>
     </message>
 </context>
-<context>
-    <name>XmlConsole</name>
-    <message>
-        <source>XML Console - %1</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
 </TS>

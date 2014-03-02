@@ -1343,11 +1343,4 @@ Details: %1</source>
         <translation>Déconnecté</translation>
     </message>
 </context>
-<context>
-    <name>XmlConsole</name>
-    <message>
-        <source>XML Console - %1</source>
-        <translation>Console XML - %1</translation>
-    </message>
-</context>
 </TS>

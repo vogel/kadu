@@ -1349,11 +1349,4 @@ Szczegóły: %1</translation>
         <translation>Rozłączony</translation>
     </message>
 </context>
-<context>
-    <name>XmlConsole</name>
-    <message>
-        <source>XML Console - %1</source>
-        <translation>Konsola XML - %1</translation>
-    </message>
-</context>
 </TS>

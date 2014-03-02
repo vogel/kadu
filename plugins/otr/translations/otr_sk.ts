@@ -6,30 +6,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Trying to start private conversation</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Trying to refresh private conversation</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Peer closed private conversation</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Conversation gone secure</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Conversation gone insecure</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Conversation still secure</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Create private key started</source>
         <translation type="unfinished"/>
     </message>

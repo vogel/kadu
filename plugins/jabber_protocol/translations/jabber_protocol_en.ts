@@ -1349,11 +1349,4 @@ Details: %1</translation>
         <translation>Disconnected</translation>
     </message>
 </context>
-<context>
-    <name>XmlConsole</name>
-    <message>
-        <source>XML Console - %1</source>
-        <translation>XML Console - %1</translation>
-    </message>
-</context>
 </TS>

@@ -1,12 +1,5 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
-    <name>Infos</name>
-    <message>
-        <source>&amp;Show infos about buddies</source>
-        <translation>&amp;amp;Ukázat informace o kamarádech</translation>
-    </message>
-</context>
-<context>
     <name>InfosDialog</name>
     <message>
         <source>Buddies Information</source>

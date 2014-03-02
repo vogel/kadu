@@ -6,30 +6,6 @@
         <translation>OTR Encryption</translation>
     </message>
     <message>
-        <source>Trying to start private conversation</source>
-        <translation>Trying to start private conversation</translation>
-    </message>
-    <message>
-        <source>Trying to refresh private conversation</source>
-        <translation>Trying to refresh private conversation</translation>
-    </message>
-    <message>
-        <source>Peer closed private conversation</source>
-        <translation>Peer closed private conversation</translation>
-    </message>
-    <message>
-        <source>Conversation gone secure</source>
-        <translation>Conversation gone secure</translation>
-    </message>
-    <message>
-        <source>Conversation gone insecure</source>
-        <translation>Conversation gone insecure</translation>
-    </message>
-    <message>
-        <source>Conversation still secure</source>
-        <translation>Conversation still secure</translation>
-    </message>
-    <message>
         <source>Create private key started</source>
         <translation>Create private key started</translation>
     </message>

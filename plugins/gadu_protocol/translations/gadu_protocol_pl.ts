@@ -85,75 +85,16 @@
         <translation>Anuluj</translation>
     </message>
     <message>
-        <source>Forgot Your Password?</source>
-        <translation>Zapomniałeś hasła?</translation>
-    </message>
-</context>
-<context>
-    <name>GaduChangePasswordWindow</name>
-    <message>
-        <source>Change Password</source>
-        <translation>Zmień hasło</translation>
+        <source>Register Account</source>
+        <translation>Zarejestruj konto</translation>
     </message>
     <message>
-        <source>E-Mail Address</source>
-        <translation>Adres e-mail</translation>
+        <source>Remind GG number</source>
+        <translation>Przypomij numer GG</translation>
     </message>
     <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Type E-Mail Address used during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Podaj adres e-mail Address użyty podczas rejestracji konta.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Old Password</source>
-        <translation>Stare hasło</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter current password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wprowadź stare hasło.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>New Password</source>
-        <translation>Nowe hasło</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter new password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wprowadź nowe hasło.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Retype New Password</source>
-        <translation>Powtórz nowe hasło</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Weryfikacja</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wprowadź tekst widoczny na obrazku.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Changing password was successful.</source>
-        <translation>Hasło zostało pomyślnie zmienione.</translation>
-    </message>
-    <message>
-        <source>An error has occurred. Please try again later.</source>
-        <translation>Wystąpił błąd. Proszę spróbować później.</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation>Błędne dane w wymaganych polach.
-
-Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) muszą być takie same!</translation>
+        <source>Remind Password</source>
+        <translation>Przypomnij hasło</translation>
     </message>
 </context>
 <context>
@@ -234,61 +175,6 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     </message>
 </context>
 <context>
-    <name>GaduCreateAccountWidget</name>
-    <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
-    </message>
-    <message>
-        <source>Retype Password</source>
-        <translation>Powtórz hasło</translation>
-    </message>
-    <message>
-        <source>Remember password</source>
-        <translation>Zapamiętaj hasło</translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation>Adres e-mail</translation>
-    </message>
-    <message>
-        <source>Account Identity</source>
-        <translation>Tożsamość konta</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Weryfikacja</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wprowadź tekst widoczny na obrazku.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Regster Account</source>
-        <translation>Zarejestruj konto</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation>Błędne dane w wymaganych polach.
-
-Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) muszą być takie same!</translation>
-    </message>
-</context>
-<context>
     <name>GaduEditAccountWidget</name>
     <message>
         <source>Apply</source>
@@ -313,14 +199,6 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     <message>
         <source>Remember password</source>
         <translation>Zapamiętaj hasło</translation>
-    </message>
-    <message>
-        <source>Forgot Your Password?</source>
-        <translation>Zapomniałeś hasła?</translation>
-    </message>
-    <message>
-        <source>Change Your Password</source>
-        <translation>Zmień hasło</translation>
     </message>
     <message>
         <source>Account Identity</source>
@@ -361,10 +239,6 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     <message>
         <source>Remove account</source>
         <translation>Usuń konto</translation>
-    </message>
-    <message>
-        <source>Remove account and unregister from server</source>
-        <translation>Usuń konto i wyrejestruj z serwera</translation>
     </message>
     <message>
         <source>External port</source>
@@ -468,6 +342,14 @@ Czy na pewno chcesz im ujawnić swoją dostępność?</translation>
         <source>Stay with private status</source>
         <translation>Uruchom ze statusem widocznym tylko dla znajomych</translation>
     </message>
+    <message>
+        <source>Remind GG number</source>
+        <translation>Przypomnij numer GG</translation>
+    </message>
+    <message>
+        <source>Remind Password</source>
+        <translation>Przypomnij hasło</translation>
+    </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
@@ -539,127 +421,6 @@ Czy na pewno chcesz im ujawnić swoją dostępność?</translation>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
         <translation>Nie można załadować wtyczki Gadu-Gadu. Libgadu ze wsparciem dla zlib jest wymagane.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduRemindPasswordWindow</name>
-    <message>
-        <source>Remind password</source>
-        <translation>Przypomnij hasło</translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation>Adres e-mail</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Type E-Mail Address used during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Podaj adres e-mail Address użyty podczas rejestracji konta.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Weryfikacja</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wprowadź tekst widoczny na obrazku.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Send Password</source>
-        <translation>Wyślij hasło</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation>Bład podczas przypominania hasła</translation>
-    </message>
-    <message>
-        <source>Your password has been sent on your email</source>
-        <translation>Twoje hasło zostało wysłane na adres e-mailowy</translation>
-    </message>
-</context>
-<context>
-    <name>GaduUnregisterAccountWindow</name>
-    <message>
-        <source>Unregister account</source>
-        <translation>Wyrejestruj konto</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to unregister your account. Be aware of using this option.</source>
-        <translation>To okno pozwala na wyrejestrowanie konta. Uważaj z używaniem tej opcji.</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&quot;+1&quot;&gt;&lt;b&gt;It will permanently delete your account and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&quot;+1&quot;&gt;&lt;b&gt;To okno dialogowe pozwala na trwałe wyrejestrowanie użytkownika z serwera Gadu-Gadu.&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;Musisz sobie zdawać sprawę że spowoduje to nieodwracalne usunięcie numeru GG z serwera i nigdy już nie będziesz mógł z niego korzystać!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Gadu-Gadu number</source>
-        <translation>Numer Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Podaj adres e-mail Address użyty podczas rejestracji konta.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Weryfikacja</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wprowadź tekst widoczny na obrazku.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Unregister Account</source>
-        <translation>Wyrejestruj konto</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation>Wyrejestrowanie przebiegło prawidłowo. Teraz już nie masz numeru GG :(</translation>
-    </message>
-    <message>
-        <source>An error has occurred while unregistration. Please try again later.</source>
-        <translation>Wystąpił błąd podczas wyrejestrowywania konta. Proszę spróbować później.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduWaitForAccountRegisterWindow</name>
-    <message>
-        <source>Plase wait. New Gadu-Gadu account is being registered.</source>
-        <translation>Proszę czekać. Nowe konto Gadu-Gadu jest rejestrowane.</translation>
-    </message>
-    <message>
-        <source>Registration was successful. Your new number is %1.
-Store it in a safe place along with the password.
-Now add your friends to the userlist.</source>
-        <translation>Rejestracja zakończona. Twój nowy numer to: %1.
-Zapisz go wraz z hasłem w bezpiecznym miejscu.
-Teraz możesz dodać znajomych do listy kontaktów.</translation>
-    </message>
-    <message>
-        <source>An error has occurred during registration. Please try again later.</source>
-        <translation>Wystąpił błąd podczas rejestracji. Proszę spróbować później.</translation>
-    </message>
-    <message>
-        <source>Registering new Gadu-Gadu account</source>
-        <translation>Rejestrowanie nowego konta Gadu-Gadu</translation>
     </message>
 </context>
 </TS>

@@ -85,75 +85,16 @@
         <translation>Cancel</translation>
     </message>
     <message>
-        <source>Forgot Your Password?</source>
-        <translation>Forgot Your Password?</translation>
-    </message>
-</context>
-<context>
-    <name>GaduChangePasswordWindow</name>
-    <message>
-        <source>Change Password</source>
-        <translation>Change Password</translation>
+        <source>Register Account</source>
+        <translation>Register Account</translation>
     </message>
     <message>
-        <source>E-Mail Address</source>
-        <translation>E-Mail Address</translation>
+        <source>Remind GG number</source>
+        <translation>Remind GG number</translation>
     </message>
     <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Type E-Mail Address used during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Type E-Mail Address used during registration.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Old Password</source>
-        <translation>Old Password</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter current password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter current password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>New Password</source>
-        <translation>New Password</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter new password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter new password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Retype New Password</source>
-        <translation>Retype New Password</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Characters</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Changing password was successful.</source>
-        <translation>Changing password was successful.</translation>
-    </message>
-    <message>
-        <source>An error has occurred. Please try again later.</source>
-        <translation>An error has occurred. Please try again later.</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</translation>
+        <source>Remind Password</source>
+        <translation>Remind Password</translation>
     </message>
 </context>
 <context>
@@ -234,61 +175,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     </message>
 </context>
 <context>
-    <name>GaduCreateAccountWidget</name>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>Retype Password</source>
-        <translation>Retype Password</translation>
-    </message>
-    <message>
-        <source>Remember password</source>
-        <translation>Remember password</translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation>E-Mail Address</translation>
-    </message>
-    <message>
-        <source>Account Identity</source>
-        <translation>Account Identity</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Characters</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Regster Account</source>
-        <translation>Regster Account</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</translation>
-    </message>
-</context>
-<context>
     <name>GaduEditAccountWidget</name>
     <message>
         <source>Apply</source>
@@ -313,14 +199,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <message>
         <source>Remember password</source>
         <translation>Remember password</translation>
-    </message>
-    <message>
-        <source>Forgot Your Password?</source>
-        <translation>Forgot Your Password?</translation>
-    </message>
-    <message>
-        <source>Change Your Password</source>
-        <translation>Change Your Password</translation>
     </message>
     <message>
         <source>Account Identity</source>
@@ -361,10 +239,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <message>
         <source>Remove account</source>
         <translation>Remove account</translation>
-    </message>
-    <message>
-        <source>Remove account and unregister from server</source>
-        <translation>Remove account and unregister from server</translation>
     </message>
     <message>
         <source>External port</source>
@@ -468,6 +342,14 @@ Are you sure to allow them to know you are available?</translation>
         <source>Stay with private status</source>
         <translation>Stay with private status</translation>
     </message>
+    <message>
+        <source>Remind GG number</source>
+        <translation>Remind GG number</translation>
+    </message>
+    <message>
+        <source>Remind Password</source>
+        <translation>Remind Password</translation>
+    </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
@@ -539,127 +421,6 @@ Are you sure to allow them to know you are available?</translation>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
         <translation>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduRemindPasswordWindow</name>
-    <message>
-        <source>Remind password</source>
-        <translation>Remind password</translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation>E-Mail Address</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Type E-Mail Address used during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Type E-Mail Address used during registration.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Characters</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Send Password</source>
-        <translation>Send Password</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Error during remind password</source>
-        <translation>Error during remind password</translation>
-    </message>
-    <message>
-        <source>Your password has been sent on your email</source>
-        <translation>Your password has been sent on your email</translation>
-    </message>
-</context>
-<context>
-    <name>GaduUnregisterAccountWindow</name>
-    <message>
-        <source>Unregister account</source>
-        <translation>Unregister account</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to unregister your account. Be aware of using this option.</source>
-        <translation>This dialog box allows you to unregister your account. Be aware of using this option.</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&quot;+1&quot;&gt;&lt;b&gt;It will permanently delete your account and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&quot;+1&quot;&gt;&lt;b&gt;It will permanently delete your account and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Gadu-Gadu number</source>
-        <translation>Gadu-Gadu number</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter password for your Gadu-Gadu account.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Characters</source>
-        <translation>Characters</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;For verification purposes, please type the characters above.&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Unregister Account</source>
-        <translation>Unregister Account</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation>Unregistation was successful. Now you don&apos;t have any GG number :(</translation>
-    </message>
-    <message>
-        <source>An error has occurred while unregistration. Please try again later.</source>
-        <translation>An error has occurred while unregistration. Please try again later.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduWaitForAccountRegisterWindow</name>
-    <message>
-        <source>Plase wait. New Gadu-Gadu account is being registered.</source>
-        <translation>Plase wait. New Gadu-Gadu account is being registered.</translation>
-    </message>
-    <message>
-        <source>Registration was successful. Your new number is %1.
-Store it in a safe place along with the password.
-Now add your friends to the userlist.</source>
-        <translation>Registration was successful. Your new number is %1.
-Store it in a safe place along with the password.
-Now add your friends to the userlist.</translation>
-    </message>
-    <message>
-        <source>An error has occurred during registration. Please try again later.</source>
-        <translation>An error has occurred during registration. Please try again later.</translation>
-    </message>
-    <message>
-        <source>Registering new Gadu-Gadu account</source>
-        <translation>Registering new Gadu-Gadu account</translation>
     </message>
 </context>
 </TS>

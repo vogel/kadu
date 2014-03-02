@@ -2,14 +2,6 @@
 <context>
     <name>HistorySqlStorage</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>It seems your Qt library does not provide support for selected database. Please install Qt with %1 plugin.</source>
-        <translation>你的 Qt 库不支持所选数据库, 请安装包含 %1 插件的 Qt.</translation>
-    </message>
-    <message>
         <source>Preparing history database...</source>
         <translation>正在准备历史数据库...</translation>
     </message>

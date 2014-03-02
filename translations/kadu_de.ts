@@ -1107,6 +1107,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Export to server failed</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Unlimited</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1489,10 +1493,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
 </context>
 <context>
-    <name>AdiumChatStyleEngine</name>
+    <name>AdiumStyleRenderer</name>
     <message>
         <source>Conference [%1]</source>
-        <translation>Konferenz [%1]</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1881,14 +1885,14 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
-    <name>ChatStylesManager</name>
+    <name>ChatStylePreview</name>
     <message>
         <source>Your message</source>
-        <translation>Ihre Nachricht</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Message from Your friend</source>
-        <translation>Nachricht von Ihrem Freund</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2494,29 +2498,6 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source> - Do not add - </source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>HtmlMessagesRenderer</name>
-    <message>
-        <source>%1 is active</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>%1 is composing...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>%1 is gone</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>%1 is inactive</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>%1 has paused composing</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3787,6 +3768,29 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
+    <name>WebkitMessagesViewHandler</name>
+    <message>
+        <source>%1 is active</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
@@ -3816,20 +3820,8 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Neues Konto erstellen&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Create New Account</source>
-        <translation>Neues Konto Erstellen</translation>
-    </message>
-    <message>
         <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Vorhandenes Konto hinzufügen&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Setup an Existing Account</source>
-        <translation>Existierendes Konto einrichten</translation>
-    </message>
-    <message>
-        <source>Choose a network</source>
-        <translation>Netzwerk auswählen</translation>
     </message>
     <message>
         <source>IM Network</source>

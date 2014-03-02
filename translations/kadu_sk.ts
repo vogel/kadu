@@ -1113,6 +1113,10 @@ changes upon establishing connection to the server</source>
         <source>Export to server failed</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Unlimited</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1424,22 +1428,22 @@ changes upon establishing connection to the server</source>
     <name>AddRoomChatAction</name>
     <message>
         <source>Join Room...</source>
-        <translation type="unfinished"/>
+        <translation>Vstúpiť do miestnosti...</translation>
     </message>
 </context>
 <context>
     <name>AddRoomChatWindow</name>
     <message>
         <source>Join Room</source>
-        <translation type="unfinished"/>
+        <translation>Vstúpiť do miestnosti</translation>
     </message>
     <message>
         <source>Account:</source>
-        <translation type="unfinished"/>
+        <translation>Účet:</translation>
     </message>
     <message>
         <source>Visible name:</source>
-        <translation type="unfinished"/>
+        <translation>Viditeľné meno:</translation>
     </message>
     <message>
         <source>Enter a name for this conference if you want to have it on roster</source>
@@ -1447,15 +1451,15 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Room:</source>
-        <translation type="unfinished"/>
+        <translation>Miestnosť:</translation>
     </message>
     <message>
         <source>Nick:</source>
-        <translation type="unfinished"/>
+        <translation>Prezývka:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Heslo:</translation>
     </message>
     <message>
         <source>Add Room Chat</source>
@@ -1467,19 +1471,19 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <source>Account is not selected</source>
-        <translation type="unfinished"/>
+        <translation>Nie je vybraný účet</translation>
     </message>
     <message>
         <source>Enter room name</source>
-        <translation type="unfinished"/>
+        <translation>Vložiť meno pre miestnosť</translation>
     </message>
     <message>
         <source>Enter nick</source>
-        <translation type="unfinished"/>
+        <translation>Vložiť prezývku</translation>
     </message>
     <message>
         <source>Visible name is already used for another chat</source>
@@ -1495,10 +1499,10 @@ changes upon establishing connection to the server</source>
     </message>
 </context>
 <context>
-    <name>AdiumChatStyleEngine</name>
+    <name>AdiumStyleRenderer</name>
     <message>
         <source>Conference [%1]</source>
-        <translation>Konferencia [%1]</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1609,7 +1613,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizovať</translation>
     </message>
 </context>
 <context>
@@ -1777,11 +1781,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Všeobecné</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Chat</translation>
     </message>
 </context>
 <context>
@@ -1871,30 +1875,30 @@ Do you want to accept this image anyway?</source>
     <name>ChatRoomEditWidget</name>
     <message>
         <source>Account:</source>
-        <translation type="unfinished"/>
+        <translation>Účet:</translation>
     </message>
     <message>
         <source>Room:</source>
-        <translation type="unfinished"/>
+        <translation>Miestnosť:</translation>
     </message>
     <message>
         <source>Nick:</source>
-        <translation type="unfinished"/>
+        <translation>Prezývka:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Heslo:</translation>
     </message>
 </context>
 <context>
-    <name>ChatStylesManager</name>
+    <name>ChatStylePreview</name>
     <message>
         <source>Your message</source>
-        <translation>Vaša správa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Message from Your friend</source>
-        <translation>Správa od vášho kamaráta</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2306,7 +2310,7 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Zatvoriť</translation>
     </message>
 </context>
 <context>
@@ -2501,29 +2505,6 @@ Do you want to accept this image anyway?</source>
     <message>
         <source> - Do not add - </source>
         <translation>- Nepridávať -</translation>
-    </message>
-</context>
-<context>
-    <name>HtmlMessagesRenderer</name>
-    <message>
-        <source>%1 is active</source>
-        <translation>%1 je aktívny</translation>
-    </message>
-    <message>
-        <source>%1 is composing...</source>
-        <translation>%1 píše...</translation>
-    </message>
-    <message>
-        <source>%1 is gone</source>
-        <translation>%1 odišiel</translation>
-    </message>
-    <message>
-        <source>%1 is inactive</source>
-        <translation>%1 je neaktívny</translation>
-    </message>
-    <message>
-        <source>%1 has paused composing</source>
-        <translation>%1 prestal písať</translation>
     </message>
 </context>
 <context>
@@ -3794,6 +3775,29 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
 </context>
 <context>
+    <name>WebkitMessagesViewHandler</name>
+    <message>
+        <source>%1 is active</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
@@ -3823,20 +3827,8 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Vytvoriť nový účet&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Create New Account</source>
-        <translation>Vytvoriť nový účet</translation>
-    </message>
-    <message>
         <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Pridať existujúci účet&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Setup an Existing Account</source>
-        <translation>Nastavenie existujúceho účtu</translation>
-    </message>
-    <message>
-        <source>Choose a network</source>
-        <translation>Zvoliť sieť</translation>
     </message>
     <message>
         <source>IM Network</source>

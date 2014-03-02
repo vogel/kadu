@@ -1115,6 +1115,10 @@ changes upon establishing connection to the server</translation>
         <source>Export to server failed</source>
         <translation>Export to server failed</translation>
     </message>
+    <message>
+        <source>Unlimited</source>
+        <translation>Unlimited</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1497,7 +1501,7 @@ changes upon establishing connection to the server</translation>
     </message>
 </context>
 <context>
-    <name>AdiumChatStyleEngine</name>
+    <name>AdiumStyleRenderer</name>
     <message>
         <source>Conference [%1]</source>
         <translation>Conference [%1]</translation>
@@ -1891,7 +1895,7 @@ Do you want to accept this image anyway?</translation>
     </message>
 </context>
 <context>
-    <name>ChatStylesManager</name>
+    <name>ChatStylePreview</name>
     <message>
         <source>Your message</source>
         <translation>Your message</translation>
@@ -2505,29 +2509,6 @@ Do you want to accept this image anyway?</translation>
     <message>
         <source> - Do not add - </source>
         <translation> - Do not add - </translation>
-    </message>
-</context>
-<context>
-    <name>HtmlMessagesRenderer</name>
-    <message>
-        <source>%1 is active</source>
-        <translation>%1 is active</translation>
-    </message>
-    <message>
-        <source>%1 is composing...</source>
-        <translation>%1 is composing...</translation>
-    </message>
-    <message>
-        <source>%1 is gone</source>
-        <translation>%1 is gone</translation>
-    </message>
-    <message>
-        <source>%1 is inactive</source>
-        <translation>%1 is inactive</translation>
-    </message>
-    <message>
-        <source>%1 has paused composing</source>
-        <translation>%1 has paused composing</translation>
     </message>
 </context>
 <context>
@@ -3798,6 +3779,29 @@ from now on. Are you sure you want to leave this conference?</translation>
     </message>
 </context>
 <context>
+    <name>WebkitMessagesViewHandler</name>
+    <message>
+        <source>%1 is active</source>
+        <translation>%1 is active</translation>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation>%1 is composing...</translation>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation>%1 is gone</translation>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation>%1 is inactive</translation>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation>%1 has paused composing</translation>
+    </message>
+</context>
+<context>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
@@ -3827,20 +3831,8 @@ from now on. Are you sure you want to leave this conference?</translation>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Create New Account&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Create New Account</source>
-        <translation>Create New Account</translation>
-    </message>
-    <message>
         <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Setup an Existing Account</source>
-        <translation>Setup an Existing Account</translation>
-    </message>
-    <message>
-        <source>Choose a network</source>
-        <translation>Choose a network</translation>
     </message>
     <message>
         <source>IM Network</source>

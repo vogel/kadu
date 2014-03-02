@@ -6,30 +6,6 @@
         <translation>Szyfrowanie OTR</translation>
     </message>
     <message>
-        <source>Trying to start private conversation</source>
-        <translation>Rozpoczynanie prywatnej rozmowy</translation>
-    </message>
-    <message>
-        <source>Trying to refresh private conversation</source>
-        <translation>Odświeżanie prywatnej rozmowy</translation>
-    </message>
-    <message>
-        <source>Peer closed private conversation</source>
-        <translation>Rozmówca zakończył prywatną rozmowę</translation>
-    </message>
-    <message>
-        <source>Conversation gone secure</source>
-        <translation>Rozmowa jest od teraz zabezpieczona</translation>
-    </message>
-    <message>
-        <source>Conversation gone insecure</source>
-        <translation>Rozmowa jest od teraz niezabezpieczona</translation>
-    </message>
-    <message>
-        <source>Conversation still secure</source>
-        <translation>Rozmowa jest nadal zabezpieczona</translation>
-    </message>
-    <message>
         <source>Create private key started</source>
         <translation>Tworzenie klucza prywatnego</translation>
     </message>

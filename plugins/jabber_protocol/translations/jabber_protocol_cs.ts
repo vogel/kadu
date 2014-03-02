@@ -1349,11 +1349,4 @@ Podrobnosti: %1</translation>
         <translation>Odpojeno</translation>
     </message>
 </context>
-<context>
-    <name>XmlConsole</name>
-    <message>
-        <source>XML Console - %1</source>
-        <translation>Konzole XML - %1</translation>
-    </message>
-</context>
 </TS>

@@ -1111,6 +1111,10 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Export to server failed</source>
         <translation>Eksport do serwera nieudany</translation>
     </message>
+    <message>
+        <source>Unlimited</source>
+        <translation>Nielimitowane</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1499,7 +1503,7 @@ Klient: %3</translation>
     </message>
 </context>
 <context>
-    <name>AdiumChatStyleEngine</name>
+    <name>AdiumStyleRenderer</name>
     <message>
         <source>Conference [%1]</source>
         <translation>Konferencja [%1]</translation>
@@ -1893,7 +1897,7 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
-    <name>ChatStylesManager</name>
+    <name>ChatStylePreview</name>
     <message>
         <source>Your message</source>
         <translation>Twoja wiadomość</translation>
@@ -2507,29 +2511,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source> - Do not add - </source>
         <translation> - Nie dodawaj - </translation>
-    </message>
-</context>
-<context>
-    <name>HtmlMessagesRenderer</name>
-    <message>
-        <source>%1 is active</source>
-        <translation>%1 jest aktywny</translation>
-    </message>
-    <message>
-        <source>%1 is composing...</source>
-        <translation>%1 pisze...</translation>
-    </message>
-    <message>
-        <source>%1 is gone</source>
-        <translation>%1 jest nieobecny</translation>
-    </message>
-    <message>
-        <source>%1 is inactive</source>
-        <translation>%1 jest nieaktywny</translation>
-    </message>
-    <message>
-        <source>%1 has paused composing</source>
-        <translation>%1 przerwał pisanie</translation>
     </message>
 </context>
 <context>
@@ -3800,6 +3781,29 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
+    <name>WebkitMessagesViewHandler</name>
+    <message>
+        <source>%1 is active</source>
+        <translation>%1 jest aktywny</translation>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation>%1 pisze...</translation>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation>%1 jest nieobecny</translation>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation>%1 jest nieaktywny</translation>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation>%1 przerwał pisanie</translation>
+    </message>
+</context>
+<context>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
@@ -3829,20 +3833,8 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Stwórz nowe konto&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <source>Create New Account</source>
-        <translation>Stwórz nowe konto</translation>
-    </message>
-    <message>
         <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Dodaj istniejące konto&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>Setup an Existing Account</source>
-        <translation>Skonfiguruj istniejące konto</translation>
-    </message>
-    <message>
-        <source>Choose a network</source>
-        <translation>Wybierz sieć</translation>
     </message>
     <message>
         <source>IM Network</source>
