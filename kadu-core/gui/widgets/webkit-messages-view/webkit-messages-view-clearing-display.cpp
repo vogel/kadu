@@ -39,10 +39,10 @@ void WebkitMessagesViewClearingDisplay::displayMessages(SortedMessages messages)
 	if (!m_currentMessages.empty() && begin(m_currentMessages) != difference.first)
 	{
 		chatStyleRenderer().clearMessages();
-		displayMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::RenderWhenRequired);
+		displayMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::WhenRequired);
 	}
 	else
-		displayMessagesRange(difference.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::RenderWhenRequired);
+		displayMessagesRange(difference.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::WhenRequired);
 
 	m_currentMessages = std::move(messages);
 }

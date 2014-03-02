@@ -80,7 +80,7 @@ QString MessageRenderInfoFactory::fontColor(const Message &message) const
 
 bool MessageRenderInfoFactory::includeHeader(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const
 {
-	if (renderHeaderBehavior == MessageRenderHeaderBehavior::RenderAlways)
+	if (renderHeaderBehavior == MessageRenderHeaderBehavior::Always)
 		return true;
 	if (!previous || previous.type() == MessageTypeSystem || message.type() == MessageTypeSystem)
 		return true;

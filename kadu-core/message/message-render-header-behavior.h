@@ -21,6 +21,6 @@
 
 enum class MessageRenderHeaderBehavior
 {
-	RenderAlways,
-	RenderWhenRequired
+	Always,
+	WhenRequired
 };
