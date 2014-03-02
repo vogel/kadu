@@ -43,6 +43,8 @@ public:
 private:
 	std::vector<Message> m_messages;
 
+	static bool precedes(const Message &left, const Message &right);
+
 };
 
 KADUAPI std::vector<Message>::const_iterator begin(const SortedMessages &sortedMessages);
