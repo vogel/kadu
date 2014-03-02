@@ -314,7 +314,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "ChatCloseTimer", true);
 	config_file.addVariable("Chat", "ChatCloseTimerPeriod", 2);
 	config_file.addVariable("Chat", "ChatPrune", false);
-	config_file.addVariable("Chat", "ChatPruneLen", 20);
+	config_file.addVariable("Chat", "ChatPruneLen", 0);
 	config_file.addVariable("Chat", "ConfirmChatClear", true);
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
