@@ -75,7 +75,6 @@ private:
 	SortedMessages m_messages;
 
 	SortedMessages limitMessages(SortedMessages messages) const;
-	void displayMessages(const SortedMessages &messages);
 
 private slots:
 	void rendererReady();

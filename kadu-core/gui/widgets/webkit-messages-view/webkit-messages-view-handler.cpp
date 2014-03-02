@@ -43,25 +43,19 @@ void WebkitMessagesViewHandler::setMessageLimit(unsigned int limit)
 {
 	m_messagesLimiter.setLimit(limit);
 	m_messages = m_messagesLimiter.limitMessages(m_messages);
-	displayMessages(m_messages);
+	m_messagesDisplay->displayMessages(m_messages);
 }
 
 void WebkitMessagesViewHandler::setMessageLimitPolicy(MessageLimitPolicy messageLimitPolicy)
 {
 	m_messagesLimiter.setLimitPolicy(messageLimitPolicy);
 	m_messages = m_messagesLimiter.limitMessages(m_messages);
-	displayMessages(m_messages);
+	m_messagesDisplay->displayMessages(m_messages);
 }
 
 void WebkitMessagesViewHandler::rendererReady()
 {
-	displayMessages(m_messages);
-}
-
-void WebkitMessagesViewHandler::displayMessages(const SortedMessages &messages)
-{
-	if (m_messagesDisplay)
-		m_messagesDisplay->displayMessages(messages);
+	m_messagesDisplay->displayMessages(m_messages);
 }
 
 SortedMessages WebkitMessagesViewHandler::limitMessages(SortedMessages messages) const
@@ -73,15 +67,16 @@ void WebkitMessagesViewHandler::add(const Message &message)
 {
 	m_messages.add(message);
 	m_messages = limitMessages(m_messages);
-	displayMessages(m_messages);
+	if (m_chatStyleRenderer->isReady())
+		m_messagesDisplay->displayMessages(m_messages);
 }
 
 void WebkitMessagesViewHandler::refreshView()
 {
-	if (m_messagesDisplay)
+	if (m_chatStyleRenderer->isReady())
 	{
-		displayMessages({});
-		displayMessages(m_messages);
+		m_messagesDisplay->displayMessages({});
+		m_messagesDisplay->displayMessages(m_messages);
 	}
 }
 
@@ -92,13 +87,15 @@ void WebkitMessagesViewHandler::add(const SortedMessages &messages)
 
 	m_messages.add(messages);
 	m_messages = limitMessages(m_messages);
-	displayMessages(m_messages);
+	if (m_chatStyleRenderer->isReady())
+		m_messagesDisplay->displayMessages(m_messages);
 }
 
 void WebkitMessagesViewHandler::clear()
 {
 	m_messages.clear();
-	displayMessages(m_messages);
+	if (m_chatStyleRenderer->isReady())
+		m_messagesDisplay->displayMessages(m_messages);
 }
 
 void WebkitMessagesViewHandler::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
