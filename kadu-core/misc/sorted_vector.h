@@ -50,8 +50,7 @@ public:
 		}
 
 		auto upperBound = std::upper_bound(std::begin(m_content), std::end(m_content), item, LessThanComparator);
-		auto previous = *(upperBound - 1);
-		if (!EqualityComparator(previous, item))
+		if (upperBound == std::begin(m_content) || !EqualityComparator(*(upperBound - 1), item))
 			m_content.emplace(upperBound, std::move(item));
 	}
 
