@@ -19,7 +19,48 @@
 
 #include "sorted-messages.h"
 
-#include <algorithm>
+#include "chat/chat.h"
+#include "formatted-string/formatted-string.h"
+
+bool SortedMessages::precedes(const Message &left, const Message &right)
+{
+	if (left == right)
+		return false;
+
+	if (left.sendDate().toTime_t() < right.sendDate().toTime_t())
+		return true;
+
+	return false;
+}
+
+bool SortedMessages::same(const Message &left, const Message &right)
+{
+	if (left.isNull() && right.isNull())
+		return true;
+
+	if (left.isNull() || right.isNull()) // one is null, second one is not
+		return false;
+
+	if (left.type() != right.type())
+		return false;
+
+	// In our SQL history we store datetime with accuracy to one second,
+	// while for received XMPP messages we have a millisecond accuracy.
+	// So to have proper results, we need to truncate those additional milliseconds.
+	if (left.sendDate().toTime_t() != right.sendDate().toTime_t())
+		return false;
+
+	if (left.messageChat() != right.messageChat())
+		return false;
+
+	if (left.messageSender() != right.messageSender())
+		return false;
+
+	if (*left.content() != *right.content())
+		return false;
+
+	return true;
+}
 
 SortedMessages::SortedMessages()
 {
@@ -28,33 +69,19 @@ SortedMessages::SortedMessages()
 SortedMessages::SortedMessages(std::vector<Message> messages) :
 		m_messages{std::move(messages)}
 {
-	std::stable_sort(std::begin(m_messages), std::end(m_messages), SortedMessages::precedes);
 }
 
 void SortedMessages::add(Message message)
 {
-	if (m_messages.empty())
-		m_messages.emplace_back(std::move(message));
-
-	auto upperBound = std::upper_bound(std::begin(m_messages), std::end(m_messages), message, SortedMessages::precedes);
-	auto previous = *(upperBound - 1);
-	if (!sameMessage(previous, message))
-		m_messages.emplace(upperBound, std::move(message));
+	m_messages.add(std::move(message));
 }
 
 void SortedMessages::add(const SortedMessages &sortedMessages)
 {
-	auto result = std::vector<Message>{};
-
-	std::merge(std::begin(m_messages), std::end(m_messages),
-		std::begin(sortedMessages.m_messages), std::end(sortedMessages.m_messages),
-		std::back_inserter(result), SortedMessages::precedes);
-	result.erase(std::unique(std::begin(result), std::end(result), sameMessage), std::end(result));
-
-	m_messages = std::move(result);
+	m_messages.add(sortedMessages.messages());
 }
 
-const std::vector<Message> & SortedMessages::messages() const
+const sorted_vector<Message, SortedMessages::precedes, SortedMessages::same> & SortedMessages::messages() const
 {
 	return m_messages;
 }
@@ -63,7 +90,7 @@ Message SortedMessages::last() const
 {
 	return m_messages.empty()
 			? Message::null
-			: m_messages.back();
+			: m_messages.content().back();
 }
 
 bool SortedMessages::empty() const
@@ -81,23 +108,12 @@ void SortedMessages::clear()
 	m_messages.clear();
 }
 
-bool SortedMessages::precedes(const Message &left, const Message &right)
-{
-	if (left == right)
-		return false;
-
-	if (left.sendDate().toTime_t() < right.sendDate().toTime_t())
-		return true;
-
-	return false;
-}
-
 std::vector<Message>::const_iterator begin(const SortedMessages &sortedMessages)
 {
-	return std::begin(sortedMessages.messages());
+	return begin(sortedMessages.messages());
 }
 
 std::vector<Message>::const_iterator end(const SortedMessages &sortedMessages)
 {
-	return std::end(sortedMessages.messages());
+	return end(sortedMessages.messages());
 }

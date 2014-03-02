@@ -20,30 +20,32 @@
 #pragma once
 
 #include "message/message.h"
+#include "misc/sorted_vector.h"
 #include "exports.h"
 
 class KADUAPI SortedMessages
 {
 
 public:
+	static bool precedes(const Message &left, const Message &right);
+	static bool same(const Message &left, const Message &right);
+
 	SortedMessages();
 	explicit SortedMessages(std::vector<Message> messages);
 
 	void add(Message message);
 	void add(const SortedMessages &sortedMessages);
 
-	const std::vector<Message> & messages() const;
+	const sorted_vector<Message, SortedMessages::precedes, SortedMessages::same> & messages() const;
 	Message last() const;
 
 	bool empty() const;
-	std::vector<Message>::size_type size() const;
+	sorted_vector<Message, SortedMessages::precedes, SortedMessages::same>::size_type size() const;
 
 	void clear();
 
 private:
-	std::vector<Message> m_messages;
-
-	static bool precedes(const Message &left, const Message &right);
+	sorted_vector<Message, SortedMessages::precedes, SortedMessages::same> m_messages;
 
 };
 

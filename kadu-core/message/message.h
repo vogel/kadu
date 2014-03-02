@@ -66,8 +66,6 @@ public:
 
 };
 
-bool sameMessage(const Message &left, const Message &right);
-
 Q_DECLARE_METATYPE(Message)
 
 #endif // MESSAGE_H
