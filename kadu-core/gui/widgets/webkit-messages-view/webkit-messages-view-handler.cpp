@@ -85,7 +85,7 @@ void WebkitMessagesViewHandler::add(const SortedMessages &messages)
 	if (messages.empty())
 		return;
 
-	m_messages.add(messages);
+	m_messages.merge(messages);
 	m_messages = limitMessages(m_messages);
 	if (m_chatStyleRenderer->isReady())
 		m_messagesDisplay->displayMessages(m_messages);

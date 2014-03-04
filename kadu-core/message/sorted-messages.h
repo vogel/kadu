@@ -34,7 +34,7 @@ public:
 	explicit SortedMessages(std::vector<Message> messages);
 
 	void add(Message message);
-	void add(const SortedMessages &sortedMessages);
+	void merge(const SortedMessages &sortedMessages);
 
 	const sorted_unique_vector<Message, SortedMessages::precedes, SortedMessages::same> & messages() const;
 	Message last() const;

@@ -49,13 +49,13 @@ private slots:
 	void addMiddle();
 	void addLargest();
 	void addGreaterThanLargest();
-	void addCopy();
-	void addListOfLessUnique();
-	void addListOfLessAndEqual();
-	void addListOfMisc();
-	void addListOfMiscUnique();
-	void addListOfGraterAndEqual();
-	void addListOfGraterUnique();
+	void mergeCopy();
+	void mergeListOfLessUnique();
+	void mergeListOfLessAndEqual();
+	void mergeListOfMisc();
+	void mergeListOfMiscUnique();
+	void mergeListOfGraterAndEqual();
+	void mergeListOfGraterUnique();
 
 };
 
@@ -167,76 +167,76 @@ void tst_SortedUniqueVector::addGreaterThanLargest()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5, 6}));
 }
 
-void tst_SortedUniqueVector::addCopy()
+void tst_SortedUniqueVector::mergeCopy()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
-	data.add(data);
+	data.merge(data);
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 4ul);
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
 }
 
-void tst_SortedUniqueVector::addListOfLessUnique()
+void tst_SortedUniqueVector::mergeListOfLessUnique()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{0, -1, -2}};
-	data.add(dataToAdd);
+	data.merge(dataToAdd);
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 7ul);
 	QCOMPARE(data.content(), (std::vector<int>{-2, -1, 0, 1, 2, 4, 5}));
 }
 
-void tst_SortedUniqueVector::addListOfLessAndEqual()
+void tst_SortedUniqueVector::mergeListOfLessAndEqual()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{1, 0, -1, -2}};
-	data.add(dataToAdd);
+	data.merge(dataToAdd);
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 7ul);
 	QCOMPARE(data.content(), (std::vector<int>{-2, -1, 0, 1, 2, 4, 5}));
 }
 
-void tst_SortedUniqueVector::addListOfMisc()
+void tst_SortedUniqueVector::mergeListOfMisc()
 {
 	auto data = Vector{std::vector<int>{0, 5, 10, 1, 3, 2}};
 	auto dataToAdd = Vector{std::vector<int>{-1, 17, 2, 3, 4, 5}};
-	data.add(dataToAdd);
+	data.merge(dataToAdd);
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 9ul);
 	QCOMPARE(data.content(), (std::vector<int>{-1, 0, 1, 2, 3, 4, 5, 10, 17}));
 }
 
-void tst_SortedUniqueVector::addListOfMiscUnique()
+void tst_SortedUniqueVector::mergeListOfMiscUnique()
 {
 	auto data = Vector{std::vector<int>{0, 5, 10, 1, 3, 2}};
 	auto dataToAdd = Vector{std::vector<int>{-1, 17, 4}};
-	data.add(dataToAdd);
+	data.merge(dataToAdd);
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 9ul);
 	QCOMPARE(data.content(), (std::vector<int>{-1, 0, 1, 2, 3, 4, 5, 10, 17}));
 }
 
-void tst_SortedUniqueVector::addListOfGraterAndEqual()
+void tst_SortedUniqueVector::mergeListOfGraterAndEqual()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{7, 8, 6}};
-	data.add(dataToAdd);
+	data.merge(dataToAdd);
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 7ul);
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5, 6, 7, 8}));
 }
 
-void tst_SortedUniqueVector::addListOfGraterUnique()
+void tst_SortedUniqueVector::mergeListOfGraterUnique()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
 	auto dataToAdd = Vector{std::vector<int>{7, 5, 6}};
-	data.add(dataToAdd);
+	data.merge(dataToAdd);
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 6ul);
