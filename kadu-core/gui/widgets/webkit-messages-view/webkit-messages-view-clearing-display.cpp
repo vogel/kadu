@@ -34,15 +34,15 @@ WebkitMessagesViewClearingDisplay::~WebkitMessagesViewClearingDisplay()
 
 void WebkitMessagesViewClearingDisplay::displayMessages(SortedMessages messages)
 {
-	auto difference = sequence_difference(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
+	auto overlapping = find_overlapping_region(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
 
-	if (!m_currentMessages.empty() && begin(m_currentMessages) != difference.first)
+	if (!m_currentMessages.empty() && begin(m_currentMessages) != overlapping.first)
 	{
 		chatStyleRenderer().clearMessages();
 		displayMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::WhenRequired);
 	}
 	else
-		displayMessagesRange(difference.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::WhenRequired);
+		displayMessagesRange(overlapping.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::WhenRequired);
 
 	m_currentMessages = std::move(messages);
 }

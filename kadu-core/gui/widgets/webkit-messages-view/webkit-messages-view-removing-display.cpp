@@ -34,22 +34,22 @@ WebkitMessagesViewRemovingDisplay::~WebkitMessagesViewRemovingDisplay()
 
 void WebkitMessagesViewRemovingDisplay::displayMessages(SortedMessages messages)
 {
-	auto difference = sequence_difference(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
+	auto overlapping = find_overlapping_region(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
 	auto previousMessage = Message::null;
 
 	if (!m_currentMessages.empty())
 	{
-		if (end(m_currentMessages) == difference.first)
+		if (end(m_currentMessages) == overlapping.first)
 			chatStyleRenderer().clearMessages();
-		else if (begin(m_currentMessages) != difference.first)
+		else if (begin(m_currentMessages) != overlapping.first)
 		{
-			auto toRemove = std::distance(begin(m_currentMessages), difference.first);
+			auto toRemove = std::distance(begin(m_currentMessages), overlapping.first);
 			for (auto i = 0; i < toRemove; i++)
 				chatStyleRenderer().removeFirstMessage();
 			previousMessage = m_currentMessages.last();
 		}
 	}
 
-	displayMessagesRange(difference.second, end(messages), previousMessage, MessageRenderHeaderBehavior::Always);
+	displayMessagesRange(overlapping.second, end(messages), previousMessage, MessageRenderHeaderBehavior::Always);
 	m_currentMessages = std::move(messages);
 }

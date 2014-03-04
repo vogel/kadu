@@ -27,110 +27,110 @@ class tst_Algorithm : public QObject
 	Q_OBJECT
 
 private slots:
-	void sequenceDifferenceEmptyTest();
-	void sequenceDifferenceFirstEmptyTest();
-	void sequenceDifferenceSecondEmptyTest();
-	void sequenceDifferenceSameTest();
-	void sequenceDifferenceRemoveFirstTest();
-	void sequenceDifferenceAddOneTest();
-	void sequenceDifferenceOverlapingTest();
-	void sequenceDifferenceDifferentTest();
-	void sequenceDifferenceOverlapingDifferentTest();
+	void findOverlappingRegionEmptyTest();
+	void findOverlappingRegionFirstEmptyTest();
+	void findOverlappingRegionSecondEmptyTest();
+	void findOverlappingRegionSameTest();
+	void findOverlappingRegionRemoveFirstTest();
+	void findOverlappingRegionAddOneTest();
+	void findOverlappingRegionOverlapingTest();
+	void findOverlappingRegionDifferentTest();
+	void findOverlappingRegionOverlapingDifferentTest();
 
 };
 
-void tst_Algorithm::sequenceDifferenceEmptyTest()
+void tst_Algorithm::findOverlappingRegionEmptyTest()
 {
 	auto left = std::vector<int>{};
 	auto right = std::vector<int>{};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, begin(left));
-	QCOMPARE(difference.first, end(left));
-	QCOMPARE(difference.second, begin(right));
-	QCOMPARE(difference.second, end(right));
+	QCOMPARE(overlapping.first, begin(left));
+	QCOMPARE(overlapping.first, end(left));
+	QCOMPARE(overlapping.second, begin(right));
+	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_Algorithm::sequenceDifferenceFirstEmptyTest()
+void tst_Algorithm::findOverlappingRegionFirstEmptyTest()
 {
 	auto left = std::vector<int>{};
 	auto right = std::vector<int>{1, 2, 3};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, begin(left));
-	QCOMPARE(difference.first, end(left));
-	QCOMPARE(difference.second, begin(right));
+	QCOMPARE(overlapping.first, begin(left));
+	QCOMPARE(overlapping.first, end(left));
+	QCOMPARE(overlapping.second, begin(right));
 }
 
-void tst_Algorithm::sequenceDifferenceSecondEmptyTest()
+void tst_Algorithm::findOverlappingRegionSecondEmptyTest()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, end(left));
-	QCOMPARE(difference.second, begin(right));
-	QCOMPARE(difference.second, end(right));
+	QCOMPARE(overlapping.first, end(left));
+	QCOMPARE(overlapping.second, begin(right));
+	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_Algorithm::sequenceDifferenceSameTest()
+void tst_Algorithm::findOverlappingRegionSameTest()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{1, 2, 3};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, begin(left));
-	QCOMPARE(difference.second, end(right));
+	QCOMPARE(overlapping.first, begin(left));
+	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_Algorithm::sequenceDifferenceRemoveFirstTest()
+void tst_Algorithm::findOverlappingRegionRemoveFirstTest()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{2, 3};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, begin(left) + 1);
-	QCOMPARE(difference.second, end(right));
+	QCOMPARE(overlapping.first, begin(left) + 1);
+	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_Algorithm::sequenceDifferenceAddOneTest()
+void tst_Algorithm::findOverlappingRegionAddOneTest()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{1, 2, 3, 4};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, begin(left));
-	QCOMPARE(difference.second, end(right) - 1);
+	QCOMPARE(overlapping.first, begin(left));
+	QCOMPARE(overlapping.second, end(right) - 1);
 }
 
-void tst_Algorithm::sequenceDifferenceOverlapingTest()
+void tst_Algorithm::findOverlappingRegionOverlapingTest()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{2, 3, 4};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, begin(left) + 1);
-	QCOMPARE(difference.second, end(right) - 1);
+	QCOMPARE(overlapping.first, begin(left) + 1);
+	QCOMPARE(overlapping.second, end(right) - 1);
 }
 
-void tst_Algorithm::sequenceDifferenceDifferentTest()
+void tst_Algorithm::findOverlappingRegionDifferentTest()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{4, 5, 6};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, end(left));
-	QCOMPARE(difference.second, begin(right));
+	QCOMPARE(overlapping.first, end(left));
+	QCOMPARE(overlapping.second, begin(right));
 }
 
-void tst_Algorithm::sequenceDifferenceOverlapingDifferentTest()
+void tst_Algorithm::findOverlappingRegionOverlapingDifferentTest()
 {
 	auto left = std::vector<int>{1, 2, 3, 5, 6, 7};
 	auto right = std::vector<int>{1, 2, 3, 4, 6, 7};
-	auto difference = sequence_difference(begin(left), end(left), begin(right), end(right));
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
 
-	QCOMPARE(difference.first, end(left));
-	QCOMPARE(difference.second, begin(right));
+	QCOMPARE(overlapping.first, end(left));
+	QCOMPARE(overlapping.second, begin(right));
 }
 
 QTEST_APPLESS_MAIN(tst_Algorithm)

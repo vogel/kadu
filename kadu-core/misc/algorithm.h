@@ -22,18 +22,41 @@
 #include <algorithm>
 #include <map>
 
+/**
+ * @addtogroup Algorithm
+ * @{
+ */
+
+/**
+ * @param c container to search
+ * @param v value to look for
+ * @return true if value v can be found in cointainer c
+ */
 template<typename C, typename T>
 bool contains(const C &c, const T &v)
 {
 	return std::find(c.begin(), c.end(), v) != c.end();
 }
 
+/**
+ * @param m map to search
+ * @param k key to look for
+ * @return true if key k can be found in map m
+ */
 template<typename K, typename V>
-bool contains(const std::map<K, V> &c, const K &k)
+bool contains(const std::map<K, V> &m, const K &k)
 {
-	return c.find(k) != c.end();
+	return m.find(k) != m.end();
 }
 
+/**
+ * @param c container to search
+ * @param v1 first value
+ * @param v2 second value
+ * @return true if value v1 precedes v2 inin cointainer c
+ *
+ * If v1 or v2 can not be found in container c, the result is undefined.
+ */
 template<typename C, typename T>
 bool precedes(const C &c, const T &v1, const T &v2)
 {
@@ -43,8 +66,22 @@ bool precedes(const C &c, const T &v1, const T &v2)
 	return it1 < it2;
 }
 
+/**
+ * @short Finds overlaping region of sequences.
+ * @param first1 begin of first sequence
+ * @param last1 end of first sequence
+ * @param first2 begin of second sequence
+ * @param last2 end of second sequence
+ * @return Iterators covering overlaping region.
+ *
+ * Two sequences A and B overlaps when there exists such s for each k=0..s-1
+ * A[end(A)-s+k] = B[k]. This functions returns pair such as its first element points
+ * to A[end(A)-s] and second one points to B[k+1].
+ *
+ * In case there is no overlap {end(A), begin(B)} is returned
+ */
 template <typename ForwardIterator1, typename ForwardIterator2>
-std::pair<ForwardIterator1, ForwardIterator2> sequence_difference(ForwardIterator1 first1, ForwardIterator1 last1,
+std::pair<ForwardIterator1, ForwardIterator2> find_overlapping_region(ForwardIterator1 first1, ForwardIterator1 last1,
 		ForwardIterator2 first2, ForwardIterator2 last2)
 {
 	if (first1 == last1 || first2 == last2)
@@ -65,3 +102,7 @@ std::pair<ForwardIterator1, ForwardIterator2> sequence_difference(ForwardIterato
 	else
 		return std::make_pair(last1, first2);
 }
+
+/**
+ * @}
+ **/
