@@ -22,7 +22,7 @@
 #include "chat/chat.h"
 #include "formatted-string/formatted-string.h"
 
-bool SortedMessages::precedes(const Message &left, const Message &right)
+bool SortedMessages::earlier(const Message &left, const Message &right)
 {
 	if (left == right)
 		return false;
@@ -81,9 +81,9 @@ void SortedMessages::merge(const SortedMessages &sortedMessages)
 	m_messages.merge(sortedMessages.messages());
 }
 
-const sorted_unique_vector<Message, SortedMessages::precedes, SortedMessages::same> & SortedMessages::messages() const
+const std::vector<Message> & SortedMessages::messages() const
 {
-	return m_messages;
+	return m_messages.content();
 }
 
 Message SortedMessages::last() const
@@ -98,7 +98,7 @@ bool SortedMessages::empty() const
 	return m_messages.empty();
 }
 
-std::size_t SortedMessages::size() const
+std::vector<Message>::size_type SortedMessages::size() const
 {
 	return m_messages.size();
 }

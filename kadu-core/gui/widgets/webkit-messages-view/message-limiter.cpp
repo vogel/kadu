@@ -42,7 +42,7 @@ SortedMessages MessageLimiter::limitMessages(SortedMessages sortedMessages) cons
 	if (m_limit == 0 || MessageLimitPolicy::None == m_messageLimitPolicy || sortedMessages.size() <= m_limit)
 		return sortedMessages;
 
-	auto messages = decltype(sortedMessages.messages().content()){};
+	auto messages = decltype(sortedMessages.messages()){};
 	std::copy(end(sortedMessages) - m_limit, end(sortedMessages), std::back_inserter(messages));
 	return SortedMessages{messages};
 }
