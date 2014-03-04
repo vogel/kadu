@@ -40,8 +40,10 @@ class tst_SortedUniqueVector : public QObject
 private slots:
 	void emptyTest();
 	void clearTest();
-	void conversionFromUnsortedTest();
-	void conversionFromSortedTest();
+	void conversionFromUniqueUnsortedTest();
+	void conversionFromNonUniqueUnsortedTest();
+	void conversionFromUniqueSortedTest();
+	void conversionFromNonUniqueSortedTest();
 	void addLessThanSmallest();
 	void addSmallest();
 	void addMiddle();
@@ -79,7 +81,7 @@ void tst_SortedUniqueVector::clearTest()
 	QCOMPARE(data.size(), 0ul);
 }
 
-void tst_SortedUniqueVector::conversionFromUnsortedTest()
+void tst_SortedUniqueVector::conversionFromUniqueUnsortedTest()
 {
 	auto data = Vector{std::vector<int>{1, 4, 5, 2}};
 
@@ -88,9 +90,27 @@ void tst_SortedUniqueVector::conversionFromUnsortedTest()
 	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
 }
 
-void tst_SortedUniqueVector::conversionFromSortedTest()
+void tst_SortedUniqueVector::conversionFromNonUniqueUnsortedTest()
+{
+	auto data = Vector{std::vector<int>{1, 4, 5, 2, 1, 4, 5, 2}};
+
+	QVERIFY(!data.empty());
+	QCOMPARE(data.size(), 4ul);
+	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
+}
+
+void tst_SortedUniqueVector::conversionFromUniqueSortedTest()
 {
 	auto data = Vector{std::vector<int>{1, 2, 4, 5}};
+
+	QVERIFY(!data.empty());
+	QCOMPARE(data.size(), 4ul);
+	QCOMPARE(data.content(), (std::vector<int>{1, 2, 4, 5}));
+}
+
+void tst_SortedUniqueVector::conversionFromNonUniqueSortedTest()
+{
+	auto data = Vector{std::vector<int>{1, 1, 2, 2, 4, 4, 5, 5}};
 
 	QVERIFY(!data.empty());
 	QCOMPARE(data.size(), 4ul);

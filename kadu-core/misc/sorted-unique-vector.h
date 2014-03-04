@@ -25,6 +25,18 @@
 #include <functional>
 #include <vector>
 
+/**
+ * @addtogroup Misc
+ * @{
+ */
+
+/**
+ * @class sorted_unique_vector
+ * @short Vector that stored only unique values thata are always sorted.
+ * @param T type of data
+ * @param LessThanComparator comparator used for sorting
+ * @param EqualityComparator comparator used for uniqueness testing
+ */
 template<typename T, bool (*LessThanComparator)(const T &, const T &), bool (*EqualityComparator)(const T &, const T &)>
 class KADUAPI sorted_unique_vector
 {
@@ -34,13 +46,32 @@ public:
 	using Storage = std::vector<T>;
 	using size_type = typename Storage::size_type;
 
+	/**
+	 * @short Create empty sorted_unique_vector.
+	 */
 	sorted_unique_vector() {}
-	sorted_unique_vector(Storage content) :
-			m_content{std::move(content)}
+
+	/**
+	 * @short Create sorted_unique_vector from given vector.
+	 * @param storage vector to get data from
+	 *
+	 * Copies content of storage, sorts it and removes duplicates.
+	 */
+	sorted_unique_vector(Storage storage) :
+			m_content{std::move(storage)}
 	{
 		std::stable_sort(std::begin(m_content), std::end(m_content), LessThanComparator);
+		ensureUnique(m_content);
 	}
 
+	/**
+	 * @short Add new item to sorted vector.
+	 * @param item new item
+	 *
+	 * Item is added at proper place so vector remains sorted. Item will not be
+	 * added if another one that compares equal (using EqualityComparator)
+	 * already exists.
+	 */
 	void add(T item)
 	{
 		if (m_content.empty())
@@ -54,33 +85,51 @@ public:
 			m_content.emplace(upperBound, std::move(item));
 	}
 
-	void add(const This &sortedVector)
+	/**
+	 * @short Merge with another sorted vector.
+	 * @param sortedVector vector to merge with
+	 *
+	 * All items from sortedVector are added at proper places and duplicates are removed.
+	 */
+	void merge(const This &sortedVector)
 	{
 		auto result = Storage{};
 
 		std::merge(std::begin(m_content), std::end(m_content),
 			std::begin(sortedVector.m_content), std::end(sortedVector.m_content),
 			std::back_inserter(result), LessThanComparator);
-		result.erase(std::unique(std::begin(result), std::end(result), EqualityComparator), std::end(result));
+		ensureUnique(result);
 
 		m_content = std::move(result);
 	}
 
+	/**
+	 * @return Data stored in sorted vector.
+	 */
 	const Storage & content() const
 	{
 		return m_content;
 	}
 
+	/**
+	 * @return true if no data is stored
+	 */
 	bool empty() const
 	{
 		return m_content.empty();
 	}
 
+	/**
+	 * @return number of stored items
+	 */
 	typename Storage::size_type size() const
 	{
 		return m_content.size();
 	}
 
+	/**
+	 * @short Removes all items from sorted vector.
+	 */
 	void clear()
 	{
 		m_content.clear();
@@ -88,6 +137,11 @@ public:
 
 private:
 	Storage m_content;
+
+	void ensureUnique(Storage &storage)
+	{
+		storage.erase(std::unique(std::begin(storage), std::end(storage), EqualityComparator), std::end(storage));
+	}
 
 };
 
@@ -102,3 +156,7 @@ KADUAPI typename sorted_unique_vector<T, LessThanComparator, EqualityComparator>
 {
 	return std::end(sortedVector.content());
 }
+
+/**
+ * @}
+ */
