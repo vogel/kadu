@@ -23,6 +23,18 @@
 
 class QWebFrame;
 
+/**
+ * @addtogroup ChatStyle
+ * @{
+ */
+
+/**
+ * @class ChatStyleRendererConfiguration
+ * @short Configuration for @see ChatStyleRenderer.
+ *
+ * This class contains all data required to properlt set up ChatStyleRenderer. It is: chat, web frame used
+ * to display chat messages, default javascript code and transparency setting.
+ */
 class ChatStyleRendererConfiguration
 {
 
@@ -44,3 +56,7 @@ private:
 
 bool operator == (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);
 bool operator != (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);
+
+/**
+ * @}
+ */

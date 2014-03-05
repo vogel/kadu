@@ -21,14 +21,39 @@
 
 #include <QtCore/QString>
 
+/**
+ * @addtogroup ChatStyle
+ * @{
+ */
+
+/**
+ * @class ChatStyle
+ * @short Chat style definition.
+ *
+ * This class contains only two fields - name of style and its variant.
+ */
 class ChatStyle
 {
 
 public:
+	/**
+	 * @short Create new empty ChatStyle.
+	 */
 	ChatStyle();
+
+	/**
+	 * @short Create ChatStyle with given name and variant.
+	 */
 	ChatStyle(QString name, QString variant);
 
+	/**
+	 * @return name of style
+	 */
 	QString name() const;
+
+	/**
+	 * @return variant of style
+	 */
 	QString variant() const;
 
 private:
@@ -43,3 +68,7 @@ bool operator < (const ChatStyle &left, const ChatStyle &right);
 bool operator <= (const ChatStyle &left, const ChatStyle &right);
 bool operator > (const ChatStyle &left, const ChatStyle &right);
 bool operator >= (const ChatStyle &left, const ChatStyle &right);
+
+/**
+ * @}
+ */

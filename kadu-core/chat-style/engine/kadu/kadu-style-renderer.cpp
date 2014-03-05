@@ -88,17 +88,17 @@ void KaduStyleRenderer::appendChatMessage(const Message &message, const MessageR
 	configuration().webFrame().evaluateJavaScript("kadu_appendMessage('" + html + "')");
 }
 
-void KaduStyleRenderer::messageStatusChanged(const QString &id, MessageStatus status)
+void KaduStyleRenderer::displayMessageStatus(const QString &id, MessageStatus status)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
-void KaduStyleRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
+void KaduStyleRenderer::displayChatState(ChatStateService::State state, const QString &message, const QString &name)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
 }
 
-void KaduStyleRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
+void KaduStyleRenderer::displayChatImage(const ChatImage &chatImage, const QString &fileName)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
 }

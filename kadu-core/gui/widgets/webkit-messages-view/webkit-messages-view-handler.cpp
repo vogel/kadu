@@ -101,13 +101,13 @@ void WebkitMessagesViewHandler::clear()
 void WebkitMessagesViewHandler::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
 {
 	if (m_chatStyleRenderer->isReady())
-		m_chatStyleRenderer->chatImageAvailable(chatImage, fileName);
+		m_chatStyleRenderer->displayChatImage(chatImage, fileName);
 }
 
 void WebkitMessagesViewHandler::messageStatusChanged(const QString &id, MessageStatus status)
 {
 	if (m_chatStyleRenderer->isReady())
-		m_chatStyleRenderer->messageStatusChanged(id, status);
+		m_chatStyleRenderer->displayMessageStatus(id, status);
 }
 
 void WebkitMessagesViewHandler::contactActivityChanged(const Contact &contact, ChatStateService::State state)
@@ -137,7 +137,7 @@ void WebkitMessagesViewHandler::contactActivityChanged(const Contact &contact, C
 			message = tr("%1 has paused composing").arg(display);
 			break;
 	}
-	m_chatStyleRenderer->contactActivityChanged(state, message, display);
+	m_chatStyleRenderer->displayChatState(state, message, display);
 }
 
 #include "moc_webkit-messages-view-handler.cpp"

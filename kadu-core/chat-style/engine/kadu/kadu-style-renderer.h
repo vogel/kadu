@@ -34,9 +34,9 @@ public:
 	virtual void clearMessages() override;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
 	virtual void removeFirstMessage() override;
-	virtual void messageStatusChanged(const QString &id, MessageStatus) override;
-	virtual void contactActivityChanged(ChatStateService::State, const QString &, const QString &) override;
-	virtual void chatImageAvailable(const ChatImage &chatImage, const QString &fileName) override;
+	virtual void displayMessageStatus(const QString &id, MessageStatus) override;
+	virtual void displayChatState(ChatStateService::State, const QString &, const QString &) override;
+	virtual void displayChatImage(const ChatImage &chatImage, const QString &fileName) override;
 
 private:
 	std::shared_ptr<KaduChatSyntax> m_style;

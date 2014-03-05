@@ -318,17 +318,17 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 	return result;
 }
 
-void AdiumStyleRenderer::messageStatusChanged(const QString &id, MessageStatus status)
+void AdiumStyleRenderer::displayMessageStatus(const QString &id, MessageStatus status)
 {
 	configuration().webFrame().evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
-void AdiumStyleRenderer::contactActivityChanged(ChatStateService::State state, const QString &message, const QString &name)
+void AdiumStyleRenderer::displayChatState(ChatStateService::State state, const QString &message, const QString &name)
 {
 	configuration().webFrame().evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
 }
 
-void AdiumStyleRenderer::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
+void AdiumStyleRenderer::displayChatImage(const ChatImage &chatImage, const QString &fileName)
 {
 	configuration().webFrame().evaluateJavaScript(QString("adiuconfiguration().chat()ImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
 }
