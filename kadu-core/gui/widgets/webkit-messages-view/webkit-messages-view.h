@@ -104,6 +104,7 @@ private:
 
 	void connectChat();
 	void disconnectChat();
+	void setWebkitMessagesViewHandler(qobject_ptr<WebkitMessagesViewHandler> handler);
 
 private slots:
 	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);

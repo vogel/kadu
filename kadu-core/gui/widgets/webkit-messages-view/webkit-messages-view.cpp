@@ -203,9 +203,6 @@ void WebkitMessagesView::refreshView()
 	if (!m_chatStyleRendererFactory || !m_webkitMessagesViewHandlerFactory)
 		return;
 
-	ScopedUpdatesDisabler updatesDisabler{*this};
-	auto scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
-
 	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
@@ -214,10 +211,18 @@ void WebkitMessagesView::refreshView()
 	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 	auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration));
 
+	setWebkitMessagesViewHandler(m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(std::move(chatStyleRenderer), page()->mainFrame()));
+}
+
+void WebkitMessagesView::setWebkitMessagesViewHandler(qobject_ptr<WebkitMessagesViewHandler> handler)
+{
+	ScopedUpdatesDisabler updatesDisabler{*this};
+	auto scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
+
 	auto messages = m_handler
 			? m_handler->messages()
 			: SortedMessages{};
-	m_handler = m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(std::move(chatStyleRenderer), page()->mainFrame());
+	m_handler = std::move(handler);
 	setForcePruneDisabled(m_forcePruneDisabled);
 	m_handler->add(messages);
 
