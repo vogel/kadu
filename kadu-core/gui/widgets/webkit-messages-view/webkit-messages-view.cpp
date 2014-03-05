@@ -203,15 +203,19 @@ void WebkitMessagesView::refreshView()
 	if (!m_chatStyleRendererFactory || !m_webkitMessagesViewHandlerFactory)
 		return;
 
+	auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(rendererConfiguration());
+	auto handler = m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(std::move(chatStyleRenderer), page()->mainFrame());
+	setWebkitMessagesViewHandler(std::move(handler));
+}
+
+ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
+{
 	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
-	auto configuration = ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
-	auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(std::move(configuration));
-
-	setWebkitMessagesViewHandler(m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(std::move(chatStyleRenderer), page()->mainFrame()));
+	return ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 }
 
 void WebkitMessagesView::setWebkitMessagesViewHandler(qobject_ptr<WebkitMessagesViewHandler> handler)

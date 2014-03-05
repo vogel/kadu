@@ -35,6 +35,7 @@
 
 class ChatImage;
 class ChatImageRequestService;
+class ChatStyleRendererConfiguration;
 class ChatStyleRendererFactory;
 class Message;
 class WebkitMessagesViewHandler;
@@ -104,6 +105,8 @@ private:
 
 	void connectChat();
 	void disconnectChat();
+
+	ChatStyleRendererConfiguration rendererConfiguration();
 	void setWebkitMessagesViewHandler(qobject_ptr<WebkitMessagesViewHandler> handler);
 
 private slots:
