@@ -24,16 +24,45 @@
 #include "message/sorted-messages.h"
 #include "exports.h"
 
+/**
+ * @addtogroup WebkitMessagesView
+ * @{
+ */
+
+/**
+ * @class WebkitMessagesViewClearingDisplay
+ * @short Implementation of @see WebkitMessagesViewDisplay that clears view every time a message is removed.
+ *
+ * This implementation of @see WebkitMessagesViewDisplay clears view every time a message is removed
+ * (even if from begining of list). This must be done when messages headers are configured to appear
+ * only when neccessary as there is no way in styles to recreate header of message that didn't have one.
+ */
 class KADUAPI WebkitMessagesViewClearingDisplay : public WebkitMessagesViewDisplay
 {
 
 public:
+	/**
+	 * @short Create new WebkitMessagesViewClearingDisplay operating on provided @see ChatStyleRenderer.
+	 * @param chatStyleRenderer Renderer used to display messages.
+	 */
 	explicit WebkitMessagesViewClearingDisplay(ChatStyleRenderer &chatStyleRenderer);
 	virtual ~WebkitMessagesViewClearingDisplay();
 
+	/**
+	 * @short Display new list of messages.
+	 * @param messages New list of messages to display.
+	 *
+	 * If new list contains the same set of messages that previous one with some additional
+	 * ones at the end, new messages are appended to view. In other case, view is cleared,
+	 * and all messages are displayed again.
+	 */
 	virtual void displayMessages(SortedMessages messages) override;
 
 private:
 	SortedMessages m_currentMessages;
 
 };
+
+/**
+ * @}
+ */

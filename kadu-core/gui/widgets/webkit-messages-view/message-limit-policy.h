@@ -19,8 +19,27 @@
 
 #pragma once
 
+/**
+ * @addtogroup WebkitMessagesView
+ * @{
+ */
+
+/**
+ * @enum MessageLimitPolicy
+ * @short Policy of limiting messages in view.
+ */
 enum class MessageLimitPolicy
 {
+	/**
+	 * @short Messages will not be limited.
+	 */
 	None,
+	/**
+	 * @short Number of messages will be limited at provided value.
+	 */
 	Value
 };
+
+/**
+ * @}
+ */

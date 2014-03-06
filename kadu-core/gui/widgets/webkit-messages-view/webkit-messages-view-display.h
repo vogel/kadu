@@ -29,22 +29,65 @@ class MessageRenderInfoFactory;
 
 enum class MessageRenderHeaderBehavior;
 
+/**
+ * @addtogroup WebkitMessagesView
+ * @{
+ */
+
+/**
+ * @class WebkitMessagesViewDisplay
+ * @short Class for displaying list of messages using @see ChatStyleRenderer.
+ * @todo Make constructor parametr std::unique_ptr.
+ *
+ * This class assumes that it is the only object that operates on messages in
+ * @see ChatStyleRenderer. Thanks to that it can optimize updating messages
+ * by not refreshing whole view when not neccessary - new messages can be appended
+ * and deleted from begining of the list can be removed one by one.
+ *
+ * This class is abstract - @see displayMessages(SortedMessages) must be reimplemented
+ * by inheriting classes.
+ */
 class KADUAPI WebkitMessagesViewDisplay
 {
 
 public:
+	/**
+	 * @short Create new WebkitMessagesViewDisplay operating on provided @see ChatStyleRenderer.
+	 * @param chatStyleRenderer Renderer used to display messages.
+	 */
 	explicit WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
 	virtual ~WebkitMessagesViewDisplay();
 
+	/**
+	 * @short Set instance of @see MessageRenderInfoFactory service.
+	 * @param messageRenderInfoFactory Instance of @see MessageRenderInfoFactory service.
+	 *
+	 * MessageRenderInfoFactory service is used to get information about how message
+	 * should be rendered after previous one (with/without header, which fonts to use).
+	 */
 	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 
+	/**
+	 * @short Display new list of messages.
+	 * @param messages New list of messages to display.
+	 */
 	virtual void displayMessages(SortedMessages messages) = 0;
 
 protected:
+	/**
+	 * @return Renderer used to display messages.
+	 */
 	ChatStyleRenderer & chatStyleRenderer() const;
 
 	using I = decltype(begin(std::declval<SortedMessages>()));
-	void displayMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const;
+	/**
+	 * @short Appends range of messages to current renderer.
+	 * @param from Iterator to first message in range.
+	 * @param to Iterator to one-past-last message in range.
+	 * @param previousMessage Message that is displayed just before *from one (or null message).
+	 * @param headerBehavior Flag that alters when messages are displayed with headers and when not.
+	 */
+	void appendMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const;
 
 private:
 	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
@@ -52,3 +95,7 @@ private:
 	ChatStyleRenderer &m_chatStyleRenderer;
 
 };
+
+/**
+ * @}
+ */

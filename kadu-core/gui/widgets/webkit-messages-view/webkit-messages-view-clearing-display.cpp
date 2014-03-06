@@ -39,10 +39,10 @@ void WebkitMessagesViewClearingDisplay::displayMessages(SortedMessages messages)
 	if (!m_currentMessages.empty() && begin(m_currentMessages) != overlapping.first)
 	{
 		chatStyleRenderer().clearMessages();
-		displayMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::WhenRequired);
+		appendMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::WhenRequired);
 	}
 	else
-		displayMessagesRange(overlapping.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::WhenRequired);
+		appendMessagesRange(overlapping.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::WhenRequired);
 
 	m_currentMessages = std::move(messages);
 }

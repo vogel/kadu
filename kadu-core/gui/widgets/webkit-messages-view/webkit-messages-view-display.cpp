@@ -42,7 +42,7 @@ ChatStyleRenderer & WebkitMessagesViewDisplay::chatStyleRenderer() const
 	return m_chatStyleRenderer;
 }
 
-void WebkitMessagesViewDisplay::displayMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const
+void WebkitMessagesViewDisplay::appendMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const
 {
 	for (auto it = from; it != to; ++it)
 	{

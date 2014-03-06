@@ -50,6 +50,6 @@ void WebkitMessagesViewRemovingDisplay::displayMessages(SortedMessages messages)
 		}
 	}
 
-	displayMessagesRange(overlapping.second, end(messages), previousMessage, MessageRenderHeaderBehavior::Always);
+	appendMessagesRange(overlapping.second, end(messages), previousMessage, MessageRenderHeaderBehavior::Always);
 	m_currentMessages = std::move(messages);
 }
