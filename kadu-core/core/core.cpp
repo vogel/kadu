@@ -774,6 +774,7 @@ void Core::runServices()
 	ChatStyleManager::instance()->setConfiguredChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
 
 	CurrentWebkitMessagesViewDisplayFactory = make_qobject<WebkitMessagesViewDisplayFactory>(this);
+	CurrentWebkitMessagesViewDisplayFactory->setChatStyleManager(ChatStyleManager::instance());
 	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(CurrentMessageRenderInfoFactory);
 
 	CurrentWebkitMessagesViewHandlerFactory = make_qobject<WebkitMessagesViewHandlerFactory>(this);

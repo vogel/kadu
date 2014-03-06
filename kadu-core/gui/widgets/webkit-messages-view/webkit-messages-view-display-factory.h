@@ -25,6 +25,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
+class ChatStyleManager;
 class ChatStyleRenderer;
 class MessageRenderInfoFactory;
 class WebkitMessagesViewDisplay;
@@ -37,11 +38,13 @@ public:
 	explicit WebkitMessagesViewDisplayFactory(QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewDisplayFactory();
 
+	void setChatStyleManager(ChatStyleManager *chatStyleManager);
 	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 
 	std::unique_ptr<WebkitMessagesViewDisplay> createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
 
 private:
+	QPointer<ChatStyleManager> m_chatStyleManager;
 	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
 
 };

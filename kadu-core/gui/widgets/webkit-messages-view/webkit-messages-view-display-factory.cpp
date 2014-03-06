@@ -34,6 +34,11 @@ WebkitMessagesViewDisplayFactory::~WebkitMessagesViewDisplayFactory()
 {
 }
 
+void WebkitMessagesViewDisplayFactory::setChatStyleManager(ChatStyleManager *chatStyleManager)
+{
+	m_chatStyleManager = chatStyleManager;
+}
+
 void WebkitMessagesViewDisplayFactory::setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory)
 {
 	m_messageRenderInfoFactory = messageRenderInfoFactory;
@@ -41,7 +46,7 @@ void WebkitMessagesViewDisplayFactory::setMessageRenderInfoFactory(MessageRender
 
 std::unique_ptr<WebkitMessagesViewDisplay> WebkitMessagesViewDisplayFactory::createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer)
 {
-	if (ChatStyleManager::instance()->cfgNoHeaderRepeat())
+	if (m_chatStyleManager && m_chatStyleManager->cfgNoHeaderRepeat())
 	{
 		auto result = make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
 		result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
