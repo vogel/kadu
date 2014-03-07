@@ -191,7 +191,8 @@ void GaduImporter::importAccounts()
 			defaultGaduGadu.setProxy(networkProxy);
 	}
 
-	accountDetails->import_0_6_5_LastStatus();
+	if (accountDetails)
+		accountDetails->import_0_6_5_LastStatus();
 
 	AccountManager::instance()->addItem(defaultGaduGadu);
 	defaultGaduGadu.accountContact().setOwnerBuddy(Core::instance()->myself());
