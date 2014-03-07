@@ -247,7 +247,7 @@ void WebkitMessagesView::pageDown()
 
 void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QString &fullFilePath)
 {
-	m_handler->chatImageAvailable(chatImage, fullFilePath);
+	m_handler->displayChatImage(chatImage, fullFilePath);
 }
 
 void WebkitMessagesView::add(const Message &message)
@@ -290,12 +290,12 @@ void WebkitMessagesView::sentMessageStatusChanged(const Message &message)
 {
 	if (m_chat != message.messageChat())
 		return;
-	m_handler->messageStatusChanged(message.id(), message.status());
+	m_handler->displayMessageStatus(message.id(), message.status());
 }
 
 void WebkitMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	m_handler->contactActivityChanged(contact, state);
+	m_handler->displayChatState(contact, state);
 }
 
 void WebkitMessagesView::scrollToTop()

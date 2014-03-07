@@ -42,42 +42,27 @@ WebkitMessagesViewHandler::~WebkitMessagesViewHandler()
 void WebkitMessagesViewHandler::setMessageLimit(unsigned int limit)
 {
 	m_messagesLimiter.setLimit(limit);
-	m_messages = m_messagesLimiter.limitMessages(m_messages);
-	m_messagesDisplay->displayMessages(m_messages);
+	limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::setMessageLimitPolicy(MessageLimitPolicy messageLimitPolicy)
 {
 	m_messagesLimiter.setLimitPolicy(messageLimitPolicy);
-	m_messages = m_messagesLimiter.limitMessages(m_messages);
-	m_messagesDisplay->displayMessages(m_messages);
+	limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::rendererReady()
 {
-	m_messagesDisplay->displayMessages(m_messages);
-}
-
-SortedMessages WebkitMessagesViewHandler::limitMessages(SortedMessages messages) const
-{
-	return m_messagesLimiter.limitMessages(messages);
+	limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::add(const Message &message)
 {
-	m_messages.add(message);
-	m_messages = limitMessages(m_messages);
-	if (m_chatStyleRenderer->isReady())
-		m_messagesDisplay->displayMessages(m_messages);
-}
+	if (!message)
+		return;
 
-void WebkitMessagesViewHandler::refreshView()
-{
-	if (m_chatStyleRenderer->isReady())
-	{
-		m_messagesDisplay->displayMessages({});
-		m_messagesDisplay->displayMessages(m_messages);
-	}
+	m_messages.add(message);
+	limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::add(const SortedMessages &messages)
@@ -86,7 +71,12 @@ void WebkitMessagesViewHandler::add(const SortedMessages &messages)
 		return;
 
 	m_messages.merge(messages);
-	m_messages = limitMessages(m_messages);
+	limitAndDisplayMessages();
+}
+
+void WebkitMessagesViewHandler::limitAndDisplayMessages()
+{
+	m_messages = m_messagesLimiter.limitMessages(m_messages);
 	if (m_chatStyleRenderer->isReady())
 		m_messagesDisplay->displayMessages(m_messages);
 }
@@ -98,19 +88,13 @@ void WebkitMessagesViewHandler::clear()
 		m_messagesDisplay->displayMessages(m_messages);
 }
 
-void WebkitMessagesViewHandler::chatImageAvailable(const ChatImage &chatImage, const QString &fileName)
-{
-	if (m_chatStyleRenderer->isReady())
-		m_chatStyleRenderer->displayChatImage(chatImage, fileName);
-}
-
-void WebkitMessagesViewHandler::messageStatusChanged(const QString &id, MessageStatus status)
+void WebkitMessagesViewHandler::displayMessageStatus(const QString &id, MessageStatus status)
 {
 	if (m_chatStyleRenderer->isReady())
 		m_chatStyleRenderer->displayMessageStatus(id, status);
 }
 
-void WebkitMessagesViewHandler::contactActivityChanged(const Contact &contact, ChatStateService::State state)
+void WebkitMessagesViewHandler::displayChatState(const Contact &contact, ChatStateService::State state)
 {
 	if (!m_chatStyleRenderer->isReady())
 		return;
@@ -138,6 +122,12 @@ void WebkitMessagesViewHandler::contactActivityChanged(const Contact &contact, C
 			break;
 	}
 	m_chatStyleRenderer->displayChatState(state, message, display);
+}
+
+void WebkitMessagesViewHandler::displayChatImage(const ChatImage &chatImage, const QString &fileName)
+{
+	if (m_chatStyleRenderer->isReady())
+		m_chatStyleRenderer->displayChatImage(chatImage, fileName);
 }
 
 #include "moc_webkit-messages-view-handler.cpp"

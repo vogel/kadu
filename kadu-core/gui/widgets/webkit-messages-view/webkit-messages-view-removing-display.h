@@ -56,6 +56,8 @@ public:
 	 * ones at the end and some removed from beggigin, new messages are appended to view
 	 * and missing ones from begining are removed. In other case, view is cleared,
 	 * and all messages are displayed again.
+	 *
+	 * If new list of messages is exactly the same as old one nothing is done.
 	 */
 	virtual void displayMessages(SortedMessages messages) override;
 

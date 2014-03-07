@@ -55,6 +55,8 @@ public:
 	 * If new list contains the same set of messages that previous one with some additional
 	 * ones at the end, new messages are appended to view. In other case, view is cleared,
 	 * and all messages are displayed again.
+	 *
+	 * If new list of messages is exactly the same as old one nothing is done.
 	 */
 	virtual void displayMessages(SortedMessages messages) override;
 

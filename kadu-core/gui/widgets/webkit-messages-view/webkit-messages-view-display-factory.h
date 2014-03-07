@@ -30,17 +30,53 @@ class ChatStyleRenderer;
 class MessageRenderInfoFactory;
 class WebkitMessagesViewDisplay;
 
+/**
+ * @addtogroup WebkitMessagesView
+ * @{
+ */
+
+/**
+ * @class WebkitMessagesViewDisplayFactory
+ * @short Factory for creating instances of @see WebkitMessagesViewDisplay.
+ *
+ * This factory uses @see ChatStyleManager to select one of implementations of
+ * @see WebkitMessagesViewDisplay to create.
+ */
 class KADUAPI WebkitMessagesViewDisplayFactory : public QObject
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @short Create new instance of WebkitMessagesViewDisplayFactory.
+	 * @param parent QObject parent of service.
+	 */
 	explicit WebkitMessagesViewDisplayFactory(QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewDisplayFactory();
 
+	/**
+	 * @short Set ChatStyleManager service instance.
+	 * @param chatStyleManager ChatStyleManager service instance.
+	 *
+	 * This service is used to select one of implementations of @see WebkitMessagesViewDisplay.
+	 */
 	void setChatStyleManager(ChatStyleManager *chatStyleManager);
+
+	/**
+	 * @short Set MessageRenderInfoFactory service instance.
+	 * @param messageRenderInfoFactory MessageRenderInfoFactory service instance.
+	 *
+	 * This service is passed to created instances of @see WebkitMessagesViewDisplay.
+	 */
 	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 
+	/**
+	 * @short Create new @see WebkitMessagesViewDisplay instance for given @see ChatStyleRenderer.
+	 * @param chatStyleRenderer @see ChatStyleRenderer to create @see WebkitMessagesViewDisplay for.
+	 *
+	 * Implementation of @see WebkitMessagesViewDisplay is selected based on configuration
+	 * read from @see ChatStyleManager service.
+	 */
 	std::unique_ptr<WebkitMessagesViewDisplay> createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
 
 private:
@@ -48,3 +84,7 @@ private:
 	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
 
 };
+
+/**
+ * @}
+ */
