@@ -57,7 +57,7 @@ public:
 	/**
 	 * @short Finalize plugin root object.
 	 *
-	 * If stored @see PluginRootComponent is not done() method of this object is called.
+	 * If stored PluginRootComponent is not done() method of this object is called.
 	 */
 	~PluginRootComponentHandler() noexcept;
 

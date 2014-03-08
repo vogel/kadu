@@ -44,13 +44,13 @@ class UnreadMessageRepository;
  * @class ChatWidgetMessageHandler
  * @short Bridge between chat widgets and messages.
  *
- * This class appends messages received from @see MessageManager and appends them
- * to proper @see ChatWidget instances stored in @see ChatWidgetRepository. It can
- * also request creation of new ChatWidget by @see ChatWidgetManager and activation
- * by @see ChatWidgetActivationService if configured to do so.
+ * This class appends messages received from MessageManager and appends them
+ * to proper ChatWidget instances stored in ChatWidgetRepository. It can
+ * also request creation of new ChatWidget by ChatWidgetManager and activation
+ * by ChatWidgetActivationService if configured to do so.
  *
- * Configuration is passed as @see ChatWidgetMessageHandlerConfiguration.
- * @see ChatWidgetMessageHandlerConfigurator can be used to automatically configure
+ * Configuration is passed as ChatWidgetMessageHandlerConfiguration.
+ * ChatWidgetMessageHandlerConfigurator can be used to automatically configure
  * it based on configuration file.
  */
 class ChatWidgetMessageHandler : public QObject

@@ -46,7 +46,7 @@ public:
 	 * @param filePath path to .desc file to read data from
 	 * @throws PluginMetadataReaderException
 	 *
-	 * If file \p filePath can not be read, a @see PluginMetadataReaderException exception is thrown.
+	 * If file \p filePath can not be read, a PluginMetadataReaderException exception is thrown.
 	 */
 	PluginMetadata readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false);
 

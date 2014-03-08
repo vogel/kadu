@@ -33,7 +33,7 @@ class PluginMetadataReader;
 
 /**
  * @class PluginMetadataFinder
- * @short Finds metadata .desc files and returns @see PluginMetadata instances from them.
+ * @short Finds metadata .desc files and returns PluginMetadata instances from them.
  *
  * This class searchs directory for .desc files and reads metadata from them.
  */
@@ -55,7 +55,7 @@ public:
 	/**
 	 * @short Set PluginMetadataReader service instance.
 	 *
-	 * @see PluginMetadataReader is used to read metadata from .desc files.
+	 * PluginMetadataReader is used to read metadata from .desc files.
 	 */
 	void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 
@@ -63,7 +63,7 @@ public:
 	 * @short Read metadata files from configured directory.
 	 *
 	 * Scans configured directory for metadata files and reads. Result is a map of file name (that is also
-	 * a plugin name) to @see PluginMetadata objects read from these files.
+	 * a plugin name) to PluginMetadata objects read from these files.
 	 * If directory is not valid, empty map is returned.
 	 */
 	std::map<QString, PluginMetadata> provide() noexcept override;

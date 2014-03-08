@@ -33,7 +33,7 @@ enum class MessageLimitPolicy;
  * @class MessageLimiter
  * @short Class for limiting number of messages.
  *
- * When policy is @see MessageLimitPolicy::Value and limit is set to number greater than
+ * When policy is MessageLimitPolicy::Value and limit is set to number greater than
  * zero, this class will remove a few first messages from list to keep its size at most
  * at limit value.
  */
@@ -42,7 +42,7 @@ class KADUAPI MessageLimiter
 
 public:
 	/**
-	 * @short Create new limiter with @see MessageLimitPolicy::None policy.
+	 * @short Create new limiter with MessageLimitPolicy::None policy.
 	 */
 	MessageLimiter();
 
@@ -51,7 +51,7 @@ public:
 	 * @param limit New limit of number of messages.
 	 *
 	 * This value only matters if greater than zero and limit policy is
-	 * set to @see MessageLimitPolicy::Value.
+	 * set to MessageLimitPolicy::Value.
 	 */
 	void setLimit(unsigned limit);
 
@@ -66,7 +66,7 @@ public:
 	 * @param sortedMessages Messages to limit.
 	 * @return sortedMessages with few (or none) first messages removed.
 	 *
-	 * When policy is @see MessageLimitPolicy::Value and limit is set to number greater than
+	 * When policy is MessageLimitPolicy::Value and limit is set to number greater than
 	 * zero, this method will return sortedMessages with first few messages removed, so size
 	 * of returned value is at most at limit value.
 	 */

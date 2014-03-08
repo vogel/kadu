@@ -33,7 +33,7 @@ class ChatWidgetContainerHandler;
 
 /**
  * @class ChatWidgetContainerHandlerRepository
- * @short Repository of @see ChatWidgetContainerHandler.
+ * @short Repository of ChatWidgetContainerHandler.
  *
  * This repository holds instances of ChatWidgetContainerHandler.
  * These instances are not owned by this repository.

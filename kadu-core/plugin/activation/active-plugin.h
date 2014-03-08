@@ -36,14 +36,14 @@
  * @short Plugin that is loaded into memory and active.
  *
  * ActivePlugin loads plugin with translation in construtor and handles its root object (derived
- * from @see PluginRootComponent). Paths of translation file and plugin dynamic library are
+ * from PluginRootComponent). Paths of translation file and plugin dynamic library are
  * currently hardcoded.
  *
  * All plugin data is loaded in constructor and plugin's root object is initialized (by calling its
  * init method). When ActivePlugin is destructed plugin's root object is deinitialized (by calling its
  * done method), then dynamic library is unloaded and translations are removed from application.
  *
- * @see PluginActivationErrorException can be thrown during object construction. All loaded data
+ * PluginActivationErrorException can be thrown during object construction. All loaded data
  * is then removed from memory and root object is destroyed if neccessary.
  *
  * @note Translations must be loaded before root object is created and destroyed after its destruction.

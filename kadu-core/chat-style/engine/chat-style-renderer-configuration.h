@@ -30,7 +30,7 @@ class QWebFrame;
 
 /**
  * @class ChatStyleRendererConfiguration
- * @short Configuration for @see ChatStyleRenderer.
+ * @short Configuration for ChatStyleRenderer.
  *
  * This class contains all data required to properlt set up ChatStyleRenderer. It is: chat, web frame used
  * to display chat messages, default javascript code and transparency setting.

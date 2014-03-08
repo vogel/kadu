@@ -41,7 +41,7 @@
  * Dependency graph is created by adding plugins and relations between them. If dependency
  * relation is created for plugins that are not yet in the graph - they are added to it.
  *
- * All plugin that have dependency cycle can be obtained by calling @see findPluginsInDependencyCycle.
+ * All plugin that have dependency cycle can be obtained by calling findPluginsInDependencyCycle.
  */
 class KADUAPI PluginDependencyGraph
 {

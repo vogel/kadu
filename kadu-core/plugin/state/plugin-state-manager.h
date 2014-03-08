@@ -38,10 +38,10 @@ enum class PluginState;
 
 /**
  * @class PluginStateService
- * @short Stores and load plugin states from configuration file to @see PluginStateService.
+ * @short Stores and load plugin states from configuration file to PluginStateService.
  *
- * This service is used to load plugin states from configuration to @see PluginStateService
- * and to load current configuration from @see PluginStateService and store it in configuration
+ * This service is used to load plugin states from configuration to PluginStateService
+ * and to load current configuration from PluginStateService and store it in configuration
  * file.
  */
 class PluginStateManager : public QObject
@@ -57,18 +57,18 @@ public:
 	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 	/**
-	 * @short Load plugin states from configuration file to @see PluginStateService.
+	 * @short Load plugin states from configuration file to PluginStateService.
 	 *
-	 * Uses @see PluginStateService as destination of data and @see StoragePointFactory to
+	 * Uses PluginStateService as destination of data and StoragePointFactory to
 	 * access storage point of configuration.
 	 */
 	void loadPluginStates();
 
 	/**
-	 * @short Store plugin states from @see PluginStateService to configuration file.
+	 * @short Store plugin states from PluginStateService to configuration file.
 	 *
-	 * Uses @see PluginStateService as source of data and @see StoragePointFactory to
-	 * access storage point of configuration. In addition @see PluginManager is used
+	 * Uses PluginStateService as source of data and StoragePointFactory to
+	 * access storage point of configuration. In addition PluginManager is used
 	 * to get list of all currently installed plugin in case import from 0.9 configuration
 	 * format is required.
 	 */

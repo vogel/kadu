@@ -39,7 +39,7 @@ class PluginListWidgetDelegateWidgets;
 //                         : public QObject
 // {
 //         Q_OBJECT
-// 
+//
 // public:
 //         explicit PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent = 0);
 //         ~PluginListWidgetDelegatePrivate();
@@ -50,7 +50,7 @@ class PluginListWidgetDelegateWidgets;
 //         void _k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 //         void _k_slotLayoutChanged();
 //         void _k_slotModelReset();
-// 
+//
 //         void updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving);
 
 // public Q_SLOTS:

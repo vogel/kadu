@@ -36,14 +36,14 @@ enum class PluginState;
  * @class PluginStateService
  * @short Handles states of all known plugins.
  *
- * Each plugin name has a assigned plugin state (see @see PluginState) As no valid plugin
+ * Each plugin name has a assigned plugin state (see PluginState) As no valid plugin
  * metadata object is required this service can also remember states of old and
  * uninstalled plugins (that helps with configuration migration).
  *
- * Use @see pluginStates() and @see setPluginStates() to manipulate all plugin states.
- * Use @see pluginState() and @see setPluginState() to manipulate one plugin state.
+ * Use pluginStates() and setPluginStates() to manipulate all plugin states.
+ * Use pluginState() and setPluginState() to manipulate one plugin state.
  *
- * In addition @see pluginsWithState() method is available to return all plugin name with
+ * In addition pluginsWithState() method is available to return all plugin name with
  * given state.
  */
 class KADUAPI PluginStateService : public QObject

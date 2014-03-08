@@ -26,7 +26,7 @@
 
 /**
  * @class ChatWidgetMessageHandlerConfiguration
- * @short Configuration for @see ChatWidgetMessageHandler.
+ * @short Configuration for ChatWidgetMessageHandler.
  */
 class ChatWidgetMessageHandlerConfiguration
 {

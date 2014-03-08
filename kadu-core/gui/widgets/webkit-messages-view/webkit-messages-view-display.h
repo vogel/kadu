@@ -36,15 +36,15 @@ enum class MessageRenderHeaderBehavior;
 
 /**
  * @class WebkitMessagesViewDisplay
- * @short Class for displaying list of messages using @see ChatStyleRenderer.
+ * @short Class for displaying list of messages using ChatStyleRenderer.
  * @todo Make constructor parametr std::unique_ptr.
  *
  * This class assumes that it is the only object that operates on messages in
- * @see ChatStyleRenderer. Thanks to that it can optimize updating messages
+ * ChatStyleRenderer. Thanks to that it can optimize updating messages
  * by not refreshing whole view when not neccessary - new messages can be appended
  * and deleted from begining of the list can be removed one by one.
  *
- * This class is abstract - @see displayMessages(SortedMessages) must be reimplemented
+ * This class is abstract - displayMessages(SortedMessages) must be reimplemented
  * by inheriting classes.
  */
 class KADUAPI WebkitMessagesViewDisplay
@@ -52,15 +52,15 @@ class KADUAPI WebkitMessagesViewDisplay
 
 public:
 	/**
-	 * @short Create new WebkitMessagesViewDisplay operating on provided @see ChatStyleRenderer.
+	 * @short Create new WebkitMessagesViewDisplay operating on provided ChatStyleRenderer.
 	 * @param chatStyleRenderer Renderer used to display messages.
 	 */
 	explicit WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
 	virtual ~WebkitMessagesViewDisplay();
 
 	/**
-	 * @short Set instance of @see MessageRenderInfoFactory service.
-	 * @param messageRenderInfoFactory Instance of @see MessageRenderInfoFactory service.
+	 * @short Set instance of MessageRenderInfoFactory service.
+	 * @param messageRenderInfoFactory Instance of MessageRenderInfoFactory service.
 	 *
 	 * MessageRenderInfoFactory service is used to get information about how message
 	 * should be rendered after previous one (with/without header, which fonts to use).

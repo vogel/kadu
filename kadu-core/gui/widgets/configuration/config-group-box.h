@@ -50,8 +50,7 @@ class QLayout;
 
 	Dodatkowo, GroupBox'a można stworzyć (lub, jeżeli istnieje, uzyskać)
 	wywołując funkcję configGroupBox(section, tab, groupBox) z okna konfiguracyjnego.
-	Do tak uzyskanego GroupBox'a można dodawać dowolne widgety (@see addWidget,
-	@see addWidgets).
+	Do tak uzyskanego GroupBox'a można dodawać dowolne widgety (addWidget, addWidgets).
  **/
 
 class KADUAPI ConfigGroupBox : public QObject

@@ -33,9 +33,9 @@ class ChatWidgetMessageHandlerConfiguration;
 
 /**
  * @class ChatWidgetMessageHandlerConfigurator
- * @short Configurator for @see ChatWidgetMessageHandler.
+ * @short Configurator for ChatWidgetMessageHandler.
  *
- * Sets configuration on @see ChatWidgetMessageHandler after each configuration
+ * Sets configuration on ChatWidgetMessageHandler after each configuration
  * file update.
  */
 class ChatWidgetMessageHandlerConfigurator : private ConfigurationAwareObject

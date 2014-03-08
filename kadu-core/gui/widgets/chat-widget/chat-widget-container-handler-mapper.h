@@ -35,17 +35,17 @@ class ChatWidgetRepository;
 
 /**
  * @class ChatWidgetContainerHandlerMapper
- * @short Mapper between @see ChatWidget and @see ChatWidgetContainerHandler.
+ * @short Mapper between ChatWidget and ChatWidgetContainerHandler.
  *
- * This class maps all @see ChatWidget from given @see ChatWidgetRepository to
- * @see ChatWidgetContainerHandler from given @see ChatWidgetContainerHandlerRepository.
+ * This class maps all ChatWidget from given ChatWidgetRepository to
+ * ChatWidgetContainerHandler from given ChatWidgetContainerHandlerRepository.
  *
  * It reacts on changes of content of two provided repositories and adds/removes
  * mapping as neccessary. It also reacts on chatWidgetAcceptanceChanged(ChatWidget*)
- * from @see ChatWidgetContainerHandlerRepository to update mapping.
+ * from ChatWidgetContainerHandlerRepository to update mapping.
  *
- * When mapping is applied, @see ChatWidget is added to @see ChatWidgetContainerHandler.
- * When mapping is removed, @see ChatWidget is removed to @see ChatWidgetContainerHandler.
+ * When mapping is applied, ChatWidget is added to ChatWidgetContainerHandler.
+ * When mapping is removed, ChatWidget is removed to ChatWidgetContainerHandler.
  */
 class ChatWidgetContainerHandlerMapper : public QObject
 {

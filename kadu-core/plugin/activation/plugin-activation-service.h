@@ -43,7 +43,7 @@ class PluginStateService;
  * @note This class is not thread safe.
  *
  * Service used for activating and deactivating plugins. It holds all active plugins as
- * instances of @see ActivePlugin and allows for quering the list. Note that this service
+ * instances of ActivePlugin and allows for quering the list. Note that this service
  * perform full dependency resolving, so it also loads/unloads dependencies/dependents.
  */
 class KADUAPI PluginActivationService : public QObject
@@ -106,9 +106,9 @@ private:
 	 * @param firstTime if this plugin is activated for first firstTime
 	 * @throws PluginActivationErrorException
 	 *
-	 * Creates new instance of @see ActivePlugin and adds it to set of active plugins.
-	 * Throws @see PluginActivationErrorException. For more information about activation
-	 * process see @see ActivePlugin.
+	 * Creates new instance of ActivePlugin and adds it to set of active plugins.
+	 * Throws PluginActivationErrorException. For more information about activation
+	 * process see ActivePlugin.
 	 */
 	void activatePlugin(const QString &pluginName, bool firstTime);
 
@@ -116,9 +116,9 @@ private:
 	 * @short Deactivates plugin.
 	 * @param pluginName name of plugin to deactivate
 	 *
-	 * Removes instance of @see ActivePlugin from set of active plugins. This triggers destruction
+	 * Removes instance of ActivePlugin from set of active plugins. This triggers destruction
 	 * of ActivePlugin and unloads plugin from memory. For more information about deactivation
-	 * process see @see ActivePlugin.
+	 * process see ActivePlugin.
 	 */
 	void deactivatePlugin(const QString &pluginName);
 

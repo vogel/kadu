@@ -35,7 +35,7 @@ class PluginMetadata;
 
 /**
  * @class PluginDependencyGraphBuilder
- * @short Build plugin dependency graph from @see PluginMetadata objects.
+ * @short Build plugin dependency graph from PluginMetadata objects.
  */
 class KADUAPI PluginDependencyGraphBuilder : public QObject
 {
@@ -46,8 +46,8 @@ public:
 	virtual ~PluginDependencyGraphBuilder();
 
 	/**
-	 * @short Build plugin dependency graph from @see PluginMetadata objects.
-	 * @param plugins List of @see PluginMetadata objects.
+	 * @short Build plugin dependency graph from PluginMetadata objects.
+	 * @param plugins List of PluginMetadata objects.
 	 *
 	 * Plugin dependency graph is build from all all relations that could be read from \p plugins
 	 * parameter. In second phase all plugins that have to entry in \p plugins parameter are removed

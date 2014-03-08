@@ -62,14 +62,14 @@ class QDialogButtonBox;
 	potrzebne żadne 'ręczne' podpinanie się do tych akcji.
 
 	W momencie zapisania konfiguracji wszystkie obiekty w programie będące instancajmi
-	klasy @see ConfigurationAwareObject zostaną o tym poinformowane i będą
+	klasy ConfigurationAwareObject zostaną o tym poinformowane i będą
 	mogły zaktualizować swój stan.
 
 	Widgety w oknie mogą być tworzone na 2 sposoby. Pierwszym z nich jest
-	pobranie GroupBoxa za pomocą funkcji @see configGroupBox i dodawanie
+	pobranie GroupBoxa za pomocą funkcji configGroupBox i dodawanie
 	do niego widgetów za pomocą jego funkcji addWidget i addWidgets.
 	Drugą jest stworzenie plików XML *.ui, które są wczytywane i usuwane dynamicznie
-	z pomocą metod @see appendUiFile i @see removeUiFile.
+	z pomocą metod appendUiFile i removeUiFile.
 
 	W tym drugim przypadku stosuje się pliki *.ui o następującej strukturze:
 
@@ -84,7 +84,7 @@ class QDialogButtonBox;
 	&lt;/configuration-ui&gt;
 
 	Elementy zawierające atrybut id (nie wymagany) - czyli group-box i dowolny widget
-	mogą zostać pobrane przez aplikacje za pomocą metody @see widgetById.
+	mogą zostać pobrane przez aplikacje za pomocą metody widgetById.
 	Widgety z modułów powinny posiadać id w postaci: nazwaModułu/nazwaId.
 
 	Atrybut catpion jest wymagany. Możliwe tagi widget są opisane w dokumentacji

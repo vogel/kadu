@@ -31,8 +31,8 @@
  * @short Implementation of ChatStyleRendererFactoryProvider with setter.
  *
  * This implementation of ChatStyleRendererFactoryProvider is used to provide every needing
- * object with @see ChatStyleRendererFactory that is configured by user choice. Method
- * @see setChatStyleRendererFactory() is called every time program configuration regarding
+ * object with ChatStyleRendererFactory that is configured by user choice. Method
+ * setChatStyleRendererFactory() is called every time program configuration regarding
  * chat style is changed.
  */
 class ConfiguredChatStyleRendererFactoryProvider : public ChatStyleRendererFactoryProvider
@@ -46,8 +46,8 @@ public:
 	virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const override;
 
 	/**
-	 * @short Set new instance of @see ChatStyleRendererFactory to be stored in this provider.
-	 * @param chatStyleRendererFactory New instance of @see ChatStyleRendererFactory.
+	 * @short Set new instance of ChatStyleRendererFactory to be stored in this provider.
+	 * @param chatStyleRendererFactory New instance of ChatStyleRendererFactory.
 	 */
 	void setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
 

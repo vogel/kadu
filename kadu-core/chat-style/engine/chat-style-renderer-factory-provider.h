@@ -31,7 +31,7 @@ class ChatStyleRendererFactory;
 
 /**
  * @class ChatStyleRendererFactoryProvider
- * @short Provider that contains current instance of @see ChatStyleRendererFactory.
+ * @short Provider that contains current instance of ChatStyleRendererFactory.
  */
 class ChatStyleRendererFactoryProvider : public QObject
 {
@@ -42,14 +42,14 @@ public:
 	virtual ~ChatStyleRendererFactoryProvider();
 
 	/**
-	 * @return Current instance of @see ChatStyleRendererFactory.
+	 * @return Current instance of ChatStyleRendererFactory.
 	 */
 	virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const = 0;
 
 signals:
 	/**
-	 * @short Signal emited when instance of @see ChatStyleRendererFactory is replaced by other one.
-	 * @param chatStyleRenderer new instance of @see ChatStyleRendererFactory.
+	 * @short Signal emited when instance of ChatStyleRendererFactory is replaced by other one.
+	 * @param chatStyleRenderer new instance of ChatStyleRendererFactory.
 	 */
 	void chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory> chatStyleRenderer);
 

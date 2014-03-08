@@ -36,14 +36,14 @@ class PluginActivationService;
  * @class PluginActivationErrorHandler
  * @short Service for handling plugin activation errors.
  *
- * Service used in @see PluginManager to handle exceptions of type @see PluginActivationErrorException.
+ * Service used in PluginManager to handle exceptions of type PluginActivationErrorException.
  *
  * This implementation informs user by displaying error message dialog. In case exception occured
  * during program startup an additional checkbox "Load plugin at next startup" is offered to allow
- * user to enable/disable it. This case occurs when plugin state is already set to @see PluginState::Enabled
- * (this is checked by using @see PluginStateService).
+ * user to enable/disable it. This case occurs when plugin state is already set to PluginState::Enabled
+ * (this is checked by using PluginStateService).
  *
- * @see PluginActivationService is used to check plugin activation state after decision in erorr dialog was
+ * PluginActivationService is used to check plugin activation state after decision in erorr dialog was
  * made by user (as plugin could be activated in meantime).
  *
  * In other cases checkbox is not displayed (the assumption is that activation can only occur during program

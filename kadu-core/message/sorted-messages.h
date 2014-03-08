@@ -67,7 +67,7 @@ public:
 	 * @short Add new message.
 	 * @param message message to add
 	 *
-	 * Message is added in proper place using @see earlier method to determine order. If message
+	 * Message is added in proper place using earlier method to determine order. If message
 	 * is already on list it will not be added.
 	 */
 	void add(Message message);
@@ -76,7 +76,7 @@ public:
 	 * @short Merge with another sorted list of messages.
 	 * @param sortedMessages sorted list to merge with
 	 *
-	 * All messages from @p sortedMessages are added in proper place using @see earlier method to
+	 * All messages from @p sortedMessages are added in proper place using earlier method to
 	 * determine order. All non-unique messages are discared.
 	 */
 	void merge(const SortedMessages &sortedMessages);

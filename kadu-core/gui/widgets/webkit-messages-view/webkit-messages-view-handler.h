@@ -45,12 +45,12 @@ enum class MessageLimitPolicy;
 
 /**
  * @class WebkitMessagesViewHandler
- * @short Class that wraps together @see ChatStyleRenderer and @see WebkitMessagesViewDisplay into one place.
+ * @short Class that wraps together ChatStyleRenderer and WebkitMessagesViewDisplay into one place.
  *
- * This class is used to connect @see ChatStyleRenderer with @see WebkitMessagesViewDisplay. It
+ * This class is used to connect ChatStyleRenderer with WebkitMessagesViewDisplay. It
  * stores list of messages that should be displayed in renderer and passes them to it as soon
  * as renderer is ready. It also accepts new messages into list and removes old ones based on set
- * @see MessageLimitPolicy and messages limit.
+ * MessageLimitPolicy and messages limit.
  */
 class KADUAPI WebkitMessagesViewHandler : public QObject
 {
@@ -72,7 +72,7 @@ public:
 	 * @param limit New limit of messages to display.
 	 * @todo Think of a way to combine it with setMessageLimitPolicy - currently impossible due to setForcePruneDisabled.
 	 *
-	 * If limit is not zero and current @see MessageLimitPolicy is set to MessageLimitPolicy::Value current list of messages
+	 * If limit is not zero and current MessageLimitPolicy is set to MessageLimitPolicy::Value current list of messages
 	 * will be trimmed to have no more elements than @p limit. This trimming will occur each time new message is added.
 	 * Only messages from begining of list are removed.
 	 */
@@ -82,14 +82,14 @@ public:
 	 * @short Set message limit policy.
 	 * @param messageLimitPolicy New message limit policy.
 	 *
-	 * See effects of @see setMessageLimit(unsigned).
+	 * See effects of setMessageLimit(unsigned).
 	 */
 	void setMessageLimitPolicy(MessageLimitPolicy messageLimitPolicy);
 
 	/**
 	 * @return List of current messages.
 	 *
-	 * This list may be different from list of displayed messages if @see ChatStyleRenderer
+	 * This list may be different from list of displayed messages if ChatStyleRenderer
 	 * is still not ready for accepting commands.
 	 */
 	const SortedMessages & messages() const { return m_messages; }
@@ -125,7 +125,7 @@ public:
 	 * @param id Id of message.
 	 * @param status Status of message.
 	 *
-	 * Status will only be displayed if @see ChatStyleRenderer is ready and message with this id is
+	 * Status will only be displayed if ChatStyleRenderer is ready and message with this id is
 	 * currently being displayed.
 	 */
 	void displayMessageStatus(const QString &id, MessageStatus status);
@@ -135,7 +135,7 @@ public:
 	 * @param contact Contact that is responsible for state change.
 	 * @param state New chat state.
 	 *
-	 * Chat state will only be displayed if @see ChatStyleRenderer is ready.
+	 * Chat state will only be displayed if ChatStyleRenderer is ready.
 	 */
 	void displayChatState(const Contact &contact, ChatStateService::State state);
 
@@ -144,7 +144,7 @@ public:
 	 * @param chatImage Chat image to display.
 	 * @param fileName Name of file that contains image data.
 	 *
-	 * This method passes to @see ChatStyleRenderer information about image that was just downloaded and
+	 * This method passes to ChatStyleRenderer information about image that was just downloaded and
 	 * saved. That makes possible for javascript code to replace placeholder image with real one.
 	 */
 	void displayChatImage(const ChatImage &chatImage, const QString &fileName);

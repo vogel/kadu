@@ -31,7 +31,7 @@ class ChatStyleRendererConfiguration;
 
 /**
  * @class ChatStyleRendererFactory
- * @short Abstract factory for creating instances of @see ChatStyleRenderer.
+ * @short Abstract factory for creating instances of ChatStyleRenderer.
  */
 class ChatStyleRendererFactory
 {
@@ -40,8 +40,8 @@ public:
 	virtual ~ChatStyleRendererFactory() {}
 
 	/**
-	 * @return New instance of @see ChatStyleRenderer with given configuration.
-	 * @param configuration configuration used to create @see ChatStyleRenderer.
+	 * @return New instance of ChatStyleRenderer with given configuration.
+	 * @param configuration configuration used to create ChatStyleRenderer.
 	 */
 	virtual qobject_ptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) = 0;
 

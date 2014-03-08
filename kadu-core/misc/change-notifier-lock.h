@@ -32,7 +32,7 @@ class ChangeNotifier;
 /**
  * @class ChangeNotifierLock
  * @author Rafał 'Vogel' Malinowski
- * @short Lock @see ChangeNotifier until end of scope.
+ * @short Lock ChangeNotifier until end of scope.
  */
 class KADUAPI ChangeNotifierLock
 {

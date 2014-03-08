@@ -31,9 +31,9 @@
 
 /**
  * @class WebkitMessagesViewClearingDisplay
- * @short Implementation of @see WebkitMessagesViewDisplay that clears view every time a message is removed.
+ * @short Implementation of WebkitMessagesViewDisplay that clears view every time a message is removed.
  *
- * This implementation of @see WebkitMessagesViewDisplay clears view every time a message is removed
+ * This implementation of WebkitMessagesViewDisplay clears view every time a message is removed
  * (even if from begining of list). This must be done when messages headers are configured to appear
  * only when neccessary as there is no way in styles to recreate header of message that didn't have one.
  */
@@ -42,7 +42,7 @@ class KADUAPI WebkitMessagesViewClearingDisplay : public WebkitMessagesViewDispl
 
 public:
 	/**
-	 * @short Create new WebkitMessagesViewClearingDisplay operating on provided @see ChatStyleRenderer.
+	 * @short Create new WebkitMessagesViewClearingDisplay operating on provided ChatStyleRenderer.
 	 * @param chatStyleRenderer Renderer used to display messages.
 	 */
 	explicit WebkitMessagesViewClearingDisplay(ChatStyleRenderer &chatStyleRenderer);

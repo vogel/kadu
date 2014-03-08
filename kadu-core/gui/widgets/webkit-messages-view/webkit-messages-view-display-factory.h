@@ -37,10 +37,10 @@ class WebkitMessagesViewDisplay;
 
 /**
  * @class WebkitMessagesViewDisplayFactory
- * @short Factory for creating instances of @see WebkitMessagesViewDisplay.
+ * @short Factory for creating instances of WebkitMessagesViewDisplay.
  *
- * This factory uses @see ChatStyleManager to select one of implementations of
- * @see WebkitMessagesViewDisplay to create.
+ * This factory uses ChatStyleManager to select one of implementations of
+ * WebkitMessagesViewDisplay to create.
  */
 class KADUAPI WebkitMessagesViewDisplayFactory : public QObject
 {
@@ -58,7 +58,7 @@ public:
 	 * @short Set ChatStyleManager service instance.
 	 * @param chatStyleManager ChatStyleManager service instance.
 	 *
-	 * This service is used to select one of implementations of @see WebkitMessagesViewDisplay.
+	 * This service is used to select one of implementations of WebkitMessagesViewDisplay.
 	 */
 	void setChatStyleManager(ChatStyleManager *chatStyleManager);
 
@@ -66,16 +66,16 @@ public:
 	 * @short Set MessageRenderInfoFactory service instance.
 	 * @param messageRenderInfoFactory MessageRenderInfoFactory service instance.
 	 *
-	 * This service is passed to created instances of @see WebkitMessagesViewDisplay.
+	 * This service is passed to created instances of WebkitMessagesViewDisplay.
 	 */
 	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 
 	/**
-	 * @short Create new @see WebkitMessagesViewDisplay instance for given @see ChatStyleRenderer.
-	 * @param chatStyleRenderer @see ChatStyleRenderer to create @see WebkitMessagesViewDisplay for.
+	 * @short Create new WebkitMessagesViewDisplay instance for given ChatStyleRenderer.
+	 * @param chatStyleRenderer ChatStyleRenderer to create WebkitMessagesViewDisplay for.
 	 *
-	 * Implementation of @see WebkitMessagesViewDisplay is selected based on configuration
-	 * read from @see ChatStyleManager service.
+	 * Implementation of WebkitMessagesViewDisplay is selected based on configuration
+	 * read from ChatStyleManager service.
 	 */
 	std::unique_ptr<WebkitMessagesViewDisplay> createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
 

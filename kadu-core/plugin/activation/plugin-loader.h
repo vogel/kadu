@@ -39,7 +39,7 @@ class PluginRootComponent;
  * This class loads plugin dynamic library file for given plugin name. In destructor library file is
  * unloaded.
  *
- * Root object of plugin is available by @see instance method.
+ * Root object of plugin is available by instance method.
  */
 class PluginLoader : public QObject
 {
@@ -52,7 +52,7 @@ public:
 	 * @param parent Qt parent object
 	 * @throws PluginActivationErrorException
 	 *
-	 * Load plugin dynamic library file. In case load fails an @see PluginActivationErrorException exception is thrown.
+	 * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
 	 */
 	explicit PluginLoader(const QString &pluginName, QObject *parent = nullptr) noexcept(false);
 
