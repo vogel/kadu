@@ -27,19 +27,21 @@ class tst_FindOverlapingRegion : public QObject
 	Q_OBJECT
 
 private slots:
-	void findOverlappingRegionEmptyTest();
-	void findOverlappingRegionFirstEmptyTest();
-	void findOverlappingRegionSecondEmptyTest();
-	void findOverlappingRegionSameTest();
-	void findOverlappingRegionRemoveFirstTest();
-	void findOverlappingRegionAddOneTest();
-	void findOverlappingRegionOverlapingTest();
-	void findOverlappingRegionDifferentTest();
-	void findOverlappingRegionOverlapingDifferentTest();
+	void shouldFindWholeRegionWhenBothRangesEmpty();
+	void shouldFindNoRegionWhenFirstRangeEmpty();
+	void shouldFindNoRegionWhenSecondRangeEmpty();
+	void shouldFindWholeRegionWhenBothRangesEqual();
+	void shouldFindSecondRangeWhenSuffixOfFirst();
+	void shouldFindNoRangeWhenFirstSuffixOfSecond();
+	void shouldFindFirstRangeWhenPreffixOfSecond();
+	void shouldFindNoRangeWhenSecondPrefixOfFirst();
+	void shouldFindCommonRegionWhenExists();
+	void shouldFindNoRegionWhenTotallyDifferent();
+	void shouldFindNoRegionWhenDifferenceInMiddle();
 
 };
 
-void tst_FindOverlapingRegion::findOverlappingRegionEmptyTest()
+void tst_FindOverlapingRegion::shouldFindWholeRegionWhenBothRangesEmpty()
 {
 	auto left = std::vector<int>{};
 	auto right = std::vector<int>{};
@@ -51,7 +53,7 @@ void tst_FindOverlapingRegion::findOverlappingRegionEmptyTest()
 	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionFirstEmptyTest()
+void tst_FindOverlapingRegion::shouldFindNoRegionWhenFirstRangeEmpty()
 {
 	auto left = std::vector<int>{};
 	auto right = std::vector<int>{1, 2, 3};
@@ -62,7 +64,7 @@ void tst_FindOverlapingRegion::findOverlappingRegionFirstEmptyTest()
 	QCOMPARE(overlapping.second, begin(right));
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionSecondEmptyTest()
+void tst_FindOverlapingRegion::shouldFindNoRegionWhenSecondRangeEmpty()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{};
@@ -73,7 +75,7 @@ void tst_FindOverlapingRegion::findOverlappingRegionSecondEmptyTest()
 	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionSameTest()
+void tst_FindOverlapingRegion::shouldFindWholeRegionWhenBothRangesEqual()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{1, 2, 3};
@@ -83,7 +85,7 @@ void tst_FindOverlapingRegion::findOverlappingRegionSameTest()
 	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionRemoveFirstTest()
+void tst_FindOverlapingRegion::shouldFindSecondRangeWhenSuffixOfFirst()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{2, 3};
@@ -93,7 +95,17 @@ void tst_FindOverlapingRegion::findOverlappingRegionRemoveFirstTest()
 	QCOMPARE(overlapping.second, end(right));
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionAddOneTest()
+void tst_FindOverlapingRegion::shouldFindNoRangeWhenFirstSuffixOfSecond()
+{
+	auto left = std::vector<int>{2, 3};
+	auto right = std::vector<int>{1, 2, 3};
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
+
+	QCOMPARE(overlapping.first, end(left));
+	QCOMPARE(overlapping.second, begin(right));
+}
+
+void tst_FindOverlapingRegion::shouldFindFirstRangeWhenPreffixOfSecond()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{1, 2, 3, 4};
@@ -103,7 +115,17 @@ void tst_FindOverlapingRegion::findOverlappingRegionAddOneTest()
 	QCOMPARE(overlapping.second, end(right) - 1);
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionOverlapingTest()
+void tst_FindOverlapingRegion::shouldFindNoRangeWhenSecondPrefixOfFirst()
+{
+	auto left = std::vector<int>{1, 2, 3, 4};
+	auto right = std::vector<int>{1, 2, 3};
+	auto overlapping = find_overlapping_region(begin(left), end(left), begin(right), end(right));
+
+	QCOMPARE(overlapping.first, end(left));
+	QCOMPARE(overlapping.second, begin(right));
+}
+
+void tst_FindOverlapingRegion::shouldFindCommonRegionWhenExists()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{2, 3, 4};
@@ -113,7 +135,7 @@ void tst_FindOverlapingRegion::findOverlappingRegionOverlapingTest()
 	QCOMPARE(overlapping.second, end(right) - 1);
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionDifferentTest()
+void tst_FindOverlapingRegion::shouldFindNoRegionWhenTotallyDifferent()
 {
 	auto left = std::vector<int>{1, 2, 3};
 	auto right = std::vector<int>{4, 5, 6};
@@ -123,7 +145,7 @@ void tst_FindOverlapingRegion::findOverlappingRegionDifferentTest()
 	QCOMPARE(overlapping.second, begin(right));
 }
 
-void tst_FindOverlapingRegion::findOverlappingRegionOverlapingDifferentTest()
+void tst_FindOverlapingRegion::shouldFindNoRegionWhenDifferenceInMiddle()
 {
 	auto left = std::vector<int>{1, 2, 3, 5, 6, 7};
 	auto right = std::vector<int>{1, 2, 3, 4, 6, 7};
