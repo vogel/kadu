@@ -1,4 +1,5 @@
 +++ version 1.0-alpha6
+* gadu: #2750 fixed: unable to login when password contains non-ascii characters (Vogel)
 
 +++ version 1.0-alpha5
 * gui: #2614 fixed: problems with displaying unread messages (Vogel)

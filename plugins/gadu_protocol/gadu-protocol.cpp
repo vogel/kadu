@@ -382,7 +382,7 @@ void GaduProtocol::setupLoginParams()
 		return;
 
 	GaduLoginParams.uin = account().id().toULong();
-	GaduLoginParams.password = qstrdup(account().password().toAscii().constData());
+	GaduLoginParams.password = qstrdup(account().password().toUtf8().constData());
 
 	GaduLoginParams.async = 1;
 
