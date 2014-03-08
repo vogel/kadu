@@ -1,4 +1,4 @@
-kadu_add_test (misc/tst-algorithm misc/tst-algorithm.cpp)
+kadu_add_test (misc/tst-find-overlaping-region misc/tst-find-overlaping-region.cpp)
 kadu_add_test (misc/tst-sorted-unique-vector misc/tst-sorted-unique-vector.cpp)
 kadu_add_test (misc/tst-string-utils misc/tst-string-utils.cpp)
 kadu_add_test (misc/graph/tst-graph-find-cycles misc/graph/tst-graph-find-cycles.cpp)
