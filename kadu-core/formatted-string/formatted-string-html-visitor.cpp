@@ -49,7 +49,7 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const f
 	QString imagePath = formattedStringImageBlock->imagePath();
 	ChatImageKey imageKey = formattedStringImageBlock->imageKey();
 	Result.append(QFileInfo(imagePath).isAbsolute()
-			? QString("<img class=\"scalable\" src=\"file://%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString())
+			? QString("<img class=\"scalable\" src=\"file:///%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString())
 			: imagePath.startsWith("kaduimg:///")
 			? QString("<img class=\"scalable\" src=\"%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString())
 			: QString("<img class=\"scalable\" src=\"kaduimg:///%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString()));

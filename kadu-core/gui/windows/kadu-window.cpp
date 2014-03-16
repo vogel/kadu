@@ -393,7 +393,7 @@ void KaduWindow::setHiddenParent()
 void KaduWindow::hideWindowFromTaskbar()
 {
 	QWidget *w = window();
-	LONG_PTR newWindowLongPtr = GetWindowLongPtr(w->winId(), GWL_EXSTYLE);
+	LONG_PTR newWindowLongPtr = GetWindowLongPtr(reinterpret_cast<HWND>(w->winId()), GWL_EXSTYLE);
 	bool hideFromTaskbar = config_file.readBoolEntry("General", "HideMainWindowFromTaskbar");
 	if (hideFromTaskbar == !(newWindowLongPtr & WS_EX_APPWINDOW))
 		return;
@@ -405,7 +405,7 @@ void KaduWindow::hideWindowFromTaskbar()
 
 	bool wasVisible = w->isVisible();
 	w->setVisible(false);
-	SetWindowLongPtr(w->winId(), GWL_EXSTYLE, newWindowLongPtr);
+	SetWindowLongPtr(reinterpret_cast<HWND>(w->winId()), GWL_EXSTYLE, newWindowLongPtr);
 	w->setVisible(wasVisible);
 }
 #endif

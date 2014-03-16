@@ -282,7 +282,12 @@ QPixmap PixmapGrabber::grabCurrent()
 			DeleteDC(hdcMem);
 			ReleaseDC(winId, hDC);
 
+#if QT_VERSION >= 0x050200
+			//TODO: QPixmap ret = QtWin::fromHBITMAP(hBitmap);
+			QPixmap ret;
+#else
 			QPixmap ret = QPixmap::fromWinHBITMAP(hBitmap);
+#endif
 
 			DeleteObject(hBitmap);
 			return ret;

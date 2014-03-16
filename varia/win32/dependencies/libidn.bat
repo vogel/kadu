@@ -8,12 +8,13 @@ if not exist libidn-%IDNVER%.tar.gz (
 	if errorlevel 1 exit /b 1
 )
 
-if exist libidn-%IDNVER%.tar %RM% libidn-%IDNVER%.tar
+if exist libidn-%IDNVER%.tar %MY_RM% libidn-%IDNVER%.tar
 %SEVENZ% x libidn-%IDNVER%.tar.gz
 if errorlevel 1 exit /b 1
 %SEVENZ% x libidn-%IDNVER%.tar
 if errorlevel 1 exit /b 1
-%RM% libidn-%IDNVER%.tar
+%MY_RM% libidn-%IDNVER%.tar
+if errorlevel 1 exit /b 1
 
 rename libidn-%IDNVER% libidn
 if errorlevel 1 exit /b 1
@@ -26,5 +27,5 @@ if errorlevel 1 exit /b 1
 if errorlevel 1 exit /b 1
 popd
 
-%CP% "%INSTALLPREFIX%"\libidn\windows\lib\libidn.dll "%INSTALLBASE%"
+%MY_CP% "%INSTALLPREFIX%"\libidn\windows\lib\libidn.dll "%INSTALLBASE%"
 if errorlevel 1 exit /b 1

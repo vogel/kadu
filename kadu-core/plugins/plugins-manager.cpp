@@ -139,10 +139,10 @@ void PluginsManager::loadPluginStates()
 QMap<QString, PluginState> PluginsManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
 {
 	return importedFrom09
-			? PluginStateStorage{}.load(*storagePoint)
+			? PluginStateStorage().load(*storagePoint)
 			: m_pluginInfoRepository
-					? PluginStateStorage09{}.load(*m_pluginInfoRepository.data())
-					: QMap<QString, PluginState>{};
+					? PluginStateStorage09().load(*m_pluginInfoRepository.data())
+					: QMap<QString, PluginState>();
 }
 
 void PluginsManager::storePluginStates()
@@ -369,12 +369,12 @@ QString PluginsManager::findActiveProviding(const QString &feature) const
 
 QVector<QString> PluginsManager::allDependencies(const QString &pluginName)
 {
-	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependencies(pluginName) : QVector<QString>{};
+	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependencies(pluginName) : QVector<QString>();
 }
 
 QVector<QString> PluginsManager::allDependents(const QString &pluginName)
 {
-	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependents(pluginName) : QVector<QString>{};
+	return m_pluginDependencyDAG ? m_pluginDependencyDAG.get()->findDependents(pluginName) : QVector<QString>();
 }
 
 /**

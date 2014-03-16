@@ -26,5 +26,5 @@ if errorlevel 1 exit /b 1
 popd
 if errorlevel 1 exit /b 1
 
-%CP% "%INSTALLPREFIX%"\xz\bin_i486\liblzma.dll "%INSTALLBASE%"
+%MY_CP% "%INSTALLPREFIX%"\xz\bin_i486\liblzma.dll "%INSTALLBASE%"
 if errorlevel 1 exit /b 1

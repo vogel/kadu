@@ -3,12 +3,16 @@ if exist libgadu-install (
 	exit /b
 )
 
-if exist libgadu %RMDIR% libgadu
+if exist libgadu %MY_RMDIR% libgadu
+if errorlevel 1 exit /b 1
 
-%SVN% co -r %GADUVER% http://toxygen.net/svn/libgadu/trunk libgadu
+%GIT% clone https://github.com/wojtekka/libgadu.git
 if errorlevel 1 exit /b 1
 
 pushd libgadu
+if errorlevel 1 exit /b 1
+
+%GIT% checkout %GADUVER%
 if errorlevel 1 exit /b 1
 
 %PATCH% -p1 < "%~dp0"\patches\libgadu-win32.patch
@@ -28,5 +32,5 @@ if errorlevel 1 exit /b 1
 popd
 popd
 
-%CP% "%INSTALLPREFIX%"\libgadu-install\bin\gadu.dll "%INSTALLBASE%"
+%MY_CP% "%INSTALLPREFIX%"\libgadu-install\bin\gadu.dll "%INSTALLBASE%"
 if errorlevel 1 exit /b 1

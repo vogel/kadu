@@ -159,7 +159,8 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://
 	 * so we have to remove it here */
-	text = text.remove("file://");
+	text.remove("file:///");
+	text.remove("file://");
 
 	while (text.endsWith(QLatin1String("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);

@@ -4,8 +4,6 @@ cmake_minimum_required (VERSION 2.8)
 
 find_package (Kadu REQUIRED CONFIG)
 
-include (FindPkgConfig)
-
 set (SOURCES
 	gui/widgets/otr-account-configuration-widget-factory.cpp
 	gui/widgets/otr-account-configuration-widget.cpp
@@ -96,9 +94,30 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
-pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
+if (WIN32)
+	if (NOT WIN_LIBOTR_DIR)
+		message (SEND_ERROR "Pass path to libotr -DWIN_LIBOTR_DIR=path")
+		set (WIN_LIBOTR_DIR "")
+	else ()
+		set (LIBOTR_FOUND TRUE)
+		set (LIBOTR_INCLUDE_DIRS ${WIN_LIBOTR_DIR}/include)
+		set (LIBOTR_LIBRARIES libotr gcrypt libgpg-error)
 
-set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt)
+		if (MSVC)
+			set (LIBOTR_LIBRARY_DIRS ${WIN_LIBOTR_DIR}/lib)
+		else ()
+			set (LIBOTR_LIBRARY_DIRS ${WIN_LIBOTR_DIR}/bin)
+		endif ()
+	endif ()
+else ()
+	find_package (PkgConfig)
+	pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
+endif ()
+
+include_directories (${LIBOTR_INCLUDE_DIRS})
+link_directories (${LIBOTR_LIBRARY_DIRS})
+
+set (LIBRARIES ${LIBOTR_LIBRARIES})
 
 kadu_plugin (otr
 	PLUGIN_SOURCES ${SOURCES}

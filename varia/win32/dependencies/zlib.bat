@@ -3,19 +3,21 @@ if exist zlib-install (
 	exit /b
 )
 
-if exist zlib-%ZLIBVER% %RMDIR% zlib-%ZLIBVER%
+if exist zlib-%ZLIBVER% %MY_RMDIR% zlib-%ZLIBVER%
+if errorlevel 1 exit /b 1
 
-if not exist zlib-%ZLIBVER%.tar.bz2 (
-	%WGET% http://zlib.net/zlib-%ZLIBVER%.tar.bz2
+if not exist zlib-%ZLIBVER%.tar.xz (
+	%WGET% http://zlib.net/zlib-%ZLIBVER%.tar.xz
 	if errorlevel 1 exit /b 1
 )
 
-if exist zlib-%ZLIBVER%.tar %RM% zlib-%ZLIBVER%.tar
-%SEVENZ% x zlib-%ZLIBVER%.tar.bz2
+if exist zlib-%ZLIBVER%.tar %MY_RM% zlib-%ZLIBVER%.tar
+%SEVENZ% x zlib-%ZLIBVER%.tar.xz
 if errorlevel 1 exit /b 1
 %SEVENZ% x zlib-%ZLIBVER%.tar
 if errorlevel 1 exit /b 1
-%RM% zlib-%ZLIBVER%.tar
+%MY_RM% zlib-%ZLIBVER%.tar
+if errorlevel 1 exit /b 1
 
 pushd zlib-%ZLIBVER%
 if errorlevel 1 exit /b 1
@@ -35,5 +37,8 @@ if errorlevel 1 exit /b 1
 popd
 popd
 
-%CP% "%INSTALLPREFIX%"\zlib-install\bin\zlib1.dll "%INSTALLBASE%"
+%MY_CP% "%INSTALLPREFIX%"\zlib-install\lib\zlib.lib "%INSTALLPREFIX%"\zlib-install\lib\zdll.lib
+if errorlevel 1 exit /b 1
+
+%MY_CP% "%INSTALLPREFIX%"\zlib-install\bin\zlib1.dll "%INSTALLBASE%"
 if errorlevel 1 exit /b 1

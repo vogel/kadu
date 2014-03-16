@@ -6,19 +6,21 @@ if exist libarchive-install (
 set OLDPATH=%PATH%
 set PATH=%INSTALLPREFIX%\xz\bin_i486;%PATH%
 
-if exist libarchive-%ARCHIVEVER% %RMDIR% libarchive-%ARCHIVEVER%
+if exist libarchive-%ARCHIVEVER% %MY_RMDIR% libarchive-%ARCHIVEVER%
+if errorlevel 1 exit /b 1
 
 if not exist libarchive-%ARCHIVEVER%.tar.gz (
 	%WGET% http://libarchive.org/downloads/libarchive-%ARCHIVEVER%.tar.gz
 	if errorlevel 1 exit /b 1
 )
 
-if exist libarchive-%ARCHIVEVER%.tar %RM% libarchive-%ARCHIVEVER%.tar
+if exist libarchive-%ARCHIVEVER%.tar %MY_RM% libarchive-%ARCHIVEVER%.tar
 %SEVENZ% x libarchive-%ARCHIVEVER%.tar.gz
 if errorlevel 1 exit /b 1
 %SEVENZ% x libarchive-%ARCHIVEVER%.tar
 if errorlevel 1 exit /b 1
-%RM% libarchive-%ARCHIVEVER%.tar
+%MY_RM% libarchive-%ARCHIVEVER%.tar
+if errorlevel 1 exit /b 1
 
 mkdir libarchive-%ARCHIVEVER%\build-cmake
 if errorlevel 1 exit /b 1
@@ -53,5 +55,5 @@ if errorlevel 1 exit /b 1
 
 set PATH=%OLDPATH%
 
-%CP% "%INSTALLPREFIX%"\libarchive-install\bin\archive.dll "%INSTALLBASE%"
+%MY_CP% "%INSTALLPREFIX%"\libarchive-install\bin\archive.dll "%INSTALLBASE%"
 if errorlevel 1 exit /b 1

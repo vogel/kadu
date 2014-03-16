@@ -58,10 +58,10 @@ QString KaduPaths::homePath()
 
 	return QDir::homePath();
 }
-
+#include <QtDebug>
 QString KaduPaths::webKitPath(const QString &path)
 {
-#ifdef Q_OS_WIN
+#if 0
 	QString winPath = path;
 	if (winPath.startsWith(QLatin1String("file:///")))
 		return winPath.remove(0, 8);
@@ -69,6 +69,7 @@ QString KaduPaths::webKitPath(const QString &path)
 		return winPath.remove(0, 7);
 	return winPath;
 #else
+	qDebug() << path.startsWith("file:///") << path;
 	if (path.isEmpty())
 		return path;
 	if (path.startsWith(QLatin1String("file:///")))

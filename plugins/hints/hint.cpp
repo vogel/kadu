@@ -181,7 +181,8 @@ void Hint::updateText()
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.
 		 * for compatibility with other syntaxes we're allowing to put the file://
 		 * so we have to remove it here */
-		text = text.remove("file://");
+		text.remove("file:///");
+		text.remove("file://");
 	}
 
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))

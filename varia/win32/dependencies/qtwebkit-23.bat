@@ -1,5 +1,5 @@
-if exist qtwebkit-23 (
-	echo qtwebkit-23 directory already exists, skipping...
+if exist qtwebkit-%QTWEBKIT23VER% (
+	echo qtwebkit-%QTWEBKIT23VER% directory already exists, skipping...
 	exit /b
 )
 
@@ -13,7 +13,7 @@ if exist python-%PYTHONCOMMONPORTABLEVER%-bin-win32\python.exe goto pastpython
 		if errorlevel 1 exit /b 1
 	)
 
-	if exist python-%PYTHONCOMMONPORTABLEVER%-bin-win32 %RMDIR% python-%PYTHONCOMMONPORTABLEVER%-bin-win32
+	if exist python-%PYTHONCOMMONPORTABLEVER%-bin-win32 %MY_RMDIR% python-%PYTHONCOMMONPORTABLEVER%-bin-win32
 	mkdir python-%PYTHONCOMMONPORTABLEVER%-bin-win32
 
 	%SEVENZ% x -opython-%PYTHONCOMMONPORTABLEVER%-bin-win32 python-%PYTHONCOMMONPORTABLEVER%-bin-win32.7z
@@ -24,11 +24,11 @@ set PATH=%CD%\python-%PYTHONCOMMONPORTABLEVER%-bin-win32;%PATH%
 
 if exist ruby-%RUBYVER%-i386-mingw32\bin\ruby.exe goto pastruby
 	if not exist ruby-%RUBYVER%-i386-mingw32.7z (
-		%WGET% http://rubyforge.org/frs/download.php/76807/ruby-%RUBYVER%-i386-mingw32.7z
+		%WGET% -O ruby-%RUBYVER%-i386-mingw32.7z http://dl.bintray.com/oneclick/rubyinstaller/ruby-%RUBYVER%-i386-mingw32.7z?direct
 		if errorlevel 1 exit /b 1
 	)
 
-	if exist ruby-%RUBYVER%-i386-mingw32 %RMDIR% ruby-%RUBYVER%-i386-mingw32
+	if exist ruby-%RUBYVER%-i386-mingw32 %MY_RMDIR% ruby-%RUBYVER%-i386-mingw32
 
 	%SEVENZ% x ruby-%RUBYVER%-i386-mingw32.7z
 	if errorlevel 1 exit /b 1
@@ -42,7 +42,7 @@ if exist winflexbison\bison.exe goto pastwinflexbison
 		if errorlevel 1 exit /b 1
 	)
 
-	if exist winflexbison %RMDIR% winflexbison
+	if exist winflexbison %MY_RMDIR% winflexbison
 	mkdir winflexbison
 
 	%SEVENZ% x -owinflexbison win_flex_bison-latest.zip
@@ -94,31 +94,29 @@ if exist %TARBALL% goto pastdownload
 	rem send small text instead of it meanwhile.
 	
 :download
-	%WGET% -O %TARBALL% http://gitorious.org/webkit/qtwebkit-23/archive-tarball/qtwebkit-%QTWEBKIT23VER%
+	%WGET% -O %TARBALL% ftp://ftp.archlinux.org/other/packages/qtwebkit/qtwebkit-%QTWEBKIT23VER%.tar.gz
 	if errorlevel 1 exit /b 1
 	
 	for /F "usebackq" %%A in ('%TARBALL%') do set SIZE=%%~zA
 	if %SIZE% LSS 1000000 (
-		%RM% %TARBALL%
+		%MY_RM% %TARBALL%
 		if errorlevel 1 exit /b 1
 		goto download
 	)
 :pastdownload
 
-if exist pax_global_header %RM% pax_global_header
-if exist webkit-qtwebkit-23 %RMDIR% webkit-qtwebkit-23
-if exist qtwebkit-%QTWEBKIT23VER%.tar %RM% qtwebkit-%QTWEBKIT23VER%.tar
+if exist pax_global_header %MY_RM% pax_global_header
+if exist qtwebkit-%QTWEBKIT23VER% %MY_RMDIR% qtwebkit-%QTWEBKIT23VER%
+if exist qtwebkit-%QTWEBKIT23VER%.tar %MY_RM% qtwebkit-%QTWEBKIT23VER%.tar
 %SEVENZ% x qtwebkit-%QTWEBKIT23VER%.tar.gz
 if errorlevel 1 exit /b 1
 %SEVENZ% x qtwebkit-%QTWEBKIT23VER%.tar
 if errorlevel 1 exit /b 1
-%RM% qtwebkit-%QTWEBKIT23VER%.tar
-%RM% pax_global_header
-
-rename webkit-qtwebkit-23 qtwebkit-23
+%MY_RM% qtwebkit-%QTWEBKIT23VER%.tar
 if errorlevel 1 exit /b 1
+%MY_RM% pax_global_header
 
-pushd qtwebkit-23
+pushd qtwebkit-%QTWEBKIT23VER%
 if errorlevel 1 exit /b 1
 
 rem This is needed to disable LTCG also on MSVC2012. Otherwise linking fails due to too big objects.
@@ -152,5 +150,5 @@ if errorlevel 1 exit /b 1
 
 set PATH=%OLDPATH%
 
-%CP% "%QTDIR%"\lib\QtWebKit4.dll "%INSTALLBASE%"
+%MY_CP% "%QTDIR%"\lib\QtWebKit4.dll "%INSTALLBASE%"
 if errorlevel 1 exit /b 1

@@ -668,6 +668,9 @@ QString Parser::parse(const QString &s, Talkable talkable, const QObject * const
 							filePath = joinParserTokens(tokens.mid(0, firstSpaceTokenIdx)) +
 									tokens.at(firstSpaceTokenIdx).rawContent().left(spacePos);
 
+						if (filePath.startsWith(QLatin1String("file:///")))
+							filePath = filePath.mid(static_cast<int>(qstrlen("file:///")));
+
 						if (filePath.startsWith(QLatin1String("file://")))
 							filePath = filePath.mid(static_cast<int>(qstrlen("file://")));
 

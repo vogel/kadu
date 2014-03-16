@@ -3,19 +3,21 @@ if exist aspell-install (
 	exit /b
 )
 
-if exist aspell-%ASPELLVER% %RMDIR% aspell-%ASPELLVER%
+if exist aspell-%ASPELLVER% %MY_RMDIR% aspell-%ASPELLVER%
+if errorlevel 1 exit /b 1
 
 if not exist aspell-%ASPELLVER%.tar.gz (
 	%WGET% ftp://ftp.gnu.org/gnu/aspell/aspell-%ASPELLVER%.tar.gz
 	if errorlevel 1 exit /b 1
 )
 
-if exist aspell-%ASPELLVER%.tar %RM% aspell-%ASPELLVER%.tar
+if exist aspell-%ASPELLVER%.tar %MY_RM% aspell-%ASPELLVER%.tar
 %SEVENZ% x aspell-%ASPELLVER%.tar.gz
 if errorlevel 1 exit /b 1
 %SEVENZ% x aspell-%ASPELLVER%.tar
 if errorlevel 1 exit /b 1
-%RM% aspell-%ASPELLVER%.tar
+%MY_RM% aspell-%ASPELLVER%.tar
+if errorlevel 1 exit /b 1
 
 pushd aspell-%ASPELLVER%
 if errorlevel 1 exit /b 1
@@ -42,13 +44,13 @@ if not exist aspell-data-bin.7z (
 	if errorlevel 1 exit /b 1
 )
 
-%CP% "%INSTALLPREFIX%"\aspell-install\bin\aspell.dll "%INSTALLBASE%"
+%MY_CP% "%INSTALLPREFIX%"\aspell-install\bin\aspell.dll "%INSTALLBASE%"
 if errorlevel 1 exit /b 1
 
-if exist "%INSTALLBASE%"\aspell %RMDIR% "%INSTALLBASE%"\aspell
+if exist "%INSTALLBASE%"\aspell %MY_RMDIR% "%INSTALLBASE%"\aspell
 if errorlevel 1 exit /b 1
 
-%CPDIR% "%INSTALLPREFIX%"\aspell-install\lib\aspell-0.60 "%INSTALLBASE%"\aspell
+%MY_CPDIR% "%INSTALLPREFIX%"\aspell-install\lib\aspell-0.60 "%INSTALLBASE%"\aspell
 if errorlevel 1 exit /b 1
 
 %SEVENZ% x -o"%INSTALLBASE%"\aspell aspell-data-bin.7z
