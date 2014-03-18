@@ -1,32 +1,109 @@
+@echo off
+
+call "%~dp0\..\build-config.bat"
+if errorlevel 1 exit /b 1
+
+call "%~dp0\..\pre-build.bat"
+if errorlevel 1 goto fail
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
 if exist libgadu-install (
 	echo libgadu-install directory already exists, skipping...
-	exit /b
+	goto end
 )
 
-if exist libgadu %RMDIR% libgadu
+if exist libgadu-%GADUVER%-win32 %RMDIR% libgadu-%GADUVER%-win32
 
-%SVN% co -r %GADUVER% http://toxygen.net/svn/libgadu/trunk libgadu
-if errorlevel 1 exit /b 1
+if not exist mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm (
+	%WGET% http://download.opensuse.org/repositories/home:/tomkiewicz:/libgadu/win32/noarch/mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
+	if errorlevel 1 goto fail
+)
 
-pushd libgadu
-if errorlevel 1 exit /b 1
+if exist mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio %RM% mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio
+if exist libgadu-%GADUVER%-win32.zip %RM% libgadu-%GADUVER%-win32.zip
 
-%PATCH% -p1 < "%~dp0"\patches\libgadu-win32.patch
-if errorlevel 1 exit /b 1
+%SEVENZ% x mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
+if errorlevel 1 goto fail
+%SEVENZ% x mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio
+if errorlevel 1 goto fail
+%RM% mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio
+%SEVENZ% x libgadu-%GADUVER%-win32.zip
+if errorlevel 1 goto fail
+%RM% libgadu-%GADUVER%-win32.zip
 
-mkdir build
-if errorlevel 1 exit /b 1
-pushd build
-if errorlevel 1 exit /b 1
+if exist libgadu-install %RMDIR% libgadu-install
 
-%CMAKE% -DCMAKE_INSTALL_PREFIX:PATH="%INSTALLPREFIX%"\libgadu-install -DBUILD_SHARED:BOOL=ON -DBUILD_STATIC:BOOL=OFF -DBUILD_EXAMPLES:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DBUILD_DOC:BOOL=OFF -DWITH_PTHREAD:BOOL=OFF -DWITH_ZLIB:BOOL=ON -DWITH_GNUTLS:BOOL=OFF -DWITH_OPENSSL:BOOL=ON -DZLIB_ROOT:PATH="%INSTALLPREFIX%"\zlib-install -DOPENSSL_ROOT_DIR:PATH="%INSTALLPREFIX%"\openssl-install ..
-if errorlevel 1 exit /b 1
+mkdir libgadu-install
+mkdir libgadu-install\bin
 
-%CMAKE_MAKE_INSTALL%
-if errorlevel 1 exit /b 1
+pushd libgadu-%GADUVER%-win32
+if errorlevel 1 goto fail
+
+%CP% "bin\libgadu-3.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libnettle-4-6.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libintl-8.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libhogweed-2-4.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libwinpthread-1.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libtasn1-6.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libgnutls-28.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libp11-kit-0.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libffi-6.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libgcc_s_sjlj-1.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libgmp-10.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "deps\libprotobuf-c-0.dll" "%INSTALLBASE%"
+if errorlevel 1 goto fail2
+
+%CP% "bin\libgadu-3.dll" "%INSTALLPREFIX%"\libgadu-install\lib
+if errorlevel 1 goto fail2
+
+%CP% "dev\libgadu.h" "%INSTALLPREFIX%"\libgadu-install\include
+if errorlevel 1 goto fail2
 
 popd
+
+echo.
+echo libgadu build: Success
+echo.
+goto end
+
+:fail3
 popd
 
-%CP% "%INSTALLPREFIX%"\libgadu-install\bin\gadu.dll "%INSTALLBASE%"
-if errorlevel 1 exit /b 1
+:fail2
+popd
+
+:fail
+echo.
+echo libgadu: Error encountered
+echo.
+popd
+call "%~dp0\..\post-build.bat"
+exit /b 1
+
+:end
+popd
+call "%~dp0\..\post-build.bat"

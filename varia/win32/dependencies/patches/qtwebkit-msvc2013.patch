@@ -1,0 +1,38 @@
+From 24d678ce9c3996f46d1069c2b1193e7ec1083fc8 Mon Sep 17 00:00:00 2001
+From: Friedemann Kleint <Friedemann.Kleint@digia.com>
+Date: Thu, 24 Oct 2013 13:54:20 +0300
+Subject: [PATCH] Fix compilation of Qt Script with MSVC 2013.
+
+Starting with MSVC 2013, more functions are provided.
+
+Change-Id: Iabbc9a94e7ed01584baaa1bb17c06e41ac70830f
+Reviewed-by: Simon Hausmann <simon.hausmann@digia.com>
+Reviewed-by: Friedemann Kleint <Friedemann.Kleint@digia.com>
+---
+ .../javascriptcore/JavaScriptCore/wtf/MathExtras.h |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Source/WTF/wtf/MathExtras.h b/Source/WTF/JavaScriptCore/wtf/MathExtras.h
+index fc5676a..81a1d8a 100644
+--- a/Source/WTF/wtf/MathExtras.h
++++ b/Source/WTF/wtf/MathExtras.h
+@@ -108,7 +108,7 @@ inline bool signbit(double x) { struct ieee_double *p = (struct ieee_double *)&x
+ 
+ #endif
+ 
+-#if COMPILER(MSVC) || (COMPILER(RVCT) && !(RVCT_VERSION_AT_LEAST(3, 0, 0, 0)))
++#if (COMPILER(MSVC) && _MSC_VER < 1800) || COMPILER(RVCT)
+ 
+ // We must not do 'num + 0.5' or 'num - 0.5' because they can cause precision loss.
+ static double round(double num)
+@@ -153,7 +153,7 @@ inline double trunc(double num) { return num > 0 ? floor(num) : ceil(num); }
+ }
+ #endif
+ 
+-#if COMPILER(MSVC)
++#if COMPILER(MSVC) && _MSC_VER < 1800
+ // The 64bit version of abs() is already defined in stdlib.h which comes with VC10
+ #if COMPILER(MSVC9_OR_LOWER)
+ inline long long abs(long long num) { return _abs64(num); }
+-- 
+1.7.1
