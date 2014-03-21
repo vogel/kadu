@@ -82,6 +82,7 @@ echo libarchive: Error encountered
 echo.
 popd
 call "%~dp0\..\post-build.bat"
+pause
 exit /b 1
 
 :end

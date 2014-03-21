@@ -1,10 +1,20 @@
 @echo off
 
-call "%~dp0\..\build-config.bat"
-if errorlevel 1 exit /b 1
+set ret=0
 
-call "%~dp0\..\pre-build.bat"
+call "%~dp0\..\utils.bat" load-config
 if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" build-dependency python
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" load-result webkit WEBKIT
+if errorlevel 1 goto fail
+
+echo %WEBKIT_RESULT%
+pause
+
+
 
 pushd "%INSTALLPREFIX%"
 if errorlevel 1 goto fail
@@ -175,8 +185,8 @@ if errorlevel 1 goto fail2
 if errorlevel 1 goto fail2
 
 rem This is needed to disable LTCG also on MSVC2012. Otherwise linking fails due to too big objects.
-%SED% -i -e "s/win32-msvc2005|win32-msvc2008|win32-msvc2010|wince/win32-msvc2005|win32-msvc2008|win32-msvc2010|win32-msvc2012|wince/" Source\WebCore\WebCore.pri
-if errorlevel 1 goto fail2
+rem %SED% -i -e "s/win32-msvc2005|win32-msvc2008|win32-msvc2010|wince/win32-msvc2005|win32-msvc2008|win32-msvc2010|win32-msvc2012|wince/" Source\WebCore\WebCore.pri
+rem if errorlevel 1 goto fail2
 
 rem Don't build DumpRenderTree, linking fails.
 %SED% -i -e "/DumpRenderTree\//d" Tools\Tools.pro
@@ -194,7 +204,7 @@ if errorlevel 1 goto fail2
 pushd WebKitBuild\Release
 if errorlevel 1 goto fail2
 
-nmake install
+mingw32-make
 if errorlevel 1 goto fail3
 
 popd
@@ -225,8 +235,16 @@ echo qtwebkit: Error encountered
 echo.
 popd
 call "%~dp0\..\post-build.bat"
+pause
 exit /b 1
 
 :end
 popd
 call "%~dp0\..\post-build.bat"
+
+:utils-not-found
+echo.
+echo utils.bat file not found
+echo.
+pause
+exit

@@ -1,28 +1,23 @@
 @echo off
 
+call "%~dp0\utils.bat" load-config
+if errorlevel 1 goto fail
+
 call "%~dp0\build-config.bat"
 if errorlevel 1 goto fail
 
 pushd "%INSTALLPREFIX%"
 if errorlevel 1 goto fail
 
-rem Perl is needed by aspell, OpenSSL, Qt, and QtWebKit.
-
-call "%~dp0"\dependencies\perl.bat
-if errorlevel 1 goto fail
-
-call strawberry-perl-%PERLVER%-32bit-portable\portableshell.bat
-if errorlevel 1 goto fail
-
 rem Now the real Kadu dependencies.
 
-call "%~dp0"\dependencies\zlib.bat
+call "%~dp0\..\utils.bat" build-dependency zlib
 if errorlevel 1 goto fail
 
-call "%~dp0"\dependencies\libidn.bat
+call "%~dp0\..\utils.bat" build-dependency libidn
 if errorlevel 1 goto fail
 
-call "%~dp0"\dependencies\openssl.bat
+call "%~dp0\..\utils.bat" build-dependency openssl
 if errorlevel 1 goto fail
 
 call "%~dp0"\dependencies\libgadu.bat

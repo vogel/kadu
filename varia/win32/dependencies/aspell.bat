@@ -56,7 +56,7 @@ if not exist aspell-data-bin.7z (
 	if errorlevel 1 goto fail
 )
 
-%CP% "%INSTALLPREFIX%"\aspell-install\bin\aspell.dll "%INSTALLBASE%"
+%CP% "%INSTALLPREFIX%"\aspell-install\bin\libaspell.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
 if exist "%INSTALLBASE%"\aspell %RMDIR% "%INSTALLBASE%"\aspell
@@ -85,8 +85,8 @@ echo apell: Error encountered
 echo.
 popd
 call "%~dp0\..\post-build.bat"
+pause
 exit /b 1
-goto end
 
 :end
 popd
