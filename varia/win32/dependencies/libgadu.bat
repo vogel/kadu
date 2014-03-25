@@ -19,7 +19,7 @@ if %LIBGADU_RESULT% EQU 1 goto downloaded
 if %LIBGADU_RESULT% EQU 2 goto unpacked
 if %LIBGADU_RESULT% EQU 3 goto ready
 
-if exist mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm  %RM% mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
+if exist mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm %RM% mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
 if errorlevel 1 goto fail
 
 %WGET% http://download.opensuse.org/repositories/home:/tomkiewicz:/libgadu/win32/noarch/mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
@@ -30,22 +30,25 @@ if errorlevel 1 goto fail
 
 :downloaded
 
-if exist libgadu-%GADUVER%-win32 %RMDIR% libgadu-%GADUVER%-win32
-if errorlevel 1 goto fail
-
 if exist mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio %RM% mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio
 if errorlevel 1 goto fail
 
-if exist libgadu-%GADUVER%-win32.zip %RM% libgadu-%GADUVER%-win32.zip
+%SEVENZ% x mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
 if errorlevel 1 goto fail
 
-%SEVENZ% x mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
+%RM% mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.rpm
+if errorlevel 1 goto fail
+
+if exist libgadu-%GADUVER%-win32.zip %RM% libgadu-%GADUVER%-win32.zip
 if errorlevel 1 goto fail
 
 %SEVENZ% x mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio
 if errorlevel 1 goto fail
 
 %RM% mingw32-libgadu-release-%GADUVER%-%GADUPACKAGEVER%.noarch.cpio
+if errorlevel 1 goto fail
+
+if exist libgadu-%GADUVER%-win32 %RMDIR% libgadu-%GADUVER%-win32
 if errorlevel 1 goto fail
 
 %SEVENZ% x libgadu-%GADUVER%-win32.zip
@@ -65,7 +68,10 @@ if errorlevel 1 goto fail
 mkdir libgadu-install
 if errorlevel 1 goto fail
 
-mkdir libgadu-install\bin
+mkdir libgadu-install\include
+if errorlevel 1 goto fail
+
+mkdir libgadu-install\lib
 if errorlevel 1 goto fail
 
 pushd libgadu-%GADUVER%-win32
@@ -107,11 +113,16 @@ if errorlevel 1 goto fail2
 %CP% "deps\libprotobuf-c-0.dll" "%INSTALLBASE%"
 if errorlevel 1 goto fail2
 
-%CP% "bin\libgadu-3.dll" "%INSTALLPREFIX%"\libgadu-install\lib
+%CP% "bin\libgadu-3.dll" "%INSTALLPREFIX%"\libgadu-install\lib\gadu-3.dll
 if errorlevel 1 goto fail2
 
 %CP% "dev\libgadu.h" "%INSTALLPREFIX%"\libgadu-install\include
 if errorlevel 1 goto fail2
+
+call "%~dp0\..\utils.bat" enable-msvc
+if errorlevel 1 goto fail
+
+lib /machine:i386 /def:dev\libgadu.def /out:"%INSTALLPREFIX%"\libgadu-install\lib\gadu.lib
 
 popd
 

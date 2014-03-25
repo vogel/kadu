@@ -82,6 +82,9 @@ if exist install goto pastkadu
 	if errorlevel 1 goto fail3
 :pastkadu
 
+call "%~dp0\..\utils.bat" enable-msvc
+if errorlevel 1 goto fail
+
 popd
 if errorlevel 1 goto fail2
 
