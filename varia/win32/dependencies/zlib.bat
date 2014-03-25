@@ -27,7 +27,7 @@ if %ZLIB_RESULT% EQU 3 (
 	goto configured
 )
 if %ZLIB_RESULT% EQU 4 goto compiled
-if %ZLIB_RESULT% EQU 5 goto installed
+if %ZLIB_RESULT% EQU 5 goto ready
 
 if exist zlib-%ZLIBVER%.tar.xz %RM% zlib-%ZLIBVER%.tar.xz
 if errorlevel 1 goto fail
@@ -69,6 +69,9 @@ if errorlevel 1 goto fail2
 pushd build
 if errorlevel 1 goto fail2
 
+call "%~dp0\..\utils.bat" enable-msvc
+if errorlevel 1 goto fail
+
 REM TODO: Improve this CMake file; maybe use masm? (nmake makefile can use it).
 %CMAKE% -DCMAKE_INSTALL_PREFIX:PATH="%INSTALLPREFIX%"\zlib-install -DBUILD_SHARED_LIBS:BOOL=ON ..
 if errorlevel 1 goto fail3
@@ -92,7 +95,7 @@ if errorlevel 1 goto fail
 
 :compiled
 
-%CP% "%INSTALLPREFIX%"\zlib-install\bin\libzlib1.dll "%INSTALLBASE%"
+%CP% "%INSTALLPREFIX%"\zlib-install\bin\zlib1.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
 call "%~dp0\..\utils.bat" store-result zlib 5

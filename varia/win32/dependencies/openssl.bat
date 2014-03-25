@@ -6,22 +6,17 @@ echo.
 
 set ret=0
 
-call "%~dp0\..\utils.bat" build-dependency perl
-if errorlevel 1 goto fail
-
-call "%~dp0\..\utils.bat" build-dependency nasm
-if errorlevel 1 goto fail
-
 call "%~dp0\..\utils.bat" load-config
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" enable-perl
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" enable-nasm
 if errorlevel 1 goto fail
 
 pushd "%INSTALLPREFIX%"
 if errorlevel 1 goto fail
-
-call strawberry-perl-%PERLVER%-32bit-portable\portableshell.bat
-if errorlevel 1 goto fail
-
-set PATH=%CD%\nasm-%NASMVER%;%PATH%
 
 call "%~dp0\..\utils.bat" load-result openssl OPENSSSL
 if errorlevel 1 goto fail

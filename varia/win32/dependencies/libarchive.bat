@@ -1,39 +1,60 @@
 @echo off
 
-call "%~dp0\..\build-config.bat"
-if errorlevel 1 exit /b 1
+echo.
+echo Building libarchive
+echo.
 
-call "%~dp0\..\pre-build.bat"
+set ret=0
+
+call "%~dp0\..\utils.bat" load-config
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" enable-xz
 if errorlevel 1 goto fail
 
 pushd "%INSTALLPREFIX%"
 if errorlevel 1 goto fail
 
-if exist libarchive-install (
-	echo libarchive-install directory already exists, skipping...
-	goto end
-)
+call "%~dp0\..\utils.bat" load-result archive ARCHIVE
+if errorlevel 1 goto fail
 
-set OLDPATH=%PATH%
-set PATH=%INSTALLPREFIX%\xz\bin_i486;%PATH%
+if %ARCHIVE_RESULT% EQU 1 goto downloaded
+if %ARCHIVE_RESULT% EQU 2 goto unpacked
+if %ARCHIVE_RESULT% EQU 3 goto ready
+
+if exist libarchive-%ARCHIVEVER%.tar.gz %RM% libarchive-%ARCHIVEVER%.tar.gz
+if errorlevel 1 goto fail
+
+%WGET% http://libarchive.org/downloads/libarchive-%ARCHIVEVER%.tar.gz
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" store-result archive 1
+if errorlevel 1 goto fail
+
+:downloaded
 
 if exist libarchive-%ARCHIVEVER% %RMDIR% libarchive-%ARCHIVEVER%
-
-if not exist libarchive-%ARCHIVEVER%.tar.gz (
-	%WGET% http://libarchive.org/downloads/libarchive-%ARCHIVEVER%.tar.gz
-	if errorlevel 1 goto fail
-)
+if errorlevel 1 goto fail
 
 if exist libarchive-%ARCHIVEVER%.tar %RM% libarchive-%ARCHIVEVER%.tar
+if errorlevel 1 goto fail
+
 %SEVENZ% x libarchive-%ARCHIVEVER%.tar.gz
 if errorlevel 1 goto fail
 
 %SEVENZ% x libarchive-%ARCHIVEVER%.tar
-if errorlevel 1 exit /b 1
+if errorlevel 1 goto fail
+
 %RM% libarchive-%ARCHIVEVER%.tar
+if errorlevel 1 goto fail
 
 mkdir libarchive-%ARCHIVEVER%\build-cmake
 if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" store-result archive 2
+if errorlevel 1 goto fail
+
+:unpacked
 
 pushd libarchive-%ARCHIVEVER%\build-cmake
 if errorlevel 1 goto fail2
@@ -63,10 +84,13 @@ if errorlevel 1 goto fail2
 popd
 if errorlevel 1 goto fail
 
-set PATH=%OLDPATH%
-
 %CP% "%INSTALLPREFIX%"\libarchive-install\bin\archive.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" store-result archive 3
+if errorlevel 1 goto fail
+
+:ready
 
 echo.
 echo libarchive build: Success

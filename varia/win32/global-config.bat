@@ -13,7 +13,7 @@ rem set CL=/MP /D_USING_V120_SDK71_
 set ARCHIVEVER=3.1.2
 set ASPELLVER=0.60.6.1
 set GADUVER=1.12.0rc2
-set GADUPACKAGEVER=1.1
+set GADUPACKAGEVER=1.2
 set GNUWIN32GPERFVER=3.0.1
 set GNUWIN32GREPVER=2.5.4
 set IDNVER=1.26
@@ -24,7 +24,7 @@ set PYTHONCOMMONPORTABLEVER=2.7
 set QCAVER=v2.0.3
 set QTVER=v4.8.5
 set QTWEBKIT23VER=2.3.3
-set QMAKESPEC=win32-g++
+set QMAKESPEC=win32-msvc2012
 set RUBYVER=2.0.0-p0
 set SQLITEYEAR=2013
 set SQLITEVER=3071602
@@ -45,8 +45,9 @@ set CPDIR=xcopy /s /q /y /i
 set RM=del /f /q
 set RMDIR=rmdir /s /q
 
-set MINGWROOT="C:\MinGW\mingw64"
-set CMAKE=cmake -G "MinGW Makefiles"
+set MINGWROOT="C:\MinGW\"
+set CMAKE_GENERATOR=-G "Visual Studio 12"
+set CMAKE=cmake %CMAKE_GENERATOR%
 set CMAKE_MAKE=cmake --build . --config %Configuration%
 set CMAKE_MAKE_INSTALL=cmake --build . --config %Configuration% --target install
 set CTEST=ctest -C %Configuration%
@@ -60,6 +61,7 @@ set SVN=svn
 set WGET="%PROGRAM_FILES_X86%"\GnuWin32\bin\wget.exe
 
 set PATH=%PATH%;%MINGWROOT%\bin
+set Path=%Path%;%MINGWROOT%\bin
 
 if not exist "%INSTALLPREFIX%" mkdir "%INSTALLPREFIX%"
 if not exist "%INSTALLBASE%" mkdir "%INSTALLBASE%"

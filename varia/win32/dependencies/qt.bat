@@ -1,42 +1,64 @@
 @echo off
 
-call "%~dp0\..\build-config.bat"
-if errorlevel 1 exit /b 1
+echo.
+echo Building qt
+echo.
 
-call "%~dp0\..\pre-build.bat"
+set ret=0
+
+call "%~dp0\..\utils.bat" load-config
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" enable-perl
 if errorlevel 1 goto fail
 
 pushd "%INSTALLPREFIX%"
 if errorlevel 1 goto fail
 
-if exist qt (
-	echo qt directory already exists, skipping...
-	exit /b
-)
-
-if not exist qt.git-bare (
-	%GIT% clone --bare git://gitorious.org/qt/qt.git qt.git-bare
-	if errorlevel 1 goto fail
-) else (
-	pushd qt.git-bare
-	if errorlevel 1 goto fail
-	%GIT% fetch --all
-	if errorlevel 1 goto fail2
-	popd
-)
-
-if not exist sqlite-amalgamation-%SQLITEVER%.zip (
-	%WGET% http://www.sqlite.org/%SQLITEYEAR%/sqlite-amalgamation-%SQLITEVER%.zip
-	if errorlevel 1 goto fail
-)
-
-if not exist qt (
-	%GIT% clone .\qt.git-bare qt
-	if errorlevel 1 goto fail
-)
-
-call strawberry-perl-%PERLVER%-32bit-portable\portableshell.bat
+call "%~dp0\..\utils.bat" load-result qt QT
 if errorlevel 1 goto fail
+
+if %QT_RESULT% EQU 1 goto downloaded
+if %QT_RESULT% EQU 2 goto patch-downloaded
+if %QT_RESULT% EQU 3 (
+	pushd qt
+	if errorlevel 1 goto fail
+	goto version-checked-out
+)
+if %QT_RESULT% EQU 4 (
+	pushd qt
+	if errorlevel 1 goto fail
+	goto patched
+)
+if %QT_RESULT% EQU 4 (
+	pushd qt
+	if errorlevel 1 goto fail
+	goto configured
+)
+if %QT_RESULT% EQU 6 goto compiled
+if %QT_RESULT% EQU 7 goto ready
+
+if exist qt %RMDIR% qt
+if errorlevel 1 goto fail
+
+%GIT% clone git://gitorious.org/qt/qt.git qt
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" store-result qt 1
+if errorlevel 1 goto fail
+
+:downloaded
+
+if exist sqlite-amalgamation-%SQLITEVER%.zip %RM% sqlite-amalgamation-%SQLITEVER%.zip
+if errorlevel 1 goto fail
+
+%WGET% http://www.sqlite.org/%SQLITEYEAR%/sqlite-amalgamation-%SQLITEVER%.zip
+if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" store-result qt 2
+if errorlevel 1 goto fail
+
+:patch-downloaded
 
 pushd qt
 if errorlevel 1 goto fail
@@ -44,38 +66,65 @@ if errorlevel 1 goto fail
 %GIT% checkout %QTVER%
 if errorlevel 1 goto fail2
 
-rem TODO: check thread-safety, 2156f7057df5c748b51a7fd16a044f39c60b872 in qt.git
-rem %SEVENZ% e ..\sqlite-amalgamation-%SQLITEVER%.zip -osrc\3rdparty\sqlite -y
-rem if errorlevel 1 goto fail2
+rem javascript and msvc bug
+%GIT% cherry-pick 158caa355f459480e56dec0dc6aadfd792084a00
+if errorlevel 1 goto fail2
 
-rem %PATCH% -p1 < "%~dp0"\patches\qt-stylesheet.patch
-rem if errorlevel 1 goto fail2
+call "%~dp0\..\utils.bat" store-result qt 3
+if errorlevel 1 goto fail
+
+:version-checked-out
+
+rem TODO: check thread-safety, 2156f7057df5c748b51a7fd16a044f39c60b872 in qt.git
+%SEVENZ% e ..\sqlite-amalgamation-%SQLITEVER%.zip -osrc\3rdparty\sqlite -y
+if errorlevel 1 goto fail2
+
+%PATCH% -p1 < "%~dp0"\patches\qt-stylesheet.patch
+if errorlevel 1 goto fail2
 
 %SED% -i -e "s/zdll.lib/zlib.lib/g" src/3rdparty/zlib_dependency.pri src/tools/bootstrap/bootstrap.pri
 if errorlevel 1 goto fail2
 
-rem %SED% -i -e "s/SUBSYSTEM:CONSOLE$/SUBSYSTEM:CONSOLE,5.01/" -e "s/SUBSYSTEM:WINDOWS$/SUBSYSTEM:WINDOWS,5.01/" mkspecs\win32-msvc2012\qmake.conf
-rem if errorlevel 1 goto fail2
+%SED% -i -e "s/SUBSYSTEM:CONSOLE$/SUBSYSTEM:CONSOLE,5.01/" -e "s/SUBSYSTEM:WINDOWS$/SUBSYSTEM:WINDOWS,5.01/" mkspecs\%QMAKESPEC%\qmake.conf
+if errorlevel 1 goto fail2
 
-rem %SED% -i -e "s/"""v110"""/"""%PlatformToolset%"""/" qmake\generators\win32\msbuild_objectmodel.cpp
-rem if errorlevel 1 goto fail2
+%SED% -i -e "s/"""v110"""/"""%PlatformToolset%"""/" qmake\generators\win32\msbuild_objectmodel.cpp
+if errorlevel 1 goto fail2
+
+call "%~dp0\..\utils.bat" store-result qt 4
+if errorlevel 1 goto fail
+
+:patched
 
 rem qmake.exe will need zlib1.dll in PATH
-set OLDPATH=%PATH%
 set PATH=%INSTALLPREFIX%\zlib-install\bin;%PATH%
 
-configure -release -opensource -confirm-license -shared -ltcg -no-accessibility -plugin-sql-sqlite -no-qt3support -no-opengl -no-openvg -platform win32-g++ -I "%INSTALLPREFIX%"\zlib-install\include -L "%INSTALLPREFIX%"\zlib-install\lib -l zlib -I "%INSTALLPREFIX%"\openssl-install\include -L "%INSTALLPREFIX%"\openssl-install\lib OPENSSL_LIBS="-lssleay32 -llibeay32" -system-zlib -qt-libpng -no-libmng -no-libtiff -qt-libjpeg -openssl-linked -no-dbus -phonon -phonon-backend -no-multimedia -no-webkit -script -scripttools -declarative -arch windows -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -nomake demos -nomake examples -nomake tests -nomake tools -mp
+call "%~dp0\..\utils.bat" enable-msvc
+if errorlevel 1 goto fail
+
+configure -release -opensource -confirm-license -shared -ltcg -no-accessibility -plugin-sql-sqlite -no-qt3support -no-opengl -no-openvg -platform %QMAKESPEC% -I "%INSTALLPREFIX%"\zlib-install\include -L "%INSTALLPREFIX%"\zlib-install\lib -l zlib -I "%INSTALLPREFIX%"\openssl-install\include -L "%INSTALLPREFIX%"\openssl-install\lib OPENSSL_LIBS="-lssleay32 -llibeay32" -system-zlib -qt-libpng -no-libmng -no-libtiff -qt-libjpeg -openssl-linked -no-dbus -phonon -phonon-backend -no-multimedia -no-webkit -script -scripttools -declarative -arch windows -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -nomake demos -nomake examples -nomake tests -nomake tools -mp
 if errorlevel 1 goto fail2
 
-mingw32-make
-if errorlevel 1 goto fail2
+call "%~dp0\..\utils.bat" store-result qt 5
+if errorlevel 1 goto fail
 
-set QTDIR=%CD%
+:patched
+
+call "%~dp0\..\utils.bat" enable-msvc
+if errorlevel 1 goto fail
+
+nmake
+if errorlevel 1 goto fail2
 
 popd
 if errorlevel 1 goto fail
 
-set PATH=%OLDPATH%
+call "%~dp0\..\utils.bat" store-result qt 6
+if errorlevel 1 goto fail
+
+:compiled
+
+set QTDIR=%CD%
 
 %CP% "%QTDIR%"\lib\phonon4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
@@ -153,6 +202,11 @@ if not exist "%INSTALLBASE%"\qt-plugins\sqldrivers mkdir "%INSTALLBASE%"\qt-plug
 if errorlevel 1 goto fail
 %CP% "%QTDIR%"\plugins\sqldrivers\qsqlite4.dll "%INSTALLBASE%"\qt-plugins\sqldrivers
 if errorlevel 1 goto fail
+
+call "%~dp0\..\utils.bat" store-result qt 7
+if errorlevel 1 goto fail
+
+:ready
 
 echo.
 echo qt build: Success

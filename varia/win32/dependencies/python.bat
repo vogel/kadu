@@ -41,9 +41,6 @@ if errorlevel 1 goto fail2
 call "%~dp0\..\utils.bat" store-result python 2
 if errorlevel 1 goto fail2
 
-call strawberry-perl-%PERLVER%-32bit-portable\portableshell.bat
-if errorlevel 1 goto fail
-
 :ready
 popd
 echo Setting up python succeeded

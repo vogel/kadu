@@ -57,3 +57,103 @@ echo MSVC enabled
 echo.
 popd
 goto :eof
+
+:enable-perl
+call :build-dependency ret perl
+if errorlevel 1 goto fail
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+call strawberry-perl-%PERLVER%-32bit-portable\portableshell.bat
+if errorlevel 1 goto fail2
+
+popd
+if errorlevel 1 goto fail2
+
+goto :eof
+
+:enable-python
+call :build-dependency ret python
+if errorlevel 1 go
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+set PATH=%CD%\python-%PYTHONCOMMONPORTABLEVER%-bin-win32;%PATH%
+
+popd
+if errorlevel 1 goto fail2
+
+goto :eof
+
+:enable-ruby
+call :build-dependency ret ruby
+if errorlevel 1 go
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+set PATH=%CD%\ruby-%RUBYVER%-i386-mingw32\bin;%PATH%
+
+popd
+if errorlevel 1 goto fail2
+
+goto :eof
+
+:enable-nasm
+call :build-dependency ret nasm
+if errorlevel 1 goto fail
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+set PATH=%CD%\nasm-%NASMVER%;%PATH%
+goto :eof
+
+:enable-winflexbison
+call :build-dependency ret winflexbison
+if errorlevel 1 goto fail
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+set PATH=%CD%\winflexbison;%PATH%
+goto :eof
+
+:enable-gperf
+call :build-dependency ret gperf
+if errorlevel 1 goto fail
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+set PATH=%CD%\gnuwin32\bin;%PATH%
+goto :eof
+
+:enable-grep
+call :build-dependency ret grep
+if errorlevel 1 goto fail
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+set PATH=%CD%\gnuwin32\bin;%PATH%
+goto :eof
+
+
+:enable-xz
+call :build-dependency ret xz
+if errorlevel 1 goto fail
+
+pushd "%INSTALLPREFIX%"
+if errorlevel 1 goto fail
+
+set PATH=%INSTALLPREFIX%\xz\bin_i486;%PATH%
+goto :eof
+
+:fail2
+popd
+
+:fail
+exit /b %ret%
