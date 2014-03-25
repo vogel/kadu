@@ -115,7 +115,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(QTextD
 		firstBlock = false;
 	}
 
-	return make_unique<CompositeFormattedString>(std::move(items));
+	return ::make_unique<CompositeFormattedString>(std::move(items));
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromText(const QString &text)

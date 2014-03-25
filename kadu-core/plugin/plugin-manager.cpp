@@ -92,7 +92,7 @@ QVector<QString> PluginManager::pluginsToActivate(std::function<bool(const Plugi
 	return result;
 }
 
-bool PluginManager::shouldActivate(const PluginMetadata &pluginMetadata) const noexcept
+bool PluginManager::shouldActivate(const PluginMetadata &pluginMetadata) const
 {
 	if (!m_pluginStateService)
 		return false;
@@ -130,7 +130,7 @@ void PluginManager::activateReplacementPlugins()
 	}
 }
 
-QString PluginManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
+QString PluginManager::findReplacementPlugin(const QString &pluginToReplace) const
 {
 	if (!m_pluginDependencyHandler)
 		return {};

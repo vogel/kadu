@@ -52,14 +52,14 @@ public:
 	 * If pluginRootComponent is nullptr a PluginActivationErrorException is thrown. If not, init() method
 	 * of this object is called. If its result is false, PluginActivationErrorException is thrown.
 	 */
-	PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr) noexcept(false);
+	PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent = nullptr);
 
 	/**
 	 * @short Finalize plugin root object.
 	 *
 	 * If stored PluginRootComponent is not done() method of this object is called.
 	 */
-	~PluginRootComponentHandler() noexcept;
+	~PluginRootComponentHandler();
 
 private:
 	PluginRootComponent *m_pluginRootComponent;

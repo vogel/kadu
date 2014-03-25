@@ -42,8 +42,8 @@ class PluginMetadataFinder : public PluginMetadataProvider
 	Q_OBJECT
 
 public:
-	explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
-	virtual ~PluginMetadataFinder() noexcept;
+	explicit PluginMetadataFinder(QObject *parent = nullptr);
+	virtual ~PluginMetadataFinder();
 
 
 	/**
@@ -57,7 +57,7 @@ public:
 	 *
 	 * PluginMetadataReader is used to read metadata from .desc files.
 	 */
-	void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
+	void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader);
 
 	/**
 	 * @short Read metadata files from configured directory.
@@ -66,7 +66,7 @@ public:
 	 * a plugin name) to PluginMetadata objects read from these files.
 	 * If directory is not valid, empty map is returned.
 	 */
-	std::map<QString, PluginMetadata> provide() noexcept override;
+	std::map<QString, PluginMetadata> provide() override;
 
 private:
 	QString m_directory;

@@ -238,7 +238,7 @@ void PluginListWidget::handleCheckedPlugin(const QString &pluginName, const QSet
 		setAllChecked(m_pluginDependencyHandler->withDependencies(pluginName), true);
 	}
 	else
-		setAllChecked(QVector<QString>{pluginName}, false);
+		setAllChecked(QVector<QString>() << pluginName, false);
 }
 
 void PluginListWidget::handleUncheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins)
@@ -265,7 +265,7 @@ void PluginListWidget::handleUncheckedPlugin(const QString &pluginName, const QS
 	if (QDialog::Accepted == dialog->exec())
 		setAllChecked(dependents, false);
 	else
-		setAllChecked(QVector<QString>{pluginName}, true);
+		setAllChecked(QVector<QString>() << pluginName, true);
 
 }
 

@@ -54,17 +54,17 @@ public:
 	 *
 	 * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
 	 */
-	explicit PluginLoader(const QString &pluginName, QObject *parent = nullptr) noexcept(false);
+	explicit PluginLoader(const QString &pluginName, QObject *parent = nullptr);
 
 	/**
 	 * @short Unload plugin dynamic library file.
 	 */
-	virtual ~PluginLoader() noexcept;
+	virtual ~PluginLoader();
 
 	/**
 	 * @return root object of plugin.
 	 */
-	PluginRootComponent * instance() const noexcept;
+	PluginRootComponent * instance() const;
 
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;

@@ -142,7 +142,7 @@ QList<QWidget *> PluginListWidgetItemDelegate::createItemWidgets() const
 			<< QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
 			<< QEvent::KeyPress << QEvent::KeyRelease);
 
-	return {enabledCheckBox, aboutPushButton};
+	return QList<QWidget *>() << enabledCheckBox << aboutPushButton;
 }
 
 void PluginListWidgetItemDelegate::updateItemWidgets(const QList<QWidget *> widgets, const QStyleOptionViewItem &option,

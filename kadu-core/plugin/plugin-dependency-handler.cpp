@@ -49,12 +49,12 @@ void PluginDependencyHandler::setPluginMetadataProvider(PluginMetadataProvider *
 
 PluginDependencyHandler::Iterator PluginDependencyHandler::begin()
 {
-	return {m_allPluginMetadata.begin(), converter};
+	return PluginDependencyHandler::Iterator{m_allPluginMetadata.begin(), converter};
 }
 
 PluginDependencyHandler::Iterator PluginDependencyHandler::end()
 {
-	return {m_allPluginMetadata.end(), converter};
+	return PluginDependencyHandler::Iterator{m_allPluginMetadata.end(), converter};
 }
 
 void PluginDependencyHandler::initialize()
@@ -93,28 +93,28 @@ QVector<QString> PluginDependencyHandler::withDependencies(const QString &plugin
 {
 	return hasPluginMetadata(pluginName)
 			? m_pluginDependencyDAG.findDependencies(pluginName) << pluginName
-			: QVector<QString>{};
+			: QVector<QString>();
 }
 
 QVector<QString> PluginDependencyHandler::findDependencies(const QString &pluginName) const
 {
 	return hasPluginMetadata(pluginName)
 			? m_pluginDependencyDAG.findDependencies(pluginName)
-			: QVector<QString>{};
+			: QVector<QString>();
 }
 
 QVector<QString> PluginDependencyHandler::withDependents(const QString &pluginName) const
 {
 	return hasPluginMetadata(pluginName)
 			? m_pluginDependencyDAG.findDependents(pluginName) << pluginName
-			: QVector<QString>{};
+			: QVector<QString>();
 }
 
 QVector<QString> PluginDependencyHandler::findDependents(const QString &pluginName) const
 {
 	return hasPluginMetadata(pluginName)
 			? m_pluginDependencyDAG.findDependents(pluginName)
-			: QVector<QString>{};
+			: QVector<QString>();
 }
 
 #include "moc_plugin-dependency-handler.cpp"

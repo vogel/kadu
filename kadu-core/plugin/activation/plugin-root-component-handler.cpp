@@ -22,7 +22,7 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-root-component.h"
 
-PluginRootComponentHandler::PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent) noexcept(false) :
+PluginRootComponentHandler::PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent) :
 		QObject{parent}, m_pluginRootComponent{pluginRootComponent}
 {
 	if (!m_pluginRootComponent)
@@ -32,7 +32,7 @@ PluginRootComponentHandler::PluginRootComponentHandler(const QString &pluginName
 		throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
 }
 
-PluginRootComponentHandler::~PluginRootComponentHandler() noexcept
+PluginRootComponentHandler::~PluginRootComponentHandler()
 {
 	m_pluginRootComponent->done();
 }

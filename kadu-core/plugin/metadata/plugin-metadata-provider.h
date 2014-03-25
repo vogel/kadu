@@ -34,6 +34,6 @@ public:
 	explicit PluginMetadataProvider(QObject *parent = nullptr);
 	virtual ~PluginMetadataProvider();
 
-	virtual std::map<QString, PluginMetadata> provide() noexcept = 0;
+	virtual std::map<QString, PluginMetadata> provide() = 0;
 
 };

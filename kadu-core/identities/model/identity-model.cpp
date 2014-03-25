@@ -51,7 +51,7 @@ int IdentityModel::rowCount(const QModelIndex &parent) const
 QVariant IdentityModel::data(const QModelIndex &index, int role) const
 {
 	Identity ident = identity(index);
-	if (0 == ident)
+	if (ident.isNull())
 		return QVariant();
 
 	switch (role)

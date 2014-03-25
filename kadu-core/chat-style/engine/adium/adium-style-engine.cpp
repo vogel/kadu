@@ -79,7 +79,7 @@ std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactor
 	auto style = std::make_shared<AdiumStyle>(chatStyle.name());
 	style->setCurrentVariant(chatStyle.variant());
 
-	auto result = make_unique<AdiumStyleRendererFactory>(style);
+	auto result = ::make_unique<AdiumStyleRendererFactory>(style);
 	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
 	return std::move(result);
 }

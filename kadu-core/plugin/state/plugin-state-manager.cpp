@@ -75,8 +75,8 @@ void PluginStateManager::loadPluginStates()
 QMap<QString, PluginState> PluginStateManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
 {
 	return importedFrom09
-			? PluginStateStorage{}.load(*storagePoint)
-			: PluginStateStorage09{}.load(m_pluginDependencyHandler->pluginNames());
+			? PluginStateStorage().load(*storagePoint)
+			: PluginStateStorage09().load(m_pluginDependencyHandler->pluginNames());
 }
 
 void PluginStateManager::storePluginStatesAndFlush()

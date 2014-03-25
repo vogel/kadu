@@ -37,8 +37,8 @@ class PluginMetadataReader : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginMetadataReader(QObject *parent = nullptr) noexcept;
-	virtual ~PluginMetadataReader() noexcept;
+	explicit PluginMetadataReader(QObject *parent = nullptr);
+	virtual ~PluginMetadataReader();
 
 	/**
 	 * @short Reads PluginMetadata instance from .desc file.
@@ -48,7 +48,7 @@ public:
 	 *
 	 * If file \p filePath can not be read, a PluginMetadataReaderException exception is thrown.
 	 */
-	PluginMetadata readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false);
+	PluginMetadata readPluginMetadata(const QString &pluginName, const QString &filePath);
 
 };
 

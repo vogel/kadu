@@ -53,8 +53,8 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 	{
 		auto pluginsToRemove = QSet<QString>{};
 		auto data = std::map<QString, std::tuple<int, std::set<QString>>>{};
-		for (auto const &plugin : graph.plugins())
-			data.insert({plugin, std::make_tuple(graph.directDependencies(plugin).size(), std::set<QString>{})});
+		foreach (QString plugin, graph.plugins()) // MSVC 2013
+			data.insert(std::make_pair(plugin, std::make_tuple(graph.directDependencies(plugin).size(), std::set<QString>())));
 
 		auto readyToCompute = std::queue<QString>{};
 		for (auto const &entry : data)

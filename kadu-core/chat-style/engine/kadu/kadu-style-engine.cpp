@@ -55,5 +55,5 @@ std::unique_ptr<ChatStyleRendererFactory> KaduStyleEngine::createRendererFactory
 		"#{message}</font></p>"
 	);
 
-	return make_unique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
+	return ::make_unique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
 }

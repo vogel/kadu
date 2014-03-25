@@ -30,14 +30,14 @@ class GraphNode
 	struct TypeIndex
 	{
 		typedef typename TypeIndex<I + 1, T, Tail...>::type type;
-		static constexpr int i = I;
+		static const int i = I;
 	};
 
 	template<int I, class T, class... Tail>
 	struct TypeIndex<I, T, T, Tail...>
 	{
 		typedef TypeIndex type;
-		static constexpr int i = I;
+		static const int i = I;
 	};
 
 public:

@@ -134,8 +134,8 @@ private:
 	 *   <li>is either PluginState::Enabled or PluginState::New with PluginMetadata::loadByDefault() set to true
 	 * </ul>
 	 */
-	bool shouldActivate(const PluginMetadata &pluginMetadata) const noexcept;
-	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
+	bool shouldActivate(const PluginMetadata &pluginMetadata) const;
+	QString findReplacementPlugin(const QString &pluginToReplace) const;
 
 };
 

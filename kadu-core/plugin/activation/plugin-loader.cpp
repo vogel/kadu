@@ -41,7 +41,7 @@
 	#define SO_EXT "so"
 #endif
 
-PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(false) :
+PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) :
 		QObject{parent},
 		m_pluginLoader{make_unique<QPluginLoader>(KaduPaths::instance()->pluginsLibPath() + "/" + QLatin1String{SO_PREFIX} + pluginName + QLatin1String{"." SO_EXT})}
 {
@@ -56,7 +56,7 @@ PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(
 	}
 }
 
-PluginLoader::~PluginLoader() noexcept
+PluginLoader::~PluginLoader()
 {
 	if (m_pluginLoader)
 	{
@@ -70,7 +70,7 @@ PluginLoader::~PluginLoader() noexcept
 	}
 }
 
-PluginRootComponent * PluginLoader::instance() const noexcept
+PluginRootComponent * PluginLoader::instance() const
 {
 	if (!m_pluginLoader)
 		return nullptr;

@@ -124,7 +124,7 @@ std::set<typename GraphType::PayloadType> graph_find_cycles(const GraphType &gra
 
 class GraphCycleException : public std::exception
 {
-	virtual const char * what() const noexcept { return "Found cycle in graph"; }
+	virtual const char * what() const { return "Found cycle in graph"; }
 };
 
 template<typename GraphType, typename SuccessorTypeTag>
@@ -134,7 +134,7 @@ class GraphSuccessorSorter
 	using NodePointer = typename GraphType::NodePointer;
 
 public:
-	explicit GraphSuccessorSorter(const GraphType &graph, const PayloadType &payload) noexcept(false)
+	explicit GraphSuccessorSorter(const GraphType &graph, const PayloadType &payload)
 	{
 		auto node = graph.node(payload);
 		if (node)
@@ -157,7 +157,7 @@ private:
 	std::vector<NodePointer> m_result;
 	std::map<NodePointer, VisitState> m_visitStates;
 
-	void visitNode(NodePointer node) noexcept(false)
+	void visitNode(NodePointer node)
 	{
 		m_visitStates.insert({node, VisitState::BeingVisited});
 		for (auto successor : node->template successors<SuccessorTypeTag>())
@@ -165,7 +165,7 @@ private:
 		m_visitStates.at(node) = VisitState::Visited;
 	}
 
-	void sortSuccessors(NodePointer node) noexcept(false)
+	void sortSuccessors(NodePointer node)
 	{
 		auto visitState = m_visitStates.find(node);
 		if (visitState == m_visitStates.end())
@@ -180,7 +180,7 @@ private:
 };
 
 template<typename SuccessorTypeTag, typename GraphType, typename PayloadType = typename GraphType::PayloadType>
-std::vector<typename GraphType::NodePointer> graph_sort_successors(const GraphType &graph, const PayloadType &payload) noexcept(false)
+std::vector<typename GraphType::NodePointer> graph_sort_successors(const GraphType &graph, const PayloadType &payload)
 {
 	auto successorSorter = GraphSuccessorSorter<GraphType, SuccessorTypeTag>{graph, payload};
 	return successorSorter.result();

@@ -51,13 +51,13 @@ class KADUAPI PluginStateService : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginStateService(QObject *parent = nullptr) noexcept;
-	virtual ~PluginStateService() noexcept;
+	explicit PluginStateService(QObject *parent = nullptr);
+	virtual ~PluginStateService();
 
 	/**
 	 * @return Plugin states for all known plugin names.
 	 */
-	QMap<QString, PluginState> pluginStates() const noexcept;
+	QMap<QString, PluginState> pluginStates() const;
 
 	/**
 	 * @short Change map of known plugin states.
@@ -68,7 +68,7 @@ public:
 	 * It is also emited for removed plugins (with PluginState::New). In such cases @see changeNotifier()
 	 * is also notified.
 	 */
-	void setPluginStates(QMap<QString, PluginState> pluginStates) noexcept;
+	void setPluginStates(QMap<QString, PluginState> pluginStates);
 
 	/**
 	 * @param pluginName name of plugin
@@ -76,7 +76,7 @@ public:
 	 *
 	 * If no plugin state is known for this plugin name, PluginState::New is returned.
 	 */
-	PluginState pluginState(const QString &pluginName) const noexcept;
+	PluginState pluginState(const QString &pluginName) const;
 
 	/**
 	 * @short Set new state for plugin.
@@ -89,13 +89,13 @@ public:
 	 * If new state is different than previous, signal pluginStateChanged is emited and @see changeNotifier()
 	 * it notified.
 	 */
-	void setPluginState(const QString &pluginName, PluginState state) noexcept;
+	void setPluginState(const QString &pluginName, PluginState state);
 
 	/**
 	 * @return All plugin with state PluginState::Enabled.
 	 * @param state state
 	 */
-	QList<QString> enabledPlugins() noexcept;
+	QList<QString> enabledPlugins();
 
 	/**
 	 * @return Change notifier called each time a plugin state changes.

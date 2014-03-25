@@ -55,7 +55,7 @@ int GroupsModel::rowCount(const QModelIndex &parent) const
 QVariant GroupsModel::data(const QModelIndex &index, int role) const
 {
 	Group grp = group(index);
-	if (0 == grp)
+	if (grp.isNull())
 		return QVariant();
 
 	switch (role)

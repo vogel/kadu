@@ -51,10 +51,19 @@ class KADUAPI PluginDependencyGraph
 public:
 	PluginDependencyGraph() = default;
 	PluginDependencyGraph(const PluginDependencyGraph &) = delete;
-	PluginDependencyGraph(PluginDependencyGraph &&) = default;
+	PluginDependencyGraph(PluginDependencyGraph &&moveMe)
+	{
+		using std::swap;
+		swap(m_graph, moveMe.m_graph);
+	}
 
 	PluginDependencyGraph & operator = (const PluginDependencyGraph &) = delete;
-	PluginDependencyGraph & operator = (PluginDependencyGraph &&) = default;
+	PluginDependencyGraph & operator = (PluginDependencyGraph &&moveMe)
+	{
+		using std::swap;
+		swap(m_graph, moveMe.m_graph);
+		return *this;
+	}
 
 	/**
 	 * @short Add plugin to graph.
@@ -111,7 +120,7 @@ public:
 	 * plugins can be properly activated in order of this list. If such list could not be computed
 	 * due to cycle in graph, PluginDependencyCycleException is thrown.
 	 */
-	QVector<QString> findDependencies(const QString &pluginName) const noexcept(false);
+	QVector<QString> findDependencies(const QString &pluginName) const;
 
 	/**
 	 * @param pluginName name of plugin to find all dependents for
@@ -122,7 +131,7 @@ public:
 	 * plugins can be properly deactivated in order of this list. If such list could not be computed
 	 * due to cycle in graph, PluginDependencyCycleException is thrown.
 	 */
-	QVector<QString> findDependents(const QString &pluginName) const noexcept(false);
+	QVector<QString> findDependents(const QString &pluginName) const;
 
 private:
 	using PluginGraph = Graph<QString, PluginDependencyTag, PluginDependentTag>;
@@ -132,7 +141,7 @@ private:
 	QSet<QString> directSuccessors(const QString &pluginName) const;
 
 	template<typename SuccessorTypeTag>
-	QVector<QString> findSuccessors(const QString &pluginName) const noexcept(false);
+	QVector<QString> findSuccessors(const QString &pluginName) const;
 
 };
 

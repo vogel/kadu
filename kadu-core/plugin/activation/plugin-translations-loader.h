@@ -45,12 +45,12 @@ public:
 	 * Loads and installs plugin translation file in application. If for some reason it
 	 * was impossible - this constructor does nothing.
 	 */
-	explicit PluginTranslationsLoader(const QString &pluginName) noexcept;
+	explicit PluginTranslationsLoader(const QString &pluginName);
 
 	/**
 	 * @short Unload plugin translation file.
 	 */
-	~PluginTranslationsLoader() noexcept;
+	~PluginTranslationsLoader();
 
 private:
 	std::unique_ptr<QTranslator> m_translator;

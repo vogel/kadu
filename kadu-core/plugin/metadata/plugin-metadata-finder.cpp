@@ -25,12 +25,12 @@
 #include <QtCore/QDir>
 #include <QtCore/QVector>
 
-PluginMetadataFinder::PluginMetadataFinder(QObject *parent) noexcept :
+PluginMetadataFinder::PluginMetadataFinder(QObject *parent) :
 		PluginMetadataProvider{parent}
 {
 }
 
-PluginMetadataFinder::~PluginMetadataFinder() noexcept
+PluginMetadataFinder::~PluginMetadataFinder()
 {
 }
 
@@ -39,12 +39,12 @@ void PluginMetadataFinder::setDirectory(QString directory)
 	m_directory = std::move(directory);
 }
 
-void PluginMetadataFinder::setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept
+void PluginMetadataFinder::setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader)
 {
 	m_pluginMetadataReader = pluginMetadataReader;
 }
 
-std::map<QString, PluginMetadata> PluginMetadataFinder::provide() noexcept
+std::map<QString, PluginMetadata> PluginMetadataFinder::provide()
 {
 	if (m_directory.isEmpty() || !m_pluginMetadataReader)
 		return {};

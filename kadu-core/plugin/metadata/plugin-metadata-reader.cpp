@@ -27,16 +27,16 @@
 
 #include <QtCore/QFileInfo>
 
-PluginMetadataReader::PluginMetadataReader(QObject *parent) noexcept :
+PluginMetadataReader::PluginMetadataReader(QObject *parent) :
 		QObject(parent)
 {
 }
 
-PluginMetadataReader::~PluginMetadataReader() noexcept
+PluginMetadataReader::~PluginMetadataReader()
 {
 }
 
-PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false)
+PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginName, const QString &filePath)
 {
 	auto fileInfo = QFileInfo{filePath};
 	if (!fileInfo.exists() || !fileInfo.isReadable())

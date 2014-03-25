@@ -104,7 +104,7 @@ QVector<QString> PluginDependencyGraph::findSuccessors(const QString &pluginName
 		std::transform(sortedSuccessors.begin(), sortedSuccessors.end(), std::back_inserter(result), extractPayload);
 		return result;
 	}
-	catch (GraphCycleException &e)
+	catch (GraphCycleException &)
 	{
 		throw PluginDependencyCycleException();
 	}

@@ -211,11 +211,11 @@ void WebkitMessagesView::refreshView()
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
 	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
-	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
+	QString javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
-			: QString{};
+			: QString();
 	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
-	return ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
+	return ChatStyleRendererConfiguration(chat(), *page()->mainFrame(), javaScript, transparency);
 }
 
 void WebkitMessagesView::setWebkitMessagesViewHandler(qobject_ptr<WebkitMessagesViewHandler> handler)

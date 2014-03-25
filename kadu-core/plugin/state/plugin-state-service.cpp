@@ -24,21 +24,21 @@
 
 #include <QtCore/QSet>
 
-PluginStateService::PluginStateService(QObject *parent) noexcept :
+PluginStateService::PluginStateService(QObject *parent) :
 		QObject{parent}
 {
 }
 
-PluginStateService::~PluginStateService() noexcept
+PluginStateService::~PluginStateService()
 {
 }
 
-QMap<QString, PluginState> PluginStateService::pluginStates() const noexcept
+QMap<QString, PluginState> PluginStateService::pluginStates() const
 {
 	return m_pluginStates;
 }
 
-void PluginStateService::setPluginStates(QMap<QString, PluginState> pluginStates) noexcept
+void PluginStateService::setPluginStates(QMap<QString, PluginState> pluginStates)
 {
 	auto setToNew = QSet<QString>{};
 	for (auto &plugin : m_pluginStates.keys())
@@ -52,14 +52,14 @@ void PluginStateService::setPluginStates(QMap<QString, PluginState> pluginStates
 		setPluginState(plugin, pluginStates.value(plugin));
 }
 
-PluginState PluginStateService::pluginState(const QString &pluginName) const noexcept
+PluginState PluginStateService::pluginState(const QString &pluginName) const
 {
 	return m_pluginStates.contains(pluginName)
 			? m_pluginStates.value(pluginName)
 			: PluginState::New;
 }
 
-void PluginStateService::setPluginState(const QString &pluginName, PluginState state) noexcept
+void PluginStateService::setPluginState(const QString &pluginName, PluginState state)
 {
 	if (PluginState::New == state)
 	{
@@ -81,7 +81,7 @@ void PluginStateService::setPluginState(const QString &pluginName, PluginState s
 	}
 }
 
-QList<QString> PluginStateService::enabledPlugins() noexcept
+QList<QString> PluginStateService::enabledPlugins()
 {
 	return m_pluginStates.keys(PluginState::Enabled);
 }

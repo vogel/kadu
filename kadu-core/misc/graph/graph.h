@@ -28,7 +28,7 @@
 #include <memory>
 
 template<typename P, typename... SuccessorTypeTags>
-class Graph
+class KADUAPI Graph
 {
 
 public:
@@ -41,9 +41,18 @@ public:
 
 	Graph() = default;
 	Graph(const Graph &) = delete;
-	Graph(Graph &&) = default;
+	Graph(Graph &&moveMe)
+	{
+		using std::swap;
+		swap(m_nodes, moveMe.m_nodes);
+	}
 	Graph & operator = (const Graph &) = delete;
-	Graph & operator = (Graph &&) = default;
+	Graph & operator = (Graph &&moveMe)
+	{
+		using std::swap;
+		swap(m_nodes, moveMe.m_nodes);
+		return *this;
+	}
 
 	const Storage & nodes() const
 	{

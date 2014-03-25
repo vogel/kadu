@@ -64,7 +64,7 @@ void FormattedStringCloneVisitor::endVisit(const CompositeFormattedString * cons
 			break;
 	}
 	std::reverse(std::begin(items), std::end(items));
-	ItemsStack.push(make_unique<CompositeFormattedString>(std::move(items)));
+	ItemsStack.push(::make_unique<CompositeFormattedString>(std::move(items)));
 }
 
 void FormattedStringCloneVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
