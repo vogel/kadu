@@ -25,7 +25,7 @@
 class ChatImageService;
 class ImageStorageService;
 
-class KADUAPI FormattedStringGaduHtmlVisitor : public FormattedStringHtmlVisitor
+class FormattedStringGaduHtmlVisitor : public FormattedStringHtmlVisitor
 {
 	Q_DISABLE_COPY(FormattedStringGaduHtmlVisitor);
 
