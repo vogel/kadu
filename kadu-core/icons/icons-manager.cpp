@@ -212,7 +212,7 @@ QIcon IconsManager::iconByPath(const QString &themePath, const QString &path, Al
 		IconCache.insert(themePath + path, icon);
 	}
 
-	return IconCache.value(themePath + path);
+	return QIcon(); // IconCache.value(themePath + path);
 }
 
 void IconsManager::clearCache()

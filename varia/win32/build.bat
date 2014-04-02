@@ -6,42 +6,7 @@ if errorlevel 1 goto fail
 call "%~dp0\global-config.bat"
 if errorlevel 1 goto fail
 
-pushd "%INSTALLPREFIX%"
-if errorlevel 1 goto fail
-
-rem Now the real Kadu dependencies.
-
-rem call "%~dp0\utils.bat" build-dependency zlib
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency libidn
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency openssl
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency libgadu
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency aspell
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency qt
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency qtwebkit-23
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency qca
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency xz
-rem if errorlevel 1 goto fail
-
-rem call "%~dp0\utils.bat" build-dependency libarchive
-rem if errorlevel 1 goto fail
-
-popd
+call "%~dp0\utils.bat" build-dependency kadu
 if errorlevel 1 goto fail
 
 rem Prepare Kadu installation directory.
@@ -71,7 +36,7 @@ if exist install goto pastkadu
 	pushd build
 	if errorlevel 1 goto fail2
 
-	%CMAKE% -DCMAKE_INSTALL_PREFIX:PATH="%KADUROOT%"\install -DKADU_SDK_DIR:PATH="%KADUROOT%"\sdk -DCMAKE_PREFIX_PATH="%INSTALLPREFIX%"\qca;"%INSTALLPREFIX%"\libarchive-install;"%INSTALLPREFIX%"\openssl-install -DZLIB_ROOT:PATH="%INSTALLPREFIX%"\zlib-install -DWIN_LIBGADU_DIR:PATH="%INSTALLPREFIX%"\libgadu-install -DWIN_IDN_DIR:PATH="%INSTALLPREFIX%"\libidn -DWIN_ASPELL_DIR:PATH="%INSTALLPREFIX%"\aspell-install "%KADUGIT%" -DCOMPILE_PLUGINS="%KADU_PLUGINS%"
+	%CMAKE% -DCMAKE_INSTALL_PREFIX:PATH="%KADUROOT%\install" -DKADU_SDK_DIR:PATH="%KADUROOT%\sdk" -DCMAKE_PREFIX_PATH="%INSTALLPREFIX%\qca";"%INSTALLPREFIX%\libarchive-install";"%INSTALLPREFIX%\openssl-install" -DZLIB_ROOT:PATH="%INSTALLPREFIX%\zlib-install" -DWIN_LIBGADU_DIR:PATH="%INSTALLPREFIX%\libgadu-install" -DWIN_IDN_DIR:PATH="%INSTALLPREFIX%\libidn" -DWIN_ASPELL_DIR:PATH="%INSTALLPREFIX%\aspell-install" "%KADUGIT%" -DCOMPILE_PLUGINS="%KADU_PLUGINS%"
 	if errorlevel 1 goto fail3
 	%CMAKE_MAKE%
 	if errorlevel 1 goto fail3

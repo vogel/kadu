@@ -31,11 +31,31 @@ set SQLITEVER=3071602
 set XZVER=5.0.4
 set ZLIBVER=1.2.8
 
-set Configuration=Release
+set DEBUG=0
+set BUILD_SUBDIR=kadu-build-release
+
+if %DEBUG% EQU 1 (
+	set Configuration=Debug
+	set LIBSUFFIX=d
+	set LIBDIR=debug
+	set QTMODE=debug
+	set QTWEBKITDIR=Debug
+	set OPENSSLCONFIG=debug-VC-WIN32
+) else (
+	set Configuration=Release
+	set LIBSUFFIX=
+	set LIBDIR=
+	set QTMODE=release
+	set QTWEBKITDIR=Release
+	set OPENSSLCONFIG=VC-WIN32
+)
+
 set PlatformToolset=v120_xp
 
 set KADUGIT=%~dp0\..\..
-if not defined KADUROOT set KADUROOT=%KADUGIT%\..
+if not defined KADUROOT set KADUROOT=C:\%BUILD_SUBDIR%\
+if not exist %KADUROOT% mkdir %KADUROOT%
+
 set INSTALLPREFIX=%KADUROOT%\dependencies
 set INSTALLBASE=%KADUROOT%\install-base
 set KADU_PLUGINS=antistring;auto_hide;autoaway;autoresponder;autostatus;cenzor;chat_notify;config_wizard;desktop_docking;docking;emoticons;encryption_ng;encryption_ng_simlite;exec_notify;ext_sound;filedesc;firewall;gadu_protocol;hints;history;history_migration;idle;imagelink;jabber_protocol;last_seen;mediaplayer;pcspeaker;phonon_sound;profiles_import;qt4_docking;qt4_docking_notify;qt4_sound;screenshot;simpleview;single_window;sms;sound;speech;spellchecker;sql_history;tabs;winamp_mediaplayer;word_fix

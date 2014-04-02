@@ -77,7 +77,8 @@ if errorlevel 1 goto fail2
 
 :compiled
 
-%CP% "%INSTALLPREFIX%"\libidn\windows\lib\libidn.dll "%INSTALLBASE%"
+echo %CP% "%INSTALLPREFIX%"\libidn\windows\lib\%LIBDIR%\libidn.dll "%INSTALLBASE%"
+%CP% "%INSTALLPREFIX%"\libidn\windows\lib\%LIBDIR%\libidn.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
 call "%~dp0\..\utils.bat" store-result libidn 4

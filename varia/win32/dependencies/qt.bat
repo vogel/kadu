@@ -30,7 +30,7 @@ if %QT_RESULT% EQU 4 (
 	if errorlevel 1 goto fail
 	goto patched
 )
-if %QT_RESULT% EQU 4 (
+if %QT_RESULT% EQU 5 (
 	pushd qt
 	if errorlevel 1 goto fail
 	goto configured
@@ -41,8 +41,9 @@ if %QT_RESULT% EQU 7 goto ready
 if exist qt %RMDIR% qt
 if errorlevel 1 goto fail
 
+:reclone
 %GIT% clone git://gitorious.org/qt/qt.git qt
-if errorlevel 1 goto fail
+if errorlevel 1 goto reclone
 
 call "%~dp0\..\utils.bat" store-result qt 1
 if errorlevel 1 goto fail
@@ -82,7 +83,7 @@ if errorlevel 1 goto fail2
 %PATCH% -p1 < "%~dp0"\patches\qt-stylesheet.patch
 if errorlevel 1 goto fail2
 
-%SED% -i -e "s/zdll.lib/zlib.lib/g" src/3rdparty/zlib_dependency.pri src/tools/bootstrap/bootstrap.pri
+%SED% -i -e "s/zdll.lib/zlib%LIBSUFFIX%.lib/g" src/3rdparty/zlib_dependency.pri src/tools/bootstrap/bootstrap.pri
 if errorlevel 1 goto fail2
 
 %SED% -i -e "s/SUBSYSTEM:CONSOLE$/SUBSYSTEM:CONSOLE,5.01/" -e "s/SUBSYSTEM:WINDOWS$/SUBSYSTEM:WINDOWS,5.01/" mkspecs\%QMAKESPEC%\qmake.conf
@@ -102,13 +103,13 @@ set PATH=%INSTALLPREFIX%\zlib-install\bin;%PATH%
 call "%~dp0\..\utils.bat" enable-msvc
 if errorlevel 1 goto fail
 
-configure -release -opensource -confirm-license -shared -ltcg -no-accessibility -plugin-sql-sqlite -no-qt3support -no-opengl -no-openvg -platform %QMAKESPEC% -I "%INSTALLPREFIX%"\zlib-install\include -L "%INSTALLPREFIX%"\zlib-install\lib -l zlib -I "%INSTALLPREFIX%"\openssl-install\include -L "%INSTALLPREFIX%"\openssl-install\lib OPENSSL_LIBS="-lssleay32 -llibeay32" -system-zlib -qt-libpng -no-libmng -no-libtiff -qt-libjpeg -openssl-linked -no-dbus -phonon -phonon-backend -no-multimedia -no-webkit -script -scripttools -declarative -arch windows -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -nomake demos -nomake examples -nomake tests -nomake tools -mp
+configure -%QTMODE% -opensource -confirm-license -shared -ltcg -no-accessibility -plugin-sql-sqlite -no-qt3support -no-opengl -no-openvg -platform %QMAKESPEC% -I "%INSTALLPREFIX%"\zlib-install\include -L "%INSTALLPREFIX%"\zlib-install\lib -l zlib%LIBSUFFIX% -I "%INSTALLPREFIX%"\openssl-install\include -L "%INSTALLPREFIX%"\openssl-install\lib OPENSSL_LIBS="-lssleay32 -llibeay32" -system-zlib -qt-libpng -no-libmng -no-libtiff -qt-libjpeg -openssl-linked -no-dbus -phonon -phonon-backend -no-multimedia -no-webkit -script -scripttools -declarative -arch windows -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -nomake demos -nomake examples -nomake tests -nomake tools -mp
 if errorlevel 1 goto fail2
 
 call "%~dp0\..\utils.bat" store-result qt 5
 if errorlevel 1 goto fail
 
-:patched
+:configured
 
 call "%~dp0\..\utils.bat" enable-msvc
 if errorlevel 1 goto fail
@@ -124,39 +125,40 @@ if errorlevel 1 goto fail
 
 :compiled
 
-set QTDIR=%CD%
+set QTDIR=%CD%\qt
 
-%CP% "%QTDIR%"\lib\phonon4.dll "%INSTALLBASE%"
+echo %CP% "%QTDIR%"\lib\phonon%LIBSUFFIX%4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\phonon%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtCore4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtCore%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtDeclarative4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtDeclarative%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtGui4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtGui%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtNetwork4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtNetwork%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtScript4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtScript%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtSql4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtSql%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtSvg4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtSvg%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtXml4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtXml%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\QtXmlPatterns4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtXmlPatterns%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%QTDIR%"\lib\phonon4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\phonon%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
 if not exist "%INSTALLBASE%"\translations mkdir "%INSTALLBASE%"\translations
@@ -174,33 +176,33 @@ if errorlevel 1 goto fail
 
 if not exist "%INSTALLBASE%"\qt-plugins\bearer mkdir "%INSTALLBASE%"\qt-plugins\bearer
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\bearer\qgenericbearer4.dll "%INSTALLBASE%"\qt-plugins\bearer
+%CP% "%QTDIR%"\plugins\bearer\qgenericbearer%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\bearer
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\bearer\qnativewifibearer4.dll "%INSTALLBASE%"\qt-plugins\bearer
+%CP% "%QTDIR%"\plugins\bearer\qnativewifibearer%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\bearer
 if errorlevel 1 goto fail
 
 if not exist "%INSTALLBASE%"\qt-plugins\iconengines mkdir "%INSTALLBASE%"\qt-plugins\iconengines
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\iconengines\qsvgicon4.dll "%INSTALLBASE%"\qt-plugins\iconengines
+%CP% "%QTDIR%"\plugins\iconengines\qsvgicon%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\iconengines
 if errorlevel 1 goto fail
 
 if not exist "%INSTALLBASE%"\qt-plugins\imageformats mkdir "%INSTALLBASE%"\qt-plugins\imageformats
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\imageformats\qgif4.dll "%INSTALLBASE%"\qt-plugins\imageformats
+%CP% "%QTDIR%"\plugins\imageformats\qgif%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\imageformats
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\imageformats\qjpeg4.dll "%INSTALLBASE%"\qt-plugins\imageformats
+%CP% "%QTDIR%"\plugins\imageformats\qjpeg%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\imageformats
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\imageformats\qsvg4.dll "%INSTALLBASE%"\qt-plugins\imageformats
+%CP% "%QTDIR%"\plugins\imageformats\qsvg%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\imageformats
 if errorlevel 1 goto fail
 
 if not exist "%INSTALLBASE%"\qt-plugins\phonon_backend mkdir "%INSTALLBASE%"\qt-plugins\phonon_backend
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\phonon_backend\phonon_ds94.dll "%INSTALLBASE%"\qt-plugins\phonon_backend
+%CP% "%QTDIR%"\plugins\phonon_backend\phonon_ds9%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\phonon_backend
 if errorlevel 1 goto fail
 
 if not exist "%INSTALLBASE%"\qt-plugins\sqldrivers mkdir "%INSTALLBASE%"\qt-plugins\sqldrivers
 if errorlevel 1 goto fail
-%CP% "%QTDIR%"\plugins\sqldrivers\qsqlite4.dll "%INSTALLBASE%"\qt-plugins\sqldrivers
+%CP% "%QTDIR%"\plugins\sqldrivers\qsqlite%LIBSUFFIX%4.dll "%INSTALLBASE%"\qt-plugins\sqldrivers
 if errorlevel 1 goto fail
 
 call "%~dp0\..\utils.bat" store-result qt 7

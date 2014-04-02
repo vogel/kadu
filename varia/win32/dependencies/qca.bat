@@ -50,11 +50,11 @@ if errorlevel 1 goto fail
 
 %GIT% checkout %QCAVER%
 
-echo CONFIG += release > conf.pri
+echo CONFIG += %QTMODE% > conf.pri
 echo QCA_NO_TESTS = 1 >> conf.pri
 if errorlevel 1 goto fail2
 
-echo CONFIG += release > confapp.pri
+echo CONFIG += %QTMODE% > confapp.pri
 if errorlevel 1 goto fail2
 
 call "%~dp0\..\utils.bat" enable-msvc
@@ -76,6 +76,9 @@ if errorlevel 1 goto fail2
 
 call .\configwin.bat r
 if errorlevel 1 goto fail3
+
+echo CONFIG += %QTMODE% > conf_win.pri
+if errorlevel 1 goto fail2
 
 qmake
 if errorlevel 1 goto fail3

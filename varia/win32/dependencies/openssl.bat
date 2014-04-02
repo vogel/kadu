@@ -70,7 +70,7 @@ if errorlevel 1 goto fail2
 
 :unpacked
 
-%PERL% Configure VC-WIN32 enable-md2 --prefix="%INSTALLPREFIX%"\openssl-install
+%PERL% Configure %OPENSSLCONFIG% enable-md2 --prefix="%INSTALLPREFIX%"\openssl-install
 if errorlevel 1 goto fail2
 
 call "%~dp0\..\utils.bat" store-result openssl 3
@@ -83,6 +83,17 @@ if errorlevel 1 goto fail
 
 call ms\do_nasm.bat
 if errorlevel 1 goto fail2
+
+%SED% -i -e "s/-WX//" ms\ntdll.mak
+if errorlevel 1 goto fail2
+
+if %DEBUG% EQU 1 (
+	%SED% -i -e "s/SSL=ssleay32/SSL=ssleay32d/" ms\ntdll.mak
+	if errorlevel 1 goto fail2
+
+	%SED% -i -e "s/CRYPTO=libeay32/CRYPTO=libeay32d/" ms\ntdll.mak
+	if errorlevel 1 goto fail2
+)
 
 nmake -f ms\ntdll.mak
 if errorlevel 1 goto fail2
@@ -104,10 +115,10 @@ if errorlevel 1 goto fail2
 %CP% "%INSTALLPREFIX%"\openssl-%OSSLVER%\LICENSE "%INSTALLBASE%"\LICENSE.OpenSSL
 if errorlevel 1 goto fail
 
-%CP% "%INSTALLPREFIX%"\openssl-install\bin\libeay32.dll "%INSTALLBASE%"
+%CP% "%INSTALLPREFIX%"\openssl-install\bin\libeay32%LIBSUFFIX%.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
-%CP% "%INSTALLPREFIX%"\openssl-install\bin\ssleay32.dll "%INSTALLBASE%"
+%CP% "%INSTALLPREFIX%"\openssl-install\bin\ssleay32%LIBSUFFIX%.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
 call "%~dp0\..\utils.bat" store-result openssl 5

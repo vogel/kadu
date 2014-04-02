@@ -30,6 +30,10 @@ if errorlevel 1 goto fail
 pushd "%INSTALLPREFIX%"
 if errorlevel 1 goto fail
 
+set QTDIR=%INSTALLPREFIX%\qt
+set SQLITE3SRCDIR=%QTDIR%\src\3rdparty\sqlite
+set PATH=%QTDIR%\bin;%INSTALLPREFIX%\zlib-install\bin;%PATH%
+
 call "%~dp0\..\utils.bat" load-result qtwebkit QTWEBKIT
 if errorlevel 1 goto fail2
 
@@ -55,8 +59,12 @@ if %QTWEBKIT_RESULT% EQU 6 goto ready
 rem if exist qtwebkit-23 %RMDIR% qtwebkit-23
 rem if errorlevel 1 goto fail2
 
-%GIT% clone git://gitorious.org/webkit/qtwebkit-23.git qtwebkit-23
+:reclone
+if exist qtwebkit-23 %RMDIR% qtwebkit-23
 if errorlevel 1 goto fail2
+
+%GIT% clone git://gitorious.org/webkit/qtwebkit-23.git qtwebkit-23
+if errorlevel 1 goto reclone
 
 call "%~dp0\..\utils.bat" store-result qtwebkit 1
 if errorlevel 1 goto fail2
@@ -106,10 +114,6 @@ rem Don't build DumpRenderTree, linking fails.
 %SED% -i -e "/DumpRenderTree\//d" Tools\Tools.pro
 if errorlevel 1 goto fail2
 
-set QTDIR=%INSTALLPREFIX%\qt
-set SQLITE3SRCDIR=%QTDIR%\src\3rdparty\sqlite
-set PATH=%QTDIR%\bin;%INSTALLPREFIX%\zlib-install\bin;%PATH%
-
 rem debug: --inspector --javascript-debugger?
 rem TODO all: --svg?
 echo Calling perl
@@ -117,7 +121,7 @@ echo Calling perl
 call "%~dp0\..\utils.bat" enable-msvc
 if errorlevel 1 goto fail
 
-%PERL% Tools\Scripts\build-webkit --qt --release --no-webkit2 --no-force-sse2 --minimal --netscape-plugin-api
+%PERL% Tools\Scripts\build-webkit --qt --%QTMODE% --no-webkit2 --no-force-sse2 --minimal --netscape-plugin-api
 if errorlevel 1 goto fail3
 
 call "%~dp0\..\utils.bat" store-result qtwebkit 4
@@ -125,7 +129,7 @@ if errorlevel 1 goto fail3
 
 :perl-finished
 
-pushd WebKitBuild\Release
+pushd WebKitBuild\%QTWEBKITDIR%
 if errorlevel 1 goto fail3
 
 call "%~dp0\..\utils.bat" enable-msvc
@@ -145,7 +149,7 @@ if errorlevel 1 goto fail2
 
 :make-passed
 
-%CP% "%QTDIR%"\lib\QtWebKit4.dll "%INSTALLBASE%"
+%CP% "%QTDIR%"\lib\QtWebKit%LIBSUFFIX%4.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail2
 
 call "%~dp0\..\utils.bat" store-result qtwebkit 6
@@ -179,10 +183,3 @@ exit /b 1
 :end
 popd
 call "%~dp0\..\post-build.bat"
-
-:utils-not-found
-echo.
-echo utils.bat file not found
-echo.
-pause
-exit

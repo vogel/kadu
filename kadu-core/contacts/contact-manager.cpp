@@ -77,8 +77,8 @@ void ContactManager::init()
 
 	ContactParserTags::registerParserTags();
 
-	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
-		unreadMessageAdded(message);
+	// foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
+	//	unreadMessageAdded(message);
 
 	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)),
 	        this, SLOT(unreadMessageAdded(Message)));

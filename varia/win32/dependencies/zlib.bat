@@ -1,4 +1,4 @@
-@echo off
+rem echo off
 
 echo.
 echo Building zlib
@@ -95,7 +95,7 @@ if errorlevel 1 goto fail
 
 :compiled
 
-%CP% "%INSTALLPREFIX%"\zlib-install\bin\zlib1.dll "%INSTALLBASE%"
+%CP% "%INSTALLPREFIX%"\zlib-install\bin\zlib%LIBSUFFIX%1.dll "%INSTALLBASE%"
 if errorlevel 1 goto fail
 
 call "%~dp0\..\utils.bat" store-result zlib 5
