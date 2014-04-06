@@ -27,7 +27,7 @@ bool SortedMessages::earlier(const Message &left, const Message &right)
 	if (left == right)
 		return false;
 
-	if (left.sendDate().toTime_t() < right.sendDate().toTime_t())
+	if (left.receiveDate().toTime_t() < right.receiveDate().toTime_t())
 		return true;
 
 	return false;
@@ -47,7 +47,7 @@ bool SortedMessages::same(const Message &left, const Message &right)
 	// In our SQL history we store datetime with accuracy to one second,
 	// while for received XMPP messages we have a millisecond accuracy.
 	// So to have proper results, we need to truncate those additional milliseconds.
-	if (left.sendDate().toTime_t() != right.sendDate().toTime_t())
+	if (left.receiveDate().toTime_t() != right.receiveDate().toTime_t())
 		return false;
 
 	if (left.messageChat() != right.messageChat())
