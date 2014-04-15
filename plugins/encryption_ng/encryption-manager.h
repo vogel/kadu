@@ -59,10 +59,10 @@ public:
 	void setEncryptionProvider(const Chat &chat, EncryptionProvider *encryptionProvider);
 	EncryptionProvider * encryptionProvider(const Chat &chat);
 
-	QByteArray transformIncomingMessage(const QByteArray &rawMessage, const Message &message);
-	QByteArray transformOutgoingMessage(const QByteArray &rawMessage, const Message &message);
+	RawMessage transformIncomingMessage(const RawMessage &rawMessage, const Message &message);
+	RawMessage transformOutgoingMessage(const RawMessage &rawMessage, const Message &message);
 
-	virtual QByteArray transform(const QByteArray &rawMessage, const Message &message);
+	virtual RawMessage transform(const RawMessage &rawMessage, const Message &message);
 
 private:
 	static EncryptionManager *m_instance;

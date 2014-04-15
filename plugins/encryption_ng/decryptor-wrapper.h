@@ -48,7 +48,7 @@ public:
 	DecryptorWrapper(const Chat &chat, EncryptionProviderManager *providerManager, QObject *parent = 0);
 	virtual ~DecryptorWrapper() {}
 
-	virtual QByteArray decrypt(const QByteArray &data, Chat chat, bool *ok = 0);
+	virtual RawMessage decrypt(const RawMessage &rawMessage, Chat chat, bool *ok = 0) override;
 
 	const QList<Decryptor *> & decryptors() const { return Decryptors; }
 

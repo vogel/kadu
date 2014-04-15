@@ -26,10 +26,8 @@
 #include "core/configurable-transformer.h"
 #include "exports.h"
 
-class QByteArray;
-
-class Chat;
 class Message;
+class RawMessage;
 
 /**
  * @addtogroup Protocol
@@ -43,7 +41,7 @@ class Message;
  *
  * This interface allows arbitraty tranformations of raw content of messages - the one that is directly sent or received.
  */
-class KADUAPI RawMessageTransformer : public ConfigurableTransformer<QByteArray, Message>
+class KADUAPI RawMessageTransformer : public ConfigurableTransformer<RawMessage, Message>
 {
 };
 

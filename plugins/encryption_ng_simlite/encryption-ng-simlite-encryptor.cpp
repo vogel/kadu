@@ -25,6 +25,7 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
+#include "message/raw-message.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -119,12 +120,12 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 	return publicKey;
 }
 
-QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
+RawMessage EncryptioNgSimliteEncryptor::encrypt(const RawMessage &rawMessage)
 {
 	if (!Valid)
 	{
 		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: valid public key not available"));
-		return data;
+		return rawMessage;
 	}
 
 	//generate a symmetric key for Blowfish (16 bytes in length)
@@ -135,7 +136,7 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	if (encryptedBlowfishKey.isEmpty())
 	{
 		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: valid blowfish key not available"));
-		return data;
+		return rawMessage;
 	}
 
 	bool supportUtf8 = false;
@@ -168,11 +169,11 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	encryptedData.resize(sizeof(head));
 	memcpy(encryptedData.data(), &head, sizeof(head));
 	if (supportUtf8)
-		encryptedData += data;
+		encryptedData += rawMessage.rawPlainContent();
 	else
 	{
 		// we have to replace each Line Separator (U+2028) with Line Feed (\n)
-		QString dataString = QString::fromUtf8(data).replace(QChar::LineSeparator, QLatin1Char('\n'));
+		QString dataString = QString::fromUtf8(rawMessage.rawPlainContent()).replace(QChar::LineSeparator, QLatin1Char('\n'));
 		QTextCodec *cp1250Codec = QTextCodec::codecForName("CP1250");
 		if (cp1250Codec)
 			encryptedData += cp1250Codec->fromUnicode(dataString);
@@ -188,7 +189,7 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	if (!cipher.ok())
 	{
 		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: unknown error"));
-		return data;
+		return rawMessage;
 	}
 
 	//build the encrypted message
@@ -202,11 +203,11 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	if (!encoder.ok())
 	{
 		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: unknown error"));
-		return data;
+		return rawMessage;
 	}
 
 	//finally, put the encrypted message into the output QByteArray
-	return encrypted.toByteArray();
+	return {encrypted.toByteArray()};
 }
 
 #include "moc_encryption-ng-simlite-encryptor.cpp"

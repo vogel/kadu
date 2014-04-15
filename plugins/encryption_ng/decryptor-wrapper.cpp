@@ -26,6 +26,8 @@
 
 #include "decryptor-wrapper.h"
 
+#include "message/raw-message.h"
+
 DecryptorWrapper::DecryptorWrapper(const Chat &chat, EncryptionProviderManager *providerManager, QObject *parent) :
 		Decryptor(providerManager, parent), MyChat(chat)
 {
@@ -60,9 +62,9 @@ void DecryptorWrapper::decryptorDestroyed(QObject *decryptor)
 	Decryptors.removeAll(static_cast<Decryptor *>(decryptor));
 }
 
-QByteArray DecryptorWrapper::decrypt(const QByteArray &data, Chat chat, bool *ok)
+RawMessage DecryptorWrapper::decrypt(const RawMessage &data, Chat chat, bool *ok)
 {
-	QByteArray decrypted = data;
+	RawMessage decrypted = data;
 
 	if (ok)
 		*ok = false;

@@ -33,6 +33,7 @@
 
 class Chat;
 class EncryptionProvider;
+class RawMessage;
 
 class ENCRYPTIONAPI Decryptor : public QObject
 {
@@ -41,12 +42,12 @@ class ENCRYPTIONAPI Decryptor : public QObject
 	EncryptionProvider *Provider;
 
 public:
-	Decryptor(EncryptionProvider *provider, QObject *parent = 0);
+	explicit Decryptor(EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~Decryptor() {}
 
 	EncryptionProvider * provider() { return Provider; }
 
-	virtual QByteArray decrypt(const QByteArray &data, Chat chat, bool *ok = 0) = 0;
+	virtual RawMessage decrypt(const RawMessage &rawMessage, Chat chat, bool *ok = 0) = 0;
 
 };
 

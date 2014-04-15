@@ -38,6 +38,7 @@
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
+#include "message/raw-message.h"
 #include "misc/misc.h"
 #include "resource/jabber-resource-pool.h"
 #include "resource/jabber-resource.h"
@@ -268,9 +269,9 @@ bool JabberChatService::sendMessage(const ::Message &message)
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	message.content()->accept(&plainTextVisitor);
 
-	QString plain = plainTextVisitor.result();
+	auto plain = plainTextVisitor.result();
 	if (rawMessageTransformerService())
-		plain = QString::fromUtf8(rawMessageTransformerService()->transform(plain.toUtf8(), message));
+		plain = QString::fromUtf8(rawMessageTransformerService()->transform(plain.toUtf8(), {message}).rawContent());
 
 	msg.setType(chatMessageType(message.messageChat(), jid));
 	msg.setBody(plain);
@@ -377,7 +378,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	QString body = msg.body();
 	if (rawMessageTransformerService())
-		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message));
+		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
 	auto formattedString = CurrentFormattedStringFactory.data()->fromText(body);
 	if (!formattedString)

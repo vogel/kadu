@@ -36,6 +36,7 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
+#include "message/raw-message.h"
 #include "services/image-storage-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-type.h"
@@ -91,7 +92,7 @@ int GaduChatService::maxMessageLength() const
 	return 10000;
 }
 
-int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByteArray &rawMessage)
+int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
@@ -102,12 +103,12 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByt
 	{
 		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
 		return gg_send_message_confer_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
-				(const unsigned char *) rawMessage.constData());
+				(const unsigned char *) rawMessage.rawContent().constData());
 	}
 	else if (uinsCount == 1)
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
-		return gg_send_message_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin, (const unsigned char *) rawMessage.constData());
+		return gg_send_message_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin, (const unsigned char *) rawMessage.rawContent().constData());
 	}
 
 	return -1;
@@ -132,13 +133,14 @@ bool GaduChatService::sendMessage(const Message &message)
 	FormattedStringGaduHtmlVisitor htmlVisitor(CurrentGaduChatImageService, CurrentImageStorageService);
 	message.content()->accept(&htmlVisitor);
 
-	QByteArray rawMessage = htmlVisitor.result().toUtf8();
+	auto rawContent = htmlVisitor.result().toUtf8();
+	auto rawMessage = RawMessage{rawContent, rawContent};
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
-	if (rawMessage.length() > maxMessageLength())
+	if (rawMessage.rawContent().length() > maxMessageLength())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(rawMessage.length()).arg(10000));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(rawMessage.rawContent().length()).arg(10000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}
@@ -156,7 +158,7 @@ bool GaduChatService::sendMessage(const Message &message)
 
 bool GaduChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMessage)
 {
-	int messageId = sendRawMessage(chat.contacts().toContactVector(), rawMessage);
+	int messageId = sendRawMessage(chat.contacts().toContactVector(), {rawMessage});
 	return messageId != -1;
 }
 
@@ -192,9 +194,12 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 	return recipients;
 }
 
-QByteArray GaduChatService::getRawContent(gg_event *e)
+RawMessage GaduChatService::getRawMessage(gg_event *e)
 {
-	return (const char *)e->event.msg.xhtml_message;
+	return {
+		(const char *)e->event.msg.message,
+		(const char *)e->event.msg.xhtml_message
+	};
 }
 
 bool GaduChatService::ignoreRichText(Contact sender)
@@ -228,11 +233,11 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	message.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	QByteArray rawContent = getRawContent(e);
+	auto rawMessage= getRawMessage(e);
 	if (rawMessageTransformerService())
-		rawContent = rawMessageTransformerService()->transform(rawContent, message);
+		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
-	auto string = QString::fromUtf8(rawContent);
+	auto string = QString::fromUtf8(rawMessage.rawContent());
 	// TODO: this is a hack, we get <img name= from GG servers, but
 	// FormattedStringFactory requires <img src= as it cannot parse name= attribute
 	// this is because of QTextDocument usage, this needs to be fixed in a proper way

@@ -31,6 +31,7 @@
 #include "encryption_exports.h"
 
 class EncryptionProvider;
+class RawMessage;
 
 class ENCRYPTIONAPI Encryptor : public QObject
 {
@@ -39,12 +40,12 @@ class ENCRYPTIONAPI Encryptor : public QObject
 	EncryptionProvider *Provider;
 
 public:
-	Encryptor(EncryptionProvider *provider, QObject *parent = 0);
+	explicit Encryptor(EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~Encryptor() {}
 
 	EncryptionProvider * provider() { return Provider; }
 
-	virtual QByteArray encrypt(const QByteArray &data) = 0;
+	virtual RawMessage encrypt(const RawMessage &rawMessage) = 0;
 
 };
 

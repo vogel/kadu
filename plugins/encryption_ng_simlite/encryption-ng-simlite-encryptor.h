@@ -54,7 +54,7 @@ public:
 	EncryptioNgSimliteEncryptor(const Contact &contact, EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~EncryptioNgSimliteEncryptor();
 
-	virtual QByteArray encrypt(const QByteArray &data);
+	virtual RawMessage encrypt(const RawMessage &rawMessage) override;
 
 	bool isValid() { return Valid; }
 

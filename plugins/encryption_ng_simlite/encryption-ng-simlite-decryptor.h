@@ -52,7 +52,7 @@ public:
 	EncryptioNgSimliteDecryptor(const Account &account, EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~EncryptioNgSimliteDecryptor();
 
-	virtual QByteArray decrypt(const QByteArray &data, Chat chat, bool *ok);
+	virtual RawMessage decrypt(const RawMessage &rawMessage, Chat chat, bool *ok) override;
 
 	bool isValid() { return Valid; }
 

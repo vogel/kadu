@@ -49,8 +49,8 @@ class OtrRawMessageTransformer: public QObject, public RawMessageTransformer
 
 	bool EnableFragments;
 
-	QByteArray transformReceived(const QByteArray &messageContent, const Message &message);
-	QByteArray transformSent(const QByteArray &messageContent, const Message &message);
+	RawMessage transformReceived(const RawMessage &RawMessage, const Message &message);
+	RawMessage transformSent(const RawMessage &rawMessage, const Message &message);
 
 public:
 	explicit OtrRawMessageTransformer();
@@ -63,7 +63,7 @@ public:
 
 	void setEnableFragments(bool enableFragments);
 
-	virtual QByteArray transform(const QByteArray &messageContent, const Message &message);
+	virtual RawMessage transform(const RawMessage &rawMessage, const Message &message) override;
 
 signals:
 	void peerEndedSession(const Contact &contact) const;

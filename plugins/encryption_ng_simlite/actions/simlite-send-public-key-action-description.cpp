@@ -106,7 +106,7 @@ void SimliteSendPublicKeyActionDescription::sendPublicKey(const Contact &contact
 	}
 
 	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	if (MessageManager::instance()->sendMessage(chat, QString::fromUtf8(key.key().data()), true))
+	if (MessageManager::instance()->sendRawMessage(chat, key.key().data()))
 		EncryptionNgNotification::notifyPublicKeySent(contact);
 }
 

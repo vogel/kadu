@@ -22,6 +22,7 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "message/raw-message.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 #include "services/raw-message-transformer-service.h"
@@ -175,7 +176,7 @@ KeyGenerator * EncryptionManager::generator()
 	return m_generator;
 }
 
-QByteArray EncryptionManager::transformIncomingMessage(const QByteArray &rawMessage, const Message &message)
+RawMessage EncryptionManager::transformIncomingMessage(const RawMessage &rawMessage, const Message &message)
 {
 	if (!message.messageChat())
 		return rawMessage;
@@ -191,7 +192,7 @@ QByteArray EncryptionManager::transformIncomingMessage(const QByteArray &rawMess
 	return encryptionChatData->decryptor()->decrypt(rawMessage, message.messageChat(), &decrypted);
 }
 
-QByteArray EncryptionManager::transformOutgoingMessage(const QByteArray &rawMessage, const Message &message)
+RawMessage EncryptionManager::transformOutgoingMessage(const RawMessage &rawMessage, const Message &message)
 {
 	if (!message.messageChat())
 		return rawMessage;
@@ -203,7 +204,7 @@ QByteArray EncryptionManager::transformOutgoingMessage(const QByteArray &rawMess
 	return rawMessage;
 }
 
-QByteArray EncryptionManager::transform(const QByteArray &rawMessage, const Message& message)
+RawMessage EncryptionManager::transform(const RawMessage &rawMessage, const Message& message)
 {
 	switch (message.type())
 	{

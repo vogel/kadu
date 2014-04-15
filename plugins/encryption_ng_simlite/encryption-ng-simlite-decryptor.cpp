@@ -23,6 +23,7 @@
 #include <QtCore/QTextCodec>
 
 #include "chat/chat.h"
+#include "message/raw-message.h"
 #include "plugins/encryption_ng/encryption-manager.h"
 #include "plugins/encryption_ng/encryption-provider-manager.h"
 #include "plugins/encryption_ng/keys/key.h"
@@ -114,24 +115,33 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 	return privateKey;
 }
 
-QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat chat, bool *ok)
+RawMessage EncryptioNgSimliteDecryptor::decrypt(const RawMessage &rawMessage, Chat chat, bool *ok)
 {
 	if (ok)
 		*ok = false;
 
 	if (!Valid)
-		return data;
+		return rawMessage;
 
 	//check if the message has at least the length of the shortest possible encrypted message
-	if (data.length() < 192)
-		return data;
+	if (rawMessage.rawPlainContent().length() < 192 && rawMessage.rawXmlContent().length() < 192)
+		return rawMessage;
+
+	auto data = rawMessage.rawPlainContent();
 
 	//decode the message from the Base64 encoding
 	QCA::Base64 decoder(QCA::Decode);
 	QCA::SecureArray decodedMessage = decoder.stringToArray(data);
 
 	if (!decoder.ok())
-		return data;
+	{
+		// hack for Kadu 0.12-1.0 compatibility
+		data = rawMessage.rawXmlContent();
+		decodedMessage = decoder.stringToArray(data);
+
+		if (!decoder.ok())
+			return rawMessage;
+	}
 
 	//extract the Blowfish key (first 128 characters)
 	QCA::SecureArray encryptedBlowfishKey(decodedMessage.toByteArray().left(128));
@@ -140,7 +150,7 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 
 	QCA::SymmetricKey blowfishKey;
 	if (!DecodingKey.decrypt(encryptedBlowfishKey, &blowfishKey, QCA::EME_PKCS1_OAEP))
-		return data;
+		return rawMessage;
 
 	//recreate the initialization vector (should be the same as the one used for ciphering)
 	QCA::InitializationVector iv(QByteArray(8, '\x00'));
@@ -152,19 +162,19 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 	//decipher the message (put the message into the decoding cipher object)
 	QCA::SecureArray plainText = cipher.process(encryptedMessage);
 	if (!cipher.ok())
-		return data;
+		return rawMessage;
 
 	//check whether the decrypted data length is at least the size of the header -
 	//if not, then we have an invalid message
 	if (plainText.size() < (int)sizeof(sim_message_header))
-		return data;
+		return rawMessage;
 
 	//extract the header from the decrypted data and check if the magic number is
 	//correct
 	sim_message_header head;
 	memcpy(&head, plainText.constData(), sizeof(sim_message_header));
 	if (head.magicFirstPart != SIM_MAGIC_V1_1 || head.magicSecondPart != SIM_MAGIC_V1_2)
-		return data;
+		return rawMessage;
 
 	if (ok)
 		*ok = true;
@@ -206,7 +216,7 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 		EncryptionManager::instance()->setEncryptionProvider(chat, encryptorProvider);
 	}
 
-	return result;
+	return {result};
 }
 
 #include "moc_encryption-ng-simlite-decryptor.cpp"

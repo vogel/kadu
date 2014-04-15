@@ -32,6 +32,7 @@ extern "C" {
 #include "contacts/contact.h"
 #include "formatted-string/formatted-string.h"
 #include "message/message.h"
+#include "message/raw-message.h"
 
 #include "otr-app-ops-service.h"
 #include "otr-op-data-factory.h"
@@ -75,27 +76,27 @@ void OtrRawMessageTransformer::setUserStateService(OtrUserStateService *userStat
 	UserStateService = userStateService;
 }
 
-QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
+RawMessage OtrRawMessageTransformer::transform(const RawMessage &rawMessage, const Message &message)
 {
 	switch (message.type())
 	{
 		case MessageTypeSent:
-			return transformSent(messageContent, message);
+			return transformSent(rawMessage, message);
 		case MessageTypeReceived:
-			return transformReceived(messageContent, message);
+			return transformReceived(rawMessage, message);
 		default:
-			return messageContent;
+			return rawMessage;
 	}
 }
 
-QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
+RawMessage OtrRawMessageTransformer::transformReceived(const RawMessage &rawMessage, const Message &message)
 {
 	if (!AppOpsService || !OpDataFactory || !UserStateService)
-		return messageContent;
+		return rawMessage;
 
 	OtrlUserState userState = UserStateService.data()->userState();
 	if (!userState)
-		return messageContent;
+		return rawMessage;
 
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
 	Account account = message.messageChat().chatAccount();
@@ -105,7 +106,7 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 	bool ignoreMessage = otrl_message_receiving(userState, AppOpsService.data()->appOps(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
-			messageContent.data(),
+			rawMessage.rawXmlContent().data(),
 			&newMessage, &tlvs, 0, 0, 0);
 
 	OtrlTLV *tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
@@ -114,31 +115,31 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 	otrl_tlv_free(tlvs);
 
 	if (ignoreMessage)
-		return QByteArray();
+		return {};
 
 	if (newMessage)
 	{
 		QByteArray result = newMessage;
 		otrl_message_free(newMessage);
-		return result;
+		return {result, result};
 	}
 	else
-		return messageContent;
+		return rawMessage;
 }
 
-QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageContent, const Message &message)
+RawMessage OtrRawMessageTransformer::transformSent(const RawMessage &rawMessage, const Message &message)
 {
 	if (!AppOpsService || !OpDataFactory || !UserStateService)
-		return messageContent;
+		return rawMessage;
 
 	OtrlUserState userState = UserStateService.data()->userState();
 	if (!userState)
-		return messageContent;
+		return rawMessage;
 
 	Chat chat = message.messageChat();
 	ChatDetails *chatDetails = chat.details();
 	if (chatDetails->contacts().size() > 1)
-		return messageContent;
+		return rawMessage;
 
 	Contact receiver = (*chatDetails->contacts().begin());
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
@@ -148,7 +149,7 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 	gcry_error_t err = otrl_message_sending(userState, AppOpsService.data()->appOps(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			receiver.id().toUtf8().data(), OTRL_INSTAG_BEST,
-			messageContent.data(), 0,
+			rawMessage.rawXmlContent().data(), 0,
 			&newMessage, EnableFragments ? OTRL_FRAGMENT_SEND_ALL : OTRL_FRAGMENT_SEND_SKIP,
 			0, 0, 0);
 
@@ -156,11 +157,11 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 	{
 		QByteArray result = newMessage;
 		otrl_message_free(newMessage);
-		return result;
+		return {result, result};
 	}
 
 	if (newMessage)
 		otrl_message_free(newMessage);
 
-	return messageContent;
+	return rawMessage;
 }

@@ -39,6 +39,7 @@ class FormattedStringFactory;
 class GaduChatImageService;
 class GaduConnection;
 class ImageStorageService;
+class RawMessage;
 
 /**
  * @addtogroup Gadu
@@ -69,11 +70,11 @@ class GaduChatService : public ChatService
 	Contact getSender(struct gg_event *e);
 	bool ignoreSender(gg_event *e, Buddy sender);
 	ContactSet getRecipients(struct gg_event *e);
-	QByteArray getRawContent(struct gg_event *e);
+	RawMessage getRawMessage(struct gg_event *e);
 	bool ignoreRichText(Contact sender);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
-	int sendRawMessage(const QVector<Contact> &contacts, const QByteArray &rawMessage);
+	int sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage);
 	UinType * contactsToUins(const QVector<Contact> &contacts) const;
 
 	QTimer *RemoveTimer;
