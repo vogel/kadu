@@ -1,6 +1,6 @@
 [Module]
-DisplayName=Sound support
-DisplayName[pl]=Obsługa dźwięków
+DisplayName=Sound support (Phonon)
+DisplayName[pl]=Obsługa dźwięków (Phonon)
 Description=Sound support via Phonon library
 Description[pl]=Obsługa dźwięku przez bibliotekę Phonon
 Author=Kadu Team

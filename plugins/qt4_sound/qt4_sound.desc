@@ -1,6 +1,6 @@
 [Module]
-DisplayName=Sound support
-DisplayName[pl]=Obsługa dźwięku
+DisplayName=Sound support (Qt)
+DisplayName[pl]=Obsługa dźwięku (Qt)
 Description=Sound support using standard Qt4 mechanisms
 Description[pl]=Obsługa dźwięku z użyciem standardowych funkcji Qt4
 Author=Kadu Team
