@@ -130,11 +130,13 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
+	FormattedStringPlainTextVisitor plainTextVisitor;
+	message.content()->accept(&plainTextVisitor);
+
 	FormattedStringGaduHtmlVisitor htmlVisitor(CurrentGaduChatImageService, CurrentImageStorageService);
 	message.content()->accept(&htmlVisitor);
 
-	auto rawContent = htmlVisitor.result().toUtf8();
-	auto rawMessage = RawMessage{rawContent, rawContent};
+	auto rawMessage = RawMessage{plainTextVisitor.result().toUtf8(), htmlVisitor.result().toUtf8()};
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
