@@ -79,7 +79,11 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 		return QCA::PublicKey();
 	}
 
-	keyData = keyData.mid(BEGIN_RSA_PUBLIC_KEY_LENGTH, keyData.length() - BEGIN_RSA_PUBLIC_KEY_LENGTH - END_RSA_PUBLIC_KEY_LENGTH).replace('\r', "").trimmed();
+	keyData = keyData.replace(BEGIN_RSA_PUBLIC_KEY, "");
+	keyData = keyData.replace(END_RSA_PUBLIC_KEY, "");
+	keyData = keyData.replace('\r', "");
+	keyData = keyData.replace('\n', "");
+	keyData = keyData.replace(' ', "");
 
 	QCA::SecureArray certificate;
 
