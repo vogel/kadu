@@ -141,11 +141,14 @@ void GaduAddAccountWidget::apply()
 {
 	Account gaduAccount = Account::create("gadu");
 
-	gaduAccount.setAccountIdentity(Identity->currentIdentity());
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
 	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	gaduAccount.setRememberPassword(RememberPassword->isChecked());
+	// bad code: order of calls is important here
+	// we have to set identity after password
+	// so in cache of identity status container it already knows password and can do status change without asking user for it
+	gaduAccount.setAccountIdentity(Identity->currentIdentity());
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(gaduAccount.details());
 	if (details)

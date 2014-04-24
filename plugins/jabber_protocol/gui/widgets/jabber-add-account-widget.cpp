@@ -172,11 +172,14 @@ void JabberAddAccountWidget::apply()
 {
 	Account jabberAccount = Account::create("jabber");
 
-	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 	jabberAccount.setId(Username->text() + '@' + Domain->currentText());
 	jabberAccount.setPassword(AccountPassword->text());
 	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccount.setRememberPassword(RememberPassword->isChecked());
+	// bad code: order of calls is important here
+	// we have to set identity after password
+	// so in cache of identity status container it already knows password and can do status change without asking user for it
+	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 
 	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(jabberAccount.details());
 	if (details)

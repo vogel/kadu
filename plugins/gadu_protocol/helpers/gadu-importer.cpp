@@ -161,14 +161,17 @@ void GaduImporter::importAccounts()
 
 	Account defaultGaduGadu = Account::create("gadu");
 
-	if (!IdentityManager::instance()->items().isEmpty())
-		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items().at(0));
-
 	defaultGaduGadu.setId(importUinString);
 	defaultGaduGadu.setPassword(pwHash(config_file.readEntry("General", "Password")));
 	defaultGaduGadu.setRememberPassword(true);
 	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
 	defaultGaduGadu.setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
+
+	// bad code: order of calls is important here
+	// we have to set identity after password
+	// so in cache of identity status container it already knows password and can do status change without asking user for it
+	if (!IdentityManager::instance()->items().isEmpty())
+		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items().at(0));
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
 	if (accountDetails)

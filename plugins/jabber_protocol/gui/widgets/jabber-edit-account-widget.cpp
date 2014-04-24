@@ -443,13 +443,16 @@ void JabberEditAccountWidget::apply()
 
 	applyAccountConfigurationWidgets();
 
-	account().setAccountIdentity(Identities->currentIdentity());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
 	account().setUseDefaultProxy(ProxyCombo->isDefaultProxySelected());
 	account().setProxy(ProxyCombo->currentProxy());
+	// bad code: order of calls is important here
+	// we have to set identity after password
+	// so in cache of identity status container it already knows password and can do status change without asking user for it
+	account().setAccountIdentity(Identities->currentIdentity());
 	AccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
 	AccountDetails->setCustomHost(CustomHost->text());
 	AccountDetails->setCustomPort(CustomPort->text().toInt());

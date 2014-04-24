@@ -322,7 +322,6 @@ void GaduEditAccountWidget::apply()
 {
 	applyAccountConfigurationWidgets();
 
-	account().setAccountIdentity(Identities->currentIdentity());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
@@ -330,6 +329,10 @@ void GaduEditAccountWidget::apply()
 	account().setPrivateStatus(ShowStatusToEveryone->isChecked());
 	account().setUseDefaultProxy(ProxyCombo->isDefaultProxySelected());
 	account().setProxy(ProxyCombo->currentProxy());
+	// bad code: order of calls is important here
+	// we have to set identity after password
+	// so in cache of identity status container it already knows password and can do status change without asking user for it
+	account().setAccountIdentity(Identities->currentIdentity());
 
 	if (Details)
 	{

@@ -22,6 +22,7 @@
  */
 
 #include "accounts/account-manager.h"
+#include "configuration/main-configuration-holder.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
@@ -116,6 +117,8 @@ void IdentityShared::addAccount(const Account &account)
 
 	Accounts.append(account);
 	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+		account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
 
 	emit statusUpdated(this);
 }
@@ -163,6 +166,7 @@ void IdentityShared::setStatus(Status status, StatusChangeSource source)
 {
 	ensureLoaded();
 
+	LastSetStatus = status;
 	foreach (const Account &account, Accounts)
 		if (account)
 			account.statusContainer()->setStatus(status, source);

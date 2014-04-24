@@ -36,6 +36,7 @@ class KADUAPI IdentityShared : public StorableStatusContainer, public Shared
 	bool Permanent;
 	QString Name;
 	QList<Account> Accounts;
+	Status LastSetStatus;
 
 protected:
 	virtual void load();

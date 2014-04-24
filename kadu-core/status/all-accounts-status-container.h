@@ -45,6 +45,7 @@ class KADUAPI AllAccountsStatusContainer : public StatusContainer, public Accoun
 	Q_DISABLE_COPY(AllAccountsStatusContainer)
 
 	QList<Account> Accounts;
+	Status LastSetStatus;
 
 protected:
 	/**

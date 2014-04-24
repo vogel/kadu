@@ -21,6 +21,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "configuration/main-configuration-holder.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 
@@ -41,6 +42,8 @@ void AllAccountsStatusContainer::accountRegistered(Account account)
 {
 	Accounts.append(account);
 	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
+	if (!MainConfigurationHolder::instance()->isSetStatusPerAccount() && !MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+		account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
 
 	emit statusUpdated(this);
 }
@@ -91,6 +94,7 @@ int AllAccountsStatusContainer::maxDescriptionLength()
 
 void AllAccountsStatusContainer::setStatus(Status status, StatusChangeSource source)
 {
+	LastSetStatus = status;
 	foreach (const Account &account, Accounts)
 		if (account)
 			account.statusContainer()->setStatus(status, source);
