@@ -46,8 +46,6 @@ set (SOURCES_IRIS
 	libiris/src/xmpp/xmpp-core/compressionhandler.cpp
 	libiris/src/xmpp/xmpp-core/parser.cpp
 	libiris/src/xmpp/xmpp-core/connector.cpp
-	libiris/src/jdns/qjdns.cpp
-	libiris/src/jdns/qjdns_sock.cpp
 	libiris/src/irisnet/noncore/ice176.cpp
 	libiris/src/irisnet/noncore/stunallocate.cpp
 	libiris/src/irisnet/noncore/legacy/ndns.cpp
@@ -72,15 +70,17 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/corelib/netnames.cpp
 	libiris/src/irisnet/corelib/irisnetplugin.cpp
 	libiris/src/irisnet/corelib/netinterface.cpp
-	libiris/src/irisnet/corelib/jdnsshared.cpp
 	libiris/src/irisnet/corelib/objectsession.cpp
 	libiris/src/irisnet/corelib/irisnetglobal.cpp
 
-	libiris/src/jdns/jdns.c
-	libiris/src/jdns/jdns_util.c
-	libiris/src/jdns/jdns_sys.c
-	libiris/src/jdns/jdns_mdnsd.c
-	libiris/src/jdns/jdns_packet.c
+	libiris/src/jdns/src/jdns/jdns.c
+	libiris/src/jdns/src/jdns/jdns_mdnsd.c
+	libiris/src/jdns/src/jdns/jdns_packet.c
+	libiris/src/jdns/src/jdns/jdns_sys.c
+	libiris/src/jdns/src/jdns/jdns_util.c
+	libiris/src/jdns/src/qjdns/qjdns.cpp
+	libiris/src/jdns/src/qjdns/qjdnsshared.cpp
+	libiris/src/jdns/src/qjdns/qjdns_sock.cpp
 
 	libiris/src/irisnet/noncore/cutestuff/bytestream.h
 	libiris/src/irisnet/noncore/cutestuff/socks.h
@@ -112,7 +112,16 @@ set (SOURCES_IRIS
 	libiris/src/xmpp/xmpp-core/xmpp_clientstream.h
 	libiris/src/xmpp/xmpp-core/xmpp_stream.h
 
-	libiris/src/jdns/qjdns.h
+	libiris/src/jdns/include/jdns/jdns_export.h
+	libiris/src/jdns/include/jdns/jdns.h
+	libiris/src/jdns/include/jdns/qjdns.h
+	libiris/src/jdns/include/jdns/qjdnsshared.h
+	libiris/src/jdns/src/jdns/jdns_mdnsd.h
+	libiris/src/jdns/src/jdns/jdns_packet.h
+	libiris/src/jdns/src/jdns/jdns_p.h
+	libiris/src/jdns/src/qjdns/qjdns_p.h
+	libiris/src/jdns/src/qjdns/qjdnsshared_p.h
+	libiris/src/jdns/src/qjdns/qjdns_sock.h
 
 	libiris/src/irisnet/noncore/stuntransaction.h
 	libiris/src/irisnet/noncore/stunbinding.h
@@ -131,7 +140,6 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/udpportreserver.h
 	libiris/src/irisnet/corelib/addressresolver.h
 	libiris/src/irisnet/corelib/irisnetplugin.h
-	libiris/src/irisnet/corelib/jdnsshared.h
 	libiris/src/irisnet/corelib/netavailability.h
 	libiris/src/irisnet/corelib/netinterface.h
 	libiris/src/irisnet/corelib/netnames.h
@@ -151,7 +159,7 @@ include_directories (
 
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/include/iris
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/corelib
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/jdns
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/jdns/include/jdns
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/xmpp-core
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src
 )
