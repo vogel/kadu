@@ -609,7 +609,8 @@ void DockingManager::iconThemeChanged()
 	while (i.hasNext())
 	{
 		i.next();
-		i.value()->setIcon(i.key()->statusIcon().icon());
+		if (i.value() && i.key())
+			i.value()->setIcon(i.key()->statusIcon().icon());
 	}
 }
 
