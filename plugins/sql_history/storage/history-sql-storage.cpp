@@ -865,7 +865,7 @@ SortedMessages HistorySqlStorage::syncMessages(const HistoryQuery &historyQuery)
 	// it is reverted back manually below
 	if (historyQuery.limit() > 0)
 	{
-		queryString += " ORDER BY date DESC, kadu_messages.rowid DESC";
+		queryString += " ORDER BY date DESC, kadu_messages.rowid ASC";
 		queryString += " LIMIT :limit";
 	}
 	else
@@ -884,8 +884,6 @@ SortedMessages HistorySqlStorage::syncMessages(const HistoryQuery &historyQuery)
 
 	if (historyQuery.limit() > 0)
 		query.bindValue(":limit", historyQuery.limit());
-
-	SortedMessages messages;
 
 	executeQuery(query);
 	return messagesFromQuery(query);
