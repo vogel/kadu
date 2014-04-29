@@ -1,5 +1,6 @@
 set (ICON_THEMES
 	default
+	faenza
 	glass
 	oxygen
 )
@@ -9,7 +10,7 @@ if (ICON_THEMES)
 		DEPENDS ${ICON_THEMES}
 	)
 	add_dependencies (kadu icon_themes)
-	
+
 	if (UNIX AND NOT APPLE)
 		option (COMPRESS_SVG "Compress SVG files when installing (will break freedesktop_notify on notification-daemon, notify-osd and possibly other daemons, though will work on KDE)" OFF)
 	else ()
