@@ -27,7 +27,7 @@ bool SortedMessages::earlier(const Message &left, const Message &right)
 	if (left == right)
 		return false;
 
-	if (left.receiveDate().toTime_t() < right.receiveDate().toTime_t())
+	if (left.receiveDate() < right.receiveDate())
 		return true;
 
 	return false;
