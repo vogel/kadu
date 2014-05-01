@@ -1,4 +1,4 @@
-+++ version 1.0-beta1
++++ version 1.0-rc1
 * gadu: #2750 fixed: unable to login when password contains non-ascii characters (Vogel)
 * status: #2655 fixed: set status on new account automatically if status is per-identity or per-all (Vogel)
 * jabber: #2680 fixed: IPv6 was broken (beevvy)
