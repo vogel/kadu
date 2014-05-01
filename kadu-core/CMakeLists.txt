@@ -321,6 +321,9 @@ kadu_api_directories (kadu-core
 	gui/widgets
 	gui/widgets/configuration
 	gui/widgets/dialog
+	gui/widgets/chat-widget
+	gui/widgets/webkit-messages-view
+	chat-style/engine
 	gui/windows
 	gui/windows/open-chat-with
 	icons
