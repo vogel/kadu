@@ -455,7 +455,7 @@
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished"/>
+        <translation>Блокировка</translation>
     </message>
     <message>
         <source>Headers and Separators</source>
@@ -775,95 +775,95 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Turn on blur</source>
-        <translation type="unfinished"/>
+        <translation>Включить размытие</translation>
     </message>
     <message>
         <source>Background colors</source>
-        <translation type="unfinished"/>
+        <translation>Фоновые цвета</translation>
     </message>
     <message>
         <source>We&apos;re sorry, but Kadu cannot be loaded. Profile is inaccessible. Please check permissions in the &apos;%1&apos; directory.</source>
-        <translation type="unfinished"/>
+        <translation>Извините, Kadu не может быть запущен. Профиль недоступен. Пожалуйста, проверьте разрешения для папки &apos;%1&apos; </translation>
     </message>
     <message>
         <source>Profile Inaccessible</source>
-        <translation type="unfinished"/>
+        <translation>Профиль недоступен</translation>
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"/>
+        <translation>Запуск</translation>
     </message>
     <message>
         <source>Launch Kadu at startup</source>
-        <translation type="unfinished"/>
+        <translation>Запускать Kadu при старте системы</translation>
     </message>
     <message>
         <source>Inform about new versions of Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Уведомлять о новых версиях Kadu</translation>
     </message>
     <message>
         <source>Kadu main window will not be visible in window list on your taskbar</source>
-        <translation type="unfinished"/>
+        <translation>Главное окно не будет отображаться в списке окон в панели задач</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"/>
+        <translation>Соединение</translation>
     </message>
     <message>
         <source>Parser</source>
-        <translation type="unfinished"/>
+        <translation>Парсер</translation>
     </message>
     <message>
         <source>Misc</source>
-        <translation type="unfinished"/>
+        <translation>Разное</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation type="unfinished"/>
+        <translation>Значки</translation>
     </message>
     <message>
         <source>Install new icons...</source>
-        <translation type="unfinished"/>
+        <translation>Установить новые значки...</translation>
     </message>
     <message>
         <source>Enable transparency in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Включить прозрачность в окне чата</translation>
     </message>
     <message>
         <source>Your system does not support transparency.</source>
-        <translation type="unfinished"/>
+        <translation>Ваша система не поддерживает прозрачность</translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"/>
+        <translation>Список контактов</translation>
     </message>
     <message>
         <source>Show buddies&apos; photos</source>
-        <translation type="unfinished"/>
+        <translation>Показывать фотографии контактов</translation>
     </message>
     <message>
         <source>Add border to buddies&apos; photos</source>
-        <translation type="unfinished"/>
+        <translation>Добавить рамку к фотографиям контактов</translation>
     </message>
     <message>
         <source>Show buddies&apos; descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Показывать описание контакта</translation>
     </message>
     <message>
         <source>Split long descriptions into multiple lines</source>
-        <translation type="unfinished"/>
+        <translation>Разбивать длинные описания на несколько строк</translation>
     </message>
     <message>
         <source>Transparency</source>
-        <translation type="unfinished"/>
+        <translation>Прозрачность</translation>
     </message>
     <message>
         <source>Enable transparency in buddy list</source>
-        <translation type="unfinished"/>
+        <translation>Включить прозрачность в списке контактов</translation>
     </message>
     <message>
         <source>Transparency level</source>
-        <translation type="unfinished"/>
+        <translation>Уровень прозрачности</translation>
     </message>
     <message>
         <source>0</source>
@@ -871,35 +871,35 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>My message font color</source>
-        <translation type="unfinished"/>
+        <translation>Цвет шрифта моего сообщения</translation>
     </message>
     <message>
         <source>Buddy&apos;s message font color</source>
-        <translation type="unfinished"/>
+        <translation>Цвет шрифта сообщения собеседника</translation>
     </message>
     <message>
         <source>Use custom font in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Использовать пользовательский шрифт в окне чата</translation>
     </message>
     <message>
         <source>Use custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
-        <translation type="unfinished"/>
+        <translation>Использовать пользовательский шрифт даже для стилей чата которые определяют свой собственный шрифт (большинство Adium стилей делают это)</translation>
     </message>
     <message>
         <source>Limit visible messages in chat window to</source>
-        <translation type="unfinished"/>
+        <translation>Ограничить количество сообщений в окне чата до</translation>
     </message>
     <message>
         <source>Maximum number of messages visible in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Максимальное количество сообщений отображаемых в окне чата</translation>
     </message>
     <message>
         <source>Fold links in messages</source>
-        <translation type="unfinished"/>
+        <translation>Скрывать ссылки в сообщениях</translation>
     </message>
     <message>
         <source>Shorten ugly, long links to save space in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Сокращать длинные ссылки, чтобы сохранить место в окне чата</translation>
     </message>
     <message>
         <source>Use descriptive date format</source>
@@ -907,27 +907,27 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Display dates like Today, Yesterday or Friday, 2:30PM</source>
-        <translation type="unfinished"/>
+        <translation>Отображать даты как Сегодня, Вчера или в Пятницу, 2:30 ПП</translation>
     </message>
     <message>
         <source>Chat syntax</source>
-        <translation type="unfinished"/>
+        <translation>Синтаксис чата</translation>
     </message>
     <message>
         <source>Configure...</source>
-        <translation type="unfinished"/>
+        <translation>Настроить...</translation>
     </message>
     <message>
         <source>Buddies window</source>
-        <translation type="unfinished"/>
+        <translation>Окно контактов</translation>
     </message>
     <message>
         <source>Show buddy information panel</source>
-        <translation type="unfinished"/>
+        <translation>Показать панель информации контактов</translation>
     </message>
     <message>
         <source>Displays buddy information panel below the buddy list</source>
-        <translation type="unfinished"/>
+        <translation>Отображать панель информации контактов внизу списка контактов</translation>
     </message>
     <message>
         <source>Displays status changing buttons below the buddy list</source>
@@ -935,11 +935,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Buddy groups</source>
-        <translation type="unfinished"/>
+        <translation>Группы контактов</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Информация</translation>
     </message>
     <message>
         <source>Tooltip over buddy</source>
@@ -995,7 +995,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Block window close</source>
-        <translation type="unfinished"/>
+        <translation>Блокировать закрытие окна</translation>
     </message>
     <message>
         <source>Flash chat title</source>
@@ -1007,31 +1007,31 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Events</source>
-        <translation type="unfinished"/>
+        <translation>События</translation>
     </message>
     <message>
         <source>Remember opened chats</source>
-        <translation type="unfinished"/>
+        <translation>Помнить открытые чаты</translation>
     </message>
     <message>
         <source>Save opened chat windows when exiting and restore them on next statup</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять открытые окна чатов при выходе и восстанавливавть их при следующем запуске</translation>
     </message>
     <message>
         <source>Enable sending message by hitting &apos;Enter&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Включить отправку сообщения при нажатии &apos;Enter&apos;</translation>
     </message>
     <message>
         <source>Hitting &apos;Enter&apos; while typing in chat window sends message</source>
-        <translation type="unfinished"/>
+        <translation>Нажатие &apos;Enter&apos; отправляет сообщение во время ввода в окне чата</translation>
     </message>
     <message>
         <source>Ask before clearing messages in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Спрашивать прежде чем очищать сообщения в окне чата</translation>
     </message>
     <message>
         <source>Ask for confirmation before clearing chat window</source>
-        <translation type="unfinished"/>
+        <translation>Спрашивать подтверждение перед очисткой окна чата</translation>
     </message>
     <message>
         <source>Per account separately</source>
@@ -1336,7 +1336,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>No e-mail entered</source>
-        <translation type="unfinished"/>
+        <translation>Не введен e-mail</translation>
     </message>
     <message>
         <source>Account:</source>
@@ -1386,7 +1386,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Start Conference</source>
-        <translation type="unfinished"/>
+        <translation>Начать конференцию</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1398,7 +1398,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Select at least two buddies</source>
-        <translation type="unfinished"/>
+        <translation>Выберите минимум два контакта</translation>
     </message>
     <message>
         <source>Visible name is already used for another chat</source>
@@ -1410,7 +1410,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Enter visible name to add this conference to roster</source>
-        <translation type="unfinished"/>
+        <translation>Введите имя, чтобы добавить конференцию в ростер</translation>
     </message>
 </context>
 <context>

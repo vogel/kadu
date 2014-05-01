@@ -1117,7 +1117,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Unlimited</source>
-        <translation type="unfinished"/>
+        <translation>Neomezeně</translation>
     </message>
 </context>
 <context>

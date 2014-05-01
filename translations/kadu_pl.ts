@@ -673,7 +673,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>For All Accounts</source>
-        <translation>dla wszystkich kont</translation>
+        <translation>Dla wszystkich kont</translation>
     </message>
     <message>
         <source>Last Status</source>
