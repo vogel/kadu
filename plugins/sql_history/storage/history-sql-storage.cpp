@@ -865,11 +865,11 @@ SortedMessages HistorySqlStorage::syncMessages(const HistoryQuery &historyQuery)
 	// it is reverted back manually below
 	if (historyQuery.limit() > 0)
 	{
-		queryString += " ORDER BY date DESC, kadu_messages.rowid ASC";
+		queryString += " ORDER BY date DESC, kadu_messages.rowid DESC";
 		queryString += " LIMIT :limit";
 	}
 	else
-		queryString += " ORDER BY date ASC, kadu_messages.rowid ASC";
+		queryString += " ORDER BY date ASC, kadu_messages.rowid DESC";
 
 	query.prepare(queryString);
 
@@ -1044,6 +1044,9 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 
 		messages.push_back(message);
 	}
+
+	// the data was queried in descending order, so we need to reverse it
+	std::reverse(messages.begin(), messages.end());
 
 	return SortedMessages{messages};
 }
