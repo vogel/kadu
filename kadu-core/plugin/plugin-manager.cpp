@@ -265,6 +265,9 @@ void PluginManager::activateReplacementPlugins()
 			continue;
 
 		auto replacementPlugin = findReplacementPlugin(pluginToReplace);
+		if (replacementPlugin.isEmpty())
+			continue;
+
 		if (PluginState::New == m_pluginStateService->pluginState(replacementPlugin))
 			if (activatePluginWithDependencies(replacementPlugin))
 			{
