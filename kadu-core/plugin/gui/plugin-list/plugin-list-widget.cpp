@@ -44,7 +44,7 @@
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
 
-#include <QtGui/QBoxLayout>
+#include <QtWidgets/QBoxLayout>
 
 PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 		QWidget{window}, m_listView{0}, m_processingChange{false}

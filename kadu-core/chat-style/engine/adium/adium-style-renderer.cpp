@@ -41,8 +41,8 @@
 
 #include <QtCore/QFile>
 #include <QtGui/QTextDocument>
-#include <QtWebKit/QWebPage>
-#include <QtWebKit/QWebFrame>
+#include <QtWebKitWidgets/QWebPage>
+#include <QtWebKitWidgets/QWebFrame>
 
 AdiumStyleRenderer::AdiumStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent) :
 		ChatStyleRenderer{std::move(configuration), parent},

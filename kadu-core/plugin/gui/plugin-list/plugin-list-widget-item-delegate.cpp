@@ -41,14 +41,14 @@
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/plugin-dependency-handler.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
 #include <QtGui/QPainter>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyleOptionViewItemV4>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyleOptionViewItemV4>
 
 #define MARGIN 5
 

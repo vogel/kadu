@@ -23,7 +23,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "misc/memory.h"
 
-#include <QtGui/QFrame>
+#include <QtWidgets/QFrame>
 
 class WebkitMessagesView;
 

@@ -45,7 +45,7 @@
 #include "services/chat-image-request-service.h"
 
 #include <QtGui/QKeyEvent>
-#include <QtWebKit/QWebFrame>
+#include <QtWebKitWidgets/QWebFrame>
 
 WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView{parent},

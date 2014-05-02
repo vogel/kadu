@@ -28,7 +28,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QHBoxLayout>
 
 ChatStylePreview::ChatStylePreview(QWidget *parent) :
 		QFrame{parent}

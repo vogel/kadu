@@ -19,7 +19,7 @@
 
 #include "scoped-updates-disabler.h"
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 ScopedUpdatesDisabler::ScopedUpdatesDisabler(QWidget &widget) :
 		m_widget(widget), m_wasEnabled{m_widget.updatesEnabled()}

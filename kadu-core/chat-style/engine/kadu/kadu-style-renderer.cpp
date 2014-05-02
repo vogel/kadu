@@ -28,7 +28,7 @@
 #include "protocols/services/chat-image.h"
 
 #include <QtGui/QTextDocument>
-#include <QtWebKit/QWebFrame>
+#include <QtWebKitWidgets/QWebFrame>
 
 KaduStyleRenderer::KaduStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
 		ChatStyleRenderer{std::move(configuration), parent},

@@ -19,12 +19,12 @@
 
 #include "string-list-dialog.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
 StringListDialog::StringListDialog(QString message, QString okButtonTitle, QStringList stringList, QWidget *parent) :
 		QDialog{parent}
