@@ -21,7 +21,7 @@
 #ifndef TOKEN_WINDOW_H
 #define TOKEN_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "exports.h"
 

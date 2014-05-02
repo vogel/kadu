@@ -24,7 +24,7 @@
 #define BUDDY_CONTACTS_TABLE_H
 
 #include <QtCore/QModelIndex>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "buddies/buddy.h"
 

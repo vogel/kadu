@@ -26,7 +26,7 @@
 #define JABBER_SERVER_INFO_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QString>
+#include <QtCore/QString>
 
 #include "xmpp_tasks.h"
 

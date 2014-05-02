@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/kadu-window.h"

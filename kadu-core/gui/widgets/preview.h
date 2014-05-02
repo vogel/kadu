@@ -24,7 +24,7 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
-#include <QtGui/QFrame>
+#include <QtWidgets/QFrame>
 
 class KaduWebView;
 

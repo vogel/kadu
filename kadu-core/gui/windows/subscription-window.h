@@ -27,8 +27,8 @@
 #ifndef SUBSCRIPTION_WINDOW_H
 #define SUBSCRIPTION_WINDOW_H
 
-#include <QtGui/QComboBox>
-#include <QtGui/QDialog>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDialog>
 
 #include "contacts/contact.h"
 #include "os/generic/desktop-aware-object.h"

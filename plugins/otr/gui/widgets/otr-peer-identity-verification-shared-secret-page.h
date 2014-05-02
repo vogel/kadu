@@ -22,7 +22,7 @@
 #ifndef OTR_PEER_IDENTITY_VERIFICATION_SHARED_SECRET_PAGE_H
 #define OTR_PEER_IDENTITY_VERIFICATION_SHARED_SECRET_PAGE_H
 
-#include <QtGui/QWizardPage>
+#include <QtWidgets/QWizardPage>
 
 #include "contacts/contact.h"
 

@@ -26,7 +26,7 @@
 #ifndef FILTERWIDGET_H
 #define FILTERWIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include "exports.h"
 
 #ifdef Q_OS_MAC

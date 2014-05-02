@@ -30,7 +30,7 @@
 #ifndef KADU_TREE_VIEW_DELEGATE_H
 #define KADU_TREE_VIEW_DELEGATE_H
 
-#include <QtGui/QItemDelegate>
+#include <QtWidgets/QItemDelegate>
 
 #include "gui/widgets/talkable-delegate-configuration.h"
 

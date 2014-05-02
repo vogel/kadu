@@ -8,7 +8,7 @@
 # Copyright (c) 2009, Ruslan Nigmatullin, <euroelessar@gmail.com>
 # Copyrignt (c) 2011, Rafał 'Vogel' Malinowski <vogel@kadu.im>
 
-cmake_minimum_required (VERSION 2.8.10)
+cmake_minimum_required (VERSION 2.8.11)
 
 # Set default install prefix
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -21,15 +21,14 @@ if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 endif ()
 
 # libraries
-set (QT_USE_QTXML 1)
-set (QT_USE_QTNETWORK 1)
-set (QT_USE_QTWEBKIT 1)
-set (QT_USE_QTDECLARATIVE 1)
-if (UNIX AND NOT APPLE)
-	set (QT_USE_QTDBUS 1)
-endif ()
-find_package (Qt4 4.8.0 REQUIRED)
-include (${QT_USE_FILE})
+# TODO: support cmake parameters for this
+find_package (Qt5Core 5.1)
+if (Qt5Core_FOUND)
+	find_package (Qt5LinguistTools REQUIRED)
+else ()
+	set (QT_USE_IMPORTED_TARGETS TRUE)
+	find_package (Qt4 4.8 REQUIRED)
+endif()
 
 macro (kadu_numeric_version _version _result_variable)
 	# Remove non-digit suffixes like "-git".
@@ -101,6 +100,7 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 		PLUGIN_DATA_DIRECTORIES
 		PLUGIN_DEPENDENCIES
 		PLUGIN_LIBRARIES
+		PLUGIN_ADDITIONAL_QT_MODULES
 	)
 
 	cmake_parse_arguments (KADU "" "" "${_multi_value_keywords}" ${ARGN})
@@ -150,7 +150,11 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 	endif ()
 
 	if (_translation_sources)
-		qt4_add_translation (_translation_files ${_translation_sources})
+		if (Qt5Core_FOUND)
+			qt5_add_translation (_translation_files ${_translation_sources})
+		else ()
+			qt4_add_translation (_translation_files ${_translation_sources})
+		endif ()
 
 		install (FILES ${_translation_files}
 			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/translations
@@ -179,8 +183,26 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 		endforeach ()
 	endif ()
 
+	if (Qt5Core_FOUND)
+		qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE Core Gui Widgets Network Xml WebKit WebKitWidgets Declarative)
+		if (UNIX AND NOT APPLE)
+			qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE DBus)
+		endif ()
+		if (KADU_PLUGIN_ADDITIONAL_QT_MODULES)
+			qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_ADDITIONAL_QT_MODULES})
+		endif ()
+	else ()
+		qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE Core Gui Network Xml WebKit Declarative)
+		if (UNIX AND NOT APPLE)
+			qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE DBus)
+		endif ()
+		if (KADU_PLUGIN_ADDITIONAL_QT_MODULES)
+			qt4_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_ADDITIONAL_QT_MODULES})
+		endif ()
+	endif ()
+
 	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE
-		${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${KADU_PLUGIN_LIBRARIES} ${QT_LIBRARIES}
+		${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${KADU_PLUGIN_LIBRARIES}
 	)
 
 	configure_file ("${KADU_SDK_DIR}/plugins/PluginConfig.cmake.in" "${CMAKE_BINARY_DIR}/KaduPlugin_${KADU_PLUGIN_NAME}Config.cmake" @ONLY)

@@ -3,7 +3,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"

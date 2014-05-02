@@ -26,7 +26,7 @@
 #ifndef PATH_EDIT_H
 #define PATH_EDIT_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include "exports.h"
 
 class QLineEdit;

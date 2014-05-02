@@ -33,7 +33,7 @@
 #define DOCKING_H
 
 #include <QtCore/QMap>
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "configuration/configuration-aware-object.h"
 #include "status/status-container-aware-object.h"

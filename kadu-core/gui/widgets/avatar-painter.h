@@ -25,7 +25,7 @@
 
 #include <QtCore/QString>
 #include <QtGui/QPixmap>
-#include <QtGui/QStyleOptionViewItemV4>
+#include <QtWidgets/QStyleOptionViewItemV4>
 
 class QModelIndex;
 

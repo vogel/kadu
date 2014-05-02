@@ -21,9 +21,9 @@
 
 #include "desktop-aware-object-helper.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QWidget>
 
 #include "misc/misc.h"
 #include "os/generic/desktop-aware-object.h"

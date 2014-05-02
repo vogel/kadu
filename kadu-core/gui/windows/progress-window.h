@@ -20,7 +20,7 @@
 #ifndef PROGRESS_WINDOW_H
 #define PROGRESS_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "exports.h"
 

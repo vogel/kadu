@@ -32,7 +32,7 @@
 #ifndef EMOTICON_SELECTOR_H
 #define EMOTICON_SELECTOR_H
 
-#include <QtGui/QScrollArea>
+#include <QtWidgets/QScrollArea>
 
 #include "expander/emoticon-path-provider.h"
 

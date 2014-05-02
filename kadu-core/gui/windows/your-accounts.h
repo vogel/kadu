@@ -27,8 +27,8 @@
 #define YOUR_ACCOUNTS
 
 #include <QtCore/QModelIndex>
-#include <QtGui/QItemSelection>
-#include <QtGui/QWidget>
+#include <QtCore/QItemSelection>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"

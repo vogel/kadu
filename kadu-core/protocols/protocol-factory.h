@@ -29,7 +29,7 @@
 #define PROTOCOL_FACTORY_H
 
 #include <QtCore/QString>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 #include <QtGui/QValidator>
 
 #include "contacts/contact-details.h"

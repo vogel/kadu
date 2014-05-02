@@ -19,10 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFormLayout>
+#include <QtWidgets/QFormLayout>
 #include <QtGui/QIcon>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 
 #include "buddies/group-manager.h"
 #include "icons/kadu-icon.h"

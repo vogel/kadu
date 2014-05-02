@@ -36,8 +36,8 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
-#include <QtGui/QMenu>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QTextDocument>
 

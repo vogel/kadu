@@ -31,7 +31,7 @@
 #ifndef EMOTICONS_SELECTOR_BUTTON_H
 #define EMOTICONS_SELECTOR_BUTTON_H
 
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "emoticon.h"
 

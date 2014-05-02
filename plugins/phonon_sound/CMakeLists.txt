@@ -26,14 +26,11 @@ endif ()
 
 if (WIN32 OR NOT PHONON_FOUND)
 	if (QT_PHONON_FOUND)
-		set (LIBRARIES ${QT_PHONON_LIBRARY})
-		include_directories (${QT_PHONON_INCLUDE_DIR})
+		set (PHONON_MODULE phonon)
 	else ()
 		message (FATAL_ERROR "Could not find Phonon library")
 	endif ()
 endif ()
-
-message (STATUS "Found Phonon library: ${LIBRARIES}")
 
 kadu_plugin (phonon_sound
 	PLUGIN_SOURCES ${SOURCES}
@@ -41,4 +38,5 @@ kadu_plugin (phonon_sound
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 	PLUGIN_DEPENDENCIES sound
+	PLUGIN_ADDITIONAL_QT_MODULES ${PHONON_MODULE}
 )

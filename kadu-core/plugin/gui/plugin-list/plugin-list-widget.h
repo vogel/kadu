@@ -25,7 +25,7 @@
 #pragma once
 
 #include <QtCore/QPointer>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QLineEdit;
 class QModelIndex;

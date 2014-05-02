@@ -23,7 +23,7 @@
 #ifndef CONFIG_RADIO_BUTTON_H
 #define CONFIG_RADIO_BUTTON_H
 
-#include <QtGui/QRadioButton>
+#include <QtWidgets/QRadioButton>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget-value.h"

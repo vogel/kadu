@@ -20,8 +20,11 @@
 
 #include "os/generic/system-info.h"
 
-#include <QtCore/QCoreApplication>
+#include <QtCore/QChar>
+#include <QtCore/QDateTime>
 #include <QtCore/QLocale>
+#include <QtCore/QString>
+#include <QtWidgets/QApplication>
 
 namespace AdiumTimeFormatter
 {

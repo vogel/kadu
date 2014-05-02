@@ -23,26 +23,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAbstractItemView>
-#include <QAbstractProxyModel>
-#include <QApplication>
-#include <QBitmap>
-#include <QCoreApplication>
-#include <QCursor>
-#include <QEvent>
-#include <QFocusEvent>
-#include <QHoverEvent>
-#include <QIcon>
-#include <QKeyEvent>
-#include <QLayout>
-#include <QPaintEngine>
-#include <QPainter>
-#include <QScrollBar>
-#include <QSize>
-#include <QStyle>
-#include <QStyleOption>
-#include <QTimer>
-#include <QTreeView>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QEvent>
+#include <QtCore/QSize>
+#include <QtCore/QTimer>
+#include <QtWidgets/QAbstractItemView>
+#include <QtCore/QAbstractProxyModel>
+#include <QtWidgets/QApplication>
+#include <QtGui/QBitmap>
+#include <QtGui/QCursor>
+#include <QtGui/QFocusEvent>
+#include <QtGui/QHoverEvent>
+#include <QtGui/QIcon>
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QLayout>
+#include <QtGui/QPaintEngine>
+#include <QtGui/QPainter>
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOption>
+#include <QtWidgets/QTreeView>
 
 #include "plugin/gui/plugin-list/plugin-list-view-delegate-widgets.h"
 

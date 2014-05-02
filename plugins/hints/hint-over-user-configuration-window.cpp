@@ -23,11 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
 #include <QtGui/QPalette>
-#include <QtGui/QSpinBox>
-#include <QtGui/QTextEdit>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QTextEdit>
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"

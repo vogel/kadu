@@ -28,7 +28,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
-#include <QtGui/QSystemTrayIcon>
+#include <QtWidgets/QSystemTrayIcon>
 
 #include "plugins/docking/docker.h"
 

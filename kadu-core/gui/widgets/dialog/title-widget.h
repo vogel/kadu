@@ -24,7 +24,7 @@
 #ifndef TITLE_WIDGET_H
 #define TITLE_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QLabel;
 

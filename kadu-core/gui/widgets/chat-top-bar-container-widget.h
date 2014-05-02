@@ -22,7 +22,7 @@
 #ifndef CHAT_TOP_BAR_CONTAINER_WIDGET_H
 #define CHAT_TOP_BAR_CONTAINER_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "chat/chat.h"
 

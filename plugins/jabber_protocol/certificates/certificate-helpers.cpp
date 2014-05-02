@@ -27,14 +27,13 @@
  * See COPYING for details.
  */
 
-#include <QDebug>
-#include <QDir>
-#include <QDomDocument>
-#include <QFile>
-#include <QMessageBox>
-#include <QStringList>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QStringList>
+#include <QtCore/QtDebug>
+#include <QtWidgets/QMessageBox>
+#include <QtXml/QDomDocument>
 #include <QtCrypto>
-#include <QtDebug>
 
 #include "xmpp.h"
 

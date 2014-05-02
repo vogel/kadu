@@ -23,7 +23,7 @@
 #ifndef ENCRYPTION_SET_UP_MENU_H
 #define ENCRYPTION_SET_UP_MENU_H
 
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 class Action;
 

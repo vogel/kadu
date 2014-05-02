@@ -24,7 +24,7 @@
 #ifndef STATUS_WINDOW_H
 #define STATUS_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "os/generic/desktop-aware-object.h"
 #include <status/status.h>

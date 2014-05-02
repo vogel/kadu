@@ -24,7 +24,7 @@
 #define ACTION_H
 
 #include <QtCore/QMultiMap>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"

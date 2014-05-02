@@ -28,6 +28,8 @@
 
 #include <QtCore/QObject>
 
+#include <QtCrypto>
+
 #include "plugin/plugin-root-component.h"
 
 class EncryptionNgPlugin : public QObject, public PluginRootComponent
@@ -35,6 +37,8 @@ class EncryptionNgPlugin : public QObject, public PluginRootComponent
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+
+	QCA::Initializer QcaInitializer;
 
 public:
 	virtual ~EncryptionNgPlugin();

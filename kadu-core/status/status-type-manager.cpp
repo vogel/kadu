@@ -23,7 +23,7 @@
  */
 
 #include <QtCore/QtAlgorithms>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "icons/kadu-icon.h"
 #include "status/status-type-data.h"

@@ -25,7 +25,7 @@
 #define PATH_LIST_EDIT_H
 
 #include <QtCore/QPointer>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 class QLineEdit;
 class QListWidget;

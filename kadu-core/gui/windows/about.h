@@ -31,8 +31,8 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include <QtGui/QLabel>
-#include <QtGui/QWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QWidget>
 
 #include "os/generic/desktop-aware-object.h"
 

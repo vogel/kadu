@@ -35,7 +35,7 @@
 #ifndef KADU_APPLICATION_H
 #define KADU_APPLICATION_H
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>

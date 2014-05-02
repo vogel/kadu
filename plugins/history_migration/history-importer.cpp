@@ -25,7 +25,7 @@
 #include <QtCore/QList>
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
-#include <QtGui/QProgressDialog>
+#include <QtWidgets/QProgressDialog>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

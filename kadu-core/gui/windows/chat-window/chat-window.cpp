@@ -29,10 +29,10 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QCloseEvent>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QVBoxLayout>
 
 #include "chat/chat-details.h"
 #include "chat/type/chat-type.h"

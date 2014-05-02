@@ -26,7 +26,7 @@
 #ifndef ACCOUNTS_PROXY_MODEL_H
 #define ACCOUNTS_PROXY_MODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 class AbstractAccountFilter;
 

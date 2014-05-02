@@ -23,7 +23,7 @@
 #ifndef SELECT_FONT_H
 #define SELECT_FONT_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "exports.h"
 

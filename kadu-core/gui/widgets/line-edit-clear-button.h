@@ -25,7 +25,7 @@
 #define LINE_EDIT_CLEAR_BUTTON_H
 
 #include <QtGui/QIcon>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QTimeLine;
 

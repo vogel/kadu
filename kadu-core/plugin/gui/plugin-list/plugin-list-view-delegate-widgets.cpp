@@ -33,11 +33,11 @@
 #include <QtCore/QMetaProperty>
 #include <QtCore/QPair>
 #include <QtCore/qobjectdefs.h>
-#include <QtGui/QAbstractItemView>
-#include <QtGui/QAbstractProxyModel>
-#include <QtGui/QApplication>
+#include <QtWidgets/QAbstractItemView>
+#include <QtCore/QAbstractProxyModel>
+#include <QtWidgets/QApplication>
 #include <QtGui/QInputEvent>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "plugin/gui/plugin-list/plugin-list-view-delegate.h"
 

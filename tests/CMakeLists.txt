@@ -1,5 +1,3 @@
-find_package (Qt4 QUIET REQUIRED COMPONENTS QtTest)
-
 include_directories(".")
 
 # kadu_add_test (<name> source1 source2 ... sourceN)
@@ -26,9 +24,15 @@ function (kadu_add_test name_)
 	endif ()
 	add_test ("${sourcePath}/${name_}" ${name_})
 
+	if (Qt5Core_FOUND)
+		qt5_use_modules (${name_} LINK_PRIVATE Core Gui Widgets Xml Network WebKit WebKitWidgets Declarative Test)
+	else ()
+		qt4_use_modules (${name_} LINK_PRIVATE Core Gui Xml Network WebKit Declarative Test)
+	endif ()
+
 	# Add libkadu after the plugin so that --as-needed won't drop anything
 	# needed by the plugin.
-	target_link_libraries (${name_} LINK_PRIVATE ${pluginName} libkadu ${QT_LIBRARIES} ${QT_QTTEST_LIBRARY})
+	target_link_libraries (${name_} LINK_PRIVATE ${pluginName} libkadu)
 endfunction ()
 
 add_subdirectory (unit)

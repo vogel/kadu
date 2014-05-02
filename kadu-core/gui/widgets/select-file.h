@@ -23,7 +23,7 @@
 #ifndef SELECT_FILE_H
 #define SELECT_FILE_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "exports.h"
 

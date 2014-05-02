@@ -29,7 +29,7 @@
 
 #include <QtCore/QMetaType>
 #include <QtCore/QSet>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 const int KaduRoles = 1000;
 

@@ -31,10 +31,10 @@
 #include <QtCore/QDir>
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
-#include <QtGui/QLabel>
-#include <QtGui/QStyleFactory>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QStyleFactory>
 
 #include "configuration/config-file-data-manager.h"
 

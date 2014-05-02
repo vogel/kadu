@@ -38,11 +38,11 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
-#include <QtGui/QCheckBox>
-#include <QtGui/QDialog>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QDialog>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 
 #include "configuration/configuration-aware-object.h"
 #include "core/crash-aware-object.h"

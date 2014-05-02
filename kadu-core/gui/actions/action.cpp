@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"

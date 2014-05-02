@@ -29,7 +29,7 @@
 #define TOOLBAR_H
 
 #include <QtGui/QDrag>
-#include <QtGui/QToolBar>
+#include <QtWidgets/QToolBar>
 
 #include "configuration/configuration-aware-object.h"
 #include "misc/change-notifier.h"

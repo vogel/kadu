@@ -27,7 +27,7 @@
 #define ADD_GROUP_DIALOG_WIDGET_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "gui/widgets/dialog/dialog-widget.h"
 

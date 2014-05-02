@@ -30,7 +30,7 @@
 
 #include <QtCore/QPointer>
 #include <QtGui/QClipboard>
-#include <QtWebKit/QWebView>
+#include <QtWebKitWidgets/QWebView>
 
 #include "exports.h"
 

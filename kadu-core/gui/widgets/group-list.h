@@ -27,7 +27,7 @@
 #ifndef GROUP_LIST_H
 #define GROUP_LIST_H
 
-#include <QtGui/QListWidget>
+#include <QtWidgets/QListWidget>
 
 class Group;
 

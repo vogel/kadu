@@ -25,7 +25,7 @@
 #ifndef BUDDY_CONTACTS_TABLE_MODEL_PROXY_H
 #define BUDDY_CONTACTS_TABLE_MODEL_PROXY_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 class BuddyContactsTableModelProxy : public QSortFilterProxyModel
 {

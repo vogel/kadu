@@ -10,8 +10,8 @@
 #include <QtCore/QStringList>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QSplitter>
-#include <QtGui/QTabWidget>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QTabWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"

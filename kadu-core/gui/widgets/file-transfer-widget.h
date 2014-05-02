@@ -25,7 +25,7 @@
 #define FILE_TRANSFER_WIDGET
 
 #include <QtCore/QDateTime>
-#include <QtGui/QFrame>
+#include <QtWidgets/QFrame>
 
 #include "file-transfer/file-transfer.h"
 

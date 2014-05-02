@@ -21,8 +21,8 @@
 #ifndef PROXY_EDIT_WINDOW_H
 #define PROXY_EDIT_WINDOW_H
 
-#include <QtGui/QItemSelection>
-#include <QtGui/QWidget>
+#include <QtCore/QItemSelection>
+#include <QtWidgets/QWidget>
 
 #include "gui/widgets/modal-configuration-widget.h"
 #include "network/proxy/network-proxy.h"

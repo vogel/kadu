@@ -24,7 +24,7 @@
 #ifndef GROUP_TAB_BAR_H
 #define GROUP_TAB_BAR_H
 
-#include <QtGui/QTabBar>
+#include <QtWidgets/QTabBar>
 
 #include "buddies/buddy-list.h"
 #include "buddies/group.h"

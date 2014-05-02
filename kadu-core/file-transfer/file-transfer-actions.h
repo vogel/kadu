@@ -25,7 +25,7 @@
 #ifndef FILE_TRANSFER_ACTIONS_H
 #define FILE_TRANSFER_ACTIONS_H
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 class Action;
 class ActionDescription;

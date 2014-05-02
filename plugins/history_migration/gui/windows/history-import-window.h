@@ -25,7 +25,7 @@
 #ifndef HISTORY_IMPORT_WINDOW_H
 #define HISTORY_IMPORT_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 class QProgressBar;
 

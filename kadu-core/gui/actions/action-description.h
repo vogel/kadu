@@ -24,7 +24,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
-#include <QtGui/QToolButton>
+#include <QtWidgets/QToolButton>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"

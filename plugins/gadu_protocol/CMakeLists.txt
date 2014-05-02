@@ -5,11 +5,6 @@ cmake_minimum_required (VERSION 2.8)
 # Needed for FindQCA2.cmake when building externally
 list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
 
-set (QT_USE_QTXML 1)
-set (QT_USE_QTXMLPATTERNS 1)
-set (QT_USE_QTNETWORK 1)
-set (QT_USE_QTWEBKIT 1)
-
 find_package (Kadu REQUIRED CONFIG)
 
 set (LIBGADU_MIN_VERSION "1.12.0")
@@ -189,7 +184,7 @@ else ()
 	message (FATAL_ERROR " * libgadu (version ${LIBGADU_MIN_VERSION}) was NOT FOUND")
 endif ()
 
-set (LIBRARIES ${LIBGADU_LIBRARIES} ${QCA2_LIBRARIES} ${QT_LIBRARIES} ${QT_QTXMLPATTERNS_LIBRARY})
+set (LIBRARIES ${LIBGADU_LIBRARIES} ${QCA2_LIBRARIES})
 if (WIN32)
 	list (APPEND LIBRARIES ws2_32)
 endif ()
@@ -200,4 +195,5 @@ kadu_plugin (gadu_protocol
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 	PLUGIN_DATA_FILES ${SERVERS_FILE}
+	PLUGIN_ADDITIONAL_QT_MODULES XmlPatterns
 )

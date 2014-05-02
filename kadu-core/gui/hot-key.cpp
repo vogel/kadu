@@ -28,7 +28,7 @@
 
 QKeySequence HotKey::shortCutFromFile(const QString &groupname, const QString &name)
 {
-	return QKeySequence(config_file.readEntry(groupname, name));
+	return QKeySequence::fromString(config_file.readEntry(groupname, name), QKeySequence::PortableText);
 }
 
 bool HotKey::shortCut(QKeyEvent *e, const QString &groupname, const QString &name)
@@ -57,7 +57,7 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 		(e->key() == Qt::Key_Shift) ||
 		(e->key() == Qt::Key_Alt) ||
 		(e->key() == Qt::Key_Meta)))
-		result += QKeySequence(e->key()).toString();
+		result += QKeySequence(e->key()).toString(QKeySequence::NativeText);
 
 	return result;
 }
@@ -69,18 +69,17 @@ HotKeyEdit::HotKeyEdit(QWidget *parent)
 
 QString HotKeyEdit::shortCutString() const
 {
-	return text();
+	return shortCut().toString(QKeySequence::PortableText);
 }
 
 QKeySequence HotKeyEdit::shortCut() const
 {
-	return QKeySequence(text());
+	return QKeySequence::fromString(text(), QKeySequence::NativeText);
 }
 
 void HotKeyEdit::setShortCut(const QString &shortcut)
 {
-	QKeySequence str(shortcut);
-	if (str.isEmpty())
+	if (QKeySequence::fromString(shortcut, QKeySequence::PortableText).isEmpty())
 		clear();
 	else
 		setText(shortcut);
@@ -88,7 +87,7 @@ void HotKeyEdit::setShortCut(const QString &shortcut)
 
 void HotKeyEdit::setShortCut(const QKeySequence &shortcut)
 {
-	setText(shortcut);
+	setText(shortcut.toString(QKeySequence::NativeText));
 }
 
 void HotKeyEdit::keyPressEvent(QKeyEvent *e)

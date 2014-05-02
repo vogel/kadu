@@ -26,7 +26,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "chat/chat.h"
 

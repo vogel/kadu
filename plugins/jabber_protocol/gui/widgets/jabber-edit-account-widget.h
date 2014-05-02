@@ -28,9 +28,9 @@
 #ifndef JABBER_EDIT_ACCOUNT_WIDGET_H
 #define JABBER_EDIT_ACCOUNT_WIDGET_H
 
-#include <QtGui/QComboBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
 
 #include "gui/widgets/account-edit-widget.h"
 #include "gui/widgets/identities-combo-box.h"

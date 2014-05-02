@@ -26,7 +26,7 @@
 #define IMPORT_PROFILES_WINDOW_H
 
 #include <QtCore/QMap>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 class QCheckBox;
 class QGridLayout;

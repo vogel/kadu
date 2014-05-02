@@ -31,9 +31,9 @@
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QCursor>
 #include <QtGui/QDragEnterEvent>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QtGui/QPainter>
-#include <QtGui/QToolButton>
+#include <QtWidgets/QToolButton>
 #include <QtXml/QDomElement>
 
 #include "configuration/configuration-file.h"

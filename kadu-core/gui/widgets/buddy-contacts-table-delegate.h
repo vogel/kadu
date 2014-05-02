@@ -26,7 +26,7 @@
 #ifndef BUDDY_CONTACTS_TABLE_DELEGATE_H
 #define BUDDY_CONTACTS_TABLE_DELEGATE_H
 
-#include <QtGui/QStyledItemDelegate>
+#include <QtWidgets/QStyledItemDelegate>
 
 class BuddyContactsTableDelegate : public QStyledItemDelegate
 {

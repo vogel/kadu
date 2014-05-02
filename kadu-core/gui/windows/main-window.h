@@ -27,7 +27,7 @@
 #ifndef KADU_MAIN_WINDOW_H
 #define KADU_MAIN_WINDOW_H
 
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <QtXml/QDomElement>
 
 #include "gui/actions/action-context-provider.h"

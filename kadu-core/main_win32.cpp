@@ -23,8 +23,8 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QLibrary>
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"

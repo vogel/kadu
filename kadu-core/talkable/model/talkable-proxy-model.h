@@ -30,7 +30,7 @@
 #ifndef TALKABLE_PROXY_MODEL_H
 #define TALKABLE_PROXY_MODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 #include "exports.h"
 

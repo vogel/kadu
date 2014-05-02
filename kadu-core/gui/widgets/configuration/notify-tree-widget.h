@@ -28,9 +28,9 @@
 #ifndef NOTIFY_TREE_WIDGET_H
 #define NOTIFY_TREE_WIDGET_H
 
-#include <QtGui/QStyledItemDelegate>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
+#include <QtWidgets/QStyledItemDelegate>
+#include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QTreeWidgetItem>
 
 #include "notify/notify-configuration-ui-handler.h"
 

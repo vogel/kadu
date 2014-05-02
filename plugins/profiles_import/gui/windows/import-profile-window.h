@@ -25,7 +25,7 @@
 #ifndef IMPORT_PROFILE_WINDOW_H
 #define IMPORT_PROFILE_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 class QCheckBox;
 class QLabel;

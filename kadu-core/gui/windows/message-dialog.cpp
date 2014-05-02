@@ -29,7 +29,7 @@
  */
 
 #include <QtGui/QPixmap>
-#include <QtGui/QStyle>
+#include <QtWidgets/QStyle>
 
 #include "message-dialog.h"
 

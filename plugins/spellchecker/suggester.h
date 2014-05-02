@@ -26,7 +26,7 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QTextCursor>
 
 class ActionDescription;

@@ -24,8 +24,8 @@
 #ifndef KADU_SCROLL_AREA_H
 #define KADU_SCROLL_AREA_H
 
-#include <QtGui/QScrollArea>
-#include <QtGui/QScrollBar>
+#include <QtWidgets/QScrollArea>
+#include <QtWidgets/QScrollBar>
 
 class KaduScrollArea : public QScrollArea
 {

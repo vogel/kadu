@@ -61,7 +61,6 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/stuntransaction.cpp
 	libiris/src/irisnet/noncore/stuntypes.cpp
 	libiris/src/irisnet/noncore/stunutil.cpp
-	libiris/src/irisnet/noncore/processquit.cpp
 	libiris/src/irisnet/noncore/turnclient.cpp
 	libiris/src/irisnet/noncore/udpportreserver.cpp
 	libiris/src/irisnet/corelib/addressresolver.cpp
@@ -132,7 +131,6 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/stunallocate.h
 	libiris/src/irisnet/noncore/ice176.h
 	libiris/src/irisnet/noncore/icecomponent.h
-	libiris/src/irisnet/noncore/processquit.h
 	libiris/src/irisnet/noncore/icetransport.h
 	libiris/src/irisnet/noncore/iceturntransport.h
 	libiris/src/irisnet/noncore/icelocaltransport.h
@@ -166,6 +164,11 @@ include_directories (
 
 add_library (3rdparty STATIC ${SOURCES_IRIS})
 kadu_set_flags (3rdparty)
+if (Qt5Core_FOUND)
+	qt5_use_modules (3rdparty LINK_PUBLIC Core Gui Network Xml)
+else ()
+	qt4_use_modules (3rdparty LINK_PUBLIC Core Gui Network Xml)
+endif ()
 set_property (TARGET 3rdparty PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 
 if (NOT MSVC)

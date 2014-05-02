@@ -38,8 +38,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
 #include <QtCore/QTranslator>
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
 #include <errno.h>
 #include <time.h>
@@ -337,7 +337,9 @@ int main(int argc, char *argv[])
 	// On some systems it leads to crash with sms module.
 	// Reproducible by simply calling "delete new QScriptEngine();" in a module,
 	// so it's probably a bug in Qt. Sigh.
-	//delete qApp;
+#if QT_VERSION >= 0x050000
+	delete qApp;
+#endif
 
 #ifdef Q_OS_WIN32
 	WSACleanup();

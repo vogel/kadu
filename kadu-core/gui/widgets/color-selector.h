@@ -1,7 +1,7 @@
 #ifndef KADU_COLOR_SELECTOR_H
 #define KADU_COLOR_SELECTOR_H
 
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 extern const char colors[16][8];
 

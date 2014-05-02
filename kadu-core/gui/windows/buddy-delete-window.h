@@ -26,8 +26,8 @@
 #ifndef BUDDY_DELETE_WINDOW_H
 #define BUDDY_DELETE_WINDOW_H
 
-#include <QtGui/QDialog>
-#include <QtGui/QListWidgetItem>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QListWidgetItem>
 
 #include "buddies/buddy-set.h"
 

@@ -26,7 +26,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QMutexLocker>
 #include <QtCore/QThread>
-#include <QtCore/QtConcurrentRun>
+#include <QtConcurrent/QtConcurrentRun>
 #include <QtGui/QTextDocument>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>

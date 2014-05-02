@@ -40,7 +40,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include <QtCore/QFile>
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include "plugins/history/history.h"
 

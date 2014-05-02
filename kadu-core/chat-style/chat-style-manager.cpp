@@ -42,10 +42,12 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtGui/QPalette>
+#include <QtWidgets/QPushButton>
 
 static bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
 {

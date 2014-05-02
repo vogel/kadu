@@ -20,7 +20,7 @@
 #ifndef HISTORY_QUERY_RESULTS_PROXY_MODEL_H
 #define HISTORY_QUERY_RESULTS_PROXY_MODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QtCore/QSortFilterProxyModel>
 
 /**
  * @addtogroup History

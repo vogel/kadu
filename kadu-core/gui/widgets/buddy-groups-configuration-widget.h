@@ -29,7 +29,7 @@
 #ifndef BUDDY_GROUPS_CONFIGURATION_WIDGET_H
 #define BUDDY_GROUPS_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "buddies/buddy.h"
 

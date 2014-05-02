@@ -25,8 +25,8 @@
 #ifndef HINT_H
 #define HINT_H
 
-#include <QtGui/QFrame>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QVBoxLayout>
 
 #include "chat/chat.h"
 

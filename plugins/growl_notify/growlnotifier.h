@@ -30,9 +30,9 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <Growl/Growl.h>
 
-#include <QPixmap>
-#include <QString>
-#include <QStringList>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtGui/QPixmap>
 
 /**
  * \brief A class for emitting a clicked signal to the interested party.

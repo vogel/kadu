@@ -24,7 +24,7 @@
 #define SYNTAX_EDITOR_H
 
 #include <QtCore/QSharedPointer>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class QComboBox;
 class QPushButton;

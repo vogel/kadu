@@ -25,7 +25,7 @@
 #ifndef ACCOUNT_ADD_WIDGET_H
 #define ACCOUNT_ADD_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "gui/widgets/modal-configuration-widget.h"

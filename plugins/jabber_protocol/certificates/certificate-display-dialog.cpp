@@ -24,9 +24,9 @@
  * Copyright (C) 2003  Justin Karneges
  */
 
-#include <QDateTime>
-#include <QLabel>
-#include <QPushButton>
+#include <QtCore/QDateTime>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 #include <QtCrypto>
 
 #include "certificates/certificate-display-dialog.h"

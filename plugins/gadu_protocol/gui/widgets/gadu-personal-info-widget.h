@@ -27,7 +27,7 @@
 #ifndef GADU_PERSONAL_INFO_WIDGET_H
 #define GADU_PERSONAL_INFO_WIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "buddies/buddy.h"
 

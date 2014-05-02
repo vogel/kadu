@@ -23,7 +23,7 @@
 #ifndef NOTIFY_GROUP_BOX
 #define NOTIFY_GROUP_BOX
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "notify/notifier.h"
 

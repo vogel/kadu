@@ -27,8 +27,8 @@
 #ifndef ACCOUNT_BUDDY_LIST_WIDGET_H
 #define ACCOUNT_BUDDY_LIST_WIDGET_H
 
-#include <QtGui/QPushButton>
-#include <QtGui/QWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QWidget>
 
 #include "accounts/account.h"
 #include "buddies/buddy-list.h"

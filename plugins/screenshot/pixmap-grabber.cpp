@@ -28,8 +28,8 @@
 #ifdef Q_WS_X11
 #include <QtGui/QX11Info>
 #else
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 #endif
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>

@@ -20,7 +20,7 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

@@ -50,7 +50,7 @@
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QString>
 #include <QtCore/QTime>
-#include <QtGlobal>
+#include <QtGui/QtGlobal>
 
 #include <CoreFoundation/CoreFoundation.h>
 

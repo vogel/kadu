@@ -1,7 +1,7 @@
 #ifndef COLOR_BUTTON_H
 #define COLOR_BUTTON_H
 
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "exports.h"
 

@@ -22,7 +22,7 @@
 #ifndef OTR_PEER_IDENTITY_VERIFICATION_SELECT_METHOD_PAGE_H
 #define OTR_PEER_IDENTITY_VERIFICATION_SELECT_METHOD_PAGE_H
 
-#include <QtGui/QWizardPage>
+#include <QtWidgets/QWizardPage>
 
 class OtrPeerIdentityVerificationSelectMethodPage : public QWizardPage
 {

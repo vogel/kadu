@@ -19,7 +19,7 @@
  */
 
 #include <QtCore/QAbstractItemModel>
-#include <QtGui/QAbstractProxyModel>
+#include <QtCore/QAbstractProxyModel>
 
 #include "model/kadu-abstract-model.h"
 
