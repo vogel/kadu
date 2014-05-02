@@ -27,6 +27,8 @@
 
 #include "chat-list-model.h"
 
+#define NO_PARENT_ID 0xffffff
+
 ChatListModel::ChatListModel(QObject *parent) :
 		QAbstractItemModel(parent)
 {
@@ -98,7 +100,7 @@ void ChatListModel::removeChat(const Chat &chat)
 
 QModelIndex ChatListModel::index(int row, int column, const QModelIndex &parent) const
 {
-	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
+	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : NO_PARENT_ID) : QModelIndex();
 }
 
 int ChatListModel::columnCount(const QModelIndex &parent) const
@@ -132,7 +134,7 @@ QFlags<Qt::ItemFlag> ChatListModel::flags(const QModelIndex& index) const
 
 QModelIndex ChatListModel::parent(const QModelIndex &child) const
 {
-	if (-1 == child.internalId())
+	if (NO_PARENT_ID == child.internalId())
 		return QModelIndex();
 	else
 		return index(static_cast<int>(child.internalId()), 0, QModelIndex());
