@@ -2,9 +2,9 @@
 
 #include "activate.h"
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 
-	#include <QtGui/QX11Info>
+	#include <QtX11Extras/QX11Info>
 
 	#include "configuration/configuration-file.h"
 	#include "os/x11tools.h"
@@ -103,7 +103,7 @@
 
 bool _isWindowActiveOrFullyVisible( QWidget *window )
 {
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	if( _isActiveWindow( window ) )
 		return true;
 
