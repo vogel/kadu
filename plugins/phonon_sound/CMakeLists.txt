@@ -16,7 +16,7 @@ set (MOC_SOURCES
 
 if (NOT WIN32)
 	find_package (PkgConfig)
-	pkg_search_module (PHONON phonon)
+	pkg_search_module (PHONON phonon4qt5)
 	if (PHONON_FOUND)
 		set (LIBRARIES ${PHONON_LIBRARIES})
 		link_directories (${PHONON_LIBRARY_DIRS})
@@ -26,7 +26,7 @@ endif ()
 
 if (WIN32 OR NOT PHONON_FOUND)
 	if (QT_PHONON_FOUND)
-		set (PHONON_MODULE phonon)
+		set (PHONON_MODULE phonon4qt5)
 	else ()
 		message (FATAL_ERROR "Could not find Phonon library")
 	endif ()

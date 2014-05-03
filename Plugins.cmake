@@ -48,7 +48,7 @@ set (DEFAULT_PLUGINS
 	# General sound plugin
 	sound
 	# Phonon sound support
-	#phonon_sound
+	phonon_sound
 	# External sound player support
 	ext_sound
 	# QtSound sound support
