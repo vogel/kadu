@@ -668,7 +668,7 @@ void HintManager::import_0_6_5_configuration()
 void HintManager::createDefaultConfiguration()
 {
 	// TODO: this should be more like: if (plugins.loaded(freedesktop_notify) && this_is_first_time_we_are_loaded_or_whatever)
-#if !defined(Q_WS_X11)
+#if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
 	config_file.addVariable("Notify", "ConnectionError_Hints", true);
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);

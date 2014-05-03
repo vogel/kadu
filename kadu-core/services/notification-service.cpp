@@ -40,7 +40,7 @@
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include "notify/x11-screen-mode-checker.h"
 #elif defined(Q_OS_WIN32)
 #include "notify/windows-screen-mode-checker.h"
@@ -220,7 +220,7 @@ void NotificationService::startScreenModeChecker()
 	if (FullscreenChecker)
 		return;
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	FullscreenChecker = new X11ScreenModeChecker();
 #elif defined(Q_OS_WIN32)
 	FullscreenChecker = new WindowsScreenModeChecker();
@@ -284,6 +284,6 @@ void checkNotify(Action *action)
 	action->setChecked(notifyAll);
 }
 
-
+#undef Bool
 
 #include "moc_notification-service.cpp"

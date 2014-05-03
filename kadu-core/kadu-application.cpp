@@ -35,22 +35,22 @@
 
 #include "kadu-application.h"
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include <X11/Xatom.h>
 #include <X11/extensions/Xfixes.h>
 #undef KeyPress
 #undef Status
 
-#include <QtGui/QX11Info>
+#include <QtX11Extras/QX11Info>
 
 #include "os/generic/compositing-aware-object.h"
-#endif // Q_WS_X11
+#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication(argc, argv)
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 		, net_wm_state{}
-#endif // Q_WS_X11
+#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #if QT_VERSION < 0x050000
 		, SavingSession(false)
 #endif
@@ -63,7 +63,7 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	setStyleSheet("QToolBar{border:0px}");
 #endif
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	xfixes_event_base = -1;
 	int dummy;
 	if (XFixesQueryExtension(QX11Info::display(), &xfixes_event_base, &dummy))
@@ -74,9 +74,11 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		XFixesSelectionWindowDestroyNotifyMask |
 		XFixesSelectionClientCloseNotifyMask);
 	}
+#if QT_VERSION < 0x050000
 	if (QX11Info::isCompositingManagerRunning())
-		CompositingAwareObject::compositingStateChanged();
-#endif // Q_WS_X11
+		CompositingAwareObject::compositingStateChanged(); // not defined in Qt5.2
+#endif // QT_VERSION < 0x050000
+#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 }
 
 #if QT_VERSION < 0x050000
@@ -89,7 +91,7 @@ void KaduApplication::commitData(QSessionManager &manager)
 	SavingSession = false;
 }
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 bool KaduApplication::x11EventFilter(XEvent *event)
 {
 	if (xfixes_event_base != -1 && event->type == xfixes_event_base + XFixesSelectionNotify)
@@ -100,7 +102,7 @@ bool KaduApplication::x11EventFilter(XEvent *event)
 	}
 	return false;
 }
-#endif // Q_WS_X11
+#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 
 bool KaduApplication::isSavingSession() const
 {

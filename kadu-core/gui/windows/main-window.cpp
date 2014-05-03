@@ -41,8 +41,8 @@
 
 #include "main-window.h"
 
-#ifdef Q_WS_X11
-#include <QtGui/QX11Info>
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#include <QtX11Extras/QX11Info>
 
 #include "os/x11tools.h" // this should be included as last one,
 #undef KeyPress
@@ -473,7 +473,7 @@ ActionContext * MainWindow::actionContext()
 
 void MainWindow::setBlur(bool enable)
 {
-#if !defined(Q_WS_X11)
+#if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
 	Q_UNUSED(enable);
 #else
 	BlurEnabled = enable;

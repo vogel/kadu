@@ -75,7 +75,7 @@
 
 #include "main-configuration-window.h"
 
-#ifdef Q_WS_X11
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include "os/x11tools.h" // this should be included as last one,
 #undef KeyPress
 #undef Status            // and Status defined by Xlib.h must be undefined
@@ -184,15 +184,15 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	widget()->widgetById("hideMainWindowFromTaskbar")->hide();
 #endif
 
-#ifndef Q_WS_X11
+#if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
 	widget()->widgetById("windowActivationMethod")->hide();
 #endif
 
-#if !defined(Q_WS_X11) && !defined(Q_OS_WIN32)
+#if !(defined(Q_OS_UNIX) && !defined(Q_OS_MAC)) && !defined(Q_OS_WIN32)
 	widget()->widgetById("notify/fullscreenSilentMode")->hide();
 #endif
 
-#if !defined(Q_WS_X11)
+#if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
 	widget()->widgetById("useTransparency")->hide();
 	widget()->widgetById("userboxTransparency")->hide();
 	widget()->widgetById("userboxAlpha")->hide();
