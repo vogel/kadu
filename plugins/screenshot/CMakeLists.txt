@@ -49,10 +49,8 @@ if (UNIX AND NOT APPLE)
 		message (SEND_ERROR "Could NOT find X11 Xshape")
 	endif ()
 
-	find_package(Qt5X11Extras REQUIRED)
-
-	include_directories (${X11_INCLUDE_DIR} ${Qt5X11Extras_INCLUDE_DIRS})
-	list (APPEND LIBRARIES ${X11_X11_LIB} ${X11_Xext_LIB} ${Qt5X11Extras_LIBRARIES})
+	include_directories (${X11_INCLUDE_DIR})
+	list (APPEND LIBRARIES ${X11_X11_LIB} ${X11_Xext_LIB})
 endif ()
 
 kadu_plugin (screenshot
@@ -61,3 +59,7 @@ kadu_plugin (screenshot
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )
+
+if (UNIX AND NOT APPLE)
+	qt5_use_modules (screenshot LINK_PRIVATE X11Extras)
+endif ()
