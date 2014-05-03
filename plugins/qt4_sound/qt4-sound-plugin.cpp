@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QSound>
+#include <QtMultimedia/QSound>
 
 #include "gui/windows/message-dialog.h"
 
@@ -37,12 +37,6 @@ Qt4SoundPlugin::~Qt4SoundPlugin()
 bool Qt4SoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-
-	if (!QSound::isAvailable())
-	{
-		MessageDialog::show(KaduIcon("dialog-error"), QObject::tr("Kadu"), QObject::tr("QSound API is not available on this platform"));
-		return false;
-	}
 
 	QtSound4Player::createInstance();
 	SoundManager::instance()->setPlayer(QtSound4Player::instance());

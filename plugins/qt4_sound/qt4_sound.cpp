@@ -23,7 +23,7 @@
  */
 
 #include <QtWidgets/QApplication>
-#include <QtGui/QSound>
+#include <QtMultimedia/QSound>
 
 #include "gui/windows/message-dialog.h"
 #include "plugins/sound/sound-manager.h"

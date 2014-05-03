@@ -20,3 +20,5 @@ kadu_plugin (qt4_sound
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES sound
 )
+
+qt5_use_modules (qt4_sound LINK_PRIVATE Multimedia)
