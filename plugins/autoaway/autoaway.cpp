@@ -44,6 +44,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
 #include "parser/parser.h"
+#include "plugin/activation/plugin-activation-service.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
@@ -61,6 +62,7 @@ AutoAway::AutoAway() :
 		autoAwayStatusChanger{},
 		timer{},
 		StatusChanged{false},
+		idle{},
 		idleTime{},
 		refreshStatusTime{},
 		refreshStatusInterval{},
@@ -91,6 +93,9 @@ bool AutoAway::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
+	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
+	idle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
+
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
@@ -105,7 +110,7 @@ void AutoAway::done()
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
 {
-	idleTime = IdlePlugin::idle()->secondsIdle();
+	idleTime = idle->secondsIdle();
 
 	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
 		return AutoAwayStatusChanger::ChangeStatusToOffline;
@@ -137,7 +142,7 @@ void AutoAway::checkIdleTime()
 {
 	kdebugf();
 
-	idleTime = IdlePlugin::idle()->secondsIdle();
+	idleTime = idle->secondsIdle();
 
 	if (refreshStatusInterval > 0 && idleTime >= refreshStatusTime)
 	{

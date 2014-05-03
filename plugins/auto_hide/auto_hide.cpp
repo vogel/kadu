@@ -28,6 +28,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/kadu-paths.h"
+#include "plugin/activation/plugin-activation-service.h"
 
 #include "plugins/idle/idle-plugin.h"
 #include "plugins/idle/idle.h"
@@ -35,7 +36,9 @@
 #include "auto_hide.h"
 
 AutoHide::AutoHide(QObject *parent) :
-		ConfigurationUiHandler(parent), IdleTime(0)
+		ConfigurationUiHandler{parent},
+		MyIdle{nullptr},
+		IdleTime{0}
 {
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
 
@@ -49,6 +52,9 @@ AutoHide::~AutoHide()
 bool AutoHide::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
+
+	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
+	MyIdle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
@@ -68,7 +74,7 @@ void AutoHide::timerTimeoutSlot()
 {
 	if (Enabled)
 	{
-		if (IdlePlugin::idle()->secondsIdle() >= IdleTime)
+		if (MyIdle->secondsIdle() >= IdleTime)
 		{
 			KaduWindow *window = Core::instance()->kaduWindow();
 			if (window->docked())

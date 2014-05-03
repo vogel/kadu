@@ -24,8 +24,6 @@
 
 #include "idle-plugin.h"
 
-Idle * IdlePlugin::IdleInstance = 0;
-
 IdlePlugin::~IdlePlugin()
 {
 }
@@ -34,14 +32,18 @@ bool IdlePlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	IdleInstance = new Idle(this);
+	m_idle = make_qobject<Idle>(this);
 	return true;
 }
 
 void IdlePlugin::done()
 {
-	delete IdleInstance;
-	IdleInstance = 0;
+	m_idle.reset();
+}
+
+Idle * IdlePlugin::idle() const
+{
+	return m_idle.get();
 }
 
 Q_EXPORT_PLUGIN2(idle, IdlePlugin)

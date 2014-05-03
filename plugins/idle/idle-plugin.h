@@ -26,6 +26,7 @@
 #ifndef IDLE_PLUGIN_H
 #define IDLE_PLUGIN_H
 
+#include "misc/memory.h"
 #include "plugin/plugin-root-component.h"
 
 #include "idle_exports.h"
@@ -38,15 +39,16 @@ class IDLEAPI IdlePlugin : public QObject, public PluginRootComponent
 	Q_INTERFACES(PluginRootComponent)
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
-	static Idle *IdleInstance;
-
 public:
 	virtual ~IdlePlugin();
 
 	virtual bool init(bool firstLoad);
 	virtual void done();
 
-	static Idle * idle() { return IdleInstance; }
+	Idle * idle() const;
+
+private:
+	qobject_ptr<Idle> m_idle;
 
 };
 

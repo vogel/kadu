@@ -33,7 +33,7 @@ class IDLEAPI Idle : public QObject
 	Q_OBJECT
 
 public:
-	explicit Idle(QObject *parent = 0);
+	explicit Idle(QObject *parent = nullptr);
 	virtual ~Idle();
 
 	long secondsIdle();

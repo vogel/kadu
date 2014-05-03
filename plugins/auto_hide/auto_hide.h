@@ -40,6 +40,7 @@ class AutoHide : public ConfigurationUiHandler, ConfigurationAwareObject, public
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	QTimer Timer;
+	Idle *MyIdle;
 	int IdleTime;
 	bool Enabled;
 

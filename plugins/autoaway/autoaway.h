@@ -43,6 +43,8 @@ class QLineEdit;
 class QSpinBox;
 class QCheckBox;
 
+class Idle;
+
 /**
  * @defgroup autoaway Autoaway
  * @{
@@ -71,6 +73,7 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject, public
 
 	bool StatusChanged;
 
+	Idle *idle;
 	unsigned int idleTime;
 	unsigned int refreshStatusTime;
 	unsigned int refreshStatusInterval;
