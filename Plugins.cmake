@@ -88,7 +88,7 @@ set (DEFAULT_PLUGINS
 	# Imports profiles from old Kadu
 	profiles_import
 	# Easily take screenshots and send as images
-	#screenshot
+	screenshot
 	# Simple view - neww port for 0.11.0
 	simpleview
 	# Single window mode

@@ -161,4 +161,6 @@ void ScreenShot::checkShotsSize()
 		ScreenshotNotification::notifySizeLimit(size);
 }
 
+#undef Bool
+
 #include "moc_screenshot.cpp"

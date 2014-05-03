@@ -162,4 +162,6 @@ void ScreenshotTaker::takeShot()
 	emit screenshotTaken(pixmap, true);
 }
 
+#undef Bool
+
 #include "moc_screenshot-taker.cpp"
