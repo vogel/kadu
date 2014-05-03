@@ -62,9 +62,9 @@ set (DEFAULT_PLUGINS
 	# Antistring
 	antistring
 	# Auto away module
-	#autoaway
+	autoaway
 	# Auto hide Kadu window
-	#auto_hide
+	auto_hide
 	# Autoresponder plugin
 	autoresponder
 	# Autostatus
@@ -80,7 +80,7 @@ set (DEFAULT_PLUGINS
 	# Protection against unwanted chats
 	firewall
 	# Idle time counter
-	#idle
+	idle
 	# Shows image links and youtube links as images and videos in chat
 	imagelink
 	# Last status infos
