@@ -61,6 +61,11 @@ public:
 	 */
 	~PluginRootComponentHandler() noexcept;
 
+	/**
+	 * @return Stored root component of plugin.
+	 */
+	PluginRootComponent * pluginRootComponent() const;
+
 private:
 	PluginRootComponent *m_pluginRootComponent;
 

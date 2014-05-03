@@ -30,6 +30,7 @@
 class ActivePlugin;
 class PluginActivationErrorHandler;
 class PluginDependencyHandler;
+class PluginRootComponent;
 class PluginStateService;
 
 /**
@@ -90,6 +91,12 @@ public:
 	* @return Names of all currently active plugins.
 	*/
 	QSet<QString> activePlugins() const;
+
+	/**
+	 * @param pluginName name of plugin
+	 * @return root object from plugin with name pluginName
+	 */
+	PluginRootComponent * pluginRootComponent(const QString &pluginName) const;
 
 private:
 	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;

@@ -27,3 +27,8 @@ ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad) :
 		m_pluginRootComponentHandler{make_unique<PluginRootComponentHandler>(pluginName, firstLoad, m_pluginLoader->instance())}
 {
 }
+
+PluginRootComponent * ActivePlugin::pluginRootComponent() const
+{
+	return m_pluginRootComponentHandler->pluginRootComponent();
+}

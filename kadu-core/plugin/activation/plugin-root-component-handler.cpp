@@ -36,3 +36,8 @@ PluginRootComponentHandler::~PluginRootComponentHandler() noexcept
 {
 	m_pluginRootComponent->done();
 }
+
+PluginRootComponent * PluginRootComponentHandler::pluginRootComponent() const
+{
+	return m_pluginRootComponent;
+}
