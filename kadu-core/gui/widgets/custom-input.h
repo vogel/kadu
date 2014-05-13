@@ -62,12 +62,7 @@ protected:
 	virtual void insertFromMimeData(const QMimeData *source);
 
 public:
-	enum
-	{
-		KEY_COPY
-	};
-
-	CustomInput(Chat chat, QWidget *parent = 0);
+	explicit CustomInput(Chat chat, QWidget *parent = 0);
 
 	void setImageStorageService(ImageStorageService *imageStorageService);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
