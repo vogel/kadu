@@ -37,10 +37,6 @@ class FormattedString;
 class FormattedStringFactory;
 class ImageStorageService;
 
-/**
-	\class CustomInput
-	\brief Klasa umo�liwiaj�ca wpisywanie wiadomo�ci
-**/
 class KADUAPI CustomInput : public QTextEdit
 {
 	Q_OBJECT
@@ -57,47 +53,20 @@ private slots:
 	void setCopyPossible(bool available);
 
 protected:
-	bool autosend_enabled;/*!< zmienna informuj�ca czy w��czone jest
-				automatyczne wysy�anie */
+	bool autosend_enabled;
 
-	/**
-		\fn virtual void keyPressEvent(QKeyEvent *e)
-		Funkcja obs�uguj�ca naci�ni�cie przycisku
-		\param e wska�nik do obiektu obs�uguj�cego klawisze
-	**/
 	virtual void keyPressEvent(QKeyEvent *e);
-
-	/**
-		\fn virtual void keyReleaseEvent(QKeyEvent *e)
-		Funkcja obs�uguj�ca zwolnienie przycisku
-		\param e wska�nik do obiektu obs�uguj�cego klawisze
-	**/
 	virtual void keyReleaseEvent(QKeyEvent *e);
-
-	/**
-		\fn virtual void keyReleaseEvent(QKeyEvent *e)
-		Funkcja obs�uguj�ca zwswietlenie menu kontekstowego
-		\param e wska�nik do obiektu obs�uguj�cego klamenu
-	**/
 	virtual void contextMenuEvent(QContextMenuEvent *e);
-
 	virtual bool canInsertFromMimeData(const QMimeData *source) const;
 	virtual void insertFromMimeData(const QMimeData *source);
 
 public:
-	/*! Typ wyliczeniowy mowi�cy o rodzaju pisanych znak�w */
 	enum
 	{
-		KEY_COPY/*!< kopiuj */
+		KEY_COPY
 	};
 
-	/**
-		\fn CustomInput(QWidget *parent = 0)
-		Konstruktor tworz�cy obiekt
-		i ustawiaj�cy odpowiedni styl
-		\param parent rodzic okna
-		\param name nazwa obiektu
-	**/
 	CustomInput(Chat chat, QWidget *parent = 0);
 
 	void setImageStorageService(ImageStorageService *imageStorageService);
@@ -106,47 +75,12 @@ public:
 	std::unique_ptr<FormattedString> formattedString() const;
 
 public slots:
-	/**
-		\fn void setAutosend(bool on)
-		Ustawia/wy��cza automatyczne wysy�anie wiadomo�ci
-		\param on zmienna ustawiaj�ca autosend
-	**/
 	void setAutoSend(bool on);
 
 signals:
-	/**
-		\fn void sendMessage()
-		Sygna� zostaje wys�any kiedy naci�ni�to
-		klawisz wys�ania wiadomo�ci
-	**/
 	void sendMessage();
 
-	/**
-		\fn void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled)
-		Dowolny przycisk klawiatury zosta� naci�ni�ty.
-		Przekazany zostaje tak�e obiekt, kt�ry wywo�a� akcj� -
-		czyli this
-		\param e wska�nik do obiektu obs�uguj�cego klawisze
-		\param sender wska�nik do obiektu, kt�ry
-		wywo�a� ten sygna�
-		\param handled Slot osb�uguj�cy ten sygna� powinien ten parametr ustawi� na true,
-		je�li zdarzenie zosta�o ju� obs�u�one i �adne czynno�ci zwi�zane
-		ze standardow� obs�ug� kontrolek Qt nie powinny by� podj�te.
-	**/
 	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
-
-	/**
-		\fn void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled)
-		Dowolny przycisk klawiatury zosta� zwolniony.
-		Przekazany zostaje tak�e obiekt, kt�ry wywo�a� akcj� -
-		 czyli this.
-		\param e wska�nik do obiektu obs�uguj�cego klawisze
-		\param sender wska�nik do obiektu, kt�ry
-		wywo�a� ten sygna�
-		\param handled Slot osb�uguj�cy ten sygna� powinien ten parametr ustawi� na true,
-		je�li zdarzenie zosta�o ju� obs�u�one i �adne czynno�ci zwi�zane
-		ze standardow� obs�ug� kontrolek Qt nie powinny by� podj�te.
-	**/
 	void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled);
 
 	void fontChanged(QFont font);
