@@ -18,13 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_EDIT_WIDGET_H
-#define CHAT_EDIT_WIDGET_H
+#pragma once
 
 #include <QtWidgets/QWidget>
 
 #include "chat/chat.h"
 #include "gui/widgets/modal-configuration-widget.h"
+#include "misc/memory.h"
 #include "exports.h"
 
 class SimpleConfigurationValueStateNotifier;
@@ -33,21 +33,19 @@ class KADUAPI ChatEditWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
-	SimpleConfigurationValueStateNotifier *StateNotifier;
+public:
+	explicit ChatEditWidget(Chat chat, QWidget *parent = nullptr);
+	virtual ~ChatEditWidget();
 
-	Chat MyChat;
+	virtual const ConfigurationValueStateNotifier * stateNotifier() const override;
 
 protected:
-	Chat chat();
+	Chat chat() const;
 
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 
-public:
-	explicit ChatEditWidget(Chat chat, QWidget *parent = 0);
-	virtual ~ChatEditWidget();
-
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+private:
+	qobject_ptr<SimpleConfigurationValueStateNotifier> m_stateNotifier;
+	Chat m_chat;
 
 };
-
-#endif // CHAT_EDIT_WIDGET_H

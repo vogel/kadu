@@ -25,7 +25,9 @@
 #include "chat-edit-widget.h"
 
 ChatEditWidget::ChatEditWidget(Chat chat, QWidget *parent) :
-		ModalConfigurationWidget(parent), StateNotifier{new SimpleConfigurationValueStateNotifier{this}}, MyChat(chat)
+		ModalConfigurationWidget{parent},
+		m_stateNotifier{make_qobject<SimpleConfigurationValueStateNotifier>(this)},
+		m_chat{chat}
 {
 }
 
@@ -33,17 +35,17 @@ ChatEditWidget::~ChatEditWidget()
 {
 }
 
-Chat ChatEditWidget::chat()
+Chat ChatEditWidget::chat() const
 {
-	return MyChat;
+	return m_chat;
 }
 
 SimpleConfigurationValueStateNotifier * ChatEditWidget::simpleStateNotifier() const
 {
-	return StateNotifier;
+	return m_stateNotifier.get();
 }
 
 const ConfigurationValueStateNotifier * ChatEditWidget::stateNotifier() const
 {
-	return StateNotifier;
+	return m_stateNotifier.get();
 }
