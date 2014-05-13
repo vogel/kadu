@@ -271,10 +271,10 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 	if (source->hasUrls() && !source->urls().isEmpty())
 	{
 		QUrl url = source->urls().first();
-		if (CurrentImageStorageService)
+		if (!url.toString().isEmpty() && CurrentImageStorageService)
 			url = CurrentImageStorageService->toFileUrl(url);
 
-		if (!url.isEmpty() && url.scheme() == "file")
+		if (!url.toString().isEmpty() && url.scheme() == "file")
 		{
 			path = QDir::cleanPath(url.path());
 			if (QImage(path).isNull())
