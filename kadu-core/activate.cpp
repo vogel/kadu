@@ -7,7 +7,7 @@
 	#include <QtX11Extras/QX11Info>
 
 	#include "configuration/configuration-file.h"
-	#include "os/x11tools.h"
+	#include "os/x11/x11tools.h"
 	#undef KeyPress
 	#undef Status
 

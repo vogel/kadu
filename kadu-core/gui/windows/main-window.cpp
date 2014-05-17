@@ -44,7 +44,7 @@
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include <QtX11Extras/QX11Info>
 
-#include "os/x11tools.h" // this should be included as last one,
+#include "os/x11/x11tools.h" // this should be included as last one,
 #undef KeyPress
 #undef Status            // and Status defined by Xlib.h must be undefined
 #endif

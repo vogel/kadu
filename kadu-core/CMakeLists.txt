@@ -87,7 +87,7 @@ endif ()
 
 if (UNIX AND NOT APPLE)
 	list (APPEND kadu_SRCS
-		os/x11tools.cpp
+		os/x11/x11tools.cpp
 	)
 endif ()
 
