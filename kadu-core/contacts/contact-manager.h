@@ -39,6 +39,8 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactManager)
 
+	friend class Core;
+
 	static ContactManager * Instance;
 
 	QList<Contact> DirtyContacts;

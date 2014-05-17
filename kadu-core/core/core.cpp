@@ -785,6 +785,9 @@ void Core::runServices()
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
 	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
+
+	// moved here because of #2758
+	ContactManager::instance()->init();
 }
 
 void Core::runGuiServices()
