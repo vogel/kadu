@@ -50,7 +50,9 @@ ContactManager * ContactManager::instance()
 		BuddyManager::instance();
 
 		Instance = new ContactManager();
-		Instance->init();
+
+		// moved from here because of #2758
+		// Instance->init();
 	}
 
 	return Instance;
