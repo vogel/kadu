@@ -49,8 +49,6 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <unistd.h>
-#else // !Q_OS_WIN32
-#include <winsock2.h>
 #endif // !Q_OS_WIN32
 
 #include "configuration/configuration-file.h"
@@ -58,6 +56,8 @@
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
+#include "os/win/wsa-exception.h"
+#include "os/win/wsa-handler.h"
 #include "protocols/protocols-manager.h"
 
 #include "icons/icons-manager.h"
@@ -164,8 +164,10 @@ static void printKaduOptions()
 		"                             (overwrites CONFIG_DIR variable)\n");
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) try
 {
+	WSAHandler wsaHandler;
+
 	bool ok;
 	long msec;
 	time_t sec;
@@ -188,10 +190,6 @@ int main(int argc, char *argv[])
 		qputenv("LC_COLLATE", "en_US");
 	else if (lcAllEnv.isEmpty())
 		qputenv("LC_COLLATE", langEnv);
-#else // !Q_OS_WIN32
-	WSADATA wsaData;
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-		return 2;
 #endif // !Q_OS_WIN32
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
@@ -209,9 +207,6 @@ int main(int argc, char *argv[])
 		{
 			printVersion();
 			delete qApp;
-#ifdef Q_OS_WIN32
-			WSACleanup();
-#endif
 			return 0;
 		}
 		else if (*it == QLatin1String("--help"))
@@ -219,9 +214,6 @@ int main(int argc, char *argv[])
 			printUsage();
 			printKaduOptions();
 			delete qApp;
-#ifdef Q_OS_WIN32
-			WSACleanup();
-#endif
 			return 0;
 		}
 		else if (*it == QLatin1String("--debug") && ++it != arguments.constEnd())
@@ -294,10 +286,6 @@ int main(int argc, char *argv[])
 		delete config_file_ptr;
 		delete xml_config_file;
 		delete qApp;
-#ifdef Q_OS_WIN32
-		WSACleanup();
-#endif
-
 		return 1;
 	}
 
@@ -341,10 +329,6 @@ int main(int argc, char *argv[])
 	delete qApp;
 #endif
 
-#ifdef Q_OS_WIN32
-	WSACleanup();
-#endif
-
 	if (measureTime)
 	{
 		getTime(&sec, &msec);
@@ -360,4 +344,14 @@ int main(int argc, char *argv[])
 	KaduPaths::destroyInstance();
 
 	return ret;
+}
+#if defined(Q_OS_WIN32)
+catch (WSAException &)
+{
+	return 2;
+}
+#endif
+catch (...)
+{
+	throw;
 }
