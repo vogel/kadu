@@ -20,6 +20,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "misc/memory.h"
 #include "themes.h"
 
 #include "sound-theme-manager.h"
@@ -44,7 +45,7 @@ SoundThemeManager * SoundThemeManager::instance()
 }
 
 SoundThemeManager::SoundThemeManager() :
-		MyThemes(new Themes("sounds", "sound.conf"))
+		MyThemes{make_unique<Themes>("sounds", "sound.conf")}
 {
 	MyThemes->setPaths(config_file->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
@@ -62,8 +63,6 @@ SoundThemeManager::SoundThemeManager() :
 
 SoundThemeManager::~SoundThemeManager()
 {
-	delete MyThemes;
-	MyThemes = 0;
 }
 
 void SoundThemeManager::applyTheme(const QString &themeName)

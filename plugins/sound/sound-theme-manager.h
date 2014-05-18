@@ -24,6 +24,7 @@
 #define SOUND_THEME_MANAGER_H
 
 #include <QtCore/QString>
+#include <memory>
 
 class Themes;
 
@@ -31,7 +32,7 @@ class SoundThemeManager
 {
 	static SoundThemeManager * Instance;
 
-	Themes *MyThemes;
+	std::unique_ptr<Themes> MyThemes;
 
 	SoundThemeManager();
 	~SoundThemeManager();
@@ -43,7 +44,7 @@ public:
 
 	void applyTheme(const QString &themeName);
 
-	Themes * themes() { return MyThemes; }
+	Themes * themes() { return MyThemes.get(); }
 
 };
 
