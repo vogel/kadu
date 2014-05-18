@@ -125,6 +125,7 @@ set (kadu_SUBDIRS
 	contacts
 	core
 	dom
+	execution-arguments
 	file-transfer
 	formatted-string
 	gui
@@ -339,6 +340,7 @@ kadu_api_directories (kadu-core
 	contacts/model
 	core
 	dom
+	execution-arguments
 	file-transfer
 	formatted-string
 	gui
