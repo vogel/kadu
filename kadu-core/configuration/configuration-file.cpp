@@ -472,11 +472,6 @@ ConfigFile::ConfigFile(const QString &filename) : filename(filename)
 {
 }
 
-void ConfigFile::sync()
-{
-	xml_config_file->sync();
-}
-
 bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
 {
 	QMutexLocker locker(&GlobalMutex);

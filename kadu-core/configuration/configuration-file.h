@@ -400,11 +400,6 @@ public:
 	ConfigFile(const QString &filename);
 
 	/**
-		Zapisuje na dysk zawarto�� konfiguracji
-	**/
-	void sync();
-
-	/**
 		Zapisuje warto�� "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
