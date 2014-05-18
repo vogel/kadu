@@ -54,6 +54,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
+#include "execution-arguments/execution-arguments.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
 #include "os/win/wsa-exception.h"
@@ -172,7 +173,6 @@ int main(int argc, char *argv[]) try
 	long msec;
 	time_t sec;
 	FILE *logFile = 0;
-	QStringList ids;
 
 	getTime(&sec, &msec);
 
@@ -196,6 +196,12 @@ int main(int argc, char *argv[]) try
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
+	bool queryVersion = false;
+	bool queryUsage = false;
+	QString debugMask;
+	QString configurationDirectory;
+	QStringList openIds;
+
 	auto arguments = QCoreApplication::arguments();
 	for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
 	{
@@ -204,32 +210,48 @@ int main(int argc, char *argv[]) try
 			continue;
 
 		if (*it == QLatin1String("--version"))
-		{
-			printVersion();
-			delete qApp;
-			return 0;
-		}
+			queryVersion = true;
 		else if (*it == QLatin1String("--help"))
-		{
-			printUsage();
-			printKaduOptions();
-			delete qApp;
-			return 0;
-		}
-		else if (*it == QLatin1String("--debug") && ++it != arguments.constEnd())
-		{
-			it->toInt(&ok);
-			if (ok)
-				qputenv("DEBUG_MASK", it->toUtf8());
-			else
-				fprintf(stderr, "Ignoring invalid debug mask '%s'\n", it->toUtf8().constData());
-		}
-		else if (*it == QLatin1String("--config-dir") && ++it != arguments.constEnd())
-			qputenv("CONFIG_DIR", it->toUtf8());
+			queryUsage = true;
+		else if (*it == QLatin1String("--debug") && (it + 1) != arguments.constEnd())
+			debugMask = *(++it);
+		else if (*it == QLatin1String("--config-dir") && (it + 1) != arguments.constEnd())
+			configurationDirectory = *(++it);
 		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(*it))
-			ids.append(*it);
+			openIds.append(*it);
 		else
 			fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
+	}
+
+	auto executionArguments = ExecutionArguments{queryVersion, queryUsage, debugMask, configurationDirectory, openIds};
+
+	if (executionArguments.queryVersion())
+	{
+		printVersion();
+		delete qApp;
+		return 0;
+	}
+
+	if (executionArguments.queryUsage())
+	{
+		printUsage();
+		printKaduOptions();
+		delete qApp;
+		return 0;
+	}
+
+	if (!executionArguments.debugMask().isEmpty())
+	{
+		executionArguments.debugMask().toInt(&ok);
+		if (ok)
+			qputenv("DEBUG_MASK", executionArguments.debugMask().toUtf8());
+		else
+			fprintf(stderr, "Ignoring invalid debug mask '%s'\n", executionArguments.debugMask().toUtf8().constData());
+	}
+
+	if (!executionArguments.configurationDirectory().isEmpty())
+	{
+		qputenv("CONFIG_DIR", executionArguments.configurationDirectory().toUtf8());
 	}
 
 	// It has to be called after putting CONFIG_DIR environment variable.
@@ -277,8 +299,8 @@ int main(int argc, char *argv[]) try
 	QtLocalPeer *peer = new QtLocalPeer(qApp, KaduPaths::instance()->profilePath());
 	if (peer->isClient())
 	{
-		if (!ids.isEmpty())
-			foreach (const QString &id, ids)
+		if (!openIds.isEmpty())
+			for (auto const &id : openIds)
 				peer->sendMessage(id, 1000);
 		else
 			peer->sendMessage("activate", 1000);
@@ -296,7 +318,7 @@ int main(int argc, char *argv[]) try
 
 	Core::instance()->activatePlugins();
 
-	foreach (const QString &id, ids)
+	for (auto const &id : openIds)
 		Core::instance()->receivedSignal(id);
 
 	/* for testing of startup / close time */
