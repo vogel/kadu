@@ -65,14 +65,14 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	CurrentChat = chatNotification ? chatNotification->chat() : Chat::null;
 
-	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
+	startSecs = secs = config_file->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
-	createLabels(notification->icon().icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(notification->icon().icon().pixmap(config_file->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
 	if (showButtons)
-		if (config_file.readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
+		if (config_file->readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
 			showButtons = false;
 
 	if (showButtons)
@@ -119,18 +119,18 @@ void Hint::configurationUpdated()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &palette.window().color());
-	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &palette.windowText().color());
-	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->key() + "_font", &font));
-	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
-	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
+	bcolor = config_file->readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &palette.window().color());
+	fcolor = config_file->readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &palette.windowText().color());
+	label->setFont(config_file->readFontEntry("Hints", "Event_" + notification->key() + "_font", &font));
+	setMinimumWidth(config_file->readNumEntry("Hints", "MinimumWidth", 100));
+	setMaximumWidth(config_file->readNumEntry("Hints", "MaximumWidth", 500));
 	mouseOut();
 	updateText();
 }
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
-	int margin = config_file.readNumEntry("Hints", "MarginSize", 0);
+	int margin = config_file->readNumEntry("Hints", "MarginSize", 0);
 
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(0);
@@ -163,7 +163,7 @@ void Hint::updateText()
 {
 	QString text;
 
-	QString syntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_syntax", QString());
+	QString syntax = config_file->readEntry("Hints", "Event_" + notification->key() + "_syntax", QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else
@@ -184,7 +184,7 @@ void Hint::updateText()
 		text = text.remove("file://");
 	}
 
-	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
+	if (config_file->readBoolEntry("Hints", "ShowContentMessage"))
 	{
 		QStringList details;
 		if (!notification->details().isEmpty())
@@ -195,14 +195,14 @@ void Hint::updateText()
 		{
 			int i = (count > 5) ? count - 5 : 0;
 
-			int citeSign = config_file.readNumEntry("Hints","CiteSign");
+			int citeSign = config_file->readNumEntry("Hints","CiteSign");
 
 			QString defaultSyntax;
 			if (notification->type() == "NewMessage" || notification->type() == "NewChat")
 				defaultSyntax = "\n&bull; <small>%1</small>";
 			else
 				defaultSyntax = "\n <small>%1</small>";
-			QString itemSyntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
+			QString itemSyntax = config_file->readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
 			for (; i < count; i++)
 			{
 				const QString &message = details[i].replace("<br/>", QLatin1String(""));

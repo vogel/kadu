@@ -54,7 +54,7 @@ ConfigSection::~ConfigSection()
 	blockSignals(false);
 	emit destroyed(this);
 
-	config_file.writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
+	config_file->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
 			TabWidget->tabText(TabWidget->currentIndex()));
 
 	// delete them here, since they manually delete child widgets of our TabWidget
@@ -88,7 +88,7 @@ void ConfigSection::activate()
 	if (Activated)
 		return;
 
-	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
+	QString tab = config_file->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
 	if (ConfigTabs.contains(tab))
 		TabWidget->setCurrentWidget(ConfigTabs.value(tab)->widget());
 	Activated = true;

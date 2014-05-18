@@ -51,10 +51,10 @@ void NetworkAccessManagerWrapper::configurationUpdated()
 {
 	NetworkProxy networkProxy;
 
-	if (config_file.readBoolEntry("SMS", "DefaultProxy", true))
+	if (config_file->readBoolEntry("SMS", "DefaultProxy", true))
 		networkProxy = NetworkProxyManager::instance()->defaultProxy();
 	else
-		networkProxy = NetworkProxyManager::instance()->byUuid(config_file.readEntry("SMS", "Proxy"));
+		networkProxy = NetworkProxyManager::instance()->byUuid(config_file->readEntry("SMS", "Proxy"));
 
 	QNetworkProxy proxy;
 

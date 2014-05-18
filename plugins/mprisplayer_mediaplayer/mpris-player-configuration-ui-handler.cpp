@@ -101,7 +101,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 
 	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
-	PlayersBox->setCurrentIndex(PlayersBox->findText(config_file.readEntry("MPRISPlayer", "Player")));
+	PlayersBox->setCurrentIndex(PlayersBox->findText(config_file->readEntry("MPRISPlayer", "Player")));
 
 	connect(add, SIGNAL(clicked()), this, SLOT(addPlayer()));
 	connect(edit, SIGNAL(clicked()), this, SLOT(editPlayer()));
@@ -166,7 +166,7 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 	if (newPlayer.isEmpty() || newService.isEmpty())
 		return;
 
-	QString oldPlayerName = config_file.readEntry("MPRISPlayer", "Player");
+	QString oldPlayerName = config_file->readEntry("MPRISPlayer", "Player");
 	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
 
 	userPlayersFile.writeEntry(newPlayer, "player", newPlayer);
@@ -261,8 +261,8 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
 
 void MPRISPlayerConfigurationUiHandler::configurationApplied()
 {
-	config_file.writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
-	config_file.writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
+	config_file->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
+	config_file->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
 
 	MPRISPlayer::instance()->configurationApplied();
 }

@@ -502,7 +502,7 @@ void Firewall::import_0_6_5_configuration()
 {
 	kdebugf();
 
-	QString loadedStr = config_file.readEntry("Firewall", "Secured_list");
+	QString loadedStr = config_file->readEntry("Firewall", "Secured_list");
 	QStringList secured = loadedStr.split(',', QString::SkipEmptyParts);
 
 	foreach (const QString &contact, secured)
@@ -514,58 +514,58 @@ void Firewall::import_0_6_5_configuration()
 		buddy.addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
 	}
 
-	config_file.removeVariable("Firewall", "Secured_list");
+	config_file->removeVariable("Firewall", "Secured_list");
 
 	kdebugf2();
 }
 
 void Firewall::configurationUpdated()
 {
-	CheckFloodingEmoticons = config_file.readBoolEntry("Firewall", "dos_emoticons", true);
-	EmoticonsAllowKnown = config_file.readBoolEntry("Firewall", "emoticons_allow_known", false);
-	WriteLog = config_file.readBoolEntry("Firewall", "write_log", true);
-	LogFilePath = config_file.readEntry("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
-	CheckDos = config_file.readBoolEntry("Firewall", "dos", true);
-	CheckChats = config_file.readBoolEntry("Firewall", "chats", true);
-	IgnoreConferences = config_file.readBoolEntry("Firewall", "ignore_conferences", true);
-	DropAnonymousWhenInvisible = config_file.readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
-	IgnoreInvisible = config_file.readBoolEntry("Firewall", "ignore_invisible", false);
-	Confirmation = config_file.readBoolEntry("Firewall", "confirmation", true);
-	ConfirmationText = config_file.readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"));
-	Search = config_file.readBoolEntry("Firewall", "search", true);
-	ConfirmationQuestion = config_file.readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"));
-	WriteInHistory = config_file.readBoolEntry("Firewall", "write_history", true);
-	DosInterval = config_file.readNumEntry("Firewall", "dos_interval", 500);
-	MaxEmoticons = config_file.readNumEntry("Firewall", "emoticons_max", 15);
-	SafeSending = config_file.readBoolEntry("Firewall", "safe_sending", false);
+	CheckFloodingEmoticons = config_file->readBoolEntry("Firewall", "dos_emoticons", true);
+	EmoticonsAllowKnown = config_file->readBoolEntry("Firewall", "emoticons_allow_known", false);
+	WriteLog = config_file->readBoolEntry("Firewall", "write_log", true);
+	LogFilePath = config_file->readEntry("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
+	CheckDos = config_file->readBoolEntry("Firewall", "dos", true);
+	CheckChats = config_file->readBoolEntry("Firewall", "chats", true);
+	IgnoreConferences = config_file->readBoolEntry("Firewall", "ignore_conferences", true);
+	DropAnonymousWhenInvisible = config_file->readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
+	IgnoreInvisible = config_file->readBoolEntry("Firewall", "ignore_invisible", false);
+	Confirmation = config_file->readBoolEntry("Firewall", "confirmation", true);
+	ConfirmationText = config_file->readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"));
+	Search = config_file->readBoolEntry("Firewall", "search", true);
+	ConfirmationQuestion = config_file->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"));
+	WriteInHistory = config_file->readBoolEntry("Firewall", "write_history", true);
+	DosInterval = config_file->readNumEntry("Firewall", "dos_interval", 500);
+	MaxEmoticons = config_file->readNumEntry("Firewall", "emoticons_max", 15);
+	SafeSending = config_file->readBoolEntry("Firewall", "safe_sending", false);
 
-	pattern.setPattern(config_file.readEntry("Firewall", "answer", tr("I want something")));
+	pattern.setPattern(config_file->readEntry("Firewall", "answer", tr("I want something")));
 }
 
 void Firewall::createDefaultConfiguration()
 {
 	//domy�lne powiadamianie dymkiem
-	config_file.addVariable("Notify", "Firewall_Hints", config_file.readEntry("Firewall", "show_hint", "true"));
-	config_file.addVariable("Firewall", "notification_syntax", config_file.readEntry("Firewall", "hint_syntax", tr("%u writes")));
+	config_file->addVariable("Notify", "Firewall_Hints", config_file->readEntry("Firewall", "show_hint", "true"));
+	config_file->addVariable("Firewall", "notification_syntax", config_file->readEntry("Firewall", "hint_syntax", tr("%u writes")));
 	//domy�lne kolory dymk�w
-	config_file.addVariable("Hints", "Event_Firewall_fgcolor", config_file.readEntry("Firewall", "fg_color", "#000080"));//navy
-	config_file.addVariable("Hints", "Event_Firewall_bgcolor", config_file.readEntry("Firewall", "bg_color", "#add8e6"));//lightblue
+	config_file->addVariable("Hints", "Event_Firewall_fgcolor", config_file->readEntry("Firewall", "fg_color", "#000080"));//navy
+	config_file->addVariable("Hints", "Event_Firewall_bgcolor", config_file->readEntry("Firewall", "bg_color", "#add8e6"));//lightblue
 	//domy�lne warto�ci zmiennych konfiguracyjnych
-	config_file.addVariable("Firewall", "ignore_conferences", true);
-	config_file.addVariable("Firewall", "search", true);
-	config_file.addVariable("Firewall", "chats", true);
-	config_file.addVariable("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)") );
-	config_file.addVariable("Firewall", "answer", tr("I want something") );
-	config_file.addVariable("Firewall", "confirmation", true );
-	config_file.addVariable("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)") );
-	config_file.addVariable("Firewall", "dos", true);
-	config_file.addVariable("Firewall", "dos_interval", 500);
-	config_file.addVariable("Firewall", "dos_emoticons", true);
-	config_file.addVariable("Firewall", "emoticons_max", 15);
-	config_file.addVariable("Firewall", "emoticons_allow_known", false);
-	config_file.addVariable("Firewall", "safe_sending", false);
-	config_file.addVariable("Firewall", "write_log", true);
-	config_file.addVariable("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
+	config_file->addVariable("Firewall", "ignore_conferences", true);
+	config_file->addVariable("Firewall", "search", true);
+	config_file->addVariable("Firewall", "chats", true);
+	config_file->addVariable("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)") );
+	config_file->addVariable("Firewall", "answer", tr("I want something") );
+	config_file->addVariable("Firewall", "confirmation", true );
+	config_file->addVariable("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)") );
+	config_file->addVariable("Firewall", "dos", true);
+	config_file->addVariable("Firewall", "dos_interval", 500);
+	config_file->addVariable("Firewall", "dos_emoticons", true);
+	config_file->addVariable("Firewall", "emoticons_max", 15);
+	config_file->addVariable("Firewall", "emoticons_allow_known", false);
+	config_file->addVariable("Firewall", "safe_sending", false);
+	config_file->addVariable("Firewall", "write_log", true);
+	config_file->addVariable("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
 }
 
 #include "moc_firewall.cpp"

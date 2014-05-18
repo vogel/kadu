@@ -54,7 +54,7 @@ void HistoryChatConfigurationWidget::createGui()
 
 void HistoryChatConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = config_file.readBoolEntry("History", "SaveChats", true);
+	GlobalStoreHistory = config_file->readBoolEntry("History", "SaveChats", true);
 	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 

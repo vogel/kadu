@@ -74,19 +74,19 @@ void ConfigWizardProfilePage::setLanguages()
 
 void ConfigWizardProfilePage::initializePage()
 {
-	int languageIndex = LanguagesCombo->findData(config_file.readEntry("General", "Language"));
+	int languageIndex = LanguagesCombo->findData(config_file->readEntry("General", "Language"));
 	if (-1 == languageIndex)
 		languageIndex = LanguagesCombo->findData("en");
 	if (-1 != languageIndex)
 		LanguagesCombo->setCurrentIndex(languageIndex);
 
-	NickNameEdit->setText(config_file.readEntry("General", "Nick", "Me"));
+	NickNameEdit->setText(config_file->readEntry("General", "Nick", "Me"));
 }
 
 void ConfigWizardProfilePage::acceptPage()
 {
-	config_file.writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
-	config_file.writeEntry("General", "Nick", NickNameEdit->text());
+	config_file->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+	config_file->writeEntry("General", "Nick", NickNameEdit->text());
 
 	Core::instance()->myself().setDisplay(NickNameEdit->text());
 }

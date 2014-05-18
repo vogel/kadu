@@ -115,7 +115,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 
 QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
 {
-	return config_file.readEntry(group, name, defaultValue);
+	return config_file->readEntry(group, name, defaultValue);
 }
 
 void SmsInternalSender::sendSms()

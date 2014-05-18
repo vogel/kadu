@@ -61,7 +61,7 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 	connect(messageLabel, SIGNAL(linkActivated(QString)), this, SLOT(downloadClicked()));
 
 	CheckForUpdates = new QCheckBox(tr("Check for updates when Kadu is opened"));
-	CheckForUpdates->setChecked(config_file.readBoolEntry("General", "CheckUpdates", true));
+	CheckForUpdates->setChecked(config_file->readBoolEntry("General", "CheckUpdates", true));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -85,7 +85,7 @@ UpdatesDialog::~UpdatesDialog()
 
 void UpdatesDialog::downloadClicked()
 {
-	if (config_file.readEntry("General", "Language") == "pl")
+	if (config_file->readEntry("General", "Language") == "pl")
 		UrlOpener::openUrl("http://www.kadu.im/w/Pobierz");
 	else
 		UrlOpener::openUrl("http://www.kadu.im/w/English:Download");
@@ -93,7 +93,7 @@ void UpdatesDialog::downloadClicked()
 
 void UpdatesDialog::accepted()
 {
-	config_file.writeEntry("General", "CheckUpdates", CheckForUpdates->isChecked());
+	config_file->writeEntry("General", "CheckUpdates", CheckForUpdates->isChecked());
 
 	close();
 }

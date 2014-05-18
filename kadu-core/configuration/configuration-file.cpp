@@ -766,4 +766,4 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const QP
 		writeEntry(group,name,defvalue);
 }
 
-ConfigFile *config_file_ptr;
+ConfigFile *config_file;

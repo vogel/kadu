@@ -61,13 +61,13 @@ void NetworkProxyManager::store()
 
 void NetworkProxyManager::configurationUpdated()
 {
-	DefaultProxy = byUuid(config_file.readEntry("Network", "DefaultProxy"));
+	DefaultProxy = byUuid(config_file->readEntry("Network", "DefaultProxy"));
 }
 
 void NetworkProxyManager::setDefaultProxy(const NetworkProxy &proxy)
 {
 	DefaultProxy = proxy;
-	config_file.writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
+	config_file->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
 }
 
 const NetworkProxy & NetworkProxyManager::defaultProxy()

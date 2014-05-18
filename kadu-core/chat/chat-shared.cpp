@@ -231,7 +231,7 @@ bool ChatShared::shouldStore()
 		return false;
 
 	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (config_file.readNumEntry("History", "Schema", 0) < 4)
+	if (config_file->readNumEntry("History", "Schema", 0) < 4)
 		return true;
 
 	if (customProperties()->shouldStore())

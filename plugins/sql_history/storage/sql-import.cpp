@@ -681,7 +681,7 @@ void SqlImport::performImport(QSqlDatabase &database)
 
 	initKaduSchemaTable(database);
 
-	config_file.writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
+	config_file->writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
 }
 
 #include "moc_sql-import.cpp"

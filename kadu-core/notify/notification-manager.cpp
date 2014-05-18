@@ -183,7 +183,7 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	foreach (Notifier *notifier, Notifiers)
 	{
-		if (config_file.readBoolEntry("Notify", notifyType + '_' + notifier->name()))
+		if (config_file->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{
 			notifier->notify(notification);
 			foundNotifier = true;
@@ -262,7 +262,7 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 		if (-1 == slashPosition)
 			return event;
 
-		if (config_file.readBoolEntry("Notify", event + "_UseCustomSettings", false))
+		if (config_file->readBoolEntry("Notify", event + "_UseCustomSettings", false))
 			return event;
 
 		event = event.left(slashPosition);

@@ -41,9 +41,9 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Look", "ShowGroupAll", true);
-	config_file.addVariable("Look", "ShowGroupTabUngroupped", false);
-	config_file.addVariable("Look", "DisplayGroupTabs", true);
+	config_file->addVariable("Look", "ShowGroupAll", true);
+	config_file->addVariable("Look", "ShowGroupTabUngroupped", false);
+	config_file->addVariable("Look", "DisplayGroupTabs", true);
 }
 
 void GroupTabBarConfigurator::configurationUpdated()
@@ -58,10 +58,10 @@ GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
 {
 	auto configuration = GroupTabBarConfiguration();
 
-	configuration.setDisplayGroupTabs(config_file.readBoolEntry("Look", "DisplayGroupTabs", true));
-	configuration.setShowGroupTabEverybody(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-	configuration.setAlwaysShowGroupTabUngroupped(config_file.readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
-	configuration.setCurrentGroupTab(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
+	configuration.setDisplayGroupTabs(config_file->readBoolEntry("Look", "DisplayGroupTabs", true));
+	configuration.setShowGroupTabEverybody(config_file->readBoolEntry("Look", "ShowGroupAll", true));
+	configuration.setAlwaysShowGroupTabUngroupped(config_file->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
+	configuration.setCurrentGroupTab(config_file->readNumEntry("Look", "CurrentGroupTab", 0));
 	configuration.setGroupFilters(loadGroupFilters(configuration.showGroupTabEverybody()));
 
 	return configuration;
@@ -73,11 +73,11 @@ void GroupTabBarConfigurator::storeConfiguration()
 		return;
 
 	auto configuration = ConfigurableGroupTabBar.data()->configuration();
-	config_file.writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
+	config_file->writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
 
 	storeGroupFilters(configuration.groupFilters());
 
-	config_file.sync(); // TODO: fix whole configuration system
+	config_file->sync(); // TODO: fix whole configuration system
 }
 
 QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTabEverybody) const
@@ -116,8 +116,8 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 {
 	auto result = QVector<GroupFilter>();
 	auto position = showGroupTabEverybody
-			? config_file.readNumEntry("Look", "AllGroupTabPosition", 0)
-			: config_file.readNumEntry("Look", "UngroupedGroupTabPosition", 0);
+			? config_file->readNumEntry("Look", "AllGroupTabPosition", 0)
+			: config_file->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
 
 	auto groups = GroupManager::instance()->items().toList();
 	qStableSort(groups.begin(), groups.end(), [](const Group &a, const Group &b){ return a.tabPosition() < b.tabPosition(); });

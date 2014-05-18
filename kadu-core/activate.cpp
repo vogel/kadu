@@ -35,7 +35,7 @@
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
 		// read user settings
-		int action = config_file.readNumEntry( "General", "WindowActivationMethod" );
+		int action = config_file->readNumEntry( "General", "WindowActivationMethod" );
 		// window & desktop
 		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
 		{

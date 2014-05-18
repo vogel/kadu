@@ -155,7 +155,7 @@ void SqlInitializer::initDatabase()
 	}
 	else
 	{
-		config_file.writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
+		config_file->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
 	}
 }

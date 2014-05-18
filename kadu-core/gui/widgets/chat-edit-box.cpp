@@ -227,13 +227,13 @@ void ChatEditBox::openInsertImageDialog()
 		return;
 
 	// QTBUG-849
-	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), config_file.readEntry("Chat", "LastImagePath"),
+	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), config_file->readEntry("Chat", "LastImagePath"),
 							tr("Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)"));
 	if (!selectedFile.isEmpty())
 	{
 		QFileInfo f(selectedFile);
 
-		config_file.writeEntry("Chat", "LastImagePath", f.absolutePath());
+		config_file->writeEntry("Chat", "LastImagePath", f.absolutePath());
 
 		if (!f.isReadable())
 		{

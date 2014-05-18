@@ -423,9 +423,9 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
 	GaduLoginParams.has_audio = false;
-	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
+	GaduLoginParams.last_sysmsg = config_file->readNumEntry("General", "SystemMsgIndex", 1389);
 
-	GaduLoginParams.image_size = qMax(qMin(config_file.readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
+	GaduLoginParams.image_size = qMax(qMin(config_file->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
 
 	setStatusFlags();
 }

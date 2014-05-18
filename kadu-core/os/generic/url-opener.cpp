@@ -52,9 +52,9 @@ bool UrlOpener::openUrl(const QByteArray &urlForDesktopServices, const QByteArra
 void UrlOpener::openUrl(const QByteArray &url)
 {
 	QString browser;
-	bool useDefaultWebBrowser = config_file.readBoolEntry("Chat", "UseDefaultWebBrowser", true);
+	bool useDefaultWebBrowser = config_file->readBoolEntry("Chat", "UseDefaultWebBrowser", true);
 	if (!useDefaultWebBrowser)
-		browser = config_file.readEntry("Chat", "WebBrowser");
+		browser = config_file->readEntry("Chat", "WebBrowser");
 
 	if (!openUrl(url, url, browser))
 		MessageDialog::show(KaduIcon("dialog-error"), QCoreApplication::translate("@default", QT_TR_NOOP("Kadu")),
@@ -64,9 +64,9 @@ void UrlOpener::openUrl(const QByteArray &url)
 void UrlOpener::openEmail(const QByteArray &email)
 {
 	QString client;
-	bool useDefaultEMailClient = config_file.readBoolEntry("Chat", "UseDefaultEMailClient", true);
+	bool useDefaultEMailClient = config_file->readBoolEntry("Chat", "UseDefaultEMailClient", true);
 	if (useDefaultEMailClient)
-		client = config_file.readEntry("Chat", "MailClient");
+		client = config_file->readEntry("Chat", "MailClient");
 
 	QByteArray urlForDesktopServices;
 	QByteArray urlForApplication;

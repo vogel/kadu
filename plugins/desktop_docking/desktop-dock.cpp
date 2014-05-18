@@ -74,7 +74,7 @@ DesktopDock::DesktopDock(QObject *parent) :
 	MoveMenuAction = new QAction(tr("Move"), DockWindow);
 	connect(MoveMenuAction, SIGNAL(triggered()), DockWindow, SLOT(startMoving()));
 
-	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
+	if (config_file->readBoolEntry("Desktop Dock", "MoveInMenu"))
 		createMenu();
 
 	kdebugf2();
@@ -141,18 +141,18 @@ void DesktopDock::updateMenu(bool b)
 
 void DesktopDock::configurationUpdated()
 {
-	updateMenu(config_file.readBoolEntry("Desktop Dock", "MoveInMenu"));
+	updateMenu(config_file->readBoolEntry("Desktop Dock", "MoveInMenu"));
 }
 
 void DesktopDock::createDefaultConfiguration()
 {
 	QWidget w;
 
-	config_file.addVariable("Desktop Dock", "DockingColor", w.palette().color(QPalette::Active, QPalette::Window));
-	config_file.addVariable("Desktop Dock", "DockingTransparency", true);
-	config_file.addVariable("Desktop Dock", "MoveInMenu", true);
-	config_file.addVariable("Desktop Dock", "PositionX", 0);
-	config_file.addVariable("Desktop Dock", "PositionY", 0);
+	config_file->addVariable("Desktop Dock", "DockingColor", w.palette().color(QPalette::Active, QPalette::Window));
+	config_file->addVariable("Desktop Dock", "DockingTransparency", true);
+	config_file->addVariable("Desktop Dock", "MoveInMenu", true);
+	config_file->addVariable("Desktop Dock", "PositionX", 0);
+	config_file->addVariable("Desktop Dock", "PositionY", 0);
 }
 
 #include "moc_desktop-dock.cpp"

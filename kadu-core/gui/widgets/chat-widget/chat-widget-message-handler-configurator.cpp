@@ -42,14 +42,14 @@ void ChatWidgetMessageHandlerConfigurator::configurationUpdated()
 
 void ChatWidgetMessageHandlerConfigurator::createDefaultConfiguration() const
 {
-	config_file.addVariable("Chat", "OpenChatOnMessage", false);
-	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
+	config_file->addVariable("Chat", "OpenChatOnMessage", false);
+	config_file->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
 }
 
 ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::loadConfiguration() const
 {
 	auto configuration = ChatWidgetMessageHandlerConfiguration();
-	configuration.setOpenChatOnMessage(config_file.readBoolEntry("Chat", "OpenChatOnMessage", false));
-	configuration.setOpenChatOnMessageOnlyWhenOnline(config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
+	configuration.setOpenChatOnMessage(config_file->readBoolEntry("Chat", "OpenChatOnMessage", false));
+	configuration.setOpenChatOnMessageOnlyWhenOnline(config_file->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
 	return configuration;
 }

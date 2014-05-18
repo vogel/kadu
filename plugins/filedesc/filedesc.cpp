@@ -101,9 +101,9 @@ FileDescription::~FileDescription()
 
 void FileDescription::configurationUpdated()
 {
-	File = config_file.readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	ForceDesc = config_file.readBoolEntry("FileDesc", "forceDescr", true);
-	AllowOther = config_file.readBoolEntry("FileDesc", "allowOther", true);
+	File = config_file->readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	ForceDesc = config_file->readBoolEntry("FileDesc", "forceDescr", true);
+	AllowOther = config_file->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
@@ -129,9 +129,9 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	config_file.addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	config_file.addVariable("FileDesc", "forceDescr", true);
-	config_file.addVariable("FileDesc", "allowOther", true);
+	config_file->addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	config_file->addVariable("FileDesc", "forceDescr", true);
+	config_file->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

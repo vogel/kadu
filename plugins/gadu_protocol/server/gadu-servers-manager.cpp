@@ -102,7 +102,7 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 void GaduServersManager::loadServerListFromFile(const QString &fileName)
 {
 	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-	GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
+	GoodServers << gaduServersFromString(config_file->readEntry("Network", "LastServerIP"));
 
 	QFile file(fileName);
 
@@ -127,7 +127,7 @@ void GaduServersManager::loadServerListFromString(const QString& data)
 	foreach (const QString &server, servers)
 		GoodServers << gaduServersFromString(server.trimmed());
 	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-	GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
+	GoodServers << gaduServersFromString(config_file->readEntry("Network", "LastServerIP"));
 }
 
 void GaduServersManager::buildServerList()
@@ -137,8 +137,8 @@ void GaduServersManager::buildServerList()
 	AllServers.clear();
 	AllPorts.clear();
 
-	int LastGoodPort = config_file.readNumEntry("Network", "LastServerPort",
-			config_file.readNumEntry("Network", "DefaultPort", 443));
+	int LastGoodPort = config_file->readNumEntry("Network", "LastServerPort",
+			config_file->readNumEntry("Network", "DefaultPort", 443));
 
 	if (8074 == LastGoodPort || 443 == LastGoodPort)
 		AllPorts << LastGoodPort;
@@ -147,10 +147,10 @@ void GaduServersManager::buildServerList()
 	if (443 != LastGoodPort)
 		AllPorts << 443;
 
-	if (config_file.readBoolEntry("Network", "isDefServers", true))
+	if (config_file->readBoolEntry("Network", "isDefServers", true))
 		loadServerListFromFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
 	else
-		loadServerListFromString(config_file.readEntry("Network", "Server"));
+		loadServerListFromString(config_file->readEntry("Network", "Server"));
 
 	AllServers = GoodServers;
 }
@@ -185,8 +185,8 @@ const QList<GaduServersManager::GaduServer> & GaduServersManager::getServersList
 
 void GaduServersManager::markServerAsGood(GaduServersManager::GaduServer server)
 {
-	config_file.writeEntry("Network", "LastServerIP", server.first.toString());
-	config_file.writeEntry("Network", "LastServerPort", server.second);
+	config_file->writeEntry("Network", "LastServerIP", server.first.toString());
+	config_file->writeEntry("Network", "LastServerPort", server.second);
 }
 
 void GaduServersManager::markServerAsBad(GaduServersManager::GaduServer server)

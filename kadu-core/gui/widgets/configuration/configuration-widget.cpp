@@ -95,7 +95,7 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 ConfigurationWidget::~ConfigurationWidget()
 {
 	if (SectionsListWidget->currentItem())
-		config_file.writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
+		config_file->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
 
 	disconnect(SectionsListWidget, 0, this, 0);
 
@@ -109,7 +109,7 @@ ConfigurationWidget::~ConfigurationWidget()
 
 void ConfigurationWidget::init()
 {
-	QString lastSection = config_file.readEntry("General", "ConfigurationWindow_" + Name);
+	QString lastSection = config_file->readEntry("General", "ConfigurationWindow_" + Name);
 	if (ConfigSections.contains(lastSection))
 		ConfigSections.value(lastSection)->activate();
 	else if (SectionsListWidget->count() > 0)

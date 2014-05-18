@@ -64,7 +64,7 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 		SoundFiles[CurrentNotifyEvent] = SoundFileSelectFile->file();
 
 	for (QMap<QString, QString>::const_iterator it = SoundFiles.constBegin(), end = SoundFiles.constEnd(); it != end; ++it)
-		config_file.writeEntry("Sounds", it.key() + "_sound", it.value());
+		config_file->writeEntry("Sounds", it.key() + "_sound", it.value());
 }
 
 void SoundConfigurationWidget::switchToEvent(const QString &event)
@@ -76,7 +76,7 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 	if (SoundFiles.contains(event))
 		SoundFileSelectFile->setFile(SoundFiles[event]);
 	else
-		SoundFileSelectFile->setFile(config_file.readEntry("Sounds", event + "_sound"));
+		SoundFileSelectFile->setFile(config_file->readEntry("Sounds", event + "_sound"));
 }
 
 void SoundConfigurationWidget::themeChanged(int index)
@@ -87,7 +87,7 @@ void SoundConfigurationWidget::themeChanged(int index)
 	//refresh soundFiles
 	for (QMap<QString, QString>::iterator it = SoundFiles.begin(), end = SoundFiles.end(); it != end; ++it)
 	{
-		it.value() = config_file.readEntry("Sounds", it.key() + "_sound");
+		it.value() = config_file->readEntry("Sounds", it.key() + "_sound");
 		if (it.key() == CurrentNotifyEvent)
 			SoundFileSelectFile->setFile(it.value());
 	}

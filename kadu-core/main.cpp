@@ -259,7 +259,7 @@ int main(int argc, char *argv[]) try
 		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
 		qFatal("%s", qPrintable(errorMessage));
 	}
-	config_file_ptr = new ConfigFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu.conf"));
+	config_file = new ConfigFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu.conf"));
 
 #ifdef DEBUG_OUTPUT_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
@@ -267,7 +267,7 @@ int main(int argc, char *argv[]) try
 
 	enableSignalHandling();
 
-	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name().left(2));
+	const QString lang = config_file->readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	kadu_qm.load("kadu_" + lang, KaduPaths::instance()->dataPath() + QLatin1String("translations"));
@@ -283,7 +283,7 @@ int main(int argc, char *argv[]) try
 		else
 			peer->sendMessage("activate", 1000);
 
-		delete config_file_ptr;
+		delete config_file;
 		delete xml_config_file;
 		delete qApp;
 		return 1;
@@ -317,10 +317,10 @@ int main(int argc, char *argv[]) try
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
 	delete xml_config_file;
-	delete config_file_ptr;
+	delete config_file;
 
 	xml_config_file = 0;
-	config_file_ptr = 0;
+	config_file = 0;
 
 	// On some systems it leads to crash with sms module.
 	// Reproducible by simply calling "delete new QScriptEngine();" in a module,

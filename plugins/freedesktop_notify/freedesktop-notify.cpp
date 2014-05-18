@@ -349,51 +349,51 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 
 void FreedesktopNotify::configurationUpdated()
 {
-	CustomTimeout = config_file.readBoolEntry("FreedesktopNotify", "CustomTimeout");
-	Timeout = config_file.readNumEntry("FreedesktopNotify", "Timeout");
-	ShowContentMessage = config_file.readBoolEntry("FreedesktopNotify", "ShowContentMessage");
-	CiteSign = config_file.readNumEntry("FreedesktopNotify", "CiteSign");
+	CustomTimeout = config_file->readBoolEntry("FreedesktopNotify", "CustomTimeout");
+	Timeout = config_file->readNumEntry("FreedesktopNotify", "Timeout");
+	ShowContentMessage = config_file->readBoolEntry("FreedesktopNotify", "ShowContentMessage");
+	CiteSign = config_file->readNumEntry("FreedesktopNotify", "CiteSign");
 }
 
 void FreedesktopNotify::import_0_9_0_Configuration()
 {
-	config_file.addVariable("FreedesktopNotify", "Timeout", config_file.readEntry("KDENotify", "Timeout"));
-	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", config_file.readEntry("KDENotify", "ShowContentMessage"));
-	config_file.addVariable("FreedesktopNotify", "CiteSign", config_file.readEntry("KDENotify", "CiteSign"));
-	if (!config_file.readEntry("KDENotify", "Timeout").isEmpty() || !config_file.readEntry("FreedesktopNotify", "Timeout").isEmpty())
-		config_file.addVariable("FreedesktopNotify", "CustomTimeout", true);
+	config_file->addVariable("FreedesktopNotify", "Timeout", config_file->readEntry("KDENotify", "Timeout"));
+	config_file->addVariable("FreedesktopNotify", "ShowContentMessage", config_file->readEntry("KDENotify", "ShowContentMessage"));
+	config_file->addVariable("FreedesktopNotify", "CiteSign", config_file->readEntry("KDENotify", "CiteSign"));
+	if (!config_file->readEntry("KDENotify", "Timeout").isEmpty() || !config_file->readEntry("FreedesktopNotify", "Timeout").isEmpty())
+		config_file->addVariable("FreedesktopNotify", "CustomTimeout", true);
 
 	foreach (NotifyEvent *event, NotificationManager::instance()->notifyEvents())
-		config_file.addVariable("Notify", event->name() + "_FreedesktopNotify", config_file.readEntry("Notify", event->name() + "_KNotify"));
+		config_file->addVariable("Notify", event->name() + "_FreedesktopNotify", config_file->readEntry("Notify", event->name() + "_KNotify"));
 }
 
 void FreedesktopNotify::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "ConnectionError_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "NewChat_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "NewMessage_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "StatusChanged_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "StatusChanged/ToOnline_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "StatusChanged/ToAway_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "StatusChanged/ToNotAvailable_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "StatusChanged/ToDoNotDisturb_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "StatusChanged/ToOffline_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "FileTransfer_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "FileTransfer/IncomingFile_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "FileTransfer/Finished_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "multilogon_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	config_file.addVariable("Notify", "Roster/ImportFailed_FreedesktopNotify", true);
-	config_file.addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	config_file.addVariable("Notify", "Roster/ExportFailed_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "ConnectionError_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "NewChat_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "NewMessage_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "StatusChanged_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "StatusChanged/ToFreeForChat_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "StatusChanged/ToOnline_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "StatusChanged/ToAway_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "StatusChanged/ToNotAvailable_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "StatusChanged/ToDoNotDisturb_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "StatusChanged/ToOffline_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "FileTransfer_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "FileTransfer/IncomingFile_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "FileTransfer/Finished_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "multilogon_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+	config_file->addVariable("Notify", "Roster/ImportFailed_FreedesktopNotify", true);
+	config_file->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+	config_file->addVariable("Notify", "Roster/ExportFailed_FreedesktopNotify", true);
 
-	config_file.addVariable("FreedesktopNotify", "CustomTimeout", false);
-	config_file.addVariable("FreedesktopNotify", "Timeout", 10);
-	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", true);
-	config_file.addVariable("FreedesktopNotify", "CiteSign", 100);
+	config_file->addVariable("FreedesktopNotify", "CustomTimeout", false);
+	config_file->addVariable("FreedesktopNotify", "Timeout", 10);
+	config_file->addVariable("FreedesktopNotify", "ShowContentMessage", true);
+	config_file->addVariable("FreedesktopNotify", "CiteSign", 100);
 }
 
 #include "moc_freedesktop-notify.cpp"

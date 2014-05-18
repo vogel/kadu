@@ -78,12 +78,12 @@ void WindowNotifier::notificationClosed(Notification *notification)
 
 void WindowNotifier::import_0_6_5_configuration()
 {
-    	config_file.addVariable("Notify", "StatusChanged/ToAway_Window", config_file.readEntry("Notify", "StatusChanged/ToBusy_Window"));
+    	config_file->addVariable("Notify", "StatusChanged/ToAway_Window", config_file->readEntry("Notify", "StatusChanged/ToBusy_Window"));
 }
 
 void WindowNotifier::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
+	config_file->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
 }
 
 /** @} */

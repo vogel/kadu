@@ -40,9 +40,9 @@ QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 {
 	QStringList programArguments;
 
-	if (config_file.readBoolEntry("SMS", "UseCustomString"))
+	if (config_file->readBoolEntry("SMS", "UseCustomString"))
 	{
-		programArguments = config_file.readEntry("SMS", "SmsString").split(' ');
+		programArguments = config_file->readEntry("SMS", "SmsString").split(' ');
 		programArguments.replaceInStrings("%k", number());
 		programArguments.replaceInStrings("%m", message);
 	}
@@ -59,7 +59,7 @@ void SmsExternalSender::sendMessage(const QString &message)
 {
 	Message = message;
 
-	QString smsAppPath = config_file.readEntry("SMS", "SmsApp");
+	QString smsAppPath = config_file->readEntry("SMS", "SmsApp");
 
 	Process = new QProcess(this);
 	Process->start(smsAppPath, buildProgramArguments(message));

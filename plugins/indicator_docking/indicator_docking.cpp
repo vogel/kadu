@@ -124,7 +124,7 @@ IndicatorDocking::~IndicatorDocking()
 
 void IndicatorDocking::indicateUnreadMessages()
 {
-	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
+	if (config_file->readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
 		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
@@ -322,8 +322,8 @@ QList<IndicatorDocking::IndMMap::iterator> IndicatorDocking::iteratorsForAggrega
 
 void IndicatorDocking::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "NewChat_IndicatorNotify", true);
-	config_file.addVariable("Notify", "NewMessage_IndicatorNotify", true);
+	config_file->addVariable("Notify", "NewChat_IndicatorNotify", true);
+	config_file->addVariable("Notify", "NewMessage_IndicatorNotify", true);
 }
 
 #include "moc_indicator_docking.cpp"

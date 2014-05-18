@@ -70,29 +70,29 @@ SpellcheckerConfiguration::~SpellcheckerConfiguration()
 
 void SpellcheckerConfiguration::createDefaultConfiguration()
 {
-	config_file.addVariable("ASpell", "Bold", "false");
-	config_file.addVariable("ASpell", "Italic", "false");
-	config_file.addVariable("ASpell", "Underline", "true");
-	config_file.addVariable("ASpell", "Color", "#FF0101");
-	config_file.addVariable("ASpell", "Checked", config_file.readEntry("General", "Language"));
-	config_file.addVariable("ASpell", "Accents", "false");
-	config_file.addVariable("ASpell", "Case", "false");
-	config_file.addVariable("ASpell", "Suggester", "true");
-	config_file.addVariable("ASpell", "SuggesterWordCount", "10");
+	config_file->addVariable("ASpell", "Bold", "false");
+	config_file->addVariable("ASpell", "Italic", "false");
+	config_file->addVariable("ASpell", "Underline", "true");
+	config_file->addVariable("ASpell", "Color", "#FF0101");
+	config_file->addVariable("ASpell", "Checked", config_file->readEntry("General", "Language"));
+	config_file->addVariable("ASpell", "Accents", "false");
+	config_file->addVariable("ASpell", "Case", "false");
+	config_file->addVariable("ASpell", "Suggester", "true");
+	config_file->addVariable("ASpell", "SuggesterWordCount", "10");
 }
 
 void SpellcheckerConfiguration::configurationUpdated()
 {
-	bool bold = config_file.readBoolEntry("ASpell", "Bold", false);
-	bool italic = config_file.readBoolEntry("ASpell", "Italic", false);
-	bool underline = config_file.readBoolEntry("ASpell", "Underline", false);
-	bool accents = config_file.readBoolEntry("ASpell", "Accents", false);
-	bool caseSensivity = config_file.readBoolEntry("ASpell", "Case", false);
-	bool suggester = config_file.readBoolEntry("ASpell", "Suggester", true);
+	bool bold = config_file->readBoolEntry("ASpell", "Bold", false);
+	bool italic = config_file->readBoolEntry("ASpell", "Italic", false);
+	bool underline = config_file->readBoolEntry("ASpell", "Underline", false);
+	bool accents = config_file->readBoolEntry("ASpell", "Accents", false);
+	bool caseSensivity = config_file->readBoolEntry("ASpell", "Case", false);
+	bool suggester = config_file->readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
-	QColor color = config_file.readColorEntry("ASpell", "Color", &colorMark);
-	QStringList checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
-	int suggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
+	QColor color = config_file->readColorEntry("ASpell", "Color", &colorMark);
+	QStringList checked = config_file->readEntry("ASpell", "Checked", config_file->readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
+	int suggesterWordCount = config_file->readNumEntry("ASpell", "SuggesterWordCount");
 
 	if (FullyLoaded && bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
 			caseSensivity == Case && suggester == Suggester && color == Color &&
@@ -115,5 +115,5 @@ void SpellcheckerConfiguration::configurationUpdated()
 
 void SpellcheckerConfiguration::setChecked(const QStringList &checked)
 {
-	config_file.writeEntry("ASpell", "Checked", checked.join(","));
+	config_file->writeEntry("ASpell", "Checked", checked.join(","));
 }

@@ -136,15 +136,15 @@ void KaduWindow::createGui()
 
 	ChangeStatusButtons = new StatusButtons(MainWidget);
 
-	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
+	if (!config_file->readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);
-	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
+	if (!config_file->readBoolEntry("Look", "ShowStatusButton"))
 		ChangeStatusButtons->hide();
 
 	QList<int> splitSizes;
 
-	splitSizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
-	splitSizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
+	splitSizes.append(config_file->readNumEntry("General", "UserBoxHeight"));
+	splitSizes.append(config_file->readNumEntry("General", "DescriptionHeight"));
 
 	Split->setSizes(splitSizes);
 
@@ -249,7 +249,7 @@ QMenuBar* KaduWindow::menuBar() const
 
 void KaduWindow::compositingEnabled()
 {
-	if (!config_file.readBoolEntry("Look", "UserboxTransparency"))
+	if (!config_file->readBoolEntry("Look", "UserboxTransparency"))
 	{
 		compositingDisabled();
 		return;
@@ -317,13 +317,13 @@ void KaduWindow::storeConfiguration()
 		hide();
 	}
 
-	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
+	if (config_file->readBoolEntry("Look", "ShowInfoPanel"))
 	{
-		config_file.writeEntry("General", "UserBoxHeight", Roster->size().height());
-		config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
+		config_file->writeEntry("General", "UserBoxHeight", Roster->size().height());
+		config_file->writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 	}
-	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-		config_file.writeEntry("General", "UserBoxHeight", Roster->size().height());
+	if (config_file->readBoolEntry("Look", "ShowStatusButton"))
+		config_file->writeEntry("General", "UserBoxHeight", Roster->size().height());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -394,7 +394,7 @@ void KaduWindow::hideWindowFromTaskbar()
 {
 	QWidget *w = window();
 	LONG_PTR newWindowLongPtr = GetWindowLongPtr(w->winId(), GWL_EXSTYLE);
-	bool hideFromTaskbar = config_file.readBoolEntry("General", "HideMainWindowFromTaskbar");
+	bool hideFromTaskbar = config_file->readBoolEntry("General", "HideMainWindowFromTaskbar");
 	if (hideFromTaskbar == !(newWindowLongPtr & WS_EX_APPWINDOW))
 		return;
 
@@ -421,7 +421,7 @@ void KaduWindow::changeEvent(QEvent *event)
 #ifdef Q_OS_WIN32
 	else if (event->type() == QEvent::WindowStateChange)
 	{
-		if (Docked && isMinimized() && config_file.readBoolEntry("General", "HideMainWindowFromTaskbar"))
+		if (Docked && isMinimized() && config_file->readBoolEntry("General", "HideMainWindowFromTaskbar"))
 			QMetaObject::invokeMethod(this, "hide", Qt::QueuedConnection);
 	}
 #endif
@@ -466,10 +466,10 @@ void KaduWindow::configurationUpdated()
 
 	setDocked(Docked);
 
-	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+	ChangeStatusButtons->setVisible(config_file->readBoolEntry("Look", "ShowStatusButton"));
 
 	triggerCompositingStateChanged();
-	setBlur(config_file.readBoolEntry("Look", "UserboxTransparency") && config_file.readBoolEntry("Look", "UserboxBlur"));
+	setBlur(config_file->readBoolEntry("Look", "UserboxTransparency") && config_file->readBoolEntry("Look", "UserboxBlur"));
 }
 
 void KaduWindow::createDefaultToolbars(QDomElement parentConfig)

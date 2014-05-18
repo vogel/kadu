@@ -133,7 +133,7 @@ void HistoryImporter::threadFinished()
 {
 	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
 	{
-		config_file.writeEntry("History", "Imported_from_0.6.5", true);
+		config_file->writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful
 		HistoryMigrationActions::unregisterActions();
 	}

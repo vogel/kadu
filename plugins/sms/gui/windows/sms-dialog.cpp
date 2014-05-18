@@ -138,7 +138,7 @@ void SmsDialog::createGui()
 	LengthLabel = new QLabel("0", this);
 	formLayout->addRow(0, LengthLabel);
 
-	SignatureEdit = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
+	SignatureEdit = new QLineEdit(config_file->readEntry("SMS", "SmsNick"), this);
 	connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
 	formLayout->addRow(tr("Signature") + ':', SignatureEdit);
@@ -191,7 +191,7 @@ void SmsDialog::validate()
 
 void SmsDialog::configurationUpdated()
 {
-	ContentEdit->setFont(config_file.readFontEntry("Look", "ChatFont"));
+	ContentEdit->setFont(config_file->readFontEntry("Look", "ChatFont"));
 }
 
 void SmsDialog::setRecipient(const QString &phone)
@@ -270,7 +270,7 @@ void SmsDialog::sendSms()
 
 	SmsSender *sender;
 
-	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
+	if (config_file->readBoolEntry("SMS", "BuiltInApp"))
 	{
 		int gatewayIndex = ProviderComboBox->currentIndex();
 		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
@@ -278,7 +278,7 @@ void SmsDialog::sendSms()
 	}
 	else
 	{
-		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
+		if (config_file->readEntry("SMS", "SmsApp").isEmpty())
 		{
 			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
 					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);

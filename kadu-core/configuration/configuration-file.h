@@ -686,7 +686,6 @@ public:
 //TODO: mamy juz 0.6 ;)
 //TODO pozdrowienia z prawie-1.0
 
-extern KADUAPI ConfigFile *config_file_ptr;
-#define config_file (*config_file_ptr)
+extern KADUAPI ConfigFile *config_file;
 
 #endif

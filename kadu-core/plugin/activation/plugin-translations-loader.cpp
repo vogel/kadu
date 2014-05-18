@@ -30,7 +30,7 @@
 PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept :
 		m_translator{make_unique<QTranslator>()}
 {
-	auto const lang = config_file.readEntry("General", "Language");
+	auto const lang = config_file->readEntry("General", "Language");
 
 	if (m_translator->load(pluginName + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String{"plugins/translations"}))
 		QCoreApplication::installTranslator(m_translator.get());

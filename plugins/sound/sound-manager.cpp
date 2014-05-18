@@ -65,7 +65,7 @@ SoundManager::SoundManager() :
 	import_0_6_5_configuration();
 	createDefaultConfiguration();
 
-	setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
+	setMute(!config_file->readBoolEntry("Sounds", "PlaySound"));
 
 
 	PlayThread = new QThread();
@@ -100,25 +100,25 @@ SoundManager::~SoundManager()
 
 void SoundManager::import_0_6_5_configuration()
 {
-	config_file.addVariable("Notify", "StatusChanged/ToAway_Sound",
-			config_file.readEntry("Notify", "StatusChanged/ToAway_Sound"));
+	config_file->addVariable("Notify", "StatusChanged/ToAway_Sound",
+			config_file->readEntry("Notify", "StatusChanged/ToAway_Sound"));
 }
 
 void SoundManager::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "ConnectionError_Sound", false);
-	config_file.addVariable("Notify", "InvalidPassword_Sound", false);
-	config_file.addVariable("Notify", "NewChat_Sound", true);
-	config_file.addVariable("Notify", "NewMessage_Sound", true);
-	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat", false);
-	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
-	config_file.addVariable("Notify", "StatusChanged/ToAway_Sound", false);
-	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
+	config_file->addVariable("Notify", "ConnectionError_Sound", false);
+	config_file->addVariable("Notify", "InvalidPassword_Sound", false);
+	config_file->addVariable("Notify", "NewChat_Sound", true);
+	config_file->addVariable("Notify", "NewMessage_Sound", true);
+	config_file->addVariable("Notify", "StatusChanged/ToFreeForChat", false);
+	config_file->addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
+	config_file->addVariable("Notify", "StatusChanged/ToAway_Sound", false);
+	config_file->addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
 
-	config_file.addVariable("Sounds", "PlaySound", true);
-	config_file.addVariable("Sounds", "SoundPaths", QString());
-	config_file.addVariable("Sounds", "SoundTheme", "default");
-	config_file.addVariable("Sounds", "SoundVolume", 100);
+	config_file->addVariable("Sounds", "PlaySound", true);
+	config_file->addVariable("Sounds", "SoundPaths", QString());
+	config_file->addVariable("Sounds", "SoundTheme", "default");
+	config_file->addVariable("Sounds", "SoundVolume", 100);
 }
 
 bool SoundManager::isMuted() const
@@ -145,7 +145,7 @@ void SoundManager::playSoundByName(const QString &soundName)
 	if (isMuted())
 		return;
 
-	QString file = config_file.readEntry("Sounds", soundName + "_sound");
+	QString file = config_file->readEntry("Sounds", soundName + "_sound");
 	playFile(file);
 }
 

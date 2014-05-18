@@ -140,7 +140,7 @@ void RecentChatManager::store()
 	for (int i = 0; i < count; i++)
 		mainElement.removeChild(chatElements.at(i));
 
-	if (!config_file.readBoolEntry("Chat", "RecentChatsClear", false))
+	if (!config_file->readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (const Chat &chat, RecentChats)
 			if (chat && !chat.uuid().isNull())
 			{
@@ -234,7 +234,7 @@ void RecentChatManager::removeRecentChat(Chat chat)
 void RecentChatManager::configurationUpdated()
 {
 	CleanUpTimer.stop();
-	RecentChatsTimeout = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
+	RecentChatsTimeout = config_file->readNumEntry("Chat", "RecentChatsTimeout") * 60;
 	if (RecentChatsTimeout > 0)
 		CleanUpTimer.start();
 

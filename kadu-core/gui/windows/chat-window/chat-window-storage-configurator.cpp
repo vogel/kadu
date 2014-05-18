@@ -42,12 +42,12 @@ void ChatWindowStorageConfigurator::configurationUpdated()
 
 void ChatWindowStorageConfigurator::createDefaultConfiguration() const
 {
-	config_file.addVariable("Chat", "SaveOpenedWindows", true);
+	config_file->addVariable("Chat", "SaveOpenedWindows", true);
 }
 
 ChatWindowStorageConfiguration ChatWindowStorageConfigurator::loadConfiguration() const
 {
 	auto configuration = ChatWindowStorageConfiguration();
-	configuration.setStoreOpenedChatWindows(config_file.readBoolEntry("Chat", "SaveOpenedWindows", true));
+	configuration.setStoreOpenedChatWindows(config_file->readBoolEntry("Chat", "SaveOpenedWindows", true));
 	return configuration;
 }

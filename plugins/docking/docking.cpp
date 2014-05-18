@@ -296,7 +296,7 @@ void DockingManager::defaultToolTip()
 	if (!CurrentDocker)
 		return;
 
-	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
+	if (config_file->readBoolEntry("General", "ShowTooltipInTray"))
 	{
 		QString tiptext("");
 
@@ -486,7 +486,7 @@ void DockingManager::setDocker(Docker *docker)
 		changeIcon();
 		defaultToolTip();
 #ifndef Q_OS_MAC
-		if (config_file.readBoolEntry("General", "RunDocked"))
+		if (config_file->readBoolEntry("General", "RunDocked"))
 			Core::instance()->setShowMainWindowOnStart(false);
 		Core::instance()->kaduWindow()->setDocked(true);
 	}
@@ -630,7 +630,7 @@ void DockingManager::statusContainerUnregistered(StatusContainer *statusContaine
 
 void DockingManager::configurationUpdated()
 {
-	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
+	if (config_file->readBoolEntry("General", "ShowTooltipInTray"))
 		defaultToolTip();
 	else
 	{
@@ -638,7 +638,7 @@ void DockingManager::configurationUpdated()
 			CurrentDocker->changeTrayTooltip(QString());
 	}
 
-	IconType it = (IconType)config_file.readNumEntry("Look", "NewMessageIcon");
+	IconType it = (IconType)config_file->readNumEntry("Look", "NewMessageIcon");
 	if (newMessageIcon != it)
 	{
 		newMessageIcon = it;
@@ -648,9 +648,9 @@ void DockingManager::configurationUpdated()
 
 void DockingManager::createDefaultConfiguration()
 {
-	config_file.addVariable("General", "RunDocked", false);
-	config_file.addVariable("General", "ShowTooltipInTray", true);
-	config_file.addVariable("Look", "NewMessageIcon", 0);
+	config_file->addVariable("General", "RunDocked", false);
+	config_file->addVariable("General", "ShowTooltipInTray", true);
+	config_file->addVariable("Look", "NewMessageIcon", 0);
 }
 
 void DockingManager::registerModuleAction(QAction *action)

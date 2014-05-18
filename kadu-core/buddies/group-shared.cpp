@@ -68,7 +68,7 @@ QString GroupShared::storageNodeName()
 void GroupShared::importConfiguration(const QString &name)
 {
 	Name = name;
-	Icon = config_file.readEntry("GroupIcon", name);
+	Icon = config_file->readEntry("GroupIcon", name);
 	NotifyAboutStatusChanges = true;
 	ShowInAllGroup= true;
 	OfflineToGroup= false;

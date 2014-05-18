@@ -533,7 +533,7 @@ void ChatWidget::clearChatWindow()
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
+	if (!config_file->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
 		MessagesView->setForcePruneDisabled(false);

@@ -46,14 +46,14 @@ SoundThemeManager * SoundThemeManager::instance()
 SoundThemeManager::SoundThemeManager() :
 		MyThemes(new Themes("sounds", "sound.conf"))
 {
-	MyThemes->setPaths(config_file.readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+	MyThemes->setPaths(config_file->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	QStringList soundThemes = themes()->themes();
-	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
+	QString soundTheme = config_file->readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
 		soundTheme = "default";
-		config_file.writeEntry("Sounds", "SoundTheme", "default");
+		config_file->writeEntry("Sounds", "SoundTheme", "default");
 	}
 
 	if (soundTheme != "custom")
@@ -74,7 +74,7 @@ void SoundThemeManager::applyTheme(const QString &themeName)
 
 	while (i != entries.constEnd())
 	{
-		config_file.writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
+		config_file->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
 		++i;
 	}
 }

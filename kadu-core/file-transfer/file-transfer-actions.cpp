@@ -141,7 +141,7 @@ QStringList FileTransferActions::selectFilesToSend()
 {
 	return QFileDialog::getOpenFileNames(
 			0, tr("Select file location"),
-			config_file.readEntry("Network", "LastUploadDirectory"));
+			config_file->readEntry("Network", "LastUploadDirectory"));
 }
 
 void FileTransferActions::selectFilesAndSend(const ContactSet &contacts)

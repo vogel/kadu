@@ -51,8 +51,8 @@ void HistoryMigrationActions::unregisterActions()
 HistoryMigrationActions::HistoryMigrationActions() :
 		ImportHistoryActionDescription(0)
 {
-	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
-	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN"));
+	bool imported = config_file->readBoolEntry("History", "Imported_from_0.6.5", false);
+	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file->readEntry("General", "UIN"));
 	if (!imported && gaduAccount && QFile::exists(KaduPaths::instance()->profilePath() + QLatin1String("history")))
 	{
 		ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
@@ -89,7 +89,7 @@ void HistoryMigrationActions::runImportHistoryAction()
 	if (HistoryImporterManager::instance()->containsImporter(KaduPaths::instance()->profilePath() + QLatin1String("history/")))
 		return;
 
-	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN"));
+	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file->readEntry("General", "UIN"));
 	if (!gaduAccount)
 		return;
 

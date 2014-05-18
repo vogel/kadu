@@ -61,7 +61,7 @@ void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 		Sounds[CurrentNotifyEvent] = soundEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = Sounds.constBegin(), end = Sounds.constEnd(); it != end; ++it)
-		config_file.writeEntry("PC Speaker", it.key() + "_Sound", it.value());
+		config_file->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
 }
 
 void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
@@ -74,7 +74,7 @@ void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 	if (Sounds.contains(event))
 		soundEdit->setText(Sounds[event]);
 	else
-		soundEdit->setText(config_file.readEntry("PC Speaker", event + "_Sound"));
+		soundEdit->setText(config_file->readEntry("PC Speaker", event + "_Sound"));
 }
 
 void PCSpeakerConfigurationWidget::test()

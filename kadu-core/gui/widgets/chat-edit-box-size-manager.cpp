@@ -46,7 +46,7 @@ ChatEditBoxSizeManager::~ChatEditBoxSizeManager()
 
 void ChatEditBoxSizeManager::configurationUpdated()
 {
-	setCommonHeight(config_file.readNumEntry("Chat", "ChatEditBoxHeight", 0));
+	setCommonHeight(config_file->readNumEntry("Chat", "ChatEditBoxHeight", 0));
 }
 
 void ChatEditBoxSizeManager::setCommonHeight(int height)
@@ -54,7 +54,7 @@ void ChatEditBoxSizeManager::setCommonHeight(int height)
 	if (height != CommonHeight)
 	{
 		CommonHeight = height;
-		config_file.writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
+		config_file->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
 		emit commonHeightChanged(CommonHeight);
 	}
 }

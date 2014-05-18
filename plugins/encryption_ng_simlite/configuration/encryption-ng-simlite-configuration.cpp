@@ -58,11 +58,11 @@ EncryptionNgSimliteConfiguration::~EncryptionNgSimliteConfiguration()
 
 void EncryptionNgSimliteConfiguration::createDefaultConfiguration()
 {
-	config_file.removeVariable("Chat", "Encryption");
-	config_file.addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	config_file->removeVariable("Chat", "Encryption");
+	config_file->addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }
 
 void EncryptionNgSimliteConfiguration::configurationUpdated()
 {
-	EncryptAfterReceiveEncryptedMessage = config_file.readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	EncryptAfterReceiveEncryptedMessage = config_file->readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }

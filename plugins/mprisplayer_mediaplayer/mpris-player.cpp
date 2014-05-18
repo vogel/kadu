@@ -106,26 +106,26 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 	// Save service value from mpris_mediaplayer module
 	if (key == "mpris_mediaplayer")
 	{
-		QString oldMPRISService = config_file.readEntry("MediaPlayer", "MPRISService");
+		QString oldMPRISService = config_file->readEntry("MediaPlayer", "MPRISService");
 
 		userPlayersFile.writeEntry(value, "player", value);
 		userPlayersFile.writeEntry(value, "service", oldMPRISService);
 		userPlayersFile.sync();
 
-		config_file.writeEntry("MPRISPlayer", "Player", value);
-		config_file.writeEntry("MPRISPlayer", "Service", oldMPRISService);
+		config_file->writeEntry("MPRISPlayer", "Player", value);
+		config_file->writeEntry("MPRISPlayer", "Service", oldMPRISService);
 	}
 	else // Choose player based on old module loaded.
 	{
-		config_file.writeEntry("MPRISPlayer", "Player", value);
-		config_file.writeEntry("MPRISPlayer", "Service", globalPlayersFile.readEntry(value, "service"));
+		config_file->writeEntry("MPRISPlayer", "Player", value);
+		config_file->writeEntry("MPRISPlayer", "Service", globalPlayersFile.readEntry(value, "service"));
 	}
 }
 
 void MPRISPlayer::configurationApplied()
 {
-	setName(config_file.readEntry("MPRISPlayer", "Player"));
-	setService(config_file.readEntry("MPRISPlayer", "Service"));
+	setName(config_file->readEntry("MPRISPlayer", "Player"));
+	setService(config_file->readEntry("MPRISPlayer", "Service"));
 
 	if (!MediaPlayer::instance()->registerMediaPlayer(MPRISPlayer::instance(), MPRISPlayer::instance()))
 	{

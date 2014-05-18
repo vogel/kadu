@@ -56,7 +56,7 @@ MainConfigurationHolder::MainConfigurationHolder() :
 
 void MainConfigurationHolder::configurationUpdated()
 {
-	QString statusContainerType = config_file.readEntry("General", "StatusContainerType", "Identity");
+	QString statusContainerType = config_file->readEntry("General", "StatusContainerType", "Identity");
 
 	SetStatusMode newStatus = SetStatusPerIdentity;
 	if (statusContainerType == "Account")

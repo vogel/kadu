@@ -168,7 +168,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 	{
 		if (fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(Core::instance()->kaduWindow(), tr("Select file location"),
-					config_file.readEntry("Network", "LastDownloadDirectory") + transfer.remoteFileName(),
+					config_file->readEntry("Network", "LastDownloadDirectory") + transfer.remoteFileName(),
 							QString(), 0, QFileDialog::DontConfirmOverwrite);
 
 		if (fileName.isEmpty())
@@ -179,7 +179,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			return;
 		}
 
-		config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
+		config_file->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
 		fi.setFile(fileName);
 
 		if (!haveFileName && fi.exists())

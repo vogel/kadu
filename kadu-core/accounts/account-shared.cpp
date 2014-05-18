@@ -313,8 +313,8 @@ void AccountShared::setDisconnectStatus()
 	if (!ProtocolHandler->isConnected() && !ProtocolHandler->isDisconnecting())
 		return;
 
-	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
-	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+	bool disconnectWithCurrentDescription = config_file->readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = config_file->readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
 	disconnectStatus.setType(StatusTypeOffline);

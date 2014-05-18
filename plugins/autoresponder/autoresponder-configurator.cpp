@@ -36,12 +36,12 @@ void AutoresponderConfigurator::setAutoresponder(AutoResponder *autoresponder)
 
 void AutoresponderConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Autoresponder", "Autotext", QCoreApplication::translate("AutoresponderConfigurator", "I am busy."));
-	config_file.addVariable("Autoresponder", "OnlyFirstTime", true);
-	config_file.addVariable("Autoresponder", "RespondConf", true);
-	config_file.addVariable("Autoresponder", "StatusAvailable", false);
-	config_file.addVariable("Autoresponder", "StatusBusy", true);
-	config_file.addVariable("Autoresponder", "StatusInvisible", false);
+	config_file->addVariable("Autoresponder", "Autotext", QCoreApplication::translate("AutoresponderConfigurator", "I am busy."));
+	config_file->addVariable("Autoresponder", "OnlyFirstTime", true);
+	config_file->addVariable("Autoresponder", "RespondConf", true);
+	config_file->addVariable("Autoresponder", "StatusAvailable", false);
+	config_file->addVariable("Autoresponder", "StatusBusy", true);
+	config_file->addVariable("Autoresponder", "StatusInvisible", false);
 }
 
 void AutoresponderConfigurator::configurationUpdated()
@@ -50,12 +50,12 @@ void AutoresponderConfigurator::configurationUpdated()
 		return;
 
 	AutoresponderConfiguration configuration;
-	configuration.setAutoRespondText(config_file.readEntry("Autoresponder", "Autotext"));
-	configuration.setRespondConferences(config_file.readBoolEntry("Autoresponder", "RespondConf"));
-	configuration.setRespondOnlyFirst(config_file.readBoolEntry("Autoresponder", "OnlyFirstTime"));
-	configuration.setStatusAvailable(config_file.readBoolEntry("Autoresponder", "StatusAvailable"));
-	configuration.setStatusBusy(config_file.readBoolEntry("Autoresponder", "StatusBusy"));
-	configuration.setStatusInvisible(config_file.readBoolEntry("Autoresponder", "StatusInvisible"));
+	configuration.setAutoRespondText(config_file->readEntry("Autoresponder", "Autotext"));
+	configuration.setRespondConferences(config_file->readBoolEntry("Autoresponder", "RespondConf"));
+	configuration.setRespondOnlyFirst(config_file->readBoolEntry("Autoresponder", "OnlyFirstTime"));
+	configuration.setStatusAvailable(config_file->readBoolEntry("Autoresponder", "StatusAvailable"));
+	configuration.setStatusBusy(config_file->readBoolEntry("Autoresponder", "StatusBusy"));
+	configuration.setStatusInvisible(config_file->readBoolEntry("Autoresponder", "StatusInvisible"));
 
 	ConfigurableAutoresponder->setConfiguration(configuration);
 }

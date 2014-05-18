@@ -38,22 +38,22 @@ TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *l
 
 void TalkableDelegateConfiguration::configurationUpdated()
 {
-	Font = config_file.readFontEntry("Look", "UserboxFont");
+	Font = config_file->readFontEntry("Look", "UserboxFont");
 	BoldFont = Font;
 	BoldFont.setBold(true);
 
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
-	ShowAvatars = config_file.readBoolEntry("Look", "ShowAvatars");
-	AvatarBorder = config_file.readBoolEntry("Look", "AvatarBorder");
-	AvatarGreyOut = config_file.readBoolEntry("Look", "AvatarGreyOut");
-	AlignTop = config_file.readBoolEntry("Look", "AlignUserboxIconsTop");
-	ShowBold = config_file.readBoolEntry("Look", "ShowBold");
-	ShowDescription = config_file.readBoolEntry("Look", "ShowDesc");
-	ShowMultiLineDescription = config_file.readBoolEntry("Look", "ShowMultilineDesc");
-	DescriptionColor = config_file.readColorEntry("Look", "DescriptionColor");
-	FontColor = config_file.readColorEntry("Look", "UserboxFgColor");
+	ShowAvatars = config_file->readBoolEntry("Look", "ShowAvatars");
+	AvatarBorder = config_file->readBoolEntry("Look", "AvatarBorder");
+	AvatarGreyOut = config_file->readBoolEntry("Look", "AvatarGreyOut");
+	AlignTop = config_file->readBoolEntry("Look", "AlignUserboxIconsTop");
+	ShowBold = config_file->readBoolEntry("Look", "ShowBold");
+	ShowDescription = config_file->readBoolEntry("Look", "ShowDesc");
+	ShowMultiLineDescription = config_file->readBoolEntry("Look", "ShowMultilineDesc");
+	DescriptionColor = config_file->readColorEntry("Look", "DescriptionColor");
+	FontColor = config_file->readColorEntry("Look", "UserboxFgColor");
 
 	ListView->scheduleDelayedItemsLayout();
 }

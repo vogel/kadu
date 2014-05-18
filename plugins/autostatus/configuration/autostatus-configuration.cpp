@@ -32,7 +32,7 @@ AutostatusConfiguration::AutostatusConfiguration()
 
 void AutostatusConfiguration::configurationUpdated()
 {
-	AutoTime = config_file.readNumEntry("PowerKadu", "autostatus_time", 10);
-	AutoStatus = config_file.readNumEntry("PowerKadu", "autoStatus");
-	StatusFilePath = config_file.readEntry("PowerKadu", "status_file_path", KaduPaths::instance()->profilePath() + QLatin1String("autostatus.list"));
+	AutoTime = config_file->readNumEntry("PowerKadu", "autostatus_time", 10);
+	AutoStatus = config_file->readNumEntry("PowerKadu", "autoStatus");
+	StatusFilePath = config_file->readEntry("PowerKadu", "status_file_path", KaduPaths::instance()->profilePath() + QLatin1String("autostatus.list"));
 }

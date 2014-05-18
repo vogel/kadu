@@ -67,14 +67,14 @@ SimpleView::SimpleView() :
 
 	configurationUpdated();
 
-	DiffRect = config_file.readRectEntry("Look", "SimpleViewGeometry");
+	DiffRect = config_file->readRectEntry("Look", "SimpleViewGeometry");
 	if (DiffRect != QRect(0,0,0,0))
 		simpleViewToggle(true);
 }
 
 SimpleView::~SimpleView()
 {
-	config_file.writeEntry("Look", "SimpleViewGeometry", DiffRect);
+	config_file->writeEntry("Look", "SimpleViewGeometry", DiffRect);
 
 	simpleViewToggle(false);
 
@@ -201,10 +201,10 @@ void SimpleView::simpleViewToggle(bool activate)
 			MainWindowHandle->setGeometry(r);
 
 			/* Status button */
-			StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+			StatusButtonsHandle->setVisible(config_file->readBoolEntry("Look", "ShowStatusButton"));
 
 			/* Info panel*/
-			if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
+			if (config_file->readBoolEntry("Look", "ShowInfoPanel"))
 				KaduWindowHandle->infoPanel()->show();
 
 			/* ScrollBar */
@@ -216,7 +216,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			if (config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+			if (config_file->readBoolEntry("Look", "DisplayGroupTabs"))
 				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
@@ -253,9 +253,9 @@ void SimpleView::configurationUpdated()
 	/* Give the kadu update the GUI with old configuration */
 	simpleViewToggle(false);
 
-	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-	Borderless = config_file.readBoolEntry("Look", "SimpleViewBorderless", true);
+	KeepSize = config_file->readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = config_file->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = config_file->readBoolEntry("Look", "SimpleViewBorderless", true);
 
 }
 

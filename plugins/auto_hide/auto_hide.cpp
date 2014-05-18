@@ -85,8 +85,8 @@ void AutoHide::timerTimeoutSlot()
 
 void AutoHide::configurationUpdated()
 {
-	IdleTime = config_file.readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
-	Enabled = config_file.readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+	IdleTime = config_file->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+	Enabled = config_file->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
 
 	if (Enabled && !Timer.isActive())
 		Timer.start(1000);

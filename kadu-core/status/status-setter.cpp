@@ -70,10 +70,10 @@ void StatusSetter::coreInitialized()
 
 void StatusSetter::configurationUpdated()
 {
-	StartupStatus = config_file.readEntry("General", "StartupStatus");
-	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = config_file.readEntry("General", "StartupDescription");
-	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+	StartupStatus = config_file->readEntry("General", "StartupStatus");
+	StartupLastDescription = config_file->readBoolEntry("General", "StartupLastDescription");
+	StartupDescription = config_file->readEntry("General", "StartupDescription");
+	OfflineToInvisible = config_file->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
 
 	if (StartupStatus.isEmpty())
 		StartupStatus = "LastStatus";

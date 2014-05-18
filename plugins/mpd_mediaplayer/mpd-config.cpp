@@ -30,9 +30,9 @@ MPDConfig::MPDConfig()
 {
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
-	Host = config_file.readEntry("MediaPlayer", "MPDHost");
-	Port = config_file.readEntry("MediaPlayer", "MPDPort");
-	Timeout = config_file.readEntry("MediaPlayer", "MPDTimeout");
+	Host = config_file->readEntry("MediaPlayer", "MPDHost");
+	Port = config_file->readEntry("MediaPlayer", "MPDPort");
+	Timeout = config_file->readEntry("MediaPlayer", "MPDTimeout");
 }
 
 MPDConfig::~MPDConfig()
@@ -42,14 +42,14 @@ MPDConfig::~MPDConfig()
 
 void MPDConfig::createDefaultConfiguration()
 {
-	config_file.addVariable("MediaPlayer", "MPDHost", "localhost");
-	config_file.addVariable("MediaPlayer", "MPDPort", "6600");
-	config_file.addVariable("MediaPlayer", "MPDTimeout", "10");
+	config_file->addVariable("MediaPlayer", "MPDHost", "localhost");
+	config_file->addVariable("MediaPlayer", "MPDPort", "6600");
+	config_file->addVariable("MediaPlayer", "MPDTimeout", "10");
 }
 
 void MPDConfig::configurationUpdated()
 {
-	Host = config_file.readEntry("MediaPlayer", "MPDHost");
-	Port = config_file.readEntry("MediaPlayer", "MPDPort");
-	Timeout = config_file.readEntry("MediaPlayer", "MPDTimeout");
+	Host = config_file->readEntry("MediaPlayer", "MPDHost");
+	Port = config_file->readEntry("MediaPlayer", "MPDPort");
+	Timeout = config_file->readEntry("MediaPlayer", "MPDTimeout");
 }

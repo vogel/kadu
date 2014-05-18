@@ -137,12 +137,12 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 void GroupPropertiesWindow::selectIcon()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), config_file.readEntry("GroupIcon", "recentPath", "~/"),
+	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), config_file->readEntry("GroupIcon", "recentPath", "~/"),
 					tr("Images (*.png *.xpm *.jpg);;All Files (*)"));
 	if (!file.isEmpty())
 	{
 		QFileInfo fileInfo(file);
-		config_file.writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
+		config_file->writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
 		icon->setText(QString());
 		icon->setIcon(QIcon(file));
 		iconPath = file;

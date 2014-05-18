@@ -55,10 +55,10 @@ IconsManager::IconsManager()
 
 	ThemeManager = new IconThemeManager(this);
 	ThemeManager->loadThemes();
-	ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
+	ThemeManager->setCurrentTheme(config_file->readEntry("Look", "IconTheme"));
 	configurationUpdated();
 
-	config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+	config_file->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 	// TODO: localized protocol
 	localProtocolPath = "gadu-gadu";
@@ -222,12 +222,12 @@ void IconsManager::clearCache()
 
 void IconsManager::configurationUpdated()
 {
-	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
+	bool themeWasChanged = config_file->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
 	if (themeWasChanged)
 	{
 		clearCache();
-		ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
-		config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+		ThemeManager->setCurrentTheme(config_file->readEntry("Look", "IconTheme"));
+		config_file->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 		emit themeChanged();
 	}

@@ -99,8 +99,8 @@ void ChatWindow::configurationUpdated()
 {
 	triggerCompositingStateChanged();
 
-	m_showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
-	m_blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
+	m_showNewMessagesNum = config_file->readBoolEntry("Chat", "NewMessagesInChatTitle", false);
+	m_blinkChatTitle = config_file->readBoolEntry("Chat", "BlinkChatTitle", true);
 
 	if (m_chatWidget->chat().unreadMessagesCount())
 		blinkTitle();
@@ -108,7 +108,7 @@ void ChatWindow::configurationUpdated()
 
 void ChatWindow::compositingEnabled()
 {
-	if (config_file.readBoolEntry("Chat", "UseTransparency", false))
+	if (config_file->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -157,9 +157,9 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 {
 	kdebugf();
 
-	if (config_file.readBoolEntry("Chat", "ChatCloseTimer"))
+	if (config_file->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		int period = config_file.readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
+		int period = config_file->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < m_chatWidget->lastReceivedMessageTime().addSecs(period))
 		{

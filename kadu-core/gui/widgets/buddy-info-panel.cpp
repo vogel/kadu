@@ -63,7 +63,7 @@ BuddyInfoPanel::~BuddyInfoPanel()
 
 void BuddyInfoPanel::configurationUpdated()
 {
-	setUserFont(config_file.readFontEntry("Look", "PanelFont").toString(), true);
+	setUserFont(config_file->readFontEntry("Look", "PanelFont").toString(), true);
 
 	update();
 }
@@ -79,7 +79,7 @@ void BuddyInfoPanel::update()
 	if (Core::instance()->isClosing())
 		return;
 
-	QFont font = config_file.readFontEntry("Look", "PanelFont");
+	QFont font = config_file->readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
 	QString fontSize;
 	if (font.pointSize() > 0)
@@ -90,10 +90,10 @@ void BuddyInfoPanel::update()
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
-	QString fontColor = config_file.readColorEntry("Look", "InfoPanelFgColor").name();
-	bool backgroundFilled = config_file.readBoolEntry("Look", "InfoPanelBgFilled");
+	QString fontColor = config_file->readColorEntry("Look", "InfoPanelFgColor").name();
+	bool backgroundFilled = config_file->readBoolEntry("Look", "InfoPanelBgFilled");
 	if (backgroundFilled)
-		BackgroundColor = config_file.readColorEntry("Look", "InfoPanelBgColor").name();
+		BackgroundColor = config_file->readColorEntry("Look", "InfoPanelBgColor").name();
 	else
 		BackgroundColor = "transparent";
 
@@ -130,11 +130,11 @@ void BuddyInfoPanel::update()
 		"</html>"
 		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
-	QString syntaxFile = config_file.readEntry("Look", "InfoPanelSyntaxFile", "ultr");
+	QString syntaxFile = config_file->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
 	if (syntaxFile == "default")
 	{
 		syntaxFile = "Old Default";
-		config_file.writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
+		config_file->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
 	}
 
 	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
@@ -142,7 +142,7 @@ void BuddyInfoPanel::update()
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	displayItem(Item);
 
-	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
+	if (config_file->readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
 	else
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);

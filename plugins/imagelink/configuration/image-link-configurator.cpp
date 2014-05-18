@@ -54,15 +54,15 @@ void ImageLinkConfigurator::configure()
 
 void ImageLinkConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Imagelink", "show_image", true);
-	config_file.addVariable("Imagelink", "show_yt", true);
+	config_file->addVariable("Imagelink", "show_image", true);
+	config_file->addVariable("Imagelink", "show_yt", true);
 }
 
 void ImageLinkConfigurator::configurationUpdated()
 {
 	ImageLinkConfiguration configuration;
-	configuration.setShowImages(config_file.readBoolEntry("Imagelink", "show_image", true));
-	configuration.setShowVideos(config_file.readBoolEntry("Imagelink", "show_yt", true));
+	configuration.setShowImages(config_file->readBoolEntry("Imagelink", "show_image", true));
+	configuration.setShowVideos(config_file->readBoolEntry("Imagelink", "show_yt", true));
 
 	if (ImageExpander)
 		ImageExpander->setConfiguration(configuration);

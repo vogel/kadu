@@ -160,12 +160,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	config_file.addVariable("SMS", "Priority", QString());
-	config_file.addVariable("SMS", "BuiltInApp", true);
-	config_file.addVariable("SMS", "SmsNick", QString());
-	config_file.addVariable("SMS", "UseCustomString", false);
+	config_file->addVariable("SMS", "Priority", QString());
+	config_file->addVariable("SMS", "BuiltInApp", true);
+	config_file->addVariable("SMS", "SmsNick", QString());
+	config_file->addVariable("SMS", "UseCustomString", false);
 
-	config_file.addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+	config_file->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

@@ -42,7 +42,7 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 	if (!fileInfo.exists() || !fileInfo.isReadable())
 		throw PluginMetadataReaderException{};
 
-	auto const lang = config_file.readEntry("General", "Language");
+	auto const lang = config_file->readEntry("General", "Language");
 	PlainConfigFile file{filePath, "UTF-8"};
 
 	auto builder = PluginMetadataBuilder{};

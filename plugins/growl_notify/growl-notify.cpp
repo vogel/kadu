@@ -121,9 +121,9 @@ void GrowlNotify::notify(Notification *notification)
 		return;
 
 	QPixmap pixmap;
-	QString title = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_title");
-	QString syntax = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_syntax");
-//	bool showAvatar = config_file.readBoolEntry("GrowlNotify", QString("Event_") + notification->type() + "_avatar");
+	QString title = config_file->readEntry("GrowlNotify", QString("Event_") + notification->type() + "_title");
+	QString syntax = config_file->readEntry("GrowlNotify", QString("Event_") + notification->type() + "_syntax");
+//	bool showAvatar = config_file->readBoolEntry("GrowlNotify", QString("Event_") + notification->type() + "_avatar");
 
 	notification->acquire();
 
@@ -158,32 +158,32 @@ void GrowlNotify::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 
 void GrowlNotify::createDefaultConfiguration()
 {
-	config_file.addVariable("GrowlNotify", "Event_ConnectionError_syntax", "%&m");
-	config_file.addVariable("GrowlNotify", "Event_ConnectionError_title", "%&t");
+	config_file->addVariable("GrowlNotify", "Event_ConnectionError_syntax", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_ConnectionError_title", "%&t");
 
-	config_file.addVariable("GrowlNotify", "Event_NewChat_syntax", "%&d");
-	config_file.addVariable("GrowlNotify", "Event_NewChat_title", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_NewChat_syntax", "%&d");
+	config_file->addVariable("GrowlNotify", "Event_NewChat_title", "%&m");
 
-	config_file.addVariable("GrowlNotify", "Event_NewMessage_syntax", "%&d");
-	config_file.addVariable("GrowlNotify", "Event_NewMessage_title", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_NewMessage_syntax", "%&d");
+	config_file->addVariable("GrowlNotify", "Event_NewMessage_title", "%&m");
 
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_syntax", "%&d");
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_title", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_syntax", "%&d");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_title", "%&m");
 
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_title", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_title", "%&m");
 
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_title", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_title", "%&m");
 
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
-	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
+	config_file->addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
 
-	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_syntax", "%&m");
-	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
+	config_file->addVariable("GrowlNotify", "Event_FileTransfer/Finished_syntax", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
 
-	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
-	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
+	config_file->addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
+	config_file->addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
 }
 
 NotifierConfigurationWidget *GrowlNotify::createConfigurationWidget(QWidget *parent)

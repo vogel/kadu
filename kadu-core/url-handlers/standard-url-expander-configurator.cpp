@@ -36,8 +36,8 @@ void StandardUrlExpanderConfigurator::setStandardUrlExpander(StandardUrlExpander
 
 void StandardUrlExpanderConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Chat", "FoldLink", true);
-	config_file.addVariable("Chat", "LinkFoldTreshold", 50);
+	config_file->addVariable("Chat", "FoldLink", true);
+	config_file->addVariable("Chat", "LinkFoldTreshold", 50);
 }
 
 void StandardUrlExpanderConfigurator::configurationUpdated()
@@ -47,8 +47,8 @@ void StandardUrlExpanderConfigurator::configurationUpdated()
 
 	StandardUrlExpanderConfiguration configuration;
 
-	configuration.setFoldLink(config_file.readBoolEntry("Chat", "FoldLink"));
-	configuration.setFoldLinkThreshold(config_file.readNumEntry("Chat", "LinkFoldTreshold"));
+	configuration.setFoldLink(config_file->readBoolEntry("Chat", "FoldLink"));
+	configuration.setFoldLinkThreshold(config_file->readNumEntry("Chat", "LinkFoldTreshold"));
 
 	ConfigurableStandardUrlExpander->setConfiguration(configuration);
 }

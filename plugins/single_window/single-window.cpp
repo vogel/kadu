@@ -37,8 +37,8 @@ SingleWindowManager::SingleWindowManager(QObject *parent) :
 		ConfigurationUiHandler(parent),
 		m_windowProvider(new SimpleProvider<QWidget *>(0))
 {
-	config_file.addVariable("SingleWindow", "RosterPosition", 0);
-	config_file.addVariable("SingleWindow", "KaduWindowWidth", 205);
+	config_file->addVariable("SingleWindow", "RosterPosition", 0);
+	config_file->addVariable("SingleWindow", "KaduWindowWidth", 205);
 
 	m_window = new SingleWindow();
 	m_windowProvider->provideValue(m_window);
@@ -56,7 +56,7 @@ SingleWindowManager::~SingleWindowManager()
 
 void SingleWindowManager::configurationUpdated()
 {
-	int newRosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
+	int newRosterPos = config_file->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_window->rosterPosition() != newRosterPos)
 		m_window->changeRosterPos(newRosterPos);
 }
@@ -73,7 +73,7 @@ SingleWindow::SingleWindow()
 	m_tabs = new QTabWidget(this);
 	m_tabs->setTabsClosable(true);
 
-	m_rosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
+	m_rosterPos = config_file->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_rosterPos == 0)
 	{
 		m_split->addWidget(kadu);
@@ -92,7 +92,7 @@ SingleWindow::SingleWindow()
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
-	int kaduwidth = config_file.readNumEntry("SingleWindow", "KaduWindowWidth", 205);
+	int kaduwidth = config_file->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
 	if (m_rosterPos == 0)
 	{
@@ -125,7 +125,7 @@ SingleWindow::~SingleWindow()
 	KaduWindow *kadu = Core::instance()->kaduWindow();
 	bool visible = isVisible();
 
-	config_file.writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
+	config_file->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
 	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
 	disconnect(m_tabs, 0, this, 0);
@@ -229,7 +229,7 @@ void SingleWindow::updateTabName(ChatWidget *chatWidget)
 			baseTabName = chat.name();
 	}
 
-	if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false) && chatWidget->unreadMessagesCount() > 0)
+	if (config_file->readBoolEntry("SingleWindow", "NumMessagesInTab", false) && chatWidget->unreadMessagesCount() > 0)
 	{
 		m_tabs->setTabText(i, QString("%1 [%2]").arg(baseTabName).arg(chatWidget->unreadMessagesCount()));
 		m_tabs->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chatWidget->unreadMessagesCount()));

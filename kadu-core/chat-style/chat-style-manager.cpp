@@ -117,18 +117,18 @@ void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 
 void ChatStyleManager::configurationUpdated()
 {
-	if (config_file.readBoolEntry("Chat", "ChatPrune", true))
-		Prune = config_file.readNumEntry("Chat", "ChatPruneLen");
+	if (config_file->readBoolEntry("Chat", "ChatPrune", true))
+		Prune = config_file->readNumEntry("Chat", "ChatPruneLen");
 	else
 	{
-		config_file.writeEntry("Chat", "ChatPrune", true);
-		config_file.writeEntry("Chat", "ChatPruneLen", 0);
+		config_file->writeEntry("Chat", "ChatPrune", true);
+		config_file->writeEntry("Chat", "ChatPruneLen", 0);
 		Prune = 0;
 	}
 
-	ParagraphSeparator = config_file.readNumEntry("Look", "ParagraphSeparator");
+	ParagraphSeparator = config_file->readNumEntry("Look", "ParagraphSeparator");
 
-	QFont font = config_file.readFontEntry("Look","ChatFont");
+	QFont font = config_file->readFontEntry("Look","ChatFont");
 
 	QString fontFamily = font.family();
 	QString fontSize;
@@ -170,13 +170,13 @@ void ChatStyleManager::configurationUpdated()
 		"	padding: 3px;"
 		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, QString::number(ParagraphSeparator), backgroundColor);
 
-	CfgNoHeaderRepeat = config_file.readBoolEntry("Look", "NoHeaderRepeat", true);
+	CfgNoHeaderRepeat = config_file->readBoolEntry("Look", "NoHeaderRepeat", true);
 
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
 	{
-		CfgHeaderSeparatorHeight = config_file.readNumEntry("Look", "HeaderSeparatorHeight");
-		CfgNoHeaderInterval = config_file.readNumEntry("Look", "NoHeaderInterval");
+		CfgHeaderSeparatorHeight = config_file->readNumEntry("Look", "HeaderSeparatorHeight");
+		CfgNoHeaderInterval = config_file->readNumEntry("Look", "NoHeaderInterval");
 	}
 	else
 	{
@@ -184,10 +184,10 @@ void ChatStyleManager::configurationUpdated()
 		CfgNoHeaderInterval = 0;
 	}
 
-	NoServerTime = config_file.readBoolEntry("Look", "NoServerTime");
-	NoServerTimeDiff = config_file.readNumEntry("Look", "NoServerTimeDiff");
+	NoServerTime = config_file->readBoolEntry("Look", "NoServerTime");
+	NoServerTimeDiff = config_file->readNumEntry("Look", "NoServerTimeDiff");
 
-	auto newChatStyle = ChatStyle{config_file.readEntry("Look", "Style"), config_file.readEntry("Look", "ChatStyleVariant")};
+	auto newChatStyle = ChatStyle{config_file->readEntry("Look", "Style"), config_file->readEntry("Look", "ChatStyleVariant")};
 
 	// if Style was changed, load new Style
 	if (!CurrentEngine || newChatStyle != m_currentChatStyle)
@@ -355,8 +355,8 @@ void ChatStyleManager::mainConfigurationWindowCreated(MainConfigurationWindow *w
 
 void ChatStyleManager::configurationApplied()
 {
-	config_file.writeEntry("Look", "Style", SyntaxListCombo->currentText());
-	config_file.writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
+	config_file->writeEntry("Look", "Style", SyntaxListCombo->currentText());
+	config_file->writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
 }
 
 void ChatStyleManager::styleChangedSlot(const QString &styleName)

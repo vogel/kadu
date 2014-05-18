@@ -87,12 +87,12 @@ void RosterWidget::createGui()
 
 void RosterWidget::configurationUpdated()
 {
-	QString bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
-	QString alternateBgColor = config_file.readColorEntry("Look","UserboxAlternateBgColor").name();
+	QString bgColor = config_file->readColorEntry("Look","UserboxBgColor").name();
+	QString alternateBgColor = config_file->readColorEntry("Look","UserboxAlternateBgColor").name();
 
-	if (CompositingEnabled && config_file.readBoolEntry("Look", "UserboxTransparency"))
+	if (CompositingEnabled && config_file->readBoolEntry("Look", "UserboxTransparency"))
 	{
-		int alpha = config_file.readNumEntry("Look", "UserboxAlpha");
+		int alpha = config_file->readNumEntry("Look", "UserboxAlpha");
 
 		QColor color(bgColor);
 		bgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
@@ -104,9 +104,9 @@ void RosterWidget::configurationUpdated()
 			alternateBgColor = QString("transparent");
 	}
 
-	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
+	if (config_file->readBoolEntry("Look", "UseUserboxBackground", true))
 	{
-		QString typeName = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
+		QString typeName = config_file->readEntry("Look", "UserboxBackgroundDisplayStyle");
 
 		KaduTreeView::BackgroundMode type;
 		if (typeName == "Centered")
@@ -120,7 +120,7 @@ void RosterWidget::configurationUpdated()
 		else
 			type = KaduTreeView::BackgroundNone;
 
-		TalkableTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
+		TalkableTree->setBackground(bgColor, alternateBgColor, config_file->readEntry("Look", "UserboxBackground"), type);
 	}
 	else
 	{
@@ -138,7 +138,7 @@ void RosterWidget::storeConfiguration()
 
 void RosterWidget::compositingEnabled()
 {
-	if (!config_file.readBoolEntry("Look", "UserboxTransparency"))
+	if (!config_file->readBoolEntry("Look", "UserboxTransparency"))
 	{
 		compositingDisabled();
 		return;

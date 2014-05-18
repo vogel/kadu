@@ -51,7 +51,7 @@ EncryptioNgSimliteKeyImporter::EncryptioNgSimliteKeyImporter()
 
 void EncryptioNgSimliteKeyImporter::accountRegistered(Account account)
 {
-	if (account.id() == config_file.readEntry("General", "UIN"))
+	if (account.id() == config_file->readEntry("General", "UIN"))
 		importKeys(account);
 }
 

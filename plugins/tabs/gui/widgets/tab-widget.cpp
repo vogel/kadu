@@ -210,9 +210,9 @@ void TabWidget::closeTab(QWidget *tabWidget)
 	if (!chatWidget)
 		return;
 
-	if (config_file.readBoolEntry("Chat", "ChatCloseTimer"))
+	if (config_file->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		unsigned int period = config_file.readUnsignedNumEntry("Chat",
+		unsigned int period = config_file->readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < chatWidget->lastReceivedMessageTime().addSecs(period))
@@ -476,7 +476,7 @@ void TabWidget::tabRemoved(int index)
 
 void TabWidget::compositingEnabled()
 {
-	if (config_file.readBoolEntry("Chat", "UseTransparency", false))
+	if (config_file->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -498,13 +498,13 @@ void TabWidget::configurationUpdated()
 
 	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 
-	setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
-	config_oldStyleClosing = config_file.readBoolEntry("Tabs", "OldStyleClosing");
+	setTabsClosable(config_file->readBoolEntry("Tabs", "CloseButtonOnTab"));
+	config_oldStyleClosing = config_file->readBoolEntry("Tabs", "OldStyleClosing");
 
 	bool isOpenChatButtonEnabled = (cornerWidget(Qt::TopLeftCorner) == OpenChatButtonsWidget);
-	bool shouldEnableOpenChatButton = config_file.readBoolEntry("Tabs", "OpenChatButton");
+	bool shouldEnableOpenChatButton = config_file->readBoolEntry("Tabs", "OpenChatButton");
 	bool isCloseButtonEnabled = (cornerWidget(Qt::TopRightCorner) == CloseChatButton);
-	bool shouldEnableCloseButton = config_file.readBoolEntry("Tabs", "CloseButton");
+	bool shouldEnableCloseButton = config_file->readBoolEntry("Tabs", "CloseButton");
 
 	if (isOpenChatButtonEnabled != shouldEnableOpenChatButton)
 	{

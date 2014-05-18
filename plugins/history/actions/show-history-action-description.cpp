@@ -60,7 +60,7 @@ void ShowHistoryActionDescription::configurationUpdated()
 {
 	ActionDescription::configurationUpdated();
 
-	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -24);
+	ChatHistoryQuotationTime = config_file->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 }
 
 void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
@@ -79,9 +79,9 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
 
-	if (config_file.readNumEntry("History", "ChatHistoryCitation", 10) > 0)
+	if (config_file->readNumEntry("History", "ChatHistoryCitation", 10) > 0)
 	{
-		int prune = config_file.readNumEntry("History", "ChatHistoryCitation", 10);
+		int prune = config_file->readNumEntry("History", "ChatHistoryCitation", 10);
 		menu->addAction(tr("Show last %1 messages").arg(prune), this, SLOT(showPruneMessages()))->setData(chatWidgetData);
 		menu->addSeparator();
 	}
@@ -164,7 +164,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	query.setTalkable(messagesChat);
 
 	if (0 == days)
-		query.setLimit(config_file.readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
+		query.setLimit(config_file->readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
 	else
 		query.setFromDate(QDate::currentDate().addDays(-days));
 

@@ -55,26 +55,26 @@ ScreenShotConfiguration::~ScreenShotConfiguration()
 
 void ScreenShotConfiguration::createDefaultConfiguration()
 {
-	config_file.addVariable("ScreenShot", "fileFormat", "PNG");
-	config_file.addVariable("ScreenShot", "use_short_jpg", true);
-	config_file.addVariable("ScreenShot", "quality", -1);
-	config_file.addVariable("ScreenShot", "path", KaduPaths::instance()->profilePath() + QLatin1String("images/"));
-	config_file.addVariable("ScreenShot", "filenamePrefix", "shot");
-	config_file.addVariable("ScreenShot", "paste_clause", true);
-	config_file.addVariable("ScreenShot", "dir_size_warns", true);
-	config_file.addVariable("ScreenShot", "dir_size_limit", 10000);
+	config_file->addVariable("ScreenShot", "fileFormat", "PNG");
+	config_file->addVariable("ScreenShot", "use_short_jpg", true);
+	config_file->addVariable("ScreenShot", "quality", -1);
+	config_file->addVariable("ScreenShot", "path", KaduPaths::instance()->profilePath() + QLatin1String("images/"));
+	config_file->addVariable("ScreenShot", "filenamePrefix", "shot");
+	config_file->addVariable("ScreenShot", "paste_clause", true);
+	config_file->addVariable("ScreenShot", "dir_size_warns", true);
+	config_file->addVariable("ScreenShot", "dir_size_limit", 10000);
 }
 
 void ScreenShotConfiguration::configurationUpdated()
 {
-	FileFormat = config_file.readEntry("ScreenShot", "fileFormat", "PNG");
-	UseShortJpgExtension = config_file.readBoolEntry("ScreenShot", "use_short_jpg", true);
-	Quality = config_file.readNumEntry("ScreenShot", "quality", -1);
-	ImagePath = config_file.readEntry("ScreenShot", "path", KaduPaths::instance()->profilePath() + QLatin1String("images/"));
-	FileNamePrefix = config_file.readEntry("ScreenShot", "filenamePrefix", "shot");
-	PasteImageClauseIntoChatWidget = config_file.readBoolEntry("ScreenShot", "paste_clause", true);
-	WarnAboutDirectorySize = config_file.readBoolEntry("ScreenShot", "dir_size_warns", true);
-	DirectorySizeLimit = config_file.readNumEntry("ScreenShot", "dir_size_limit", 10000);
+	FileFormat = config_file->readEntry("ScreenShot", "fileFormat", "PNG");
+	UseShortJpgExtension = config_file->readBoolEntry("ScreenShot", "use_short_jpg", true);
+	Quality = config_file->readNumEntry("ScreenShot", "quality", -1);
+	ImagePath = config_file->readEntry("ScreenShot", "path", KaduPaths::instance()->profilePath() + QLatin1String("images/"));
+	FileNamePrefix = config_file->readEntry("ScreenShot", "filenamePrefix", "shot");
+	PasteImageClauseIntoChatWidget = config_file->readBoolEntry("ScreenShot", "paste_clause", true);
+	WarnAboutDirectorySize = config_file->readBoolEntry("ScreenShot", "dir_size_warns", true);
+	DirectorySizeLimit = config_file->readNumEntry("ScreenShot", "dir_size_limit", 10000);
 }
 
 QString ScreenShotConfiguration::screenshotFileNameExtension()

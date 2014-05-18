@@ -53,11 +53,11 @@ DesktopDockWindow::~DesktopDockWindow()
 
 void DesktopDockWindow::configurationUpdated()
 {
-	QPoint pos(config_file.readNumEntry("Desktop Dock", "PositionX"), config_file.readNumEntry("Desktop Dock", "PositionY"));
+	QPoint pos(config_file->readNumEntry("Desktop Dock", "PositionX"), config_file->readNumEntry("Desktop Dock", "PositionY"));
 	move(pos);
 
 	QPalette newPalette = palette();
-	if (config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
+	if (config_file->readBoolEntry("Desktop Dock", "DockingTransparency"))
 	{
 		newPalette.setColor(QPalette::Active, QPalette::Window, Qt::transparent);
 		newPalette.setColor(QPalette::Inactive, QPalette::Window, Qt::transparent);
@@ -66,7 +66,7 @@ void DesktopDockWindow::configurationUpdated()
 	}
 	else
 	{
-		QColor color = config_file.readColorEntry("Desktop Dock", "DockingColor");
+		QColor color = config_file->readColorEntry("Desktop Dock", "DockingColor");
 		newPalette.setColor(QPalette::Active, QPalette::Window, color);
 		newPalette.setColor(QPalette::Inactive, QPalette::Window, color);
 		clearMask();

@@ -350,8 +350,8 @@ void GaduEditAccountWidget::apply()
 		Details->setExternalPort(ExternalPort->text().toUInt());
 	}
 
-	config_file.writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
-	config_file.writeEntry("Network", "Server", ipAddresses->text());
+	config_file->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
+	config_file->writeEntry("Network", "Server", ipAddresses->text());
 	GaduServersManager::instance()->buildServerList();
 
 	if (gpiw->isModified())
@@ -396,8 +396,8 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& Details->allowDcc() == AllowFileTransfers->isChecked()
 
-		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
-		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
+		&& config_file->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
+		&& config_file->readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& Details->receiveSpam() != ReceiveSpam->isChecked()
@@ -447,8 +447,8 @@ void GaduEditAccountWidget::loadAccountData()
 		ExternalPort->setText(QString::number(details->externalPort()));
 	}
 
-	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));
-	ipAddresses->setText(config_file.readEntry("Network", "Server"));
+	useDefaultServers->setChecked(config_file->readBoolEntry("Network", "isDefServers", true));
+	ipAddresses->setText(config_file->readEntry("Network", "Server"));
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }

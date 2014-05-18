@@ -67,7 +67,7 @@ void Updates::buildQuery()
 {
 	Query = QString("/update-new.php?uuid=%1&version=%2").arg(ConfigurationManager::instance()->uuid().toString()).arg(Core::version());
 
-	if (config_file.readBoolEntry("General", "SendSysInfo"), true)
+	if (config_file->readBoolEntry("General", "SendSysInfo"), true)
 	{
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
@@ -210,7 +210,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 	reply->deleteLater();
 	deleteLater();
 
-	if (config_file.readBoolEntry("General", "CheckUpdates"))
+	if (config_file->readBoolEntry("General", "CheckUpdates"))
 	{
 		auto newestVersion = QString::fromUtf8(reply->readAll());
 		if (newestVersion.size() > 31)

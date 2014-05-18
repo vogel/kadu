@@ -91,7 +91,7 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 
 	QString name;
 
-	int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
+	int typeIndex = config_file->readNumEntry("General", "LastStatusType", -1);
 	switch (typeIndex)
 	{
 		case 0: name = "Online"; break;
@@ -101,7 +101,7 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 	}
 
 	storeValue("LastStatusName", name);
-	storeValue("LastStatusDescription", config_file.readEntry("General", "LastStatusDescription"));
+	storeValue("LastStatusDescription", config_file->readEntry("General", "LastStatusDescription"));
 }
 
 UinType GaduAccountDetails::uin()

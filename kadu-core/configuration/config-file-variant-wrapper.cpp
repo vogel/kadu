@@ -36,10 +36,10 @@ ConfigFileVariantWrapper::~ConfigFileVariantWrapper()
 
 QVariant ConfigFileVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return config_file.readEntry(Group, Name, defaultValue.toString());
+	return config_file->readEntry(Group, Name, defaultValue.toString());
 }
 
 void ConfigFileVariantWrapper::set(const QVariant &value)
 {
-	config_file.writeEntry(Group, Name, value.toString());
+	config_file->writeEntry(Group, Name, value.toString());
 }

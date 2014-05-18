@@ -49,14 +49,14 @@ S5BServerManager::~S5BServerManager()
 
 void S5BServerManager::createDefaultConfiguration()
 {
-	config_file.addVariable("XMPP", "DataTransferPort", 8010);
-	config_file.addVariable("XMPP", "DataTransferExternalAddress", "");
+	config_file->addVariable("XMPP", "DataTransferPort", 8010);
+	config_file->addVariable("XMPP", "DataTransferExternalAddress", "");
 }
 
 void S5BServerManager::configurationUpdated()
 {
-	int port = config_file.readNumEntry("XMPP", "DataTransferPort", 8010);
-	QString externalAddress = config_file.readEntry("XMPP", "DataTransferExternalAddress", "");
+	int port = config_file->readNumEntry("XMPP", "DataTransferPort", 8010);
+	QString externalAddress = config_file->readEntry("XMPP", "DataTransferExternalAddress", "");
 
 	if (externalAddress != ExternalAddress)
 	{

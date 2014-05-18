@@ -37,9 +37,9 @@ void ChatImageRequestServiceConfigurator::configurationUpdated()
 
 	ChatImageRequestServiceConfiguration configuration;
 
-	configuration.setLimitImageSize(config_file.readBoolEntry("Chat", "LimitImageSize", true));
-	configuration.setMaximumImageSizeInKiloBytes(config_file.readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
-	configuration.setAllowBiggerImagesAfterAsking(config_file.readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
+	configuration.setLimitImageSize(config_file->readBoolEntry("Chat", "LimitImageSize", true));
+	configuration.setMaximumImageSizeInKiloBytes(config_file->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
+	configuration.setAllowBiggerImagesAfterAsking(config_file->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
 
 	Service.data()->setConfiguration(configuration);
 }

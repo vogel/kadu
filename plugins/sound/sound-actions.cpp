@@ -101,12 +101,12 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 	SoundManager::instance()->setMute(!toggled);
 	setMuteActionState();
 
-	config_file.writeEntry("Sounds", "PlaySound", toggled);
+	config_file->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundActions::configurationUpdated()
 {
-	SoundManager::instance()->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
+	SoundManager::instance()->setMute(!config_file->readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 

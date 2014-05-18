@@ -105,8 +105,8 @@ void SpeechConfigurationUiHandler::testSpeech()
 
 	QString program = programSelectFile->file();
 	// TODO: mo�e u�ywa� jakiego� normalnego tekstu ?
-	QString formatM = config_file.readEntry("Speech", "NewChat_Syntax/Male");
-	QString formatF = config_file.readEntry("Speech", "NewChat_Syntax/Female");
+	QString formatM = config_file->readEntry("Speech", "NewChat_Syntax/Male");
+	QString formatF = config_file->readEntry("Speech", "NewChat_Syntax/Female");
 	QString device = dspDeviceLineEdit->text();
 	bool klatt = klattSyntCheckBox->isChecked();
 	bool mel = melodyCheckBox->isChecked();

@@ -52,10 +52,10 @@ void EmoticonConfigurator::configure()
 
 void EmoticonConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Chat", "EmoticonsPaths", QString());
-	config_file.addVariable("Chat", "EnableEmoticonAnimations", 1 != config_file.readNumEntry("Chat", "EmoticonsStyle", 2));
-	config_file.addVariable("Chat", "EmoticonsTheme", ThemeManager->defaultTheme());
-	config_file.addVariable("Chat", "EnableEmoticons", config_file.readEntry("Chat", "EmoticonsTheme") != "None");
+	config_file->addVariable("Chat", "EmoticonsPaths", QString());
+	config_file->addVariable("Chat", "EnableEmoticonAnimations", 1 != config_file->readNumEntry("Chat", "EmoticonsStyle", 2));
+	config_file->addVariable("Chat", "EmoticonsTheme", ThemeManager->defaultTheme());
+	config_file->addVariable("Chat", "EnableEmoticons", config_file->readEntry("Chat", "EmoticonsTheme") != "None");
 }
 
 void EmoticonConfigurator::configurationUpdated()
@@ -65,14 +65,14 @@ void EmoticonConfigurator::configurationUpdated()
 
 	ThemeManager->loadThemes();
 
-	Configuration.setEnabled(config_file.readBoolEntry("Chat", "EnableEmoticons", true));
-	Configuration.setAnimate(config_file.readBoolEntry("Chat", "EnableEmoticonAnimations", true));
+	Configuration.setEnabled(config_file->readBoolEntry("Chat", "EnableEmoticons", true));
+	Configuration.setAnimate(config_file->readBoolEntry("Chat", "EnableEmoticonAnimations", true));
 
 	if (Configuration.enabled())
 	{
-		if (LastLoadedThemeName != config_file.readEntry("Chat", "EmoticonsTheme"))
+		if (LastLoadedThemeName != config_file->readEntry("Chat", "EmoticonsTheme"))
 		{
-			LastLoadedThemeName = config_file.readEntry("Chat", "EmoticonsTheme");
+			LastLoadedThemeName = config_file->readEntry("Chat", "EmoticonsTheme");
 			ThemeManager->setCurrentTheme(LastLoadedThemeName);
 
 			GaduEmoticonThemeLoader loader;

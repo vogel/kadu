@@ -184,7 +184,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(SilentMode);
 
-	config_file.writeEntry("Notify", "SilentMode", SilentMode);
+	config_file->writeEntry("Notify", "SilentMode", SilentMode);
 
 	if (silentMode() != wasSilent)
 		emit silentModeToggled(silentMode());
@@ -192,7 +192,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 
 bool NotificationService::silentMode()
 {
-	return SilentMode || (IsFullScreen && config_file.readBoolEntry("Notify", "FullscreenSilentMode", false));
+	return SilentMode || (IsFullScreen && config_file->readBoolEntry("Notify", "FullscreenSilentMode", false));
 }
 
 bool NotificationService::ignoreNotifications()
@@ -202,12 +202,12 @@ bool NotificationService::ignoreNotifications()
 
 void NotificationService::configurationUpdated()
 {
-	NewMessageOnlyIfInactive = config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
-	NotifyIgnoreOnConnection = config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection");
-	IgnoreOnlineToOnline = config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline");
-	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
-	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
-	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
+	NewMessageOnlyIfInactive = config_file->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+	NotifyIgnoreOnConnection = config_file->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
+	IgnoreOnlineToOnline = config_file->readBoolEntry("Notify", "IgnoreOnlineToOnline");
+	SilentModeWhenDnD = config_file->readBoolEntry("Notify", "AwaySilentMode", false);
+	SilentModeWhenFullscreen = config_file->readBoolEntry("Notify", "FullscreenSilentMode", false);
+	setSilentMode(config_file->readBoolEntry("Notify", "SilentMode", false));
 
 	if (SilentModeWhenFullscreen)
 		startScreenModeChecker();
@@ -253,9 +253,9 @@ void NotificationService::fullscreenToggled(bool inFullscreen)
 
 void NotificationService::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "IgnoreOnlineToOnline", false);
-	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
-	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", true);
+	config_file->addVariable("Notify", "IgnoreOnlineToOnline", false);
+	config_file->addVariable("Notify", "NewMessageOnlyIfInactive", true);
+	config_file->addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
 void NotificationService::notify(Notification* notification)
