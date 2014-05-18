@@ -55,7 +55,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "execution-arguments/execution-arguments.h"
-#include "execution-arguments/execution-arguments-builder.h"
+#include "execution-arguments/execution-arguments-parser.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
 #include "os/win/wsa-exception.h"
@@ -197,41 +197,9 @@ int main(int argc, char *argv[]) try
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
-	bool queryVersion = false;
-	bool queryUsage = false;
-	QString debugMask;
-	QString configurationDirectory;
-	QStringList openIds;
-
-	auto arguments = QCoreApplication::arguments();
-	for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
-	{
-		// do not parse program name
-		if (it == arguments.constBegin())
-			continue;
-
-		if (*it == QLatin1String("--version"))
-			queryVersion = true;
-		else if (*it == QLatin1String("--help"))
-			queryUsage = true;
-		else if (*it == QLatin1String("--debug") && (it + 1) != arguments.constEnd())
-			debugMask = *(++it);
-		else if (*it == QLatin1String("--config-dir") && (it + 1) != arguments.constEnd())
-			configurationDirectory = *(++it);
-		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(*it))
-			openIds.append(*it);
-		else
-			fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
-	}
-
-	auto executionArgumentsBuilder = ExecutionArgumentsBuilder{};
-	auto executionArguments = executionArgumentsBuilder
-		.setQueryVersion(queryVersion)
-		.setQueryUsage(queryUsage)
-		.setDebugMask(debugMask)
-		.setConfigurationDirectory(configurationDirectory)
-		.setOpenIds(openIds)
-		.build();
+	auto executionArgumentsParser = ExecutionArgumentsParser{};
+	// do not parse program name
+	auto executionArguments = executionArgumentsParser.parse(QCoreApplication::arguments().mid(1));
 
 	if (executionArguments.queryVersion())
 	{
@@ -307,8 +275,8 @@ int main(int argc, char *argv[]) try
 	QtLocalPeer *peer = new QtLocalPeer(qApp, KaduPaths::instance()->profilePath());
 	if (peer->isClient())
 	{
-		if (!openIds.isEmpty())
-			for (auto const &id : openIds)
+		if (!executionArguments.openIds().isEmpty())
+			for (auto const &id : executionArguments.openIds())
 				peer->sendMessage(id, 1000);
 		else
 			peer->sendMessage("activate", 1000);
@@ -326,7 +294,7 @@ int main(int argc, char *argv[]) try
 
 	Core::instance()->activatePlugins();
 
-	for (auto const &id : openIds)
+	for (auto const &id : executionArguments.openIds())
 		Core::instance()->receivedSignal(id);
 
 	/* for testing of startup / close time */
