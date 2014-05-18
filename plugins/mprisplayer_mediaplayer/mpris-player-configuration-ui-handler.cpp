@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QFile>
+#include <QtCore/QSettings>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialog>
@@ -111,18 +112,21 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 
 void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile(const QString &globalFileName, const QString &userFileName)
 {
-	PlainConfigFile globalPlayersFile(globalFileName);
-	PlainConfigFile userPlayersFile(userFileName);
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	userPlayersSettings.setIniCodec("ISO8859-2");
 
-	QStringList globalSections = globalPlayersFile.getGroupList();
-	QStringList userSections = userPlayersFile.getGroupList();
+	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+	globalPlayersSettings.setIniCodec("ISO8859-2");
+
+	QStringList globalSections = globalPlayersSettings.childGroups();
+	QStringList userSections = userPlayersSettings.childGroups();
 
 	PlayersMap.clear();
 
 	foreach (const QString &section, userSections)
 	{
-		QString player = userPlayersFile.readEntry(section, "player");
-		QString service = userPlayersFile.readEntry(section, "service");
+		QString player = userPlayersSettings.value(section + "/player").toString();
+		QString service = userPlayersSettings.value(section + "/service").toString();
 
 		if (!player.isEmpty() && !service.isEmpty())
 			PlayersMap.insert(player, service);
@@ -133,8 +137,8 @@ void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile(const QString &g
 		if (userSections.contains(globalSection))
 			continue;
 
-		QString player = globalPlayersFile.readEntry(globalSection, "player");
-		QString service = globalPlayersFile.readEntry(globalSection, "service");
+		QString player = globalPlayersSettings.value(globalSection + "/player").toString();
+		QString service = globalPlayersSettings.value(globalSection + "/service").toString();
 
 		if (!player.isEmpty() && !service.isEmpty())
 			PlayersMap.insert(player, service);
@@ -167,11 +171,12 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 		return;
 
 	QString oldPlayerName = config_file->readEntry("MPRISPlayer", "Player");
-	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	userPlayersSettings.setIniCodec("ISO8859-2");
 
-	userPlayersFile.writeEntry(newPlayer, "player", newPlayer);
-	userPlayersFile.writeEntry(newPlayer, "service", newService);
-	userPlayersFile.sync();
+	userPlayersSettings.setValue(newPlayer + "/player", newPlayer);
+	userPlayersSettings.setValue(newPlayer + "/service", newService);
+	userPlayersSettings.sync();
 
 	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
@@ -201,27 +206,29 @@ void MPRISPlayerConfigurationUiHandler::editPlayer()
 	if ((newPlayer.isEmpty() || newService.isEmpty()) || (newPlayer == oldPlayer && oldService == newService))
 		return;
 
-	PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
-	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
-	QStringList sections = globalPlayersFile.getGroupList();
+	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+	globalPlayersSettings.setIniCodec("ISO8859-2");
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	userPlayersSettings.setIniCodec("ISO8859-2");
+	QStringList sections = globalPlayersSettings.childGroups();
 
 	if (!sections.contains(oldPlayer))
-		sections = userPlayersFile.getGroupList();
+		sections = userPlayersSettings.childGroups();
 
 	foreach (const QString &section, sections)
 	{
 		if (section != oldPlayer)
 			continue;
 
-		userPlayersFile.writeEntry(section, "player", QString());
-		userPlayersFile.writeEntry(section, "service", QString());
+		userPlayersSettings.remove(section + "/player");
+		userPlayersSettings.remove(section + "/service");
 
-		userPlayersFile.writeEntry(newPlayer, "player", newPlayer);
-		userPlayersFile.writeEntry(newPlayer, "service", newService);
+		userPlayersSettings.setValue(newPlayer + "/player", newPlayer);
+		userPlayersSettings.setValue(newPlayer + "/service", newService);
 		break;
 	}
 
-	userPlayersFile.sync();
+	userPlayersSettings.sync();
 
 	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
@@ -233,25 +240,27 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
 {
 	QString playerToRemove = PlayersBox->currentText();
 
-	PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
-	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
+	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+	globalPlayersSettings.setIniCodec("ISO8859-2");
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	userPlayersSettings.setIniCodec("ISO8859-2");
 
-	QStringList sections = globalPlayersFile.getGroupList();
+	QStringList sections = globalPlayersSettings.childGroups();
 
 	if (!sections.contains(playerToRemove))
-		sections = userPlayersFile.getGroupList();
+		sections = userPlayersSettings.childGroups();
 
 	foreach (const QString &section, sections)
 	{
 		if (section != playerToRemove)
 			continue;
 
-		userPlayersFile.writeEntry(section, "player", QString());
-		userPlayersFile.writeEntry(section, "service", QString());
+		userPlayersSettings.remove(section + "/player");
+		userPlayersSettings.remove(section + "/service");
 		break;
 	}
 
-	userPlayersFile.sync();
+	userPlayersSettings.sync();
 
 	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
