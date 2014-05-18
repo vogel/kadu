@@ -70,7 +70,6 @@ public:
 	void writeEntry(const QString &group,const QString &name, const QString &value);
 
 	QString readEntry(const QString &group, const QString &name, const QString &def = QString());
-	bool readBoolEntry(const QString &group, const QString &name, bool def = false);
 
 };
 

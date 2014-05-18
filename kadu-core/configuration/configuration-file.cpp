@@ -220,14 +220,6 @@ QString PlainConfigFile::readEntry(const QString &group,const QString &name, con
 	return string;
 }
 
-bool PlainConfigFile::readBoolEntry(const QString &group,const QString &name, bool def)
-{
-	QString string = getEntry(group, name);
-	if (string.isNull())
-		return def;
-	return string=="true";
-}
-
 ConfigFile::ConfigFile(const QString &filename) : filename(filename)
 {
 }
