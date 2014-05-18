@@ -24,7 +24,8 @@
 #include "storage/storage-point.h"
 
 StoragePointFactory::StoragePointFactory(QObject *parent) :
-		QObject{parent}, m_configurationFile{}
+		QObject{parent},
+		m_configurationFile{}
 {
 }
 
