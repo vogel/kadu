@@ -37,10 +37,15 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 		else if (*it == QLatin1String("--help"))
 			queryUsage = true;
 		else if (*it == QLatin1String("--debug") && (it + 1) != arguments.constEnd())
-			debugMask = *(++it);
+		{
+			bool ok;
+			(++it)->toInt(&ok);
+			if (ok)
+				debugMask = *it;
+		}
 		else if (*it == QLatin1String("--config-dir") && (it + 1) != arguments.constEnd())
 			configurationDirectory = *(++it);
-		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(*it))
+		else if (QRegExp("^[a-zA-Z]+:(/){0,3}.+").exactMatch(*it))
 			openIds.append(*it);
 		else
 			fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());

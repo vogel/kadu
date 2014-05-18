@@ -1,3 +1,4 @@
+kadu_add_test (execution-arguments/tst-execution-arguments-parser execution-arguments/tst-execution-arguments-parser.cpp)
 kadu_add_test (misc/tst-find-overlaping-region misc/tst-find-overlaping-region.cpp)
 kadu_add_test (misc/tst-sorted-unique-vector misc/tst-sorted-unique-vector.cpp)
 kadu_add_test (misc/tst-string-utils misc/tst-string-utils.cpp)
