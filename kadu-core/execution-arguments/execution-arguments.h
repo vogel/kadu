@@ -24,16 +24,47 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
+/**
+ * @addtogroup Core
+ * @{
+ */
+
+/**
+ * @class ExecutionArguments
+ * @short Arguments used to run Kadu.
+ *
+ * All run arguments recognized by Kadu are stored in this class.
+ */
 class KADUAPI ExecutionArguments final
 {
 
 public:
 	ExecutionArguments(bool queryVersion, bool queryUsage, QString debugMask, QString configurationDirectory, QStringList openIds);
 
+	/**
+	 * @return True if version information is requested.
+	 */
 	bool queryVersion() const;
+
+	/**
+	 * @return True if usage information is requested.
+	 */
 	bool queryUsage() const;
+
+	/**
+	 * @return Requested value of debug mask.
+	 * @todo change to int
+	 */
 	QString debugMask() const;
+
+	/**
+	 * @return Requested value of configuation directory.
+	 */
 	QString configurationDirectory() const;
+
+	/**
+	 * @return Requested list of ids to open chat with.
+	 */
 	QStringList openIds() const;
 
 private:
@@ -44,3 +75,7 @@ private:
 	QStringList m_openIds;
 
 };
+
+/**
+ * @}
+ */

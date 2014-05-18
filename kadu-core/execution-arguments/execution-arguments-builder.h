@@ -26,6 +26,22 @@
 
 class ExecutionArguments;
 
+/**
+ * @addtogroup Core
+ * @{
+ */
+
+/**
+ * @class ExecutionArgumentsBuilder
+ * @short Builder for creating ExecutionArguments instances from simple values.
+ *
+ * Example usage:
+ * auto builder = ExecutionArgumentsBuilder{};
+ * auto arguments = builder.setQueryVersion(true).setOpenIds(QStringList{} << "gg:1" << "gg:2").build();
+ *
+ * will create ExecutionArguments with QueryVersion set to true and two ids in OpenIds fields. All other
+ * fields will have default values.
+ */
 class KADUAPI ExecutionArgumentsBuilder final
 {
 
@@ -38,6 +54,9 @@ public:
 	ExecutionArgumentsBuilder & setConfigurationDirectory(QString configurationDirectory);
 	ExecutionArgumentsBuilder & setOpenIds(QStringList openIds);
 
+	/**
+	 * @short Create ExecutionArguments from values set before by setXXX methods.
+	 */
 	ExecutionArguments build() const;
 
 private:
@@ -48,3 +67,7 @@ private:
 	QStringList m_openIds;
 
 };
+
+/**
+ * @}
+ */
