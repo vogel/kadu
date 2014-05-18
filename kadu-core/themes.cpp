@@ -24,6 +24,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QSettings>
 
 #include "configuration/configuration-file.h"
 
@@ -102,10 +103,16 @@ void Themes::setTheme(const QString &theme)
 		ActualTheme = theme;
 		if (theme != "Custom" && !ConfigName.isEmpty())
 		{
-			PlainConfigFile theme_file(
-			themePath() +  fixFileName(themePath(), ConfigName));
-			theme_file.read();
-			entries = theme_file.getGroupSection(Name);
+			QSettings themeSettings(themePath() +  fixFileName(themePath(), ConfigName), QSettings::IniFormat);
+			themeSettings.setIniCodec("ISO8859-2");
+
+			themeSettings.beginGroup(Name);
+			auto keys = themeSettings.allKeys();
+			for (auto key : keys)
+			{
+				entries.insert(key, themeSettings.value(key).toString());
+			}
+			themeSettings.endGroup();
 		}
 		emit themeChanged(ActualTheme);
 	}
