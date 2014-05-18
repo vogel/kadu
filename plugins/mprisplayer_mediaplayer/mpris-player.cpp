@@ -100,13 +100,11 @@ void MPRISPlayer::replacePlugin()
 
 void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 {
-	PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
-	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
-
 	// Save service value from mpris_mediaplayer module
 	if (key == "mpris_mediaplayer")
 	{
 		QString oldMPRISService = config_file->readEntry("MediaPlayer", "MPRISService");
+		PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
 
 		userPlayersFile.writeEntry(value, "player", value);
 		userPlayersFile.writeEntry(value, "service", oldMPRISService);
@@ -117,6 +115,8 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 	}
 	else // Choose player based on old module loaded.
 	{
+		PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
+
 		config_file->writeEntry("MPRISPlayer", "Player", value);
 		config_file->writeEntry("MPRISPlayer", "Service", globalPlayersFile.readEntry(value, "service"));
 	}
