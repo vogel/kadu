@@ -55,6 +55,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "execution-arguments/execution-arguments.h"
+#include "execution-arguments/execution-arguments-builder.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
 #include "os/win/wsa-exception.h"
@@ -223,7 +224,14 @@ int main(int argc, char *argv[]) try
 			fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
 	}
 
-	auto executionArguments = ExecutionArguments{queryVersion, queryUsage, debugMask, configurationDirectory, openIds};
+	auto executionArgumentsBuilder = ExecutionArgumentsBuilder{};
+	auto executionArguments = executionArgumentsBuilder
+		.setQueryVersion(queryVersion)
+		.setQueryUsage(queryUsage)
+		.setDebugMask(debugMask)
+		.setConfigurationDirectory(configurationDirectory)
+		.setOpenIds(openIds)
+		.build();
 
 	if (executionArguments.queryVersion())
 	{
