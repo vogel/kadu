@@ -534,11 +534,6 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const int 
 	changeEntry(group, name, QString::number(value));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const double value)
-{
-	changeEntry(group, name, QString::number(value, 'f'));
-}
-
 void ConfigFile::writeEntry(const QString &group,const QString &name, const bool value)
 {
 	changeEntry(group, name, value ? "true" : "false");
@@ -549,11 +544,6 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const QRec
 	changeEntry(group, name, rectToString(value));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QSize &value)
-{
-	changeEntry(group, name, QString("%1,%2").arg(value.width()).arg(value.height()));
-}
-
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QColor &value)
 {
 	changeEntry(group, name, value.name());
@@ -562,11 +552,6 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const QCol
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value)
 {
 	changeEntry(group, name, value.toString());
-}
-
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value)
-{
-	changeEntry(group, name, QString("%1,%2").arg(value.x()).arg(value.y()));
 }
 
 QString ConfigFile::readEntry(const QString &group,const QString &name, const QString &def) const
@@ -601,18 +586,6 @@ int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) 
 	return num;
 }
 
-double ConfigFile::readDoubleNumEntry(const QString &group,const QString &name, double def) const
-{
-	bool ok;
-	QString string = getEntry(group, name);
-	if (string.isNull())
-		return def;
-	double num = string.toDouble(&ok);
-	if (!ok)
-		return def;
-	return num;
-}
-
 bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool def) const
 {
 	QString string = getEntry(group, name);
@@ -624,30 +597,6 @@ bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool de
 QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def) const
 {
 	return stringToRect(getEntry(group, name), def);
-}
-
-QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def) const
-{
-	QString string = getEntry(group, name);
-	QStringList stringlist;
-	QSize size(0,0);
-	int w, h;
-	bool ok;
-
-	if (string.isNull())
-		return def ? *def : size;
-	stringlist = string.split(',', QString::SkipEmptyParts);
-	if (stringlist.count() != 2)
-		return def ? *def : size;
-	w = stringlist.at(0).toInt(&ok);
-	if (!ok)
-		return def ? *def : size;
-	h = stringlist.at(1).toInt(&ok);
-	if (!ok)
-		return def ? *def : size;
-	size.setWidth(w);
-	size.setHeight(h);
-	return size;
 }
 
 QColor ConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
@@ -669,30 +618,6 @@ QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const 
 	if(font.fromString(string))
 		return font;
 	return def ? *def : QApplication::font();
-}
-
-QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) const
-{
-	QString string = getEntry(group, name);
-	QStringList stringlist;
-	QPoint point(0,0);
-	int x, y;
-	bool ok;
-
-	if (string.isNull())
-		return def ? *def : point;
-	stringlist = string.split(',', QString::SkipEmptyParts);
-	if (stringlist.count() != 2)
-		return def ? *def : point;
-	x = stringlist.at(0).toInt(&ok);
-	if (!ok)
-		return def ? *def : point;
-	y = stringlist.at(1).toInt(&ok);
-	if (!ok)
-		return def ? *def : point;
-	point.setX(x);
-	point.setY(y);
-	return point;
 }
 
 void ConfigFile::removeVariable(const QString &group, const QString &name)
@@ -725,22 +650,7 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const in
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
-void ConfigFile::addVariable(const QString &group, const QString &name, const double defvalue)
-{
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group,name,defvalue);
-}
 void ConfigFile::addVariable(const QString &group, const QString &name, const bool defvalue)
-{
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group,name,defvalue);
-}
-void ConfigFile::addVariable(const QString &group, const QString &name, const QRect &defvalue)
-{
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group,name,defvalue);
-}
-void ConfigFile::addVariable(const QString &group, const QString &name, const QSize &defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
@@ -751,11 +661,6 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const QC
 		writeEntry(group,name,defvalue);
 }
 void ConfigFile::addVariable(const QString &group, const QString &name, const QFont &defvalue)
-{
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group,name,defvalue);
-}
-void ConfigFile::addVariable(const QString &group, const QString &name, const QPoint &defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
