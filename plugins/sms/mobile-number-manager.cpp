@@ -24,6 +24,8 @@
 #include <QtCore/QtAlgorithms>
 
 #include "configuration/configuration-manager.h"
+#include "core/core.h"
+#include "storage/storage-point-factory.h"
 
 #include "mobile-number.h"
 
@@ -84,7 +86,7 @@ void MobileNumberManager::unregisterNumber(QString number)
 
 std::shared_ptr<StoragePoint> MobileNumberManager::createStoragePoint()
 {
-	return std::make_shared<StoragePoint>(xml_config_file, xml_config_file->getNode("MobileNumbers"));
+	return Core::instance()->storagePointFactory()->createStoragePoint("MobileNumbers");
 }
 
 StorableObject * MobileNumberManager::storageParent()

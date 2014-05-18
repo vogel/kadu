@@ -19,13 +19,15 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <memory>
 #include <QtCore/QObject>
 
 class StoragePoint;
 class XmlConfigFile;
 
-class StoragePointFactory : public QObject
+class KADUAPI StoragePointFactory : public QObject
 {
 	Q_OBJECT
 
