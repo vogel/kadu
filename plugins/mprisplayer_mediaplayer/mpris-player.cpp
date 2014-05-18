@@ -21,6 +21,7 @@
  */
 
 #include <QtCore/QFile>
+#include <QtCore/QSettings>
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -104,21 +105,23 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 	if (key == "mpris_mediaplayer")
 	{
 		QString oldMPRISService = config_file->readEntry("MediaPlayer", "MPRISService");
-		PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
+		QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+		userPlayersSettings.setIniCodec("ISO8859-2");
 
-		userPlayersFile.writeEntry(value, "player", value);
-		userPlayersFile.writeEntry(value, "service", oldMPRISService);
-		userPlayersFile.sync();
+		userPlayersSettings.setValue(value + "/player", value);
+		userPlayersSettings.setValue(value +  "/service", oldMPRISService);
+		userPlayersSettings.sync();
 
 		config_file->writeEntry("MPRISPlayer", "Player", value);
 		config_file->writeEntry("MPRISPlayer", "Service", oldMPRISService);
 	}
 	else // Choose player based on old module loaded.
 	{
-		PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
+		QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+		globalPlayersSettings.setIniCodec("ISO8859-2");
 
 		config_file->writeEntry("MPRISPlayer", "Player", value);
-		config_file->writeEntry("MPRISPlayer", "Service", globalPlayersFile.readEntry(value, "service"));
+		config_file->writeEntry("MPRISPlayer", "Service", globalPlayersSettings.value(value + "/service").toString());
 	}
 }
 
