@@ -26,6 +26,7 @@
 #include "plugin/metadata/plugin-metadata.h"
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QSettings>
 
 PluginMetadataReader::PluginMetadataReader(QObject *parent) noexcept :
 		QObject(parent)
@@ -43,22 +44,23 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 		throw PluginMetadataReaderException{};
 
 	auto const lang = config_file->readEntry("General", "Language");
-	PlainConfigFile file{filePath, "UTF-8"};
+	QSettings file{filePath, QSettings::IniFormat};
+	file.setIniCodec("UTF-8");
 
 	auto builder = PluginMetadataBuilder{};
 	return builder
 			.setName(pluginName)
-			.setDisplayName(file.readEntry("Module", "DisplayName[" + lang + ']', file.readEntry("Module", "DisplayName")))
-			.setCategory(file.readEntry("Module", "Category"))
-			.setType(file.readEntry("Module", "Type"))
-			.setDescription(file.readEntry("Module", "Description[" + lang + ']', file.readEntry("Module", "Description")))
-			.setAuthor(file.readEntry("Module", "Author"))
-			.setVersion(file.readEntry("Module", "Version") == "core"
+			.setDisplayName(file.value("Module/DisplayName[" + lang + ']', file.value("Module/DisplayName")).toString())
+			.setCategory(file.value("Module/Category").toString())
+			.setType(file.value("Module/Type").toString())
+			.setDescription(file.value("Module/Description[" + lang + ']', file.value("Module/Description")).toString())
+			.setAuthor(file.value("Module/Author").toString())
+			.setVersion(file.value("Module/Version").toString() == "core"
 					? Core::version()
-					: file.readEntry("Module", "Version"))
-			.setProvides(file.readEntry("Module", "Provides"))
-			.setDependencies(file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts))
-			.setReplaces(file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts))
-			.setLoadByDefault(file.readBoolEntry("Module", "LoadByDefault"))
+					: file.value("Module/Version").toString())
+			.setProvides(file.value("Module/Provides").toString())
+			.setDependencies(file.value("Module/Dependencies").toString().split(' ', QString::SkipEmptyParts))
+			.setReplaces(file.value("Module/Replaces").toString().split(' ', QString::SkipEmptyParts))
+			.setLoadByDefault(file.value("Module/LoadByDefault").toBool())
 			.create();
 }
