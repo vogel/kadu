@@ -40,39 +40,6 @@
 
 #include "exports.h"
 
-class KADUAPI PlainConfigFile
-{
-	void write() const;
-	bool changeEntry(const QString &group, const QString &name, const QString &value);
-	QString getEntry(const QString &group, const QString &name, bool *ok = 0);
-
-	QString filename;
-	QString CodecName;
-	QMap<QString, QMap<QString, QString> > groups;
-	mutable QString activeGroupName;
-	mutable QMap<QString, QString> activeGroup;
-	PlainConfigFile(const PlainConfigFile &);
-	PlainConfigFile &operator = (const PlainConfigFile &);
-
-	void changeActiveGroup(const QString &newGroup);
-
-public:
-	PlainConfigFile(const QString &filename, const QString &codec = "ISO8859-2");
-
-	void read();
-
-	void sync();
-
-	QMap<QString, QString> & getGroupSection(const QString &name);
-
-	QStringList getGroupList() const;
-
-	void writeEntry(const QString &group,const QString &name, const QString &value);
-
-	QString readEntry(const QString &group, const QString &name, const QString &def = QString());
-
-};
-
 class KADUAPI ConfigFile
 {
 	bool changeEntry(const QString &group, const QString &name, const QString &value);
