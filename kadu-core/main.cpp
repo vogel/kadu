@@ -163,7 +163,6 @@ int main(int argc, char *argv[]) try
 	WSAHandler wsaHandler;
 
 	bool ok;
-	FILE *logFile = 0;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
 	auto application = make_unique<KaduApplication>(argc, argv);
@@ -199,16 +198,6 @@ int main(int argc, char *argv[]) try
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
 	KaduPaths::createInstance(profileDirectory);
-
-	if (0 != qgetenv("SAVE_STDERR").toInt())
-	{
-		const QByteArray logFilePath = QString(KaduPaths::instance()->profilePath() + QLatin1String("kadu.log.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss")).toLocal8Bit();
-		logFile = freopen(logFilePath.constData(), "w", stderr);
-		if (!logFile)
-			printf("freopen failed: %s\nstderr is now broken\n", strerror(errno));
-		else
-			printf("logging all stderr output to file: %s\n", logFilePath.constData());
-	}
 
 #ifndef Q_OS_WIN32
 	// Qt version is better on win32
@@ -285,8 +274,6 @@ int main(int argc, char *argv[]) try
 
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 
-	if (logFile)
-		fclose(logFile);
 	KaduPaths::destroyInstance();
 
 	return ret;
