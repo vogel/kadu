@@ -182,17 +182,6 @@ int main(int argc, char *argv[]) try
 	exitingTime = 0;
 	startTime = (sec % 1000) * 1000 + msec;
 
-#ifndef Q_OS_WIN32
-	// We want some sensible LC_COLLATE (i.e., not "C", if possible) to make
-	// QString::localeAwareCompare() work as expected.
-	QByteArray langEnv = qgetenv("LANG");
-	QByteArray lcAllEnv = qgetenv("LC_ALL");
-	if (langEnv.isEmpty() && lcAllEnv.isEmpty())
-		qputenv("LC_COLLATE", "en_US");
-	else if (lcAllEnv.isEmpty())
-		qputenv("LC_COLLATE", langEnv);
-#endif // !Q_OS_WIN32
-
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
