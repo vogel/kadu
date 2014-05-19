@@ -31,12 +31,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
 #include <QtCore/QLibraryInfo>
-#include <QtCore/QLocale>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
