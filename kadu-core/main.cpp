@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) try
 	}
 
 	// It has to be called after putting CONFIG_DIR environment variable.
-	KaduPaths::createInstance();
+	KaduPaths::createInstance(qgetenv("CONFIG_DIR"));
 
 	if (0 != qgetenv("SAVE_STDERR").toInt())
 	{

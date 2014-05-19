@@ -46,13 +46,13 @@ class KADUAPI KaduPaths
 	QString PluginsLibPath;
 	QString DataPath;
 
-	KaduPaths();
+	KaduPaths(const QString &customProfileDir);
 
 	void initBasicPaths();
-	void initProfilePath();
+	void initProfilePath(const QString &customProfileDir);
 
 public:
-	static void createInstance();
+	static void createInstance(const QString &customProfileDir);
 	static void destroyInstance();
 	static KaduPaths * instance() { return Instance; }
 
@@ -123,7 +123,7 @@ public:
 	 * Default library path for plugins is $CMAKE_INSTALL_FULL_LIBDIR/kadu/plugins
 	 * on X11 and $CMAKE_INSTALL_PREFIX/plugins on Windows. It can be overwritten by
 	 * KADU_INSTALL_PLUGINS_LIB_DIR CMake argument.
-	 */ 
+	 */
 	const QString & pluginsLibPath() const { return PluginsLibPath; }
 
 	/**

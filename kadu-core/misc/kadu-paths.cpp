@@ -34,10 +34,10 @@
 
 KaduPaths * KaduPaths::Instance;
 
-void KaduPaths::createInstance()
+void KaduPaths::createInstance(const QString &customProfileDir)
 {
 	if (!Instance)
-		Instance = new KaduPaths();
+		Instance = new KaduPaths(customProfileDir);
 }
 
 void KaduPaths::destroyInstance()
@@ -79,10 +79,10 @@ QString KaduPaths::webKitPath(const QString &path)
 #endif
 }
 
-KaduPaths::KaduPaths()
+KaduPaths::KaduPaths(const QString &customProfileDir)
 {
 	initBasicPaths();
-	initProfilePath();
+	initProfilePath(customProfileDir);
 }
 
 void KaduPaths::initBasicPaths()
@@ -113,7 +113,7 @@ void KaduPaths::initBasicPaths()
 		PluginsLibPath = canonicalPath + '/';
 }
 
-void KaduPaths::initProfilePath()
+void KaduPaths::initProfilePath(const QString &customProfileDir)
 {
 #if defined(Q_OS_MAC)
 	const QString defaultConfigDirRelativeToHome = QLatin1String("Library/Kadu");
@@ -126,7 +126,6 @@ void KaduPaths::initProfilePath()
 	const QString oldMidConfigDir = QLatin1String("kadu");
 #endif
 
-	QString customProfileDir = qgetenv("CONFIG_DIR");
 	if (customProfileDir.isEmpty())
 	{
 		if (QFileInfo(dataPath() + QLatin1String("portable")).exists())
