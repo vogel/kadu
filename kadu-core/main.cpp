@@ -256,7 +256,7 @@ int main(int argc, char *argv[]) try
 	Core::instance()->showMainWindow();
 	Core::instance()->initialized();
 
-	int ret = application->exec();
+	int ret = QApplication::exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
 	delete xml_config_file;
