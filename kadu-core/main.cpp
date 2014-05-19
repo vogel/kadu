@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) try
 	FILE *logFile = 0;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
-	new KaduApplication(argc, argv);
+	auto application = make_unique<KaduApplication>(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
 	auto executionArgumentsParser = ExecutionArgumentsParser{};
@@ -181,7 +181,6 @@ int main(int argc, char *argv[]) try
 	if (executionArguments.queryVersion())
 	{
 		printVersion();
-		delete qApp;
 		return 0;
 	}
 
@@ -189,7 +188,6 @@ int main(int argc, char *argv[]) try
 	{
 		printUsage();
 		printKaduOptions();
-		delete qApp;
 		return 0;
 	}
 
@@ -246,7 +244,7 @@ int main(int argc, char *argv[]) try
 	QCoreApplication::installTranslator(&qt_qm);
 	QCoreApplication::installTranslator(&kadu_qm);
 
-	QtLocalPeer *peer = new QtLocalPeer(qApp, KaduPaths::instance()->profilePath());
+	QtLocalPeer *peer = new QtLocalPeer(application.get(), KaduPaths::instance()->profilePath());
 	if (peer->isClient())
 	{
 		if (!executionArguments.openIds().isEmpty())
@@ -257,7 +255,6 @@ int main(int argc, char *argv[]) try
 
 		delete config_file;
 		delete xml_config_file;
-		delete qApp;
 		return 1;
 	}
 
@@ -275,7 +272,7 @@ int main(int argc, char *argv[]) try
 	Core::instance()->showMainWindow();
 	Core::instance()->initialized();
 
-	int ret = qApp->exec();
+	int ret = application->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
 	delete xml_config_file;
@@ -287,8 +284,8 @@ int main(int argc, char *argv[]) try
 	// On some systems it leads to crash with sms module.
 	// Reproducible by simply calling "delete new QScriptEngine();" in a module,
 	// so it's probably a bug in Qt. Sigh.
-#if QT_VERSION >= 0x050000
-	delete qApp;
+#if QT_VERSION < 0x050000
+	application.release()
 #endif
 
 	kdebugm(KDEBUG_INFO, "exiting main\n");
