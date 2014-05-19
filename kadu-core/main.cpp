@@ -213,7 +213,7 @@ int main(int argc, char *argv[]) try
 		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
 		qFatal("%s", qPrintable(errorMessage));
 	}
-	config_file = new ConfigFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu.conf"));
+	config_file = new ConfigFile(QLatin1String("kadu.conf"));
 
 #ifdef DEBUG_OUTPUT_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
