@@ -136,9 +136,6 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 extern KADUAPI bool showTimesInDebug;
 #endif
 
-static long int startTime, beforeExecTime, endingTime, exitingTime;
-static bool measureTime;
-
 // defined in main_unix.cpp and main_win32.cpp
 void enableSignalHandling();
 
@@ -171,16 +168,7 @@ int main(int argc, char *argv[]) try
 	WSAHandler wsaHandler;
 
 	bool ok;
-	long msec;
-	time_t sec;
 	FILE *logFile = 0;
-
-	getTime(&sec, &msec);
-
-	beforeExecTime = 0;
-	endingTime = 0;
-	exitingTime = 0;
-	startTime = (sec % 1000) * 1000 + msec;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
 	new KaduApplication(argc, argv);
@@ -283,16 +271,6 @@ int main(int argc, char *argv[]) try
 	for (auto const &id : executionArguments.openIds())
 		Core::instance()->receivedSignal(id);
 
-	/* for testing of startup / close time */
-	int closeAfter = qgetenv("CLOSE_AFTER").toInt(&ok);
-	if (ok && closeAfter >= 0)
-		QTimer::singleShot(closeAfter, qApp, SLOT(quit()));
-	if (0 != qgetenv("MEASURE_TIME").toInt())
-	{
-		getTime(&sec, &msec);
-		beforeExecTime = (sec % 1000) * 1000 + msec;
-	}
-
 	// it has to be called after loading modules (docking might want to block showing the window)
 	Core::instance()->showMainWindow();
 	Core::instance()->initialized();
@@ -312,14 +290,6 @@ int main(int argc, char *argv[]) try
 #if QT_VERSION >= 0x050000
 	delete qApp;
 #endif
-
-	if (measureTime)
-	{
-		getTime(&sec, &msec);
-		exitingTime = (sec % 1000) * 1000 + msec;
-		fprintf(stderr, "init time: %ld, run time: %ld, ending time: %ld\n",
-				beforeExecTime - startTime, endingTime - beforeExecTime, exitingTime - endingTime);
-	}
 
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 
