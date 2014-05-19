@@ -45,9 +45,9 @@ ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setDebugMask(QString debu
 	return *this;
 }
 
-ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setConfigurationDirectory(QString configurationDirectory)
+ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setProfileDirectory(QString profileDirectory)
 {
-	m_configurationDirectory = std::move(configurationDirectory);
+	m_profileDirectory = std::move(profileDirectory);
 	return *this;
 }
 
@@ -63,7 +63,7 @@ ExecutionArguments ExecutionArgumentsBuilder::build() const
 		m_queryVersion,
 		m_queryUsage,
 		m_debugMask,
-		m_configurationDirectory,
+		m_profileDirectory,
 		m_openIds
 	};
 }

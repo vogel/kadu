@@ -51,7 +51,7 @@ public:
 	ExecutionArgumentsBuilder & setQueryVersion(bool queryVersion);
 	ExecutionArgumentsBuilder & setQueryUsage(bool queryUsage);
 	ExecutionArgumentsBuilder & setDebugMask(QString debugMask);
-	ExecutionArgumentsBuilder & setConfigurationDirectory(QString configurationDirectory);
+	ExecutionArgumentsBuilder & setProfileDirectory(QString profileDirectory);
 	ExecutionArgumentsBuilder & setOpenIds(QStringList openIds);
 
 	/**
@@ -63,7 +63,7 @@ private:
 	bool m_queryVersion;
 	bool m_queryUsage;
 	QString m_debugMask;
-	QString m_configurationDirectory;
+	QString m_profileDirectory;
 	QStringList m_openIds;
 
 };

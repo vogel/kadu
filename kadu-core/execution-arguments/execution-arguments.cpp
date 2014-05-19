@@ -19,11 +19,11 @@
 
 #include "execution-arguments.h"
 
-ExecutionArguments::ExecutionArguments(bool queryVersion, bool queryUsage, QString debugMask, QString configurationDirectory, QStringList openIds) :
+ExecutionArguments::ExecutionArguments(bool queryVersion, bool queryUsage, QString debugMask, QString profileDirectory, QStringList openIds) :
 		m_queryVersion{queryVersion},
 		m_queryUsage{queryUsage},
 		m_debugMask{std::move(debugMask)},
-		m_configurationDirectory{std::move(configurationDirectory)},
+		m_profileDirectory{std::move(profileDirectory)},
 		m_openIds{std::move(openIds)}
 {
 }
@@ -43,9 +43,9 @@ QString ExecutionArguments::debugMask() const
 	return m_debugMask;
 }
 
-QString ExecutionArguments::configurationDirectory() const
+QString ExecutionArguments::profileDirectory() const
 {
-	return m_configurationDirectory;
+	return m_profileDirectory;
 }
 
 QStringList ExecutionArguments::openIds() const

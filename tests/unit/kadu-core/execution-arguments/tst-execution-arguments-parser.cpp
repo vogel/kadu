@@ -35,9 +35,9 @@ private slots:
 	void shouldIgnoreInvalidDebugMask();
 	void shouldIgnoreEmptyDebugMask();
 	void shouldAcceptLastValidDebugMask();
-	void shouldProperlyParseConfigurationDirectory();
-	void shouldIgnoreEmptyConfigurationDirectory();
-	void shouldAcceptLastConfigurationDirectory();
+	void shouldProperlyParseProfileDirectory();
+	void shouldIgnoreEmptyProfileDirectory();
+	void shouldAcceptLastProfileDirectory();
 	void shouldProperlyParseListOfIds();
 	void shouldIgnoreInvalidIds();
 	void shouldProperlyParseComplexArguments();
@@ -53,7 +53,7 @@ void tst_ExcutionArgumentsParser::shouldCreateDefaultArgumentsWhenNonePassed()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
@@ -66,7 +66,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseQueryVersion()
 	QCOMPARE(executionArguments.queryVersion(), true);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
@@ -79,7 +79,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseQueryUsage()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), true);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
@@ -92,7 +92,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseValidDebugMask()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{"126"});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
@@ -105,7 +105,7 @@ void tst_ExcutionArgumentsParser::shouldIgnoreEmptyDebugMask()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
@@ -118,7 +118,7 @@ void tst_ExcutionArgumentsParser::shouldIgnoreInvalidDebugMask()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
@@ -131,11 +131,11 @@ void tst_ExcutionArgumentsParser::shouldAcceptLastValidDebugMask()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{"256"});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldProperlyParseConfigurationDirectory()
+void tst_ExcutionArgumentsParser::shouldProperlyParseProfileDirectory()
 {
 	auto arguments = QStringList{} << "--config-dir" << "kadu-2";
 	auto parser = ExecutionArgumentsParser{};
@@ -144,11 +144,11 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseConfigurationDirectory()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{"kadu-2"});
+	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-2"});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldIgnoreEmptyConfigurationDirectory()
+void tst_ExcutionArgumentsParser::shouldIgnoreEmptyProfileDirectory()
 {
 	auto arguments = QStringList{} << "--config-dir";
 	auto parser = ExecutionArgumentsParser{};
@@ -157,11 +157,11 @@ void tst_ExcutionArgumentsParser::shouldIgnoreEmptyConfigurationDirectory()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldAcceptLastConfigurationDirectory()
+void tst_ExcutionArgumentsParser::shouldAcceptLastProfileDirectory()
 {
 	auto arguments = QStringList{} << "--config-dir" << "kadu-2" << "--config-dir" << "kadu-3";
 	auto parser = ExecutionArgumentsParser{};
@@ -170,7 +170,7 @@ void tst_ExcutionArgumentsParser::shouldAcceptLastConfigurationDirectory()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{"kadu-3"});
+	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-3"});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
@@ -183,7 +183,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseListOfIds()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
 }
 
@@ -196,7 +196,7 @@ void tst_ExcutionArgumentsParser::shouldIgnoreInvalidIds()
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
 	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{});
+	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
 }
 
@@ -209,7 +209,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseComplexArguments()
 	QCOMPARE(executionArguments.queryVersion(), true);
 	QCOMPARE(executionArguments.queryUsage(), true);
 	QCOMPARE(executionArguments.debugMask(), QString{"15"});
-	QCOMPARE(executionArguments.configurationDirectory(), QString{"kadu-7"});
+	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-7"});
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:15" << "xmpp:12");
 }
 

@@ -27,7 +27,7 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 	auto queryVersion = false;
 	auto queryUsage = false;
 	auto debugMask = QString{};
-	auto configurationDirectory = QString{};
+	auto profileDirectory = QString{};
 	auto openIds = QStringList{};
 
 	for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
@@ -44,7 +44,7 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 				debugMask = *it;
 		}
 		else if (*it == QLatin1String("--config-dir") && (it + 1) != arguments.constEnd())
-			configurationDirectory = *(++it);
+			profileDirectory = *(++it);
 		else if (QRegExp("^[a-zA-Z]+:(/){0,3}.+").exactMatch(*it))
 			openIds.append(*it);
 		else
@@ -55,7 +55,7 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 		.setQueryVersion(queryVersion)
 		.setQueryUsage(queryUsage)
 		.setDebugMask(std::move(debugMask))
-		.setConfigurationDirectory(std::move(configurationDirectory))
+		.setProfileDirectory(std::move(profileDirectory))
 		.setOpenIds(std::move(openIds))
 		.build();
 }

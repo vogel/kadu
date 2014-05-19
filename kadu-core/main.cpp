@@ -225,9 +225,9 @@ int main(int argc, char *argv[]) try
 			fprintf(stderr, "Ignoring invalid debug mask '%s'\n", executionArguments.debugMask().toUtf8().constData());
 	}
 
-	if (!executionArguments.configurationDirectory().isEmpty())
+	if (!executionArguments.profileDirectory().isEmpty())
 	{
-		qputenv("CONFIG_DIR", executionArguments.configurationDirectory().toUtf8());
+		qputenv("CONFIG_DIR", executionArguments.profileDirectory().toUtf8());
 	}
 
 	// It has to be called after putting CONFIG_DIR environment variable.

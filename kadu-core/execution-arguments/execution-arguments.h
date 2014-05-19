@@ -39,7 +39,7 @@ class KADUAPI ExecutionArguments final
 {
 
 public:
-	ExecutionArguments(bool queryVersion, bool queryUsage, QString debugMask, QString configurationDirectory, QStringList openIds);
+	ExecutionArguments(bool queryVersion, bool queryUsage, QString debugMask, QString profileDirectory, QStringList openIds);
 
 	/**
 	 * @return True if version information is requested.
@@ -58,9 +58,9 @@ public:
 	QString debugMask() const;
 
 	/**
-	 * @return Requested value of configuation directory.
+	 * @return Requested value of profile directory.
 	 */
-	QString configurationDirectory() const;
+	QString profileDirectory() const;
 
 	/**
 	 * @return Requested list of ids to open chat with.
@@ -71,7 +71,7 @@ private:
 	bool m_queryVersion;
 	bool m_queryUsage;
 	QString m_debugMask;
-	QString m_configurationDirectory;
+	QString m_profileDirectory;
 	QStringList m_openIds;
 
 };
