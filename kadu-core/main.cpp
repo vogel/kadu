@@ -225,13 +225,10 @@ int main(int argc, char *argv[]) try
 			fprintf(stderr, "Ignoring invalid debug mask '%s'\n", executionArguments.debugMask().toUtf8().constData());
 	}
 
-	if (!executionArguments.profileDirectory().isEmpty())
-	{
-		qputenv("CONFIG_DIR", executionArguments.profileDirectory().toUtf8());
-	}
-
-	// It has to be called after putting CONFIG_DIR environment variable.
-	KaduPaths::createInstance(qgetenv("CONFIG_DIR"));
+	auto profileDirectory = executionArguments.profileDirectory().isEmpty()
+			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
+			: executionArguments.profileDirectory();
+	KaduPaths::createInstance(profileDirectory);
 
 	if (0 != qgetenv("SAVE_STDERR").toInt())
 	{
