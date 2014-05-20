@@ -36,6 +36,7 @@
 #include "misc/change-notifier.h"
 #include "parser/parser.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "chat-shared.h"
 
@@ -231,7 +232,7 @@ bool ChatShared::shouldStore()
 		return false;
 
 	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (config_file->readNumEntry("History", "Schema", 0) < 4)
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("History", "Schema", 0) < 4)
 		return true;
 
 	if (customProperties()->shouldStore())

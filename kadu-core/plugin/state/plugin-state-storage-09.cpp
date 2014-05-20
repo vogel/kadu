@@ -22,6 +22,7 @@
 #include "configuration/configuration-file.h"
 #include "misc/algorithm.h"
 #include "plugin/state/plugin-state.h"
+#include "kadu-application.h"
 
 #include <QtCore/QSet>
 
@@ -36,12 +37,12 @@ QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> 
 {
 	auto result = QMap<QString, PluginState>{};
 
-	auto everLoaded = config_file->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
-	auto loaded = config_file->readEntry("General", "LoadedModules");
+	auto everLoaded = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
+	auto loaded = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "LoadedModules");
 
 	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
 	everLoaded += loadedPlugins;
-	auto unloaded_str = config_file->readEntry("General", "UnloadedModules");
+	auto unloaded_str = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "UnloadedModules");
 	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...

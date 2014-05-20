@@ -26,6 +26,7 @@
 #include "configuration/configuration-file.h"
 #include "message/message-manager.h"
 #include "message/message.h"
+#include "kadu-application.h"
 
 #include "recent-chat-manager.h"
 
@@ -140,7 +141,7 @@ void RecentChatManager::store()
 	for (int i = 0; i < count; i++)
 		mainElement.removeChild(chatElements.at(i));
 
-	if (!config_file->readBoolEntry("Chat", "RecentChatsClear", false))
+	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (const Chat &chat, RecentChats)
 			if (chat && !chat.uuid().isNull())
 			{
@@ -234,7 +235,7 @@ void RecentChatManager::removeRecentChat(Chat chat)
 void RecentChatManager::configurationUpdated()
 {
 	CleanUpTimer.stop();
-	RecentChatsTimeout = config_file->readNumEntry("Chat", "RecentChatsTimeout") * 60;
+	RecentChatsTimeout = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Chat", "RecentChatsTimeout") * 60;
 	if (RecentChatsTimeout > 0)
 		CleanUpTimer.start();
 

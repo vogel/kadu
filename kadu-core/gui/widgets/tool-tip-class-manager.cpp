@@ -20,6 +20,7 @@
 
 #include "configuration/configuration-file.h"
 #include "talkable/talkable.h"
+#include "kadu-application.h"
 
 #include "tool-tip-class-manager.h"
 
@@ -36,7 +37,7 @@ ToolTipClassManager * ToolTipClassManager::instance()
 ToolTipClassManager::ToolTipClassManager() :
 		CurrentToolTipClass(0)
 {
-	config_file->addVariable("Look", "UserboxToolTipStyle", "Hints");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
 	configurationUpdated();
 }
 
@@ -108,5 +109,5 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(config_file->readEntry("Look", "UserboxToolTipStyle", "Hints"));
+	useToolTipClass(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
 }

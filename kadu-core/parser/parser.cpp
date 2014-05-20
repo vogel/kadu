@@ -39,6 +39,7 @@
 #include "chat/model/chat-data-extractor.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "parser/parser-token.h"
@@ -47,9 +48,8 @@
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
-
-#include "icons/icons-manager.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "parser.h"
 
@@ -69,7 +69,7 @@ static void prepareSearchChars(bool forceExecSeachChars = false)
 		foreach (QChar c, QString(SEARCH_CHARS))
 			chars.insert(c);
 
-	bool allowExec = forceExecSeachChars || config_file->readBoolEntry("General", "AllowExecutingFromParser", false);
+	bool allowExec = forceExecSeachChars || KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
 	foreach (QChar c, QString(EXEC_SEARCH_CHARS))
 		if (allowExec)
 			chars.insert(c);
@@ -292,7 +292,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 				pe.setContent(description);
 
-				if (config_file->readBoolEntry("Look", "ShowMultilineDesc"))
+				if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowMultilineDesc"))
 				{
 					QString content = pe.decodedContent();
 					content.replace('\n', QLatin1String("<br/>"));

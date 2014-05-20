@@ -43,6 +43,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
 #include "parser/parser.h"
+#include "kadu-application.h"
 
 #include "hint_manager.h"
 #include "hints-plugin.h"
@@ -85,7 +86,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay = new QHBoxLayout(syntaxWidget);
 	hintSyntax = new QTextEdit;
 	hintSyntax->setAcceptRichText(true);
-	hintSyntax->setPlainText(config_file->readEntry("Hints", "MouseOverUserSyntax"));
+	hintSyntax->setPlainText(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Hints", "MouseOverUserSyntax"));
 	hintSyntax->setToolTip(tr(MainConfigurationWindow::SyntaxText));
 
 	QPushButton *syntaxChangedButton = new QPushButton(tr("Update preview"));
@@ -98,10 +99,10 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 
 	HintsPlugin::instance()->hintsManger()->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
 
-	bgcolor = config_file->readColorEntry("Hints", "HintOverUser_bgcolor").name();
-	fgcolor = config_file->readColorEntry("Hints", "HintOverUser_fgcolor").name();
-	bdcolor = config_file->readColorEntry("Hints", "HintOverUser_bdcolor").name();
-	bdwidth = config_file->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
+	bgcolor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
+	fgcolor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
+	bdcolor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name();
+	bdwidth = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
 }
 
 void HintOverUserConfigurationWindow::fontChanged(QFont font)
@@ -171,7 +172,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 
 void HintOverUserConfigurationWindow::configurationWindowApplied()
 {
-	config_file->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
 }
 
 #include "moc_hint-over-user-configuration-window.cpp"

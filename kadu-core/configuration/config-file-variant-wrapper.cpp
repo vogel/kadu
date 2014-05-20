@@ -22,6 +22,7 @@
 #include <QtCore/QVariant>
 
 #include "configuration/configuration-file.h"
+#include "kadu-application.h"
 
 #include "config-file-variant-wrapper.h"
 
@@ -36,10 +37,10 @@ ConfigFileVariantWrapper::~ConfigFileVariantWrapper()
 
 QVariant ConfigFileVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return config_file->readEntry(Group, Name, defaultValue.toString());
+	return KaduApplication::instance()->depreceatedConfigurationApi()->readEntry(Group, Name, defaultValue.toString());
 }
 
 void ConfigFileVariantWrapper::set(const QVariant &value)
 {
-	config_file->writeEntry(Group, Name, value.toString());
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry(Group, Name, value.toString());
 }

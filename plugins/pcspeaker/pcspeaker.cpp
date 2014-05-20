@@ -32,6 +32,7 @@
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/notification.h"
+#include "kadu-application.h"
 
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSlider>
@@ -155,7 +156,7 @@ void PCSpeaker::notify(Notification *notification)
 #ifdef Q_OS_MACX
 	SysBeep(1);
 #else
-	parseAndPlay(config_file->readEntry("PC Speaker", notification->type() + "_Sound"));
+	parseAndPlay(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("PC Speaker", notification->type() + "_Sound"));
 #endif
 	notification->release(this);
 	kdebugf2();
@@ -260,7 +261,7 @@ void PCSpeaker::play(int sound[21], int soundlength[20])
 
 void PCSpeaker::parseAndPlay(QString line)
 {
-	volume = config_file->readNumEntry("PC Speaker", "SpeakerVolume");
+	volume = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("PC Speaker", "SpeakerVolume");
 	int sound[21], soundLength[20];
 	ParseStringToSound(line, sound, soundLength);
 	play(sound, soundLength);
@@ -268,12 +269,12 @@ void PCSpeaker::parseAndPlay(QString line)
 
 void PCSpeaker::createDefaultConfiguration()
 {
-	config_file->addVariable("PC Speaker", "SpeakerVolume", 100);
-	config_file->addVariable("PC Speaker", "NewChat_Sound", "C4/2");
-	config_file->addVariable("PC Speaker", "NewMessage_Sound", "F2/2");
-	config_file->addVariable("PC Speaker", "ConnectionError_Sound", "D3/4");
-	config_file->addVariable("PC Speaker", "StatusChanged_Sound", "A3/2");
-	config_file->addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PC Speaker", "SpeakerVolume", 100);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PC Speaker", "NewChat_Sound", "C4/2");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PC Speaker", "NewMessage_Sound", "F2/2");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PC Speaker", "ConnectionError_Sound", "D3/4");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PC Speaker", "StatusChanged_Sound", "A3/2");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
 }
 
 Q_EXPORT_PLUGIN2(pcspeaker, PCSpeaker)

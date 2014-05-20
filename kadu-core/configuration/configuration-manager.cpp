@@ -28,6 +28,7 @@
 #include "configuration/toolbar-configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storable-object.h"
+#include "kadu-application.h"
 
 #include "configuration-manager.h"
 
@@ -61,11 +62,11 @@ ConfigurationManager::~ConfigurationManager()
 
 void ConfigurationManager::load()
 {
-	xml_config_file->makeBackup();
+	KaduApplication::instance()->configurationApi()->makeBackup();
 
 	importConfiguration();
 
-	Uuid = xml_config_file->rootElement().attribute("uuid");
+	Uuid = KaduApplication::instance()->configurationApi()->rootElement().attribute("uuid");
 	if (Uuid.isNull())
 		Uuid = QUuid::createUuid();
 }
@@ -75,8 +76,8 @@ void ConfigurationManager::flush()
 	foreach (StorableObject *object, RegisteredStorableObjects)
 		object->ensureStored();
 
-	xml_config_file->rootElement().setAttribute("uuid", Uuid.toString());
-	xml_config_file->sync();
+	KaduApplication::instance()->configurationApi()->rootElement().setAttribute("uuid", Uuid.toString());
+	KaduApplication::instance()->configurationApi()->sync();
 }
 
 void ConfigurationManager::registerStorableObject(StorableObject *object)
@@ -104,9 +105,9 @@ void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 
 void ConfigurationManager::importConfiguration()
 {
-	QDomElement root = xml_config_file->rootElement();
-	QDomElement general = xml_config_file->findElementByProperty(root.firstChild().firstChild().toElement(), "Group", "name", "General");
-	QDomElement mainConfiguration = xml_config_file->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
+	QDomElement root = KaduApplication::instance()->configurationApi()->rootElement();
+	QDomElement general = KaduApplication::instance()->configurationApi()->findElementByProperty(root.firstChild().firstChild().toElement(), "Group", "name", "General");
+	QDomElement mainConfiguration = KaduApplication::instance()->configurationApi()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
 
 	if (!mainConfiguration.isNull())
 		  mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");

@@ -29,6 +29,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "icons/kadu-icon.h"
+#include "kadu-application.h"
 
 #include "kadu-tree-view.h"
 
@@ -56,7 +57,7 @@ KaduTreeView::~KaduTreeView()
 
 void KaduTreeView::configurationUpdated()
 {
-	bool showExpandingControl = config_file->readBoolEntry("Look", "ShowExpandingControl", false);
+	bool showExpandingControl = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowExpandingControl", false);
 
 	if (rootIsDecorated() && !showExpandingControl)
 		collapseAll();
@@ -80,7 +81,7 @@ void KaduTreeView::updateBackground()
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	if (config_file->readBoolEntry("Look", "AlignUserboxIconsTop"))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "AlignUserboxIconsTop"))
 	{
 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
 		     "{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-closed", "16x16").fullPath() + "); margin-top: 4px; image-position: top }");

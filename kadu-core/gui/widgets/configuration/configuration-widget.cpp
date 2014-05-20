@@ -61,6 +61,7 @@
 #include "gui/windows/configuration-window.h"
 #include "icons/kadu-icon.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "debug.h"
 
@@ -95,7 +96,7 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 ConfigurationWidget::~ConfigurationWidget()
 {
 	if (SectionsListWidget->currentItem())
-		config_file->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
 
 	disconnect(SectionsListWidget, 0, this, 0);
 
@@ -109,7 +110,7 @@ ConfigurationWidget::~ConfigurationWidget()
 
 void ConfigurationWidget::init()
 {
-	QString lastSection = config_file->readEntry("General", "ConfigurationWindow_" + Name);
+	QString lastSection = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "ConfigurationWindow_" + Name);
 	if (ConfigSections.contains(lastSection))
 		ConfigSections.value(lastSection)->activate();
 	else if (SectionsListWidget->count() > 0)

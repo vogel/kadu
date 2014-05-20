@@ -77,6 +77,4 @@ public:
 
 };
 
-extern KADUAPI ConfigFile *config_file;
-
 #endif

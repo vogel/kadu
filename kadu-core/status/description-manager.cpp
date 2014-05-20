@@ -24,6 +24,7 @@
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "status/description-model.h"
+#include "kadu-application.h"
 
 #include "description-manager.h"
 
@@ -42,7 +43,7 @@ DescriptionManager::DescriptionManager()
 
 	configurationUpdated();
 
-	if (xml_config_file->getNode("Descriptions", XmlConfigFile::ModeFind).isNull())
+	if (KaduApplication::instance()->configurationApi()->getNode("Descriptions", XmlConfigFile::ModeFind).isNull())
 		import();
 	else
 		setState(StateNotLoaded);
@@ -78,7 +79,7 @@ DescriptionModel * DescriptionManager::model()
 void DescriptionManager::import()
 {
 	StringList.clear();
-	StringList.append(config_file->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
+	StringList.append(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
 	StringList.removeDuplicates();
 
 	truncate();
@@ -99,7 +100,7 @@ void DescriptionManager::truncate()
 
 void DescriptionManager::configurationUpdated()
 {
-	MaxNumberOfDescriptions = config_file->readNumEntry("General", "NumberOfDescriptions");
+	MaxNumberOfDescriptions = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("General", "NumberOfDescriptions");
 	truncate();
 }
 

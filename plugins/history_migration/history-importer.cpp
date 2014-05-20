@@ -36,6 +36,7 @@
 #include "misc/kadu-paths.h"
 #include "plugins/history/history.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "gui/windows/history-import-window.h"
 
@@ -133,7 +134,7 @@ void HistoryImporter::threadFinished()
 {
 	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
 	{
-		config_file->writeEntry("History", "Imported_from_0.6.5", true);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful
 		HistoryMigrationActions::unregisterActions();
 	}

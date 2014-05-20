@@ -36,8 +36,8 @@
 #include "gui/actions/actions.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/toolbar.h"
-
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "main-window.h"
 
@@ -179,12 +179,12 @@ void MainWindow::loadToolBarsFromConfig(Qt::ToolBarArea area)
 
 bool MainWindow::loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area)
 {
-	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 
 	if (toolbarsConfig.isNull())
 		return false;
 
-	QDomElement dockareaConfig = xml_config_file->findElementByProperty(toolbarsConfig, "DockArea", "name", configName);
+	QDomElement dockareaConfig = KaduApplication::instance()->configurationApi()->findElementByProperty(toolbarsConfig, "DockArea", "name", configName);
 	if (dockareaConfig.isNull())
 		return false;
 
@@ -196,9 +196,9 @@ bool MainWindow::loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBa
 
 QDomElement MainWindow::getToolbarsConfigElement()
 {
-	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
+		toolbarsConfig = KaduApplication::instance()->configurationApi()->createElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 
 	return toolbarsConfig;
 }
@@ -234,10 +234,10 @@ QDomElement MainWindow::getDockAreaConfigElement(Qt::ToolBarArea area)
 
 QDomElement MainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name)
 {
-	QDomElement dockAreaConfig = xml_config_file->findElementByProperty(toolbarsConfig, "DockArea", "name", name);
+	QDomElement dockAreaConfig = KaduApplication::instance()->configurationApi()->findElementByProperty(toolbarsConfig, "DockArea", "name", name);
 	if (dockAreaConfig.isNull())
 	{
-		dockAreaConfig = xml_config_file->createElement(toolbarsConfig, "DockArea");
+		dockAreaConfig = KaduApplication::instance()->configurationApi()->createElement(toolbarsConfig, "DockArea");
 		dockAreaConfig.setAttribute("name", name);
 	}
 
@@ -246,24 +246,24 @@ QDomElement MainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig, con
 
 void MainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionName, Qt::ToolButtonStyle style)
 {
-	QDomElement buttonConfig = xml_config_file->findElementByProperty(toolbarConfig, "ToolButton", "action_name", actionName);
+	QDomElement buttonConfig = KaduApplication::instance()->configurationApi()->findElementByProperty(toolbarConfig, "ToolButton", "action_name", actionName);
 //don't add element if exists
 	if (!buttonConfig.isNull())
 		return;
-	buttonConfig = xml_config_file->createElement(toolbarConfig, "ToolButton");
+	buttonConfig = KaduApplication::instance()->configurationApi()->createElement(toolbarConfig, "ToolButton");
 	buttonConfig.setAttribute("action_name", actionName);
 	buttonConfig.setAttribute("toolbutton_style", style);
 }
 
 QDomElement MainWindow::findExistingToolbarOnArea(const QString &areaName)
 {
-	QDomElement dockAreaConfig = xml_config_file->findElementByProperty(getToolbarsConfigElement(), "DockArea", "name", areaName);
+	QDomElement dockAreaConfig = KaduApplication::instance()->configurationApi()->findElementByProperty(getToolbarsConfigElement(), "DockArea", "name", areaName);
 	QDomElement nullResult;
 
 	if (dockAreaConfig.isNull())
 		return nullResult;
 
-	QDomElement toolbarElement = xml_config_file->findElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarElement = KaduApplication::instance()->configurationApi()->findElement(dockAreaConfig, "ToolBar");
 	if (toolbarElement.isNull())
 		return nullResult;
 
@@ -293,7 +293,7 @@ QDomElement MainWindow::findExistingToolbar(const QString &prefix)
 		return toolbarElement;
 
 	QDomElement dockAreaConfig = getDockAreaConfigElement(getToolbarsConfigElement(), realPrefix + "topDockArea");
-	return xml_config_file->createElement(dockAreaConfig, "ToolBar");
+	return KaduApplication::instance()->configurationApi()->createElement(dockAreaConfig, "ToolBar");
 }
 
 void MainWindow::writeToolBarsToConfig()
@@ -307,7 +307,7 @@ void MainWindow::writeToolBarsToConfig()
 void MainWindow::writeToolBarsToConfig(Qt::ToolBarArea area)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(area);
-	xml_config_file->removeChildren(dockAreaConfig);
+	KaduApplication::instance()->configurationApi()->removeChildren(dockAreaConfig);
 
 	// TODO: laaaaame
 	foreach(QObject *child, children())

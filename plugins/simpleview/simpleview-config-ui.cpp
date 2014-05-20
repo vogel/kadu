@@ -21,6 +21,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "kadu-application.h"
 
 #include "simpleview-config-ui.h"
 
@@ -63,9 +64,9 @@ void SimpleViewConfigUi::mainConfigurationWindowDestroyed()
 
 void SimpleViewConfigUi::createDefaultConfiguration()
 {
-	config_file->addVariable("Look", "SimpleViewKeepSize", true);
-	config_file->addVariable("Look", "SimpleViewNoScrollBar", true);
-	config_file->addVariable("Look", "SimpleViewBorderless", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "SimpleViewKeepSize", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "SimpleViewBorderless", true);
 }
 
 

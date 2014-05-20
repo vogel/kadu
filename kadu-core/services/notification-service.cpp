@@ -39,6 +39,7 @@
 #include "status/status-container-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
+#include "kadu-application.h"
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include "notify/x11-screen-mode-checker.h"
@@ -184,7 +185,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(SilentMode);
 
-	config_file->writeEntry("Notify", "SilentMode", SilentMode);
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Notify", "SilentMode", SilentMode);
 
 	if (silentMode() != wasSilent)
 		emit silentModeToggled(silentMode());
@@ -192,7 +193,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 
 bool NotificationService::silentMode()
 {
-	return SilentMode || (IsFullScreen && config_file->readBoolEntry("Notify", "FullscreenSilentMode", false));
+	return SilentMode || (IsFullScreen && KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "FullscreenSilentMode", false));
 }
 
 bool NotificationService::ignoreNotifications()
@@ -202,12 +203,12 @@ bool NotificationService::ignoreNotifications()
 
 void NotificationService::configurationUpdated()
 {
-	NewMessageOnlyIfInactive = config_file->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
-	NotifyIgnoreOnConnection = config_file->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
-	IgnoreOnlineToOnline = config_file->readBoolEntry("Notify", "IgnoreOnlineToOnline");
-	SilentModeWhenDnD = config_file->readBoolEntry("Notify", "AwaySilentMode", false);
-	SilentModeWhenFullscreen = config_file->readBoolEntry("Notify", "FullscreenSilentMode", false);
-	setSilentMode(config_file->readBoolEntry("Notify", "SilentMode", false));
+	NewMessageOnlyIfInactive = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+	NotifyIgnoreOnConnection = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
+	IgnoreOnlineToOnline = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
+	SilentModeWhenDnD = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "AwaySilentMode", false);
+	SilentModeWhenFullscreen = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
+	setSilentMode(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "SilentMode", false));
 
 	if (SilentModeWhenFullscreen)
 		startScreenModeChecker();
@@ -253,9 +254,9 @@ void NotificationService::fullscreenToggled(bool inFullscreen)
 
 void NotificationService::createDefaultConfiguration()
 {
-	config_file->addVariable("Notify", "IgnoreOnlineToOnline", false);
-	config_file->addVariable("Notify", "NewMessageOnlyIfInactive", true);
-	config_file->addVariable("Notify", "NotifyIgnoreOnConnection", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "IgnoreOnlineToOnline", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewMessageOnlyIfInactive", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
 void NotificationService::notify(Notification* notification)

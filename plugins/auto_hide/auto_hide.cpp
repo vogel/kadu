@@ -29,6 +29,7 @@
 #include "gui/windows/kadu-window.h"
 #include "misc/kadu-paths.h"
 #include "plugin/activation/plugin-activation-service.h"
+#include "kadu-application.h"
 
 #include "plugins/idle/idle-plugin.h"
 #include "plugins/idle/idle.h"
@@ -85,8 +86,8 @@ void AutoHide::timerTimeoutSlot()
 
 void AutoHide::configurationUpdated()
 {
-	IdleTime = config_file->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
-	Enabled = config_file->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+	IdleTime = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+	Enabled = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
 
 	if (Enabled && !Timer.isActive())
 		Timer.start(1000);

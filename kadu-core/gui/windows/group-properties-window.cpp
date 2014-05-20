@@ -39,6 +39,7 @@
 #include "misc/change-notifier.h"
 #include "misc/change-notifier-lock.h"
 #include "misc/misc.h"
+#include "kadu-application.h"
 
 #include "group-properties-window.h"
 
@@ -137,12 +138,12 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 void GroupPropertiesWindow::selectIcon()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), config_file->readEntry("GroupIcon", "recentPath", "~/"),
+	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("GroupIcon", "recentPath", "~/"),
 					tr("Images (*.png *.xpm *.jpg);;All Files (*)"));
 	if (!file.isEmpty())
 	{
 		QFileInfo fileInfo(file);
-		config_file->writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
 		icon->setText(QString());
 		icon->setIcon(QIcon(file));
 		iconPath = file;

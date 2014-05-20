@@ -56,6 +56,7 @@
 #include "protocols/services/chat-image-service.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "chat-edit-box.h"
 
@@ -199,7 +200,7 @@ ChatWidget * ChatEditBox::chatWidget()
 void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_topDockArea");
-	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarConfig = KaduApplication::instance()->configurationApi()->createElement(dockAreaConfig, "ToolBar");
 
 	addToolButton(toolbarConfig, "autoSendAction");
 	addToolButton(toolbarConfig, "clearChatAction");
@@ -227,13 +228,13 @@ void ChatEditBox::openInsertImageDialog()
 		return;
 
 	// QTBUG-849
-	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), config_file->readEntry("Chat", "LastImagePath"),
+	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Chat", "LastImagePath"),
 							tr("Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)"));
 	if (!selectedFile.isEmpty())
 	{
 		QFileInfo f(selectedFile);
 
-		config_file->writeEntry("Chat", "LastImagePath", f.absolutePath());
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
 
 		if (!f.isReadable())
 		{

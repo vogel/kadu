@@ -35,6 +35,21 @@
 
 #include "kadu-application.h"
 
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
+#include "misc/kadu-paths.h"
+#include "misc/memory.h"
+
+#include <QtWidgets/QMessageBox>
+
+KaduApplication * KaduApplication::m_instance = nullptr;
+
+KaduApplication * KaduApplication::instance()
+{
+	return m_instance;
+}
+
+
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication{argc, argv}
 {
@@ -45,6 +60,37 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	// Fix for #2491
 	setStyleSheet("QToolBar{border:0px}");
 #endif
+
+	m_instance = this;
+}
+
+KaduApplication::~KaduApplication()
+{
+	m_instance = nullptr;
+}
+
+void KaduApplication::prepareConfiguration()
+{
+	m_configurationApi = make_unique<XmlConfigFile>();
+	if (!m_configurationApi->isUsable())
+	{
+		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
+				"Profile is inaccessible. Please check permissions in the '%1' directory.")
+				.arg(KaduPaths::instance()->profilePath().left(KaduPaths::instance()->profilePath().length() - 1));
+		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
+		qFatal("%s", qPrintable(errorMessage));
+	}
+	m_depreceatedConfigurationApi = make_unique<ConfigFile>(QLatin1String("kadu.conf"));
+}
+
+XmlConfigFile * KaduApplication::configurationApi() const
+{
+	return m_configurationApi.get();
+}
+
+ConfigFile * KaduApplication::depreceatedConfigurationApi() const
+{
+	return m_depreceatedConfigurationApi.get();
 }
 
 #include "moc_kadu-application.cpp"

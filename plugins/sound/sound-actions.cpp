@@ -31,6 +31,7 @@
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "debug.h"
+#include "kadu-application.h"
 #include "themes.h"
 
 #include "sound-manager.h"
@@ -101,12 +102,12 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 	SoundManager::instance()->setMute(!toggled);
 	setMuteActionState();
 
-	config_file->writeEntry("Sounds", "PlaySound", toggled);
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundActions::configurationUpdated()
 {
-	SoundManager::instance()->setMute(!config_file->readBoolEntry("Sounds", "PlaySound"));
+	SoundManager::instance()->setMute(!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 

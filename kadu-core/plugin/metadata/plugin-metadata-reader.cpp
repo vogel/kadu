@@ -24,6 +24,7 @@
 #include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata-reader-exception.h"
 #include "plugin/metadata/plugin-metadata.h"
+#include "kadu-application.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
@@ -43,7 +44,7 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 	if (!fileInfo.exists() || !fileInfo.isReadable())
 		throw PluginMetadataReaderException{};
 
-	auto const lang = config_file->readEntry("General", "Language");
+	auto const lang = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "Language");
 	QSettings file{filePath, QSettings::IniFormat};
 	file.setIniCodec("UTF-8");
 

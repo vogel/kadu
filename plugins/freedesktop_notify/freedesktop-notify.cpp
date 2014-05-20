@@ -39,6 +39,7 @@
 #include "notify/notification/notification.h"
 #include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
+#include "kadu-application.h"
 
 #include "freedesktop-notify.h"
 
@@ -349,51 +350,51 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 
 void FreedesktopNotify::configurationUpdated()
 {
-	CustomTimeout = config_file->readBoolEntry("FreedesktopNotify", "CustomTimeout");
-	Timeout = config_file->readNumEntry("FreedesktopNotify", "Timeout");
-	ShowContentMessage = config_file->readBoolEntry("FreedesktopNotify", "ShowContentMessage");
-	CiteSign = config_file->readNumEntry("FreedesktopNotify", "CiteSign");
+	CustomTimeout = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("FreedesktopNotify", "CustomTimeout");
+	Timeout = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("FreedesktopNotify", "Timeout");
+	ShowContentMessage = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("FreedesktopNotify", "ShowContentMessage");
+	CiteSign = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("FreedesktopNotify", "CiteSign");
 }
 
 void FreedesktopNotify::import_0_9_0_Configuration()
 {
-	config_file->addVariable("FreedesktopNotify", "Timeout", config_file->readEntry("KDENotify", "Timeout"));
-	config_file->addVariable("FreedesktopNotify", "ShowContentMessage", config_file->readEntry("KDENotify", "ShowContentMessage"));
-	config_file->addVariable("FreedesktopNotify", "CiteSign", config_file->readEntry("KDENotify", "CiteSign"));
-	if (!config_file->readEntry("KDENotify", "Timeout").isEmpty() || !config_file->readEntry("FreedesktopNotify", "Timeout").isEmpty())
-		config_file->addVariable("FreedesktopNotify", "CustomTimeout", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "Timeout", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("KDENotify", "Timeout"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "ShowContentMessage", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("KDENotify", "ShowContentMessage"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "CiteSign", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("KDENotify", "CiteSign"));
+	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("KDENotify", "Timeout").isEmpty() || !KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("FreedesktopNotify", "Timeout").isEmpty())
+		KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "CustomTimeout", true);
 
 	foreach (NotifyEvent *event, NotificationManager::instance()->notifyEvents())
-		config_file->addVariable("Notify", event->name() + "_FreedesktopNotify", config_file->readEntry("Notify", event->name() + "_KNotify"));
+		KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", event->name() + "_FreedesktopNotify", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Notify", event->name() + "_KNotify"));
 }
 
 void FreedesktopNotify::createDefaultConfiguration()
 {
-	config_file->addVariable("Notify", "ConnectionError_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "NewChat_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "NewMessage_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "StatusChanged_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "StatusChanged/ToFreeForChat_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "StatusChanged/ToOnline_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "StatusChanged/ToAway_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "StatusChanged/ToNotAvailable_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "StatusChanged/ToDoNotDisturb_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "StatusChanged/ToOffline_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "FileTransfer_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "FileTransfer/IncomingFile_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "FileTransfer/Finished_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "multilogon_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	config_file->addVariable("Notify", "Roster/ImportFailed_FreedesktopNotify", true);
-	config_file->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	config_file->addVariable("Notify", "Roster/ExportFailed_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "ConnectionError_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewChat_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewMessage_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOnline_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOffline_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer/Finished_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "multilogon_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ImportFailed_FreedesktopNotify", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ExportFailed_FreedesktopNotify", true);
 
-	config_file->addVariable("FreedesktopNotify", "CustomTimeout", false);
-	config_file->addVariable("FreedesktopNotify", "Timeout", 10);
-	config_file->addVariable("FreedesktopNotify", "ShowContentMessage", true);
-	config_file->addVariable("FreedesktopNotify", "CiteSign", 100);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "CustomTimeout", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "Timeout", 10);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "ShowContentMessage", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FreedesktopNotify", "CiteSign", 100);
 }
 
 #include "moc_freedesktop-notify.cpp"

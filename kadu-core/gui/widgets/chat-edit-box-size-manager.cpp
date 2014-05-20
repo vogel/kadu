@@ -21,6 +21,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "kadu-application.h"
 
 #include "chat-edit-box-size-manager.h"
 
@@ -46,7 +47,7 @@ ChatEditBoxSizeManager::~ChatEditBoxSizeManager()
 
 void ChatEditBoxSizeManager::configurationUpdated()
 {
-	setCommonHeight(config_file->readNumEntry("Chat", "ChatEditBoxHeight", 0));
+	setCommonHeight(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
 }
 
 void ChatEditBoxSizeManager::setCommonHeight(int height)
@@ -54,7 +55,7 @@ void ChatEditBoxSizeManager::setCommonHeight(int height)
 	if (height != CommonHeight)
 	{
 		CommonHeight = height;
-		config_file->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
 		emit commonHeightChanged(CommonHeight);
 	}
 }

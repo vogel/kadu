@@ -38,6 +38,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/updates-dialog.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "updates.h"
 
@@ -67,7 +68,7 @@ void Updates::buildQuery()
 {
 	Query = QString("/update-new.php?uuid=%1&version=%2").arg(ConfigurationManager::instance()->uuid().toString()).arg(Core::version());
 
-	if (config_file->readBoolEntry("General", "SendSysInfo"), true)
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "SendSysInfo"), true)
 	{
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
@@ -210,7 +211,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 	reply->deleteLater();
 	deleteLater();
 
-	if (config_file->readBoolEntry("General", "CheckUpdates"))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "CheckUpdates"))
 	{
 		auto newestVersion = QString::fromUtf8(reply->readAll());
 		if (newestVersion.size() > 31)

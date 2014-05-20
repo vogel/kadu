@@ -29,6 +29,7 @@
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "misc/misc.h"
+#include "kadu-application.h"
 
 #include "gadu-account-details.h"
 
@@ -91,7 +92,7 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 
 	QString name;
 
-	int typeIndex = config_file->readNumEntry("General", "LastStatusType", -1);
+	int typeIndex = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("General", "LastStatusType", -1);
 	switch (typeIndex)
 	{
 		case 0: name = "Online"; break;
@@ -101,7 +102,7 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 	}
 
 	storeValue("LastStatusName", name);
-	storeValue("LastStatusDescription", config_file->readEntry("General", "LastStatusDescription"));
+	storeValue("LastStatusDescription", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "LastStatusDescription"));
 }
 
 UinType GaduAccountDetails::uin()

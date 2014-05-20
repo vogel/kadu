@@ -36,6 +36,7 @@
 #include "protocols/protocols-manager.h"
 #include "protocols/services/roster/roster-service.h"
 #include "status/status-setter.h"
+#include "kadu-application.h"
 
 #include "account-shared.h"
 
@@ -313,8 +314,8 @@ void AccountShared::setDisconnectStatus()
 	if (!ProtocolHandler->isConnected() && !ProtocolHandler->isDisconnecting())
 		return;
 
-	bool disconnectWithCurrentDescription = config_file->readBoolEntry("General", "DisconnectWithCurrentDescription");
-	QString disconnectDescription = config_file->readEntry("General", "DisconnectDescription");
+	bool disconnectWithCurrentDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
 	disconnectStatus.setType(StatusTypeOffline);

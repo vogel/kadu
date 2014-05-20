@@ -47,6 +47,7 @@
 #include "misc/change-notifier-lock.h"
 #include "misc/misc.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "toolbar.h"
 
@@ -557,7 +558,7 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 
 void ToolBar::configurationUpdated()
 {
-	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 
 	if (!toolbarsConfig.hasAttribute("blocked"))
 		toolbarsConfig.setAttribute("blocked", "1");
@@ -572,14 +573,14 @@ void ToolBar::configurationUpdated()
 void ToolBar::writeToConfig(const QDomElement &parent_element)
 {
 	kdebugf();
-	QDomElement toolbar_elem = xml_config_file->createElement(parent_element, "ToolBar");
+	QDomElement toolbar_elem = KaduApplication::instance()->configurationApi()->createElement(parent_element, "ToolBar");
 
 	toolbar_elem.setAttribute("x_offset", pos().x());
 	toolbar_elem.setAttribute("y_offset", pos().y());
 
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 	{
-		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
+		QDomElement button_elem = KaduApplication::instance()->configurationApi()->createElement(toolbar_elem, "ToolButton");
 		if (toolBarAction.actionName.startsWith(QLatin1String("__separator")))
 			button_elem.setAttribute("action_name", "__separator");
 		else if (toolBarAction.actionName.startsWith(QLatin1String("__spacer")))
@@ -828,18 +829,18 @@ void ToolBar::removeToolbar()
 
 bool ToolBar::isBlockToolbars()
 {
-	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
+		toolbarsConfig = KaduApplication::instance()->configurationApi()->createElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 
 	return toolbarsConfig.attribute("blocked") == "1";
 }
 
 void ToolBar::setBlockToolbars(bool checked)
 {
-	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
+		toolbarsConfig = KaduApplication::instance()->configurationApi()->createElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
 
 	toolbarsConfig.setAttribute("blocked", checked ? "1" : "0");
 	ConfigurationAwareObject::notifyAll();

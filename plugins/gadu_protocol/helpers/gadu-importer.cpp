@@ -38,6 +38,7 @@
 #include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocols-manager.h"
 #include "protocols/roster.h"
+#include "kadu-application.h"
 
 #include "helpers/gadu-imported-contact-xml-receiver.h"
 #include "gadu-account-details.h"
@@ -65,7 +66,7 @@ void GaduImporter::destroyInstance()
 
 bool GaduImporter::alreadyImported()
 {
-	QDomElement node = xml_config_file->getNode("Accounts", XmlConfigFile::ModeFind);
+	QDomElement node = KaduApplication::instance()->configurationApi()->getNode("Accounts", XmlConfigFile::ModeFind);
 	if (node.isNull())
 		return false;
 
@@ -74,7 +75,7 @@ bool GaduImporter::alreadyImported()
 
 void GaduImporter::markImported()
 {
-	QDomElement node = xml_config_file->getNode("Accounts", XmlConfigFile::ModeFind);
+	QDomElement node = KaduApplication::instance()->configurationApi()->getNode("Accounts", XmlConfigFile::ModeFind);
 	node.setAttribute("import_done", "true");
 }
 
@@ -147,7 +148,7 @@ QList<Buddy> GaduImporter::import065Buddies(Account account, QXmlQuery &xmlQuery
 
 void GaduImporter::importAccounts()
 {
-	quint32 importUin = config_file->readUnsignedNumEntry("General", "UIN");
+	quint32 importUin = KaduApplication::instance()->depreceatedConfigurationApi()->readUnsignedNumEntry("General", "UIN");
 	if (0 == importUin)
 		return;
 
@@ -162,10 +163,10 @@ void GaduImporter::importAccounts()
 	Account defaultGaduGadu = Account::create("gadu");
 
 	defaultGaduGadu.setId(importUinString);
-	defaultGaduGadu.setPassword(pwHash(config_file->readEntry("General", "Password")));
+	defaultGaduGadu.setPassword(pwHash(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "Password")));
 	defaultGaduGadu.setRememberPassword(true);
 	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
-	defaultGaduGadu.setPrivateStatus(config_file->readBoolEntry("General", "PrivateStatus"));
+	defaultGaduGadu.setPrivateStatus(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "PrivateStatus"));
 
 	// bad code: order of calls is important here
 	// we have to set identity after password
@@ -177,20 +178,20 @@ void GaduImporter::importAccounts()
 	if (accountDetails)
 	{
 		accountDetails->setState(StorableObject::StateNew);
-		accountDetails->setAllowDcc(config_file->readBoolEntry("Network", "AllowDCC"));
-		accountDetails->setReceiveImagesDuringInvisibility(config_file->readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
+		accountDetails->setAllowDcc(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Network", "AllowDCC"));
+		accountDetails->setReceiveImagesDuringInvisibility(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
 	}
 
-	QString address = config_file->readEntry("Network", "ProxyHost");
+	QString address = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "ProxyHost");
 	if (!address.isEmpty())
 	{
-		int port = config_file->readNumEntry("Network", "ProxyPort");
-		QString user = config_file->readEntry("Network", "ProxyUser");
-		QString password = config_file->readEntry("Network", "ProxyPassword");
+		int port = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Network", "ProxyPort");
+		QString user = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "ProxyUser");
+		QString password = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "ProxyPassword");
 
 		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
 		            address, port, user, password, ActionCreateAndAdd);
-		if (config_file->readBoolEntry("Network", "UseProxy"))
+		if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Network", "UseProxy"))
 			defaultGaduGadu.setProxy(networkProxy);
 	}
 
@@ -239,14 +240,14 @@ void GaduImporter::importIgnored()
 	if (account.isNull())
 		return;
 
-	QDomElement ignored = xml_config_file->getNode("Ignored", XmlConfigFile::ModeFind);
+	QDomElement ignored = KaduApplication::instance()->configurationApi()->getNode("Ignored", XmlConfigFile::ModeFind);
 	if (ignored.isNull())
 		return;
 
-	QVector<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
+	QVector<QDomElement> ignoredGroups = KaduApplication::instance()->configurationApi()->getNodes(ignored, "IgnoredGroup");
 	foreach (const QDomElement &ignoredGroup, ignoredGroups)
 	{
-		QVector<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
+		QVector<QDomElement> ignoredContacts = KaduApplication::instance()->configurationApi()->getNodes(ignoredGroup, "IgnoredContact");
 		if (1 == ignoredContacts.count())
 		{
 			QDomElement ignoredContact = ignoredContacts.at(0);
@@ -255,7 +256,7 @@ void GaduImporter::importIgnored()
 		}
 	}
 
-	xml_config_file->removeNode(xml_config_file->rootElement(), "Ignored");
+	KaduApplication::instance()->configurationApi()->removeNode(KaduApplication::instance()->configurationApi()->rootElement(), "Ignored");
 }
 
 void GaduImporter::buddyAdded(const Buddy &buddy)

@@ -26,6 +26,7 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "main-configuration-holder.h"
 
@@ -56,7 +57,7 @@ MainConfigurationHolder::MainConfigurationHolder() :
 
 void MainConfigurationHolder::configurationUpdated()
 {
-	QString statusContainerType = config_file->readEntry("General", "StatusContainerType", "Identity");
+	QString statusContainerType = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "StatusContainerType", "Identity");
 
 	SetStatusMode newStatus = SetStatusPerIdentity;
 	if (statusContainerType == "Account")

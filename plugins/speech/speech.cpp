@@ -29,6 +29,7 @@
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
+#include "kadu-application.h"
 #include "speech-configuration-widget.h"
 
 #include "speech.h"
@@ -72,7 +73,7 @@ Speech::Speech() :
 
 	NotificationManager::instance()->registerNotifier(this);
 
-	config_file->addVariable("Notify", "NewChat_Speech", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewChat_Speech", true);
 
 	kdebugf2();
 }
@@ -87,67 +88,67 @@ Speech::~Speech()
 
 void Speech::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
 {
-	QString entry = config_file->readEntry("Speech", from + "Female", QString());
+	QString entry = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", from + "Female", QString());
 	if (!entry.isEmpty())
-		config_file->writeEntry("Speech", from + "_Syntax/Female", entry);
-	config_file->removeVariable("Speech", from + "Female");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", from + "_Syntax/Female", entry);
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", from + "Female");
 
-	entry = config_file->readEntry("Speech", to + "Male", QString());
+	entry = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", to + "Male", QString());
 	if (!entry.isEmpty())
-		config_file->writeEntry("Speech", to + "_Syntax/Male", entry);
-	config_file->removeVariable("Speech", to + "Male");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", to + "_Syntax/Male", entry);
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", to + "Male");
 }
 
 void Speech::import_0_5_0_Configuration()
 {
 	QString entry;
 
-	entry = config_file->readEntry("Speech", "ConnectionError", QString());
+	entry = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", "ConnectionError", QString());
 	if (!entry.isEmpty())
-		config_file->writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
-	config_file->removeVariable("Speech", "ConnectionError");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", "ConnectionError");
 
-	entry = config_file->readEntry("Speech", "NotifyFormatFemale", QString());
+	entry = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", "NotifyFormatFemale", QString());
 	if (!entry.isEmpty())
 	{
-		config_file->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Female", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Female", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Female", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Female", entry);
 	}
-	config_file->removeVariable("Speech", "NotifyFormatFemale");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", "NotifyFormatFemale");
 
-	entry = config_file->readEntry("Speech", "NotifyFormatMale", QString());
+	entry = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", "NotifyFormatMale", QString());
 	if (!entry.isEmpty())
 	{
-		config_file->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Male", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Male", entry);
-		config_file->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Male", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Male", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Male", entry);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Male", entry);
 	}
-	config_file->removeVariable("Speech", "NotifyFormatMale");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", "NotifyFormatMale");
 
 	import_0_5_0_ConfigurationFromTo("NewChat", "NewChat");
 	import_0_5_0_ConfigurationFromTo("NewMessage", "NewMessage");
 
-	bool arts = config_file->readBoolEntry("Speech", "UseArts", false);
-	bool esd = config_file->readBoolEntry("Speech", "UseEsd", false);
-	bool dsp = config_file->readBoolEntry("Speech", "UseDsp", false);
+	bool arts = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Speech", "UseArts", false);
+	bool esd = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Speech", "UseEsd", false);
+	bool dsp = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Speech", "UseDsp", false);
 
 	if (arts)
-		config_file->writeEntry("Speech", "SoundSystem", "aRts");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "SoundSystem", "aRts");
 	else if (esd)
-		config_file->writeEntry("Speech", "SoundSystem", "Eds");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "SoundSystem", "Eds");
 	else if (dsp)
-		config_file->writeEntry("Speech", "SoundSystem", "Dsp");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Speech", "SoundSystem", "Dsp");
 
-	config_file->removeVariable("Speech", "UseArts");
-	config_file->removeVariable("Speech", "UseEsd");
-	config_file->removeVariable("Speech", "UseDsp");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", "UseArts");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", "UseEsd");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Speech", "UseDsp");
 }
 
 void Speech::import_0_6_5_configuration()
@@ -167,14 +168,14 @@ void Speech::say(const QString &s, const QString &path,
 
 	if (path.isEmpty())
 	{
-		t = config_file->readEntry("Speech","SpeechProgram", "powiedz");
-		klatt = config_file->readBoolEntry("Speech", "KlattSynt");
-		melody = config_file->readBoolEntry("Speech", "Melody");
-		soundSystem = config_file->readBoolEntry("Speech", "SoundSystem");
-		dev = config_file->readEntry("Speech", "DspDev", "/dev/dsp");
-		freq = config_file->readNumEntry("Speech", "Frequency");
-		tempo = config_file->readNumEntry("Speech", "Tempo");
-		basefreq = config_file->readNumEntry("Speech", "BaseFrequency");
+		t = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech","SpeechProgram", "powiedz");
+		klatt = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Speech", "KlattSynt");
+		melody = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Speech", "Melody");
+		soundSystem = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Speech", "SoundSystem");
+		dev = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", "DspDev", "/dev/dsp");
+		freq = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Speech", "Frequency");
+		tempo = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Speech", "Tempo");
+		basefreq = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Speech", "BaseFrequency");
 	}
 	else
 	{
@@ -238,14 +239,14 @@ void Speech::notify(Notification *notification)
 			sex = "Female";
 	}
 
-	QString syntax = config_file->readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
+	QString syntax = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else
 	{
 		QString details = notification->details().join(QLatin1String("\n"));
-		if (details.length() > config_file->readNumEntry("Speech", "MaxLength"))
-			syntax = config_file->readEntry("Speech", "MsgTooLong" + sex);
+		if (details.length() > KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Speech", "MaxLength"))
+			syntax = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", "MsgTooLong" + sex);
 
 		syntax = syntax.arg(details);
 

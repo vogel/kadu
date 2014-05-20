@@ -37,12 +37,30 @@
 #include "exports.h"
 
 #include <QtWidgets/QApplication>
+#include <memory>
+
+class ConfigFile;
+class XmlConfigFile;
 
 class KADUAPI KaduApplication : public QApplication
 {
 	Q_OBJECT
 
 public:
+	static KaduApplication * instance();
+
 	KaduApplication(int &argc, char *argv[]);
+	virtual ~KaduApplication();
+
+	void prepareConfiguration();
+
+	XmlConfigFile * configurationApi() const;
+	ConfigFile * depreceatedConfigurationApi() const;
+
+private:
+	static KaduApplication * m_instance;
+
+	std::unique_ptr<XmlConfigFile> m_configurationApi;
+	std::unique_ptr<ConfigFile> m_depreceatedConfigurationApi;
 
 };

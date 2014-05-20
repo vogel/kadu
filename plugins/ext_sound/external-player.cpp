@@ -29,6 +29,7 @@
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "external-player.h"
 
@@ -64,7 +65,7 @@ void ExternalPlayer::playSound(const QString &path)
 {
 	kdebugf();
 
-	QString playerCommand = config_file->readEntry("Sounds", "SoundPlayer");
+	QString playerCommand = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Sounds", "SoundPlayer");
 	QString volumeArguments;
 
 	if (playerCommand.isEmpty())
@@ -84,9 +85,9 @@ void ExternalPlayer::playSound(const QString &path)
 void ExternalPlayer::createDefaultConfiguration()
 {
 #ifdef Q_OS_MAC
-	config_file->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
 #else
-	config_file->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
 }
 

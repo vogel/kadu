@@ -32,6 +32,7 @@
 #include "misc/kadu-paths.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "filedesc.h"
 
@@ -101,9 +102,9 @@ FileDescription::~FileDescription()
 
 void FileDescription::configurationUpdated()
 {
-	File = config_file->readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	ForceDesc = config_file->readBoolEntry("FileDesc", "forceDescr", true);
-	AllowOther = config_file->readBoolEntry("FileDesc", "allowOther", true);
+	File = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	ForceDesc = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("FileDesc", "forceDescr", true);
+	AllowOther = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
@@ -129,9 +130,9 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	config_file->addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	config_file->addVariable("FileDesc", "forceDescr", true);
-	config_file->addVariable("FileDesc", "allowOther", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FileDesc", "forceDescr", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

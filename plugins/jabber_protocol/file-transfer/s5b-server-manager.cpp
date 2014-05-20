@@ -19,6 +19,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "kadu-application.h"
 
 #include "s5b-server-manager.h"
 
@@ -49,14 +50,14 @@ S5BServerManager::~S5BServerManager()
 
 void S5BServerManager::createDefaultConfiguration()
 {
-	config_file->addVariable("XMPP", "DataTransferPort", 8010);
-	config_file->addVariable("XMPP", "DataTransferExternalAddress", "");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("XMPP", "DataTransferPort", 8010);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("XMPP", "DataTransferExternalAddress", "");
 }
 
 void S5BServerManager::configurationUpdated()
 {
-	int port = config_file->readNumEntry("XMPP", "DataTransferPort", 8010);
-	QString externalAddress = config_file->readEntry("XMPP", "DataTransferExternalAddress", "");
+	int port = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("XMPP", "DataTransferPort", 8010);
+	QString externalAddress = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("XMPP", "DataTransferExternalAddress", "");
 
 	if (externalAddress != ExternalAddress)
 	{

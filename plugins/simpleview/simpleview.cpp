@@ -35,6 +35,7 @@
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "plugins/docking/docking.h"
 
@@ -67,14 +68,14 @@ SimpleView::SimpleView() :
 
 	configurationUpdated();
 
-	DiffRect = config_file->readRectEntry("Look", "SimpleViewGeometry");
+	DiffRect = KaduApplication::instance()->depreceatedConfigurationApi()->readRectEntry("Look", "SimpleViewGeometry");
 	if (DiffRect != QRect(0,0,0,0))
 		simpleViewToggle(true);
 }
 
 SimpleView::~SimpleView()
 {
-	config_file->writeEntry("Look", "SimpleViewGeometry", DiffRect);
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
 
 	simpleViewToggle(false);
 
@@ -201,10 +202,10 @@ void SimpleView::simpleViewToggle(bool activate)
 			MainWindowHandle->setGeometry(r);
 
 			/* Status button */
-			StatusButtonsHandle->setVisible(config_file->readBoolEntry("Look", "ShowStatusButton"));
+			StatusButtonsHandle->setVisible(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowStatusButton"));
 
 			/* Info panel*/
-			if (config_file->readBoolEntry("Look", "ShowInfoPanel"))
+			if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowInfoPanel"))
 				KaduWindowHandle->infoPanel()->show();
 
 			/* ScrollBar */
@@ -216,7 +217,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			if (config_file->readBoolEntry("Look", "DisplayGroupTabs"))
+			if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "DisplayGroupTabs"))
 				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
@@ -253,9 +254,9 @@ void SimpleView::configurationUpdated()
 	/* Give the kadu update the GUI with old configuration */
 	simpleViewToggle(false);
 
-	KeepSize = config_file->readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = config_file->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-	Borderless = config_file->readBoolEntry("Look", "SimpleViewBorderless", true);
+	KeepSize = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
 
 }
 

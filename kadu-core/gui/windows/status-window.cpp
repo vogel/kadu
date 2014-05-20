@@ -46,9 +46,9 @@
 #include "status/status-setter.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
-
 #include "activate.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "status-window.h"
 
@@ -294,7 +294,7 @@ void StatusWindow::applyStatus()
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
 
-	if (config_file->readBoolEntry("General", "ParseStatus", false))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
 
 	foreach (StatusContainer *container, Container->subStatusContainers())

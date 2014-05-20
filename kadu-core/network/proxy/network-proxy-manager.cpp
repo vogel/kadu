@@ -23,6 +23,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storage-point.h"
+#include "kadu-application.h"
 
 #include "network-proxy-manager.h"
 
@@ -61,13 +62,13 @@ void NetworkProxyManager::store()
 
 void NetworkProxyManager::configurationUpdated()
 {
-	DefaultProxy = byUuid(config_file->readEntry("Network", "DefaultProxy"));
+	DefaultProxy = byUuid(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "DefaultProxy"));
 }
 
 void NetworkProxyManager::setDefaultProxy(const NetworkProxy &proxy)
 {
 	DefaultProxy = proxy;
-	config_file->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
 }
 
 const NetworkProxy & NetworkProxyManager::defaultProxy()

@@ -27,6 +27,7 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "storage/history-sql-storage.h"
 #include "storage/sql-import.h"
@@ -155,7 +156,7 @@ void SqlInitializer::initDatabase()
 	}
 	else
 	{
-		config_file->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
 	}
 }

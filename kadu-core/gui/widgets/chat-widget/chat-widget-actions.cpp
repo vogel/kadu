@@ -49,6 +49,7 @@
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "model/roles.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "chat-widget-actions.h"
 
@@ -246,7 +247,7 @@ void ChatWidgetActions::configurationUpdated()
 
 void ChatWidgetActions::autoSendActionCreated(Action *action)
 {
-	action->setChecked(config_file->readBoolEntry("Chat", "AutoSend"));
+	action->setChecked(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "AutoSend"));
 }
 
 void ChatWidgetActions::clearChatActionCreated(Action *action)
@@ -275,7 +276,7 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 
 void ChatWidgetActions::autoSendActionCheck()
 {
- 	bool check = config_file->readBoolEntry("Chat", "AutoSend");
+ 	bool check = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "AutoSend");
  	foreach (Action *action, AutoSend->actions())
  		action->setChecked(check);
 }
@@ -288,7 +289,7 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	config_file->writeEntry("Chat", "AutoSend", toggled);
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Chat", "AutoSend", toggled);
  	chatEditBox->setAutoSend(toggled);
 	autoSendActionCheck();
 }

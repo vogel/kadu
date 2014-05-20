@@ -49,6 +49,7 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "misc/kadu-paths.h"
 
@@ -160,12 +161,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	config_file->addVariable("SMS", "Priority", QString());
-	config_file->addVariable("SMS", "BuiltInApp", true);
-	config_file->addVariable("SMS", "SmsNick", QString());
-	config_file->addVariable("SMS", "UseCustomString", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "Priority", QString());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "BuiltInApp", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "SmsNick", QString());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "UseCustomString", false);
 
-	config_file->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

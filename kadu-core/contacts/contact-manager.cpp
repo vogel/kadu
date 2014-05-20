@@ -34,6 +34,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "contact-manager.h"
 
@@ -271,14 +272,14 @@ void ContactManager::removeDuplicateContacts()
 			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
 	}
 
-	config_file->writeEntry("General", "ContactsImportedFrom0_9", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
 }
 
 void ContactManager::loaded()
 {
 	Manager<Contact>::loaded();
 
-	if (!config_file->readBoolEntry("General", "ContactsImportedFrom0_9", false))
+	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }

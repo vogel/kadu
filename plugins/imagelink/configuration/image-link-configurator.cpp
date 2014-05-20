@@ -19,6 +19,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "kadu-application.h"
 
 #include "configuration/image-link-configuration.h"
 #include "image-expander-dom-visitor-provider.h"
@@ -54,15 +55,15 @@ void ImageLinkConfigurator::configure()
 
 void ImageLinkConfigurator::createDefaultConfiguration()
 {
-	config_file->addVariable("Imagelink", "show_image", true);
-	config_file->addVariable("Imagelink", "show_yt", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Imagelink", "show_image", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Imagelink", "show_yt", true);
 }
 
 void ImageLinkConfigurator::configurationUpdated()
 {
 	ImageLinkConfiguration configuration;
-	configuration.setShowImages(config_file->readBoolEntry("Imagelink", "show_image", true));
-	configuration.setShowVideos(config_file->readBoolEntry("Imagelink", "show_yt", true));
+	configuration.setShowImages(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Imagelink", "show_image", true));
+	configuration.setShowVideos(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Imagelink", "show_yt", true));
 
 	if (ImageExpander)
 		ImageExpander->setConfiguration(configuration);

@@ -21,17 +21,18 @@
 #include <QtCore/QVector>
 
 #include "configuration/xml-configuration-file.h"
+#include "kadu-application.h"
 
 #include "profile-data-manager.h"
 
 QDomElement ProfileDataManager::getProfilesNode()
 {
-	QDomElement deprecated = xml_config_file->getNode("Deprecated", XmlConfigFile::ModeFind);
+	QDomElement deprecated = KaduApplication::instance()->configurationApi()->getNode("Deprecated", XmlConfigFile::ModeFind);
 	if (deprecated.isNull())
 		return QDomElement();
 
 	QDomElement configFile;
-	QVector<QDomElement> configFiles = xml_config_file->getNodes(deprecated, "ConfigFile");
+	QVector<QDomElement> configFiles = KaduApplication::instance()->configurationApi()->getNodes(deprecated, "ConfigFile");
 
 	foreach (const QDomElement &cf, configFiles)
 		if (cf.attribute("name").endsWith("kadu.conf"))
@@ -43,7 +44,7 @@ QDomElement ProfileDataManager::getProfilesNode()
 	if (configFile.isNull())
 		return QDomElement();
 
-	return xml_config_file->getNamedNode(configFile, "Group", "Profiles");
+	return KaduApplication::instance()->configurationApi()->getNamedNode(configFile, "Group", "Profiles");
 }
 
 QList<ProfileData> ProfileDataManager::readProfileData()
@@ -54,7 +55,7 @@ QList<ProfileData> ProfileDataManager::readProfileData()
 	if (groupProfiles.isNull())
 		return result;
 
-	QVector<QDomElement> profiles = xml_config_file->getNodes(groupProfiles, "Profile");
+	QVector<QDomElement> profiles = KaduApplication::instance()->configurationApi()->getNodes(groupProfiles, "Profile");
 	foreach (const QDomElement &profile, profiles)
 	{
 		if (profile.attribute("imported") != "yes")
@@ -75,6 +76,6 @@ void ProfileDataManager::markImported(const QString &name)
 	if (groupProfiles.isNull())
 		return;
 
-	QDomElement profile = xml_config_file->getNamedNode(groupProfiles, "Profile", name);
+	QDomElement profile = KaduApplication::instance()->configurationApi()->getNamedNode(groupProfiles, "Profile", name);
 	profile.setAttribute("imported", "yes");
 }

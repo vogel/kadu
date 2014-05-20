@@ -23,6 +23,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "mpd-config.h"
 
@@ -30,9 +31,9 @@ MPDConfig::MPDConfig()
 {
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
-	Host = config_file->readEntry("MediaPlayer", "MPDHost");
-	Port = config_file->readEntry("MediaPlayer", "MPDPort");
-	Timeout = config_file->readEntry("MediaPlayer", "MPDTimeout");
+	Host = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDTimeout");
 }
 
 MPDConfig::~MPDConfig()
@@ -42,14 +43,14 @@ MPDConfig::~MPDConfig()
 
 void MPDConfig::createDefaultConfiguration()
 {
-	config_file->addVariable("MediaPlayer", "MPDHost", "localhost");
-	config_file->addVariable("MediaPlayer", "MPDPort", "6600");
-	config_file->addVariable("MediaPlayer", "MPDTimeout", "10");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "MPDHost", "localhost");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "MPDPort", "6600");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "MPDTimeout", "10");
 }
 
 void MPDConfig::configurationUpdated()
 {
-	Host = config_file->readEntry("MediaPlayer", "MPDHost");
-	Port = config_file->readEntry("MediaPlayer", "MPDPort");
-	Timeout = config_file->readEntry("MediaPlayer", "MPDTimeout");
+	Host = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDTimeout");
 }

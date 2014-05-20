@@ -21,6 +21,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/configuration-window.h"
+#include "kadu-application.h"
 
 #include "notifier-configuration-data-manager.h"
 
@@ -36,7 +37,7 @@ void NotifierConfigurationDataManager::writeEntry(const QString &section, const 
 	if (section.isEmpty() || name.isEmpty())
 		return;
 
-	config_file->writeEntry(section, QString("Event_") + EventName + name, value.toString());
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry(section, QString("Event_") + EventName + name, value.toString());
 }
 
 QVariant NotifierConfigurationDataManager::readEntry(const QString &section, const QString &name)
@@ -44,7 +45,7 @@ QVariant NotifierConfigurationDataManager::readEntry(const QString &section, con
 	if (section.isEmpty() || name.isEmpty())
 		return QVariant(QString());
 
-	return config_file->readEntry(section, QString("Event_") + EventName + name);
+	return KaduApplication::instance()->depreceatedConfigurationApi()->readEntry(section, QString("Event_") + EventName + name);
 }
 
 NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(const QString &eventName)

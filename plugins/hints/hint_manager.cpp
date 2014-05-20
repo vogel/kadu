@@ -49,6 +49,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification/chat-notification.h"
 #include "parser/parser.h"
+#include "kadu-application.h"
 
 #include "icons/icons-manager.h"
 #include "activate.h"
@@ -106,8 +107,8 @@ HintManager::HintManager(QObject *parent) :
 "</tr>"
 "</table>"
 "[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
-	if (config_file->readEntry("Hints", "MouseOverUserSyntax").isEmpty())
-		config_file->writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Hints", "MouseOverUserSyntax").isEmpty())
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
@@ -151,12 +152,12 @@ void HintManager::hintUpdated()
 void HintManager::configurationUpdated()
 {
 	Style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
-			.arg(config_file->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
-			.arg(config_file->readColorEntry("Hints", "AllEvents_bdcolor").name())
+			.arg(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
+			.arg(KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
 	frame->setStyleSheet(Style);
 
-	Opacity = config_file->readNumEntry("Hints", "AllEvents_transparency", 0);
+	Opacity = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "AllEvents_transparency", 0);
 	Opacity = 1 - Opacity/100;
 
 	setHint();
@@ -173,8 +174,8 @@ void HintManager::setHint()
 		return;
 	}
 
-	int minimumWidth = config_file->readNumEntry("Hints", "MinimumWidth", 285);
-	int maximumWidth = config_file->readNumEntry("Hints", "MaximumWidth", 500);
+	int minimumWidth = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "MinimumWidth", 285);
+	int maximumWidth = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "MaximumWidth", 500);
 
 	minimumWidth = minimumWidth >= 285 ? minimumWidth : 285;
 	maximumWidth = maximumWidth >= 285 ? maximumWidth : 285;
@@ -191,12 +192,12 @@ void HintManager::setHint()
 	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 
 	emit searchingForTrayPosition(trayPosition);
-	if (config_file->readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
 	{
-		newPosition = QPoint(config_file->readNumEntry("Hints", "HintsPositionX"), config_file->readNumEntry("Hints", "HintsPositionY"));
+		newPosition = QPoint(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "HintsPositionX"), KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "HintsPositionY"));
 
-//		kdebugm(KDEBUG_INFO, "%d %d %d\n", config_file->readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
-		switch(config_file->readNumEntry("Hints", "Corner"))
+//		kdebugm(KDEBUG_INFO, "%d %d %d\n", KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
+		switch(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "Corner"))
 		{
 			case 1: // "TopRight"
 				newPosition -= QPoint(preferredSize.width(), 0);
@@ -320,14 +321,14 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.toUtf8().constData());
 
-	switch (config_file->readNumEntry("Hints", buttonName))
+	switch (KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", buttonName))
 	{
 		case 1:
 			hint->acceptNotification();
 			break;
 
 		case 2:
-			if (hint->chat() && config_file->readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+			if (hint->chat() && KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
 			{
 				auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(hint->chat());
 				for (auto const &message : unreadMessages)
@@ -369,7 +370,7 @@ void HintManager::openChat(Hint *hint)
 	if (!hint->chat())
 		return;
 
-	if (!config_file->readBoolEntry("Hints", "OpenChatOnEveryNotification"))
+	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Hints", "OpenChatOnEveryNotification"))
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
@@ -460,12 +461,12 @@ void HintManager::setLayoutDirection()
 	QPoint trayPosition;
 	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 	emit searchingForTrayPosition(trayPosition);
-	switch (config_file->readNumEntry("Hints", "NewHintUnder"))
+	switch (KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "NewHintUnder"))
 	{
 		case 0:
-			if (trayPosition.isNull() || config_file->readBoolEntry("Hints","UseUserPosition"))
+			if (trayPosition.isNull() || KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Hints","UseUserPosition"))
 			{
-				if (config_file->readNumEntry("Hints","HintsPositionY") < desktopSize.height()/2)
+				if (KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints","HintsPositionY") < desktopSize.height()/2)
 					layout->setDirection(QBoxLayout::Down);
 				else
 					layout->setDirection(QBoxLayout::Up);
@@ -490,7 +491,7 @@ void HintManager::setLayoutDirection()
 
 void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable)
 {
-	QString text = Parser::parse(config_file->readEntry("Hints", "MouseOverUserSyntax"), talkable, ParserEscape::HtmlEscape);
+	QString text = Parser::parse(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Hints", "MouseOverUserSyntax"), talkable, ParserEscape::HtmlEscape);
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://
@@ -502,17 +503,17 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkab
 	while (text.startsWith(QLatin1String("<br/>")))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
-	tipLabel->setFont(config_file->readFontEntry("Hints", "HintOverUser_font"));
+	tipLabel->setFont(KaduApplication::instance()->depreceatedConfigurationApi()->readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
 
 	tipFrame->setObjectName("tip_frame");
 	QString style = QString("QFrame#tip_frame {border-width: %1px; border-style: solid; border-color: %2;"
 				"border-radius: %3px; background-color: %4} QFrame { color: %5}")
-			.arg(config_file->readNumEntry("Hints", "HintOverUser_borderWidth", FRAME_WIDTH))
-			.arg(config_file->readColorEntry("Hints", "HintOverUser_bdcolor").name())
+			.arg(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "HintOverUser_borderWidth", FRAME_WIDTH))
+			.arg(KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name())
 			.arg(BORDER_RADIUS)
-			.arg(config_file->readColorEntry("Hints", "HintOverUser_bgcolor").name())
-			.arg(config_file->readColorEntry("Hints", "HintOverUser_fgcolor").name());
+			.arg(KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name())
+			.arg(KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name());
 
 	tipFrame->setStyleSheet(style);
 
@@ -545,7 +546,7 @@ void HintManager::showToolTip(const QPoint &point, Talkable talkable)
 
 	prepareOverUserHint(tipFrame, tipLabel, talkable);
 
-	double opacity = config_file->readNumEntry("Hints", "HintOverUser_transparency", 0);
+	double opacity = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Hints", "HintOverUser_transparency", 0);
 	opacity = 1 - opacity/100;
 	tipFrame->setWindowOpacity(opacity);
 
@@ -593,29 +594,29 @@ void HintManager::realCopyConfiguration(const QString &fromCategory, const QStri
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	config_file->writeEntry("Hints", toHint + "_font", config_file->readFontEntry(fromCategory, fromHint + "_font", &font));
-	config_file->writeEntry("Hints", toHint + "_fgcolor", config_file->readColorEntry(fromCategory, fromHint + "_fgcolor", &palette.windowText().color()));
-	config_file->writeEntry("Hints", toHint + "_bgcolor", config_file->readColorEntry(fromCategory, fromHint + "_bgcolor", &palette.window().color()));
-	config_file->writeEntry("Hints", toHint + "_timeout", (int) config_file->readUnsignedNumEntry(fromCategory,  fromHint + "_timeout", 10));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Hints", toHint + "_font", KaduApplication::instance()->depreceatedConfigurationApi()->readFontEntry(fromCategory, fromHint + "_font", &font));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Hints", toHint + "_fgcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry(fromCategory, fromHint + "_fgcolor", &palette.windowText().color()));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Hints", toHint + "_bgcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry(fromCategory, fromHint + "_bgcolor", &palette.window().color()));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Hints", toHint + "_timeout", (int) KaduApplication::instance()->depreceatedConfigurationApi()->readUnsignedNumEntry(fromCategory,  fromHint + "_timeout", 10));
 }
 
 void HintManager::import_0_6_5_configuration()
 {
-	config_file->addVariable("Hints", "AllEvents_transparency", 1 - config_file->readNumEntry("OSDHints", "Opacity", 100)/100);
-	config_file->addVariable("Hints", "AllEvents_iconSize", config_file->readNumEntry("OSDHints", "IconSize", 32));
-	config_file->addVariable("Hints", "AllEvents_borderWidth",config_file->readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
-	config_file->addVariable("Hints", "AllEvents_bdcolor", config_file->readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "AllEvents_transparency", 1 - KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("OSDHints", "Opacity", 100)/100);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "AllEvents_iconSize", KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("OSDHints", "IconSize", 32));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "AllEvents_borderWidth",KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "AllEvents_bdcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
 
-	config_file->addVariable("Hints", "HintOverUser_transparency", 1 - config_file->readNumEntry("OSDHints", "Opacity", 100)/100);
-	config_file->addVariable("Hints", "HintOverUser_iconSize", config_file->readNumEntry("OSDHints", "IconSize", 32));
-	config_file->addVariable("Hints", "HintOverUser_borderWidth",config_file->readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
-	config_file->addVariable("Hints", "HintOverUser_bdcolor", config_file->readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
-	config_file->addVariable("Hints", "HintOverUser_bgcolor", config_file->readColorEntry("OSDHints", "SetAll_bgcolor", &qApp->palette().window().color()).name());
-	config_file->addVariable("Hints", "HintOverUser_fgcolor", config_file->readColorEntry("OSDHints", "SetAll_fgcolor", &qApp->palette().windowText().color()).name());
-	config_file->addVariable("Hints", "HintOverUser_font", config_file->readFontEntry("OSDHints", "SetAll_font"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_transparency", 1 - KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("OSDHints", "Opacity", 100)/100);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_iconSize", KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("OSDHints", "IconSize", 32));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_borderWidth",KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_bdcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_bgcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("OSDHints", "SetAll_bgcolor", &qApp->palette().window().color()).name());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_fgcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("OSDHints", "SetAll_fgcolor", &qApp->palette().windowText().color()).name());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_font", KaduApplication::instance()->depreceatedConfigurationApi()->readFontEntry("OSDHints", "SetAll_font"));
 
-	if (config_file->readEntry("Look", "UserboxToolTipStyle") == "OSDHints")
-		config_file->writeEntry("Hints", "MouseOverUserSyntax", config_file->readEntry("OSDHints", "MouseOverUserSyntax"));
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Look", "UserboxToolTipStyle") == "OSDHints")
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Hints", "MouseOverUserSyntax", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("OSDHints", "MouseOverUserSyntax"));
 
 	QStringList events;
 	events << "ConnectionError" << "NewChat" << "NewMessage" << "StatusChanged"
@@ -623,35 +624,35 @@ void HintManager::import_0_6_5_configuration()
 		<< "StatusChanged/ToDoNotDisturb" << "StatusChanged/ToOffline"
 		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished";
 
-	bool osdHintsSetAll = config_file->readBoolEntry("OSDHints", "SetAll", false);
-	bool hintsSetAll = config_file->readBoolEntry("Hints", "SetAll", false);
+	bool osdHintsSetAll = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("OSDHints", "SetAll", false);
+	bool hintsSetAll = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Hints", "SetAll", false);
 
 	foreach (const QString &event, events)
 	{
-		if (config_file->readBoolEntry("Notify", event + "_OSDHints", false))
+		if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", event + "_OSDHints", false))
 		{
 			if (osdHintsSetAll)
 				realCopyConfiguration("OSDHints", "SetAll", event);
 			else
 				realCopyConfiguration("OSDHints", event, event);
 
-			config_file->writeEntry("Notify", event + "_Hints", true);
-			config_file->removeVariable("Notify", event + "_OSDHints");
+			KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Notify", event + "_Hints", true);
+			KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Notify", event + "_OSDHints");
 		}
 		else if (hintsSetAll)
 				realCopyConfiguration("Hints", "SetAll", event);
 
 	}
 
-	if (config_file->readBoolEntry("Notify", "StatusChanged/ToBusy_OSDHints", false))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", "StatusChanged/ToBusy_OSDHints", false))
 	{
 		if (osdHintsSetAll)
 			realCopyConfiguration("OSDHints", "SetAll", "ToAway");
 		else
 			realCopyConfiguration("OSDHints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
 
-		config_file->writeEntry("Notify", "StatusChanged/ToAway_Hints", true);
-		config_file->removeVariable("Notify", "StatusChanged/ToBusy_OSDHints");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Notify", "StatusChanged/ToAway_Hints", true);
+		KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Notify", "StatusChanged/ToBusy_OSDHints");
 	}
 	else
 	{
@@ -660,8 +661,8 @@ void HintManager::import_0_6_5_configuration()
 		else
 			realCopyConfiguration("Hints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
 	}
-	config_file->removeVariable("OSDHints", "SetAll");
-	config_file->removeVariable("Hints", "SetAll");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("OSDHints", "SetAll");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Hints", "SetAll");
 
 }
 
@@ -669,31 +670,31 @@ void HintManager::createDefaultConfiguration()
 {
 	// TODO: this should be more like: if (plugins.loaded(freedesktop_notify) && this_is_first_time_we_are_loaded_or_whatever)
 #if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
-	config_file->addVariable("Notify", "ConnectionError_Hints", true);
-	config_file->addVariable("Notify", "NewChat_Hints", true);
-	config_file->addVariable("Notify", "NewMessage_Hints", true);
-	config_file->addVariable("Notify", "StatusChanged_Hints", true);
-	config_file->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
-	config_file->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
-	config_file->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
-	config_file->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
-	config_file->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
-	config_file->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
-	config_file->addVariable("Notify", "FileTransfer_Hints", true);
-	config_file->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
-	config_file->addVariable("Notify", "FileTransfer/Finished_Hints", true);
-	config_file->addVariable("Notify", "multilogon_Hints", true);
-	config_file->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
-	config_file->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
-	config_file->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	config_file->addVariable("Notify", "Roster/ImportFailed_Hints", true);
-	config_file->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	config_file->addVariable("Notify", "Roster/ExportFailed_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "ConnectionError_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewChat_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewMessage_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "multilogon_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
 #endif
 
-	config_file->addVariable("Hints", "CiteSign", 50);
-	config_file->addVariable("Hints", "Corner", 0);
-	config_file->addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "CiteSign", 50);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "Corner", 0);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
 
 	//TODO:
 	QStringList events;
@@ -703,39 +704,39 @@ void HintManager::createDefaultConfiguration()
 		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished" << "InvalidPassword";
 	foreach (const QString &event, events)
 	{
-		config_file->addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().window().color());
-		config_file->addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().windowText().color());
-		config_file->addVariable("Hints", "Event_" + event + "_font", qApp->font());
-		config_file->addVariable("Hints", "Event_" + event + "_timeout", 10);
+		KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().window().color());
+		KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().windowText().color());
+		KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "Event_" + event + "_font", qApp->font());
+		KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "Event_" + event + "_timeout", 10);
 	}
 
-	config_file->addVariable("Hints", "HintsPositionX", 0);
-	config_file->addVariable("Hints", "HintsPositionY", 0);
-	config_file->addVariable("Hints", "LeftButton", 1);
-	config_file->addVariable("Hints", "RightButton", 2);
-	config_file->addVariable("Hints", "MaximumWidth", 500);
-	config_file->addVariable("Hints", "MiddleButton", 3);
-	config_file->addVariable("Hints", "MinimumWidth", 285);
-	config_file->addVariable("Hints", "MouseOverUserSyntax", QString());
-	config_file->addVariable("Hints", "NewHintUnder", 0);
-	config_file->addVariable("Hints", "ShowContentMessage", true);
-	config_file->addVariable("Hints", "UseUserPosition", false);
-	config_file->addVariable("Hints", "OpenChatOnEveryNotification", false);
-	config_file->addVariable("Hints", "MarginSize", 2);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintsPositionX", 0);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintsPositionY", 0);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "LeftButton", 1);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "RightButton", 2);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "MaximumWidth", 500);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "MiddleButton", 3);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "MinimumWidth", 285);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "MouseOverUserSyntax", QString());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "NewHintUnder", 0);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "ShowContentMessage", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "UseUserPosition", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "OpenChatOnEveryNotification", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "MarginSize", 2);
 
-	config_file->addVariable("Hints", "AllEvents_transparency", 0);
-	config_file->addVariable("Hints", "AllEvents_iconSize", 32);
-	config_file->addVariable("Hints", "AllEvents_borderWidth", FRAME_WIDTH);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "AllEvents_transparency", 0);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "AllEvents_iconSize", 32);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "AllEvents_borderWidth", FRAME_WIDTH);
 
-	config_file->addVariable("Hints", "HintOverUser_transparency", 0);
-	config_file->addVariable("Hints", "HintOverUser_iconSize", 32);
-	config_file->addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
-	config_file->addVariable("Hints", "HintOverUser_bdcolor", qApp->palette().window().color());
-	config_file->addVariable("Hints", "HintOverUser_bgcolor", qApp->palette().window().color());
-	config_file->addVariable("Hints", "HintOverUser_fgcolor", qApp->palette().windowText().color());
-	config_file->addVariable("Hints", "HintOverUser_font", qApp->font());
-	config_file->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
-	config_file->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_transparency", 0);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_iconSize", 32);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_bdcolor", qApp->palette().window().color());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_bgcolor", qApp->palette().window().color());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_fgcolor", qApp->palette().windowText().color());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_font", qApp->font());
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
 }
 
 HintManager *hint_manager = NULL;

@@ -22,6 +22,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "icons/kadu-icon.h"
+#include "kadu-application.h"
 
 #include "talkable-delegate-configuration.h"
 
@@ -38,22 +39,22 @@ TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *l
 
 void TalkableDelegateConfiguration::configurationUpdated()
 {
-	Font = config_file->readFontEntry("Look", "UserboxFont");
+	Font = KaduApplication::instance()->depreceatedConfigurationApi()->readFontEntry("Look", "UserboxFont");
 	BoldFont = Font;
 	BoldFont.setBold(true);
 
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
-	ShowAvatars = config_file->readBoolEntry("Look", "ShowAvatars");
-	AvatarBorder = config_file->readBoolEntry("Look", "AvatarBorder");
-	AvatarGreyOut = config_file->readBoolEntry("Look", "AvatarGreyOut");
-	AlignTop = config_file->readBoolEntry("Look", "AlignUserboxIconsTop");
-	ShowBold = config_file->readBoolEntry("Look", "ShowBold");
-	ShowDescription = config_file->readBoolEntry("Look", "ShowDesc");
-	ShowMultiLineDescription = config_file->readBoolEntry("Look", "ShowMultilineDesc");
-	DescriptionColor = config_file->readColorEntry("Look", "DescriptionColor");
-	FontColor = config_file->readColorEntry("Look", "UserboxFgColor");
+	ShowAvatars = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowAvatars");
+	AvatarBorder = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "AvatarBorder");
+	AvatarGreyOut = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "AvatarGreyOut");
+	AlignTop = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "AlignUserboxIconsTop");
+	ShowBold = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowBold");
+	ShowDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowDesc");
+	ShowMultiLineDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowMultilineDesc");
+	DescriptionColor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Look", "DescriptionColor");
+	FontColor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Look", "UserboxFgColor");
 
 	ListView->scheduleDelayedItemsLayout();
 }

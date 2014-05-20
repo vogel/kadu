@@ -20,6 +20,7 @@
 #include "configuration/configuration-file.h"
 #include "services/chat-image-request-service-configuration.h"
 #include "services/chat-image-request-service.h"
+#include "kadu-application.h"
 
 #include "chat-image-request-service-configurator.h"
 
@@ -37,9 +38,9 @@ void ChatImageRequestServiceConfigurator::configurationUpdated()
 
 	ChatImageRequestServiceConfiguration configuration;
 
-	configuration.setLimitImageSize(config_file->readBoolEntry("Chat", "LimitImageSize", true));
-	configuration.setMaximumImageSizeInKiloBytes(config_file->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
-	configuration.setAllowBiggerImagesAfterAsking(config_file->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
+	configuration.setLimitImageSize(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "LimitImageSize", true));
+	configuration.setMaximumImageSizeInKiloBytes(KaduApplication::instance()->depreceatedConfigurationApi()->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
+	configuration.setAllowBiggerImagesAfterAsking(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
 
 	Service.data()->setConfiguration(configuration);
 }

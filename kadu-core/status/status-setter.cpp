@@ -21,6 +21,7 @@
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
+#include "kadu-application.h"
 
 #include "status-setter.h"
 
@@ -70,10 +71,10 @@ void StatusSetter::coreInitialized()
 
 void StatusSetter::configurationUpdated()
 {
-	StartupStatus = config_file->readEntry("General", "StartupStatus");
-	StartupLastDescription = config_file->readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = config_file->readEntry("General", "StartupDescription");
-	OfflineToInvisible = config_file->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+	StartupStatus = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "StartupStatus");
+	StartupLastDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "StartupLastDescription");
+	StartupDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "StartupDescription");
+	OfflineToInvisible = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
 
 	if (StartupStatus.isEmpty())
 		StartupStatus = "LastStatus";

@@ -25,6 +25,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -51,7 +52,7 @@ EncryptioNgSimliteKeyImporter::EncryptioNgSimliteKeyImporter()
 
 void EncryptioNgSimliteKeyImporter::accountRegistered(Account account)
 {
-	if (account.id() == config_file->readEntry("General", "UIN"))
+	if (account.id() == KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "UIN"))
 		importKeys(account);
 }
 

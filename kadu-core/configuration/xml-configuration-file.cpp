@@ -430,5 +430,3 @@ void XmlConfigFile::removeNode(QDomElement parentNode, const QString& nodeTagNam
 		elementToRemove = getNode(parentNode, nodeTagName, ModeFind);
 	}
 }
-
-XmlConfigFile* xml_config_file = NULL;

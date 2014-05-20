@@ -34,8 +34,8 @@
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
 #include "url-handlers/url-handler-manager.h"
-
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "buddy-info-panel.h"
 
@@ -63,7 +63,7 @@ BuddyInfoPanel::~BuddyInfoPanel()
 
 void BuddyInfoPanel::configurationUpdated()
 {
-	setUserFont(config_file->readFontEntry("Look", "PanelFont").toString(), true);
+	setUserFont(KaduApplication::instance()->depreceatedConfigurationApi()->readFontEntry("Look", "PanelFont").toString(), true);
 
 	update();
 }
@@ -79,7 +79,7 @@ void BuddyInfoPanel::update()
 	if (Core::instance()->isClosing())
 		return;
 
-	QFont font = config_file->readFontEntry("Look", "PanelFont");
+	QFont font = KaduApplication::instance()->depreceatedConfigurationApi()->readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
 	QString fontSize;
 	if (font.pointSize() > 0)
@@ -90,10 +90,10 @@ void BuddyInfoPanel::update()
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
-	QString fontColor = config_file->readColorEntry("Look", "InfoPanelFgColor").name();
-	bool backgroundFilled = config_file->readBoolEntry("Look", "InfoPanelBgFilled");
+	QString fontColor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Look", "InfoPanelFgColor").name();
+	bool backgroundFilled = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "InfoPanelBgFilled");
 	if (backgroundFilled)
-		BackgroundColor = config_file->readColorEntry("Look", "InfoPanelBgColor").name();
+		BackgroundColor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Look", "InfoPanelBgColor").name();
 	else
 		BackgroundColor = "transparent";
 
@@ -130,11 +130,11 @@ void BuddyInfoPanel::update()
 		"</html>"
 		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
-	QString syntaxFile = config_file->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
+	QString syntaxFile = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
 	if (syntaxFile == "default")
 	{
 		syntaxFile = "Old Default";
-		config_file->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
 	}
 
 	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
@@ -142,7 +142,7 @@ void BuddyInfoPanel::update()
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	displayItem(Item);
 
-	if (config_file->readBoolEntry("Look", "PanelVerticalScrollbar"))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
 	else
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);

@@ -201,16 +201,7 @@ int main(int argc, char *argv[]) try
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
 
-	xml_config_file = new XmlConfigFile();
-	if (!xml_config_file->isUsable())
-	{
-		QString errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
-				"Profile is inaccessible. Please check permissions in the '%1' directory.")
-				.arg(KaduPaths::instance()->profilePath().left(KaduPaths::instance()->profilePath().length() - 1));
-		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
-		qFatal("%s", qPrintable(errorMessage));
-	}
-	config_file = new ConfigFile(QLatin1String("kadu.conf"));
+	application->prepareConfiguration();
 
 #ifdef DEBUG_OUTPUT_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
@@ -218,7 +209,7 @@ int main(int argc, char *argv[]) try
 
 	enableSignalHandling();
 
-	const QString lang = config_file->readEntry("General", "Language", QLocale::system().name().left(2));
+	const QString lang = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	kadu_qm.load("kadu_" + lang, KaduPaths::instance()->dataPath() + QLatin1String("translations"));
@@ -234,8 +225,8 @@ int main(int argc, char *argv[]) try
 		else
 			peer->sendMessage("activate", 1000);
 
-		delete config_file;
-		delete xml_config_file;
+		delete KaduApplication::instance()->depreceatedConfigurationApi();
+		delete KaduApplication::instance()->configurationApi();
 		return 1;
 	}
 
@@ -255,12 +246,6 @@ int main(int argc, char *argv[]) try
 
 	int ret = QApplication::exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
-
-	delete xml_config_file;
-	delete config_file;
-
-	xml_config_file = 0;
-	config_file = 0;
 
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 

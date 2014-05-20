@@ -46,6 +46,7 @@
 #include "gui/widgets/custom-input.h"
 #include "misc/kadu-paths.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "word-fix-formatted-string-visitor.h"
 
@@ -66,7 +67,7 @@ WordFix::WordFix(QObject *parent) :
 	ExtractBody.setPattern("<body[^>]*>.*</body>");
 
 	// Loading list
-	QString data = config_file->readEntry("word_fix", "WordFix_list");
+	QString data = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
 		QFile defList(KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
@@ -171,7 +172,7 @@ void WordFix::chatWidgetRemoved(ChatWidget *chatWidget)
 
 void WordFix::sendRequest(ChatWidget* chat)
 {
-	if (!config_file->readBoolEntry("PowerKadu", "enable_word_fix", false))
+	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
 		return;
 
 	auto formattedString = chat->edit()->formattedString();
@@ -414,7 +415,7 @@ void WordFix::saveList()
 	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
 		list.append(i.key() + '\t' + i.value());
 
-	config_file->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
 
 	kdebugf2();
 }

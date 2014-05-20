@@ -30,8 +30,8 @@
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "storage/storage-point.h"
-
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "group-manager.h"
 
@@ -88,7 +88,7 @@ void GroupManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	QDomElement groupsNode = xml_config_file->getNode("Groups", XmlConfigFile::ModeFind);
+	QDomElement groupsNode = KaduApplication::instance()->configurationApi()->getNode("Groups", XmlConfigFile::ModeFind);
 	if (groupsNode.isNull())
 	{
 		importConfiguration();

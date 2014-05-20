@@ -23,6 +23,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "kadu-application.h"
 
 #include "encryption-ng-simlite-configuration.h"
 
@@ -58,11 +59,11 @@ EncryptionNgSimliteConfiguration::~EncryptionNgSimliteConfiguration()
 
 void EncryptionNgSimliteConfiguration::createDefaultConfiguration()
 {
-	config_file->removeVariable("Chat", "Encryption");
-	config_file->addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Chat", "Encryption");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }
 
 void EncryptionNgSimliteConfiguration::configurationUpdated()
 {
-	EncryptAfterReceiveEncryptedMessage = config_file->readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	EncryptAfterReceiveEncryptedMessage = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }

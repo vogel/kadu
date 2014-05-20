@@ -31,6 +31,7 @@
 #include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-tab.h"
 #include "gui/widgets/configuration/config-widget.h"
+#include "kadu-application.h"
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget,
 		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const KaduIcon &icon) :
@@ -54,7 +55,7 @@ ConfigSection::~ConfigSection()
 	blockSignals(false);
 	emit destroyed(this);
 
-	config_file->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
 			TabWidget->tabText(TabWidget->currentIndex()));
 
 	// delete them here, since they manually delete child widgets of our TabWidget
@@ -88,7 +89,7 @@ void ConfigSection::activate()
 	if (Activated)
 		return;
 
-	QString tab = config_file->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
+	QString tab = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
 	if (ConfigTabs.contains(tab))
 		TabWidget->setCurrentWidget(ConfigTabs.value(tab)->widget());
 	Activated = true;

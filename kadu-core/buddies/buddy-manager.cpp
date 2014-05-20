@@ -31,8 +31,8 @@
 #include "core/core.h"
 #include "protocols/roster.h"
 #include "storage/storage-point.h"
-
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "buddy-manager.h"
 
@@ -62,11 +62,11 @@ void BuddyManager::init()
 	QMutexLocker locker(&mutex());
 
 	int itemsSize = items().size();
-	QDomElement buddiesNode = xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind);
-	QDomElement oldContactsNode = xml_config_file->getNode("OldContacts", XmlConfigFile::ModeFind);
+	QDomElement buddiesNode = KaduApplication::instance()->configurationApi()->getNode("Buddies", XmlConfigFile::ModeFind);
+	QDomElement oldContactsNode = KaduApplication::instance()->configurationApi()->getNode("OldContacts", XmlConfigFile::ModeFind);
 	if (oldContactsNode.isNull() && (buddiesNode.isNull() || (itemsSize == 0 && !buddiesNode.hasAttribute("imported"))))
 	{
-		importConfiguration(xml_config_file);
+		importConfiguration(KaduApplication::instance()->configurationApi());
 		buddiesNode.setAttribute("imported", "true");
 	}
 }

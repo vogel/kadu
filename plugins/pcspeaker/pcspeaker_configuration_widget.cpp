@@ -32,6 +32,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
+#include "kadu-application.h"
 
 #include "pcspeaker.h"
 #include "pcspeaker_configuration_widget.h"
@@ -61,7 +62,7 @@ void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 		Sounds[CurrentNotifyEvent] = soundEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = Sounds.constBegin(), end = Sounds.constEnd(); it != end; ++it)
-		config_file->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
 }
 
 void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
@@ -74,7 +75,7 @@ void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 	if (Sounds.contains(event))
 		soundEdit->setText(Sounds[event]);
 	else
-		soundEdit->setText(config_file->readEntry("PC Speaker", event + "_Sound"));
+		soundEdit->setText(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("PC Speaker", event + "_Sound"));
 }
 
 void PCSpeakerConfigurationWidget::test()

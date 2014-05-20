@@ -27,6 +27,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "scripts/sms-script-manager.h"
 #include "sms-gateway-manager.h"
@@ -115,7 +116,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 
 QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
 {
-	return config_file->readEntry(group, name, defaultValue);
+	return KaduApplication::instance()->depreceatedConfigurationApi()->readEntry(group, name, defaultValue);
 }
 
 void SmsInternalSender::sendSms()

@@ -36,6 +36,7 @@
 #include "plugin/activation/plugin-activation-service.h"
 #include "activate.h"
 #include "debug.h"
+#include "kadu-application.h"
 #include "kadu-config.h"
 
 #include <QtCore/QCoreApplication>
@@ -117,7 +118,7 @@ static void kadu_signal_handler(int signal)
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
-		xml_config_file->makeBackup();
+		KaduApplication::instance()->configurationApi()->makeBackup();
 		abort();
 	}
 	else if (signal == SIGUSR1)

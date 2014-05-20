@@ -74,9 +74,9 @@ void GrowlNotifyConfigurationWidget::saveNotifyConfigurations()
 	{
 		const QString &eventName = property.eventName;
 
-		config_file->writeEntry("GrowlNotify", QString("Event_") + eventName + "_syntax", property.syntax);
-		config_file->writeEntry("GrowlNotify", QString("Event_") + eventName + "_title", property.title);
-//		config_file->writeEntry("GrowlNotify", QString("Event_") + eventName + "_avatar", property.showAvatar);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_syntax", property.syntax);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_title", property.title);
+//		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_avatar", property.showAvatar);
 	}
 }
 
@@ -97,9 +97,9 @@ void GrowlNotifyConfigurationWidget::switchToEvent(const QString &event)
 		currentNotifyEvent = event;
 		currentProperties.eventName = event;
 
-		currentProperties.syntax = config_file->readEntry("GrowlNotify", QString("Event_") + event + "_syntax");
-		currentProperties.title = config_file->readEntry("GrowlNotify", QString("Event_") + event + "_title");
-//		currentProperties.showAvatar = config_file->readBoolEntry("GrowlNotify", QString("Event_") + event + "_avatar");
+		currentProperties.syntax = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("GrowlNotify", QString("Event_") + event + "_syntax");
+		currentProperties.title = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("GrowlNotify", QString("Event_") + event + "_title");
+//		currentProperties.showAvatar = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("GrowlNotify", QString("Event_") + event + "_avatar");
 	}
 
 	syntax->setText(currentProperties.syntax);

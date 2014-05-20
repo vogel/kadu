@@ -33,6 +33,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "gui/windows/mpris-player-dialog.h"
 #include "mpris-player-configuration-ui-handler.h"
@@ -102,7 +103,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 
 	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
-	PlayersBox->setCurrentIndex(PlayersBox->findText(config_file->readEntry("MPRISPlayer", "Player")));
+	PlayersBox->setCurrentIndex(PlayersBox->findText(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MPRISPlayer", "Player")));
 
 	connect(add, SIGNAL(clicked()), this, SLOT(addPlayer()));
 	connect(edit, SIGNAL(clicked()), this, SLOT(editPlayer()));
@@ -170,7 +171,7 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 	if (newPlayer.isEmpty() || newService.isEmpty())
 		return;
 
-	QString oldPlayerName = config_file->readEntry("MPRISPlayer", "Player");
+	QString oldPlayerName = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MPRISPlayer", "Player");
 	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
 
@@ -270,8 +271,8 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
 
 void MPRISPlayerConfigurationUiHandler::configurationApplied()
 {
-	config_file->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
-	config_file->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
 
 	MPRISPlayer::instance()->configurationApplied();
 }

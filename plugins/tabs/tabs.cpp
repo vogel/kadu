@@ -58,6 +58,7 @@
 
 #include "activate.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "tabs.h"
 
@@ -65,7 +66,7 @@ static void disableNewTab(Action *action)
 {
 	action->setEnabled(action->context()->chat());
 
-	if (config_file->readBoolEntry("Chat", "DefaultTabs"))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "DefaultTabs"))
 		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
 	else
 		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
@@ -160,13 +161,13 @@ void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 
 void TabsManager::openStoredChatTabs()
 {
-	if (config_file->readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		ensureLoaded();
 }
 
 void TabsManager::storeOpenedChatTabs()
 {
-	if (config_file->readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		ensureStored();
 }
 
@@ -194,7 +195,7 @@ void TabsManager::addChatWidget(ChatWidget *chatWidget)
 {
 	kdebugf();
 
-	if (config_file->readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
 
 	if (chatWidget->chat().property("tabs:detached", false).toBool())
@@ -487,7 +488,7 @@ void TabsManager::makePopupMenu()
 	ReopenClosedTabMenuAction = Menu->addAction(tr("Reopen closed tab"), this, SLOT(reopenClosedChat()));
 	ReopenClosedTabMenuAction->setEnabled(false);
 
-	if (config_file->readBoolEntry("Tabs", "OldStyleClosing"))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Tabs", "OldStyleClosing"))
 		Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();
@@ -625,7 +626,7 @@ void TabsManager::store()
 
 bool TabsManager::shouldStore()
 {
-	return StorableObject::shouldStore() && config_file->readBoolEntry("Chat", "SaveOpenedWindows", true);
+	return StorableObject::shouldStore() && KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "SaveOpenedWindows", true);
 }
 
 void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -636,12 +637,12 @@ void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 void TabsManager::configurationUpdated()
 {
 	kdebugf();
-	ConfigConferencesInTabs = config_file->readBoolEntry("Chat", "ConferencesInTabs");
-	ConfigTabsBelowChats = config_file->readBoolEntry("Chat", "TabsBelowChats");
-	ConfigDefaultTabs = config_file->readBoolEntry("Chat", "DefaultTabs");
-	ConfigMinTabs = config_file->readNumEntry("Chat", "MinTabs");
-	ConfigBlinkChatTitle = config_file->readBoolEntry("Chat", "BlinkChatTitle");
-	ConfigShowNewMessagesNum = config_file->readBoolEntry("Chat", "NewMessagesInChatTitle");
+	ConfigConferencesInTabs = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "ConferencesInTabs");
+	ConfigTabsBelowChats = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "TabsBelowChats");
+	ConfigDefaultTabs = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "DefaultTabs");
+	ConfigMinTabs = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Chat", "MinTabs");
+	ConfigBlinkChatTitle = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "BlinkChatTitle");
+	ConfigShowNewMessagesNum = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "NewMessagesInChatTitle");
 
 	TabDialog->setTabPosition(ConfigTabsBelowChats ? QTabWidget::South : QTabWidget::North);
 
@@ -734,19 +735,19 @@ void TabsManager::reopenClosedChat()
 
 void TabsManager::createDefaultConfiguration()
 {
-	config_file->addVariable("ShortCuts", "MoveTabLeft", "Ctrl+Alt+Left");
-	config_file->addVariable("ShortCuts", "MoveTabRight", "Ctrl+Alt+Right");
-	config_file->addVariable("ShortCuts", "SwitchTabLeft", "Alt+Left");
-	config_file->addVariable("ShortCuts", "SwitchTabRight", "Alt+Right");
-	config_file->addVariable("ShortCuts", "ReopenClosedTab", "Ctrl+Shift+T");
-	config_file->addVariable("Chat", "ConferencesInTabs", "true");
-	config_file->addVariable("Chat", "TabsBelowChats", "false");
-	config_file->addVariable("Chat", "DefaultTabs", "true");
-	config_file->addVariable("Chat", "MinTabs", "1");
-	config_file->addVariable("Tabs", "CloseButton", "true");
-	config_file->addVariable("Tabs", "OpenChatButton", "true");
-	config_file->addVariable("Tabs", "OldStyleClosing", "false");
-	config_file->addVariable("Tabs", "CloseButtonOnTab", "false");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("ShortCuts", "MoveTabLeft", "Ctrl+Alt+Left");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("ShortCuts", "MoveTabRight", "Ctrl+Alt+Right");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("ShortCuts", "SwitchTabLeft", "Alt+Left");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("ShortCuts", "SwitchTabRight", "Alt+Right");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("ShortCuts", "ReopenClosedTab", "Ctrl+Shift+T");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "ConferencesInTabs", "true");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "TabsBelowChats", "false");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "DefaultTabs", "true");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "MinTabs", "1");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Tabs", "CloseButton", "true");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Tabs", "OpenChatButton", "true");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Tabs", "OldStyleClosing", "false");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Tabs", "CloseButtonOnTab", "false");
 }
 
 void TabsManager::unreadMessagesCountChanged(ChatWidget *chatWidget)

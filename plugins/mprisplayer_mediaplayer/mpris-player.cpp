@@ -29,6 +29,7 @@
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
+#include "kadu-application.h"
 
 #include "plugins/mediaplayer/mediaplayer.h"
 
@@ -104,7 +105,7 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 	// Save service value from mpris_mediaplayer module
 	if (key == "mpris_mediaplayer")
 	{
-		QString oldMPRISService = config_file->readEntry("MediaPlayer", "MPRISService");
+		QString oldMPRISService = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPRISService");
 		QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
 		userPlayersSettings.setIniCodec("ISO8859-2");
 
@@ -112,23 +113,23 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 		userPlayersSettings.setValue(value +  "/service", oldMPRISService);
 		userPlayersSettings.sync();
 
-		config_file->writeEntry("MPRISPlayer", "Player", value);
-		config_file->writeEntry("MPRISPlayer", "Service", oldMPRISService);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("MPRISPlayer", "Player", value);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("MPRISPlayer", "Service", oldMPRISService);
 	}
 	else // Choose player based on old module loaded.
 	{
 		QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
 		globalPlayersSettings.setIniCodec("ISO8859-2");
 
-		config_file->writeEntry("MPRISPlayer", "Player", value);
-		config_file->writeEntry("MPRISPlayer", "Service", globalPlayersSettings.value(value + "/service").toString());
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("MPRISPlayer", "Player", value);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("MPRISPlayer", "Service", globalPlayersSettings.value(value + "/service").toString());
 	}
 }
 
 void MPRISPlayer::configurationApplied()
 {
-	setName(config_file->readEntry("MPRISPlayer", "Player"));
-	setService(config_file->readEntry("MPRISPlayer", "Service"));
+	setName(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MPRISPlayer", "Player"));
+	setService(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MPRISPlayer", "Service"));
 
 	if (!MediaPlayer::instance()->registerMediaPlayer(MPRISPlayer::instance(), MPRISPlayer::instance()))
 	{

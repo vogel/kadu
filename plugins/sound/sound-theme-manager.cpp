@@ -21,6 +21,7 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/memory.h"
+#include "kadu-application.h"
 #include "themes.h"
 
 #include "sound-theme-manager.h"
@@ -47,14 +48,14 @@ SoundThemeManager * SoundThemeManager::instance()
 SoundThemeManager::SoundThemeManager() :
 		MyThemes{make_unique<Themes>("sounds", "sound.conf")}
 {
-	MyThemes->setPaths(config_file->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+	MyThemes->setPaths(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	QStringList soundThemes = themes()->themes();
-	QString soundTheme = config_file->readEntry("Sounds", "SoundTheme");
+	QString soundTheme = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
 		soundTheme = "default";
-		config_file->writeEntry("Sounds", "SoundTheme", "default");
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Sounds", "SoundTheme", "default");
 	}
 
 	if (soundTheme != "custom")
@@ -73,7 +74,7 @@ void SoundThemeManager::applyTheme(const QString &themeName)
 
 	while (i != entries.constEnd())
 	{
-		config_file->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
 		++i;
 	}
 }

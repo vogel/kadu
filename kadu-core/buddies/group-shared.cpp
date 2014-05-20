@@ -22,6 +22,7 @@
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
 #include "misc/change-notifier.h"
+#include "kadu-application.h"
 
 #include "group-shared.h"
 
@@ -68,7 +69,7 @@ QString GroupShared::storageNodeName()
 void GroupShared::importConfiguration(const QString &name)
 {
 	Name = name;
-	Icon = config_file->readEntry("GroupIcon", name);
+	Icon = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("GroupIcon", name);
 	NotifyAboutStatusChanges = true;
 	ShowInAllGroup= true;
 	OfflineToGroup= false;

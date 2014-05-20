@@ -141,6 +141,4 @@ public:
 
 };
 
-extern KADUAPI XmlConfigFile *xml_config_file;
-
 #endif // XML_CONFIG_FILE

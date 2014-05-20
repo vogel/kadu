@@ -63,13 +63,14 @@
 #include "protocols/services/search-service.h"
 #include "qt/long-validator.h"
 #include "status/status-container.h"
+#include "kadu-application.h"
 
 #include "search-window.h"
 
 void SearchWindow::createDefaultToolbars(const QDomElement &toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
-	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarConfig = KaduApplication::instance()->configurationApi()->createElement(dockAreaConfig, "ToolBar");
 
 	addToolButton(toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);

@@ -24,6 +24,7 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
+#include "kadu-application.h"
 
 #include "cenzor-configuration.h"
 
@@ -64,7 +65,7 @@ void CenzorConfiguration::setSwearList(const QList<QRegExp> &swearList)
 
 QList<QRegExp> CenzorConfiguration::loadRegExpList(const QString &itemName, const QString &fileName)
 {
-	QList<QRegExp> result = toRegExpList(config_file->readEntry("PowerKadu", itemName).split('\t', QString::SkipEmptyParts));
+	QList<QRegExp> result = toRegExpList(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("PowerKadu", itemName).split('\t', QString::SkipEmptyParts));
 
 	if (!result.empty())
 		return result;
@@ -84,14 +85,14 @@ QList<QRegExp> CenzorConfiguration::loadRegExpList(const QString &itemName, cons
 
 void CenzorConfiguration::configurationUpdated()
 {
-	Enabled = config_file->readBoolEntry("PowerKadu", "enable_cenzor");
-	Admonition = config_file->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
+	Enabled = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("PowerKadu", "enable_cenzor");
+	Admonition = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
 	SwearList = loadRegExpList("cenzor swearwords", KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words.conf"));
 	ExclusionList = loadRegExpList("cenzor exclusions", KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words_ok.conf"));
 }
 
 void CenzorConfiguration::saveConfiguration()
 {
-	config_file->writeEntry("PowerKadu", "cenzor swearwords", toStringList(SwearList).join("\t"));
-	config_file->writeEntry("PowerKadu", "cenzor exclusions", toStringList(ExclusionList).join("\t"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("PowerKadu", "cenzor swearwords", toStringList(SwearList).join("\t"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("PowerKadu", "cenzor exclusions", toStringList(ExclusionList).join("\t"));
 }

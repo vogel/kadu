@@ -79,7 +79,7 @@ MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent) , d( new M
 {
 	isBouncing = false;
 	d->macDockingHelperObjC = [[MacDockingHelperObjC alloc] init];
-	if (config_file->readBoolEntry("General", "RunDocked"))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "RunDocked"))
 		Core::instance()->setShowMainWindowOnStart(false);
 	Core::instance()->kaduWindow()->setDocked(true);
 }

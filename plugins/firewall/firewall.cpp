@@ -65,6 +65,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "services/message-filter-service.h"
 #include "status/status-container.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "firewall-notification.h"
 
@@ -502,7 +503,7 @@ void Firewall::import_0_6_5_configuration()
 {
 	kdebugf();
 
-	QString loadedStr = config_file->readEntry("Firewall", "Secured_list");
+	QString loadedStr = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "Secured_list");
 	QStringList secured = loadedStr.split(',', QString::SkipEmptyParts);
 
 	foreach (const QString &contact, secured)
@@ -514,58 +515,58 @@ void Firewall::import_0_6_5_configuration()
 		buddy.addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
 	}
 
-	config_file->removeVariable("Firewall", "Secured_list");
+	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Firewall", "Secured_list");
 
 	kdebugf2();
 }
 
 void Firewall::configurationUpdated()
 {
-	CheckFloodingEmoticons = config_file->readBoolEntry("Firewall", "dos_emoticons", true);
-	EmoticonsAllowKnown = config_file->readBoolEntry("Firewall", "emoticons_allow_known", false);
-	WriteLog = config_file->readBoolEntry("Firewall", "write_log", true);
-	LogFilePath = config_file->readEntry("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
-	CheckDos = config_file->readBoolEntry("Firewall", "dos", true);
-	CheckChats = config_file->readBoolEntry("Firewall", "chats", true);
-	IgnoreConferences = config_file->readBoolEntry("Firewall", "ignore_conferences", true);
-	DropAnonymousWhenInvisible = config_file->readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
-	IgnoreInvisible = config_file->readBoolEntry("Firewall", "ignore_invisible", false);
-	Confirmation = config_file->readBoolEntry("Firewall", "confirmation", true);
-	ConfirmationText = config_file->readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"));
-	Search = config_file->readBoolEntry("Firewall", "search", true);
-	ConfirmationQuestion = config_file->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"));
-	WriteInHistory = config_file->readBoolEntry("Firewall", "write_history", true);
-	DosInterval = config_file->readNumEntry("Firewall", "dos_interval", 500);
-	MaxEmoticons = config_file->readNumEntry("Firewall", "emoticons_max", 15);
-	SafeSending = config_file->readBoolEntry("Firewall", "safe_sending", false);
+	CheckFloodingEmoticons = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "dos_emoticons", true);
+	EmoticonsAllowKnown = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "emoticons_allow_known", false);
+	WriteLog = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "write_log", true);
+	LogFilePath = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
+	CheckDos = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "dos", true);
+	CheckChats = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "chats", true);
+	IgnoreConferences = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "ignore_conferences", true);
+	DropAnonymousWhenInvisible = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
+	IgnoreInvisible = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "ignore_invisible", false);
+	Confirmation = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "confirmation", true);
+	ConfirmationText = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"));
+	Search = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "search", true);
+	ConfirmationQuestion = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"));
+	WriteInHistory = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "write_history", true);
+	DosInterval = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Firewall", "dos_interval", 500);
+	MaxEmoticons = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Firewall", "emoticons_max", 15);
+	SafeSending = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Firewall", "safe_sending", false);
 
-	pattern.setPattern(config_file->readEntry("Firewall", "answer", tr("I want something")));
+	pattern.setPattern(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "answer", tr("I want something")));
 }
 
 void Firewall::createDefaultConfiguration()
 {
 	//domy�lne powiadamianie dymkiem
-	config_file->addVariable("Notify", "Firewall_Hints", config_file->readEntry("Firewall", "show_hint", "true"));
-	config_file->addVariable("Firewall", "notification_syntax", config_file->readEntry("Firewall", "hint_syntax", tr("%u writes")));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "Firewall_Hints", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "show_hint", "true"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "notification_syntax", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "hint_syntax", tr("%u writes")));
 	//domy�lne kolory dymk�w
-	config_file->addVariable("Hints", "Event_Firewall_fgcolor", config_file->readEntry("Firewall", "fg_color", "#000080"));//navy
-	config_file->addVariable("Hints", "Event_Firewall_bgcolor", config_file->readEntry("Firewall", "bg_color", "#add8e6"));//lightblue
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "Event_Firewall_fgcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "fg_color", "#000080"));//navy
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Hints", "Event_Firewall_bgcolor", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Firewall", "bg_color", "#add8e6"));//lightblue
 	//domy�lne warto�ci zmiennych konfiguracyjnych
-	config_file->addVariable("Firewall", "ignore_conferences", true);
-	config_file->addVariable("Firewall", "search", true);
-	config_file->addVariable("Firewall", "chats", true);
-	config_file->addVariable("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)") );
-	config_file->addVariable("Firewall", "answer", tr("I want something") );
-	config_file->addVariable("Firewall", "confirmation", true );
-	config_file->addVariable("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)") );
-	config_file->addVariable("Firewall", "dos", true);
-	config_file->addVariable("Firewall", "dos_interval", 500);
-	config_file->addVariable("Firewall", "dos_emoticons", true);
-	config_file->addVariable("Firewall", "emoticons_max", 15);
-	config_file->addVariable("Firewall", "emoticons_allow_known", false);
-	config_file->addVariable("Firewall", "safe_sending", false);
-	config_file->addVariable("Firewall", "write_log", true);
-	config_file->addVariable("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "ignore_conferences", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "search", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "chats", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)") );
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "answer", tr("I want something") );
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "confirmation", true );
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)") );
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "dos", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "dos_interval", 500);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "dos_emoticons", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "emoticons_max", 15);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "emoticons_allow_known", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "safe_sending", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "write_log", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
 }
 
 #include "moc_firewall.cpp"

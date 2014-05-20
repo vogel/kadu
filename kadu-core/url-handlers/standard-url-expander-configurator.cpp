@@ -17,12 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
-
 #include "configuration/configuration-file.h"
 
 #include "url-handlers/standard-url-expander-configuration.h"
 #include "url-handlers/standard-url-expander.h"
+#include "kadu-application.h"
 
 #include "standard-url-expander-configurator.h"
 
@@ -36,8 +35,8 @@ void StandardUrlExpanderConfigurator::setStandardUrlExpander(StandardUrlExpander
 
 void StandardUrlExpanderConfigurator::createDefaultConfiguration()
 {
-	config_file->addVariable("Chat", "FoldLink", true);
-	config_file->addVariable("Chat", "LinkFoldTreshold", 50);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "FoldLink", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "LinkFoldTreshold", 50);
 }
 
 void StandardUrlExpanderConfigurator::configurationUpdated()
@@ -47,8 +46,8 @@ void StandardUrlExpanderConfigurator::configurationUpdated()
 
 	StandardUrlExpanderConfiguration configuration;
 
-	configuration.setFoldLink(config_file->readBoolEntry("Chat", "FoldLink"));
-	configuration.setFoldLinkThreshold(config_file->readNumEntry("Chat", "LinkFoldTreshold"));
+	configuration.setFoldLink(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "FoldLink"));
+	configuration.setFoldLinkThreshold(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Chat", "LinkFoldTreshold"));
 
 	ConfigurableStandardUrlExpander->setConfiguration(configuration);
 }

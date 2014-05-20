@@ -40,6 +40,7 @@
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/notify-tree-widget.h"
 #include "gui/windows/configuration-window.h"
+#include "kadu-application.h"
 
 #include "notifier.h"
 #include "notify-event.h"
@@ -116,7 +117,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 		foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
 		{
 			if (!NotifierGui[notifier].Events.contains(notifyEvent->name()))
-				NotifierGui[notifier].Events[notifyEvent->name()] = config_file->readBoolEntry("Notify", notifyEvent->name() + '_' + notifier->name());
+				NotifierGui[notifier].Events[notifyEvent->name()] = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", notifyEvent->name() + '_' + notifier->name());
 		}
 	}
 
@@ -129,7 +130,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 		NotifyEventConfigurationItem item;
 		item.event = notifyEvent;
-		item.useCustomSettings = config_file->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
+		item.useCustomSettings = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 
 		NotifyEvents[eventName] = item;
 	}
@@ -180,7 +181,7 @@ void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent *notifyEven
 		NotifyEventConfigurationItem item;
 		item.event = notifyEvent;
 		if (!notifyEvent->category().isEmpty())
-			item.useCustomSettings = config_file->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
+			item.useCustomSettings = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 		else
 			item.useCustomSettings = true;
 
@@ -206,7 +207,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (notifyEvent->category().isEmpty() || !NotifyEvents.contains(notifyEvent->name()))
 			continue;
 
-		config_file->writeEntry("Notify", notifyEvent->name() + "_UseCustomSettings", NotifyEvents[notifyEvent->name()].useCustomSettings);
+		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Notify", notifyEvent->name() + "_UseCustomSettings", NotifyEvents[notifyEvent->name()].useCustomSettings);
 	}
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
@@ -219,7 +220,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 			gui.ConfigurationWidget->saveNotifyConfigurations();
 
 		for (QMap<QString, bool>::const_iterator it = gui.Events.constBegin(), end = gui.Events.constEnd(); it != end; ++it)
-			config_file->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
+			KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
 	}
 }
 
@@ -275,7 +276,7 @@ void NotifyConfigurationUiHandler::eventSwitched()
 		NotifierConfigurationGuiItem &gui = NotifierGui[notifier];
 
 		if (!gui.Events.contains(CurrentEvent))
-			gui.Events[CurrentEvent] = config_file->readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
+			gui.Events[CurrentEvent] = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
 
 		if (gui.ConfigurationWidget)
 			gui.ConfigurationWidget->switchToEvent(CurrentEvent);

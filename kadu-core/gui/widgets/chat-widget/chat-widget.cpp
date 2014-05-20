@@ -76,7 +76,7 @@
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
-#include <gui/widgets/webkit-messages-view/webkit-messages-view-factory.h>
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -91,6 +91,7 @@
 #include "talkable/model/talkable-proxy-model.h"
 #include "activate.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "chat-widget.h"
 
@@ -533,7 +534,7 @@ void ChatWidget::clearChatWindow()
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!config_file->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
+	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
 		MessagesView->setForcePruneDisabled(false);

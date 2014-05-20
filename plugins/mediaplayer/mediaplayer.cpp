@@ -51,6 +51,7 @@
 #include "notify/notify-event.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "plugins/docking/docking.h"
 
@@ -193,7 +194,7 @@ MediaPlayer::MediaPlayer()
 
 	createDefaultConfiguration();
 
-	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file->readNumEntry("MediaPlayer", "statusPosition"));
+	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("MediaPlayer", "statusPosition"));
 
 	setControlsEnabled(false);
 	isPaused = true;
@@ -308,7 +309,7 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 	if (handled)
 		return;
 
-	if (!config_file->readBoolEntry("MediaPlayer", "chatShortcuts", true))
+	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "chatShortcuts", true))
 		return;
 
 	if (e->key() == SHORTCUT_KEY)
@@ -401,7 +402,7 @@ void MediaPlayer::putSongTitle(int ident)
 	switch (id)
 	{
 		case 0:
-			title = parse(config_file->readEntry("MediaPlayer", "chatString"));
+			title = parse(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "chatString"));
 			break;
 		case 1:
 			title = getTitle();
@@ -743,10 +744,10 @@ void MediaPlayer::checkTitle()
 	int pos = getCurrentPos();
 
 	// If OSD is enabled and current track position is betwean 0 and 1000 ms, then shows OSD
-	if (config_file->readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
 		MediaPlayerNotification::notifyTitleHint(getTitle());
 
-	Changer->setTitle(parse(config_file->readEntry("MediaPlayer", "statusTagString")));
+	Changer->setTitle(parse(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "statusTagString")));
 }
 
 void MediaPlayer::configurationUpdated()
@@ -756,7 +757,7 @@ void MediaPlayer::configurationUpdated()
 	// Statuses switch
 	bool enabled = !Changer->isDisabled();
 
-	if (config_file->readBoolEntry("MediaPlayer", "dockMenu", false))
+	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "dockMenu", false))
 	{
 		MenuInventory::instance()
 			->menu("main")
@@ -788,7 +789,7 @@ void MediaPlayer::configurationUpdated()
 		}
 	}
 
-	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file->readNumEntry("MediaPlayer", "statusPosition"));
+	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("MediaPlayer", "statusPosition"));
 }
 
 bool MediaPlayer::playerInfoSupported()
@@ -937,9 +938,9 @@ QString MediaPlayer::getTitle()
 		QString title = playerInfo->getTitle();
 
 		// Lets cut nasty signatures
-		if (config_file->readBoolEntry("MediaPlayer", "signature", true))
+		if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "signature", true))
 		{
-			QStringList sigList(config_file->readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES).split('\n'));
+			QStringList sigList(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES).split('\n'));
 			for (int i = 0; i < sigList.count(); i++)
 				title.remove(sigList[i]);
 		}
@@ -1023,14 +1024,14 @@ QStringList MediaPlayer::getPlayListFiles()
 
 void MediaPlayer::createDefaultConfiguration()
 {
-	config_file->addVariable("MediaPlayer", "chatString", "MediaPlayer: %t [%c / %l]");
-	config_file->addVariable("MediaPlayer", "statusTagString", "%r - %t");
-	config_file->addVariable("MediaPlayer", "osd", true);
-	config_file->addVariable("MediaPlayer", "signature", true);
-	config_file->addVariable("MediaPlayer", "signatures", DEFAULT_SIGNATURES);
-	config_file->addVariable("MediaPlayer", "chatShortcuts", true);
-	config_file->addVariable("MediaPlayer", "dockMenu", false);
-	config_file->addVariable("MediaPlayer", "statusPosition", 0);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "chatString", "MediaPlayer: %t [%c / %l]");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "statusTagString", "%r - %t");
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "osd", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "signature", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "signatures", DEFAULT_SIGNATURES);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "chatShortcuts", true);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "dockMenu", false);
+	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "statusPosition", 0);
 }
 
 void MediaPlayer::insertFormattedSong()

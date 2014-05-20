@@ -31,6 +31,7 @@
 #include "misc/kadu-paths.h"
 #include "parser/parser.h"
 #include "debug.h"
+#include "kadu-application.h"
 #include "speech.h"
 
 #include "speech-configuration-ui-handler.h"
@@ -105,8 +106,8 @@ void SpeechConfigurationUiHandler::testSpeech()
 
 	QString program = programSelectFile->file();
 	// TODO: mo�e u�ywa� jakiego� normalnego tekstu ?
-	QString formatM = config_file->readEntry("Speech", "NewChat_Syntax/Male");
-	QString formatF = config_file->readEntry("Speech", "NewChat_Syntax/Female");
+	QString formatM = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", "NewChat_Syntax/Male");
+	QString formatF = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Speech", "NewChat_Syntax/Female");
 	QString device = dspDeviceLineEdit->text();
 	bool klatt = klattSyntCheckBox->isChecked();
 	bool mel = melodyCheckBox->isChecked();

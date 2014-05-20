@@ -38,6 +38,7 @@
 
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
+#include "kadu-application.h"
 
 #include "debug.h"
 
@@ -54,13 +55,13 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	QMutexLocker locker(&GlobalMutex);
 
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", qPrintable(group), qPrintable(name), qPrintable(value), this);
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
-	QDomElement config_file_elem = xml_config_file->accessElementByFileNameProperty(
+	QDomElement root_elem = KaduApplication::instance()->configurationApi()->rootElement();
+	QDomElement deprecated_elem = KaduApplication::instance()->configurationApi()->accessElement(root_elem, "Deprecated");
+	QDomElement config_file_elem = KaduApplication::instance()->configurationApi()->accessElementByFileNameProperty(
 		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
-	QDomElement group_elem = xml_config_file->accessElementByProperty(
+	QDomElement group_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
 		config_file_elem, "Group", "name", group);
-	QDomElement entry_elem = xml_config_file->accessElementByProperty(
+	QDomElement entry_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
 		group_elem, "Entry", "name", name);
 	entry_elem.setAttribute("value", value);
 
@@ -72,20 +73,20 @@ QString ConfigFile::getEntry(const QString &group, const QString &name) const
 	QMutexLocker locker(&GlobalMutex);
 
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
+	QDomElement root_elem = KaduApplication::instance()->configurationApi()->rootElement();
+	QDomElement deprecated_elem = KaduApplication::instance()->configurationApi()->findElement(root_elem, "Deprecated");
 	if (!deprecated_elem.isNull())
 	{
-		QDomElement config_file_elem = xml_config_file->findElementByFileNameProperty(
+		QDomElement config_file_elem = KaduApplication::instance()->configurationApi()->findElementByFileNameProperty(
 			deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
 		if (!config_file_elem.isNull())
 		{
-			QDomElement group_elem = xml_config_file->findElementByProperty(
+			QDomElement group_elem = KaduApplication::instance()->configurationApi()->findElementByProperty(
 				config_file_elem, "Group", "name", group);
 			if (!group_elem.isNull())
 			{
 				QDomElement entry_elem =
-					xml_config_file->findElementByProperty(
+					KaduApplication::instance()->configurationApi()->findElementByProperty(
 						group_elem, "Entry", "name", name);
 				if (!entry_elem.isNull())
 					return entry_elem.attribute("value");
@@ -201,13 +202,13 @@ void ConfigFile::removeVariable(const QString &group, const QString &name)
 {
 	QMutexLocker locker(&GlobalMutex);
 
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
-	QDomElement config_file_elem = xml_config_file->accessElementByFileNameProperty(
+	QDomElement root_elem = KaduApplication::instance()->configurationApi()->rootElement();
+	QDomElement deprecated_elem = KaduApplication::instance()->configurationApi()->accessElement(root_elem, "Deprecated");
+	QDomElement config_file_elem = KaduApplication::instance()->configurationApi()->accessElementByFileNameProperty(
 		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
-	QDomElement group_elem = xml_config_file->accessElementByProperty(
+	QDomElement group_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
 		config_file_elem, "Group", "name", group);
-	QDomElement entry_elem = xml_config_file->accessElementByProperty(
+	QDomElement entry_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
 		group_elem, "Entry", "name", name);
 	group_elem.removeChild(entry_elem);
 }
@@ -242,5 +243,3 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const QF
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
-
-ConfigFile *config_file;

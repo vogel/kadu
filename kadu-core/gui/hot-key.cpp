@@ -23,17 +23,18 @@
 #include <QtGui/QKeyEvent>
 
 #include "configuration/configuration-file.h"
+#include "kadu-application.h"
 
 #include "hot-key.h"
 
 QKeySequence HotKey::shortCutFromFile(const QString &groupname, const QString &name)
 {
-	return QKeySequence::fromString(config_file->readEntry(groupname, name), QKeySequence::PortableText);
+	return QKeySequence::fromString(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry(groupname, name), QKeySequence::PortableText);
 }
 
 bool HotKey::shortCut(QKeyEvent *e, const QString &groupname, const QString &name)
 {
-	QString config = config_file->readEntry(groupname, name);
+	QString config = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry(groupname, name);
 	return !config.isEmpty() && config == keyEventToString(e);
 }
 
