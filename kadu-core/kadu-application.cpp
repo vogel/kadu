@@ -80,7 +80,7 @@ void KaduApplication::prepareConfiguration()
 		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
 		qFatal("%s", qPrintable(errorMessage));
 	}
-	m_depreceatedConfigurationApi = make_unique<ConfigFile>(QLatin1String("kadu.conf"));
+	m_depreceatedConfigurationApi = make_unique<ConfigFile>(m_configurationApi.get(), QLatin1String("kadu.conf"));
 }
 
 XmlConfigFile * KaduApplication::configurationApi() const

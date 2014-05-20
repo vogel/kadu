@@ -38,7 +38,6 @@
 
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
-#include "kadu-application.h"
 
 #include "debug.h"
 
@@ -46,7 +45,9 @@
 
 static QMutex GlobalMutex;
 
-ConfigFile::ConfigFile(const QString &filename) : filename(filename)
+ConfigFile::ConfigFile(XmlConfigFile *xmlConfigFile, const QString &fileName) :
+		m_xmlConfigFile{xmlConfigFile},
+		m_fileName{fileName}
 {
 }
 
@@ -55,13 +56,13 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	QMutexLocker locker(&GlobalMutex);
 
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", qPrintable(group), qPrintable(name), qPrintable(value), this);
-	QDomElement root_elem = KaduApplication::instance()->configurationApi()->rootElement();
-	QDomElement deprecated_elem = KaduApplication::instance()->configurationApi()->accessElement(root_elem, "Deprecated");
-	QDomElement config_file_elem = KaduApplication::instance()->configurationApi()->accessElementByFileNameProperty(
-		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
-	QDomElement group_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
+	QDomElement root_elem = m_xmlConfigFile->rootElement();
+	QDomElement deprecated_elem = m_xmlConfigFile->accessElement(root_elem, "Deprecated");
+	QDomElement config_file_elem = m_xmlConfigFile->accessElementByFileNameProperty(
+		deprecated_elem, "ConfigFile", "name", m_fileName.section('/', -1));
+	QDomElement group_elem = m_xmlConfigFile->accessElementByProperty(
 		config_file_elem, "Group", "name", group);
-	QDomElement entry_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
+	QDomElement entry_elem = m_xmlConfigFile->accessElementByProperty(
 		group_elem, "Entry", "name", name);
 	entry_elem.setAttribute("value", value);
 
@@ -73,20 +74,20 @@ QString ConfigFile::getEntry(const QString &group, const QString &name) const
 	QMutexLocker locker(&GlobalMutex);
 
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
-	QDomElement root_elem = KaduApplication::instance()->configurationApi()->rootElement();
-	QDomElement deprecated_elem = KaduApplication::instance()->configurationApi()->findElement(root_elem, "Deprecated");
+	QDomElement root_elem = m_xmlConfigFile->rootElement();
+	QDomElement deprecated_elem = m_xmlConfigFile->findElement(root_elem, "Deprecated");
 	if (!deprecated_elem.isNull())
 	{
-		QDomElement config_file_elem = KaduApplication::instance()->configurationApi()->findElementByFileNameProperty(
-			deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
+		QDomElement config_file_elem = m_xmlConfigFile->findElementByFileNameProperty(
+			deprecated_elem, "ConfigFile", "name", m_fileName.section('/', -1));
 		if (!config_file_elem.isNull())
 		{
-			QDomElement group_elem = KaduApplication::instance()->configurationApi()->findElementByProperty(
+			QDomElement group_elem = m_xmlConfigFile->findElementByProperty(
 				config_file_elem, "Group", "name", group);
 			if (!group_elem.isNull())
 			{
 				QDomElement entry_elem =
-					KaduApplication::instance()->configurationApi()->findElementByProperty(
+					m_xmlConfigFile->findElementByProperty(
 						group_elem, "Entry", "name", name);
 				if (!entry_elem.isNull())
 					return entry_elem.attribute("value");
@@ -202,13 +203,13 @@ void ConfigFile::removeVariable(const QString &group, const QString &name)
 {
 	QMutexLocker locker(&GlobalMutex);
 
-	QDomElement root_elem = KaduApplication::instance()->configurationApi()->rootElement();
-	QDomElement deprecated_elem = KaduApplication::instance()->configurationApi()->accessElement(root_elem, "Deprecated");
-	QDomElement config_file_elem = KaduApplication::instance()->configurationApi()->accessElementByFileNameProperty(
-		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
-	QDomElement group_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
+	QDomElement root_elem = m_xmlConfigFile->rootElement();
+	QDomElement deprecated_elem = m_xmlConfigFile->accessElement(root_elem, "Deprecated");
+	QDomElement config_file_elem = m_xmlConfigFile->accessElementByFileNameProperty(
+		deprecated_elem, "ConfigFile", "name", m_fileName.section('/', -1));
+	QDomElement group_elem = m_xmlConfigFile->accessElementByProperty(
 		config_file_elem, "Group", "name", group);
-	QDomElement entry_elem = KaduApplication::instance()->configurationApi()->accessElementByProperty(
+	QDomElement entry_elem = m_xmlConfigFile->accessElementByProperty(
 		group_elem, "Entry", "name", name);
 	group_elem.removeChild(entry_elem);
 }

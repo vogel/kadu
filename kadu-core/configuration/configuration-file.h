@@ -40,15 +40,18 @@
 
 #include "exports.h"
 
-class KADUAPI ConfigFile
+class XmlConfigFile;
+
+class KADUAPI ConfigFile final
 {
 	bool changeEntry(const QString &group, const QString &name, const QString &value);
 	QString getEntry(const QString &group, const QString &name) const;
 
-	QString filename;
+	XmlConfigFile *m_xmlConfigFile;
+	QString m_fileName;
 
 public:
-	ConfigFile(const QString &filename);
+	ConfigFile(XmlConfigFile *xmlConfigFile, const QString &fileName);
 
 	void writeEntry(const QString &group, const QString &name, const QString &value);
 	void writeEntry(const QString &group, const QString &name, const char *value);
