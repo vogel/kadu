@@ -32,12 +32,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_APPLICATION_H
-#define KADU_APPLICATION_H
-
-#include <QtWidgets/QApplication>
+#pragma once
 
 #include "exports.h"
+
+#include <QtWidgets/QApplication>
 
 class KADUAPI KaduApplication : public QApplication
 {
@@ -47,5 +46,3 @@ public:
 	KaduApplication(int &argc, char *argv[]);
 
 };
-
-#endif // KADU_APPLICATION_H

@@ -35,19 +35,8 @@
 
 #include "kadu-application.h"
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-#include <X11/Xatom.h>
-#include <X11/extensions/Xfixes.h>
-#undef KeyPress
-#undef Status
-
-#include <QtX11Extras/QX11Info>
-
-#include "os/generic/compositing-aware-object.h"
-#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
-		QApplication(argc, argv)
+		QApplication{argc, argv}
 {
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);

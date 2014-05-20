@@ -107,7 +107,6 @@ else ()
 endif ()
 
 set (kadu_MOC_SRCS
-	kadu-application.h
 	themes.h
 	updates.h
 
