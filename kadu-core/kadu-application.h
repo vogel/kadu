@@ -37,29 +37,11 @@
 
 #include <QtWidgets/QApplication>
 
-#ifdef Q_OS_MAC
-#include <Carbon/Carbon.h>
-#endif // Q_OS_MAC
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-#include <X11/Xdefs.h>
-#undef KeyPress
-#undef Status
-#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-
 #include "exports.h"
 
 class KADUAPI KaduApplication : public QApplication
 {
 	Q_OBJECT
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	Atom net_wm_state;
-	int xfixes_event_base;
-#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-#ifdef Q_OS_MAC
-	AEEventHandlerUPP m_appleEventProcessorUPP;
-#endif // Q_OS_MAC
 
 public:
 	KaduApplication(int &argc, char *argv[]);

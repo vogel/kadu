@@ -48,9 +48,6 @@
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication(argc, argv)
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-		, net_wm_state{}
-#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 {
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
@@ -59,19 +56,6 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	// Fix for #2491
 	setStyleSheet("QToolBar{border:0px}");
 #endif
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	xfixes_event_base = -1;
-	int dummy;
-	if (XFixesQueryExtension(QX11Info::display(), &xfixes_event_base, &dummy))
-	{
-		net_wm_state = XInternAtom(QX11Info::display(), "_NET_WM_CM_S0", False);
-		XFixesSelectSelectionInput(QX11Info::display(), QX11Info::appRootWindow(0) , net_wm_state,
-		XFixesSetSelectionOwnerNotifyMask |
-		XFixesSelectionWindowDestroyNotifyMask |
-		XFixesSelectionClientCloseNotifyMask);
-	}
-#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 }
 
 #include "moc_kadu-application.cpp"
