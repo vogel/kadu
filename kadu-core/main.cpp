@@ -136,20 +136,18 @@ void enableSignalHandling();
 
 static void printVersion()
 {
-	printf("Kadu %s Copyright (c) 2001-2012 Kadu Team\n"
+	printf(
+		"Kadu %s Copyright (c) 2001-2012 Kadu Team\n"
 		"Compiled with Qt %s\nRunning on Qt %s\n",
 		qPrintable(Core::version()), QT_VERSION_STR, qVersion());
 }
 
 static void printUsage()
 {
-	printf("Usage: kadu [General Options] [Options]\n\n"
-		"Kadu Instant Messenger\n");
-}
-
-static void printKaduOptions()
-{
-	printf("\nGeneral Options:\n"
+	printf(
+		"Usage: kadu [General Options] [Options]\n\n"
+		"Kadu Instant Messenger\n"
+		"\nGeneral Options:\n"
 		"  --help                     Print Kadu options\n"
 		"  --version                  Print Kadu and Qt version\n"
 		"\nOptions:\n"
@@ -181,7 +179,6 @@ int main(int argc, char *argv[]) try
 	if (executionArguments.queryUsage())
 	{
 		printUsage();
-		printKaduOptions();
 		return 0;
 	}
 
