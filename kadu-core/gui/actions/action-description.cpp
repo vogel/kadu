@@ -217,20 +217,11 @@ void ActionDescription::configurationUpdated()
 	}
 }
 
-// TODO: a hack
-#if QT_VERSION >= 0x050000
 void ActionDescription::connectNotify(const QMetaMethod &signal)
-#else
-void ActionDescription::connectNotify(const char *signal)
-#endif
 {
 	QObject::connectNotify(signal);
 
-#if QT_VERSION >= 0x050000
 	if (signal == QMetaMethod::fromSignal(&ActionDescription::actionCreated))
-#else
-	if (QLatin1String(signal) == SIGNAL(actionCreated(Action*))) // do not insert space here
-#endif
 		foreach (Action *action, MappedActions)
 			emit actionCreated(action);
 }

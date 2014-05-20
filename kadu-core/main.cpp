@@ -262,13 +262,6 @@ int main(int argc, char *argv[]) try
 	xml_config_file = 0;
 	config_file = 0;
 
-	// On some systems it leads to crash with sms module.
-	// Reproducible by simply calling "delete new QScriptEngine();" in a module,
-	// so it's probably a bug in Qt. Sigh.
-#if QT_VERSION < 0x050000
-	application.release()
-#endif
-
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 
 	KaduPaths::destroyInstance();

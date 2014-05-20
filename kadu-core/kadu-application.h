@@ -61,22 +61,8 @@ class KADUAPI KaduApplication : public QApplication
 	AEEventHandlerUPP m_appleEventProcessorUPP;
 #endif // Q_OS_MAC
 
-#if QT_VERSION < 0x050000
-	bool SavingSession;
-#endif
-
 public:
 	KaduApplication(int &argc, char *argv[]);
-
-#if QT_VERSION < 0x050000
-	virtual void commitData(QSessionManager &manager);
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	virtual bool x11EventFilter(XEvent *event);
-#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-
-	bool isSavingSession() const;
-#endif
 
 };
 

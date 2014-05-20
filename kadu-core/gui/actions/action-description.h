@@ -225,11 +225,7 @@ protected:
 	 */
 	virtual QMenu * menuForAction(Action *action);
 
-#if QT_VERSION >= 0x050000
 	virtual void connectNotify(const QMetaMethod &signal);
-#else
-	virtual void connectNotify(const char *signal);
-#endif
 	virtual void configurationUpdated();
 
 public:

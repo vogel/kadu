@@ -51,9 +51,6 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 		, net_wm_state{}
 #endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-#if QT_VERSION < 0x050000
-		, SavingSession(false)
-#endif
 {
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
@@ -74,40 +71,7 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		XFixesSelectionWindowDestroyNotifyMask |
 		XFixesSelectionClientCloseNotifyMask);
 	}
-#if QT_VERSION < 0x050000
-	if (QX11Info::isCompositingManagerRunning())
-		CompositingAwareObject::compositingStateChanged(); // not defined in Qt5.2
-#endif // QT_VERSION < 0x050000
 #endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 }
-
-#if QT_VERSION < 0x050000
-void KaduApplication::commitData(QSessionManager &manager)
-{
-	SavingSession = true;
-
-	QApplication::commitData(manager);
-
-	SavingSession = false;
-}
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-bool KaduApplication::x11EventFilter(XEvent *event)
-{
-	if (xfixes_event_base != -1 && event->type == xfixes_event_base + XFixesSelectionNotify)
-	{
-		XFixesSelectionNotifyEvent *ev = (XFixesSelectionNotifyEvent *)event;
-		if (ev->selection == net_wm_state)
-			CompositingAwareObject::compositingStateChanged();
-	}
-	return false;
-}
-#endif // defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-
-bool KaduApplication::isSavingSession() const
-{
-	return SavingSession;
-}
-#endif
 
 #include "moc_kadu-application.cpp"

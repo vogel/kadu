@@ -45,13 +45,6 @@
 template<class T>
 class DefaultProvider;
 
-#if QT_VERSION < 0x050000
-namespace QCA
-{
-	class Initializer;
-}
-#endif
-
 class AccountConfigurationWidgetFactoryRepository;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyDataWindowRepository;
@@ -168,13 +161,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	bool IsClosing;
 	bool ShowMainWindowOnStart; // TODO: 0.11.0, it is a hack
-
-#if QT_VERSION < 0x050000
-	// NOTE: Kadu core itself doesn't use QCA, but important plugins do. And QCA lib
-	// isn't very well suited to be unloaded, so we just link to it in core and initialize
-	// here.
-	QCA::Initializer *QcaInit;
-#endif
 
 	Core();
 	virtual ~Core();

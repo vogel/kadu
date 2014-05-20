@@ -34,10 +34,6 @@
 #include <QtCore/QTimer>
 #include <QtWidgets/QApplication>
 
-#if QT_VERSION < 0x050000
-#include <QtCrypto>
-#endif
-
 #include "accounts/account-manager.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
@@ -217,9 +213,6 @@ Core::Core() :
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true)
-#if QT_VERSION < 0x050000
-		, QcaInit(new QCA::Initializer())
-#endif
 {
 	// must be created first
 	CurrentStoragePointFactory = new StoragePointFactory(this);
@@ -274,13 +267,6 @@ Core::~Core()
 	MainConfigurationHolder::destroyInstance();
 
 	triggerAllAccountsUnregistered();
-
-#if QT_VERSION < 0x050000
-	// Sometimes it causes crash which I don't understand. For me 100% reproducible
-	// if Kadu was compiled with Clang and we logged in to a jabber account. --beevvy
-	// delete QcaInit;
-	// QcaInit = 0;
-#endif
 }
 
 void Core::import_0_6_5_configuration()

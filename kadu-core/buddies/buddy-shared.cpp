@@ -82,11 +82,7 @@ void BuddyShared::collectGarbage()
 
 	// 1 is for current Buddy
 	const int numberOfReferences = 1 + Contacts.length();
-#if QT_VERSION >= 0x050000
 	if (numberOfReferences != ref.load())
-#else
-	if (numberOfReferences != (int)ref)
-#endif
 	{
 		CollectingGarbage = false;
 		return;
@@ -98,11 +94,7 @@ void BuddyShared::collectGarbage()
 
 		// 1 is for current BuddyShared
 		const int contactNumberOfReferences = 1;
-#if QT_VERSION >= 0x050000
 		if (contactNumberOfReferences != contact.data()->ref.load())
-#else
-		if (contactNumberOfReferences != (int)(contact.data()->ref))
-#endif
 		{
 			CollectingGarbage = false;
 			return;
