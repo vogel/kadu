@@ -36,7 +36,7 @@
 #include "kadu-application.h"
 
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
 
@@ -71,7 +71,7 @@ KaduApplication::~KaduApplication()
 
 void KaduApplication::prepareConfiguration()
 {
-	m_configurationApi = make_unique<XmlConfigFile>();
+	m_configurationApi = make_unique<ConfigurationApi>();
 	if (!m_configurationApi->isUsable())
 	{
 		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
@@ -83,7 +83,7 @@ void KaduApplication::prepareConfiguration()
 	m_deprecatedConfigurationApi = make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QLatin1String("kadu.conf"));
 }
 
-XmlConfigFile * KaduApplication::configurationApi() const
+ConfigurationApi * KaduApplication::configurationApi() const
 {
 	return m_configurationApi.get();
 }

@@ -37,7 +37,7 @@
 #include <QtXml/QDomElement>
 
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"

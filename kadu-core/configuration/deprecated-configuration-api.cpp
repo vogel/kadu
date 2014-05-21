@@ -29,7 +29,7 @@
 
 #include "deprecated-configuration-api.h"
 
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "misc/misc.h"
 
 #include <QtCore/QMutex>
@@ -38,7 +38,7 @@
 
 static QMutex GlobalMutex;
 
-DeprecatedConfigurationApi::DeprecatedConfigurationApi(XmlConfigFile *xmlConfigFile, const QString &fileName) :
+DeprecatedConfigurationApi::DeprecatedConfigurationApi(ConfigurationApi *xmlConfigFile, const QString &fileName) :
 		m_xmlConfigFile{xmlConfigFile},
 		m_fileName{fileName.section('/', -1)}
 {

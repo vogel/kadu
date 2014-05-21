@@ -22,7 +22,7 @@
  */
 
 #include "accounts/account-manager.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "misc/misc.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"

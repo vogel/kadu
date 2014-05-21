@@ -19,7 +19,7 @@
 
 #include "storage-point-factory.h"
 
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "misc/memory.h"
 #include "storage/storage-point.h"
 
@@ -33,7 +33,7 @@ StoragePointFactory::~StoragePointFactory()
 {
 }
 
-void StoragePointFactory::setConfigurationFile(XmlConfigFile *configurationFile)
+void StoragePointFactory::setConfigurationFile(ConfigurationApi *configurationFile)
 {
 	m_configurationFile = configurationFile;
 }

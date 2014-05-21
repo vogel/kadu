@@ -66,7 +66,7 @@
 
 class Account;
 class BuddySet;
-class XmlConfigFile;
+class ConfigurationApi;
 
 /**
  * @class ChatManager

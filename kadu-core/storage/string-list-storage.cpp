@@ -19,7 +19,7 @@
 
 #include "string-list-storage.h"
 
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "storage/storage-point.h"
 
 #include <QtCore/QVector>

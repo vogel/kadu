@@ -152,7 +152,7 @@ void AccountShared::loadRosterTasks()
 	if (!protocolHandler() || !protocolHandler()->rosterService())
 		return;
 
-	XmlConfigFile *configurationStorage = storage()->storage();
+	ConfigurationApi *configurationStorage = storage()->storage();
 	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
 
 	QDomNodeList rosterTaskNodes = rosterTasksNode.childNodes();
@@ -226,7 +226,7 @@ void AccountShared::storeRosterTasks()
 	if (!protocolHandler() || !protocolHandler()->rosterService())
 		return;
 
-	XmlConfigFile *configurationStorage = storage()->storage();
+	ConfigurationApi *configurationStorage = storage()->storage();
 	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
 
 	while (!rosterTasksNode.childNodes().isEmpty())

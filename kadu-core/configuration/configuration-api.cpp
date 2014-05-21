@@ -37,14 +37,14 @@
 #include "debug.h"
 #include "kadu-config.h"
 
-#include "xml-configuration-file.h"
+#include "configuration-api.h"
 
-XmlConfigFile::XmlConfigFile() : DomDocument()
+ConfigurationApi::ConfigurationApi() : DomDocument()
 {
 	read();
 }
 
-bool XmlConfigFile::isUsable() const
+bool ConfigurationApi::isUsable() const
 {
 	const QString &profilePath = KaduPaths::instance()->profilePath();
 	return !profilePath.isEmpty() &&
@@ -52,7 +52,7 @@ bool XmlConfigFile::isUsable() const
 			QFile(profilePath + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite);
 }
 
-void XmlConfigFile::read()
+void ConfigurationApi::read()
 {
 	kdebugf();
 	QFile file;
@@ -120,7 +120,7 @@ void XmlConfigFile::read()
 	kdebugf2();
 }
 
-void XmlConfigFile::write(const QString& f)
+void ConfigurationApi::write(const QString& f)
 {
 	kdebugf();
 	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
@@ -156,35 +156,35 @@ void XmlConfigFile::write(const QString& f)
 	kdebugf2();
 }
 
-void XmlConfigFile::sync()
+void ConfigurationApi::sync()
 {
 	write();
 }
 
-void XmlConfigFile::makeBackup()
+void ConfigurationApi::makeBackup()
 {
 	QString f = QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	write(KaduPaths::instance()->profilePath() + f);
 }
 
-QDomElement XmlConfigFile::rootElement()
+QDomElement ConfigurationApi::rootElement()
 {
 	return DomDocument.documentElement();
 }
 
-QDomElement XmlConfigFile::createElement(QDomElement parent, const QString& tag_name)
+QDomElement ConfigurationApi::createElement(QDomElement parent, const QString& tag_name)
 {
 	const QDomElement &elem = DomDocument.createElement(tag_name);
 	parent.appendChild(elem);
 	return elem;
 }
 
-QDomElement XmlConfigFile::findElement(const QDomElement &parent, const QString& tag_name) const
+QDomElement ConfigurationApi::findElement(const QDomElement &parent, const QString& tag_name) const
 {
 	return parent.firstChildElement(tag_name);
 }
 
-QDomElement XmlConfigFile::findElementByProperty(const QDomElement &parent, const QString &tag_name,
+QDomElement ConfigurationApi::findElementByProperty(const QDomElement &parent, const QString &tag_name,
 	const QString &property_name, const QString &property_value) const
 {
 	for (QDomElement elem = parent.firstChildElement(tag_name); !elem.isNull(); elem = elem.nextSiblingElement(tag_name))
@@ -196,7 +196,7 @@ QDomElement XmlConfigFile::findElementByProperty(const QDomElement &parent, cons
 	return QDomNode().toElement();
 }
 
-QDomElement XmlConfigFile::findElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
+QDomElement ConfigurationApi::findElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
 	const QString &property_name, const QString &property_value) const
 {
 	for (QDomElement elem = parent.firstChildElement(tag_name); !elem.isNull(); elem = elem.nextSiblingElement(tag_name))
@@ -208,7 +208,7 @@ QDomElement XmlConfigFile::findElementByFileNameProperty(const QDomElement &pare
 	return QDomNode().toElement();
 }
 
-QDomElement XmlConfigFile::accessElement(const QDomElement &parent, const QString& tag_name)
+QDomElement ConfigurationApi::accessElement(const QDomElement &parent, const QString& tag_name)
 {
 	const QDomElement &elem = findElement(parent, tag_name);
 	if (elem.isNull())
@@ -217,7 +217,7 @@ QDomElement XmlConfigFile::accessElement(const QDomElement &parent, const QStrin
 		return elem;
 }
 
-QDomElement XmlConfigFile::accessElementByProperty(const QDomElement &parent, const QString& tag_name,
+QDomElement ConfigurationApi::accessElementByProperty(const QDomElement &parent, const QString& tag_name,
 	const QString& property_name, const QString& property_value)
 {
 	QDomElement elem = findElementByProperty(parent, tag_name,
@@ -230,7 +230,7 @@ QDomElement XmlConfigFile::accessElementByProperty(const QDomElement &parent, co
 	return elem;
 }
 
-QDomElement XmlConfigFile::accessElementByFileNameProperty(const QDomElement &parent, const QString& tag_name,
+QDomElement ConfigurationApi::accessElementByFileNameProperty(const QDomElement &parent, const QString& tag_name,
 	const QString& property_name, const QString& property_value)
 {
 	QDomElement elem = findElementByFileNameProperty(parent, tag_name,
@@ -243,7 +243,7 @@ QDomElement XmlConfigFile::accessElementByFileNameProperty(const QDomElement &pa
 	return elem;
 }
 
-void XmlConfigFile::removeChildren(QDomElement parent)
+void ConfigurationApi::removeChildren(QDomElement parent)
 {
 	while (parent.hasChildNodes())
 	{
@@ -252,62 +252,62 @@ void XmlConfigFile::removeChildren(QDomElement parent)
 	}
 }
 
-void XmlConfigFile::removeNodes(QDomElement parentNode, const QVector<QDomElement> &elements)
+void ConfigurationApi::removeNodes(QDomElement parentNode, const QVector<QDomElement> &elements)
 {
 	foreach (const QDomElement &element, elements)
 		parentNode.removeChild(element);
 }
 
-void XmlConfigFile::removeNamedNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &name)
+void ConfigurationApi::removeNamedNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &name)
 {
 	foreach (const QDomElement &element, elements)
 		if (isElementNamed(element, name))
 			parentNode.removeChild(element);
 }
 
-void XmlConfigFile::removeUuidNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &uuid)
+void ConfigurationApi::removeUuidNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &uuid)
 {
 	foreach (const QDomElement &element, elements)
 		if (isElementUuid(element, uuid))
 			parentNode.removeChild(element);
 }
 
-bool XmlConfigFile::isElementNamed(const QDomElement &element, const QString &name)
+bool ConfigurationApi::isElementNamed(const QDomElement &element, const QString &name)
 {
 	return element.hasAttribute("name") && name == element.attribute("name");
 }
 
-bool XmlConfigFile::isElementUuid(const QDomElement &element, const QString &uuid)
+bool ConfigurationApi::isElementUuid(const QDomElement &element, const QString &uuid)
 {
 	return element.hasAttribute("uuid") && uuid == element.attribute("uuid");
 }
 
-bool XmlConfigFile::hasNode(const QString &nodeTagName)
+bool ConfigurationApi::hasNode(const QString &nodeTagName)
 {
 	return !getNode(nodeTagName, ModeFind).isNull();
 }
 
-bool XmlConfigFile::hasNode(const QDomElement &parentNode, const QString &nodeTagName)
+bool ConfigurationApi::hasNode(const QDomElement &parentNode, const QString &nodeTagName)
 {
 	return !getNode(parentNode, nodeTagName, ModeFind).isNull();
 }
 
-QDomElement XmlConfigFile::getNode(const QString &nodeTagName, GetNodeMode getMode)
+QDomElement ConfigurationApi::getNode(const QString &nodeTagName, GetNodeMode getMode)
 {
 	return getNode(DomDocument.documentElement(), nodeTagName, getMode);
 }
 
-QDomElement XmlConfigFile::getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode)
+QDomElement ConfigurationApi::getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode)
 {
 	return getNamedNode(DomDocument.documentElement(), nodeTagName, nodeName, getMode);
 }
 
-QDomElement XmlConfigFile::getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
+QDomElement ConfigurationApi::getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
 {
 	return getUuidNode(DomDocument.documentElement(), nodeTagName, nodeUuid, getMode);
 }
 
-QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode)
+QDomElement ConfigurationApi::getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode)
 {
 	if (ModeCreate == getMode)
 	{
@@ -331,7 +331,7 @@ QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTa
 	return result;
 }
 
-QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode)
+QDomElement ConfigurationApi::getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode)
 {
 	QVector<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
@@ -353,7 +353,7 @@ QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &n
 	return result;
 }
 
-QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
+QDomElement ConfigurationApi::getUuidNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
 {
 	QVector<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
@@ -375,7 +375,7 @@ QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &no
 	return result;
 }
 
-QVector<QDomElement> XmlConfigFile::getNodes(const QDomElement &parent, const QString &nodeTagName)
+QVector<QDomElement> ConfigurationApi::getNodes(const QDomElement &parent, const QString &nodeTagName)
 {
 	QVector<QDomElement> result;
 
@@ -385,7 +385,7 @@ QVector<QDomElement> XmlConfigFile::getNodes(const QDomElement &parent, const QS
 	return result;
 }
 
-QDomNode XmlConfigFile::cdataOrText(const QString &text)
+QDomNode ConfigurationApi::cdataOrText(const QString &text)
 {
 	if (text.trimmed() != text)
 		return DomDocument.createCDATASection(text);
@@ -393,26 +393,26 @@ QDomNode XmlConfigFile::cdataOrText(const QString &text)
 		return DomDocument.createTextNode(text);
 }
 
-void XmlConfigFile::appendTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
+void ConfigurationApi::appendTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeAppend);
 	element.appendChild(cdataOrText(nodeContent));
 }
 
-void XmlConfigFile::createTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
+void ConfigurationApi::createTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeCreate);
 	element.appendChild(cdataOrText(nodeContent));
 }
 
-void XmlConfigFile::createNamedTextNode(const QDomElement &parentNode, const QString &nodeTagName,
+void ConfigurationApi::createNamedTextNode(const QDomElement &parentNode, const QString &nodeTagName,
 		const QString &nodeName, const QString &nodeContent)
 {
 	QDomElement element = getNamedNode(parentNode, nodeTagName, nodeName, ModeCreate);
 	element.appendChild(cdataOrText(nodeContent));
 }
 
-QString XmlConfigFile::getTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &defaultValue)
+QString ConfigurationApi::getTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &defaultValue)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeFind);
 	if (element.isNull())
@@ -421,7 +421,7 @@ QString XmlConfigFile::getTextNode(const QDomElement &parentNode, const QString 
 	return element.text();
 }
 
-void XmlConfigFile::removeNode(QDomElement parentNode, const QString& nodeTagName)
+void ConfigurationApi::removeNode(QDomElement parentNode, const QString& nodeTagName)
 {
 	QDomElement elementToRemove = getNode(parentNode, nodeTagName, ModeFind);
 	while (!elementToRemove.isNull())

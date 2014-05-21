@@ -19,15 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XML_CONFIG_FILE_H
-#define XML_CONFIG_FILE_H
+#pragma once
 
 #include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
 #include "exports.h"
 
-class KADUAPI XmlConfigFile
+class KADUAPI ConfigurationApi
 {
 public:
 	enum GetNodeMode
@@ -52,7 +51,7 @@ private:
 	QDomNode cdataOrText(const QString &text);
 
 public:
-	XmlConfigFile();
+	ConfigurationApi();
 
 	bool isUsable() const;
 	void read();
@@ -96,5 +95,3 @@ public:
 	void removeNode(QDomElement parentNode, const QString &nodeTagName);
 
 };
-
-#endif // XML_CONFIG_FILE

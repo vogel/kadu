@@ -29,7 +29,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/main-configuration-holder.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"

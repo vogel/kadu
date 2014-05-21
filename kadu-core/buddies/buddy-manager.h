@@ -38,7 +38,7 @@
 #include "exports.h"
 
 class Account;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 {
@@ -52,7 +52,7 @@ class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 
 	void init();
 
-	void importConfiguration(XmlConfigFile *configurationStorage);
+	void importConfiguration(ConfigurationApi *configurationStorage);
 
 	QString mergeValue(const QString &destination, const QString &source) const;
 

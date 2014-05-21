@@ -40,7 +40,7 @@
 #include <memory>
 
 class DeprecatedConfigurationApi;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI KaduApplication : public QApplication
 {
@@ -54,13 +54,13 @@ public:
 
 	void prepareConfiguration();
 
-	XmlConfigFile * configurationApi() const;
+	ConfigurationApi * configurationApi() const;
 	DeprecatedConfigurationApi * deprecatedConfigurationApi() const;
 
 private:
 	static KaduApplication * m_instance;
 
-	std::unique_ptr<XmlConfigFile> m_configurationApi;
+	std::unique_ptr<ConfigurationApi> m_configurationApi;
 	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
 
 };

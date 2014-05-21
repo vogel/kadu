@@ -26,7 +26,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/dialog/password-dialog-widget.h"

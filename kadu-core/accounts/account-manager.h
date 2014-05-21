@@ -34,7 +34,7 @@
 #include "exports.h"
 
 class Status;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI AccountManager : public QObject, public Manager<Account>
 {

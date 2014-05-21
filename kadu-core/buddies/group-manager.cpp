@@ -26,7 +26,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-manager.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "storage/storage-point.h"
@@ -69,9 +69,9 @@ void GroupManager::importConfiguration()
 		return;
 
 	QSet<QString> groups;
-	XmlConfigFile *configurationStorage = sp->storage();
+	ConfigurationApi *configurationStorage = sp->storage();
 
-	QDomElement contactsNode = configurationStorage->getNode("Contacts", XmlConfigFile::ModeFind);
+	QDomElement contactsNode = configurationStorage->getNode("Contacts", ConfigurationApi::ModeFind);
 	if (contactsNode.isNull())
 		return;
 
@@ -88,7 +88,7 @@ void GroupManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	QDomElement groupsNode = KaduApplication::instance()->configurationApi()->getNode("Groups", XmlConfigFile::ModeFind);
+	QDomElement groupsNode = KaduApplication::instance()->configurationApi()->getNode("Groups", ConfigurationApi::ModeFind);
 	if (groupsNode.isNull())
 	{
 		importConfiguration();

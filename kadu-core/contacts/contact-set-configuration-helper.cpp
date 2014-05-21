@@ -26,7 +26,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 
@@ -37,13 +37,13 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *
 	if (!parent->isValidStorage())
 		return ContactSet();
 
-	XmlConfigFile *configurationStorage = parent->storage()->storage();
+	ConfigurationApi *configurationStorage = parent->storage()->storage();
 	QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
 
 	return loadFromConfiguration(configurationStorage, contactSetNode);
 }
 
-ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ConfigurationApi *configurationStorage, QDomElement contactSetNode)
 {
 	ContactSet result;
 
@@ -64,13 +64,13 @@ void ContactSetConfigurationHelper::saveToConfiguration(StorableObject *parent, 
 	if (!parent->isValidStorage())
 		return;
 
-	XmlConfigFile *configurationStorage = parent->storage()->storage();
+	ConfigurationApi *configurationStorage = parent->storage()->storage();
 	QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
 
 	saveToConfiguration(configurationStorage, contactSetNode, contactSet);
 }
 
-void ContactSetConfigurationHelper::saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet)
+void ContactSetConfigurationHelper::saveToConfiguration(ConfigurationApi *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet)
 {
 	while (!contactSetNode.childNodes().isEmpty())
 		contactSetNode.removeChild(contactSetNode.childNodes().at(0));

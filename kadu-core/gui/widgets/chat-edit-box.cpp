@@ -35,7 +35,7 @@
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/main-configuration-holder.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"

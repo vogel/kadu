@@ -45,7 +45,7 @@ class Contact;
 class ContactShared;
 class Group;
 class StoragePoint;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI Buddy : public SharedBase<BuddyShared>
 {

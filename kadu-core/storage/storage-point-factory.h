@@ -25,7 +25,7 @@
 #include <QtCore/QObject>
 
 class StoragePoint;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI StoragePointFactory : public QObject
 {
@@ -35,11 +35,11 @@ public:
 	explicit StoragePointFactory(QObject *parent = 0);
 	virtual ~StoragePointFactory();
 
-	void setConfigurationFile(XmlConfigFile *configurationFile);
+	void setConfigurationFile(ConfigurationApi *configurationFile);
 
 	std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0);
 
 private:
-	XmlConfigFile *m_configurationFile;
+	ConfigurationApi *m_configurationFile;
 
 };

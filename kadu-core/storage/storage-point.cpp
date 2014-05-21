@@ -31,7 +31,7 @@
  *
  * Constructs StoragePoint from given XML file and DOM node.
  */
-StoragePoint::StoragePoint(XmlConfigFile *storage, QDomElement point)
+StoragePoint::StoragePoint(ConfigurationApi *storage, QDomElement point)
 		: Storage(storage), Point(point)
 {
 }
@@ -42,7 +42,7 @@ StoragePoint::StoragePoint(XmlConfigFile *storage, QDomElement point)
  *
  * Returns pointer to current XML storage file.
  */
-XmlConfigFile * StoragePoint::storage() const
+ConfigurationApi * StoragePoint::storage() const
 {
 	return Storage;
 }

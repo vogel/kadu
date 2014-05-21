@@ -26,7 +26,7 @@
 #include <QtWidgets/QApplication>
 
 #include "configuration/toolbar-configuration-manager.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "storage/storable-object.h"
 #include "kadu-application.h"
 

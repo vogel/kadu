@@ -25,7 +25,7 @@
  */
 
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "misc/misc.h"

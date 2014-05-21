@@ -36,7 +36,7 @@ class Identity;
 class NetworkProxy;
 class Protocol;
 class ProtocolFactory;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI Account : public SharedBase<AccountShared>
 {

@@ -40,7 +40,7 @@
 class Avatar;
 class ContactDetails;
 class ContactShared;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI Contact : public SharedBase<ContactShared>
 {

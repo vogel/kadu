@@ -47,7 +47,7 @@
 #endif // !Q_OS_WIN32
 
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "core/core.h"
 #include "execution-arguments/execution-arguments.h"
 #include "execution-arguments/execution-arguments-parser.h"

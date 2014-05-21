@@ -20,14 +20,14 @@
 
 #include <QtCore/QVector>
 
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "kadu-application.h"
 
 #include "profile-data-manager.h"
 
 QDomElement ProfileDataManager::getProfilesNode()
 {
-	QDomElement deprecated = KaduApplication::instance()->configurationApi()->getNode("Deprecated", XmlConfigFile::ModeFind);
+	QDomElement deprecated = KaduApplication::instance()->configurationApi()->getNode("Deprecated", ConfigurationApi::ModeFind);
 	if (deprecated.isNull())
 		return QDomElement();
 

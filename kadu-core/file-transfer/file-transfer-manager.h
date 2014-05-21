@@ -40,7 +40,7 @@
 
 class FileTransferActions;
 class FileTransferWindow;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTransfer>, AccountsAwareObject
 {

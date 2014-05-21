@@ -32,7 +32,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
@@ -161,10 +161,10 @@ void BuddyShared::load()
 
 	Shared::load();
 
-	XmlConfigFile *configurationStorage = storage()->storage();
+	ConfigurationApi *configurationStorage = storage()->storage();
 	QDomElement parent = storage()->point();
 
-	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
+	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeFind);
 	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
 
 	int count = customDataValuesList.count();
@@ -181,7 +181,7 @@ void BuddyShared::load()
 	}
 
 	Groups.clear();
-	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
+	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeFind);
 	if (!groupsNode.isNull())
 	{
 		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
@@ -223,10 +223,10 @@ void BuddyShared::store()
 
 	Shared::store();
 
-	XmlConfigFile *configurationStorage = storage()->storage();
+	ConfigurationApi *configurationStorage = storage()->storage();
 	QDomElement parent = storage()->point();
 
-	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeCreate);
+	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeCreate);
 
 	for (QMap<QString, QString>::const_iterator it = CustomData.constBegin(), end = CustomData.constEnd(); it != end; ++it)
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", it.key(), it.value());
@@ -260,7 +260,7 @@ void BuddyShared::store()
 
 	if (!Groups.isEmpty())
 	{
-		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeCreate);
+		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeCreate);
 		foreach (const Group &group, Groups)
 			configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
 	}

@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "exports.h"
 
 #include <QtCore/QVariant>
@@ -46,7 +46,7 @@
  * @{
  */
 
-class XmlConfigFile;
+class ConfigurationApi;
 
 /**
  * @class StoragePoint
@@ -66,13 +66,13 @@ class XmlConfigFile;
  */
 class KADUAPI StoragePoint
 {
-	XmlConfigFile *Storage;
+	ConfigurationApi *Storage;
 	QDomElement Point;
 
 public:
-	StoragePoint(XmlConfigFile *storage, QDomElement point);
+	StoragePoint(ConfigurationApi *storage, QDomElement point);
 
-	XmlConfigFile * storage() const;
+	ConfigurationApi * storage() const;
 	QDomElement point() const;
 
 	/**

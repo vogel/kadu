@@ -37,7 +37,7 @@
 #include "buddies/buddy.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
@@ -593,7 +593,7 @@ void TabsManager::store()
 	if (!isValidStorage())
 		return;
 
-	XmlConfigFile *storageFile = storage()->storage();
+	ConfigurationApi *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
 
 	storageFile->removeChildren(point);

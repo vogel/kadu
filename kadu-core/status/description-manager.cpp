@@ -43,7 +43,7 @@ DescriptionManager::DescriptionManager()
 
 	configurationUpdated();
 
-	if (KaduApplication::instance()->configurationApi()->getNode("Descriptions", XmlConfigFile::ModeFind).isNull())
+	if (KaduApplication::instance()->configurationApi()->getNode("Descriptions", ConfigurationApi::ModeFind).isNull())
 		import();
 	else
 		setState(StateNotLoaded);

@@ -70,7 +70,7 @@ class Account;
 class Avatar;
 class Contact;
 class Group;
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI BuddyShared : public QObject, public Shared
 {

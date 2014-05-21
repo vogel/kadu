@@ -21,7 +21,7 @@
 
 #include "buddies/group-manager.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar-configuration.h"
 #include "kadu-application.h"
@@ -83,7 +83,7 @@ void GroupTabBarConfigurator::storeConfiguration()
 
 QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTabEverybody) const
 {
-	auto groupTabBarNode = KaduApplication::instance()->configurationApi()->getNode("GroupTabBar", XmlConfigFile::ModeGet);
+	auto groupTabBarNode = KaduApplication::instance()->configurationApi()->getNode("GroupTabBar", ConfigurationApi::ModeGet);
 	if (groupTabBarNode.isNull())
 		return import_0_12_groupFilters(showGroupTabEverybody);
 
@@ -133,7 +133,7 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 
 void GroupTabBarConfigurator::storeGroupFilters(const QVector<GroupFilter> &groupFilters)
 {
-	auto groupTabBarNode = KaduApplication::instance()->configurationApi()->getNode("GroupTabBar", XmlConfigFile::ModeCreate);
+	auto groupTabBarNode = KaduApplication::instance()->configurationApi()->getNode("GroupTabBar", ConfigurationApi::ModeCreate);
 	foreach (const auto &groupFilter, groupFilters)
 		storeGroupFilter(groupTabBarNode, groupFilter);
 }
@@ -143,7 +143,7 @@ void GroupTabBarConfigurator::storeGroupFilter(QDomElement parentElement, const 
 	if (GroupFilterInvalid == groupFilter.filterType())
 		return;
 
-	auto groupFilterNode = KaduApplication::instance()->configurationApi()->getNode(parentElement, "GroupFilter", XmlConfigFile::ModeAppend);
+	auto groupFilterNode = KaduApplication::instance()->configurationApi()->getNode(parentElement, "GroupFilter", ConfigurationApi::ModeAppend);
 	switch (groupFilter.filterType())
 	{
 		case GroupFilterRegular:

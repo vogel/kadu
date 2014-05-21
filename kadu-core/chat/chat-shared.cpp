@@ -140,12 +140,12 @@ void ChatShared::load()
 
 	Shared::load();
 
-	XmlConfigFile *configurationStorage = storage()->storage();
+	ConfigurationApi *configurationStorage = storage()->storage();
 	QDomElement parent = storage()->point();
 
 	Groups.clear();
 
-	QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", XmlConfigFile::ModeFind);
+	QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", ConfigurationApi::ModeFind);
 	if (!groupsNode.isNull())
 	{
 		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
@@ -191,7 +191,7 @@ void ChatShared::store()
 
 	Shared::store();
 
-	XmlConfigFile *configurationStorage = storage()->storage();
+	ConfigurationApi *configurationStorage = storage()->storage();
 	QDomElement parent = storage()->point();
 
 	storeValue("Account", ChatAccount->uuid().toString());
@@ -206,7 +206,7 @@ void ChatShared::store()
 
 	if (!Groups.isEmpty())
 	{
-		QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", XmlConfigFile::ModeCreate);
+		QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", ConfigurationApi::ModeCreate);
 		foreach (const Group &group, Groups)
 			configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
 	}

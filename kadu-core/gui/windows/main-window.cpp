@@ -30,7 +30,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/toolbar-configuration-manager.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"

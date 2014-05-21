@@ -101,7 +101,7 @@ void MobileNumberManager::load()
 
 	StorableObject::load();
 
-	XmlConfigFile *configurationStorage = storage()->storage();
+	ConfigurationApi *configurationStorage = storage()->storage();
 	QDomElement mobileNumbersNode = storage()->point();
 	if (mobileNumbersNode.isNull())
 		return;

@@ -40,7 +40,7 @@ UnreadMessageRepository::~UnreadMessageRepository()
 
 bool UnreadMessageRepository::importFromPendingMessages()
 {
-	auto pendingMessagesNode = KaduApplication::instance()->configurationApi()->getNode("PendingMessages", XmlConfigFile::ModeFind);
+	auto pendingMessagesNode = KaduApplication::instance()->configurationApi()->getNode("PendingMessages", ConfigurationApi::ModeFind);
 	if (pendingMessagesNode.isNull())
 		return false;
 

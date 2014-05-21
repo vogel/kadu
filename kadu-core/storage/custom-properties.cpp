@@ -20,7 +20,7 @@
 
 #include <QtCore/QVariant>
 
-#include <configuration/xml-configuration-file.h>
+#include <configuration/configuration-api.h>
 #include "custom-properties.h"
 #include "storage-point.h"
 

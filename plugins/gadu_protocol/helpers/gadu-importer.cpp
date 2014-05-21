@@ -30,7 +30,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
@@ -66,7 +66,7 @@ void GaduImporter::destroyInstance()
 
 bool GaduImporter::alreadyImported()
 {
-	QDomElement node = KaduApplication::instance()->configurationApi()->getNode("Accounts", XmlConfigFile::ModeFind);
+	QDomElement node = KaduApplication::instance()->configurationApi()->getNode("Accounts", ConfigurationApi::ModeFind);
 	if (node.isNull())
 		return false;
 
@@ -75,7 +75,7 @@ bool GaduImporter::alreadyImported()
 
 void GaduImporter::markImported()
 {
-	QDomElement node = KaduApplication::instance()->configurationApi()->getNode("Accounts", XmlConfigFile::ModeFind);
+	QDomElement node = KaduApplication::instance()->configurationApi()->getNode("Accounts", ConfigurationApi::ModeFind);
 	node.setAttribute("import_done", "true");
 }
 
@@ -240,7 +240,7 @@ void GaduImporter::importIgnored()
 	if (account.isNull())
 		return;
 
-	QDomElement ignored = KaduApplication::instance()->configurationApi()->getNode("Ignored", XmlConfigFile::ModeFind);
+	QDomElement ignored = KaduApplication::instance()->configurationApi()->getNode("Ignored", ConfigurationApi::ModeFind);
 	if (ignored.isNull())
 		return;
 

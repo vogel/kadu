@@ -34,18 +34,18 @@
 #include <QtGui/QColor>
 #include <QtGui/QFont>
 
-class XmlConfigFile;
+class ConfigurationApi;
 
 class KADUAPI DeprecatedConfigurationApi final
 {
 	bool changeEntry(const QString &group, const QString &name, const QString &value);
 	QString getEntry(const QString &group, const QString &name) const;
 
-	XmlConfigFile *m_xmlConfigFile;
+	ConfigurationApi *m_xmlConfigFile;
 	QString m_fileName;
 
 public:
-	DeprecatedConfigurationApi(XmlConfigFile *xmlConfigFile, const QString &fileName);
+	DeprecatedConfigurationApi(ConfigurationApi *xmlConfigFile, const QString &fileName);
 
 	void writeEntry(const QString &group, const QString &name, const QString &value);
 	void writeEntry(const QString &group, const QString &name, const char *value);

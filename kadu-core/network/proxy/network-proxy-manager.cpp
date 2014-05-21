@@ -21,7 +21,7 @@
 #include <QtXml/QDomElement>
 
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/xml-configuration-file.h"
+#include "configuration/configuration-api.h"
 #include "storage/storage-point.h"
 #include "kadu-application.h"
 
