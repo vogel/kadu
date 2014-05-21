@@ -6,6 +6,7 @@ set (configuration_SRCS
 	configuration-aware-object.cpp
 	configuration-holder.cpp
 	configuration-manager.cpp
+	configuration-storage.cpp
 	deprecated-configuration-api.cpp
 	main-configuration-holder.cpp
 	notifier-configuration-data-manager.cpp
