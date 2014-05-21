@@ -194,7 +194,7 @@ MediaPlayer::MediaPlayer()
 
 	createDefaultConfiguration();
 
-	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("MediaPlayer", "statusPosition"));
+	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("MediaPlayer", "statusPosition"));
 
 	setControlsEnabled(false);
 	isPaused = true;
@@ -309,7 +309,7 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 	if (handled)
 		return;
 
-	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "chatShortcuts", true))
+	if (!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("MediaPlayer", "chatShortcuts", true))
 		return;
 
 	if (e->key() == SHORTCUT_KEY)
@@ -402,7 +402,7 @@ void MediaPlayer::putSongTitle(int ident)
 	switch (id)
 	{
 		case 0:
-			title = parse(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "chatString"));
+			title = parse(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "chatString"));
 			break;
 		case 1:
 			title = getTitle();
@@ -744,10 +744,10 @@ void MediaPlayer::checkTitle()
 	int pos = getCurrentPos();
 
 	// If OSD is enabled and current track position is betwean 0 and 1000 ms, then shows OSD
-	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
+	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
 		MediaPlayerNotification::notifyTitleHint(getTitle());
 
-	Changer->setTitle(parse(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "statusTagString")));
+	Changer->setTitle(parse(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "statusTagString")));
 }
 
 void MediaPlayer::configurationUpdated()
@@ -757,7 +757,7 @@ void MediaPlayer::configurationUpdated()
 	// Statuses switch
 	bool enabled = !Changer->isDisabled();
 
-	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "dockMenu", false))
+	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("MediaPlayer", "dockMenu", false))
 	{
 		MenuInventory::instance()
 			->menu("main")
@@ -789,7 +789,7 @@ void MediaPlayer::configurationUpdated()
 		}
 	}
 
-	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("MediaPlayer", "statusPosition"));
+	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("MediaPlayer", "statusPosition"));
 }
 
 bool MediaPlayer::playerInfoSupported()
@@ -938,9 +938,9 @@ QString MediaPlayer::getTitle()
 		QString title = playerInfo->getTitle();
 
 		// Lets cut nasty signatures
-		if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("MediaPlayer", "signature", true))
+		if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("MediaPlayer", "signature", true))
 		{
-			QStringList sigList(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES).split('\n'));
+			QStringList sigList(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES).split('\n'));
 			for (int i = 0; i < sigList.count(); i++)
 				title.remove(sigList[i]);
 		}
@@ -1024,14 +1024,14 @@ QStringList MediaPlayer::getPlayListFiles()
 
 void MediaPlayer::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "chatString", "MediaPlayer: %t [%c / %l]");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "statusTagString", "%r - %t");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "osd", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "signature", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "signatures", DEFAULT_SIGNATURES);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "chatShortcuts", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "dockMenu", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "statusPosition", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "chatString", "MediaPlayer: %t [%c / %l]");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "statusTagString", "%r - %t");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "osd", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "signature", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "signatures", DEFAULT_SIGNATURES);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "chatShortcuts", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "dockMenu", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "statusPosition", 0);
 }
 
 void MediaPlayer::insertFormattedSong()

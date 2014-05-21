@@ -57,7 +57,7 @@ MainConfigurationHolder::MainConfigurationHolder() :
 
 void MainConfigurationHolder::configurationUpdated()
 {
-	QString statusContainerType = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "StatusContainerType", "Identity");
+	QString statusContainerType = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "StatusContainerType", "Identity");
 
 	SetStatusMode newStatus = SetStatusPerIdentity;
 	if (statusContainerType == "Account")

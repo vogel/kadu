@@ -75,7 +75,7 @@ DesktopDock::DesktopDock(QObject *parent) :
 	MoveMenuAction = new QAction(tr("Move"), DockWindow);
 	connect(MoveMenuAction, SIGNAL(triggered()), DockWindow, SLOT(startMoving()));
 
-	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Desktop Dock", "MoveInMenu"))
+	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Desktop Dock", "MoveInMenu"))
 		createMenu();
 
 	kdebugf2();
@@ -142,18 +142,18 @@ void DesktopDock::updateMenu(bool b)
 
 void DesktopDock::configurationUpdated()
 {
-	updateMenu(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Desktop Dock", "MoveInMenu"));
+	updateMenu(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Desktop Dock", "MoveInMenu"));
 }
 
 void DesktopDock::createDefaultConfiguration()
 {
 	QWidget w;
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Desktop Dock", "DockingColor", w.palette().color(QPalette::Active, QPalette::Window));
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Desktop Dock", "DockingTransparency", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Desktop Dock", "MoveInMenu", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Desktop Dock", "PositionX", 0);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Desktop Dock", "PositionY", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "DockingColor", w.palette().color(QPalette::Active, QPalette::Window));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "DockingTransparency", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "MoveInMenu", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "PositionX", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "PositionY", 0);
 }
 
 #include "moc_desktop-dock.cpp"

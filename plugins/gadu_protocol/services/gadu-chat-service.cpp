@@ -179,10 +179,10 @@ bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 {
 	bool ignore =
 			sender.isAnonymous() &&
-			KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
+			KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
 			(
 				(e->event.msg.recipients_count == 0) ||
-				KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")
+				KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")
 			);
 
 	return ignore;
@@ -207,7 +207,7 @@ RawMessage GaduChatService::getRawMessage(gg_event *e)
 
 bool GaduChatService::ignoreRichText(Contact sender)
 {
-	return sender.isAnonymous() && KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat","IgnoreAnonymousRichtext");
+	return sender.isAnonymous() && KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
 void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)

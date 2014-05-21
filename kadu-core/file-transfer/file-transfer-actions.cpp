@@ -142,7 +142,7 @@ QStringList FileTransferActions::selectFilesToSend()
 {
 	return QFileDialog::getOpenFileNames(
 			0, tr("Select file location"),
-			KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "LastUploadDirectory"));
+			KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "LastUploadDirectory"));
 }
 
 void FileTransferActions::selectFilesAndSend(const ContactSet &contacts)

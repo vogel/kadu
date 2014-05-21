@@ -148,7 +148,7 @@ QList<Buddy> GaduImporter::import065Buddies(Account account, QXmlQuery &xmlQuery
 
 void GaduImporter::importAccounts()
 {
-	quint32 importUin = KaduApplication::instance()->depreceatedConfigurationApi()->readUnsignedNumEntry("General", "UIN");
+	quint32 importUin = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General", "UIN");
 	if (0 == importUin)
 		return;
 
@@ -163,10 +163,10 @@ void GaduImporter::importAccounts()
 	Account defaultGaduGadu = Account::create("gadu");
 
 	defaultGaduGadu.setId(importUinString);
-	defaultGaduGadu.setPassword(pwHash(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "Password")));
+	defaultGaduGadu.setPassword(pwHash(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Password")));
 	defaultGaduGadu.setRememberPassword(true);
 	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
-	defaultGaduGadu.setPrivateStatus(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "PrivateStatus"));
+	defaultGaduGadu.setPrivateStatus(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "PrivateStatus"));
 
 	// bad code: order of calls is important here
 	// we have to set identity after password
@@ -178,20 +178,20 @@ void GaduImporter::importAccounts()
 	if (accountDetails)
 	{
 		accountDetails->setState(StorableObject::StateNew);
-		accountDetails->setAllowDcc(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Network", "AllowDCC"));
-		accountDetails->setReceiveImagesDuringInvisibility(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
+		accountDetails->setAllowDcc(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Network", "AllowDCC"));
+		accountDetails->setReceiveImagesDuringInvisibility(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
 	}
 
-	QString address = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "ProxyHost");
+	QString address = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "ProxyHost");
 	if (!address.isEmpty())
 	{
-		int port = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Network", "ProxyPort");
-		QString user = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "ProxyUser");
-		QString password = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "ProxyPassword");
+		int port = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Network", "ProxyPort");
+		QString user = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "ProxyUser");
+		QString password = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "ProxyPassword");
 
 		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
 		            address, port, user, password, ActionCreateAndAdd);
-		if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Network", "UseProxy"))
+		if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Network", "UseProxy"))
 			defaultGaduGadu.setProxy(networkProxy);
 	}
 

@@ -55,16 +55,16 @@ void ChatNotifyPlugin::done()
 
 void ChatNotifyPlugin::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "OTR_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "FileTransfer_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "OTR_ChatNotifier", true);
 }
 
 Q_EXPORT_PLUGIN2(chat_notify, ChatNotifyPlugin)

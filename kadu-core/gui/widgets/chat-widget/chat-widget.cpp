@@ -534,7 +534,7 @@ void ChatWidget::clearChatWindow()
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
+	if (!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
 		MessagesView->setForcePruneDisabled(false);

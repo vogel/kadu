@@ -102,9 +102,9 @@ FileDescription::~FileDescription()
 
 void FileDescription::configurationUpdated()
 {
-	File = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	ForceDesc = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("FileDesc", "forceDescr", true);
-	AllowOther = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("FileDesc", "allowOther", true);
+	File = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	ForceDesc = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("FileDesc", "forceDescr", true);
+	AllowOther = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
@@ -130,9 +130,9 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FileDesc", "forceDescr", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("FileDesc", "allowOther", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("FileDesc", "forceDescr", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

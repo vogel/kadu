@@ -138,12 +138,12 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 void GroupPropertiesWindow::selectIcon()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("GroupIcon", "recentPath", "~/"),
+	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("GroupIcon", "recentPath", "~/"),
 					tr("Images (*.png *.xpm *.jpg);;All Files (*)"));
 	if (!file.isEmpty())
 	{
 		QFileInfo fileInfo(file);
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
 		icon->setText(QString());
 		icon->setIcon(QIcon(file));
 		iconPath = file;

@@ -86,8 +86,8 @@ void AutoHide::timerTimeoutSlot()
 
 void AutoHide::configurationUpdated()
 {
-	IdleTime = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
-	Enabled = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+	IdleTime = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+	Enabled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
 
 	if (Enabled && !Timer.isActive())
 		Timer.start(1000);

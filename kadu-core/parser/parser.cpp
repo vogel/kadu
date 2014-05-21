@@ -69,7 +69,7 @@ static void prepareSearchChars(bool forceExecSeachChars = false)
 		foreach (QChar c, QString(SEARCH_CHARS))
 			chars.insert(c);
 
-	bool allowExec = forceExecSeachChars || KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
+	bool allowExec = forceExecSeachChars || KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
 	foreach (QChar c, QString(EXEC_SEARCH_CHARS))
 		if (allowExec)
 			chars.insert(c);
@@ -292,7 +292,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 				pe.setContent(description);
 
-				if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowMultilineDesc"))
+				if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "ShowMultilineDesc"))
 				{
 					QString content = pe.decodedContent();
 					content.replace('\n', QLatin1String("<br/>"));

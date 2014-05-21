@@ -66,7 +66,7 @@ SoundManager::SoundManager() :
 	import_0_6_5_configuration();
 	createDefaultConfiguration();
 
-	setMute(!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Sounds", "PlaySound"));
+	setMute(!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Sounds", "PlaySound"));
 
 
 	PlayThread = new QThread();
@@ -101,25 +101,25 @@ SoundManager::~SoundManager()
 
 void SoundManager::import_0_6_5_configuration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Sound",
-			KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Notify", "StatusChanged/ToAway_Sound"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Sound",
+			KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Notify", "StatusChanged/ToAway_Sound"));
 }
 
 void SoundManager::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "ConnectionError_Sound", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "InvalidPassword_Sound", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewChat_Sound", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "NewMessage_Sound", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToFreeForChat", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Sound", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "ConnectionError_Sound", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "InvalidPassword_Sound", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "NewChat_Sound", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "NewMessage_Sound", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToFreeForChat", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Sound", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "PlaySound", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "SoundPaths", QString());
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "SoundTheme", "default");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "SoundVolume", 100);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "PlaySound", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundPaths", QString());
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundTheme", "default");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundVolume", 100);
 }
 
 bool SoundManager::isMuted() const
@@ -146,7 +146,7 @@ void SoundManager::playSoundByName(const QString &soundName)
 	if (isMuted())
 		return;
 
-	QString file = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Sounds", soundName + "_sound");
+	QString file = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Sounds", soundName + "_sound");
 	playFile(file);
 }
 

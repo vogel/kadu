@@ -31,9 +31,9 @@ MPDConfig::MPDConfig()
 {
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
-	Host = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDHost");
-	Port = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDPort");
-	Timeout = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDTimeout");
+	Host = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "MPDTimeout");
 }
 
 MPDConfig::~MPDConfig()
@@ -43,14 +43,14 @@ MPDConfig::~MPDConfig()
 
 void MPDConfig::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "MPDHost", "localhost");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "MPDPort", "6600");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("MediaPlayer", "MPDTimeout", "10");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "MPDHost", "localhost");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "MPDPort", "6600");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("MediaPlayer", "MPDTimeout", "10");
 }
 
 void MPDConfig::configurationUpdated()
 {
-	Host = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDHost");
-	Port = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDPort");
-	Timeout = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("MediaPlayer", "MPDTimeout");
+	Host = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("MediaPlayer", "MPDTimeout");
 }

@@ -41,8 +41,8 @@ AntistringConfiguration::~AntistringConfiguration()
 
 void AntistringConfiguration::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PowerKadu", "log file", KaduPaths::instance()->profilePath() + QLatin1String("antistring.log"));
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("PowerKadu", "admonish_tresc_config",
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("PowerKadu", "log file", KaduPaths::instance()->profilePath() + QLatin1String("antistring.log"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("PowerKadu", "admonish_tresc_config",
 			"http://www.olsztyn.mm.pl/~silentman/lancuszki.htm");
 }
 
@@ -50,11 +50,11 @@ void AntistringConfiguration::configurationUpdated()
 {
 	readConditions();
 
-	Enabled = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("PowerKadu", "enable_antistring");
-	MessageStop = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("PowerKadu", "message stop");
-	LogMessage = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("PowerKadu", "log message");
-	ReturnMessage = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("PowerKadu", "admonish_tresc_config");
-	LogFile = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("PowerKadu", "log file", KaduPaths::instance()->profilePath() + QLatin1String("antistring.log"));
+	Enabled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("PowerKadu", "enable_antistring");
+	MessageStop = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("PowerKadu", "message stop");
+	LogMessage = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("PowerKadu", "log message");
+	ReturnMessage = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("PowerKadu", "admonish_tresc_config");
+	LogFile = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("PowerKadu", "log file", KaduPaths::instance()->profilePath() + QLatin1String("antistring.log"));
 }
 
 void AntistringConfiguration::addCondition(const QString &conditionString)
@@ -91,7 +91,7 @@ void AntistringConfiguration::readConditions()
 {
 	Conditions.clear();
 
-	QString conditionsString = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("PowerKadu", "antistring conditions");
+	QString conditionsString = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("PowerKadu", "antistring conditions");
 	QStringList conditionsList = conditionsString.split("\t\t");
 
 	if (conditionsList.empty())
@@ -111,5 +111,5 @@ void AntistringConfiguration::storeConditions()
 	foreach (const ConditionPair &condition, Conditions)
 		conditionsList.append(QString::number(condition.second) + '\t' + condition.first);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));
 }

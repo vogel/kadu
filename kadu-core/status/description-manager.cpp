@@ -79,7 +79,7 @@ DescriptionModel * DescriptionManager::model()
 void DescriptionManager::import()
 {
 	StringList.clear();
-	StringList.append(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
+	StringList.append(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
 	StringList.removeDuplicates();
 
 	truncate();
@@ -100,7 +100,7 @@ void DescriptionManager::truncate()
 
 void DescriptionManager::configurationUpdated()
 {
-	MaxNumberOfDescriptions = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("General", "NumberOfDescriptions");
+	MaxNumberOfDescriptions = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("General", "NumberOfDescriptions");
 	truncate();
 }
 

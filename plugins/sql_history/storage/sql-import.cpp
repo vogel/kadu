@@ -682,7 +682,7 @@ void SqlImport::performImport(QSqlDatabase &database)
 
 	initKaduSchemaTable(database);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
 }
 
 #include "moc_sql-import.cpp"

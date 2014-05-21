@@ -52,10 +52,10 @@ void NetworkAccessManagerWrapper::configurationUpdated()
 {
 	NetworkProxy networkProxy;
 
-	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("SMS", "DefaultProxy", true))
+	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("SMS", "DefaultProxy", true))
 		networkProxy = NetworkProxyManager::instance()->defaultProxy();
 	else
-		networkProxy = NetworkProxyManager::instance()->byUuid(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("SMS", "Proxy"));
+		networkProxy = NetworkProxyManager::instance()->byUuid(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("SMS", "Proxy"));
 
 	QNetworkProxy proxy;
 

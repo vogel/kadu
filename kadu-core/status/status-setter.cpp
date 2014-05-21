@@ -71,10 +71,10 @@ void StatusSetter::coreInitialized()
 
 void StatusSetter::configurationUpdated()
 {
-	StartupStatus = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "StartupStatus");
-	StartupLastDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "StartupDescription");
-	OfflineToInvisible = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+	StartupStatus = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "StartupStatus");
+	StartupLastDescription = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "StartupLastDescription");
+	StartupDescription = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "StartupDescription");
+	OfflineToInvisible = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
 
 	if (StartupStatus.isEmpty())
 		StartupStatus = "LastStatus";

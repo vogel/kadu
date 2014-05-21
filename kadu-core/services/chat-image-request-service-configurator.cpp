@@ -38,9 +38,9 @@ void ChatImageRequestServiceConfigurator::configurationUpdated()
 
 	ChatImageRequestServiceConfiguration configuration;
 
-	configuration.setLimitImageSize(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "LimitImageSize", true));
-	configuration.setMaximumImageSizeInKiloBytes(KaduApplication::instance()->depreceatedConfigurationApi()->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
-	configuration.setAllowBiggerImagesAfterAsking(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
+	configuration.setLimitImageSize(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "LimitImageSize", true));
+	configuration.setMaximumImageSizeInKiloBytes(KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
+	configuration.setAllowBiggerImagesAfterAsking(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
 
 	Service.data()->setConfiguration(configuration);
 }

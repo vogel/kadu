@@ -272,14 +272,14 @@ void ContactManager::removeDuplicateContacts()
 			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
 	}
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
 }
 
 void ContactManager::loaded()
 {
 	Manager<Contact>::loaded();
 
-	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
+	if (!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }

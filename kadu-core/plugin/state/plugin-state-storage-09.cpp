@@ -37,12 +37,12 @@ QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> 
 {
 	auto result = QMap<QString, PluginState>{};
 
-	auto everLoaded = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
-	auto loaded = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "LoadedModules");
+	auto everLoaded = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
+	auto loaded = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "LoadedModules");
 
 	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
 	everLoaded += loadedPlugins;
-	auto unloaded_str = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "UnloadedModules");
+	auto unloaded_str = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "UnloadedModules");
 	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...

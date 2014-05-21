@@ -141,7 +141,7 @@ void RecentChatManager::store()
 	for (int i = 0; i < count; i++)
 		mainElement.removeChild(chatElements.at(i));
 
-	if (!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "RecentChatsClear", false))
+	if (!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (const Chat &chat, RecentChats)
 			if (chat && !chat.uuid().isNull())
 			{
@@ -235,7 +235,7 @@ void RecentChatManager::removeRecentChat(Chat chat)
 void RecentChatManager::configurationUpdated()
 {
 	CleanUpTimer.stop();
-	RecentChatsTimeout = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Chat", "RecentChatsTimeout") * 60;
+	RecentChatsTimeout = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "RecentChatsTimeout") * 60;
 	if (RecentChatsTimeout > 0)
 		CleanUpTimer.start();
 

@@ -247,7 +247,7 @@ void ChatWidgetActions::configurationUpdated()
 
 void ChatWidgetActions::autoSendActionCreated(Action *action)
 {
-	action->setChecked(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "AutoSend"));
+	action->setChecked(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "AutoSend"));
 }
 
 void ChatWidgetActions::clearChatActionCreated(Action *action)
@@ -276,7 +276,7 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 
 void ChatWidgetActions::autoSendActionCheck()
 {
- 	bool check = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "AutoSend");
+ 	bool check = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "AutoSend");
  	foreach (Action *action, AutoSend->actions())
  		action->setChecked(check);
 }
@@ -289,7 +289,7 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Chat", "AutoSend", toggled);
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "AutoSend", toggled);
  	chatEditBox->setAutoSend(toggled);
 	autoSendActionCheck();
 }

@@ -43,12 +43,12 @@ void ChatWindowStorageConfigurator::configurationUpdated()
 
 void ChatWindowStorageConfigurator::createDefaultConfiguration() const
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "SaveOpenedWindows", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "SaveOpenedWindows", true);
 }
 
 ChatWindowStorageConfiguration ChatWindowStorageConfigurator::loadConfiguration() const
 {
 	auto configuration = ChatWindowStorageConfiguration();
-	configuration.setStoreOpenedChatWindows(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
+	configuration.setStoreOpenedChatWindows(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
 	return configuration;
 }

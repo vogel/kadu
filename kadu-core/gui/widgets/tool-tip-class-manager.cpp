@@ -37,7 +37,7 @@ ToolTipClassManager * ToolTipClassManager::instance()
 ToolTipClassManager::ToolTipClassManager() :
 		CurrentToolTipClass(0)
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
 	configurationUpdated();
 }
 
@@ -109,5 +109,5 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
+	useToolTipClass(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
 }

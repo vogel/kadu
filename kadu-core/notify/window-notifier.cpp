@@ -79,12 +79,12 @@ void WindowNotifier::notificationClosed(Notification *notification)
 
 void WindowNotifier::import_0_6_5_configuration()
 {
-    	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Window", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Notify", "StatusChanged/ToBusy_Window"));
+    	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Window", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Notify", "StatusChanged/ToBusy_Window"));
 }
 
 void WindowNotifier::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
 }
 
 /** @} */

@@ -96,7 +96,7 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 ConfigurationWidget::~ConfigurationWidget()
 {
 	if (SectionsListWidget->currentItem())
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
 
 	disconnect(SectionsListWidget, 0, this, 0);
 
@@ -110,7 +110,7 @@ ConfigurationWidget::~ConfigurationWidget()
 
 void ConfigurationWidget::init()
 {
-	QString lastSection = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "ConfigurationWindow_" + Name);
+	QString lastSection = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "ConfigurationWindow_" + Name);
 	if (ConfigSections.contains(lastSection))
 		ConfigSections.value(lastSection)->activate();
 	else if (SectionsListWidget->count() > 0)

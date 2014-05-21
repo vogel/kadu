@@ -294,7 +294,7 @@ void StatusWindow::applyStatus()
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
 
-	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "ParseStatus", false))
+	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
 
 	foreach (StatusContainer *container, Container->subStatusContainers())

@@ -100,8 +100,8 @@ void ChatWindow::configurationUpdated()
 {
 	triggerCompositingStateChanged();
 
-	m_showNewMessagesNum = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false);
-	m_blinkChatTitle = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "BlinkChatTitle", true);
+	m_showNewMessagesNum = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false);
+	m_blinkChatTitle = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "BlinkChatTitle", true);
 
 	if (m_chatWidget->chat().unreadMessagesCount())
 		blinkTitle();
@@ -109,7 +109,7 @@ void ChatWindow::configurationUpdated()
 
 void ChatWindow::compositingEnabled()
 {
-	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "UseTransparency", false))
+	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -158,9 +158,9 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 {
 	kdebugf();
 
-	if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "ChatCloseTimer"))
+	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		int period = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
+		int period = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < m_chatWidget->lastReceivedMessageTime().addSecs(period))
 		{

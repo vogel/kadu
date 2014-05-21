@@ -55,15 +55,15 @@ void ImageLinkConfigurator::configure()
 
 void ImageLinkConfigurator::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Imagelink", "show_image", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Imagelink", "show_yt", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Imagelink", "show_image", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Imagelink", "show_yt", true);
 }
 
 void ImageLinkConfigurator::configurationUpdated()
 {
 	ImageLinkConfiguration configuration;
-	configuration.setShowImages(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Imagelink", "show_image", true));
-	configuration.setShowVideos(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Imagelink", "show_yt", true));
+	configuration.setShowImages(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Imagelink", "show_image", true));
+	configuration.setShowVideos(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Imagelink", "show_yt", true));
 
 	if (ImageExpander)
 		ImageExpander->setConfiguration(configuration);

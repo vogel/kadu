@@ -52,7 +52,7 @@ EncryptioNgSimliteKeyImporter::EncryptioNgSimliteKeyImporter()
 
 void EncryptioNgSimliteKeyImporter::accountRegistered(Account account)
 {
-	if (account.id() == KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "UIN"))
+	if (account.id() == KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "UIN"))
 		importKeys(account);
 }
 

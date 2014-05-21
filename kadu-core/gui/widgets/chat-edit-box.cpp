@@ -228,13 +228,13 @@ void ChatEditBox::openInsertImageDialog()
 		return;
 
 	// QTBUG-849
-	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Chat", "LastImagePath"),
+	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Chat", "LastImagePath"),
 							tr("Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)"));
 	if (!selectedFile.isEmpty())
 	{
 		QFileInfo f(selectedFile);
 
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
 
 		if (!f.isReadable())
 		{

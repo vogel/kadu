@@ -161,12 +161,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "Priority", QString());
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "BuiltInApp", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "SmsNick", QString());
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("SMS", "UseCustomString", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "Priority", QString());
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "BuiltInApp", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "SmsNick", QString());
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "UseCustomString", false);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

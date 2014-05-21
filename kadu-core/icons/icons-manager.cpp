@@ -56,10 +56,10 @@ IconsManager::IconsManager()
 
 	ThemeManager = new IconThemeManager(this);
 	ThemeManager->loadThemes();
-	ThemeManager->setCurrentTheme(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Look", "IconTheme"));
+	ThemeManager->setCurrentTheme(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "IconTheme"));
 	configurationUpdated();
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 	// TODO: localized protocol
 	localProtocolPath = "gadu-gadu";
@@ -223,12 +223,12 @@ void IconsManager::clearCache()
 
 void IconsManager::configurationUpdated()
 {
-	bool themeWasChanged = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
+	bool themeWasChanged = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
 	if (themeWasChanged)
 	{
 		clearCache();
-		ThemeManager->setCurrentTheme(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Look", "IconTheme"));
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+		ThemeManager->setCurrentTheme(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "IconTheme"));
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 		emit themeChanged();
 	}

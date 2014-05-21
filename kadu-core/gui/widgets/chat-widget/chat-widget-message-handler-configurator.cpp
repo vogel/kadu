@@ -43,14 +43,14 @@ void ChatWidgetMessageHandlerConfigurator::configurationUpdated()
 
 void ChatWidgetMessageHandlerConfigurator::createDefaultConfiguration() const
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "OpenChatOnMessage", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "OpenChatOnMessage", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
 }
 
 ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::loadConfiguration() const
 {
 	auto configuration = ChatWidgetMessageHandlerConfiguration();
-	configuration.setOpenChatOnMessage(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "OpenChatOnMessage", false));
-	configuration.setOpenChatOnMessageOnlyWhenOnline(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
+	configuration.setOpenChatOnMessage(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "OpenChatOnMessage", false));
+	configuration.setOpenChatOnMessageOnlyWhenOnline(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
 	return configuration;
 }

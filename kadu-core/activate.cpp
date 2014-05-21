@@ -37,7 +37,7 @@
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
 		// read user settings
-		int action = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry( "General", "WindowActivationMethod" );
+		int action = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry( "General", "WindowActivationMethod" );
 		// window & desktop
 		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
 		{

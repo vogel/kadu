@@ -48,14 +48,14 @@ SoundThemeManager * SoundThemeManager::instance()
 SoundThemeManager::SoundThemeManager() :
 		MyThemes{make_unique<Themes>("sounds", "sound.conf")}
 {
-	MyThemes->setPaths(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+	MyThemes->setPaths(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	QStringList soundThemes = themes()->themes();
-	QString soundTheme = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Sounds", "SoundTheme");
+	QString soundTheme = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
 		soundTheme = "default";
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Sounds", "SoundTheme", "default");
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Sounds", "SoundTheme", "default");
 	}
 
 	if (soundTheme != "custom")
@@ -74,7 +74,7 @@ void SoundThemeManager::applyTheme(const QString &themeName)
 
 	while (i != entries.constEnd())
 	{
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
 		++i;
 	}
 }

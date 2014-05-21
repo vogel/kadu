@@ -314,8 +314,8 @@ void AccountShared::setDisconnectStatus()
 	if (!ProtocolHandler->isConnected() && !ProtocolHandler->isDisconnecting())
 		return;
 
-	bool disconnectWithCurrentDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
-	QString disconnectDescription = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "DisconnectDescription");
+	bool disconnectWithCurrentDescription = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
 	disconnectStatus.setType(StatusTypeOffline);

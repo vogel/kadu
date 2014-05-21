@@ -62,13 +62,13 @@ void NetworkProxyManager::store()
 
 void NetworkProxyManager::configurationUpdated()
 {
-	DefaultProxy = byUuid(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "DefaultProxy"));
+	DefaultProxy = byUuid(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "DefaultProxy"));
 }
 
 void NetworkProxyManager::setDefaultProxy(const NetworkProxy &proxy)
 {
 	DefaultProxy = proxy;
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
 }
 
 const NetworkProxy & NetworkProxyManager::defaultProxy()

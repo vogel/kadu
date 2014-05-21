@@ -37,10 +37,10 @@ ConfigFileVariantWrapper::~ConfigFileVariantWrapper()
 
 QVariant ConfigFileVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return KaduApplication::instance()->depreceatedConfigurationApi()->readEntry(Group, Name, defaultValue.toString());
+	return KaduApplication::instance()->deprecatedConfigurationApi()->readEntry(Group, Name, defaultValue.toString());
 }
 
 void ConfigFileVariantWrapper::set(const QVariant &value)
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry(Group, Name, value.toString());
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry(Group, Name, value.toString());
 }

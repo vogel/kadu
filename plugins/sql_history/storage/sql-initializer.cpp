@@ -156,7 +156,7 @@ void SqlInitializer::initDatabase()
 	}
 	else
 	{
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
 	}
 }

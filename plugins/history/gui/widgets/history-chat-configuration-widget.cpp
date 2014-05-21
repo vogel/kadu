@@ -55,7 +55,7 @@ void HistoryChatConfigurationWidget::createGui()
 
 void HistoryChatConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("History", "SaveChats", true);
+	GlobalStoreHistory = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "SaveChats", true);
 	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 

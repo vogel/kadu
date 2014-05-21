@@ -55,7 +55,7 @@ ConfigSection::~ConfigSection()
 	blockSignals(false);
 	emit destroyed(this);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
 			TabWidget->tabText(TabWidget->currentIndex()));
 
 	// delete them here, since they manually delete child widgets of our TabWidget
@@ -89,7 +89,7 @@ void ConfigSection::activate()
 	if (Activated)
 		return;
 
-	QString tab = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
+	QString tab = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
 	if (ConfigTabs.contains(tab))
 		TabWidget->setCurrentWidget(ConfigTabs.value(tab)->widget());
 	Activated = true;

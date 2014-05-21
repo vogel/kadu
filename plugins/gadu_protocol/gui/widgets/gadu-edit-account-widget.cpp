@@ -351,8 +351,8 @@ void GaduEditAccountWidget::apply()
 		Details->setExternalPort(ExternalPort->text().toUInt());
 	}
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Network", "Server", ipAddresses->text());
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Network", "Server", ipAddresses->text());
 	GaduServersManager::instance()->buildServerList();
 
 	if (gpiw->isModified())
@@ -397,8 +397,8 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& Details->allowDcc() == AllowFileTransfers->isChecked()
 
-		&& KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
-		&& KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "Server") == ipAddresses->text()
+		&& KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
+		&& KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& Details->receiveSpam() != ReceiveSpam->isChecked()
@@ -448,8 +448,8 @@ void GaduEditAccountWidget::loadAccountData()
 		ExternalPort->setText(QString::number(details->externalPort()));
 	}
 
-	useDefaultServers->setChecked(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Network", "isDefServers", true));
-	ipAddresses->setText(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Network", "Server"));
+	useDefaultServers->setChecked(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Network", "isDefServers", true));
+	ipAddresses->setText(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "Server"));
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }

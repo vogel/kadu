@@ -65,7 +65,7 @@ void ExternalPlayer::playSound(const QString &path)
 {
 	kdebugf();
 
-	QString playerCommand = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Sounds", "SoundPlayer");
+	QString playerCommand = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Sounds", "SoundPlayer");
 	QString volumeArguments;
 
 	if (playerCommand.isEmpty())
@@ -85,9 +85,9 @@ void ExternalPlayer::playSound(const QString &path)
 void ExternalPlayer::createDefaultConfiguration()
 {
 #ifdef Q_OS_MAC
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
 #else
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
 }
 

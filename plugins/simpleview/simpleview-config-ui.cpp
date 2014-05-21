@@ -64,9 +64,9 @@ void SimpleViewConfigUi::mainConfigurationWindowDestroyed()
 
 void SimpleViewConfigUi::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "SimpleViewKeepSize", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "SimpleViewBorderless", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "SimpleViewKeepSize", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "SimpleViewBorderless", true);
 }
 
 

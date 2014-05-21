@@ -102,12 +102,12 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 	SoundManager::instance()->setMute(!toggled);
 	setMuteActionState();
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Sounds", "PlaySound", toggled);
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundActions::configurationUpdated()
 {
-	SoundManager::instance()->setMute(!KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Sounds", "PlaySound"));
+	SoundManager::instance()->setMute(!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 

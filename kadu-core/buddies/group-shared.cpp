@@ -69,7 +69,7 @@ QString GroupShared::storageNodeName()
 void GroupShared::importConfiguration(const QString &name)
 {
 	Name = name;
-	Icon = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("GroupIcon", name);
+	Icon = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("GroupIcon", name);
 	NotifyAboutStatusChanges = true;
 	ShowInAllGroup= true;
 	OfflineToGroup= false;

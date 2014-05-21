@@ -44,7 +44,7 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 	if (!fileInfo.exists() || !fileInfo.isReadable())
 		throw PluginMetadataReaderException{};
 
-	auto const lang = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "Language");
+	auto const lang = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language");
 	QSettings file{filePath, QSettings::IniFormat};
 	file.setIniCodec("UTF-8");
 

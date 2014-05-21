@@ -184,7 +184,7 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	foreach (Notifier *notifier, Notifiers)
 	{
-		if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
+		if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{
 			notifier->notify(notification);
 			foundNotifier = true;
@@ -263,7 +263,7 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 		if (-1 == slashPosition)
 			return event;
 
-		if (KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
+		if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
 			return event;
 
 		event = event.left(slashPosition);

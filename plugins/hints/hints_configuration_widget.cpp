@@ -81,10 +81,10 @@ void HintsConfigurationWidget::updatePreview()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	preview->setFont(KaduApplication::instance()->depreceatedConfigurationApi()->readFontEntry("Hints", "Event_" + currentNotifyEvent + "_font", &font));
+	preview->setFont(KaduApplication::instance()->deprecatedConfigurationApi()->readFontEntry("Hints", "Event_" + currentNotifyEvent + "_font", &font));
 
-	QColor bcolor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "Event_" + currentNotifyEvent + "_bgcolor", &palette.window().color());
-	QColor fcolor = KaduApplication::instance()->depreceatedConfigurationApi()->readColorEntry("Hints", "Event_" + currentNotifyEvent + "_fgcolor", &palette.windowText().color());
+	QColor bcolor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Hints", "Event_" + currentNotifyEvent + "_bgcolor", &palette.window().color());
+	QColor fcolor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Hints", "Event_" + currentNotifyEvent + "_fgcolor", &palette.windowText().color());
 	QString style = QString("* {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }

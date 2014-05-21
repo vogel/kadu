@@ -52,8 +52,8 @@ void HistoryMigrationActions::unregisterActions()
 HistoryMigrationActions::HistoryMigrationActions() :
 		ImportHistoryActionDescription(0)
 {
-	bool imported = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("History", "Imported_from_0.6.5", false);
-	Account gaduAccount = AccountManager::instance()->byId("gadu", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "UIN"));
+	bool imported = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "Imported_from_0.6.5", false);
+	Account gaduAccount = AccountManager::instance()->byId("gadu", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "UIN"));
 	if (!imported && gaduAccount && QFile::exists(KaduPaths::instance()->profilePath() + QLatin1String("history")))
 	{
 		ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
@@ -90,7 +90,7 @@ void HistoryMigrationActions::runImportHistoryAction()
 	if (HistoryImporterManager::instance()->containsImporter(KaduPaths::instance()->profilePath() + QLatin1String("history/")))
 		return;
 
-	Account gaduAccount = AccountManager::instance()->byId("gadu", KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "UIN"));
+	Account gaduAccount = AccountManager::instance()->byId("gadu", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "UIN"));
 	if (!gaduAccount)
 		return;
 

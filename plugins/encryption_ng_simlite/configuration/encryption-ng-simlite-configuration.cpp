@@ -59,11 +59,11 @@ EncryptionNgSimliteConfiguration::~EncryptionNgSimliteConfiguration()
 
 void EncryptionNgSimliteConfiguration::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->removeVariable("Chat", "Encryption");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->removeVariable("Chat", "Encryption");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }
 
 void EncryptionNgSimliteConfiguration::configurationUpdated()
 {
-	EncryptAfterReceiveEncryptedMessage = KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	EncryptAfterReceiveEncryptedMessage = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }

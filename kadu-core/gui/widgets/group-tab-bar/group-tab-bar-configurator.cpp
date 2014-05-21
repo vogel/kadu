@@ -42,9 +42,9 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "ShowGroupAll", true);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "ShowGroupTabUngroupped", false);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Look", "DisplayGroupTabs", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "ShowGroupAll", true);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "ShowGroupTabUngroupped", false);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "DisplayGroupTabs", true);
 }
 
 void GroupTabBarConfigurator::configurationUpdated()
@@ -59,10 +59,10 @@ GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
 {
 	auto configuration = GroupTabBarConfiguration();
 
-	configuration.setDisplayGroupTabs(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "DisplayGroupTabs", true));
-	configuration.setShowGroupTabEverybody(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "ShowGroupAll", true));
-	configuration.setAlwaysShowGroupTabUngroupped(KaduApplication::instance()->depreceatedConfigurationApi()->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
-	configuration.setCurrentGroupTab(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Look", "CurrentGroupTab", 0));
+	configuration.setDisplayGroupTabs(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "DisplayGroupTabs", true));
+	configuration.setShowGroupTabEverybody(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "ShowGroupAll", true));
+	configuration.setAlwaysShowGroupTabUngroupped(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
+	configuration.setCurrentGroupTab(KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Look", "CurrentGroupTab", 0));
 	configuration.setGroupFilters(loadGroupFilters(configuration.showGroupTabEverybody()));
 
 	return configuration;
@@ -74,7 +74,7 @@ void GroupTabBarConfigurator::storeConfiguration()
 		return;
 
 	auto configuration = ConfigurableGroupTabBar.data()->configuration();
-	KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
+	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
 
 	storeGroupFilters(configuration.groupFilters());
 
@@ -117,8 +117,8 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 {
 	auto result = QVector<GroupFilter>();
 	auto position = showGroupTabEverybody
-			? KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
-			: KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
+			? KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
+			: KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
 
 	auto groups = GroupManager::instance()->items().toList();
 	qStableSort(groups.begin(), groups.end(), [](const Group &a, const Group &b){ return a.tabPosition() < b.tabPosition(); });

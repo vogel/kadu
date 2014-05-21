@@ -209,7 +209,7 @@ int main(int argc, char *argv[]) try
 
 	enableSignalHandling();
 
-	const QString lang = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("General", "Language", QLocale::system().name().left(2));
+	const QString lang = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	kadu_qm.load("kadu_" + lang, KaduPaths::instance()->dataPath() + QLatin1String("translations"));
@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) try
 		else
 			peer->sendMessage("activate", 1000);
 
-		delete KaduApplication::instance()->depreceatedConfigurationApi();
+		delete KaduApplication::instance()->deprecatedConfigurationApi();
 		delete KaduApplication::instance()->configurationApi();
 		return 1;
 	}

@@ -50,14 +50,14 @@ S5BServerManager::~S5BServerManager()
 
 void S5BServerManager::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("XMPP", "DataTransferPort", 8010);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("XMPP", "DataTransferExternalAddress", "");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("XMPP", "DataTransferPort", 8010);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("XMPP", "DataTransferExternalAddress", "");
 }
 
 void S5BServerManager::configurationUpdated()
 {
-	int port = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("XMPP", "DataTransferPort", 8010);
-	QString externalAddress = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("XMPP", "DataTransferExternalAddress", "");
+	int port = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("XMPP", "DataTransferPort", 8010);
+	QString externalAddress = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("XMPP", "DataTransferExternalAddress", "");
 
 	if (externalAddress != ExternalAddress)
 	{

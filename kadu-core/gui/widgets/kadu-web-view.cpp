@@ -280,7 +280,7 @@ void KaduWebView::saveImage()
 	QPointer<QFileDialog> fd = new QFileDialog(this);
 	fd->setFileMode(QFileDialog::AnyFile);
 	fd->setAcceptMode(QFileDialog::AcceptSave);
-	fd->setDirectory(KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Chat", "LastImagePath"));
+	fd->setDirectory(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Chat", "LastImagePath"));
 	fd->setNameFilter(QString("%1 (*%2)").arg(QCoreApplication::translate("ImageDialog", "Images"), fileExt));
 	fd->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
 	fd->setWindowTitle(tr("Save image"));
@@ -334,7 +334,7 @@ void KaduWebView::saveImage()
 			}
 		}
 
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
 	} while (false);
 
 	delete fd.data();

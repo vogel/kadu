@@ -55,12 +55,12 @@ public:
 	void prepareConfiguration();
 
 	XmlConfigFile * configurationApi() const;
-	ConfigFile * depreceatedConfigurationApi() const;
+	ConfigFile * deprecatedConfigurationApi() const;
 
 private:
 	static KaduApplication * m_instance;
 
 	std::unique_ptr<XmlConfigFile> m_configurationApi;
-	std::unique_ptr<ConfigFile> m_depreceatedConfigurationApi;
+	std::unique_ptr<ConfigFile> m_deprecatedConfigurationApi;
 
 };

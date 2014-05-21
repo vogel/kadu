@@ -134,7 +134,7 @@ void HistoryImporter::threadFinished()
 {
 	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
 	{
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("History", "Imported_from_0.6.5", true);
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful
 		HistoryMigrationActions::unregisterActions();
 	}

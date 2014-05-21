@@ -47,7 +47,7 @@ ChatEditBoxSizeManager::~ChatEditBoxSizeManager()
 
 void ChatEditBoxSizeManager::configurationUpdated()
 {
-	setCommonHeight(KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
+	setCommonHeight(KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
 }
 
 void ChatEditBoxSizeManager::setCommonHeight(int height)
@@ -55,7 +55,7 @@ void ChatEditBoxSizeManager::setCommonHeight(int height)
 	if (height != CommonHeight)
 	{
 		CommonHeight = height;
-		KaduApplication::instance()->depreceatedConfigurationApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
+		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
 		emit commonHeightChanged(CommonHeight);
 	}
 }

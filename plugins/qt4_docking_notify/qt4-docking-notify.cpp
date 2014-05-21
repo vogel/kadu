@@ -119,10 +119,10 @@ void Qt4Notify::notify(Notification *notification)
 	{
 		notification->acquire(this);
 
-		unsigned int timeout = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
-		unsigned int icon = KaduApplication::instance()->depreceatedConfigurationApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
-		QString title = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
-		QString syntax = KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
+		unsigned int timeout = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
+		unsigned int icon = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
+		QString title = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
+		QString syntax = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
 
 		Qt4TrayIcon::instance()->showMessage(parseText(title, notification, notification->text()),
 			parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
@@ -147,78 +147,78 @@ NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *paren
 
 void Qt4Notify::import_0_6_5_configuration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
-		KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_syntax",
-		KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
-		KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_title"));
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_icon",
-		KaduApplication::instance()->depreceatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_icon"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
+		KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_syntax",
+		KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
+		KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_title"));
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_icon",
+		KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_icon"));
 }
 
 void Qt4Notify::createDefaultConfiguration()
 {
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_syntax", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_title", "%&t");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_icon", 3);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_syntax", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_title", "%&t");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_icon", 3);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_icon", 1);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewChat_icon", 1);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_icon", 1);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_NewMessage_icon", 1);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChangedt_icon", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChangedt_icon", 0);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_icon", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToFreeForChat_icon", 0);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_icon", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_icon", 0);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_icon", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_icon", 0);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_icon", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToNotAvailable_icon", 0);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_icon", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_icon", 0);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_title", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_icon", 0);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_title", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_icon", 0);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_syntax", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_title", "%&t");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_icon", 2);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_syntax", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_title", "%&t");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_icon", 2);
 
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_timeout", 10);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_icon", 2);
-	KaduApplication::instance()->depreceatedConfigurationApi()->addVariable("Qt4DockingNotify", "Qt4DockingNotifyEventConfiguration_Geometry", "50, 50, 615, 290");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_timeout", 10);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_icon", 2);
+	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Qt4DockingNotify", "Qt4DockingNotifyEventConfiguration_Geometry", "50, 50, 615, 290");
 }
 
 /** @} */
