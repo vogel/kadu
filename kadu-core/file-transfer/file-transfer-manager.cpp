@@ -31,7 +31,7 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-actions.h"

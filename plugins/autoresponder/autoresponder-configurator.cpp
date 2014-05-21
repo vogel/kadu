@@ -19,7 +19,7 @@
 
 #include <QtCore/QCoreApplication>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
 #include "autoresponder-configuration.h"

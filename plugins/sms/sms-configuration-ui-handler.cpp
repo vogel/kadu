@@ -38,7 +38,7 @@
 #include <QtWidgets/QTextEdit>
 
 #include "buddies/buddy-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/configuration/config-combo-box.h"

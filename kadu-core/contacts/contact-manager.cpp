@@ -25,7 +25,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-parser-tags.h"
 #include "core/core.h"

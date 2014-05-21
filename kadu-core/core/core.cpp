@@ -43,7 +43,7 @@
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
 #include "contacts/contact-manager.h"

@@ -19,7 +19,7 @@
  */
 
 #include "buddies/buddy.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 
 #include "debug.h"
 

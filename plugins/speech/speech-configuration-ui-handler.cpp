@@ -24,7 +24,7 @@
 #include <QtWidgets/QSlider>
 
 #include "buddies/buddy-preferred-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/select-file.h"

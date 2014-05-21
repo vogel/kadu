@@ -25,7 +25,7 @@
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QStackedWidget>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar.h"

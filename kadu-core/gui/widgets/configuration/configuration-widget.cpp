@@ -34,7 +34,7 @@
 #include <QtWidgets/QWidget>
 #include <QtXml/QDomElement>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-color-button.h"

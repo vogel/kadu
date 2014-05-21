@@ -35,7 +35,7 @@
 
 #include "kadu-application.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/xml-configuration-file.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
@@ -80,7 +80,7 @@ void KaduApplication::prepareConfiguration()
 		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
 		qFatal("%s", qPrintable(errorMessage));
 	}
-	m_deprecatedConfigurationApi = make_unique<ConfigFile>(m_configurationApi.get(), QLatin1String("kadu.conf"));
+	m_deprecatedConfigurationApi = make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QLatin1String("kadu.conf"));
 }
 
 XmlConfigFile * KaduApplication::configurationApi() const
@@ -88,7 +88,7 @@ XmlConfigFile * KaduApplication::configurationApi() const
 	return m_configurationApi.get();
 }
 
-ConfigFile * KaduApplication::deprecatedConfigurationApi() const
+DeprecatedConfigurationApi * KaduApplication::deprecatedConfigurationApi() const
 {
 	return m_deprecatedConfigurationApi.get();
 }

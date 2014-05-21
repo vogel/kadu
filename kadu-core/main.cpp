@@ -46,7 +46,7 @@
 #include <unistd.h>
 #endif // !Q_OS_WIN32
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "execution-arguments/execution-arguments.h"

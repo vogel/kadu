@@ -21,7 +21,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "kadu-application.h"
 

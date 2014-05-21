@@ -19,7 +19,7 @@
 
 #include "chat-widget-message-handler-configurator.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configuration.h"
 #include "kadu-application.h"

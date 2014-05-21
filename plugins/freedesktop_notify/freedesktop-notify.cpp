@@ -29,7 +29,7 @@
 #include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusServiceWatcher>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"

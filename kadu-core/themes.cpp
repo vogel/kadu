@@ -26,7 +26,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QSettings>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 
 #include "gui/windows/message-dialog.h"
 #include "misc/kadu-paths.h"

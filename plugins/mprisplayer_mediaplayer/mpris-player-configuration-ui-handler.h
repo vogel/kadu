@@ -26,7 +26,7 @@
 #include <QtCore/QMap>
 
 #include "configuration/configuration-aware-object.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/main-configuration-window.h"
 
 class QComboBox;

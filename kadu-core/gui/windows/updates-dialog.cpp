@@ -30,7 +30,7 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "os/generic/url-opener.h"
 #include "kadu-application.h"
 

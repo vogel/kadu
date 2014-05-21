@@ -20,7 +20,7 @@
 
 #include <QtXml/QDomElement>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storage-point.h"
 #include "kadu-application.h"

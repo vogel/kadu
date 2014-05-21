@@ -31,7 +31,7 @@
 
 #include <QtWidgets/QApplication>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/message-dialog.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notifier.h"

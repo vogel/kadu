@@ -33,7 +33,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/updates-dialog.h"

@@ -27,7 +27,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "kadu-application.h"
 #include "languages-manager.h"

@@ -35,7 +35,7 @@
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"

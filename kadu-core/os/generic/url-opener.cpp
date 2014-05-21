@@ -24,7 +24,7 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QDesktopServices>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/message-dialog.h"
 #include "kadu-application.h"
 

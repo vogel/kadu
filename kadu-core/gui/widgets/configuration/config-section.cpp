@@ -26,7 +26,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QListWidget>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-tab.h"

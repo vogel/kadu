@@ -3,9 +3,9 @@ set (configuration_SRCS
 	config-file-data-manager.cpp
 	config-file-variant-wrapper.cpp
 	configuration-aware-object.cpp
-	configuration-file.cpp
 	configuration-holder.cpp
 	configuration-manager.cpp
+	deprecated-configuration-api.cpp
 	main-configuration-holder.cpp
 	notifier-configuration-data-manager.cpp
 	toolbar-configuration-manager.cpp

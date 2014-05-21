@@ -29,7 +29,7 @@
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/kadu/kadu-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-style-preview.h"

@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
 #include "chat-configuration-holder.h"

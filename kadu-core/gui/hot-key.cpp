@@ -22,7 +22,7 @@
 
 #include <QtGui/QKeyEvent>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
 #include "hot-key.h"

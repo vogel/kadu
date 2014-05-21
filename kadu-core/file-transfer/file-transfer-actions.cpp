@@ -23,7 +23,7 @@
 
 #include <QtWidgets/QFileDialog>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-handler.h"

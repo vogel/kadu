@@ -19,7 +19,7 @@
 
 #include "plugin-metadata-reader.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata-reader-exception.h"

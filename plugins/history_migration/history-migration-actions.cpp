@@ -23,7 +23,7 @@
 #include <QtCore/QFile>
 
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/kadu-paths.h"

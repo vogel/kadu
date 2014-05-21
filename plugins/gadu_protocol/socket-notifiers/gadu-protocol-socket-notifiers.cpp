@@ -36,7 +36,7 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-set.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
 #include "debug.h"

@@ -24,7 +24,7 @@
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
 #include "accounts/account-status-container.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"

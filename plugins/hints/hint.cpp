@@ -32,7 +32,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "chat/chat.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "icons/icons-manager.h"
 #include "notify/notification/aggregate-notification.h"

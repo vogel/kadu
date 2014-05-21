@@ -8,7 +8,7 @@
 
 	#include <QtX11Extras/QX11Info>
 
-	#include "configuration/configuration-file.h"
+	#include "configuration/deprecated-configuration-api.h"
 	#include "os/x11/x11tools.h"
 	#undef KeyPress
 	#undef Status

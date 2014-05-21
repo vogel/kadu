@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "services/chat-image-request-service-configuration.h"
 #include "services/chat-image-request-service.h"
 #include "kadu-application.h"

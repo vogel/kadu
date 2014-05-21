@@ -32,7 +32,7 @@
 #include <QtWidgets/QMenu>
 #include <QtGui/QMovie>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "icons/kadu-icon.h"
 #include "debug.h"
 #include "kadu-application.h"

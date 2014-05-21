@@ -27,7 +27,7 @@
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/main-configuration-holder.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-details.h"

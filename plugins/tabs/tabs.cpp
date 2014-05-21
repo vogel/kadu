@@ -36,7 +36,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"

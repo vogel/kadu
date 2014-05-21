@@ -30,7 +30,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSpinBox>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "debug.h"
 
 #include "growl-notify-configuration-widget.h"

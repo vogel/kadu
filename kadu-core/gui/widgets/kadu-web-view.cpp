@@ -58,7 +58,7 @@
 #	include <QtWebKitWidgets/QWebInspector>
 #endif
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/message-dialog.h"

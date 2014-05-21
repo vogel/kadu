@@ -42,7 +42,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-set.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"

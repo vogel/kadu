@@ -32,7 +32,7 @@
 #include <X11/Xlib.h>
 #endif
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "debug.h"
 
 #include "gui/widgets/crop-image-widget.h"

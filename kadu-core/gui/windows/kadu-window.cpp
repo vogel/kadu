@@ -43,7 +43,7 @@
 #include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"

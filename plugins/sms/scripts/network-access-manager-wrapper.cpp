@@ -30,7 +30,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtScript/QScriptEngine>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "kadu-application.h"
 

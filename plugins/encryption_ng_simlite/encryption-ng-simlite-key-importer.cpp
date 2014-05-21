@@ -22,7 +22,7 @@
 #include <QtCore/QDir>
 
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "misc/kadu-paths.h"
 #include "kadu-application.h"

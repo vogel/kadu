@@ -39,7 +39,7 @@
 #include <QtWidgets/QApplication>
 #include <memory>
 
-class ConfigFile;
+class DeprecatedConfigurationApi;
 class XmlConfigFile;
 
 class KADUAPI KaduApplication : public QApplication
@@ -55,12 +55,12 @@ public:
 	void prepareConfiguration();
 
 	XmlConfigFile * configurationApi() const;
-	ConfigFile * deprecatedConfigurationApi() const;
+	DeprecatedConfigurationApi * deprecatedConfigurationApi() const;
 
 private:
 	static KaduApplication * m_instance;
 
 	std::unique_ptr<XmlConfigFile> m_configurationApi;
-	std::unique_ptr<ConfigFile> m_deprecatedConfigurationApi;
+	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
 
 };

@@ -33,7 +33,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "configuration/chat-configuration-holder.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/main-configuration-holder.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-set.h"

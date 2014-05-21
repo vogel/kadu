@@ -25,7 +25,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification/notification.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 
 #include "icons/icons-manager.h"
 #include "activate.h"

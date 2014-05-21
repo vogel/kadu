@@ -27,7 +27,7 @@
 #include "pcspeaker.h"
 #include "pcspeaker_configuration_widget.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"

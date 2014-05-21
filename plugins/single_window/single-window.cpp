@@ -14,7 +14,7 @@
 #include <QtWidgets/QTabWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/hot-key.h"

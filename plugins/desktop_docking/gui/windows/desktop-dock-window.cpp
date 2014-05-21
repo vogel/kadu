@@ -22,7 +22,7 @@
 #include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "icons/kadu-icon.h"
 #include "kadu-application.h"
 

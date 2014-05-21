@@ -23,7 +23,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QSettings>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
 #include "plugin/metadata/plugin-metadata.h"

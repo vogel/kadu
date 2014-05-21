@@ -26,7 +26,7 @@
 #include <QtGui/QDrag>
 #include <QtGui/QKeyEvent>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "icons/kadu-icon.h"
 #include "kadu-application.h"

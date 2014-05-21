@@ -23,7 +23,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/select-file.h"
 #include "icons/kadu-icon.h"

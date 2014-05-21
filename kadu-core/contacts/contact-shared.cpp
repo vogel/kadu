@@ -25,7 +25,7 @@
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"

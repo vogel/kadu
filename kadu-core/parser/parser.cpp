@@ -37,7 +37,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/group.h"
 #include "chat/model/chat-data-extractor.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"

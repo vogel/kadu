@@ -36,7 +36,7 @@
 #include <QtWidgets/QToolButton>
 #include <QtXml/QDomElement>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/xml-configuration-file.h"
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"

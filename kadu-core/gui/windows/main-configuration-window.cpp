@@ -44,7 +44,7 @@
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-engine.h"
 #include "compression/archive-extractor.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-info-panel.h"

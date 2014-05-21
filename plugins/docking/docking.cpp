@@ -41,7 +41,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QTextDocument>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/status-menu.h"

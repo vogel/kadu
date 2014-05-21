@@ -19,7 +19,7 @@
 
 #include "plugin-state-storage-09.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "misc/algorithm.h"
 #include "plugin/state/plugin-state.h"
 #include "kadu-application.h"

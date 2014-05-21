@@ -30,7 +30,7 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"

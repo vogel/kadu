@@ -53,7 +53,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"

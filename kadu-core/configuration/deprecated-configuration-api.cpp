@@ -41,17 +41,17 @@
 
 #include "debug.h"
 
-#include "configuration-file.h"
+#include "deprecated-configuration-api.h"
 
 static QMutex GlobalMutex;
 
-ConfigFile::ConfigFile(XmlConfigFile *xmlConfigFile, const QString &fileName) :
+DeprecatedConfigurationApi::DeprecatedConfigurationApi(XmlConfigFile *xmlConfigFile, const QString &fileName) :
 		m_xmlConfigFile{xmlConfigFile},
 		m_fileName{fileName}
 {
 }
 
-bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
+bool DeprecatedConfigurationApi::changeEntry(const QString &group, const QString &name, const QString &value)
 {
 	QMutexLocker locker(&GlobalMutex);
 
@@ -69,7 +69,7 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	return true;
 }
 
-QString ConfigFile::getEntry(const QString &group, const QString &name) const
+QString DeprecatedConfigurationApi::getEntry(const QString &group, const QString &name) const
 {
 	QMutexLocker locker(&GlobalMutex);
 
@@ -98,42 +98,42 @@ QString ConfigFile::getEntry(const QString &group, const QString &name) const
 	return QString();
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QString &value)
 {
 	changeEntry(group, name, value);
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const char *value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const char *value)
 {
 	changeEntry(group, name, QString::fromLocal8Bit(value));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const int value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const int value)
 {
 	changeEntry(group, name, QString::number(value));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const bool value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const bool value)
 {
 	changeEntry(group, name, value ? "true" : "false");
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QRect &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QRect &value)
 {
 	changeEntry(group, name, rectToString(value));
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QColor &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QColor &value)
 {
 	changeEntry(group, name, value.name());
 }
 
-void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QFont &value)
 {
 	changeEntry(group, name, value.toString());
 }
 
-QString ConfigFile::readEntry(const QString &group,const QString &name, const QString &def) const
+QString DeprecatedConfigurationApi::readEntry(const QString &group,const QString &name, const QString &def) const
 {
 	QString string = getEntry(group, name);
 	if (string.isNull())
@@ -141,7 +141,7 @@ QString ConfigFile::readEntry(const QString &group,const QString &name, const QS
 	return string;
 }
 
-unsigned int ConfigFile::readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def) const
+unsigned int DeprecatedConfigurationApi::readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def) const
 {
 	bool ok;
 	QString string = getEntry(group, name);
@@ -153,7 +153,7 @@ unsigned int ConfigFile::readUnsignedNumEntry(const QString &group,const QString
 	return num;
 }
 
-int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) const
+int DeprecatedConfigurationApi::readNumEntry(const QString &group,const QString &name, int def) const
 {
 	bool ok;
 	QString string = getEntry(group, name);
@@ -165,7 +165,7 @@ int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) 
 	return num;
 }
 
-bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool def) const
+bool DeprecatedConfigurationApi::readBoolEntry(const QString &group,const QString &name, bool def) const
 {
 	QString string = getEntry(group, name);
 	if (string.isNull())
@@ -173,12 +173,12 @@ bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool de
 	return string=="true";
 }
 
-QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def) const
+QRect DeprecatedConfigurationApi::readRectEntry(const QString &group,const QString &name, const QRect *def) const
 {
 	return stringToRect(getEntry(group, name), def);
 }
 
-QColor ConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
+QColor DeprecatedConfigurationApi::readColorEntry(const QString &group,const QString &name, const QColor *def) const
 {
 	QString str = getEntry(group, name);
 	if (str.isNull())
@@ -188,7 +188,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 }
 
 
-QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
+QFont DeprecatedConfigurationApi::readFontEntry(const QString &group,const QString &name, const QFont *def) const
 {
 	QString string = getEntry(group, name);
 	if (string.isNull())
@@ -199,7 +199,7 @@ QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const 
 	return def ? *def : QApplication::font();
 }
 
-void ConfigFile::removeVariable(const QString &group, const QString &name)
+void DeprecatedConfigurationApi::removeVariable(const QString &group, const QString &name)
 {
 	QMutexLocker locker(&GlobalMutex);
 
@@ -214,32 +214,32 @@ void ConfigFile::removeVariable(const QString &group, const QString &name)
 	group_elem.removeChild(entry_elem);
 }
 
-void ConfigFile::addVariable(const QString &group, const QString &name, const QString &defvalue)
+void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const QString &defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
-void ConfigFile::addVariable(const QString &group, const QString &name, const char *defvalue)
+void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const char *defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
-void ConfigFile::addVariable(const QString &group, const QString &name, const int defvalue)
+void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const int defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
-void ConfigFile::addVariable(const QString &group, const QString &name, const bool defvalue)
+void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const bool defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
-void ConfigFile::addVariable(const QString &group, const QString &name, const QColor &defvalue)
+void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const QColor &defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
-void ConfigFile::addVariable(const QString &group, const QString &name, const QFont &defvalue)
+void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const QFont &defvalue)
 {
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);

@@ -26,8 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_FILE_H
-#define CONFIG_FILE_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QRect>
@@ -42,7 +41,7 @@
 
 class XmlConfigFile;
 
-class KADUAPI ConfigFile final
+class KADUAPI DeprecatedConfigurationApi final
 {
 	bool changeEntry(const QString &group, const QString &name, const QString &value);
 	QString getEntry(const QString &group, const QString &name) const;
@@ -51,7 +50,7 @@ class KADUAPI ConfigFile final
 	QString m_fileName;
 
 public:
-	ConfigFile(XmlConfigFile *xmlConfigFile, const QString &fileName);
+	DeprecatedConfigurationApi(XmlConfigFile *xmlConfigFile, const QString &fileName);
 
 	void writeEntry(const QString &group, const QString &name, const QString &value);
 	void writeEntry(const QString &group, const QString &name, const char *value);
@@ -79,5 +78,3 @@ public:
 	void addVariable(const QString &group, const QString &name, const QFont &value);
 
 };
-
-#endif

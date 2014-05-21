@@ -33,7 +33,7 @@
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolTip>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"

@@ -19,7 +19,7 @@
 
 #include "chat-window-storage-configurator.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/chat-window-storage-configuration.h"
 #include "kadu-application.h"

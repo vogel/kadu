@@ -47,7 +47,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"

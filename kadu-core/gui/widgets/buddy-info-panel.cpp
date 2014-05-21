@@ -27,7 +27,7 @@
 #include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"

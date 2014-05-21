@@ -19,7 +19,7 @@
 
 #include "plugin-translations-loader.h"
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
 #include "kadu-application.h"

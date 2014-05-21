@@ -35,7 +35,7 @@
 #include <QtGui/QTextDocument>
 
 #include "avatars/avatar.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "notify/notification-manager.h"

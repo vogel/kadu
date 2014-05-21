@@ -31,7 +31,7 @@
 #include <QtCore/QFileInfo>
 
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"

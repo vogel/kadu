@@ -28,7 +28,7 @@
 #include <QtGui/QIcon>
 
 #include "ApplicationServices/ApplicationServices.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "docking.h"

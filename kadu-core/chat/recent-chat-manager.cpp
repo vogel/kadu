@@ -23,7 +23,7 @@
 #include <QtCore/QVector>
 
 #include "chat/chat-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "kadu-application.h"

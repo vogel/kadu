@@ -24,7 +24,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtScript/QScriptEngine>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
 #include "kadu-application.h"

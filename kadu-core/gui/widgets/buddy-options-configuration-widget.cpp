@@ -31,7 +31,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QVBoxLayout>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
 

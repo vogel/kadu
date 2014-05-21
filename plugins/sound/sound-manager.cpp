@@ -34,7 +34,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QThread>
 
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "debug.h"
 #include "kadu-application.h"
 #include "themes.h"

@@ -20,7 +20,7 @@
  */
 
 #include "buddies/group-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "misc/change-notifier.h"
 #include "kadu-application.h"
 

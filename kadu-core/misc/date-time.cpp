@@ -32,7 +32,7 @@
 #include <time.h>
 
 #include "configuration/chat-configuration-holder.h"
-#include "configuration/configuration-file.h"
+#include "configuration/deprecated-configuration-api.h"
 
 #include "date-time.h"
 
