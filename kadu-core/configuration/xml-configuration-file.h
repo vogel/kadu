@@ -27,9 +27,6 @@
 
 #include "exports.h"
 
-/**
-	Klasa reprezentuj�ca plik XML-owy z zapisem konfiguracji programu
-**/
 class KADUAPI XmlConfigFile
 {
 public:
@@ -55,68 +52,27 @@ private:
 	QDomNode cdataOrText(const QString &text);
 
 public:
-	/**
-		Otwiera plik i go wczytuje
-	**/
 	XmlConfigFile();
 
 	bool isUsable() const;
-
-	/**
-		Wczytuje plik konfiguracyjny z dysku
-	**/
 	void read();
-
-	/**
-		Zapisuje na dysk zawarto�� konfiguracji
-	**/
 	void sync();
-
 	void makeBackup();
 
-	/**
-		Zwraca glowny element konfiguracji
-	**/
 	QDomElement rootElement();
-
-	/**
-		Dodaje nowy element i przypisuje do rodzica.
-	**/
-
 	QDomElement createElement(QDomElement parent, const QString &tag_name);
-	/**
-		Zwraca pierwszy element lub element typu null jesli nie znajdzie.
-	**/
-
 	QDomElement findElement(const QDomElement &parent, const QString &tag_name) const;
-
-	/**
-		Zwraca pierwszy element ktorego dany atrybut ma dana wartosc
-		lub element typu null jesli nie znajdzie.
-	**/
 	QDomElement findElementByProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value) const;
 	QDomElement findElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value) const;
 
-	/**
-		Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
-	**/
 	QDomElement accessElement(const QDomElement &parent, const QString &tag_name);
-
-	/**
-		Zwraca pierwszy element ktorego dany atrybut ma dana wartosc
-		lub dodaje nowy i przypisuje do rodzica (ustawia rowniez zadany
-		atrybut na zadana wartosc).
-	**/
 	QDomElement accessElementByProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value);
 	QDomElement accessElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value);
 
-	/**
-		Usuwa wszystkie dzieci elementu.
-	**/
 	void removeChildren(QDomElement parent);
 
 	bool hasNode(const QString &nodeTagName);
