@@ -28,16 +28,11 @@
 
 #pragma once
 
-#include <QtCore/QMap>
+#include "exports.h"
+
 #include <QtCore/QRect>
-#include <QtCore/QSize>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
 #include <QtGui/QColor>
 #include <QtGui/QFont>
-#include <QtXml/QDomDocument>
-
-#include "exports.h"
 
 class XmlConfigFile;
 

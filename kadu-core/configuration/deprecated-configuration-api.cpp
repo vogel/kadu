@@ -27,21 +27,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDateTime>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QTextCodec>
-#include <QtCore/QTextStream>
-#include <QtWidgets/QApplication>
+#include "deprecated-configuration-api.h"
 
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
 
-#include "debug.h"
-
-#include "deprecated-configuration-api.h"
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
+#include <QtWidgets/QApplication>
 
 static QMutex GlobalMutex;
 
