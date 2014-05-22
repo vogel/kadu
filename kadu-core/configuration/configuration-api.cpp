@@ -23,19 +23,13 @@
  */
 
 #include <QtCore/QDateTime>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QTextCodec>
-#include <QtCore/QTextStream>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNodeList>
 
 #include <errno.h>
 
 #include "core/core.h"
-#include "misc/kadu-paths.h"
 #include "debug.h"
-#include "kadu-config.h"
 
 #include "configuration-api.h"
 
