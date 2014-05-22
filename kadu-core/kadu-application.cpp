@@ -35,8 +35,9 @@
 
 #include "kadu-application.h"
 
-#include "configuration/deprecated-configuration-api.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration-storage.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
 
@@ -71,12 +72,15 @@ KaduApplication::~KaduApplication()
 
 void KaduApplication::prepareConfiguration()
 {
-	m_configurationApi = make_unique<ConfigurationApi>();
+	auto profilePath = KaduPaths::instance()->profilePath();
+
+	m_configurationStorage = make_qobject<ConfigurationStorage>(this);
+	m_configurationApi = make_unique<ConfigurationApi>(m_configurationStorage->readConfiguration(profilePath));
 	if (!m_configurationApi->isUsable())
 	{
 		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
 				"Profile is inaccessible. Please check permissions in the '%1' directory.")
-				.arg(KaduPaths::instance()->profilePath().left(KaduPaths::instance()->profilePath().length() - 1));
+				.arg(profilePath.left(profilePath.length() - 1));
 		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
 		qFatal("%s", qPrintable(errorMessage));
 	}

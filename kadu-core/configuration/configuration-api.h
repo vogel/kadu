@@ -51,10 +51,9 @@ private:
 	QDomNode cdataOrText(const QString &text);
 
 public:
-	ConfigurationApi();
+	ConfigurationApi(const QString &content);
 
 	bool isUsable() const;
-	void read();
 	void sync();
 	void makeBackup();
 

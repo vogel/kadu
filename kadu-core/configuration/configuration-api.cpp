@@ -39,9 +39,14 @@
 
 #include "configuration-api.h"
 
-ConfigurationApi::ConfigurationApi() : DomDocument()
+ConfigurationApi::ConfigurationApi(const QString &content)
 {
-	read();
+	DomDocument.setContent(content);
+	if (DomDocument.documentElement().tagName() != "Kadu")
+	{
+		auto root = DomDocument.createElement( "Kadu" );
+		DomDocument.appendChild(root);
+	}
 }
 
 bool ConfigurationApi::isUsable() const
@@ -50,74 +55,6 @@ bool ConfigurationApi::isUsable() const
 	return !profilePath.isEmpty() &&
 			QDir(profilePath).isReadable() &&
 			QFile(profilePath + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite);
-}
-
-void ConfigurationApi::read()
-{
-	kdebugf();
-	QFile file;
-
-	QDir backups_0_12(KaduPaths::instance()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
-	QDir backups_0_6_6(KaduPaths::instance()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
-	QDir backups_0_6_5(KaduPaths::instance()->profilePath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
-
-	QStringList files("kadu-0.12.conf.xml");
-
-	files += backups_0_12.entryList();
-	files += "kadu-0.6.6.conf.xml";
-	files += backups_0_6_6.entryList();
-	files += "kadu.conf.xml";
-	files += backups_0_6_5.entryList();
-
-	bool fileOpened(false);
-
-	foreach (const QString &fileName, files)
-	{
-		file.setFileName(KaduPaths::instance()->profilePath() + fileName);
-		fileOpened = file.open(QIODevice::ReadOnly);
-		if (fileOpened && file.size() > 0)
-		{
-			kdebugm(KDEBUG_INFO, "configuration file %s opened!\n", qPrintable(file.fileName()));
-			break;
-		}
-		if (fileOpened) // && file.size() == 0
-		{
-			kdebugm(KDEBUG_INFO, "config file (%s) is empty, looking for backup\n", qPrintable(file.fileName()));
-			file.close();
-			fileOpened = false;
-		}
-		else
-		{
-			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", qPrintable(file.fileName()));
-		}
-	}
-
-	if (fileOpened)
-	{
-		if (DomDocument.setContent(&file))
-			kdebugm(KDEBUG_INFO, "xml configuration file loaded\n");
-		else
-		{
-			fprintf(stderr, "error reading or parsing xml configuration file\n");
-			fflush(stderr);
-		}
-		file.close();
-
-		if (DomDocument.documentElement().tagName() != "Kadu")
-		{
-			QDomElement root = DomDocument.createElement( "Kadu" );
-			DomDocument.appendChild(root);
-		}
-	}
-	else
-	{
-		fprintf(stderr, "error opening xml configuration file (%s), creating empty document\n", qPrintable(file.errorString()));
-		fflush(stderr);
-		QDomElement root = DomDocument.createElement( "Kadu" );
-		DomDocument.appendChild(root);
-	}
-
-	kdebugf2();
 }
 
 void ConfigurationApi::write(const QString& f)

@@ -34,13 +34,15 @@
 
 #pragma once
 
+#include "misc/memory.h"
 #include "exports.h"
 
 #include <QtWidgets/QApplication>
 #include <memory>
 
-class DeprecatedConfigurationApi;
 class ConfigurationApi;
+class ConfigurationStorage;
+class DeprecatedConfigurationApi;
 
 class KADUAPI KaduApplication : public QApplication
 {
@@ -62,5 +64,6 @@ private:
 
 	std::unique_ptr<ConfigurationApi> m_configurationApi;
 	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
+	qobject_ptr<ConfigurationStorage> m_configurationStorage;
 
 };
