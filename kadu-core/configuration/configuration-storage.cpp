@@ -25,9 +25,9 @@
 #include <QtCore/QFile>
 #include <unistd.h>
 
-ConfigurationStorage::ConfigurationStorage(QString m_profilePath, QObject *parent) :
+ConfigurationStorage::ConfigurationStorage(QString profilePath, QObject *parent) :
 		QObject{parent},
-		m_profilePath{std::move(m_profilePath)}
+		m_profilePath{std::move(profilePath)}
 {
 }
 
@@ -93,7 +93,7 @@ QString ConfigurationStorage::readConfiguration() const
 
 void ConfigurationStorage::writeConfiguration(const QString &configuration) const
 {
-	auto fileName = m_profilePath + QLatin1String("kadu-0.12.conf.xml");
+	auto fileName = m_profilePath + "kadu-0.12.conf.xml";
 	// saving to another file to avoid truncation of output file when segfault occurs :|
 	auto tmpFileName = fileName + ".tmp";
 	QFile file{tmpFileName};
