@@ -26,6 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -102,12 +103,12 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 	SoundManager::instance()->setMute(!toggled);
 	setMuteActionState();
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Sounds", "PlaySound", toggled);
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundActions::configurationUpdated()
 {
-	SoundManager::instance()->setMute(!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Sounds", "PlaySound"));
+	SoundManager::instance()->setMute(!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 

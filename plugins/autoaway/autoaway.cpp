@@ -38,6 +38,7 @@
 #include <QtWidgets/QSpinBox>
 
 #include "accounts/account.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -194,25 +195,25 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 
 void AutoAway::configurationUpdated()
 {
-	checkInterval = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General","AutoAwayCheckTime");
-	refreshStatusTime = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General","AutoRefreshStatusTime");
-	autoAwayTime = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General","AutoAwayTimeMinutes")*60;
-	autoExtendedAwayTime = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General","AutoExtendedAwayTimeMinutes")*60;
-	autoDisconnectTime = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General","AutoDisconnectTimeMinutes")*60;
-	autoInvisibleTime = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General","AutoInvisibleTimeMinutes")*60;
+	checkInterval = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoAwayCheckTime");
+	refreshStatusTime = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoRefreshStatusTime");
+	autoAwayTime = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoAwayTimeMinutes")*60;
+	autoExtendedAwayTime = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoExtendedAwayTimeMinutes")*60;
+	autoDisconnectTime = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoDisconnectTimeMinutes")*60;
+	autoInvisibleTime = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoInvisibleTimeMinutes")*60;
 
-	autoAwayEnabled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General","AutoAway");
-	autoExtendedAwayEnabled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General","AutoExtendedAway");
-	autoInvisibleEnabled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General","AutoInvisible");
-	autoDisconnectEnabled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General","AutoDisconnect");
-	parseAutoStatus = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "ParseStatus");
+	autoAwayEnabled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoAway");
+	autoExtendedAwayEnabled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoExtendedAway");
+	autoInvisibleEnabled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoInvisible");
+	autoDisconnectEnabled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoDisconnect");
+	parseAutoStatus = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus");
 
 	refreshStatusInterval = refreshStatusTime;
 
-	autoStatusText = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "AutoStatusText");
+	autoStatusText = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "AutoStatusText");
 	DescriptionAddon = parseDescription(autoStatusText);
 
-	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("General", "AutoChangeDescription");
+	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("General", "AutoChangeDescription");
 
 	autoAwayStatusChanger->update();
 
@@ -274,31 +275,31 @@ QString AutoAway::parseDescription(const QString &parseDescription)
 
 static int denominatedInverval(const QString &name, unsigned int def)
 {
-	int ret = KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General", name, def * 60);
+	int ret = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General", name, def * 60);
 	// This AutoAwayTimesDenominated thing was living shortly in 1.0-git.
-	return KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "AutoAwayTimesDenominated", false)
+	return KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AutoAwayTimesDenominated", false)
 			? ret
 			: (ret + 59) / 60;
 }
 
 void AutoAway::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoAway", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoAwayCheckTime", 10);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoAwayTimeMinutes", denominatedInverval("AutoAwayTime", 5));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoExtendedAway", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoExtendedAwayTimeMinutes", denominatedInverval("AutoExtendedAwayTime", 15));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoChangeDescription", 0);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoDisconnect", false);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoDisconnectTimeMinutes", denominatedInverval("AutoDisconnectTime", 60));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoInvisible", false);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoInvisibleTimeMinutes", denominatedInverval("AutoInvisibleTime", 30));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoRefreshStatusTime", 0);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("General", "AutoStatusText", QString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoAway", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoAwayCheckTime", 10);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoAwayTimeMinutes", denominatedInverval("AutoAwayTime", 5));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoExtendedAway", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoExtendedAwayTimeMinutes", denominatedInverval("AutoExtendedAwayTime", 15));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoChangeDescription", 0);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoDisconnect", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoDisconnectTimeMinutes", denominatedInverval("AutoDisconnectTime", 60));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoInvisible", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoInvisibleTimeMinutes", denominatedInverval("AutoInvisibleTime", 30));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoRefreshStatusTime", 0);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoStatusText", QString());
 
 	// AutoAwayCheckTime has been mistakenly denominated in 1.0-git.
-	if (0 == KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("General", "AutoAwayCheckTime"))
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "AutoAwayCheckTime", 10);
+	if (0 == KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General", "AutoAwayCheckTime"))
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "AutoAwayCheckTime", 10);
 }
 
 

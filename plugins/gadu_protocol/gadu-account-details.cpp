@@ -24,8 +24,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/deprecated-configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "misc/misc.h"
@@ -92,7 +93,7 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 
 	QString name;
 
-	int typeIndex = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("General", "LastStatusType", -1);
+	int typeIndex = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("General", "LastStatusType", -1);
 	switch (typeIndex)
 	{
 		case 0: name = "Online"; break;
@@ -102,7 +103,7 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 	}
 
 	storeValue("LastStatusName", name);
-	storeValue("LastStatusDescription", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "LastStatusDescription"));
+	storeValue("LastStatusDescription", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "LastStatusDescription"));
 }
 
 UinType GaduAccountDetails::uin()

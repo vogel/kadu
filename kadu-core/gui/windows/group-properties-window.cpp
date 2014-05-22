@@ -34,6 +34,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "buddies/group.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "icons/kadu-icon.h"
 #include "misc/change-notifier.h"
@@ -138,12 +139,12 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 void GroupPropertiesWindow::selectIcon()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("GroupIcon", "recentPath", "~/"),
+	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("GroupIcon", "recentPath", "~/"),
 					tr("Images (*.png *.xpm *.jpg);;All Files (*)"));
 	if (!file.isEmpty())
 	{
 		QFileInfo fileInfo(file);
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
 		icon->setText(QString());
 		icon->setIcon(QIcon(file));
 		iconPath = file;

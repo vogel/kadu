@@ -32,6 +32,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/config-file-data-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "gui/widgets/configuration/config-color-button.h"
@@ -86,7 +87,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay = new QHBoxLayout(syntaxWidget);
 	hintSyntax = new QTextEdit;
 	hintSyntax->setAcceptRichText(true);
-	hintSyntax->setPlainText(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Hints", "MouseOverUserSyntax"));
+	hintSyntax->setPlainText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax"));
 	hintSyntax->setToolTip(tr(MainConfigurationWindow::SyntaxText));
 
 	QPushButton *syntaxChangedButton = new QPushButton(tr("Update preview"));
@@ -99,10 +100,10 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 
 	HintsPlugin::instance()->hintsManger()->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
 
-	bgcolor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
-	fgcolor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
-	bdcolor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name();
-	bdwidth = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
+	bgcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
+	fgcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
+	bdcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name();
+	bdwidth = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
 }
 
 void HintOverUserConfigurationWindow::fontChanged(QFont font)
@@ -172,7 +173,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 
 void HintOverUserConfigurationWindow::configurationWindowApplied()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
 }
 
 #include "moc_hint-over-user-configuration-window.cpp"

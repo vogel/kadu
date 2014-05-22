@@ -22,6 +22,7 @@
 
 #include <QtGui/QKeyEvent>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -29,12 +30,12 @@
 
 QKeySequence HotKey::shortCutFromFile(const QString &groupname, const QString &name)
 {
-	return QKeySequence::fromString(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry(groupname, name), QKeySequence::PortableText);
+	return QKeySequence::fromString(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(groupname, name), QKeySequence::PortableText);
 }
 
 bool HotKey::shortCut(QKeyEvent *e, const QString &groupname, const QString &name)
 {
-	QString config = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry(groupname, name);
+	QString config = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(groupname, name);
 	return !config.isEmpty() && config == keyEventToString(e);
 }
 

@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -50,14 +51,14 @@ S5BServerManager::~S5BServerManager()
 
 void S5BServerManager::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("XMPP", "DataTransferPort", 8010);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("XMPP", "DataTransferExternalAddress", "");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("XMPP", "DataTransferPort", 8010);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("XMPP", "DataTransferExternalAddress", "");
 }
 
 void S5BServerManager::configurationUpdated()
 {
-	int port = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("XMPP", "DataTransferPort", 8010);
-	QString externalAddress = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("XMPP", "DataTransferExternalAddress", "");
+	int port = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("XMPP", "DataTransferPort", 8010);
+	QString externalAddress = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("XMPP", "DataTransferExternalAddress", "");
 
 	if (externalAddress != ExternalAddress)
 	{

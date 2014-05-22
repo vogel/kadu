@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/configuration-window.h"
 #include "kadu-application.h"
@@ -37,7 +38,7 @@ void NotifierConfigurationDataManager::writeEntry(const QString &section, const 
 	if (section.isEmpty() || name.isEmpty())
 		return;
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry(section, QString("Event_") + EventName + name, value.toString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry(section, QString("Event_") + EventName + name, value.toString());
 }
 
 QVariant NotifierConfigurationDataManager::readEntry(const QString &section, const QString &name)
@@ -45,7 +46,7 @@ QVariant NotifierConfigurationDataManager::readEntry(const QString &section, con
 	if (section.isEmpty() || name.isEmpty())
 		return QVariant(QString());
 
-	return KaduApplication::instance()->deprecatedConfigurationApi()->readEntry(section, QString("Event_") + EventName + name);
+	return KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(section, QString("Event_") + EventName + name);
 }
 
 NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(const QString &eventName)

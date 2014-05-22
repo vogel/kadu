@@ -21,6 +21,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "kadu-application.h"
@@ -55,7 +56,7 @@ void HistoryBuddyConfigurationWidget::createGui()
 
 void HistoryBuddyConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "SaveChats", true);
+	GlobalStoreHistory = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
 	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 

@@ -28,6 +28,7 @@
 #include <signal.h>
 #include <stdio.h>
 
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "core/core.h"
 #include "core/crash-aware-object.h"
@@ -118,7 +119,7 @@ static void kadu_signal_handler(int signal)
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
-		KaduApplication::instance()->configurationApi()->makeBackup();
+		KaduApplication::instance()->configuration()->api()->makeBackup();
 		abort();
 	}
 	else if (signal == SIGUSR1)

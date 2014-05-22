@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"

@@ -26,6 +26,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 
@@ -33,6 +34,7 @@
 #ifdef _MSC_VER
 #include <dbghelp.h>
 #endif
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "core/crash-aware-object.h"
 
@@ -90,7 +92,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 	}
 
 	// if we cannot make crash dump only save config file to backup
-	KaduApplication::instance()->configurationApi()->makeBackup();
+	KaduApplication::instance()->configuration()->api()->makeBackup();
 	return ret;
 #else
 	MessageBoxW(NULL, L"Mini dumps are not available in this build.", L"Kadu crashed", MB_OK | MB_ICONERROR);

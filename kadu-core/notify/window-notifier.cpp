@@ -25,6 +25,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification/notification.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
 #include "icons/icons-manager.h"
@@ -79,12 +80,12 @@ void WindowNotifier::notificationClosed(Notification *notification)
 
 void WindowNotifier::import_0_6_5_configuration()
 {
-    	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Window", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Notify", "StatusChanged/ToBusy_Window"));
+    	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Window", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Notify", "StatusChanged/ToBusy_Window"));
 }
 
 void WindowNotifier::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
 }
 
 /** @} */

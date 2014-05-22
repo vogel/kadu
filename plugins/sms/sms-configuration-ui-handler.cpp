@@ -38,6 +38,7 @@
 #include <QtWidgets/QTextEdit>
 
 #include "buddies/buddy-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -161,12 +162,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "Priority", QString());
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "BuiltInApp", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "SmsNick", QString());
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("SMS", "UseCustomString", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

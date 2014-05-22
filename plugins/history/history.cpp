@@ -48,6 +48,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -234,7 +235,7 @@ void History::chatWidgetAdded(ChatWidget *chatWidget)
 	HistoryQuery query;
 	query.setTalkable(chat ? chat : chatWidget->chat());
 	query.setFromDateTime(QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600));
-	query.setLimit(KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("History", "ChatHistoryCitation", 10));
+	query.setLimit(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10));
 
 	new HistoryMessagesPrepender(CurrentStorage->messages(query), chatMessagesView);
 }
@@ -391,13 +392,13 @@ void History::configurationUpdated()
 {
 	kdebugf();
 
-	ChatHistoryCitation = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("History", "ChatHistoryCitation");
-	ChatHistoryQuotationTime = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
+	ChatHistoryCitation = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation");
+	ChatHistoryQuotationTime = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 
-	SaveChats = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "SaveChats", true);
-	SaveChatsWithAnonymous = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "SaveChatsWithAnonymous", true);
-	SaveStatuses = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "SaveStatusChanges", false);
-	SaveOnlyStatusesWithDescription = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "SaveOnlyStatusWithDescription", false);
+	SaveChats = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
+	SaveChatsWithAnonymous = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChatsWithAnonymous", true);
+	SaveStatuses = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveStatusChanges", false);
+	SaveOnlyStatusesWithDescription = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveOnlyStatusWithDescription", false);
 
 	kdebugf2();
 }
@@ -441,19 +442,19 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 void History::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("History", "SaveChats", KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("History", "Logging", true));
-	KaduApplication::instance()->deprecatedConfigurationApi()->removeVariable("History", "Logging");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveChats", KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "Logging", true));
+	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("History", "Logging");
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("History", "SaveStatusChanges", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveStatusChanges", true);
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("History", "SaveChatsWithAnonymous", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveChatsWithAnonymous", true);
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("History", "SaveOnlyStatusWithDescription", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveOnlyStatusWithDescription", true);
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("History", "ChatHistoryCitation", 10);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("History", "ChatHistoryQuotationTime", -24);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("History", "ChatHistoryCitation", 10);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("History", "ChatHistoryQuotationTime", -24);
 }
 
 void History::forceSync()

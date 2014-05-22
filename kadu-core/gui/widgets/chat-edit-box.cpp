@@ -33,8 +33,10 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "configuration/chat-configuration-holder.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/main-configuration-holder.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -200,7 +202,7 @@ ChatWidget * ChatEditBox::chatWidget()
 void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_topDockArea");
-	QDomElement toolbarConfig = KaduApplication::instance()->configurationApi()->createElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarConfig = KaduApplication::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
 
 	addToolButton(toolbarConfig, "autoSendAction");
 	addToolButton(toolbarConfig, "clearChatAction");
@@ -228,13 +230,13 @@ void ChatEditBox::openInsertImageDialog()
 		return;
 
 	// QTBUG-849
-	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Chat", "LastImagePath"),
+	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"),
 							tr("Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)"));
 	if (!selectedFile.isEmpty())
 	{
 		QFileInfo f(selectedFile);
 
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
 
 		if (!f.isReadable())
 		{

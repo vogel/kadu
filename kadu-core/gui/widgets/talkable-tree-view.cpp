@@ -44,6 +44,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "chat/chat-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/main-configuration-holder.h"
 #include "core/core.h"

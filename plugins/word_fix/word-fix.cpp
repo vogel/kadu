@@ -35,6 +35,7 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QTreeWidgetItem>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-html-visitor.h"
@@ -67,7 +68,7 @@ WordFix::WordFix(QObject *parent) :
 	ExtractBody.setPattern("<body[^>]*>.*</body>");
 
 	// Loading list
-	QString data = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("word_fix", "WordFix_list");
+	QString data = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
 		QFile defList(KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
@@ -172,7 +173,7 @@ void WordFix::chatWidgetRemoved(ChatWidget *chatWidget)
 
 void WordFix::sendRequest(ChatWidget* chat)
 {
-	if (!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
+	if (!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
 		return;
 
 	auto formattedString = chat->edit()->formattedString();
@@ -415,7 +416,7 @@ void WordFix::saveList()
 	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
 		list.append(i.key() + '\t' + i.value());
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
 
 	kdebugf2();
 }

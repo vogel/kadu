@@ -34,6 +34,7 @@
 #include <QtWidgets/QWidget>
 #include <QtXml/QDomElement>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-check-box.h"
@@ -96,7 +97,7 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 ConfigurationWidget::~ConfigurationWidget()
 {
 	if (SectionsListWidget->currentItem())
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
 
 	disconnect(SectionsListWidget, 0, this, 0);
 
@@ -110,7 +111,7 @@ ConfigurationWidget::~ConfigurationWidget()
 
 void ConfigurationWidget::init()
 {
-	QString lastSection = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "ConfigurationWindow_" + Name);
+	QString lastSection = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
 	if (ConfigSections.contains(lastSection))
 		ConfigSections.value(lastSection)->activate();
 	else if (SectionsListWidget->count() > 0)

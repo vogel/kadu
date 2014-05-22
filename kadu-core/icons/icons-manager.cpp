@@ -31,6 +31,7 @@
 #include <QtCore/QFileInfo>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -56,10 +57,10 @@ IconsManager::IconsManager()
 
 	ThemeManager = new IconThemeManager(this);
 	ThemeManager->loadThemes();
-	ThemeManager->setCurrentTheme(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "IconTheme"));
+	ThemeManager->setCurrentTheme(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "IconTheme"));
 	configurationUpdated();
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 	// TODO: localized protocol
 	localProtocolPath = "gadu-gadu";
@@ -223,12 +224,12 @@ void IconsManager::clearCache()
 
 void IconsManager::configurationUpdated()
 {
-	bool themeWasChanged = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
+	bool themeWasChanged = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
 	if (themeWasChanged)
 	{
 		clearCache();
-		ThemeManager->setCurrentTheme(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "IconTheme"));
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+		ThemeManager->setCurrentTheme(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "IconTheme"));
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 		emit themeChanged();
 	}

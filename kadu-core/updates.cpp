@@ -33,6 +33,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
@@ -68,7 +69,7 @@ void Updates::buildQuery()
 {
 	Query = QString("/update-new.php?uuid=%1&version=%2").arg(ConfigurationManager::instance()->uuid().toString()).arg(Core::version());
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "SendSysInfo"), true)
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
 	{
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
@@ -211,7 +212,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 	reply->deleteLater();
 	deleteLater();
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "CheckUpdates"))
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates"))
 	{
 		auto newestVersion = QString::fromUtf8(reply->readAll());
 		if (newestVersion.size() > 31)

@@ -38,6 +38,7 @@
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "contacts/contact.h"
 #include "core/core.h"

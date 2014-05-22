@@ -35,9 +35,8 @@
 
 #include "kadu-application.h"
 
-#include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-storage.h"
-#include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
 
@@ -70,31 +69,19 @@ KaduApplication::~KaduApplication()
 	m_instance = nullptr;
 }
 
-void KaduApplication::prepareConfiguration()
+void KaduApplication::readConfiguration()
 {
 	auto profilePath = KaduPaths::instance()->profilePath();
 
 	m_configurationStorage = make_qobject<ConfigurationStorage>(profilePath, this);
-	m_configurationApi = make_unique<ConfigurationApi>(m_configurationStorage->readConfiguration());
-	if (!m_configurationStorage->isUsable())
-	{
-		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
-				"Profile is inaccessible. Please check permissions in the '%1' directory.")
-				.arg(profilePath.left(profilePath.length() - 1));
-		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
-		qFatal("%s", qPrintable(errorMessage));
-	}
-	m_deprecatedConfigurationApi = make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QLatin1String("kadu.conf"));
+	m_configuration = make_qobject<Configuration>(this);
+	m_configuration->setConfigurationStorage(m_configurationStorage.get());
+	m_configuration->read();
 }
 
-ConfigurationApi * KaduApplication::configurationApi() const
+Configuration * KaduApplication::configuration() const
 {
-	return m_configurationApi.get();
-}
-
-DeprecatedConfigurationApi * KaduApplication::deprecatedConfigurationApi() const
-{
-	return m_deprecatedConfigurationApi.get();
+	return m_configuration.get();
 }
 
 #include "moc_kadu-application.cpp"

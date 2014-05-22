@@ -25,6 +25,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-parser-tags.h"
@@ -272,14 +273,14 @@ void ContactManager::removeDuplicateContacts()
 			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
 	}
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
 }
 
 void ContactManager::loaded()
 {
 	Manager<Contact>::loaded();
 
-	if (!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
+	if (!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }

@@ -19,29 +19,35 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "exports.h"
 
-class ConfigurationStorage final : public QObject
+#include <QtCore/QObject>
+#include <memory>
+
+class ConfigurationApi;
+class ConfigurationStorage;
+class DeprecatedConfigurationApi;
+
+class KADUAPI Configuration final : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ConfigurationStorage(QString profilePath, QObject *parent = nullptr);
-	virtual ~ConfigurationStorage();
+	explicit Configuration(QObject *parent = nullptr);
+	virtual ~Configuration();
 
-	QString profilePath() const;
+	void setConfigurationStorage(ConfigurationStorage *configurationStorage);
 
-	QStringList possibleConfigurationFiles() const;
-	/**
-	 * @todo Hidden dependency is here. This functin can not be called before readConfiguration()
-	 * because is creates file that readConfiguration checks.
-	 */
-	bool isUsable() const;
+	ConfigurationApi * api() const;
+	DeprecatedConfigurationApi * deprecatedApi() const;
 
-	QString readConfiguration() const;
-	void writeConfiguration(const QString &configuration) const;
+	void read();
+	void save();
 
 private:
-	QString m_profilePath;
+	ConfigurationStorage *m_configurationStorage;
+
+	std::unique_ptr<ConfigurationApi> m_configurationApi;
+	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
 
 };

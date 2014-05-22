@@ -21,6 +21,7 @@
 
 #include <QtGui/QTextDocument>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "icons/icons-manager.h"
 #include "notify/notification-manager.h"
@@ -54,7 +55,7 @@ void FirewallNotification::notify(const Chat &chat, const Contact &sender, const
 {
 	FirewallNotification *notification = new FirewallNotification(chat);
 	notification->setTitle(tr("Message was blocked"));
-	notification->setText(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Firewall", "notification_syntax",
+	notification->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));
 	notification->setDetails(Qt::escape(message));
 	NotificationManager::instance()->notify(notification);

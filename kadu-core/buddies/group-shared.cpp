@@ -20,6 +20,7 @@
  */
 
 #include "buddies/group-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/change-notifier.h"
 #include "kadu-application.h"
@@ -69,7 +70,7 @@ QString GroupShared::storageNodeName()
 void GroupShared::importConfiguration(const QString &name)
 {
 	Name = name;
-	Icon = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("GroupIcon", name);
+	Icon = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("GroupIcon", name);
 	NotifyAboutStatusChanges = true;
 	ShowInAllGroup= true;
 	OfflineToGroup= false;

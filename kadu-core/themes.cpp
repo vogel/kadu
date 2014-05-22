@@ -26,6 +26,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QSettings>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
 #include "gui/windows/message-dialog.h"

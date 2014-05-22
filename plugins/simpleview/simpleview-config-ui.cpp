@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -64,9 +65,9 @@ void SimpleViewConfigUi::mainConfigurationWindowDestroyed()
 
 void SimpleViewConfigUi::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "SimpleViewKeepSize", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "SimpleViewBorderless", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewKeepSize", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewBorderless", true);
 }
 
 

@@ -22,6 +22,7 @@
 #include <QtCore/QDir>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "misc/kadu-paths.h"
@@ -52,7 +53,7 @@ EncryptioNgSimliteKeyImporter::EncryptioNgSimliteKeyImporter()
 
 void EncryptioNgSimliteKeyImporter::accountRegistered(Account account)
 {
-	if (account.id() == KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "UIN"))
+	if (account.id() == KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "UIN"))
 		importKeys(account);
 }
 

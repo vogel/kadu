@@ -8,6 +8,7 @@
 
 	#include <QtX11Extras/QX11Info>
 
+	#include "configuration/configuration.h"
 	#include "configuration/deprecated-configuration-api.h"
 	#include "os/x11/x11tools.h"
 	#undef KeyPress
@@ -37,7 +38,7 @@
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
 		// read user settings
-		int action = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry( "General", "WindowActivationMethod" );
+		int action = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry( "General", "WindowActivationMethod" );
 		// window & desktop
 		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
 		{

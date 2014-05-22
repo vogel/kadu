@@ -32,6 +32,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"

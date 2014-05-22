@@ -21,6 +21,7 @@
 
 #include <QtCore/QVariant>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -37,10 +38,10 @@ ConfigFileVariantWrapper::~ConfigFileVariantWrapper()
 
 QVariant ConfigFileVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return KaduApplication::instance()->deprecatedConfigurationApi()->readEntry(Group, Name, defaultValue.toString());
+	return KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(Group, Name, defaultValue.toString());
 }
 
 void ConfigFileVariantWrapper::set(const QVariant &value)
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry(Group, Name, value.toString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry(Group, Name, value.toString());
 }

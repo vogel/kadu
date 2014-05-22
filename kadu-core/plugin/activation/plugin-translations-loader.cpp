@@ -19,6 +19,7 @@
 
 #include "plugin-translations-loader.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
@@ -31,7 +32,7 @@
 PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept :
 		m_translator{make_unique<QTranslator>()}
 {
-	auto const lang = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language");
+	auto const lang = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language");
 
 	if (m_translator->load(pluginName + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String{"plugins/translations"}))
 		QCoreApplication::installTranslator(m_translator.get());

@@ -32,6 +32,7 @@
 #include <QtWidgets/QMenu>
 #include <QtGui/QMovie>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "icons/kadu-icon.h"
 #include "debug.h"
@@ -75,7 +76,7 @@ DesktopDock::DesktopDock(QObject *parent) :
 	MoveMenuAction = new QAction(tr("Move"), DockWindow);
 	connect(MoveMenuAction, SIGNAL(triggered()), DockWindow, SLOT(startMoving()));
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Desktop Dock", "MoveInMenu"))
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Desktop Dock", "MoveInMenu"))
 		createMenu();
 
 	kdebugf2();
@@ -142,18 +143,18 @@ void DesktopDock::updateMenu(bool b)
 
 void DesktopDock::configurationUpdated()
 {
-	updateMenu(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Desktop Dock", "MoveInMenu"));
+	updateMenu(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Desktop Dock", "MoveInMenu"));
 }
 
 void DesktopDock::createDefaultConfiguration()
 {
 	QWidget w;
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "DockingColor", w.palette().color(QPalette::Active, QPalette::Window));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "DockingTransparency", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "MoveInMenu", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "PositionX", 0);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Desktop Dock", "PositionY", 0);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Desktop Dock", "DockingColor", w.palette().color(QPalette::Active, QPalette::Window));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Desktop Dock", "DockingTransparency", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Desktop Dock", "MoveInMenu", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Desktop Dock", "PositionX", 0);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Desktop Dock", "PositionY", 0);
 }
 
 #include "moc_desktop-dock.cpp"

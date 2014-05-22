@@ -19,6 +19,7 @@
 
 #include "plugin-metadata-reader.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "plugin/metadata/plugin-metadata-builder.h"
@@ -44,7 +45,7 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 	if (!fileInfo.exists() || !fileInfo.isReadable())
 		throw PluginMetadataReaderException{};
 
-	auto const lang = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language");
+	auto const lang = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language");
 	QSettings file{filePath, QSettings::IniFormat};
 	file.setIniCodec("UTF-8");
 

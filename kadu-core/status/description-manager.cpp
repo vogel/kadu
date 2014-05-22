@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
@@ -43,7 +44,7 @@ DescriptionManager::DescriptionManager()
 
 	configurationUpdated();
 
-	if (KaduApplication::instance()->configurationApi()->getNode("Descriptions", ConfigurationApi::ModeFind).isNull())
+	if (KaduApplication::instance()->configuration()->api()->getNode("Descriptions", ConfigurationApi::ModeFind).isNull())
 		import();
 	else
 		setState(StateNotLoaded);
@@ -79,7 +80,7 @@ DescriptionModel * DescriptionManager::model()
 void DescriptionManager::import()
 {
 	StringList.clear();
-	StringList.append(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
+	StringList.append(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
 	StringList.removeDuplicates();
 
 	truncate();
@@ -100,7 +101,7 @@ void DescriptionManager::truncate()
 
 void DescriptionManager::configurationUpdated()
 {
-	MaxNumberOfDescriptions = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("General", "NumberOfDescriptions");
+	MaxNumberOfDescriptions = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("General", "NumberOfDescriptions");
 	truncate();
 }
 

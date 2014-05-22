@@ -31,6 +31,7 @@
 
 #include <QtWidgets/QApplication>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/message-dialog.h"
 #include "notify/notification/aggregate-notification.h"
@@ -184,7 +185,7 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	foreach (Notifier *notifier, Notifiers)
 	{
-		if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
+		if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{
 			notifier->notify(notification);
 			foundNotifier = true;
@@ -263,7 +264,7 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 		if (-1 == slashPosition)
 			return event;
 
-		if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
+		if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
 			return event;
 
 		event = event.left(slashPosition);

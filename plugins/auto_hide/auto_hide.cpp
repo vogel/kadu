@@ -23,6 +23,7 @@
 
 #include <QtWidgets/QSpinBox>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -86,8 +87,8 @@ void AutoHide::timerTimeoutSlot()
 
 void AutoHide::configurationUpdated()
 {
-	IdleTime = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
-	Enabled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+	IdleTime = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+	Enabled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
 
 	if (Enabled && !Timer.isActive())
 		Timer.start(1000);

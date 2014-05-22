@@ -29,6 +29,7 @@
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/kadu/kadu-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -118,18 +119,18 @@ void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 
 void ChatStyleManager::configurationUpdated()
 {
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "ChatPrune", true))
-		Prune = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "ChatPruneLen");
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatPrune", true))
+		Prune = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ChatPruneLen");
 	else
 	{
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "ChatPrune", true);
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "ChatPruneLen", 0);
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "ChatPrune", true);
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "ChatPruneLen", 0);
 		Prune = 0;
 	}
 
-	ParagraphSeparator = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Look", "ParagraphSeparator");
+	ParagraphSeparator = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "ParagraphSeparator");
 
-	QFont font = KaduApplication::instance()->deprecatedConfigurationApi()->readFontEntry("Look","ChatFont");
+	QFont font = KaduApplication::instance()->configuration()->deprecatedApi()->readFontEntry("Look","ChatFont");
 
 	QString fontFamily = font.family();
 	QString fontSize;
@@ -171,13 +172,13 @@ void ChatStyleManager::configurationUpdated()
 		"	padding: 3px;"
 		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, QString::number(ParagraphSeparator), backgroundColor);
 
-	CfgNoHeaderRepeat = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "NoHeaderRepeat", true);
+	CfgNoHeaderRepeat = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "NoHeaderRepeat", true);
 
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
 	{
-		CfgHeaderSeparatorHeight = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Look", "HeaderSeparatorHeight");
-		CfgNoHeaderInterval = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Look", "NoHeaderInterval");
+		CfgHeaderSeparatorHeight = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "HeaderSeparatorHeight");
+		CfgNoHeaderInterval = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NoHeaderInterval");
 	}
 	else
 	{
@@ -185,10 +186,10 @@ void ChatStyleManager::configurationUpdated()
 		CfgNoHeaderInterval = 0;
 	}
 
-	NoServerTime = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "NoServerTime");
-	NoServerTimeDiff = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Look", "NoServerTimeDiff");
+	NoServerTime = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "NoServerTime");
+	NoServerTimeDiff = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NoServerTimeDiff");
 
-	auto newChatStyle = ChatStyle{KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "Style"), KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatStyleVariant")};
+	auto newChatStyle = ChatStyle{KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "Style"), KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatStyleVariant")};
 
 	// if Style was changed, load new Style
 	if (!CurrentEngine || newChatStyle != m_currentChatStyle)
@@ -356,8 +357,8 @@ void ChatStyleManager::mainConfigurationWindowCreated(MainConfigurationWindow *w
 
 void ChatStyleManager::configurationApplied()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "Style", SyntaxListCombo->currentText());
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "Style", SyntaxListCombo->currentText());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
 }
 
 void ChatStyleManager::styleChangedSlot(const QString &styleName)

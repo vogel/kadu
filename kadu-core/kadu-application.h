@@ -40,9 +40,8 @@
 #include <QtWidgets/QApplication>
 #include <memory>
 
-class ConfigurationApi;
+class Configuration;
 class ConfigurationStorage;
-class DeprecatedConfigurationApi;
 
 class KADUAPI KaduApplication : public QApplication
 {
@@ -54,16 +53,14 @@ public:
 	KaduApplication(int &argc, char *argv[]);
 	virtual ~KaduApplication();
 
-	void prepareConfiguration();
+	void readConfiguration();
 
-	ConfigurationApi * configurationApi() const;
-	DeprecatedConfigurationApi * deprecatedConfigurationApi() const;
+	Configuration * configuration() const;
 
 private:
 	static KaduApplication * m_instance;
 
-	std::unique_ptr<ConfigurationApi> m_configurationApi;
-	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
+	qobject_ptr<Configuration> m_configuration;
 	qobject_ptr<ConfigurationStorage> m_configurationStorage;
 
 };

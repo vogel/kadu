@@ -24,6 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "kadu-application.h"
@@ -57,7 +58,7 @@ MainConfigurationHolder::MainConfigurationHolder() :
 
 void MainConfigurationHolder::configurationUpdated()
 {
-	QString statusContainerType = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "StatusContainerType", "Identity");
+	QString statusContainerType = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
 
 	SetStatusMode newStatus = SetStatusPerIdentity;
 	if (statusContainerType == "Account")

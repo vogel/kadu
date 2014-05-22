@@ -32,6 +32,7 @@
 
 #include <QtGui/QMouseEvent>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/emoticon-selector-button-popup.h"
 

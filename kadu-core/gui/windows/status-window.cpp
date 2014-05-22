@@ -32,6 +32,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/widgets/kadu-text-edit.h"
@@ -294,7 +295,7 @@ void StatusWindow::applyStatus()
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "ParseStatus", false))
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
 
 	foreach (StatusContainer *container, Container->subStatusContainers())

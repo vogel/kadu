@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "kadu-application.h"
@@ -33,7 +34,7 @@ AutostatusConfiguration::AutostatusConfiguration()
 
 void AutostatusConfiguration::configurationUpdated()
 {
-	AutoTime = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("PowerKadu", "autostatus_time", 10);
-	AutoStatus = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("PowerKadu", "autoStatus");
-	StatusFilePath = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("PowerKadu", "status_file_path", KaduPaths::instance()->profilePath() + QLatin1String("autostatus.list"));
+	AutoTime = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autostatus_time", 10);
+	AutoStatus = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autoStatus");
+	StatusFilePath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "status_file_path", KaduPaths::instance()->profilePath() + QLatin1String("autostatus.list"));
 }

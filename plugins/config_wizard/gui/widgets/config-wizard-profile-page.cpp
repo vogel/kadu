@@ -27,6 +27,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "kadu-application.h"
@@ -75,19 +76,19 @@ void ConfigWizardProfilePage::setLanguages()
 
 void ConfigWizardProfilePage::initializePage()
 {
-	int languageIndex = LanguagesCombo->findData(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language"));
+	int languageIndex = LanguagesCombo->findData(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
 	if (-1 == languageIndex)
 		languageIndex = LanguagesCombo->findData("en");
 	if (-1 != languageIndex)
 		LanguagesCombo->setCurrentIndex(languageIndex);
 
-	NickNameEdit->setText(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Nick", "Me"));
+	NickNameEdit->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", "Me"));
 }
 
 void ConfigWizardProfilePage::acceptPage()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("General", "Nick", NickNameEdit->text());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
 
 	Core::instance()->myself().setDisplay(NickNameEdit->text());
 }

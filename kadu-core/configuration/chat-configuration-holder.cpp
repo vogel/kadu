@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -58,35 +59,35 @@ void ChatConfigurationHolder::init()
 
 void ChatConfigurationHolder::configurationUpdated()
 {
-	AutoSend = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "AutoSend");
-	NiceDateFormat = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "NiceDateFormat");
+	AutoSend = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
+	NiceDateFormat = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "NiceDateFormat");
 
-	ChatTextCustomColors = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "ChatTextCustomColors");
-	ChatTextBgColor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Look", "ChatTextBgColor");
-	ChatTextFontColor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Look", "ChatTextFontColor");
+	ChatTextCustomColors = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ChatTextCustomColors");
+	ChatTextBgColor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor");
+	ChatTextFontColor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextFontColor");
 
-	ForceCustomChatFont = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "ForceCustomChatFont");
-	ChatFont = KaduApplication::instance()->deprecatedConfigurationApi()->readFontEntry("Look", "ChatFont");
+	ForceCustomChatFont = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ForceCustomChatFont");
+	ChatFont = KaduApplication::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "ChatFont");
 
-	ChatContents = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatContents");
-	ConferenceContents = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ConferenceContents");
-	ConferencePrefix = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ConferencePrefix");
-	MyBackgroundColor = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatMyBgColor");
-	MyFontColor = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatMyFontColor");
-	MyNickColor = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatMyNickColor");
-	UsrBackgroundColor = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatUsrBgColor");
-	UsrFontColor = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatUsrFontColor");
-	UsrNickColor = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "ChatUsrNickColor");
+	ChatContents = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatContents");
+	ConferenceContents = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ConferenceContents");
+	ConferencePrefix = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ConferencePrefix");
+	MyBackgroundColor = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatMyBgColor");
+	MyFontColor = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatMyFontColor");
+	MyNickColor = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatMyNickColor");
+	UsrBackgroundColor = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatUsrBgColor");
+	UsrFontColor = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatUsrFontColor");
+	UsrNickColor = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatUsrNickColor");
 
-	ContactStateChats = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "ContactStateChats");
-	ContactStateWindowTitle = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "ContactStateWindowTitle");
-	ContactStateWindowTitlePosition = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "ContactStateWindowTitlePosition");
-	ContactStateWindowTitleComposingSyntax = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Chat", "ContactStateWindowTitleComposingSyntax");
+	ContactStateChats = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ContactStateChats");
+	ContactStateWindowTitle = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ContactStateWindowTitle");
+	ContactStateWindowTitlePosition = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ContactStateWindowTitlePosition");
+	ContactStateWindowTitleComposingSyntax = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "ContactStateWindowTitleComposingSyntax");
 
-	ChatBgFilled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "ChatBgFilled");
-	ChatBgColor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Look", "ChatBgColor");
+	ChatBgFilled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ChatBgFilled");
+	ChatBgColor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatBgColor");
 
-	UseTransparency = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "UseTransparency");
+	UseTransparency = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency");
 
 
 	emit chatConfigurationUpdated();

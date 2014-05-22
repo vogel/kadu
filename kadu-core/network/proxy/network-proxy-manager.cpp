@@ -20,8 +20,9 @@
 
 #include <QtXml/QDomElement>
 
-#include "configuration/deprecated-configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "storage/storage-point.h"
 #include "kadu-application.h"
 
@@ -62,13 +63,13 @@ void NetworkProxyManager::store()
 
 void NetworkProxyManager::configurationUpdated()
 {
-	DefaultProxy = byUuid(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Network", "DefaultProxy"));
+	DefaultProxy = byUuid(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Network", "DefaultProxy"));
 }
 
 void NetworkProxyManager::setDefaultProxy(const NetworkProxy &proxy)
 {
 	DefaultProxy = proxy;
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
 }
 
 const NetworkProxy & NetworkProxyManager::defaultProxy()

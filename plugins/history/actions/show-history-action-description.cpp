@@ -24,6 +24,7 @@
 
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -61,7 +62,7 @@ void ShowHistoryActionDescription::configurationUpdated()
 {
 	ActionDescription::configurationUpdated();
 
-	ChatHistoryQuotationTime = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
+	ChatHistoryQuotationTime = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 }
 
 void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
@@ -80,9 +81,9 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("History", "ChatHistoryCitation", 10) > 0)
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10) > 0)
 	{
-		int prune = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("History", "ChatHistoryCitation", 10);
+		int prune = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10);
 		menu->addAction(tr("Show last %1 messages").arg(prune), this, SLOT(showPruneMessages()))->setData(chatWidgetData);
 		menu->addSeparator();
 	}
@@ -165,7 +166,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	query.setTalkable(messagesChat);
 
 	if (0 == days)
-		query.setLimit(KaduApplication::instance()->deprecatedConfigurationApi()->readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
+		query.setLimit(KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
 	else
 		query.setFromDate(QDate::currentDate().addDays(-days));
 

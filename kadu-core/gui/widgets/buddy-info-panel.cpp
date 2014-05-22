@@ -27,6 +27,7 @@
 #include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
@@ -63,7 +64,7 @@ BuddyInfoPanel::~BuddyInfoPanel()
 
 void BuddyInfoPanel::configurationUpdated()
 {
-	setUserFont(KaduApplication::instance()->deprecatedConfigurationApi()->readFontEntry("Look", "PanelFont").toString(), true);
+	setUserFont(KaduApplication::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont").toString(), true);
 
 	update();
 }
@@ -79,7 +80,7 @@ void BuddyInfoPanel::update()
 	if (Core::instance()->isClosing())
 		return;
 
-	QFont font = KaduApplication::instance()->deprecatedConfigurationApi()->readFontEntry("Look", "PanelFont");
+	QFont font = KaduApplication::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
 	QString fontSize;
 	if (font.pointSize() > 0)
@@ -90,10 +91,10 @@ void BuddyInfoPanel::update()
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
-	QString fontColor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Look", "InfoPanelFgColor").name();
-	bool backgroundFilled = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "InfoPanelBgFilled");
+	QString fontColor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelFgColor").name();
+	bool backgroundFilled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "InfoPanelBgFilled");
 	if (backgroundFilled)
-		BackgroundColor = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("Look", "InfoPanelBgColor").name();
+		BackgroundColor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelBgColor").name();
 	else
 		BackgroundColor = "transparent";
 
@@ -130,11 +131,11 @@ void BuddyInfoPanel::update()
 		"</html>"
 		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
-	QString syntaxFile = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
+	QString syntaxFile = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
 	if (syntaxFile == "default")
 	{
 		syntaxFile = "Old Default";
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
 	}
 
 	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
@@ -142,7 +143,7 @@ void BuddyInfoPanel::update()
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	displayItem(Item);
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
 	else
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);

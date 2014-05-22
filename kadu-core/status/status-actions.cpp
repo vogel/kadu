@@ -24,6 +24,7 @@
 #include <QtWidgets/QAction>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"

@@ -23,6 +23,7 @@
 #include <QtCore/QVector>
 
 #include "chat/chat-manager.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "message/message-manager.h"
 #include "message/message.h"
@@ -141,7 +142,7 @@ void RecentChatManager::store()
 	for (int i = 0; i < count; i++)
 		mainElement.removeChild(chatElements.at(i));
 
-	if (!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "RecentChatsClear", false))
+	if (!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (const Chat &chat, RecentChats)
 			if (chat && !chat.uuid().isNull())
 			{
@@ -235,7 +236,7 @@ void RecentChatManager::removeRecentChat(Chat chat)
 void RecentChatManager::configurationUpdated()
 {
 	CleanUpTimer.stop();
-	RecentChatsTimeout = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "RecentChatsTimeout") * 60;
+	RecentChatsTimeout = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "RecentChatsTimeout") * 60;
 	if (RecentChatsTimeout > 0)
 		CleanUpTimer.start();
 

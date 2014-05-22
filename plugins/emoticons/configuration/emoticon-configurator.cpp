@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
 #include "configuration/emoticon-configuration.h"
@@ -53,10 +54,10 @@ void EmoticonConfigurator::configure()
 
 void EmoticonConfigurator::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "EmoticonsPaths", QString());
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "EnableEmoticonAnimations", 1 != KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "EmoticonsStyle", 2));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "EmoticonsTheme", ThemeManager->defaultTheme());
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "EnableEmoticons", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Chat", "EmoticonsTheme") != "None");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "EmoticonsPaths", QString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "EnableEmoticonAnimations", 1 != KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "EmoticonsStyle", 2));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "EmoticonsTheme", ThemeManager->defaultTheme());
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "EnableEmoticons", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "EmoticonsTheme") != "None");
 }
 
 void EmoticonConfigurator::configurationUpdated()
@@ -66,14 +67,14 @@ void EmoticonConfigurator::configurationUpdated()
 
 	ThemeManager->loadThemes();
 
-	Configuration.setEnabled(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "EnableEmoticons", true));
-	Configuration.setAnimate(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "EnableEmoticonAnimations", true));
+	Configuration.setEnabled(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "EnableEmoticons", true));
+	Configuration.setAnimate(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "EnableEmoticonAnimations", true));
 
 	if (Configuration.enabled())
 	{
-		if (LastLoadedThemeName != KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Chat", "EmoticonsTheme"))
+		if (LastLoadedThemeName != KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "EmoticonsTheme"))
 		{
-			LastLoadedThemeName = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Chat", "EmoticonsTheme");
+			LastLoadedThemeName = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "EmoticonsTheme");
 			ThemeManager->setCurrentTheme(LastLoadedThemeName);
 
 			GaduEmoticonThemeLoader loader;

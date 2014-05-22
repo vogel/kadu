@@ -38,6 +38,7 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -124,7 +125,7 @@ IndicatorDocking::~IndicatorDocking()
 
 void IndicatorDocking::indicateUnreadMessages()
 {
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
 		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
@@ -322,8 +323,8 @@ QList<IndicatorDocking::IndMMap::iterator> IndicatorDocking::iteratorsForAggrega
 
 void IndicatorDocking::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "NewChat_IndicatorNotify", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "NewMessage_IndicatorNotify", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_IndicatorNotify", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_IndicatorNotify", true);
 }
 
 #include "moc_indicator_docking.cpp"

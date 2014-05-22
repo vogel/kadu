@@ -25,6 +25,7 @@
 #include <QtCore/QThread>
 #include <QtSql/QSqlError>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "kadu-application.h"
@@ -156,7 +157,7 @@ void SqlInitializer::initDatabase()
 	}
 	else
 	{
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
 	}
 }

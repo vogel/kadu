@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -47,7 +48,7 @@ ChatEditBoxSizeManager::~ChatEditBoxSizeManager()
 
 void ChatEditBoxSizeManager::configurationUpdated()
 {
-	setCommonHeight(KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
+	setCommonHeight(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
 }
 
 void ChatEditBoxSizeManager::setCommonHeight(int height)
@@ -55,7 +56,7 @@ void ChatEditBoxSizeManager::setCommonHeight(int height)
 	if (height != CommonHeight)
 	{
 		CommonHeight = height;
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
 		emit commonHeightChanged(CommonHeight);
 	}
 }

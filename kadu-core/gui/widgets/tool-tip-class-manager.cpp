@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "talkable/talkable.h"
 #include "kadu-application.h"
@@ -37,7 +38,7 @@ ToolTipClassManager * ToolTipClassManager::instance()
 ToolTipClassManager::ToolTipClassManager() :
 		CurrentToolTipClass(0)
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
 	configurationUpdated();
 }
 
@@ -109,5 +110,5 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
+	useToolTipClass(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
 }

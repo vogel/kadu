@@ -22,6 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -59,11 +60,11 @@ EncryptionNgSimliteConfiguration::~EncryptionNgSimliteConfiguration()
 
 void EncryptionNgSimliteConfiguration::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->removeVariable("Chat", "Encryption");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Chat", "Encryption");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }
 
 void EncryptionNgSimliteConfiguration::configurationUpdated()
 {
-	EncryptAfterReceiveEncryptedMessage = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	EncryptAfterReceiveEncryptedMessage = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }

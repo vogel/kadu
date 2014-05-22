@@ -23,6 +23,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QToolBar>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -68,14 +69,14 @@ SimpleView::SimpleView() :
 
 	configurationUpdated();
 
-	DiffRect = KaduApplication::instance()->deprecatedConfigurationApi()->readRectEntry("Look", "SimpleViewGeometry");
+	DiffRect = KaduApplication::instance()->configuration()->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
 	if (DiffRect != QRect(0,0,0,0))
 		simpleViewToggle(true);
 }
 
 SimpleView::~SimpleView()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
 
 	simpleViewToggle(false);
 
@@ -202,10 +203,10 @@ void SimpleView::simpleViewToggle(bool activate)
 			MainWindowHandle->setGeometry(r);
 
 			/* Status button */
-			StatusButtonsHandle->setVisible(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "ShowStatusButton"));
+			StatusButtonsHandle->setVisible(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
 
 			/* Info panel*/
-			if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "ShowInfoPanel"))
+			if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 				KaduWindowHandle->infoPanel()->show();
 
 			/* ScrollBar */
@@ -217,7 +218,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "DisplayGroupTabs"))
+			if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
 				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
@@ -254,9 +255,9 @@ void SimpleView::configurationUpdated()
 	/* Give the kadu update the GUI with old configuration */
 	simpleViewToggle(false);
 
-	KeepSize = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-	Borderless = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
+	KeepSize = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
 
 }
 

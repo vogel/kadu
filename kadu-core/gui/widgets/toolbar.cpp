@@ -36,8 +36,9 @@
 #include <QtWidgets/QToolButton>
 #include <QtXml/QDomElement>
 
-#include "configuration/deprecated-configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"
@@ -558,7 +559,7 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 
 void ToolBar::configurationUpdated()
 {
-	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configuration()->api()->findElement(KaduApplication::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	if (!toolbarsConfig.hasAttribute("blocked"))
 		toolbarsConfig.setAttribute("blocked", "1");
@@ -573,14 +574,14 @@ void ToolBar::configurationUpdated()
 void ToolBar::writeToConfig(const QDomElement &parent_element)
 {
 	kdebugf();
-	QDomElement toolbar_elem = KaduApplication::instance()->configurationApi()->createElement(parent_element, "ToolBar");
+	QDomElement toolbar_elem = KaduApplication::instance()->configuration()->api()->createElement(parent_element, "ToolBar");
 
 	toolbar_elem.setAttribute("x_offset", pos().x());
 	toolbar_elem.setAttribute("y_offset", pos().y());
 
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 	{
-		QDomElement button_elem = KaduApplication::instance()->configurationApi()->createElement(toolbar_elem, "ToolButton");
+		QDomElement button_elem = KaduApplication::instance()->configuration()->api()->createElement(toolbar_elem, "ToolButton");
 		if (toolBarAction.actionName.startsWith(QLatin1String("__separator")))
 			button_elem.setAttribute("action_name", "__separator");
 		else if (toolBarAction.actionName.startsWith(QLatin1String("__spacer")))
@@ -829,18 +830,18 @@ void ToolBar::removeToolbar()
 
 bool ToolBar::isBlockToolbars()
 {
-	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configuration()->api()->findElement(KaduApplication::instance()->configuration()->api()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = KaduApplication::instance()->configurationApi()->createElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
+		toolbarsConfig = KaduApplication::instance()->configuration()->api()->createElement(KaduApplication::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	return toolbarsConfig.attribute("blocked") == "1";
 }
 
 void ToolBar::setBlockToolbars(bool checked)
 {
-	QDomElement toolbarsConfig = KaduApplication::instance()->configurationApi()->findElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = KaduApplication::instance()->configuration()->api()->findElement(KaduApplication::instance()->configuration()->api()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = KaduApplication::instance()->configurationApi()->createElement(KaduApplication::instance()->configurationApi()->rootElement(), "Toolbars");
+		toolbarsConfig = KaduApplication::instance()->configuration()->api()->createElement(KaduApplication::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	toolbarsConfig.setAttribute("blocked", checked ? "1" : "0");
 	ConfigurationAwareObject::notifyAll();

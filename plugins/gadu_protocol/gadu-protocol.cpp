@@ -47,6 +47,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
@@ -424,9 +425,9 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
 	GaduLoginParams.has_audio = false;
-	GaduLoginParams.last_sysmsg = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("General", "SystemMsgIndex", 1389);
+	GaduLoginParams.last_sysmsg = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
 
-	GaduLoginParams.image_size = qMax(qMin(KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
+	GaduLoginParams.image_size = qMax(qMin(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
 
 	setStatusFlags();
 }

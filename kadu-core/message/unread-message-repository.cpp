@@ -40,11 +40,11 @@ UnreadMessageRepository::~UnreadMessageRepository()
 
 bool UnreadMessageRepository::importFromPendingMessages()
 {
-	auto pendingMessagesNode = KaduApplication::instance()->configurationApi()->getNode("PendingMessages", ConfigurationApi::ModeFind);
+	auto pendingMessagesNode = KaduApplication::instance()->configuration()->api()->getNode("PendingMessages", ConfigurationApi::ModeFind);
 	if (pendingMessagesNode.isNull())
 		return false;
 
-	auto messageElements = KaduApplication::instance()->configurationApi()->getNodes(pendingMessagesNode, "Message");
+	auto messageElements = KaduApplication::instance()->configuration()->api()->getNodes(pendingMessagesNode, "Message");
 	for (const auto &messageElement : messageElements)
 	{
 		auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), messageElement);

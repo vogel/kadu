@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -71,29 +72,29 @@ SpellcheckerConfiguration::~SpellcheckerConfiguration()
 
 void SpellcheckerConfiguration::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Bold", "false");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Italic", "false");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Underline", "true");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Color", "#FF0101");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Checked", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language"));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Accents", "false");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Case", "false");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "Suggester", "true");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("ASpell", "SuggesterWordCount", "10");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Bold", "false");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Italic", "false");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Underline", "true");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Color", "#FF0101");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Checked", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Accents", "false");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Case", "false");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Suggester", "true");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "SuggesterWordCount", "10");
 }
 
 void SpellcheckerConfiguration::configurationUpdated()
 {
-	bool bold = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("ASpell", "Bold", false);
-	bool italic = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("ASpell", "Italic", false);
-	bool underline = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("ASpell", "Underline", false);
-	bool accents = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("ASpell", "Accents", false);
-	bool caseSensivity = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("ASpell", "Case", false);
-	bool suggester = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("ASpell", "Suggester", true);
+	bool bold = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Bold", false);
+	bool italic = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Italic", false);
+	bool underline = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Underline", false);
+	bool accents = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Accents", false);
+	bool caseSensivity = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Case", false);
+	bool suggester = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
-	QColor color = KaduApplication::instance()->deprecatedConfigurationApi()->readColorEntry("ASpell", "Color", &colorMark);
-	QStringList checked = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("ASpell", "Checked", KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
-	int suggesterWordCount = KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("ASpell", "SuggesterWordCount");
+	QColor color = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("ASpell", "Color", &colorMark);
+	QStringList checked = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("ASpell", "Checked", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
+	int suggesterWordCount = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("ASpell", "SuggesterWordCount");
 
 	if (FullyLoaded && bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
 			caseSensivity == Case && suggester == Suggester && color == Color &&
@@ -116,5 +117,5 @@ void SpellcheckerConfiguration::configurationUpdated()
 
 void SpellcheckerConfiguration::setChecked(const QStringList &checked)
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("ASpell", "Checked", checked.join(","));
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", checked.join(","));
 }

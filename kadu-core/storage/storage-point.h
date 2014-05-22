@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "exports.h"
 

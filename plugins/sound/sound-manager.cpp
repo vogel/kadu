@@ -34,6 +34,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QThread>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "debug.h"
 #include "kadu-application.h"
@@ -66,7 +67,7 @@ SoundManager::SoundManager() :
 	import_0_6_5_configuration();
 	createDefaultConfiguration();
 
-	setMute(!KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Sounds", "PlaySound"));
+	setMute(!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
 
 
 	PlayThread = new QThread();
@@ -101,25 +102,25 @@ SoundManager::~SoundManager()
 
 void SoundManager::import_0_6_5_configuration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Sound",
-			KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Notify", "StatusChanged/ToAway_Sound"));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Sound",
+			KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Notify", "StatusChanged/ToAway_Sound"));
 }
 
 void SoundManager::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "ConnectionError_Sound", false);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "InvalidPassword_Sound", false);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "NewChat_Sound", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "NewMessage_Sound", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToFreeForChat", false);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "StatusChanged/ToAway_Sound", false);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_Sound", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "InvalidPassword_Sound", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Sound", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_Sound", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Sound", false);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "PlaySound", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundPaths", QString());
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundTheme", "default");
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Sounds", "SoundVolume", 100);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "PlaySound", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPaths", QString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundTheme", "default");
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundVolume", 100);
 }
 
 bool SoundManager::isMuted() const
@@ -146,7 +147,7 @@ void SoundManager::playSoundByName(const QString &soundName)
 	if (isMuted())
 		return;
 
-	QString file = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("Sounds", soundName + "_sound");
+	QString file = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Sounds", soundName + "_sound");
 	playFile(file);
 }
 

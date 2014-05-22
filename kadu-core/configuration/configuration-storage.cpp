@@ -35,6 +35,11 @@ ConfigurationStorage::~ConfigurationStorage()
 {
 }
 
+QString ConfigurationStorage::profilePath() const
+{
+	return m_profilePath;
+}
+
 QStringList ConfigurationStorage::possibleConfigurationFiles() const
 {
 	auto backups_0_12 = QDir{m_profilePath, "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files};

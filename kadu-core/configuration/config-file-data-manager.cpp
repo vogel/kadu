@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -31,7 +32,7 @@ void ConfigFileDataManager::writeEntry(const QString &section, const QString &na
 	if (section.isEmpty() || name.isEmpty())
 		return;
 
-	KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry(section, name, value.toString());
+	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry(section, name, value.toString());
 }
 
 QVariant ConfigFileDataManager::readEntry(const QString &section, const QString &name)
@@ -39,7 +40,7 @@ QVariant ConfigFileDataManager::readEntry(const QString &section, const QString 
 	if (section.isEmpty() || name.isEmpty())
 		return QVariant(QString());
 
-	return QVariant(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry(section, name));
+	return QVariant(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(section, name));
 }
 
 

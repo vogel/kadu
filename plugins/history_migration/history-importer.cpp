@@ -29,6 +29,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
@@ -134,7 +135,7 @@ void HistoryImporter::threadFinished()
 {
 	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
 	{
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("History", "Imported_from_0.6.5", true);
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful
 		HistoryMigrationActions::unregisterActions();
 	}

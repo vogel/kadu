@@ -30,6 +30,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSpinBox>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "debug.h"
 
@@ -74,9 +75,9 @@ void GrowlNotifyConfigurationWidget::saveNotifyConfigurations()
 	{
 		const QString &eventName = property.eventName;
 
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_syntax", property.syntax);
-		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_title", property.title);
-//		KaduApplication::instance()->deprecatedConfigurationApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_avatar", property.showAvatar);
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_syntax", property.syntax);
+		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_title", property.title);
+//		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("GrowlNotify", QString("Event_") + eventName + "_avatar", property.showAvatar);
 	}
 }
 
@@ -97,9 +98,9 @@ void GrowlNotifyConfigurationWidget::switchToEvent(const QString &event)
 		currentNotifyEvent = event;
 		currentProperties.eventName = event;
 
-		currentProperties.syntax = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("GrowlNotify", QString("Event_") + event + "_syntax");
-		currentProperties.title = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("GrowlNotify", QString("Event_") + event + "_title");
-//		currentProperties.showAvatar = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("GrowlNotify", QString("Event_") + event + "_avatar");
+		currentProperties.syntax = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("GrowlNotify", QString("Event_") + event + "_syntax");
+		currentProperties.title = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("GrowlNotify", QString("Event_") + event + "_title");
+//		currentProperties.showAvatar = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("GrowlNotify", QString("Event_") + event + "_avatar");
 	}
 
 	syntax->setText(currentProperties.syntax);

@@ -19,6 +19,7 @@
 
 #include "plugin-state-storage-09.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/algorithm.h"
 #include "plugin/state/plugin-state.h"
@@ -37,12 +38,12 @@ QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> 
 {
 	auto result = QMap<QString, PluginState>{};
 
-	auto everLoaded = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
-	auto loaded = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "LoadedModules");
+	auto everLoaded = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
+	auto loaded = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "LoadedModules");
 
 	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
 	everLoaded += loadedPlugins;
-	auto unloaded_str = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "UnloadedModules");
+	auto unloaded_str = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "UnloadedModules");
 	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...

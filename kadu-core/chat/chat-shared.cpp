@@ -31,6 +31,7 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/type/chat-type.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "misc/change-notifier.h"
@@ -232,7 +233,7 @@ bool ChatShared::shouldStore()
 		return false;
 
 	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readNumEntry("History", "Schema", 0) < 4)
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
 		return true;
 
 	if (customProperties()->shouldStore())

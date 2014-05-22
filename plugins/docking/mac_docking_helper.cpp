@@ -28,6 +28,7 @@
 #include <QtGui/QIcon>
 
 #include "ApplicationServices/ApplicationServices.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
@@ -79,7 +80,7 @@ MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent) , d( new M
 {
 	isBouncing = false;
 	d->macDockingHelperObjC = [[MacDockingHelperObjC alloc] init];
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("General", "RunDocked"))
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"))
 		Core::instance()->setShowMainWindowOnStart(false);
 	Core::instance()->kaduWindow()->setDocked(true);
 }

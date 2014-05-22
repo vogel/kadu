@@ -28,6 +28,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/kadu-paths.h"
 #include "status/status-changer-manager.h"
@@ -102,9 +103,9 @@ FileDescription::~FileDescription()
 
 void FileDescription::configurationUpdated()
 {
-	File = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	ForceDesc = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("FileDesc", "forceDescr", true);
-	AllowOther = KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("FileDesc", "allowOther", true);
+	File = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	ForceDesc = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
+	AllowOther = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
@@ -130,9 +131,9 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("FileDesc", "forceDescr", true);
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("FileDesc", "allowOther", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "file", KaduPaths::instance()->profilePath() + QLatin1String("description.txt"));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

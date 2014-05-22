@@ -19,6 +19,7 @@
 
 #include "chat-window-storage-configurator.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/chat-window-storage-configuration.h"
@@ -43,12 +44,12 @@ void ChatWindowStorageConfigurator::configurationUpdated()
 
 void ChatWindowStorageConfigurator::createDefaultConfiguration() const
 {
-	KaduApplication::instance()->deprecatedConfigurationApi()->addVariable("Chat", "SaveOpenedWindows", true);
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
 }
 
 ChatWindowStorageConfiguration ChatWindowStorageConfigurator::loadConfiguration() const
 {
 	auto configuration = ChatWindowStorageConfiguration();
-	configuration.setStoreOpenedChatWindows(KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
+	configuration.setStoreOpenedChatWindows(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
 	return configuration;
 }

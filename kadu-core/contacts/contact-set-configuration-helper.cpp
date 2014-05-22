@@ -26,6 +26,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"

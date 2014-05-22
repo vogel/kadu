@@ -30,6 +30,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtScript/QScriptEngine>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "kadu-application.h"
@@ -52,10 +53,10 @@ void NetworkAccessManagerWrapper::configurationUpdated()
 {
 	NetworkProxy networkProxy;
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("SMS", "DefaultProxy", true))
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
 		networkProxy = NetworkProxyManager::instance()->defaultProxy();
 	else
-		networkProxy = NetworkProxyManager::instance()->byUuid(KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("SMS", "Proxy"));
+		networkProxy = NetworkProxyManager::instance()->byUuid(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("SMS", "Proxy"));
 
 	QNetworkProxy proxy;
 

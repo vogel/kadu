@@ -46,7 +46,9 @@
 #include <unistd.h>
 #endif // !Q_OS_WIN32
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "core/core.h"
 #include "execution-arguments/execution-arguments.h"
@@ -201,7 +203,7 @@ int main(int argc, char *argv[]) try
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
 
-	application->prepareConfiguration();
+	application->readConfiguration();
 
 #ifdef DEBUG_OUTPUT_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
@@ -209,7 +211,7 @@ int main(int argc, char *argv[]) try
 
 	enableSignalHandling();
 
-	const QString lang = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("General", "Language", QLocale::system().name().left(2));
+	const QString lang = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	kadu_qm.load("kadu_" + lang, KaduPaths::instance()->dataPath() + QLatin1String("translations"));
@@ -225,8 +227,8 @@ int main(int argc, char *argv[]) try
 		else
 			peer->sendMessage("activate", 1000);
 
-		delete KaduApplication::instance()->deprecatedConfigurationApi();
-		delete KaduApplication::instance()->configurationApi();
+		delete KaduApplication::instance()->configuration()->deprecatedApi();
+		delete KaduApplication::instance()->configuration()->api();
 		return 1;
 	}
 

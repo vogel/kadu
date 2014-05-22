@@ -22,6 +22,7 @@
 
 #include <QtCore/QProcess>
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "kadu-application.h"
 
@@ -41,9 +42,9 @@ QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 {
 	QStringList programArguments;
 
-	if (KaduApplication::instance()->deprecatedConfigurationApi()->readBoolEntry("SMS", "UseCustomString"))
+	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "UseCustomString"))
 	{
-		programArguments = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("SMS", "SmsString").split(' ');
+		programArguments = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsString").split(' ');
 		programArguments.replaceInStrings("%k", number());
 		programArguments.replaceInStrings("%m", message);
 	}
@@ -60,7 +61,7 @@ void SmsExternalSender::sendMessage(const QString &message)
 {
 	Message = message;
 
-	QString smsAppPath = KaduApplication::instance()->deprecatedConfigurationApi()->readEntry("SMS", "SmsApp");
+	QString smsAppPath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsApp");
 
 	Process = new QProcess(this);
 	Process->start(smsAppPath, buildProgramArguments(message));

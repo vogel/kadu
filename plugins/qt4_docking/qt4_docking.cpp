@@ -29,6 +29,7 @@
 
 #include "plugins/docking/docking.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
