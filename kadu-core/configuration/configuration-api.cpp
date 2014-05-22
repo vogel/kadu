@@ -49,14 +49,6 @@ ConfigurationApi::ConfigurationApi(const QString &content)
 	}
 }
 
-bool ConfigurationApi::isUsable() const
-{
-	const QString &profilePath = KaduPaths::instance()->profilePath();
-	return !profilePath.isEmpty() &&
-			QDir(profilePath).isReadable() &&
-			QFile(profilePath + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite);
-}
-
 void ConfigurationApi::write(const QString& f)
 {
 	kdebugf();

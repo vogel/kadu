@@ -23,6 +23,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <unistd.h>
 
 ConfigurationStorage::ConfigurationStorage(QObject *parent) :
 		QObject{parent}
@@ -49,6 +50,20 @@ QStringList ConfigurationStorage::possibleConfigurationFiles(const QString &prof
 	files += backups_0_6_5.entryList();
 
 	return files;
+}
+
+bool ConfigurationStorage::isUsable(const QString &profilePath) const
+{
+	if (profilePath.isEmpty())
+		return false;
+
+	if (!QDir(profilePath).isReadable())
+		return false;
+
+	if (!QFile(profilePath + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite))
+		return false;
+
+	return true;
 }
 
 QString ConfigurationStorage::readConfiguration(const QString &profilePath) const

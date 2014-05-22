@@ -53,7 +53,6 @@ private:
 public:
 	ConfigurationApi(const QString &content);
 
-	bool isUsable() const;
 	void sync();
 	void makeBackup();
 
