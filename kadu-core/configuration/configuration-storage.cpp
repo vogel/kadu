@@ -25,8 +25,9 @@
 #include <QtCore/QFile>
 #include <unistd.h>
 
-ConfigurationStorage::ConfigurationStorage(QObject *parent) :
-		QObject{parent}
+ConfigurationStorage::ConfigurationStorage(QString m_profilePath, QObject *parent) :
+		QObject{parent},
+		m_profilePath{std::move(m_profilePath)}
 {
 }
 
@@ -34,11 +35,11 @@ ConfigurationStorage::~ConfigurationStorage()
 {
 }
 
-QStringList ConfigurationStorage::possibleConfigurationFiles(const QString &profilePath) const
+QStringList ConfigurationStorage::possibleConfigurationFiles() const
 {
-	auto backups_0_12 = QDir{profilePath, "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files};
-	auto backups_0_6_6 = QDir{profilePath, "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files};
-	auto backups_0_6_5 = QDir{profilePath, "kadu.conf.xml.backup.*", QDir::Name, QDir::Files};
+	auto backups_0_12 = QDir{m_profilePath, "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files};
+	auto backups_0_6_6 = QDir{m_profilePath, "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files};
+	auto backups_0_6_5 = QDir{m_profilePath, "kadu.conf.xml.backup.*", QDir::Name, QDir::Files};
 
 	auto files = QStringList{};
 
@@ -52,25 +53,25 @@ QStringList ConfigurationStorage::possibleConfigurationFiles(const QString &prof
 	return files;
 }
 
-bool ConfigurationStorage::isUsable(const QString &profilePath) const
+bool ConfigurationStorage::isUsable() const
 {
-	if (profilePath.isEmpty())
+	if (m_profilePath.isEmpty())
 		return false;
 
-	if (!QDir(profilePath).isReadable())
+	if (!QDir(m_profilePath).isReadable())
 		return false;
 
-	if (!QFile(profilePath + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite))
+	if (!QFile(m_profilePath + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite))
 		return false;
 
 	return true;
 }
 
-QString ConfigurationStorage::readConfiguration(const QString &profilePath) const
+QString ConfigurationStorage::readConfiguration() const
 {
-	for (auto const &fileName : possibleConfigurationFiles(profilePath))
+	for (auto const &fileName : possibleConfigurationFiles())
 	{
-		QFile file{profilePath + fileName};
+		QFile file{m_profilePath + fileName};
 		if (!file.open(QIODevice::ReadOnly))
 		{
 			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", qPrintable(file.fileName()));
@@ -85,9 +86,9 @@ QString ConfigurationStorage::readConfiguration(const QString &profilePath) cons
 	return {};
 }
 
-void ConfigurationStorage::writeConfiguration(const QString &profilePath, const QString &configuration) const
+void ConfigurationStorage::writeConfiguration(const QString &configuration) const
 {
-	auto fileName = profilePath + QLatin1String("kadu-0.12.conf.xml");
+	auto fileName = m_profilePath + QLatin1String("kadu-0.12.conf.xml");
 	// saving to another file to avoid truncation of output file when segfault occurs :|
 	auto tmpFileName = fileName + ".tmp";
 	QFile file{tmpFileName};

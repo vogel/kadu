@@ -74,9 +74,9 @@ void KaduApplication::prepareConfiguration()
 {
 	auto profilePath = KaduPaths::instance()->profilePath();
 
-	m_configurationStorage = make_qobject<ConfigurationStorage>(this);
-	m_configurationApi = make_unique<ConfigurationApi>(m_configurationStorage->readConfiguration(profilePath));
-	if (!m_configurationStorage->isUsable(profilePath))
+	m_configurationStorage = make_qobject<ConfigurationStorage>(profilePath, this);
+	m_configurationApi = make_unique<ConfigurationApi>(m_configurationStorage->readConfiguration());
+	if (!m_configurationStorage->isUsable())
 	{
 		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
 				"Profile is inaccessible. Please check permissions in the '%1' directory.")

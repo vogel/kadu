@@ -26,17 +26,20 @@ class ConfigurationStorage final : public QObject
 	Q_OBJECT
 
 public:
-	explicit ConfigurationStorage(QObject *parent = nullptr);
+	explicit ConfigurationStorage(QString profilePath, QObject *parent = nullptr);
 	virtual ~ConfigurationStorage();
 
-	QStringList possibleConfigurationFiles(const QString &profilePath) const;
+	QStringList possibleConfigurationFiles() const;
 	/**
 	 * @todo Hidden dependency is here. This functin can not be called before readConfiguration()
 	 * because is creates file that readConfiguration checks.
 	 */
-	bool isUsable(const QString &profilePath) const;
+	bool isUsable() const;
 
-	QString readConfiguration(const QString &profilePath) const;
-	void writeConfiguration(const QString &profilePath, const QString &configuration) const;
+	QString readConfiguration() const;
+	void writeConfiguration(const QString &configuration) const;
+
+private:
+	QString m_profilePath;
 
 };
