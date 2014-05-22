@@ -49,11 +49,17 @@ ConfigurationApi::ConfigurationApi(const QString &content)
 	}
 }
 
+void ConfigurationApi::touch()
+{
+	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
+	rootElement().setAttribute("last_save_version", Core::version());
+}
+
 void ConfigurationApi::write(const QString& f)
 {
 	kdebugf();
-	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
-	rootElement().setAttribute("last_save_version", Core::version());
+
+	touch();
 	QFile file;
 	QString fileName, tmpFileName;
 	if (f.isEmpty())

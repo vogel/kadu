@@ -53,6 +53,8 @@ private:
 public:
 	ConfigurationApi(const QString &content);
 
+	void touch();
+
 	void sync();
 	void makeBackup();
 
