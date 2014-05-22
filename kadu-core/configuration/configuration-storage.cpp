@@ -91,12 +91,12 @@ QString ConfigurationStorage::readConfiguration() const
 	return {};
 }
 
-void ConfigurationStorage::writeConfiguration(const QString &configuration) const
+void ConfigurationStorage::writeConfiguration(const QString &fileName, const QString &configuration) const
 {
-	auto fileName = m_profilePath + "kadu-0.12.conf.xml";
+	auto fullPath = m_profilePath + fileName;
 	// saving to another file to avoid truncation of output file when segfault occurs :|
-	auto tmpFileName = fileName + ".tmp";
-	QFile file{tmpFileName};
+	auto fullPathTmp = fullPath + ".tmp";
+	QFile file{fullPathTmp};
 
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
@@ -111,10 +111,10 @@ void ConfigurationStorage::writeConfiguration(const QString &configuration) cons
 	file.close();
 
 	// remove old file (win32)
-	QFile::remove(fileName);
-	if (!QFile::rename(tmpFileName, fileName))
+	QFile::remove(fullPath);
+	if (!QFile::rename(fullPathTmp, fullPath))
 	{
-		fprintf(stderr, "cannot rename '%s' to '%s': %s\n", qPrintable(tmpFileName), qPrintable(fileName), strerror(errno));
+		fprintf(stderr, "cannot rename '%s' to '%s': %s\n", qPrintable(fullPathTmp), qPrintable(fullPath), strerror(errno));
 		fflush(stderr);
 	}
 }

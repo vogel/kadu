@@ -70,7 +70,7 @@ void Configuration::read()
 
 void Configuration::write()
 {
-	m_configurationStorage->writeConfiguration(m_configurationApi->configuration());
+	m_configurationStorage->writeConfiguration("kadu-0.12.conf.xml", m_configurationApi->configuration());
 }
 
 #include "moc_configuration.cpp"

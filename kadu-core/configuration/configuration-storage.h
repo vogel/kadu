@@ -39,7 +39,7 @@ public:
 	bool isUsable() const;
 
 	QString readConfiguration() const;
-	void writeConfiguration(const QString &configuration) const;
+	void writeConfiguration(const QString &fileName, const QString &configuration) const;
 
 private:
 	QString m_profilePath;
