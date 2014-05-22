@@ -57,8 +57,6 @@ public:
 
 	QString configuration() const;
 
-	void makeBackup();
-
 	QDomElement rootElement();
 	QDomElement createElement(QDomElement parent, const QString &tag_name);
 	QDomElement findElement(const QDomElement &parent, const QString &tag_name) const;

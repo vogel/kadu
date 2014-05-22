@@ -43,6 +43,7 @@ public:
 
 	void read();
 	void write();
+	void backup();
 
 private:
 	ConfigurationStorage *m_configurationStorage;

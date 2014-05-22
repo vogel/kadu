@@ -249,7 +249,7 @@ Core::~Core()
 // 	delete Configuration;
 // 	Configuration = 0;
 
-	KaduApplication::instance()->configuration()->api()->makeBackup();
+	KaduApplication::instance()->configuration()->backup();
 
 	CurrentPluginManager->deactivatePlugins();
 

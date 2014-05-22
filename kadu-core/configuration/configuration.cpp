@@ -25,6 +25,7 @@
 #include "misc/memory.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDateTime>
 #include <QtWidgets/QMessageBox>
 
 Configuration::Configuration(QObject *parent) :
@@ -71,6 +72,12 @@ void Configuration::read()
 void Configuration::write()
 {
 	m_configurationStorage->writeConfiguration("kadu-0.12.conf.xml", m_configurationApi->configuration());
+}
+
+void Configuration::backup()
+{
+	auto backupName = QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+	m_configurationStorage->writeConfiguration(backupName, m_configurationApi->configuration());
 }
 
 #include "moc_configuration.cpp"

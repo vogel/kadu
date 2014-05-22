@@ -96,12 +96,6 @@ void ConfigurationApi::write(const QString& f)
 	kdebugf2();
 }
 
-void ConfigurationApi::makeBackup()
-{
-	QString f = QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
-	write(KaduPaths::instance()->profilePath() + f);
-}
-
 QDomElement ConfigurationApi::rootElement()
 {
 	return DomDocument.documentElement();

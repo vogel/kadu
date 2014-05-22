@@ -63,7 +63,7 @@ ConfigurationManager::~ConfigurationManager()
 
 void ConfigurationManager::load()
 {
-	KaduApplication::instance()->configuration()->api()->makeBackup();
+	KaduApplication::instance()->configuration()->backup();
 
 	importConfiguration();
 
