@@ -42,7 +42,7 @@ public:
 	DeprecatedConfigurationApi * deprecatedApi() const;
 
 	void read();
-	void save();
+	void write();
 
 private:
 	ConfigurationStorage *m_configurationStorage;

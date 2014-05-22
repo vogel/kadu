@@ -55,7 +55,8 @@ public:
 
 	void touch();
 
-	void sync();
+	QString configuration() const;
+
 	void makeBackup();
 
 	QDomElement rootElement();

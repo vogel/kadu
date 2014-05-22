@@ -55,6 +55,11 @@ void ConfigurationApi::touch()
 	rootElement().setAttribute("last_save_version", Core::version());
 }
 
+QString ConfigurationApi::configuration() const
+{
+	return DomDocument.toString();
+}
+
 void ConfigurationApi::write(const QString& f)
 {
 	kdebugf();
@@ -89,11 +94,6 @@ void ConfigurationApi::write(const QString& f)
 		fflush(stderr);
 	}
 	kdebugf2();
-}
-
-void ConfigurationApi::sync()
-{
-	write();
 }
 
 void ConfigurationApi::makeBackup()

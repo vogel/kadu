@@ -80,7 +80,7 @@ void GroupTabBarConfigurator::storeConfiguration()
 
 	storeGroupFilters(configuration.groupFilters());
 
-	KaduApplication::instance()->configuration()->api()->sync(); // TODO: fix whole configuration system
+	KaduApplication::instance()->configuration()->write(); // TODO: fix whole configuration system
 }
 
 QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTabEverybody) const

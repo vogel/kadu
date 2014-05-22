@@ -68,9 +68,9 @@ void Configuration::read()
 	}
 }
 
-void Configuration::save()
+void Configuration::write()
 {
-
+	m_configurationStorage->writeConfiguration(m_configurationApi->configuration());
 }
 
 #include "moc_configuration.cpp"

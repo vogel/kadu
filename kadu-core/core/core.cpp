@@ -492,7 +492,7 @@ void Core::createAllDefaultToolbars()
 	ChatEditBox::createDefaultToolbars(toolbarsConfig);
 	SearchWindow::createDefaultToolbars(toolbarsConfig);
 
-	KaduApplication::instance()->configuration()->api()->sync();
+	KaduApplication::instance()->configuration()->write();
 }
 
 void Core::init()

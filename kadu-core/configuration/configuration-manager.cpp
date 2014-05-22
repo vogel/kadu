@@ -78,7 +78,7 @@ void ConfigurationManager::flush()
 		object->ensureStored();
 
 	KaduApplication::instance()->configuration()->api()->rootElement().setAttribute("uuid", Uuid.toString());
-	KaduApplication::instance()->configuration()->api()->sync();
+	KaduApplication::instance()->configuration()->write();
 }
 
 void ConfigurationManager::registerStorableObject(StorableObject *object)
