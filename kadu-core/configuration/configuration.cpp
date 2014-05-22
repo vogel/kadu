@@ -60,6 +60,7 @@ void Configuration::read()
 
 	if (!m_configurationStorage->isUsable())
 	{
+		// TODO: should be an exception
 		auto profilePath = m_configurationStorage->profilePath();
 		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
 				"Profile is inaccessible. Please check permissions in the '%1' directory.")
@@ -71,12 +72,14 @@ void Configuration::read()
 
 void Configuration::write()
 {
+	m_configurationApi->touch();
 	m_configurationStorage->writeConfiguration("kadu-0.12.conf.xml", m_configurationApi->configuration());
 }
 
 void Configuration::backup()
 {
 	auto backupName = QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+	m_configurationApi->touch();
 	m_configurationStorage->writeConfiguration(backupName, m_configurationApi->configuration());
 }
 

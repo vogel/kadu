@@ -60,42 +60,6 @@ QString ConfigurationApi::configuration() const
 	return DomDocument.toString();
 }
 
-void ConfigurationApi::write(const QString& f)
-{
-	kdebugf();
-
-	touch();
-	QFile file;
-	QString fileName, tmpFileName;
-	if (f.isEmpty())
-		fileName = KaduPaths::instance()->profilePath() + QLatin1String("kadu-0.12.conf.xml");
-	else
-		fileName = f;
-	tmpFileName = fileName + ".tmp"; // saving to another file to avoid truncation of output file when segfault occurs :|
-	file.setFileName(tmpFileName);
-	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
-		QTextStream stream(&file);
-		stream.setCodec(QTextCodec::codecForName("UTF-8"));
-		stream << DomDocument.toString();
-		file.close();
-		// remove old file (win32)
-		QFile::remove(fileName);
-		if (!QFile::rename(tmpFileName, fileName))
-		{
-			fprintf(stderr, "cannot rename '%s' to '%s': %s\n", qPrintable(tmpFileName), qPrintable(fileName), strerror(errno));
-			fflush(stderr);
-		}
-	}
-	else
-	{
-		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
-		fflush(stderr);
-	}
-	kdebugf2();
-}
-
 QDomElement ConfigurationApi::rootElement()
 {
 	return DomDocument.documentElement();

@@ -39,7 +39,6 @@ public:
 
 private:
 	QDomDocument DomDocument;
-	void write(const QString& f = QString());
 
 	bool isElementNamed(const QDomElement &element, const QString &name);
 	bool isElementUuid(const QDomElement &element, const QString &uuid);
