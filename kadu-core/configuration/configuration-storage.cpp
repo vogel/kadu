@@ -70,7 +70,7 @@ QString ConfigurationStorage::readConfiguration(const QString &profilePath) cons
 	return {};
 }
 
-void ConfigurationStorage::storeConfiguration(const QString &profilePath, const QString &configuration) const
+void ConfigurationStorage::writeConfiguration(const QString &profilePath, const QString &configuration) const
 {
 	auto fileName = profilePath + QLatin1String("kadu-0.12.conf.xml");
 	// saving to another file to avoid truncation of output file when segfault occurs :|

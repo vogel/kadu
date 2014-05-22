@@ -31,6 +31,6 @@ public:
 
 	QStringList possibleConfigurationFiles(const QString &profilePath) const;
 	QString readConfiguration(const QString &profilePath) const;
-	void storeConfiguration(const QString &profilePath, const QString &configuration) const;
+	void writeConfiguration(const QString &profilePath, const QString &configuration) const;
 
 };
