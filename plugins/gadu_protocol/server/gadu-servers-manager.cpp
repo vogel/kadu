@@ -150,7 +150,7 @@ void GaduServersManager::buildServerList()
 		AllPorts << 443;
 
 	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
-		loadServerListFromFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
+		loadServerListFromFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
 	else
 		loadServerListFromString(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
 

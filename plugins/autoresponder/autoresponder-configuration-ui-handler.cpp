@@ -26,18 +26,19 @@
 
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "autoresponder-configuration-ui-handler.h"
 
 AutoresponderConfigurationUiHolder::AutoresponderConfigurationUiHolder(QObject *parent) :
 		ConfigurationUiHandler(parent)
 {
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
 AutoresponderConfigurationUiHolder::~AutoresponderConfigurationUiHolder()
 {
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
 void AutoresponderConfigurationUiHolder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)

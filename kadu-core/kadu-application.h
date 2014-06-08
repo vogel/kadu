@@ -42,6 +42,7 @@
 
 class Configuration;
 class ConfigurationStorage;
+class PathsProvider;
 
 class KADUAPI KaduApplication : public QApplication
 {
@@ -53,14 +54,17 @@ public:
 	KaduApplication(int &argc, char *argv[]);
 	virtual ~KaduApplication();
 
+	void setProfileDirectory(QString profileDirectory);
 	void readConfiguration();
 
 	Configuration * configuration() const;
+	PathsProvider * pathsProvider() const;
 
 private:
 	static KaduApplication * m_instance;
 
 	qobject_ptr<Configuration> m_configuration;
 	qobject_ptr<ConfigurationStorage> m_configurationStorage;
+	qobject_ptr<PathsProvider> m_pathsProvider;
 
 };

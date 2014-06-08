@@ -49,9 +49,9 @@
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/model/talkable-proxy-model.h"
-
 #include "activate.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "open-chat-with-contact-list-runner.h"
 #include "open-chat-with-runner-manager.h"
@@ -110,7 +110,7 @@ OpenChatWith::OpenChatWith() :
 
 	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	BuddiesView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-	BuddiesView->setSource(QUrl(PathsProvider::instance()->dataPath() + "qml/openChatWith.qml"));
+	BuddiesView->setSource(QUrl(KaduApplication::instance()->pathsProvider()->dataPath() + "qml/openChatWith.qml"));
 
 	connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));
 

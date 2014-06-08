@@ -24,6 +24,7 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "tabs.h"
 #include "tabs-chat-widget-container-handler.h"
@@ -48,7 +49,7 @@ bool TabsPlugin::init(bool firstLoad)
 	ChatWidgetContainerHandler.reset(new TabsChatWidgetContainerHandler());
 	TabsManagerInstance = new TabsManager(this);
 	TabsManagerInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	MainConfigurationWindow::registerUiHandler(TabsManagerInstance);
 
 	ChatWidgetContainerHandler.data()->setTabsManager(TabsManagerInstance);
@@ -67,7 +68,7 @@ void TabsPlugin::done()
 	Core::instance()->chatWidgetContainerHandlerRepository()->unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler.data());
 
 	MainConfigurationWindow::unregisterUiHandler(TabsManagerInstance);
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	delete TabsManagerInstance;
 	TabsManagerInstance = 0;
 	ChatWidgetContainerHandler.reset();

@@ -38,6 +38,7 @@
 #include "xmpp.h"
 
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "certificates/certificate-helpers.h"
 #include "certificates/trusted-certificates-manager.h"
@@ -232,6 +233,6 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 QStringList CertificateHelpers::getCertificateStoreDirs()
 {
 	QStringList l;
-	l += PathsProvider::instance()->profilePath() + QLatin1String("certs");
+	l += KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("certs");
 	return l;
 }

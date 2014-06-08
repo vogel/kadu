@@ -24,6 +24,7 @@ extern "C" {
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "otr-create-private-key-job.h"
 #include "otr-op-data.h"
@@ -61,7 +62,7 @@ void OtrPrivateKeyService::setUserStateService(OtrUserStateService *userStateSer
 
 QString OtrPrivateKeyService::privateStoreFileName() const
 {
-	return PathsProvider::instance()->profilePath() + QString("/keys/otr_private");
+	return KaduApplication::instance()->pathsProvider()->profilePath() + QString("/keys/otr_private");
 }
 
 void OtrPrivateKeyService::createPrivateKey(const Account &account)

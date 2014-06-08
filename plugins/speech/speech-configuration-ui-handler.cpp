@@ -44,7 +44,7 @@ void SpeechConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new SpeechConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -54,7 +54,7 @@ void SpeechConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 		delete Instance;
 		Instance = 0;
 	}

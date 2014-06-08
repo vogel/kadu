@@ -34,6 +34,7 @@
 #include "misc/paths-provider.h"
 #include "debug.h"
 #include "exports.h"
+#include "kadu-application.h"
 
 #include "infos.h"
 #include "infos_dialog.h"
@@ -46,7 +47,7 @@ Infos::Infos(QObject *parent) :
 
 	triggerAllAccountsRegistered();
 
-	fileName = PathsProvider::instance()->profilePath() + QLatin1String("last_seen.data");
+	fileName = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("last_seen.data");
 
 	if (QFile::exists(fileName))
 	{

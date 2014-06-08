@@ -30,6 +30,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "antistring-configuration.h"
 #include "antistring.h"
@@ -43,7 +44,7 @@ void AntistringConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new AntistringConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
+		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -53,7 +54,7 @@ void AntistringConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
+		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 		delete Instance;
 		Instance = 0;
 	}

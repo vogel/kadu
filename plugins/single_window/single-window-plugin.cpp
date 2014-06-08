@@ -24,6 +24,7 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "single-window.h"
 #include "single-window-chat-widget-container-handler.h"
@@ -40,7 +41,7 @@ bool SingleWindowPlugin::init(bool firstLoad)
 
 	m_singleWindowChatWidgetContainerHandler.reset(new SingleWindowChatWidgetContainerHandler());
 	m_singleWindowManager.reset(new SingleWindowManager());
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
 
 	m_singleWindowChatWidgetContainerHandler.data()->setSingleWindow(m_singleWindowManager.data()->window());
 	Core::instance()->chatWidgetContainerHandlerRepository()->registerChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler.data());
@@ -53,7 +54,7 @@ void SingleWindowPlugin::done()
 	Core::instance()->chatWidgetContainerHandlerRepository()->unregisterChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler.data());
 	m_singleWindowChatWidgetContainerHandler.data()->setSingleWindow(nullptr);
 
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
 	m_singleWindowManager.reset();
 	m_singleWindowChatWidgetContainerHandler.reset();
 }

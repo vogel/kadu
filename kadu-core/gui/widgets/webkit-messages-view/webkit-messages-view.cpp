@@ -43,6 +43,7 @@
 #include "protocols/services/chat-image-service.h"
 #include "protocols/services/chat-service.h"
 #include "services/chat-image-request-service.h"
+#include "kadu-application.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWebKitWidgets/QWebFrame>
@@ -210,7 +211,7 @@ void WebkitMessagesView::refreshView()
 
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
-	QFile file{PathsProvider::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	QFile file{KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};

@@ -23,15 +23,16 @@
 #include <QtCore/QUrl>
 #include <QtCore/QUuid>
 
+#include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
-#include <icons/kadu-icon.h>
 #include "image-storage-service.h"
 
 ImageStorageService::ImageStorageService(QObject *parent) :
 		QObject(parent)
 {
-	StoragePath = PathsProvider::instance()->profilePath() + QLatin1String("images/");
+	StoragePath = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("images/");
 }
 
 ImageStorageService::~ImageStorageService()

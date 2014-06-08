@@ -19,6 +19,7 @@
 
 #include "accounts/account.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "otr-op-data.h"
 #include "otr-user-state-service.h"
@@ -80,5 +81,5 @@ void OtrInstanceTagService::createInstanceTag(const Account &account)
 
 QString OtrInstanceTagService::instanceTagsFileName() const
 {
-	return PathsProvider::instance()->profilePath() + QString("/keys/otr_instance_tags");
+	return KaduApplication::instance()->pathsProvider()->profilePath() + QString("/keys/otr_instance_tags");
 }

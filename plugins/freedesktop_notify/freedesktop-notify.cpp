@@ -72,7 +72,7 @@ FreedesktopNotify::FreedesktopNotify() :
 	// this is meant to catch all HTML tags except <b>, <i>, <u>
 	StripUnsupportedHtml.setPattern(QLatin1String("<(/?[^/<>][^<>]+|//[^>]*|/?[^biu])>"));
 
-	DesktopEntry = QFileInfo(PathsProvider::instance()->desktopFilePath()).baseName();
+	DesktopEntry = QFileInfo(KaduApplication::instance()->pathsProvider()->desktopFilePath()).baseName();
 	NotificationsInterface = new QDBusInterface("org.freedesktop.Notifications",
 			"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
 

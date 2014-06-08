@@ -58,7 +58,7 @@ bool AutoHide::init(bool firstLoad)
 	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
 	MyIdle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
 
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	return true;
@@ -69,7 +69,7 @@ void AutoHide::done()
 	Timer.stop();
 
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 }
 
 void AutoHide::timerTimeoutSlot()

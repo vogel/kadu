@@ -67,7 +67,7 @@ void SmsConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new SmsConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -77,7 +77,7 @@ void SmsConfigurationUiHandler::unregisterConfigurationUi()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 		delete Instance;
 		Instance = 0;
 	}

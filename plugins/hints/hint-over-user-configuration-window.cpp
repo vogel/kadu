@@ -56,7 +56,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	ExampleBuddy(exampleBuddy)
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-	widget()->appendUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
+	widget()->appendUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
 
 	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));

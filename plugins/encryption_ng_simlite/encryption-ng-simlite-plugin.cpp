@@ -34,6 +34,7 @@
 #include "plugins/encryption_ng/encryption-provider-manager.h"
 #include "services/message-filter-service.h"
 #include "exports.h"
+#include "kadu-application.h"
 
 #include "actions/simlite-send-public-key-action-description.h"
 #include "configuration/encryption-ng-simlite-configuration.h"
@@ -66,7 +67,7 @@ bool EngryptionNgSimlitePlugin::init(bool firstLoad)
 	EncryptionProviderManager::instance()->registerProvider(EncryptioNgSimliteProvider::instance());
 
 	new SimliteSendPublicKeyActionDescription(this);
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
 	MenuInventory::instance()->menu("encryption-ng")->addAction(Actions::instance()->value("simliteSendPublicKeyAction"), KaduMenu::SectionConfig);
 	MenuInventory::instance()->menu("encryption-ng")->update();
 
@@ -77,7 +78,7 @@ void EngryptionNgSimlitePlugin::done()
 {
 	MenuInventory::instance()->menu("encryption-ng")->removeAction(Actions::instance()->value("simliteSendPublicKeyAction"));
 	MenuInventory::instance()->menu("encryption-ng")->update();
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
 
 	Core::instance()->messageFilterService()->unregisterMessageFilter(MessageFilter);
 

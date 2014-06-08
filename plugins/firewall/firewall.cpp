@@ -526,7 +526,7 @@ void Firewall::configurationUpdated()
 	CheckFloodingEmoticons = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "dos_emoticons", true);
 	EmoticonsAllowKnown = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "emoticons_allow_known", false);
 	WriteLog = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "write_log", true);
-	LogFilePath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "logFile", PathsProvider::instance()->profilePath() + QLatin1String("firewall.log"));
+	LogFilePath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "logFile", KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
 	CheckDos = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "dos", true);
 	CheckChats = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "chats", true);
 	IgnoreConferences = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "ignore_conferences", true);
@@ -567,7 +567,7 @@ void Firewall::createDefaultConfiguration()
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "emoticons_allow_known", false);
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "safe_sending", false);
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "write_log", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "logFile", PathsProvider::instance()->profilePath() + QLatin1String("firewall.log"));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "logFile", KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
 }
 
 #include "moc_firewall.cpp"

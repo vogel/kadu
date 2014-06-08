@@ -92,7 +92,7 @@ void EncryptioNgSimliteKeyImporter::importKey(const Account &account, const QFil
 
 void EncryptioNgSimliteKeyImporter::importKeys(const Account &account)
 {
-	QString keysPath = PathsProvider::instance()->profilePath() + QLatin1String("keys/");
+	QString keysPath = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("keys/");
 
 	QDir keysDir(keysPath);
 	if (!keysDir.exists())

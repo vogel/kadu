@@ -33,6 +33,7 @@
 #include "misc/paths-provider.h"
 #include "misc/misc.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "themes.h"
 
@@ -154,11 +155,11 @@ QStringList Themes::defaultPathsProviderWithThemes() const
 {
 	QStringList result;
 
-	foreach(const QString &it, getSubDirs(PathsProvider::instance()->dataPath() + QLatin1String("themes/") + Name))
-		result << (PathsProvider::instance()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name))
+		result << (KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(PathsProvider::instance()->profilePath() + Name))
-		result << (PathsProvider::instance()->profilePath() + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(KaduApplication::instance()->pathsProvider()->profilePath() + Name))
+		result << (KaduApplication::instance()->pathsProvider()->profilePath() + Name + '/' + it + '/');
 
 	return result;
 }

@@ -69,9 +69,14 @@ KaduApplication::~KaduApplication()
 	m_instance = nullptr;
 }
 
+void KaduApplication::setProfileDirectory(QString profileDirectory)
+{
+	m_pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
+}
+
 void KaduApplication::readConfiguration() try
 {
-	auto profilePath = PathsProvider::instance()->profilePath();
+	auto profilePath = m_pathsProvider->profilePath();
 
 	m_configurationStorage = make_qobject<ConfigurationStorage>(profilePath, this);
 	m_configuration = make_qobject<Configuration>(this);
@@ -92,6 +97,11 @@ catch (ConfigurationUnusableException &e)
 Configuration * KaduApplication::configuration() const
 {
 	return m_configuration.get();
+}
+
+PathsProvider * KaduApplication::pathsProvider() const
+{
+	return m_pathsProvider.get();
 }
 
 #include "moc_kadu-application.cpp"

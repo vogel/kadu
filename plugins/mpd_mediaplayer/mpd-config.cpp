@@ -30,7 +30,7 @@
 
 MPDConfig::MPDConfig()
 {
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
 	Host = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
 	Port = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
@@ -39,7 +39,7 @@ MPDConfig::MPDConfig()
 
 MPDConfig::~MPDConfig()
 {
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 }
 
 void MPDConfig::createDefaultConfiguration()

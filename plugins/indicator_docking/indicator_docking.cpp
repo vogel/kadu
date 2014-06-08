@@ -81,7 +81,7 @@ IndicatorDocking::IndicatorDocking() :
 		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail"))
 {
 	Server = QIndicate::Server::defaultInstance();
-	Server->setDesktopFile(PathsProvider::instance()->desktopFilePath());
+	Server->setDesktopFile(KaduApplication::instance()->pathsProvider()->desktopFilePath());
 	Server->setType("message.im");
 	Server->show();
 

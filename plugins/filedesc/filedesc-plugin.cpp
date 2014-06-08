@@ -22,6 +22,7 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "filedesc.h"
 
@@ -36,14 +37,14 @@ bool FiledescPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	FileDescriptionInstance = new FileDescription(this);
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
 
 	return true;
 }
 
 void FiledescPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
 }
 
 Q_EXPORT_PLUGIN2(filedesc, FiledescPlugin)

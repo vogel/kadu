@@ -30,6 +30,7 @@
 #include <QtCore/QStringList>
 
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "emoticon-theme-manager.h"
 
@@ -67,8 +68,8 @@ QString EmoticonThemeManager::defaultThemeName() const
 QStringList EmoticonThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
-	QStringList result = getSubDirs(PathsProvider::instance()->profilePath() + QLatin1String("emoticons"));
-	result += getSubDirs(PathsProvider::instance()->dataPath() + QLatin1String("themes/emoticons"));
+	QStringList result = getSubDirs(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("emoticons"));
+	result += getSubDirs(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("themes/emoticons"));
 
 	return result;
 }

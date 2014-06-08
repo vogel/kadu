@@ -29,6 +29,7 @@
 #include <QtSql/QSqlError>
 
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "sql-restore.h"
 
@@ -73,7 +74,7 @@ QString SqlRestore::errorMessage(SqlRestore::RestoreError error)
 
 SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFilePath)
 {
-	QString recoveryScriptPath = PathsProvider::instance()->dataPath() + QLatin1String(RECOVERY_SCRIPT);
+	QString recoveryScriptPath = KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String(RECOVERY_SCRIPT);
 
 	QFileInfo recoveryScriptFileInfo(recoveryScriptPath);
 	if (!recoveryScriptFileInfo.exists())

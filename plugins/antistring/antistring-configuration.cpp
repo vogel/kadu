@@ -42,7 +42,7 @@ AntistringConfiguration::~AntistringConfiguration()
 
 void AntistringConfiguration::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("PowerKadu", "log file", PathsProvider::instance()->profilePath() + QLatin1String("antistring.log"));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("PowerKadu", "log file", KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("antistring.log"));
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("PowerKadu", "admonish_tresc_config",
 			"http://www.olsztyn.mm.pl/~silentman/lancuszki.htm");
 }
@@ -55,7 +55,7 @@ void AntistringConfiguration::configurationUpdated()
 	MessageStop = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "message stop");
 	LogMessage = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "log message");
 	ReturnMessage = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config");
-	LogFile = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "log file", PathsProvider::instance()->profilePath() + QLatin1String("antistring.log"));
+	LogFile = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "log file", KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("antistring.log"));
 }
 
 void AntistringConfiguration::addCondition(const QString &conditionString)
@@ -73,7 +73,7 @@ void AntistringConfiguration::addCondition(const QString &conditionString)
 
 void AntistringConfiguration::readDefaultConditions()
 {
-	QFile defaultListFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/data/antistring/ant_conditions.conf"));
+	QFile defaultListFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/antistring/ant_conditions.conf"));
 	if (!defaultListFile.open(QFile::ReadOnly))
 	{
 		kdebug("Can't open file: %s\n", qPrintable(defaultListFile.fileName()));

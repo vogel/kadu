@@ -133,7 +133,7 @@ void HistoryImporter::updateProgressWindow()
 
 void HistoryImporter::threadFinished()
 {
-	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == PathsProvider::instance()->profilePath() + QLatin1String("history/"))
+	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("history/"))
 	{
 		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful

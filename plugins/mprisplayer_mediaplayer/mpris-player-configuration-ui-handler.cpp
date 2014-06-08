@@ -48,7 +48,7 @@ void MPRISPlayerConfigurationUiHandler::registerConfigurationUi()
 		return;
 
 	Instance = new MPRISPlayerConfigurationUiHandler();
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -61,7 +61,7 @@ void MPRISPlayerConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 }
 
 MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler() :

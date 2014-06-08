@@ -56,6 +56,7 @@
 #include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "about.h"
 
@@ -232,7 +233,7 @@ QString About::loadFile(const QString &name)
 {
 	kdebugf();
 
-	QFile file(PathsProvider::instance()->dataPath() + name);
+	QFile file(KaduApplication::instance()->pathsProvider()->dataPath() + name);
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));

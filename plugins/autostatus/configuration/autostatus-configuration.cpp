@@ -36,5 +36,5 @@ void AutostatusConfiguration::configurationUpdated()
 {
 	AutoTime = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autostatus_time", 10);
 	AutoStatus = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autoStatus");
-	StatusFilePath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "status_file_path", PathsProvider::instance()->profilePath() + QLatin1String("autostatus.list"));
+	StatusFilePath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "status_file_path", KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("autostatus.list"));
 }

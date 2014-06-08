@@ -32,20 +32,6 @@
 
 #include "paths-provider.h"
 
-PathsProvider * PathsProvider::Instance;
-
-void PathsProvider::createInstance(const QString &customProfileDir)
-{
-	if (!Instance)
-		Instance = new PathsProvider(customProfileDir);
-}
-
-void PathsProvider::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
 QString PathsProvider::homePath()
 {
 #ifdef Q_OS_WIN
@@ -79,10 +65,15 @@ QString PathsProvider::webKitPath(const QString &path)
 #endif
 }
 
-PathsProvider::PathsProvider(const QString &customProfileDir)
+PathsProvider::PathsProvider(const QString &customProfileDir, QObject *parent) :
+		QObject{parent}
 {
 	initBasicPaths();
 	initProfilePath(customProfileDir);
+}
+
+PathsProvider::~PathsProvider()
+{
 }
 
 void PathsProvider::initBasicPaths()

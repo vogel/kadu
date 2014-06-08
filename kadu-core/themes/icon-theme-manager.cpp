@@ -29,6 +29,7 @@
 #include <QtCore/QStringList>
 
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "icon-theme-manager.h"
 
@@ -54,8 +55,8 @@ QString IconThemeManager::defaultThemeName() const
 QStringList IconThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
-	QStringList result = getSubDirs(PathsProvider::instance()->profilePath() + QLatin1String("icons"));
-	result += getSubDirs(PathsProvider::instance()->dataPath() + QLatin1String("themes/icons"));
+	QStringList result = getSubDirs(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("icons"));
+	result += getSubDirs(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("themes/icons"));
 
 	return result;
 }

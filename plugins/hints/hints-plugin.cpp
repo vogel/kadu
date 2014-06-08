@@ -24,6 +24,7 @@
  */
 
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "hint_manager.h"
 #include "hints-configuration-ui-handler.h"
@@ -48,7 +49,7 @@ bool HintsPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	HintManagerInstance = new HintManager(this);
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 	MainConfigurationWindow::registerUiHandler(HintManagerInstance->uiHandler());
 
 	return true;
@@ -57,7 +58,7 @@ bool HintsPlugin::init(bool firstLoad)
 void HintsPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(HintManagerInstance->uiHandler());
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 }
 
 Q_EXPORT_PLUGIN2(hints, HintsPlugin)

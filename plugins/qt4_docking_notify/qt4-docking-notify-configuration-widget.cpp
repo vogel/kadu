@@ -33,9 +33,9 @@
 #include "gui/windows/configuration-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-
 #include "activate.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "qt4-docking-notify-configuration-widget.h"
 
@@ -69,7 +69,7 @@ void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 
 	dataManager->configurationWindowCreated(configWindow);
 
-	configWindow->widget()->appendUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/qt4-docking-notify.ui"));
+	configWindow->widget()->appendUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/qt4-docking-notify.ui"));
 
 	QString tooltip = QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
 	tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");

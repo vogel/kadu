@@ -23,6 +23,7 @@
 
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
+#include "kadu-application.h"
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
@@ -75,14 +76,14 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(UrlDomVisitorProvider, 200);
 
-	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	return true;
 }
 
 void JabberProtocolPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 

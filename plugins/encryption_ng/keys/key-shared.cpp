@@ -26,6 +26,7 @@
 #include "contacts/contact.h"
 #include "misc/change-notifier.h"
 #include "misc/paths-provider.h"
+#include "kadu-application.h"
 
 #include "keys/keys-manager.h"
 
@@ -50,7 +51,7 @@ KeyShared * KeyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &stor
 KeyShared::KeyShared(const QUuid &uuid) :
 		Shared(uuid)
 {
-	KeysDir = PathsProvider::instance()->profilePath() + QLatin1String("keys/");
+	KeysDir = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("keys/");
 	KeyContact = new Contact();
 
 	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));

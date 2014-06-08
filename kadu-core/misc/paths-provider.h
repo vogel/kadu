@@ -17,11 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_PATHS_H
-#define KADU_PATHS_H
+#pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QtGlobal>
+#include <QtCore/QObject>
 
 #include "exports.h"
 
@@ -33,11 +31,10 @@
  * upon class instance creation, and path to the current user profile is created if it does not
  * exist yet. Details are described in the individual getter methods.
  */
-class KADUAPI PathsProvider
+class KADUAPI PathsProvider : public QObject
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(PathsProvider)
-
-	static PathsProvider *Instance;
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	QString DesktopFilePath;
@@ -46,15 +43,12 @@ class KADUAPI PathsProvider
 	QString PluginsLibPath;
 	QString DataPath;
 
-	PathsProvider(const QString &customProfileDir);
-
 	void initBasicPaths();
 	void initProfilePath(const QString &customProfileDir);
 
 public:
-	static void createInstance(const QString &customProfileDir);
-	static void destroyInstance();
-	static PathsProvider * instance() { return Instance; }
+	explicit PathsProvider(const QString &customProfileDir, QObject *parent = nullptr);
+	virtual ~PathsProvider();
 
 	/**
 	 * @short Returns roaming persistent data storage path on Windows and QDir::homePath() on other platforms.
@@ -140,7 +134,7 @@ public:
 	 *
 	 * The default path to the current user profile may overwritten by existence
 	 * of file named "portable" in directory returned by the dataPath() method. Then
-	 * current user profile is located in the same location as PathsProvider::instance()->dataPath() + QLatin1String("config")
+	 * current user profile is located in the same location as KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("config")
 	 * would give. It may be also overwritten by CONFIG_DIR environment variable
 	 * and --config-dir command-line option (the latter takes precedence). We will
 	 * call it CONFIG_DIR in this description, not matter which way it was set.
@@ -158,5 +152,3 @@ public:
 	const QString & profilePath() const { return ProfilePath; }
 
 };
-
-#endif // KADU_PATHS_H

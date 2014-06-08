@@ -48,7 +48,7 @@ void FirewallConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new FirewallConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -58,7 +58,7 @@ void FirewallConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 		delete Instance;
 		Instance = 0;
 	}

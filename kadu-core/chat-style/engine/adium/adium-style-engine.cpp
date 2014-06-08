@@ -30,6 +30,7 @@
 #include "message/message-html-renderer-service.h"
 #include "misc/paths-provider.h"
 #include "misc/memory.h"
+#include "kadu-application.h"
 
 #include <QtCore/QDir>
 
@@ -66,9 +67,9 @@ QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 QStringList AdiumStyleEngine::styleVariants(QString styleName)
 {
 	QDir dir;
-	QString styleBaseHref = PathsProvider::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+	QString styleBaseHref = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	if (!dir.exists(styleBaseHref))
-		styleBaseHref = PathsProvider::instance()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+		styleBaseHref = KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	dir.setPath(styleBaseHref);
 	dir.setNameFilters(QStringList("*.css"));
 	return dir.entryList();

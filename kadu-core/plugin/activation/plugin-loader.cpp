@@ -24,6 +24,7 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-root-component.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEvent>
@@ -43,7 +44,7 @@
 
 PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(false) :
 		QObject{parent},
-		m_pluginLoader{make_unique<QPluginLoader>(PathsProvider::instance()->pluginsLibPath() + "/" + QLatin1String{SO_PREFIX} + pluginName + QLatin1String{"." SO_EXT})}
+		m_pluginLoader{make_unique<QPluginLoader>(KaduApplication::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String{SO_PREFIX} + pluginName + QLatin1String{"." SO_EXT})}
 {
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
