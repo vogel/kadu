@@ -31,7 +31,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "debug.h"
 #include "exports.h"
 
@@ -46,7 +46,7 @@ Infos::Infos(QObject *parent) :
 
 	triggerAllAccountsRegistered();
 
-	fileName = KaduPaths::instance()->profilePath() + QLatin1String("last_seen.data");
+	fileName = PathsProvider::instance()->profilePath() + QLatin1String("last_seen.data");
 
 	if (QFile::exists(fileName))
 	{

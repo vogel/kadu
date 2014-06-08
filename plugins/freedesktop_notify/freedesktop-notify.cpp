@@ -34,7 +34,7 @@
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notification/notification.h"
@@ -72,7 +72,7 @@ FreedesktopNotify::FreedesktopNotify() :
 	// this is meant to catch all HTML tags except <b>, <i>, <u>
 	StripUnsupportedHtml.setPattern(QLatin1String("<(/?[^/<>][^<>]+|//[^>]*|/?[^biu])>"));
 
-	DesktopEntry = QFileInfo(KaduPaths::instance()->desktopFilePath()).baseName();
+	DesktopEntry = QFileInfo(PathsProvider::instance()->desktopFilePath()).baseName();
 	NotificationsInterface = new QDBusInterface("org.freedesktop.Notifications",
 			"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
 

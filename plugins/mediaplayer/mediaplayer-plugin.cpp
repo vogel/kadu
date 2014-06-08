@@ -20,7 +20,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "mediaplayer.h"
 
@@ -36,7 +36,7 @@ bool MediaplayerPlugin::init(bool firstLoad)
 
 	MediaPlayer::createInstance();
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(MediaPlayer::instance());
 
 	return true;
@@ -45,7 +45,7 @@ bool MediaplayerPlugin::init(bool firstLoad)
 void MediaplayerPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(MediaPlayer::instance());
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 
 	MediaPlayer::destroyInstance();
 }

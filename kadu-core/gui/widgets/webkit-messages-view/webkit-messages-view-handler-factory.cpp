@@ -25,7 +25,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 WebkitMessagesViewHandlerFactory::WebkitMessagesViewHandlerFactory(QObject *parent) :
 		QObject{parent}

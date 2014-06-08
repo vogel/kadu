@@ -24,7 +24,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "kadu-application.h"
 
 #include "cenzor-configuration.h"
@@ -88,8 +88,8 @@ void CenzorConfiguration::configurationUpdated()
 {
 	Enabled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_cenzor");
 	Admonition = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
-	SwearList = loadRegExpList("cenzor swearwords", KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words.conf"));
-	ExclusionList = loadRegExpList("cenzor exclusions", KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words_ok.conf"));
+	SwearList = loadRegExpList("cenzor swearwords", PathsProvider::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words.conf"));
+	ExclusionList = loadRegExpList("cenzor exclusions", PathsProvider::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words_ok.conf"));
 }
 
 void CenzorConfiguration::saveConfiguration()

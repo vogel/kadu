@@ -19,7 +19,7 @@
 
 #include "plugin-loader.h"
 
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "misc/memory.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-root-component.h"
@@ -43,7 +43,7 @@
 
 PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(false) :
 		QObject{parent},
-		m_pluginLoader{make_unique<QPluginLoader>(KaduPaths::instance()->pluginsLibPath() + "/" + QLatin1String{SO_PREFIX} + pluginName + QLatin1String{"." SO_EXT})}
+		m_pluginLoader{make_unique<QPluginLoader>(PathsProvider::instance()->pluginsLibPath() + "/" + QLatin1String{SO_PREFIX} + pluginName + QLatin1String{"." SO_EXT})}
 {
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 

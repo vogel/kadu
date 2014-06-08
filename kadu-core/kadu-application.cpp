@@ -38,7 +38,7 @@
 #include "configuration/configuration.h"
 #include "configuration/configuration-storage.h"
 #include "configuration/configuration-unusable-exception.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "misc/memory.h"
 
 #include <QtWidgets/QMessageBox>
@@ -71,7 +71,7 @@ KaduApplication::~KaduApplication()
 
 void KaduApplication::readConfiguration() try
 {
-	auto profilePath = KaduPaths::instance()->profilePath();
+	auto profilePath = PathsProvider::instance()->profilePath();
 
 	m_configurationStorage = make_qobject<ConfigurationStorage>(profilePath, this);
 	m_configuration = make_qobject<Configuration>(this);

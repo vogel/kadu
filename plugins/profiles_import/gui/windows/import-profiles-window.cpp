@@ -31,7 +31,7 @@
 
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "plugins/history_migration/history-importer-manager.h"
 #include "plugins/history_migration/history-importer.h"
@@ -113,7 +113,7 @@ void ImportProfilesWindow::accept()
 
 		QString path = QFileInfo(profile.Path).isAbsolute()
 				? profile.Path
-				: KaduPaths::homePath() + '/' + profile.Path;
+				: PathsProvider::homePath() + '/' + profile.Path;
 
 		ProfileImporter importer(path + "/kadu/kadu.conf.xml");
 		if (importer.import(IdentityManager::instance()->byName(profile.Name, true)))

@@ -33,7 +33,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "debug.h"
 #include "kadu-application.h"
 
@@ -48,7 +48,7 @@ void FirewallConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new FirewallConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+		MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -58,7 +58,7 @@ void FirewallConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+		MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 		delete Instance;
 		Instance = 0;
 	}

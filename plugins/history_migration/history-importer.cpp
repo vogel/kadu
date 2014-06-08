@@ -34,7 +34,7 @@
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "plugins/history/history.h"
 #include "debug.h"
 #include "kadu-application.h"
@@ -133,7 +133,7 @@ void HistoryImporter::updateProgressWindow()
 
 void HistoryImporter::threadFinished()
 {
-	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
+	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == PathsProvider::instance()->profilePath() + QLatin1String("history/"))
 	{
 		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful

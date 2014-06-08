@@ -5,7 +5,7 @@ set (misc_SRCS
 	date-time-parser-tags.cpp
 	error.cpp
 	misc.cpp
-	kadu-paths.cpp
+	paths-provider.cpp
 	string-utils.cpp
 	syntax-list.cpp
 )

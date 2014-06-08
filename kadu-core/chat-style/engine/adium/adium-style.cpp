@@ -21,7 +21,7 @@
 
 #include "adium-style.h"
 
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QTextCodec>
@@ -100,9 +100,9 @@ AdiumStyle::AdiumStyle(const QString &styleName) :
 		Name{styleName}, StyleViewVersion{0}, DefaultBackgroundIsTransparent{false}, UsesCustomTemplateHtml{false}
 {
 	QDir dir;
-	BaseHref = KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
+	BaseHref = PathsProvider::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
 	if (!dir.exists(BaseHref))
-		BaseHref = KaduPaths::instance()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
+		BaseHref = PathsProvider::instance()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
 
 	readConfiugrationFile();
 	loadHtmlFiles();
@@ -138,7 +138,7 @@ void AdiumStyle::loadHtmlFiles()
 		TemplateHref = BaseHref + "template.html";
 	else
 	{
-		TemplateHref = KaduPaths::instance()->dataPath() + QLatin1String("syntax/chat/Default/Template.html");
+		TemplateHref = PathsProvider::instance()->dataPath() + QLatin1String("syntax/chat/Default/Template.html");
 		UsesCustomTemplateHtml = false;
 	}
 

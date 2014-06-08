@@ -30,7 +30,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "theme/emoticon-theme.h"
 #include "theme/gadu-emoticon-theme-loader.h"
@@ -105,7 +105,7 @@ void EmoticonsConfigurationUiHandler::installEmoticonTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &profilePath = KaduPaths::instance()->profilePath();
+	const QString &profilePath = PathsProvider::instance()->profilePath();
 	ArchiveExtractor extractor;
 	bool success = extractor.extract(fileName, profilePath + "emoticons");
 

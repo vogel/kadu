@@ -42,7 +42,7 @@
 #include "gui/widgets/configuration/config-spin-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "parser/parser.h"
 #include "kadu-application.h"
 
@@ -56,7 +56,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	ExampleBuddy(exampleBuddy)
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-	widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
+	widget()->appendUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
 
 	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));

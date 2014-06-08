@@ -35,7 +35,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "kadu-application.h"
 
 #include "plugins/docking/docking.h"
@@ -52,7 +52,7 @@ SimpleView::SimpleView() :
 
 	SimpleViewConfigUi::createInstance();
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
 	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
@@ -83,7 +83,7 @@ SimpleView::~SimpleView()
 	DockingManager::instance()->unregisterModuleAction(DockAction);
 
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 	SimpleViewConfigUi::destroyInstance();
 }
 

@@ -21,7 +21,7 @@
 #include <QtGui/QIcon>
 
 #include "icons/icons-manager.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "kadu-icon.h"
 
@@ -32,7 +32,7 @@ QString KaduIcon::fullPath() const
 
 QString KaduIcon::webKitPath() const
 {
-	return KaduPaths::webKitPath(fullPath());
+	return PathsProvider::webKitPath(fullPath());
 }
 
 QIcon KaduIcon::icon() const

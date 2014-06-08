@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "kadu-application.h"
 
 #include "main-configuration-holder.h"

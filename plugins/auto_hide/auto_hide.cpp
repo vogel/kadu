@@ -28,7 +28,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "kadu-application.h"
 
@@ -58,7 +58,7 @@ bool AutoHide::init(bool firstLoad)
 	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
 	MyIdle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	return true;
@@ -69,7 +69,7 @@ void AutoHide::done()
 	Timer.stop();
 
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 }
 
 void AutoHide::timerTimeoutSlot()

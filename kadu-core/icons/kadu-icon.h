@@ -153,7 +153,7 @@ public:
 	 * @return WebKit-friendly representation of path
 	 *
 	 * Return WebKit-friendly representation of full path to the icon file. Makes use
-	 * of KaduPaths::webKitPath() method.
+	 * of PathsProvider::webKitPath() method.
 	 */
 	QString webKitPath() const;
 

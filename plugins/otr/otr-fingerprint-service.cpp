@@ -23,7 +23,7 @@ extern "C" {
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "otr-context-converter.h"
 #include "otr-op-data.h"
@@ -59,7 +59,7 @@ void OtrFingerprintService::setUserStateService(OtrUserStateService *userStateSe
 
 QString OtrFingerprintService::fingerprintsStoreFileName() const
 {
-	return KaduPaths::instance()->profilePath() + QString("/keys/otr_fingerprints");
+	return PathsProvider::instance()->profilePath() + QString("/keys/otr_fingerprints");
 }
 
 void OtrFingerprintService::readFingerprints() const

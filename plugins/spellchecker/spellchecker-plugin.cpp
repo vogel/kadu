@@ -22,7 +22,7 @@
  */
 
 #include "core/core.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "configuration/spellchecker-configuration.h"
 #include "spellchecker-plugin.h"
@@ -51,7 +51,7 @@ bool SpellCheckerPlugin::init(bool firstLoad)
 
 	SpellcheckerConfiguration::createInstance();
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::registerUiHandler(SpellCheckerInstance);
 
 	return true;
@@ -63,7 +63,7 @@ void SpellCheckerPlugin::done()
 	SpellcheckerConfiguration::destroyInstance();
 
 	MainConfigurationWindow::unregisterUiHandler(SpellCheckerInstance);
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
 
 	delete SpellCheckerInstance;
 	SpellCheckerInstance = 0;

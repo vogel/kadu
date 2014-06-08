@@ -43,7 +43,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "status/status-changer-manager.h"
@@ -98,7 +98,7 @@ bool AutoAway::init(bool firstLoad)
 	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
 	idle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	return true;
@@ -107,7 +107,7 @@ bool AutoAway::init(bool firstLoad)
 void AutoAway::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 }
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()

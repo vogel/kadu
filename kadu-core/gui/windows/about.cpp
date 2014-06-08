@@ -51,7 +51,7 @@
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "os/generic/url-opener.h"
 #include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -232,7 +232,7 @@ QString About::loadFile(const QString &name)
 {
 	kdebugf();
 
-	QFile file(KaduPaths::instance()->dataPath() + name);
+	QFile file(PathsProvider::instance()->dataPath() + name);
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));

@@ -45,7 +45,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/custom-input.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "debug.h"
 #include "kadu-application.h"
 
@@ -71,7 +71,7 @@ WordFix::WordFix(QObject *parent) :
 	QString data = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
-		QFile defList(KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
+		QFile defList(PathsProvider::instance()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
 		if (defList.open(QIODevice::ReadOnly))
 		{
 			QTextStream s(&defList);
@@ -144,7 +144,7 @@ bool WordFix::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	kdebugf();
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	setChatWidgetRepository(Core::instance()->chatWidgetRepository());
@@ -157,7 +157,7 @@ void WordFix::done()
 {
 	kdebugf();
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
 	kdebugf2();
 }
 

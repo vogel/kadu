@@ -27,7 +27,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "protocols/protocol.h"
 #include "kadu-application.h"
 
@@ -55,7 +55,7 @@ HistoryMigrationActions::HistoryMigrationActions() :
 {
 	bool imported = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "Imported_from_0.6.5", false);
 	Account gaduAccount = AccountManager::instance()->byId("gadu", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "UIN"));
-	if (!imported && gaduAccount && QFile::exists(KaduPaths::instance()->profilePath() + QLatin1String("history")))
+	if (!imported && gaduAccount && QFile::exists(PathsProvider::instance()->profilePath() + QLatin1String("history")))
 	{
 		ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
 				this, SLOT(importHistoryActionActivated(QAction*,bool)), KaduIcon(), tr("Import history..."));
@@ -88,14 +88,14 @@ void HistoryMigrationActions::runImportHistoryAction()
 	if (!ImportHistoryActionDescription)
 		return;
 
-	if (HistoryImporterManager::instance()->containsImporter(KaduPaths::instance()->profilePath() + QLatin1String("history/")))
+	if (HistoryImporterManager::instance()->containsImporter(PathsProvider::instance()->profilePath() + QLatin1String("history/")))
 		return;
 
 	Account gaduAccount = AccountManager::instance()->byId("gadu", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "UIN"));
 	if (!gaduAccount)
 		return;
 
-	HistoryImporter *hi = new HistoryImporter(gaduAccount, KaduPaths::instance()->profilePath() + QLatin1String("history/"));
+	HistoryImporter *hi = new HistoryImporter(gaduAccount, PathsProvider::instance()->profilePath() + QLatin1String("history/"));
 	HistoryImporterManager::instance()->addImporter(hi);
 
 	hi->run();

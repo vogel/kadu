@@ -31,7 +31,7 @@
 #include "dom/dom-processor-service.h"
 #include "file-transfer/s5b-server-manager.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "jabber-id-validator.h"
@@ -75,14 +75,14 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(UrlDomVisitorProvider, 200);
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	return true;
 }
 
 void JabberProtocolPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 

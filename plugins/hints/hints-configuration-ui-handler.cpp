@@ -42,7 +42,7 @@
 #include "hint-over-user-configuration-window.h"
 #include "hints-plugin.h"
 
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "activate.h"
 
 #include "hints-configuration-ui-handler.h"
@@ -131,7 +131,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 	if (!AdvancedWindow)
 	{
 		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
-		AdvancedWindow->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
+		AdvancedWindow->widget()->appendUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 

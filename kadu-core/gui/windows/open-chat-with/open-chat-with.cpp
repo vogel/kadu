@@ -45,7 +45,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/model/talkable-proxy-model.h"
@@ -110,7 +110,7 @@ OpenChatWith::OpenChatWith() :
 
 	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	BuddiesView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-	BuddiesView->setSource(QUrl(KaduPaths::instance()->dataPath() + "qml/openChatWith.qml"));
+	BuddiesView->setSource(QUrl(PathsProvider::instance()->dataPath() + "qml/openChatWith.qml"));
 
 	connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));
 

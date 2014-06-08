@@ -48,7 +48,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/unread-message-repository.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/new-message-notification.h"
 #include "notify/notification/notification.h"
@@ -81,7 +81,7 @@ IndicatorDocking::IndicatorDocking() :
 		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail"))
 {
 	Server = QIndicate::Server::defaultInstance();
-	Server->setDesktopFile(KaduPaths::instance()->desktopFilePath());
+	Server->setDesktopFile(PathsProvider::instance()->desktopFilePath());
 	Server->setType("message.im");
 	Server->show();
 

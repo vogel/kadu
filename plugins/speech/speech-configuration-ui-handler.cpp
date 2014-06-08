@@ -29,7 +29,7 @@
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/select-file.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "kadu-application.h"
@@ -44,7 +44,7 @@ void SpeechConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new SpeechConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+		MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -54,7 +54,7 @@ void SpeechConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+		MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 		delete Instance;
 		Instance = 0;
 	}

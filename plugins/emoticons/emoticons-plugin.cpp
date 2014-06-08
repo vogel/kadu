@@ -25,7 +25,7 @@
 #include "dom/dom-processor-service.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "configuration/emoticon-configurator.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
@@ -49,14 +49,14 @@ void EmoticonsPlugin::registerConfigurationUi()
 {
 	ConfigurationUiHandler.reset(new EmoticonsConfigurationUiHandler(this));
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 	MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler.data());
 }
 
 void EmoticonsPlugin::unregisterConfigurationUi()
 {
 	MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler.data());
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 
 	ConfigurationUiHandler.reset();
 }

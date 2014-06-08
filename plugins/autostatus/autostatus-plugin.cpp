@@ -21,7 +21,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "autostatus-actions.h"
 #include "autostatus.h"
@@ -36,7 +36,7 @@ bool AutostatusPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 	Autostatus::createInstance();
 	AutostatusActions::createInstance();
 	AutostatusActions::instance()->registerActions();
@@ -49,7 +49,7 @@ void AutostatusPlugin::done()
 	AutostatusActions::instance()->unregisterActions();
 	AutostatusActions::destroyInstance();
 	Autostatus::destroyInstance();
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 }
 
 Q_EXPORT_PLUGIN2(autostatus, AutostatusPlugin)

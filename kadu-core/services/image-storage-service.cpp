@@ -23,7 +23,7 @@
 #include <QtCore/QUrl>
 #include <QtCore/QUuid>
 
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include <icons/kadu-icon.h>
 #include "image-storage-service.h"
@@ -31,7 +31,7 @@
 ImageStorageService::ImageStorageService(QObject *parent) :
 		QObject(parent)
 {
-	StoragePath = KaduPaths::instance()->profilePath() + QLatin1String("images/");
+	StoragePath = PathsProvider::instance()->profilePath() + QLatin1String("images/");
 }
 
 ImageStorageService::~ImageStorageService()

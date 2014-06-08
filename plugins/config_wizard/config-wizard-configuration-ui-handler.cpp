@@ -27,7 +27,7 @@
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "activate.h"
 #include "debug.h"
 

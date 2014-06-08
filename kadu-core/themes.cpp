@@ -30,7 +30,7 @@
 #include "configuration/deprecated-configuration-api.h"
 
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -132,7 +132,7 @@ void Themes::setPaths(const QStringList &paths)
 	ThemesList.clear();
 	ThemesPaths.clear();
 	additional.clear();
-	QStringList temp = paths + defaultKaduPathsWithThemes();
+	QStringList temp = paths + defaultPathsProviderWithThemes();
 	foreach(const QString &it, temp)
 	{
 		if (validateDir(it))
@@ -150,15 +150,15 @@ void Themes::setPaths(const QStringList &paths)
 	kdebugf2();
 }
 
-QStringList Themes::defaultKaduPathsWithThemes() const
+QStringList Themes::defaultPathsProviderWithThemes() const
 {
 	QStringList result;
 
-	foreach(const QString &it, getSubDirs(KaduPaths::instance()->dataPath() + QLatin1String("themes/") + Name))
-		result << (KaduPaths::instance()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(PathsProvider::instance()->dataPath() + QLatin1String("themes/") + Name))
+		result << (PathsProvider::instance()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(KaduPaths::instance()->profilePath() + Name))
-		result << (KaduPaths::instance()->profilePath() + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(PathsProvider::instance()->profilePath() + Name))
+		result << (PathsProvider::instance()->profilePath() + Name + '/' + it + '/');
 
 	return result;
 }

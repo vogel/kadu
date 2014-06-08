@@ -23,7 +23,7 @@
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "image-expander-dom-visitor-provider.h"
 #include "video-expander-dom-visitor-provider.h"
@@ -41,12 +41,12 @@ ImageLinkPlugin::~ImageLinkPlugin()
 
 void ImageLinkPlugin::registerConfigurationUi()
 {
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 }
 
 void ImageLinkPlugin::unregisterConfigurationUi()
 {
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 }
 
 void ImageLinkPlugin::registerImageExpander()

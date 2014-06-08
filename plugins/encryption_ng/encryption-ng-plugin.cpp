@@ -29,7 +29,7 @@
 #include <QtCrypto>
 
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "exports.h"
 
 #include "keys/keys-manager.h"

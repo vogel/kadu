@@ -21,7 +21,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "plugins/sound/sound-manager.h"
 
@@ -39,14 +39,14 @@ bool ExtSoundPlugin::init(bool firstLoad)
 
 	ExternalPlayer::createInstance();
 	SoundManager::instance()->setPlayer(ExternalPlayer::instance());
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
 
 	return true;
 }
 
 void ExtSoundPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
 	SoundManager::instance()->setPlayer(0);
 	ExternalPlayer::destroyInstance();
 }

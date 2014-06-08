@@ -76,12 +76,12 @@ public:
 	Themes(const QString &name, const QString &configname = QString());
 
 	/**
-		\fn QStringList defaultKaduPathsWithThemes() const
+		\fn QStringList defaultPathsProviderWithThemes() const
 		Tworzy list� �cie�ek do zestaw�w znajduj�cych si� w lokalizacjach
 		domy�lnych dla typu zestawu.
 		\return lista �cie�ek do zestaw�w
 	**/
-	QStringList defaultKaduPathsWithThemes() const;
+	QStringList defaultPathsProviderWithThemes() const;
 
 	/**
 		\fn const QStringList &themes() const

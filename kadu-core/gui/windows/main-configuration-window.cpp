@@ -63,7 +63,7 @@
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "network/proxy/network-proxy.h"
 #include "plugin/gui/plugin-list/plugin-list-widget.h"
 #include "status/status-container.h"
@@ -174,7 +174,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 {
 	setWindowRole("kadu-configuration");
 
-	widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog.ui"));
+	widget()->appendUiFile(PathsProvider::instance()->dataPath() + QLatin1String("configuration/dialog.ui"));
 
 #ifndef DEBUG_ENABLED
 	widget()->widgetById("debug")->hide();
@@ -310,7 +310,7 @@ void MainConfigurationWindow::installIconTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &profilePath = KaduPaths::instance()->profilePath();
+	const QString &profilePath = PathsProvider::instance()->profilePath();
 	ArchiveExtractor extractor;
 	bool success = extractor.extract(fileName, profilePath + "icons");
 	if (success)
@@ -395,7 +395,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
-		lookChatAdvanced.data()->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced.data()->widget()->appendUiFile(PathsProvider::instance()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 
 		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
 		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(QCoreApplication::translate("@default", SyntaxText));

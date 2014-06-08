@@ -31,7 +31,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "kadu-application.h"
 
 #include "gadu-servers-manager.h"
@@ -150,7 +150,7 @@ void GaduServersManager::buildServerList()
 		AllPorts << 443;
 
 	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
-		loadServerListFromFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
+		loadServerListFromFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
 	else
 		loadServerListFromString(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
 

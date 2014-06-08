@@ -38,7 +38,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/algorithm.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "misc/memory.h"
 #include "kadu-application.h"
 
@@ -252,7 +252,7 @@ void ChatStyleManager::loadStyles()
 	QFileInfo fi;
 	QStringList files;
 
-	path = KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/");
+	path = PathsProvider::instance()->profilePath() + QLatin1String("syntax/chat/");
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -277,7 +277,7 @@ void ChatStyleManager::loadStyles()
 		}
 	}
 
-	path = KaduPaths::instance()->dataPath() + QLatin1String("syntax/chat/");
+	path = PathsProvider::instance()->dataPath() + QLatin1String("syntax/chat/");
 	dir.setPath(path);
 
 	files = dir.entryList();

@@ -21,7 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "kadu-application.h"
 
 #include "screen-shot-configuration.h"
@@ -60,7 +60,7 @@ void ScreenShotConfiguration::createDefaultConfiguration()
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "fileFormat", "PNG");
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "use_short_jpg", true);
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "quality", -1);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "path", KaduPaths::instance()->profilePath() + QLatin1String("images/"));
+	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "path", PathsProvider::instance()->profilePath() + QLatin1String("images/"));
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "filenamePrefix", "shot");
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "paste_clause", true);
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ScreenShot", "dir_size_warns", true);
@@ -72,7 +72,7 @@ void ScreenShotConfiguration::configurationUpdated()
 	FileFormat = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("ScreenShot", "fileFormat", "PNG");
 	UseShortJpgExtension = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ScreenShot", "use_short_jpg", true);
 	Quality = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("ScreenShot", "quality", -1);
-	ImagePath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("ScreenShot", "path", KaduPaths::instance()->profilePath() + QLatin1String("images/"));
+	ImagePath = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("ScreenShot", "path", PathsProvider::instance()->profilePath() + QLatin1String("images/"));
 	FileNamePrefix = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("ScreenShot", "filenamePrefix", "shot");
 	PasteImageClauseIntoChatWidget = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ScreenShot", "paste_clause", true);
 	WarnAboutDirectorySize = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("ScreenShot", "dir_size_warns", true);

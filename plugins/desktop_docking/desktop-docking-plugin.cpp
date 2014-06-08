@@ -21,7 +21,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 
 #include "plugins/docking/docking.h"
 
@@ -42,7 +42,7 @@ bool DesktopDockingPlugin::init(bool firstLoad)
 	DesktopDock::createInstance();
 	DockingManager::instance()->setDocker(DesktopDock::instance());
 	DesktopDockConfigurationUiHandler::createInstance();
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
 	MainConfigurationWindow::registerUiHandler(DesktopDockConfigurationUiHandler::instance());
 
 	return true;
@@ -51,7 +51,7 @@ bool DesktopDockingPlugin::init(bool firstLoad)
 void DesktopDockingPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(DesktopDockConfigurationUiHandler::instance());
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
 	DesktopDockConfigurationUiHandler::destroyInstance();
 	DockingManager::instance()->setDocker(0);
 	DesktopDock::destroyInstance();

@@ -33,7 +33,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "kadu-application.h"
 
 #include "gui/windows/mpris-player-dialog.h"
@@ -48,7 +48,7 @@ void MPRISPlayerConfigurationUiHandler::registerConfigurationUi()
 		return;
 
 	Instance = new MPRISPlayerConfigurationUiHandler();
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::registerUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -61,7 +61,7 @@ void MPRISPlayerConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiFile(PathsProvider::instance()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 }
 
 MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler() :

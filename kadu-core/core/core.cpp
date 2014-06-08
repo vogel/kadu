@@ -88,7 +88,7 @@
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
@@ -228,9 +228,9 @@ Core::Core() :
 
 	MainConfigurationHolder::createInstance();
 
-	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), KaduPaths::instance()->dataPath());
-	Parser::GlobalVariables.insert(QLatin1String("HOME"), KaduPaths::homePath());
-	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), KaduPaths::instance()->profilePath());
+	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), PathsProvider::instance()->dataPath());
+	Parser::GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
+	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), PathsProvider::instance()->profilePath());
 	DateTimeParserTags::registerParserTags();
 
 	importPre10Configuration();
@@ -544,25 +544,25 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs(KaduPaths::instance()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs(PathsProvider::instance()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
-			QFile::remove(KaduPaths::instance()->profilePath() + oldConfigs[static_cast<int>(i)]);
+			QFile::remove(PathsProvider::instance()->profilePath() + oldConfigs[static_cast<int>(i)]);
 
-	QDir oldConfigs2(KaduPaths::instance()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(PathsProvider::instance()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
-			QFile::remove(KaduPaths::instance()->profilePath() + oldConfigs2[static_cast<int>(i)]);
+			QFile::remove(PathsProvider::instance()->profilePath() + oldConfigs2[static_cast<int>(i)]);
 
-	QDir oldBacktraces(KaduPaths::instance()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+	QDir oldBacktraces(PathsProvider::instance()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
 	if (oldBacktraces.count() > 20)
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
-			QFile::remove(KaduPaths::instance()->profilePath() + oldBacktraces[static_cast<int>(i)]);
+			QFile::remove(PathsProvider::instance()->profilePath() + oldBacktraces[static_cast<int>(i)]);
 
-	QDir oldDebugs(KaduPaths::instance()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
+	QDir oldDebugs(PathsProvider::instance()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 20)
 		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
-			QFile::remove(KaduPaths::instance()->profilePath() + oldDebugs[static_cast<int>(i)]);
+			QFile::remove(PathsProvider::instance()->profilePath() + oldDebugs[static_cast<int>(i)]);
 
 	kdebugf2();
 }
@@ -733,7 +733,7 @@ void Core::runServices()
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 
-	CurrentPluginMetadataFinder->setDirectory(KaduPaths::instance()->dataPath() + QLatin1String{"plugins"});
+	CurrentPluginMetadataFinder->setDirectory(PathsProvider::instance()->dataPath() + QLatin1String{"plugins"});
 	CurrentPluginMetadataFinder->setPluginMetadataReader(CurrentPluginMetadataReader);
 
 	CurrentPluginDependencyHandler = new PluginDependencyHandler(this);

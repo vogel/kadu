@@ -38,7 +38,7 @@
 #include "gui/widgets/webkit-messages-view/message-limit-policy.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
 #include "protocols/services/chat-service.h"
@@ -210,7 +210,7 @@ void WebkitMessagesView::refreshView()
 
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
-	QFile file{KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	QFile file{PathsProvider::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};

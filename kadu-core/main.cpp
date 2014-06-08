@@ -62,7 +62,7 @@
 
 #include "icons/icons-manager.h"
 #include "misc/date-time.h"
-#include "misc/kadu-paths.h"
+#include "misc/paths-provider.h"
 #include "debug.h"
 #include "kadu-application.h"
 #include "kadu-config.h"
@@ -197,7 +197,7 @@ int main(int argc, char *argv[]) try
 	auto profileDirectory = executionArguments.profileDirectory().isEmpty()
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
-	KaduPaths::createInstance(profileDirectory);
+	PathsProvider::createInstance(profileDirectory);
 
 #ifndef Q_OS_WIN32
 	// Qt version is better on win32
@@ -215,11 +215,11 @@ int main(int argc, char *argv[]) try
 	const QString lang = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	kadu_qm.load("kadu_" + lang, KaduPaths::instance()->dataPath() + QLatin1String("translations"));
+	kadu_qm.load("kadu_" + lang, PathsProvider::instance()->dataPath() + QLatin1String("translations"));
 	QCoreApplication::installTranslator(&qt_qm);
 	QCoreApplication::installTranslator(&kadu_qm);
 
-	QtLocalPeer *peer = new QtLocalPeer(application.get(), KaduPaths::instance()->profilePath());
+	QtLocalPeer *peer = new QtLocalPeer(application.get(), PathsProvider::instance()->profilePath());
 	if (peer->isClient())
 	{
 		if (!executionArguments.openIds().isEmpty())
@@ -252,7 +252,7 @@ int main(int argc, char *argv[]) try
 
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 
-	KaduPaths::destroyInstance();
+	PathsProvider::destroyInstance();
 
 	return ret;
 }
