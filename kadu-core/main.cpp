@@ -50,6 +50,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration-unusable-exception.h"
 #include "core/core.h"
 #include "execution-arguments/execution-arguments.h"
 #include "execution-arguments/execution-arguments-parser.h"
@@ -261,6 +262,10 @@ catch (WSAException &)
 	return 2;
 }
 #endif
+catch (ConfigurationUnusableException &e)
+{
+	// already handled
+}
 catch (...)
 {
 	throw;

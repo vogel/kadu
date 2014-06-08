@@ -37,6 +37,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/configuration-storage.h"
+#include "configuration/configuration-unusable-exception.h"
 #include "misc/kadu-paths.h"
 #include "misc/memory.h"
 
@@ -48,7 +49,6 @@ KaduApplication * KaduApplication::instance()
 {
 	return m_instance;
 }
-
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication{argc, argv}
@@ -69,7 +69,7 @@ KaduApplication::~KaduApplication()
 	m_instance = nullptr;
 }
 
-void KaduApplication::readConfiguration()
+void KaduApplication::readConfiguration() try
 {
 	auto profilePath = KaduPaths::instance()->profilePath();
 
@@ -77,6 +77,16 @@ void KaduApplication::readConfiguration()
 	m_configuration = make_qobject<Configuration>(this);
 	m_configuration->setConfigurationStorage(m_configurationStorage.get());
 	m_configuration->read();
+}
+catch (ConfigurationUnusableException &e)
+{
+	auto profilePath = e.profilePath();
+	auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
+			"Profile is inaccessible. Please check permissions in the '%1' directory.")
+			.arg(profilePath.left(profilePath.length() - 1));
+	QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
+
+	throw;
 }
 
 Configuration * KaduApplication::configuration() const

@@ -21,12 +21,11 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-storage.h"
+#include "configuration/configuration-unusable-exception.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/memory.h"
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
-#include <QtWidgets/QMessageBox>
 
 Configuration::Configuration(QObject *parent) :
 		QObject{parent},
@@ -59,15 +58,7 @@ void Configuration::read()
 	m_deprecatedConfigurationApi = make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QLatin1String("kadu.conf"));
 
 	if (!m_configurationStorage->isUsable())
-	{
-		// TODO: should be an exception
-		auto profilePath = m_configurationStorage->profilePath();
-		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
-				"Profile is inaccessible. Please check permissions in the '%1' directory.")
-				.arg(profilePath.left(profilePath.length() - 1));
-		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
-		qFatal("%s", qPrintable(errorMessage));
-	}
+		throw ConfigurationUnusableException(m_configurationStorage->profilePath());
 }
 
 void Configuration::write()

@@ -8,6 +8,7 @@ set (configuration_SRCS
 	configuration-holder.cpp
 	configuration-manager.cpp
 	configuration-storage.cpp
+	configuration-unusable-exception.cpp
 	deprecated-configuration-api.cpp
 	main-configuration-holder.cpp
 	notifier-configuration-data-manager.cpp
