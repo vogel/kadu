@@ -38,9 +38,9 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 

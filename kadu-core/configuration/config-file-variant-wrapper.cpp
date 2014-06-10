@@ -23,7 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "kadu-application.h"
+#include "core/application.h"
 
 #include "config-file-variant-wrapper.h"
 
@@ -38,10 +38,10 @@ ConfigFileVariantWrapper::~ConfigFileVariantWrapper()
 
 QVariant ConfigFileVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(Group, Name, defaultValue.toString());
+	return Application::instance()->configuration()->deprecatedApi()->readEntry(Group, Name, defaultValue.toString());
 }
 
 void ConfigFileVariantWrapper::set(const QVariant &value)
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry(Group, Name, value.toString());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry(Group, Name, value.toString());
 }

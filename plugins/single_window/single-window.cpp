@@ -17,6 +17,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -30,7 +31,6 @@
 #include "provider/default-provider.h"
 #include "activate.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "single-window.h"
 
@@ -38,8 +38,8 @@ SingleWindowManager::SingleWindowManager(QObject *parent) :
 		ConfigurationUiHandler(parent),
 		m_windowProvider(new SimpleProvider<QWidget *>(0))
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SingleWindow", "RosterPosition", 0);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SingleWindow", "KaduWindowWidth", 205);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("SingleWindow", "RosterPosition", 0);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("SingleWindow", "KaduWindowWidth", 205);
 
 	m_window = new SingleWindow();
 	m_windowProvider->provideValue(m_window);
@@ -57,7 +57,7 @@ SingleWindowManager::~SingleWindowManager()
 
 void SingleWindowManager::configurationUpdated()
 {
-	int newRosterPos = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
+	int newRosterPos = Application::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_window->rosterPosition() != newRosterPos)
 		m_window->changeRosterPos(newRosterPos);
 }
@@ -74,7 +74,7 @@ SingleWindow::SingleWindow()
 	m_tabs = new QTabWidget(this);
 	m_tabs->setTabsClosable(true);
 
-	m_rosterPos = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
+	m_rosterPos = Application::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_rosterPos == 0)
 	{
 		m_split->addWidget(kadu);
@@ -93,7 +93,7 @@ SingleWindow::SingleWindow()
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
-	int kaduwidth = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
+	int kaduwidth = Application::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
 	if (m_rosterPos == 0)
 	{
@@ -126,7 +126,7 @@ SingleWindow::~SingleWindow()
 	KaduWindow *kadu = Core::instance()->kaduWindow();
 	bool visible = isVisible();
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
 	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
 	disconnect(m_tabs, 0, this, 0);
@@ -230,7 +230,7 @@ void SingleWindow::updateTabName(ChatWidget *chatWidget)
 			baseTabName = chat.name();
 	}
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("SingleWindow", "NumMessagesInTab", false) && chatWidget->unreadMessagesCount() > 0)
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("SingleWindow", "NumMessagesInTab", false) && chatWidget->unreadMessagesCount() > 0)
 	{
 		m_tabs->setTabText(i, QString("%1 [%2]").arg(baseTabName).arg(chatWidget->unreadMessagesCount()));
 		m_tabs->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chatWidget->unreadMessagesCount()));

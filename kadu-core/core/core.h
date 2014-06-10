@@ -70,7 +70,7 @@ class ConfiguredChatStyleRendererFactoryProvider;
 class DomProcessorService;
 class FormattedStringFactory;
 class ImageStorageService;
-class KaduApplication;
+class Application;
 class KaduIcon;
 class KaduWindow;
 class Message;
@@ -190,7 +190,7 @@ public:
 	static QString name();
 	static QString version();
 	static QString nameWithVersion();
-	static KaduApplication * application();
+	static Application * application();
 
 	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }

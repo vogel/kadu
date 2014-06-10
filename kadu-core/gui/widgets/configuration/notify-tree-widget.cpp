@@ -25,10 +25,10 @@
  *  Copyright (C) 2005 Olivier Goffart <ogoffart at kde.org>
  */
 
-#include <QtWidgets/QApplication>
 #include <QtGui/QFontMetrics>
-#include <QtWidgets/QHeaderView>
 #include <QtGui/QPainter>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHeaderView>
 
 #include "notify/notification-manager.h"
 #include "notify/notifier.h"

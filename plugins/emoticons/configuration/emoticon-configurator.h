@@ -22,8 +22,8 @@
 #ifndef EMOTICON_CONFIGURATOR
 #define EMOTICON_CONFIGURATOR
 
-#include <QtCore/QScopedPointer>
 #include <QtCore/QPointer>
+#include <QtCore/QScopedPointer>
 
 #include "configuration/emoticon-configuration.h"
 #include "theme/emoticon-theme-manager.h"

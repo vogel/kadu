@@ -40,6 +40,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/configuration/config-combo-box.h"
@@ -50,7 +51,6 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "misc/paths-provider.h"
 
@@ -67,7 +67,7 @@ void SmsConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new SmsConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -77,7 +77,7 @@ void SmsConfigurationUiHandler::unregisterConfigurationUi()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 		delete Instance;
 		Instance = 0;
 	}
@@ -162,12 +162,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

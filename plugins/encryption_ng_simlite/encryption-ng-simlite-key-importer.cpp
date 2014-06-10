@@ -25,8 +25,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
+#include "core/application.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -53,7 +53,7 @@ EncryptioNgSimliteKeyImporter::EncryptioNgSimliteKeyImporter()
 
 void EncryptioNgSimliteKeyImporter::accountRegistered(Account account)
 {
-	if (account.id() == KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "UIN"))
+	if (account.id() == Application::instance()->configuration()->deprecatedApi()->readEntry("General", "UIN"))
 		importKeys(account);
 }
 
@@ -92,7 +92,7 @@ void EncryptioNgSimliteKeyImporter::importKey(const Account &account, const QFil
 
 void EncryptioNgSimliteKeyImporter::importKeys(const Account &account)
 {
-	QString keysPath = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("keys/");
+	QString keysPath = Application::instance()->pathsProvider()->profilePath() + QLatin1String("keys/");
 
 	QDir keysDir(keysPath);
 	if (!keysDir.exists())

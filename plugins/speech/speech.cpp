@@ -25,12 +25,12 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "kadu-application.h"
 #include "speech-configuration-widget.h"
 
 #include "speech.h"
@@ -74,7 +74,7 @@ Speech::Speech() :
 
 	NotificationManager::instance()->registerNotifier(this);
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
 
 	kdebugf2();
 }
@@ -89,67 +89,67 @@ Speech::~Speech()
 
 void Speech::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
 {
-	QString entry = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", from + "Female", QString());
+	QString entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", from + "Female", QString());
 	if (!entry.isEmpty())
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", from + "_Syntax/Female", entry);
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", from + "Female");
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", from + "_Syntax/Female", entry);
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", from + "Female");
 
-	entry = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", to + "Male", QString());
+	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", to + "Male", QString());
 	if (!entry.isEmpty())
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", to + "_Syntax/Male", entry);
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", to + "Male");
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", to + "_Syntax/Male", entry);
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", to + "Male");
 }
 
 void Speech::import_0_5_0_Configuration()
 {
 	QString entry;
 
-	entry = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", "ConnectionError", QString());
+	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "ConnectionError", QString());
 	if (!entry.isEmpty())
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "ConnectionError");
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "ConnectionError");
 
-	entry = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NotifyFormatFemale", QString());
+	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NotifyFormatFemale", QString());
 	if (!entry.isEmpty())
 	{
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Female", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Female", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Female", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Female", entry);
 	}
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "NotifyFormatFemale");
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "NotifyFormatFemale");
 
-	entry = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NotifyFormatMale", QString());
+	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NotifyFormatMale", QString());
 	if (!entry.isEmpty())
 	{
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Male", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Male", entry);
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Male", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Male", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Male", entry);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Male", entry);
 	}
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "NotifyFormatMale");
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "NotifyFormatMale");
 
 	import_0_5_0_ConfigurationFromTo("NewChat", "NewChat");
 	import_0_5_0_ConfigurationFromTo("NewMessage", "NewMessage");
 
-	bool arts = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseArts", false);
-	bool esd = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseEsd", false);
-	bool dsp = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseDsp", false);
+	bool arts = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseArts", false);
+	bool esd = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseEsd", false);
+	bool dsp = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseDsp", false);
 
 	if (arts)
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "aRts");
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "aRts");
 	else if (esd)
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "Eds");
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "Eds");
 	else if (dsp)
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "Dsp");
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "Dsp");
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseArts");
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseEsd");
-	KaduApplication::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseDsp");
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseArts");
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseEsd");
+	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseDsp");
 }
 
 void Speech::import_0_6_5_configuration()
@@ -169,14 +169,14 @@ void Speech::say(const QString &s, const QString &path,
 
 	if (path.isEmpty())
 	{
-		t = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech","SpeechProgram", "powiedz");
-		klatt = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "KlattSynt");
-		melody = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "Melody");
-		soundSystem = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "SoundSystem");
-		dev = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", "DspDev", "/dev/dsp");
-		freq = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Frequency");
-		tempo = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Tempo");
-		basefreq = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "BaseFrequency");
+		t = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech","SpeechProgram", "powiedz");
+		klatt = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "KlattSynt");
+		melody = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "Melody");
+		soundSystem = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "SoundSystem");
+		dev = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "DspDev", "/dev/dsp");
+		freq = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Frequency");
+		tempo = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Tempo");
+		basefreq = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "BaseFrequency");
 	}
 	else
 	{
@@ -240,14 +240,14 @@ void Speech::notify(Notification *notification)
 			sex = "Female";
 	}
 
-	QString syntax = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
+	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else
 	{
 		QString details = notification->details().join(QLatin1String("\n"));
-		if (details.length() > KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
-			syntax = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
+		if (details.length() > Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
+			syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
 
 		syntax = syntax.arg(details);
 

@@ -22,8 +22,8 @@
 #ifndef CUSTOM_PROPERTIES_VARIANT_WRAPPER_H
 #define CUSTOM_PROPERTIES_VARIANT_WRAPPER_H
 
-#include <QtCore/QString>
 #include <QtCore/QPointer>
+#include <QtCore/QString>
 
 #include "misc/variant-wrapper.h"
 #include "storage/custom-properties.h"

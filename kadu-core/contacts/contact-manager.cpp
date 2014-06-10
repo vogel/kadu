@@ -25,17 +25,17 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/configuration-manager.h"
 #include "contacts/contact-parser-tags.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "message/unread-message-repository.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "contact-manager.h"
 
@@ -273,14 +273,14 @@ void ContactManager::removeDuplicateContacts()
 			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
 	}
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
 }
 
 void ContactManager::loaded()
 {
 	Manager<Contact>::loaded();
 
-	if (!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
+	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }

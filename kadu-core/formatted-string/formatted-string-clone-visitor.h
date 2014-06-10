@@ -21,11 +21,11 @@
 #ifndef FORMATTED_STRING_CLONE_VISITOR_H
 #define FORMATTED_STRING_CLONE_VISITOR_H
 
-#include <memory>
-#include <stack>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QStack>
 #include <QtCore/QString>
+#include <memory>
+#include <stack>
 
 #include "formatted-string/formatted-string-visitor.h"
 #include "exports.h"

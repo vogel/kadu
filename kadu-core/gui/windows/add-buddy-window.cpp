@@ -24,6 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QSortFilterProxyModel>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
@@ -33,7 +34,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtCore/QSortFilterProxyModel>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -51,10 +51,10 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-talkable-combo-box.h"
-#include "gui/scoped-updates-disabler.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"

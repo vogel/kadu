@@ -25,12 +25,12 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/paths-provider.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "kadu-application.h"
 
 #include "plugins/idle/idle-plugin.h"
 #include "plugins/idle/idle.h"
@@ -58,7 +58,7 @@ bool AutoHide::init(bool firstLoad)
 	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
 	MyIdle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
 
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	return true;
@@ -69,7 +69,7 @@ void AutoHide::done()
 	Timer.stop();
 
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 }
 
 void AutoHide::timerTimeoutSlot()
@@ -87,8 +87,8 @@ void AutoHide::timerTimeoutSlot()
 
 void AutoHide::configurationUpdated()
 {
-	IdleTime = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
-	Enabled = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+	IdleTime = Application::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+	Enabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
 
 	if (Enabled && !Timer.isActive())
 		Timer.start(1000);

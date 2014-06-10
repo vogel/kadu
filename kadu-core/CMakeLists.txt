@@ -65,7 +65,6 @@ include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 set (kadu_SRCS
 	activate.cpp
 	debug.cpp
-	kadu-application.cpp
 	languages-manager.cpp
 	themes.cpp
 	updates.cpp

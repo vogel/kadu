@@ -21,11 +21,11 @@
  */
 
 #include <QtCore/QTimer>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QPixmap>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLabel>
-#include <QtGui/QPixmap>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>

@@ -22,9 +22,9 @@
 #include "misc/graph/graph.h"
 #include "exports.h"
 
-#include <set>
 #include <QtCore/QSet>
 #include <QtCore/QVector>
+#include <set>
 
 /**
  * @addtogroup Plugin

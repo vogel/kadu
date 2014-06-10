@@ -19,12 +19,12 @@
 
 #include "string-list-storage.h"
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "storage/storage-point.h"
 
-#include <QtCore/QVector>
 #include <QtCore/QStringList>
+#include <QtCore/QVector>
 
 StringListStorage::StringListStorage(StoragePoint *storagePoint, QString nodeName) :
 		m_storagePoint(storagePoint), m_nodeName(nodeName)

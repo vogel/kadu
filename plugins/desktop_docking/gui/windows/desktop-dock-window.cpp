@@ -19,13 +19,13 @@
  */
 
 #include <QtGui/QBitmap>
-#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
+#include <QtWidgets/QMenu>
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "icons/kadu-icon.h"
-#include "kadu-application.h"
 
 #include "plugins/docking/docking.h"
 
@@ -55,11 +55,11 @@ DesktopDockWindow::~DesktopDockWindow()
 
 void DesktopDockWindow::configurationUpdated()
 {
-	QPoint pos(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Desktop Dock", "PositionX"), KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Desktop Dock", "PositionY"));
+	QPoint pos(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Desktop Dock", "PositionX"), Application::instance()->configuration()->deprecatedApi()->readNumEntry("Desktop Dock", "PositionY"));
 	move(pos);
 
 	QPalette newPalette = palette();
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Desktop Dock", "DockingTransparency"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Desktop Dock", "DockingTransparency"))
 	{
 		newPalette.setColor(QPalette::Active, QPalette::Window, Qt::transparent);
 		newPalette.setColor(QPalette::Inactive, QPalette::Window, Qt::transparent);
@@ -68,7 +68,7 @@ void DesktopDockWindow::configurationUpdated()
 	}
 	else
 	{
-		QColor color = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Desktop Dock", "DockingColor");
+		QColor color = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Desktop Dock", "DockingColor");
 		newPalette.setColor(QPalette::Active, QPalette::Window, color);
 		newPalette.setColor(QPalette::Inactive, QPalette::Window, color);
 		clearMask();

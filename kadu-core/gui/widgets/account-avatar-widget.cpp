@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMovie>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLabel>
-#include <QtGui/QMovie>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 

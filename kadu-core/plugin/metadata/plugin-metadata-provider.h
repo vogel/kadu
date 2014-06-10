@@ -21,8 +21,8 @@
 
 #include "exports.h"
 
-#include <map>
 #include <QtCore/QObject>
+#include <map>
 
 class PluginMetadata;
 

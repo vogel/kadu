@@ -36,13 +36,14 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QTextDocument>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMenu>
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/status-menu.h"
@@ -61,7 +62,6 @@
 #include "status/status-type-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #ifdef Q_OS_MAC
 #include "services/notification-service.h"
@@ -298,7 +298,7 @@ void DockingManager::defaultToolTip()
 	if (!CurrentDocker)
 		return;
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"))
 	{
 		QString tiptext("");
 
@@ -488,7 +488,7 @@ void DockingManager::setDocker(Docker *docker)
 		changeIcon();
 		defaultToolTip();
 #ifndef Q_OS_MAC
-		if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"))
+		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"))
 			Core::instance()->setShowMainWindowOnStart(false);
 		Core::instance()->kaduWindow()->setDocked(true);
 	}
@@ -632,7 +632,7 @@ void DockingManager::statusContainerUnregistered(StatusContainer *statusContaine
 
 void DockingManager::configurationUpdated()
 {
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"))
 		defaultToolTip();
 	else
 	{
@@ -640,7 +640,7 @@ void DockingManager::configurationUpdated()
 			CurrentDocker->changeTrayTooltip(QString());
 	}
 
-	IconType it = (IconType)KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NewMessageIcon");
+	IconType it = (IconType)Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NewMessageIcon");
 	if (newMessageIcon != it)
 	{
 		newMessageIcon = it;
@@ -650,9 +650,9 @@ void DockingManager::configurationUpdated()
 
 void DockingManager::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "RunDocked", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowTooltipInTray", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 0);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "RunDocked", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowTooltipInTray", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 0);
 }
 
 void DockingManager::registerModuleAction(QAction *action)

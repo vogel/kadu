@@ -20,13 +20,13 @@
 #include "chat-style-preview.h"
 
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/chat-details-contact.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
+#include "chat/chat-details-contact.h"
 #include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 
 #include <QtWidgets/QHBoxLayout>
 

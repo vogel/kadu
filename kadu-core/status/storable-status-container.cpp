@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/configuration-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "storage/storable-object.h"

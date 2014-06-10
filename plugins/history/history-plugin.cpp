@@ -21,11 +21,11 @@
  */
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "gui/widgets/history-buddy-configuration-widget-factory.h"
 #include "gui/widgets/history-chat-configuration-widget-factory.h"
@@ -49,7 +49,7 @@ bool HistoryPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	History::createInstance();
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 	MainConfigurationWindow::registerUiHandler(History::instance());
 
 	BuddyHistoryDeleteHandler::createInstance();
@@ -71,7 +71,7 @@ void HistoryPlugin::done()
 		delete HistoryWindow::instance();
 
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 	History::destroyInstance();
 }
 

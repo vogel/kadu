@@ -23,8 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QPainter>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "handler-rect-item.h"
 

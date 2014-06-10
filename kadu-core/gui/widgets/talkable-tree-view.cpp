@@ -31,9 +31,9 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QTemporaryFile>
-#include <QtWidgets/QApplication>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QImage>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
 #include "accounts/account.h"

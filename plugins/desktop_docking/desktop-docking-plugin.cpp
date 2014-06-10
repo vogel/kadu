@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/application.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "plugins/docking/docking.h"
 
@@ -43,7 +43,7 @@ bool DesktopDockingPlugin::init(bool firstLoad)
 	DesktopDock::createInstance();
 	DockingManager::instance()->setDocker(DesktopDock::instance());
 	DesktopDockConfigurationUiHandler::createInstance();
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
 	MainConfigurationWindow::registerUiHandler(DesktopDockConfigurationUiHandler::instance());
 
 	return true;
@@ -52,7 +52,7 @@ bool DesktopDockingPlugin::init(bool firstLoad)
 void DesktopDockingPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(DesktopDockConfigurationUiHandler::instance());
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
 	DesktopDockConfigurationUiHandler::destroyInstance();
 	DockingManager::instance()->setDocker(0);
 	DesktopDock::destroyInstance();

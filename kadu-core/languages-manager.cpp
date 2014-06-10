@@ -24,8 +24,8 @@
 
 #include <QtCore/QDir>
 
+#include "core/application.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "languages-manager.h"
 
@@ -33,7 +33,7 @@ QMap<QString, QString> LanguagesManager::Languages;
 
 void LanguagesManager::loadLanguages()
 {
-	QDir tranlationsDir(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	QDir tranlationsDir(Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
 
 	QStringList languagesFilter;
 	languagesFilter << "*.language";

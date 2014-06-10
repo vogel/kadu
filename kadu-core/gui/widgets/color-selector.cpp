@@ -20,10 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QPixmap>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QGridLayout>
-#include <QtGui/QPixmap>
 
 #include "misc/misc.h"
 #include "debug.h"

@@ -28,14 +28,14 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
-#include <QtWidgets/QMainWindow>
 #include <QtScript/QScriptEngine>
+#include <QtWidgets/QMainWindow>
 #if SMS_USE_DEBUGGER
 #include <QtScriptTools/QScriptEngineDebugger>
 #endif
 
+#include "core/application.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "scripts/network-access-manager-wrapper.h"
 #include "scripts/sms-translator.h"
@@ -82,20 +82,20 @@ void SmsScriptsManager::init()
  	debugger->standardWindow()->show();
 #endif
 
-	QString scriptPath = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
+	QString scriptPath = Application::instance()->pathsProvider()->profilePath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
 	if (QFile::exists(scriptPath))
 		loadScript(scriptPath);
 	else
 	{
-		scriptPath = KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
+		scriptPath = Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
 		if (QFile::exists(scriptPath))
 			loadScript(scriptPath);
 		// TODO: maybe we should return here if no gateway.js was found?
 	}
 
 	// scripts from profile path can replace the ones from data path if the file name is the same
-	loadScripts(QDir(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("plugins/data/sms/scripts")));
-	loadScripts(QDir(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/sms/scripts")));
+	loadScripts(QDir(Application::instance()->pathsProvider()->profilePath() + QLatin1String("plugins/data/sms/scripts")));
+	loadScripts(QDir(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/sms/scripts")));
 }
 
 void SmsScriptsManager::loadScripts(const QDir &dir)

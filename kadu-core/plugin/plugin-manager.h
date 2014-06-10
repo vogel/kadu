@@ -34,9 +34,9 @@
 #include "plugin/metadata/plugin-metadata.h"
 #include "exports.h"
 
-#include <functional>
 #include <QtCore/QPointer>
 #include <QtCore/QVector>
+#include <functional>
 
 class PluginActivationService;
 class PluginDependencyHandler;

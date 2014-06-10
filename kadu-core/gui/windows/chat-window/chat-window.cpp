@@ -29,8 +29,8 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
-#include <QtWidgets/QApplication>
 #include <QtGui/QCloseEvent>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QVBoxLayout>
 
@@ -39,13 +39,13 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
+#include "core/application.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 #include "os/generic/window-geometry-manager.h"
 #include "storage/custom-properties-variant-wrapper.h"
-#include "kadu-application.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -101,8 +101,8 @@ void ChatWindow::configurationUpdated()
 {
 	triggerCompositingStateChanged();
 
-	m_showNewMessagesNum = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false);
-	m_blinkChatTitle = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true);
+	m_showNewMessagesNum = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false);
+	m_blinkChatTitle = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true);
 
 	if (m_chatWidget->chat().unreadMessagesCount())
 		blinkTitle();
@@ -110,7 +110,7 @@ void ChatWindow::configurationUpdated()
 
 void ChatWindow::compositingEnabled()
 {
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -159,9 +159,9 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 {
 	kdebugf();
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		int period = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
+		int period = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < m_chatWidget->lastReceivedMessageTime().addSecs(period))
 		{

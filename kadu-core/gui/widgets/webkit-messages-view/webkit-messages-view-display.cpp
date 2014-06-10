@@ -20,8 +20,8 @@
 #include "webkit-messages-view-display.h"
 
 #include "chat-style/engine/chat-style-renderer.h"
-#include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
+#include "message/message-render-info.h"
 
 WebkitMessagesViewDisplay::WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer) :
 		m_chatStyleRenderer(chatStyleRenderer)

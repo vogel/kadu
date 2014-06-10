@@ -26,13 +26,13 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-manager.h"
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "storage/storage-point.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "group-manager.h"
 
@@ -89,7 +89,7 @@ void GroupManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	QDomElement groupsNode = KaduApplication::instance()->configuration()->api()->getNode("Groups", ConfigurationApi::ModeFind);
+	QDomElement groupsNode = Application::instance()->configuration()->api()->getNode("Groups", ConfigurationApi::ModeFind);
 	if (groupsNode.isNull())
 	{
 		importConfiguration();

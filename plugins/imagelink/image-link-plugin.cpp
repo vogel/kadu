@@ -20,11 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/application.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "image-expander-dom-visitor-provider.h"
 #include "video-expander-dom-visitor-provider.h"
@@ -42,12 +42,12 @@ ImageLinkPlugin::~ImageLinkPlugin()
 
 void ImageLinkPlugin::registerConfigurationUi()
 {
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 }
 
 void ImageLinkPlugin::unregisterConfigurationUi()
 {
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 }
 
 void ImageLinkPlugin::registerImageExpander()

@@ -23,12 +23,12 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
 #include "misc/paths-provider.h"
 #include "debug.h"
-#include "kadu-application.h"
 #include "themes.h"
 
 #include "gui/widgets/configuration/sound-configuration-widget.h"
@@ -46,7 +46,7 @@ void SoundConfigurationUiHandler::registerConfigurationUi()
 
 	Instance = new SoundConfigurationUiHandler();
 
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -58,7 +58,7 @@ void SoundConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
 }
 
 SoundConfigurationUiHandler * SoundConfigurationUiHandler::instance()

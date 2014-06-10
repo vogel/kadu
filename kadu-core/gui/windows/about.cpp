@@ -36,10 +36,10 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 #include <QtCore/QUrl>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QTabWidget>
@@ -48,6 +48,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
@@ -56,7 +57,6 @@
 #include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "about.h"
 
@@ -233,7 +233,7 @@ QString About::loadFile(const QString &name)
 {
 	kdebugf();
 
-	QFile file(KaduApplication::instance()->pathsProvider()->dataPath() + name);
+	QFile file(Application::instance()->pathsProvider()->dataPath() + name);
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));

@@ -20,9 +20,9 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
+#include "core/application.h"
 #include "url-handlers/standard-url-expander-configuration.h"
 #include "url-handlers/standard-url-expander.h"
-#include "kadu-application.h"
 
 #include "standard-url-expander-configurator.h"
 
@@ -36,8 +36,8 @@ void StandardUrlExpanderConfigurator::setStandardUrlExpander(StandardUrlExpander
 
 void StandardUrlExpanderConfigurator::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "FoldLink", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "LinkFoldTreshold", 50);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "FoldLink", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "LinkFoldTreshold", 50);
 }
 
 void StandardUrlExpanderConfigurator::configurationUpdated()
@@ -47,8 +47,8 @@ void StandardUrlExpanderConfigurator::configurationUpdated()
 
 	StandardUrlExpanderConfiguration configuration;
 
-	configuration.setFoldLink(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "FoldLink"));
-	configuration.setFoldLinkThreshold(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "LinkFoldTreshold"));
+	configuration.setFoldLink(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "FoldLink"));
+	configuration.setFoldLinkThreshold(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "LinkFoldTreshold"));
 
 	ConfigurableStandardUrlExpander->setConfiguration(configuration);
 }

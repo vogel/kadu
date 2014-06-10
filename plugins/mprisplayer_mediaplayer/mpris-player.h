@@ -27,8 +27,8 @@
 #include <QtCore/QMap>
 
 #include "configuration/configuration-aware-object.h"
+#include "core/application.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "mpris_mediaplayer.h"
 
@@ -55,8 +55,8 @@ public:
 	static void destroyInstance();
 	static MPRISPlayer *instance() { return Instance; }
 
-	static QString userPlayersListFileName() { return KaduApplication::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }
-	static QString globalPlayersListFileName() { return KaduApplication::instance()->pathsProvider()->dataPath() + GlobalPlayersListFile; }
+	static QString userPlayersListFileName() { return Application::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }
+	static QString globalPlayersListFileName() { return Application::instance()->pathsProvider()->dataPath() + GlobalPlayersListFile; }
 
 	void configurationApplied();
 

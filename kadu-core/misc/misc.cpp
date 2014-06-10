@@ -34,8 +34,8 @@
 #include <QtCore/QProcess>
 #include <QtCore/QRegExp>
 #include <QtCore/QUrl>
-#include <QtWidgets/QApplication>
 #include <QtGui/QDesktopServices>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 
 #include "accounts/account-manager.h"

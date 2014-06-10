@@ -20,20 +20,20 @@
 
 #include <QtCore/QVector>
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
-#include "kadu-application.h"
+#include "configuration/configuration.h"
+#include "core/application.h"
 
 #include "profile-data-manager.h"
 
 QDomElement ProfileDataManager::getProfilesNode()
 {
-	QDomElement deprecated = KaduApplication::instance()->configuration()->api()->getNode("Deprecated", ConfigurationApi::ModeFind);
+	QDomElement deprecated = Application::instance()->configuration()->api()->getNode("Deprecated", ConfigurationApi::ModeFind);
 	if (deprecated.isNull())
 		return QDomElement();
 
 	QDomElement configFile;
-	QVector<QDomElement> configFiles = KaduApplication::instance()->configuration()->api()->getNodes(deprecated, "ConfigFile");
+	QVector<QDomElement> configFiles = Application::instance()->configuration()->api()->getNodes(deprecated, "ConfigFile");
 
 	foreach (const QDomElement &cf, configFiles)
 		if (cf.attribute("name").endsWith("kadu.conf"))
@@ -45,7 +45,7 @@ QDomElement ProfileDataManager::getProfilesNode()
 	if (configFile.isNull())
 		return QDomElement();
 
-	return KaduApplication::instance()->configuration()->api()->getNamedNode(configFile, "Group", "Profiles");
+	return Application::instance()->configuration()->api()->getNamedNode(configFile, "Group", "Profiles");
 }
 
 QList<ProfileData> ProfileDataManager::readProfileData()
@@ -56,7 +56,7 @@ QList<ProfileData> ProfileDataManager::readProfileData()
 	if (groupProfiles.isNull())
 		return result;
 
-	QVector<QDomElement> profiles = KaduApplication::instance()->configuration()->api()->getNodes(groupProfiles, "Profile");
+	QVector<QDomElement> profiles = Application::instance()->configuration()->api()->getNodes(groupProfiles, "Profile");
 	foreach (const QDomElement &profile, profiles)
 	{
 		if (profile.attribute("imported") != "yes")
@@ -77,6 +77,6 @@ void ProfileDataManager::markImported(const QString &name)
 	if (groupProfiles.isNull())
 		return;
 
-	QDomElement profile = KaduApplication::instance()->configuration()->api()->getNamedNode(groupProfiles, "Profile", name);
+	QDomElement profile = Application::instance()->configuration()->api()->getNamedNode(groupProfiles, "Profile", name);
 	profile.setAttribute("imported", "yes");
 }

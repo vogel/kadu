@@ -23,9 +23,9 @@
 #ifndef COMPOSITE_FORMATTED_STRING_H
 #define COMPOSITE_FORMATTED_STRING_H
 
-#include <memory>
 #include <QtCore/QVector>
 #include <QtGui/QColor>
+#include <memory>
 
 #include "exports.h"
 

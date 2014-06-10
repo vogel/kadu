@@ -29,8 +29,8 @@
 #define PROTOCOL_FACTORY_H
 
 #include <QtCore/QString>
-#include <QtWidgets/QDialog>
 #include <QtGui/QValidator>
+#include <QtWidgets/QDialog>
 
 #include "contacts/contact-details.h"
 #include "status/status-adapter.h"

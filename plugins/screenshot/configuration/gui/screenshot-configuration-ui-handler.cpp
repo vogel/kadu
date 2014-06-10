@@ -21,8 +21,8 @@
 
 #include <QtGui/QImageWriter>
 
+#include "core/application.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -38,7 +38,7 @@ void ScreenShotConfigurationUiHandler::registerConfigurationUi()
 
 	Instance = new ScreenShotConfigurationUiHandler();
 
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -50,7 +50,7 @@ void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
 }
 
 ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) :

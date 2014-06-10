@@ -25,8 +25,8 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/plugin-dependency-handler.h"
-#include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
+#include "plugin/state/plugin-state.h"
 
 PluginActivationService::PluginActivationService(QObject *parent) :
 		QObject{parent}

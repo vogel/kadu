@@ -19,11 +19,11 @@
  */
 
 #include <QtCore/QVariant>
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDateEdit>
 #include <QtWidgets/QFormLayout>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>

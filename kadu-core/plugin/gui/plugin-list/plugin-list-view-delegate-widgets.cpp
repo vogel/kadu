@@ -26,6 +26,7 @@
 
 #include <math.h>
 
+#include <QtCore/QAbstractProxyModel>
 #include <QtCore/QHash>
 #include <QtCore/QList>
 #include <QtCore/QMetaMethod>
@@ -33,10 +34,9 @@
 #include <QtCore/QMetaProperty>
 #include <QtCore/QPair>
 #include <QtCore/qobjectdefs.h>
-#include <QtWidgets/QAbstractItemView>
-#include <QtCore/QAbstractProxyModel>
-#include <QtWidgets/QApplication>
 #include <QtGui/QInputEvent>
+#include <QtWidgets/QAbstractItemView>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 
 #include "plugin/gui/plugin-list/plugin-list-view-delegate.h"

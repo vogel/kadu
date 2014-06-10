@@ -34,8 +34,8 @@
 #ifdef _MSC_VER
 #include <dbghelp.h>
 #endif
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "core/crash-aware-object.h"
 
 #ifdef _MSC_VER

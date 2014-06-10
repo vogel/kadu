@@ -19,11 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QPainter>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
-#include <QtGui/QPainter>
 
 #include "compression/archive-extractor.h"
+#include "core/application.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
@@ -31,7 +32,6 @@
 #include "gui/widgets/path-list-edit.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "theme/emoticon-theme.h"
 #include "theme/gadu-emoticon-theme-loader.h"
@@ -106,7 +106,7 @@ void EmoticonsConfigurationUiHandler::installEmoticonTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &profilePath = KaduApplication::instance()->pathsProvider()->profilePath();
+	const QString &profilePath = Application::instance()->pathsProvider()->profilePath();
 	ArchiveExtractor extractor;
 	bool success = extractor.extract(fileName, profilePath + "emoticons");
 

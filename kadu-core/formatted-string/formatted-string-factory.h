@@ -21,8 +21,8 @@
 #ifndef FORMATTED_STRING_FACTORY_H
 #define FORMATTED_STRING_FACTORY_H
 
-#include <memory>
 #include <QtCore/QPointer>
+#include <memory>
 
 #include "formatted-string/formatted-string.h"
 #include "exports.h"

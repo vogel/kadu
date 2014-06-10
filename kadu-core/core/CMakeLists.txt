@@ -1,4 +1,5 @@
 set (core_SRCS
+	application.cpp
 	core.cpp
 	crash-aware-object.cpp
 )

@@ -23,10 +23,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialogButtonBox>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -45,8 +45,8 @@
 #include "gui/widgets/group-list.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/icons-manager.h"
-#include "misc/change-notifier.h"
 #include "misc/change-notifier-lock.h"
+#include "misc/change-notifier.h"
 #include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 

@@ -21,12 +21,12 @@
 
 #include <QtCore/QPointer>
 #include <QtCore/QUrl>
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFormLayout>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QMessageBox>

@@ -30,10 +30,10 @@
 #include "accounts/account.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "misc/paths-provider.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "filedesc.h"
 
@@ -103,9 +103,9 @@ FileDescription::~FileDescription()
 
 void FileDescription::configurationUpdated()
 {
-	File = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
-	ForceDesc = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
-	AllowOther = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
+	File = Application::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", Application::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
+	ForceDesc = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
+	AllowOther = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
@@ -131,9 +131,9 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "file", KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "file", Application::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

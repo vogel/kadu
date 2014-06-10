@@ -25,8 +25,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QAbstractItemView>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QAbstractItemView>
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"

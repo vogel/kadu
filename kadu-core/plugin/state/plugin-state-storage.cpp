@@ -19,8 +19,8 @@
 
 #include "plugin-state-storage.h"
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "plugin/state/plugin-state.h"
 #include "storage/storage-point.h"
 

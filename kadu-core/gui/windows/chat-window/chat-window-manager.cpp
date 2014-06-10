@@ -21,9 +21,9 @@
 
 #include "chat/chat.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
+#include "gui/windows/chat-window/chat-window.h"
 
 ChatWindowManager::ChatWindowManager(QObject *parent) :
 		QObject(parent)

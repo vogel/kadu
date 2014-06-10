@@ -22,8 +22,8 @@
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer.h"
 #include "gui/widgets/webkit-messages-view/message-limit-policy.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "misc/paths-provider.h"
 

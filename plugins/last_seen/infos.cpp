@@ -29,12 +29,12 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
+#include "core/application.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "debug.h"
 #include "exports.h"
-#include "kadu-application.h"
 
 #include "infos.h"
 #include "infos_dialog.h"
@@ -47,7 +47,7 @@ Infos::Infos(QObject *parent) :
 
 	triggerAllAccountsRegistered();
 
-	fileName = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("last_seen.data");
+	fileName = Application::instance()->pathsProvider()->profilePath() + QLatin1String("last_seen.data");
 
 	if (QFile::exists(fileName))
 	{

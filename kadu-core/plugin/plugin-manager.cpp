@@ -35,10 +35,10 @@
 #include "misc/algorithm.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/plugin-dependency-handler.h"
-#include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
-#include "plugin/state/plugin-state-storage.h"
 #include "plugin/state/plugin-state-storage-09.h"
+#include "plugin/state/plugin-state-storage.h"
+#include "plugin/state/plugin-state.h"
 #include "debug.h"
 
 PluginManager::PluginManager(QObject *parent) :

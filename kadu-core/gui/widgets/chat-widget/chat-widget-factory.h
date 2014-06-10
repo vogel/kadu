@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <memory>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <memory>
 
 #include "exports.h"
 

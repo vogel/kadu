@@ -22,8 +22,8 @@
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "plugin/metadata/plugin-metadata.h"
 
-#include <queue>
 #include <QtCore/QSet>
+#include <queue>
 
 PluginDependencyGraphBuilder::PluginDependencyGraphBuilder(QObject *parent) :
 		QObject{parent}

@@ -20,8 +20,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "talkable/talkable.h"
-#include "kadu-application.h"
 
 #include "tool-tip-class-manager.h"
 
@@ -38,7 +38,7 @@ ToolTipClassManager * ToolTipClassManager::instance()
 ToolTipClassManager::ToolTipClassManager() :
 		CurrentToolTipClass(0)
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
 	configurationUpdated();
 }
 
@@ -110,5 +110,5 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
+	useToolTipClass(Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
 }

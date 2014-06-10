@@ -23,8 +23,8 @@
 #include "plugin/activation/plugin-root-component-handler.h"
 #include "plugin/activation/plugin-translations-loader.h"
 
-#include <memory>
 #include <QtCore/QScopedPointer>
+#include <memory>
 
 class PluginRootComponent;
 

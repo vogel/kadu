@@ -25,8 +25,8 @@
 
 #include <QtCore/QMap>
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-aware-object.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/windows/main-configuration-window.h"
 

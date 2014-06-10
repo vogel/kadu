@@ -28,8 +28,8 @@
 #define TABS_TABWIDGET_H
 
 #include <QtGui/QCursor>
-#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QTabBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolButton>

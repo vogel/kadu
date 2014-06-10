@@ -81,7 +81,7 @@ IndicatorDocking::IndicatorDocking() :
 		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail"))
 {
 	Server = QIndicate::Server::defaultInstance();
-	Server->setDesktopFile(KaduApplication::instance()->pathsProvider()->desktopFilePath());
+	Server->setDesktopFile(Application::instance()->pathsProvider()->desktopFilePath());
 	Server->setType("message.im");
 	Server->show();
 
@@ -125,7 +125,7 @@ IndicatorDocking::~IndicatorDocking()
 
 void IndicatorDocking::indicateUnreadMessages()
 {
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
 		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
@@ -323,8 +323,8 @@ QList<IndicatorDocking::IndMMap::iterator> IndicatorDocking::iteratorsForAggrega
 
 void IndicatorDocking::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_IndicatorNotify", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_IndicatorNotify", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_IndicatorNotify", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_IndicatorNotify", true);
 }
 
 #include "moc_indicator_docking.cpp"

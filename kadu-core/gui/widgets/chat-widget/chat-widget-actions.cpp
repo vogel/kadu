@@ -33,6 +33,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -50,7 +51,6 @@
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "model/roles.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "chat-widget-actions.h"
 
@@ -248,7 +248,7 @@ void ChatWidgetActions::configurationUpdated()
 
 void ChatWidgetActions::autoSendActionCreated(Action *action)
 {
-	action->setChecked(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
+	action->setChecked(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
 }
 
 void ChatWidgetActions::clearChatActionCreated(Action *action)
@@ -277,7 +277,7 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 
 void ChatWidgetActions::autoSendActionCheck()
 {
- 	bool check = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
+ 	bool check = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
  	foreach (Action *action, AutoSend->actions())
  		action->setChecked(check);
 }
@@ -290,7 +290,7 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
  	chatEditBox->setAutoSend(toggled);
 	autoSendActionCheck();
 }

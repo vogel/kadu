@@ -23,9 +23,9 @@
 #include "misc/iterator.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
 #include <map>
 #include <memory>
-#include <QtCore/QObject>
 
 class ChatWidget;
 

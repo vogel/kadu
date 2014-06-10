@@ -21,8 +21,8 @@
 
 #include "exports.h"
 
-#include <memory>
 #include <QtCore/QObject>
+#include <memory>
 
 class StoragePoint;
 class ConfigurationApi;

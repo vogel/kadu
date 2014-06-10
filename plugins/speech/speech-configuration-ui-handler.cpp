@@ -26,13 +26,13 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/select-file.h"
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "kadu-application.h"
 #include "speech.h"
 
 #include "speech-configuration-ui-handler.h"
@@ -44,7 +44,7 @@ void SpeechConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new SpeechConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -54,7 +54,7 @@ void SpeechConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 		delete Instance;
 		Instance = 0;
 	}
@@ -107,8 +107,8 @@ void SpeechConfigurationUiHandler::testSpeech()
 
 	QString program = programSelectFile->file();
 	// TODO: mo�e u�ywa� jakiego� normalnego tekstu ?
-	QString formatM = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
-	QString formatF = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
+	QString formatM = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
+	QString formatF = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
 	QString device = dspDeviceLineEdit->text();
 	bool klatt = klattSyntCheckBox->isChecked();
 	bool mel = melodyCheckBox->isChecked();

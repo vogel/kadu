@@ -31,8 +31,8 @@
  */
 
 #include <QtCore/QMimeData>
-#include <QtWidgets/QApplication>
 #include <QtGui/QDragEnterEvent>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QMenu>
 
@@ -53,8 +53,8 @@
 
 #include "debug.h"
 
-#include "group-tab-bar.h"
 #include "group-filter-tab-data.h"
+#include "group-tab-bar.h"
 
 GroupTabBar::GroupTabBar(QWidget *parent) :
 		QTabBar(parent)

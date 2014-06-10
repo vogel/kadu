@@ -35,24 +35,24 @@
 #include <QtCore/QFile>
 #include <QtCore/QMimeData>
 #include <QtCore/QPoint>
+#include <QtCore/QPointer>
 #include <QtCore/QString>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
-#include <QtCore/QPointer>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QDrag>
-#include <QtWidgets/QFileDialog>
 #include <QtGui/QImage>
-#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
-#include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtWebKit/QWebHistory>
 #include <QtWebKitWidgets/QWebHitTestResult>
 #include <QtWebKitWidgets/QWebPage>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QStyle>
 
 #ifdef DEBUG_ENABLED
 #	include <QtWebKitWidgets/QWebInspector>
@@ -60,6 +60,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/message-dialog.h"
@@ -67,7 +68,6 @@
 #include "services/image-storage-service.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "kadu-web-view.h"
 
@@ -281,7 +281,7 @@ void KaduWebView::saveImage()
 	QPointer<QFileDialog> fd = new QFileDialog(this);
 	fd->setFileMode(QFileDialog::AnyFile);
 	fd->setAcceptMode(QFileDialog::AcceptSave);
-	fd->setDirectory(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"));
+	fd->setDirectory(Application::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"));
 	fd->setNameFilter(QString("%1 (*%2)").arg(QCoreApplication::translate("ImageDialog", "Images"), fileExt));
 	fd->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
 	fd->setWindowTitle(tr("Save image"));
@@ -335,7 +335,7 @@ void KaduWebView::saveImage()
 			}
 		}
 
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
 	} while (false);
 
 	delete fd.data();

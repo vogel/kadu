@@ -23,9 +23,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QPalette>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtGui/QPalette>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTextEdit>
 
@@ -35,6 +35,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -44,7 +45,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
-#include "kadu-application.h"
 
 #include "hint_manager.h"
 #include "hints-plugin.h"
@@ -56,7 +56,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	ExampleBuddy(exampleBuddy)
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-	widget()->appendUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
+	widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
 
 	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));
@@ -87,7 +87,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay = new QHBoxLayout(syntaxWidget);
 	hintSyntax = new QTextEdit;
 	hintSyntax->setAcceptRichText(true);
-	hintSyntax->setPlainText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax"));
+	hintSyntax->setPlainText(Application::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax"));
 	hintSyntax->setToolTip(tr(MainConfigurationWindow::SyntaxText));
 
 	QPushButton *syntaxChangedButton = new QPushButton(tr("Update preview"));
@@ -100,10 +100,10 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 
 	HintsPlugin::instance()->hintsManger()->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
 
-	bgcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
-	fgcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
-	bdcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name();
-	bdwidth = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
+	bgcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
+	fgcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
+	bdcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name();
+	bdwidth = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
 }
 
 void HintOverUserConfigurationWindow::fontChanged(QFont font)
@@ -173,7 +173,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 
 void HintOverUserConfigurationWindow::configurationWindowApplied()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
 }
 
 #include "moc_hint-over-user-configuration-window.cpp"

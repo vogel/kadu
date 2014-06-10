@@ -22,8 +22,8 @@
 #include "accounts/account.h"
 #include "dcc/dcc-socket-notifiers.h"
 #include "helpers/gadu-protocol-helper.h"
-#include "misc/change-notifier.h"
 #include "misc/change-notifier-lock.h"
+#include "misc/change-notifier.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 

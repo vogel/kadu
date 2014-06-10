@@ -27,10 +27,11 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/group-tab-bar/group-tab-bar.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar-configurator.h"
+#include "gui/widgets/group-tab-bar/group-tab-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
@@ -42,7 +43,6 @@
 #include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model-factory.h"
 #include "talkable/model/talkable-proxy-model.h"
-#include "kadu-application.h"
 
 #include "roster-widget.h"
 
@@ -89,12 +89,12 @@ void RosterWidget::createGui()
 
 void RosterWidget::configurationUpdated()
 {
-	QString bgColor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look","UserboxBgColor").name();
-	QString alternateBgColor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look","UserboxAlternateBgColor").name();
+	QString bgColor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look","UserboxBgColor").name();
+	QString alternateBgColor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look","UserboxAlternateBgColor").name();
 
-	if (CompositingEnabled && KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
+	if (CompositingEnabled && Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
 	{
-		int alpha = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UserboxAlpha");
+		int alpha = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UserboxAlpha");
 
 		QColor color(bgColor);
 		bgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
@@ -106,9 +106,9 @@ void RosterWidget::configurationUpdated()
 			alternateBgColor = QString("transparent");
 	}
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UseUserboxBackground", true))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UseUserboxBackground", true))
 	{
-		QString typeName = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBackgroundDisplayStyle");
+		QString typeName = Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBackgroundDisplayStyle");
 
 		KaduTreeView::BackgroundMode type;
 		if (typeName == "Centered")
@@ -122,7 +122,7 @@ void RosterWidget::configurationUpdated()
 		else
 			type = KaduTreeView::BackgroundNone;
 
-		TalkableTree->setBackground(bgColor, alternateBgColor, KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBackground"), type);
+		TalkableTree->setBackground(bgColor, alternateBgColor, Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBackground"), type);
 	}
 	else
 	{
@@ -140,7 +140,7 @@ void RosterWidget::storeConfiguration()
 
 void RosterWidget::compositingEnabled()
 {
-	if (!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
+	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
 	{
 		compositingDisabled();
 		return;

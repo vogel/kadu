@@ -29,11 +29,11 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
+#include "core/application.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/paths-provider.h"
 #include "misc/misc.h"
+#include "misc/paths-provider.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "themes.h"
 
@@ -155,11 +155,11 @@ QStringList Themes::defaultPathsProviderWithThemes() const
 {
 	QStringList result;
 
-	foreach(const QString &it, getSubDirs(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name))
-		result << (KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(Application::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name))
+		result << (Application::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(KaduApplication::instance()->pathsProvider()->profilePath() + Name))
-		result << (KaduApplication::instance()->pathsProvider()->profilePath() + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(Application::instance()->pathsProvider()->profilePath() + Name))
+		result << (Application::instance()->pathsProvider()->profilePath() + Name + '/' + it + '/');
 
 	return result;
 }

@@ -23,8 +23,8 @@
 
 #include "base64.h"
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "misc/misc.h"
 #include "os/generic/system-info.h"

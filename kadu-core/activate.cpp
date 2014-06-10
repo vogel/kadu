@@ -2,7 +2,7 @@
 
 #include "activate.h"
 
-#include "kadu-application.h"
+#include "core/application.h"
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 
@@ -38,7 +38,7 @@
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
 		// read user settings
-		int action = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry( "General", "WindowActivationMethod" );
+		int action = Application::instance()->configuration()->deprecatedApi()->readNumEntry( "General", "WindowActivationMethod" );
 		// window & desktop
 		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
 		{

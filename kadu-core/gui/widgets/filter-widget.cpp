@@ -27,8 +27,8 @@
  */
 
 #include <QtCore/QCoreApplication>
-#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 

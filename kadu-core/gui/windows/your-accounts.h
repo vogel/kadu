@@ -26,8 +26,8 @@
 #ifndef YOUR_ACCOUNTS
 #define YOUR_ACCOUNTS
 
-#include <QtCore/QModelIndex>
 #include <QtCore/QItemSelection>
+#include <QtCore/QModelIndex>
 #include <QtWidgets/QWidget>
 
 #include "accounts/account.h"

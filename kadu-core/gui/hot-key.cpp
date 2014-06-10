@@ -24,18 +24,18 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "kadu-application.h"
+#include "core/application.h"
 
 #include "hot-key.h"
 
 QKeySequence HotKey::shortCutFromFile(const QString &groupname, const QString &name)
 {
-	return QKeySequence::fromString(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(groupname, name), QKeySequence::PortableText);
+	return QKeySequence::fromString(Application::instance()->configuration()->deprecatedApi()->readEntry(groupname, name), QKeySequence::PortableText);
 }
 
 bool HotKey::shortCut(QKeyEvent *e, const QString &groupname, const QString &name)
 {
-	QString config = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(groupname, name);
+	QString config = Application::instance()->configuration()->deprecatedApi()->readEntry(groupname, name);
 	return !config.isEmpty() && config == keyEventToString(e);
 }
 

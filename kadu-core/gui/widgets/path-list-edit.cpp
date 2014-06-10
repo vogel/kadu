@@ -23,11 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 

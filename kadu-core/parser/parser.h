@@ -25,8 +25,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <functional>
 #include <QtCore/QMap>
+#include <functional>
 
 #include "parser/parser-token-type.h"
 #include "talkable/talkable.h"

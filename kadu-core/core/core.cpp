@@ -38,16 +38,17 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "chat/buddy-chat-manager.h"
-#include "chat/chat-manager.h"
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
+#include "chat/buddy-chat-manager.h"
+#include "chat/chat-manager.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
 #include "contacts/contact-manager.h"
+#include "core/application.h"
 #include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -63,8 +64,8 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
+#include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
@@ -73,9 +74,9 @@
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
-#include "gui/windows/chat-window/chat-window-storage.h"
-#include "gui/windows/chat-window/chat-window-storage-configurator.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
+#include "gui/windows/chat-window/chat-window-storage-configurator.h"
+#include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
@@ -83,17 +84,17 @@
 #include "icons/kadu-icon.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-manager.h"
-#include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
+#include "message/message-render-info.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
-#include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"
+#include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/metadata/plugin-metadata-reader.h"
 #include "plugin/plugin-conflict-resolver.h"
@@ -123,7 +124,6 @@
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "kadu-application.h"
 #include "kadu-config.h"
 #include "updates.h"
 
@@ -161,9 +161,9 @@ QString Core::nameWithVersion()
 	return name() + QLatin1String(" ")  + version();
 }
 
-KaduApplication * Core::application()
+Application * Core::application()
 {
-	return static_cast<KaduApplication *>(qApp);
+	return static_cast<Application *>(qApp);
 }
 
 Core::Core() :
@@ -217,7 +217,7 @@ Core::Core() :
 {
 	// must be created first
 	CurrentStoragePointFactory = new StoragePointFactory(this);
-	CurrentStoragePointFactory->setConfigurationFile(KaduApplication::instance()->configuration()->api());
+	CurrentStoragePointFactory->setConfigurationFile(Application::instance()->configuration()->api());
 	Instance = this; // TODO: fix this hack
 
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
@@ -228,9 +228,9 @@ Core::Core() :
 
 	MainConfigurationHolder::createInstance();
 
-	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), KaduApplication::instance()->pathsProvider()->dataPath());
+	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), Application::instance()->pathsProvider()->dataPath());
 	Parser::GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
-	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), KaduApplication::instance()->pathsProvider()->profilePath());
+	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), Application::instance()->pathsProvider()->profilePath());
 	DateTimeParserTags::registerParserTags();
 
 	importPre10Configuration();
@@ -249,7 +249,7 @@ Core::~Core()
 // 	delete Configuration;
 // 	Configuration = 0;
 
-	KaduApplication::instance()->configuration()->backup();
+	Application::instance()->configuration()->backup();
 
 	CurrentPluginManager->deactivatePlugins();
 
@@ -272,12 +272,12 @@ Core::~Core()
 
 void Core::import_0_6_5_configuration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxAlternateBgColor", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBgColor"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxAlternateBgColor", Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBgColor"));
 }
 
 void Core::importPre10Configuration()
 {
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ImportedPre10"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ImportedPre10"))
 	{
 		return;
 	}
@@ -287,7 +287,7 @@ void Core::importPre10Configuration()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		bool notify = buddy.property("notify:Notify", false).toBool() || KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NotifyAboutAll");
+		bool notify = buddy.property("notify:Notify", false).toBool() || Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NotifyAboutAll");
 
 		if (notify)
 			buddy.removeProperty("notify:Notify");
@@ -295,77 +295,77 @@ void Core::importPre10Configuration()
 			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
 	}
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ImportedPre10", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ImportedPre10", true);
 }
 
 void Core::createDefaultConfiguration()
 {
 	QWidget w;
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "AutoSend", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "BlinkChatTitle", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatCloseTimer", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatCloseTimerPeriod", 2);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatPrune", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatPruneLen", 0);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ConfirmChatClear", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousRichtext", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsers", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "LastImagePath", QDir::homePath() + '/');
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "NewMessagesInChatTitle", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ReceiveMessages", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "RecentChatsTimeout", 240);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "RecentChatsClear", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "RememberPosition", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ShowEditWindowLabel", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "AutoSend", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "BlinkChatTitle", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatCloseTimer", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatCloseTimerPeriod", 2);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatPrune", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatPruneLen", 0);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ConfirmChatClear", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousRichtext", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsers", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "LastImagePath", QDir::homePath() + '/');
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "NewMessagesInChatTitle", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ReceiveMessages", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "RecentChatsTimeout", 240);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "RecentChatsClear", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "RememberPosition", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ShowEditWindowLabel", true);
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "AllowExecutingFromParser", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "CheckUpdates", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "DescriptionHeight", 60);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "DisconnectWithCurrentDescription", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AllowExecutingFromParser", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "CheckUpdates", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DescriptionHeight", 60);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DisconnectWithCurrentDescription", true);
 #ifdef Q_OS_WIN32
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "HideMainWindowFromTaskbar", false);
 #endif
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "Language",  QLocale::system().name().left(2));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "Nick", tr("Me"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "NumberOfDescriptions", 20);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ParseStatus", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowBlocked", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowBlocking", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowMyself", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowOffline", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowOnlineAndDescription", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowWithoutDescription", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "Language",  QLocale::system().name().left(2));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "Nick", tr("Me"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "NumberOfDescriptions", 20);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ParseStatus", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowBlocked", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowBlocking", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowMyself", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowOffline", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowOnlineAndDescription", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowWithoutDescription", true);
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AdvancedMode", false))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AdvancedMode", false))
 	{
-		KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "StatusContainerType", "Account");
-		KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", true);
+		Application::instance()->configuration()->deprecatedApi()->addVariable("General", "StatusContainerType", "Account");
+		Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", true);
 	}
 	else
 	{
-		KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "StatusContainerType", "Identity");
-		KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", false);
+		Application::instance()->configuration()->deprecatedApi()->addVariable("General", "StatusContainerType", "Identity");
+		Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", false);
 	}
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "StartupLastDescription", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "StartupStatus", "LastStatus");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "UserBoxHeight", 300);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "WindowActivationMethod", 0);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 580");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "StartupLastDescription", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "StartupStatus", "LastStatus");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "UserBoxHeight", 300);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "WindowActivationMethod", 0);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 580");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "AlignUserboxIconsTop", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "AvatarBorder", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "AvatarGreyOut", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatContents", QString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ForceCustomChatFont", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AlignUserboxIconsTop", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AvatarBorder", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AvatarGreyOut", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatContents", QString());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ForceCustomChatFont", false);
 	QFont chatFont = qApp->font();
 #ifdef Q_OS_WIN32
 	// On Windows default app font is often "MS Shell Dlg 2", and the default sans
@@ -375,60 +375,60 @@ void Core::createDefaultConfiguration()
 	chatFont.setStyleHint(QFont::SansSerif);
 	chatFont.setFamily(chatFont.defaultFamily());
 #endif
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatFont", chatFont);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatBgFilled", // depends on configuration imported from older version
-		KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatBgColor").isValid() &&
-		KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatBgColor") != QColor("#ffffff"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatBgColor", QColor("#ffffff"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatMyFontColor", QColor("#000000"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatMyNickColor", QColor("#000000"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextCustomColors", // depends on configuration imported from older version
-		KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor").isValid() &&
-		KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor") != QColor("#ffffff"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextFontColor", QColor("#000000"));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ConferenceContents", QString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ConferencePrefix", QString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "DescriptionColor", w.palette().text().color());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "HeaderSeparatorHeight", 1);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelFgColor", w.palette().text().color());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelBgFilled", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelBgColor", w.palette().base().color());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelSyntaxFile", "ultr");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NiceDateFormat", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoHeaderInterval", 30);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoHeaderRepeat", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoServerTime", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoServerTimeDiff", 60);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "PanelFont", qApp->font());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "PanelVerticalScrollbar", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ParagraphSeparator", 4);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowAvatars", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "IconTheme", IconThemeManager::defaultTheme());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowBold", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowDesc", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowInfoPanel", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowMultilineDesc", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowStatusButton", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "Style", "Satin");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxTransparency", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxAlpha", 0);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxBlur", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxBgColor", w.palette().base().color());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxAlternateBgColor", w.palette().alternateBase().color());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserBoxColumnCount", 1);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxFgColor", w.palette().text().color());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatFont", chatFont);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatBgFilled", // depends on configuration imported from older version
+		Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatBgColor").isValid() &&
+		Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatBgColor") != QColor("#ffffff"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatBgColor", QColor("#ffffff"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatMyFontColor", QColor("#000000"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatMyNickColor", QColor("#000000"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextCustomColors", // depends on configuration imported from older version
+		Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor").isValid() &&
+		Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor") != QColor("#ffffff"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextFontColor", QColor("#000000"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ConferenceContents", QString());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ConferencePrefix", QString());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "DescriptionColor", w.palette().text().color());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "HeaderSeparatorHeight", 1);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelFgColor", w.palette().text().color());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelBgFilled", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelBgColor", w.palette().base().color());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "InfoPanelSyntaxFile", "ultr");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NiceDateFormat", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoHeaderInterval", 30);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoHeaderRepeat", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoServerTime", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NoServerTimeDiff", 60);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "PanelFont", qApp->font());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "PanelVerticalScrollbar", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ParagraphSeparator", 4);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowAvatars", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "IconTheme", IconThemeManager::defaultTheme());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowBold", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowDesc", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowInfoPanel", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowMultilineDesc", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowStatusButton", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "Style", "Satin");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxTransparency", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxAlpha", 0);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxBlur", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxBgColor", w.palette().base().color());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxAlternateBgColor", w.palette().alternateBase().color());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserBoxColumnCount", 1);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxFgColor", w.palette().text().color());
 	QFont userboxfont(qApp->font());
 	userboxfont.setPointSize(qApp->font().pointSize() + 1);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxFont", userboxfont);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "UseUserboxBackground", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxFont", userboxfont);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UseUserboxBackground", false);
 #ifdef Q_OS_MAC
 	/* Dorr: for MacOS X define the icon notification to animated which
 	 * will prevent from blinking the dock icon
@@ -436,11 +436,11 @@ void Core::createDefaultConfiguration()
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 2);
 #endif
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Network", "AllowDCC", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Network", "DefaultPort", 0);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Network", "isDefServers", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Network", "Server", QString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Network", "UseProxy", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "AllowDCC", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "DefaultPort", 0);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "isDefServers", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "Server", QString());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "UseProxy", false);
 
 #ifdef Q_OS_MAC
 	/* Dorr: for MacOS X define the function keys with 'apple' button
@@ -451,29 +451,29 @@ void Core::createDefaultConfiguration()
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "Ctrl+F9");
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
 #else
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "F9");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "F2");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "F4");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "F9");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "F10");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "F9");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "F2");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "F4");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "F9");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "F10");
 #endif
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_bold", "Ctrl+B");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_close", "Esc");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_italic", "Ctrl+I");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_underline", "Ctrl+U");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_deleteuser", "Del");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_persinfo", "Ins");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_exit", "Ctrl+Q");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_bold", "Ctrl+B");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_close", "Esc");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_italic", "Ctrl+I");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_underline", "Ctrl+U");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_deleteuser", "Del");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_persinfo", "Ins");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_exit", "Ctrl+Q");
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "UseDefaultWebBrowser", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "WebBrowser").isEmpty());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "UseDefaultEMailClient", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "MailClient").isEmpty());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateChats", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitle", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitleSyntax", QString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitlePosition", 1);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "UseDefaultWebBrowser", Application::instance()->configuration()->deprecatedApi()->readEntry("Chat", "WebBrowser").isEmpty());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "UseDefaultEMailClient", Application::instance()->configuration()->deprecatedApi()->readEntry("Chat", "MailClient").isEmpty());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateChats", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitle", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitleSyntax", QString());
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitlePosition", 1);
 
 	createAllDefaultToolbars();
 }
@@ -481,18 +481,18 @@ void Core::createDefaultConfiguration()
 void Core::createAllDefaultToolbars()
 {
 	// don't use getToolbarsConfigElement here, we have to be sure that this element don'e exists
-	QDomElement toolbarsConfig = KaduApplication::instance()->configuration()->api()->findElement(KaduApplication::instance()->configuration()->api()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = Application::instance()->configuration()->api()->findElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	if (!toolbarsConfig.isNull())
 		return; // no need for defaults...
 
-	toolbarsConfig = KaduApplication::instance()->configuration()->api()->createElement(KaduApplication::instance()->configuration()->api()->rootElement(), "Toolbars");
+	toolbarsConfig = Application::instance()->configuration()->api()->createElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	KaduWindow::createDefaultToolbars(toolbarsConfig);
 	ChatEditBox::createDefaultToolbars(toolbarsConfig);
 	SearchWindow::createDefaultToolbars(toolbarsConfig);
 
-	KaduApplication::instance()->configuration()->write();
+	Application::instance()->configuration()->write();
 }
 
 void Core::init()
@@ -509,7 +509,7 @@ void Core::init()
 	}
 
 	Myself.setAnonymous(false);
-	Myself.setDisplay(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
+	Myself.setDisplay(Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
 
 	new Updates(this);
 
@@ -544,25 +544,25 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs(KaduApplication::instance()->pathsProvider()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs(Application::instance()->pathsProvider()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
-			QFile::remove(KaduApplication::instance()->pathsProvider()->profilePath() + oldConfigs[static_cast<int>(i)]);
+			QFile::remove(Application::instance()->pathsProvider()->profilePath() + oldConfigs[static_cast<int>(i)]);
 
-	QDir oldConfigs2(KaduApplication::instance()->pathsProvider()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(Application::instance()->pathsProvider()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
-			QFile::remove(KaduApplication::instance()->pathsProvider()->profilePath() + oldConfigs2[static_cast<int>(i)]);
+			QFile::remove(Application::instance()->pathsProvider()->profilePath() + oldConfigs2[static_cast<int>(i)]);
 
-	QDir oldBacktraces(KaduApplication::instance()->pathsProvider()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+	QDir oldBacktraces(Application::instance()->pathsProvider()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
 	if (oldBacktraces.count() > 20)
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
-			QFile::remove(KaduApplication::instance()->pathsProvider()->profilePath() + oldBacktraces[static_cast<int>(i)]);
+			QFile::remove(Application::instance()->pathsProvider()->profilePath() + oldBacktraces[static_cast<int>(i)]);
 
-	QDir oldDebugs(KaduApplication::instance()->pathsProvider()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
+	QDir oldDebugs(Application::instance()->pathsProvider()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 20)
 		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
-			QFile::remove(KaduApplication::instance()->pathsProvider()->profilePath() + oldDebugs[static_cast<int>(i)]);
+			QFile::remove(Application::instance()->pathsProvider()->profilePath() + oldDebugs[static_cast<int>(i)]);
 
 	kdebugf2();
 }
@@ -614,9 +614,9 @@ void Core::configurationUpdated()
 
 	bool ok;
 	int newMask = qgetenv("DEBUG_MASK").toInt(&ok);
-	debug_mask = ok ? newMask : KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
+	debug_mask = ok ? newMask : Application::instance()->configuration()->deprecatedApi()->readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 
-	Myself.setDisplay(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
+	Myself.setDisplay(Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
 }
 
 void Core::createGui()
@@ -733,7 +733,7 @@ void Core::runServices()
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 
-	CurrentPluginMetadataFinder->setDirectory(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
+	CurrentPluginMetadataFinder->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	CurrentPluginMetadataFinder->setPluginMetadataReader(CurrentPluginMetadataReader);
 
 	CurrentPluginDependencyHandler = new PluginDependencyHandler(this);

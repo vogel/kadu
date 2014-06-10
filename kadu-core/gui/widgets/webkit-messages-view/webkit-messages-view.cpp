@@ -27,23 +27,23 @@
 #include "webkit-messages-view.h"
 
 #include "chat-style/chat-style-manager.h"
-#include "chat-style/engine/chat-style-renderer.h"
 #include "chat-style/engine/chat-style-renderer-configuration.h"
 #include "chat-style/engine/chat-style-renderer-factory.h"
+#include "chat-style/engine/chat-style-renderer.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "gui/widgets/webkit-messages-view/message-limit-policy.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler.h"
 #include "misc/paths-provider.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
 #include "protocols/services/chat-service.h"
 #include "services/chat-image-request-service.h"
-#include "kadu-application.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWebKitWidgets/QWebFrame>
@@ -211,7 +211,7 @@ void WebkitMessagesView::refreshView()
 
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
-	QFile file{KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	QFile file{Application::instance()->pathsProvider()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};

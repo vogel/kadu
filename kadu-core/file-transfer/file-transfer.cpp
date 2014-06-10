@@ -29,8 +29,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"

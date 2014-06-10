@@ -31,11 +31,11 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "firewall.h"
 
@@ -48,7 +48,7 @@ void FirewallConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new FirewallConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -58,7 +58,7 @@ void FirewallConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 		delete Instance;
 		Instance = 0;
 	}
@@ -128,11 +128,11 @@ Automatic question GUI
 
 	QuestionEdit = new QTextEdit(question);
 	QuestionEdit->setAcceptRichText(false);
-	QuestionEdit->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "question"));
+	QuestionEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "question"));
 	QuestionEdit->setToolTip(tr("This message will be send to unknown person."));
 
 	AnswerEdit = new QLineEdit(question);
-	AnswerEdit->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer"));
+	AnswerEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer"));
 	AnswerEdit->setToolTip(tr("Right answer for question above - you can use regexp."));
 	QLabel *label = new QLabel(tr("Answer:"), question);
 	label->setToolTip(tr("Right answer for question above - you can use regexp."));
@@ -238,8 +238,8 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		buddy.removeProperty("firewall-secured-sending:FirewallSecuredSending");
 	}
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "question", QuestionEdit->toPlainText());
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "answer", AnswerEdit->text());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "question", QuestionEdit->toPlainText());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "answer", AnswerEdit->text());
 }
 
 #include "moc_firewall-configuration-ui-handler.cpp"

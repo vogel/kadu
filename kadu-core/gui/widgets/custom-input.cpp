@@ -31,9 +31,9 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QUrl>
-#include <QtWidgets/QAction>
 #include <QtGui/QImageReader>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
 #include "core/core.h"

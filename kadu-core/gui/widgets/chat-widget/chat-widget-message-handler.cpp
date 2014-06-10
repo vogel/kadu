@@ -21,10 +21,10 @@
 
 #include "chat/buddy-chat-manager.h"
 #include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"

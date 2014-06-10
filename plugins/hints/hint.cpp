@@ -25,9 +25,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
-#include <QtGui/QMouseEvent>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
@@ -35,13 +35,13 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
+#include "core/application.h"
 #include "icons/icons-manager.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "hint.h"
 
@@ -67,14 +67,14 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	CurrentChat = chatNotification ? chatNotification->chat() : Chat::null;
 
-	startSecs = secs = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
+	startSecs = secs = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
-	createLabels(notification->icon().icon().pixmap(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(notification->icon().icon().pixmap(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
 	if (showButtons)
-		if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
+		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
 			showButtons = false;
 
 	if (showButtons)
@@ -121,18 +121,18 @@ void Hint::configurationUpdated()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	bcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &palette.window().color());
-	fcolor = KaduApplication::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &palette.windowText().color());
-	label->setFont(KaduApplication::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "Event_" + notification->key() + "_font", &font));
-	setMinimumWidth(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 100));
-	setMaximumWidth(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500));
+	bcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &palette.window().color());
+	fcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &palette.windowText().color());
+	label->setFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "Event_" + notification->key() + "_font", &font));
+	setMinimumWidth(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 100));
+	setMaximumWidth(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500));
 	mouseOut();
 	updateText();
 }
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
-	int margin = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MarginSize", 0);
+	int margin = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MarginSize", 0);
 
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(0);
@@ -165,7 +165,7 @@ void Hint::updateText()
 {
 	QString text;
 
-	QString syntax = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_syntax", QString());
+	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_syntax", QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else
@@ -186,7 +186,7 @@ void Hint::updateText()
 		text = text.remove("file://");
 	}
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
 	{
 		QStringList details;
 		if (!notification->details().isEmpty())
@@ -197,14 +197,14 @@ void Hint::updateText()
 		{
 			int i = (count > 5) ? count - 5 : 0;
 
-			int citeSign = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints","CiteSign");
+			int citeSign = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints","CiteSign");
 
 			QString defaultSyntax;
 			if (notification->type() == "NewMessage" || notification->type() == "NewChat")
 				defaultSyntax = "\n&bull; <small>%1</small>";
 			else
 				defaultSyntax = "\n <small>%1</small>";
-			QString itemSyntax = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
+			QString itemSyntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
 			for (; i < count; i++)
 			{
 				const QString &message = details[i].replace("<br/>", QLatin1String(""));

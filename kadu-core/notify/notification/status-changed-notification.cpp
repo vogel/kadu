@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
 #include <QtGui/QTextDocument>
+#include <QtWidgets/QApplication>
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"

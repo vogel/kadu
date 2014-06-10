@@ -20,13 +20,13 @@
 #include <QtWidgets/QApplication>
 
 #include "buddies/group-manager.h"
+#include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/configuration.h"
-#include "configuration/configuration-api.h"
-#include "gui/widgets/group-tab-bar/group-tab-bar.h"
+#include "core/application.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar-configuration.h"
-#include "kadu-application.h"
+#include "gui/widgets/group-tab-bar/group-tab-bar.h"
 
 #include "group-tab-bar-configurator.h"
 
@@ -44,9 +44,9 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupTabUngroupped", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupTabUngroupped", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
 }
 
 void GroupTabBarConfigurator::configurationUpdated()
@@ -61,10 +61,10 @@ GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
 {
 	auto configuration = GroupTabBarConfiguration();
 
-	configuration.setDisplayGroupTabs(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs", true));
-	configuration.setShowGroupTabEverybody(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowGroupAll", true));
-	configuration.setAlwaysShowGroupTabUngroupped(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
-	configuration.setCurrentGroupTab(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "CurrentGroupTab", 0));
+	configuration.setDisplayGroupTabs(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs", true));
+	configuration.setShowGroupTabEverybody(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowGroupAll", true));
+	configuration.setAlwaysShowGroupTabUngroupped(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
+	configuration.setCurrentGroupTab(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "CurrentGroupTab", 0));
 	configuration.setGroupFilters(loadGroupFilters(configuration.showGroupTabEverybody()));
 
 	return configuration;
@@ -76,21 +76,21 @@ void GroupTabBarConfigurator::storeConfiguration()
 		return;
 
 	auto configuration = ConfigurableGroupTabBar.data()->configuration();
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
 
 	storeGroupFilters(configuration.groupFilters());
 
-	KaduApplication::instance()->configuration()->write(); // TODO: fix whole configuration system
+	Application::instance()->configuration()->write(); // TODO: fix whole configuration system
 }
 
 QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTabEverybody) const
 {
-	auto groupTabBarNode = KaduApplication::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeGet);
+	auto groupTabBarNode = Application::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeGet);
 	if (groupTabBarNode.isNull())
 		return import_0_12_groupFilters(showGroupTabEverybody);
 
 	auto result = QVector<GroupFilter>();
-	auto groupFilterNodes = KaduApplication::instance()->configuration()->api()->getNodes(groupTabBarNode, "GroupFilter");
+	auto groupFilterNodes = Application::instance()->configuration()->api()->getNodes(groupTabBarNode, "GroupFilter");
 	foreach (const auto &groupFilterNode, groupFilterNodes)
 	{
 		auto groupFilter = loadGroupFilter(groupFilterNode);
@@ -103,8 +103,8 @@ QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTab
 
 GroupFilter GroupTabBarConfigurator::loadGroupFilter(QDomElement element) const
 {
-	auto type = KaduApplication::instance()->configuration()->api()->getTextNode(element, "Type");
-	auto groupUuid = KaduApplication::instance()->configuration()->api()->getTextNode(element, "Group");
+	auto type = Application::instance()->configuration()->api()->getTextNode(element, "Type");
+	auto groupUuid = Application::instance()->configuration()->api()->getTextNode(element, "Group");
 
 	if (type == "Regular")
 		return GroupFilter(GroupManager::instance()->byUuid(groupUuid));
@@ -119,8 +119,8 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 {
 	auto result = QVector<GroupFilter>();
 	auto position = showGroupTabEverybody
-			? KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
-			: KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
+			? Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
+			: Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
 
 	auto groups = GroupManager::instance()->items().toList();
 	qStableSort(groups.begin(), groups.end(), [](const Group &a, const Group &b){ return a.tabPosition() < b.tabPosition(); });
@@ -135,7 +135,7 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 
 void GroupTabBarConfigurator::storeGroupFilters(const QVector<GroupFilter> &groupFilters)
 {
-	auto groupTabBarNode = KaduApplication::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeCreate);
+	auto groupTabBarNode = Application::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeCreate);
 	foreach (const auto &groupFilter, groupFilters)
 		storeGroupFilter(groupTabBarNode, groupFilter);
 }
@@ -145,18 +145,18 @@ void GroupTabBarConfigurator::storeGroupFilter(QDomElement parentElement, const 
 	if (GroupFilterInvalid == groupFilter.filterType())
 		return;
 
-	auto groupFilterNode = KaduApplication::instance()->configuration()->api()->getNode(parentElement, "GroupFilter", ConfigurationApi::ModeAppend);
+	auto groupFilterNode = Application::instance()->configuration()->api()->getNode(parentElement, "GroupFilter", ConfigurationApi::ModeAppend);
 	switch (groupFilter.filterType())
 	{
 		case GroupFilterRegular:
-			KaduApplication::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Regular");
-			KaduApplication::instance()->configuration()->api()->createTextNode(groupFilterNode, "Group", groupFilter.group().uuid().toString());
+			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Regular");
+			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Group", groupFilter.group().uuid().toString());
 			break;
 		case GroupFilterEverybody:
-			KaduApplication::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Everybody");
+			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Everybody");
 			break;
 		case GroupFilterUngroupped:
-			KaduApplication::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Ungroupped");
+			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Ungroupped");
 			break;
 		default:
 			break;

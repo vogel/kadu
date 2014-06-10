@@ -24,8 +24,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QFileDialog>
 #include <QtGui/QResizeEvent>
+#include <QtWidgets/QFileDialog>
 #include <QtXml/QDomElement>
 
 
@@ -33,19 +33,20 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "configuration/chat-configuration-holder.h"
+#include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/main-configuration-holder.h"
-#include "configuration/configuration.h"
-#include "configuration/configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -58,7 +59,6 @@
 #include "protocols/services/chat-image-service.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "chat-edit-box.h"
 
@@ -202,7 +202,7 @@ ChatWidget * ChatEditBox::chatWidget()
 void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_topDockArea");
-	QDomElement toolbarConfig = KaduApplication::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarConfig = Application::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
 
 	addToolButton(toolbarConfig, "autoSendAction");
 	addToolButton(toolbarConfig, "clearChatAction");
@@ -230,13 +230,13 @@ void ChatEditBox::openInsertImageDialog()
 		return;
 
 	// QTBUG-849
-	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"),
+	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), Application::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"),
 							tr("Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)"));
 	if (!selectedFile.isEmpty())
 	{
 		QFileInfo f(selectedFile);
 
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
 
 		if (!f.isReadable())
 		{

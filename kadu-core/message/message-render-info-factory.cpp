@@ -21,10 +21,10 @@
 
 #include "chat-style/chat-style-manager.h"
 #include "configuration/chat-configuration-holder.h"
-#include "message/message.h"
 #include "message/message-render-header-behavior.h"
-#include "message/message-render-info.h"
 #include "message/message-render-info-builder.h"
+#include "message/message-render-info.h"
+#include "message/message.h"
 
 MessageRenderInfoFactory::MessageRenderInfoFactory(QObject *parent) :
 		QObject{parent}

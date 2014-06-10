@@ -23,22 +23,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QAbstractProxyModel>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEvent>
 #include <QtCore/QSize>
 #include <QtCore/QTimer>
-#include <QtWidgets/QAbstractItemView>
-#include <QtCore/QAbstractProxyModel>
-#include <QtWidgets/QApplication>
 #include <QtGui/QBitmap>
 #include <QtGui/QCursor>
 #include <QtGui/QFocusEvent>
 #include <QtGui/QHoverEvent>
 #include <QtGui/QIcon>
 #include <QtGui/QKeyEvent>
-#include <QtWidgets/QLayout>
 #include <QtGui/QPaintEngine>
 #include <QtGui/QPainter>
+#include <QtWidgets/QAbstractItemView>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLayout>
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOption>

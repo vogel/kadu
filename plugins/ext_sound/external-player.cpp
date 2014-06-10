@@ -29,8 +29,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "external-player.h"
 
@@ -66,7 +66,7 @@ void ExternalPlayer::playSound(const QString &path)
 {
 	kdebugf();
 
-	QString playerCommand = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
+	QString playerCommand = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
 	QString volumeArguments;
 
 	if (playerCommand.isEmpty())
@@ -88,7 +88,7 @@ void ExternalPlayer::createDefaultConfiguration()
 #ifdef Q_OS_MAC
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
 #else
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
 }
 

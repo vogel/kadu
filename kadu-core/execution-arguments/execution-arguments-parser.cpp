@@ -19,8 +19,8 @@
 
 #include "execution-arguments-parser.h"
 
-#include "execution-arguments/execution-arguments.h"
 #include "execution-arguments/execution-arguments-builder.h"
+#include "execution-arguments/execution-arguments.h"
 
 ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments) const
 {

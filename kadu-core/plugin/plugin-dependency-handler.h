@@ -24,11 +24,11 @@
 #include "plugin/metadata/plugin-metadata.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <map>
 #include <memory>
 #include <set>
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
 
 class PluginDependencyGraphBuilder;
 class PluginMetadataProvider;

@@ -33,12 +33,12 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/config-file-data-manager.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "notify/notification/chat-notification.h"
 #include "talkable/talkable.h"
-#include "kadu-application.h"
 
 #include "hint-over-user-configuration-window.h"
 #include "hints-plugin.h"
@@ -132,7 +132,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 	if (!AdvancedWindow)
 	{
 		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
-		AdvancedWindow->widget()->appendUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
+		AdvancedWindow->widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 

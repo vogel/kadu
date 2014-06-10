@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <set>
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <set>
 
 class PluginDependencyHandler;
 class PluginStateService;

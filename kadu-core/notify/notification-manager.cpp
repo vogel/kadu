@@ -33,6 +33,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/windows/message-dialog.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notifier.h"
@@ -40,7 +41,6 @@
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "notify/notification-manager.h"
 
@@ -185,7 +185,7 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	foreach (Notifier *notifier, Notifiers)
 	{
-		if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
+		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{
 			notifier->notify(notification);
 			foundNotifier = true;
@@ -264,7 +264,7 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 		if (-1 == slashPosition)
 			return event;
 
-		if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
+		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
 			return event;
 
 		event = event.left(slashPosition);

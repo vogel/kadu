@@ -23,6 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -40,7 +41,6 @@
 #include "status/status-container-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
-#include "kadu-application.h"
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include "notify/x11-screen-mode-checker.h"
@@ -186,7 +186,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(SilentMode);
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Notify", "SilentMode", SilentMode);
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", "SilentMode", SilentMode);
 
 	if (silentMode() != wasSilent)
 		emit silentModeToggled(silentMode());
@@ -194,7 +194,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 
 bool NotificationService::silentMode()
 {
-	return SilentMode || (IsFullScreen && KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false));
+	return SilentMode || (IsFullScreen && Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false));
 }
 
 bool NotificationService::ignoreNotifications()
@@ -204,12 +204,12 @@ bool NotificationService::ignoreNotifications()
 
 void NotificationService::configurationUpdated()
 {
-	NewMessageOnlyIfInactive = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
-	NotifyIgnoreOnConnection = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
-	IgnoreOnlineToOnline = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
-	SilentModeWhenDnD = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
-	SilentModeWhenFullscreen = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
-	setSilentMode(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false));
+	NewMessageOnlyIfInactive = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+	NotifyIgnoreOnConnection = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
+	IgnoreOnlineToOnline = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
+	SilentModeWhenDnD = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
+	SilentModeWhenFullscreen = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
+	setSilentMode(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false));
 
 	if (SilentModeWhenFullscreen)
 		startScreenModeChecker();
@@ -255,9 +255,9 @@ void NotificationService::fullscreenToggled(bool inFullscreen)
 
 void NotificationService::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "IgnoreOnlineToOnline", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessageOnlyIfInactive", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NotifyIgnoreOnConnection", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "IgnoreOnlineToOnline", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessageOnlyIfInactive", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
 void NotificationService::notify(Notification* notification)

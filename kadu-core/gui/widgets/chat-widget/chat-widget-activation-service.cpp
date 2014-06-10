@@ -19,9 +19,9 @@
 
 #include "chat-widget-activation-service.h"
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 
 ChatWidgetActivationService::ChatWidgetActivationService(QObject *parent) :
 		QObject{parent}

@@ -32,12 +32,13 @@
  */
 
 #include <QtCore/QTimer>
+#include <QtGui/QIntValidator>
+#include <QtGui/QKeyEvent>
+#include <QtNetwork/QHostInfo>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialogButtonBox>
-#include <QtGui/QIntValidator>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -45,7 +46,6 @@
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
-#include <QtNetwork/QHostInfo>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -53,10 +53,10 @@
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "configuration/config-file-variant-wrapper.h"
+#include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/configuration.h"
-#include "configuration/configuration-api.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
@@ -69,8 +69,8 @@
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/change-notifier.h"
 #include "misc/change-notifier-lock.h"
+#include "misc/change-notifier.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"

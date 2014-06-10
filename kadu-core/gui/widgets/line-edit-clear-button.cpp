@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimeLine>
 #include <QtCore/QEvent>
+#include <QtCore/QTimeLine>
 #include <QtGui/QPainter>
 
 #include "line-edit-clear-button.h"

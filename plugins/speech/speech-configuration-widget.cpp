@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "kadu-application.h"
+#include "core/application.h"
 
 #include "speech-configuration-widget.h"
 
@@ -61,7 +61,7 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 	{
 		i.next();
 		const QString &eventName = i.key();
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
 	}
 
 	QMapIterator<QString, QString> j(femaleFormat);
@@ -69,7 +69,7 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 	{
 		j.next();
 		const QString &eventName = j.key();
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
 	}
 }
 
@@ -85,12 +85,12 @@ void SpeechConfigurationWidget::switchToEvent(const QString &event)
 	if (maleFormat.contains(event))
 		maleLineEdit->setText(maleFormat[event]);
 	else
-		maleLineEdit->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
+		maleLineEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
 
 	if (femaleFormat.contains(event))
 		femaleLineEdit->setText(femaleFormat[event]);
 	else
-		femaleLineEdit->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
+		femaleLineEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
 }
 
 #include "moc_speech-configuration-widget.cpp"

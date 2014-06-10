@@ -21,10 +21,10 @@
 
 #include "gui/windows/chat-window/chat-window-storage-configuration.h"
 
-#include <memory>
 #include <QtCore/QObject>
-#include <QtCore/QVector>
 #include <QtCore/QPointer>
+#include <QtCore/QVector>
+#include <memory>
 
 class Chat;
 class ChatManager;

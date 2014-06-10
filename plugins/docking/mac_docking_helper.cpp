@@ -24,8 +24,8 @@
  */
 
 #include <Cocoa/Cocoa.h>
-#include <QtWidgets/QApplication>
 #include <QtGui/QIcon>
+#include <QtWidgets/QApplication>
 
 #include "ApplicationServices/ApplicationServices.h"
 #include "configuration/configuration.h"
@@ -80,7 +80,7 @@ MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent) , d( new M
 {
 	isBouncing = false;
 	d->macDockingHelperObjC = [[MacDockingHelperObjC alloc] init];
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"))
 		Core::instance()->setShowMainWindowOnStart(false);
 	Core::instance()->kaduWindow()->setDocked(true);
 }

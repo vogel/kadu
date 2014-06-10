@@ -31,13 +31,13 @@
 #include "accounts/account.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
 #include "plugins/history/history.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "gui/windows/history-import-window.h"
 
@@ -133,9 +133,9 @@ void HistoryImporter::updateProgressWindow()
 
 void HistoryImporter::threadFinished()
 {
-	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("history/"))
+	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == Application::instance()->pathsProvider()->profilePath() + QLatin1String("history/"))
 	{
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("History", "Imported_from_0.6.5", true);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful
 		HistoryMigrationActions::unregisterActions();
 	}

@@ -19,9 +19,9 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtWidgets/QLabel>
 #include <QtGui/QMovie>
 #include <QtGui/QResizeEvent>
+#include <QtWidgets/QLabel>
 
 #include "icons/kadu-icon.h"
 

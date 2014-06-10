@@ -33,6 +33,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -41,7 +42,6 @@
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/notify-tree-widget.h"
 #include "gui/windows/configuration-window.h"
-#include "kadu-application.h"
 
 #include "notifier.h"
 #include "notify-event.h"
@@ -118,7 +118,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 		foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
 		{
 			if (!NotifierGui[notifier].Events.contains(notifyEvent->name()))
-				NotifierGui[notifier].Events[notifyEvent->name()] = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyEvent->name() + '_' + notifier->name());
+				NotifierGui[notifier].Events[notifyEvent->name()] = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyEvent->name() + '_' + notifier->name());
 		}
 	}
 
@@ -131,7 +131,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 		NotifyEventConfigurationItem item;
 		item.event = notifyEvent;
-		item.useCustomSettings = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
+		item.useCustomSettings = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 
 		NotifyEvents[eventName] = item;
 	}
@@ -182,7 +182,7 @@ void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent *notifyEven
 		NotifyEventConfigurationItem item;
 		item.event = notifyEvent;
 		if (!notifyEvent->category().isEmpty())
-			item.useCustomSettings = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
+			item.useCustomSettings = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 		else
 			item.useCustomSettings = true;
 
@@ -208,7 +208,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (notifyEvent->category().isEmpty() || !NotifyEvents.contains(notifyEvent->name()))
 			continue;
 
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent->name() + "_UseCustomSettings", NotifyEvents[notifyEvent->name()].useCustomSettings);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent->name() + "_UseCustomSettings", NotifyEvents[notifyEvent->name()].useCustomSettings);
 	}
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
@@ -221,7 +221,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 			gui.ConfigurationWidget->saveNotifyConfigurations();
 
 		for (QMap<QString, bool>::const_iterator it = gui.Events.constBegin(), end = gui.Events.constEnd(); it != end; ++it)
-			KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
+			Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
 	}
 }
 
@@ -277,7 +277,7 @@ void NotifyConfigurationUiHandler::eventSwitched()
 		NotifierConfigurationGuiItem &gui = NotifierGui[notifier];
 
 		if (!gui.Events.contains(CurrentEvent))
-			gui.Events[CurrentEvent] = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
+			gui.Events[CurrentEvent] = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
 
 		if (gui.ConfigurationWidget)
 			gui.ConfigurationWidget->switchToEvent(CurrentEvent);

@@ -41,6 +41,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
+#include "core/application.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
@@ -54,7 +55,6 @@
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
-#include "kadu-application.h"
 
 #include "services/gadu-contact-list-service.h"
 #include "gadu-account-details.h"
@@ -352,8 +352,8 @@ void GaduEditAccountWidget::apply()
 		Details->setExternalPort(ExternalPort->text().toUInt());
 	}
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
 	GaduServersManager::instance()->buildServerList();
 
 	if (gpiw->isModified())
@@ -398,8 +398,8 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& Details->allowDcc() == AllowFileTransfers->isChecked()
 
-		&& KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
-		&& KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
+		&& Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
+		&& Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& Details->receiveSpam() != ReceiveSpam->isChecked()
@@ -449,8 +449,8 @@ void GaduEditAccountWidget::loadAccountData()
 		ExternalPort->setText(QString::number(details->externalPort()));
 	}
 
-	useDefaultServers->setChecked(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
-	ipAddresses->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
+	useDefaultServers->setChecked(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
+	ipAddresses->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }

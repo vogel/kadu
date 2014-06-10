@@ -30,8 +30,8 @@
 
 #include <QtCore/QVariant>
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "storage/storage-point.h"
 
 #include "exports.h"

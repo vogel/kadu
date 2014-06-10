@@ -20,8 +20,8 @@
 #include "webkit-messages-view-factory.h"
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "services/image-storage-service.h"
 
 WebkitMessagesViewFactory::WebkitMessagesViewFactory(QObject *parent) :

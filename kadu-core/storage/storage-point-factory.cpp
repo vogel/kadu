@@ -19,8 +19,8 @@
 
 #include "storage-point-factory.h"
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "misc/memory.h"
 #include "storage/storage-point.h"
 

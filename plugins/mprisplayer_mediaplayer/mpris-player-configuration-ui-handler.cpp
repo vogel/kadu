@@ -31,10 +31,10 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "gui/windows/mpris-player-dialog.h"
 #include "mpris-player-configuration-ui-handler.h"
@@ -48,7 +48,7 @@ void MPRISPlayerConfigurationUiHandler::registerConfigurationUi()
 		return;
 
 	Instance = new MPRISPlayerConfigurationUiHandler();
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -61,7 +61,7 @@ void MPRISPlayerConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 }
 
 MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler() :
@@ -104,7 +104,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 
 	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
-	PlayersBox->setCurrentIndex(PlayersBox->findText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player")));
+	PlayersBox->setCurrentIndex(PlayersBox->findText(Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player")));
 
 	connect(add, SIGNAL(clicked()), this, SLOT(addPlayer()));
 	connect(edit, SIGNAL(clicked()), this, SLOT(editPlayer()));
@@ -172,7 +172,7 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 	if (newPlayer.isEmpty() || newService.isEmpty())
 		return;
 
-	QString oldPlayerName = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player");
+	QString oldPlayerName = Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player");
 	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
 
@@ -272,8 +272,8 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
 
 void MPRISPlayerConfigurationUiHandler::configurationApplied()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
 
 	MPRISPlayer::instance()->configurationApplied();
 }

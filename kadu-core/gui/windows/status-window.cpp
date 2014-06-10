@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QHBoxLayout>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QPushButton>
@@ -34,6 +34,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/kadu-text-edit.h"
 #include "gui/windows/kadu-window.h"
@@ -49,7 +50,6 @@
 #include "status/status-type-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "status-window.h"
 
@@ -295,7 +295,7 @@ void StatusWindow::applyStatus()
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
 
 	foreach (StatusContainer *container, Container->subStatusContainers())

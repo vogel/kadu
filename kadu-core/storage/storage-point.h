@@ -24,8 +24,8 @@
 
 #pragma once
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "exports.h"
 
 #include <QtCore/QVariant>

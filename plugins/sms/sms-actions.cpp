@@ -34,8 +34,8 @@
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
 
-#include "gui/windows/sms-dialog.h"
 #include "gui/windows/sms-dialog-repository.h"
+#include "gui/windows/sms-dialog.h"
 
 #include "sms-actions.h"
 

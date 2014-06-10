@@ -26,9 +26,9 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "scripts/sms-script-manager.h"
 #include "sms-gateway-manager.h"
@@ -117,7 +117,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 
 QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
 {
-	return KaduApplication::instance()->configuration()->deprecatedApi()->readEntry(group, name, defaultValue);
+	return Application::instance()->configuration()->deprecatedApi()->readEntry(group, name, defaultValue);
 }
 
 void SmsInternalSender::sendSms()

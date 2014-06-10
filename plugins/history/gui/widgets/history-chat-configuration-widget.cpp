@@ -23,8 +23,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
-#include "kadu-application.h"
 
 #include "history-chat-configuration-widget.h"
 
@@ -56,7 +56,7 @@ void HistoryChatConfigurationWidget::createGui()
 
 void HistoryChatConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
+	GlobalStoreHistory = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
 	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 

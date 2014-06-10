@@ -19,8 +19,8 @@
 
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/chat-notification.h"
 #include "notify/notify-event.h"

@@ -20,11 +20,11 @@
 #include "unread-message-repository.h"
 
 #include "buddies/buddy-manager.h"
-#include "chat/chat.h"
 #include "chat/chat-details-buddy.h"
+#include "chat/chat.h"
+#include "core/application.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
-#include "kadu-application.h"
 
 UnreadMessageRepository::UnreadMessageRepository(QObject *parent) :
 		QObject{parent}
@@ -40,11 +40,11 @@ UnreadMessageRepository::~UnreadMessageRepository()
 
 bool UnreadMessageRepository::importFromPendingMessages()
 {
-	auto pendingMessagesNode = KaduApplication::instance()->configuration()->api()->getNode("PendingMessages", ConfigurationApi::ModeFind);
+	auto pendingMessagesNode = Application::instance()->configuration()->api()->getNode("PendingMessages", ConfigurationApi::ModeFind);
 	if (pendingMessagesNode.isNull())
 		return false;
 
-	auto messageElements = KaduApplication::instance()->configuration()->api()->getNodes(pendingMessagesNode, "Message");
+	auto messageElements = Application::instance()->configuration()->api()->getNodes(pendingMessagesNode, "Message");
 	for (const auto &messageElement : messageElements)
 	{
 		auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), messageElement);

@@ -23,10 +23,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtConcurrent/QtConcurrentRun>
 #include <QtCore/QDir>
 #include <QtCore/QMutexLocker>
 #include <QtCore/QThread>
-#include <QtConcurrent/QtConcurrentRun>
 #include <QtGui/QTextDocument>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>

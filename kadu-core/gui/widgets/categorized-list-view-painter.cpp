@@ -19,8 +19,8 @@
   */
 
 
-#include <QtWidgets/QApplication>
 #include <QtGui/QPainter>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QStyleOption>
 
 #include "gui/widgets/categorized-list-view.h"

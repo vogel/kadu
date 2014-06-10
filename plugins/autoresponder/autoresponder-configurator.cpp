@@ -21,7 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "kadu-application.h"
+#include "core/application.h"
 
 #include "autoresponder-configuration.h"
 #include "autoresponder.h"
@@ -38,12 +38,12 @@ void AutoresponderConfigurator::setAutoresponder(AutoResponder *autoresponder)
 
 void AutoresponderConfigurator::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "Autotext", QCoreApplication::translate("AutoresponderConfigurator", "I am busy."));
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "OnlyFirstTime", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "RespondConf", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "StatusAvailable", false);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "StatusBusy", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "StatusInvisible", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "Autotext", QCoreApplication::translate("AutoresponderConfigurator", "I am busy."));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "OnlyFirstTime", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "RespondConf", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "StatusAvailable", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "StatusBusy", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Autoresponder", "StatusInvisible", false);
 }
 
 void AutoresponderConfigurator::configurationUpdated()
@@ -52,12 +52,12 @@ void AutoresponderConfigurator::configurationUpdated()
 		return;
 
 	AutoresponderConfiguration configuration;
-	configuration.setAutoRespondText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Autoresponder", "Autotext"));
-	configuration.setRespondConferences(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "RespondConf"));
-	configuration.setRespondOnlyFirst(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "OnlyFirstTime"));
-	configuration.setStatusAvailable(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "StatusAvailable"));
-	configuration.setStatusBusy(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "StatusBusy"));
-	configuration.setStatusInvisible(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "StatusInvisible"));
+	configuration.setAutoRespondText(Application::instance()->configuration()->deprecatedApi()->readEntry("Autoresponder", "Autotext"));
+	configuration.setRespondConferences(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "RespondConf"));
+	configuration.setRespondOnlyFirst(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "OnlyFirstTime"));
+	configuration.setStatusAvailable(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "StatusAvailable"));
+	configuration.setStatusBusy(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "StatusBusy"));
+	configuration.setStatusInvisible(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Autoresponder", "StatusInvisible"));
 
 	ConfigurableAutoresponder->setConfiguration(configuration);
 }

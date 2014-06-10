@@ -27,6 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
+#include "core/application.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
 #include "identities/identity.h"
@@ -37,7 +38,6 @@
 #include "protocols/protocols-manager.h"
 #include "protocols/services/roster/roster-service.h"
 #include "status/status-setter.h"
-#include "kadu-application.h"
 
 #include "account-shared.h"
 
@@ -315,8 +315,8 @@ void AccountShared::setDisconnectStatus()
 	if (!ProtocolHandler->isConnected() && !ProtocolHandler->isDisconnecting())
 		return;
 
-	bool disconnectWithCurrentDescription = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
-	QString disconnectDescription = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "DisconnectDescription");
+	bool disconnectWithCurrentDescription = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
 	disconnectStatus.setType(StatusTypeOffline);

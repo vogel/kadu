@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include <QtCore/QObject>
 #include <map>
 #include <set>
-#include <QtCore/QObject>
 
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"

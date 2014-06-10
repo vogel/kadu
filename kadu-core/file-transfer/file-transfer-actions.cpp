@@ -26,6 +26,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -36,7 +37,6 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "file-transfer-actions.h"
 
@@ -143,7 +143,7 @@ QStringList FileTransferActions::selectFilesToSend()
 {
 	return QFileDialog::getOpenFileNames(
 			0, tr("Select file location"),
-			KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
+			Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
 }
 
 void FileTransferActions::selectFilesAndSend(const ContactSet &contacts)

@@ -23,13 +23,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QRadioButton>
@@ -49,6 +49,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -64,14 +65,13 @@
 #include "protocols/services/search-service.h"
 #include "qt/long-validator.h"
 #include "status/status-container.h"
-#include "kadu-application.h"
 
 #include "search-window.h"
 
 void SearchWindow::createDefaultToolbars(const QDomElement &toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
-	QDomElement toolbarConfig = KaduApplication::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarConfig = Application::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
 
 	addToolButton(toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);

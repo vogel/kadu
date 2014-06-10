@@ -49,10 +49,10 @@
 #include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 
+#include "core/application.h"
 #include "icons/icons-manager.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "exec_notify.h"
 
@@ -78,7 +78,7 @@ void ExecConfigurationWidget::saveNotifyConfigurations()
 		Commands[currentNotifyEvent] = commandLineEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = Commands.constBegin(), end = Commands.constEnd(); it != end; ++it)
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
 }
 
 void ExecConfigurationWidget::switchToEvent(const QString &event)
@@ -90,7 +90,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 	if (Commands.contains(event))
 		commandLineEdit->setText(Commands[event]);
 	else
-		commandLineEdit->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
+		commandLineEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
 }
 
 ExecNotify::ExecNotify(QObject *parent) :
@@ -116,21 +116,21 @@ ExecNotify::~ExecNotify()
 
 void ExecNotify::import_0_6_5_configuration()
 {
-    	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", "StatusChanged/ToBusyCmd"));
+    	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", "StatusChanged/ToBusyCmd"));
 }
 
 void ExecNotify::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToFreeForChatCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToNotAvailableCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToDoNotDisturbCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToFreeForChatCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToNotAvailableCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToDoNotDisturbCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 }
 
 // TODO: merge with HistoryManager version
@@ -223,7 +223,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotify::notify(Notification *notification)
 {
-	QString syntax = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
+	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	QStringList s = mySplit(' ', syntax);

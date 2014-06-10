@@ -29,8 +29,8 @@
 
 #include <QtCore/QMutex>
 #include <QtCore/QObject>
-#include <QtCore/QWaitCondition>
 #include <QtCore/QPointer>
+#include <QtCore/QWaitCondition>
 
 class SoundPlayer;
 

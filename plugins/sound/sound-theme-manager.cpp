@@ -19,11 +19,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "misc/memory.h"
-#include "kadu-application.h"
 #include "themes.h"
 
 #include "sound-theme-manager.h"
@@ -50,14 +50,14 @@ SoundThemeManager * SoundThemeManager::instance()
 SoundThemeManager::SoundThemeManager() :
 		MyThemes{make_unique<Themes>("sounds", "sound.conf")}
 {
-	MyThemes->setPaths(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+	MyThemes->setPaths(Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	QStringList soundThemes = themes()->themes();
-	QString soundTheme = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundTheme");
+	QString soundTheme = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
 		soundTheme = "default";
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
 	}
 
 	if (soundTheme != "custom")
@@ -76,7 +76,7 @@ void SoundThemeManager::applyTheme(const QString &themeName)
 
 	while (i != entries.constEnd())
 	{
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
 		++i;
 	}
 }

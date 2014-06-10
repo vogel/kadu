@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <QtCore/QString>
 #include <QtCore/QPointer>
+#include <QtCore/QString>
 
 class Chat;
 class ChatManager;

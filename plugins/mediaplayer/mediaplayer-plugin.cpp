@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/application.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "mediaplayer.h"
 
@@ -37,7 +37,7 @@ bool MediaplayerPlugin::init(bool firstLoad)
 
 	MediaPlayer::createInstance();
 
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(MediaPlayer::instance());
 
 	return true;
@@ -46,7 +46,7 @@ bool MediaplayerPlugin::init(bool firstLoad)
 void MediaplayerPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(MediaPlayer::instance());
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 
 	MediaPlayer::destroyInstance();
 }

@@ -47,6 +47,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
@@ -69,7 +70,6 @@
 #include "status/status-container.h"
 #include "status/status.h"
 #include "themes/icon-theme-manager.h"
-#include "kadu-application.h"
 
 #include "icons/icons-manager.h"
 #include "debug.h"
@@ -175,7 +175,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 {
 	setWindowRole("kadu-configuration");
 
-	widget()->appendUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog.ui"));
+	widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog.ui"));
 
 #ifndef DEBUG_ENABLED
 	widget()->widgetById("debug")->hide();
@@ -311,7 +311,7 @@ void MainConfigurationWindow::installIconTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &profilePath = KaduApplication::instance()->pathsProvider()->profilePath();
+	const QString &profilePath = Application::instance()->pathsProvider()->profilePath();
 	ArchiveExtractor extractor;
 	bool success = extractor.extract(fileName, profilePath + "icons");
 	if (success)
@@ -396,7 +396,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
-		lookChatAdvanced.data()->widget()->appendUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced.data()->widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 
 		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
 		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(QCoreApplication::translate("@default", SyntaxText));

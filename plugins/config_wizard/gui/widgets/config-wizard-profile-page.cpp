@@ -29,8 +29,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
-#include "kadu-application.h"
 #include "languages-manager.h"
 
 #include "config-wizard-profile-page.h"
@@ -76,19 +76,19 @@ void ConfigWizardProfilePage::setLanguages()
 
 void ConfigWizardProfilePage::initializePage()
 {
-	int languageIndex = LanguagesCombo->findData(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
+	int languageIndex = LanguagesCombo->findData(Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
 	if (-1 == languageIndex)
 		languageIndex = LanguagesCombo->findData("en");
 	if (-1 != languageIndex)
 		LanguagesCombo->setCurrentIndex(languageIndex);
 
-	NickNameEdit->setText(KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", "Me"));
+	NickNameEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", "Me"));
 }
 
 void ConfigWizardProfilePage::acceptPage()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
 
 	Core::instance()->myself().setDisplay(NickNameEdit->text());
 }

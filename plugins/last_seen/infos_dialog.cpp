@@ -24,13 +24,13 @@
  */
 
 #include <QtCore/QStringList>
+#include <QtNetwork/QHostAddress>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
-#include <QtNetwork/QHostAddress>
 
 #include "chat/type/chat-type-contact.h"
 #include "configuration/config-file-variant-wrapper.h"

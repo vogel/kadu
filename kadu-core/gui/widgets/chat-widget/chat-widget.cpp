@@ -35,10 +35,10 @@
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QMimeData>
-#include <QtWidgets/QApplication>
 #include <QtGui/QIcon>
-#include <QtWidgets/QInputDialog>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QInputDialog>
 #include <QtWidgets/QShortcut>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QToolBar>
@@ -49,8 +49,8 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "buddies/model/buddy-list-model.h"
-#include "chat/chat-manager.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
+#include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration.h"
@@ -60,14 +60,15 @@
 #include "contacts/model/chat-adapter.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/hot-key.h"
 #include "gui/web-view-highlighter.h"
-#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -76,8 +77,8 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -92,7 +93,6 @@
 #include "talkable/model/talkable-proxy-model.h"
 #include "activate.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "chat-widget.h"
 
@@ -535,7 +535,7 @@ void ChatWidget::clearChatWindow()
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
+	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
 		MessagesView->setForcePruneDisabled(false);

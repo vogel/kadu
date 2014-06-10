@@ -21,8 +21,8 @@
 
 #include "exports.h"
 
-#include <QtCore/QObject>
 #include <QtCore/QList>
+#include <QtCore/QObject>
 
 class ChatWidgetContainerHandler;
 

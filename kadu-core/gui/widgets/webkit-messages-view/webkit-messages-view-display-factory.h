@@ -21,9 +21,9 @@
 
 #include "exports.h"
 
-#include <memory>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <memory>
 
 class ChatStyleManager;
 class ChatStyleRenderer;

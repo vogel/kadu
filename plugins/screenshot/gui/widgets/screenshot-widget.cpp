@@ -22,10 +22,10 @@
 
 #include <QtCore/QBuffer>
 #include <QtCore/QTimer>
+#include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QHBoxLayout>
-#include <QtGui/QMouseEvent>
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include <QtX11Extras/QX11Info>
 #include <X11/Xatom.h>

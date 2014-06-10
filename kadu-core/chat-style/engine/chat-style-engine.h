@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include <memory>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
+#include <memory>
 
 class ChatStyle;
 class ChatStyleRendererFactory;

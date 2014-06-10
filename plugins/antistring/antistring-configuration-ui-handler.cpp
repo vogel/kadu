@@ -27,10 +27,10 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 
+#include "core/application.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "antistring-configuration.h"
 #include "antistring.h"
@@ -44,7 +44,7 @@ void AntistringConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new AntistringConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
+		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -54,7 +54,7 @@ void AntistringConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
+		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 		delete Instance;
 		Instance = 0;
 	}

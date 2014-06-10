@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <memory>
 #include <QtCore/QObject>
+#include <memory>
 
 #include "exports.h"
 

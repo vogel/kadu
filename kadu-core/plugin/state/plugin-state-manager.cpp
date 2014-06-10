@@ -23,10 +23,10 @@
 #include "misc/change-notifier-lock.h"
 #include "plugin/plugin-dependency-handler.h"
 #include "plugin/state/plugin-state-service.h"
-#include "plugin/state/plugin-state-storage.h"
 #include "plugin/state/plugin-state-storage-09.h"
-#include "storage/storage-point.h"
+#include "plugin/state/plugin-state-storage.h"
 #include "storage/storage-point-factory.h"
+#include "storage/storage-point.h"
 
 PluginStateManager::PluginStateManager(QObject *parent) :
 		QObject{parent}

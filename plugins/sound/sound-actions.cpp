@@ -28,11 +28,11 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "debug.h"
-#include "kadu-application.h"
 #include "themes.h"
 
 #include "sound-manager.h"
@@ -103,12 +103,12 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 	SoundManager::instance()->setMute(!toggled);
 	setMuteActionState();
 
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundActions::configurationUpdated()
 {
-	SoundManager::instance()->setMute(!KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
+	SoundManager::instance()->setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 

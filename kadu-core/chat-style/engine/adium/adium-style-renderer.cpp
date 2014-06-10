@@ -21,8 +21,8 @@
 
 #include "avatars/avatar.h"
 #include "chat-style/chat-style-manager.h"
-#include "chat-style/engine/adium/adium-style.h"
 #include "chat-style/engine/adium/adium-style-engine.h"
+#include "chat-style/engine/adium/adium-style.h"
 #include "chat-style/engine/adium/adium-time-formatter.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
@@ -30,19 +30,19 @@
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "message/message-html-renderer-service.h"
-#include "message/message-render-info.h"
 #include "message/message-render-info-factory.h"
+#include "message/message-render-info.h"
 #include "misc/date-time.h"
-#include "misc/paths-provider.h"
 #include "misc/misc.h"
-#include "protocols/protocol.h"
+#include "misc/paths-provider.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 #include "protocols/services/chat-image.h"
 
 #include <QtCore/QFile>
 #include <QtGui/QTextDocument>
-#include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKitWidgets/QWebPage>
 
 AdiumStyleRenderer::AdiumStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent) :
 		ChatStyleRenderer{std::move(configuration), parent},

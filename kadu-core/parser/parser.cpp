@@ -30,9 +30,9 @@
 #include <QtCore/QProcess>
 #include <QtCore/QStack>
 #include <QtCore/QVariant>
-#include <QtWidgets/QApplication>
 #include <QtGui/QTextDocument>
 #include <QtNetwork/QHostAddress>
+#include <QtWidgets/QApplication>
 
 #include "accounts/account-manager.h"
 #include "buddies/group.h"
@@ -40,6 +40,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -50,7 +51,6 @@
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "parser.h"
 
@@ -70,7 +70,7 @@ static void prepareSearchChars(bool forceExecSeachChars = false)
 		foreach (QChar c, QString(SEARCH_CHARS))
 			chars.insert(c);
 
-	bool allowExec = forceExecSeachChars || KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
+	bool allowExec = forceExecSeachChars || Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
 	foreach (QChar c, QString(EXEC_SEARCH_CHARS))
 		if (allowExec)
 			chars.insert(c);
@@ -293,7 +293,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 				pe.setContent(description);
 
-				if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
+				if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
 				{
 					QString content = pe.decodedContent();
 					content.replace('\n', QLatin1String("<br/>"));

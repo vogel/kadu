@@ -46,14 +46,15 @@
 #include <unistd.h>
 #endif // !Q_OS_WIN32
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-unusable-exception.h"
+#include "configuration/configuration.h"
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
-#include "execution-arguments/execution-arguments.h"
 #include "execution-arguments/execution-arguments-parser.h"
+#include "execution-arguments/execution-arguments.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "misc/date-time.h"
@@ -63,7 +64,6 @@
 #include "os/win/wsa-handler.h"
 #include "protocols/protocols-manager.h"
 #include "debug.h"
-#include "kadu-application.h"
 #include "kadu-config.h"
 
 #ifndef Q_OS_WIN32
@@ -164,9 +164,9 @@ int main(int argc, char *argv[]) try
 
 	bool ok;
 
-	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
-	auto application = make_unique<KaduApplication>(argc, argv);
-	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
+	kdebugm(KDEBUG_INFO, "before creation of new Application\n");
+	auto application = make_unique<Application>(argc, argv);
+	kdebugm(KDEBUG_INFO, "after creation of new Application\n");
 
 	auto executionArgumentsParser = ExecutionArgumentsParser{};
 	// do not parse program name
@@ -212,14 +212,14 @@ int main(int argc, char *argv[]) try
 
 	enableSignalHandling();
 
-	const QString lang = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
+	const QString lang = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	kadu_qm.load("kadu_" + lang, KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	kadu_qm.load("kadu_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
 	QCoreApplication::installTranslator(&qt_qm);
 	QCoreApplication::installTranslator(&kadu_qm);
 
-	QtLocalPeer *peer = new QtLocalPeer(application.get(), KaduApplication::instance()->pathsProvider()->profilePath());
+	QtLocalPeer *peer = new QtLocalPeer(application.get(), Application::instance()->pathsProvider()->profilePath());
 	if (peer->isClient())
 	{
 		if (!executionArguments.openIds().isEmpty())

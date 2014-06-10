@@ -34,6 +34,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-actions.h"
 #include "file-transfer/file-transfer-handler.h"
@@ -50,7 +51,6 @@
 #include "storage/storage-point.h"
 #include "activate.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "file-transfer-manager.h"
 
@@ -170,7 +170,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 	{
 		if (fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(Core::instance()->kaduWindow(), tr("Select file location"),
-					KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + transfer.remoteFileName(),
+					Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + transfer.remoteFileName(),
 							QString(), 0, QFileDialog::DontConfirmOverwrite);
 
 		if (fileName.isEmpty())
@@ -181,7 +181,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			return;
 		}
 
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
 		fi.setFile(fileName);
 
 		if (!haveFileName && fi.exists())

@@ -25,12 +25,12 @@
 #include "adium-style-engine.h"
 
 #include "chat-style/chat-style.h"
-#include "chat-style/engine/adium/adium-style.h"
 #include "chat-style/engine/adium/adium-style-renderer-factory.h"
+#include "chat-style/engine/adium/adium-style.h"
+#include "core/application.h"
 #include "message/message-html-renderer-service.h"
-#include "misc/paths-provider.h"
 #include "misc/memory.h"
-#include "kadu-application.h"
+#include "misc/paths-provider.h"
 
 #include <QtCore/QDir>
 
@@ -67,9 +67,9 @@ QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 QStringList AdiumStyleEngine::styleVariants(QString styleName)
 {
 	QDir dir;
-	QString styleBaseHref = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+	QString styleBaseHref = Application::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	if (!dir.exists(styleBaseHref))
-		styleBaseHref = KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+		styleBaseHref = Application::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	dir.setPath(styleBaseHref);
 	dir.setNameFilters(QStringList("*.css"));
 	return dir.entryList();

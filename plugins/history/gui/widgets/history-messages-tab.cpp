@@ -23,8 +23,8 @@
  */
 
 #include <QtCore/QScopedPointer>
-#include <QtWidgets/QAction>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QTreeView>

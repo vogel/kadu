@@ -25,6 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddy-info-panel.h"
@@ -36,7 +37,6 @@
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "plugins/docking/docking.h"
 
@@ -52,7 +52,7 @@ SimpleView::SimpleView() :
 
 	SimpleViewConfigUi::createInstance();
 
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
 	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
@@ -69,21 +69,21 @@ SimpleView::SimpleView() :
 
 	configurationUpdated();
 
-	DiffRect = KaduApplication::instance()->configuration()->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
+	DiffRect = Application::instance()->configuration()->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
 	if (DiffRect != QRect(0,0,0,0))
 		simpleViewToggle(true);
 }
 
 SimpleView::~SimpleView()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
+	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
 
 	simpleViewToggle(false);
 
 	DockingManager::instance()->unregisterModuleAction(DockAction);
 
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 	SimpleViewConfigUi::destroyInstance();
 }
 
@@ -203,10 +203,10 @@ void SimpleView::simpleViewToggle(bool activate)
 			MainWindowHandle->setGeometry(r);
 
 			/* Status button */
-			StatusButtonsHandle->setVisible(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
+			StatusButtonsHandle->setVisible(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
 
 			/* Info panel*/
-			if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+			if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 				KaduWindowHandle->infoPanel()->show();
 
 			/* ScrollBar */
@@ -218,7 +218,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
+			if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
 				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
@@ -255,9 +255,9 @@ void SimpleView::configurationUpdated()
 	/* Give the kadu update the GUI with old configuration */
 	simpleViewToggle(false);
 
-	KeepSize = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-	Borderless = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
+	KeepSize = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
 
 }
 

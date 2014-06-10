@@ -44,15 +44,15 @@ class Configuration;
 class ConfigurationStorage;
 class PathsProvider;
 
-class KADUAPI KaduApplication : public QApplication
+class KADUAPI Application : public QApplication
 {
 	Q_OBJECT
 
 public:
-	static KaduApplication * instance();
+	static Application * instance();
 
-	KaduApplication(int &argc, char *argv[]);
-	virtual ~KaduApplication();
+	Application(int &argc, char *argv[]);
+	virtual ~Application();
 
 	void setProfileDirectory(QString profileDirectory);
 	void readConfiguration();
@@ -61,7 +61,7 @@ public:
 	PathsProvider * pathsProvider() const;
 
 private:
-	static KaduApplication * m_instance;
+	static Application * m_instance;
 
 	qobject_ptr<Configuration> m_configuration;
 	qobject_ptr<ConfigurationStorage> m_configurationStorage;

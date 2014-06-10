@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
 #include <QtGui/QIcon>
+#include <QtWidgets/QApplication>
 
 #include "icons/kadu-icon.h"
 

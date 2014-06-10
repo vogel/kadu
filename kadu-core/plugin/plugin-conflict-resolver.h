@@ -21,9 +21,9 @@
 
 #include "exports.h"
 
-#include <set>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <set>
 
 class PluginDependencyHandler;
 

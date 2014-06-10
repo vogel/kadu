@@ -59,10 +59,10 @@
 #include "status/status-type.h"
 #include "status/status.h"
 
+#include "core/application.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "server/gadu-servers-manager.h"
 #include "server/protocol-gadu-connection.h"
@@ -425,9 +425,9 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
 	GaduLoginParams.has_audio = false;
-	GaduLoginParams.last_sysmsg = KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
+	GaduLoginParams.last_sysmsg = Application::instance()->configuration()->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
 
-	GaduLoginParams.image_size = qMax(qMin(KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
+	GaduLoginParams.image_size = qMax(qMin(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
 
 	setStatusFlags();
 }

@@ -33,24 +33,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "kadu-application.h"
+#include "core/application.h"
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-storage.h"
 #include "configuration/configuration-unusable-exception.h"
-#include "misc/paths-provider.h"
+#include "configuration/configuration.h"
 #include "misc/memory.h"
+#include "misc/paths-provider.h"
 
 #include <QtWidgets/QMessageBox>
 
-KaduApplication * KaduApplication::m_instance = nullptr;
+Application * Application::m_instance = nullptr;
 
-KaduApplication * KaduApplication::instance()
+Application * Application::instance()
 {
 	return m_instance;
 }
 
-KaduApplication::KaduApplication(int &argc, char *argv[]) :
+Application::Application(int &argc, char *argv[]) :
 		QApplication{argc, argv}
 {
 	setApplicationName("Kadu");
@@ -64,17 +64,17 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	m_instance = this;
 }
 
-KaduApplication::~KaduApplication()
+Application::~Application()
 {
 	m_instance = nullptr;
 }
 
-void KaduApplication::setProfileDirectory(QString profileDirectory)
+void Application::setProfileDirectory(QString profileDirectory)
 {
 	m_pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
 }
 
-void KaduApplication::readConfiguration() try
+void Application::readConfiguration() try
 {
 	auto profilePath = m_pathsProvider->profilePath();
 
@@ -94,14 +94,14 @@ catch (ConfigurationUnusableException &e)
 	throw;
 }
 
-Configuration * KaduApplication::configuration() const
+Configuration * Application::configuration() const
 {
 	return m_configuration.get();
 }
 
-PathsProvider * KaduApplication::pathsProvider() const
+PathsProvider * Application::pathsProvider() const
 {
 	return m_pathsProvider.get();
 }
 
-#include "moc_kadu-application.cpp"
+#include "moc_application.cpp"

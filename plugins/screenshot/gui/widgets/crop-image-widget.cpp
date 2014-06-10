@@ -29,9 +29,9 @@
 #include <QtCore/QBuffer>
 #include <QtCore/QTimer>
 #include <QtGui/QCursor>
+#include <QtGui/QResizeEvent>
 #include <QtWidgets/QGraphicsPixmapItem>
 #include <QtWidgets/QGraphicsProxyWidget>
-#include <QtGui/QResizeEvent>
 
 #include "gui/graphics-items/selection-frame-item.h"
 #include "gui/widgets/screenshot-tool-box.h"

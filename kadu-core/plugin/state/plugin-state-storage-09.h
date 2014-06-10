@@ -21,8 +21,8 @@
 
 #include "exports.h"
 
-#include <set>
 #include <QtCore/QMap>
+#include <set>
 
 class QStringList;
 

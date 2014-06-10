@@ -20,7 +20,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "kadu-application.h"
+#include "core/application.h"
 
 #include "configuration/image-link-configuration.h"
 #include "image-expander-dom-visitor-provider.h"
@@ -56,15 +56,15 @@ void ImageLinkConfigurator::configure()
 
 void ImageLinkConfigurator::createDefaultConfiguration()
 {
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_image", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_image", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
 }
 
 void ImageLinkConfigurator::configurationUpdated()
 {
 	ImageLinkConfiguration configuration;
-	configuration.setShowImages(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
-	configuration.setShowVideos(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
+	configuration.setShowImages(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
+	configuration.setShowVideos(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
 
 	if (ImageExpander)
 		ImageExpander->setConfiguration(configuration);

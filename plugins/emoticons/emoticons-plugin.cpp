@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/application.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "configuration/emoticon-configurator.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
@@ -50,14 +50,14 @@ void EmoticonsPlugin::registerConfigurationUi()
 {
 	ConfigurationUiHandler.reset(new EmoticonsConfigurationUiHandler(this));
 
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 	MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler.data());
 }
 
 void EmoticonsPlugin::unregisterConfigurationUi()
 {
 	MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler.data());
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 
 	ConfigurationUiHandler.reset();
 }

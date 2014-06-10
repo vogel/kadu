@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QIcon>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QFormLayout>
-#include <QtGui/QIcon>
 #include <QtWidgets/QLabel>
 
 #include "buddies/buddy-manager.h"

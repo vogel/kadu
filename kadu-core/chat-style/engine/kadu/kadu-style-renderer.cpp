@@ -19,8 +19,8 @@
 
 #include "kadu-style-renderer.h"
 
-#include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "chat-style/chat-style-manager.h"
+#include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "contacts/contact-set.h"
 #include "message/message-render-info.h"
 #include "misc/misc.h"

@@ -26,13 +26,13 @@
 #include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"
 
-#include <map>
-#include <memory>
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QStringList>
 #include <QtGui/QColor>
+#include <map>
+#include <memory>
 
 class ChatStyleEngine;
 class ChatStylePreview;

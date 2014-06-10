@@ -19,11 +19,11 @@
 
 #include "window-chat-widget-container-handler.h"
 
-#include "activate.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
+#include "gui/windows/chat-window/chat-window.h"
+#include "activate.h"
 
 WindowChatWidgetContainerHandler::WindowChatWidgetContainerHandler(QObject *parent) :
 		ChatWidgetContainerHandler{parent}

@@ -27,8 +27,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "misc/paths-provider.h"
-#include "kadu-application.h"
 
 #include "storage/history-sql-storage.h"
 #include "storage/sql-import.h"
@@ -63,28 +63,28 @@ void SqlInitializer::initialize()
 
 bool SqlInitializer::oldHistoryFileExists()
 {
-	QFileInfo scheme0FileInfo(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_0));
-	QFileInfo scheme1FileInfo(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_1));
+	QFileInfo scheme0FileInfo(Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_0));
+	QFileInfo scheme1FileInfo(Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_1));
 	return scheme0FileInfo.exists() || scheme1FileInfo.exists();
 }
 
 bool SqlInitializer::currentHistoryFileExists()
 {
-	QFileInfo schemeCurrentFileInfo(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
+	QFileInfo schemeCurrentFileInfo(Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
 	return schemeCurrentFileInfo.exists();
 }
 
 bool SqlInitializer::copyHistoryFile()
 {
-	QFileInfo schemeCurrentFileInfo(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
+	QFileInfo schemeCurrentFileInfo(Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
 	if (schemeCurrentFileInfo.exists())
 		return true;
 
-	QFileInfo scheme1FileInfo(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_1));
+	QFileInfo scheme1FileInfo(Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_1));
 	if (scheme1FileInfo.exists())
 		return QFile::copy(scheme1FileInfo.absoluteFilePath(), schemeCurrentFileInfo.absoluteFilePath());
 
-	QFileInfo scheme0FileInfo(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_0));
+	QFileInfo scheme0FileInfo(Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_0));
 	if (scheme0FileInfo.exists())
 		return QFile::copy(scheme0FileInfo.absoluteFilePath(), schemeCurrentFileInfo.absoluteFilePath());
 
@@ -105,7 +105,7 @@ void SqlInitializer::initDatabase()
 
 	if (!currentFileExists && oldHistoryFileExists())
 	{
-		emit progressMessage("dialog-information", tr("Copying history file to new location: %1 ...").arg(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT)));
+		emit progressMessage("dialog-information", tr("Copying history file to new location: %1 ...").arg(Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT)));
 		if (!copyHistoryFile())
 		{
 			emit progressFinished(false, "dialog-error", tr("Unable to copy history file to new location. Check if disk is full."));
@@ -113,7 +113,7 @@ void SqlInitializer::initDatabase()
 		}
 	}
 
-	QString historyFilePath = KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT);
+	QString historyFilePath = Application::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT);
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
 	Database.setDatabaseName(historyFilePath);
@@ -157,7 +157,7 @@ void SqlInitializer::initDatabase()
 	}
 	else
 	{
-		KaduApplication::instance()->configuration()->deprecatedApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
 	}
 }

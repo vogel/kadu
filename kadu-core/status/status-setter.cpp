@@ -19,10 +19,10 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
-#include "kadu-application.h"
 
 #include "status-setter.h"
 
@@ -72,10 +72,10 @@ void StatusSetter::coreInitialized()
 
 void StatusSetter::configurationUpdated()
 {
-	StartupStatus = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "StartupStatus");
-	StartupLastDescription = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = KaduApplication::instance()->configuration()->deprecatedApi()->readEntry("General", "StartupDescription");
-	OfflineToInvisible = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+	StartupStatus = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "StartupStatus");
+	StartupLastDescription = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "StartupLastDescription");
+	StartupDescription = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "StartupDescription");
+	OfflineToInvisible = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
 
 	if (StartupStatus.isEmpty())
 		StartupStatus = "LastStatus";

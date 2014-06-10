@@ -37,6 +37,7 @@
 #include "chat/recent-chat-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -49,7 +50,6 @@
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "activate.h"
-#include "kadu-application.h"
 
 #include "tab-bar.h"
 #include "tabs.h"
@@ -211,9 +211,9 @@ void TabWidget::closeTab(QWidget *tabWidget)
 	if (!chatWidget)
 		return;
 
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		unsigned int period = KaduApplication::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("Chat",
+		unsigned int period = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < chatWidget->lastReceivedMessageTime().addSecs(period))
@@ -477,7 +477,7 @@ void TabWidget::tabRemoved(int index)
 
 void TabWidget::compositingEnabled()
 {
-	if (KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -499,13 +499,13 @@ void TabWidget::configurationUpdated()
 
 	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 
-	setTabsClosable(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButtonOnTab"));
-	config_oldStyleClosing = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing");
+	setTabsClosable(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButtonOnTab"));
+	config_oldStyleClosing = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing");
 
 	bool isOpenChatButtonEnabled = (cornerWidget(Qt::TopLeftCorner) == OpenChatButtonsWidget);
-	bool shouldEnableOpenChatButton = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OpenChatButton");
+	bool shouldEnableOpenChatButton = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OpenChatButton");
 	bool isCloseButtonEnabled = (cornerWidget(Qt::TopRightCorner) == CloseChatButton);
-	bool shouldEnableCloseButton = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButton");
+	bool shouldEnableCloseButton = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButton");
 
 	if (isOpenChatButtonEnabled != shouldEnableOpenChatButton)
 	{

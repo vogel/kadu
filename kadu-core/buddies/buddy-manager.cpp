@@ -24,16 +24,16 @@
 #include "accounts/account.h"
 
 #include "buddies/buddy-list.h"
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-manager.h"
+#include "configuration/configuration.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "protocols/roster.h"
 #include "storage/storage-point.h"
 #include "debug.h"
-#include "kadu-application.h"
 
 #include "buddy-manager.h"
 
@@ -63,11 +63,11 @@ void BuddyManager::init()
 	QMutexLocker locker(&mutex());
 
 	int itemsSize = items().size();
-	QDomElement buddiesNode = KaduApplication::instance()->configuration()->api()->getNode("Buddies", ConfigurationApi::ModeFind);
-	QDomElement oldContactsNode = KaduApplication::instance()->configuration()->api()->getNode("OldContacts", ConfigurationApi::ModeFind);
+	QDomElement buddiesNode = Application::instance()->configuration()->api()->getNode("Buddies", ConfigurationApi::ModeFind);
+	QDomElement oldContactsNode = Application::instance()->configuration()->api()->getNode("OldContacts", ConfigurationApi::ModeFind);
 	if (oldContactsNode.isNull() && (buddiesNode.isNull() || (itemsSize == 0 && !buddiesNode.hasAttribute("imported"))))
 	{
-		importConfiguration(KaduApplication::instance()->configuration()->api());
+		importConfiguration(Application::instance()->configuration()->api());
 		buddiesNode.setAttribute("imported", "true");
 	}
 }

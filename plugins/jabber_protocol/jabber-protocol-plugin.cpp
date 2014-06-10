@@ -21,9 +21,9 @@
 
 #include <iris/irisnetglobal.h>
 
+#include "core/application.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
-#include "kadu-application.h"
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
@@ -76,14 +76,14 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(UrlDomVisitorProvider, 200);
 
-	MainConfigurationWindow::registerUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	return true;
 }
 
 void JabberProtocolPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 

@@ -28,10 +28,10 @@
 #include "core/core.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/web-view-highlighter.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/wait-overlay.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "message/sorted-messages.h"
 #include "model/roles.h"
 
