@@ -228,8 +228,6 @@ int main(int argc, char *argv[]) try
 		else
 			peer->sendMessage("activate", 1000);
 
-		delete KaduApplication::instance()->configuration()->deprecatedApi();
-		delete KaduApplication::instance()->configuration()->api();
 		return 1;
 	}
 
