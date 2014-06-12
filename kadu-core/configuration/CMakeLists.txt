@@ -8,6 +8,7 @@ set (configuration_SRCS
 	configuration-factory.cpp
 	configuration-holder.cpp
 	configuration-manager.cpp
+	configuration-path-provider.cpp
 	configuration-storage.cpp
 	configuration-unusable-exception.cpp
 	deprecated-configuration-api.cpp
