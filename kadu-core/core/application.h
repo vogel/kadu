@@ -34,11 +34,9 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
 
 #include <QtWidgets/QApplication>
-#include <memory>
 
 class Configuration;
 class PathsProvider;
@@ -53,8 +51,8 @@ public:
 	Application(int &argc, char *argv[]);
 	virtual ~Application();
 
-	void setPathsProvider(qobject_ptr<PathsProvider> pathsProvider);
-	void readConfiguration();
+	void setConfiguration(Configuration *configuration);
+	void setPathsProvider(PathsProvider *pathsProvider);
 
 	Configuration * configuration() const;
 	PathsProvider * pathsProvider() const;
@@ -62,7 +60,7 @@ public:
 private:
 	static Application * m_instance;
 
-	qobject_ptr<Configuration> m_configuration;
-	qobject_ptr<PathsProvider> m_pathsProvider;
+	Configuration *m_configuration;
+	PathsProvider *m_pathsProvider;
 
 };

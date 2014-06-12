@@ -5,6 +5,7 @@ set (configuration_SRCS
 	configuration.cpp
 	configuration-api.cpp
 	configuration-aware-object.cpp
+	configuration-factory.cpp
 	configuration-holder.cpp
 	configuration-manager.cpp
 	configuration-storage.cpp

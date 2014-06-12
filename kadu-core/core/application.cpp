@@ -35,7 +35,6 @@
 
 #include "core/application.h"
 
-#include "configuration/configuration-storage.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/configuration.h"
 #include "misc/paths-provider.h"
@@ -50,7 +49,9 @@ Application * Application::instance()
 }
 
 Application::Application(int &argc, char *argv[]) :
-		QApplication{argc, argv}
+		QApplication{argc, argv},
+		m_configuration{nullptr},
+		m_pathsProvider{nullptr}
 {
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
@@ -68,16 +69,9 @@ Application::~Application()
 	m_instance = nullptr;
 }
 
-void Application::setPathsProvider(qobject_ptr<PathsProvider> pathsProvider)
+void Application::setConfiguration(Configuration *configuration) try
 {
-	m_pathsProvider = std::move(pathsProvider);
-}
-
-void Application::readConfiguration() try
-{
-	auto profilePath = m_pathsProvider->profilePath();
-
-	m_configuration = make_qobject<Configuration>(make_qobject<ConfigurationStorage>(profilePath, this), this);
+	m_configuration = std::move(configuration);
 	m_configuration->read();
 }
 catch (ConfigurationUnusableException &e)
@@ -91,14 +85,19 @@ catch (ConfigurationUnusableException &e)
 	throw;
 }
 
+void Application::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = std::move(pathsProvider);
+}
+
 Configuration * Application::configuration() const
 {
-	return m_configuration.get();
+	return m_configuration;
 }
 
 PathsProvider * Application::pathsProvider() const
 {
-	return m_pathsProvider.get();
+	return m_pathsProvider;
 }
 
 #include "moc_application.cpp"

@@ -47,8 +47,8 @@
 #endif // !Q_OS_WIN32
 
 #include "configuration/configuration-api.h"
+#include "configuration/configuration-factory.h"
 #include "configuration/configuration-unusable-exception.h"
-#include "configuration/configuration.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
@@ -196,15 +196,20 @@ int main(int argc, char *argv[]) try
 	auto profileDirectory = executionArguments.profileDirectory().isEmpty()
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
+	auto pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
+	auto configurationFactory = make_qobject<ConfigurationFactory>();
+	configurationFactory->setPathsProvider(pathsProvider.get());
 
-	application->setPathsProvider(make_qobject<PathsProvider>(std::move(profileDirectory)));
+	auto configuration = configurationFactory->createConfiguration();
+
+	application->setPathsProvider(pathsProvider.get());
 
 #ifndef Q_OS_WIN32
 	// Qt version is better on win32
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
 
-	application->readConfiguration();
+	application->setConfiguration(configuration.get());
 
 #ifdef DEBUG_OUTPUT_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
