@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "misc/memory.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
@@ -33,10 +34,8 @@ class KADUAPI Configuration final : public QObject
 	Q_OBJECT
 
 public:
-	explicit Configuration(QObject *parent = nullptr);
+	explicit Configuration(qobject_ptr<ConfigurationStorage> configurationStorage, QObject *parent = nullptr);
 	virtual ~Configuration();
-
-	void setConfigurationStorage(ConfigurationStorage *configurationStorage);
 
 	ConfigurationApi * api() const;
 	DeprecatedConfigurationApi * deprecatedApi() const;
@@ -46,7 +45,7 @@ public:
 	void backup();
 
 private:
-	ConfigurationStorage *m_configurationStorage;
+	qobject_ptr<ConfigurationStorage> m_configurationStorage;
 
 	std::unique_ptr<ConfigurationApi> m_configurationApi;
 	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;

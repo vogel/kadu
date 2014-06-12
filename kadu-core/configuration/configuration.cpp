@@ -23,23 +23,17 @@
 #include "configuration/configuration-storage.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "misc/memory.h"
 
 #include <QtCore/QDateTime>
 
-Configuration::Configuration(QObject *parent) :
+Configuration::Configuration(qobject_ptr<ConfigurationStorage> configurationStorage, QObject *parent) :
 		QObject{parent},
-		m_configurationStorage{nullptr}
+		m_configurationStorage{std::move(configurationStorage)}
 {
 }
 
 Configuration::~Configuration()
 {
-}
-
-void Configuration::setConfigurationStorage(ConfigurationStorage *configurationStorage)
-{
-	m_configurationStorage = configurationStorage;
 }
 
 ConfigurationApi * Configuration::api() const

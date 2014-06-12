@@ -38,7 +38,6 @@
 #include "configuration/configuration-storage.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/configuration.h"
-#include "misc/memory.h"
 #include "misc/paths-provider.h"
 
 #include <QtWidgets/QMessageBox>
@@ -78,9 +77,7 @@ void Application::readConfiguration() try
 {
 	auto profilePath = m_pathsProvider->profilePath();
 
-	m_configurationStorage = make_qobject<ConfigurationStorage>(profilePath, this);
-	m_configuration = make_qobject<Configuration>(this);
-	m_configuration->setConfigurationStorage(m_configurationStorage.get());
+	m_configuration = make_qobject<Configuration>(make_qobject<ConfigurationStorage>(profilePath, this), this);
 	m_configuration->read();
 }
 catch (ConfigurationUnusableException &e)

@@ -41,7 +41,6 @@
 #include <memory>
 
 class Configuration;
-class ConfigurationStorage;
 class PathsProvider;
 
 class KADUAPI Application : public QApplication
@@ -64,7 +63,6 @@ private:
 	static Application * m_instance;
 
 	qobject_ptr<Configuration> m_configuration;
-	qobject_ptr<ConfigurationStorage> m_configurationStorage;
 	qobject_ptr<PathsProvider> m_pathsProvider;
 
 };
