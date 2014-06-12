@@ -69,9 +69,9 @@ Application::~Application()
 	m_instance = nullptr;
 }
 
-void Application::setProfileDirectory(QString profileDirectory)
+void Application::setPathsProvider(qobject_ptr<PathsProvider> pathsProvider)
 {
-	m_pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
+	m_pathsProvider = std::move(pathsProvider);
 }
 
 void Application::readConfiguration() try

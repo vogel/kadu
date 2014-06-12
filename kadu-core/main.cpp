@@ -197,7 +197,7 @@ int main(int argc, char *argv[]) try
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
 
-	application->setProfileDirectory(profileDirectory);
+	application->setPathsProvider(make_qobject<PathsProvider>(std::move(profileDirectory)));
 
 #ifndef Q_OS_WIN32
 	// Qt version is better on win32

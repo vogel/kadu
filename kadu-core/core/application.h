@@ -54,7 +54,7 @@ public:
 	Application(int &argc, char *argv[]);
 	virtual ~Application();
 
-	void setProfileDirectory(QString profileDirectory);
+	void setPathsProvider(qobject_ptr<PathsProvider> pathsProvider);
 	void readConfiguration();
 
 	Configuration * configuration() const;
