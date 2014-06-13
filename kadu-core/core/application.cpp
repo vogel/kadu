@@ -35,10 +35,12 @@
 
 #include "core/application.h"
 
-#include "configuration/configuration-unusable-exception.h"
+#include "configuration/configuration-api.h"
+#include "configuration/configuration-storage.h"
 #include "configuration/configuration.h"
 #include "misc/paths-provider.h"
 
+#include <QtCore/QDateTime>
 #include <QtWidgets/QMessageBox>
 
 Application * Application::m_instance = nullptr;
@@ -51,6 +53,7 @@ Application * Application::instance()
 Application::Application(int &argc, char *argv[]) :
 		QApplication{argc, argv},
 		m_configuration{nullptr},
+		m_configurationStorage{nullptr},
 		m_pathsProvider{nullptr}
 {
 	setApplicationName("Kadu");
@@ -69,25 +72,19 @@ Application::~Application()
 	m_instance = nullptr;
 }
 
-void Application::setConfiguration(Configuration *configuration) try
+void Application::setConfiguration(Configuration *configuration)
 {
-	m_configuration = std::move(configuration);
-	m_configuration->read();
+	m_configuration = configuration;
 }
-catch (ConfigurationUnusableException &e)
-{
-	auto profilePath = e.profilePath();
-	auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
-			"Profile is inaccessible. Please check permissions in the '%1' directory.")
-			.arg(profilePath.left(profilePath.length() - 1));
-	QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
 
-	throw;
+void Application::setConfigurationStorage(ConfigurationStorage *configurationStorage)
+{
+	m_configurationStorage = configurationStorage;
 }
 
 void Application::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = std::move(pathsProvider);
+	m_pathsProvider = pathsProvider;
 }
 
 Configuration * Application::configuration() const
@@ -98,6 +95,19 @@ Configuration * Application::configuration() const
 PathsProvider * Application::pathsProvider() const
 {
 	return m_pathsProvider;
+}
+
+void Application::flushConfiguration()
+{
+	m_configuration->api()->touch();
+	m_configurationStorage->writeConfiguration("kadu-0.12.conf.xml", m_configuration->api()->configuration());
+}
+
+void Application::backupConfiguration()
+{
+	auto backupName = QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+	m_configuration->api()->touch();
+	m_configurationStorage->writeConfiguration(backupName, m_configuration->api()->configuration());
 }
 
 #include "moc_application.cpp"

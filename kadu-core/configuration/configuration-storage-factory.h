@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,18 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration-unusable-exception.h"
+#pragma once
 
-ConfigurationUnusableException::ConfigurationUnusableException(QString profilePath) :
-		_profilePath(std::move(profilePath))
-{
-}
+#include "misc/memory.h"
+#include "exports.h"
 
-ConfigurationUnusableException::~ConfigurationUnusableException()
-{
-}
+#include <QtCore/QObject>
 
-QString ConfigurationUnusableException::profilePath() const
+class ConfigurationStorage;
+class PathsProvider;
+
+class KADUAPI ConfigurationStorageFactory final : public QObject
 {
-	return _profilePath;
-}
+	Q_OBJECT
+
+public:
+	explicit ConfigurationStorageFactory(QObject *parent = nullptr);
+	virtual ~ConfigurationStorageFactory();
+
+	void setPathsProvider(PathsProvider *pathsProvider);
+
+	qobject_ptr<ConfigurationStorage> createConfigurationStorage();
+
+private:
+	PathsProvider *m_pathsProvider;
+
+};

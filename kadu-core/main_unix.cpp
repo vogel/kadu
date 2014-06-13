@@ -119,7 +119,7 @@ static void kadu_signal_handler(int signal)
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
-		Application::instance()->configuration()->backup();
+		Application::instance()->backupConfiguration();
 		abort();
 	}
 	else if (signal == SIGUSR1)

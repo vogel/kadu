@@ -63,7 +63,7 @@ ConfigurationManager::~ConfigurationManager()
 
 void ConfigurationManager::load()
 {
-	Application::instance()->configuration()->backup();
+	Application::instance()->backupConfiguration();
 
 	importConfiguration();
 
@@ -78,7 +78,7 @@ void ConfigurationManager::flush()
 		object->ensureStored();
 
 	Application::instance()->configuration()->api()->rootElement().setAttribute("uuid", Uuid.toString());
-	Application::instance()->configuration()->write();
+	Application::instance()->flushConfiguration();
 }
 
 void ConfigurationManager::registerStorableObject(StorableObject *object)

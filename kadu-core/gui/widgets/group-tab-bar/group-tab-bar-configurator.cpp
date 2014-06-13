@@ -80,7 +80,7 @@ void GroupTabBarConfigurator::storeConfiguration()
 
 	storeGroupFilters(configuration.groupFilters());
 
-	Application::instance()->configuration()->write(); // TODO: fix whole configuration system
+	Application::instance()->flushConfiguration(); // TODO: fix whole configuration system
 }
 
 QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTabEverybody) const

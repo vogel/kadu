@@ -26,17 +26,5 @@
 
 class KADUAPI ConfigurationUnusableException : public std::exception
 {
-
-public:
-	explicit ConfigurationUnusableException(QString profilePath);
-	~ConfigurationUnusableException();
-
-	QString profilePath() const;
-
-protected:
 	virtual const char * what() const noexcept { return "Found cycle in graph"; }
-
-private:
-	QString _profilePath;
-
 };

@@ -20,12 +20,12 @@
 #include "configuration-factory.h"
 
 #include "configuration/configuration.h"
+#include "configuration/configuration-api.h"
 #include "configuration/configuration-storage.h"
-#include "misc/paths-provider.h"
 
 ConfigurationFactory::ConfigurationFactory(QObject *parent) :
 		QObject{parent},
-		m_pathsProvider{nullptr}
+		m_configurationStorage{nullptr}
 {
 }
 
@@ -33,17 +33,15 @@ ConfigurationFactory::~ConfigurationFactory()
 {
 }
 
-void ConfigurationFactory::setPathsProvider(PathsProvider *pathsProvider)
+void ConfigurationFactory::setConfigurationStorage(ConfigurationStorage *configurationStorage)
 {
-	m_pathsProvider = pathsProvider;
+	m_configurationStorage = configurationStorage;
 }
 
 qobject_ptr<Configuration> ConfigurationFactory::createConfiguration()
 {
-	auto profilePath = m_pathsProvider->profilePath();
-	auto configurationStorage = make_qobject<ConfigurationStorage>(profilePath);
-
-	return make_qobject<Configuration>(std::move(configurationStorage));
+	auto configurationApi = make_unique<ConfigurationApi>(m_configurationStorage->readConfiguration());
+	return make_qobject<Configuration>(std::move(configurationApi));
 }
 
 #include "moc_configuration-factory.cpp"

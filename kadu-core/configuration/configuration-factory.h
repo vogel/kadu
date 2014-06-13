@@ -25,7 +25,7 @@
 #include <QtCore/QObject>
 
 class Configuration;
-class PathsProvider;
+class ConfigurationStorage;
 
 class KADUAPI ConfigurationFactory final : public QObject
 {
@@ -35,11 +35,11 @@ public:
 	explicit ConfigurationFactory(QObject *parent = nullptr);
 	virtual ~ConfigurationFactory();
 
-	void setPathsProvider(PathsProvider *pathsProvider);
+	void setConfigurationStorage(ConfigurationStorage *configurationStorage);
 
 	qobject_ptr<Configuration> createConfiguration();
 
 private:
-	PathsProvider *m_pathsProvider;
+	ConfigurationStorage *m_configurationStorage;
 
 };

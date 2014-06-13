@@ -48,6 +48,8 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-factory.h"
+#include "configuration/configuration-storage.h"
+#include "configuration/configuration-storage-factory.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -197,19 +199,37 @@ int main(int argc, char *argv[]) try
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
 	auto pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
+
+	auto configurationStorageFactory = make_qobject<ConfigurationStorageFactory>();
+	configurationStorageFactory->setPathsProvider(pathsProvider.get());
+	auto configurationStorage = configurationStorageFactory->createConfigurationStorage();
+
 	auto configurationFactory = make_qobject<ConfigurationFactory>();
-	configurationFactory->setPathsProvider(pathsProvider.get());
+	configurationFactory->setConfigurationStorage(configurationStorage.get());
 
-	auto configuration = configurationFactory->createConfiguration();
+	auto configuration = qobject_ptr<Configuration>();
 
+	try
+	{
+		configuration = configurationFactory->createConfiguration();
+		application->setConfiguration(configuration.get());
+	}
+	catch (ConfigurationUnusableException &)
+	{
+		auto profilePath = pathsProvider->profilePath();
+		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
+				"Profile is inaccessible. Please check permissions in the '%1' directory.")
+				.arg(profilePath.left(profilePath.length() - 1));
+		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
+	}
+
+	application->setConfigurationStorage(configurationStorage.get());
 	application->setPathsProvider(pathsProvider.get());
 
 #ifndef Q_OS_WIN32
 	// Qt version is better on win32
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
-
-	application->setConfiguration(configuration.get());
 
 #ifdef DEBUG_OUTPUT_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());

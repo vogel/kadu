@@ -17,29 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "configuration-storage-factory.h"
 
-#include "exports.h"
+#include "configuration/configuration-storage.h"
+#include "misc/paths-provider.h"
 
-#include <QtCore/QObject>
-#include <memory>
-
-class ConfigurationApi;
-class DeprecatedConfigurationApi;
-
-class KADUAPI Configuration final : public QObject
+ConfigurationStorageFactory::ConfigurationStorageFactory(QObject *parent) :
+		QObject{parent},
+		m_pathsProvider{nullptr}
 {
-	Q_OBJECT
+}
 
-public:
-	explicit Configuration(std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent = nullptr);
-	virtual ~Configuration();
+ConfigurationStorageFactory::~ConfigurationStorageFactory()
+{
+}
 
-	ConfigurationApi * api() const;
-	DeprecatedConfigurationApi * deprecatedApi() const;
+void ConfigurationStorageFactory::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
 
-private:
-	std::unique_ptr<ConfigurationApi> m_configurationApi;
-	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
+qobject_ptr<ConfigurationStorage> ConfigurationStorageFactory::createConfigurationStorage()
+{
+	return make_qobject<ConfigurationStorage>(m_pathsProvider->profilePath());
+}
 
-};
+#include "moc_configuration-storage-factory.cpp"

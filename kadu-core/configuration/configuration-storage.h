@@ -19,9 +19,11 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QObject>
 
-class ConfigurationStorage final : public QObject
+class KADUAPI ConfigurationStorage final : public QObject
 {
 	Q_OBJECT
 

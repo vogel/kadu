@@ -249,7 +249,7 @@ Core::~Core()
 // 	delete Configuration;
 // 	Configuration = 0;
 
-	Application::instance()->configuration()->backup();
+	Application::instance()->backupConfiguration();
 
 	CurrentPluginManager->deactivatePlugins();
 
@@ -492,7 +492,7 @@ void Core::createAllDefaultToolbars()
 	ChatEditBox::createDefaultToolbars(toolbarsConfig);
 	SearchWindow::createDefaultToolbars(toolbarsConfig);
 
-	Application::instance()->configuration()->write();
+	Application::instance()->flushConfiguration();
 }
 
 void Core::init()
