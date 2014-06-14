@@ -113,3 +113,5 @@ void ConfigurationManager::importConfiguration()
 	if (!mainConfiguration.isNull())
 		  mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");
 }
+
+#include "moc_configuration-manager.cpp"
