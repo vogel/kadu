@@ -150,10 +150,10 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginStateManager *CurrentPluginStateManager;
 	PluginStateService *CurrentPluginStateService;
 	PluginManager *CurrentPluginManager;
-	qobject_ptr<ConfiguredChatStyleRendererFactoryProvider> CurrentChatStyleRendererFactoryProvider;
-	qobject_ptr<WebkitMessagesViewDisplayFactory> CurrentWebkitMessagesViewDisplayFactory;
-	qobject_ptr<WebkitMessagesViewFactory> CurrentWebkitMessagesViewFactory;
-	qobject_ptr<WebkitMessagesViewHandlerFactory> CurrentWebkitMessagesViewHandlerFactory;
+	owned_qptr<ConfiguredChatStyleRendererFactoryProvider> CurrentChatStyleRendererFactoryProvider;
+	owned_qptr<WebkitMessagesViewDisplayFactory> CurrentWebkitMessagesViewDisplayFactory;
+	owned_qptr<WebkitMessagesViewFactory> CurrentWebkitMessagesViewFactory;
+	owned_qptr<WebkitMessagesViewHandlerFactory> CurrentWebkitMessagesViewHandlerFactory;
 
 	KaduWindow *Window;
 

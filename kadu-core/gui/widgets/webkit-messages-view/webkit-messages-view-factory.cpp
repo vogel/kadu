@@ -48,9 +48,9 @@ void WebkitMessagesViewFactory::setWebkitMessagesViewHandlerFactory(WebkitMessag
 	m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
 }
 
-qobject_ptr<WebkitMessagesView> WebkitMessagesViewFactory::createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent)
+owned_qptr<WebkitMessagesView> WebkitMessagesViewFactory::createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent)
 {
-	auto result = make_qobject<WebkitMessagesView>(chat, supportTransparency, parent);
+	auto result = make_owned<WebkitMessagesView>(chat, supportTransparency, parent);
 	result->setChatStyleRendererFactory(m_chatStyleRendererFactoryProvider->chatStyleRendererFactory());
 	result->setImageStorageService(m_imageStorageService);
 	result->setWebkitMessagesViewHandlerFactory(m_webkitMessagesViewHandlerFactory);

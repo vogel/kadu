@@ -35,7 +35,7 @@ public:
 
 	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
-	virtual qobject_ptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
+	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
 
 private:
 	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;

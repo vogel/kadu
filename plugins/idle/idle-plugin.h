@@ -48,7 +48,7 @@ public:
 	Idle * idle() const;
 
 private:
-	qobject_ptr<Idle> m_idle;
+	owned_qptr<Idle> m_idle;
 
 };
 

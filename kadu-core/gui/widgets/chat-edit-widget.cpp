@@ -26,7 +26,7 @@
 
 ChatEditWidget::ChatEditWidget(Chat chat, QWidget *parent) :
 		ModalConfigurationWidget{parent},
-		m_stateNotifier{make_qobject<SimpleConfigurationValueStateNotifier>(this)},
+		m_stateNotifier{make_owned<SimpleConfigurationValueStateNotifier>(this)},
 		m_chat{chat}
 {
 }

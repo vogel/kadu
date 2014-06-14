@@ -32,7 +32,7 @@ bool IdlePlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	m_idle = make_qobject<Idle>(this);
+	m_idle = make_owned<Idle>(this);
 	return true;
 }
 

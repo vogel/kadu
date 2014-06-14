@@ -43,7 +43,7 @@ void ConfigurationFactory::setConfigurationPathProvider(ConfigurationPathProvide
 	m_configurationPathProvider = configurationPathProvider;
 }
 
-qobject_ptr<Configuration> ConfigurationFactory::createConfiguration() const
+not_owned_qptr<Configuration> ConfigurationFactory::createConfiguration() const
 {
 	auto result = readConfiguration();
 	if (result)
@@ -52,7 +52,7 @@ qobject_ptr<Configuration> ConfigurationFactory::createConfiguration() const
 	return createEmptyConfiguration();
 }
 
-qobject_ptr<Configuration> ConfigurationFactory::readConfiguration() const
+not_owned_qptr<Configuration> ConfigurationFactory::readConfiguration() const
 {
 	auto dir = m_configurationPathProvider->configurationDirectoryPath();
 	for (auto const &fileName : m_configurationPathProvider->possibleConfigurationFilePaths())
@@ -68,7 +68,7 @@ qobject_ptr<Configuration> ConfigurationFactory::readConfiguration() const
 		try
 		{
 			auto configurationApi = make_unique<ConfigurationApi>(content);
-			return make_qobject<Configuration>(std::move(configurationApi));
+			return make_not_owned<Configuration>(std::move(configurationApi));
 		}
 		catch (ConfigurationReadErrorException &)
 		{
@@ -79,13 +79,13 @@ qobject_ptr<Configuration> ConfigurationFactory::readConfiguration() const
 	return {};
 }
 
-qobject_ptr<Configuration> ConfigurationFactory::createEmptyConfiguration() const
+not_owned_qptr<Configuration> ConfigurationFactory::createEmptyConfiguration() const
 {
 	if (!isConfigurationPathUsable())
 		throw ConfigurationUnusableException();
 
 	auto configurationApi = make_unique<ConfigurationApi>();
-	return make_qobject<Configuration>(std::move(configurationApi));
+	return make_not_owned<Configuration>(std::move(configurationApi));
 }
 
 bool ConfigurationFactory::isConfigurationPathUsable() const

@@ -43,7 +43,7 @@ public:
 	void setImageStorageService(ImageStorageService *imageStorageService);
 	void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 
-	qobject_ptr<WebkitMessagesView> createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent);
+	owned_qptr<WebkitMessagesView> createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent);
 
 private:
 	QPointer<ChatStyleRendererFactoryProvider> m_chatStyleRendererFactoryProvider;

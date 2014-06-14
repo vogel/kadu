@@ -63,7 +63,7 @@ public:
 	 * @param messagesDisplay Object to handle order of rendering messages.
 	 * @param parent QObject parent.
 	 */
-	explicit WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer,
+	explicit WebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer,
 			std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay, QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewHandler();
 
@@ -150,7 +150,7 @@ public:
 	void displayChatImage(const ChatImage &chatImage, const QString &fileName);
 
 private:
-	qobject_ptr<ChatStyleRenderer> m_chatStyleRenderer;
+	not_owned_qptr<ChatStyleRenderer> m_chatStyleRenderer;
 	std::unique_ptr<WebkitMessagesViewDisplay> m_messagesDisplay;
 
 	MessageLimiter m_messagesLimiter;

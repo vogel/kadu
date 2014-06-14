@@ -41,7 +41,7 @@ public:
 	void setChatStyleManager(ChatStyleManager *chatStyleManager);
 	void setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory);
 
-	qobject_ptr<WebkitMessagesViewHandler> createWebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent);
+	owned_qptr<WebkitMessagesViewHandler> createWebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent);
 
 private:
 	QPointer<ChatStyleManager> m_chatStyleManager;

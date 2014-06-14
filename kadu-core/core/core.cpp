@@ -762,19 +762,19 @@ void Core::runServices()
 	CurrentPluginDependencyHandler->initialize();
 	CurrentPluginStateManager->loadPluginStates();
 
-	CurrentChatStyleRendererFactoryProvider = make_qobject<ConfiguredChatStyleRendererFactoryProvider>(this);
+	CurrentChatStyleRendererFactoryProvider = make_owned<ConfiguredChatStyleRendererFactoryProvider>(this);
 
 	ChatStyleManager::instance()->setConfiguredChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
 
-	CurrentWebkitMessagesViewDisplayFactory = make_qobject<WebkitMessagesViewDisplayFactory>(this);
+	CurrentWebkitMessagesViewDisplayFactory = make_owned<WebkitMessagesViewDisplayFactory>(this);
 	CurrentWebkitMessagesViewDisplayFactory->setChatStyleManager(ChatStyleManager::instance());
 	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(CurrentMessageRenderInfoFactory);
 
-	CurrentWebkitMessagesViewHandlerFactory = make_qobject<WebkitMessagesViewHandlerFactory>(this);
+	CurrentWebkitMessagesViewHandlerFactory = make_owned<WebkitMessagesViewHandlerFactory>(this);
 	CurrentWebkitMessagesViewHandlerFactory->setChatStyleManager(ChatStyleManager::instance());
 	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(CurrentWebkitMessagesViewDisplayFactory.get());
 
-	CurrentWebkitMessagesViewFactory = make_qobject<WebkitMessagesViewFactory>(this);
+	CurrentWebkitMessagesViewFactory = make_owned<WebkitMessagesViewFactory>(this);
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
 	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());

@@ -41,8 +41,8 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	qobject_ptr<WebkitMessagesView> m_view;
+	owned_qptr<WebkitMessagesView> m_view;
 
-	qobject_ptr<WebkitMessagesView> preparePreview();
+	owned_qptr<WebkitMessagesView> preparePreview();
 
 };

@@ -34,7 +34,7 @@ HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<SortedMessages> messa
 
 	connect(m_messagesView, SIGNAL(destroyed()), this, SLOT(deleteLater()));
 
-	auto futureWatcher = make_qobject<QFutureWatcher<SortedMessages>>(this);
+	auto futureWatcher = make_owned<QFutureWatcher<SortedMessages>>(this);
 	connect(futureWatcher.get(), SIGNAL(finished()), this, SLOT(messagesAvailable()));
 
 	futureWatcher->setFuture(m_messages);

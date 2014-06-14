@@ -45,7 +45,7 @@ protected:
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 
 private:
-	qobject_ptr<SimpleConfigurationValueStateNotifier> m_stateNotifier;
+	owned_qptr<SimpleConfigurationValueStateNotifier> m_stateNotifier;
 	Chat m_chat;
 
 };

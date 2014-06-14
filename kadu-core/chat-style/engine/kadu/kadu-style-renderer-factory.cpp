@@ -30,8 +30,8 @@ KaduStyleRendererFactory::~KaduStyleRendererFactory()
 {
 }
 
-qobject_ptr<ChatStyleRenderer> KaduStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
+not_owned_qptr<ChatStyleRenderer> KaduStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
 {
-	auto renderer = make_qobject<KaduStyleRenderer>(std::move(configuration), m_style);
-	return qobject_ptr<ChatStyleRenderer>{renderer.release()};
+	auto renderer = make_not_owned<KaduStyleRenderer>(std::move(configuration), m_style);
+	return not_owned_qptr<ChatStyleRenderer>{renderer.release()};
 }

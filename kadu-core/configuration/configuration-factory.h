@@ -37,13 +37,13 @@ public:
 
 	void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
 
-	qobject_ptr<Configuration> createConfiguration() const;
+	not_owned_qptr<Configuration> createConfiguration() const;
 
 private:
 	ConfigurationPathProvider *m_configurationPathProvider;
 
-	qobject_ptr<Configuration> readConfiguration() const;
-	qobject_ptr<Configuration> createEmptyConfiguration() const;
+	not_owned_qptr<Configuration> readConfiguration() const;
+	not_owned_qptr<Configuration> createEmptyConfiguration() const;
 	bool isConfigurationPathUsable() const;
 
 };

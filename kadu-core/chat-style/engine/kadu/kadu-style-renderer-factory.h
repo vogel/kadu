@@ -30,7 +30,7 @@ public:
 	explicit KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style);
 	virtual ~KaduStyleRendererFactory();
 
-	virtual qobject_ptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
+	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
 
 private:
 	std::shared_ptr<KaduChatSyntax> m_style;

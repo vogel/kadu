@@ -25,7 +25,7 @@
 #include "chat-style/engine/chat-style-renderer.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
 
-WebkitMessagesViewHandler::WebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer,
+WebkitMessagesViewHandler::WebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer,
 	std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay, QObject *parent) :
 		QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)}, m_messagesDisplay{std::move(messagesDisplay)}
 {

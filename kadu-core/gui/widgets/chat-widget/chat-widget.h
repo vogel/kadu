@@ -64,7 +64,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	Chat CurrentChat;
 
 	ChatTopBarContainerWidget *TopBarContainer;
-	qobject_ptr<WebkitMessagesView> MessagesView;
+	owned_qptr<WebkitMessagesView> MessagesView;
 	FilteredTreeView *BuddiesWidget;
 	TalkableProxyModel *ProxyModel;
 	ChatEditBox *InputBox;

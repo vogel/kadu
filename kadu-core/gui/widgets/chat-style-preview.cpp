@@ -37,7 +37,7 @@ ChatStylePreview::ChatStylePreview(QWidget *parent) :
 	setFixedHeight(250);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-	auto layout = make_qobject<QHBoxLayout>(this);
+	auto layout = make_owned<QHBoxLayout>(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	m_view = preparePreview();
@@ -56,7 +56,7 @@ void ChatStylePreview::setRendererFactory(std::unique_ptr<ChatStyleRendererFacto
 	m_view.get()->setChatStyleRendererFactory(std::move(rendererFactory));
 }
 
-qobject_ptr<WebkitMessagesView> ChatStylePreview::preparePreview()
+owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 {
 	auto example = Buddy::dummy();
 

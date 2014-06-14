@@ -56,7 +56,7 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 		m_atBottom{true}
 {
 	auto oldManager = page()->networkAccessManager();
-	auto newManager = make_qobject<ChatViewNetworkAccessManager>(oldManager, this);
+	auto newManager = make_owned<ChatViewNetworkAccessManager>(oldManager, this);
 	newManager->setImageStorageService(Core::instance()->imageStorageService());
 	page()->setNetworkAccessManager(newManager.get());
 
@@ -219,7 +219,7 @@ ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 	return ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 }
 
-void WebkitMessagesView::setWebkitMessagesViewHandler(qobject_ptr<WebkitMessagesViewHandler> handler)
+void WebkitMessagesView::setWebkitMessagesViewHandler(owned_qptr<WebkitMessagesViewHandler> handler)
 {
 	ScopedUpdatesDisabler updatesDisabler{*this};
 	auto scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);

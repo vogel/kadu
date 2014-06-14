@@ -36,9 +36,9 @@ void AdiumStyleRendererFactory::setMessageHtmlRendererService(MessageHtmlRendere
 	m_messageHtmlRendererService = messageHtmlRendererService;
 }
 
-qobject_ptr<ChatStyleRenderer> AdiumStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
+not_owned_qptr<ChatStyleRenderer> AdiumStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
 {
-	auto renderer = make_qobject<AdiumStyleRenderer>(std::move(configuration), m_style);
+	auto renderer = make_not_owned<AdiumStyleRenderer>(std::move(configuration), m_style);
 	renderer->setMessageHtmlRendererService(m_messageHtmlRendererService);
-	return qobject_ptr<ChatStyleRenderer>{renderer.release()};
+	return not_owned_qptr<ChatStyleRenderer>{renderer.release()};
 }

@@ -46,11 +46,11 @@ void WebkitMessagesViewHandlerFactory::setWebkitMessagesViewDisplayFactory(Webki
 	m_webkitMessagesViewDisplayFactory = webkitMessagesViewDisplayFactory;
 }
 
-qobject_ptr<WebkitMessagesViewHandler> WebkitMessagesViewHandlerFactory::createWebkitMessagesViewHandler(qobject_ptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent)
+owned_qptr<WebkitMessagesViewHandler> WebkitMessagesViewHandlerFactory::createWebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent)
 {
 	auto display = m_webkitMessagesViewDisplayFactory->createWebkitMessagesViewDisplay(*chatStyleRenderer.get());
 
-	auto result = make_qobject<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(display), parent);
+	auto result = make_owned<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(display), parent);
 	result->setMessageLimit(m_chatStyleManager->prune());
 	result->setMessageLimitPolicy(0 == m_chatStyleManager->prune()
 			? MessageLimitPolicy::None

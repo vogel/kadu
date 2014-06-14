@@ -43,7 +43,7 @@ public:
 	 * @return New instance of ChatStyleRenderer with given configuration.
 	 * @param configuration configuration used to create ChatStyleRenderer.
 	 */
-	virtual qobject_ptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) = 0;
+	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) = 0;
 
 };
 

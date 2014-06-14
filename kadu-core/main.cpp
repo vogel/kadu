@@ -199,16 +199,16 @@ int main(int argc, char *argv[]) try
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
 
-	auto pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
-	auto configurationFactory = make_qobject<ConfigurationFactory>();
-	auto configurationPathProvider = make_qobject<ConfigurationPathProvider>();
-	auto configurationWriter = make_qobject<ConfigurationWriter>();
+	auto pathsProvider = make_not_owned<PathsProvider>(std::move(profileDirectory));
+	auto configurationFactory = make_not_owned<ConfigurationFactory>();
+	auto configurationPathProvider = make_not_owned<ConfigurationPathProvider>();
+	auto configurationWriter = make_not_owned<ConfigurationWriter>();
 
 	configurationFactory->setConfigurationPathProvider(configurationPathProvider.get());
 	configurationPathProvider->setPathsProvider(pathsProvider.get());
 	configurationWriter->setConfigurationPathProvider(configurationPathProvider.get());
 
-	auto configuration = qobject_ptr<Configuration>();
+	auto configuration = not_owned_qptr<Configuration>();
 
 	try
 	{

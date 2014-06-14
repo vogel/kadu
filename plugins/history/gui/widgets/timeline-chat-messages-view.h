@@ -68,7 +68,7 @@ class TimelineChatMessagesView : public QWidget
 	HistoryQueryResultsModel *ResultsModel;
 	HistoryQueryResultsProxyModel *ResultsProxyModel;
 	WebViewHighlighter *Highlighter;
-	qobject_ptr<WebkitMessagesView> MessagesView;
+	owned_qptr<WebkitMessagesView> MessagesView;
 	SearchBar *MessagesSearchBar;
 
 	QFutureWatcher<QVector<HistoryQueryResult> > *ResultsFutureWatcher;
