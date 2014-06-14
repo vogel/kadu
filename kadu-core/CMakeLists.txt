@@ -124,6 +124,7 @@ set (kadu_SUBDIRS
 	core
 	dom
 	execution-arguments
+	file-system
 	file-transfer
 	formatted-string
 	gui
@@ -313,6 +314,7 @@ kadu_api_directories (kadu-core
 	core
 	dom
 	execution-arguments
+	file-system
 	file-transfer
 	formatted-string
 	gui

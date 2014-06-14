@@ -17,37 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration-storage.h"
+#include "atomic-file-writer.h"
 
 #include "file-system/atomic-file-write-exception.h"
-#include "file-system/atomic-file-writer.h"
-#include "debug.h"
 
-#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QString>
 
-ConfigurationStorage::ConfigurationStorage(QString profilePath, QObject *parent) :
-		QObject{parent},
-		m_profilePath{std::move(profilePath)}
+void AtomicFileWriter::write(const QString &fileName, const QString &content)
 {
+	auto tmpFileName = fileName + ".tmp";
+	QFile file{tmpFileName};
+
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+		throw AtomicFileWriteException();
+
+	file.write(content.toUtf8());
+	file.close();
+
+	QFile::remove(fileName);
+	if (!QFile::rename(tmpFileName, fileName))
+		throw AtomicFileWriteException();
 }
-
-ConfigurationStorage::~ConfigurationStorage()
-{
-}
-
-void ConfigurationStorage::writeConfiguration(const QString &fileName, const QString &configuration) const
-{
-	auto atomicFileWriter = AtomicFileWriter{};
-
-	try
-	{
-		auto fullPath = m_profilePath + fileName;
-		atomicFileWriter.write(fullPath, configuration);
-	}
-	catch (AtomicFileWriteException &)
-	{
-		kdebugm(KDEBUG_INFO, "error during saving of '%s'\n", qPrintable(fileName));
-	}
-}
-
-#include "moc_configuration-storage.cpp"
