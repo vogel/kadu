@@ -38,6 +38,9 @@ public:
 	ConfigurationApi * api() const;
 	DeprecatedConfigurationApi * deprecatedApi() const;
 
+	void touch();
+	QString content() const;
+
 private:
 	std::unique_ptr<ConfigurationApi> m_configurationApi;
 	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;

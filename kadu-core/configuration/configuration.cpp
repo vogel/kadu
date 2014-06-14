@@ -44,4 +44,14 @@ DeprecatedConfigurationApi * Configuration::deprecatedApi() const
 	return m_deprecatedConfigurationApi.get();
 }
 
+void Configuration::touch()
+{
+	m_configurationApi->touch();
+}
+
+QString Configuration::content() const
+{
+	return m_configurationApi->configuration();
+}
+
 #include "moc_configuration.cpp"

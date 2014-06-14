@@ -23,17 +23,27 @@
 
 #include <QtCore/QObject>
 
+class Configuration;
+class ConfigurationPathProvider;
+
 class KADUAPI ConfigurationStorage final : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ConfigurationStorage(QString profilePath, QObject *parent = nullptr);
+	explicit ConfigurationStorage(QObject *parent = nullptr);
 	virtual ~ConfigurationStorage();
 
-	void writeConfiguration(const QString &fileName, const QString &configuration) const;
+	void setConfiguration(Configuration *configuration);
+	void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
+
+	void write() const;
+	void backup() const;
 
 private:
-	QString m_profilePath;
+	Configuration *m_configuration;
+	ConfigurationPathProvider *m_configurationPathProvider;
+
+	void write(const QString &fileName) const;
 
 };

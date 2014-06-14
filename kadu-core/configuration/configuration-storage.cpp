@@ -19,15 +19,18 @@
 
 #include "configuration-storage.h"
 
+#include "configuration/configuration.h"
+#include "configuration/configuration-path-provider.h"
 #include "file-system/atomic-file-write-exception.h"
 #include "file-system/atomic-file-writer.h"
 #include "debug.h"
 
 #include <QtCore/QDir>
 
-ConfigurationStorage::ConfigurationStorage(QString profilePath, QObject *parent) :
+ConfigurationStorage::ConfigurationStorage(QObject *parent) :
 		QObject{parent},
-		m_profilePath{std::move(profilePath)}
+		m_configuration{nullptr},
+		m_configurationPathProvider{nullptr}
 {
 }
 
@@ -35,14 +38,34 @@ ConfigurationStorage::~ConfigurationStorage()
 {
 }
 
-void ConfigurationStorage::writeConfiguration(const QString &fileName, const QString &configuration) const
+void ConfigurationStorage::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ConfigurationStorage::setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider)
+{
+	m_configurationPathProvider = configurationPathProvider;
+}
+
+void ConfigurationStorage::write() const
+{
+	write(m_configurationPathProvider->configurationFilePath());
+}
+
+void ConfigurationStorage::backup() const
+{
+	write(m_configurationPathProvider->backupFilePath());
+}
+
+void ConfigurationStorage::write(const QString &fileName) const
 {
 	auto atomicFileWriter = AtomicFileWriter{};
 
 	try
 	{
-		auto fullPath = m_profilePath + fileName;
-		atomicFileWriter.write(fullPath, configuration);
+		m_configuration->touch();
+		atomicFileWriter.write(fileName, m_configuration->content());
 	}
 	catch (AtomicFileWriteException &)
 	{

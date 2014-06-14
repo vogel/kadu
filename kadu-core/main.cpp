@@ -50,7 +50,6 @@
 #include "configuration/configuration-factory.h"
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration-storage.h"
-#include "configuration/configuration-storage-factory.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -199,23 +198,21 @@ int main(int argc, char *argv[]) try
 	auto profileDirectory = executionArguments.profileDirectory().isEmpty()
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
+
 	auto pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
-	auto configurationPathProvider = make_qobject<ConfigurationPathProvider>();
-	configurationPathProvider->setPathsProvider(pathsProvider.get());
-
-	auto configurationStorageFactory = make_qobject<ConfigurationStorageFactory>();
-	configurationStorageFactory->setPathsProvider(pathsProvider.get());
-	auto configurationStorage = configurationStorageFactory->createConfigurationStorage();
-
 	auto configurationFactory = make_qobject<ConfigurationFactory>();
+	auto configurationPathProvider = make_qobject<ConfigurationPathProvider>();
+	auto configurationStorage = make_qobject<ConfigurationStorage>();
+
 	configurationFactory->setConfigurationPathProvider(configurationPathProvider.get());
+	configurationPathProvider->setPathsProvider(pathsProvider.get());
+	configurationStorage->setConfigurationPathProvider(configurationPathProvider.get());
 
 	auto configuration = qobject_ptr<Configuration>();
 
 	try
 	{
 		configuration = configurationFactory->createConfiguration();
-		application->setConfiguration(configuration.get());
 	}
 	catch (ConfigurationUnusableException &)
 	{
@@ -228,6 +225,9 @@ int main(int argc, char *argv[]) try
 		throw;
 	}
 
+	configurationStorage->setConfiguration(configuration.get());
+
+	application->setConfiguration(configuration.get());
 	application->setConfigurationStorage(configurationStorage.get());
 	application->setPathsProvider(pathsProvider.get());
 
