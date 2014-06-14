@@ -31,14 +31,6 @@ public:
 	explicit ConfigurationStorage(QString profilePath, QObject *parent = nullptr);
 	virtual ~ConfigurationStorage();
 
-	QStringList possibleConfigurationFiles() const;
-	/**
-	 * @todo Hidden dependency is here. This functin can not be called before readConfiguration()
-	 * because is creates file that readConfiguration checks.
-	 */
-	bool isUsable() const;
-
-	QString readConfiguration() const;
 	void writeConfiguration(const QString &fileName, const QString &configuration) const;
 
 private:
