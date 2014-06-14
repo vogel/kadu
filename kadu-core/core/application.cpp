@@ -35,7 +35,7 @@
 
 #include "core/application.h"
 
-#include "configuration/configuration-storage.h"
+#include "configuration/configuration-writer.h"
 #include "configuration/configuration.h"
 #include "misc/paths-provider.h"
 
@@ -51,7 +51,7 @@ Application * Application::instance()
 Application::Application(int &argc, char *argv[]) :
 		QApplication{argc, argv},
 		m_configuration{nullptr},
-		m_configurationStorage{nullptr},
+		m_configurationWriter{nullptr},
 		m_pathsProvider{nullptr}
 {
 	setApplicationName("Kadu");
@@ -75,9 +75,9 @@ void Application::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void Application::setConfigurationStorage(ConfigurationStorage *configurationStorage)
+void Application::setConfigurationWriter(ConfigurationWriter *configurationWriter)
 {
-	m_configurationStorage = configurationStorage;
+	m_configurationWriter = configurationWriter;
 }
 
 void Application::setPathsProvider(PathsProvider *pathsProvider)
@@ -97,12 +97,12 @@ PathsProvider * Application::pathsProvider() const
 
 void Application::flushConfiguration()
 {
-	m_configurationStorage->write();
+	m_configurationWriter->write();
 }
 
 void Application::backupConfiguration()
 {
-	m_configurationStorage->backup();
+	m_configurationWriter->backup();
 }
 
 #include "moc_application.cpp"

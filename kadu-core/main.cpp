@@ -49,7 +49,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-factory.h"
 #include "configuration/configuration-path-provider.h"
-#include "configuration/configuration-storage.h"
+#include "configuration/configuration-writer.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -202,11 +202,11 @@ int main(int argc, char *argv[]) try
 	auto pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
 	auto configurationFactory = make_qobject<ConfigurationFactory>();
 	auto configurationPathProvider = make_qobject<ConfigurationPathProvider>();
-	auto configurationStorage = make_qobject<ConfigurationStorage>();
+	auto configurationWriter = make_qobject<ConfigurationWriter>();
 
 	configurationFactory->setConfigurationPathProvider(configurationPathProvider.get());
 	configurationPathProvider->setPathsProvider(pathsProvider.get());
-	configurationStorage->setConfigurationPathProvider(configurationPathProvider.get());
+	configurationWriter->setConfigurationPathProvider(configurationPathProvider.get());
 
 	auto configuration = qobject_ptr<Configuration>();
 
@@ -225,10 +225,10 @@ int main(int argc, char *argv[]) try
 		throw;
 	}
 
-	configurationStorage->setConfiguration(configuration.get());
+	configurationWriter->setConfiguration(configuration.get());
 
 	application->setConfiguration(configuration.get());
-	application->setConfigurationStorage(configurationStorage.get());
+	application->setConfigurationWriter(configurationWriter.get());
 	application->setPathsProvider(pathsProvider.get());
 
 #ifndef Q_OS_WIN32

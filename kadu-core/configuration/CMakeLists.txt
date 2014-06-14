@@ -9,7 +9,7 @@ set (configuration_SRCS
 	configuration-holder.cpp
 	configuration-manager.cpp
 	configuration-path-provider.cpp
-	configuration-storage.cpp
+	configuration-writer.cpp
 	deprecated-configuration-api.cpp
 	main-configuration-holder.cpp
 	notifier-configuration-data-manager.cpp

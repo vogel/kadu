@@ -39,7 +39,7 @@
 #include <QtWidgets/QApplication>
 
 class Configuration;
-class ConfigurationStorage;
+class ConfigurationWriter;
 class PathsProvider;
 
 class KADUAPI Application : public QApplication
@@ -53,7 +53,7 @@ public:
 	virtual ~Application();
 
 	void setConfiguration(Configuration *configuration);
-	void setConfigurationStorage(ConfigurationStorage *configurationStorage);
+	void setConfigurationWriter(ConfigurationWriter *configurationWriter);
 	void setPathsProvider(PathsProvider *pathsProvider);
 
 	Configuration * configuration() const;
@@ -66,7 +66,7 @@ private:
 	static Application * m_instance;
 
 	Configuration *m_configuration;
-	ConfigurationStorage *m_configurationStorage;
+	ConfigurationWriter *m_configurationWriter;
 	PathsProvider *m_pathsProvider;
 
 };

@@ -26,13 +26,13 @@
 class Configuration;
 class ConfigurationPathProvider;
 
-class KADUAPI ConfigurationStorage final : public QObject
+class KADUAPI ConfigurationWriter final : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ConfigurationStorage(QObject *parent = nullptr);
-	virtual ~ConfigurationStorage();
+	explicit ConfigurationWriter(QObject *parent = nullptr);
+	virtual ~ConfigurationWriter();
 
 	void setConfiguration(Configuration *configuration);
 	void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);

@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration-storage.h"
+#include "configuration-writer.h"
 
 #include "configuration/configuration.h"
 #include "configuration/configuration-path-provider.h"
@@ -27,38 +27,38 @@
 
 #include <QtCore/QDir>
 
-ConfigurationStorage::ConfigurationStorage(QObject *parent) :
+ConfigurationWriter::ConfigurationWriter(QObject *parent) :
 		QObject{parent},
 		m_configuration{nullptr},
 		m_configurationPathProvider{nullptr}
 {
 }
 
-ConfigurationStorage::~ConfigurationStorage()
+ConfigurationWriter::~ConfigurationWriter()
 {
 }
 
-void ConfigurationStorage::setConfiguration(Configuration *configuration)
+void ConfigurationWriter::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
 }
 
-void ConfigurationStorage::setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider)
+void ConfigurationWriter::setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider)
 {
 	m_configurationPathProvider = configurationPathProvider;
 }
 
-void ConfigurationStorage::write() const
+void ConfigurationWriter::write() const
 {
 	write(m_configurationPathProvider->configurationFilePath());
 }
 
-void ConfigurationStorage::backup() const
+void ConfigurationWriter::backup() const
 {
 	write(m_configurationPathProvider->backupFilePath());
 }
 
-void ConfigurationStorage::write(const QString &fileName) const
+void ConfigurationWriter::write(const QString &fileName) const
 {
 	auto atomicFileWriter = AtomicFileWriter{};
 
@@ -73,4 +73,4 @@ void ConfigurationStorage::write(const QString &fileName) const
 	}
 }
 
-#include "moc_configuration-storage.cpp"
+#include "moc_configuration-writer.cpp"
