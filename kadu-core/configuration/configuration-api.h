@@ -50,7 +50,8 @@ private:
 	QDomNode cdataOrText(const QString &text);
 
 public:
-	ConfigurationApi(const QString &content);
+	ConfigurationApi();
+	explicit ConfigurationApi(const QString &content);
 
 	void touch();
 

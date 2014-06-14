@@ -21,11 +21,16 @@
 
 #include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
-#include "configuration/configuration-storage.h"
+#include "configuration/configuration-path-provider.h"
+#include "configuration/configuration-read-error-exception.h"
+#include "configuration/configuration-unusable-exception.h"
+
+#include <QtCore/QDir>
+#include <QtCore/QFile>
 
 ConfigurationFactory::ConfigurationFactory(QObject *parent) :
 		QObject{parent},
-		m_configurationStorage{nullptr}
+		m_configurationPathProvider{nullptr}
 {
 }
 
@@ -33,15 +38,69 @@ ConfigurationFactory::~ConfigurationFactory()
 {
 }
 
-void ConfigurationFactory::setConfigurationStorage(ConfigurationStorage *configurationStorage)
+void ConfigurationFactory::setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider)
 {
-	m_configurationStorage = configurationStorage;
+	m_configurationPathProvider = configurationPathProvider;
 }
 
-qobject_ptr<Configuration> ConfigurationFactory::createConfiguration()
+qobject_ptr<Configuration> ConfigurationFactory::createConfiguration() const
 {
-	auto configurationApi = make_unique<ConfigurationApi>(m_configurationStorage->readConfiguration());
+	auto result = readConfiguration();
+	if (result)
+		return result;
+
+	return createEmptyConfiguration();
+}
+
+qobject_ptr<Configuration> ConfigurationFactory::readConfiguration() const
+{
+	auto dir = m_configurationPathProvider->configurationDirectoryPath();
+	for (auto const &fileName : m_configurationPathProvider->possibleConfigurationFilePaths())
+	{
+		QFile file{dir + "/" + fileName};
+		if (!file.open(QIODevice::ReadOnly))
+			continue;
+
+		auto content = QString::fromUtf8(file.readAll());
+		if (content.length() == 0)
+			continue;
+
+		try
+		{
+			auto configurationApi = make_unique<ConfigurationApi>(content);
+			return make_qobject<Configuration>(std::move(configurationApi));
+		}
+		catch (ConfigurationReadErrorException &)
+		{
+			continue; // try next file
+		}
+	}
+
+	return {};
+}
+
+qobject_ptr<Configuration> ConfigurationFactory::createEmptyConfiguration() const
+{
+	if (!isConfigurationPathUsable())
+		throw ConfigurationUnusableException();
+
+	auto configurationApi = make_unique<ConfigurationApi>();
 	return make_qobject<Configuration>(std::move(configurationApi));
+}
+
+bool ConfigurationFactory::isConfigurationPathUsable() const
+{
+	auto directory = m_configurationPathProvider->configurationDirectoryPath();
+	if (directory.isEmpty())
+		return false;
+
+	if (!QDir(directory).isReadable())
+		return false;
+
+	if (!QFile(m_configurationPathProvider->configurationFilePath()).open(QIODevice::ReadWrite))
+		return false;
+
+	return true;
 }
 
 #include "moc_configuration-factory.cpp"

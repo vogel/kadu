@@ -39,6 +39,11 @@ void ConfigurationPathProvider::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
+QString ConfigurationPathProvider::configurationDirectoryPath() const
+{
+	return m_pathsProvider->profilePath();
+}
+
 QStringList ConfigurationPathProvider::possibleConfigurationFilePaths() const
 {
 	auto profilePath = m_pathsProvider->profilePath();

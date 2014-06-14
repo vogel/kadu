@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,31 +19,12 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
 
-#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <exception>
 
-class Configuration;
-class ConfigurationPathProvider;
-
-class KADUAPI ConfigurationFactory final : public QObject
+class KADUAPI ConfigurationReadErrorException : public std::exception
 {
-	Q_OBJECT
-
-public:
-	explicit ConfigurationFactory(QObject *parent = nullptr);
-	virtual ~ConfigurationFactory();
-
-	void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
-
-	qobject_ptr<Configuration> createConfiguration() const;
-
-private:
-	ConfigurationPathProvider *m_configurationPathProvider;
-
-	qobject_ptr<Configuration> readConfiguration() const;
-	qobject_ptr<Configuration> createEmptyConfiguration() const;
-	bool isConfigurationPathUsable() const;
-
+	virtual const char * what() const noexcept { return "Configuration could not be read"; }
 };

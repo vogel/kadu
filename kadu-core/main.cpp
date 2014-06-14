@@ -48,6 +48,7 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-factory.h"
+#include "configuration/configuration-path-provider.h"
 #include "configuration/configuration-storage.h"
 #include "configuration/configuration-storage-factory.h"
 #include "configuration/configuration-unusable-exception.h"
@@ -199,13 +200,15 @@ int main(int argc, char *argv[]) try
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
 	auto pathsProvider = make_qobject<PathsProvider>(std::move(profileDirectory));
+	auto configurationPathProvider = make_qobject<ConfigurationPathProvider>();
+	configurationPathProvider->setPathsProvider(pathsProvider.get());
 
 	auto configurationStorageFactory = make_qobject<ConfigurationStorageFactory>();
 	configurationStorageFactory->setPathsProvider(pathsProvider.get());
 	auto configurationStorage = configurationStorageFactory->createConfigurationStorage();
 
 	auto configurationFactory = make_qobject<ConfigurationFactory>();
-	configurationFactory->setConfigurationStorage(configurationStorage.get());
+	configurationFactory->setConfigurationPathProvider(configurationPathProvider.get());
 
 	auto configuration = qobject_ptr<Configuration>();
 
@@ -216,11 +219,13 @@ int main(int argc, char *argv[]) try
 	}
 	catch (ConfigurationUnusableException &)
 	{
-		auto profilePath = pathsProvider->profilePath();
+		auto profilePath = configurationPathProvider->configurationDirectoryPath();
 		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
 				"Profile is inaccessible. Please check permissions in the '%1' directory.")
 				.arg(profilePath.left(profilePath.length() - 1));
 		QMessageBox::critical(0, QCoreApplication::translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
+
+		throw;
 	}
 
 	application->setConfigurationStorage(configurationStorage.get());
@@ -283,7 +288,7 @@ catch (WSAException &)
 	return 2;
 }
 #endif
-catch (ConfigurationUnusableException &e)
+catch (ConfigurationUnusableException &)
 {
 	// already handled
 }

@@ -26,5 +26,5 @@
 
 class KADUAPI ConfigurationUnusableException : public std::exception
 {
-	virtual const char * what() const noexcept { return "Found cycle in graph"; }
+	virtual const char * what() const noexcept { return "Configuration directory unusable"; }
 };

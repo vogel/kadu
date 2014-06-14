@@ -28,18 +28,28 @@
 
 #include <errno.h>
 
+#include "configuration/configuration-read-error-exception.h"
 #include "core/core.h"
 #include "debug.h"
 
 #include "configuration-api.h"
 
+ConfigurationApi::ConfigurationApi()
+{
+	auto root = DomDocument.createElement("Kadu");
+	DomDocument.appendChild(root);
+}
+
 ConfigurationApi::ConfigurationApi(const QString &content)
 {
-	DomDocument.setContent(content);
+	if (!DomDocument.setContent(content))
+	{
+		throw ConfigurationReadErrorException();
+	}
+
 	if (DomDocument.documentElement().tagName() != "Kadu")
 	{
-		auto root = DomDocument.createElement( "Kadu" );
-		DomDocument.appendChild(root);
+		throw ConfigurationReadErrorException();
 	}
 }
 

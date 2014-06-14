@@ -19,13 +19,15 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QObject>
 
 class PathsProvider;
 
 class QStringList;
 
-class ConfigurationPathProvider final : public QObject
+class KADUAPI ConfigurationPathProvider final : public QObject
 {
 	Q_OBJECT
 
@@ -35,6 +37,7 @@ public:
 
 	void setPathsProvider(PathsProvider *pathsProvider);
 
+	QString configurationDirectoryPath() const;
 	QStringList possibleConfigurationFilePaths() const;
 	QString configurationFilePath() const;
 	QString backupFilePath() const;
