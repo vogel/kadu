@@ -22,13 +22,13 @@
  */
 
 #include "accounts/account-manager.h"
-#include "configuration/main-configuration-holder.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
+#include "status/main-configuration-holder.h"
 
 #include "status/status-type-manager.h"
 #include "status/status-type.h"

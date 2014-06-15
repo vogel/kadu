@@ -11,6 +11,7 @@ set (notify_SRCS
 	notification/notification.cpp
 	notification-manager.cpp
 	notifier.cpp
+	notifier-configuration-data-manager.cpp
 	notify-configuration-ui-handler.cpp
 	notify-event.cpp
 	screen-mode-checker.cpp

@@ -46,7 +46,6 @@
 #include "chat/chat-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/main-configuration-holder.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -71,6 +70,7 @@
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
+#include "status/main-configuration-holder.h"
 #include "status/status-container-manager.h"
 
 #include "talkable-tree-view.h"

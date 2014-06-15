@@ -13,6 +13,9 @@ set (gui_SRCS
 	actions/edit-talkable-action.cpp
 	actions/recent-chats-action.cpp
 
+	configuration/chat-configuration-holder.cpp
+	configuration/toolbar-configuration-manager.cpp
+
 	menu/kadu-menu.cpp
 	menu/menu-inventory.cpp
 	menu/menu-item.cpp

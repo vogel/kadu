@@ -20,10 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/chat-configuration-holder.h"
 #include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-dom-visitor.h"
 #include "formatted-string/formatted-string.h"
+#include "gui/configuration/chat-configuration-holder.h"
 #include "message/message.h"
 
 #include "message-html-renderer-service.h"

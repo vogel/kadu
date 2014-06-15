@@ -30,7 +30,6 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/main-configuration-holder.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
@@ -39,6 +38,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
+#include "status/main-configuration-holder.h"
 
 #include "account.h"
 

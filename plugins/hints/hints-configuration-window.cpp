@@ -24,7 +24,6 @@
 #include <QtGui/QPalette>
 #include <QtWidgets/QSpinBox>
 
-#include "configuration/notifier-configuration-data-manager.h"
 #include "core/application.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-label.h"
@@ -32,6 +31,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "notify/notifier-configuration-data-manager.h"
 
 #include "hints-configuration-window.h"
 

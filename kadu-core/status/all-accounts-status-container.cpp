@@ -21,9 +21,9 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "configuration/main-configuration-holder.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
+#include "status/main-configuration-holder.h"
 
 #include "all-accounts-status-container.h"
 

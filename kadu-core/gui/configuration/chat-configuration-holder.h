@@ -26,7 +26,7 @@
 #include <QtGui/QColor>
 #include <QtGui/QFont>
 
-#include "configuration-holder.h"
+#include "configuration/configuration-holder.h"
 
 class ChatConfigurationHolder : public ConfigurationHolder
 {

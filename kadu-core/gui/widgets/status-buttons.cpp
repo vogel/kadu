@@ -22,8 +22,8 @@
  */
 
 #include "accounts/account-manager.h"
-#include "configuration/main-configuration-holder.h"
 #include "gui/widgets/status-button.h"
+#include "status/main-configuration-holder.h"
 #include "status/status-container-manager.h"
 
 #include "status-buttons.h"

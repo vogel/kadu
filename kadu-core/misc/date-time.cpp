@@ -31,9 +31,9 @@
 #endif
 #include <time.h>
 
-#include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "gui/configuration/chat-configuration-holder.h"
 
 #include "date-time.h"
 

@@ -27,8 +27,8 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "configuration/toolbar-configuration-manager.h"
 #include "core/application.h"
+#include "gui/configuration/toolbar-configuration-manager.h"
 #include "storage/storable-object.h"
 
 #include "configuration-manager.h"

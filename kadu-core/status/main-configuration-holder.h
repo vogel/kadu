@@ -23,7 +23,7 @@
 #ifndef MAIN_CONFIGURATION_HOLDER_H
 #define MAIN_CONFIGURATION_HOLDER_H
 
-#include "configuration-holder.h"
+#include "configuration/configuration-holder.h"
 
 enum SetStatusMode
 {
