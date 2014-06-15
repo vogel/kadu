@@ -32,20 +32,20 @@ enum SetStatusMode
 	SetStatusForAll
 };
 
-class MainConfigurationHolder : public ConfigurationHolder
+class StatusConfigurationHolder : public ConfigurationHolder
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(MainConfigurationHolder)
+	Q_DISABLE_COPY(StatusConfigurationHolder)
 
-	static MainConfigurationHolder *Instance;
-	explicit MainConfigurationHolder();
+	static StatusConfigurationHolder *Instance;
+	explicit StatusConfigurationHolder();
 
 	SetStatusMode SetStatus;
 
 public:
 	static void createInstance();
 	static void destroyInstance();
-	static MainConfigurationHolder * instance();
+	static StatusConfigurationHolder * instance();
 	void configurationUpdated();
 
 	SetStatusMode setStatusMode() const { return SetStatus; }

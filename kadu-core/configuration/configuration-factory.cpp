@@ -19,11 +19,11 @@
 
 #include "configuration-factory.h"
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration-read-error-exception.h"
 #include "configuration/configuration-unusable-exception.h"
+#include "configuration/configuration.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>

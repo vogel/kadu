@@ -114,7 +114,7 @@
 #include "services/message-transformer-service.h"
 #include "services/notification-service.h"
 #include "services/raw-message-transformer-service.h"
-#include "status/main-configuration-holder.h"
+#include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
@@ -226,7 +226,7 @@ Core::Core() :
 	createDefaultConfiguration();
 	configurationUpdated();
 
-	MainConfigurationHolder::createInstance();
+	StatusConfigurationHolder::createInstance();
 
 	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), Application::instance()->pathsProvider()->dataPath());
 	Parser::GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
@@ -265,7 +265,7 @@ Core::~Core()
 	Window = 0;
 	delete hiddenParent;
 
-	MainConfigurationHolder::destroyInstance();
+	StatusConfigurationHolder::destroyInstance();
 
 	triggerAllAccountsUnregistered();
 }

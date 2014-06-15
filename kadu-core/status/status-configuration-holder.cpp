@@ -29,34 +29,34 @@
 #include "core/application.h"
 #include "misc/paths-provider.h"
 
-#include "main-configuration-holder.h"
+#include "status-configuration-holder.h"
 
-MainConfigurationHolder *MainConfigurationHolder::Instance = 0;
+StatusConfigurationHolder *StatusConfigurationHolder::Instance = 0;
 
-MainConfigurationHolder * MainConfigurationHolder::instance()
+StatusConfigurationHolder * StatusConfigurationHolder::instance()
 {
 	return Instance;
 }
 
-void MainConfigurationHolder::createInstance()
+void StatusConfigurationHolder::createInstance()
 {
 	if (!Instance)
-		Instance = new MainConfigurationHolder();
+		Instance = new StatusConfigurationHolder();
 }
 
-void MainConfigurationHolder::destroyInstance()
+void StatusConfigurationHolder::destroyInstance()
 {
 	delete Instance;
 	Instance = 0;
 }
 
-MainConfigurationHolder::MainConfigurationHolder() :
+StatusConfigurationHolder::StatusConfigurationHolder() :
 		SetStatus(SetStatusPerIdentity)
 {
 	configurationUpdated();
 }
 
-void MainConfigurationHolder::configurationUpdated()
+void StatusConfigurationHolder::configurationUpdated()
 {
 	QString statusContainerType = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
 
@@ -73,4 +73,4 @@ void MainConfigurationHolder::configurationUpdated()
 	}
 }
 
-#include "moc_main-configuration-holder.cpp"
+#include "moc_status-configuration-holder.cpp"

@@ -36,7 +36,7 @@
 #include "gui/widgets/status-menu.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
-#include "status/main-configuration-holder.h"
+#include "status/status-configuration-holder.h"
 #include "status/status-container.h"
 
 #include "status-button.h"
@@ -113,7 +113,7 @@ void StatusButton::updateStatus()
 	}
 	else
 	{
-		if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+		if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		{
 			setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 			setText(MyStatusContainer->statusContainerName());

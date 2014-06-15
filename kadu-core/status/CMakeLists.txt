@@ -2,11 +2,11 @@ set (status_SRCS
 	all-accounts-status-container.cpp
 	description-manager.cpp
 	description-model.cpp
-	main-configuration-holder.cpp
 	status.cpp
 	status-actions.cpp
 	status-changer.cpp
 	status-changer-manager.cpp
+	status-configuration-holder.cpp
 	status-container.cpp
 	status-container-aware-object.cpp
 	status-container-manager.cpp

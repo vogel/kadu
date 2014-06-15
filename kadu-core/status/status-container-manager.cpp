@@ -29,7 +29,7 @@
 #include "identities/identity-manager.h"
 #include "protocols/protocol.h"
 #include "status/all-accounts-status-container.h"
-#include "status/main-configuration-holder.h"
+#include "status/status-configuration-holder.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
@@ -50,25 +50,25 @@ StatusContainerManager::StatusContainerManager() :
 {
 	AllAccountsContainer = new AllAccountsStatusContainer(this);
 
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesAdded();
-	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		triggerAllAccountsRegistered();
 	else
 		registerStatusContainer(AllAccountsContainer);
 
-	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
+	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
 	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
 }
 
 StatusContainerManager::~StatusContainerManager()
 {
 	disconnect(AccountManager::instance(), 0, this, 0);
-	disconnect(MainConfigurationHolder::instance(), 0, this, 0);
+	disconnect(StatusConfigurationHolder::instance(), 0, this, 0);
 
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesRemoved();
-	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		triggerAllAccountsUnregistered();
 	else
 		unregisterStatusContainer(AllAccountsContainer);
@@ -76,7 +76,7 @@ StatusContainerManager::~StatusContainerManager()
 
 void StatusContainerManager::updateIdentities()
 {
-	if (!MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (!StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		return;
 
 	foreach (const Identity &identity, IdentityManager::instance()->items())
@@ -88,31 +88,31 @@ void StatusContainerManager::updateIdentities()
 
 void StatusContainerManager::accountRegistered(Account account)
 {
-	if (MainConfigurationHolder::instance()->isSetStatusPerAccount() && !StatusContainers.contains(account.statusContainer()))
+	if (StatusConfigurationHolder::instance()->isSetStatusPerAccount() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
 
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity()))
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity()))
 		updateIdentities();
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
 {
-	if (MainConfigurationHolder::instance()->isSetStatusPerAccount() && StatusContainers.contains(account.statusContainer()))
+	if (StatusConfigurationHolder::instance()->isSetStatusPerAccount() && StatusContainers.contains(account.statusContainer()))
 		unregisterStatusContainer(account.statusContainer());
 
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		updateIdentities();
 }
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity() && !StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity() && !StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
 		registerStatusContainer(identity);
 }
 
 void StatusContainerManager::identityRemoved(Identity identity)
 {
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity() && StatusContainers.contains(identity))
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity() && StatusContainers.contains(identity))
 		unregisterStatusContainer(identity);
 }
 
@@ -155,9 +155,9 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 void StatusContainerManager::setStatusModeChanged()
 {
 	cleanStatusContainers();
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		addAllIdentities();
-	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		addAllAccounts();
 	else
 		registerStatusContainer(AllAccountsContainer);

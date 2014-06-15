@@ -19,8 +19,8 @@
 
 #include "configuration-writer.h"
 
-#include "configuration/configuration.h"
 #include "configuration/configuration-path-provider.h"
+#include "configuration/configuration.h"
 #include "file-system/atomic-file-write-exception.h"
 #include "file-system/atomic-file-writer.h"
 #include "debug.h"

@@ -38,7 +38,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-#include "status/main-configuration-holder.h"
+#include "status/status-configuration-holder.h"
 
 #include "account.h"
 

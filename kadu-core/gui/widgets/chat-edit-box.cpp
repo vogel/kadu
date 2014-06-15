@@ -56,7 +56,7 @@
 #include "misc/error.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
-#include "status/main-configuration-holder.h"
+#include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
 
@@ -85,7 +85,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	Context->setBuddies(CurrentChat.contacts().toBuddySet());
 	updateContext();
 
-	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	InputBox = new CustomInput(CurrentChat, this);
 	InputBox->setImageStorageService(Core::instance()->imageStorageService());
@@ -178,9 +178,9 @@ TalkableProxyModel * ChatEditBox::talkableProxyModel()
 
 void ChatEditBox::updateContext()
 {
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		Context->setStatusContainer(CurrentChat.chatAccount().accountIdentity().data());
-	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		Context->setStatusContainer(CurrentChat.chatAccount().statusContainer());
 	else
 		Context->setStatusContainer(StatusContainerManager::instance());

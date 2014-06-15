@@ -70,7 +70,7 @@
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-#include "status/main-configuration-holder.h"
+#include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
 
 #include "talkable-tree-view.h"
@@ -79,7 +79,7 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
 	Context = new BaseActionContext();
-	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	Delegate = new TalkableDelegate(this);
 	setItemDelegate(Delegate);
@@ -94,7 +94,7 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 
 TalkableTreeView::~TalkableTreeView()
 {
-	disconnect(MainConfigurationHolder::instance(), 0, this, 0);
+	disconnect(StatusConfigurationHolder::instance(), 0, this, 0);
 
 	delete Context;
 	Context = 0;
@@ -246,9 +246,9 @@ void TalkableTreeView::mouseMoveEvent(QMouseEvent *event)
 
 StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) const
 {
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		return chat.chatAccount().accountIdentity().data();
-	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		return chat.chatAccount().statusContainer();
 	else
 		return StatusContainerManager::instance();
