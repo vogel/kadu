@@ -21,6 +21,7 @@
 
 #include "exports.h"
 
+#include <injeqt/setter-injector.h>
 #include <QtCore/QObject>
 
 class Configuration;
@@ -34,9 +35,6 @@ public:
 	explicit ConfigurationWriter(QObject *parent = nullptr);
 	virtual ~ConfigurationWriter();
 
-	void setConfiguration(Configuration *configuration);
-	void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
-
 	void write() const;
 	void backup() const;
 
@@ -45,5 +43,9 @@ private:
 	ConfigurationPathProvider *m_configurationPathProvider;
 
 	void write(const QString &fileName) const;
+
+private slots:
+	injeqt_setter void setConfiguration(Configuration *configuration);
+	injeqt_setter void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
 
 };

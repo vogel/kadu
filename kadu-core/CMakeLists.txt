@@ -59,6 +59,14 @@ if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 endif ()
 # The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
 
+# injeqt
+find_package (PkgConfig)
+pkg_check_modules (INJEQT REQUIRED injeqt)
+set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
+include_directories (${INJEQT_INCLUDEDIR})
+link_directories (${INJEQT_LIBIR})
+list (APPEND ADDITIONAL_LIBRARIES ${INJEQT_LDFLAGS})
+
 configure_file (kadu-config.h.in "${CMAKE_CURRENT_BINARY_DIR}/kadu-config.h" ESCAPE_QUOTES)
 include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 
@@ -229,12 +237,13 @@ if (UNIX AND NOT APPLE)
 	qt5_use_modules (libkadu LINK_PRIVATE DBus X11Extras)
 endif ()
 
+message (${ADDITIONAL_LIBRARIES})
 target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBRARIES})
 
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
 qt5_use_modules (kadu LINK_PRIVATE Core Gui Widgets Network Xml)
-target_link_libraries (kadu LINK_PRIVATE libkadu)
+target_link_libraries (kadu LINK_PRIVATE libkadu ${INJEQT_LDFLAGS})
 if (NOT IS_ABSOLUTE "${KADU_INSTALL_LIB_DIR}")
 	set (install_full_lib_dir "${CMAKE_INSTALL_PREFIX}/${KADU_INSTALL_LIB_DIR}")
 else ()

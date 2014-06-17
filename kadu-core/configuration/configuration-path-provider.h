@@ -21,6 +21,7 @@
 
 #include "exports.h"
 
+#include <injeqt/setter-injector.h>
 #include <QtCore/QObject>
 
 class PathsProvider;
@@ -35,8 +36,6 @@ public:
 	explicit ConfigurationPathProvider(QObject *parent = nullptr);
 	virtual ~ConfigurationPathProvider();
 
-	void setPathsProvider(PathsProvider *pathsProvider);
-
 	QString configurationDirectoryPath() const;
 	QStringList possibleConfigurationFilePaths() const;
 	QString configurationFilePath() const;
@@ -44,5 +43,9 @@ public:
 
 private:
 	PathsProvider *m_pathsProvider;
+
+private slots:
+	injeqt_setter void setPathsProvider(PathsProvider *pathsProvider);
+
 
 };

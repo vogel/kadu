@@ -22,6 +22,7 @@
 #include "misc/memory.h"
 #include "exports.h"
 
+#include <injeqt/setter-injector.h>
 #include <QtCore/QObject>
 
 class Configuration;
@@ -35,8 +36,6 @@ public:
 	explicit ConfigurationFactory(QObject *parent = nullptr);
 	virtual ~ConfigurationFactory();
 
-	void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
-
 	not_owned_qptr<Configuration> createConfiguration() const;
 
 private:
@@ -45,5 +44,8 @@ private:
 	not_owned_qptr<Configuration> readConfiguration() const;
 	not_owned_qptr<Configuration> createEmptyConfiguration() const;
 	bool isConfigurationPathUsable() const;
+
+private slots:
+	injeqt_setter void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
 
 };

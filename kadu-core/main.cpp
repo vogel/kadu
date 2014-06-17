@@ -68,6 +68,9 @@
 #include "debug.h"
 #include "kadu-config.h"
 
+#include <injeqt/class-mapping.h>
+#include <injeqt/setter-injector.h>
+
 #ifndef Q_OS_WIN32
 #if HAVE_EXECINFO
 #include <execinfo.h>
@@ -204,15 +207,22 @@ int main(int argc, char *argv[]) try
 	auto configurationPathProvider = make_not_owned<ConfigurationPathProvider>();
 	auto configurationWriter = make_not_owned<ConfigurationWriter>();
 
-	configurationFactory->setConfigurationPathProvider(configurationPathProvider.get());
-	configurationPathProvider->setPathsProvider(pathsProvider.get());
-	configurationWriter->setConfigurationPathProvider(configurationPathProvider.get());
+	auto mapping = std::map<QByteArray, QObject *>{};
+	mapping.insert(std::make_pair(pathsProvider->metaObject()->className(), pathsProvider.get()));
+	mapping.insert(std::make_pair(configurationPathProvider->metaObject()->className(), configurationPathProvider.get()));
+	mapping.insert(std::make_pair(configurationWriter->metaObject()->className(), configurationWriter.get()));
+
+	auto setterInjector = injeqt::v1::setter_injector{injeqt::v1::class_mapping{mapping}};
+
+	setterInjector.inject(configurationFactory.get());
+	setterInjector.inject(configurationPathProvider.get());
 
 	auto configuration = not_owned_qptr<Configuration>();
 
 	try
 	{
 		configuration = configurationFactory->createConfiguration();
+		mapping.insert(std::make_pair(configuration->metaObject()->className(), configuration.get()));
 	}
 	catch (ConfigurationUnusableException &)
 	{
@@ -225,11 +235,10 @@ int main(int argc, char *argv[]) try
 		throw;
 	}
 
-	configurationWriter->setConfiguration(configuration.get());
+	auto setterInjectorWithConfiguration = injeqt::v1::setter_injector{injeqt::v1::class_mapping{mapping}};
 
-	application->setConfiguration(configuration.get());
-	application->setConfigurationWriter(configurationWriter.get());
-	application->setPathsProvider(pathsProvider.get());
+	setterInjectorWithConfiguration.inject(configurationWriter.get());
+	setterInjectorWithConfiguration.inject(application.get());
 
 #ifndef Q_OS_WIN32
 	// Qt version is better on win32

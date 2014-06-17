@@ -38,6 +38,10 @@
 
 #include <QtWidgets/QApplication>
 
+#ifndef Q_MOC_RUN
+#  define injeqt_setter
+#endif
+
 class Configuration;
 class ConfigurationWriter;
 class PathsProvider;
@@ -52,10 +56,6 @@ public:
 	Application(int &argc, char *argv[]);
 	virtual ~Application();
 
-	void setConfiguration(Configuration *configuration);
-	void setConfigurationWriter(ConfigurationWriter *configurationWriter);
-	void setPathsProvider(PathsProvider *pathsProvider);
-
 	Configuration * configuration() const;
 	PathsProvider * pathsProvider() const;
 
@@ -68,5 +68,10 @@ private:
 	Configuration *m_configuration;
 	ConfigurationWriter *m_configurationWriter;
 	PathsProvider *m_pathsProvider;
+
+private slots:
+	injeqt_setter void setConfiguration(Configuration *configuration);
+	injeqt_setter void setConfigurationWriter(ConfigurationWriter *configurationWriter);
+	injeqt_setter void setPathsProvider(PathsProvider *pathsProvider);
 
 };
