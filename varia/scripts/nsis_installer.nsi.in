@@ -4,7 +4,7 @@
 SetCompressor /SOLID /FINAL lzma
 
 !define PRODUCT_NAME "Kadu"
-!define PRODUCT_VERSION "1.0-rc2"
+!define PRODUCT_VERSION "@KADU_VERSION@"
 !define PRODUCT_BINARY_FILE_NAME "kadu.exe"
 !define PRODUCT_UNINSTALLER_FILE_NAME "uninst.exe"
 !define PRODUCT_PUBLISHER "Kadu Team"
@@ -13,7 +13,7 @@ SetCompressor /SOLID /FINAL lzma
 !define PRODUCT_REGISTRY_KEY_DIRECTORY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_BINARY_FILE_NAME}"
 !define PRODUCT_REGISTRY_KEY_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_REGISTRY_STARTMENU_VALUE "NSIS:StartMenuDir"
-!define PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR "."
+!define PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR "@CMAKE_INSTALL_PREFIX@"
 +; !define PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR "C:\kadu\external-plugins\install"
 
 !define BIN_DIR "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\bin"
