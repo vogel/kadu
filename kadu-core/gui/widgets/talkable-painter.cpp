@@ -75,7 +75,7 @@ bool TalkablePainter::useColorsWorkaround()
 }
 #endif
 
-TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
+TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index) :
 		Configuration(configuration), Option(option), Index(index),
 		FontMetrics(Configuration.font()),
 		BoldFontMetrics(Configuration.boldFont()),

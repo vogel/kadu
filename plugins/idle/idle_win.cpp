@@ -77,7 +77,7 @@ Idle::~Idle()
 	lib = 0;
 }
 
-int Idle::secondsIdle()
+long Idle::secondsIdle()
 {
 	int i;
 	if (GetLastInputInfoFun != 0)
