@@ -4,7 +4,7 @@
 SetCompressor /SOLID /FINAL lzma
 
 !define PRODUCT_NAME "Kadu"
-!define PRODUCT_VERSION "0.11.0"
+!define PRODUCT_VERSION "1.0-rc2"
 !define PRODUCT_BINARY_FILE_NAME "kadu.exe"
 !define PRODUCT_UNINSTALLER_FILE_NAME "uninst.exe"
 !define PRODUCT_PUBLISHER "Kadu Team"
@@ -13,8 +13,12 @@ SetCompressor /SOLID /FINAL lzma
 !define PRODUCT_REGISTRY_KEY_DIRECTORY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_BINARY_FILE_NAME}"
 !define PRODUCT_REGISTRY_KEY_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_REGISTRY_STARTMENU_VALUE "NSIS:StartMenuDir"
-!define PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR "C:\kadu\git-install"
-!define PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR "C:\kadu\external-plugins\install"
+!define PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR "."
++; !define PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR "C:\kadu\external-plugins\install"
+
+!define BIN_DIR "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\bin"
+!define DATA_DIR "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\share"
+!define LIB_DIR "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\lib"
 
 ; General Settings
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
@@ -47,7 +51,7 @@ XPStyle on
 
 !insertmacro MUI_PAGE_WELCOME
 
-!insertmacro MUI_PAGE_LICENSE "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\COPYING"
+!insertmacro MUI_PAGE_LICENSE "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\COPYING.WIN32"
 
 !insertmacro MUI_PAGE_COMPONENTS
 
@@ -125,40 +129,42 @@ Section $(NAME_SectionOfficial) SectionOfficial
   SetOverwrite on
 ; main files
   SetOutPath "$INSTDIR"
-  File "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\*.*"
+  File "${BIN_DIR}\*.*"
 ; configuration
   SetOutPath "$INSTDIR\configuration"
-  File "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\configuration\*.ui"
+  File "${DATA_DIR}\kadu\configuration\*.ui"
 ; chat scripts
   SetOutPath "$INSTDIR\scripts"
-  File "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\scripts\*.js"
+  File "${DATA_DIR}\kadu\scripts\*.js"
 ; plugins
   SetOutPath "$INSTDIR\plugins"
-  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\plugins\*"
+  File /r "${LIB_DIR}\kadu\plugins\*"
+  SetOutPath "$INSTDIR\plugins"
+  File /r "${DATA_DIR}\kadu\plugins\*"
 ; Qt plugins
   SetOutPath "$INSTDIR\qt-plugins"
-  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\qt-plugins\*"
+  File /r "${BIN_DIR}\qt-plugins\*"
 ; syntax
   SetOutPath "$INSTDIR\syntax\chat"
-  File  /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\syntax\chat\*"
+  File  /r "${DATA_DIR}\syntax\chat\*"
   SetOutPath "$INSTDIR\syntax\infopanel"
-  File "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\syntax\infopanel\*.syntax"
+  File "${DATA_DIR}\kadu\syntax\infopanel\*.syntax"
 ; emoticons
   SetOutPath "$INSTDIR\themes\emoticons"
-  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\themes\emoticons\*"
+  File /r "${DATA_DIR}\kadu\themes\emoticons\*"
 ; icons
   SetOutPath "$INSTDIR\themes\icons"
-  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\themes\icons\*"
+  File /r "${DATA_DIR}\kadu\themes\icons\*"
 ; sounds
   SetOutPath "$INSTDIR\themes\sounds"
-  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\themes\sounds\*"
+  File /r "${DATA_DIR}\kadu\themes\sounds\*"
 ; translations
   SetOutPath "$INSTDIR\translations"
-  File "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\translations\*.qm"
-  File "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\translations\*.language"
+  File "${DATA_DIR}\kadu\translations\*.qm"
+  File "${DATA_DIR}\kadu\translations\*.language"
 ; aspell dictionary
-  SetOutPath "$INSTDIR\aspell"
-  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\aspell\*"
+;  SetOutPath "$INSTDIR\aspell"
+;  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\aspell\*"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
@@ -167,11 +173,11 @@ Section $(NAME_SectionOfficial) SectionOfficial
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
-Section $(NAME_SectionExternalPlugins) SectionExternalPlugins
-  SetOverwrite on
-  SetOutPath "$INSTDIR\plugins"
-  File /r "${PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR}\*"
-SectionEnd
+;Section $(NAME_SectionExternalPlugins) SectionExternalPlugins
+;  SetOverwrite on
+;  SetOutPath "$INSTDIR\plugins"
+;  File /r "${PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR}\*"
+;SectionEnd
 
 Section $(NAME_SectionDesktopShortCut) SectionDesktopShortCut
   SetOverwrite on
