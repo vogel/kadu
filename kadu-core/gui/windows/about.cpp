@@ -143,7 +143,12 @@ About::About(QWidget *parent) :
 	tb_license->setFrameStyle(QFrame::NoFrame);
 	tb_license->setWordWrapMode(QTextOption::WordWrap);
 	tb_license->viewport()->setAutoFillBackground(false);
+
+#ifdef Q_OS_WIN
+	tb_license->setText(loadFile("COPYING.WIN32"));
+#else
 	tb_license->setText(loadFile("COPYING"));
+#endif
 
 	// changelog
 	QTextBrowser *tb_changelog = new QTextBrowser(tw_about);
