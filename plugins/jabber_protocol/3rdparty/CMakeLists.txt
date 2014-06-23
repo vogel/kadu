@@ -164,6 +164,10 @@ include_directories (
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src
 )
 
+if (WIN32)
+	add_definitions (-DJJDNS_STATIC)
+endif ()
+
 add_library (3rdparty STATIC ${SOURCES_IRIS})
 kadu_set_flags (3rdparty)
 set_property (TARGET 3rdparty PROPERTY POSITION_INDEPENDENT_CODE TRUE)
