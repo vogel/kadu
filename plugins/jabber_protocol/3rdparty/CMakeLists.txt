@@ -162,6 +162,10 @@ include_directories (
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src
 )
 
+if (WIN32)
+	add_definitions (-DJJDNS_STATIC)
+endif ()
+
 add_library (3rdparty STATIC ${SOURCES_IRIS})
 kadu_set_flags (3rdparty)
 qt5_use_modules (3rdparty LINK_PUBLIC Core Gui Network Xml)
