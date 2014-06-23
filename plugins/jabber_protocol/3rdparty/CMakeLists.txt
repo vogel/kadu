@@ -163,7 +163,7 @@ include_directories (
 )
 
 if (WIN32)
-	add_definitions (-DJJDNS_STATIC)
+	add_definitions (-DJDNS_STATIC)
 endif ()
 
 add_library (3rdparty STATIC ${SOURCES_IRIS})
