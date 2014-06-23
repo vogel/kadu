@@ -149,25 +149,8 @@ set (SERVERS_FILE
 	data/servers.txt
 )
 
-if (WIN32)
-	if (NOT WIN_LIBGADU_DIR)
-		message (SEND_ERROR "Pass path to libgadu -DWIN_LIBGADU_DIR=path")
-		set (WIN_LIBGADU_DIR "")
-	else ()
-		set (LIBGADU_FOUND TRUE)
-		set (LIBGADU_INCLUDE_DIRS ${WIN_LIBGADU_DIR}/include)
-		set (LIBGADU_LIBRARIES optimized gadu debug gadud)
-
-		if (MSVC)
-			set (LIBGADU_LIBRARY_DIRS ${WIN_LIBGADU_DIR}/lib)
-		else ()
-			set (LIBGADU_LIBRARY_DIRS ${WIN_LIBGADU_DIR}/bin)
-		endif ()
-	endif ()
-else ()
-	find_package (PkgConfig)
-	pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
-endif ()
+find_package (PkgConfig)
+pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
 
 find_package (QCA2 REQUIRED)
 
