@@ -146,7 +146,7 @@ Section $(NAME_SectionOfficial) SectionOfficial
   File /r "${BIN_DIR}\qt-plugins\*"
 ; syntax
   SetOutPath "$INSTDIR\syntax\chat"
-  File  /r "${DATA_DIR}\syntax\chat\*"
+  File  /r "${DATA_DIR}\kadu\syntax\chat\*"
   SetOutPath "$INSTDIR\syntax\infopanel"
   File "${DATA_DIR}\kadu\syntax\infopanel\*.syntax"
 ; emoticons
