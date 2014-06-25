@@ -208,9 +208,9 @@ int main(int argc, char *argv[]) try
 	auto configurationWriter = make_not_owned<ConfigurationWriter>();
 
 	auto mapping = std::map<QByteArray, QObject *>{};
-	mapping.insert(std::make_pair(pathsProvider->metaObject()->className(), pathsProvider.get()));
-	mapping.insert(std::make_pair(configurationPathProvider->metaObject()->className(), configurationPathProvider.get()));
-	mapping.insert(std::make_pair(configurationWriter->metaObject()->className(), configurationWriter.get()));
+	mapping.insert(std::make_pair(PathsProvider::staticMetaObject.className(), pathsProvider.get()));
+	mapping.insert(std::make_pair(ConfigurationPathProvider::staticMetaObject.className(), configurationPathProvider.get()));
+	mapping.insert(std::make_pair(ConfigurationWriter::staticMetaObject.className(), configurationWriter.get()));
 
 	auto setterInjector = injeqt::v1::setter_injector{injeqt::v1::class_mapping{mapping}};
 
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) try
 	try
 	{
 		configuration = configurationFactory->createConfiguration();
-		mapping.insert(std::make_pair(configuration->metaObject()->className(), configuration.get()));
+		mapping.insert(std::make_pair(Configuration::staticMetaObject.className(), configuration.get()));
 	}
 	catch (ConfigurationUnusableException &)
 	{
