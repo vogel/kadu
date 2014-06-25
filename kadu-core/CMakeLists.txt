@@ -31,7 +31,7 @@ endif ()
 #			link_directories (${LIBINDICATE_QT_LIBRARY_DIRS})
 #			add_definitions (${LIBINDICATE_QT_CFLAGS_OTHER})
 #			include_directories (${LIBINDICATE_QT_INCLUDE_DIRS})
-#			list (APPEND ADDITIONAL_LIBRARIES ${LIBINDICATE_QT_LIBRARIES})
+#			list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${LIBINDICATE_QT_LIBRARIES})
 #		endif ()
 #	else ()
 #		message (STATUS "Could NOT find libindicate-qt. Disabling Ayatana support")
@@ -55,7 +55,7 @@ endif ()
 set (NETWORK_IMPLEMENTATION "${NETWORK_IMPLEMENTATION}" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
 
 if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
-	list (APPEND ADDITIONAL_LIBRARIES ${QNTRACK_LIBRARIES})
+	list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${QNTRACK_LIBRARIES})
 endif ()
 # The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
 
@@ -64,8 +64,10 @@ find_package (PkgConfig)
 pkg_check_modules (INJEQT REQUIRED injeqt)
 set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
 include_directories (${INJEQT_INCLUDEDIR})
-link_directories (${INJEQT_LIBIR})
-list (APPEND ADDITIONAL_LIBRARIES ${INJEQT_LDFLAGS})
+link_directories (${INJEQT_LIBRARY_DIRS})
+
+list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${INJEQT_LIBRARIES})
+list (APPEND ADDITIONAL_LIBRARIES ${INJEQT_LIBRARIES})
 
 configure_file (kadu-config.h.in "${CMAKE_CURRENT_BINARY_DIR}/kadu-config.h" ESCAPE_QUOTES)
 include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
@@ -166,7 +168,7 @@ if (NOT have_libarchive_lzma_support OR NOT have_libarchive_xz_support)
 endif ()
 
 include_directories (${LibArchive_INCLUDE_DIRS})
-list (APPEND ADDITIONAL_LIBRARIES ${LibArchive_LIBRARIES})
+list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${LibArchive_LIBRARIES})
 
 if (UNIX AND NOT APPLE)
 	find_package (X11 REQUIRED COMPONENTS X11 Xutil Xfixes)
@@ -177,11 +179,11 @@ if (UNIX AND NOT APPLE)
 	endif ()
 
 	include_directories (${X11_INCLUDE_DIR})
-	list (APPEND ADDITIONAL_LIBRARIES ${X11_X11_LIB} ${X11_Xfixes_LIB})
+	list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${X11_X11_LIB} ${X11_Xfixes_LIB})
 endif ()
 
 if (APPLE)
-	list (APPEND ADDITIONAL_LIBRARIES "-framework carbon")
+	list (APPEND ADDITIONAL_LIBKADU_LIBRARIES "-framework carbon")
 endif ()
 
 macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
@@ -237,18 +239,20 @@ if (UNIX AND NOT APPLE)
 	qt5_use_modules (libkadu LINK_PRIVATE DBus X11Extras)
 endif ()
 
-message (${ADDITIONAL_LIBRARIES})
-target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBRARIES})
+message (${ADDITIONAL_LIBKADU_LIBRARIES})
+target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBKADU_LIBRARIES})
 
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
 qt5_use_modules (kadu LINK_PRIVATE Core Gui Widgets Network Xml)
-target_link_libraries (kadu LINK_PRIVATE libkadu ${INJEQT_LDFLAGS})
+target_link_libraries (kadu LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES})
+
 if (NOT IS_ABSOLUTE "${KADU_INSTALL_LIB_DIR}")
 	set (install_full_lib_dir "${CMAKE_INSTALL_PREFIX}/${KADU_INSTALL_LIB_DIR}")
 else ()
 	set (install_full_lib_dir "${KADU_INSTALL_LIB_DIR}")
 endif ()
+
 set_target_properties (kadu PROPERTIES
 	INSTALL_RPATH "${install_full_lib_dir}"
 	BUILD_WITH_INSTALL_RPATH TRUE
