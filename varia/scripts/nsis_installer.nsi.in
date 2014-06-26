@@ -162,7 +162,9 @@ Section $(NAME_SectionOfficial) SectionOfficial
   SetOutPath "$INSTDIR\translations"
   File "${DATA_DIR}\kadu\translations\*.qm"
   File "${DATA_DIR}\kadu\translations\*.language"
-; aspell dictionary
+; spellchecker
+  SetOutPath "$INSTDIR\enchant"
+  File /r "${DATA_DIR}\enchant\*"
 ;  SetOutPath "$INSTDIR\aspell"
 ;  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\aspell\*"
 
