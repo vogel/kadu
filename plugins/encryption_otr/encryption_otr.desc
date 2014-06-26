@@ -7,3 +7,4 @@ Author=Kadu Team
 LoadByDefault=true
 Version=core
 Category=Privacy
+Replaces=otr

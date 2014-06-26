@@ -1,4 +1,4 @@
-project (otr)
+project (encryption_otr)
 
 cmake_minimum_required (VERSION 2.8)
 
@@ -100,7 +100,7 @@ pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
 
 set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt)
 
-kadu_plugin (otr
+kadu_plugin (encryption_otr
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
