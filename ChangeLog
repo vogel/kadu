@@ -1,6 +1,10 @@
 +++ version 1.0-rc3
 * windows: fixed windows build (Vogel)
 
++++ version 1.0-rc3
+* windows: build fixes (Vogel)
+* debian: build fixes (Vogel)
+
 +++ version 1.0-rc2
 * misc: misc fixes (Vogel)
 
