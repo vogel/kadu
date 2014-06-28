@@ -163,10 +163,10 @@ Section $(NAME_SectionOfficial) SectionOfficial
   File "${DATA_DIR}\kadu\translations\*.qm"
   File "${DATA_DIR}\kadu\translations\*.language"
 ; spellchecker
-  SetOutPath "$INSTDIR\enchant"
+  SetOutPath "$INSTDIR\lib\enchant"
   File /r "${LIB_DIR}\enchant\*"
-;  SetOutPath "$INSTDIR\aspell"
-;  File /r "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\aspell\*"
+  SetOutPath "$INSTDIR\share\enchant\myspell"
+  File /r "${DATA_DIR}\enchant\myspell\*"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
