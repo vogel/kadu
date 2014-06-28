@@ -240,13 +240,13 @@ else ()
 	set (install_full_lib_dir "${KADU_INSTALL_LIB_DIR}")
 endif ()
 set_target_properties (kadu PROPERTIES
-	INSTALL_RPATH "${install_full_lib_dir}"
+	INSTALL_RPATH "${install_full_lib_dir}/kadu"
 	BUILD_WITH_INSTALL_RPATH TRUE
 )
 
 install (TARGETS libkadu kadu
 	EXPORT KaduTargets
-	LIBRARY DESTINATION ${KADU_INSTALL_LIB_DIR}
+	LIBRARY DESTINATION ${KADU_INSTALL_LIB_DIR}/kadu
 	RUNTIME DESTINATION ${KADU_INSTALL_BIN_DIR}
 )
 # TODO this WIN32 check is a workaround for an error on Linux

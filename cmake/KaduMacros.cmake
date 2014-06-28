@@ -183,6 +183,13 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 		${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${KADU_PLUGIN_LIBRARIES} ${QT_LIBRARIES}
 	)
 
+	if (NOT WIN32)
+		set_target_properties (${KADU_PLUGIN_NAME} PROPERTIES
+			INSTALL_RPATH "${KADU_INSTALL_LIB_DIR}/kadu"
+			BUILD_WITH_INSTALL_RPATH TRUE
+		)
+	endif ()
+
 	configure_file ("${KADU_SDK_DIR}/plugins/PluginConfig.cmake.in" "${CMAKE_BINARY_DIR}/KaduPlugin_${KADU_PLUGIN_NAME}Config.cmake" @ONLY)
 
 	install (TARGETS ${KADU_PLUGIN_NAME}
