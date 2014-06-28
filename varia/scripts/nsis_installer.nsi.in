@@ -130,7 +130,6 @@ Section $(NAME_SectionOfficial) SectionOfficial
 ; main files
   SetOutPath "$INSTDIR"
   File "${BIN_DIR}\*.*"
-  File "${BIN_DIR}\kadu\*.*"
 ; configuration
   SetOutPath "$INSTDIR\configuration"
   File "${DATA_DIR}\kadu\configuration\*.ui"
