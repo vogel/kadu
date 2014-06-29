@@ -176,6 +176,7 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 		foreach (_plugin_dependency ${KADU_PLUGIN_DEPENDENCIES})
 			set (KaduPlugin_${_plugin_dependency}_DIR "${Kadu_DIR}")
 			find_package (KaduPlugin_${_plugin_dependency} REQUIRED)
+			include_directories (${KADU_INCLUDE_DIR}/plugins/${_plugin_dependency})
 		endforeach ()
 	endif ()
 

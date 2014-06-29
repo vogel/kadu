@@ -30,6 +30,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image.h"
 
+#include "gadu-exports.h"
 #include "protocols/services/chat-image-service.h"
 
 class GaduChatService;
@@ -50,7 +51,7 @@ class GaduConnection;
  * This service will only allow for some number of images sent by peers per minute to disable DOS attacks.
  * To manually re-enable receiving images in given minute call resetSendImageRequests().
  */
-class GaduChatImageService : public ChatImageService
+class GADUAPI GaduChatImageService : public ChatImageService
 {
 	Q_OBJECT
 
