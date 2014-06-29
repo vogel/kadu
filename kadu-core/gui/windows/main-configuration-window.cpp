@@ -248,22 +248,22 @@ MainConfigurationWindow::~MainConfigurationWindow()
 
 void MainConfigurationWindow::compositingEnabled()
 {
+	auto userboxTransparencyGroup = widget()->widgetById("userboxTransparencyGroup")->parentWidget();
+	userboxTransparencyGroup->setVisible(true);
 	userboxTransparency->setEnabled(true);
 	userboxTransparency->blockSignals(false);
 	userboxAlpha->setEnabled(userboxTransparency->isChecked());
 	userboxBlur->setEnabled(userboxTransparency->isChecked());
-	QLabel *help = static_cast<QLabel *>(widget()->widgetById("userboxTransparencyHelp"));
-	help->setVisible(false);
 }
 
 void MainConfigurationWindow::compositingDisabled()
 {
+	auto userboxTransparencyGroup = widget()->widgetById("userboxTransparencyGroup")->parentWidget();
+	userboxTransparencyGroup->setVisible(false);
 	userboxTransparency->setEnabled(false);
 	userboxTransparency->blockSignals(true);
 	userboxAlpha->setEnabled(false);
 	userboxBlur->setEnabled(false);
-	QLabel *help = static_cast<QLabel *>(widget()->widgetById("userboxTransparencyHelp"));
-	help->setVisible(true);
 }
 
 void MainConfigurationWindow::show()
