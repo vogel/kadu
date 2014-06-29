@@ -60,7 +60,6 @@
 		<tab name="Chat">
 			<group-box name="Style">
 				<check-box caption="Enable transparency in chat window" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
-				<label caption="Your system does not support transparency." id="useTransparencyHelp" />
 			</group-box>
 		</tab>
 		<tab name="Buddies list">
@@ -76,9 +75,8 @@
 				<check-box caption="Split long descriptions into multiple lines" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
 					tool-tip="Dislpays multiline descriptions in the buddy list" parent-widget="showDescription" />
 			</group-box>
-			<group-box name="Transparency">
+			<group-box name="Transparency" id="userboxTransparencyGroup">
 				<check-box caption="Enable transparency in buddy list" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
-				<label caption="Your system does not support transparency." id="userboxTransparencyHelp" />
 				<slider caption="Transparency level" config-section="Look" config-item="UserboxAlpha" min-value="0" max-value="255" page-step="10"
 					id="userboxAlpha" parent-widget="userboxTransparency" />
 				<label caption="0" />
