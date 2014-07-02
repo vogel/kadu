@@ -314,7 +314,7 @@
         <translation>texte souligné</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Comportement</translation>
     </message>
     <message>
@@ -2366,7 +2366,7 @@ Do you want to accept this image anyway?</source>
         <translation>Propriétés du groupe %1</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Comportement</translation>
     </message>
     <message>

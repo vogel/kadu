@@ -70,8 +70,8 @@
         <translation>Bottom</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>

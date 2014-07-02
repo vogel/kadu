@@ -42,7 +42,7 @@
  *
  * This class represents query for messages in history. Each query can contain a talkable,
  * query string, range of dates (or datetimes) and limit. Any query element can be empty - it will be ignored during
- * search. Any query element can be ignored by given history method. This behaviour is documented
+ * search. Any query element can be ignored by given history method. This behavior is documented
  * for these methods.
  *
  * Results of query are stored in QVector of HistoryQueryResult.

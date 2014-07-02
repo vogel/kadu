@@ -314,8 +314,8 @@
         <translation>Underline text</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
     <message>
         <source>Remember chat windows positions</source>
@@ -2369,8 +2369,8 @@ Do you want to accept this image anyway?</translation>
         <translation>Properties of group %1</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
     <message>
         <source>Notify about status changes</source>

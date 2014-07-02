@@ -26,7 +26,7 @@
         <translation>Permet de définir une description personnalisée manuellement, tant que le contenu du fichier ne change pas</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation type="unfinished"/>
     </message>
     <message>

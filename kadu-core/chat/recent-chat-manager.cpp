@@ -222,7 +222,7 @@ void RecentChatManager::removeRecentChat(Chat chat)
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Updates behaviour of manager to new configuration values.
+ * @short Updates behavior of manager to new configuration values.
  *
  * If RecentChatsClear is changed to false this manager will not remove chats
  * from the list by itself (afer RecentChatsTimeout timeout). All recent chats

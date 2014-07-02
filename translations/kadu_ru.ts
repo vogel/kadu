@@ -314,7 +314,7 @@
         <translation>Подчеркнутый текст</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Поведение</translation>
     </message>
     <message>
@@ -2365,7 +2365,7 @@ Do you want to accept this image anyway?</source>
         <translation>Свойства группы %1</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Поведение</translation>
     </message>
     <message>

@@ -54,7 +54,7 @@
         <translation>Cambiar el foco entre lista y pestañas </translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation type="unfinished"/>
     </message>
 </context>

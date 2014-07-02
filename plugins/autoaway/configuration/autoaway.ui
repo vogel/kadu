@@ -1,5 +1,5 @@
 <configuration-ui>
-	<section name="Behaviour">
+	<section name="Behavior">
 		<tab name="Inactivity">
 			<group-box name="Status">
 				<spin-box caption="Check idle every" config-section="General" config-item="AutoAwayCheckTime" min-value="1" max-value="600" suffix="%n second(s)" />

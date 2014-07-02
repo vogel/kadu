@@ -76,8 +76,8 @@ Arguments should be separated with spaces. %k argument is converted to number, %
         <translation>SMS custom arguments</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
 </context>
 <context>

@@ -294,10 +294,10 @@ public:
 	 * @short Returns QToolButton::ToolButtonPopupMode for given action.
 	 *
 	 * Returns QToolButton::ToolButtonPopupMode for given action. This allows actions with menu that
-	 * can have default behavior or not. By default actions have default behaviour - QToolButton::MenuButtonPopup
+	 * can have default behavior or not. By default actions have default behavior - QToolButton::MenuButtonPopup
 	 * is returned.
 	 *
-	 * If action does not have default behaviour no method will be called after clicking on method. Reimplementing
+	 * If action does not have default behavior no method will be called after clicking on method. Reimplementing
 	 * actionTriggered is then not required.
 	 */
 	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const

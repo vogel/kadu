@@ -52,15 +52,15 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 	QVBoxLayout *main_layout = new QVBoxLayout(this);
 
-	QGroupBox *behaviourGroupBox = new QGroupBox;
-	QVBoxLayout *behaviour_layout = new QVBoxLayout(behaviourGroupBox);
-	behaviour_layout->setSpacing(5);
-	behaviourGroupBox->setTitle(tr("Behaviour"));
+	QGroupBox *behaviorGroupBox = new QGroupBox;
+	QVBoxLayout *behavior_layout = new QVBoxLayout(behaviorGroupBox);
+	behavior_layout->setSpacing(5);
+	behaviorGroupBox->setTitle(tr("Behavior"));
 
-	notifyCheckBox = new QCheckBox(tr("Notify about status changes"), behaviourGroupBox);
+	notifyCheckBox = new QCheckBox(tr("Notify about status changes"), behaviorGroupBox);
 	notifyCheckBox->setChecked(group.notifyAboutStatusChanges());
 
-	offlineCheckBox = new QCheckBox(tr("Offline for this group"), behaviourGroupBox);
+	offlineCheckBox = new QCheckBox(tr("Offline for this group"), behaviorGroupBox);
 	offlineCheckBox->setChecked(group.offlineToGroup());
 	offlineCheckBox->setToolTip(tr("Supported for Gadu-Gadu network"));
 
@@ -71,13 +71,13 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 	info->setVisible(offlineCheckBox->isChecked());
 	connect(offlineCheckBox, SIGNAL(toggled(bool)), info, SLOT(setVisible(bool)));
 
-	allGroupCheckBox = new QCheckBox(tr("Show in group \"All\""), behaviourGroupBox);
+	allGroupCheckBox = new QCheckBox(tr("Show in group \"All\""), behaviorGroupBox);
 	allGroupCheckBox->setChecked(group.showInAllGroup());
 
-	behaviour_layout->addWidget(notifyCheckBox);
-	behaviour_layout->addWidget(offlineCheckBox);
-	behaviour_layout->addWidget(info);
-	behaviour_layout->addWidget(allGroupCheckBox);
+	behavior_layout->addWidget(notifyCheckBox);
+	behavior_layout->addWidget(offlineCheckBox);
+	behavior_layout->addWidget(info);
+	behavior_layout->addWidget(allGroupCheckBox);
 
 	QGroupBox *lookGroupBox = new QGroupBox;
 	QVBoxLayout *look_layout = new QVBoxLayout(lookGroupBox);
@@ -129,7 +129,7 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(applyClicked()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
-	main_layout->addWidget(behaviourGroupBox);
+	main_layout->addWidget(behaviorGroupBox);
 	main_layout->addWidget(lookGroupBox);
 	main_layout->addSpacing(10);//TODO
 	main_layout->addWidget(buttons_layout);
