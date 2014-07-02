@@ -54,7 +54,7 @@
         <translation>Przełącz focus pomiędzy listą kontaktów a zakładkami</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Zachowanie</translation>
     </message>
 </context>

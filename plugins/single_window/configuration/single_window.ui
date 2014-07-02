@@ -10,7 +10,7 @@
 			</group-box>
 		</tab>
 	</section>
-	<section name="Behaviour">
+	<section name="Behavior">
 		<tab name="Shortcuts">
 			<group-box name="SingleWindow">
 				<hot-key-edit caption="Switch to previous tab" config-section="ShortCuts" config-item="SwitchTabLeft" />

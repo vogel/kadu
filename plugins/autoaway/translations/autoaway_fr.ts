@@ -42,7 +42,7 @@
         <translation>Ne pas modifier</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Comportement</translation>
     </message>
     <message>

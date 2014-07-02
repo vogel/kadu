@@ -23,7 +23,7 @@
 			</group-box>
 		</tab>
 	</section>
-	<section name="Behaviour">
+	<section name="Behavior">
 		<tab name="Shortcuts">
 			<group-box name="Chat window">
 				<hot-key-edit caption="View history" config-section="ShortCuts" config-item="kadu_viewhistory" />

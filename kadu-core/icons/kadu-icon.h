@@ -40,7 +40,7 @@ class QIcon;
  *
  * Objects of this class store Kadu-specific information about icons and allow to retrieve the icons
  * themselves, as well as their paths and sizes and also full system paths and WebKit-friendly paths.
- * KaduIcon objects can be bound to specific theme or to current one (default behaviour). Use setThemePath()
+ * KaduIcon objects can be bound to specific theme or to current one (default behavior). Use setThemePath()
  * method to set specific theme.
  *
  * Creating objects of this class is relatively cheap as no data is verified or additionally retrieved

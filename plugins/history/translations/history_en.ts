@@ -78,8 +78,8 @@
         <translation>Limit number of messages from history</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
     <message>
         <source>Chat window</source>

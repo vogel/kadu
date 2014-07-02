@@ -234,7 +234,7 @@
 		</tab>
 	</section>
 
-	<section name="Behaviour" icon="preferences-desktop-peripherals">
+	<section name="Behavior" icon="preferences-desktop-peripherals">
 		<tab name="Chat">
 			<group-box name="Chat Window">
 				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" id="openChatOnMessage"

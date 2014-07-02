@@ -78,7 +78,7 @@
         <translation>Limit ilości wiadomości z historii</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Zachowanie</translation>
     </message>
     <message>

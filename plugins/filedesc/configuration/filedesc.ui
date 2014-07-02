@@ -1,5 +1,5 @@
 <configuration-ui>
-	<section name="Behaviour">
+	<section name="Behavior">
 		<tab name="Description">
 			<group-box name="FileDesc">
 				<select-file caption="File with description to synchronize" config-section="FileDesc" config-item="file" type="all" tool-tip="Enter here a file, which will contain descriptions to refresh by module." />

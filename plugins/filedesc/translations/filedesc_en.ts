@@ -26,8 +26,8 @@
         <translation>Allows you to set some custom description manualy, until file contents does not change</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
     <message>
         <source>Description</source>

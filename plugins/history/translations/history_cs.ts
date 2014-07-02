@@ -78,7 +78,7 @@
         <translation>Omezit počet zpráv z historie</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Chování</translation>
     </message>
     <message>

@@ -76,7 +76,7 @@ Argumenty mají být odděleny mezerami. %k argument je převeden na číslo, %m
         <translation>Vlastní argumenty SMS</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Chování</translation>
     </message>
 </context>

@@ -146,7 +146,7 @@ index 0000000..4d98117
 +
 +if (CMAKE_CROSSCOMPILING)
 +	if (NOT DEFINED HAVE_C99_VSNPRINTF)
-+		message (FATAL_ERROR "Cannot determine vsnprintf() behaviour when cross-compiling. You need to provide -DHAVE_C99_VSNPRINTF=ON|OFF option. It is safe to assume that the former is valid on most modern operating systems")
++		message (FATAL_ERROR "Cannot determine vsnprintf() behavior when cross-compiling. You need to provide -DHAVE_C99_VSNPRINTF=ON|OFF option. It is safe to assume that the former is valid on most modern operating systems")
 +	endif ()
 +
 +	option (HAVE_C99_VSNPRINTF "Whether target system has C99-compatible vsnprintf()." ON)

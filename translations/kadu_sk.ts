@@ -314,7 +314,7 @@
         <translation>Podčiarknutý text</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Správanie</translation>
     </message>
     <message>
@@ -2365,7 +2365,7 @@ Do you want to accept this image anyway?</source>
         <translation>Vlastnosti skupiny %1</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Správanie</translation>
     </message>
     <message>

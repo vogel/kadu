@@ -54,7 +54,7 @@
         <translation>Basculer le focus entre roster et les onglets</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation type="unfinished"/>
     </message>
 </context>
