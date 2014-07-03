@@ -30,8 +30,9 @@
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image.h"
 
-#include "gadu-exports.h"
 #include "protocols/services/chat-image-service.h"
+
+#include "gadu-exports.h"
 
 class GaduChatService;
 class GaduConnection;
