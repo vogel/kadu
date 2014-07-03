@@ -170,9 +170,8 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 
 	if (NOT KADU_BUILD)
 		foreach (_plugin_dependency ${KADU_PLUGIN_DEPENDENCIES})
-			set (KaduPlugin_${_plugin_dependency}_DIR "${Kadu_DIR}")
-			find_package (KaduPlugin_${_plugin_dependency} REQUIRED)
-			include_directories (${KADU_INCLUDE_DIR}/plugins/${_plugin_dependency})
+			find_package (KaduPlugin_${_plugin_dependency} REQUIRED
+				HINTS ${KADU_FULL_INSTALL_CMAKE_DIR})
 		endforeach ()
 	endif ()
 
@@ -183,6 +182,10 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 	if (KADU_PLUGIN_ADDITIONAL_QT_MODULES)
 		qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_ADDITIONAL_QT_MODULES})
 	endif ()
+
+	foreach (_plugin_dependency ${KADU_PLUGIN_DEPENDENCIES})
+		include_directories (${KADU_INCLUDE_DIR}/plugins/${_plugin_dependency})
+	endforeach ()
 
 	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE
 		${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${KADU_PLUGIN_LIBRARIES}
