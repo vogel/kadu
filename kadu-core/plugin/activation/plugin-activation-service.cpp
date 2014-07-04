@@ -66,7 +66,7 @@ QVector<QString> PluginActivationService::activatePluginWithDependencies(const Q
 
 		for (auto plugin : withDependencies)
 		{
-			auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(pluginName).provides());
+			auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(plugin).provides());
 			if (!conflict.isEmpty())
 				throw PluginActivationErrorException(plugin, tr("Plugin %1 conflicts with: %2").arg(plugin, conflict));
 		}
