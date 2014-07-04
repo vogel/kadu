@@ -110,9 +110,10 @@ OpenChatWith::OpenChatWith() :
 
 	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	BuddiesView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-	BuddiesView->setSource(QUrl(Application::instance()->pathsProvider()->dataPath() + "qml/openChatWith.qml"));
+	BuddiesView->setSource(QUrl("file:///" + Application::instance()->pathsProvider()->dataPath() + "qml/openChatWith.qml"));
 
-	connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));
+	if (BuddiesView->rootObject())
+		connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));
 
 	MainLayout->addWidget(BuddiesView);
 
@@ -208,8 +209,9 @@ void OpenChatWith::inputChanged(const QString &text)
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	ListModel->setBuddyList(matchingContacts);
-	if (BuddiesView->rootObject()->property("currentIndex").toInt() < 0)
-		BuddiesView->rootObject()->setProperty("currentIndex", 0);
+	if (BuddiesView->rootObject())
+		if (BuddiesView->rootObject()->property("currentIndex").toInt() < 0)
+			BuddiesView->rootObject()->setProperty("currentIndex", 0);
 }
 
 void OpenChatWith::itemActivated(int index)
@@ -232,7 +234,8 @@ void OpenChatWith::itemActivated(int index)
 
 void OpenChatWith::inputAccepted()
 {
-	itemActivated(BuddiesView->rootObject()->property("currentIndex").toInt());
+	if (BuddiesView->rootObject())
+		itemActivated(BuddiesView->rootObject()->property("currentIndex").toInt());
 }
 
 void OpenChatWith::show()
