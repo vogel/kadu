@@ -149,6 +149,9 @@ Section $(NAME_SectionOfficial) SectionOfficial
   File  /r "${DATA_DIR}\kadu\syntax\chat\*"
   SetOutPath "$INSTDIR\syntax\infopanel"
   File "${DATA_DIR}\kadu\syntax\infopanel\*.syntax"
+; qml files
+  SetOutPath "$INSTDIR\qml"
+  File  /r "${DATA_DIR}\kadu\qml\*"
 ; emoticons
   SetOutPath "$INSTDIR\themes\emoticons"
   File /r "${DATA_DIR}\kadu\themes\emoticons\*"
