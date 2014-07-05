@@ -22,6 +22,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
+#include "exports.h"
+
 class ChatWidget;
 class ChatWidgetContainerHandler;
 class ChatWidgetContainerHandlerMapper;
@@ -40,7 +42,7 @@ class ChatWidgetContainerHandlerRepository;
  * tryActivateChatWidget(ChatWidget*) method. Chat activity status can be checked
  * by isChatWidgetActive(ChatWidget*).
  */
-class ChatWidgetActivationService : public QObject
+class KADUAPI ChatWidgetActivationService : public QObject
 {
 	Q_OBJECT
 

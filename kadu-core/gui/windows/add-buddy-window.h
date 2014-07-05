@@ -29,6 +29,7 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
+#include "exports.h"
 #include "os/generic/desktop-aware-object.h"
 
 class QCheckBox;
@@ -41,7 +42,7 @@ class AccountsComboBox;
 class GroupsComboBox;
 class SelectTalkableComboBox;
 
-class AddBuddyWindow : public QDialog, DesktopAwareObject
+class KADUAPI AddBuddyWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
