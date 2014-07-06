@@ -118,6 +118,7 @@ protected:
 	* w zależności od konfiguracji
 	*/
 	virtual void closeEvent(QCloseEvent *e);
+    virtual void showEvent(QShowEvent *e);
 	virtual void resizeEvent(QResizeEvent *e);
 	/**
 	* Metoda wywoływana w chwili przeciągnięcia obiektu na pasek kart
