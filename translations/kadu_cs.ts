@@ -832,10 +832,6 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Povolit průhlednost v okně pro rozhovor</translation>
     </message>
     <message>
-        <source>Your system does not support transparency.</source>
-        <translation>Váš systém nepodporuje průhlednost.</translation>
-    </message>
-    <message>
         <source>Buddies list</source>
         <translation>Seznam kamarádů</translation>
     </message>

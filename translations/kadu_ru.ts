@@ -830,10 +830,6 @@ changes upon establishing connection to the server</source>
         <translation>Включить прозрачность в окне чата</translation>
     </message>
     <message>
-        <source>Your system does not support transparency.</source>
-        <translation>Ваша система не поддерживает прозрачность</translation>
-    </message>
-    <message>
         <source>Buddies list</source>
         <translation>Список контактов</translation>
     </message>

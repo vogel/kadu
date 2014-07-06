@@ -831,10 +831,6 @@ changes upon establishing connection to the server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Your system does not support transparency.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Buddies list</source>
         <translation type="unfinished"/>
     </message>
