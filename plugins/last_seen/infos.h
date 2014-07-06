@@ -32,10 +32,10 @@
 #include "contacts/contact.h"
 #include "status/status.h"
 
-class ActionDescription;
-
 //! A "dictionary oriented" list type, holding uins and "Last seen" times.
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
+
+class ActionDescription;
 
 /*!
  * This class handles the "Last seen" time for InfosDialog class.
@@ -60,17 +60,17 @@ protected:
 	 * in the constructor.
 	 */
 	QString fileName;
-	
+
 	/*!
 	 * List with "last seen on" time.
 	 * The keys are uins,
 	 * the values are "last seen" times.
 	 */
 	LastSeen lastSeen;
-	
+
 	//! Holds the "&Show infos about contacts" menu entry ID.
 	int menuID;
-	
+
 	ActionDescription* lastSeenActionDescription;
 
 public:
@@ -79,11 +79,11 @@ public:
 	 * \param parent - the parent object,
 	 * \param name - the object's name
 	 */
-	Infos(QObject *parent = 0);
+	explicit Infos(QObject *parent = 0);
 
 	//! Default destructor
 	~Infos();
-		
+
 public slots:
 	//! This slot open InfosDialog dialog.
 	void onShowInfos();

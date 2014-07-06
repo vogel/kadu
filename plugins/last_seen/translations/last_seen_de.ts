@@ -1,5 +1,12 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
+    <name>Infos</name>
+    <message>
+        <source>&amp;Show infos about buddies</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>InfosDialog</name>
     <message>
         <source>Buddies Information</source>

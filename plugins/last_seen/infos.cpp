@@ -25,6 +25,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
@@ -95,7 +96,7 @@ Infos::Infos(QObject *parent) :
 	lastSeenActionDescription = new ActionDescription(
 		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
-		KaduIcon(), tr("&Show infos about buddies")
+		KaduIcon(), qApp->translate("Infos", "&Show infos about buddies")
 	);
 
 	MenuInventory::instance()
