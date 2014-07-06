@@ -828,10 +828,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Włącz przezroczystość w oknie rozmowy</translation>
     </message>
     <message>
-        <source>Your system does not support transparency.</source>
-        <translation>Twój system nie obsługuje przezroczystości.</translation>
-    </message>
-    <message>
         <source>Buddies list</source>
         <translation>Lista znajomych</translation>
     </message>

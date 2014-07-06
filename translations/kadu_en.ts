@@ -832,10 +832,6 @@ changes upon establishing connection to the server</translation>
         <translation>Enable transparency in chat window</translation>
     </message>
     <message>
-        <source>Your system does not support transparency.</source>
-        <translation>Your system does not support transparency.</translation>
-    </message>
-    <message>
         <source>Buddies list</source>
         <translation>Buddies list</translation>
     </message>

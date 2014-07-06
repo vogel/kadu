@@ -824,10 +824,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Your system does not support transparency.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Buddies list</source>
         <translation type="unfinished"/>
     </message>
