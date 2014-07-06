@@ -54,7 +54,7 @@
         <translation>Přepnout zaměření mezi rozpisem služeb a kartami</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Chování</translation>
     </message>
 </context>

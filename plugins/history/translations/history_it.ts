@@ -78,7 +78,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Conservazione</translation>
     </message>
     <message>

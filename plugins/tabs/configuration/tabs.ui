@@ -20,7 +20,7 @@
 			</group-box>
 		</tab>
 	</section>
-	<section name="Behaviour">
+	<section name="Behavior">
 		<tab name="Shortcuts">
 			<group-box name="Tabs">
 				<hot-key-edit caption="Move tab left" config-section="ShortCuts" config-item="MoveTabLeft" />

@@ -302,7 +302,7 @@ class ChangeNotifier;
  * This class is contructed to allow copying objects without copying their data. Each object
  * of SharedBase class contains only pointer (reference-counted) to Shared class that
  * contains real data. So every copied object will have the same data, changes in one object
- * will be visible in all copied object. This is behaviour similar to references and very
+ * will be visible in all copied object. This is behavior similar to references and very
  * similar to Java objects.
  *
  * Empty objects are called 'null' objects and can be tested by isNull method.

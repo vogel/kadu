@@ -314,7 +314,7 @@
         <translation>Podtržený text</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Chování</translation>
     </message>
     <message>
@@ -2365,7 +2365,7 @@ Chcete přesto tento obrázek přijmout?</translation>
         <translation>Vlastnosti skupiny %1</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Chování</translation>
     </message>
     <message>

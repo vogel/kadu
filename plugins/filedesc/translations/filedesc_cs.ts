@@ -26,7 +26,7 @@
         <translation>Umožní vám nastavit některé vlastní popisy ručně, dokud se obsah souboru nezmění</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Chování</translation>
     </message>
     <message>

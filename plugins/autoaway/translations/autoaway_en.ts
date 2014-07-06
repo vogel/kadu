@@ -42,8 +42,8 @@
         <translation>Do Not Change</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
     <message>
         <source>Inactivity</source>

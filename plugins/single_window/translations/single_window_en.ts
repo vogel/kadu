@@ -54,8 +54,8 @@
         <translation>Switch focus between roster and tabs</translation>
     </message>
     <message>
-        <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <source>Behavior</source>
+        <translation>Behavior</translation>
     </message>
 </context>
 <context>

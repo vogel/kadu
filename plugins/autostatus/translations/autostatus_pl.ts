@@ -30,7 +30,7 @@
         <translation>Niewidoczny</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Zachowanie</translation>
     </message>
     <message>

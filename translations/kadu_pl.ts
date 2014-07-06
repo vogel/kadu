@@ -314,7 +314,7 @@
         <translation>Podkreślenie</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Zachowanie</translation>
     </message>
     <message>
@@ -2367,7 +2367,7 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
         <translation>Ustawienia grupy %1</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Zachowanie</translation>
     </message>
     <message>

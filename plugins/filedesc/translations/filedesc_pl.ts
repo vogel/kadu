@@ -26,7 +26,7 @@
         <translation>Umożliwia ustawienie własnego opisu dopóki zawartość pliku nie ulegnie zmianie</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Zachowanie</translation>
     </message>
     <message>

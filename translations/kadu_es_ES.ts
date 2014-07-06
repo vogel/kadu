@@ -314,7 +314,7 @@
         <translation>Subrayado</translation>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Comportamiento</translation>
     </message>
     <message>
@@ -2354,7 +2354,7 @@ Do you want to accept this image anyway?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Behaviour</source>
+        <source>Behavior</source>
         <translation>Comportamiento</translation>
     </message>
     <message>
