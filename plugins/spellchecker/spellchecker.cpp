@@ -71,6 +71,20 @@ static void enchantDictDescribe(const char * const langTag, const char * const p
 	if (!checkers.contains(langTag))
 		result.append(langTag);
 }
+
+static void enchantUsedDictDescribe(const char * const langTag, const char * const providerName,
+		const char * const providerDesc, const char * const providerFile, void *userData)
+{
+	Q_UNUSED(providerName)
+	Q_UNUSED(providerDesc)
+	Q_UNUSED(providerFile)
+
+	DescWrapper *pWrapper = static_cast<DescWrapper *>(userData);
+	const SpellChecker::Checkers &checkers = *pWrapper->first;
+	QStringList &result = *pWrapper->second;
+	if (checkers.contains(langTag))
+		result.append(langTag);
+}
 #endif
 
 SpellChecker::SpellChecker(QObject *parent) :
@@ -150,8 +164,25 @@ QStringList SpellChecker::notCheckedLanguages()
 QStringList SpellChecker::checkedLanguages()
 {
 	QStringList result;
-	for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
-		result.append(it.key());
+
+#if defined(HAVE_ASPELL)
+	AspellDictInfoList *dlist;
+	AspellDictInfoEnumeration *dels;
+	const AspellDictInfo *entry;
+
+	/* the returned pointer should _not_ need to be deleted */
+	dlist = get_aspell_dict_info_list(SpellConfig);
+
+	dels = aspell_dict_info_list_elements(dlist);
+	while ((entry = aspell_dict_info_enumeration_next(dels)))
+		if (MyCheckers.contains(entry->name))
+			result.push_back(entry->name);
+	delete_aspell_dict_info_enumeration(dels);
+#elif defined(HAVE_ENCHANT)
+	DescWrapper aWrapper(&MyCheckers, &result);
+	enchant_broker_list_dicts(Broker, enchantUsedDictDescribe, &aWrapper);
+#endif
+
 	return result;
 }
 
