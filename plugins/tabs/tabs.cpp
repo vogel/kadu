@@ -392,6 +392,11 @@ void TabsManager::onTimer()
 
 	bool tabsActive = _isWindowActiveOrFullyVisible(TabDialog);
 	ChatWidget *currentChatWidget = static_cast<ChatWidget *>(TabDialog->currentWidget());
+	if (!currentChatWidget)
+	{
+		// that means we are closing window now
+		return;
+	}
 
 	auto unreadChatWidget = chatWidgetWithUnreadMessage();
 	if (unreadChatWidget && !tabsActive)
