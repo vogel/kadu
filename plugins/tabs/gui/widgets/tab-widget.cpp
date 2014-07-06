@@ -518,12 +518,20 @@ void TabWidget::configurationUpdated()
 	}
 }
 
-void TabWidget::resizeEvent(QResizeEvent *e)
+void TabWidget::showEvent(QShowEvent* e)
 {
+	QTabWidget::showEvent(e);
+
 	updateTabsListButton();
 	updateTabsMenu();
+}
 
+void TabWidget::resizeEvent(QResizeEvent *e)
+{
 	QTabWidget::resizeEvent(e);
+
+	updateTabsListButton();
+	updateTabsMenu();
 }
 
 void TabWidget::updateTabsListButton()
