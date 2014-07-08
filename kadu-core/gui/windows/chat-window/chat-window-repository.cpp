@@ -23,6 +23,11 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window/chat-window.h"
 
+ChatWindow * ChatWindowRepository::converter(ChatWindowRepository::WrappedIterator iterator)
+{
+	return iterator->second.get();
+}
+
 ChatWindowRepository::ChatWindowRepository(QObject *parent) :
 		QObject{parent}
 {
@@ -30,42 +35,51 @@ ChatWindowRepository::ChatWindowRepository(QObject *parent) :
 
 ChatWindowRepository::~ChatWindowRepository()
 {
+	// neeed to emit signals on finish
+	while (!m_windows.empty())
+		removeChatWindow((*m_windows.begin()).second.get());
 }
 
-void ChatWindowRepository::addChatWindow(ChatWindow *chatWindow)
+ChatWindowRepository::Iterator ChatWindowRepository::begin()
 {
-	if (!chatWindow || m_windows.contains(chatWindow->chatWidget()))
+	return Iterator{m_windows.begin(), converter};
+}
+
+ChatWindowRepository::Iterator ChatWindowRepository::end()
+{
+	return Iterator{m_windows.end(), converter};
+}
+
+void ChatWindowRepository::addChatWindow(std::unique_ptr<ChatWindow> chatWindow)
+{
+	if (!chatWindow || hasWindowForChat(chatWindow.get()->chat()))
 		return;
 
-	connect(chatWindow, SIGNAL(windowDestroyed(ChatWindow*)), this, SLOT(windowDestroyed(ChatWindow*)));
-	m_windows.insert(chatWindow->chatWidget(), chatWindow);
+	m_windows.insert(std::make_pair(chatWindow->chat(), std::move(chatWindow)));
 }
 
 void ChatWindowRepository::removeChatWindow(ChatWindow *chatWindow)
 {
-	if (!chatWindow || !m_windows.contains(chatWindow->chatWidget()))
+	if (!chatWindow || !hasWindowForChat(chatWindow->chat()))
 		return;
 
-	disconnect(chatWindow, SIGNAL(windowDestroyed(ChatWindow*)), this, SLOT(windowDestroyed(ChatWindow*)));
-	m_windows.remove(chatWindow->chatWidget());
+	m_windows.erase(chatWindow->chat());
 }
 
-ChatWindow * ChatWindowRepository::windowForChatWidget(ChatWidget * const chatWidget)
+bool ChatWindowRepository::hasWindowForChat(const Chat &chat) const
 {
-	if (!chatWidget)
+	return m_windows.end() != m_windows.find(chat);
+}
+
+ChatWindow * ChatWindowRepository::windowForChat(const Chat &chat)
+{
+	if (!chat)
 		return nullptr;
 
-	return m_windows.value(chatWidget);
-}
-
-const QMap<ChatWidget *, ChatWindow *> &ChatWindowRepository::windows() const
-{
-	return m_windows;
-}
-
-void ChatWindowRepository::windowDestroyed(ChatWindow *chatWindow)
-{
-	removeChatWindow(chatWindow);
+	auto it = m_windows.find(chat);
+	return it != m_windows.end()
+			? it->second.get()
+			: nullptr;
 }
 
 #include "moc_chat-window-repository.cpp"

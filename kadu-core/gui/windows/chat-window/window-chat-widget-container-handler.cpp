@@ -54,14 +54,15 @@ void WindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
 	if (!chatWidget || !m_chatWindowFactory || !m_chatWindowRepository)
 		return;
 
-	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
+	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chatWidget->chat());
 	if (!chatWindow)
 	{
-		chatWindow = m_chatWindowFactory.data()->createChatWindow(chatWidget).release();
+		auto newChatWindow = m_chatWindowFactory.data()->createChatWindow(chatWidget);
+		chatWindow = newChatWindow.get();
 		if (!chatWindow)
 			return;
 
-		m_chatWindowRepository.data()->addChatWindow(chatWindow);
+		m_chatWindowRepository.data()->addChatWindow(std::move(newChatWindow));
 		connect(chatWindow, SIGNAL(activated(ChatWindow*)), this, SLOT(chatWindowActivated(ChatWindow*)));
 	}
 
@@ -73,10 +74,8 @@ void WindowChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)
 	if (!chatWidget || !m_chatWindowRepository)
 		return;
 
-	chatWidget->setParent(nullptr);
-	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
-	if (chatWindow)
-		chatWindow->deleteLater();
+	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chatWidget->chat());
+	m_chatWindowRepository.data()->removeChatWindow(chatWindow);
 }
 
 bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)
@@ -84,7 +83,7 @@ bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget
 	if (!chatWidget || !m_chatWindowRepository)
 		return false;
 
-	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
+	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chatWidget->chat());
 	return chatWindow ? _isWindowActiveOrFullyVisible(chatWindow) : false;
 }
 
@@ -93,7 +92,7 @@ void WindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWid
 	if (!chatWidget || !m_chatWindowRepository)
 		return;
 
-	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
+	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chatWidget->chat());
 	if (chatWindow)
 		_activateWindow(chatWindow);
 }

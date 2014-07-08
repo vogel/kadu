@@ -22,6 +22,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include "chat/chat.h"
+#include "misc/iterator.h"
 #include "exports.h"
 
 class ChatWidget;
@@ -48,16 +50,31 @@ class KADUAPI ChatWindowRepository : public QObject
 {
 	Q_OBJECT
 
+	using Storage = std::map<Chat, std::unique_ptr<ChatWindow>>;
+	using WrappedIterator = Storage::iterator;
+
 public:
+	using Iterator = IteratorWrapper<WrappedIterator, ChatWindow *>;
+
 	explicit ChatWindowRepository(QObject *parent = nullptr);
 	virtual ~ChatWindowRepository();
+
+	/**
+	 * @short Begin iterator that returns ChatWindow *.
+	 */
+	Iterator begin();
+
+	/**
+	 * @short Begin iterator that returns ChatWindow *.
+	 */
+	Iterator end();
 
 	/**
 	 * @short Add new chatWindow to repository.
 	 *
 	 * Add new chatWindow to repository only if it is valid and not already in repository.
 	 */
-	void addChatWindow(ChatWindow *chatWindow);
+	void addChatWindow(std::unique_ptr<ChatWindow> chatWindow);
 
 	/**
 	 * @short Remove chatWindow from repository.
@@ -67,27 +84,36 @@ public:
 	void removeChatWindow(ChatWindow *chatWindow);
 
 	/**
-	 * @short Return ChatWindow for given chatWidget.
-	 * @param chatWidget chatWidget to get ChatWindow for
-	 * @return ChatWindow for given chatWidget
-	 *
-	 * If chatWidget is null then nullptr is returned. If repository does contain ChatWidget then
-	 * it is returned. Else nullptr is returned.
+	 * @short Return true if repository has chat window for given chat.
 	 */
-	ChatWindow * windowForChatWidget(ChatWidget * const chatWidget);
+	bool hasWindowForChat(const Chat &chat) const;
 
 	/**
-	 * @short Return complete mapping of ChatWidget* to ChatWindow* instances
+	 * @short Return ChatWindow for given chatWidget.
+	 * @param chat chat to get ChatWindow for
+	 * @return ChatWindow for given chat
+	 *
+	 * If chat is null then nullptr is returned. If repository does contain chat then
+	 * it is returned. Else nullptr is returned.
 	 */
-	const QMap<ChatWidget *, ChatWindow *> & windows() const;
+	ChatWindow * windowForChat(const Chat &chat);
 
 private:
-	QMap<ChatWidget *, ChatWindow *> m_windows;
+	static ChatWindow * converter(WrappedIterator iterator);
 
-private slots:
-	void windowDestroyed(ChatWindow *chatWindow);
+	Storage m_windows;
 
 };
+
+inline ChatWindowRepository::Iterator begin(ChatWindowRepository *chatWindowRepository)
+{
+	return chatWindowRepository->begin();
+}
+
+inline ChatWindowRepository::Iterator end(ChatWindowRepository *chatWindowRepository)
+{
+	return chatWindowRepository->end();
+}
 
 /**
  * @}
