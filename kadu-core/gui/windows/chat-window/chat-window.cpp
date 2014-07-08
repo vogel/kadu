@@ -92,7 +92,8 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 
 ChatWindow::~ChatWindow()
 {
-	m_chatWidget->requestClose();
+	m_chatWidget->setParent(nullptr);
+
 	emit windowDestroyed(this);
 }
 

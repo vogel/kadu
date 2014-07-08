@@ -63,9 +63,8 @@ void ChatWindowManager::storeOpenedChatWindows()
 	if (!m_chatWindowRepository)
 		return;
 
-	const auto &windows = m_chatWindowRepository.data()->windows();
 	auto chats = QVector<Chat>{};
-	std::transform(windows.begin(), windows.end(), std::back_inserter(chats), [](ChatWindow *window) {
+	std::transform(begin(m_chatWindowRepository.data()), end(m_chatWindowRepository.data()), std::back_inserter(chats), [](ChatWindow *window) {
 		return window->chat();
 	});
 

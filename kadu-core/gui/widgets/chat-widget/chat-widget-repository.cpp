@@ -73,10 +73,13 @@ bool ChatWidgetRepository::hasWidgetForChat(const Chat &chat) const
 
 ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
 {
-	if (!chat || !hasWidgetForChat(chat))
+	if (!chat)
 		return nullptr;
 
-	return m_widgets.at(chat).get();
+	auto it = m_widgets.find(chat);
+	return it != m_widgets.end()
+			? it->second.get()
+			: nullptr;
 }
 
 #include "moc_chat-widget-repository.cpp"
