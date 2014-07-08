@@ -120,7 +120,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 		: getActionContext();
 
 	bool firstItem = true;
-	MenuSection latestSection;
+	MenuSection latestSection = KaduMenu::SectionAbout; // prevent 4.9 from complaining
 
 	QMenu *actions = new QMenu(tr("More Actions..."), menu);
 
