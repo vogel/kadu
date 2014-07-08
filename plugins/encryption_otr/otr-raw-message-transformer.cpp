@@ -91,7 +91,7 @@ RawMessage OtrRawMessageTransformer::transform(const RawMessage &rawMessage, con
 
 RawMessage OtrRawMessageTransformer::transformReceived(const RawMessage &rawMessage, const Message &message)
 {
-	if (!AppOpsService || !OpDataFactory || !UserStateService)
+	if (!AppOpsService || !OpDataFactory || !UserStateService || message.messageChat().contacts().size() != 1)
 		return rawMessage;
 
 	OtrlUserState userState = UserStateService.data()->userState();
@@ -129,19 +129,14 @@ RawMessage OtrRawMessageTransformer::transformReceived(const RawMessage &rawMess
 
 RawMessage OtrRawMessageTransformer::transformSent(const RawMessage &rawMessage, const Message &message)
 {
-	if (!AppOpsService || !OpDataFactory || !UserStateService)
+	if (!AppOpsService || !OpDataFactory || !UserStateService || message.messageChat().contacts().size() != 1)
 		return rawMessage;
 
 	OtrlUserState userState = UserStateService.data()->userState();
 	if (!userState)
 		return rawMessage;
 
-	Chat chat = message.messageChat();
-	ChatDetails *chatDetails = chat.details();
-	if (chatDetails->contacts().size() > 1)
-		return rawMessage;
-
-	Contact receiver = (*chatDetails->contacts().begin());
+	Contact receiver = message.messageChat().contacts().toContact();
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
