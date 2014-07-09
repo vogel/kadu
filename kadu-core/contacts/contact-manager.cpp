@@ -187,6 +187,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	ChangeNotifierLock lock(contact.rosterEntry()->changeNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
 	contact.setId(id);
 	contact.setContactAccount(account);
+	contact.rosterEntry()->setState(RosterEntrySynchronized); // TODO: setId desynchronized it, make a factory
 
 	if (action == ActionCreateAndAdd)
 		addItem(contact);
