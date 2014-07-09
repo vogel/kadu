@@ -30,6 +30,7 @@
 #include "contacts/contact-parser-tags.h"
 #include "core/core.h"
 #include "message/unread-message-repository.h"
+#include "misc/change-notifier-lock.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
@@ -182,6 +183,8 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 		return Contact::null;
 
 	Contact contact = Contact::create();
+
+	ChangeNotifierLock lock(contact.rosterEntry()->changeNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
 	contact.setId(id);
 	contact.setContactAccount(account);
 
