@@ -32,6 +32,7 @@
 #include <libindicate-qt/qindicateserver.h>
 
 #include "avatars/avatar.h"
+#include "avatars/avatar-manager.h"
 #include "buddies/buddy.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-details-buddy.h"
@@ -198,7 +199,7 @@ void IndicatorDocking::notify(Notification *notification)
 			indicator->setNameProperty(ChatDataExtractor::data(chat, Qt::DisplayRole).toString());
 			if (chat.contacts().count() == 1)
 			{
-				Avatar avatar = chat.contacts().constBegin()->contactAvatar();
+				auto avatar = AvatarManager::instance()->byContact(*chat.contacts().constBegin(), ActionCreateAndAdd);
 				if (avatar && !avatar.pixmap().isNull())
 					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 			}

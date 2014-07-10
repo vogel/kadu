@@ -25,6 +25,7 @@
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"
+#include "avatars/avatar-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "configuration/configuration.h"
@@ -163,8 +164,8 @@ void BuddyInfoPanel::connectItem()
 	if (contact)
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(update()));
-		if (contact.contactAvatar())
-			connect(contact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
+		auto avatar = AvatarManager::instance()->byContact(contact, ActionCreateAndAdd);
+		connect(avatar, SIGNAL(updated()), this, SLOT(update()));
 	}
 }
 
@@ -182,8 +183,8 @@ void BuddyInfoPanel::disconnectItem()
 	if (contact)
 	{
 		disconnect(contact, 0, this, 0);
-		if (contact.contactAvatar())
-			disconnect(contact.contactAvatar(), 0, this, 0);
+		auto avatar = AvatarManager::instance()->byContact(contact, ActionCreateAndAdd);
+		disconnect(avatar, 0, this, 0);
 	}
 }
 
