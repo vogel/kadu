@@ -127,23 +127,16 @@ bool AvatarManager::needUpdate(const Contact &contact)
 	if (!protocol || !protocol->isConnected())
 		return false;
 
-	if (!contact.contactAvatar())
-		return true;
+	auto avatar = byContact(contact, ActionCreateAndAdd);
 
-	if (contact.contactAvatar().state() != StorableObject::StateLoaded)
-	{
-		contact.setContactAvatar(Avatar::create());
-		return true;
-	}
-
-	QDateTime lastUpdated = contact.contactAvatar().lastUpdated();
+	QDateTime lastUpdated = avatar.lastUpdated();
 	if (!lastUpdated.isValid())
 		return true;
 	// one hour passed
 	if (lastUpdated.secsTo(QDateTime::currentDateTime()) > 60 * 60)
 		return true;
 
-	QDateTime nextUpdate = contact.contactAvatar().nextUpdate();
+	QDateTime nextUpdate = avatar.nextUpdate();
 	if (nextUpdate > QDateTime::currentDateTime())
 		return true;
 
@@ -219,7 +212,7 @@ Avatar AvatarManager::byBuddy(Buddy buddy, NotFoundAction action)
 
 Avatar AvatarManager::byContact(Contact contact, NotFoundAction action)
 {
-	if (contact.contactAvatar())
+	if (contact.contactAvatar() || (contact.contactAvatar().state() != StorableObject::StateLoaded))
 		return contact.contactAvatar();
 
 	if (ActionReturnNull == action)
