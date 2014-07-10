@@ -130,6 +130,12 @@ bool AvatarManager::needUpdate(const Contact &contact)
 	if (!contact.contactAvatar())
 		return true;
 
+	if (contact.contactAvatar().state() != StorableObject::StateLoaded)
+	{
+		contact.setContactAvatar(Avatar::create());
+		return true;
+	}
+
 	QDateTime lastUpdated = contact.contactAvatar().lastUpdated();
 	if (!lastUpdated.isValid())
 		return true;
