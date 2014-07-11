@@ -52,7 +52,6 @@ public:
 
 	virtual void storeAvatar();
 
-	KaduSharedBase_PropertyRead(StorableObject::StorableObjectState, state, State)
 	KaduSharedBase_PropertyBoolRead(Empty)
 	KaduSharedBase_PropertyCRW(QDateTime, lastUpdated, LastUpdated)
 	KaduSharedBase_PropertyCRW(QDateTime, nextUpdate, NextUpdate)

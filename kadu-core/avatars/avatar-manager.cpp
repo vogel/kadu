@@ -212,7 +212,7 @@ Avatar AvatarManager::byBuddy(Buddy buddy, NotFoundAction action)
 
 Avatar AvatarManager::byContact(Contact contact, NotFoundAction action)
 {
-	if (contact.contactAvatar() && (contact.contactAvatar().state() == StorableObject::StateLoaded))
+	if (contact.contactAvatar())
 		return contact.contactAvatar();
 
 	if (ActionReturnNull == action)
