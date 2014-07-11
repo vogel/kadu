@@ -199,7 +199,7 @@ void IndicatorDocking::notify(Notification *notification)
 			indicator->setNameProperty(ChatDataExtractor::data(chat, Qt::DisplayRole).toString());
 			if (chat.contacts().count() == 1)
 			{
-				auto avatar = AvatarManager::instance()->byContact(*chat.contacts().constBegin(), ActionCreateAndAdd);
+				auto avatar = AvatarManager::instance()->byContact(*chat.contacts().constBegin(), ActionReturnNull);
 				if (avatar && !avatar.pixmap().isNull())
 					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 			}
