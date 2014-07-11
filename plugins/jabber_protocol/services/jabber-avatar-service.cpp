@@ -29,6 +29,7 @@
 #include "server/jabber-avatar-vcard-uploader.h"
 #include "services/jabber-pep-service.h"
 #include "services/jabber-vcard-service.h"
+#include "jabber-protocol.h"
 
 #include "jabber-avatar-service.h"
 
@@ -53,6 +54,9 @@ void JabberAvatarService::setVCardService(XMPP::JabberVCardService *vCardService
 
 AvatarDownloader * JabberAvatarService::createAvatarDownloader()
 {
+	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+	if (!protocol->isConnected() || !protocol->xmppClient())
+		return 0;
 	if (!PepService.data() && !VCardService.data())
 		return 0;
 	if (PepService.data() && !VCardService.data())
@@ -64,6 +68,9 @@ AvatarDownloader * JabberAvatarService::createAvatarDownloader()
 
 AvatarUploader * JabberAvatarService::createAvatarUploader()
 {
+	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+	if (!protocol->isConnected() || !protocol->xmppClient())
+		return 0;
 	if (!PepService.data() && !VCardService.data())
 		return 0;
 	if (PepService.data() && !VCardService.data())
