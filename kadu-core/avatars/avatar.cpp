@@ -76,7 +76,6 @@ void Avatar::storeAvatar()
 		data()->storeAvatar();
 }
 
-KaduSharedBase_PropertyReadDef(Avatar, StorableObject::StorableObjectState, state, State, StorableObject::StateNew)
 KaduSharedBase_PropertyBoolReadDef(Avatar, Empty, true)
 KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
 KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())
