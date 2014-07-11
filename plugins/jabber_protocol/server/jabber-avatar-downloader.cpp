@@ -30,7 +30,7 @@
 
 #include "jabber-avatar-downloader.h"
 
-JabberAvatarDownloader::JabberAvatarDownloader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
+JabberAvatarDownloader::JabberAvatarDownloader( JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
 		AvatarDownloader(parent), PepService(pepService), VCardService(vCardService)
 {
 }
@@ -94,17 +94,10 @@ void JabberAvatarDownloader::downloadAvatar(const QString &id)
 {
 	Id = id;
 
-	Account account = AccountManager::instance()->byId("jabber", Id);
-
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
-
-	if (account && protocol->isConnected() && protocol->xmppClient())
-	{
-		if (PepService && PepService.data()->enabled())
-			downloadAvatarPEP();
-		else
-			downloadAvatarVCard();
-	}
+	if (PepService && PepService.data()->enabled())
+		downloadAvatarPEP();
+	else
+		downloadAvatarVCard();
 }
 
 #include "moc_jabber-avatar-downloader.cpp"
