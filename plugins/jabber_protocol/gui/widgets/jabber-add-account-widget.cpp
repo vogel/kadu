@@ -192,7 +192,7 @@ void JabberAddAccountWidget::apply()
 		if (isFacebookAccount)
 		{
 			details->setEncryptionMode(JabberAccountDetails::Encryption_Yes);
-			details->setPlainAuthMode(JabberAccountDetails::NoAllowPlain);
+			details->setPlainAuthMode(JabberAccountDetails::AllowPlainOverTLS);
 			details->setUseCustomHostPort(false);
 			details->setCustomHost("chat.facebook.com");
 			details->setCustomPort(5222);
