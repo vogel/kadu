@@ -30,7 +30,7 @@
 #include "image-expander.h"
 
 ImageExpander::ImageExpander() :
-		DomTextRegexpVisitor(QRegExp("http://.*(\\.gif|\\.jpg|\\.png)"))
+		DomTextRegexpVisitor(QRegExp("https?://.*(\\.gif|\\.jpg|\\.png)"))
 {
 }
 

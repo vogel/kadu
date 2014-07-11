@@ -28,7 +28,7 @@
 #include "video-expander.h"
 
 VideoExpander::VideoExpander() :
-		DomTextRegexpVisitor(QRegExp("http://www.youtube.com/watch(.*)&?"))
+		DomTextRegexpVisitor(QRegExp("https?://www.youtube.com/watch(.*)&?"))
 {
 }
 
