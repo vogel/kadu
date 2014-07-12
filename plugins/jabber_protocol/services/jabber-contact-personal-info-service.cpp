@@ -49,7 +49,7 @@ void JabberContactPersonalInfoService::setVCardService(XMPP::JabberVCardService 
 
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
-	CurrentBuddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+	CurrentBuddy = Buddy::create();
 	if (!VCardService)
 		return;
 
