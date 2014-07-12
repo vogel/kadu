@@ -48,10 +48,6 @@ BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 	Proxy = new BuddyContactsTableModelProxy(Model);
 	Proxy->setSourceModel(Model);
 
-	connect(Model, SIGNAL(validChanged()), this, SIGNAL(validChanged()));
-	connect(Model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SIGNAL(validChanged()));
-	connect(Model, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SIGNAL(validChanged()));
-
 	createGui();
 }
 
