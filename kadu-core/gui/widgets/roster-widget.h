@@ -61,8 +61,6 @@ class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, Confi
 	ModelChain * createModelChain();
 	void createTalkableWidget(QWidget *parent);
 
-	void storeConfiguration();
-
 protected:
 	void configurationUpdated();
 
@@ -81,6 +79,9 @@ public:
 
 	// ActionContextProvider implementation
 	virtual ActionContext * actionContext();
+
+public slots:
+	void storeConfiguration();
 
 signals:
 	void currentChanged(const Talkable &talkable);
