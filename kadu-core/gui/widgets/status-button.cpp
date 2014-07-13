@@ -42,7 +42,7 @@
 #include "status-button.h"
 
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
-		QToolButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false)
+		QToolButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false), MenuTitleAction{nullptr}
 {
 	Icon = new StatusIcon(MyStatusContainer, this);
 
@@ -61,7 +61,8 @@ StatusButton::~StatusButton()
 void StatusButton::createGui()
 {
 	QMenu *menu = new QMenu(this);
-	addTitleToMenu(MyStatusContainer->statusContainerName(), menu);
+	if (!MyStatusContainer->statusContainerName().isEmpty())
+		addTitleToMenu(MyStatusContainer->statusContainerName(), menu);
 	new StatusMenu(MyStatusContainer, false, menu);
 
 	setMenu(menu);
@@ -167,7 +168,8 @@ void StatusButton::setDisplayStatusName(bool displayStatusName)
 void StatusButton::iconUpdated(const KaduIcon &icon)
 {
 	setIcon(icon.icon());
-	MenuTitleAction->setIcon(icon.icon());
+	if (MenuTitleAction)
+		MenuTitleAction->setIcon(icon.icon());
 }
 
 QString StatusButton::prepareDescription(const QString &description) const
