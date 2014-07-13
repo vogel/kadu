@@ -73,6 +73,9 @@ void RosterWidget::createGui()
 	layout->setSpacing(0);
 
 	GroupBar = new GroupTabBar(this);
+	connect(GroupBar, SIGNAL(currentChanged(int)), this, SLOT(storeConfiguration()));
+	connect(GroupBar, SIGNAL(tabMoved(int,int)), this, SLOT(storeConfiguration()));
+
 	TabBarConfigurator.reset(new GroupTabBarConfigurator());
 	TabBarConfigurator->setGroupTabBar(GroupBar);
 
