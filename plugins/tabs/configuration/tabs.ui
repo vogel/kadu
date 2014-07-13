@@ -14,9 +14,9 @@
 				</combo-box>
 			</group-box>
 			<group-box name="Look">
-				<check-box caption="Show &quot;Open chat&quot; button" config-section="Tabs" config-item="OpenChatButton" />
-				<check-box caption="Show common &quot;Close Tab&quot; button on tab bar" config-section="Tabs" config-item="CloseButton" />
-				<check-box caption="Show &quot;Close&quot; button on each tab" config-section="Tabs" config-item="CloseButtonOnTab" />
+				<check-box caption="Show 'Open chat' button" config-section="Tabs" config-item="OpenChatButton" />
+				<check-box caption="Show common 'Close Tab' button on tab bar" config-section="Tabs" config-item="CloseButton" />
+				<check-box caption="Show 'Close' button on each tab" config-section="Tabs" config-item="CloseButtonOnTab" />
 			</group-box>
 		</tab>
 	</section>
