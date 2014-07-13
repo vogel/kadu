@@ -1,426 +1,425 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation>Nepodařilo se navázat spojení, server nebyl nalezen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation>Nepodařilo se navázat spojení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
-        <translation>Změňte, prosím, svoji adresu elektronické pošty v okně &quot;Změnit heslo / E-mail&quot;. Pole pro nové heslo ponechejte prázdné.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation>Nepodařilo se navázat spojení, server vrátil neznámá data</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation>Nepodařilo se navázat spojení, přerušení spojení během čtení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation>Nepodařilo se navázat spojení, přerušení spojení během zápisu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect, invalid password</source>
-        <translation>Nepodařilo se navázat spojení, neplatné heslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Nepodařilo se navázat spojení, chyba ve vyjednání TLS</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Too many connection attempts with bad password!</source>
-        <translation>Příliš mnoho pokusů o spojení se špatným heslem!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect, servers are down</source>
-        <translation>Nepodařilo se navázat spojení, servery spadly</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connection broken</source>
-        <translation>Připojení přerušeno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation>Časové omezení pro spojení. Spojení vypršelo!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Disconnection has occurred</source>
-        <translation>Vyskytlo se odpojení</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduAddAccountWidget</name>
     <message>
         <source>Gadu-Gadu number</source>
-        <translation>Číslo Gadu-Gadu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Password</source>
-        <translation>Heslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Remember Password</source>
-        <translation>Zapamatovat si heslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation>Totožnost účtu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Vyberte nebo zadejte totožnost, která bude spojena s tímto účtem.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Add Account</source>
-        <translation>Přidat účet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Register Account</source>
-        <translation>Přihlásit účet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Remind GG number</source>
-        <translation>Připomenout číslo GG</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Remind Password</source>
-        <translation>Připomenout heslo</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduChatImageService</name>
     <message>
         <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
-        <translation>Tento obrázek má %1 KiB a překračuje doporučenou největší velikost %2 KiB. Někteří klienti mají potíže s příliš velkými obrázky.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Do you really want to send this image?</source>
-        <translation>Opravdu chcete poslat tento obrázek?</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduChatService</name>
     <message>
         <source>Kadu</source>
-        <translation>Kadu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Message too long (%1 &gt;= %2)</source>
-        <translation>Zpráva příliš dlouhá (%1 &gt;= %2)</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduContactPersonalInfoWidget</name>
     <message>
         <source>First Name</source>
-        <translation>Křestní jméno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Last Name</source>
-        <translation>Příjmení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Přezdívka</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Gender</source>
-        <translation>Pohlaví</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Birthdate</source>
-        <translation>Datum narození</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>City</source>
-        <translation>Město</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>State/Province</source>
-        <translation>Stát/Země</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>IP Address</source>
-        <translation>Adresa IP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Port</source>
-        <translation>Přípojka</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>DNS Name</source>
-        <translation>Název DNS</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Protocol Version</source>
-        <translation>Verze protokolu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Female</source>
-        <translation>Žena</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Male</source>
-        <translation>Muž</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduEditAccountWidget</name>
     <message>
         <source>Apply</source>
-        <translation>Použít</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete account</source>
-        <translation>Smazat účet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Gadu-Gadu number</source>
-        <translation>Číslo Gadu-Gadu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Password</source>
-        <translation>Heslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Remember password</source>
-        <translation>Zapamatovat si heslo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation>Totožnost účtu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Vyberte nebo zadejte totožnost, která bude spojena s tímto účtem.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation>Obecné</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Personal info</source>
-        <translation>Osobní údaje</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Buddies</source>
-        <translation>Kamarádi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connection</source>
-        <translation>Připojení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Options</source>
-        <translation>Volby</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Use default servers</source>
-        <translation>Použít výchozí servery</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation>Použít šifrované připojení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Remove account</source>
-        <translation>Odstranit účet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>External port</source>
-        <translation>Vnější přípojka</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation>Musíte libgadu sestavit s podporou pro SSL, abyste mohl povolit zašifrované spojení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Other</source>
-        <translation>Jiné</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation>Nastavení proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Images</source>
-        <translation>Obrázky</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Receive images also when I am Invisible</source>
-        <translation>Přijímat obrázky, i když jsem neviditelný</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Warn me when the image being sent may be too large</source>
-        <translation>Varovat, když je posílaný obrázek příliš velký</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Some clients may have trouble with too large images (over 256 KiB).</source>
-        <translation>Někteří klienti mají potíže s příliš velkými obrázky (nad 256 KiB).</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show my status only to buddies on my list</source>
-        <translation>Ukazovat můj stav jen kamarádům v mém seznamu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>When disabled, anyone can see your status.</source>
-        <translation>Když je zakázáno, kdokoli může vidět váš stav.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation>Povolit složené události</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation>Účastník vašeho hovoru bude upozorněn, když budete psát zprávu, předtím než bude poslána. A naopak.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Block links from anonymous buddies</source>
-        <translation>Blokovat odkazy od nepodepsaných kamarádů</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
-        <translation>Chrání vás před možnými škodlivými odkazy ve zprávách od nepodepsaných kamarádů</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Gadu-Gadu Server</source>
-        <translation>Server Gadu-Gadu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Custom server IP addresses</source>
-        <translation>Vlastní serverové adresy IP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable file transfers</source>
-        <translation>Povolit přenosy souborů</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Network</source>
-        <translation>Síť</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>External IP</source>
-        <translation>Vnější IP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation>Potvrdit odstranění účtu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation>Opravdu chcete odstranit účet %1 (%2)?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Status Visibility</source>
-        <translation>Viditelnost stavu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
 Are you sure to allow them to know you are available?</source>
-        <translation>Chystáte se odhalit svůj stav několika kamarádům, kterým není v současnosti dovoleno jej vidět.
-Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Make my status visible anyway</source>
-        <translation>Učinit můj stav viditelný tak jako tak</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Stay with private status</source>
-        <translation>Zůstat u soukromého stavu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Remind GG number</source>
-        <translation>Připomenout číslo GG</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Remind Password</source>
-        <translation>Připomenout heslo</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
     <message>
         <source>Unknown Gender</source>
-        <translation>Neznámé pohlaví</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Male</source>
-        <translation>Muž</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Female</source>
-        <translation>Žena</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Nick</source>
-        <translation>Přezdívka</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>First name</source>
-        <translation>Křestní jméno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Last name</source>
-        <translation>Příjmení</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Sex</source>
-        <translation>Pohlaví</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Family name</source>
-        <translation>Rodné jméno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Birth year</source>
-        <translation>Rok narození</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>City</source>
-        <translation>Město</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Family city</source>
-        <translation>Rodné město</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
-        <translation>Kadu</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduProtocolFactory</name>
     <message>
         <source>Gadu-Gadu number:</source>
-        <translation>Číslo Gadu-Gadu:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduProtocolPlugin</name>
     <message>
         <source>Gadu-Gadu Protocol</source>
-        <translation>Protokol Gadu-Gadu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation>Nelze nahrát přídavný modul pro protokol Gadu-Gadu. Sestavte, prosím, libgadu s podporou pro zlib.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

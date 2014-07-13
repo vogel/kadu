@@ -1,56 +1,56 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.0">
 <context>
     <name>Infos</name>
     <message>
         <source>&amp;Show infos about buddies</source>
-        <translation>&amp;Ukázat informace o kamarádech</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>InfosDialog</name>
     <message>
         <source>Buddies Information</source>
-        <translation>Informace o kamarádech</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Buddy</source>
-        <translation>Kamarád</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Protocol</source>
-        <translation>Protokol</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Nick</source>
-        <translation>Přezdívka</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>IP</source>
-        <translation>Adresa IP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Domain name</source>
-        <translation>Název domény</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Description</source>
-        <translation>Popis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>State</source>
-        <translation>Stav</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Last time seen on</source>
-        <translation>Naposledy viděn</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Username</source>
-        <translation>Uživatelské jméno</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
