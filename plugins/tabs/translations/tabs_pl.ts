@@ -77,6 +77,18 @@
         <source>Reopen closed tab</source>
         <translation>Otwórz zamkniętą kartę</translation>
     </message>
+    <message>
+        <source>Show &apos;Open chat&apos; button</source>
+        <translation>Pokazuj przycisk &apos;Otwórz rozmowę&apos;</translation>
+    </message>
+    <message>
+        <source>Show common &apos;Close Tab&apos; button on tab bar</source>
+        <translation>Pokazuj wspólny przycisk &apos;Zamkij kartę&apos; na pasku kart</translation>
+    </message>
+    <message>
+        <source>Show &apos;Close&apos; button on each tab</source>
+        <translation>Pokazuj przyciski &apos;Zamknij&apos; na każdej karcie</translation>
+    </message>
 </context>
 <context>
     <name>TabWidget</name>
