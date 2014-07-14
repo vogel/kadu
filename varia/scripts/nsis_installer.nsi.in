@@ -85,160 +85,458 @@ Var START_MENU_FOLDER
 ; Language Strings
 LangString ALREADY_INSTALLED_MESSAGE ${LANG_ENGLISH} "${PRODUCT_NAME} is already installed.$\n$\nClose ${PRODUCT_NAME} and click `OK` to remove the previous version and continue upgrade or `Cancel` to cancel this upgrade."
 LangString ALREADY_INSTALLED_MESSAGE ${LANG_POLISH} "Program ${PRODUCT_NAME} jest ju¿ zainstalowany na tym systemie.$\n$\nZamknij program ${PRODUCT_NAME} i kliknij $\"OK$\", aby usun¹æ poprzedni¹ wersjê i kontynuowaæ aktualizacjê, lub $\"Anuluj$\", aby anulowaæ tê aktualizacjê."
-LangString NAME_SectionOfficial ${LANG_ENGLISH} "Official Kadu IM"
-LangString NAME_SectionOfficial ${LANG_POLISH} "Oficjalne Kadu"
-LangString DESC_SectionOfficial ${LANG_ENGLISH} "Official Kadu IM as prepared by Kadu Team."
-LangString DESC_SectionOfficial ${LANG_POLISH} "Oficjalne Kadu przygotowane przez Kadu Team."
-LangString NAME_SectionExternalPlugins ${LANG_ENGLISH} "External Plugins"
-LangString NAME_SectionExternalPlugins ${LANG_POLISH} "Zewnêtrzne wtyczki"
-LangString DESC_SectionExternalPlugins ${LANG_ENGLISH} "Additional plugins provided by external developers. They include anonymous_check, import_history, lednotify, mime_tex, networkping, nextinfo, and senthistory."
-LangString DESC_SectionExternalPlugins ${LANG_POLISH} "Dodatkowe wtyczki dostarczone przez zewnêtrznych twórców. Zawieraj¹ anonymous_check, import_history, lednotify, mime_tex, networkping, nextinfo oraz senthistory."
-LangString NAME_SectionDesktopShortCut ${LANG_ENGLISH} "Desktop Shortcut"
-LangString NAME_SectionDesktopShortCut ${LANG_POLISH} "Skrót na pulpicie"
-; LangString DESC_SectionDesktopShortCut ${LANG_ENGLISH} ""
-; LangString DESC_SectionDesktopShortCut ${LANG_POLISH} ""
+
+LangString section_kadu ${LANG_ENGLISH} "Kadu"
+LangString section_kadu ${LANG_POLISH} "Kadu"
+LangString section_kadu_description ${LANG_ENGLISH} "Core Kadu components."
+LangString section_kadu_description ${LANG_POLISH} "Podstawowe elementy Kadu."
+
+LangString section_icon_themes ${LANG_ENGLISH} "Icon themes"
+LangString section_icon_themes ${LANG_POLISH} "Zestawy ikon"
+LangString section_icon_themes_description ${LANG_ENGLISH} "Various icon themes to use in Kadu"
+LangString section_icon_themes_description ${LANG_POLISH} "Ró¿ne zestawy ikon do u¿ycia w Kadu"
+
+LangString section_icon_themes_default ${LANG_ENGLISH} "Default"
+LangString section_icon_themes_default ${LANG_POLISH} "Domyœlny"
+LangString section_icon_themes_default_description ${LANG_ENGLISH} "Default Kadu icon theme"
+LangString section_icon_themes_default_description ${LANG_POLISH} "Domyœlny zestaw ikon Kadu"
+
+LangString section_sound_themes ${LANG_ENGLISH} "Sound themes"
+LangString section_sound_themes ${LANG_POLISH} "Zestawy dŸwiêków"
+LangString section_sound_themes_description ${LANG_ENGLISH} "Various sound themes to use in Kadu"
+LangString section_sound_themes_description ${LANG_POLISH} "Ró¿ne zestawy dŸwiêków do u¿ycia w Kadu"
+
+LangString section_sound_themes_default ${LANG_ENGLISH} "Default"
+LangString section_sound_themes_default ${LANG_POLISH} "Domyœlny"
+LangString section_sound_themes_default_description ${LANG_ENGLISH} "Default Kadu sound theme"
+LangString section_sound_themes_default_description ${LANG_POLISH} "Domyœlny zestaw dŸwiêków Kadu"
+
+LangString section_protocols ${LANG_ENGLISH} "Protocols"
+LangString section_protocols ${LANG_POLISH} "Protoko³y"
+LangString section_protocols_description ${LANG_ENGLISH} "Protocols supported by Kadu"
+LangString section_protocols_description ${LANG_POLISH} "Protoko³y wspierane przez Kadu"
+
+LangString section_plugins ${LANG_ENGLISH} "Plugins"
+LangString section_plugins ${LANG_POLISH} "Wtyczki"
+LangString section_plugins_description ${LANG_ENGLISH} "Official Kadu plugins"
+LangString section_plugins_description ${LANG_POLISH} "Oficjalne wtyczki do Kadu"
+
+LangString section_external_plugins ${LANG_ENGLISH} "External plugins"
+LangString section_external_plugins ${LANG_POLISH} "Zewnêtrzne wtyczki"
+LangString section_external_plugins_description ${LANG_ENGLISH} "External plugins for Kadu"
+LangString section_external_plugins_description ${LANG_POLISH} "Zewnêtrzne wtyczki do Kadu"
+
+LangString section_desktop_shortcut ${LANG_ENGLISH} "Desktop Shortcut"
+LangString section_desktop_shortcut ${LANG_POLISH} "Skrót na pulpicie"
 
 Function .onInit
-  ReadRegStr $R0 ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "UninstallString"
-  StrCmp $R0 "" done
+	ReadRegStr $R0 ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "UninstallString"
+	StrCmp $R0 "" done
 
-  MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION $(ALREADY_INSTALLED_MESSAGE) IDOK uninst
-  Abort
+	MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION $(ALREADY_INSTALLED_MESSAGE) IDOK uninst
+	Abort
 
 ;Run the uninstaller
 uninst:
-  !insertmacro MUI_LANGDLL_DISPLAY
+	!insertmacro MUI_LANGDLL_DISPLAY
 
-  ClearErrors
-  ExecWait '$R0 /S _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
+	ClearErrors
+	ExecWait '$R0 /S _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
 
-  IfErrors no_remove_uninstaller done
-    ;You can either use Delete /REBOOTOK in the uninstaller or add some code
-    ;here to remove the uninstaller. Use a registry key to check
-    ;whether the user has chosen to uninstall. If you are using an uninstaller
-    ;components page, make sure all sections are uninstalled.
-  no_remove_uninstaller:
+	IfErrors no_remove_uninstaller done
+		;You can either use Delete /REBOOTOK in the uninstaller or add some code
+		;here to remove the uninstaller. Use a registry key to check
+		;whether the user has chosen to uninstall. If you are using an uninstaller
+		;components page, make sure all sections are uninstalled.
+	no_remove_uninstaller:
 
 done:
 FunctionEnd
 
-Section $(NAME_SectionOfficial) SectionOfficial
-; always selected
-  SectionIn RO
+Section -section_generic_libraries
+	SetOverwrite on
 
-  SetOverwrite on
+	SetOutPath "$INSTDIR"
+	File "${BIN_DIR}\bz2-1.dll"
+	File "${BIN_DIR}\libarchive-12.dll"
+	File "${BIN_DIR}\libcrypto-10.dll"
+	File "${BIN_DIR}\libffi-6.dll"
+	File "${BIN_DIR}\libgcc_s_sjlj-1.dll"
+	File "${BIN_DIR}\libgcrypt-20.dll"
+	File "${BIN_DIR}\libglib-2.0-0.dll"
+	File "${BIN_DIR}\libgmodule-2.0-0.dll"
+	File "${BIN_DIR}\libgmp-10.dll"
+	File "${BIN_DIR}\libgnutls-28.dll"
+	File "${BIN_DIR}\libgnutls-openssl-27.dll"
+	File "${BIN_DIR}\libgpg-error-0.dll"
+	File "${BIN_DIR}\libhogweed-2-4.dll"
+	File "${BIN_DIR}\libidn-11.dll"
+	File "${BIN_DIR}\libintl-8.dll"
+	File "${BIN_DIR}\libjpeg-8.dll"
+	File "${BIN_DIR}\liblzma-5.dll"
+	File "${BIN_DIR}\libnettle-4-6.dll"
+	File "${BIN_DIR}\libp11-kit-0.dll"
+	File "${BIN_DIR}\libpng16-16.dll"
+	File "${BIN_DIR}\libprotobuf-c-1.dll"
+	File "${BIN_DIR}\libqca.dll"
+	File "${BIN_DIR}\libsqlite3-0.dll"
+	File "${BIN_DIR}\libssl-10.dll"
+	File "${BIN_DIR}\libstdc++-6.dll"
+	File "${BIN_DIR}\libtasn1-6.dll"
+	File "${BIN_DIR}\libtiff-5.dll"
+	File "${BIN_DIR}\libwinpthread-1.dll"
+	File "${BIN_DIR}\zlib1.dll"
+SectionEnd
+
+Section -section_qt
+	SetOverwrite on
+
+	SetOutPath "$INSTDIR"
+	File "${BIN_DIR}\QtCore4.dll"
+	File "${BIN_DIR}\QtDeclarative4.dll"
+	File "${BIN_DIR}\QtGui4.dll"
+	File "${BIN_DIR}\QtNetwork4.dll"
+	File "${BIN_DIR}\QtScript4.dll"
+	File "${BIN_DIR}\QtSql4.dll"
+	File "${BIN_DIR}\QtSvg4.dll"
+	File "${BIN_DIR}\QtWebKit4.dll"
+	File "${BIN_DIR}\QtXml4.dll"
+	File "${BIN_DIR}\QtXmlPatterns4.dll"
+	File "${BIN_DIR}\qt.conf"
+
+	SetOutPath "$INSTDIR\qt-plugins"
+	File /r "${BIN_DIR}\qt-plugins\*"
+SectionEnd
+
+Section !$(section_kadu) SectionKadu
+	SectionIn RO
+	SetOverwrite on
+
 ; main files
-  SetOutPath "$INSTDIR"
-  File "${BIN_DIR}\*.*"
+	SetOutPath "$INSTDIR"
+	File "${BIN_DIR}\kadu.exe"
+	File "${BIN_DIR}\kadu_c.exe"
+	File "${BIN_DIR}\libkadu.dll"
+	File "${BIN_DIR}\kadu.ico"
+
 ; configuration
-  SetOutPath "$INSTDIR\configuration"
-  File "${DATA_DIR}\kadu\configuration\*.ui"
-; chat scripts
-  SetOutPath "$INSTDIR\scripts"
-  File "${DATA_DIR}\kadu\scripts\*.js"
-; plugins
-  SetOutPath "$INSTDIR\plugins"
-  File /r "${LIB_DIR}\kadu\plugins\*"
-  SetOutPath "$INSTDIR\plugins"
-  File /r "${DATA_DIR}\kadu\plugins\*"
-; Qt plugins
-  SetOutPath "$INSTDIR\qt-plugins"
-  File /r "${BIN_DIR}\qt-plugins\*"
-; syntax
-  SetOutPath "$INSTDIR\syntax\chat"
-  File  /r "${DATA_DIR}\kadu\syntax\chat\*"
-  SetOutPath "$INSTDIR\syntax\infopanel"
-  File "${DATA_DIR}\kadu\syntax\infopanel\*.syntax"
-; qml files
-  SetOutPath "$INSTDIR\qml"
-  File  /r "${DATA_DIR}\kadu\qml\*"
-; emoticons
-  SetOutPath "$INSTDIR\themes\emoticons"
-  File /r "${DATA_DIR}\kadu\themes\emoticons\*"
-; icons
-  SetOutPath "$INSTDIR\themes\icons"
-  File /r "${DATA_DIR}\kadu\themes\icons\*"
-; sounds
-  SetOutPath "$INSTDIR\themes\sounds"
-  File /r "${DATA_DIR}\kadu\themes\sounds\*"
+	SetOutPath "$INSTDIR\configuration"
+	File "${DATA_DIR}\kadu\configuration\*.ui"
+
+; scripts
+	SetOutPath "$INSTDIR\scripts"
+	File "${DATA_DIR}\kadu\scripts\*.js"
+
+; syntax files
+	SetOutPath "$INSTDIR\syntax"
+	File /r "${DATA_DIR}\kadu\syntax\*"
+
 ; translations
-  SetOutPath "$INSTDIR\translations"
-  File "${DATA_DIR}\kadu\translations\*.qm"
-  File "${DATA_DIR}\kadu\translations\*.language"
-; spellchecker
-  SetOutPath "$INSTDIR\lib\enchant"
-  File /r "${LIB_DIR}\enchant\*"
-  SetOutPath "$INSTDIR\share\enchant\myspell"
-  File /r "${DATA_DIR}\enchant\myspell\*"
+	SetOutPath "$INSTDIR\translations"
+	File "${DATA_DIR}\kadu\translations\*.qm"
+	File "${DATA_DIR}\kadu\translations\*.language"
+
+; qml files
+	SetOutPath "$INSTDIR\qml"
+	File /r "${DATA_DIR}\kadu\qml\*"
+
+; other files
+	SetOutPath "$INSTDIR"
+	File "${DATA_DIR}\kadu\COPYING.WIN32"
+	File "${DATA_DIR}\kadu\HISTORY"
+	File "${DATA_DIR}\kadu\THANKS"
+	File "${DATA_DIR}\kadu\AUTHORS"
+	File "${DATA_DIR}\kadu\ChangeLog"
+	File "${DATA_DIR}\kadu\AUTHORS.html"
+	File "${DATA_DIR}\kadu\ChangeLog.OLD-PL"
+	File "${DATA_DIR}\kadu\README"
 
 ; Shortcuts
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
-  CreateDirectory "$SMPROGRAMS\$START_MENU_FOLDER"
-  CreateShortCut "$SMPROGRAMS\$START_MENU_FOLDER\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME}"
-  !insertmacro MUI_STARTMENU_WRITE_END
+	!insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
+	CreateDirectory "$SMPROGRAMS\$START_MENU_FOLDER"
+	CreateShortCut "$SMPROGRAMS\$START_MENU_FOLDER\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME}"
+	!insertmacro MUI_STARTMENU_WRITE_END
+SectionEnd
+
+SectionGroup $(section_icon_themes) SectionIconThemes
+
+	Section !$(section_icon_themes_default) SectionIconThemesDefault
+		SectionIn RO
+		SetOverwrite on
+
+		SetOutPath "$INSTDIR\themes\icons\default"
+		File /r "${DATA_DIR}\kadu\themes\icons\default\*"
+	SectionEnd
+
+	Section Faenza
+		SetOverwrite on
+
+		SetOutPath "$INSTDIR\themes\icons\faenza"
+		File /r "${DATA_DIR}\kadu\themes\icons\faenza\*"
+	SectionEnd
+
+	Section Glass
+		SetOverwrite on
+
+		SetOutPath "$INSTDIR\themes\icons\glass"
+		File /r "${DATA_DIR}\kadu\themes\icons\glass\*"
+	SectionEnd
+
+	Section Oxygen
+		SetOverwrite on
+
+		SetOutPath "$INSTDIR\themes\icons\oxygen"
+		File /r "${DATA_DIR}\kadu\themes\icons\oxygen\*"
+	SectionEnd
+
+SectionGroupEnd
+
+SectionGroup $(section_sound_themes) SectionSoundThemes
+
+	Section !$(section_sound_themes_default) SectionSoundThemesDefault
+		SectionIn RO
+		SetOverwrite on
+
+		SetOutPath "$INSTDIR\themes\sounds\default"
+		File /r "${DATA_DIR}\kadu\themes\sounds\default\*"
+	SectionEnd
+
+SectionGroupEnd
+
+!macro kadu_plugin_desc_file name
+	SetOutPath "$INSTDIR\plugins\"
+	File "${DATA_DIR}\kadu\plugins\${name}.desc"
+!macroend
+
+!macro kadu_plugin_ui_file name
+	SetOutPath "$INSTDIR\plugins\configuration"
+	File /nonfatal "${DATA_DIR}\kadu\plugins\configuration\${name}.ui"
+!macroend
+
+!macro kadu_plugin_translation_files name
+	SetOutPath "$INSTDIR\plugins\translations"
+	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_cs.qm"
+	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_en.qm"
+	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_pl.qm"
+!macroend
+
+!macro kadu_plugin_data_files name
+	SetOutPath "$INSTDIR\plugins\data\"
+	File /nonfatal /r "${DATA_DIR}\kadu\plugins\data\${name}"
+!macroend
+
+!macro kadu_plugin_file name
+	SetOutPath "$INSTDIR\plugins"
+	File "${LIB_DIR}\kadu\plugins\${name}.dll"
+!macroend
+
+!macro kadu_plugin_content plugin_name
+	SetOverwrite on
+
+	!insertmacro kadu_plugin_desc_file ${plugin_name}
+	!insertmacro kadu_plugin_ui_file ${plugin_name}
+	!insertmacro kadu_plugin_translation_files ${plugin_name}
+	!insertmacro kadu_plugin_data_files ${plugin_name}
+	!insertmacro kadu_plugin_file lib${plugin_name}
+!macroend
+
+!macro kadu_plugin plugin_name plugin_display_name
+	Section ${plugin_display_name}
+		!insertmacro kadu_plugin_content ${plugin_name}
+	SectionEnd
+!macroend
+
+!macro kadu_external_plugin plugin_name plugin_display_name
+	Section /o ${plugin_display_name}
+		!insertmacro kadu_plugin_content ${plugin_name}
+	SectionEnd
+!macroend
+
+SectionGroup $(section_protocols) SectionProtocols
+
+	!insertmacro kadu_plugin jabber_protocol XMPP/Jabber
+
+	Section Gadu-Gadu
+		!insertmacro kadu_plugin_content gadu_protocol
+
+		SetOutPath "$INSTDIR"
+		File "${BIN_DIR}\libgadu-3.dll"
+	SectionEnd
+
+SectionGroupEnd
+
+SectionGroup $(section_plugins) SectionPlugins
+
+	!insertmacro kadu_plugin antistring antistring
+	!insertmacro kadu_plugin auto_hide auto_hide
+	!insertmacro kadu_plugin autoaway autoaway
+	!insertmacro kadu_plugin autoresponder autoresponder
+	!insertmacro kadu_plugin autostatus autostatus
+	!insertmacro kadu_plugin cenzor cenzor
+	!insertmacro kadu_plugin chat_notify chat_notify
+	!insertmacro kadu_plugin config_wizard config_wizard
+	!insertmacro kadu_plugin desktop_docking desktop_docking
+	!insertmacro kadu_plugin docking docking
+	!insertmacro kadu_plugin emoticons emoticons
+	!insertmacro kadu_plugin encryption_ng encryption_ng
+
+	Section encryption_ng_simlite
+		SetOverwrite on
+
+		!insertmacro kadu_plugin_desc_file encryption_ng_simlite
+		!insertmacro kadu_plugin_ui_file encryption-ng-simlite
+		!insertmacro kadu_plugin_translation_files encryption_ng_simlite
+		!insertmacro kadu_plugin_data_files encryption_ng_simlite
+		!insertmacro kadu_plugin_file libencryption_ng_simlite
+	SectionEnd
+
+	!insertmacro kadu_plugin encryption_otr encryption_otr
+	!insertmacro kadu_plugin exec_notify exec_notify
+	!insertmacro kadu_plugin ext_sound ext_sound
+	!insertmacro kadu_plugin filedesc filedesc
+	!insertmacro kadu_plugin firewall firewall
+
+	Section hints
+		SetOverwrite on
+
+		!insertmacro kadu_plugin_desc_file hints
+		!insertmacro kadu_plugin_ui_file hints
+		!insertmacro kadu_plugin_ui_file hint-over-user
+		!insertmacro kadu_plugin_ui_file hints-advanced
+		!insertmacro kadu_plugin_ui_file hints-notifier
+		!insertmacro kadu_plugin_translation_files hints
+		!insertmacro kadu_plugin_data_files hints
+		!insertmacro kadu_plugin_file libhints
+	SectionEnd
+
+	!insertmacro kadu_plugin history history
+	!insertmacro kadu_plugin history_migration history_migration
+	!insertmacro kadu_plugin idle idle
+
+	Section imagelink
+		SetOverwrite on
+
+		!insertmacro kadu_plugin_desc_file imagelink
+		!insertmacro kadu_plugin_ui_file image-link
+		!insertmacro kadu_plugin_translation_files imagelink
+		!insertmacro kadu_plugin_data_files imagelink
+		!insertmacro kadu_plugin_file libimagelink
+	SectionEnd
+
+	!insertmacro kadu_plugin last_seen last_seen
+	!insertmacro kadu_plugin mediaplayer mediaplayer
+	!insertmacro kadu_plugin pcspeaker pcspeaker
+	!insertmacro kadu_plugin profiles_import profiles_import
+	!insertmacro kadu_plugin qt4_docking libqt4_docking
+
+	Section qt4_docking_notify
+		SetOverwrite on
+
+		!insertmacro kadu_plugin_desc_file qt4_docking_notify
+		!insertmacro kadu_plugin_ui_file qt4-docking-notify
+		!insertmacro kadu_plugin_translation_files qt4_docking_notify
+		!insertmacro kadu_plugin_data_files qt4_docking_notify
+		!insertmacro kadu_plugin_file libqt4_docking_notify
+	SectionEnd
+
+	!insertmacro kadu_plugin qt4_sound qt4_sound
+	!insertmacro kadu_plugin screenshot screenshot
+	!insertmacro kadu_plugin simpleview simpleview
+	!insertmacro kadu_plugin single_window single_window
+	!insertmacro kadu_plugin sms sms
+	!insertmacro kadu_plugin sound sound
+	!insertmacro kadu_plugin speech speech
+	!insertmacro kadu_plugin spellchecker spellchecker
+	!insertmacro kadu_plugin sql_history sql_history
+	!insertmacro kadu_plugin tabs tabs
+	!insertmacro kadu_plugin winamp_mediaplayer winamp_mediaplayer
+	!insertmacro kadu_plugin word_fix word_fix
+
+SectionGroupEnd
+
+SectionGroup $(section_external_plugins) SectionExternalPlugins
+
+	!insertmacro kadu_external_plugin anonymous_check anonymous_check
+	!insertmacro kadu_external_plugin import_history import_history
+	!insertmacro kadu_external_plugin kadu_completion kadu_completion
+	!insertmacro kadu_external_plugin mime_tex mime_tex
+
+SectionGroupEnd
+
+Section -random
+; emoticons
+	SetOutPath "$INSTDIR\themes\emoticons"
+	File /r "${DATA_DIR}\kadu\themes\emoticons\*"
+; spellchecker
+	SetOutPath "$INSTDIR\lib\enchant"
+	File /r "${LIB_DIR}\enchant\*"
+	SetOutPath "$INSTDIR\share\enchant\myspell"
+	File /r "${DATA_DIR}\enchant\myspell\*"
 SectionEnd
 
 ;Section $(NAME_SectionExternalPlugins) SectionExternalPlugins
-;  SetOverwrite on
-;  SetOutPath "$INSTDIR\plugins"
-;  File /r "${PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR}\*"
+;	SetOverwrite on
+;	SetOutPath "$INSTDIR\plugins"
+;	File /r "${PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR}\*"
 ;SectionEnd
 
-Section $(NAME_SectionDesktopShortCut) SectionDesktopShortCut
-  SetOverwrite on
-  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME}"
+Section $(section_desktop_shortcut)
+	SetOverwrite on
+	CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME}"
 SectionEnd
 
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SectionOfficial} $(DESC_SectionOfficial)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SectionExternalPlugins} $(DESC_SectionExternalPlugins)
-;  !insertmacro MUI_DESCRIPTION_TEXT ${SectionDesktopShortCut} $(DESC_SectionDesktopShortCut)
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
-
-Section -AdditionalIcons
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
-  WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-  CreateShortCut "$SMPROGRAMS\$START_MENU_FOLDER\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
-  CreateShortCut "$SMPROGRAMS\$START_MENU_FOLDER\Uninstall.lnk" "$INSTDIR\${PRODUCT_UNINSTALLER_FILE_NAME}"
-  !insertmacro MUI_STARTMENU_WRITE_END
+Section -additional_links
+	!insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
+	WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
+	CreateShortCut "$SMPROGRAMS\$START_MENU_FOLDER\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
+	CreateShortCut "$SMPROGRAMS\$START_MENU_FOLDER\Uninstall.lnk" "$INSTDIR\${PRODUCT_UNINSTALLER_FILE_NAME}"
+	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
 Section -Post
-  WriteUninstaller "$INSTDIR\${PRODUCT_UNINSTALLER_FILE_NAME}"
-  WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}" "" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME}"
-  WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "DisplayName" "$(^Name)"
-  WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "UninstallString" "$INSTDIR\${PRODUCT_UNINSTALLER_FILE_NAME}"
-  WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "DisplayIcon" "$INSTDIR\kadu.ico"
-  WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "DisplayVersion" "${PRODUCT_VERSION}"
-  WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
-  WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "Publisher" "${PRODUCT_PUBLISHER}"
+	WriteUninstaller "$INSTDIR\${PRODUCT_UNINSTALLER_FILE_NAME}"
+	WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}" "" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME}"
+	WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "DisplayName" "$(^Name)"
+	WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "UninstallString" "$INSTDIR\${PRODUCT_UNINSTALLER_FILE_NAME}"
+	WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "DisplayIcon" "$INSTDIR\kadu.ico"
+	WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "DisplayVersion" "${PRODUCT_VERSION}"
+	WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
+	WriteRegStr ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "Publisher" "${PRODUCT_PUBLISHER}"
 SectionEnd
 
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+	!insertmacro MUI_DESCRIPTION_TEXT ${SectionKadu} $(section_kadu_description)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SectionIconThemes} $(section_icon_themes_description)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SectionIconThemesDefault} $(section_icon_themes_default_description)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SectionSoundThemes} $(section_sound_themes_description)
+	!insertmacro MUI_DESCRIPTION_TEXT ${SectionSoundThemesDefault} $(section_sound_themes_default_description)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+
 Function un.onInit
-  !insertmacro MUI_UNGETLANGUAGE
+	!insertmacro MUI_UNGETLANGUAGE
 FunctionEnd
 
 Section Uninstall
-  !insertmacro MUI_STARTMENU_GETFOLDER "Application" $START_MENU_FOLDER
-  Delete "$INSTDIR\*.*"
+	!insertmacro MUI_STARTMENU_GETFOLDER "Application" $START_MENU_FOLDER
+	Delete "$INSTDIR\*.*"
 
-  Delete "$SMPROGRAMS\$START_MENU_FOLDER\Uninstall.lnk"
-  Delete "$SMPROGRAMS\$START_MENU_FOLDER\Website.lnk"
-  Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
-  Delete "$SMPROGRAMS\$START_MENU_FOLDER\${PRODUCT_NAME}.lnk"
+	Delete "$SMPROGRAMS\$START_MENU_FOLDER\Uninstall.lnk"
+	Delete "$SMPROGRAMS\$START_MENU_FOLDER\Website.lnk"
+	Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
+	Delete "$SMPROGRAMS\$START_MENU_FOLDER\${PRODUCT_NAME}.lnk"
 
-  RMDir "$SMPROGRAMS\$START_MENU_FOLDER"
-  RMDir /r "$INSTDIR\aspell"
-  RMDir /r "$INSTDIR\configuration"
-  RMDir /r "$INSTDIR\plugins"
-  RMDir /r "$INSTDIR\qt-plugins"
-  RMDir /r "$INSTDIR\scripts"
-  RMDir /r "$INSTDIR\syntax"
-  RMDir /r "$INSTDIR\themes"
-  RMDir /r "$INSTDIR\translations"
-  RMDir "$INSTDIR"
+	RMDir "$SMPROGRAMS\$START_MENU_FOLDER"
+	RMDir /r "$INSTDIR\aspell"
+	RMDir /r "$INSTDIR\configuration"
+	RMDir /r "$INSTDIR\plugins"
+	RMDir /r "$INSTDIR\qt-plugins"
+	RMDir /r "$INSTDIR\scripts"
+	RMDir /r "$INSTDIR\syntax"
+	RMDir /r "$INSTDIR\themes"
+	RMDir /r "$INSTDIR\translations"
+	RMDir "$INSTDIR"
 
-  DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}"
-  DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}"
-  SetAutoClose true
+	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}"
+	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}"
+	SetAutoClose true
 SectionEnd
