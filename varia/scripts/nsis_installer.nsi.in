@@ -258,36 +258,30 @@ Section !$(section_kadu) SectionKadu
 	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
+!macro kadu_icon_theme_content name
+	SetOverwrite on
+
+	SetOutPath "$INSTDIR\themes\icons\${name}"
+	File /r "${DATA_DIR}\kadu\themes\icons\${name}\*"
+!macroend
+
+!macro kadu_icon_theme name display_name
+	Section ${name}
+		!insertmacro kadu_icon_theme_content ${name}
+	SectionEnd
+!macroend
+
 SectionGroup $(section_icon_themes) SectionIconThemes
 
 	Section !$(section_icon_themes_default) SectionIconThemesDefault
 		SectionIn RO
-		SetOverwrite on
 
-		SetOutPath "$INSTDIR\themes\icons\default"
-		File /r "${DATA_DIR}\kadu\themes\icons\default\*"
+		!insertmacro kadu_icon_theme_content default
 	SectionEnd
 
-	Section Faenza
-		SetOverwrite on
-
-		SetOutPath "$INSTDIR\themes\icons\faenza"
-		File /r "${DATA_DIR}\kadu\themes\icons\faenza\*"
-	SectionEnd
-
-	Section Glass
-		SetOverwrite on
-
-		SetOutPath "$INSTDIR\themes\icons\glass"
-		File /r "${DATA_DIR}\kadu\themes\icons\glass\*"
-	SectionEnd
-
-	Section Oxygen
-		SetOverwrite on
-
-		SetOutPath "$INSTDIR\themes\icons\oxygen"
-		File /r "${DATA_DIR}\kadu\themes\icons\oxygen\*"
-	SectionEnd
+	!insertmacro kadu_icon_theme faenza Faenza
+	!insertmacro kadu_icon_theme glass Glass
+	!insertmacro kadu_icon_theme oxygen Oxygen
 
 SectionGroupEnd
 
@@ -354,13 +348,20 @@ SectionGroupEnd
 
 SectionGroup $(section_protocols) SectionProtocols
 
-	!insertmacro kadu_plugin jabber_protocol XMPP/Jabber
+	Section XMPP/Jabber
+		!insertmacro kadu_plugin_content jabber_protocol
+
+		WriteRegStr ${PRODUCT_REGISTRY_ROOT} "xmpp\shell\open\command" "" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME} $\"%1$\""
+		WriteRegStr ${PRODUCT_REGISTRY_ROOT} "jabber\shell\open\command" "" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME} $\"%1$\""
+	SectionEnd
 
 	Section Gadu-Gadu
 		!insertmacro kadu_plugin_content gadu_protocol
 
 		SetOutPath "$INSTDIR"
 		File "${BIN_DIR}\libgadu-3.dll"
+
+		WriteRegStr ${PRODUCT_REGISTRY_ROOT} "gg\shell\open\command" "" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME} $\"%1$\""
 	SectionEnd
 
 SectionGroupEnd
@@ -377,7 +378,20 @@ SectionGroup $(section_plugins) SectionPlugins
 	!insertmacro kadu_plugin config_wizard config_wizard
 	!insertmacro kadu_plugin desktop_docking desktop_docking
 	!insertmacro kadu_plugin docking docking
-	!insertmacro kadu_plugin emoticons emoticons
+
+	Section emoticons
+		SetOverwrite on
+
+		!insertmacro kadu_plugin_desc_file emoticons
+		!insertmacro kadu_plugin_ui_file emoticons
+		!insertmacro kadu_plugin_translation_files emoticons
+		!insertmacro kadu_plugin_data_files emoticons
+		!insertmacro kadu_plugin_file libemoticons
+
+		SetOutPath "$INSTDIR\themes\emoticons"
+		File /r "${DATA_DIR}\kadu\themes\emoticons\*"
+	SectionEnd
+
 	!insertmacro kadu_plugin encryption_ng encryption_ng
 
 	Section encryption_ng_simlite
@@ -446,7 +460,28 @@ SectionGroup $(section_plugins) SectionPlugins
 	!insertmacro kadu_plugin sms sms
 	!insertmacro kadu_plugin sound sound
 	!insertmacro kadu_plugin speech speech
-	!insertmacro kadu_plugin spellchecker spellchecker
+
+	Section spellchecker
+		SetOverwrite on
+
+		!insertmacro kadu_plugin_desc_file spellchecker
+		!insertmacro kadu_plugin_ui_file spellchecker
+		!insertmacro kadu_plugin_translation_files spellchecker
+		!insertmacro kadu_plugin_data_files spellchecker
+		!insertmacro kadu_plugin_file libspellchecker
+
+		SetOutPath "$INSTDIR"
+		File "${BIN_DIR}\libenchant.dll"
+		File "${BIN_DIR}\libhunspell-1.3-0.dll"
+
+		SetOutPath "$INSTDIR\lib\enchant"
+		File /r "${LIB_DIR}\enchant\*.dll"
+
+		SetOutPath "$INSTDIR\share\enchant\myspell"
+		File /r "${DATA_DIR}\enchant\myspell\*.aff"
+		File /r "${DATA_DIR}\enchant\myspell\*.dic"
+	SectionEnd
+
 	!insertmacro kadu_plugin sql_history sql_history
 	!insertmacro kadu_plugin tabs tabs
 	!insertmacro kadu_plugin winamp_mediaplayer winamp_mediaplayer
@@ -462,23 +497,6 @@ SectionGroup $(section_external_plugins) SectionExternalPlugins
 	!insertmacro kadu_external_plugin mime_tex mime_tex
 
 SectionGroupEnd
-
-Section -random
-; emoticons
-	SetOutPath "$INSTDIR\themes\emoticons"
-	File /r "${DATA_DIR}\kadu\themes\emoticons\*"
-; spellchecker
-	SetOutPath "$INSTDIR\lib\enchant"
-	File /r "${LIB_DIR}\enchant\*"
-	SetOutPath "$INSTDIR\share\enchant\myspell"
-	File /r "${DATA_DIR}\enchant\myspell\*"
-SectionEnd
-
-;Section $(NAME_SectionExternalPlugins) SectionExternalPlugins
-;	SetOverwrite on
-;	SetOutPath "$INSTDIR\plugins"
-;	File /r "${PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR}\*"
-;SectionEnd
 
 Section $(section_desktop_shortcut)
 	SetOverwrite on
@@ -538,5 +556,21 @@ Section Uninstall
 
 	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}"
 	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}"
+
+	ReadRegStr $R0 ${PRODUCT_REGISTRY_ROOT} "xmpp\shell\open\command" ""
+	StrCmp $R0 "$INSTDIR\${PRODUCT_BINARY_FILE_NAME} $\"%1$\"" xmpp_removed
+	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "xmpp\shell\open\command" ""
+	xmpp_removed:
+
+	ReadRegStr $R0 ${PRODUCT_REGISTRY_ROOT} "jabber\shell\open\command" ""
+	StrCmp $R0 "$INSTDIR\${PRODUCT_BINARY_FILE_NAME} $\"%1$\"" jabber_removed
+	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "jabber\shell\open\command" ""
+	jabber_removed:
+
+	ReadRegStr $R0 ${PRODUCT_REGISTRY_ROOT} "gg\shell\open\command" ""
+	StrCmp $R0 "$INSTDIR\${PRODUCT_BINARY_FILE_NAME} $\"%1$\"" gg_removed
+	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "gg\shell\open\command" ""
+	gg_removed:
+
 	SetAutoClose true
 SectionEnd
