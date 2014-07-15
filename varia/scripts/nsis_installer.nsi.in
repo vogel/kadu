@@ -427,7 +427,7 @@ SectionGroup $(section_plugins) SectionPlugins
 	!insertmacro kadu_plugin mediaplayer mediaplayer
 	!insertmacro kadu_plugin pcspeaker pcspeaker
 	!insertmacro kadu_plugin profiles_import profiles_import
-	!insertmacro kadu_plugin qt4_docking libqt4_docking
+	!insertmacro kadu_plugin qt4_docking qt4_docking
 
 	Section qt4_docking_notify
 		SetOverwrite on
