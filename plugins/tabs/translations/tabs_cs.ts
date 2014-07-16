@@ -79,15 +79,15 @@
     </message>
     <message>
         <source>Show &apos;Open chat&apos; button</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat tlačítko pro otevření rozhovoru</translation>
     </message>
     <message>
         <source>Show common &apos;Close Tab&apos; button on tab bar</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat tlačítko pro zavření karty v pruhu s kartami</translation>
     </message>
     <message>
         <source>Show &apos;Close&apos; button on each tab</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat tlačítko pro zavření na každé kartě</translation>
     </message>
 </context>
 <context>
