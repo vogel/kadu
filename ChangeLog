@@ -2,10 +2,6 @@
 * windows: fixed windows build (Vogel)
 * jabber: #2800 fixed: unable to change buddy name with Facebook account to its real name (Vogel)
 
-+++ version 1.0-rc3
-* windows: build fixes (Vogel)
-* debian: build fixes (Vogel)
-
 +++ version 1.0-rc2
 * misc: misc fixes (Vogel)
 
