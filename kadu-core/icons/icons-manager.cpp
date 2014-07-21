@@ -123,9 +123,11 @@ QIcon IconsManager::buildPngIcon(const QString &themePath, const QString &path)
 		QLatin1String("22x22"),
 		QLatin1String("32x32"),
 		QLatin1String("64x64"),
-		QLatin1String("128x128")
+		QLatin1String("96x96"),
+		QLatin1String("128x128"),
+		QLatin1String("256x256")
 	};
-	static int sizes_count = 5;
+	static int sizes_count = 7;
 
 	QIcon icon;
 	for (int i = 0; i < sizes_count; i++)
