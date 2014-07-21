@@ -184,17 +184,17 @@ void GaduAddAccountWidget::dataChanged()
 
 void GaduAddAccountWidget::registerAccount()
 {
-	UrlOpener::openUrl("https://login.gg.pl/createGG/step1/?id=frame_1");
+	UrlOpener::openUrl("https://login.gg.pl/rejestracja-gg/");
 }
 
 void GaduAddAccountWidget::remindUin()
 {
-	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/?id=frame_1");
+	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/");
 }
 
 void GaduAddAccountWidget::remindPassword()
 {
-	UrlOpener::openUrl("https://login.gg.pl/account/remindPassword/?id=frame_1");
+	UrlOpener::openUrl("https://login.gg.pl/account/remindPassword/");
 }
 
 #include "moc_gadu-add-account-widget.cpp"
