@@ -4,6 +4,6 @@ DisplayName[pl]=Szyfrowanie rozmów
 Description=Provides chat encryption
 Description[pl]=Umożliwia szyfrowanie rozmów
 Author=Kadu Team
-LoadByDefault=true
+LoadByDefault=false
 Version=core
 Category=Privacy
