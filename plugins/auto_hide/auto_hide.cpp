@@ -42,9 +42,6 @@ AutoHide::AutoHide(QObject *parent) :
 		MyIdle{nullptr},
 		IdleTime{0}
 {
-	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
-
-	configurationUpdated();
 }
 
 AutoHide::~AutoHide()
@@ -54,6 +51,10 @@ AutoHide::~AutoHide()
 bool AutoHide::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
+
+	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
+
+	configurationUpdated();
 
 	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
 	MyIdle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
