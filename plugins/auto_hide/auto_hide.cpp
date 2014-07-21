@@ -37,9 +37,6 @@
 AutoHide::AutoHide(QObject *parent) :
 		ConfigurationUiHandler(parent), IdleTime(0)
 {
-	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
-
-	configurationUpdated();
 }
 
 AutoHide::~AutoHide()
@@ -49,6 +46,10 @@ AutoHide::~AutoHide()
 bool AutoHide::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
+
+	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
+
+	configurationUpdated();
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
