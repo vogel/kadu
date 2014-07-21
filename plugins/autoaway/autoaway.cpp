@@ -75,6 +75,16 @@ AutoAway::AutoAway() :
 		autoRefreshSpinBox{},
 		descriptionTextLineEdit{}
 {
+}
+
+AutoAway::~AutoAway()
+{
+}
+
+bool AutoAway::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
 	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
 	timer = new QTimer(this);
@@ -84,16 +94,6 @@ AutoAway::AutoAway() :
 	configurationUpdated();
 
 	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
-}
-
-AutoAway::~AutoAway()
-{
-	StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);
-}
-
-bool AutoAway::init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
 
 	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
 	idle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
@@ -108,6 +108,8 @@ void AutoAway::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
+
+	StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);
 }
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
