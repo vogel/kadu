@@ -1,8 +1,8 @@
 [Module]
-DisplayName=Off The Record chat encryption
-DisplayName[pl]=Szyfrowanie rozmów OTR
-Description=Provides extended chat encryption using OTR library
-Description[pl]=Dostarcza rozszerzone szyfrowanie rozmów w oparciu o bibliotekę OTR
+DisplayName=Off-the-record chat encryption
+DisplayName[pl]=Szyfrowanie rozmów Off-the-record
+Description=Provides Off-the-record chat encryption
+Description[pl]=Szyfruje rozmowy w standardzie Off-the-record
 Author=Kadu Team
 LoadByDefault=true
 Version=core

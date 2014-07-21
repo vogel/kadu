@@ -1,8 +1,8 @@
 [Module]
-DisplayName=Extended chat encryption
-DisplayName[pl]=Rozszerzone szyfrowanie rozmów
-Description=Provides extended chat encryption using QCA2 library
-Description[pl]=Dostarcza rozszerzone szyfrowanie rozmów w oparciu o bibliotekę QCA2
+DisplayName=Simlite chat encryption
+DisplayName[pl]=Szyfrowanie rozmów Simlite
+Description=Provides Simlite chat encryption
+Description[pl]=Szyfruje rozmowy w standardzie Simlite
 Author=Kadu Team
 LoadByDefault=false
 Version=core
