@@ -1,3 +1,6 @@
++++ version 1.0-rc4
+* plugins: #2831 fixed: remove code from plugins object constructors and destructors (Vogel)
+
 +++ version 1.0-rc3
 * windows: fixed windows build (Vogel)
 * jabber: #2800 fixed: unable to change buddy name with Facebook account to its real name (Vogel)
