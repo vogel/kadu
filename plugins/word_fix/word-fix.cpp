@@ -63,6 +63,31 @@ WordFix::WordFix(QObject *parent) :
 		valueEdit{},
 		list{}
 {
+}
+
+WordFix::~WordFix()
+{
+}
+
+void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	this->chatWidgetRepository = chatWidgetRepository;
+
+	if (this->chatWidgetRepository)
+	{
+		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)),
+			this, SLOT(chatWidgetAdded(ChatWidget *)));
+		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
+			this, SLOT(chatWidgetRemoved(ChatWidget *)));
+
+		for (auto chatWidget : this->chatWidgetRepository.data())
+			chatWidgetAdded(chatWidget);
+	}
+}
+
+bool WordFix::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
 	kdebugf();
 
 	ExtractBody.setPattern("<body[^>]*>.*</body>");
@@ -106,42 +131,6 @@ WordFix::WordFix(QObject *parent) :
 	}
 
 	kdebugf2();
-}
-
-WordFix::~WordFix()
-{
-	kdebugf();
-
-	if (chatWidgetRepository)
-	{
-		disconnect(chatWidgetRepository.data(), 0, this, 0);
-
-		for (auto chatWidget : chatWidgetRepository.data())
-			chatWidgetRemoved(chatWidget);
-	}
-
-	kdebugf2();
-}
-
-void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
-{
-	this->chatWidgetRepository = chatWidgetRepository;
-
-	if (this->chatWidgetRepository)
-	{
-		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)),
-			this, SLOT(chatWidgetAdded(ChatWidget *)));
-		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
-			this, SLOT(chatWidgetRemoved(ChatWidget *)));
-
-		for (auto chatWidget : this->chatWidgetRepository.data())
-			chatWidgetAdded(chatWidget);
-	}
-}
-
-bool WordFix::init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
 
 	kdebugf();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
@@ -158,6 +147,18 @@ void WordFix::done()
 	kdebugf();
 	MainConfigurationWindow::unregisterUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
+	kdebugf2();
+
+	kdebugf();
+
+	if (chatWidgetRepository)
+	{
+		disconnect(chatWidgetRepository.data(), 0, this, 0);
+
+		for (auto chatWidget : chatWidgetRepository.data())
+			chatWidgetRemoved(chatWidget);
+	}
+
 	kdebugf2();
 }
 
