@@ -1,5 +1,6 @@
 +++ version 1.0-rc4
 * plugins: #2831 fixed: remove code from plugins object constructors and destructors (Vogel)
+* gui: #2832 fixed: improved behavior of new open chat with window (Vogel)
 
 +++ version 1.0-rc3
 * windows: fixed windows build (Vogel)
