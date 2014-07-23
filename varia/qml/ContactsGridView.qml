@@ -40,9 +40,11 @@ Item
 				anchors.fill: parent
 				onClicked: {
 					contactsGrid.currentIndex = index;
+					contactsGrid.focus = true;
 				}
 				onDoubleClicked: {
 					component.itemActivated(index)
+					contactsGrid.focus = true;
 				}
 			}
 		}
@@ -50,11 +52,14 @@ Item
 
 	GridView
 	{
+		objectName: "mainWidget"
 		id: contactsGrid
 		anchors.fill: parent
 		cellWidth: 222
 		cellHeight: 74
+		currentIndex: 0
 		focus: true
+		keyNavigationWraps: true
 		highlight: Rectangle
 		{
 			color: pallete.highlight

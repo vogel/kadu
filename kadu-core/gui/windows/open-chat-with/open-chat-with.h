@@ -54,13 +54,14 @@ class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 	BuddyListModel *ListModel;
 	ModelChain *Chain;
 
+	void focusQml();
+
 private slots:
 	void inputAccepted();
 	void inputChanged(const QString &text);
 	void itemActivated(int index);
 
 protected:
-	virtual bool eventFilter(QObject *obj, QEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:

@@ -92,7 +92,6 @@ OpenChatWith::OpenChatWith() :
 	idLayout->addWidget(new QLabel(tr("User name:"), idWidget));
 
 	ContactID = new LineEditWithClearButton(this);
-	ContactID->installEventFilter(this);
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	idLayout->addWidget(ContactID);
 
@@ -145,29 +144,6 @@ OpenChatWith::~OpenChatWith()
 	OpenChatRunner = 0;
 }
 
-bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
-{
-	if (obj == ContactID && e->type() == QEvent::KeyPress)
-	{
-		if (static_cast<QKeyEvent *>(e)->modifiers() == Qt::NoModifier)
-		{
-			int key = static_cast<QKeyEvent *>(e)->key();
-			if (key == Qt::Key_Down ||
-					key == Qt::Key_Up ||
-					key == Qt::Key_PageDown ||
-					key == Qt::Key_PageUp ||
-					key == Qt::Key_Left ||
-					key == Qt::Key_Right)
-			{
-				QCoreApplication::sendEvent(BuddiesView, e);
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
 void OpenChatWith::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
@@ -185,11 +161,20 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 			close();
 			return;
 			break;
+		case Qt::Key_Down:
+		case Qt::Key_Up:
+		case Qt::Key_PageDown:
+		case Qt::Key_PageUp:
+			BuddiesView->setFocus();
+			QCoreApplication::sendEvent(BuddiesView, e);
+			focusQml();
+			e->accept();
+			return;
 	}
 
 	if (FilteredTreeView::shouldEventGoToFilter(e))
 	{
-		ContactID->setText(e->text());
+		ContactID->setText(ContactID->text() + e->text());
 		ContactID->setFocus(Qt::OtherFocusReason);
 		e->accept();
 		return;
@@ -198,6 +183,19 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 	QWidget::keyPressEvent(e);
 
 	kdebugf2();
+}
+
+void OpenChatWith::focusQml()
+{
+	auto rootObject = dynamic_cast<QObject *>(BuddiesView->rootObject());
+	if (!rootObject)
+		return;
+
+	auto mainWidget = rootObject->findChild<QObject *>("mainWidget");
+	if (!mainWidget)
+		return;
+
+	mainWidget->setProperty("focus", true);
 }
 
 void OpenChatWith::inputChanged(const QString &text)
@@ -209,9 +207,6 @@ void OpenChatWith::inputChanged(const QString &text)
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	ListModel->setBuddyList(matchingContacts);
-	if (BuddiesView->rootObject())
-		if (BuddiesView->rootObject()->property("currentIndex").toInt() < 0)
-			BuddiesView->rootObject()->setProperty("currentIndex", 0);
 }
 
 void OpenChatWith::itemActivated(int index)
