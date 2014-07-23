@@ -51,6 +51,16 @@
 AutoResponder::AutoResponder(QObject *parent) :
 		MessageFilter(parent)
 {
+}
+
+AutoResponder::~AutoResponder()
+{
+}
+
+bool AutoResponder::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
@@ -61,9 +71,11 @@ AutoResponder::AutoResponder(QObject *parent) :
 	Configurator->setAutoresponder(this);
 
 	Core::instance()->messageFilterService()->registerMessageFilter(this);
+
+	return true;
 }
 
-AutoResponder::~AutoResponder()
+void AutoResponder::done()
 {
 	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
 
@@ -73,16 +85,6 @@ AutoResponder::~AutoResponder()
 	Configurator = 0;
 
 	disconnect(Core::instance()->chatWidgetRepository(), 0, this, 0);
-}
-
-bool AutoResponder::init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-	return true;
-}
-
-void AutoResponder::done()
-{
 }
 
 bool AutoResponder::acceptMessage(const Message &message)
