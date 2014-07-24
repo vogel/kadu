@@ -224,9 +224,16 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 			? ChatTypeContact::findChat(*chatContacts.constBegin(), ActionCreateAndAdd)
 			: ChatTypeContactSet::findChat(chatContacts, ActionCreateAndAdd);
 
+	printf("GaduChatService::handleMsg()\n");
+	printf("  chat name: %s\n", qPrintable(chat.display()));
+	printf("  chat contacts count: %d\n", chat.contacts().size());
+
 	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty
 	if (!chat || chat.isIgnoreAllMessages())
+	{
+		printf(" -> return 1\n");
 		return;
+	}
 
 	Message message = Message::create();
 	message.setMessageChat(chat);
@@ -237,7 +244,10 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 
 	auto rawMessage= getRawMessage(e);
 	if (rawMessageTransformerService())
+	{
+		printf(" -> passing to rawMessageTransformerService\n");
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
+	}
 
 	auto string = QString::fromUtf8(rawMessage.rawContent());
 	// TODO: this is a hack, we get <img name= from GG servers, but
@@ -253,12 +263,16 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	}
 
 	if (formattedString->isEmpty())
+	{
+		printf(" -> return 2\n");
 		return;
+	}
 
 	message.setContent(std::move(formattedString));
 
 	if (MessageTypeReceived == type)
 	{
+		printf(" -> received properly!\n");
 		emit messageReceived(message);
 
 		FormattedStringImageKeyReceivedVisitor imageKeyReceivedVisitor(sender.id());

@@ -91,12 +91,22 @@ RawMessage OtrRawMessageTransformer::transform(const RawMessage &rawMessage, con
 
 RawMessage OtrRawMessageTransformer::transformReceived(const RawMessage &rawMessage, const Message &message)
 {
+	printf("OtrRawMessageTransformer::transformReceived()\n");
+	printf("  chat name: %s\n", qPrintable(message.messageChat().display()));
+	printf("  chat contacts count: %d\n", message.messageChat().contacts().size());
+
 	if (!AppOpsService || !OpDataFactory || !UserStateService || message.messageChat().contacts().size() != 1)
+	{
+		printf(" -> return 1\n");
 		return rawMessage;
+	}
 
 	OtrlUserState userState = UserStateService.data()->userState();
 	if (!userState)
+	{
+		printf(" -> return 2\n");
 		return rawMessage;
+	}
 
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
 	Account account = message.messageChat().chatAccount();
@@ -109,22 +119,31 @@ RawMessage OtrRawMessageTransformer::transformReceived(const RawMessage &rawMess
 			rawMessage.rawXmlContent().data(),
 			&newMessage, &tlvs, 0, 0, 0);
 
+	printf("message passed to libotr: ignore = %d\n", ignoreMessage);
+
 	OtrlTLV *tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
 	if (tlv)
 		emit peerEndedSession(message.messageSender());
 	otrl_tlv_free(tlvs);
 
 	if (ignoreMessage)
+	{
+		printf(" -> return 3\n");
 		return {};
+	}
 
 	if (newMessage)
 	{
 		QByteArray result = newMessage;
 		otrl_message_free(newMessage);
+		printf(" -> return 4\n");
 		return {result, result};
 	}
 	else
+	{
+		printf(" -> return 5\n");
 		return rawMessage;
+	}
 }
 
 RawMessage OtrRawMessageTransformer::transformSent(const RawMessage &rawMessage, const Message &message)
