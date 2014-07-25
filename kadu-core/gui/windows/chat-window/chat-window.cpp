@@ -179,6 +179,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 		}
 	}
 
+	m_chatWidget->requestClose();
  	QWidget::closeEvent(e);
 }
 
