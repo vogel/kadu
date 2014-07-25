@@ -55,9 +55,15 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 
 	auto filterEdit = new FilterWidget{this};
 	filterEdit->setAutoVisibility(false);
+
 	m_listView = new CategorizedListView{this};
 	m_listView->setVerticalScrollMode(QListView::ScrollPerPixel);
 	m_listView->setAlternatingRowColors(true);
+
+#if defined(Q_OS_WIN) // see #2823
+	m_listView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+#endif
+
 	auto painter = new CategorizedListViewPainter{m_listView};
 	m_listView->setCategoryDrawer(painter);
 
