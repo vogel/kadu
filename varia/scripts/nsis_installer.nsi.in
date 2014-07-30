@@ -500,6 +500,8 @@ SectionGroup $(section_external_plugins) SectionExternalPlugins
 	!insertmacro kadu_external_plugin anonymous_check anonymous_check
 	!insertmacro kadu_external_plugin import_history import_history
 	!insertmacro kadu_external_plugin kadu_completion kadu_completion
+	!insertmacro kadu_external_plugin lednotify lednotify
+	!insertmacro kadu_external_plugin messagessplitter messagessplitter
 
 	Section /o mime_tex
 		!insertmacro kadu_plugin_content mime_tex
@@ -507,6 +509,10 @@ SectionGroup $(section_external_plugins) SectionExternalPlugins
 		SetOutPath "$INSTDIR\plugins\bin\mime_tex\"
 		File /r "${LIB_DIR}\kadu\plugins\bin\mime_tex\mimetex.exe"
 	SectionEnd
+
+	!insertmacro kadu_external_plugin networkping networkping
+	!insertmacro kadu_external_plugin nextinfo nextinfo
+	!insertmacro kadu_external_plugin senthistory senthistory
 
 SectionGroupEnd
 

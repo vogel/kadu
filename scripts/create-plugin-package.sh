@@ -18,21 +18,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-VERSION=$1
+PLUGIN_NAME=$1
+VERSION=$2
 
 function usage
 {
-	echo "Usage: $0 package-version"
-	echo "    package-version must be a git tag name"
+	echo "Usage: $0 plugin-name package-version"
+	echo "    plugin-name must be an external plugin name"
+	echo "    package-version will be appended to package name"
 }
+
+if [ "!" == "!$PLUGIN_NAME" ]; then
+	usage
+	exit
+fi
 
 if [ "!" == "!$VERSION" ]; then
 	usage
 	exit
 fi
 
-PACKAGE_NAME=kadu-$VERSION
-PACKAGE_DIR=$PACKAGE_NAME
+PACKAGE_NAME=${PLUGIN_NAME/-/_}-$VERSION
+PACKAGE_DIR=${PLUGIN_NAME/-/_}
 PACKAGE_FILE=$PACKAGE_NAME.tar.bz2
 
 if [ -d $PACKAGE_DIR ]; then
@@ -43,7 +50,7 @@ if [ -e $PACKAGE_FILE ]; then
 	rm -rf $PACKAGE_FILE
 fi
 
-git clone --recursive --depth 1 --branch $VERSION -- git://gitorious.org/kadu/kadu.git $PACKAGE_DIR
+git clone --recursive --depth 1 -- git://gitorious.org/kadu/$PLUGIN_NAME.git $PACKAGE_DIR
 find $PACKAGE_DIR -name ".git*" | xargs rm -rf
 
 tar cjf $PACKAGE_FILE $PACKAGE_DIR
