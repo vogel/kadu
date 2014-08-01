@@ -82,7 +82,12 @@ void OtrChatTopBarWidget::trustLevelUpdated()
 {
 	OtrTrustLevelService::TrustLevel level = trustLevel();
 
+#if defined(Q_OS_WIN)
+	OtrStatusButton->setText(trustStatusString(level) + "    "); // see #2835
+#else
 	OtrStatusButton->setText(trustStatusString(level));
+#endif
+
 	bool isPrivate = level >= OtrTrustLevelService::TrustLevelUnverified;
 
 	if (isPrivate)
