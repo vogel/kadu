@@ -1,3 +1,5 @@
++++ version 1.0-rc6
+
 +++ version 1.0-rc5
 * otr: #2835 fixed: chat button was displayed inproperly on Windows (Vogel)
 * windows: add more external plugins to installer (Vogel)
