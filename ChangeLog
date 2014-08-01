@@ -1,5 +1,6 @@
 +++ version 1.0-rc5
 * otr: #2835 fixed: chat button was displayed inproperly on Windows (Vogel)
+* windows: add more external plugins to installer (Vogel)
 
 +++ version 1.0-rc4
 * plugins: #2831 fixed: remove code from plugins object constructors and destructors (Vogel)
