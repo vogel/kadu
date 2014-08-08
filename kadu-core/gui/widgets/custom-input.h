@@ -60,6 +60,8 @@ protected:
 	bool autosend_enabled;/*!< zmienna informuj�ca czy w��czone jest
 				automatyczne wysy�anie */
 
+    virtual void showEvent(QShowEvent *e) override;
+
 	/**
 		\fn virtual void keyPressEvent(QKeyEvent *e)
 		Funkcja obs�uguj�ca naci�ni�cie przycisku
