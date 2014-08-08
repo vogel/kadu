@@ -1,5 +1,6 @@
 +++ version 1.0-rc6
 * gui: #2836 fixed: do not allow to shrink notification configuration widget too much (Vogel)
+* windows: #2837 fixed: invalid fonts on windows after opening chat window (Vogel)
 
 +++ version 1.0-rc5
 * otr: #2835 fixed: chat button was displayed inproperly on Windows (Vogel)

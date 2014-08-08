@@ -36,6 +36,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
+#include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/hot-key.h"
@@ -78,6 +79,14 @@ std::unique_ptr<FormattedString> CustomInput::formattedString() const
 		return CurrentFormattedStringFactory->fromTextDocument(document());
 	else
 		return 0;
+}
+
+void CustomInput::showEvent(QShowEvent *e)
+{
+	QTextEdit::showEvent(e);
+
+	// see #2837 - windows bug
+	setFont(ChatConfigurationHolder::instance()->chatFont());
 }
 
 void CustomInput::keyPressEvent(QKeyEvent *e)

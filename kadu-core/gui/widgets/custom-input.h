@@ -55,6 +55,7 @@ private slots:
 protected:
 	bool autosend_enabled;
 
+    virtual void showEvent(QShowEvent *e) override;
 	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void keyReleaseEvent(QKeyEvent *e);
 	virtual void contextMenuEvent(QContextMenuEvent *e);
