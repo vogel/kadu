@@ -137,6 +137,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Events", "Notifications");
 
 	notifyTreeWidget = new NotifyTreeWidget(this, notificationsGroupBox->widget());
+	notifyTreeWidget->setMinimumHeight(250);
 	notificationsGroupBox->addWidget(notifyTreeWidget, true);
 	notifyTreeWidget->setCurrentItem(notifyTreeWidget->topLevelItem(0));
 	connect(notifyTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(eventSwitched()));
