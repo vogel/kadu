@@ -19,12 +19,11 @@
 
 #pragma once
 
+#include "misc/paths-provider.h"
 #include "exports.h"
 
-#include <injeqt/setter-injector.h>
+#include <injeqt/injeqt-global.h>
 #include <QtCore/QObject>
-
-class PathsProvider;
 
 class QStringList;
 
@@ -33,7 +32,7 @@ class KADUAPI ConfigurationPathProvider final : public QObject
 	Q_OBJECT
 
 public:
-	explicit ConfigurationPathProvider(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ConfigurationPathProvider(QObject *parent = nullptr);
 	virtual ~ConfigurationPathProvider();
 
 	QString configurationDirectoryPath() const;
@@ -44,8 +43,7 @@ public:
 private:
 	PathsProvider *m_pathsProvider;
 
-private slots:
+public slots:
 	injeqt_setter void setPathsProvider(PathsProvider *pathsProvider);
-
 
 };

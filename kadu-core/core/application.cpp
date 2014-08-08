@@ -39,6 +39,7 @@
 #include "configuration/configuration.h"
 #include "misc/paths-provider.h"
 
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
 Application * Application::m_instance = nullptr;
@@ -48,15 +49,11 @@ Application * Application::instance()
 	return m_instance;
 }
 
-Application::Application(int &argc, char *argv[]) :
-		QApplication{argc, argv},
+Application::Application() :
 		m_configuration{nullptr},
 		m_configurationWriter{nullptr},
 		m_pathsProvider{nullptr}
 {
-	setApplicationName("Kadu");
-	setQuitOnLastWindowClosed(false);
-
 #ifdef Q_OS_WIN32
 	// Fix for #2491
 	setStyleSheet("QToolBar{border:0px}");
@@ -103,6 +100,16 @@ void Application::flushConfiguration()
 void Application::backupConfiguration()
 {
 	m_configurationWriter->backup();
+}
+
+bool Application::isSavingSession() const
+{
+	return qApp->isSavingSession();
+}
+
+void Application::quit()
+{
+	qApp->quit();
 }
 
 #include "moc_application.cpp"

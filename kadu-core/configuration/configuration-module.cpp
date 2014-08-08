@@ -17,36 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "configuration-module.h"
 
+#include "configuration/configuration-factory.h"
 #include "configuration/configuration-path-provider.h"
+#include "configuration/configuration-writer.h"
 #include "configuration/configuration.h"
-#include "misc/memory.h"
-#include "exports.h"
 
-#include <injeqt/injeqt-global.h>
-#include <QtCore/QObject>
-
-class Configuration;
-
-class KADUAPI ConfigurationFactory final : public QObject
+ConfigurationModule::ConfigurationModule()
 {
-	Q_OBJECT
+	add_type<ConfigurationFactory>();
+	add_type<ConfigurationPathProvider>();
+	add_type<ConfigurationWriter>();
 
-public:
-	Q_INVOKABLE explicit ConfigurationFactory(QObject *parent = nullptr);
-	virtual ~ConfigurationFactory();
-
-	Q_INVOKABLE Configuration * createConfiguration() const;
-
-private:
-	ConfigurationPathProvider *m_configurationPathProvider;
-
-	not_owned_qptr<Configuration> readConfiguration() const;
-	not_owned_qptr<Configuration> createEmptyConfiguration() const;
-	bool isConfigurationPathUsable() const;
-
-private slots:
-	injeqt_setter void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
-
-};
+	add_factory<Configuration, ConfigurationFactory>();
+}

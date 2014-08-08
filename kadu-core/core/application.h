@@ -36,7 +36,7 @@
 
 #include "exports.h"
 
-#include <QtWidgets/QApplication>
+#include <QtCore/QObject>
 
 #ifndef Q_MOC_RUN
 #  define injeqt_setter
@@ -46,14 +46,14 @@ class Configuration;
 class ConfigurationWriter;
 class PathsProvider;
 
-class KADUAPI Application : public QApplication
+class KADUAPI Application : public QObject
 {
 	Q_OBJECT
 
 public:
 	static Application * instance();
 
-	Application(int &argc, char *argv[]);
+	Q_INVOKABLE Application();
 	virtual ~Application();
 
 	Configuration * configuration() const;
@@ -62,6 +62,9 @@ public:
 	void flushConfiguration();
 	void backupConfiguration();
 
+	bool isSavingSession() const;
+	void quit();
+
 private:
 	static Application * m_instance;
 
@@ -69,7 +72,7 @@ private:
 	ConfigurationWriter *m_configurationWriter;
 	PathsProvider *m_pathsProvider;
 
-private slots:
+public slots:
 	injeqt_setter void setConfiguration(Configuration *configuration);
 	injeqt_setter void setConfigurationWriter(ConfigurationWriter *configurationWriter);
 	injeqt_setter void setPathsProvider(PathsProvider *pathsProvider);

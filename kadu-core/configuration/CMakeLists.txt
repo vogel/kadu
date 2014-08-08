@@ -7,6 +7,7 @@ set (configuration_SRCS
 	configuration-factory.cpp
 	configuration-holder.cpp
 	configuration-manager.cpp
+	configuration-module.cpp
 	configuration-path-provider.cpp
 	configuration-window-data-manager.cpp
 	configuration-writer.cpp

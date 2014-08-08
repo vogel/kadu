@@ -17,35 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "core-module.h"
 
-#include "exports.h"
+#include "core/application.h"
+#include "misc/paths-provider.h"
 
-#include <injeqt/injeqt-global.h>
-#include <QtCore/QObject>
-
-class Configuration;
-class ConfigurationPathProvider;
-
-class KADUAPI ConfigurationWriter final : public QObject
+CoreModule::CoreModule(QString profileDirectory)
 {
-	Q_OBJECT
+	m_pathsProvider = make_not_owned<PathsProvider>(std::move(profileDirectory));
 
-public:
-	Q_INVOKABLE explicit ConfigurationWriter();
-	virtual ~ConfigurationWriter();
+	add_type<Application>();
+	add_ready_object<PathsProvider>(m_pathsProvider.get());
+}
 
-	void write() const;
-	void backup() const;
-
-private:
-	Configuration *m_configuration;
-	ConfigurationPathProvider *m_configurationPathProvider;
-
-	void write(const QString &fileName) const;
-
-private slots:
-	injeqt_setter void setConfiguration(Configuration *configuration);
-	injeqt_setter void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
-
-};
+CoreModule::~CoreModule()
+{
+}

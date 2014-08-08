@@ -19,34 +19,21 @@
 
 #pragma once
 
-#include "configuration/configuration-path-provider.h"
-#include "configuration/configuration.h"
 #include "misc/memory.h"
 #include "exports.h"
 
-#include <injeqt/injeqt-global.h>
-#include <QtCore/QObject>
+#include <injeqt/module.h>
 
-class Configuration;
+class PathsProvider;
 
-class KADUAPI ConfigurationFactory final : public QObject
+class KADUAPI CoreModule : public injeqt::v1::module
 {
-	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConfigurationFactory(QObject *parent = nullptr);
-	virtual ~ConfigurationFactory();
-
-	Q_INVOKABLE Configuration * createConfiguration() const;
+	explicit CoreModule(QString profileDirectory);
+	virtual ~CoreModule();
 
 private:
-	ConfigurationPathProvider *m_configurationPathProvider;
-
-	not_owned_qptr<Configuration> readConfiguration() const;
-	not_owned_qptr<Configuration> createEmptyConfiguration() const;
-	bool isConfigurationPathUsable() const;
-
-private slots:
-	injeqt_setter void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
+	not_owned_qptr<PathsProvider> m_pathsProvider;
 
 };

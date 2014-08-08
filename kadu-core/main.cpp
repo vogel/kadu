@@ -48,6 +48,7 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-factory.h"
+#include "configuration/configuration-module.h"
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/configuration-writer.h"
@@ -55,6 +56,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/core-module.h"
 #include "execution-arguments/execution-arguments-parser.h"
 #include "execution-arguments/execution-arguments.h"
 #include "gui/windows/message-dialog.h"
@@ -68,8 +70,7 @@
 #include "debug.h"
 #include "kadu-config.h"
 
-#include <injeqt/class-mapping.h>
-#include <injeqt/setter-injector.h>
+#include <injeqt/injector.h>
 
 #ifndef Q_OS_WIN32
 #if HAVE_EXECINFO
@@ -167,11 +168,9 @@ int main(int argc, char *argv[]) try
 {
 	WSAHandler wsaHandler;
 
-	bool ok;
-
-	kdebugm(KDEBUG_INFO, "before creation of new Application\n");
-	auto application = make_unique<Application>(argc, argv);
-	kdebugm(KDEBUG_INFO, "after creation of new Application\n");
+	QApplication application{argc, argv};
+	application.setApplicationName("Kadu");
+	application.setQuitOnLastWindowClosed(false);
 
 	auto executionArgumentsParser = ExecutionArgumentsParser{};
 	// do not parse program name
@@ -191,6 +190,7 @@ int main(int argc, char *argv[]) try
 
 	if (!executionArguments.debugMask().isEmpty())
 	{
+		bool ok;
 		executionArguments.debugMask().toInt(&ok);
 		if (ok)
 			qputenv("DEBUG_MASK", executionArguments.debugMask().toUtf8());
@@ -202,31 +202,19 @@ int main(int argc, char *argv[]) try
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
 
-	auto pathsProvider = make_not_owned<PathsProvider>(std::move(profileDirectory));
-	auto configurationFactory = make_not_owned<ConfigurationFactory>();
-	auto configurationPathProvider = make_not_owned<ConfigurationPathProvider>();
-	auto configurationWriter = make_not_owned<ConfigurationWriter>();
+	auto modules = std::vector<std::unique_ptr<injeqt::v1::module>>{};
+	modules.emplace_back(make_unique<CoreModule>(std::move(profileDirectory)));
+	modules.emplace_back(make_unique<ConfigurationModule>());
 
-	auto mapping = std::map<QByteArray, QObject *>{};
-	mapping.insert(std::make_pair(PathsProvider::staticMetaObject.className(), pathsProvider.get()));
-	mapping.insert(std::make_pair(ConfigurationPathProvider::staticMetaObject.className(), configurationPathProvider.get()));
-	mapping.insert(std::make_pair(ConfigurationWriter::staticMetaObject.className(), configurationWriter.get()));
-
-	auto setterInjector = injeqt::v1::setter_injector{injeqt::v1::class_mapping{mapping}};
-
-	setterInjector.inject(configurationFactory.get());
-	setterInjector.inject(configurationPathProvider.get());
-
-	auto configuration = not_owned_qptr<Configuration>();
+	auto injector = injeqt::v1::injector{std::move(modules)};
 
 	try
 	{
-		configuration = configurationFactory->createConfiguration();
-		mapping.insert(std::make_pair(Configuration::staticMetaObject.className(), configuration.get()));
+		injector.get<Application>(); // force creation of Application object
 	}
 	catch (ConfigurationUnusableException &)
 	{
-		auto profilePath = configurationPathProvider->configurationDirectoryPath();
+		auto profilePath = injector.get<ConfigurationPathProvider>()->configurationDirectoryPath();
 		auto errorMessage = QCoreApplication::translate("@default", "We're sorry, but Kadu cannot be loaded. "
 				"Profile is inaccessible. Please check permissions in the '%1' directory.")
 				.arg(profilePath.left(profilePath.length() - 1));
@@ -234,11 +222,6 @@ int main(int argc, char *argv[]) try
 
 		throw;
 	}
-
-	auto setterInjectorWithConfiguration = injeqt::v1::setter_injector{injeqt::v1::class_mapping{mapping}};
-
-	setterInjectorWithConfiguration.inject(configurationWriter.get());
-	setterInjectorWithConfiguration.inject(application.get());
 
 #ifndef Q_OS_WIN32
 	// Qt version is better on win32
@@ -258,7 +241,7 @@ int main(int argc, char *argv[]) try
 	QCoreApplication::installTranslator(&qt_qm);
 	QCoreApplication::installTranslator(&kadu_qm);
 
-	QtLocalPeer *peer = new QtLocalPeer(application.get(), Application::instance()->pathsProvider()->profilePath());
+	QtLocalPeer *peer = new QtLocalPeer(&application, Application::instance()->pathsProvider()->profilePath());
 	if (peer->isClient())
 	{
 		if (!executionArguments.openIds().isEmpty())

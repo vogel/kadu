@@ -163,7 +163,7 @@ QString Core::nameWithVersion()
 
 Application * Core::application()
 {
-	return static_cast<Application *>(qApp);
+	return Application::instance();
 }
 
 Core::Core() :

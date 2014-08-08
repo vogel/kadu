@@ -27,8 +27,7 @@
 
 #include <QtCore/QDir>
 
-ConfigurationWriter::ConfigurationWriter(QObject *parent) :
-		QObject{parent},
+ConfigurationWriter::ConfigurationWriter() :
 		m_configuration{nullptr},
 		m_configurationPathProvider{nullptr}
 {

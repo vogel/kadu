@@ -43,13 +43,13 @@ void ConfigurationFactory::setConfigurationPathProvider(ConfigurationPathProvide
 	m_configurationPathProvider = configurationPathProvider;
 }
 
-not_owned_qptr<Configuration> ConfigurationFactory::createConfiguration() const
+Configuration * ConfigurationFactory::createConfiguration() const
 {
 	auto result = readConfiguration();
 	if (result)
-		return result;
+		return result.release();
 
-	return createEmptyConfiguration();
+	return createEmptyConfiguration().release();
 }
 
 not_owned_qptr<Configuration> ConfigurationFactory::readConfiguration() const
