@@ -36,9 +36,9 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
-#include "configuration/chat-configuration-holder.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"

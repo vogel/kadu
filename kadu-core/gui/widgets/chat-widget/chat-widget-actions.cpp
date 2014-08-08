@@ -39,6 +39,7 @@
 #include "gui/actions/actions.h"
 #include "gui/actions/chat/leave-chat-action.h"
 #include "gui/actions/edit-talkable-action.h"
+#include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -291,8 +292,9 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 		return;
 
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
- 	chatEditBox->setAutoSend(toggled);
 	autoSendActionCheck();
+
+	ChatConfigurationHolder::instance()->configurationUpdated();
 }
 
 void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled)
