@@ -29,6 +29,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
+#include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -289,8 +290,9 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 		return;
 
 	config_file.writeEntry("Chat", "AutoSend", toggled);
- 	chatEditBox->setAutoSend(toggled);
 	autoSendActionCheck();
+
+	ChatConfigurationHolder::instance()->configurationUpdated();
 }
 
 void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled)
