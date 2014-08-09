@@ -217,6 +217,8 @@ void ChatWindow::blinkTitle()
 			m_titleTimer->start(500);
 		}
 	}
+	else
+		setWindowTitle(m_chatWidget->title());
 }
 
 void ChatWindow::showNewMessagesNumInTitle()
