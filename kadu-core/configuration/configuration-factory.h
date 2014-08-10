@@ -24,7 +24,7 @@
 #include "misc/memory.h"
 #include "exports.h"
 
-#include <injeqt/injeqt-global.h>
+#include <injeqt/injeqt.h>
 #include <QtCore/QObject>
 
 class Configuration;
@@ -47,6 +47,6 @@ private:
 	bool isConfigurationPathUsable() const;
 
 private slots:
-	injeqt_setter void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
+	INJEQT_SETTER void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
 
 };

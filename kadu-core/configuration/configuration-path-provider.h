@@ -22,7 +22,7 @@
 #include "misc/paths-provider.h"
 #include "exports.h"
 
-#include <injeqt/injeqt-global.h>
+#include <injeqt/injeqt.h>
 #include <QtCore/QObject>
 
 class QStringList;
@@ -44,6 +44,6 @@ private:
 	PathsProvider *m_pathsProvider;
 
 public slots:
-	injeqt_setter void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 
 };

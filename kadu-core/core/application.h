@@ -39,7 +39,7 @@
 #include <QtCore/QObject>
 
 #ifndef Q_MOC_RUN
-#  define injeqt_setter
+#  define INJEQT_SETTER
 #endif
 
 class Configuration;
@@ -73,8 +73,8 @@ private:
 	PathsProvider *m_pathsProvider;
 
 public slots:
-	injeqt_setter void setConfiguration(Configuration *configuration);
-	injeqt_setter void setConfigurationWriter(ConfigurationWriter *configurationWriter);
-	injeqt_setter void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setConfiguration(Configuration *configuration);
+	INJEQT_SETTER void setConfigurationWriter(ConfigurationWriter *configurationWriter);
+	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 
 };
