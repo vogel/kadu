@@ -68,7 +68,7 @@ void JabberAvatarUploader::uploadAvatarPEP()
 		return;
 
 	JabberAvatarPepUploader *pepUploader = new JabberAvatarPepUploader(PepService.data(), this);
-	connect(pepUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(pepAvatarUploaded(bool)));
+	connect(pepUploader, SIGNAL(avatarUploaded(bool,QImage)), this, SLOT(pepAvatarUploaded(bool)));
 	pepUploader->uploadAvatar(Id, Password, UploadingAvatar);
 }
 

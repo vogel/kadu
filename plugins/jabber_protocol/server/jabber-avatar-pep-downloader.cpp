@@ -26,6 +26,7 @@
 
 #include "iris/xmpp_tasks.h"
 #include "services/jabber-pep-service.h"
+#include "tasks/pep-get-task.h"
 #include "base64.h"
 
 #include "jabber-avatar-pep-downloader.h"
@@ -97,16 +98,32 @@ void JabberAvatarPepDownloader::discoItemsFinished()
 		return;
 	}
 
-	connect(PepService.data(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	PepService.data()->get(Id, XMLNS_AVATAR_METADATA, "");
+	auto getTask = PepService.data()->get(Id, XMLNS_AVATAR_METADATA, "");
+	if (!getTask)
+	{
+		failed();
+		return;
+	}
+
+	connect(getTask, SIGNAL(finished()), this, SLOT(avatarMetadataQueryFinished()));
 }
 
-void JabberAvatarPepDownloader::avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
+void JabberAvatarPepDownloader::avatarMetadataQueryFinished()
 {
-	if (jid.bare() != Id || node != XMLNS_AVATAR_METADATA)
-		return; // not our data :(
+	auto pepTask = static_cast<PEPGetTask *>(sender());
+	if (!pepTask->success())
+	{
+		failed();
+		return;
+	}
 
-	AvatarId = item.id();
+	if (pepTask->items().isEmpty())
+	{
+		failed();
+		return;
+	}
+
+	AvatarId = pepTask->items().at(0).id();
 	if (AvatarId == "current") // removed
 	{
 		done(QImage());
@@ -119,17 +136,32 @@ void JabberAvatarPepDownloader::avatarMetadataQueryFinished(const XMPP::Jid &jid
 		return;
 	}
 
-	disconnect(PepService.data(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	connect(PepService.data(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	PepService.data()->get(Id, XMLNS_AVATAR_DATA, AvatarId);
+	auto getTask = PepService.data()->get(Id, XMLNS_AVATAR_DATA, AvatarId);
+	if (!getTask)
+	{
+		failed();
+		return;
+	}
+
+	connect(getTask, SIGNAL(finished()), this, SLOT(avatarDataQueryFinished()));
 }
 
-void JabberAvatarPepDownloader::avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
+void JabberAvatarPepDownloader::avatarDataQueryFinished()
 {
-	if (jid.bare() != Id || node != XMLNS_AVATAR_DATA || item.id() != AvatarId)
-		return; // not our data :(
+	auto pepTask = static_cast<PEPGetTask *>(sender());
+	if (!pepTask->success())
+	{
+		failed();
+		return;
+	}
 
-	QByteArray imageData = XMPP::Base64::decode(item.payload().text());
+	if (pepTask->items().isEmpty())
+	{
+		failed();
+		return;
+	}
+
+	QByteArray imageData = XMPP::Base64::decode(pepTask->items().at(0).payload().text());
 	if (!imageData.isEmpty())
 		done(QImage::fromData(imageData));
 	else

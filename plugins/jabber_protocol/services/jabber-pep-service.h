@@ -38,6 +38,8 @@ namespace XMPP
 	class JabberProtocol;
 }
 
+class PEPGetTask;
+
 class JabberPepService : public QObject
 {
 	Q_OBJECT
@@ -49,7 +51,6 @@ class JabberPepService : public QObject
 
 protected slots:
 	void messageReceived(const Message &message);
-	void getFinished();
 	void publishFinished();
 
 public:
@@ -69,7 +70,7 @@ public:
 
 	void publish(const QString &node, const XMPP::PubSubItem &item, Access = DefaultAccess);
 	void retract(const QString &node, const QString &id);
-	void get(const XMPP::Jid &jid, const QString &node, const QString &id);
+	PEPGetTask * get(const XMPP::Jid &jid, const QString &node, const QString &id);
 
 signals:
 	void publishSuccess(const QString &ns, const XMPP::PubSubItem &item);
