@@ -1,3 +1,5 @@
++++ version 1.0-rc8
+
 +++ version 1.0-rc7
 * gui: #2839 fixed: properly set chat window title when no tabs plugin is loaded (Vogel)
 * jabber: #2842 fixed: vcard support problems resolved (Vogel)
