@@ -345,8 +345,8 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	AppendMessageQuery.bindValue(":chat_id", ChatsMapping->idByChat(message.messageChat(), true));
 	AppendMessageQuery.bindValue(":contact_id", ContactsMapping->idByContact(message.messageSender(), true));
-	AppendMessageQuery.bindValue(":send_time", message.sendDate());
-	AppendMessageQuery.bindValue(":receive_time", message.receiveDate());
+	AppendMessageQuery.bindValue(":send_time", message.sendDate().toString("yyyy-MM-ddThh:mm:ss.zzz"));
+	AppendMessageQuery.bindValue(":receive_time", message.receiveDate().toString("yyyy-MM-ddThh:mm:ss.zzz"));
 	AppendMessageQuery.bindValue(":date_id", findOrCreateDate(message.receiveDate().date()));
 	AppendMessageQuery.bindValue(":is_outgoing", outgoing);
 	AppendMessageQuery.bindValue(":content_id", saveMessageContent(message));
