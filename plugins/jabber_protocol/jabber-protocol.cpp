@@ -107,7 +107,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentStreamDebugService = new XMPP::JabberStreamDebugService(this);
 
-	CurrentVCardService = new XMPP::JabberVCardService(this);
+	CurrentVCardService = new XMPP::JabberVCardService(account, this);
 	CurrentVCardService->setXmppClient(XmppClient);
 
 	CurrentAvatarService->setVCardService(CurrentVCardService);

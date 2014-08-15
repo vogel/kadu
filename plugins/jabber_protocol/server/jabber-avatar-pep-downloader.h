@@ -65,8 +65,8 @@ class JabberAvatarPepDownloader : public AvatarDownloader
 
 private slots:
 	void discoItemsFinished();
-	void avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
-	void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
+	void avatarMetadataQueryFinished();
+	void avatarDataQueryFinished();
 
 public:
 	/**

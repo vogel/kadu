@@ -104,14 +104,16 @@ void JabberPepService::publishFinished()
 		emit publishError(task->node(), task->item());
 }
 
-void JabberPepService::get(const XMPP::Jid &jid, const QString &node, const QString &id)
+PEPGetTask * JabberPepService::get(const XMPP::Jid &jid, const QString &node, const QString &id)
 {
 	if (!Enabled || !XmppClient)
-		return;
+		return nullptr;
 
 	PEPGetTask* g = new PEPGetTask(XmppClient->rootTask(), jid.bare(), node, id);
 	connect(g, SIGNAL(finished()), SLOT(getFinished()));
 	g->go(true);
+
+	return g;
 }
 
 void JabberPepService::messageReceived(const Message &message)
@@ -123,19 +125,6 @@ void JabberPepService::messageReceived(const Message &message)
 		emit itemRetracted(from, pubsubNode, item);
 	foreach (const XMPP::PubSubItem &item, message.pubsubItems())
 		emit itemPublished(from, pubsubNode, item);
-}
-
-void JabberPepService::getFinished()
-{
-	PEPGetTask *task = qobject_cast<PEPGetTask *>(sender());
-	if (!task)
-		return;
-
-	if (task->success())
-		// Act as if the item was published. This is a convenience
-		// implementation, probably should be changed later.
-		if (!task->items().isEmpty())
-			emit itemPublished(task->jid(),task->node(),task->items().at(0));
 }
 
 #include "moc_jabber-pep-service.cpp"

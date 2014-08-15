@@ -21,6 +21,8 @@
 #ifndef JABBER_VCARD_SERVICE_H
 #define JABBER_VCARD_SERVICE_H
 
+#include "accounts/account.h"
+
 #include <QtCore/QPointer>
 
 class JabberVCardDownloader;
@@ -51,6 +53,7 @@ class JabberVCardService : public QObject
 {
 	Q_OBJECT
 
+	Account MyAccount;
 	QPointer<XMPP::Client> XmppClient;
 
 public:
@@ -59,7 +62,7 @@ public:
 	 * @short Create new instance of JabberVCardService.
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardService(QObject *parent = 0);
+	explicit JabberVCardService(Account account, QObject *parent = 0);
 	virtual ~JabberVCardService();
 
 	/**
