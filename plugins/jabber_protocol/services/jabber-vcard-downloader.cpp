@@ -63,7 +63,7 @@ void JabberVCardDownloader::downloadVCard(const QString &id)
 
 	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
 
-	if (account && protocol->isConnected() && protocol->xmppClient())
+	if (!account || !protocol || !protocol->isConnected() || !protocol->xmppClient())
 	{
 		failed();
 		return;
