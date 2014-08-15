@@ -118,6 +118,7 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 		return;
 	}
 
+	vCardUploader->uploadVCard(id, vcard);
 	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SIGNAL(personalInfoUpdated(bool)));
 }
 
