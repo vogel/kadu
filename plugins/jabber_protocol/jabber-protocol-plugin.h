@@ -40,8 +40,6 @@ class JabberProtocolPlugin : public QObject, public PluginRootComponent
 	Q_INTERFACES(PluginRootComponent)
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
-	QCA::Initializer QcaInitializer;
-
 	JabberUrlDomVisitorProvider *UrlDomVisitorProvider;
 
 public:

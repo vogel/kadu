@@ -245,7 +245,7 @@ target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBKADU_LIBRARIES})
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
 qt5_use_modules (kadu LINK_PRIVATE Core Gui Widgets Network Xml)
-target_link_libraries (kadu LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES})
+target_link_libraries (kadu LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES} ${QCA2_LIBRARIES})
 
 if (NOT IS_ABSOLUTE "${KADU_INSTALL_LIB_DIR}")
 	set (install_full_lib_dir "${CMAKE_INSTALL_PREFIX}/${KADU_INSTALL_LIB_DIR}")
