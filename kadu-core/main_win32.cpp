@@ -92,7 +92,8 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 	}
 
 	// if we cannot make crash dump only save config file to backup
-	KaduApplication::instance()->configuration()->backup();
+	Application::instance()->backupConfiguration();
+	ConfigurationManager::instance()->flush();
 	return ret;
 #else
 	MessageBoxW(NULL, L"Mini dumps are not available in this build.", L"Kadu crashed", MB_OK | MB_ICONERROR);

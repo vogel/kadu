@@ -29,6 +29,7 @@
 #include <stdio.h>
 
 #include "configuration/configuration-api.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "core/application.h"
 #include "core/core.h"
@@ -53,14 +54,14 @@ static void kadu_signal_handler(int signal)
 
 	static int sigsegvCount = 0;
 
-	if (sigsegvCount > 1)
-	{
-		kdebugmf(KDEBUG_WARNING, "sigsegv recursion: %d\n", sigsegvCount);
-		abort();
-	}
-
 	if (signal == SIGSEGV)
 	{
+		if (sigsegvCount > 1)
+		{
+			kdebugmf(KDEBUG_WARNING, "sigsegv recursion: %d\n", sigsegvCount);
+			abort();
+		}
+
 		++sigsegvCount;
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 
@@ -120,6 +121,7 @@ static void kadu_signal_handler(int signal)
 #endif // HAVE_EXECINFO
 
 		Application::instance()->backupConfiguration();
+		ConfigurationManager::instance()->flush();
 		abort();
 	}
 	else if (signal == SIGUSR1)
