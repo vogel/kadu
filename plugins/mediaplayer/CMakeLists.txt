@@ -13,7 +13,7 @@ set (SOURCES
 
 	mediaplayer.cpp
 	mediaplayer-plugin.cpp
-	mp_status_changer.cpp
+	media-player-status-changer.cpp
 )
 
 set (MOC_SOURCES
@@ -21,7 +21,6 @@ set (MOC_SOURCES
 
 	mediaplayer.h
 	mediaplayer-plugin.h
-	mp_status_changer.h
 	player_commands.h
 )
 
