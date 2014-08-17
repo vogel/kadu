@@ -19,11 +19,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_FINGERPRINT_SERVICE_H
-#define OTR_FINGERPRINT_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Account;
 class Contact;
@@ -34,11 +34,6 @@ class OtrFingerprintService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<OtrContextConverter> ContextConverter;
-	QPointer<OtrUserStateService> UserStateService;
-
-	QString fingerprintsStoreFileName() const;
-
 public:
 	static void wrapperOtrWriteFingerprints(void *data);
 
@@ -48,11 +43,8 @@ public:
 		TrustVerified
 	};
 
-	explicit OtrFingerprintService(QObject *parent = 0);
+	Q_INVOKABLE OtrFingerprintService();
 	virtual ~OtrFingerprintService();
-
-	void setContextConverter(OtrContextConverter *contextConverter);
-	void setUserStateService(OtrUserStateService *userStateService);
 
 	void readFingerprints() const;
 	void writeFingerprints() const;
@@ -66,6 +58,14 @@ public:
 signals:
 	void fingerprintsUpdated() const;
 
-};
+private slots:
+	INJEQT_SETTER void setContextConverter(OtrContextConverter *contextConverter);
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
 
-#endif // OTR_FINGERPRINT_SERVICE_H
+private:
+	QPointer<OtrContextConverter> ContextConverter;
+	QPointer<OtrUserStateService> UserStateService;
+
+	QString fingerprintsStoreFileName() const;
+
+};

@@ -39,8 +39,7 @@ void OtrFingerprintService::wrapperOtrWriteFingerprints(void *data)
 		opData->fingerprintService()->writeFingerprints();
 }
 
-OtrFingerprintService::OtrFingerprintService(QObject *parent) :
-		QObject(parent)
+OtrFingerprintService::OtrFingerprintService()
 {
 }
 

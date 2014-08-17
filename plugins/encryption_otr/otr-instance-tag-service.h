@@ -21,11 +21,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_INSTANCE_TAG_SERVICE_H
-#define OTR_INSTANCE_TAG_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -39,22 +39,22 @@ class OtrInstanceTagService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<OtrUserStateService> UserStateService;
-
-	QString instanceTagsFileName() const;
-
 public:
 	static void wrapperOtrCreateInstanceTag(void *data, const char *accountName, const char *protocol);
 
-	explicit OtrInstanceTagService(QObject *parent = 0);
+	Q_INVOKABLE OtrInstanceTagService();
 	virtual ~OtrInstanceTagService();
-
-	void setUserStateService(OtrUserStateService *userStateService);
 
 	void readInstanceTags();
 	void writeInstanceTags();
 	void createInstanceTag(const Account &account);
 
-};
+private slots:
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
 
-#endif // OTR_INSTANCE_TAG_SERVICE_H
+private:
+	QPointer<OtrUserStateService> UserStateService;
+
+	QString instanceTagsFileName() const;
+
+};

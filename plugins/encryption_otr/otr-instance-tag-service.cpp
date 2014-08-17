@@ -36,8 +36,7 @@ void OtrInstanceTagService::wrapperOtrCreateInstanceTag(void *data, const char *
 		opData->instanceTagService()->createInstanceTag(opData->contact().contactAccount());
 }
 
-OtrInstanceTagService::OtrInstanceTagService(QObject *parent) :
-		QObject(parent)
+OtrInstanceTagService::OtrInstanceTagService()
 {
 }
 

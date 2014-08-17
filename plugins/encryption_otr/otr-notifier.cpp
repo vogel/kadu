@@ -31,8 +31,7 @@ QString OtrNotifier::OtrNotifyTopic("OTR");
 QString OtrNotifier::CreatePrivateKeyStartedNotifyTopic("OTR/CreatePrivateKeyStarted");
 QString OtrNotifier::CreatePrivateKeyFinishedNotifyTopic("OTR/CreatePrivateKeyFinished");
 
-OtrNotifier::OtrNotifier(QObject *parent) :
-		QObject(parent)
+OtrNotifier::OtrNotifier()
 {
 	OtrNotifyEvent.reset(new NotifyEvent(OtrNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "OTR Encryption")));

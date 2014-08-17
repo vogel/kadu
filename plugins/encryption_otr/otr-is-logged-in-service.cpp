@@ -36,8 +36,7 @@ int OtrIsLoggedInService::wrapperOtrIsLoggedIn(void *data, const char *accountNa
 		return static_cast<int>(OtrIsLoggedInService::NotSure);
 }
 
-OtrIsLoggedInService::OtrIsLoggedInService(QObject *parent) :
-		QObject(parent)
+OtrIsLoggedInService::OtrIsLoggedInService()
 {
 }
 

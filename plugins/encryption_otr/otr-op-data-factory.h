@@ -21,11 +21,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_OP_DATA_FACTORY_H
-#define OTR_OP_DATA_FACTORY_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Contact;
 
@@ -47,6 +47,28 @@ class OtrOpDataFactory : public QObject
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE OtrOpDataFactory();
+	virtual ~OtrOpDataFactory();
+
+	OtrOpData opData();
+	OtrOpData opDataForContact(const Contact &contact);
+
+private slots:
+	INJEQT_SETTER void setErrorMessageService(OtrErrorMessageService *errorMessageService);
+	INJEQT_SETTER void setFingerprintService(OtrFingerprintService *fingerprintService);
+	INJEQT_SETTER void setInstanceTagService(OtrInstanceTagService *instanceTagService);
+	INJEQT_SETTER void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
+	INJEQT_SETTER void setMessageEventService(OtrMessageEventService *messageEventService);
+	INJEQT_SETTER void setMessageService(OtrMessageService *messageService);
+	INJEQT_SETTER void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+	INJEQT_SETTER void setPolicyService(OtrPolicyService *policyService);
+	INJEQT_SETTER void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
+	INJEQT_SETTER void setSessionService(OtrSessionService *sessionService);
+	INJEQT_SETTER void setTimerService(OtrTimerService *timerService);
+	INJEQT_SETTER void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+
+private:
 	QPointer<OtrErrorMessageService> ErrorMessageService;
 	QPointer<OtrFingerprintService> FingerprintService;
 	QPointer<OtrInstanceTagService> InstanceTagService;
@@ -60,26 +82,4 @@ class OtrOpDataFactory : public QObject
 	QPointer<OtrTimerService> TimerService;
 	QPointer<OtrTrustLevelService> TrustLevelService;
 
-public:
-	explicit OtrOpDataFactory(QObject *parent = 0);
-	virtual ~OtrOpDataFactory();
-
-	void setErrorMessageService(OtrErrorMessageService *errorMessageService);
-	void setFingerprintService(OtrFingerprintService *fingerprintService);
-	void setInstanceTagService(OtrInstanceTagService *instanceTagService);
-	void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
-	void setMessageEventService(OtrMessageEventService *messageEventService);
-	void setMessageService(OtrMessageService *messageService);
-	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	void setPolicyService(OtrPolicyService *policyService);
-	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
-	void setSessionService(OtrSessionService *sessionService);
-	void setTimerService(OtrTimerService *timerService);
-	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
-
-	OtrOpData opData();
-	OtrOpData opDataForContact(const Contact &contact);
-
 };
-
-#endif // OTR_OP_DATA_FACTORY_H

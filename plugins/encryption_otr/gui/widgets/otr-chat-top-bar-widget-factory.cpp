@@ -30,8 +30,7 @@
 
 #include "otr-chat-top-bar-widget-factory.h"
 
-OtrChatTopBarWidgetFactory::OtrChatTopBarWidgetFactory(QObject *parent) :
-		QObject(parent)
+OtrChatTopBarWidgetFactory::OtrChatTopBarWidgetFactory()
 {
 }
 

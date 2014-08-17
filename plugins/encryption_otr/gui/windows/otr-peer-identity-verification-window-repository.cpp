@@ -22,8 +22,7 @@
 
 #include "otr-peer-identity-verification-window-repository.h"
 
-OtrPeerIdentityVerificationWindowRepository::OtrPeerIdentityVerificationWindowRepository(QObject *parent) :
-		QObject(parent)
+OtrPeerIdentityVerificationWindowRepository::OtrPeerIdentityVerificationWindowRepository()
 {
 }
 

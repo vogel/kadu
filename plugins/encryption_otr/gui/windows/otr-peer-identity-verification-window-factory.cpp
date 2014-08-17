@@ -31,8 +31,7 @@
 
 #include "otr-peer-identity-verification-window-factory.h"
 
-OtrPeerIdentityVerificationWindowFactory::OtrPeerIdentityVerificationWindowFactory(QObject *parent) :
-		QObject(parent)
+OtrPeerIdentityVerificationWindowFactory::OtrPeerIdentityVerificationWindowFactory()
 {
 }
 

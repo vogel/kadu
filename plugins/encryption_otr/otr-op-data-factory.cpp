@@ -33,8 +33,7 @@
 
 #include "otr-op-data-factory.h"
 
-OtrOpDataFactory::OtrOpDataFactory(QObject *parent) :
-		QObject(parent)
+OtrOpDataFactory::OtrOpDataFactory()
 {
 }
 

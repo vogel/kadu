@@ -21,13 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
-#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
+#pragma once
+
+#include "contacts/contact.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-
-#include "contacts/contact.h"
+#include <injeqt/injeqt.h>
 
 class OtrFingerprintService;
 class OtrPeerIdentityVerificationService;
@@ -38,22 +38,22 @@ class OtrPeerIdentityVerificationWindowFactory : public QObject
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE OtrPeerIdentityVerificationWindowFactory();
+	virtual ~OtrPeerIdentityVerificationWindowFactory();
+
+	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
+
+private slots:
+	INJEQT_SETTER void setFingerprintService(OtrFingerprintService *fingerprintService);
+	INJEQT_SETTER void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+	INJEQT_SETTER void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+
+private:
 	QPointer<OtrFingerprintService> FingerprintService;
 	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QPointer<OtrTrustLevelService> TrustLevelService;
 
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
-public:
-	explicit OtrPeerIdentityVerificationWindowFactory(QObject *parent = 0);
-	virtual ~OtrPeerIdentityVerificationWindowFactory();
-
-	void setFingerprintService(OtrFingerprintService *fingerprintService);
-	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
-
-	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
-
 };
-
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H

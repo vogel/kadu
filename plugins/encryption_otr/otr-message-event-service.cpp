@@ -36,8 +36,7 @@ void OtrMessageEventService::wrapperOtrHandleMessageEvent(void *data, OtrlMessag
 		opData->messageEventService()->handleMessageEvent(opData->contact(), event, message, error);
 }
 
-OtrMessageEventService::OtrMessageEventService(QObject *parent) :
-		QObject(parent)
+OtrMessageEventService::OtrMessageEventService()
 {
 }
 

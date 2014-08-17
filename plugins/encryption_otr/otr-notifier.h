@@ -50,7 +50,7 @@ class OtrNotifier : public QObject
 	void notify(const Contact &contact, const QString &message);
 
 public:
-	explicit OtrNotifier(QObject *parent = 0);
+	Q_INVOKABLE OtrNotifier();
 	virtual ~OtrNotifier();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);

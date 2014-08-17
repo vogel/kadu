@@ -34,8 +34,7 @@ extern "C" {
 
 #include "otr-context-converter.h"
 
-OtrContextConverter::OtrContextConverter(QObject *parent) :
-		QObject(parent)
+OtrContextConverter::OtrContextConverter()
 {
 }
 
@@ -66,7 +65,6 @@ ConnContext * OtrContextConverter::chatToContextConverter(const Chat &chat, NotF
 		return 0;
 
 	return contactToContextConverter(chat.contacts().toContact(), notFoundAction);
-	
 }
 
 ConnContext * OtrContextConverter::contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction) const

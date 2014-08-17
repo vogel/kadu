@@ -36,6 +36,7 @@ set (SOURCES
 	otr-is-logged-in-service.cpp
 	otr-message-event-service.cpp
 	otr-message-service.cpp
+	otr-module.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
 	otr-op-data-factory.cpp
@@ -97,8 +98,12 @@ set (CONFIGURATION_FILES
 )
 
 pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
+pkg_check_modules (INJEQT REQUIRED injeqt)
 
-set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt)
+include_directories (${INJEQT_INCLUDEDIR})
+link_directories (${INJEQT_LIBRARY_DIRS})
+
+set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt ${INJEQT_LIBRARIES})
 
 kadu_plugin (encryption_otr
 	PLUGIN_SOURCES ${SOURCES}

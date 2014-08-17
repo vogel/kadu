@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,19 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "otr-user-state-service.h"
+#pragma once
 
-OtrUserStateService::OtrUserStateService()
-{
-	UserState = otrl_userstate_create();
-}
+#include <injeqt/module.h>
 
-OtrUserStateService::~OtrUserStateService()
+class OtrModule : public injeqt::module
 {
-	otrl_userstate_free(UserState);
-}
 
-OtrlUserState OtrUserStateService::userState() const
-{
-	return UserState;
-}
+public:
+	explicit OtrModule();
+	virtual ~OtrModule();
+
+};

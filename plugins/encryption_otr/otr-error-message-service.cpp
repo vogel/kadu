@@ -39,8 +39,7 @@ void OtrErrorMessageService::wrapperOtrErrorMessageFree(void *data, const char *
 	free(const_cast<char *>(errorMessage));
 }
 
-OtrErrorMessageService::OtrErrorMessageService(QObject *parent) :
-		QObject(parent)
+OtrErrorMessageService::OtrErrorMessageService()
 {
 }
 

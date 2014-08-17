@@ -36,7 +36,7 @@ class OtrUserStateService : public QObject
 	OtrlUserState UserState;
 
 public:
-	explicit OtrUserStateService(QObject *parent = 0);
+	Q_INVOKABLE OtrUserStateService();
 	virtual ~OtrUserStateService();
 
 	OtrlUserState userState() const;

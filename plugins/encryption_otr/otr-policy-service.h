@@ -40,7 +40,7 @@ class OtrPolicyService : public QObject
 public:
 	static OtrlPolicy wrapperOtrPolicy(void *data, ConnContext *context);
 
-	explicit OtrPolicyService(QObject *parent = 0);
+	Q_INVOKABLE OtrPolicyService();
 	virtual ~OtrPolicyService();
 
 	void setAccountPolicy(const Account &account, const OtrPolicy &policy);
