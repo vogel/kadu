@@ -81,6 +81,7 @@ void StatusChangerManager::setStatusManually(StatusContainer *statusContainer, S
 {
 	if (statusContainer)
 	{
+		emit manualStatusAboutToBeChanged(statusContainer, status);
 		Statuses.insert(statusContainer, status);
 		statusChanged(statusContainer, SourceUser);
 	}

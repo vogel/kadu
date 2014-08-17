@@ -1,5 +1,6 @@
 +++ version 2.0
 * chat: #2669 implemented: store content of input box in chat widgets (Vogel)
+* mediaplayer: #943 fixed: disable mediaplayer statuses after changing it manually (Vogel)
 
 +++ version 1.0-rc6
 * gui: #2836 fixed: do not allow to shrink notification configuration widget too much (Vogel)

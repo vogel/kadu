@@ -19,13 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_CHANGER_MANAGER_H
-#define STATUS_CHANGER_MANAGER_H
-
-#include <QtCore/QMap>
+#pragma once
 
 #include "status/status-change-source.h"
 #include "status/status.h"
+
+#include <QtCore/QMap>
 
 class Account;
 class StatusChanger;
@@ -139,11 +138,19 @@ public:
 	 */
 	Status manuallySetStatus(StatusContainer *statusContainer);
 
+signals:
+	/**
+	 * @short Emited just before status is changed by user.
+	 * @param statusContainer StatusContainer that changes status on.
+	 * @param status status to be set on given statusContainer
+	 *
+	 * This signal can be used by status changers to disable themself in case user changes status.
+	 */
+	void manualStatusAboutToBeChanged(StatusContainer *statusContainer, Status status);
+
 };
 
 /**
  * @addtogroup Status
  * @}
  */
-
-#endif // STATUS_CHANGER_MANAGER_H

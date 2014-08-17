@@ -192,6 +192,8 @@ MediaPlayer::MediaPlayer()
 
 	Changer = new MediaPlayerStatusChanger(this);
 	StatusChangerManager::instance()->registerStatusChanger(Changer);
+	connect(StatusChangerManager::instance(), SIGNAL(manualStatusAboutToBeChanged(StatusContainer*,Status)),
+			this, SLOT(statusAboutToBeChanged()));
 
 	createDefaultConfiguration();
 
@@ -695,11 +697,17 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 	toggleStatuses(toggled);
 }
 
+void MediaPlayer::statusAboutToBeChanged()
+{
+	if (Changer->changeDescriptionTo() == MediaPlayerStatusChanger::DescriptionReplace)
+		toggleStatuses(false);
+}
+
 void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		foreach (Action *action, enableMediaPlayerStatuses->actions())
+		for (auto &&action : enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
 		if (!getPlayerName().isEmpty())
@@ -709,6 +717,9 @@ void MediaPlayer::toggleStatuses(bool toggled)
 
 		return;
 	}
+
+	for (auto &&action : enableMediaPlayerStatuses->actions())
+		action->setChecked(toggled);
 
 	Changer->setDisable(!toggled);
 	if (toggled)

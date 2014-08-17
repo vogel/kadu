@@ -42,6 +42,7 @@ public:
 	void setDisable(bool disable);
 	bool isDisabled() const;
 	void changePositionInStatus(ChangeDescriptionTo newPosition);
+	ChangeDescriptionTo changeDescriptionTo() const;
 
 private:
 	QString _title;

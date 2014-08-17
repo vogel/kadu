@@ -95,4 +95,9 @@ void MediaPlayerStatusChanger::changePositionInStatus(ChangeDescriptionTo newSon
 	}
 }
 
+MediaPlayerStatusChanger::ChangeDescriptionTo MediaPlayerStatusChanger::changeDescriptionTo() const
+{
+	return _mediaPlayerStatusPosition;
+}
+
 #include "moc_media-player-status-changer.cpp"

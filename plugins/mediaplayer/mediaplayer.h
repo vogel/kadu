@@ -126,6 +126,7 @@ private slots:
 
 	void mediaPlayerStatusChangerActivated(QAction *sender, bool toggled);
 	void mediaPlayerMenuActivated(QAction *sender, bool toggled);
+	void statusAboutToBeChanged();
 	void toggleStatuses(bool toggled);
 
 protected:
