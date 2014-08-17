@@ -114,7 +114,7 @@ public:
 	 * it using StatusChangersManager singleton. After all changes are done, new status is set on statusContainer
 	 * using StatusContainer::setStatus method.
 	 */
-	void setStatus(StatusContainer *statusContainer, Status status);
+	void setStatusManually(StatusContainer *statusContainer, Status status);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -298,7 +298,7 @@ void StatusWindow::applyStatus()
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
 
-	foreach (StatusContainer *container, Container->subStatusContainers())
+	for (auto &&container : Container->subStatusContainers())
 	{
 		Status status = StatusSetter::instance()->manuallySetStatus(container);
 		status.setDescription(description);
@@ -307,7 +307,7 @@ void StatusWindow::applyStatus()
 		if (statusType != StatusTypeNone)
 			status.setType(statusType);
 
-		StatusSetter::instance()->setStatus(container, status);
+		StatusSetter::instance()->setStatusManually(container, status);
 		container->storeStatus(status);
 	}
 }

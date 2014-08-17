@@ -61,7 +61,7 @@ void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 	else if (StatusTypeOffline == status.type() && OfflineToInvisible)
 		status.setType(StatusTypeInvisible);
 
-	StatusSetter::instance()->setStatus(statusContainer, status);
+	StatusSetter::instance()->setStatusManually(statusContainer, status);
 }
 
 void StatusSetter::coreInitialized()
@@ -94,9 +94,9 @@ void StatusSetter::statusContainerUnregistered(StatusContainer *statusContainer)
 	Q_UNUSED(statusContainer);
 }
 
-void StatusSetter::setStatus(StatusContainer *statusContainer, Status status)
+void StatusSetter::setStatusManually(StatusContainer *statusContainer, Status status)
 {
-	StatusChangerManager::instance()->setStatus(statusContainer, status);
+	StatusChangerManager::instance()->setStatusManually(statusContainer, status);
 }
 
 Status StatusSetter::manuallySetStatus(StatusContainer *statusContainer)
