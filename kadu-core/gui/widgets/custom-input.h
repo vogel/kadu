@@ -68,6 +68,7 @@ public:
 	void setImageStorageService(ImageStorageService *imageStorageService);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
+	void setFormattedString(const FormattedString &formattedString);
 	std::unique_ptr<FormattedString> formattedString() const;
 
 public slots:

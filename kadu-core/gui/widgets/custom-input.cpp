@@ -38,6 +38,7 @@
 
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/formatted-string-html-visitor.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
 #include "protocols/protocol.h"
@@ -71,6 +72,13 @@ void CustomInput::setImageStorageService(ImageStorageService *imageStorageServic
 void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
+void CustomInput::setFormattedString(const FormattedString &formattedString)
+{
+	FormattedStringHtmlVisitor html{};
+	formattedString.accept(&html);
+	setHtml(html.result());
 }
 
 std::unique_ptr<FormattedString> CustomInput::formattedString() const

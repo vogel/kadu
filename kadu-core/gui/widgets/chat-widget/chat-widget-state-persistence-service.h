@@ -17,19 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-widget-module.h"
+#pragma once
 
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-ChatWidgetModule::ChatWidgetModule()
+class ChatWidget;
+class ChatWidgetRepository;
+
+class ChatWidgetStatePersistenceService : public QObject
 {
-	m_chatWidgetRepository = make_not_owned<ChatWidgetRepository>();
+	Q_OBJECT
 
-	add_ready_object<ChatWidgetRepository>(m_chatWidgetRepository.get());
-	add_type<ChatWidgetStatePersistenceService>();
-}
+public:
+	Q_INVOKABLE ChatWidgetStatePersistenceService();
+	virtual ~ChatWidgetStatePersistenceService();
 
-ChatWidgetModule::~ChatWidgetModule()
-{
-}
+private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
+	void storeChatWidgetState(ChatWidget *chatWidget);
+	void restoreChatWidgetState(ChatWidget *chatWidget);
+
+private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+
+};

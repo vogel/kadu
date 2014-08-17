@@ -67,6 +67,7 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
@@ -246,15 +247,18 @@ Core::~Core()
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
 	CurrentChatWindowManager->storeOpenedChatWindows();
-	ConfigurationManager::instance()->flush();
-// 	delete Configuration;
-// 	Configuration = 0;
 
+	// some plugins crash on deactivation
+	// ensure we have at least some configuration stored
+	ConfigurationManager::instance()->flush();
 	Application::instance()->backupConfiguration();
 
 	CurrentPluginManager->deactivatePlugins();
 
 	stopServices();
+
+	ConfigurationManager::instance()->flush();
+	Application::instance()->backupConfiguration();
 
 #ifdef Q_OS_MAC
 	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
@@ -777,6 +781,9 @@ void Core::runServices()
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
 	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
+
+	// instantiate = run in case of services
+	m_injector.get<ChatWidgetStatePersistenceService>();
 
 	// moved here because of #2758
 	ContactManager::instance()->init();
