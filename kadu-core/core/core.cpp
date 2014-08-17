@@ -33,6 +33,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QTimer>
 #include <QtWidgets/QApplication>
+#include <injeqt/injector.h>
 
 #include "accounts/account-manager.h"
 #include "avatars/avatar-manager.h"
@@ -135,14 +136,14 @@
 
 Core * Core::Instance = 0;
 
+void Core::createInstance(injeqt::injector &injector)
+{
+	Instance = new Core(injector);
+	Instance->init();
+}
+
 Core * Core::instance()
 {
-	if (!Instance)
-	{
-		Instance = new Core();
-		Instance->init();
-	}
-
 	return Instance;
 }
 
@@ -166,7 +167,8 @@ Application * Core::application()
 	return Application::instance();
 }
 
-Core::Core() :
+Core::Core(injeqt::injector &injector) :
+		m_injector(injector),
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
 		CurrentBuddyDataWindowRepository{nullptr},
@@ -195,7 +197,6 @@ Core::Core() :
 		CurrentChatWidgetFactory{nullptr},
 		CurrentChatWidgetManager{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
-		CurrentChatWidgetRepository{nullptr},
 		CurrentChatWindowFactory{nullptr},
 		CurrentChatWindowManager{nullptr},
 		CurrentChatWindowStorage{nullptr},
@@ -657,8 +658,6 @@ void Core::runServices()
 	CurrentChatWidgetFactory = new ChatWidgetFactory(this);
 	CurrentChatWidgetFactory->setFormattedStringFactory(CurrentFormattedStringFactory);
 
-	CurrentChatWidgetRepository = new ChatWidgetRepository(this);
-
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
 
@@ -671,7 +670,7 @@ void Core::runServices()
 
 	CurrentChatWidgetContainerHandlerMapper = new ChatWidgetContainerHandlerMapper(this);
 	CurrentChatWidgetContainerHandlerMapper->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
-	CurrentChatWidgetContainerHandlerMapper->setChatWidgetRepository(CurrentChatWidgetRepository);
+	CurrentChatWidgetContainerHandlerMapper->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
 
 	CurrentChatWidgetActivationService = new ChatWidgetActivationService(this);
 	CurrentChatWidgetActivationService->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
@@ -680,12 +679,12 @@ void Core::runServices()
 	CurrentChatWidgetManager = new ChatWidgetManager(this);
 	CurrentChatWidgetManager->setChatWidgetActivationService(CurrentChatWidgetActivationService);
 	CurrentChatWidgetManager->setChatWidgetFactory(CurrentChatWidgetFactory);
-	CurrentChatWidgetManager->setChatWidgetRepository(CurrentChatWidgetRepository);
+	CurrentChatWidgetManager->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
 
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
 	CurrentChatWidgetMessageHandler->setChatWidgetActivationService(CurrentChatWidgetActivationService);
 	CurrentChatWidgetMessageHandler->setChatWidgetManager(CurrentChatWidgetManager);
-	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
+	CurrentChatWidgetMessageHandler->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
 	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
@@ -793,8 +792,9 @@ void Core::runGuiServices()
 
 void Core::stopServices()
 {
-	delete CurrentChatWidgetRepository;
-	CurrentChatWidgetRepository = 0;
+	auto chatWidgetRepository = m_injector.get<ChatWidgetRepository>();
+	while (begin(chatWidgetRepository) != end(chatWidgetRepository))
+		chatWidgetRepository->removeChatWidget(*begin(chatWidgetRepository));
 }
 
 void Core::activatePlugins()
@@ -931,7 +931,7 @@ ChatWidgetFactory * Core::chatWidgetFactory() const
 
 ChatWidgetRepository * Core::chatWidgetRepository() const
 {
-	return CurrentChatWidgetRepository;
+	return m_injector.get<ChatWidgetRepository>();
 }
 
 ChatWindowFactory * Core::chatWindowFactory() const

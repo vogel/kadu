@@ -98,6 +98,8 @@ class WebkitMessagesViewDisplayFactory;
 class WebkitMessagesViewFactory;
 class WebkitMessagesViewHandlerFactory;
 
+namespace injeqt { namespace v1 { class injector; } }
+
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -105,6 +107,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	static Core *Instance;
 
+	injeqt::v1::injector &m_injector;
 	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
@@ -134,7 +137,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWidgetFactory *CurrentChatWidgetFactory;
 	ChatWidgetManager *CurrentChatWidgetManager;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
-	ChatWidgetRepository *CurrentChatWidgetRepository;
 	ChatWindowFactory *CurrentChatWindowFactory;
 	ChatWindowManager *CurrentChatWindowManager;
 	ChatWindowStorage *CurrentChatWindowStorage;
@@ -162,7 +164,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	bool IsClosing;
 	bool ShowMainWindowOnStart; // TODO: 0.11.0, it is a hack
 
-	Core();
+	Core(injeqt::v1::injector &injector);
 	virtual ~Core();
 
 	void import_0_6_5_configuration();
@@ -185,6 +187,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
+	static void createInstance(injeqt::v1::injector &injector);
 	static Core * instance();
 
 	static QString name();

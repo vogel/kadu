@@ -33,9 +33,6 @@ ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
 
 ChatWidgetRepository::~ChatWidgetRepository()
 {
-	// neeed to emit signals on finish
-	while (!m_widgets.empty())
-		removeChatWidget((*m_widgets.begin()).second.get());
 }
 
 ChatWidgetRepository::Iterator ChatWidgetRepository::begin()
