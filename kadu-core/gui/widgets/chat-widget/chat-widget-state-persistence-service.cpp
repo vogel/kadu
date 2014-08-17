@@ -47,6 +47,13 @@ void ChatWidgetStatePersistenceService::setFormattedStringFactory(FormattedStrin
 	m_formattedStringFactory = formattedStringFactory;
 }
 
+void ChatWidgetStatePersistenceService::crash()
+{
+	printf("crash found!\n");
+	for (auto &&chatWidget : m_chatWidgetRepository)
+		storeChatWidgetState(chatWidget);
+}
+
 void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWidget)
 {
 	auto content = chatWidget->edit()->formattedString();
