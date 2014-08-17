@@ -182,7 +182,6 @@ Core::Core(injeqt::injector &injector) :
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
 		CurrentNotificationService{nullptr},
-		CurrentFormattedStringFactory{nullptr},
 		CurrentRawMessageTransformerService{nullptr},
 		CurrentClipboardHtmlTransformerService{nullptr},
 		CurrentAccountConfigurationWidgetFactoryRepository{nullptr},
@@ -644,7 +643,6 @@ void Core::runServices()
 	CurrentMessageFilterService = new MessageFilterService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
-	CurrentFormattedStringFactory = new FormattedStringFactory();
 	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
 	CurrentClipboardHtmlTransformerService = new ClipboardHtmlTransformerService(this);
 	CurrentAccountConfigurationWidgetFactoryRepository = new AccountConfigurationWidgetFactoryRepository(this);
@@ -660,7 +658,7 @@ void Core::runServices()
 	CurrentChatWidgetActions = new ChatWidgetActions(this);
 
 	CurrentChatWidgetFactory = new ChatWidgetFactory(this);
-	CurrentChatWidgetFactory->setFormattedStringFactory(CurrentFormattedStringFactory);
+	CurrentChatWidgetFactory->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
 
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
@@ -716,11 +714,11 @@ void Core::runServices()
 
 	MessageManager::instance()->setMessageFilterService(CurrentMessageFilterService);
 	MessageManager::instance()->setMessageTransformerService(CurrentMessageTransformerService);
-	MessageManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
+	MessageManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
 
-	CurrentFormattedStringFactory->setImageStorageService(CurrentImageStorageService);
+	m_injector.get<FormattedStringFactory>()->setImageStorageService(CurrentImageStorageService);
 
-	ChatStyleManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
+	ChatStyleManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
 	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
@@ -863,7 +861,7 @@ NotificationService * Core::notificationService() const
 
 FormattedStringFactory * Core::formattedStringFactory() const
 {
-	return CurrentFormattedStringFactory;
+	return m_injector.get<FormattedStringFactory>();
 }
 
 RawMessageTransformerService * Core::rawMessageTransformerService() const

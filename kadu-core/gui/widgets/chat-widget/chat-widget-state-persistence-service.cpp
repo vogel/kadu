@@ -19,7 +19,6 @@
 
 #include "chat-widget-state-persistence-service.h"
 
-#include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -43,6 +42,11 @@ void ChatWidgetStatePersistenceService::setChatWidgetRepository(ChatWidgetReposi
 			this, SLOT(storeChatWidgetState(ChatWidget*)));
 }
 
+void ChatWidgetStatePersistenceService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	m_formattedStringFactory = formattedStringFactory;
+}
+
 void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWidget)
 {
 	auto content = chatWidget->edit()->formattedString();
@@ -59,7 +63,7 @@ void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWid
 void ChatWidgetStatePersistenceService::restoreChatWidgetState(ChatWidget *chatWidget)
 {
 	auto html = chatWidget->chat().property("chat-widget-state:message", QString{}).toString();
-	auto formattedString = Core::instance()->formattedStringFactory()->fromHtml(html);
+	auto formattedString = m_formattedStringFactory->fromHtml(html);
 	chatWidget->edit()->setFormattedString(*formattedString);
 
 	auto textCursor = chatWidget->edit()->textCursor();

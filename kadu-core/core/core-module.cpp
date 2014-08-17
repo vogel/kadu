@@ -20,6 +20,7 @@
 #include "core-module.h"
 
 #include "core/application.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "misc/paths-provider.h"
 
 CoreModule::CoreModule(QString profileDirectory)
@@ -27,6 +28,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	m_pathsProvider = make_not_owned<PathsProvider>(std::move(profileDirectory));
 
 	add_type<Application>();
+	add_type<FormattedStringFactory>();
 	add_ready_object<PathsProvider>(m_pathsProvider.get());
 }
 

@@ -57,6 +57,9 @@ class KADUAPI FormattedStringFactory : public QObject
 	std::vector<std::unique_ptr<FormattedString>> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
 
 public:
+	Q_INVOKABLE FormattedStringFactory();
+	virtual ~FormattedStringFactory();
+
 	/**
 	 * @short Set ImageStorageService to use by this factory.
 	 * @author Rafał 'Vogel' Malinowski

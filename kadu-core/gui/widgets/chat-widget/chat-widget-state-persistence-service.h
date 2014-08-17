@@ -25,6 +25,7 @@
 
 class ChatWidget;
 class ChatWidgetRepository;
+class FormattedStringFactory;
 
 class ChatWidgetStatePersistenceService : public QObject
 {
@@ -36,11 +37,13 @@ public:
 
 private slots:
 	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void storeChatWidgetState(ChatWidget *chatWidget);
 	void restoreChatWidgetState(ChatWidget *chatWidget);
 
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 };

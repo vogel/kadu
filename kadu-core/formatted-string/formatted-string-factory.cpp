@@ -33,6 +33,14 @@
 
 #include "formatted-string-factory.h"
 
+FormattedStringFactory::FormattedStringFactory()
+{
+}
+
+FormattedStringFactory::~FormattedStringFactory()
+{
+}
+
 void FormattedStringFactory::setImageStorageService(ImageStorageService *imageStorageService)
 {
 	CurrentImageStorageService = imageStorageService;

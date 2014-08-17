@@ -121,7 +121,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;
 	NotificationService *CurrentNotificationService;
-	FormattedStringFactory *CurrentFormattedStringFactory;
 	RawMessageTransformerService *CurrentRawMessageTransformerService;
 	ClipboardHtmlTransformerService *CurrentClipboardHtmlTransformerService;
 	AccountConfigurationWidgetFactoryRepository *CurrentAccountConfigurationWidgetFactoryRepository;
