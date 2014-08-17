@@ -23,7 +23,7 @@
 
 #include <injeqt/module.h>
 
-class KADUAPI ConfigurationModule : public injeqt::v1::module
+class KADUAPI ConfigurationModule : public injeqt::module
 {
 
 public:

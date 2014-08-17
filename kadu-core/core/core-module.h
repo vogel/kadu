@@ -26,7 +26,7 @@
 
 class PathsProvider;
 
-class KADUAPI CoreModule : public injeqt::v1::module
+class KADUAPI CoreModule : public injeqt::module
 {
 
 public:

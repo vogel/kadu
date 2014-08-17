@@ -202,11 +202,11 @@ int main(int argc, char *argv[]) try
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))
 			: executionArguments.profileDirectory();
 
-	auto modules = std::vector<std::unique_ptr<injeqt::v1::module>>{};
+	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
 	modules.emplace_back(make_unique<CoreModule>(std::move(profileDirectory)));
 	modules.emplace_back(make_unique<ConfigurationModule>());
 
-	auto injector = injeqt::v1::injector{std::move(modules)};
+	auto injector = injeqt::injector{std::move(modules)};
 
 	try
 	{
