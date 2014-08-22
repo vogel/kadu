@@ -2,6 +2,9 @@
 * chat: #2669 implemented: store content of input box in chat widgets (Vogel)
 * mediaplayer: #943 fixed: disable mediaplayer statuses after changing it manually (Vogel)
 
++++ version 1.0-rc8
+* themes: #2844 fixed: more formats of archives supported (Vogel)
+
 +++ version 1.0-rc7
 * gui: #2839 fixed: properly set chat window title when no tabs plugin is loaded (Vogel)
 * jabber: #2842 fixed: vcard support problems resolved (Vogel)

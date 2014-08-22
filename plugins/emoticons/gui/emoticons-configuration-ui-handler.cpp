@@ -101,7 +101,7 @@ void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigu
 
 void EmoticonsConfigurationUiHandler::installEmoticonTheme()
 {
-	QString fileName = QFileDialog::getOpenFileName(Widget.data(), tr("Open icon theme archive"), QDir::home().path(), tr("XZ archive (*.tar.xz)"));
+	QString fileName = QFileDialog::getOpenFileName(Widget.data(), tr("Open icon theme archive"), QDir::home().path(), tr("Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)"));
 
 	if (fileName.isEmpty())
 		return;

@@ -306,7 +306,7 @@ void MainConfigurationWindow::setLanguages()
 
 void MainConfigurationWindow::installIconTheme()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open icon theme archive"), QDir::home().path(), tr("XZ archive (*.tar.xz)"));
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open icon theme archive"), QDir::home().path(), tr("Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)"));
 
 	if (fileName.isEmpty())
 		return;
