@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2014 Michał Ziąbkowski (mziab@o2.pl)
  * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
