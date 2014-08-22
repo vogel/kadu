@@ -1,3 +1,5 @@
++++ version 1.0-rc9
+
 +++ version 1.0-rc8
 * themes: #2844 fixed: more formats of archives supported (Vogel)
 * gui: #2845 fixed: change Help link into Forum link (Vogel)
