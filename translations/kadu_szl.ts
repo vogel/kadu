@@ -2716,10 +2716,6 @@ Do you want to accept this image anyway?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Getting H&amp;elp</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Report a Bug</source>
         <translation type="unfinished"/>
     </message>
@@ -2775,6 +2771,10 @@ Do you want to accept this image anyway?</source>
         <source>Delete Buddy</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Forum</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>LeaveChatAction</name>
@@ -2826,11 +2826,11 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>XZ archive (*.tar.xz)</source>
+        <source>Installation failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Installation failed</source>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
         <translation type="unfinished"/>
     </message>
 </context>

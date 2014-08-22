@@ -45,12 +45,12 @@
         <translation>Open icon theme archive</translation>
     </message>
     <message>
-        <source>XZ archive (*.tar.xz)</source>
-        <translation>XZ archive (*.tar.xz)</translation>
-    </message>
-    <message>
         <source>Installation failed</source>
         <translation>Installation failed</translation>
+    </message>
+    <message>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
+        <translation>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</translation>
     </message>
 </context>
 <context>

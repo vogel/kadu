@@ -45,12 +45,12 @@
         <translation>Archiv s motivem ikon</translation>
     </message>
     <message>
-        <source>XZ archive (*.tar.xz)</source>
-        <translation>Archiv XZ (*.tar.xz)</translation>
-    </message>
-    <message>
         <source>Installation failed</source>
         <translation>Instalace se nezdařila</translation>
+    </message>
+    <message>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
+        <translation>Archiv (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</translation>
     </message>
 </context>
 <context>

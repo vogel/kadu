@@ -45,12 +45,12 @@
         <translation>Otwórz plik ze schematem emotikon</translation>
     </message>
     <message>
-        <source>XZ archive (*.tar.xz)</source>
-        <translation>Archiwum XZ (*.tar.xz)</translation>
-    </message>
-    <message>
         <source>Installation failed</source>
         <translation>Instalacja się nie powiodła</translation>
+    </message>
+    <message>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
+        <translation>Archiwum (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</translation>
     </message>
 </context>
 <context>
