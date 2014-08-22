@@ -4,6 +4,7 @@
 
 +++ version 1.0-rc8
 * themes: #2844 fixed: more formats of archives supported (Vogel)
+* gui: #2845 fixed: change Help link into Forum link (Vogel)
 
 +++ version 1.0-rc7
 * gui: #2839 fixed: properly set chat window title when no tabs plugin is loaded (Vogel)
