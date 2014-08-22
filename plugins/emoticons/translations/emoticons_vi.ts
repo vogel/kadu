@@ -45,11 +45,11 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>XZ archive (*.tar.xz)</source>
+        <source>Installation failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Installation failed</source>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
         <translation type="unfinished"/>
     </message>
 </context>

@@ -2727,10 +2727,6 @@ Do you want to accept this image anyway?</translation>
         <translation>Multilogons</translation>
     </message>
     <message>
-        <source>Getting H&amp;elp</source>
-        <translation>Getting H&amp;elp</translation>
-    </message>
-    <message>
         <source>Report a Bug</source>
         <translation>Report a Bug</translation>
     </message>
@@ -2786,6 +2782,10 @@ Do you want to accept this image anyway?</translation>
         <source>Delete Buddy</source>
         <translation>Delete Buddy</translation>
     </message>
+    <message>
+        <source>Forum</source>
+        <translation>Forum</translation>
+    </message>
 </context>
 <context>
     <name>LeaveChatAction</name>
@@ -2838,12 +2838,12 @@ from now on. Are you sure you want to leave this conference?</translation>
         <translation>Open icon theme archive</translation>
     </message>
     <message>
-        <source>XZ archive (*.tar.xz)</source>
-        <translation>XZ archive (*.tar.xz)</translation>
-    </message>
-    <message>
         <source>Installation failed</source>
         <translation>Installation failed</translation>
+    </message>
+    <message>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
+        <translation>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</translation>
     </message>
 </context>
 <context>

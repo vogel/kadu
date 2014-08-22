@@ -2728,10 +2728,6 @@ Sloučit kamarády...</translation>
         <translation>Více přihlášení</translation>
     </message>
     <message>
-        <source>Getting H&amp;elp</source>
-        <translation>Získání &amp;nápovědy</translation>
-    </message>
-    <message>
         <source>Report a Bug</source>
         <translation>Nahlásit chybu</translation>
     </message>
@@ -2787,6 +2783,10 @@ Sloučit kamarády...</translation>
         <source>Delete Buddy</source>
         <translation>Smazat kamaráda</translation>
     </message>
+    <message>
+        <source>Forum</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>LeaveChatAction</name>
@@ -2840,12 +2840,12 @@ poradu</translation>
         <translation>Otevřít archiv s motivem ikon</translation>
     </message>
     <message>
-        <source>XZ archive (*.tar.xz)</source>
-        <translation>Archiv XZ (*.tar.xz)</translation>
-    </message>
-    <message>
         <source>Installation failed</source>
         <translation>Instalace se nezdařila</translation>
+    </message>
+    <message>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
+        <translation>Archiv (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</translation>
     </message>
 </context>
 <context>
