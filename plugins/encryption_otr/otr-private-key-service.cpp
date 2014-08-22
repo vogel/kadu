@@ -29,6 +29,7 @@ extern "C" {
 
 #include "otr-create-private-key-job.h"
 #include "otr-op-data.h"
+#include "otr-path-service.h"
 #include "otr-user-state-service.h"
 
 #include "otr-private-key-service.h"
@@ -56,14 +57,14 @@ OtrPrivateKeyService::~OtrPrivateKeyService()
 	qDeleteAll(CreateJobs);
 }
 
+void OtrPrivateKeyService::setPathService(OtrPathService *pathService)
+{
+	PathService = pathService;
+}
+
 void OtrPrivateKeyService::setUserStateService(OtrUserStateService *userStateService)
 {
 	UserStateService = userStateService;
-}
-
-QString OtrPrivateKeyService::privateStoreFileName() const
-{
-	return Application::instance()->pathsProvider()->profilePath() + QString("/keys/otr_private");
 }
 
 void OtrPrivateKeyService::createPrivateKey(const Account &account)
@@ -73,7 +74,7 @@ void OtrPrivateKeyService::createPrivateKey(const Account &account)
 
 	OtrCreatePrivateKeyJob *job = new OtrCreatePrivateKeyJob(this);
 	job->setAccount(account);
-	job->setPrivateStoreFileName(privateStoreFileName());
+	job->setPrivateStoreFileName(PathService->privateKeysStoreFilePath());
 	job->setUserStateService(UserStateService.data());
 	job->createPrivateKey();
 
@@ -96,5 +97,5 @@ void OtrPrivateKeyService::readPrivateKeys()
 		return;
 
 	OtrlUserState userState = UserStateService->userState();
-	otrl_privkey_read(userState, privateStoreFileName().toUtf8().data());
+	otrl_privkey_read(userState, PathService->privateKeysStoreFilePath().toUtf8().data());
 }

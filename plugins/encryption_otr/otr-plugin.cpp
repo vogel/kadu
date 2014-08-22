@@ -42,6 +42,7 @@
 #include "otr-message-service.h"
 #include "otr-notifier.h"
 #include "otr-op-data-factory.h"
+#include "otr-path-service.h"
 #include "otr-peer-identity-verification-service.h"
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
@@ -198,6 +199,16 @@ void OtrPlugin::unregisterOtrOpDataFactory()
 	OpDataFactory.reset();
 }
 
+void OtrPlugin::registerOtrPathService()
+{
+	PathService.reset(new OtrPathService{});
+}
+
+void OtrPlugin::unregisterOtrPathService()
+{
+	PathService.reset();;
+}
+
 void OtrPlugin::registerOtrPeerIdentityVerificationService()
 {
 	PeerIdentityVerificationService.reset(new OtrPeerIdentityVerificationService());
@@ -328,6 +339,7 @@ bool OtrPlugin::init(bool firstLoad)
 	registerOtrMessageService();
 	registerOtrNotifier();
 	registerOtrOpDataFactory();
+	registerOtrPathService();
 	registerOtrPeerIdentityVerificationService();
 	registerOtrPeerIdentityVerificationWindowFactory();
 	registerOtrPeerIdentityVerificationWindowRepository();
@@ -353,10 +365,12 @@ bool OtrPlugin::init(bool firstLoad)
 	ContextConverter->setUserStateService(UserStateService.data());
 
 	FingerprintService->setContextConverter(ContextConverter.data());
+	FingerprintService->setPathService(PathService.data());
 	FingerprintService->setUserStateService(UserStateService.data());
 	connect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 	FingerprintService->readFingerprints();
 
+	InstanceTagService->setPathService(PathService.data());
 	InstanceTagService->setUserStateService(UserStateService.data());
 	InstanceTagService->readInstanceTags();
 
@@ -395,6 +409,7 @@ bool OtrPlugin::init(bool firstLoad)
 
 	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
+	PrivateKeyService->setPathService(PathService.data());
 	PrivateKeyService->setUserStateService(UserStateService.data());
 	PrivateKeyService->readPrivateKeys();
 
@@ -472,6 +487,7 @@ void OtrPlugin::done()
 			   Notifier.data(), SLOT(notifyCreatePrivateKeyFinished(Account,bool)));
 
 	PrivateKeyService->setUserStateService(0);
+	PrivateKeyService->setPathService(0);
 
 	PeerIdentityVerificationWindowFactory->setTrustLevelService(0);
 	PeerIdentityVerificationWindowFactory->setPeerIdentityVerificationService(0);
@@ -508,9 +524,12 @@ void OtrPlugin::done()
 
 	InstanceTagService->writeInstanceTags();
 	InstanceTagService->setUserStateService(0);
+	InstanceTagService->setPathService(0);
 
 	disconnect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 
+	FingerprintService->setUserStateService(0);
+	FingerprintService->setPathService(0);
 	FingerprintService->setContextConverter(0);
 
 	ContextConverter->setUserStateService(0);
@@ -536,6 +555,7 @@ void OtrPlugin::done()
 	unregisterOtrPeerIdentityVerificationWindowRepository();
 	unregisterOtrPeerIdentityVerificationWindowFactory();
 	unregisterOtrPeerIdentityVerificationService();
+	unregisterOtrPathService();
 	unregisterOtrOpDataFactory();
 	unregisterOtrNotifier();
 	unregisterOtrMessageService();

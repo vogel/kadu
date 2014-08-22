@@ -33,15 +33,15 @@ extern "C" {
 
 class Account;
 
+class OtrPathService;
 class OtrUserStateService;
 
 class OtrInstanceTagService : public QObject
 {
 	Q_OBJECT
 
+	QPointer<OtrPathService> PathService;
 	QPointer<OtrUserStateService> UserStateService;
-
-	QString instanceTagsFileName() const;
 
 public:
 	static void wrapperOtrCreateInstanceTag(void *data, const char *accountName, const char *protocol);
@@ -49,6 +49,7 @@ public:
 	explicit OtrInstanceTagService(QObject *parent = 0);
 	virtual ~OtrInstanceTagService();
 
+	void setPathService(OtrPathService *pathService);
 	void setUserStateService(OtrUserStateService *userStateService);
 
 	void readInstanceTags();

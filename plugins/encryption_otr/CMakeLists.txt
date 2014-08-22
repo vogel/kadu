@@ -45,6 +45,7 @@ set (SOURCES
 	otr-policy.cpp
 	otr-policy-service.cpp
 	otr-private-key-service.cpp
+	otr-path-service.cpp
 	otr-raw-message-transformer.cpp
 	otr-session-service.cpp
 	otr-timer-service.cpp
@@ -82,6 +83,7 @@ set (MOC_SOURCES
 	otr-message-service.h
 	otr-notifier.h
 	otr-op-data-factory.h
+	otr-path-service.h
 	otr-peer-identity-verification-service.h
 	otr-plugin.h
 	otr-policy-service.h
