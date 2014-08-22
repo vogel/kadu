@@ -142,7 +142,7 @@ void enableSignalHandling();
 
 static void printVersion()
 {
-	printf("Kadu %s Copyright (c) 2001-2012 Kadu Team\n"
+	printf("Kadu %s Copyright (c) 2001-2014 Kadu Team\n"
 		"Compiled with Qt %s\nRunning on Qt %s\n",
 		qPrintable(Core::version()), QT_VERSION_STR, qVersion());
 }
