@@ -31,16 +31,16 @@
 class Account;
 
 class OtrCreatePrivateKeyJob;
+class OtrPathService;
 class OtrUserStateService;
 
 class OtrPrivateKeyService : public QObject
 {
 	Q_OBJECT
 
+	QPointer<OtrPathService> PathService;
 	QPointer<OtrUserStateService> UserStateService;
 	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
-
-	QString privateStoreFileName() const;
 
 private slots:
 	void jobFinished(const Account &account, bool ok);
@@ -51,6 +51,7 @@ public:
 	explicit OtrPrivateKeyService(QObject *parent = 0);
 	virtual ~OtrPrivateKeyService();
 
+	void setPathService(OtrPathService *pathService);
 	void setUserStateService(OtrUserStateService *userStateService);
 
 	void createPrivateKey(const Account &account);

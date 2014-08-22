@@ -40,6 +40,7 @@ class OtrMessageEventService;
 class OtrMessageService;
 class OtrNotifier;
 class OtrOpDataFactory;
+class OtrPathService;
 class OtrPeerIdentityVerificationService;
 class OtrPeerIdentityVerificationWindowFactory;
 class OtrPeerIdentityVerificationWindowRepository;
@@ -72,6 +73,7 @@ class OtrPlugin : public QObject, public PluginRootComponent
 	QScopedPointer<OtrMessageService> MessageService;
 	QScopedPointer<OtrNotifier> Notifier;
 	QScopedPointer<OtrOpDataFactory> OpDataFactory;
+	QScopedPointer<OtrPathService> PathService;
 	QScopedPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QScopedPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
 	QScopedPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
@@ -121,6 +123,9 @@ class OtrPlugin : public QObject, public PluginRootComponent
 
 	void registerOtrOpDataFactory();
 	void unregisterOtrOpDataFactory();
+
+	void registerOtrPathService();
+	void unregisterOtrPathService();
 
 	void registerOtrPeerIdentityVerificationService();
 	void unregisterOtrPeerIdentityVerificationService();

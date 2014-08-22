@@ -28,6 +28,7 @@ extern "C" {
 
 #include "otr-context-converter.h"
 #include "otr-op-data.h"
+#include "otr-path-service.h"
 #include "otr-user-state-service.h"
 
 #include "otr-fingerprint-service.h"
@@ -53,14 +54,14 @@ void OtrFingerprintService::setContextConverter(OtrContextConverter *contextConv
 	ContextConverter = contextConverter;
 }
 
+void OtrFingerprintService::setPathService(OtrPathService *pathService)
+{
+	PathService = pathService;
+}
+
 void OtrFingerprintService::setUserStateService(OtrUserStateService *userStateService)
 {
 	UserStateService = userStateService;
-}
-
-QString OtrFingerprintService::fingerprintsStoreFileName() const
-{
-	return KaduPaths::instance()->profilePath() + QString("/keys/otr_fingerprints");
 }
 
 void OtrFingerprintService::readFingerprints() const
@@ -69,7 +70,7 @@ void OtrFingerprintService::readFingerprints() const
 		return;
 
 	OtrlUserState userState = UserStateService->userState();
-	otrl_privkey_read_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data(), 0, 0);
+	otrl_privkey_read_fingerprints(userState, PathService->fingerprintsStoreFilePath().toUtf8().data(), 0, 0);
 
 	emit fingerprintsUpdated();
 }
@@ -80,7 +81,7 @@ void OtrFingerprintService::writeFingerprints() const
 		return;
 
 	OtrlUserState userState = UserStateService->userState();
-	otrl_privkey_write_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data());
+	otrl_privkey_write_fingerprints(userState, PathService->fingerprintsStoreFilePath().toUtf8().data());
 
 	emit fingerprintsUpdated();
 }

@@ -21,6 +21,7 @@
 #include "misc/kadu-paths.h"
 
 #include "otr-op-data.h"
+#include "otr-path-service.h"
 #include "otr-user-state-service.h"
 
 #include "otr-instance-tag-service.h"
@@ -44,6 +45,11 @@ OtrInstanceTagService::~OtrInstanceTagService()
 {
 }
 
+void OtrInstanceTagService::setPathService(OtrPathService *pathService)
+{
+	PathService = pathService;
+}
+
 void OtrInstanceTagService::setUserStateService(OtrUserStateService *userStateService)
 {
 	UserStateService = userStateService;
@@ -54,7 +60,7 @@ void OtrInstanceTagService::readInstanceTags()
 	if (!UserStateService)
 		return;
 
-	QString fileName = instanceTagsFileName();
+	QString fileName = PathService->instanceTagsStoreFilePath();
 	otrl_instag_read(UserStateService.data()->userState(), fileName.toUtf8().data());
 }
 
@@ -63,7 +69,7 @@ void OtrInstanceTagService::writeInstanceTags()
 	if (!UserStateService)
 		return;
 
-	QString fileName = instanceTagsFileName();
+	QString fileName = PathService->instanceTagsStoreFilePath();
 	otrl_instag_write(UserStateService.data()->userState(), fileName.toUtf8().data());
 }
 
@@ -72,13 +78,8 @@ void OtrInstanceTagService::createInstanceTag(const Account &account)
 	if (!UserStateService)
 		return;
 
-	QString fileName = instanceTagsFileName();
+	QString fileName = PathService->instanceTagsStoreFilePath();
 	otrl_instag_generate(UserStateService.data()->userState(), fileName.toUtf8().data(),
 						 account.id().toUtf8().data(), account.protocolName().toUtf8().data());
 	writeInstanceTags();
-}
-
-QString OtrInstanceTagService::instanceTagsFileName() const
-{
-	return KaduPaths::instance()->profilePath() + QString("/keys/otr_instance_tags");
 }
