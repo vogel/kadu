@@ -4,7 +4,7 @@
  * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Piotr Pełzowski (floss@pelzowski.eu)
  * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010, 2011, 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2011, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
