@@ -230,7 +230,7 @@ void KaduWindow::createHelpMenu()
 
 	MenuInventory::instance()->menu("help")->attachToMenu(HelpMenu);
 	MenuInventory::instance()->menu("help")
-		->addAction(Actions->Help, KaduMenu::SectionHelp, 2)
+		->addAction(Actions->Forum, KaduMenu::SectionHelp, 2)
 		->addAction(Actions->Bugs, KaduMenu::SectionHelp, 1)
 		->addAction(Actions->GetInvolved, KaduMenu::SectionGetInvolved, 2)
 		->addAction(Actions->Translate, KaduMenu::SectionGetInvolved, 1)

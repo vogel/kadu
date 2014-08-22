@@ -223,10 +223,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(OpenSearch, SIGNAL(actionCreated(Action*)), this, SLOT(openSearchActionCreated(Action*)));
 
-	Help = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "helpAction",
-		this, SLOT(helpActionActivated(QAction *, bool)),
-		KaduIcon("help-contents"), tr("Getting H&elp")
+	Forum = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "forumAction",
+		this, SLOT(forumActionActivated(QAction *, bool)),
+		{}, tr("Forum")
 	);
 
 	Bugs = new ActionDescription(this,
@@ -610,15 +610,15 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 	(new SearchWindow(sender->parentWidget()))->show();
 }
 
-void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
+void KaduWindowActions::forumActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.im/w/Pomoc");
+		UrlOpener::openUrl("http://www.kadu.im/forum/");
 	else
-		UrlOpener::openUrl("http://www.kadu.im/w/English:Kadu:Help");
+		UrlOpener::openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
 }
 
 void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
