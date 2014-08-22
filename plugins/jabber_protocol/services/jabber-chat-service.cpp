@@ -381,7 +381,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
 	auto formattedString = CurrentFormattedStringFactory.data()->fromText(body);
-	if (!formattedString)
+	if (!formattedString || formattedString->isEmpty())
 		return;
 
 	message.setContent(std::move(formattedString));
