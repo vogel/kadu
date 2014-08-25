@@ -35,6 +35,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
+#include <QtDBus/qdbusconnection.h>
 
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -234,6 +235,10 @@ void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 	connect(paste, SIGNAL(triggered()), this, SLOT(paste()));
 	menu->addAction(paste);
 
+	auto pasteAndSend = new QAction(tr("Paste and send"), menu.data());
+	connect(pasteAndSend, SIGNAL(triggered()), this, SLOT(pasteAndSend()));
+	menu->addAction(pasteAndSend);
+
 	QAction *clear = new QAction(tr("Clear"), menu.data());
 	connect(clear, SIGNAL(triggered()), this, SLOT(clear()));
 	menu->addAction(clear);
@@ -261,6 +266,12 @@ void CustomInput::cursorPositionChangedSlot()
 void CustomInput::setCopyPossible(bool available)
 {
 	CopyPossible = available;
+}
+
+void CustomInput::pasteAndSend()
+{
+	paste();
+	emit sendMessage();
 }
 
 bool CustomInput::canInsertFromMimeData(const QMimeData *source) const

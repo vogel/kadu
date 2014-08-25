@@ -73,6 +73,7 @@ public:
 
 public slots:
 	void setAutoSend(bool on);
+	void pasteAndSend();
 
 signals:
 	void sendMessage();

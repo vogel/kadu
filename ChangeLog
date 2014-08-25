@@ -1,6 +1,7 @@
 +++ version 2.0
 * chat: #2669 implemented: store content of input box in chat widgets (Vogel)
 * mediaplayer: #943 fixed: disable mediaplayer statuses after changing it manually (Vogel)
+* chat: #1219 implemented: paste and send action added to chat widget (Vogel)
 
 +++ version 1.0-rc8
 * themes: #2844 fixed: more formats of archives supported (Vogel)
