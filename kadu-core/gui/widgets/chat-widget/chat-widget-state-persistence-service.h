@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "core/crash-aware-object.h"
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -29,16 +27,13 @@ class ChatWidget;
 class ChatWidgetRepository;
 class FormattedStringFactory;
 
-class ChatWidgetStatePersistenceService : public QObject, public CrashAwareObject
+class ChatWidgetStatePersistenceService : public QObject
 {
 	Q_OBJECT
 
 public:
 	Q_INVOKABLE ChatWidgetStatePersistenceService();
 	virtual ~ChatWidgetStatePersistenceService();
-
-protected:
-	virtual void crash() override;
 
 private slots:
 	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
