@@ -380,7 +380,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
-	auto formattedString = CurrentFormattedStringFactory.data()->fromText(body);
+	auto formattedString = CurrentFormattedStringFactory.data()->fromPlainText(body);
 	if (!formattedString || formattedString->isEmpty())
 		return;
 
