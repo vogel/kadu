@@ -185,17 +185,31 @@ set (MOC_SOURCES
 add_definitions (${QCA2_DEFINITIONS} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC)
 add_subdirectory (3rdparty)
 
-include_directories (
-	${QCA2_INCLUDE_DIR}
+if (WIN32)
+	include_directories (
+		${QCA2_INCLUDE_DIR}
 
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include/iris
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/irisnet/corelib
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/base64/
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/jid/
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/xmpp-core/
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src
-)
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris-win/include
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris-win/include/iris
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris-win/src/irisnet/corelib
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris-win/src/xmpp/base64/
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris-win/src/xmpp/jid/
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris-win/src/xmpp/xmpp-core/
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris-win/src
+	)
+else ()
+	include_directories (
+		${QCA2_INCLUDE_DIR}
+
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include/iris
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/irisnet/corelib
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/base64/
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/jid/
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/xmpp-core/
+		${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src
+	)
+endif ()
 
 set (LIBRARIES 3rdparty ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QT_LIBRARIES})
 if (WIN32)
