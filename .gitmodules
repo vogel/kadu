@@ -1,6 +1,6 @@
 [submodule "plugins/jabber_protocol/3rdparty/libiris"]
 	path = plugins/jabber_protocol/3rdparty/libiris
-	url = http://git.gitorious.org/kadu/iris.git
+	url = https://gitorious.org/kadu/iris.git
 [submodule "plugins/jabber_protocol/3rdparty/libiris-win"]
 	path = plugins/jabber_protocol/3rdparty/libiris-win
-	url = git@gitorious.org:kadu/libiris.git
+	url = https://gitorious.org/kadu/libiris.git
