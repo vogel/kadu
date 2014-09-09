@@ -1,4 +1,5 @@
 +++ version 1.0-rc10
+* tabs: #2852 fixed: properly handle tabs disabled by default (Vogel)
 
 +++ version 1.0-rc9
 * jabber: #2851 fixed: properly support special chars (Vogel)
