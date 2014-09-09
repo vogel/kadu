@@ -177,6 +177,8 @@ bool TabsManager::acceptChatWidget(ChatWidget *chatWidget) const
 	if (!chatWidget)
 		return false;
 
+	if (chatWidget->chat().property("tabs:attached", false).toBool())
+		return true;
 	if (chatWidget->chat().property("tabs:detached", false).toBool())
 		return false;
 
@@ -186,10 +188,9 @@ bool TabsManager::acceptChatWidget(ChatWidget *chatWidget) const
 			return true;
 		if ((NewChats.count() + 1) >= ConfigMinTabs)
 			return true;
-		return false;
 	}
-	else
-		return true;
+
+	return false;
 }
 
 void TabsManager::addChatWidget(ChatWidget *chatWidget)
@@ -199,13 +200,14 @@ void TabsManager::addChatWidget(ChatWidget *chatWidget)
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
 
-	if (chatWidget->chat().property("tabs:detached", false).toBool())
+	auto attached = chatWidget->chat().property("tabs:attached", false).toBool();
+	if (!attached && chatWidget->chat().property("tabs:detached", false).toBool())
 	{
 		DetachedChats.append(chatWidget);
 		return;
 	}
 
-	if (ConfigDefaultTabs && (ConfigConferencesInTabs || chatWidget->chat().contacts().count() == 1))
+	if (attached || (ConfigDefaultTabs && (ConfigConferencesInTabs || chatWidget->chat().contacts().count() == 1)))
 	{
 		// jesli jest juz otwarte okno z kartami to dodajemy bezwzglednie nowe rozmowy do kart
 		if (TabDialog->count() > 0)
@@ -468,6 +470,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 		NewChats.clear();
 		auto chat = chatWidget->chat();
 		chat.removeProperty("tabs:detached");
+		chat.addProperty("tabs:attached", true, CustomProperties::Storable);
 		emit chatWidgetAcceptanceChanged(chatWidget);
 	}
 }
@@ -561,6 +564,7 @@ void TabsManager::detachChat(ChatWidget *chatWidget)
 
 	auto chat = chatWidget->chat();
 	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
+	chat.removeProperty("tabs:attached");
 	emit chatWidgetAcceptanceChanged(chatWidget);
 }
 
