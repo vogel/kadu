@@ -65,7 +65,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	ActionDescription *AttachToTabsActionDescription;
 	TabWidget *TabDialog;
 	QTimer Timer;
-	QList<ChatWidget *> NewChats;
 	QList<ChatWidget *> DetachedChats;
 	QList<Chat> ClosedChats;
 
@@ -85,10 +84,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	/**
 	* Zmienne konfiguracyjne.
 	*/
-	bool ConfigConferencesInTabs;
 	bool ConfigTabsBelowChats;
 	bool ConfigDefaultTabs;
-	int ConfigMinTabs;
 	bool ConfigBlinkChatTitle;
 	bool ConfigShowNewMessagesNum;
 
