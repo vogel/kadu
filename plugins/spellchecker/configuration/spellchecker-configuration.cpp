@@ -92,8 +92,10 @@ void SpellcheckerConfiguration::configurationUpdated()
 	bool caseSensivity = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Case", false);
 	bool suggester = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
-	QColor color = Application::instance()->configuration()->deprecatedApi()->readColorEntry("ASpell", "Color", &colorMark);
-	QStringList checked = Application::instance()->configuration()->deprecatedApi()->readEntry("ASpell", "Checked", Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
+
+	auto color = Application::instance()->configuration()->deprecatedApi()->readColorEntry("ASpell", "Color", &colorMark);
+	auto checkedEntry = Application::instance()->configuration()->deprecatedApi()->readEntry("ASpell", "Checked", Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
+	auto checked = checkedEntry == "empty" ? QStringList{} : checkedEntry.split(',', QString::SkipEmptyParts);
 	int suggesterWordCount = Application::instance()->configuration()->deprecatedApi()->readNumEntry("ASpell", "SuggesterWordCount");
 
 	if (FullyLoaded && bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
@@ -117,5 +119,8 @@ void SpellcheckerConfiguration::configurationUpdated()
 
 void SpellcheckerConfiguration::setChecked(const QStringList &checked)
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", checked.join(","));
+	if (checked.empty())
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", "empty");
+	else
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", checked.join(","));
 }
