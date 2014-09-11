@@ -6,6 +6,7 @@
 +++ version 1.0-rc10
 * tabs: #2852 fixed: properly handle tabs disabled by default (Vogel)
 * spellchecker: #2816 fixed: allow empty dictionary list (Vogel)
+* windows: #2853 fixed: do not remove user themes manually installed in Program Files during installation (Vogel)
 
 +++ version 1.0-rc9
 * jabber: #2851 fixed: properly support special chars (Vogel)

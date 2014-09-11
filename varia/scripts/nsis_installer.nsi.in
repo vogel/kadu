@@ -271,6 +271,7 @@ SectionEnd
 	SectionEnd
 !macroend
 
+; dont forget to add new themes also to uninstall section
 SectionGroup $(section_icon_themes) SectionIconThemes
 
 	Section $(section_icon_themes_default) SectionIconThemesDefault
@@ -285,6 +286,7 @@ SectionGroup $(section_icon_themes) SectionIconThemes
 
 SectionGroupEnd
 
+; dont forget to add new themes also to uninstall section
 SectionGroup $(section_sound_themes) SectionSoundThemes
 
 	Section $(section_sound_themes_default) SectionSoundThemesDefault
@@ -394,6 +396,7 @@ SectionGroup $(section_plugins) SectionPlugins
 		!insertmacro kadu_plugin_data_files emoticons
 		!insertmacro kadu_plugin_file libemoticons
 
+		; remember to add new themes also to uninstall section
 		SetOutPath "$INSTDIR\themes\emoticons"
 		File /r "${DATA_DIR}\kadu\themes\emoticons\*"
 	SectionEnd
@@ -562,7 +565,37 @@ Section Uninstall
 	Delete "$SMPROGRAMS\$START_MENU_FOLDER\${PRODUCT_NAME}.lnk"
 
 	RMDir "$SMPROGRAMS\$START_MENU_FOLDER"
-	RMDir /r "$INSTDIR"
+; some of these are from older versions
+	RMDir /r "$INSTDIR\aspell"
+	RMDir /r "$INSTDIR\configuration"
+	RMDir /r "$INSTDIR\lib"
+	RMDir /r "$INSTDIR\plugins"
+	RMDir /r "$INSTDIR\qml"
+	RMDir /r "$INSTDIR\qt-plugins"
+	RMDir /r "$INSTDIR\scripts"
+	RMDir /r "$INSTDIR\share"
+	RMDir /r "$INSTDIR\syntax"
+
+; remove themes one-by one
+; just to keep user-added ones in place
+; this does not makes us happy, but we don't want to remove user data
+	RMDir /r "$INSTDIR\themes\emoticons\penguins"
+	RMDir /r "$INSTDIR\themes\emoticons\tango"
+	RMDir "$INSTDIR\themes\emoticons"
+
+	RMDir /r "$INSTDIR\themes\icons\default"
+	RMDir /r "$INSTDIR\themes\icons\faenza"
+	RMDir /r "$INSTDIR\themes\icons\glass"
+	RMDir /r "$INSTDIR\themes\icons\oxygen"
+	RMDir "$INSTDIR\themes\icons"
+
+	RMDir /r "$INSTDIR\themes\sounds\default"
+	RMDir "$INSTDIR\themes\sounds"
+
+	RMDir "$INSTDIR\themes"
+
+	RMDir /r "$INSTDIR\translations"
+	RMDir "$INSTDIR"
 
 	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}"
 	DeleteRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}"
