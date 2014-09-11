@@ -91,7 +91,9 @@ void SpellcheckerConfiguration::configurationUpdated()
 	bool suggester = config_file.readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
 	QColor color = config_file.readColorEntry("ASpell", "Color", &colorMark);
-	QStringList checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
+
+	auto checkedEntry = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language"));
+	QStringList checked = checkedEntry == "empty" ? QStringList{} : checkedEntry.split(',', QString::SkipEmptyParts);
 	int suggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
 
 	if (FullyLoaded && bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
@@ -115,5 +117,8 @@ void SpellcheckerConfiguration::configurationUpdated()
 
 void SpellcheckerConfiguration::setChecked(const QStringList &checked)
 {
-	config_file.writeEntry("ASpell", "Checked", checked.join(","));
+	if (checked.empty())
+		config_file.writeEntry("ASpell", "Checked", "empty");
+	else
+		config_file.writeEntry("ASpell", "Checked", checked.join(","));
 }
