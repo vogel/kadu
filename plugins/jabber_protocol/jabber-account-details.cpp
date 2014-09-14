@@ -60,7 +60,10 @@ void JabberAccountDetails::load()
 	AutoResource = loadValue<bool>("AutoResource", false);
 
 	if (resourceString.isEmpty() || resourceString == "Kadu")
-		resourceString = "Kadu-" + QUuid::createUuid().toString();
+	{
+		auto guid = QUuid::createUuid().toString();
+		resourceString = "Kadu-" + guid.mid(1, guid.length() - 2);
+	}
 
 	Resource = AutoResource ? SystemInfo::instance()->localHostName() : resourceString;
 	bool ok = false;
