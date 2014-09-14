@@ -58,8 +58,10 @@ void JabberAccountDetails::load()
 	QString resourceString = loadValue<QString>("Resource");
 	QString priorityString = loadValue<QString>("Priority");
 	AutoResource = loadValue<bool>("AutoResource", false);
-	if (resourceString.isEmpty() && !AutoResource)
-		resourceString = "Kadu";
+
+	if (resourceString.isEmpty() || resourceString == "Kadu")
+		resourceString = "Kadu-" + QUuid::createUuid().toString();
+
 	Resource = AutoResource ? SystemInfo::instance()->localHostName() : resourceString;
 	bool ok = false;
 	int priority = priorityString.toInt(&ok);
