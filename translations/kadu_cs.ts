@@ -2785,7 +2785,7 @@ Sloučit kamarády...</translation>
     </message>
     <message>
         <source>Forum</source>
-        <translation type="unfinished"/>
+        <translation>Fórum</translation>
     </message>
 </context>
 <context>
