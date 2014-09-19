@@ -109,7 +109,6 @@ void UrlHandlerManager::unregisterUrlClipboardTransformer()
 	ClipboardTransformer.reset();
 }
 
-
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)

@@ -65,7 +65,7 @@ void UrlOpener::openEmail(const QByteArray &email)
 {
 	QString client;
 	bool useDefaultEMailClient = config_file.readBoolEntry("Chat", "UseDefaultEMailClient", true);
-	if (useDefaultEMailClient)
+	if (!useDefaultEMailClient)
 		client = config_file.readEntry("Chat", "MailClient");
 
 	QByteArray urlForDesktopServices;
