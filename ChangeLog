@@ -3,6 +3,9 @@
 * mediaplayer: #943 fixed: disable mediaplayer statuses after changing it manually (Vogel)
 * chat: #1219 implemented: paste and send action added to chat widget (Vogel)
 
++++ version 1.0-rc11
+* core: #2854 fixed: properly handle e-mail application (Vogel)
+
 +++ version 1.0-rc10
 * tabs: #2852 fixed: properly handle tabs disabled by default (Vogel)
 * spellchecker: #2816 fixed: allow empty dictionary list (Vogel)

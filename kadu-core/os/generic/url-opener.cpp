@@ -66,8 +66,9 @@ void UrlOpener::openUrl(const QByteArray &url)
 void UrlOpener::openEmail(const QByteArray &email)
 {
 	QString client;
+
 	bool useDefaultEMailClient = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseDefaultEMailClient", true);
-	if (useDefaultEMailClient)
+	if (!useDefaultEMailClient)
 		client = Application::instance()->configuration()->deprecatedApi()->readEntry("Chat", "MailClient");
 
 	QByteArray urlForDesktopServices;
