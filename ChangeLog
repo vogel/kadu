@@ -6,6 +6,7 @@
 +++ version 1.1
 * tabs: #2867 fixed: open in new window/tab works properly (Vogel)
 * jabber: #2861 fixed: double messages removed (Vogel)
+* gui: #2859 fixed: avatars do not show for e-mail only contacts (Vogel)
 
 +++ version 1.0
 * core: #2854 fixed: properly handle e-mail application (Vogel)
