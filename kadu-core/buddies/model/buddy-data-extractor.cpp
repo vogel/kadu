@@ -22,6 +22,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
+#include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "icons/kadu-icon.h"
@@ -50,6 +51,8 @@ QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)
 			return decoration(buddy);
 		case BuddyRole:
 			return QVariant::fromValue(buddy);
+		case AvatarRole:
+			return buddy.buddyAvatar().pixmap();
 		case StatusRole:
 			return QVariant::fromValue(BuddyPreferredManager::instance()->preferredContact(buddy, false).currentStatus());
 		case ItemTypeRole:
