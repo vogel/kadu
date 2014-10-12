@@ -175,6 +175,10 @@ bool TabsManager::acceptChatWidget(ChatWidget *chatWidget) const
 	if (!chatWidget)
 		return false;
 
+	if (chatWidget->chat().property("tabs:tmp-attached", false).toBool())
+		return true;
+	if (chatWidget->chat().property("tabs:tmp-detached", false).toBool())
+		return false;
 	if (chatWidget->chat().property("tabs:attached", false).toBool())
 		return true;
 	if (chatWidget->chat().property("tabs:detached", false).toBool())
@@ -187,11 +191,28 @@ void TabsManager::addChatWidget(ChatWidget *chatWidget)
 {
 	kdebugf();
 
+	auto chat = chatWidget->chat();
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
+		chat.addProperty("tabs:fix2626", true, CustomProperties::Storable);
 
-	auto attached = chatWidget->chat().property("tabs:attached", false).toBool();
-	if (!attached && chatWidget->chat().property("tabs:detached", false).toBool())
+	auto tmpAttached = chat.property("tabs:tmp-attached", false).toBool();
+	auto tmpDetached =  chat.property("tabs:tmp-detached", false).toBool();
+	auto attached = chat.property("tabs:attached", false).toBool();
+	auto detached = chat.property("tabs:detached", false).toBool();
+
+	if (!tmpAttached && tmpDetached)
+	{
+		DetachedChats.append(chatWidget);
+		return;
+	}
+
+	if (tmpAttached)
+	{
+		insertTab(chatWidget);
+		return;
+	}
+
+	if (!attached && detached)
 	{
 		DetachedChats.append(chatWidget);
 		return;
@@ -289,15 +310,22 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		return;
 
 	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
-	// exists - bring to front
-	if (chatWidget)
+	if (!chatWidget)
 	{
-		if (TabDialog->indexOf(chatWidget) != -1)
-			TabDialog->setCurrentWidget(chatWidget);
-		_activateWindow(chatWidget);
+		if (config_file.readBoolEntry("Chat", "DefaultTabs"))
+		{
+			chat.addProperty("tabs:tmp-detached", true, CustomProperties::NonStorable);
+		}
+		else
+		{
+			chat.addProperty("tabs:tmp-attached", true, CustomProperties::NonStorable);
+		}
 	}
-	else
-		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
+
+	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+
+	chat.removeProperty("tabs:tmp-attached");
+	chat.removeProperty("tabs:tmp-detached");
 
 	kdebugf2();
 }
