@@ -51,6 +51,8 @@
 
 #include "jabber-chat-service.h"
 
+#include <QtGui/QTextDocument>
+
 namespace XMPP
 {
 
@@ -380,7 +382,8 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
-	auto formattedString = CurrentFormattedStringFactory.data()->fromPlainText(body);
+	auto htmlBody = replacedNewLine(Qt::escape(body), QLatin1String("<br/>"));
+	auto formattedString = CurrentFormattedStringFactory.data()->fromHtml(htmlBody);
 	if (!formattedString || formattedString->isEmpty())
 		return;
 
