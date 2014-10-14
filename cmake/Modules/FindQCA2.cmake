@@ -23,8 +23,8 @@ if (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
 
 else (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
 
-  set (QCA_QCA_NAME qca-qt5)
-  set (QCA_QCA2_NAME qca2-qt5)
+  set (QCA_QCA_NAME qca)
+  set (QCA_QCA2_NAME qca2)
 
   if (NOT WIN32)
     find_package(PkgConfig)
