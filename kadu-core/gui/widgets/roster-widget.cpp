@@ -132,7 +132,7 @@ void RosterWidget::configurationUpdated()
 		TalkableTree->setBackground(bgColor, alternateBgColor);
 	}
 
-	triggerCompositingStateChanged();;
+	triggerCompositingStateChanged();
 }
 
 void RosterWidget::storeConfiguration()
