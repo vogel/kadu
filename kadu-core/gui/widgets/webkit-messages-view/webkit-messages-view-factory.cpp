@@ -22,6 +22,7 @@
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
+#include "services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
 
 WebkitMessagesViewFactory::WebkitMessagesViewFactory(QObject *parent) :
@@ -31,6 +32,11 @@ WebkitMessagesViewFactory::WebkitMessagesViewFactory(QObject *parent) :
 
 WebkitMessagesViewFactory::~WebkitMessagesViewFactory()
 {
+}
+
+void WebkitMessagesViewFactory::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
+{
+	m_chatImageRequestService = chatImageRequestService;
 }
 
 void WebkitMessagesViewFactory::setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider)
@@ -51,6 +57,7 @@ void WebkitMessagesViewFactory::setWebkitMessagesViewHandlerFactory(WebkitMessag
 qobject_ptr<WebkitMessagesView> WebkitMessagesViewFactory::createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent)
 {
 	auto result = make_qobject<WebkitMessagesView>(chat, supportTransparency, parent);
+	result->setChatImageRequestService(m_chatImageRequestService);
 	result->setChatStyleRendererFactory(m_chatStyleRendererFactoryProvider->chatStyleRendererFactory());
 	result->setImageStorageService(m_imageStorageService);
 	result->setWebkitMessagesViewHandlerFactory(m_webkitMessagesViewHandlerFactory);

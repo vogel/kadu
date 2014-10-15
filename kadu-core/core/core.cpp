@@ -782,6 +782,7 @@ void Core::runServices()
 	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(CurrentWebkitMessagesViewDisplayFactory.get());
 
 	CurrentWebkitMessagesViewFactory = make_qobject<WebkitMessagesViewFactory>(this);
+	CurrentWebkitMessagesViewFactory->setChatImageRequestService(CurrentChatImageRequestService);
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
 	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());

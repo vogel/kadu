@@ -335,7 +335,7 @@ void AdiumStyleRenderer::displayChatState(ChatStateService::State state, const Q
 
 void AdiumStyleRenderer::displayChatImage(const ChatImage &chatImage, const QString &fileName)
 {
-	configuration().webFrame().evaluateJavaScript(QString("adiuconfiguration().chat()ImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
+	configuration().webFrame().evaluateJavaScript(QString("adium_chatImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
 }
 
 #include "moc_adium-style-renderer.cpp"
