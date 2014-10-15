@@ -3,6 +3,7 @@
 * jabber: #2861 fixed: double messages removed (Vogel)
 * gui: #2859 fixed: avatars do not show for e-mail only contacts (Vogel)
 * gui: #2866 fixed: ungroupped tab visible when it should not (Vogel)
+* gui: #2865 fixed: properly filter buddies at start (Vogel)
 
 +++ version 1.0
 * core: #2854 fixed: properly handle e-mail application (Vogel)

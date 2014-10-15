@@ -108,10 +108,15 @@ void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
 
 	updateUngrouppedTab();
 
-	if (currentIndex() == configuration.currentGroupTab())
-		currentChangedSlot(configuration.currentGroupTab());
+	if (Configuration.displayGroupTabs())
+	{
+		if (currentIndex() == configuration.currentGroupTab())
+			currentChangedSlot(configuration.currentGroupTab());
+		else
+			setCurrentIndex(configuration.currentGroupTab());
+	}
 	else
-		setCurrentIndex(configuration.currentGroupTab());
+		emit currentGroupFilterChanged(GroupFilter{GroupFilterEverybody});
 }
 
 void GroupTabBar::updateUngrouppedTab()
@@ -142,9 +147,6 @@ Group GroupTabBar::groupAt(int index) const
 
 GroupFilter GroupTabBar::groupFilter() const
 {
-	if (!isVisible())
-		return GroupFilter(GroupFilterEverybody);
-
 	return groupFilterAt(currentIndex());
 }
 
