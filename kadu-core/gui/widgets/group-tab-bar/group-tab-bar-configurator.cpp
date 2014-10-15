@@ -41,9 +41,9 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Look", "ShowGroupAll", true);
-	config_file.addVariable("Look", "ShowGroupTabUngroupped", false);
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
+	config_file.addVariable("Look", "ShowGroupAll", true);
+	config_file.addVariable("Look", "AlwaysShowGroupTabUngroupped", false);
 }
 
 void GroupTabBarConfigurator::configurationUpdated()
