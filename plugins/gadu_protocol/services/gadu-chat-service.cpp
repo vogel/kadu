@@ -39,6 +39,7 @@
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "message/raw-message.h"
+#include "misc/misc.h"
 #include "services/image-storage-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-type.h"
@@ -51,6 +52,8 @@
 #include "server/gadu-writable-session-token.h"
 
 #include "gadu-chat-service.h"
+
+#include <QtGui/QTextDocument>
 
 // TODO: move to const or something
 #define MAX_DELIVERY_TIME 60 /*seconds*/
@@ -251,7 +254,10 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	{
 		FormattedStringPlainTextVisitor visitor;
 		formattedString->accept(&visitor);
-		formattedString = CurrentFormattedStringFactory->fromPlainText(visitor.result());
+
+		// for history and sorted messages we must use html format
+		auto htmlBody = replacedNewLine(Qt::escape(visitor.result()), QLatin1String("<br/>"));
+		formattedString = CurrentFormattedStringFactory->fromHtml(visitor.result());
 	}
 
 	if (formattedString->isEmpty())
