@@ -37,7 +37,7 @@ function adium_chatImageAvailable(name, src)
 	if (typeof(name) == 'undefined' || typeof(src) == 'undefined')
 		return;
 
-	var image = document.getElementByName(name);
+	var image = document.getElementsByName(name)[0];
 	if (!image)
 		return;
 
@@ -143,7 +143,7 @@ function kadu_chatImageAvailable(name, src)
 	if (typeof(name) == 'undefined' || typeof(src) == 'undefined')
 		return;
 
-	var image = document.getElementByName(name);
+	var image = document.getElementsByName(name)[0];
 	if (!image)
 		return;
 
