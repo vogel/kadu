@@ -44,9 +44,9 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupTabUngroupped", false);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AlwaysShowGroupTabUngroupped", false);
 }
 
 void GroupTabBarConfigurator::configurationUpdated()
