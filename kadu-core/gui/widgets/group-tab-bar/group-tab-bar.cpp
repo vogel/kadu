@@ -147,7 +147,10 @@ Group GroupTabBar::groupAt(int index) const
 
 GroupFilter GroupTabBar::groupFilter() const
 {
-	return groupFilterAt(currentIndex());
+	if (Configuration.displayGroupTabs())
+		return groupFilterAt(currentIndex());
+	else
+		return GroupFilter{GroupFilterEverybody};
 }
 
 GroupFilter GroupTabBar::groupFilterAt(int index) const
@@ -169,7 +172,11 @@ QVector<GroupFilter> GroupTabBar::groupFilters() const
 void GroupTabBar::currentChangedSlot(int index)
 {
 	Configuration.setCurrentGroupTab(index);
-	emit currentGroupFilterChanged(groupFilterAt(index));
+	if (Configuration.displayGroupTabs())
+		emit currentGroupFilterChanged(groupFilterAt(index));
+	else
+		emit currentGroupFilterChanged(GroupFilter{GroupFilterEverybody});
+		
 }
 
 void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
