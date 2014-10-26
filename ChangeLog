@@ -3,6 +3,9 @@
 * mediaplayer: #943 fixed: disable mediaplayer statuses after changing it manually (Vogel)
 * chat: #1219 implemented: paste and send action added to chat widget (Vogel)
 
++++ version 1.2
+* gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)
+
 +++ version 1.1
 * tabs: #2867 fixed: open in new window/tab works properly (Vogel)
 * jabber: #2861 fixed: double messages removed (Vogel)
