@@ -20,6 +20,7 @@
 #include "chat-widget-message-handler.h"
 
 #include "chat/buddy-chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
@@ -170,7 +171,14 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 	if (shouldOpenChatWidget(chat))
 		m_chatWidgetManager.data()->openChat(chat, OpenChatActivation::Activate);
 	else
+	{
+#ifdef Q_OS_WIN32
+		if (!config_file.readBoolEntry("General", "HideMainWindowFromTaskbar"))
+			qApp->alert(Core::instance()->kaduWindow());
+#else
 		qApp->alert(Core::instance()->kaduWindow());
+#endif
+	}
 }
 
 bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
