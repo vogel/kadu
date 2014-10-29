@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PRIVATE_KEY_SERVICE_H
-#define OTR_PRIVATE_KEY_SERVICE_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Account;
 
@@ -38,21 +38,11 @@ class OtrPrivateKeyService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<OtrPathService> PathService;
-	QPointer<OtrUserStateService> UserStateService;
-	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
-
-private slots:
-	void jobFinished(const Account &account, bool ok);
-
 public:
 	static void wrapperOtrCreatePrivateKey(void *data, const char *accountName, const char *protocol);
 
-	explicit OtrPrivateKeyService(QObject *parent = 0);
+	Q_INVOKABLE OtrPrivateKeyService();
 	virtual ~OtrPrivateKeyService();
-
-	void setPathService(OtrPathService *pathService);
-	void setUserStateService(OtrUserStateService *userStateService);
 
 	void createPrivateKey(const Account &account);
 	void readPrivateKeys();
@@ -61,7 +51,17 @@ signals:
 	void createPrivateKeyStarted(const Account &account);
 	void createPrivateKeyFinished(const Account &account, bool ok);
 
+private slots:
+	INJEQT_SETTER void setPathService(OtrPathService *pathService);
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+
+	void jobFinished(const Account &account, bool ok);
+
+private:
+	QPointer<OtrPathService> PathService;
+	QPointer<OtrUserStateService> UserStateService;
+	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
+
+	QString privateStoreFileName() const;
+
 };
-
-
-#endif // OTR_PRIVATE_KEY_SERVICE_H

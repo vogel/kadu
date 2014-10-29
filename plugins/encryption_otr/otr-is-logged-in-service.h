@@ -46,7 +46,7 @@ public:
 
 	static int wrapperOtrIsLoggedIn(void *data, const char *accountName, const char *protocol, const char *recipient);
 
-	explicit OtrIsLoggedInService(QObject *parent = 0);
+	Q_INVOKABLE OtrIsLoggedInService();
 	virtual ~OtrIsLoggedInService();
 
 	void setContactManager(ContactManager *contactManager);

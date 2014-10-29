@@ -47,7 +47,7 @@ public:
 	static const char * wrapperOtrResentMessagePrefix(void *data, ConnContext *context);
 	static void wrapperOtrResentMessagePrefixFree(void *data, const char *prefix);
 
-	explicit OtrMessageService(QObject *parent = 0);
+	Q_INVOKABLE OtrMessageService();
 	virtual ~OtrMessageService();
 
 	void setMessageManager(MessageManager *messageManager);

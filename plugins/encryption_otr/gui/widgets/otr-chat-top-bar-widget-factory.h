@@ -20,13 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H
-#define OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H
+#pragma once
+
+#include "gui/widgets/chat-top-bar-widget-factory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-
-#include "gui/widgets/chat-top-bar-widget-factory.h"
+#include <injeqt/injeqt.h>
 
 class OtrChatTopBarWidget;
 class OtrPeerIdentityVerificationWindowRepository;
@@ -37,24 +37,23 @@ class OtrChatTopBarWidgetFactory : public QObject, public ChatTopBarWidgetFactor
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE OtrChatTopBarWidgetFactory();
+	virtual ~OtrChatTopBarWidgetFactory();
+
+	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
+
+private slots:
+	INJEQT_SETTER void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
+	INJEQT_SETTER void setSessionService(OtrSessionService *sessionService);
+	INJEQT_SETTER void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+
+	void widgetDestroyed(QObject *widget);
+
+private:
 	QPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
 	QPointer<OtrSessionService> SessionService;
 	QPointer<OtrTrustLevelService> TrustLevelService;
 	QList<OtrChatTopBarWidget *> Widgets;
 
-private slots:
-	void widgetDestroyed(QObject *widget);
-
-public:
-	explicit OtrChatTopBarWidgetFactory(QObject *parent = 0);
-	virtual ~OtrChatTopBarWidgetFactory();
-
-	void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
-	void setSessionService(OtrSessionService *sessionService);
-	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
-
-	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
-
 };
-
-#endif // OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H

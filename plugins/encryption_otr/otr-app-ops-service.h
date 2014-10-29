@@ -34,7 +34,7 @@ class OtrAppOpsService : public QObject
 	OtrlMessageAppOps AppOps;
 
 public:
-	explicit OtrAppOpsService();
+	Q_INVOKABLE OtrAppOpsService();
 	virtual ~OtrAppOpsService();
 
 	const OtrlMessageAppOps * appOps() const;

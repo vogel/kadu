@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
-#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "contacts/contact.h"
+
+#include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 class OtrPeerIdentityVerificationWindow;
 class OtrPeerIdentityVerificationWindowFactory;
@@ -42,10 +42,8 @@ private slots:
 	void windowDestroyed(const Contact &contact);
 
 public:
-	explicit OtrPeerIdentityVerificationWindowRepository(QObject *parent = 0);
+	Q_INVOKABLE OtrPeerIdentityVerificationWindowRepository();
 	virtual ~OtrPeerIdentityVerificationWindowRepository();
-
-	void setPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory);
 
 	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 
@@ -54,6 +52,7 @@ public slots:
 	void showRespondSharedSecretVerificationWindow(const Contact &contact);
 	void showVerificationWindow(const Contact &contact);
 
-};
+private slots:
+	INJEQT_SETTER void setPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory);
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
+};

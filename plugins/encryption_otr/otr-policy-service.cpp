@@ -38,8 +38,7 @@ OtrlPolicy OtrPolicyService::wrapperOtrPolicy(void *data, ConnContext *context)
 		return OtrPolicy::PolicyManual.toOtrPolicy();
 }
 
-OtrPolicyService::OtrPolicyService(QObject *parent) :
-		QObject(parent)
+OtrPolicyService::OtrPolicyService()
 {
 }
 

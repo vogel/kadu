@@ -44,7 +44,7 @@ class OtrMessageEventService : public QObject
 public:
 	static void wrapperOtrHandleMessageEvent(void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error);
 
-	explicit OtrMessageEventService(QObject *parent = 0);
+	Q_INVOKABLE OtrMessageEventService();
 	virtual ~OtrMessageEventService();
 
 	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);

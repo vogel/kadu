@@ -20,12 +20,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H
-#define OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -44,23 +44,11 @@ class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<OtrAppOpsService> AppOpsService;
-	QPointer<OtrContextConverter> ContextConverter;
-	QPointer<OtrOpDataFactory> OpDataFactory;
-	QPointer<OtrUserStateService> UserStateService;
-
-	void handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question);
-
 public:
 	static void wrapperHandleSmpEvent(void *data, OtrlSMPEvent smpEvent, ConnContext *context, unsigned short progressPercent, char *question);
 
-	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
+	Q_INVOKABLE OtrPeerIdentityVerificationService();
 	virtual ~OtrPeerIdentityVerificationService();
-
-	void setAppOpsService(OtrAppOpsService *appOpsService);
-	void setContextConverter(OtrContextConverter *contextConverter);
-	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	void setUserStateService(OtrUserStateService *userStateService);
 
 public slots:
 	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
@@ -74,6 +62,18 @@ signals:
 	void sharedSecretRequested(const Contact &contact);
 	void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 
-};
+private slots:
+	INJEQT_SETTER void setAppOpsService(OtrAppOpsService *appOpsService);
+	INJEQT_SETTER void setContextConverter(OtrContextConverter *contextConverter);
+	INJEQT_SETTER void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H
+private:
+	QPointer<OtrAppOpsService> AppOpsService;
+	QPointer<OtrContextConverter> ContextConverter;
+	QPointer<OtrOpDataFactory> OpDataFactory;
+	QPointer<OtrUserStateService> UserStateService;
+
+	void handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question);
+
+};

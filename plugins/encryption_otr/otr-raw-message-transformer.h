@@ -20,10 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_RAW_MESSAGE_TRANSFORMER_H
-#define OTR_RAW_MESSAGE_TRANSFORMER_H
+#pragma once
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "protocols/services/raw-message-transformer.h"
 
@@ -43,6 +43,24 @@ class OtrRawMessageTransformer: public QObject, public RawMessageTransformer
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE OtrRawMessageTransformer();
+	virtual ~OtrRawMessageTransformer();
+
+	void setEnableFragments(bool enableFragments);
+
+	virtual RawMessage transform(const RawMessage &rawMessage, const Message &message) override;
+
+signals:
+	void peerEndedSession(const Contact &contact) const;
+
+private slots:
+	INJEQT_SETTER void setAppOpsService(OtrAppOpsService *appOpsService);
+	INJEQT_SETTER void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	INJEQT_SETTER void setSessionService(OtrSessionService *sessionService);
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+
+private:
 	QPointer<OtrAppOpsService> AppOpsService;
 	QPointer<OtrOpDataFactory> OpDataFactory;
 	QPointer<OtrSessionService> SessionService;
@@ -53,22 +71,4 @@ class OtrRawMessageTransformer: public QObject, public RawMessageTransformer
 	RawMessage transformReceived(const RawMessage &RawMessage, const Message &message);
 	RawMessage transformSent(const RawMessage &rawMessage, const Message &message);
 
-public:
-	explicit OtrRawMessageTransformer();
-	virtual ~OtrRawMessageTransformer();
-
-	void setAppOpsService(OtrAppOpsService *appOpsService);
-	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	void setSessionService(OtrSessionService *sessionService);
-	void setUserStateService(OtrUserStateService *userStateService);
-
-	void setEnableFragments(bool enableFragments);
-
-	virtual RawMessage transform(const RawMessage &rawMessage, const Message &message) override;
-
-signals:
-	void peerEndedSession(const Contact &contact) const;
-
 };
-
-#endif // OTR_RAW_MESSAGE_TRANSFORMER_H

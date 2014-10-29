@@ -66,8 +66,7 @@ void OtrSessionService::wrapperOtrStillSecure(void *data, ConnContext *context, 
 		emit opData->sessionService()->stillSecure(opData->contact());
 }
 
-OtrSessionService::OtrSessionService(QObject *parent) :
-		QObject(parent)
+OtrSessionService::OtrSessionService()
 {
 }
 

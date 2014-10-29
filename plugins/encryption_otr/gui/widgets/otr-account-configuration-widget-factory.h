@@ -20,26 +20,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
-#define OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
-
-#include <QtCore/QPointer>
+#pragma once
 
 #include "gui/widgets/account-configuration-widget-factory.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class OtrPolicyService;
 
-class OtrAccountConfigurationWidgetFactory : public AccountConfigurationWidgetFactory
+class OtrAccountConfigurationWidgetFactory : public QObject, public AccountConfigurationWidgetFactory
 {
-	QPointer<OtrPolicyService> PolicyService;
+	Q_OBJECT
 
 public:
+	Q_INVOKABLE OtrAccountConfigurationWidgetFactory() {}
 	virtual ~OtrAccountConfigurationWidgetFactory();
-
-	void setPolicyService(OtrPolicyService *policyService);
 
 	virtual AccountConfigurationWidget * createWidget(const Account &account, QWidget *parent);
 
-};
+private slots:
+	INJEQT_SETTER void setPolicyService(OtrPolicyService *policyService);
 
-#endif // OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
+private:
+	QPointer<OtrPolicyService> PolicyService;
+
+};

@@ -37,7 +37,7 @@ public:
 	static const char * wrapperOtrErrorMessage(void *data, ConnContext *context, OtrlErrorCode errorCode);
 	static void wrapperOtrErrorMessageFree(void *data, const char *errorMessage);
 
-	explicit OtrErrorMessageService(QObject *parent = 0);
+	Q_INVOKABLE OtrErrorMessageService();
 	virtual ~OtrErrorMessageService();
 
 	QString errorMessage(const QString &peerDisplay, OtrlErrorCode errorCode) const;

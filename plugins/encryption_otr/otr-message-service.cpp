@@ -69,8 +69,7 @@ void OtrMessageService::wrapperOtrResentMessagePrefixFree(void *data, const char
 	free(const_cast<char *>(prefix));
 }
 
-OtrMessageService::OtrMessageService(QObject *parent) :
-		QObject(parent)
+OtrMessageService::OtrMessageService()
 {
 }
 

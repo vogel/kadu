@@ -26,7 +26,7 @@ class OtrPathService : public QObject
 	Q_OBJECT
 
 public:
-	explicit OtrPathService(QObject *parent = 0);
+	Q_INVOKABLE explicit OtrPathService(QObject *parent = 0);
 	virtual ~OtrPathService();
 
 	QString fingerprintsStoreFilePath() const;

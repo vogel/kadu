@@ -33,8 +33,7 @@ void OtrTrustLevelService::wrapperOtrUpdateContextList(void *data)
 		opData->trustLevelService()->updateTrustLevels();
 }
 
-OtrTrustLevelService::OtrTrustLevelService(QObject *parent) :
-		QObject(parent)
+OtrTrustLevelService::OtrTrustLevelService()
 {
 }
 

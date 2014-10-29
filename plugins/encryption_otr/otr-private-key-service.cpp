@@ -47,8 +47,7 @@ void OtrPrivateKeyService::wrapperOtrCreatePrivateKey(void *data, const char *ac
 	}
 }
 
-OtrPrivateKeyService::OtrPrivateKeyService(QObject *parent) :
-		QObject(parent)
+OtrPrivateKeyService::OtrPrivateKeyService()
 {
 }
 

@@ -42,8 +42,7 @@ void OtrPeerIdentityVerificationService::wrapperHandleSmpEvent(void *data, OtrlS
 		opData->peerIdentityVerificationService()->handleSmpEvent(opData->contact(), smpEvent, progressPercent, QString::fromUtf8(question));
 }
 
-OtrPeerIdentityVerificationService::OtrPeerIdentityVerificationService(QObject *parent) :
-		QObject(parent)
+OtrPeerIdentityVerificationService::OtrPeerIdentityVerificationService()
 {
 }
 

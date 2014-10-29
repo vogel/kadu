@@ -21,11 +21,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_TIMER_SERVICE_H
-#define OTR_TIMER_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QTimer;
 
@@ -37,6 +37,21 @@ class OtrTimerService : public QObject
 {
 	Q_OBJECT
 
+private slots:
+	void otrTimerTimeout();
+
+public:
+	static void wrapperOtrTimerControl(void *data, unsigned int interval);
+
+	Q_INVOKABLE OtrTimerService();
+	virtual ~OtrTimerService();
+
+private slots:
+	INJEQT_SETTER void setAppOpsService(OtrAppOpsService *appOpsService);
+	INJEQT_SETTER void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+
+private:
 	QPointer<OtrAppOpsService> AppOpsService;
 	QPointer<OtrOpDataFactory> OpDataFactory;
 	QPointer<OtrUserStateService> UserStateService;
@@ -45,19 +60,4 @@ class OtrTimerService : public QObject
 
 	void timerControl(unsigned int intervalInSeconds);
 
-private slots:
-	void otrTimerTimeout();
-
-public:
-	static void wrapperOtrTimerControl(void *data, unsigned int interval);
-
-	explicit OtrTimerService(QObject *parent = 0);
-	virtual ~OtrTimerService();
-
-	void setAppOpsService(OtrAppOpsService *appOpsService);
-	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	void setUserStateService(OtrUserStateService *userStateService);
-
 };
-
-#endif // OTR_TIMER_SERVICE_H

@@ -20,17 +20,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_CONTEXT_CONVERTER_H
-#define OTR_CONTEXT_CONVERTER_H
+#pragma once
 
 extern "C" {
 #	include <libotr/context.h>
 }
 
+#include "storage/manager-common.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-
-#include "storage/manager-common.h"
+#include <injeqt/injeqt.h>
 
 class Chat;
 class Contact;
@@ -41,13 +41,9 @@ class OtrContextConverter : public QObject
 {
 	Q_OBJECT
 
-	QPointer<OtrUserStateService> UserStateService;
-
 public:
-	explicit OtrContextConverter(QObject *parent = 0);
+	Q_INVOKABLE OtrContextConverter();
 	virtual ~OtrContextConverter();
-
-	void setUserStateService(OtrUserStateService *userStateService);
 
 	Chat connectionContextToChat(ConnContext *context) const;
 	Contact connectionContextToContact(ConnContext *context) const;
@@ -55,6 +51,10 @@ public:
 	ConnContext * chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction = ActionReturnNull) const;
 	ConnContext * contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction = ActionReturnNull) const;
 
-};
+private slots:
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
 
-#endif // OTR_CONTEXT_CONVERTER_H
+private:
+	QPointer<OtrUserStateService> UserStateService;
+
+};

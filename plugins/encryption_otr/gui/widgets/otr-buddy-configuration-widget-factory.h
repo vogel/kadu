@@ -20,26 +20,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H
-#define OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H
-
-#include <QtCore/QPointer>
+#pragma once
 
 #include "gui/widgets/buddy-configuration-widget-factory.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class OtrPolicyService;
 
-class OtrBuddyConfigurationWidgetFactory : public BuddyConfigurationWidgetFactory
+class OtrBuddyConfigurationWidgetFactory : public QObject, public BuddyConfigurationWidgetFactory
 {
-	QPointer<OtrPolicyService> PolicyService;
+	Q_OBJECT
 
 public:
+	Q_INVOKABLE OtrBuddyConfigurationWidgetFactory() {}
 	virtual ~OtrBuddyConfigurationWidgetFactory();
-
-	void setPolicyService(OtrPolicyService *policyService);
 
 	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
 
-};
+private slots:
+	INJEQT_SETTER void setPolicyService(OtrPolicyService *policyService);
 
-#endif // OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H
+private:
+	QPointer<OtrPolicyService> PolicyService;
+
+};

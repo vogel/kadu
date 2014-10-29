@@ -20,11 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_SESSION_SERVICE_H
-#define OTR_SESSION_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -43,27 +43,15 @@ class OtrSessionService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<MessageManager> CurrentMessageManager;
-	QPointer<OtrAppOpsService> AppOpsService;
-	QPointer<OtrOpDataFactory> OpDataFactory;
-	QPointer<OtrPolicyService> PolicyService;
-	QPointer<OtrTrustLevelService> TrustLevelService;
-	QPointer<OtrUserStateService> UserStateService;
-
 public:
 	static void wrapperOtrGoneSecure(void *data, ConnContext *context);
 	static void wrapperOtrGoneInsecure(void *data, ConnContext *context);
 	static void wrapperOtrStillSecure(void *data, ConnContext *context, int isReply);
 
-	explicit OtrSessionService(QObject *parent = 0);
+	Q_INVOKABLE OtrSessionService();
 	virtual ~OtrSessionService();
 
-	void setAppOpsService(OtrAppOpsService *appOpsService);
 	void setMessageManager(MessageManager *messageManager);
-	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	void setPolicyService(OtrPolicyService *policyService);
-	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
-	void setUserStateService(OtrUserStateService *userStateService);
 
 public slots:
 	void startSession(const Contact &contact);
@@ -77,6 +65,19 @@ signals:
 	void goneInsecure(const Contact &contact) const;
 	void stillSecure(const Contact &contact) const;
 
-};
+private slots:
+	INJEQT_SETTER void setAppOpsService(OtrAppOpsService *appOpsService);
+	INJEQT_SETTER void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	INJEQT_SETTER void setPolicyService(OtrPolicyService *policyService);
+	INJEQT_SETTER void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
 
-#endif // OTR_SESSION_SERVICE_H
+private:
+	QPointer<MessageManager> CurrentMessageManager;
+	QPointer<OtrAppOpsService> AppOpsService;
+	QPointer<OtrOpDataFactory> OpDataFactory;
+	QPointer<OtrPolicyService> PolicyService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
+	QPointer<OtrUserStateService> UserStateService;
+
+};

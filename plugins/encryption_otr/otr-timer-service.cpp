@@ -41,8 +41,8 @@ void OtrTimerService::wrapperOtrTimerControl(void *data, unsigned int interval)
 		opData->timerService()->timerControl(interval);
 }
 
-OtrTimerService::OtrTimerService(QObject *parent) :
-		QObject(parent), Timer(0)
+OtrTimerService::OtrTimerService() :
+		Timer(0)
 {
 }
 

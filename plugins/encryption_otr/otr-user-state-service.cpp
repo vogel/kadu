@@ -22,8 +22,7 @@
 
 #include "otr-user-state-service.h"
 
-OtrUserStateService::OtrUserStateService(QObject *parent) :
-		QObject(parent)
+OtrUserStateService::OtrUserStateService()
 {
 	UserState = otrl_userstate_create();
 }

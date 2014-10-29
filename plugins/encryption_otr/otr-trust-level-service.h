@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_TRUST_LEVEL_SERVICE_H
-#define OTR_TRUST_LEVEL_SERVICE_H
+#pragma once
 
 extern "C" {
 #	include <libotr/context.h>
@@ -30,6 +29,7 @@ extern "C" {
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Contact;
 
@@ -54,11 +54,8 @@ public:
 		TrustLevelPrivate
 	};
 
-	explicit OtrTrustLevelService(QObject *parent = 0);
+	Q_INVOKABLE OtrTrustLevelService();
 	virtual ~OtrTrustLevelService();
-
-	void setContextConverter(OtrContextConverter *contextConverter);
-	void setUserStateService(OtrUserStateService *userStateService);
 
 	void storeTrustLevelToContact(const Contact &contact, TrustLevel level) const;
 	TrustLevel loadTrustLevelFromContact(const Contact &contact) const;
@@ -71,6 +68,8 @@ public slots:
 signals:
 	void trustLevelsUpdated();
 
-};
+private slots:
+	INJEQT_SETTER void setContextConverter(OtrContextConverter *contextConverter);
+	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
 
-#endif // OTR_TRUST_LEVEL_SERVICE_H
+};
