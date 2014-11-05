@@ -275,8 +275,10 @@ endif ()
 add_subdirectory (kthxbye)
 
 # Now write KaduConfig for installation.
-kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
-	"${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake" INSTALL_TREE)
+if (UNIX)
+	kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
+		"${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake" INSTALL_TREE)
+endif ()
 
 if (KADU_INSTALL_SDK)
 	install (FILES
