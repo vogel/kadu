@@ -6,6 +6,7 @@ set (formatted-string_SRCS
 	formatted-string-factory.cpp
 	formatted-string-html-visitor.cpp
 	formatted-string-image-block.cpp
+	formatted-string-is-plain-text-visitor.cpp
 	formatted-string-plain-text-visitor.cpp
 	formatted-string-text-block.cpp
 )

@@ -34,6 +34,7 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/formatted-string-is-plain-text-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "message/raw-message.h"
@@ -95,7 +96,9 @@ int GaduChatService::maxMessageLength() const
 	return 10000;
 }
 
-int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage)
+// see #2857 - old GG versions do not receive messages sent with new API
+// but we can at least sent plain text messages with old API
+int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage, bool isPlainText)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
@@ -105,13 +108,21 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const RawM
 	if (uinsCount > 1)
 	{
 		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
-		return gg_send_message_confer_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
-				(const unsigned char *) rawMessage.rawContent().constData());
+		if (isPlainText)
+			return gg_send_message_confer(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
+					(const unsigned char *) rawMessage.rawPlainContent().constData());
+		else
+			return gg_send_message_confer_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
+					(const unsigned char *) rawMessage.rawContent().constData());
 	}
 	else if (uinsCount == 1)
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
-		return gg_send_message_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin, (const unsigned char *) rawMessage.rawContent().constData());
+
+		if (isPlainText)
+			return gg_send_message(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin, (const unsigned char *) rawMessage.rawPlainContent().constData());
+		else
+			return gg_send_message_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin, (const unsigned char *) rawMessage.rawContent().constData());
 	}
 
 	return -1;
@@ -133,6 +144,9 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
+	FormattedStringIsPlainTextVisitor isPlainTextVisitor;
+	message.content()->accept(&isPlainTextVisitor);
+
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	message.content()->accept(&plainTextVisitor);
 
@@ -150,7 +164,7 @@ bool GaduChatService::sendMessage(const Message &message)
 		return false;
 	}
 
-	int messageId = sendRawMessage(message.messageChat().contacts().toContactVector(), rawMessage);
+	int messageId = sendRawMessage(message.messageChat().contacts().toContactVector(), rawMessage, isPlainTextVisitor.isPlainText());
 
 	if (-1 == messageId)
 		return false;
@@ -163,7 +177,7 @@ bool GaduChatService::sendMessage(const Message &message)
 
 bool GaduChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMessage)
 {
-	int messageId = sendRawMessage(chat.contacts().toContactVector(), {rawMessage});
+	int messageId = sendRawMessage(chat.contacts().toContactVector(), {rawMessage}, true);
 	return messageId != -1;
 }
 
@@ -238,7 +252,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	message.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	auto rawMessage= getRawMessage(e);
+	auto rawMessage = getRawMessage(e);
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
