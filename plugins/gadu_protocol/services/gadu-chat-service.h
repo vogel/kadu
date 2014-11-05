@@ -74,7 +74,7 @@ class GaduChatService : public ChatService
 	bool ignoreRichText(Contact sender);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
-	int sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage);
+	int sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage, bool isPlainText);
 	UinType * contactsToUins(const QVector<Contact> &contacts) const;
 
 	QTimer *RemoveTimer;

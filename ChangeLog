@@ -6,6 +6,7 @@
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)
 * windows: #2880 fixed: improve hiding Kadu button on taskbar (Vogel)
+* gadu: #2857 fixed: users of old GG versions could not receive messages from Kadu (Vogel)
 
 +++ version 1.1
 * tabs: #2867 fixed: open in new window/tab works properly (Vogel)
