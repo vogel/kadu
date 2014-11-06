@@ -186,6 +186,8 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\libtiff-5.dll"
 	File "${BIN_DIR}\libwinpthread-1.dll"
 	File "${BIN_DIR}\zlib1.dll"
+	File "${BIN_DIR}\libotr-5.dll"
+	File "${BIN_DIR}\libssp-0.dll"
 SectionEnd
 
 Section -section_qt
