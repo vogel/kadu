@@ -44,7 +44,7 @@ class MPRISPlayerConfigurationUiHandler : public ConfigurationUiHandler
 	MPRISPlayerConfigurationUiHandler();
 	virtual ~MPRISPlayerConfigurationUiHandler();
 
-	void loadPlayersListFromFile(const QString &globalFileName, const QString &userFileName);
+	void loadPlayersListFromFile();
 	void fillPlayersBox();
 
 private slots:

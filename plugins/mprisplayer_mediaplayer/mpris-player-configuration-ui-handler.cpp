@@ -102,7 +102,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 
 	optionsGroupBox->addWidgets(0, options);
 
-	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
+	loadPlayersListFromFile();
 	fillPlayersBox();
 	PlayersBox->setCurrentIndex(PlayersBox->findText(Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player")));
 
@@ -112,7 +112,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
-void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile(const QString &globalFileName, const QString &userFileName)
+void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile()
 {
 	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
@@ -180,7 +180,7 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 	userPlayersSettings.setValue(newPlayer + "/service", newService);
 	userPlayersSettings.sync();
 
-	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
+	loadPlayersListFromFile();
 	fillPlayersBox();
 
 	PlayersBox->setCurrentIndex(PlayersBox->findText(oldPlayerName));
@@ -232,7 +232,7 @@ void MPRISPlayerConfigurationUiHandler::editPlayer()
 
 	userPlayersSettings.sync();
 
-	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
+	loadPlayersListFromFile();
 	fillPlayersBox();
 
 	PlayersBox->setCurrentIndex(PlayersBox->findText(newPlayer));
@@ -264,7 +264,7 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
 
 	userPlayersSettings.sync();
 
-	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
+	loadPlayersListFromFile();
 	fillPlayersBox();
 
 	PlayersBox->setCurrentIndex(-1);
