@@ -20,7 +20,9 @@
 #include "chat-widget-message-handler.h"
 
 #include "chat/buddy-chat-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/configuration-api.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -173,7 +175,7 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 	else
 	{
 #ifdef Q_OS_WIN32
-		if (!config_file.readBoolEntry("General", "HideMainWindowFromTaskbar"))
+		if (!Core::instance()->application()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
 			qApp->alert(Core::instance()->kaduWindow());
 #else
 		qApp->alert(Core::instance()->kaduWindow());
