@@ -23,14 +23,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "roster-service.h"
+
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
 #include "protocols/services/roster/roster-state.h"
 
-#include "roster-service.h"
-
 RosterService::RosterService(Account account, QObject *parent) :
-		AccountService(account, parent), State(RosterState::NonInitialized)
+		AccountService{account, parent},
+		m_state{RosterState::NonInitialized}
 {
 }
 
@@ -40,27 +41,27 @@ RosterService::~RosterService()
 
 void RosterService::setProtocol(Protocol *protocol)
 {
-	if (CurrentProtocol)
-		disconnect(CurrentProtocol.data(), 0, this, 0);
+	if (m_protocol)
+		disconnect(m_protocol.data(), nullptr, this, nullptr);
 
-	CurrentProtocol = protocol;
+	m_protocol = protocol;
 
-	if (CurrentProtocol)
-		connect(CurrentProtocol.data(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
+	if (m_protocol)
+		connect(m_protocol.data(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
 }
 
 void RosterService::disconnected()
 {
 	setState(RosterState::NonInitialized);
-	setContacts(QVector<Contact>());
+	setContacts({});
 }
 
 void RosterService::contactUpdated()
 {
-	Contact contact(sender());
+	auto contact = Contact{sender()};
 
 	Q_ASSERT(contact);
-	Q_ASSERT(Contacts.contains(contact));
+	Q_ASSERT(m_contacts.contains(contact));
 
 	if (contact.contactAccount() != account() || contact.isAnonymous())
 		return;
@@ -68,17 +69,17 @@ void RosterService::contactUpdated()
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	addTask(RosterTask{RosterTaskUpdate, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
 
 bool RosterService::canPerformLocalUpdate() const
 {
-	if (!CurrentProtocol)
+	if (!m_protocol)
 		return false;
 
-	return CurrentProtocol->isConnected() && (RosterState::Initializing != State && RosterState::NonInitialized != State);
+	return m_protocol->isConnected() && (RosterState::Initializing != m_state && RosterState::NonInitialized != m_state);
 }
 
 bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
@@ -89,38 +90,40 @@ bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
 	if (!contact.rosterEntry()->canAcceptRemoteUpdate())
 		return false;
 
-	return !IdToTask.contains(contact.id());
+	return !m_idToTask.contains(contact.id());
 }
 
 void RosterService::setState(RosterState state)
 {
-	State = state;
+	m_state = state;
 }
 
 void RosterService::prepareRoster(const QVector<Contact> &contacts)
 {
 	setContacts(contacts);
 
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : m_contacts)
 	{
-		if (contact.rosterEntry() && RosterEntrySynchronizing == contact.rosterEntry()->state())
+		if (!contact.rosterEntry())
+			continue;
+		if (contact.rosterEntry()->state() == RosterEntrySynchronizing)
 			contact.rosterEntry()->setState(RosterEntryDesynchronized);
-		if (contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
-			addTask(RosterTask(RosterTaskUpdate, contact.id()));
+		if (contact.rosterEntry()->requiresSynchronization())
+			addTask(RosterTask{RosterTaskUpdate, contact.id()});
 	}
 }
 
 QVector<RosterTask> RosterService::tasks()
 {
-	return Tasks.toVector();
+	return m_tasks.toVector();
 }
 
 void RosterService::setTasks(const QVector<RosterTask> &tasks)
 {
-	Tasks.clear();
-	IdToTask.clear();
+	m_tasks.clear();
+	m_idToTask.clear();
 
-	foreach (const RosterTask &task, tasks)
+	for (auto &&task : tasks)
 		addTask(task);
 }
 
@@ -140,12 +143,12 @@ bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType re
 
 void RosterService::setContacts(const QVector<Contact> &contacts)
 {
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : m_contacts)
 		disconnectContact(contact);
 
-	Contacts = contacts;
+	m_contacts = contacts;
 
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : m_contacts)
 		connectContact(contact);
 }
 
@@ -161,36 +164,36 @@ void RosterService::disconnectContact(const Contact &contact)
 
 void RosterService::addTask(const RosterTask &task)
 {
-	if (!IdToTask.contains(task.id()))
+	if (!m_idToTask.contains(task.id()))
 	{
-		Tasks.enqueue(task);
+		m_tasks.enqueue(task);
 		return;
 	}
 
-	RosterTask existingTask = IdToTask.value(task.id());
+	auto existingTask = m_idToTask.value(task.id());
 	if (shouldReplaceTask(existingTask.type(), task.type()))
 	{
-		Tasks.removeAll(existingTask);
-		IdToTask.remove(task.id());
-		IdToTask.insert(task.id(), task);
-		Tasks.enqueue(task);
+		m_tasks.removeAll(existingTask);
+		m_idToTask.remove(task.id());
+		m_idToTask.insert(task.id(), task);
+		m_tasks.enqueue(task);
 	}
 }
 
 RosterTaskType RosterService::taskType(const QString &id)
 {
-	if (!IdToTask.contains(id))
+	if (!m_idToTask.contains(id))
 		return RosterTaskNone;
 	else
-		return IdToTask.value(id).type();
+		return m_idToTask.value(id).type();
 }
 
 void RosterService::executeAllTasks()
 {
-	while (!Tasks.isEmpty())
+	while (!m_tasks.isEmpty())
 	{
-		RosterTask task = Tasks.dequeue();
-		IdToTask.remove(task.id());
+		RosterTask task = m_tasks.dequeue();
+		m_idToTask.remove(task.id());
 		executeTask(task);
 	}
 }
@@ -200,16 +203,16 @@ void RosterService::addContact(const Contact &contact)
 	if (contact.contactAccount() != account() || contact.isAnonymous())
 		return;
 
-	if (Contacts.contains(contact))
+	if (m_contacts.contains(contact))
 		return;
 
-	Contacts.append(contact);
+	m_contacts.append(contact);
 	connectContact(contact);
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask(RosterTaskAdd, contact.id()));
+	addTask(RosterTask{RosterTaskAdd, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -219,17 +222,17 @@ void RosterService::removeContact(const Contact &contact)
 	if (contact.contactAccount() != account())
 		return;
 
-	int index = Contacts.indexOf(contact);
+	int index = m_contacts.indexOf(contact);
 	if (index < 0)
 		return;
 
-	Contacts.remove(index);
+	m_contacts.remove(index);
 	disconnectContact(contact);
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask(RosterTaskDelete, contact.id()));
+	addTask(RosterTask{RosterTaskDelete, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -242,7 +245,7 @@ void RosterService::updateContact(const Contact& contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	addTask(RosterTask{RosterTaskUpdate, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }

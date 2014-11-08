@@ -23,20 +23,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_SERVICE_H
-#define ROSTER_SERVICE_H
-
-#include <QtCore/QObject>
-#include <QtCore/QQueue>
+#pragma once
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "protocols/services/account-service.h"
 #include "protocols/services/roster/roster-task.h"
 
 #include "exports.h"
 
-#include "protocols/services/account-service.h"
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QQueue>
 
+class Protocol;
 enum class RosterState;
 
 /**
@@ -74,134 +74,13 @@ class KADUAPI RosterService : public AccountService
 {
 	Q_OBJECT
 
-	QPointer<Protocol> CurrentProtocol;
-
-	RosterState State;
-	QVector<Contact> Contacts;
-	QQueue<RosterTask> Tasks;
-	QMap<QString, RosterTask> IdToTask;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if task of second type should replace task of first type on list of task to execute.
-	 * @return true if task of second type should replace task of first type on list of task to execute
-	 */
-	bool shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set current list of contacts.
-	 * @param contacts new list of contacts
-	 *
-	 * All contacts that are currently on list are disconencted and new ones are connected.
-	 */
-	void setContacts(const QVector<Contact> &contacts);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Connects to data emitted by given contact when its roster data changes.
-	 * @param contact contact to connect to
-	 */
-	void connectContact(const Contact &contact);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Disconnects data emitted by given contact when its roster data changes.
-	 * @param contact contact to disconnect from
-	 */
-	void disconnectContact(const Contact &contact);
-
-private slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called when protocol disconencted.
-	 *
-	 * Roster state is reset to StateNonInitialized.
-	 */
-	void disconnected();
-
-	/**
-	 * @enum RosterState
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called when data of contact or contact's owner buddy changed.
-	 *
-	 * This slot can only by called for contacts that were previously added to roster using addContact() methods
-	 * and were not removed.
-	 */
-	void contactUpdated();
-
-protected:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if local update can be processed.
-	 * @return true if local update can be processed
-	 *
-	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
-	 * method and add more conditions.
-	 */
-	virtual bool canPerformLocalUpdate() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if remote update for given contact can be processed.
-	 * @param contact contact to check
-	 * @return true if remote update can be processed
-	 *
-	 * Remote update can only be processed for either anonymous contacts or contacts than can accept remote updates (not detached
-	 * and not currently synchronizing) when there is no task for given contact.
-	 */
-	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets state of roster service.
-	 * @param state new state
-	 */
-	void setState(RosterState state);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return type of task for given id.
-	 * @param id id of contact to check task for
-	 * @return type of task for given id
-	 *
-	 * If no task for given id is found then RosterTaskNone is returned.
-	 */
-	RosterTaskType taskType(const QString &id);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute given roster task.
-	 * @param task to execute
-	 */
-	virtual void executeTask(const RosterTask &task) = 0;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute all stored RosterTasks.
-	 *
-	 * This method executes all stored tasks. List of not-executed tasks will be empty after this call.
-	 */
-	void executeAllTasks();
-
-protected slots:
-	/**
-	 * @enum RosterState
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called when contact's dirtiness is changed.
-	 *
-	 * If given contact is valid and belongs to current account, then new roster task for adding item to roster is created.
-	 * If it is possible, task is executed immediately. If not, it is stored for later execution.
-	 */
-	void updateContact(const Contact &contact);
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of RosterService bound to given Account.
 	 * @param account to bound this service to
 	 */
-	explicit RosterService(Account account, QObject *parent = 0);
+	explicit RosterService(Account account, QObject *parent = nullptr);
 	virtual ~RosterService();
 
 	/**
@@ -217,7 +96,7 @@ public:
 	 * @short Return current state of this service.
 	 * @return current state of this service
 	 */
-	RosterState state() const { return State; }
+	RosterState state() const { return m_state; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -288,10 +167,130 @@ signals:
 	 */
 	void rosterReady(bool ok);
 
+protected:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if local update can be processed.
+	 * @return true if local update can be processed
+	 *
+	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
+	 * method and add more conditions.
+	 */
+	virtual bool canPerformLocalUpdate() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if remote update for given contact can be processed.
+	 * @param contact contact to check
+	 * @return true if remote update can be processed
+	 *
+	 * Remote update can only be processed for either anonymous contacts or contacts than can accept remote updates (not detached
+	 * and not currently synchronizing) when there is no task for given contact.
+	 */
+	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets state of roster service.
+	 * @param state new state
+	 */
+	void setState(RosterState state);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return type of task for given id.
+	 * @param id id of contact to check task for
+	 * @return type of task for given id
+	 *
+	 * If no task for given id is found then RosterTaskNone is returned.
+	 */
+	RosterTaskType taskType(const QString &id);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Execute given roster task.
+	 * @param task to execute
+	 */
+	virtual void executeTask(const RosterTask &task) = 0;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Execute all stored RosterTasks.
+	 *
+	 * This method executes all stored tasks. List of not-executed tasks will be empty after this call.
+	 */
+	void executeAllTasks();
+
+protected slots:
+	/**
+	 * @enum RosterState
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Method called when contact's dirtiness is changed.
+	 *
+	 * If given contact is valid and belongs to current account, then new roster task for adding item to roster is created.
+	 * If it is possible, task is executed immediately. If not, it is stored for later execution.
+	 */
+	void updateContact(const Contact &contact);
+
+private:
+	QPointer<Protocol> m_protocol;
+
+	RosterState m_state;
+	QVector<Contact> m_contacts;
+	QQueue<RosterTask> m_tasks;
+	QMap<QString, RosterTask> m_idToTask;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if task of second type should replace task of first type on list of task to execute.
+	 * @return true if task of second type should replace task of first type on list of task to execute
+	 */
+	bool shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set current list of contacts.
+	 * @param contacts new list of contacts
+	 *
+	 * All contacts that are currently on list are disconencted and new ones are connected.
+	 */
+	void setContacts(const QVector<Contact> &contacts);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Connects to data emitted by given contact when its roster data changes.
+	 * @param contact contact to connect to
+	 */
+	void connectContact(const Contact &contact);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Disconnects data emitted by given contact when its roster data changes.
+	 * @param contact contact to disconnect from
+	 */
+	void disconnectContact(const Contact &contact);
+
+private slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called when protocol disconencted.
+	 *
+	 * Roster state is reset to StateNonInitialized.
+	 */
+	void disconnected();
+
+	/**
+	 * @enum RosterState
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called when data of contact or contact's owner buddy changed.
+	 *
+	 * This slot can only by called for contacts that were previously added to roster using addContact() methods
+	 * and were not removed.
+	 */
+	void contactUpdated();
+
 };
 
 /**
  * @}
  */
-
-#endif // ROSTER_SERVICE_H
