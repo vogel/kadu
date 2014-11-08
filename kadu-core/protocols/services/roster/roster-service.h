@@ -37,6 +37,8 @@
 
 #include "protocols/services/account-service.h"
 
+enum class RosterState;
+
 /**
  * @addtogroup Protocol
  * @{
@@ -74,28 +76,6 @@ class KADUAPI RosterService : public AccountService
 
 	QPointer<Protocol> CurrentProtocol;
 
-public:
-	/**
-	 * @enum RosterState
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short State of roster service.
-	 */
-	enum RosterState {
-		/**
-		 * Roster service was not initialized and cannot perform any operation except prepareRoster().
-		 */
-		StateNonInitialized,
-		/**
-		 * Roster service is during prepareRoster() operation.
-		 */
-		StateInitializing,
-		/**
-		 * Roster is initialized and ready to accept local or remote changes.
-		 */
-		StateInitialized
-	};
-
-private:
 	RosterState State;
 	QVector<Contact> Contacts;
 	QQueue<RosterTask> Tasks;

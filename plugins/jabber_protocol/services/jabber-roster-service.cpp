@@ -26,6 +26,7 @@
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-state.h"
 #include "protocols/services/roster/roster-task.h"
 #include "debug.h"
 
@@ -144,7 +145,7 @@ bool JabberRosterService::isIntrestedIn(const XMPP::RosterItem &item)
 
 void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 {
-	if (StateNonInitialized == state())
+	if (RosterState::NonInitialized == state())
 		return;
 
 	/**
@@ -195,7 +196,7 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 {
-	if (StateNonInitialized == state())
+	if (RosterState::NonInitialized == state())
 		return;
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
@@ -280,10 +281,10 @@ void JabberRosterService::prepareRoster(const QVector<Contact> &contacts)
 {
 	RosterService::prepareRoster(contacts);
 
-	Q_ASSERT(StateNonInitialized == state());
+	Q_ASSERT(RosterState::NonInitialized == state());
 	Q_ASSERT(XmppClient);
 
-	setState(StateInitializing);
+	setState(RosterState::Initializing);
 	markContactsForDeletion();
 
 	XmppClient->rosterRequest();
@@ -291,12 +292,12 @@ void JabberRosterService::prepareRoster(const QVector<Contact> &contacts)
 
 void JabberRosterService::rosterRequestFinished(bool success)
 {
-	Q_ASSERT(StateInitializing == state());
+	Q_ASSERT(RosterState::Initializing == state());
 
 	if (success)
 		deleteMarkedContacts();
 
-	setState(StateInitialized);
+	setState(RosterState::Initialized);
 
 	emit rosterReady(success);
 
@@ -316,7 +317,7 @@ bool JabberRosterService::canPerformLocalUpdate() const
 
 void JabberRosterService::executeTask(const RosterTask& task)
 {
-	Q_ASSERT(StateInitialized == state());
+	Q_ASSERT(RosterState::Initialized == state());
 
 	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
 	XMPP::JT_Roster *rosterTask = createContactTask(contact);

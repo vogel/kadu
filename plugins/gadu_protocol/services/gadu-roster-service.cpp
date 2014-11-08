@@ -22,6 +22,7 @@
 #include <QtCore/QScopedArrayPointer>
 
 #include "contacts/contact-manager.h"
+#include "protocols/services/roster/roster-state.h"
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
@@ -66,9 +67,9 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 
 	RosterService::prepareRoster(contacts);
 
-	Q_ASSERT(StateNonInitialized == state());
+	Q_ASSERT(RosterState::NonInitialized == state());
 
-	setState(StateInitializing);
+	setState(RosterState::Initializing);
 
 	QVector<Contact> allContacts = ContactManager::instance()->contacts(account());
 	QVector<Contact> sendList;
@@ -83,7 +84,7 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 		gg_notify_ex(writableSessionToken.rawSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
-		setState(StateInitialized);
+		setState(RosterState::Initialized);
 		emit rosterReady(true);
 		return;
 	}
@@ -112,7 +113,7 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 	gg_notify_ex(writableSessionToken.rawSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
-	setState(StateInitialized);
+	setState(RosterState::Initialized);
 	emit rosterReady(true);
 }
 
@@ -157,7 +158,7 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 
 void GaduRosterService::executeTask(const RosterTask &task)
 {
-	Q_ASSERT(StateInitialized == state());
+	Q_ASSERT(RosterState::Initialized == state());
 
 	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
 	switch (task.type())

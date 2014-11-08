@@ -25,11 +25,12 @@
 
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-state.h"
 
 #include "roster-service.h"
 
 RosterService::RosterService(Account account, QObject *parent) :
-		AccountService(account, parent), State(StateNonInitialized)
+		AccountService(account, parent), State(RosterState::NonInitialized)
 {
 }
 
@@ -50,7 +51,7 @@ void RosterService::setProtocol(Protocol *protocol)
 
 void RosterService::disconnected()
 {
-	setState(StateNonInitialized);
+	setState(RosterState::NonInitialized);
 	setContacts(QVector<Contact>());
 }
 
@@ -77,7 +78,7 @@ bool RosterService::canPerformLocalUpdate() const
 	if (!CurrentProtocol)
 		return false;
 
-	return CurrentProtocol->isConnected() && (StateInitializing != State && StateNonInitialized != State);
+	return CurrentProtocol->isConnected() && (RosterState::Initializing != State && RosterState::NonInitialized != State);
 }
 
 bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
