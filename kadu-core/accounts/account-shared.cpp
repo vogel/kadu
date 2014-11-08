@@ -221,22 +221,18 @@ void AccountShared::load()
 		protocolHandler()->rosterService()->setTasks(loadRosterTasks());
 }
 
-void AccountShared::storeRosterTasks()
+void AccountShared::storeRosterTasks(const QVector<RosterTask> &tasks)
 {
 	if (!isValidStorage())
 		return;
 
-	if (!protocolHandler() || !protocolHandler()->rosterService())
-		return;
-
-	ConfigurationApi *configurationStorage = storage()->storage();
-	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
+	auto configurationStorage = storage()->storage();
+	auto rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
 
 	while (!rosterTasksNode.childNodes().isEmpty())
 		rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
 
-	QVector<RosterTask> tasks = protocolHandler()->rosterService()->tasks();
-	foreach (const RosterTask &task, tasks)
+	for (auto &&task : tasks)
 		switch (task.type())
 		{
 			case RosterTaskAdd:
@@ -281,7 +277,8 @@ void AccountShared::store()
 	if (Details)
 		Details->ensureStored();
 
-	storeRosterTasks();
+	if (protocolHandler() && protocolHandler()->rosterService())
+		storeRosterTasks(protocolHandler()->rosterService()->tasks());
 }
 
 bool AccountShared::shouldStore()
@@ -375,7 +372,8 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 	if (!ProtocolHandler || (factory->name() != ProtocolName) || !Details)
 		return;
 
-	storeRosterTasks();
+	if (protocolHandler() && protocolHandler()->rosterService())
+		storeRosterTasks(protocolHandler()->rosterService()->tasks());
 
 	disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 	disconnect(ProtocolHandler, 0, this, 0);

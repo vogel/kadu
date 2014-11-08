@@ -76,7 +76,7 @@ class KADUAPI AccountShared : public QObject, public Shared
 	void importNetworkProxy();
 
 	QVector<RosterTask> loadRosterTasks();
-	void storeRosterTasks();
+	void storeRosterTasks(const QVector<RosterTask> &tasks);
 
 private slots:
 	void protocolRegistered(ProtocolFactory *protocolHandler);
