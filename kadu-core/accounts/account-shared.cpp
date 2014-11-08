@@ -37,6 +37,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "protocols/services/roster/roster-service.h"
+#include "protocols/services/roster/roster-task-collection-storage.h"
 #include "status/status-setter.h"
 
 #include "account-shared.h"
@@ -147,32 +148,11 @@ void AccountShared::importNetworkProxy()
 
 QVector<RosterTask> AccountShared::loadRosterTasks()
 {
-	auto result = QVector<RosterTask>{};
-
 	if (!isValidStorage())
-		return result;
+		return {};
 
-	auto configurationStorage = storage()->storage();
-	auto rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
-
-	auto rosterTaskNodes = rosterTasksNode.childNodes();
-	auto rosterTaskCount = rosterTaskNodes.count();
-
-	for (decltype(rosterTaskCount) i = 0; i < rosterTaskCount; i++)
-	{
-		auto rosterTaskElement = rosterTaskNodes.at(i).toElement();
-		if (rosterTaskElement.isNull() || rosterTaskElement.text().isEmpty())
-			continue;
-
-		if (rosterTaskElement.nodeName() == "Add")
-			result.append(RosterTask(RosterTaskAdd, rosterTaskElement.text()));
-		else if (rosterTaskElement.nodeName() == "Delete")
-			result.append(RosterTask(RosterTaskDelete, rosterTaskElement.text()));
-		else if (rosterTaskElement.nodeName() == "Update")
-			result.append(RosterTask(RosterTaskUpdate, rosterTaskElement.text()));
-	}
-
-	return result;
+	auto tasksStorage = RosterTaskCollectionStorage{storage()};
+	return tasksStorage.loadRosterTasks();
 }
 
 void AccountShared::load()
@@ -226,27 +206,8 @@ void AccountShared::storeRosterTasks(const QVector<RosterTask> &tasks)
 	if (!isValidStorage())
 		return;
 
-	auto configurationStorage = storage()->storage();
-	auto rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
-
-	while (!rosterTasksNode.childNodes().isEmpty())
-		rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
-
-	for (auto &&task : tasks)
-		switch (task.type())
-		{
-			case RosterTaskAdd:
-				configurationStorage->createTextNode(rosterTasksNode, "Add", task.id());
-				break;
-			case RosterTaskDelete:
-				configurationStorage->createTextNode(rosterTasksNode, "Delete", task.id());
-				break;
-			case RosterTaskUpdate:
-				configurationStorage->createTextNode(rosterTasksNode, "Update", task.id());
-				break;
-			default:
-				break;
-		}
+	auto tasksStorage = RosterTaskCollectionStorage{storage()};
+	tasksStorage.storeRosterTasks(tasks);
 }
 
 void AccountShared::store()

@@ -16,6 +16,7 @@ set (protocols_SRCS
 	services/roster/roster-notifier.cpp
 	services/roster/roster-service.cpp
 	services/roster/roster-task.cpp
+	services/roster/roster-task-collection-storage.cpp
 
 	connection-error-notification.cpp
 	protocol.cpp
