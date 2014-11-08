@@ -205,6 +205,16 @@ void TabWidget::tryActivateChatWidget(ChatWidget *chatWidget)
 	chatWidget->edit()->setFocus();
 }
 
+void TabWidget::tryMinimizeChatWidget(ChatWidget *chatWidget)
+{
+	int index = indexOf(chatWidget);
+	if (index < 0)
+		return;
+
+	if (count() == 1)
+		window()->showMinimized();
+}
+
 void TabWidget::closeTab(QWidget *tabWidget)
 {
 	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(tabWidget);

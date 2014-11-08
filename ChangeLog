@@ -2,6 +2,7 @@
 * chat: #2669 implemented: store content of input box in chat widgets (Vogel)
 * mediaplayer: #943 fixed: disable mediaplayer statuses after changing it manually (Vogel)
 * chat: #1219 implemented: paste and send action added to chat widget (Vogel)
+* gui: #2818 implemented: add option to open chat windows minimized on incoming message (Vogel)
 
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)

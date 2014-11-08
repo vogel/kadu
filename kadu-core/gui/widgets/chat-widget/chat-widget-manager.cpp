@@ -63,8 +63,18 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 	if (!chatWidget)
 		return;
 
-	if (activation == OpenChatActivation::Activate && m_chatWidgetActivationService)
-		m_chatWidgetActivationService.data()->tryActivateChatWidget(chatWidget);
+	if (m_chatWidgetActivationService)
+		switch (activation)
+		{
+			case OpenChatActivation::Activate:
+				m_chatWidgetActivationService.data()->tryActivateChatWidget(chatWidget);
+				break;
+			case OpenChatActivation::Minimize:
+				m_chatWidgetActivationService.data()->tryMinimizeChatWidget(chatWidget);
+				break;
+			default:
+				break;
+		}
 }
 
 ChatWidget * ChatWidgetManager::getOrCreateChatWidget(const Chat &chat)

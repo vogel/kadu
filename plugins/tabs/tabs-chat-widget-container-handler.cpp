@@ -87,3 +87,9 @@ void TabsChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidge
 	if (m_tabWidget)
 		m_tabWidget.data()->tryActivateChatWidget(chatWidget);
 }
+
+void TabsChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget *chatWidget)
+{
+	if (m_tabWidget)
+		m_tabWidget.data()->tryMinimizeChatWidget(chatWidget);
+}

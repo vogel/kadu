@@ -241,6 +241,8 @@
 						tool-tip="Open chat window when a new message arrives" />
 				<check-box caption="Open chat window only when I am online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline"
 						id="openChatOnMessageWhenOnline" tool-tip="Open chat window on new message only when online" parent-widget="openChatOnMessage" />
+				<check-box caption="Open chat window minimized" config-section="Chat" config-item="OpenChatOnMessageMinimized"
+						id="openChatOnMessageMinimized" tool-tip="Open chat window on new message in minimized mode" parent-widget="openChatOnMessage" />
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
 				<check-box caption="Remember opened chats" config-section="Chat" config-item="SaveOpenedWindows"
 					tool-tip="Save opened chat windows when exiting and restore them on next statup" />

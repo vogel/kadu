@@ -171,7 +171,12 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 	}
 
 	if (shouldOpenChatWidget(chat))
-		m_chatWidgetManager.data()->openChat(chat, OpenChatActivation::Activate);
+	{
+		auto activation = m_configuration.openChatOnMessageMinimized()
+			? OpenChatActivation::Minimize
+			: OpenChatActivation::Activate;
+		m_chatWidgetManager.data()->openChat(chat, activation);
+	}
 	else
 	{
 #ifdef Q_OS_WIN32

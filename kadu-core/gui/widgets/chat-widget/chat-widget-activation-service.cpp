@@ -84,4 +84,14 @@ void ChatWidgetActivationService::tryActivateChatWidget(ChatWidget *chatWidget)
 		chatWidgetContainerHandler->tryActivateChatWidget(chatWidget);
 }
 
+void ChatWidgetActivationService::tryMinimizeChatWidget(ChatWidget* chatWidget)
+{
+	if (!m_chatWidgetContainerHandlerMapper || !chatWidget)
+		return;
+
+	auto chatWidgetContainerHandler = m_chatWidgetContainerHandlerMapper.data()->chatWidgetContainerHandlerForWidget(chatWidget);
+	if (chatWidgetContainerHandler)
+		chatWidgetContainerHandler->tryMinimizeChatWidget(chatWidget);
+}
+
 #include "moc_chat-widget-activation-service.cpp"

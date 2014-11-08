@@ -319,7 +319,8 @@ void Core::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "LastImagePath", QDir::homePath() + '/');
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "NewMessagesInChatTitle", false);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ReceiveMessages", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "RecentChatsTimeout", 240);

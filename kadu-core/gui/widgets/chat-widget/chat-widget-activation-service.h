@@ -57,6 +57,7 @@ public:
 
 	bool isChatWidgetActive(ChatWidget *chatWidget) const;
 	void tryActivateChatWidget(ChatWidget *chatWidget);
+	void tryMinimizeChatWidget(ChatWidget *chatWidget);
 
 signals:
 	void chatWidgetActivated(ChatWidget *chatWidget);

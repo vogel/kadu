@@ -47,6 +47,7 @@ public:
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
+	virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
 
 private:
 	QPointer<SingleWindow> m_singleWindow;

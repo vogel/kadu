@@ -49,6 +49,7 @@ public:
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
+	virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
 
 public:
 	QPointer<TabsManager> m_tabsManager;

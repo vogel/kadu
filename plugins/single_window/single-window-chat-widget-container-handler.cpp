@@ -76,3 +76,7 @@ void SingleWindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *c
 	if (m_singleWindow)
 		m_singleWindow.data()->tryActivateChatWidget(chatWidget);
 }
+
+void SingleWindowChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget *)
+{
+}

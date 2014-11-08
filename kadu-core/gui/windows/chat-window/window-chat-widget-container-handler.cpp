@@ -102,6 +102,16 @@ void WindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWid
 		_activateWindow(chatWindow);
 }
 
+void WindowChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget* chatWidget)
+{
+	if (!chatWidget || !m_chatWindowRepository)
+		return;
+
+	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chatWidget->chat());
+	if (chatWindow)
+		chatWindow->showMinimized();
+}
+
 void WindowChatWidgetContainerHandler::chatWindowActivated(ChatWindow *chatWindow)
 {
 	if (chatWindow && chatWindow->chatWidget())

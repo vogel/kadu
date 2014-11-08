@@ -91,6 +91,11 @@ public:
 	 */
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) = 0;
 
+	/**
+	 * @short Try to minimize given chat widget and its container.
+	 */
+	virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) = 0;
+
 signals:
 	/**
 	 * @short Signal emitted when given chat widget was activated.

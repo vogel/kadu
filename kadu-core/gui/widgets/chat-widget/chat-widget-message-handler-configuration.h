@@ -45,9 +45,13 @@ public:
 	void setOpenChatOnMessageOnlyWhenOnline(bool openChatOnMessageOnlyWhenOnline);
 	bool openChatOnMessageOnlyWhenOnline() const;
 
+	void setOpenChatOnMessageMinimized(bool openChatOnMessageMinimized);
+	bool openChatOnMessageMinimized() const;
+
 private:
 	bool m_openChatOnMessage;
 	bool m_openChatOnMessageOnlyWhenOnline;
+	bool m_openChatOnMessageMinimized;
 
 };
 

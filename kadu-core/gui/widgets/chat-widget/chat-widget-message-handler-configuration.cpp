@@ -20,7 +20,9 @@
 #include "chat-widget-message-handler-configuration.h"
 
 ChatWidgetMessageHandlerConfiguration::ChatWidgetMessageHandlerConfiguration() :
-		m_openChatOnMessage(false), m_openChatOnMessageOnlyWhenOnline(true)
+		m_openChatOnMessage{false},
+		m_openChatOnMessageOnlyWhenOnline{true},
+		m_openChatOnMessageMinimized{false}
 {
 }
 
@@ -42,4 +44,14 @@ void ChatWidgetMessageHandlerConfiguration::setOpenChatOnMessageOnlyWhenOnline(b
 bool ChatWidgetMessageHandlerConfiguration::openChatOnMessageOnlyWhenOnline() const
 {
 	return m_openChatOnMessageOnlyWhenOnline;
+}
+
+void ChatWidgetMessageHandlerConfiguration::setOpenChatOnMessageMinimized(bool openChatOnMessageMinimized)
+{
+	m_openChatOnMessageMinimized = openChatOnMessageMinimized;
+}
+
+bool ChatWidgetMessageHandlerConfiguration::openChatOnMessageMinimized() const
+{
+	return m_openChatOnMessageMinimized;
 }

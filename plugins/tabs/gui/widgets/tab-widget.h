@@ -171,6 +171,7 @@ public:
 
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
 	void tryActivateChatWidget(ChatWidget *chatWidget);
+	void tryMinimizeChatWidget(ChatWidget *chatWidget);
 
 public slots:
 	/**

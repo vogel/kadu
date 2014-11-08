@@ -38,7 +38,8 @@ class ChatWidgetRepository;
 enum class OpenChatActivation
 {
 	DoNotActivate,
-	Activate
+	Activate,
+	Minimize
 };
 
 /**
@@ -69,6 +70,9 @@ public slots:
 	 *
 	 * If activation is set to OpenChatActivation::Activate then newly opened
 	 * chat will be activated.
+	 * 
+	 * If activation is set to OpenChatActivation::Minimize and window is not yet
+	 * opened then it will be minimized after opening.
 	 */
 	void openChat(const Chat &chat, OpenChatActivation activation);
 

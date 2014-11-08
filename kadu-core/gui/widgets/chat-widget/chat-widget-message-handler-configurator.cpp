@@ -46,6 +46,7 @@ void ChatWidgetMessageHandlerConfigurator::createDefaultConfiguration() const
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
 }
 
 ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::loadConfiguration() const
@@ -53,5 +54,6 @@ ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::load
 	auto configuration = ChatWidgetMessageHandlerConfiguration();
 	configuration.setOpenChatOnMessage(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessage", false));
 	configuration.setOpenChatOnMessageOnlyWhenOnline(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
+	configuration.setOpenChatOnMessageMinimized(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageMinimized", false));
 	return configuration;
 }
