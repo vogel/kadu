@@ -50,7 +50,7 @@ public:
 
 	virtual QString groupKey() const { return CurrentContact.id(); }
 
-	StatusChangedNotification(const QString &toStatus, const Contact &contact);
+	StatusChangedNotification(const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description);
 	virtual ~StatusChangedNotification() {}
 };
 

@@ -105,11 +105,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 			return;
 	}
 
-	bool notify_contact = true;
 	if (!contact.ownerBuddy().property("notify:Notify", true).toBool())
-		notify_contact = false;
-
-	if (!notify_contact)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
@@ -122,6 +118,17 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	if (oldStatus == status)
 		return;
 
+	auto statusDisplayName = status.displayName();
+	auto description = status.description();
+
+	if (contact.ownerBuddy().property("kadu:HideDescription", false).toBool())
+	{
+		if (oldStatus.type() == status.type())
+			return;
+		else
+			description.clear();
+	}
+
 	if (Service->ignoreOnlineToOnline() &&
 			!status.isDisconnected() &&
 			!oldStatus.isDisconnected())
@@ -130,8 +137,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(status.type());
 	QString changedTo = "/To" + typeData.name();
 
-	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contact);
-
+	auto statusChangedNotification = new StatusChangedNotification(changedTo, contact, statusDisplayName, description);
 	Service->notify(statusChangedNotification);
 }
 
@@ -160,6 +166,5 @@ void AccountEventListener::multilogonSessionDisconnected(MultilogonSession *sess
 
 	Service->notify(notification);
 }
-
 
 #include "moc_account-event-listener.cpp"
