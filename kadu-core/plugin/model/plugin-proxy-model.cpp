@@ -59,7 +59,8 @@ bool PluginProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
 	return metadata.displayName().contains(m_filterText, Qt::CaseInsensitive) ||
 			metadata.name().contains(m_filterText, Qt::CaseInsensitive) ||
 			metadata.description().contains(m_filterText, Qt::CaseInsensitive) ||
-			metadata.author().contains(m_filterText, Qt::CaseInsensitive);
+			metadata.author().contains(m_filterText, Qt::CaseInsensitive) ||
+			index.data(CategorizedSortFilterProxyModel::CategoryDisplayRole).toString().contains(m_filterText, Qt::CaseInsensitive);
 }
 
 bool PluginProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
