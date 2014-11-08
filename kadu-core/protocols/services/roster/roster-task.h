@@ -23,8 +23,9 @@
 
 #include <QtCore/QString>
 
-#include "protocols/services/roster/roster-task-type.h"
 #include "exports.h"
+
+enum class RosterTaskType;
 
 /**
  * @addtogroup Protocol

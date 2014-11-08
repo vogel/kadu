@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_TASK_TYPE_H
-#define ROSTER_TASK_TYPE_H
+#pragma once
 
 /**
  * @addtogroup Protocol
@@ -28,33 +27,30 @@
 
 /**
  * @enum RosterTaskType
- * @author Rafał 'Vogel' Malinowski
  * @short Description type of roster task.
  *
  * Roster task can be either adding an entry, deleting one or updating one.
  */
-enum RosterTaskType
+enum class RosterTaskType
 {
 	/**
 	 * Do nothing.
 	 */
-	RosterTaskNone,
+	None,
 	/**
 	 * Add roster entry.
 	 */
-	RosterTaskAdd,
+	Add,
 	/**
 	 * Delete roster entry.
 	 */
-	RosterTaskDelete,
+	Delete,
 	/**
 	 * Update roster entry.
 	 */
-	RosterTaskUpdate
+	Update
 };
 
 /**
  * @}
  */
-
-#endif // ROSTER_TASK_TYPE_H

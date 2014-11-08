@@ -28,6 +28,7 @@
 #include "protocols/services/roster/roster-entry.h"
 #include "protocols/services/roster/roster-state.h"
 #include "protocols/services/roster/roster-task.h"
+#include "protocols/services/roster/roster-task-type.h"
 #include "debug.h"
 
 #include "services/jabber-subscription-service.h"
@@ -202,7 +203,7 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 
 	RosterTaskType rosterTaskType = taskType(contact.id());
-	if (RosterTaskNone == rosterTaskType || RosterTaskDelete == rosterTaskType)
+	if (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType)
 	{
 		contact.rosterEntry()->setState(RosterEntrySynchronizing);
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
@@ -255,7 +256,7 @@ void JabberRosterService::markContactsForDeletion()
 		RosterTaskType rosterTaskType = taskType(contact.id());
 
 		if (rosterEntry && (RosterEntrySynchronized == rosterEntry->state())
-				&& (RosterTaskNone == rosterTaskType || RosterTaskDelete == rosterTaskType))
+				&& (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType))
 			rosterEntry->setRemotelyDeleted(true);
 	}
 }
@@ -324,23 +325,23 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	if (!rosterTask)
 		return;
 
-	RosterTaskType taskType = contact ? task.type() : RosterTaskDelete;
+	RosterTaskType taskType = contact ? task.type() : RosterTaskType::Delete;
 
 	if (contact)
 		contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
 	switch (taskType)
 	{
-		case RosterTaskAdd:
+		case RosterTaskType::Add:
 			contact.setIgnoreNextStatusChange(true);
 			rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 			break;
 
-		case RosterTaskDelete:
+		case RosterTaskType::Delete:
 			rosterTask->remove(contact.id());
 			break;
 
-		case RosterTaskUpdate:
+		case RosterTaskType::Update:
 			rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 			break;
 

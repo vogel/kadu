@@ -23,6 +23,7 @@
 
 #include "contacts/contact-manager.h"
 #include "protocols/services/roster/roster-state.h"
+#include "protocols/services/roster/roster-task-type.h"
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
@@ -163,11 +164,11 @@ void GaduRosterService::executeTask(const RosterTask &task)
 	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
 	switch (task.type())
 	{
-		case RosterTaskAdd:
-		case RosterTaskUpdate:
+		case RosterTaskType::Add:
+		case RosterTaskType::Update:
 			sendNewFlags(contact, notifyTypeFromContact(contact));
 			break;
-		case RosterTaskDelete:
+		case RosterTaskType::Delete:
 			sendNewFlags(contact, 0);
 			break;
 		default:

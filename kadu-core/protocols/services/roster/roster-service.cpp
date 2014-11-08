@@ -28,6 +28,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
 #include "protocols/services/roster/roster-state.h"
+#include "protocols/services/roster/roster-task-type.h"
 
 RosterService::RosterService(Account account, QObject *parent) :
 		AccountService{account, parent},
@@ -69,7 +70,7 @@ void RosterService::contactUpdated()
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask{RosterTaskUpdate, contact.id()});
+	addTask(RosterTask{RosterTaskType::Update, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -109,7 +110,7 @@ void RosterService::prepareRoster(const QVector<Contact> &contacts)
 		if (contact.rosterEntry()->state() == RosterEntrySynchronizing)
 			contact.rosterEntry()->setState(RosterEntryDesynchronized);
 		if (contact.rosterEntry()->requiresSynchronization())
-			addTask(RosterTask{RosterTaskUpdate, contact.id()});
+			addTask(RosterTask{RosterTaskType::Update, contact.id()});
 	}
 }
 
@@ -129,16 +130,16 @@ void RosterService::setTasks(const QVector<RosterTask> &tasks)
 
 bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType)
 {
-	Q_ASSERT(RosterTaskNone != taskType);
-	Q_ASSERT(RosterTaskNone != replacementType);
+	Q_ASSERT(RosterTaskType::None != taskType);
+	Q_ASSERT(RosterTaskType::None != replacementType);
 
-	if (RosterTaskDelete == taskType)
+	if (RosterTaskType::Delete == taskType)
 		return true;
 
-	if (RosterTaskAdd == taskType)
-		return RosterTaskDelete == replacementType;
+	if (RosterTaskType::Add == taskType)
+		return RosterTaskType::Delete == replacementType;
 
-	return RosterTaskUpdate != replacementType;
+	return RosterTaskType::Update != replacementType;
 }
 
 void RosterService::setContacts(const QVector<Contact> &contacts)
@@ -183,7 +184,7 @@ void RosterService::addTask(const RosterTask &task)
 RosterTaskType RosterService::taskType(const QString &id)
 {
 	if (!m_idToTask.contains(id))
-		return RosterTaskNone;
+		return RosterTaskType::None;
 	else
 		return m_idToTask.value(id).type();
 }
@@ -212,7 +213,7 @@ void RosterService::addContact(const Contact &contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask{RosterTaskAdd, contact.id()});
+	addTask(RosterTask{RosterTaskType::Add, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -232,7 +233,7 @@ void RosterService::removeContact(const Contact &contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask{RosterTaskDelete, contact.id()});
+	addTask(RosterTask{RosterTaskType::Delete, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -245,7 +246,7 @@ void RosterService::updateContact(const Contact& contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask{RosterTaskUpdate, contact.id()});
+	addTask(RosterTask{RosterTaskType::Update, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }

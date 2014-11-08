@@ -22,8 +22,10 @@
 
 #include "roster-task.h"
 
+#include "protocols/services/roster/roster-task-type.h"
+
 RosterTask::RosterTask() :
-		Type(RosterTaskNone)
+		Type(RosterTaskType::None)
 {
 }
 

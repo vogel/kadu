@@ -48,11 +48,11 @@ QVector<RosterTask> RosterTaskCollectionStorage::loadRosterTasks()
 			continue;
 
 		if (rosterTaskElement.nodeName() == "Add")
-			result.append(RosterTask(RosterTaskAdd, rosterTaskElement.text()));
+			result.append(RosterTask(RosterTaskType::Add, rosterTaskElement.text()));
 		else if (rosterTaskElement.nodeName() == "Delete")
-			result.append(RosterTask(RosterTaskDelete, rosterTaskElement.text()));
+			result.append(RosterTask(RosterTaskType::Delete, rosterTaskElement.text()));
 		else if (rosterTaskElement.nodeName() == "Update")
-			result.append(RosterTask(RosterTaskUpdate, rosterTaskElement.text()));
+			result.append(RosterTask(RosterTaskType::Update, rosterTaskElement.text()));
 	}
 
 	return result;
@@ -68,13 +68,13 @@ void RosterTaskCollectionStorage::storeRosterTasks(const QVector<RosterTask> &ta
 	for (auto &&task : tasks)
 		switch (task.type())
 		{
-			case RosterTaskAdd:
+			case RosterTaskType::Add:
 				m_storage->storage()->createTextNode(rosterTasksNode, "Add", task.id());
 				break;
-			case RosterTaskDelete:
+			case RosterTaskType::Delete:
 				m_storage->storage()->createTextNode(rosterTasksNode, "Delete", task.id());
 				break;
-			case RosterTaskUpdate:
+			case RosterTaskType::Update:
 				m_storage->storage()->createTextNode(rosterTasksNode, "Update", task.id());
 				break;
 			default:

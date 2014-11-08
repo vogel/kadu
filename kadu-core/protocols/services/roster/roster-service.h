@@ -191,7 +191,7 @@ protected:
 	 * @param id id of contact to check task for
 	 * @return type of task for given id
 	 *
-	 * If no task for given id is found then RosterTaskNone is returned.
+	 * If no task for given id is found then RosterTaskType::None is returned.
 	 */
 	RosterTaskType taskType(const QString &id);
 
