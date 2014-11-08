@@ -18,12 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_TASK_H
-#define ROSTER_TASK_H
-
-#include <QtCore/QString>
+#pragma once
 
 #include "exports.h"
+
+#include <QtCore/QString>
 
 enum class RosterTaskType;
 
@@ -34,7 +33,6 @@ enum class RosterTaskType;
 
 /**
  * @class RosterTask
- * @author Rafał 'Vogel' Malinowski
  * @short Class describing one roster task.
  *
  * Roster task is described by contact id (username) and roster task type. More data about task is read from Kadu's
@@ -42,63 +40,22 @@ enum class RosterTaskType;
  */
 class KADUAPI RosterTask
 {
-	RosterTaskType Type;
-	QString Id;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create empty instance of RosterTask class.
-	 */
 	RosterTask();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of RosterTask class.
-	 * @param type type of roster task
-	 * @param id id of contact
-	 */
 	RosterTask(RosterTaskType type, const QString &id);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Copy existing instance of RosterTask class.
-	 * @param copyMe instance to copy
-	 */
-	RosterTask(const RosterTask &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Copy existing instance of RosterTask class.
-	 * @param copyMe instance to copy
-	 */
-	RosterTask & operator = (const RosterTask &copyMe);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Check if this instance is idenitcal to other one.
-	 * @param compare instance to compare with
-	 */
-	bool operator == (const RosterTask &compare) const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return value of Type property.
-	 * @return value of Type property
-	 */
 	RosterTaskType type() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return value of Id property.
-	 * @return value of Id property
-	 */
 	QString id() const;
+
+	friend KADUAPI bool operator == (const RosterTask &x, const RosterTask &y);
+
+private:
+	RosterTaskType m_type;
+	QString m_id;
 
 };
 
 /**
  * @}
  */
-
-#endif // ROSTER_TASK_H

@@ -25,40 +25,27 @@
 #include "protocols/services/roster/roster-task-type.h"
 
 RosterTask::RosterTask() :
-		Type(RosterTaskType::None)
+		m_type{RosterTaskType::None}
 {
 }
 
 RosterTask::RosterTask(RosterTaskType type, const QString &id) :
-		Type(type), Id(id)
+		m_type{type},
+		m_id{id}
 {
-}
-
-RosterTask::RosterTask(const RosterTask &copyMe)
-{
-	Type = copyMe.Type;
-	Id = copyMe.Id;
-}
-
-RosterTask & RosterTask::operator = (const RosterTask &copyMe)
-{
-	Type = copyMe.Type;
-	Id = copyMe.Id;
-
-	return *this;
-}
-
-bool RosterTask::operator == (const RosterTask &compare) const
-{
-	return Type == compare.Type && Id == compare.Id;
 }
 
 RosterTaskType RosterTask::type() const
 {
-	return Type;
+	return m_type;
 }
 
 QString RosterTask::id() const
 {
-	return Id;
+	return m_id;
+}
+
+bool operator == (const RosterTask &x, const RosterTask &y)
+{
+	return x.m_type == y.m_type && x.m_id == y.m_id;
 }
