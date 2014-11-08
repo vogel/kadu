@@ -1115,6 +1115,14 @@ changes upon establishing connection to the server</translation>
         <source>Unlimited</source>
         <translation>Unlimited</translation>
     </message>
+    <message>
+        <source>Open chat window minimized</source>
+        <translation>Open chat window minimized</translation>
+    </message>
+    <message>
+        <source>Open chat window on new message in minimized mode</source>
+        <translation>Open chat window on new message in minimized mode</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2139,6 +2147,10 @@ Do you want to accept this image anyway?</translation>
         <source>Select All</source>
         <translation>Select All</translation>
     </message>
+    <message>
+        <source>Paste and send</source>
+        <translation>Paste and send</translation>
+    </message>
 </context>
 <context>
     <name>DefaultProxyAction</name>
@@ -3134,6 +3146,49 @@ from now on. Are you sure you want to leave this conference?</translation>
     <message>
         <source>Provides: %1</source>
         <translation>Provides: %1</translation>
+    </message>
+</context>
+<context>
+    <name>PluginModel</name>
+    <message>
+        <source>Chat</source>
+        <translation>Chat</translation>
+    </message>
+    <message>
+        <source>Chats history</source>
+        <translation>Chats history</translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation>Desktop</translation>
+    </message>
+    <message>
+        <source>Media players</source>
+        <translation>Media players</translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation>Notifications</translation>
+    </message>
+    <message>
+        <source>Privacy</source>
+        <translation>Privacy</translation>
+    </message>
+    <message>
+        <source>Protocols</source>
+        <translation>Protocols</translation>
+    </message>
+    <message>
+        <source>Sound</source>
+        <translation>Sound</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation>Misc</translation>
     </message>
 </context>
 <context>

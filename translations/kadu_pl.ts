@@ -1111,6 +1111,14 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Unlimited</source>
         <translation>Nielimitowane</translation>
     </message>
+    <message>
+        <source>Open chat window minimized</source>
+        <translation>Otwórz okno rozmowy zminimalizowane</translation>
+    </message>
+    <message>
+        <source>Open chat window on new message in minimized mode</source>
+        <translation>Otwórz nowe okno rozmowy w trybie zminimalizowanym</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2141,6 +2149,10 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
         <source>Select All</source>
         <translation>Wybierz wszystko</translation>
     </message>
+    <message>
+        <source>Paste and send</source>
+        <translation>Wklej i wyślij</translation>
+    </message>
 </context>
 <context>
     <name>DefaultProxyAction</name>
@@ -3136,6 +3148,49 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>Provides: %1</source>
         <translation>Dostarcza: %1</translation>
+    </message>
+</context>
+<context>
+    <name>PluginModel</name>
+    <message>
+        <source>Chat</source>
+        <translation>Rozmowa</translation>
+    </message>
+    <message>
+        <source>Chats history</source>
+        <translation>Historia rozmów</translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation>Pulpit</translation>
+    </message>
+    <message>
+        <source>Media players</source>
+        <translation>Odtwarzacze muzyczne</translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation>Powiadomienia</translation>
+    </message>
+    <message>
+        <source>Privacy</source>
+        <translation>Prywatność</translation>
+    </message>
+    <message>
+        <source>Protocols</source>
+        <translation>Protokoły</translation>
+    </message>
+    <message>
+        <source>Sound</source>
+        <translation>Dźwięki</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation>Różne</translation>
     </message>
 </context>
 <context>

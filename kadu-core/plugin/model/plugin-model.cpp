@@ -29,6 +29,8 @@
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/metadata/plugin-metadata.h"
 
+#include <QtCore/QCoreApplication>
+
 PluginModel::PluginModel(QObject *parent) :
 		QAbstractListModel{parent}
 {
@@ -84,7 +86,19 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 			return m_activePlugins.contains(pluginMetadata.name());
 		case CategorizedSortFilterProxyModel::CategoryDisplayRole:
 		case CategorizedSortFilterProxyModel::CategorySortRole:
-			return !pluginMetadata.category().isEmpty() ? pluginMetadata.category() : "Misc";
+		{
+			(void)QT_TR_NOOP("Chat");
+			(void)QT_TR_NOOP("Chats history");
+			(void)QT_TR_NOOP("Desktop");
+			(void)QT_TR_NOOP("Media players");
+			(void)QT_TR_NOOP("Notifications");
+			(void)QT_TR_NOOP("Privacy");
+			(void)QT_TR_NOOP("Protocols");
+			(void)QT_TR_NOOP("Sound");
+			(void)QT_TR_NOOP("Status");
+
+			return !pluginMetadata.category().isEmpty() ? QCoreApplication::translate("PluginModel", pluginMetadata.category().toUtf8().constData()) : tr("Misc");
+		}
 		default:
 			return {};
 	}

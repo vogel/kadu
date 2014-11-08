@@ -4,6 +4,7 @@
 * chat: #1219 implemented: paste and send action added to chat widget (Vogel)
 * gui: #2818 implemented: add option to open chat windows minimized on incoming message (Vogel)
 * gui: #1510 implemented: hide description option also affects notifications (Vogel)
+* plugins: #2825 implemented: plugin categories are now translated (Vogel)
 
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)

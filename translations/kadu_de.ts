@@ -1107,6 +1107,14 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Unlimited</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Open chat window minimized</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Open chat window on new message in minimized mode</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2129,6 +2137,10 @@ Do you want to accept this image anyway?</source>
         <source>Select All</source>
         <translation>Alles auswählen</translation>
     </message>
+    <message>
+        <source>Paste and send</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>DefaultProxyAction</name>
@@ -3122,6 +3134,49 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Provides: %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>PluginModel</name>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Chats history</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Media players</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Privacy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Protocols</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Sound</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Misc</source>
         <translation type="unfinished"/>
     </message>
 </context>
