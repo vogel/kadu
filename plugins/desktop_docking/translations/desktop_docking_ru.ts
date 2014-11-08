@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"/>
+        <translation>Трей</translation>
     </message>
     <message>
         <source>Desktop Docking</source>
@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>Horizontal position</source>
-        <translation type="unfinished"/>
+        <translation>Позиция по-горизонтали</translation>
     </message>
     <message>
         <source>Vertical position</source>
-        <translation type="unfinished"/>
+        <translation>Позиция по-вертикали</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"/>
+        <translation>Прозрачный</translation>
     </message>
     <message>
         <source>Background color</source>
-        <translation type="unfinished"/>
+        <translation>Цыет фона</translation>
     </message>
     <message>
         <source>Enable Move entry in docklet&apos;s menu</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished"/>
+        <translation>Переместить</translation>
     </message>
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
@@ -46,7 +46,7 @@
     <name>DesktopDock</name>
     <message>
         <source>Move</source>
-        <translation type="unfinished"/>
+        <translation>Переместить</translation>
     </message>
 </context>
 </TS>

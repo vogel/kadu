@@ -27,15 +27,15 @@
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Поведение</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Описание</translation>
     </message>
     <message>
         <source>Always add description to status</source>
-        <translation type="unfinished"/>
+        <translation>Всегда добавлять описание к статусу</translation>
     </message>
 </context>
 </TS>

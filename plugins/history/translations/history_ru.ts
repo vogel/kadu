@@ -3,39 +3,39 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Чат</translation>
     </message>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>История</translation>
     </message>
     <message>
         <source>Chats History</source>
-        <translation type="unfinished"/>
+        <translation>История чата</translation>
     </message>
     <message>
         <source>Save messages in history</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять историю сообщений</translation>
     </message>
     <message>
         <source>Save chats with anonymous users</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять чаты с анонимными пользователями</translation>
     </message>
     <message>
         <source>Status Changes</source>
-        <translation type="unfinished"/>
+        <translation>Изменения статуса</translation>
     </message>
     <message>
         <source>Save status changes</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять изменения статуса</translation>
     </message>
     <message>
         <source>Save status changes in history</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять изменения статуса в истории</translation>
     </message>
     <message>
         <source>Save status only with description</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять только статусы с описанием</translation>
     </message>
     <message>
         <source>Shortcuts</source>
@@ -43,19 +43,19 @@
     </message>
     <message>
         <source>View history</source>
-        <translation type="unfinished"/>
+        <translation>Показать историю</translation>
     </message>
     <message>
         <source>Save chats in history</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять чаты в историю</translation>
     </message>
     <message>
         <source>History in chat window</source>
-        <translation type="unfinished"/>
+        <translation>История в окне чата</translation>
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation type="unfinished"/>
+        <translation>Показать сообщения с</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
@@ -63,15 +63,15 @@
     </message>
     <message>
         <source>yesterday</source>
-        <translation type="unfinished"/>
+        <translation>вчера</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation type="unfinished"/>
+        <translation>на прошлой неделе</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation type="unfinished"/>
+        <translation>в прошлом месяце</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
@@ -83,14 +83,14 @@
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"/>
+        <translation>Окно чата</translation>
     </message>
 </context>
 <context>
     <name>BuddyHistoryDeleteHandler</name>
     <message>
         <source>Chat history</source>
-        <translation type="unfinished"/>
+        <translation>История чата</translation>
     </message>
 </context>
 <context>
@@ -104,29 +104,29 @@
     <name>History</name>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"/>
+        <translation>Очистить историю</translation>
     </message>
 </context>
 <context>
     <name>HistoryBuddyConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>История</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять историю</translation>
     </message>
 </context>
 <context>
     <name>HistoryChatConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>История</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять историю</translation>
     </message>
 </context>
 <context>
@@ -137,53 +137,53 @@
     </message>
     <message>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Фильтр</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation type="unfinished"/>
+        <translation>Вы действительно хотите очистить историю?</translation>
     </message>
     <message>
         <source>Delete history</source>
-        <translation type="unfinished"/>
+        <translation>Очистить историю</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
     <name>HistoryQueryResultsModel</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Чат</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Длина</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Дата</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"/>
+        <translation>Заголовок</translation>
     </message>
 </context>
 <context>
     <name>HistoryWindow</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>История</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Поиск</translation>
     </message>
     <message>
         <source>&amp;Clear Status History</source>
@@ -195,50 +195,50 @@
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"/>
+        <translation>Чаты</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Статусы</translation>
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"/>
+        <translation>SMS</translation>
     </message>
 </context>
 <context>
     <name>SearchTab</name>
     <message>
         <source>Search for:</source>
-        <translation type="unfinished"/>
+        <translation>Поиск:</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"/>
+        <translation>Чаты</translation>
     </message>
     <message>
         <source> - All chats - </source>
-        <translation type="unfinished"/>
+        <translation>- Все чаты -</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Статусы</translation>
     </message>
     <message>
         <source> - All buddies - </source>
-        <translation type="unfinished"/>
+        <translation>- Все контакты -</translation>
     </message>
     <message>
         <source>Smses</source>
-        <translation type="unfinished"/>
+        <translation>SMS сообщения</translation>
     </message>
     <message>
         <source> - All recipients - </source>
-        <translation type="unfinished"/>
+        <translation>- Все получатели -</translation>
     </message>
     <message>
         <source>By date</source>
-        <translation type="unfinished"/>
+        <translation>По дате</translation>
     </message>
     <message>
         <source>to</source>
@@ -246,34 +246,34 @@
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Поиск</translation>
     </message>
     <message>
         <source>Found</source>
-        <translation type="unfinished"/>
+        <translation>Найдено</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Чат</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Контакт</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"/>
+        <translation>Получатель</translation>
     </message>
 </context>
 <context>
     <name>ShowHistoryActionDescription</name>
     <message>
         <source>View Chat History</source>
-        <translation type="unfinished"/>
+        <translation>Показать историю чата</translation>
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation type="unfinished"/>
+        <translation>Показывать последние %1 сообщений</translation>
     </message>
     <message>
         <source>Show messages since yesterday</source>

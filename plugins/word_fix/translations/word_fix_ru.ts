@@ -3,30 +3,30 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation>разговор</translation>
+        <translation>Чат</translation>
     </message>
     <message>
         <source>Words fix</source>
-        <translation>коррекция слова</translation>
+        <translation>Коррекция слов</translation>
     </message>
     <message>
         <source>Enable word fix</source>
-        <translation>позволяют коррекции слова</translation>
+        <translation>Включить коррекцию слов</translation>
     </message>
     <message>
         <source>Spelling</source>
-        <translation type="unfinished"/>
+        <translation>Произношение</translation>
     </message>
 </context>
 <context>
     <name>WordFix</name>
     <message>
         <source>A word to be replaced</source>
-        <translation>Слово в замене</translation>
+        <translation>Слово для замены</translation>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation>значение, при котором изменение</translation>
+        <translation>Изменяемое значение</translation>
     </message>
     <message>
         <source>Add</source>
@@ -34,11 +34,11 @@
     </message>
     <message>
         <source>Change</source>
-        <translation>изменения</translation>
+        <translation>Изменить</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>удалить</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <source>Word</source>
@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Replace with</source>
-        <translation>Заменить</translation>
+        <translation>Заменить на</translation>
     </message>
 </context>
 </TS>
