@@ -127,17 +127,6 @@ public:
 	 */
 	void setTasks(const QVector<RosterTask> &tasks);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new task for later execution.
-	 * @param task new task
-	 *
-	 * If existing task for given id is available then this service decides which one to use and which one to ignore.
-	 * If existing task is deletion, then it is always replaced. Addition task can be only replaced by deletion task. Update task
-	 * can be replaced by any non-update task.
-	 */
-	void addTask(const RosterTask &task);
-
 public slots:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -239,6 +228,17 @@ private:
 	QVector<Contact> m_contacts;
 	QQueue<RosterTask> m_tasks;
 	QMap<QString, RosterTask> m_idToTask;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Add new task for later execution.
+	 * @param task new task
+	 *
+	 * If existing task for given id is available then this service decides which one to use and which one to ignore.
+	 * If existing task is deletion, then it is always replaced. Addition task can be only replaced by deletion task. Update task
+	 * can be replaced by any non-update task.
+	 */
+	void addTask(const RosterTask &task);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
