@@ -145,33 +145,34 @@ void AccountShared::importNetworkProxy()
 	removeValue("ProxyPassword");
 }
 
-void AccountShared::loadRosterTasks()
+QVector<RosterTask> AccountShared::loadRosterTasks()
 {
+	auto result = QVector<RosterTask>{};
+
 	if (!isValidStorage())
-		return;
+		return result;
 
-	if (!protocolHandler() || !protocolHandler()->rosterService())
-		return;
+	auto configurationStorage = storage()->storage();
+	auto rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
 
-	ConfigurationApi *configurationStorage = storage()->storage();
-	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
+	auto rosterTaskNodes = rosterTasksNode.childNodes();
+	auto rosterTaskCount = rosterTaskNodes.count();
 
-	QDomNodeList rosterTaskNodes = rosterTasksNode.childNodes();
-	const int rosterTaskCount = rosterTaskNodes.count();
-
-	for (int i = 0; i < rosterTaskCount; i++)
+	for (decltype(rosterTaskCount) i = 0; i < rosterTaskCount; i++)
 	{
-		QDomElement rosterTaskElement = rosterTaskNodes.at(i).toElement();
+		auto rosterTaskElement = rosterTaskNodes.at(i).toElement();
 		if (rosterTaskElement.isNull() || rosterTaskElement.text().isEmpty())
 			continue;
 
 		if (rosterTaskElement.nodeName() == "Add")
-			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskAdd, rosterTaskElement.text()));
+			result.append(RosterTask(RosterTaskAdd, rosterTaskElement.text()));
 		else if (rosterTaskElement.nodeName() == "Delete")
-			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskDelete, rosterTaskElement.text()));
+			result.append(RosterTask(RosterTaskDelete, rosterTaskElement.text()));
 		else if (rosterTaskElement.nodeName() == "Update")
-			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskUpdate, rosterTaskElement.text()));
+			result.append(RosterTask(RosterTaskUpdate, rosterTaskElement.text()));
 	}
+
+	return result;
 }
 
 void AccountShared::load()
@@ -216,7 +217,8 @@ void AccountShared::load()
 			protocolRegistered(factory);
 	}
 
-	loadRosterTasks();
+	if (protocolHandler() && protocolHandler()->rosterService())
+		protocolHandler()->rosterService()->setTasks(loadRosterTasks());
 }
 
 void AccountShared::storeRosterTasks()
@@ -353,7 +355,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-	loadRosterTasks();
+	if (protocolHandler() && protocolHandler()->rosterService())
+		protocolHandler()->rosterService()->setTasks(loadRosterTasks());
 
 	MyStatusContainer->triggerStatusUpdated();
 
