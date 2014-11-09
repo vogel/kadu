@@ -52,7 +52,7 @@ GaduContactListService::GaduContactListService(const Account &account, Protocol 
 
 	StateMachine->start();
 
-	if (!ContactManager::instance()->dirtyContacts(account).isEmpty())
+	if (ContactManager::instance()->hasDirtyContacts(account))
 		emit stateMachineLocalDirty();
 }
 

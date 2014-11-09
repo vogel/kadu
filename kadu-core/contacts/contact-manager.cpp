@@ -209,22 +209,20 @@ QVector<Contact> ContactManager::contacts(Account account, AnonymousInclusion in
 	return contacts;
 }
 
-QVector<Contact> ContactManager::dirtyContacts(Account account)
+bool ContactManager::hasDirtyContacts(Account account)
 {
 	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
-	QVector<Contact> contacts;
-
 	if (account.isNull())
-		return contacts;
+		return false;
 
 	for (auto &&contact : items())
 		if (account == contact.contactAccount() && contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
-			contacts.append(contact);
+			return true;
 
-	return contacts;
+	return false;
 }
 
 void ContactManager::contactDataUpdated()

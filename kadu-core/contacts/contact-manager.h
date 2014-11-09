@@ -80,7 +80,7 @@ public:
 	Contact byId(Account account, const QString &id, NotFoundAction action);
 	QVector<Contact> contacts(Account account, AnonymousInclusion inclusion = IncludeAnonymous);
 
-	QVector<Contact> dirtyContacts(Account account);
+	bool hasDirtyContacts(Account account);
 
 signals:
 	void contactAboutToBeAdded(Contact contact);
