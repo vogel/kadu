@@ -20,14 +20,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_H
-#define ROSTER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "contacts/contact.h"
-
 #include "exports.h"
+
+#include <QtCore/QObject>
 
 class RosterService;
 
@@ -51,11 +49,6 @@ class KADUAPI Roster : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Roster)
-
-	static Roster *Instance;
-
-	Roster();
-	virtual ~Roster();
 
 public:
 	/**
@@ -88,10 +81,14 @@ public slots:
 	 */
 	void removeContact(const Contact &contact) const;
 
+private:
+	static Roster *m_instance;
+
+	Roster();
+	virtual ~Roster();
+
 };
 
 /**
  * @}
  */
-
-#endif // ROSTER_H
