@@ -53,7 +53,7 @@ enum class RosterState;
  * for changes and updated automatically, until it is removed.
  *
  * If an action cannot be executed immediately it is stored as @link RosterTask @endlink object for later execution.
- * List of tasks is available by calling tasks() getter and can be changed by setTasks() setter. This allows for storing
+ * List of tasks is available by calling tasks() getter and can be update by addTasks(). This allows for storing
  * and restoring this list between program invocations. Only one @link RosterTask @endlink for each contact id can be on
  * the list at a time. This service is responsible of choosing which task should be left on the list and which one should
  * be removed in case when second one is added for given id.
@@ -112,13 +112,6 @@ public:
 	 * @see addTask(const RosterTask &)
 	 */
 	void addTasks(const QVector<RosterTask> &tasks);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set list of non-executed roster tasks.
-	 * @param tasks new list of non-executed roster tasks
-	 */
-	void setTasks(const QVector<RosterTask> &tasks);
 
 public slots:
 	/**

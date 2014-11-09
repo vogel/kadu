@@ -198,7 +198,7 @@ void AccountShared::load()
 	}
 
 	if (protocolHandler() && protocolHandler()->rosterService())
-		protocolHandler()->rosterService()->setTasks(loadRosterTasks());
+		protocolHandler()->rosterService()->addTasks(loadRosterTasks());
 }
 
 void AccountShared::storeRosterTasks(const QVector<RosterTask> &tasks)
@@ -314,7 +314,7 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
 	if (protocolHandler() && protocolHandler()->rosterService())
-		protocolHandler()->rosterService()->setTasks(loadRosterTasks());
+		protocolHandler()->rosterService()->addTasks(loadRosterTasks());
 
 	MyStatusContainer->triggerStatusUpdated();
 

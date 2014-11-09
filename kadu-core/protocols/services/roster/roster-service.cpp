@@ -135,15 +135,6 @@ QVector<RosterTask> RosterService::tasks()
 	return m_tasks.toVector();
 }
 
-void RosterService::setTasks(const QVector<RosterTask> &tasks)
-{
-	m_tasks.clear();
-	m_idToTask.clear();
-
-	for (auto &&task : tasks)
-		addTask(task);
-}
-
 bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType)
 {
 	Q_ASSERT(RosterTaskType::None != taskType);
