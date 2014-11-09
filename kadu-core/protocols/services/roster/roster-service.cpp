@@ -30,10 +30,13 @@
 #include "protocols/services/roster/roster-state.h"
 #include "protocols/services/roster/roster-task-type.h"
 
-RosterService::RosterService(Account account, QObject *parent) :
+RosterService::RosterService(Account account, const QVector<Contact> &contacts, QObject *parent) :
 		AccountService{account, parent},
-		m_state{RosterState::NonInitialized}
+		m_state{RosterState::NonInitialized},
+		m_contacts{std::move(contacts)}
 {
+	for (auto &&contact : m_contacts)
+		connectContact(contact);
 }
 
 RosterService::~RosterService()
@@ -54,7 +57,6 @@ void RosterService::setProtocol(Protocol *protocol)
 void RosterService::disconnected()
 {
 	setState(RosterState::NonInitialized);
-	setContacts({});
 }
 
 void RosterService::contactUpdated()
@@ -138,17 +140,6 @@ bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType re
 		return RosterTaskType::Delete == replacementType;
 
 	return RosterTaskType::Update != replacementType;
-}
-
-void RosterService::setContacts(const QVector<Contact> &contacts)
-{
-	for (auto &&contact : m_contacts)
-		disconnectContact(contact);
-
-	m_contacts = contacts;
-
-	for (auto &&contact : m_contacts)
-		connectContact(contact);
 }
 
 void RosterService::connectContact(const Contact &contact)

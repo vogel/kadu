@@ -48,8 +48,8 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 	return result;
 }
 
-GaduRosterService::GaduRosterService(Account account, QObject *parent) :
-		RosterService(account, parent)
+GaduRosterService::GaduRosterService(Account account, const QVector<Contact> &contacts, QObject *parent) :
+		RosterService(account, std::move(contacts), parent)
 {
 }
 
@@ -61,12 +61,11 @@ void GaduRosterService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
+void GaduRosterService::prepareRoster()
 {
 	if (!Connection || !Connection->hasSession())
 		return;
 
-	setContacts(contacts);
 	RosterService::prepareRoster();
 
 	Q_ASSERT(RosterState::NonInitialized == state());

@@ -102,10 +102,10 @@ protected:
 	virtual void executeTask(const RosterTask &task);
 
 public:
-	explicit JabberRosterService(Account account, QObject *parent = 0);
+	explicit JabberRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = 0);
 	virtual ~JabberRosterService();
 
-	virtual void prepareRoster(const QVector<Contact> &contacts);
+	void prepareRoster();
 
 	void setClient(Client *xmppClient);
 

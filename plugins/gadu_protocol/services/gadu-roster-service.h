@@ -45,12 +45,12 @@ protected:
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduRosterService(Account account, QObject *parent = 0);
+	explicit GaduRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = 0);
 	virtual ~GaduRosterService();
 
 	void setConnection(GaduConnection *connection);
 
-	void prepareRoster(const QVector<Contact> &contacts);
+	void prepareRoster();
 
 };
 

@@ -79,8 +79,9 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of RosterService bound to given Account.
 	 * @param account to bound this service to
+	 * @param contacts initial list of account contacts that should be stored in Roster
 	 */
-	explicit RosterService(Account account, QObject *parent = nullptr);
+	explicit RosterService(Account account, const QVector<Contact> &contacts, QObject *parent = nullptr);
 	virtual ~RosterService();
 
 	/**
@@ -176,15 +177,6 @@ protected:
 	 * and not currently synchronizing) when there is no task for given contact.
 	 */
 	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set current list of contacts.
-	 * @param contacts new list of contacts
-	 *
-	 * All contacts that are currently on list are disconencted and new ones are connected.
-	 */
-	void setContacts(const QVector<Contact> &contacts);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
