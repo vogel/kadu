@@ -50,7 +50,7 @@ public:
 
 	void setConnection(GaduConnection *connection);
 
-	virtual void prepareRoster(const QVector<Contact> &contacts);
+	void prepareRoster(const QVector<Contact> &contacts);
 
 };
 

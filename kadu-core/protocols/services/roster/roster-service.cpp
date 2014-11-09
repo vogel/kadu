@@ -99,10 +99,8 @@ void RosterService::setState(RosterState state)
 	m_state = state;
 }
 
-void RosterService::prepareRoster(const QVector<Contact> &contacts)
+void RosterService::prepareRoster()
 {
-	setContacts(contacts);
-
 	for (auto &&contact : m_contacts)
 	{
 		if (!contact.rosterEntry())

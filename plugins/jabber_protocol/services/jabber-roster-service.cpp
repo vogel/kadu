@@ -280,7 +280,8 @@ void JabberRosterService::deleteMarkedContacts()
 
 void JabberRosterService::prepareRoster(const QVector<Contact> &contacts)
 {
-	RosterService::prepareRoster(contacts);
+	setContacts(contacts);
+	RosterService::prepareRoster();
 
 	Q_ASSERT(RosterState::NonInitialized == state());
 	Q_ASSERT(XmppClient);

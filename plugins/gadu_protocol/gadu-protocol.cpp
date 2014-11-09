@@ -330,7 +330,8 @@ void GaduProtocol::afterLoggedIn()
 	setUpFileTransferService();
 
 	// we do not need to wait for "rosterReady" signal in GaduGadu
-	rosterService()->prepareRoster(ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous));
+	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
+	static_cast<GaduRosterService *>(rosterService())->prepareRoster(contacts);
 	sendStatusToServer();
 }
 

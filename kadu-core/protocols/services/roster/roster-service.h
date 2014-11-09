@@ -101,7 +101,6 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Prepare roster to its work.
-	 * @param contacts initial list of contacts that are assumed to be also on remote roster
 	 *
 	 * This method must be reimplemented by derived services. Depending on protocol it should download remote roster,
 	 * upload local one, merge both or do nothig. After successfull (or not) preparation rosterReady() signal must be
@@ -111,7 +110,7 @@ public:
 	 * them later. If contact is in RosterEntrySynchronizing state then it is moved to RosterEntryDesynchronized with assumption
 	 * that previous synchronization was not finished.
 	 */
-	virtual void prepareRoster(const QVector<Contact> &contacts);
+	void prepareRoster();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -177,6 +176,15 @@ protected:
 	 * and not currently synchronizing) when there is no task for given contact.
 	 */
 	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set current list of contacts.
+	 * @param contacts new list of contacts
+	 *
+	 * All contacts that are currently on list are disconencted and new ones are connected.
+	 */
+	void setContacts(const QVector<Contact> &contacts);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -246,15 +254,6 @@ private:
 	 * @return true if task of second type should replace task of first type on list of task to execute
 	 */
 	bool shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set current list of contacts.
-	 * @param contacts new list of contacts
-	 *
-	 * All contacts that are currently on list are disconencted and new ones are connected.
-	 */
-	void setContacts(const QVector<Contact> &contacts);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -242,7 +242,8 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::afterLoggedIn()
 {
-	rosterService()->prepareRoster(ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous));
+	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
+	static_cast<JabberRosterService *>(rosterService())->prepareRoster(contacts);
 }
 
 void JabberProtocol::logout()

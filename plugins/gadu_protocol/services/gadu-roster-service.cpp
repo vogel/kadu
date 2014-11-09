@@ -66,7 +66,8 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 	if (!Connection || !Connection->hasSession())
 		return;
 
-	RosterService::prepareRoster(contacts);
+	setContacts(contacts);
+	RosterService::prepareRoster();
 
 	Q_ASSERT(RosterState::NonInitialized == state());
 
