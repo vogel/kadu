@@ -38,6 +38,7 @@ namespace GaduListHelper
 {
 	void setSupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 	QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
+	QByteArray contactListToByteArray(const QVector<Contact> &contacts);
 	QString contactToLine70(Contact contact);
 	BuddyList byteArrayToBuddyList(Account account, QByteArray &content);
 	BuddyList streamToBuddyList(Account account, QTextStream &content);

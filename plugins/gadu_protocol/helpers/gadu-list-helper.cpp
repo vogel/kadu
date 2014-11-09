@@ -84,14 +84,19 @@ QString GaduListHelper::contactToLine70(Contact contact)
 
 QByteArray GaduListHelper::buddyListToByteArray(Account account, const BuddyList &buddies)
 {
-	kdebugf();
+	auto contacts = QVector<Contact>{};
+	for (auto &&buddy : buddies)
+		contacts += buddy.contacts(account);
+	return contactListToByteArray(contacts);
+}
 
-	QStringList result;
+QByteArray GaduListHelper::contactListToByteArray(const QVector<Contact> &contacts)
+{
+	auto result = QStringList{};
 	result.append("GG70ExportString");
 
-	foreach (const Buddy &buddy, buddies)
-		foreach (const Contact &contact, buddy.contacts(account))
-			result.append(contactToLine70(contact));
+	for (auto &&contact : contacts)
+		result.append(contactToLine70(contact));
 
 	return result.join("\n").toUtf8();
 }
