@@ -88,7 +88,7 @@ signals:
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
 
-	void dirtyContactAdded(Contact contact);
+	void accountContactsDirty(Account account);
 
 	void contactUpdated(const Contact &contact);
 

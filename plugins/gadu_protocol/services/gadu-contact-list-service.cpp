@@ -48,7 +48,7 @@ GaduContactListService::GaduContactListService(const Account &account, Protocol 
 	connect(StateMachine, SIGNAL(performGet()), SLOT(importContactList()));
 	connect(StateMachine, SIGNAL(performPut()), SLOT(exportContactList()));
 
-	connect(ContactManager::instance(), SIGNAL(dirtyContactAdded(Contact)), SLOT(dirtyContactAdded(Contact)));
+	connect(ContactManager::instance(), SIGNAL(accountContactsDirty(Account)), SLOT(accountContactsDirty(Account)));
 
 	StateMachine->start();
 
@@ -213,9 +213,9 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 		emit stateMachineRemoteDirty();
 }
 
-void GaduContactListService::dirtyContactAdded(Contact contact)
+void GaduContactListService::accountContactsDirty(Account a)
 {
-	if (contact.contactAccount() == account())
+	if (a == account())
 		QMetaObject::invokeMethod(this, "stateMachineLocalDirty", Qt::QueuedConnection);
 }
 

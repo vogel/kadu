@@ -98,7 +98,7 @@ void ContactManager::dirtinessChanged()
 	Contact contact(sender());
 	if (!contact.isNull() && contact.ownerBuddy() != Core::instance()->myself())
 		if (contact.rosterEntry()->requiresSynchronization())
-			emit dirtyContactAdded(contact);
+			emit accountContactsDirty(contact.contactAccount());
 }
 
 void ContactManager::unreadMessageAdded(const Message &message)
@@ -135,7 +135,7 @@ void ContactManager::itemRegistered(Contact item)
 	if (Core::instance()->myself() == item.ownerBuddy())
 		item.rosterEntry()->setState(RosterEntrySynchronized);
 	else if (item.rosterEntry()->requiresSynchronization())
-		emit dirtyContactAdded(item);
+		emit accountContactsDirty(item.contactAccount());
 
 	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 }

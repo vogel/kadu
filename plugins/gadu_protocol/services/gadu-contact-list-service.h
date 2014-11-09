@@ -52,7 +52,7 @@ class GaduContactListService : public ContactListService
 	void getFinished(bool ok);
 
 private slots:
-	void dirtyContactAdded(Contact contact);
+	void accountContactsDirty(Account account);
 
 public:
 	explicit GaduContactListService(const Account &account, Protocol *protocol);
