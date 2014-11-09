@@ -161,16 +161,26 @@ void GaduRosterService::executeTask(const RosterTask &task)
 {
 	Q_ASSERT(RosterState::Initialized == state());
 
-	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
 	switch (task.type())
 	{
 		case RosterTaskType::Add:
-		case RosterTaskType::Update:
+		{
+			auto contact = ContactManager::instance()->byId(account(), task.id(), ActionCreateAndAdd);
 			sendNewFlags(contact, notifyTypeFromContact(contact));
 			break;
+		}
+		case RosterTaskType::Update:
+		{
+			auto contact = ContactManager::instance()->byId(account(), task.id(), ActionCreate);
+			sendNewFlags(contact, notifyTypeFromContact(contact));
+			break;
+		}
 		case RosterTaskType::Delete:
+		{
+			auto contact = ContactManager::instance()->byId(account(), task.id(), ActionCreate);
 			sendNewFlags(contact, 0);
 			break;
+		}
 		default:
 			break;
 	}
