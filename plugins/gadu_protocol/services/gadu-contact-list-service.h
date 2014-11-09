@@ -41,6 +41,7 @@ class GaduContactListService : public ContactListService
 	QPointer<GaduConnection> Connection;
 	QPointer<RosterNotifier> MyRosterNotifier;
 	GaduContactListStateMachine *StateMachine;
+	QVector<Contact> ExportedContacts;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventUserlist100Version(struct gg_event *e);

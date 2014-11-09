@@ -177,7 +177,7 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 		{
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
-			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(account()))
+			for (auto &&contact : ExportedContacts)
 				contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 			putFinished(true);
@@ -262,7 +262,11 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 
 	emit stateMachinePutStarted();
 
-	QByteArray contacts = GaduListHelper::buddyListToByteArray(account(), buddies);
+	ExportedContacts.clear();
+	for (auto &&buddy : buddies)
+		ExportedContacts += buddy.contacts(account());
+
+	auto contacts = GaduListHelper::contactListToByteArray(ExportedContacts);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
