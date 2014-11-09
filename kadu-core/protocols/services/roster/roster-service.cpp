@@ -59,7 +59,7 @@ void RosterService::disconnected()
 	setState(RosterState::NonInitialized);
 }
 
-void RosterService::contactUpdated()
+void RosterService::contactDirtinessChanged()
 {
 	auto contact = Contact{sender()};
 
@@ -151,12 +151,12 @@ bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType re
 
 void RosterService::connectContact(const Contact &contact)
 {
-	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	connect(contact, SIGNAL(dirtinessChanged()), this, SLOT(contactDirtinessChanged()));
 }
 
 void RosterService::disconnectContact(const Contact &contact)
 {
-	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	disconnect(contact, SIGNAL(dirtinessChanged()), this, SLOT(contactDirtinessChanged()));
 }
 
 void RosterService::addTask(const RosterTask &task)

@@ -286,7 +286,7 @@ private slots:
 	 * This slot can only by called for contacts that were previously added to roster using addContact() methods
 	 * and were not removed.
 	 */
-	void contactUpdated();
+	void contactDirtinessChanged();
 
 };
 

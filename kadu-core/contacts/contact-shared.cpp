@@ -224,6 +224,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 
 	Entry->setState(RosterEntryDesynchronized);
 	changeNotifier().notify();
+
 	emit buddyUpdated();
 }
 
@@ -242,6 +243,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
+	Entry->setState(RosterEntryDesynchronized);
 	changeNotifier().notify();
 }
 
@@ -339,7 +341,7 @@ RosterEntry * ContactShared::rosterEntry()
 
 void ContactShared::avatarUpdated()
 {
-	changeNotifier().notify();
+	Entry->setState(RosterEntryDesynchronized);
 }
 
 void ContactShared::changeNotifierChanged()
@@ -377,6 +379,7 @@ void ContactShared::setContactAvatar(const Avatar &contactAvatar)
 		return;
 
 	doSetContactAvatar(contactAvatar);
+
 	changeNotifier().notify();
 }
 
