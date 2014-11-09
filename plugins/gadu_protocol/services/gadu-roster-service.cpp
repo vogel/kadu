@@ -66,6 +66,7 @@ void GaduRosterService::prepareRoster()
 	if (!Connection || !Connection->hasSession())
 		return;
 
+	resetSynchronizingToDesynchronized();
 	RosterService::prepareRoster();
 
 	Q_ASSERT(RosterState::NonInitialized == state());

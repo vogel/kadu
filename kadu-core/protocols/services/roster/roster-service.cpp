@@ -107,10 +107,19 @@ void RosterService::prepareRoster()
 	{
 		if (!contact.rosterEntry())
 			continue;
-		if (contact.rosterEntry()->state() == RosterEntrySynchronizing)
-			contact.rosterEntry()->setState(RosterEntryDesynchronized);
 		if (contact.rosterEntry()->requiresSynchronization())
 			addTask(RosterTask{RosterTaskType::Update, contact.id()});
+	}
+}
+
+void RosterService::resetSynchronizingToDesynchronized()
+{
+	for (auto &&contact : m_contacts)
+	{
+		if (!contact.rosterEntry())
+			continue;
+		if (contact.rosterEntry()->state() == RosterEntrySynchronizing)
+			contact.rosterEntry()->setState(RosterEntryDesynchronized);
 	}
 }
 

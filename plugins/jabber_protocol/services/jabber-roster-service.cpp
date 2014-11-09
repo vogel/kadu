@@ -280,6 +280,7 @@ void JabberRosterService::deleteMarkedContacts()
 
 void JabberRosterService::prepareRoster()
 {
+	resetSynchronizingToDesynchronized();
 	RosterService::prepareRoster();
 
 	Q_ASSERT(RosterState::NonInitialized == state());

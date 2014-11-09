@@ -210,6 +210,14 @@ protected:
 	 */
 	void executeAllTasks();
 
+	/**
+	 * @short Resets all synchronizing contacts to desynchronized.
+	 * 
+	 * Should be used just after connection has been made. In case when synchronization operation was interrupted
+	 * and roster entry can be lest in synchronizing state. This method fixes that by resetting it to desynchronized.
+	 */
+	void resetSynchronizingToDesynchronized();
+
 protected slots:
 	/**
 	 * @enum RosterState
