@@ -68,7 +68,7 @@ enum class RosterState;
  * initialization the rest of contacts is removed from local roster. In this case Detached flag of @link RosterEntry @endlink
  * does not count as it is only used for detaching from data synchronization.
  *
- * Signal rosterRead() is emitted after calling prepareRoster() when implementation decides that initialization was finished.
+ * Signal rosterReady() is emitted when implementation decides that initialization was finished.
  */
 class KADUAPI RosterService : public AccountService
 {
@@ -101,24 +101,17 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Prepare roster to its work.
-	 *
-	 * This method must be reimplemented by derived services. Depending on protocol it should download remote roster,
-	 * upload local one, merge both or do nothig. After successfull (or not) preparation rosterReady() signal must be
-	 * emitted.
-	 *
-	 * Initial list of contacts is checked for contacts that requires synchronization to create tasks for them and execute
-	 * them later. If contact is in RosterEntrySynchronizing state then it is moved to RosterEntryDesynchronized with assumption
-	 * that previous synchronization was not finished.
-	 */
-	void prepareRoster();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return list of current non-executed roster tasks.
 	 * @return list of current non-executed roster tasks
 	 */
 	QVector<RosterTask> tasks();
+
+	/**
+	 * @short Add tasks for later execution.
+	 * @param tasks list of tasks
+	 * @see addTask(const RosterTask &)
+	 */
+	void addTasks(const QVector<RosterTask> &tasks);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -151,7 +144,7 @@ public slots:
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emitted when prepareRoster() operation is finished
+	 * @short Signal emitted when roster is ready
 	 * @param ok true, if preparing roster was successfull
 	 */
 	void rosterReady(bool ok);
@@ -218,6 +211,20 @@ protected:
 	 */
 	void resetSynchronizingToDesynchronized();
 
+	/**
+	 * @return List of tasks required to update @p contacts
+	 * 
+	 * For each contact that has a RosterEntry and is in desynchronized state a new RosterTask with Update mode is returned.
+	 */
+	static QVector<RosterTask> updateTasksForContacts(const QVector<Contact> &contacts);
+
+	/**
+	 * @return List of tasks required to update known contacts.
+	 * 
+	 * For each known contact that has a RosterEntry and is in desynchronized state a new RosterTask with Update mode is returned.
+	 */
+	QVector<RosterTask> updateTasksForContacts() const;
+
 protected slots:
 	/**
 	 * @enum RosterState
@@ -247,13 +254,6 @@ private:
 	 * can be replaced by any non-update task.
 	 */
 	void addTask(const RosterTask &task);
-
-	/**
-	 * @short Add tasks for later execution.
-	 * @param tasks list of tasks
-	 * @see addTask(const RosterTask &)
-	 */
-	void addTask(const QVector<RosterTask> &tasks);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

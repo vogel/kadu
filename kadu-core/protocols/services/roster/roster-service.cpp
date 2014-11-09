@@ -101,15 +101,22 @@ void RosterService::setState(RosterState state)
 	m_state = state;
 }
 
-void RosterService::prepareRoster()
+QVector<RosterTask> RosterService::updateTasksForContacts(const QVector<Contact> &contacts)
 {
-	for (auto &&contact : m_contacts)
+	auto result = QVector<RosterTask>{};
+	for (auto &&contact : contacts)
 	{
 		if (!contact.rosterEntry())
 			continue;
 		if (contact.rosterEntry()->requiresSynchronization())
-			addTask(RosterTask{RosterTaskType::Update, contact.id()});
+			result.append(RosterTask{RosterTaskType::Update, contact.id()});
 	}
+	return result;
+}
+
+QVector<RosterTask> RosterService::updateTasksForContacts() const
+{
+	return updateTasksForContacts(m_contacts);
 }
 
 void RosterService::resetSynchronizingToDesynchronized()
@@ -179,7 +186,7 @@ void RosterService::addTask(const RosterTask &task)
 	}
 }
 
-void RosterService::addTask(const QVector<RosterTask> &tasks)
+void RosterService::addTasks(const QVector<RosterTask> &tasks)
 {
 	for (auto const &task : tasks)
 		addTask(task);
