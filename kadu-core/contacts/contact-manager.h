@@ -43,8 +43,6 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 
 	static ContactManager * Instance;
 
-	QList<Contact> DirtyContacts;
-
 	ContactManager();
 	virtual ~ContactManager();
 

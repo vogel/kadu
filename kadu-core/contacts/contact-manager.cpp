@@ -97,15 +97,8 @@ void ContactManager::dirtinessChanged()
 
 	Contact contact(sender());
 	if (!contact.isNull() && contact.ownerBuddy() != Core::instance()->myself())
-	{
 		if (contact.rosterEntry()->requiresSynchronization())
-		{
-			DirtyContacts.append(contact);
 			emit dirtyContactAdded(contact);
-		}
-		else
-			DirtyContacts.removeAll(contact);
-	}
 }
 
 void ContactManager::unreadMessageAdded(const Message &message)
@@ -142,10 +135,7 @@ void ContactManager::itemRegistered(Contact item)
 	if (Core::instance()->myself() == item.ownerBuddy())
 		item.rosterEntry()->setState(RosterEntrySynchronized);
 	else if (item.rosterEntry()->requiresSynchronization())
-	{
-		DirtyContacts.append(item);
 		emit dirtyContactAdded(item);
-	}
 
 	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 }
@@ -161,10 +151,6 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
-
-	if (item && item.rosterEntry()->requiresSynchronization())
-		DirtyContacts.removeAll(item);
-
 	emit contactRemoved(item);
 }
 
@@ -234,8 +220,8 @@ QVector<Contact> ContactManager::dirtyContacts(Account account)
 	if (account.isNull())
 		return contacts;
 
-	foreach (const Contact &contact, DirtyContacts)
-		if (account == contact.contactAccount())
+	for (auto &&contact : items())
+		if (account == contact.contactAccount() && contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
 			contacts.append(contact);
 
 	return contacts;
