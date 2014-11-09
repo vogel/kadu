@@ -249,6 +249,13 @@ private:
 	void addTask(const RosterTask &task);
 
 	/**
+	 * @short Add tasks for later execution.
+	 * @param tasks list of tasks
+	 * @see addTask(const RosterTask &)
+	 */
+	void addTask(const QVector<RosterTask> &tasks);
+
+	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return true if task of second type should replace task of first type on list of task to execute.
 	 * @return true if task of second type should replace task of first type on list of task to execute

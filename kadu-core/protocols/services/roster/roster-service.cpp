@@ -179,6 +179,12 @@ void RosterService::addTask(const RosterTask &task)
 	}
 }
 
+void RosterService::addTask(const QVector<RosterTask> &tasks)
+{
+	for (auto const &task : tasks)
+		addTask(task);
+}
+
 RosterTaskType RosterService::taskType(const QString &id)
 {
 	if (!m_idToTask.contains(id))
