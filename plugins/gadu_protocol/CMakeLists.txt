@@ -68,6 +68,7 @@ set (SOURCES
 	services/gadu-contact-personal-info-service.cpp
 	services/gadu-file-transfer-service.cpp
 	services/gadu-multilogon-service.cpp
+	services/gadu-notify-service.cpp
 	services/gadu-personal-info-service.cpp
 	services/gadu-roster-service.cpp
 	services/gadu-search-service.cpp
