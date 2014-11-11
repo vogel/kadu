@@ -45,7 +45,6 @@ WindowNotifier::WindowNotifier(QObject *parent) :
 {
 	kdebugf();
 
-	import_0_6_5_configuration();
 	createDefaultConfiguration();
 	NotificationManager::instance()->registerNotifier(this);
 
@@ -76,11 +75,6 @@ void WindowNotifier::notify(Notification *notification)
 void WindowNotifier::notificationClosed(Notification *notification)
 {
 	notification->release(this);
-}
-
-void WindowNotifier::import_0_6_5_configuration()
-{
-    	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Window", Application::instance()->configuration()->deprecatedApi()->readEntry("Notify", "StatusChanged/ToBusy_Window"));
 }
 
 void WindowNotifier::createDefaultConfiguration()

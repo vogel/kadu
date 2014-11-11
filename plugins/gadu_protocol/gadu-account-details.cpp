@@ -86,26 +86,6 @@ void GaduAccountDetails::store()
 	storeValue("ReceiveSpam", ReceiveSpam);
 }
 
-void GaduAccountDetails::import_0_6_5_LastStatus()
-{
-	if (!isValidStorage())
-		return;
-
-	QString name;
-
-	int typeIndex = Application::instance()->configuration()->deprecatedApi()->readNumEntry("General", "LastStatusType", -1);
-	switch (typeIndex)
-	{
-		case 0: name = "Online"; break;
-		case 1: name = "Away"; break;
-		case 2: name = "Invisible"; break;
-		default: name = "Offline"; break;
-	}
-
-	storeValue("LastStatusName", name);
-	storeValue("LastStatusDescription", Application::instance()->configuration()->deprecatedApi()->readEntry("General", "LastStatusDescription"));
-}
-
 UinType GaduAccountDetails::uin()
 {
 	return mainData()->id().toULong();

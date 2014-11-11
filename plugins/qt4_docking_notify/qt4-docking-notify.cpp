@@ -55,7 +55,6 @@ Qt4Notify::Qt4Notify(QObject *parent) :
 {
 	kdebugf();
 
-	import_0_6_5_configuration();
 	createDefaultConfiguration();
 
 	NotificationManager::instance()->registerNotifier(this);
@@ -144,18 +143,6 @@ NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *paren
 {
 	configurationWidget = new Qt4NotifyConfigurationWidget(parent);
 	return configurationWidget;
-}
-
-void Qt4Notify::import_0_6_5_configuration()
-{
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
-		Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_syntax",
-		Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
-		Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_title"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_icon",
-		Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_icon"));
 }
 
 void Qt4Notify::createDefaultConfiguration()

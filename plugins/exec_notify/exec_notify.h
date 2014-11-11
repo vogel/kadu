@@ -58,7 +58,6 @@ class ExecNotify : public Notifier
 {
 	Q_OBJECT
 
-	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 
 	void run(const QStringList &args);

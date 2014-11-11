@@ -98,7 +98,6 @@ ExecNotify::ExecNotify(QObject *parent) :
 {
 	kdebugf();
 
-	import_0_6_5_configuration();
 	createDefaultConfiguration();
 	NotificationManager::instance()->registerNotifier(this);
 
@@ -112,11 +111,6 @@ ExecNotify::~ExecNotify()
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	kdebugf2();
-}
-
-void ExecNotify::import_0_6_5_configuration()
-{
-    	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", "StatusChanged/ToBusyCmd"));
 }
 
 void ExecNotify::createDefaultConfiguration()

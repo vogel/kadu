@@ -15,7 +15,6 @@ class Qt4Notify : public Notifier
 {
 	Q_OBJECT
 
-	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);

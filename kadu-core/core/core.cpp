@@ -223,7 +223,6 @@ Core::Core(injeqt::injector &injector) :
 
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
-	import_0_6_5_configuration();
 	createDefaultConfiguration();
 	configurationUpdated();
 
@@ -272,11 +271,6 @@ Core::~Core()
 	StatusConfigurationHolder::destroyInstance();
 
 	triggerAllAccountsUnregistered();
-}
-
-void Core::import_0_6_5_configuration()
-{
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxAlternateBgColor", Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBgColor"));
 }
 
 void Core::importPre10Configuration()

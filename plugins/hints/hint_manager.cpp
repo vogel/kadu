@@ -75,7 +75,6 @@ HintManager::HintManager(QObject *parent) :
 {
 	kdebugf();
 
-	import_0_6_5_configuration();
 	createDefaultConfiguration();
 
 #ifdef Q_OS_MAC
@@ -588,83 +587,6 @@ void HintManager::notify(Notification *notification)
 void HintManager::notificationClosed(Notification *notification)
 {
 	Q_UNUSED(notification)
-}
-
-void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)
-{
-	QFont font(qApp->font());
-	QPalette palette(qApp->palette());
-
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Hints", toHint + "_font", Application::instance()->configuration()->deprecatedApi()->readFontEntry(fromCategory, fromHint + "_font", &font));
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Hints", toHint + "_fgcolor", Application::instance()->configuration()->deprecatedApi()->readColorEntry(fromCategory, fromHint + "_fgcolor", &palette.windowText().color()));
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Hints", toHint + "_bgcolor", Application::instance()->configuration()->deprecatedApi()->readColorEntry(fromCategory, fromHint + "_bgcolor", &palette.window().color()));
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Hints", toHint + "_timeout", (int) Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry(fromCategory,  fromHint + "_timeout", 10));
-}
-
-void HintManager::import_0_6_5_configuration()
-{
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "AllEvents_transparency", 1 - Application::instance()->configuration()->deprecatedApi()->readNumEntry("OSDHints", "Opacity", 100)/100);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", Application::instance()->configuration()->deprecatedApi()->readNumEntry("OSDHints", "IconSize", 32));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "AllEvents_borderWidth",Application::instance()->configuration()->deprecatedApi()->readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "AllEvents_bdcolor", Application::instance()->configuration()->deprecatedApi()->readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
-
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_transparency", 1 - Application::instance()->configuration()->deprecatedApi()->readNumEntry("OSDHints", "Opacity", 100)/100);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_iconSize", Application::instance()->configuration()->deprecatedApi()->readNumEntry("OSDHints", "IconSize", 32));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_borderWidth",Application::instance()->configuration()->deprecatedApi()->readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_bdcolor", Application::instance()->configuration()->deprecatedApi()->readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_bgcolor", Application::instance()->configuration()->deprecatedApi()->readColorEntry("OSDHints", "SetAll_bgcolor", &qApp->palette().window().color()).name());
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_fgcolor", Application::instance()->configuration()->deprecatedApi()->readColorEntry("OSDHints", "SetAll_fgcolor", &qApp->palette().windowText().color()).name());
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_font", Application::instance()->configuration()->deprecatedApi()->readFontEntry("OSDHints", "SetAll_font"));
-
-	if (Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle") == "OSDHints")
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", Application::instance()->configuration()->deprecatedApi()->readEntry("OSDHints", "MouseOverUserSyntax"));
-
-	QStringList events;
-	events << "ConnectionError" << "NewChat" << "NewMessage" << "StatusChanged"
-		<<"StatusChanged/ToFreeForChat" << "StatusChanged/ToOnline" << "StatusChanged/ToNotAvailable"
-		<< "StatusChanged/ToDoNotDisturb" << "StatusChanged/ToOffline"
-		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished";
-
-	bool osdHintsSetAll = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("OSDHints", "SetAll", false);
-	bool hintsSetAll = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "SetAll", false);
-
-	foreach (const QString &event, events)
-	{
-		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", event + "_OSDHints", false))
-		{
-			if (osdHintsSetAll)
-				realCopyConfiguration("OSDHints", "SetAll", event);
-			else
-				realCopyConfiguration("OSDHints", event, event);
-
-			Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", event + "_Hints", true);
-			Application::instance()->configuration()->deprecatedApi()->removeVariable("Notify", event + "_OSDHints");
-		}
-		else if (hintsSetAll)
-				realCopyConfiguration("Hints", "SetAll", event);
-
-	}
-
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "StatusChanged/ToBusy_OSDHints", false))
-	{
-		if (osdHintsSetAll)
-			realCopyConfiguration("OSDHints", "SetAll", "ToAway");
-		else
-			realCopyConfiguration("OSDHints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
-
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", "StatusChanged/ToAway_Hints", true);
-		Application::instance()->configuration()->deprecatedApi()->removeVariable("Notify", "StatusChanged/ToBusy_OSDHints");
-	}
-	else
-	{
-		if (osdHintsSetAll)
-			realCopyConfiguration("Hints", "SetAll", "ToAway");
-		else
-			realCopyConfiguration("Hints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
-	}
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("OSDHints", "SetAll");
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Hints", "SetAll");
-
 }
 
 void HintManager::createDefaultConfiguration()

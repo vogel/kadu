@@ -64,7 +64,6 @@ SoundManager::SoundManager() :
 {
 	kdebugf();
 
-	import_0_6_5_configuration();
 	createDefaultConfiguration();
 
 	setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
@@ -98,12 +97,6 @@ SoundManager::~SoundManager()
 	}
 
 	kdebugf2();
-}
-
-void SoundManager::import_0_6_5_configuration()
-{
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Sound",
-			Application::instance()->configuration()->deprecatedApi()->readEntry("Notify", "StatusChanged/ToAway_Sound"));
 }
 
 void SoundManager::createDefaultConfiguration()

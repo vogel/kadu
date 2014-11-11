@@ -42,10 +42,6 @@ class Speech : public Notifier
 
 	QTime lastSpeech;
 
-	void import_0_5_0_Configuration();
-	void import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to);
-	void import_0_6_5_configuration();
-
 public:
 	Speech();
 	virtual ~Speech();

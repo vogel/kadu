@@ -66,8 +66,6 @@ public:
 	PROPERTY_DEF(int, userlistVersion, setUserlistVersion, UserlistVersion)
 	PROPERTY_DEF(bool, receiveSpam, setReceiveSpam, ReceiveSpam)
 
-	void import_0_6_5_LastStatus();
-
 };
 
 #endif // GADU_ACCOUNT_DETAILS_H

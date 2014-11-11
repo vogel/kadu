@@ -69,9 +69,6 @@ Speech::Speech() :
 {
 	kdebugf();
 
-	import_0_5_0_Configuration();
-	import_0_6_5_configuration();
-
 	NotificationManager::instance()->registerNotifier(this);
 
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
@@ -85,76 +82,6 @@ Speech::~Speech()
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	kdebugf2();
-}
-
-void Speech::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
-{
-	QString entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", from + "Female", QString());
-	if (!entry.isEmpty())
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", from + "_Syntax/Female", entry);
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", from + "Female");
-
-	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", to + "Male", QString());
-	if (!entry.isEmpty())
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", to + "_Syntax/Male", entry);
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", to + "Male");
-}
-
-void Speech::import_0_5_0_Configuration()
-{
-	QString entry;
-
-	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "ConnectionError", QString());
-	if (!entry.isEmpty())
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "ConnectionError");
-
-	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NotifyFormatFemale", QString());
-	if (!entry.isEmpty())
-	{
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Female", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Female", entry);
-	}
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "NotifyFormatFemale");
-
-	entry = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NotifyFormatMale", QString());
-	if (!entry.isEmpty())
-	{
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Male", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Male", entry);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Male", entry);
-	}
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "NotifyFormatMale");
-
-	import_0_5_0_ConfigurationFromTo("NewChat", "NewChat");
-	import_0_5_0_ConfigurationFromTo("NewMessage", "NewMessage");
-
-	bool arts = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseArts", false);
-	bool esd = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseEsd", false);
-	bool dsp = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "UseDsp", false);
-
-	if (arts)
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "aRts");
-	else if (esd)
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "Eds");
-	else if (dsp)
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", "SoundSystem", "Dsp");
-
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseArts");
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseEsd");
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Speech", "UseDsp");
-}
-
-void Speech::import_0_6_5_configuration()
-{
-
 }
 
 void Speech::say(const QString &s, const QString &path,

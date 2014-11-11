@@ -35,7 +35,6 @@ class WindowNotifier : public Notifier
 {
 	Q_OBJECT
 
-	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 
 private slots:

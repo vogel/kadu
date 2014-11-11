@@ -82,8 +82,6 @@ class Firewall : public MessageFilter, ConfigurationAwareObject, AccountsAwareOb
 	QString ConfirmationQuestion;
 	QString LogFilePath;
 
-	void import_0_6_5_configuration();
-
 	bool checkChat(const Chat &chat, const Contact &sender, const QString &message, bool &stop);
 	bool checkConference(const Chat &chat);
 	bool checkEmoticons(const QString &message);

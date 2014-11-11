@@ -67,11 +67,7 @@ class HintManager : public Notifier, public AbstractToolTip, public Configuratio
 	**/
 	void setLayoutDirection();
 
-	// TODO: usun�� w 0.6
-	void realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint);
 	void createDefaultConfiguration();
-
-	void import_0_6_5_configuration();
 
 private slots:
 	/**

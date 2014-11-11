@@ -93,8 +93,6 @@ Firewall::Firewall() :
 
 	pattern.setCaseSensitivity(Qt::CaseSensitive);
 
-	import_0_6_5_configuration();
-
 	createDefaultConfiguration();
 
 	configurationUpdated();
@@ -496,27 +494,6 @@ void Firewall::writeLog(const Contact &contact, const QString &message)
 		stream << QDateTime::currentDateTime().toString() << " :: " << contact.display(true) << " :: " << message << "\n";
 		logFile.close();
 	}
-
-	kdebugf2();
-}
-
-void Firewall::import_0_6_5_configuration()
-{
-	kdebugf();
-
-	QString loadedStr = Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "Secured_list");
-	QStringList secured = loadedStr.split(',', QString::SkipEmptyParts);
-
-	foreach (const QString &contact, secured)
-	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(contact, ActionReturnNull);
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
-
-		buddy.addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
-	}
-
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("Firewall", "Secured_list");
 
 	kdebugf2();
 }

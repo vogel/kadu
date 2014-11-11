@@ -59,7 +59,6 @@ class SOUNDAPI SoundManager : public QObject
 	SoundManager();
 	virtual ~SoundManager();
 
-	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 
 public slots:
