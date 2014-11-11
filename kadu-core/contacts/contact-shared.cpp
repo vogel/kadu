@@ -109,7 +109,7 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 	Priority = loadValue<int>("Priority", -1);
 
-	if (loadValue<bool>("Dirty", true))
+	if (loadValue<bool>("Dirty", true))  // ROSTER: not sure
 		Entry->setState(RosterEntryDesynchronized);
 	else
 		Entry->setState(RosterEntrySynchronized);
@@ -222,7 +222,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	Entry->setState(RosterEntryDesynchronized);
+	Entry->setState(RosterEntryDesynchronized); // ROSTER: not sure
 	changeNotifier().notify();
 
 	emit buddyUpdated();
@@ -243,7 +243,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	Entry->setState(RosterEntryDesynchronized);
+	Entry->setState(RosterEntryDesynchronized); // ROSTER: not sure
 	changeNotifier().notify();
 }
 
@@ -312,7 +312,6 @@ void ContactShared::setId(const QString &id)
 	QString oldId = Id;
 	Id = id;
 
-	Entry->setState(RosterEntryDesynchronized);
 	changeNotifier().notify();
 }
 
@@ -341,7 +340,7 @@ RosterEntry * ContactShared::rosterEntry()
 
 void ContactShared::avatarUpdated()
 {
-	Entry->setState(RosterEntryDesynchronized);
+	changeNotifier().notify();
 }
 
 void ContactShared::changeNotifierChanged()

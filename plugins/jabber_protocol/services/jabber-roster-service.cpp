@@ -329,7 +329,11 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	RosterTaskType taskType = contact ? task.type() : RosterTaskType::Delete;
 
 	if (contact)
+	{
+		if (!contact.rosterEntry()->requiresSynchronization())
+			return;
 		contact.rosterEntry()->setState(RosterEntrySynchronizing);
+	}
 
 	switch (taskType)
 	{

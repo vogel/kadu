@@ -27,6 +27,7 @@
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
 #include "gadu-contact-details.h"
@@ -97,10 +98,8 @@ void GaduRosterService::prepareRoster()
 
 	int i = 0;
 
-	foreach (const Contact &contact, sendList)
+	for (auto &&contact : sendList)
 	{
-		RosterService::addContact(contact);
-
 		uins[i] = GaduProtocolHelper::uin(contact);
 		types[i] = notifyTypeFromContact(contact);
 
@@ -167,19 +166,22 @@ void GaduRosterService::executeTask(const RosterTask &task)
 		case RosterTaskType::Add:
 		{
 			auto contact = ContactManager::instance()->byId(account(), task.id(), ActionCreateAndAdd);
-			sendNewFlags(contact, notifyTypeFromContact(contact));
+			if (contact.rosterEntry()->requiresSynchronization())
+				sendNewFlags(contact, notifyTypeFromContact(contact));
 			break;
 		}
 		case RosterTaskType::Update:
 		{
 			auto contact = ContactManager::instance()->byId(account(), task.id(), ActionCreate);
-			sendNewFlags(contact, notifyTypeFromContact(contact));
+			if (contact.rosterEntry()->requiresSynchronization())
+				sendNewFlags(contact, notifyTypeFromContact(contact));
 			break;
 		}
 		case RosterTaskType::Delete:
 		{
 			auto contact = ContactManager::instance()->byId(account(), task.id(), ActionCreate);
-			sendNewFlags(contact, 0);
+			if (contact.rosterEntry()->requiresSynchronization())
+				sendNewFlags(contact, 0);
 			break;
 		}
 		default:

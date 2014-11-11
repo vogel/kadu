@@ -69,9 +69,6 @@ void RosterService::contactDirtinessChanged()
 	if (contact.contactAccount() != account() || contact.isAnonymous())
 		return;
 
-	if (!contact.rosterEntry()->requiresSynchronization())
-		return;
-
 	addTask(RosterTask{RosterTaskType::Update, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
@@ -212,9 +209,6 @@ void RosterService::addContact(const Contact &contact)
 	m_contacts.append(contact);
 	connectContact(contact);
 
-	if (!contact.rosterEntry()->requiresSynchronization())
-		return;
-
 	addTask(RosterTask{RosterTaskType::Add, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
@@ -232,9 +226,6 @@ void RosterService::removeContact(const Contact &contact)
 	m_contacts.remove(index);
 	disconnectContact(contact);
 
-	if (!contact.rosterEntry()->requiresSynchronization())
-		return;
-
 	addTask(RosterTask{RosterTaskType::Delete, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
@@ -243,9 +234,6 @@ void RosterService::removeContact(const Contact &contact)
 void RosterService::updateContact(const Contact& contact)
 {
 	if (contact.contactAccount() != account() || contact.isAnonymous())
-		return;
-
-	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
 	addTask(RosterTask{RosterTaskType::Update, contact.id()});

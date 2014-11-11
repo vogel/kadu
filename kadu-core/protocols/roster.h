@@ -71,6 +71,9 @@ public slots:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Add new contact to remote roster.
 	 * @param contact new contact to be added
+	 * 
+	 * Roster state of newly added contact is set to RosterEntryDesynchronized so it will be uploaded to server
+	 * as soon as possible.
 	 */
 	void addContact(const Contact &contact) const;
 

@@ -23,6 +23,7 @@
 #include "accounts/account.h"
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-service.h"
+#include "services/roster/roster-entry.h"
 
 Roster * Roster::m_instance = nullptr;
 
@@ -58,16 +59,28 @@ Roster::~Roster()
 
 void Roster::addContact(const Contact &contact) const
 {
+	if (!contact)
+		return;
+
 	auto service = rosterService(contact);
 	if (service)
+	{
+		contact.rosterEntry()->setState(RosterEntryDesynchronized);
 		service->addContact(contact);
+	}
 }
 
 void Roster::removeContact(const Contact &contact) const
 {
+	if (!contact)
+		return;
+
 	auto service = rosterService(contact);
 	if (service)
+	{
 		service->removeContact(contact);
+		// contact.rosterEntry()->setState(RosterEntryUnknown); ROSTER: prove it
+	}
 }
 
 #include "moc_roster.cpp"
