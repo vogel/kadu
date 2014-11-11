@@ -26,13 +26,13 @@
 #include <QtCore/QByteArray>
 
 #include "buddies/buddy-manager.h"
-#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "protocols/services/roster/roster-entry.h"
 #include "protocols/services/roster/roster-entry-state.h"
 #include "protocols/services/roster/roster-notifier.h"
+#include "protocols/services/roster/roster-service.h"
 #include "debug.h"
 
 #include "helpers/gadu-list-helper.h"
@@ -49,12 +49,7 @@ GaduContactListService::GaduContactListService(const Account &account, Protocol 
 	connect(StateMachine, SIGNAL(performGet()), SLOT(importContactList()));
 	connect(StateMachine, SIGNAL(performPut()), SLOT(exportContactList()));
 
-	connect(ContactManager::instance(), SIGNAL(accountContactsDirty(Account)), SLOT(accountContactsDirty(Account)));
-
 	StateMachine->start();
-
-	if (ContactManager::instance()->hasDirtyContacts(account))
-		emit stateMachineLocalDirty();
 }
 
 GaduContactListService::~GaduContactListService()
@@ -69,6 +64,15 @@ void GaduContactListService::setConnection(GaduConnection *connection)
 void GaduContactListService::setRosterNotifier(RosterNotifier *rosterNotifier)
 {
 	MyRosterNotifier = rosterNotifier;
+}
+
+void GaduContactListService::setRosterService(RosterService *rosterService)
+{
+	MyRosterService = rosterService;
+	connect(MyRosterService.data(), SIGNAL(taskAdded()), this, SLOT(rosterTaskAdded()));
+	
+	if (MyRosterService->taskCount() > 0)
+		emit stateMachineLocalDirty();
 }
 
 void GaduContactListService::putFinished(bool ok)
@@ -214,10 +218,9 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 		emit stateMachineRemoteDirty();
 }
 
-void GaduContactListService::accountContactsDirty(Account a)
+void GaduContactListService::rosterTaskAdded()
 {
-	if (a == account())
-		QMetaObject::invokeMethod(this, "stateMachineLocalDirty", Qt::QueuedConnection);
+	QMetaObject::invokeMethod(this, "stateMachineLocalDirty", Qt::QueuedConnection);
 }
 
 bool GaduContactListService::haveToAskForAddingContacts() const

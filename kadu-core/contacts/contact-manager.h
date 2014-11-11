@@ -52,7 +52,6 @@ private slots:
 	void removeDuplicateContacts();
 
 	void contactDataUpdated();
-	void dirtinessChanged();
 
 	void unreadMessageAdded(const Message &message);
 	void unreadMessageRemoved(const Message &message);
@@ -80,15 +79,11 @@ public:
 	Contact byId(Account account, const QString &id, NotFoundAction action);
 	QVector<Contact> contacts(Account account, AnonymousInclusion inclusion = IncludeAnonymous);
 
-	bool hasDirtyContacts(Account account);
-
 signals:
 	void contactAboutToBeAdded(Contact contact);
 	void contactAdded(Contact contact);
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
-
-	void accountContactsDirty(Account account);
 
 	void contactUpdated(const Contact &contact);
 

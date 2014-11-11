@@ -40,6 +40,7 @@ class GaduContactListService : public ContactListService
 
 	QPointer<GaduConnection> Connection;
 	QPointer<RosterNotifier> MyRosterNotifier;
+	QPointer<RosterService> MyRosterService;
 	GaduContactListStateMachine *StateMachine;
 	QVector<Contact> ExportedContacts;
 
@@ -53,7 +54,7 @@ class GaduContactListService : public ContactListService
 	void getFinished(bool ok);
 
 private slots:
-	void accountContactsDirty(Account account);
+	void rosterTaskAdded();
 
 public:
 	explicit GaduContactListService(const Account &account, Protocol *protocol);
@@ -61,6 +62,7 @@ public:
 
 	void setConnection(GaduConnection *connection);
 	void setRosterNotifier(RosterNotifier *rosterNotifier);
+	void setRosterService(RosterService *rosterService);
 
 	virtual bool haveToAskForAddingContacts() const;
 

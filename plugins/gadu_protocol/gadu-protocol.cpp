@@ -129,6 +129,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	setChatStateService(CurrentChatStateService);
 	setRosterService(rosterService);
 
+	CurrentContactListService->setRosterService(rosterService);
+
 	configureServices();
 
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));

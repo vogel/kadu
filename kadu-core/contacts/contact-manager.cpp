@@ -92,16 +92,6 @@ void ContactManager::init()
 	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
-void ContactManager::dirtinessChanged()
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull() && contact.ownerBuddy() != Core::instance()->myself())
-		if (contact.rosterEntry()->requiresSynchronization())
-			emit accountContactsDirty(contact.contactAccount());
-}
-
 void ContactManager::unreadMessageAdded(const Message &message)
 {
 	const Contact &contact = message.messageSender();
@@ -135,10 +125,6 @@ void ContactManager::itemRegistered(Contact item)
 
 	if (Core::instance()->myself() == item.ownerBuddy())
 		item.rosterEntry()->setState(RosterEntryState::Synchronized);
-	else if (item.rosterEntry()->requiresSynchronization())
-		emit accountContactsDirty(item.contactAccount());
-
-	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
@@ -151,7 +137,6 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 
 void ContactManager::itemUnregistered(Contact item)
 {
-	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 	emit contactRemoved(item);
 }
 
@@ -208,22 +193,6 @@ QVector<Contact> ContactManager::contacts(Account account, AnonymousInclusion in
 			contacts.append(contact);
 
 	return contacts;
-}
-
-bool ContactManager::hasDirtyContacts(Account account)
-{
-	QMutexLocker locker(&mutex());
-
-	ensureLoaded();
-
-	if (account.isNull())
-		return false;
-
-	for (auto &&contact : items())
-		if (account == contact.contactAccount() && contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
-			return true;
-
-	return false;
 }
 
 void ContactManager::contactDataUpdated()

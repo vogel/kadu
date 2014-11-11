@@ -112,6 +112,8 @@ public:
 	 * @see addTask(const RosterTask &)
 	 */
 	void addTasks(const QVector<RosterTask> &tasks);
+	
+	int taskCount() const;
 
 public slots:
 	/**
@@ -141,6 +143,11 @@ signals:
 	 * @param ok true, if preparing roster was successfull
 	 */
 	void rosterReady(bool ok);
+
+	/**
+	 * @short Signal emitted when any task is added to list of tasks.
+	 */
+	void taskAdded();
 
 protected:
 	/**
