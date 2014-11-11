@@ -36,6 +36,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-entry-state.h"
 #include "debug.h"
 
 #include "contact-manager.h"
@@ -133,7 +134,7 @@ void ContactManager::itemRegistered(Contact item)
 	emit contactAdded(item);
 
 	if (Core::instance()->myself() == item.ownerBuddy())
-		item.rosterEntry()->setState(RosterEntrySynchronized);
+		item.rosterEntry()->setState(RosterEntryState::Synchronized);
 	else if (item.rosterEntry()->requiresSynchronization())
 		emit accountContactsDirty(item.contactAccount());
 
@@ -175,7 +176,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	ChangeNotifierLock lock(contact.rosterEntry()->changeNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
 	contact.setId(id);
 	contact.setContactAccount(account);
-	contact.rosterEntry()->setState(RosterEntrySynchronized); // TODO: setId and setContactAccount desynchronized it, make a factory
+	contact.rosterEntry()->setState(RosterEntryState::Synchronized); // TODO: setId and setContactAccount desynchronized it, make a factory
 
 	if (action == ActionCreateAndAdd)
 		addItem(contact);
@@ -186,7 +187,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
-	contact.rosterEntry()->setState(RosterEntrySynchronized);
+	contact.rosterEntry()->setState(RosterEntryState::Synchronized);
 
 	return contact;
 }

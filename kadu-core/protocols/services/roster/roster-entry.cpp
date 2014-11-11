@@ -27,7 +27,7 @@
 #include "roster-entry.h"
 
 RosterEntry::RosterEntry(QObject *parent) :
-		QObject(parent), State(RosterEntryUnknown), Detached(false), RemotelyDeleted(false)
+		QObject(parent), State(RosterEntryState::Unknown), Detached(false), RemotelyDeleted(false)
 {
 }
 
@@ -84,12 +84,12 @@ ChangeNotifier & RosterEntry::changeNotifier()
 
 bool RosterEntry::requiresSynchronization() const
 {
-	return !Detached && RosterEntryDesynchronized == State;
+	return !Detached && RosterEntryState::Desynchronized == State;
 }
 
 bool RosterEntry::canAcceptRemoteUpdate() const
 {
-	return !Detached && RosterEntryDesynchronized != State && RosterEntrySynchronizing != State;
+	return !Detached && RosterEntryState::Desynchronized != State && RosterEntryState::Synchronizing != State;
 }
 
 #include "moc_roster-entry.cpp"

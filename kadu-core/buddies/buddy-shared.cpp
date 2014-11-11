@@ -39,6 +39,7 @@
 #include "core/core.h"
 #include "misc/change-notifier.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-entry-state.h"
 #include "storage/storage-point.h"
 
 #include "buddy-shared.h"
@@ -521,7 +522,7 @@ void BuddyShared::markContactsDirty()
 
 	foreach (const Contact &contact, Contacts)
 		if (contact.rosterEntry())
-			contact.rosterEntry()->setState(RosterEntryDesynchronized);
+			contact.rosterEntry()->setState(RosterEntryState::Desynchronized);
 }
 
 quint16 BuddyShared::unreadMessagesCount()

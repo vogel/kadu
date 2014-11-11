@@ -36,6 +36,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-entry-state.h"
 
 #include "contact-shared.h"
 
@@ -110,9 +111,9 @@ void ContactShared::load()
 	Priority = loadValue<int>("Priority", -1);
 
 	if (loadValue<bool>("Dirty", true))  // ROSTER: not sure
-		Entry->setState(RosterEntryDesynchronized);
+		Entry->setState(RosterEntryState::Desynchronized);
 	else
-		Entry->setState(RosterEntrySynchronized);
+		Entry->setState(RosterEntryState::Synchronized);
 
 	// It's an explicit hack for update path from 0.10.1-0.11.x to 0.12+. 0.10/0.11 didn't
 	// have Detached property. But they did have an explicit hack for totally ignoring
@@ -160,7 +161,7 @@ void ContactShared::store()
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
 
-	storeValue("Dirty", RosterEntrySynchronized != Entry->state());
+	storeValue("Dirty", RosterEntryState::Synchronized != Entry->state());
 	// Detached property needs to be always stored, see the load() method.
 	storeValue("Detached", Entry->detached());
 
@@ -222,7 +223,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	Entry->setState(RosterEntryDesynchronized); // ROSTER: not sure
+	Entry->setState(RosterEntryState::Desynchronized); // ROSTER: not sure
 	changeNotifier().notify();
 
 	emit buddyUpdated();
@@ -243,7 +244,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	Entry->setState(RosterEntryDesynchronized); // ROSTER: not sure
+	Entry->setState(RosterEntryState::Desynchronized); // ROSTER: not sure
 	changeNotifier().notify();
 }
 

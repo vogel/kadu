@@ -31,6 +31,7 @@
 #include "core/core.h"
 #include "misc/misc.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-entry-state.h"
 #include "protocols/services/roster/roster-notifier.h"
 #include "debug.h"
 
@@ -178,7 +179,7 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
 			for (auto &&contact : ExportedContacts)
-				contact.rosterEntry()->setState(RosterEntrySynchronized);
+				contact.rosterEntry()->setState(RosterEntryState::Synchronized);
 
 			putFinished(true);
 			return;

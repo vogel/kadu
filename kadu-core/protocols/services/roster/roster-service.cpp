@@ -27,6 +27,7 @@
 
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-entry-state.h"
 #include "protocols/services/roster/roster-state.h"
 #include "protocols/services/roster/roster-task-type.h"
 
@@ -122,8 +123,8 @@ void RosterService::resetSynchronizingToDesynchronized()
 	{
 		if (!contact.rosterEntry())
 			continue;
-		if (contact.rosterEntry()->state() == RosterEntrySynchronizing)
-			contact.rosterEntry()->setState(RosterEntryDesynchronized);
+		if (contact.rosterEntry()->state() == RosterEntryState::Synchronizing)
+			contact.rosterEntry()->setState(RosterEntryState::Desynchronized);
 	}
 }
 

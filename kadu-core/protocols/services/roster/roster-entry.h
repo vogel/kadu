@@ -24,8 +24,9 @@
 #include <QtCore/QObject>
 
 #include "misc/change-notifier.h"
-#include "protocols/services/roster/roster-entry-state.h"
 #include "exports.h"
+
+enum class RosterEntryState;
 
 /**
  * @addtogroup Protocol

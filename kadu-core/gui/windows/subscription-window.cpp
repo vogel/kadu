@@ -33,6 +33,7 @@
 #include "icons/icons-manager.h"
 #include "model/roles.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-entry-state.h"
 
 #include "subscription-window.h"
 
@@ -59,7 +60,7 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	if (knownContact)
 		CurrentContact = knownContact;
 	else if (CurrentContact)
-		CurrentContact.rosterEntry()->setState(RosterEntrySynchronized);
+		CurrentContact.rosterEntry()->setState(RosterEntryState::Synchronized);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);
