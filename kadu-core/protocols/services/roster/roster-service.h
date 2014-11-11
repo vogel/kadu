@@ -145,6 +145,31 @@ signals:
 	void rosterReady(bool ok);
 
 	/**
+	 * @short Signal emitted when new contact is added to roster
+	 * @param contact added contact
+	 * 
+	 * Signal is not emitted for contacts added as initial in constructor.
+	 * Signal is emitted for detached and attached contacts.
+	 */
+	void contactAdded(Contact contact);
+
+	/**
+	 * @short Signal emitted when contact is removed from roster
+	 * @param contact removed contact
+	 *
+	 * Signal is emitted for detached and attached contacts.
+	 */
+	void contactRemoved(Contact contact);
+
+	/**
+	 * @short Signal emitted when contact is updated on roster
+	 * @param contact updated contact
+	 * 
+	 * Signal is emitted for detached and attached contacts.
+	 */
+	void contactUpdated(Contact contact);
+
+	/**
 	 * @short Signal emitted when any task is added to list of tasks.
 	 */
 	void taskAdded();

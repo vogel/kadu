@@ -70,6 +70,8 @@ void RosterService::contactDirtinessChanged()
 	if (contact.contactAccount() != account() || contact.isAnonymous())
 		return;
 
+	emit contactUpdated(contact);
+
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
@@ -223,6 +225,8 @@ void RosterService::addContact(const Contact &contact)
 	m_contacts.append(contact);
 	connectContact(contact);
 
+	emit contactAdded(contact);
+
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
@@ -242,6 +246,8 @@ void RosterService::addSynchronizedContact(const Contact& contact)
 	contact.rosterEntry()->setState(RosterEntryState::Synchronized);
 	m_contacts.append(contact);
 	connectContact(contact);
+
+	emit contactAdded(contact);
 }
 
 void RosterService::removeContact(const Contact &contact)
@@ -252,6 +258,8 @@ void RosterService::removeContact(const Contact &contact)
 	int index = m_contacts.indexOf(contact);
 	if (index < 0)
 		return;
+
+	emit contactRemoved(contact);
 
 	m_contacts.remove(index);
 	disconnectContact(contact);
