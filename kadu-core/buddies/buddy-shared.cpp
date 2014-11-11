@@ -521,7 +521,7 @@ void BuddyShared::markContactsDirty()
 	ensureLoaded();
 
 	for (auto &&contact : Contacts)
-		if (contact.rosterEntry())
+		if (contact.rosterEntry() && contact.rosterEntry()->state() != RosterEntryState::Synchronizing)
 			contact.rosterEntry()->setState(RosterEntryState::Desynchronized);
 }
 
