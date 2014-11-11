@@ -186,14 +186,12 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	Buddy buddy = contact.ownerBuddy();
 	BuddyManager::instance()->addItem(buddy);
 
-	RosterService::addContact(contact);
-
 	QSet<Group> groups;
 	foreach (const QString &group, item.groups())
 		groups << GroupManager::instance()->byName(group);
 	buddy.setGroups(groups);
 
-	contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+	addSynchronizedContact(contact);
 }
 
 void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)

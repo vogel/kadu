@@ -220,6 +220,15 @@ protected:
 
 protected slots:
 	/**
+	 * @short Add new synchronized contact to be watched.
+	 * @param contact new contact
+	 *
+	 * If given contact is valid and belongs to current account, then roster service will watch for changes of
+	 * its synchronization state. After adding its synchronization state is set to Synchronized.
+	 */
+	void addSynchronizedContact(const Contact &contact);
+
+	/**
 	 * @enum RosterState
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called when contact's dirtiness is changed.

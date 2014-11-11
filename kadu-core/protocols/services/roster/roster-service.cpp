@@ -215,6 +215,19 @@ void RosterService::addContact(const Contact &contact)
 		executeAllTasks();
 }
 
+void RosterService::addSynchronizedContact(const Contact& contact)
+{
+	if (contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	if (m_contacts.contains(contact))
+		return;
+
+	contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+	m_contacts.append(contact);
+	connectContact(contact);
+}
+
 void RosterService::removeContact(const Contact &contact)
 {
 	if (contact.contactAccount() != account())
