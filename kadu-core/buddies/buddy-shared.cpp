@@ -90,7 +90,7 @@ void BuddyShared::collectGarbage()
 		return;
 	}
 
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : Contacts)
 	{
 		Q_ASSERT(!contact.isNull());
 
@@ -103,7 +103,7 @@ void BuddyShared::collectGarbage()
 		}
 	}
 
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : Contacts)
 		contact.setOwnerBuddy(Buddy::null);
 
 	CollectingGarbage = false;
@@ -142,7 +142,7 @@ void BuddyShared::importConfiguration(const QDomElement &parent)
 void BuddyShared::importConfiguration()
 {
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
-	foreach (const QString &group, groups)
+	for (auto &&group : groups)
 		doAddToGroup(GroupManager::instance()->byName(group));
 
 	CustomData.remove("groups");
@@ -263,7 +263,7 @@ void BuddyShared::store()
 	if (!Groups.isEmpty())
 	{
 		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeCreate);
-		foreach (const Group &group, Groups)
+		for (auto &&group : Groups)
 			configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
 	}
 	else
@@ -340,7 +340,7 @@ QVector<Contact> BuddyShared::contacts(const Account &account)
 	ensureLoaded();
 
 	QVector<Contact> contacts;
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact :  Contacts)
 		if (contact.contactAccount() == account)
 			contacts.append(contact);
 
@@ -379,7 +379,7 @@ void BuddyShared::sortContacts()
 void BuddyShared::normalizePriorities()
 {
 	int priority = 0;
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : Contacts)
 		contact.setPriority(priority++);
 }
 
@@ -426,11 +426,11 @@ void BuddyShared::setGroups(const QSet<Group> &groups)
 
 	QSet<Group> groupsToRemove = Groups;
 
-	foreach (const Group &group, groups)
+	for (auto &&group : groups)
 		if (!groupsToRemove.remove(group))
 			doAddToGroup(group);
 
-	foreach (const Group &group, groupsToRemove)
+	for (auto &&group : groupsToRemove)
 		doRemoveFromGroup(group);
 
 	changeNotifier().notify();
@@ -448,7 +448,7 @@ bool BuddyShared::showInAllGroup()
 {
 	ensureLoaded();
 
-	foreach (const Group &group, Groups)
+	for (auto &&group : Groups)
 		if (group && !group.showInAllGroup())
 			return false;
 
@@ -520,7 +520,7 @@ void BuddyShared::markContactsDirty()
 {
 	ensureLoaded();
 
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : Contacts)
 		if (contact.rosterEntry())
 			contact.rosterEntry()->setState(RosterEntryState::Desynchronized);
 }
@@ -530,7 +530,7 @@ quint16 BuddyShared::unreadMessagesCount()
 	ensureLoaded();
 
 	quint16 result = 0;
-	foreach (const Contact &contact, Contacts)
+	for (auto &&contact : Contacts)
 		result += contact.unreadMessagesCount();
 
 	return result;
