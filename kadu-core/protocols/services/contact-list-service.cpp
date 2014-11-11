@@ -112,7 +112,7 @@ void ContactListService::performRenames(const QMap<Buddy, Contact> &contactsToRe
 		i.value().rosterEntry()->setState(RosterEntryState::Synchronized);
 	}
 
-	foreach (const Buddy &buddy, buddiesToRemove)
+	for (auto &&buddy : buddiesToRemove)
 		BuddyManager::instance()->removeBuddyIfEmpty(buddy, true);
 }
 
@@ -123,7 +123,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 	QMap<Buddy, Contact> contactsToRename;
 	QMap<Buddy, Buddy> personalInfoSourceBuddies;
 
-	foreach (const Buddy &buddy, buddies)
+	for (auto &&buddy : buddies)
 	{
 		if (buddy.display().isEmpty())
 			buddy.setDisplay(buddy.uuid().toString());
@@ -139,7 +139,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 			targetBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
 		targetBuddy.setAnonymous(false);
 
-		foreach (const Contact &contact, buddy.contacts(account()))
+		for (auto &&contact : buddy.contacts(account()))
 		{
 			Contact knownContact = ContactManager::instance()->byId(account(), contact.id(), ActionReturnNull);
 			if (knownContact)
@@ -176,7 +176,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 		return resultContacts;
 
 	resultContacts += performAdds(contactsToAdd);
-	performRenames( contactsToRename);
+	performRenames(contactsToRename);
 
 	for (QMap<Buddy, Buddy>::const_iterator i = personalInfoSourceBuddies.constBegin(); i != personalInfoSourceBuddies.constEnd(); i++)
 	{
@@ -196,13 +196,13 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 {
 	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(account()).toList();
 
-	foreach (const Contact &myselfContact, Core::instance()->myself().contacts(account()))
+	for (auto &&myselfContact : Core::instance()->myself().contacts(account()))
 		unImportedContacts.removeAll(myselfContact);
 
 	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS
 
 	QVector<Contact> managedContacts = registerBuddies(buddies);
-	foreach (const Contact &contact, managedContacts)
+	for (auto &&contact : managedContacts)
 		unImportedContacts.removeAll(contact);
 
 	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS)
@@ -244,7 +244,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 
 		if (removeOldAutomatically || dialog->ask())
 		{
-			foreach (const Contact &contact, unImportedContacts)
+			for (auto &&contact : unImportedContacts)
 			{
 				Buddy ownerBuddy = contact.ownerBuddy();
 				contact.setOwnerBuddy(Buddy::null);
