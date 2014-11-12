@@ -105,6 +105,8 @@ public:
 	explicit JabberRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = 0);
 	virtual ~JabberRosterService();
 
+	virtual bool supportsTasks() const override { return true; }
+
 	void prepareRoster();
 
 	void setClient(Client *xmppClient);

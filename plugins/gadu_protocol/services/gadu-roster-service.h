@@ -37,6 +37,8 @@ public:
 	explicit GaduRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = nullptr);
 	virtual ~GaduRosterService();
 
+	virtual bool supportsTasks() const override { return false; }
+
 	void prepareRoster();
 
 protected:

@@ -71,6 +71,15 @@ public:
 	void setState(RosterEntryState state);
 
 	/**
+	 * @short Set state to RosterEntryState::Desynchronized if equal to RosterEntryState::Synchronizing
+	 *
+	 * Call after initializing roster. Roster entry state set RosterEntryState::Synchronizing during roster
+	 * initialization means that this entry was not propely synchonized and must be synchronized again.
+	 * This method does not invoke changeNotifier() signals.
+	 */
+	void fixupInitialState();
+
+	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Get current value of State property.
 	 * @return current value of State property

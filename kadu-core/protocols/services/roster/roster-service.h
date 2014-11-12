@@ -100,6 +100,18 @@ public:
 	RosterState state() const { return m_state; }
 
 	/**
+	 * @short Return true if protocol supports concept of eoster tasks.
+	 * 
+	 * GaduGadu does not support this - all roster changes are done in one go, and it may be impossible
+	 * to split them in tasks. In Gadu if we have the same version of contact list as server then it can
+	 * be safely updated in one go. If not - server version is merged with local one. That means local
+	 * deletion may be reverted.
+	 * 
+	 * XMPP fully supports roster task.
+	 */
+	virtual bool supportsTasks() const = 0;
+
+	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return list of current non-executed roster tasks.
 	 * @return list of current non-executed roster tasks
@@ -112,8 +124,8 @@ public:
 	 * @see addTask(const RosterTask &)
 	 */
 	void addTasks(const QVector<RosterTask> &tasks);
-	
-	int taskCount() const;
+
+	const QVector<Contact> & contacts() const;
 
 public slots:
 	/**
@@ -259,16 +271,6 @@ protected slots:
 	 * its synchronization state. After adding its synchronization state is set to Synchronized.
 	 */
 	void addSynchronizedContact(const Contact &contact);
-
-	/**
-	 * @enum RosterState
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called when contact's dirtiness is changed.
-	 *
-	 * If given contact is valid and belongs to current account, then new roster task for adding item to roster is created.
-	 * If it is possible, task is executed immediately. If not, it is stored for later execution.
-	 */
-	void updateContact(const Contact &contact);
 
 private:
 	QPointer<Protocol> m_protocol;

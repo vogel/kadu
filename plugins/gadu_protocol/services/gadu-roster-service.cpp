@@ -36,11 +36,6 @@ GaduRosterService::~GaduRosterService()
 
 void GaduRosterService::prepareRoster()
 {
-	resetSynchronizingToDesynchronized();
-	addTasks(updateTasksForContacts());
-
-	Q_ASSERT(RosterState::NonInitialized == state());
-
 	setState(RosterState::Initialized);
 	emit rosterReady(true);
 }

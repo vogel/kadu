@@ -69,10 +69,21 @@ void GaduContactListService::setRosterNotifier(RosterNotifier *rosterNotifier)
 void GaduContactListService::setRosterService(RosterService *rosterService)
 {
 	MyRosterService = rosterService;
-	connect(MyRosterService.data(), SIGNAL(taskAdded()), this, SLOT(rosterTaskAdded()));
-	
-	if (MyRosterService->taskCount() > 0)
-		emit stateMachineLocalDirty();
+	connect(MyRosterService.data(), SIGNAL(contactAdded(Contact)), this, SLOT(rosterChanged()));
+	connect(MyRosterService.data(), SIGNAL(contactRemoved(Contact)), this, SLOT(rosterChanged()));
+	connect(MyRosterService.data(), SIGNAL(contactUpdated(Contact)), this, SLOT(rosterChanged()));
+
+	for (auto &&contact : rosterService->contacts())
+	{
+		auto requiresSynchronization = false;
+		if (contact.rosterEntry())
+		{
+			contact.rosterEntry()->fixupInitialState();
+			requiresSynchronization |= contact.rosterEntry()->requiresSynchronization();
+		}
+		if (requiresSynchronization)
+			emit stateMachineLocalDirty();
+	}
 }
 
 void GaduContactListService::putFinished(bool ok)
@@ -218,7 +229,7 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 		emit stateMachineRemoteDirty();
 }
 
-void GaduContactListService::rosterTaskAdded()
+void GaduContactListService::rosterChanged()
 {
 	QMetaObject::invokeMethod(this, "stateMachineLocalDirty", Qt::QueuedConnection);
 }

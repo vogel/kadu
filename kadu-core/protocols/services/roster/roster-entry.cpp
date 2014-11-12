@@ -44,6 +44,12 @@ void RosterEntry::setState(RosterEntryState state)
 	MyChangeNotifier.notify();
 }
 
+void RosterEntry::fixupInitialState()
+{
+	if (State == RosterEntryState::Synchronizing)
+		State = RosterEntryState::Desynchronized;
+}
+
 RosterEntryState RosterEntry::state() const
 {
 	return State;

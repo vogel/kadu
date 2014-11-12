@@ -54,7 +54,7 @@ class GaduContactListService : public ContactListService
 	void getFinished(bool ok);
 
 private slots:
-	void rosterTaskAdded();
+	void rosterChanged();
 
 public:
 	explicit GaduContactListService(const Account &account, Protocol *protocol);
