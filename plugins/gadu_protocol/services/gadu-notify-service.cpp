@@ -25,6 +25,7 @@
 #include "gadu-contact-details.h"
 
 #include <QtCore/QScopedArrayPointer>
+#include <libgadu.h>
 
 int GaduNotifyService::notifyTypeFromContact(const Contact &contact)
 {

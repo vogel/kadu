@@ -72,6 +72,7 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "helpers/gadu-proxy-helper.h"
 #include "server/gadu-writable-session-token.h"
+#include "services/gadu-notify-service.h"
 #include "services/gadu-roster-service.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
@@ -122,8 +123,12 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
 	GaduRosterService *rosterService = new GaduRosterService(account, contacts, this);
-	rosterService->setConnection(Connection);
 	rosterService->setProtocol(this);
+
+	CurrentNotifyService = new GaduNotifyService{Connection, this};
+	connect(rosterService, SIGNAL(contactAdded(Contact)), CurrentNotifyService, SLOT(contactAdded(Contact)));
+	connect(rosterService, SIGNAL(contactRemoved(Contact)), CurrentNotifyService, SLOT(contactRemoved(Contact)));
+	connect(rosterService, SIGNAL(contactUpdated(Contact)), CurrentNotifyService, SLOT(contactUpdated(Contact)));
 
 	setChatService(CurrentChatService);
 	setChatStateService(CurrentChatStateService);
@@ -334,6 +339,10 @@ void GaduProtocol::afterLoggedIn()
 
 	// we do not need to wait for "rosterReady" signal in GaduGadu
 	static_cast<GaduRosterService *>(rosterService())->prepareRoster();
+
+	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
+	CurrentNotifyService->sendInitialData(contacts);
+
 	sendStatusToServer();
 }
 

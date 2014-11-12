@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_USERLIST_HANDLER_H
-#define GADU_USERLIST_HANDLER_H
+#pragma once
 
 #include "protocols/services/roster/roster-service.h"
 
@@ -34,24 +33,13 @@ class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
-	QPointer<GaduConnection> Connection;
+public:
+	explicit GaduRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = nullptr);
+	virtual ~GaduRosterService();
 
-	void updateFlag(gg_session *session, int uin, int newFlags, int oldFlags, int flag) const;
-	void sendNewFlags(const Contact &contact, int newFlags) const;
+	void prepareRoster();
 
 protected:
 	virtual void executeTask(const RosterTask &task);
 
-public:
-	static int notifyTypeFromContact(const Contact &contact);
-
-	explicit GaduRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = 0);
-	virtual ~GaduRosterService();
-
-	void setConnection(GaduConnection *connection);
-
-	void prepareRoster();
-
 };
-
-#endif // GADU_USERLIST_HANDLER_H
