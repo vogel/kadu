@@ -192,7 +192,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 	return resultContacts;
 }
 
-void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically)
+QList<Contact> ContactListService::setBuddiesList(const BuddyList &buddies)
 {
 	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(account()).toList();
 
@@ -208,7 +208,6 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS)
 	// (unless we are importing from 0.9.x)
 
-	QStringList contactsList;
 	QList<Contact>::iterator i = unImportedContacts.begin();
 	while (i != unImportedContacts.end())
 	{
@@ -220,11 +219,6 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 
 			i = unImportedContacts.erase(i);
 		}
-		else
-		{
-			contactsList.append(i->display(true) + " (" + i->id() + ')');
-			++i;
-		}
 	}
 
 	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS) -
@@ -233,29 +227,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	//                        = NOT_PRESENT_ON_SERVER_BUT_PRESENT_LOCALLY_CONTACTS - LOCAL_DIRTY_ADDED_CONTACTS
 	// (unless we are importing from 0.9.x)
 
-	if (!unImportedContacts.isEmpty())
-	{
-		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"),
-				      tr("Kadu"),
-				      tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
-				      "Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>")));
-		dialog->addButton(QMessageBox::Yes, tr("Remove"));
-		dialog->addButton(QMessageBox::No, tr("Cancel"));
-
-		if (removeOldAutomatically || dialog->ask())
-		{
-			for (auto &&contact : unImportedContacts)
-			{
-				Buddy ownerBuddy = contact.ownerBuddy();
-				contact.setOwnerBuddy(Buddy::null);
-				// remove even if it still has some data, e.g. mobile number
-				BuddyManager::instance()->removeBuddyIfEmpty(ownerBuddy, true);
-				Roster::instance()->removeContact(contact);
-			}
-		}
-	}
-
-	ConfigurationManager::instance()->flush();
+	return unImportedContacts;
 }
 
 #include "moc_contact-list-service.cpp"

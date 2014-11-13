@@ -51,7 +51,7 @@ public:
 
 	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source) = 0;
 
-	void setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically);
+	QList<Contact> setBuddiesList(const BuddyList &buddies);
 
 };
 

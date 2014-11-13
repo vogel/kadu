@@ -42,6 +42,7 @@
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "protocols/protocol.h"
+#include "protocols/roster.h"
 #include "protocols/services/buddy-list-serialization-service.h"
 #include "protocols/services/contact-list-service.h"
 #include "debug.h"
@@ -125,7 +126,32 @@ void AccountBuddyListWidget::restoreFromFile()
 			return;
 		}
 
-		service2->setBuddiesList(list, false);
+		auto unImportedContacts = service2->setBuddiesList(list);
+		auto contactsList = QStringList{};
+		for (auto &&contact : unImportedContacts)
+			contactsList.append(contact.display(true) + " (" + contact.id() + ')');
+
+		if (!unImportedContacts.isEmpty())
+		{
+			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"),
+				tr("Kadu"),
+				tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
+				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>")));
+			dialog->addButton(QMessageBox::Yes, tr("Remove"));
+			dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+			if (dialog->ask())
+			{
+				for (auto &&contact : unImportedContacts)
+				{
+					Buddy ownerBuddy = contact.ownerBuddy();
+					contact.setOwnerBuddy(Buddy::null);
+					// remove even if it still has some data, e.g. mobile number
+					BuddyManager::instance()->removeBuddyIfEmpty(ownerBuddy, true);
+					Roster::instance()->removeContact(contact);
+				}
+			}
+		}
 	}
 }
 
