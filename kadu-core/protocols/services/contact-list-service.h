@@ -51,9 +51,6 @@ public:
 
 	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source) = 0;
 
-	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
-	virtual QByteArray storeBuddyList(const BuddyList &buddies) = 0;
-
 	void setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically);
 
 };

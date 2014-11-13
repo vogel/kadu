@@ -35,7 +35,6 @@
 
 #include "exports.h"
 
-class ContactListService;
 class FilteredTreeView;
 
 class KADUAPI AccountBuddyListWidget : public QWidget

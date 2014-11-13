@@ -70,9 +70,6 @@ public:
 
 	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 
-	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
-	virtual QByteArray storeBuddyList(const BuddyList &buddies);
-
 public slots:
 	virtual void exportContactList();
 	virtual void importContactList();

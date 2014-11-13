@@ -88,6 +88,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentAvatarService = new GaduAvatarService(account, this);
 
+	CurrentBuddyListSerializationService = new GaduBuddyListSerializationService{account, this};
+
 	CurrentChatImageService = new GaduChatImageService(account, this);
 	CurrentChatImageService->setConnection(Connection);
 

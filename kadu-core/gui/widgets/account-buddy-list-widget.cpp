@@ -42,6 +42,7 @@
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "protocols/protocol.h"
+#include "protocols/services/buddy-list-serialization-service.h"
 #include "protocols/services/contact-list-service.h"
 #include "debug.h"
 
@@ -99,8 +100,9 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 void AccountBuddyListWidget::restoreFromFile()
 {
-	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
-	if (!service)
+	auto service = CurrentAccount.protocolHandler()->buddyListSerializationService();
+	auto service2 = CurrentAccount.protocolHandler()->contactListService();
+	if (!service || !service2)
 		return;
 
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Select file"), QString(), tr("Contact List Files (*.txt *.xml);;All Files (*)"), 0);
@@ -114,7 +116,7 @@ void AccountBuddyListWidget::restoreFromFile()
 		QTextStream stream(file.readAll());
 		file.close();
 
-		QList<Buddy> list = service->loadBuddyList(stream);
+		auto list = service->deserialize(stream);
 
 		if (list.isEmpty())
 		{
@@ -123,13 +125,13 @@ void AccountBuddyListWidget::restoreFromFile()
 			return;
 		}
 
-		service->setBuddiesList(list, false);
+		service2->setBuddiesList(list, false);
 	}
 }
 
 void AccountBuddyListWidget::storeToFile()
 {
-	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
+	auto service = CurrentAccount.protocolHandler()->buddyListSerializationService();
 	if (!service)
 		return;
 
@@ -141,7 +143,7 @@ void AccountBuddyListWidget::storeToFile()
 
 	if (file.open(QFile::WriteOnly))
 	{
-		file.write(service->storeBuddyList(BuddyManager::instance()->buddies(CurrentAccount)));
+		file.write(service->serialize(BuddyManager::instance()->buddies(CurrentAccount)));
 		file.close();
 	}
 }

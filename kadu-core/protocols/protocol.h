@@ -44,6 +44,7 @@ class QPixmap;
 
 class AccountShared;
 class AvatarService;
+class BuddyListSerializationService;
 class ChatImageService;
 class ChatService;
 class ChatStateService;
@@ -130,6 +131,7 @@ public:
 	Account account() const { return CurrentAccount; }
 
 	virtual AvatarService * avatarService() { return 0; }
+	virtual BuddyListSerializationService * buddyListSerializationService() { return nullptr; }
 	virtual ChatImageService * chatImageService() { return 0; }
 	virtual ChatService * chatService();
 	virtual ChatStateService * chatStateService();

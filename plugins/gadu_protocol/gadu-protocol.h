@@ -39,6 +39,7 @@
 #include "configuration/configuration-aware-object.h"
 
 #include "services/gadu-avatar-service.h"
+#include "services/gadu-buddy-list-serialization-service.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-chat-state-service.h"
@@ -92,6 +93,7 @@ private:
 	ProtocolGaduConnection *Connection;
 
 	GaduAvatarService *CurrentAvatarService;
+	GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
 	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;
 	GaduContactListService *CurrentContactListService;
@@ -152,6 +154,7 @@ public:
 	virtual ~GaduProtocol();
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
+	virtual BuddyListSerializationService * buddyListSerializationService() { return CurrentBuddyListSerializationService; }
 	virtual ChatImageService * chatImageService() { return CurrentChatImageService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }

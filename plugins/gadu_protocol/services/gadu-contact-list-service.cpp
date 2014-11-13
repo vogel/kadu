@@ -304,14 +304,4 @@ void GaduContactListService::copySupportedBuddyInformation(const Buddy &destinat
 	GaduListHelper::setSupportedBuddyInformation(destination, source);
 }
 
-QList<Buddy> GaduContactListService::loadBuddyList(QTextStream &dataStream)
-{
-	return GaduListHelper::streamToBuddyList(account(), dataStream);
-}
-
-QByteArray GaduContactListService::storeBuddyList(const BuddyList &buddies)
-{
-	return GaduListHelper::buddyListToByteArray(account(), buddies);
-}
-
 #include "moc_gadu-contact-list-service.cpp"
