@@ -31,9 +31,9 @@
 #include "identities/identity.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
-#include "protocols/roster.h"
-#include "protocols/services/roster/roster-entry.h"
-#include "protocols/services/roster/roster-entry-state.h"
+#include "roster/roster.h"
+#include "roster/roster-entry.h"
+#include "roster/roster-entry-state.h"
 #include "protocols/services/subscription-service.h"
 
 #include "buddy-contacts-table-model.h"

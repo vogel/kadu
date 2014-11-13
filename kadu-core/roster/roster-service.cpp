@@ -26,10 +26,10 @@
 #include "roster-service.h"
 
 #include "protocols/protocol.h"
-#include "protocols/services/roster/roster-entry.h"
-#include "protocols/services/roster/roster-entry-state.h"
-#include "protocols/services/roster/roster-state.h"
-#include "protocols/services/roster/roster-task-type.h"
+#include "roster/roster-entry.h"
+#include "roster/roster-entry-state.h"
+#include "roster/roster-state.h"
+#include "roster/roster-task-type.h"
 
 RosterService::RosterService(Account account, const QVector<Contact> &contacts, QObject *parent) :
 		AccountService{account, parent},

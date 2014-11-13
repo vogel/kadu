@@ -26,7 +26,7 @@
 
 #include <QtCore/QPointer>
 
-#include "protocols/services/roster/roster-service.h"
+#include "roster/roster-service.h"
 
 class Buddy;
 class Contact;

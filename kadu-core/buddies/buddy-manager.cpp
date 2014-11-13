@@ -31,7 +31,7 @@
 #include "contacts/contact.h"
 #include "core/application.h"
 #include "core/core.h"
-#include "protocols/roster.h"
+#include "roster/roster.h"
 #include "storage/storage-point.h"
 #include "debug.h"
 

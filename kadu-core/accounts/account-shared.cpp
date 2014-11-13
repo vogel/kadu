@@ -36,8 +36,8 @@
 #include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-#include "protocols/services/roster/roster-service.h"
-#include "protocols/services/roster/roster-task-collection-storage.h"
+#include "roster/roster-service.h"
+#include "roster/roster-task-collection-storage.h"
 #include "status/status-setter.h"
 
 #include "account-shared.h"

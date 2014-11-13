@@ -25,9 +25,9 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
-#include "protocols/roster.h"
-#include "protocols/services/roster/roster-entry.h"
-#include "protocols/services/roster/roster-entry-state.h"
+#include "roster/roster.h"
+#include "roster/roster-entry.h"
+#include "roster/roster-entry-state.h"
 #include "debug.h"
 
 #include "contact-list-service.h"

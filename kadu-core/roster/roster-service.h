@@ -28,7 +28,7 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "protocols/services/account-service.h"
-#include "protocols/services/roster/roster-task.h"
+#include "roster/roster-task.h"
 
 #include "exports.h"
 

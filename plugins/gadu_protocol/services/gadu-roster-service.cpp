@@ -21,7 +21,7 @@
 
 #include "gadu-roster-service.h"
 
-#include "protocols/services/roster/roster-state.h"
+#include "roster/roster-state.h"
 
 #include <QtCore/QScopedArrayPointer>
 

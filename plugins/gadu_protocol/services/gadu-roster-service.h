@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "protocols/services/roster/roster-service.h"
+#include "roster/roster-service.h"
 
 struct gg_session;
 

@@ -25,7 +25,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
-#include "protocols/roster.h"
+#include "roster/roster.h"
 #include "debug.h"
 
 #include "gui/windows/subscription-window.h"

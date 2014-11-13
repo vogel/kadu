@@ -22,7 +22,7 @@
 
 #include "roster-task.h"
 
-#include "protocols/services/roster/roster-task-type.h"
+#include "roster/roster-task-type.h"
 
 RosterTask::RosterTask() :
 		m_type{RosterTaskType::None}

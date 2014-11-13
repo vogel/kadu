@@ -151,6 +151,7 @@ set (kadu_SUBDIRS
 	plugin
 	protocols
 	qt
+	roster
 	services
 	status
 	storage

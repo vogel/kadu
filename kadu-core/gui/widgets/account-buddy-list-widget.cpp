@@ -42,7 +42,7 @@
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "protocols/protocol.h"
-#include "protocols/roster.h"
+#include "roster/roster.h"
 #include "protocols/services/buddy-list-serialization-service.h"
 #include "protocols/services/contact-list-service.h"
 #include "debug.h"

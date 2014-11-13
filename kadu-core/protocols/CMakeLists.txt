@@ -13,17 +13,10 @@ set (protocols_SRCS
 	services/chat-state-service.cpp
 	services/contact-list-service.cpp
 
-	services/roster/roster-entry.cpp
-	services/roster/roster-notifier.cpp
-	services/roster/roster-service.cpp
-	services/roster/roster-task.cpp
-	services/roster/roster-task-collection-storage.cpp
-
 	connection-error-notification.cpp
 	protocol.cpp
 	protocols-manager.cpp
 	protocol-state-machine.cpp
-	roster.cpp
 )
 
 set (protocols_MOC_SRCS
@@ -53,7 +46,6 @@ set (protocols_MOC_SRCS
 	protocol-factory.h
 	protocols-manager.h
 	protocol-state-machine.h
-	roster.h
 )
 
 kadu_subdirectory (protocols "${protocols_SRCS}" "${protocols_MOC_SRCS}" "")

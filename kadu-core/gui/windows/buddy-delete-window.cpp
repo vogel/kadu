@@ -36,7 +36,7 @@
 #include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-manager.h"
 #include "icons/kadu-icon.h"
-#include "protocols/roster.h"
+#include "roster/roster.h"
 
 #include "buddy-delete-window.h"
 

@@ -25,7 +25,7 @@
 #include "contacts/contact-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
-#include "protocols/services/roster/roster-entry.h"
+#include "roster/roster-entry.h"
 
 #include "buddy-contacts-table-item.h"
 

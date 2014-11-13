@@ -31,7 +31,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
-#include "protocols/roster.h"
+#include "roster/roster.h"
 
 #include "plugins/gadu_protocol/helpers/gadu-importer.h"
 

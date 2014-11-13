@@ -32,7 +32,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "protocols/protocol.h"
-#include "protocols/roster.h"
+#include "roster/roster.h"
 
 #include "misc/misc.h"
 #include "debug.h"

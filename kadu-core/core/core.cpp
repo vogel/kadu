@@ -106,7 +106,7 @@
 #include "plugin/state/plugin-state-storage.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
-#include "protocols/services/roster/roster-notifier.h"
+#include "roster/roster-notifier.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "services/chat-image-request-service-configurator.h"
