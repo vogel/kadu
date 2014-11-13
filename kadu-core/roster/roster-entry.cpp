@@ -27,7 +27,10 @@
 #include "roster-entry.h"
 
 RosterEntry::RosterEntry(QObject *parent) :
-		QObject(parent), State(RosterEntryState::Unknown), Detached(false), RemotelyDeleted(false)
+		QObject{parent},
+		m_state{RosterEntryState::Unknown},
+		m_detached{false},
+		m_remotelyDeleted{false}
 {
 }
 
@@ -37,65 +40,65 @@ RosterEntry::~RosterEntry()
 
 void RosterEntry::setState(RosterEntryState state)
 {
-	if (State == state)
+	if (m_state == state)
 		return;
 
-	State = state;
-	MyChangeNotifier.notify();
+	m_state = state;
+	m_changeNotifier.notify();
 }
 
 void RosterEntry::fixupInitialState()
 {
-	if (State == RosterEntryState::Synchronizing)
-		State = RosterEntryState::Desynchronized;
+	if (m_state == RosterEntryState::Synchronizing)
+		m_state = RosterEntryState::Desynchronized;
 }
 
 RosterEntryState RosterEntry::state() const
 {
-	return State;
+	return m_state;
 }
 
 void RosterEntry::setDetached(bool detached)
 {
-	if (Detached == detached)
+	if (m_detached == detached)
 		return;
 
-	Detached = detached;
-	MyChangeNotifier.notify();
+	m_detached = detached;
+	m_changeNotifier.notify();
 }
 
 bool RosterEntry::detached() const
 {
-	return Detached;
+	return m_detached;
 }
 
 void RosterEntry::setRemotelyDeleted(bool remotelyDeleted)
 {
-	if (RemotelyDeleted == remotelyDeleted)
+	if (m_remotelyDeleted == remotelyDeleted)
 		return;
 
-	RemotelyDeleted = remotelyDeleted;
-	MyChangeNotifier.notify();
+	m_remotelyDeleted = remotelyDeleted;
+	m_changeNotifier.notify();
 }
 
 bool RosterEntry::remotelyDeleted() const
 {
-	return RemotelyDeleted;
+	return m_remotelyDeleted;
 }
 
 ChangeNotifier & RosterEntry::changeNotifier()
 {
-	return MyChangeNotifier;
+	return m_changeNotifier;
 }
 
 bool RosterEntry::requiresSynchronization() const
 {
-	return !Detached && RosterEntryState::Desynchronized == State;
+	return !m_detached && RosterEntryState::Desynchronized == m_state;
 }
 
 bool RosterEntry::canAcceptRemoteUpdate() const
 {
-	return !Detached && RosterEntryState::Desynchronized != State && RosterEntryState::Synchronizing != State;
+	return !m_detached && RosterEntryState::Desynchronized != m_state && RosterEntryState::Synchronizing != m_state;
 }
 
 #include "moc_roster-entry.cpp"

@@ -26,14 +26,14 @@
 #include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
 
-Roster * Roster::m_instance = nullptr;
+Roster * Roster::sm_instance = nullptr;
 
 Roster * Roster::instance()
 {
-	if (!m_instance)
-		m_instance = new Roster{};
+	if (!sm_instance)
+		sm_instance = new Roster{};
 
-	return m_instance;
+	return sm_instance;
 }
 
 RosterService * Roster::rosterService(const Contact &contact)

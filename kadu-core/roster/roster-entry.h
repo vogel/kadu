@@ -18,13 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_ENTRY_H
-#define ROSTER_ENTRY_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "misc/change-notifier.h"
 #include "exports.h"
+
+#include <QtCore/QObject>
 
 enum class RosterEntryState;
 
@@ -47,11 +46,6 @@ class KADUAPI RosterEntry : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(RosterEntry)
 
-	RosterEntryState State;
-	bool Detached;
-	bool RemotelyDeleted;
-	ChangeNotifier MyChangeNotifier;
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -60,7 +54,7 @@ public:
 	 *
 	 * New instance has Detached property set to false and RosterEntryUnkown synchronization state.
 	 */
-	explicit RosterEntry(QObject *parent = 0);
+	explicit RosterEntry(QObject *parent = nullptr);
 	virtual ~RosterEntry();
 
 	/**
@@ -144,10 +138,14 @@ public:
 	 */
 	bool canAcceptRemoteUpdate() const;
 
+private:
+	RosterEntryState m_state;
+	bool m_detached;
+	bool m_remotelyDeleted;
+	ChangeNotifier m_changeNotifier;
+
 };
 
 /**
  * @}
  */
-
-#endif // ROSTER_ENTRY_H

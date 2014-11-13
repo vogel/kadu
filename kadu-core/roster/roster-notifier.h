@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "exports.h"
 
-#include <exports.h>
+#include <QtCore/QObject>
 
 class Account;
 class NotifyEvent;
@@ -30,22 +30,8 @@ class KADUAPI RosterNotifier : public QObject
 {
 	Q_OBJECT
 
-	static QString RosterNotifyTopic;
-	static QString ImportSucceededNotifyTopic;
-	static QString ImportFailedNotifyTopic;
-	static QString ExportSucceededNotifyTopic;
-	static QString ExportFailedNotifyTopic;
-
-	QScopedPointer<NotifyEvent> RosterNotifyEvent;
-	QScopedPointer<NotifyEvent> ImportSucceededNotifyEvent;
-	QScopedPointer<NotifyEvent> ImportFailedNotifyEvent;
-	QScopedPointer<NotifyEvent> ExportSucceededNotifyEvent;
-	QScopedPointer<NotifyEvent> ExportFailedNotifyEvent;
-
-	void notify(const QString &topic, const Account &account, const QString &message);
-
 public:
-	explicit RosterNotifier(QObject *parent = 0);
+	explicit RosterNotifier(QObject *parent = nullptr);
 	virtual ~RosterNotifier();
 
 	QList<NotifyEvent *> notifyEvents();
@@ -55,5 +41,20 @@ public slots:
 	void notifyImportFailed(const Account &account);
 	void notifyExportSucceeded(const Account &account);
 	void notifyExportFailed(const Account &account);
+
+private:
+	static QString sm_rosterNotifyTopic;
+	static QString sm_importSucceededNotifyTopic;
+	static QString sm_importFailedNotifyTopic;
+	static QString sm_exportSucceededNotifyTopic;
+	static QString sm_exportFailedNotifyTopic;
+
+	QScopedPointer<NotifyEvent> m_rosterNotifyEvent;
+	QScopedPointer<NotifyEvent> m_importSucceededNotifyEvent;
+	QScopedPointer<NotifyEvent> m_importFailedNotifyEvent;
+	QScopedPointer<NotifyEvent> m_exportSucceededNotifyEvent;
+	QScopedPointer<NotifyEvent> m_exportFailedNotifyEvent;
+
+	void notify(const QString &topic, const Account &account, const QString &message);
 
 };

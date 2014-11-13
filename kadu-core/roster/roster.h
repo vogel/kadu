@@ -85,7 +85,7 @@ public slots:
 	void removeContact(const Contact &contact) const;
 
 private:
-	static Roster *m_instance;
+	static Roster *sm_instance;
 
 	Roster();
 	virtual ~Roster();
