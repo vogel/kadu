@@ -92,6 +92,7 @@ class PluginStateManager;
 class PluginStateService;
 class RawMessageTransformerService;
 class RosterNotifier;
+class RosterReplacer;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class WebkitMessagesViewDisplayFactory;
@@ -249,6 +250,7 @@ public:
 	WebkitMessagesViewDisplayFactory * webkitMessagesViewDisplayFactory() const;
 	WebkitMessagesViewFactory * webkitMessagesViewFactory() const;
 	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
+	RosterReplacer * rosterReplacer() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

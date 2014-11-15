@@ -32,6 +32,7 @@
 #include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-notifier.h"
+#include "roster/roster-replacer.h"
 #include "roster/roster-service.h"
 #include "debug.h"
 
@@ -156,7 +157,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
 		getFinished(true);
 
-		setBuddiesList(buddies, haveToAskForAddingContacts());
+		Core::instance()->rosterReplacer()->replaceRoster(account(), buddies, haveToAskForAddingContacts());
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 		accountDetails->setInitialRosterImport(false);
 

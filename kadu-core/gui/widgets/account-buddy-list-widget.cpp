@@ -32,6 +32,7 @@
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
@@ -43,8 +44,8 @@
 
 #include "protocols/protocol.h"
 #include "roster/roster.h"
+#include "roster/roster-replacer.h"
 #include "protocols/services/buddy-list-serialization-service.h"
-#include "protocols/services/contact-list-service.h"
 #include "debug.h"
 
 #include "account-buddy-list-widget.h"
@@ -102,8 +103,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 void AccountBuddyListWidget::restoreFromFile()
 {
 	auto service = CurrentAccount.protocolHandler()->buddyListSerializationService();
-	auto service2 = CurrentAccount.protocolHandler()->contactListService();
-	if (!service || !service2)
+	if (!service)
 		return;
 
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Select file"), QString(), tr("Contact List Files (*.txt *.xml);;All Files (*)"), 0);
@@ -126,7 +126,7 @@ void AccountBuddyListWidget::restoreFromFile()
 			return;
 		}
 
-		auto unImportedContacts = service2->setBuddiesList(list, false);
+		auto unImportedContacts = Core::instance()->rosterReplacer()->replaceRoster(CurrentAccount, list, false);
 		auto contactsList = QStringList{};
 		for (auto &&contact : unImportedContacts)
 			contactsList.append(contact.display(true) + " (" + contact.id() + ')');

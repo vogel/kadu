@@ -36,18 +36,9 @@ class KADUAPI ContactListService : public AccountService
 {
 	Q_OBJECT
 
-	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
-	QVector<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
-	void performRenames(const QMap<Buddy, Contact> &contactsToRename);
-	QVector<Contact> registerBuddies(const BuddyList &buddies, bool ask);
-
 public:
 	explicit ContactListService(Account account, QObject *parent = 0);
 	virtual ~ContactListService();
-
-	void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
-
-	QList<Contact> setBuddiesList(const BuddyList &buddies, bool ask);
 
 };
 

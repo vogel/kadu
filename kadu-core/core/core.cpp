@@ -107,6 +107,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "roster/roster-notifier.h"
+#include "roster/roster-replacer.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "services/chat-image-request-service-configurator.h"
@@ -1028,6 +1029,11 @@ WebkitMessagesViewFactory * Core::webkitMessagesViewFactory() const
 WebkitMessagesViewHandlerFactory * Core::webkitMessagesViewHandlerFactory() const
 {
 	return CurrentWebkitMessagesViewHandlerFactory.get();
+}
+
+RosterReplacer * Core::rosterReplacer() const
+{
+	return m_injector.get<RosterReplacer>();
 }
 
 void Core::showMainWindow()

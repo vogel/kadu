@@ -1,7 +1,9 @@
 set (roster_SRCS
 	roster.cpp
 	roster-entry.cpp
+	roster-module.cpp
 	roster-notifier.cpp
+	roster-replacer.cpp
 	roster-service.cpp
 	roster-task.cpp
 	roster-task-collection-storage.cpp
