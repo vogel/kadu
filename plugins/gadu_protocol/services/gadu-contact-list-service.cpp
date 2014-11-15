@@ -45,7 +45,7 @@
 #include "gadu-contact-list-service.h"
 
 GaduContactListService::GaduContactListService(const Account &account, Protocol *protocol) :
-		ContactListService(account, protocol), StateMachine(new GaduContactListStateMachine(this, protocol))
+		AccountService(account, protocol), StateMachine(new GaduContactListStateMachine(this, protocol))
 {
 	connect(StateMachine, SIGNAL(performGet()), SLOT(importContactList()));
 	connect(StateMachine, SIGNAL(performPut()), SLOT(exportContactList()));

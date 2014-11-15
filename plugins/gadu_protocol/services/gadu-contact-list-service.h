@@ -28,13 +28,14 @@
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
-#include "protocols/services/contact-list-service.h"
+#include "protocols/services/account-service.h"
 
+class BuddyList;
 class GaduContactListStateMachine;
 class GaduConnection;
 class RosterNotifier;
 
-class GaduContactListService : public ContactListService
+class GaduContactListService : public AccountService
 {
 	Q_OBJECT
 

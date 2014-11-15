@@ -48,7 +48,6 @@ class BuddyListSerializationService;
 class ChatImageService;
 class ChatService;
 class ChatStateService;
-class ContactListService;
 class ContactPersonalInfoService;
 class ContactSet;
 class FileTransferService;
@@ -136,7 +135,6 @@ public:
 	virtual ChatService * chatService();
 	virtual ChatStateService * chatStateService();
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
-	virtual ContactListService * contactListService() { return 0; }
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual MultilogonService * multilogonService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }

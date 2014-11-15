@@ -54,7 +54,6 @@
 #include "os/generic/url-opener.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
-#include "protocols/services/contact-list-service.h"
 
 #include "services/gadu-contact-list-service.h"
 #include "gadu-account-details.h"
