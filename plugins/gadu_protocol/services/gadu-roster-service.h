@@ -38,7 +38,7 @@ class GaduRosterService : public RosterService
 	Q_OBJECT
 
 public:
-	explicit GaduRosterService(Account account, Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = nullptr);
+	explicit GaduRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = nullptr);
 	virtual ~GaduRosterService();
 
 	virtual bool supportsTasks() const override { return false; }

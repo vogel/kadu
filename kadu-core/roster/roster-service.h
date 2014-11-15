@@ -75,19 +75,16 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of RosterService bound to given Account.
-	 * @param account to bound this service to
+	 * @param protocol to bound this service to
 	 * @param contacts initial list of account contacts that should be stored in Roster
 	 */
-	explicit RosterService(Account account, const QVector<Contact> &contacts, QObject *parent = nullptr);
+	explicit RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = nullptr);
 	virtual ~RosterService();
 
 	/**
-	 * @short Set protocol to use by this service.
-	 * @todo Switch to ConnectionService?
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param protocol protocol to bound this service to
+	 * @return protocol bounded with this service
 	 */
-	void setProtocol(Protocol *protocol);
+	Protocol * protocol() const;
 
 	/**
 	 * @short Return true if protocol supports concept of eoster tasks.
@@ -218,8 +215,6 @@ protected:
 	 * For each known contact that has a RosterEntry and is in desynchronized state a new RosterTask with Update mode is returned.
 	 */
 	QVector<RosterTask> updateTasksForContacts() const;
-
-	Protocol * protocol() const;
 
 	bool containsTask(const QString &id) const;
 

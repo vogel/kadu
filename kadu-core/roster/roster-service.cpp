@@ -30,8 +30,9 @@
 #include "roster/roster-entry-state.h"
 #include "roster/roster-task-type.h"
 
-RosterService::RosterService(Account account, const QVector<Contact> &contacts, QObject *parent) :
-		AccountService{account, parent},
+RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
+		AccountService{protocol->account(), parent},
+		m_protocol{protocol},
 		m_contacts{std::move(contacts)}
 {
 	for (auto &&contact : m_contacts)
@@ -42,15 +43,9 @@ RosterService::~RosterService()
 {
 }
 
-void RosterService::setProtocol(Protocol *protocol)
+Protocol * RosterService::protocol() const
 {
-	if (m_protocol)
-		disconnect(m_protocol.data(), nullptr, this, nullptr);
-
-	m_protocol = protocol;
-
-	if (m_protocol)
-		connect(m_protocol.data(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
+	return m_protocol;
 }
 
 void RosterService::contactDirtinessChanged()
@@ -94,11 +89,6 @@ QVector<RosterTask> RosterService::updateTasksForContacts(const QVector<Contact>
 QVector<RosterTask> RosterService::updateTasksForContacts() const
 {
 	return updateTasksForContacts(m_contacts);
-}
-
-Protocol * RosterService::protocol() const
-{
-	return m_protocol;
 }
 
 bool RosterService::containsTask(const QString &id) const

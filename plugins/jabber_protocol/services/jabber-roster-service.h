@@ -138,7 +138,7 @@ protected:
 	virtual void executeTask(const RosterTask &task);
 
 public:
-	explicit JabberRosterService(Account account, Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = 0);
+	explicit JabberRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = 0);
 	virtual ~JabberRosterService();
 
 	virtual bool supportsTasks() const override { return true; }

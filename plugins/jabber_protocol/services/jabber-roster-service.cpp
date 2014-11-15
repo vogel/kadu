@@ -58,8 +58,8 @@ const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 		return item.jid().bare();
 }
 
-JabberRosterService::JabberRosterService(Account account, Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
-		RosterService(account, std::move(contacts), parent),
+JabberRosterService::JabberRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
+		RosterService(protocol, std::move(contacts), parent),
 		State{JabberRosterState::NonInitialized}
 {
 	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));

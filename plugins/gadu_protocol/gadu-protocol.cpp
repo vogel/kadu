@@ -120,7 +120,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
-	GaduRosterService *rosterService = new GaduRosterService(account, this, contacts, this);
+	GaduRosterService *rosterService = new GaduRosterService(this, contacts, this);
 	rosterService->setConnection(Connection);
 	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
 	rosterService->setRosterReplacer(Core::instance()->rosterReplacer());
