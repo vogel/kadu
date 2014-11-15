@@ -37,7 +37,6 @@
 #include <QtCore/QQueue>
 
 class Protocol;
-enum class RosterState;
 
 /**
  * @addtogroup Protocol
@@ -91,13 +90,6 @@ public:
 	 * @param protocol protocol to bound this service to
 	 */
 	void setProtocol(Protocol *protocol);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return current state of this service.
-	 * @return current state of this service
-	 */
-	RosterState state() const { return m_state; }
 
 	/**
 	 * @short Return true if protocol supports concept of eoster tasks.
@@ -187,33 +179,7 @@ signals:
 	void taskAdded();
 
 protected:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if local update can be processed.
-	 * @return true if local update can be processed
-	 *
-	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
-	 * method and add more conditions.
-	 */
 	virtual bool canPerformLocalUpdate() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if remote update for given contact can be processed.
-	 * @param contact contact to check
-	 * @return true if remote update can be processed
-	 *
-	 * Remote update can only be processed for either anonymous contacts or contacts than can accept remote updates (not detached
-	 * and not currently synchronizing) when there is no task for given contact.
-	 */
-	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets state of roster service.
-	 * @param state new state
-	 */
-	void setState(RosterState state);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -262,6 +228,10 @@ protected:
 	 */
 	QVector<RosterTask> updateTasksForContacts() const;
 
+	Protocol * protocol() const;
+
+	bool containsTask(const QString &id) const;
+
 protected slots:
 	/**
 	 * @short Add new synchronized contact to be watched.
@@ -275,7 +245,6 @@ protected slots:
 private:
 	QPointer<Protocol> m_protocol;
 
-	RosterState m_state;
 	QVector<Contact> m_contacts;
 	QQueue<RosterTask> m_tasks;
 	QMap<QString, RosterTask> m_idToTask;
@@ -313,14 +282,6 @@ private:
 	void disconnectContact(const Contact &contact);
 
 private slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called when protocol disconencted.
-	 *
-	 * Roster state is reset to StateNonInitialized.
-	 */
-	void disconnected();
-
 	/**
 	 * @enum RosterState
 	 * @author Rafał 'Vogel' Malinowski

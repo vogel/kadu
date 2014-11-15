@@ -28,12 +28,10 @@
 #include "protocols/protocol.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
-#include "roster/roster-state.h"
 #include "roster/roster-task-type.h"
 
 RosterService::RosterService(Account account, const QVector<Contact> &contacts, QObject *parent) :
 		AccountService{account, parent},
-		m_state{RosterState::NonInitialized},
 		m_contacts{std::move(contacts)}
 {
 	for (auto &&contact : m_contacts)
@@ -53,11 +51,6 @@ void RosterService::setProtocol(Protocol *protocol)
 
 	if (m_protocol)
 		connect(m_protocol.data(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
-}
-
-void RosterService::disconnected()
-{
-	setState(RosterState::NonInitialized);
 }
 
 void RosterService::contactDirtinessChanged()
@@ -82,26 +75,7 @@ void RosterService::contactDirtinessChanged()
 
 bool RosterService::canPerformLocalUpdate() const
 {
-	if (!m_protocol)
-		return false;
-
-	return m_protocol->isConnected() && (RosterState::Initialized == m_state);
-}
-
-bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
-{
-	if (contact.isAnonymous())
-		return true;
-
-	if (!contact.rosterEntry()->canAcceptRemoteUpdate())
-		return false;
-
-	return !m_idToTask.contains(contact.id());
-}
-
-void RosterService::setState(RosterState state)
-{
-	m_state = state;
+	return false;
 }
 
 QVector<RosterTask> RosterService::updateTasksForContacts(const QVector<Contact> &contacts)
@@ -120,6 +94,16 @@ QVector<RosterTask> RosterService::updateTasksForContacts(const QVector<Contact>
 QVector<RosterTask> RosterService::updateTasksForContacts() const
 {
 	return updateTasksForContacts(m_contacts);
+}
+
+Protocol * RosterService::protocol() const
+{
+	return m_protocol;
+}
+
+bool RosterService::containsTask(const QString &id) const
+{
+	return m_idToTask.contains(id);
 }
 
 void RosterService::resetSynchronizingToDesynchronized()

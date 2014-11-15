@@ -28,6 +28,7 @@
 
 #include "roster/roster-service.h"
 
+enum class JabberRosterState;
 class Buddy;
 class Contact;
 class JabberProtocol;
@@ -46,6 +47,7 @@ class JabberRosterService : public RosterService
 	QPointer<Client> XmppClient;
 
 	QMap<JT_Roster *, Contact> ContactForTask;
+	JabberRosterState State;
 
 	static QStringList buddyGroups(const Buddy &buddy);
 	static const QString & itemDisplay(const RosterItem &item);
@@ -88,7 +90,21 @@ class JabberRosterService : public RosterService
 	 */
 	bool isIntrestedIn(const XMPP::RosterItem &item);
 
+	/**
+	 * @short Sets state of roster service.
+	 * @param state new state
+	 */
+	void setState(JabberRosterState state);
+
 private slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called when protocol disconencted.
+	 *
+	 * Roster state is reset to StateNonInitialized.
+	 */
+	void disconnected();
+
 	void remoteContactUpdated(const RosterItem &item);
 	void remoteContactDeleted(const RosterItem &item);
 
@@ -98,14 +114,36 @@ private slots:
 	void rosterRequestFinished(bool success);
 
 protected:
-	virtual bool canPerformLocalUpdate() const;
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if local update can be processed.
+	 * @return true if local update can be processed
+	 *
+	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
+	 * method and add more conditions.
+	 */
+	virtual bool canPerformLocalUpdate() const override;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if remote update for given contact can be processed.
+	 * @param contact contact to check
+	 * @return true if remote update can be processed
+	 *
+	 * Remote update can only be processed for either anonymous contacts or contacts than can accept remote updates (not detached
+	 * and not currently synchronizing) when there is no task for given contact.
+	 */
+	bool canPerformRemoteUpdate(const Contact &contact) const;
+
 	virtual void executeTask(const RosterTask &task);
 
 public:
-	explicit JabberRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = 0);
+	explicit JabberRosterService(Account account, Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = 0);
 	virtual ~JabberRosterService();
 
 	virtual bool supportsTasks() const override { return true; }
+
+	JabberRosterState state() const { return State; }
 
 	void prepareRoster();
 

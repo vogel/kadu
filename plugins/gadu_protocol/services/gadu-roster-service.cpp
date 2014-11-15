@@ -32,7 +32,6 @@
 #include "roster/roster-entry-state.h"
 #include "roster/roster-notifier.h"
 #include "roster/roster-replacer.h"
-#include "roster/roster-state.h"
 #include "debug.h"
 
 #include <QtCore/QScopedArrayPointer>
@@ -72,7 +71,6 @@ GaduRosterService::~GaduRosterService()
 
 void GaduRosterService::prepareRoster()
 {
-	setState(RosterState::Initialized);
 	emit rosterReady(true);
 }
 

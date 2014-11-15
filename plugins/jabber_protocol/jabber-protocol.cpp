@@ -133,7 +133,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
-	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(account, contacts, this);
+	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(account, this, contacts, this);
 
 	chatService->setXmppClient(XmppClient);
 	chatStateService->setClient(XmppClient);

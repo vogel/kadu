@@ -20,10 +20,10 @@
 #pragma once
 
 /**
- * @enum RosterState
- * @short State of roster service.
+ * @enum JabberRosterState
+ * @short State of jabbber roster service.
  */
-enum class RosterState {
+enum class JabberRosterState {
 	/**
 	 * Roster service was not initialized and cannot perform any operation except prepareRoster().
 	 */
