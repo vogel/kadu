@@ -18,100 +18,101 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QHistoryState>
-#include <QtCore/QStringList>
+#include "gadu-roster-state-machine.h"
+
+#include "services/gadu-contact-list-service.h"
 
 #include "protocols/protocol.h"
 #include "debug.h"
 
-#include "services/gadu-contact-list-service.h"
 
-#include "gadu-roster-state-machine.h"
+#include <QtCore/QHistoryState>
+#include <QtCore/QStringList>
 
 GaduRosterStateMachine::GaduRosterStateMachine(GaduContactListService *service, Protocol *protocol) :
-		QStateMachine(service)
+		QStateMachine{service}
 {
-	auto globalState = new QState(ParallelStates);
+	auto globalState = new QState{ParallelStates};
 
-	WorkState = new QState(globalState);
-	OfflineState = new QState(WorkState);
-	IdleState = new QState(WorkState);
-	PutState = new QState(WorkState);
-	GetState = new QState(WorkState);
+	m_workState = new QState{globalState};
+	m_offlineState = new QState{m_workState};
+	m_idleState = new QState{m_workState};
+	m_putState = new QState{m_workState};
+	m_getState = new QState{m_workState};
 
-	OfflineState->addTransition(protocol, SIGNAL(connected(Account)), IdleState);
-	IdleState->addTransition(service, SIGNAL(stateMachinePutStarted()), PutState);
-	IdleState->addTransition(service, SIGNAL(stateMachineGetStarted()), GetState);
-	IdleState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	PutState->addTransition(service, SIGNAL(stateMachinePutFinished()), IdleState);
-	PutState->addTransition(service, SIGNAL(stateMachinePutFailed()), IdleState);
-	PutState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	GetState->addTransition(service, SIGNAL(stateMachineGetFinished()), IdleState);
-	GetState->addTransition(service, SIGNAL(stateMachineGetFailed()), IdleState);
-	GetState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
+	m_offlineState->addTransition(protocol, SIGNAL(connected(Account)), m_idleState);
+	m_idleState->addTransition(service, SIGNAL(stateMachinePutStarted()), m_putState);
+	m_idleState->addTransition(service, SIGNAL(stateMachineGetStarted()), m_getState);
+	m_idleState->addTransition(protocol, SIGNAL(disconnected(Account)), m_offlineState);
+	m_putState->addTransition(service, SIGNAL(stateMachinePutFinished()), m_idleState);
+	m_putState->addTransition(service, SIGNAL(stateMachinePutFailed()), m_idleState);
+	m_putState->addTransition(protocol, SIGNAL(disconnected(Account)), m_offlineState);
+	m_getState->addTransition(service, SIGNAL(stateMachineGetFinished()), m_idleState);
+	m_getState->addTransition(service, SIGNAL(stateMachineGetFailed()), m_idleState);
+	m_getState->addTransition(protocol, SIGNAL(disconnected(Account)), m_offlineState);
 
-	LocalState = new QState(globalState);
-	LocalCleanState = new QState(LocalState);
-	LocalDirtyState = new QState(LocalState);
-	LocalCleaningState = new QState(LocalState);
-	LocalCleaningDirtyState = new QState(LocalState);
-	LocalFailedState = new QState(LocalState);
+	m_localState = new QState{globalState};
+	m_localCleanState = new QState{m_localState};
+	m_localDirtyState = new QState{m_localState};
+	m_localCleaningState = new QState{m_localState};
+	m_localCleaningDirtyState = new QState{m_localState};
+	m_localFailedState = new QState{m_localState};
 
-	LocalCleanState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalDirtyState);
-	LocalDirtyState->addTransition(service, SIGNAL(stateMachinePutStarted()), LocalCleaningState);
-	LocalCleaningState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalCleaningDirtyState);
-	LocalCleaningState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalCleanState);
-	LocalCleaningState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalFailedState);
-	LocalCleaningState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
-	LocalCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalDirtyState);
-	LocalCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalDirtyState);
-	LocalCleaningDirtyState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
-	LocalFailedState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalDirtyState);
-	LocalFailedState->addTransition(protocol, SIGNAL(connected(Account)), LocalDirtyState);
-	LocalFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
+	m_localCleanState->addTransition(service, SIGNAL(stateMachineLocalDirty()), m_localDirtyState);
+	m_localDirtyState->addTransition(service, SIGNAL(stateMachinePutStarted()), m_localCleaningState);
+	m_localCleaningState->addTransition(service, SIGNAL(stateMachineLocalDirty()), m_localCleaningDirtyState);
+	m_localCleaningState->addTransition(service, SIGNAL(stateMachinePutFinished()), m_localCleanState);
+	m_localCleaningState->addTransition(service, SIGNAL(stateMachinePutFailed()), m_localFailedState);
+	m_localCleaningState->addTransition(protocol, SIGNAL(disconnected(Account)), m_localDirtyState);
+	m_localCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFinished()), m_localDirtyState);
+	m_localCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFailed()), m_localDirtyState);
+	m_localCleaningDirtyState->addTransition(protocol, SIGNAL(disconnected(Account)), m_localDirtyState);
+	m_localFailedState->addTransition(service, SIGNAL(stateMachineLocalDirty()), m_localDirtyState);
+	m_localFailedState->addTransition(protocol, SIGNAL(connected(Account)), m_localDirtyState);
+	m_localFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), m_localDirtyState);
 
-	RemoteState = new QState(globalState);
-	RemoteCleanState = new QState(RemoteState);
-	RemoteDirtyState = new QState(RemoteState);
-	RemoteCleaningState = new QState(RemoteState);
-	RemoteCleaningDirtyState = new QState(RemoteState);
-	RemoteFailedState = new QState(RemoteState);
+	m_remoteState = new QState{globalState};
+	m_remoteCleanState = new QState{m_remoteState};
+	m_remoteDirtyState = new QState{m_remoteState};
+	m_remoteCleaningState = new QState{m_remoteState};
+	m_remoteCleaningDirtyState = new QState{m_remoteState};
+	m_remoteFailedState = new QState{m_remoteState};
 
-	RemoteCleanState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteDirtyState);
-	RemoteDirtyState->addTransition(service, SIGNAL(stateMachineGetStarted()), RemoteCleaningState);
-	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteCleaningDirtyState);
-	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteCleanState);
-	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteFailedState);
-	RemoteCleaningState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
-	RemoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteDirtyState);
-	RemoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteDirtyState);
-	RemoteCleaningDirtyState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
-	RemoteFailedState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteDirtyState);
-	RemoteFailedState->addTransition(protocol, SIGNAL(connected(Account)), RemoteDirtyState);
-	RemoteFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
+	m_remoteCleanState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), m_remoteDirtyState);
+	m_remoteDirtyState->addTransition(service, SIGNAL(stateMachineGetStarted()), m_remoteCleaningState);
+	m_remoteCleaningState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), m_remoteCleaningDirtyState);
+	m_remoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFinished()), m_remoteCleanState);
+	m_remoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFailed()), m_remoteFailedState);
+	m_remoteCleaningState->addTransition(protocol, SIGNAL(disconnected(Account)), m_remoteDirtyState);
+	m_remoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFinished()), m_remoteDirtyState);
+	m_remoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFailed()), m_remoteDirtyState);
+	m_remoteCleaningDirtyState->addTransition(protocol, SIGNAL(disconnected(Account)), m_remoteDirtyState);
+	m_remoteFailedState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), m_remoteDirtyState);
+	m_remoteFailedState->addTransition(protocol, SIGNAL(connected(Account)), m_remoteDirtyState);
+	m_remoteFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), m_remoteDirtyState);
 
-	LocalState->setInitialState(LocalCleanState);
-	RemoteState->setInitialState(RemoteDirtyState);
-	WorkState->setInitialState(protocol->isConnected() ? IdleState : OfflineState);
+	m_localState->setInitialState(m_localCleanState);
+	m_remoteState->setInitialState(m_remoteDirtyState);
+	m_workState->setInitialState(protocol->isConnected() ? m_idleState : m_offlineState);
 
-	connect(IdleState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
-	connect(LocalDirtyState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
-	connect(RemoteDirtyState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
+	connect(m_idleState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
+	connect(m_localDirtyState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
+	connect(m_remoteDirtyState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
 
-	connect(OfflineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(IdleState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(PutState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(GetState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(LocalCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(LocalDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(LocalCleaningState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(LocalCleaningDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(LocalFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(RemoteCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(RemoteDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(RemoteCleaningState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(RemoteCleaningDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
-	connect(RemoteFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_offlineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_idleState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_putState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_getState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_localCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_localDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_localCleaningState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_localCleaningDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_localFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_remoteCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_remoteDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_remoteCleaningState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_remoteCleaningDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(m_remoteFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 
 	addState(globalState);
 
@@ -124,35 +125,35 @@ GaduRosterStateMachine::~GaduRosterStateMachine()
 
 void GaduRosterStateMachine::printConfiguration()
 {
-	QStringList states;
+	auto states = QStringList{};
 
-	if (configuration().contains(OfflineState))
+	if (configuration().contains(m_offlineState))
 		states.append("offline");
-	if (configuration().contains(IdleState))
+	if (configuration().contains(m_idleState))
 		states.append("idle");
-	if (configuration().contains(PutState))
+	if (configuration().contains(m_putState))
 		states.append("put");
-	if (configuration().contains(GetState))
+	if (configuration().contains(m_getState))
 		states.append("get");
-	if (configuration().contains(LocalCleanState))
+	if (configuration().contains(m_localCleanState))
 		states.append("local-clean");
-	if (configuration().contains(LocalDirtyState))
+	if (configuration().contains(m_localDirtyState))
 		states.append("local-dirty");
-	if (configuration().contains(LocalCleaningState))
+	if (configuration().contains(m_localCleaningState))
 		states.append("local-cleaning");
-	if (configuration().contains(LocalCleaningDirtyState))
+	if (configuration().contains(m_localCleaningDirtyState))
 		states.append("local-cleaning-dirty");
-	if (configuration().contains(LocalFailedState))
+	if (configuration().contains(m_localFailedState))
 		states.append("local-failed");
-	if (configuration().contains(RemoteCleanState))
+	if (configuration().contains(m_remoteCleanState))
 		states.append("remote-clean");
-	if (configuration().contains(RemoteDirtyState))
+	if (configuration().contains(m_remoteDirtyState))
 		states.append("remote-dirty");
-	if (configuration().contains(RemoteCleaningState))
+	if (configuration().contains(m_remoteCleaningState))
 		states.append("remote-cleaning");
-	if (configuration().contains(RemoteCleaningDirtyState))
+	if (configuration().contains(m_remoteCleaningDirtyState))
 		states.append("remote-cleaning-dirty");
-	if (configuration().contains(RemoteFailedState))
+	if (configuration().contains(m_remoteFailedState))
 		states.append("remote-failed");
 
 	kdebugm(KDEBUG_INFO, "Gadu contact list state machine: [%s]\n", qPrintable(states.join(", ")));
@@ -168,22 +169,22 @@ void GaduRosterStateMachine::checkIfSynchronizationRequired()
 
 bool GaduRosterStateMachine::shouldPerformPut() const
 {
-	return configuration().contains(IdleState) && configuration().contains(LocalDirtyState) && !configuration().contains(RemoteDirtyState);
+	return configuration().contains(m_idleState) && configuration().contains(m_localDirtyState) && !configuration().contains(m_remoteDirtyState);
 }
 
 bool GaduRosterStateMachine::isPerformingPut() const
 {
-	return configuration().contains(PutState);
+	return configuration().contains(m_putState);
 }
 
 bool GaduRosterStateMachine::shouldPerformGet() const
 {
-	return configuration().contains(IdleState) && configuration().contains(RemoteDirtyState);
+	return configuration().contains(m_idleState) && configuration().contains(m_remoteDirtyState);
 }
 
 bool GaduRosterStateMachine::isPerformingGet() const
 {
-	return configuration().contains(GetState);
+	return configuration().contains(m_getState);
 }
 
 #include "moc_gadu-roster-state-machine.cpp"

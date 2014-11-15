@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_CONTACT_LIST_STATE_MACHINE_H
-#define GADU_CONTACT_LIST_STATE_MACHINE_H
+#pragma once
 
 #include <QtCore/QSignalTransition>
 #include <QtCore/QStateMachine>
@@ -32,30 +31,6 @@ class GaduContactListService;
 class GaduRosterStateMachine : public QStateMachine
 {
 	Q_OBJECT
-
-	QState *WorkState;
-	QState *OfflineState;
-	QState *IdleState;
-	QState *PutState;
-	QState *GetState;
-
-	QState *LocalState;
-	QState *LocalCleanState;
-	QState *LocalDirtyState;
-	QState *LocalCleaningState;
-	QState *LocalCleaningDirtyState;
-	QState *LocalFailedState;
-
-	QState *RemoteState;
-	QState *RemoteCleanState;
-	QState *RemoteDirtyState;
-	QState *RemoteCleaningState;
-	QState *RemoteCleaningDirtyState;
-	QState *RemoteFailedState;
-
-private slots:
-	void checkIfSynchronizationRequired();
-	void printConfiguration();
 
 public:
 	explicit GaduRosterStateMachine(GaduContactListService *service, Protocol *protocol);
@@ -71,6 +46,29 @@ signals:
 	void performPut();
 	void performGet();
 
-};
+private:
+	QState *m_workState;
+	QState *m_offlineState;
+	QState *m_idleState;
+	QState *m_putState;
+	QState *m_getState;
 
-#endif // GADU_CONTACT_LIST_STATE_MACHINE_H
+	QState *m_localState;
+	QState *m_localCleanState;
+	QState *m_localDirtyState;
+	QState *m_localCleaningState;
+	QState *m_localCleaningDirtyState;
+	QState *m_localFailedState;
+
+	QState *m_remoteState;
+	QState *m_remoteCleanState;
+	QState *m_remoteDirtyState;
+	QState *m_remoteCleaningState;
+	QState *m_remoteCleaningDirtyState;
+	QState *m_remoteFailedState;
+
+private slots:
+	void checkIfSynchronizationRequired();
+	void printConfiguration();
+
+};

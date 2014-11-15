@@ -30,10 +30,13 @@
 #include "contacts/contact.h"
 #include "protocols/services/account-service.h"
 
+#include <QtCore/QPointer>
+
 class BuddyList;
 class GaduConnection;
 class GaduRosterStateMachine;
 class RosterNotifier;
+class RosterService;
 
 class GaduContactListService : public AccountService
 {
