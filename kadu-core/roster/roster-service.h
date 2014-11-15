@@ -66,8 +66,6 @@ class Protocol;
  * remote roster. During initialization deletion mark is removed from contacts that have data on remote roster. After
  * initialization the rest of contacts is removed from local roster. In this case Detached flag of @link RosterEntry @endlink
  * does not count as it is only used for detaching from data synchronization.
- *
- * Signal rosterReady() is emitted when implementation decides that initialization was finished.
  */
 class KADUAPI RosterService : public AccountService
 {
@@ -141,13 +139,6 @@ public slots:
 	void removeContact(const Contact &contact);
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emitted when roster is ready
-	 * @param ok true, if preparing roster was successfull
-	 */
-	void rosterReady(bool ok);
-
 	/**
 	 * @short Signal emitted when new contact is added to roster
 	 * @param contact added contact

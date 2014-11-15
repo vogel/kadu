@@ -335,9 +335,6 @@ void GaduProtocol::afterLoggedIn()
 	// set up DCC if needed
 	setUpFileTransferService();
 
-	// we do not need to wait for "rosterReady" signal in GaduGadu
-	static_cast<GaduRosterService *>(rosterService())->prepareRoster();
-
 	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
 	CurrentNotifyService->sendInitialData(contacts);
 

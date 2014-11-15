@@ -69,11 +69,6 @@ GaduRosterService::~GaduRosterService()
 {
 }
 
-void GaduRosterService::prepareRoster()
-{
-	emit rosterReady(true);
-}
-
 void GaduRosterService::executeTask(const RosterTask &)
 {
 }

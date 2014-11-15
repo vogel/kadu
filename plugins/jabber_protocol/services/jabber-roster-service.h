@@ -149,6 +149,13 @@ public:
 
 	void setClient(Client *xmppClient);
 
+signals:
+	/**
+	 * @short Signal emitted when roster is ready
+	 * @param ok true, if preparing roster was successfull
+	 */
+	void rosterReady(bool ok);
+
 };
 
 }

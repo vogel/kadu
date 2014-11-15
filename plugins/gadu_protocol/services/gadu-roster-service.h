@@ -47,8 +47,6 @@ public:
 	void setRosterNotifier(RosterNotifier *rosterNotifier);
 	void setRosterReplacer(RosterReplacer *rosterReplacer);
 
-	void prepareRoster();
-
 protected:
 	virtual void executeTask(const RosterTask &task);
 
