@@ -41,8 +41,6 @@ public:
 	explicit GaduRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = nullptr);
 	virtual ~GaduRosterService();
 
-	virtual bool supportsTasks() const override { return false; }
-
 	void setConnection(GaduConnection *connection);
 	void setRosterNotifier(RosterNotifier *rosterNotifier);
 	void setRosterReplacer(RosterReplacer *rosterReplacer);

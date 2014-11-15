@@ -33,7 +33,6 @@
 
 RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
 		ProtocolService{protocol, parent},
-		m_tasks{new RosterServiceTasks{this}},
 		m_contacts{std::move(contacts)}
 {
 	for (auto &&contact : m_contacts)
@@ -56,10 +55,10 @@ void RosterService::contactDirtinessChanged()
 
 	emit contactUpdated(contact);
 
-	if (!supportsTasks() || !contact.rosterEntry()->requiresSynchronization())
+	if (!tasks() || !contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	m_tasks->addTask(RosterTask{RosterTaskType::Update, contact.id()});
+	tasks()->addTask(RosterTask{RosterTaskType::Update, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -97,7 +96,7 @@ void RosterService::disconnectContact(const Contact &contact)
 
 RosterServiceTasks * RosterService::tasks() const
 {
-	return m_tasks.get();
+	return nullptr;
 }
 
 const QVector<Contact> & RosterService::contacts() const
@@ -107,10 +106,11 @@ const QVector<Contact> & RosterService::contacts() const
 
 void RosterService::executeAllTasks()
 {
-	while (!m_tasks->isEmpty())
-	{
-		executeTask(m_tasks->dequeue());
-	}
+	if (tasks())
+		while (!tasks()->isEmpty())
+		{
+			executeTask(tasks()->dequeue());
+		}
 }
 
 void RosterService::addContact(const Contact &contact)
@@ -126,10 +126,10 @@ void RosterService::addContact(const Contact &contact)
 
 	emit contactAdded(contact);
 
-	if (!supportsTasks() || !contact.rosterEntry()->requiresSynchronization())
+	if (!tasks() || !contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	m_tasks->addTask(RosterTask{RosterTaskType::Add, contact.id()});
+	tasks()->addTask(RosterTask{RosterTaskType::Add, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -163,10 +163,10 @@ void RosterService::removeContact(const Contact &contact)
 	m_contacts.remove(index);
 	disconnectContact(contact);
 
-	if (!supportsTasks() || !contact.rosterEntry()->requiresSynchronization())
+	if (!tasks() || !contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	m_tasks->addTask(RosterTask{RosterTaskType::Delete, contact.id()});
+	tasks()->addTask(RosterTask{RosterTaskType::Delete, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }

@@ -26,6 +26,7 @@
 
 #include <QtCore/QPointer>
 
+#include "misc/memory.h"
 #include "roster/roster-service.h"
 
 enum class JabberRosterState;
@@ -46,6 +47,7 @@ class JabberRosterService : public RosterService
 
 	QPointer<Client> XmppClient;
 
+	owned_qptr<RosterServiceTasks> m_tasks;
 	QMap<JT_Roster *, Contact> ContactForTask;
 	JabberRosterState State;
 
@@ -141,7 +143,7 @@ public:
 	explicit JabberRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = 0);
 	virtual ~JabberRosterService();
 
-	virtual bool supportsTasks() const override { return true; }
+    virtual RosterServiceTasks * tasks() const override;
 
 	JabberRosterState state() const { return State; }
 

@@ -27,7 +27,6 @@
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
-#include "misc/memory.h"
 #include "protocols/services/protocol-service.h"
 
 #include "exports.h"
@@ -82,21 +81,16 @@ public:
 	virtual ~RosterService();
 
 	/**
-	 * @short Return true if protocol supports concept of roster tasks.
+	 * @return RosterServiceTasks instance that contains all roster tasks
 	 *
 	 * GaduGadu does not support this - all roster changes are done in one go, and it may be impossible
 	 * to split them in tasks. In Gadu if we have the same version of contact list as server then it can
 	 * be safely updated in one go. If not - server version is merged with local one. That means local
-	 * deletion may be reverted.
+	 * deletion may be reverted. So GaduGadu return null for this method.
 	 * 
 	 * XMPP fully supports roster task.
 	 */
-	virtual bool supportsTasks() const = 0;
-
-	/**
-	 * @return RosterServiceTasks instance that contains all roster tasks
-	 */
-	RosterServiceTasks * tasks() const;
+	virtual RosterServiceTasks * tasks() const;
 
 	const QVector<Contact> & contacts() const;
 
@@ -191,7 +185,6 @@ protected slots:
 	void addSynchronizedContact(const Contact &contact);
 
 private:
-	owned_qptr<RosterServiceTasks> m_tasks;
 	QPointer<Protocol> m_protocol;
 	QVector<Contact> m_contacts;
 

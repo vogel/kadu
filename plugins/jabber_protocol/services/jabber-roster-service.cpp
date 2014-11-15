@@ -60,7 +60,8 @@ const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 }
 
 JabberRosterService::JabberRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
-		RosterService(protocol, std::move(contacts), parent),
+		RosterService{protocol, std::move(contacts), parent},
+		m_tasks{new RosterServiceTasks{this}},
 		State{JabberRosterState::NonInitialized}
 {
 	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
@@ -68,6 +69,11 @@ JabberRosterService::JabberRosterService(Protocol *protocol, const QVector<Conta
 
 JabberRosterService::~JabberRosterService()
 {
+}
+
+RosterServiceTasks * JabberRosterService::tasks() const
+{
+    return m_tasks.get();
 }
 
 void JabberRosterService::connectToClient()
