@@ -135,7 +135,6 @@ void RosterService::addTask(const RosterTask &task)
 	if (!m_idToTask.contains(task.id()))
 	{
 		m_tasks.enqueue(task);
-		emit taskAdded();
 		return;
 	}
 
@@ -146,7 +145,6 @@ void RosterService::addTask(const RosterTask &task)
 		m_idToTask.remove(task.id());
 		m_idToTask.insert(task.id(), task);
 		m_tasks.enqueue(task);
-		emit taskAdded();
 	}
 }
 

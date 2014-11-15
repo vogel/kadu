@@ -156,11 +156,6 @@ signals:
 	 */
 	void contactUpdated(Contact contact);
 
-	/**
-	 * @short Signal emitted when any task is added to list of tasks.
-	 */
-	void taskAdded();
-
 protected:
 	virtual bool canPerformLocalUpdate() const;
 
