@@ -21,9 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <libgadu.h>
+#include "gadu-contact-list-service.h"
 
-#include <QtCore/QByteArray>
+#include "helpers/gadu-list-helper.h"
+#include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
+#include "services/gadu-roster-state-machine.h"
+#include "gadu-account-details.h"
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
@@ -36,21 +40,18 @@
 #include "roster/roster-service.h"
 #include "debug.h"
 
-#include "helpers/gadu-list-helper.h"
-#include "server/gadu-connection.h"
-#include "server/gadu-writable-session-token.h"
-#include "services/gadu-roster-state-machine.h"
-#include "gadu-account-details.h"
+#include <QtCore/QByteArray>
 
-#include "gadu-contact-list-service.h"
+#include <libgadu.h>
 
 GaduContactListService::GaduContactListService(const Account &account, Protocol *protocol) :
-		AccountService(account, protocol), StateMachine(new GaduRosterStateMachine(this, protocol))
+		AccountService{account, protocol},
+		m_stateMachine{new GaduRosterStateMachine(this, protocol)}
 {
-	connect(StateMachine, SIGNAL(performGet()), SLOT(importContactList()));
-	connect(StateMachine, SIGNAL(performPut()), SLOT(exportContactList()));
+	connect(m_stateMachine, SIGNAL(performGet()), SLOT(importContactList()));
+	connect(m_stateMachine, SIGNAL(performPut()), SLOT(exportContactList()));
 
-	StateMachine->start();
+	m_stateMachine->start();
 }
 
 GaduContactListService::~GaduContactListService()
@@ -59,20 +60,20 @@ GaduContactListService::~GaduContactListService()
 
 void GaduContactListService::setConnection(GaduConnection *connection)
 {
-	Connection = connection;
+	m_connection = connection;
 }
 
 void GaduContactListService::setRosterNotifier(RosterNotifier *rosterNotifier)
 {
-	MyRosterNotifier = rosterNotifier;
+	m_rosterNotifier = rosterNotifier;
 }
 
 void GaduContactListService::setRosterService(RosterService *rosterService)
 {
-	MyRosterService = rosterService;
-	connect(MyRosterService.data(), SIGNAL(contactAdded(Contact)), this, SLOT(rosterChanged()));
-	connect(MyRosterService.data(), SIGNAL(contactRemoved(Contact)), this, SLOT(rosterChanged()));
-	connect(MyRosterService.data(), SIGNAL(contactUpdated(Contact)), this, SLOT(rosterChanged()));
+	m_rosterService = rosterService;
+	connect(m_rosterService.data(), SIGNAL(contactAdded(Contact)), this, SLOT(rosterChanged()));
+	connect(m_rosterService.data(), SIGNAL(contactRemoved(Contact)), this, SLOT(rosterChanged()));
+	connect(m_rosterService.data(), SIGNAL(contactUpdated(Contact)), this, SLOT(rosterChanged()));
 
 	for (auto &&contact : rosterService->contacts())
 	{
@@ -92,14 +93,14 @@ void GaduContactListService::putFinished(bool ok)
 	if (ok)
 	{
 		emit stateMachinePutFinished();
-		if (MyRosterNotifier)
-			MyRosterNotifier.data()->notifyExportSucceeded(account());
+		if (m_rosterNotifier)
+			m_rosterNotifier.data()->notifyExportSucceeded(account());
 	}
 	else
 	{
 		emit stateMachinePutFailed();
-		if (MyRosterNotifier)
-			MyRosterNotifier.data()->notifyExportFailed(account());
+		if (m_rosterNotifier)
+			m_rosterNotifier.data()->notifyExportFailed(account());
 	}
 }
 
@@ -108,26 +109,26 @@ void GaduContactListService::getFinished(bool ok)
 	if (ok)
 	{
 		emit stateMachineGetFinished();
-		if (MyRosterNotifier)
-			MyRosterNotifier.data()->notifyImportSucceeded(account());
+		if (m_rosterNotifier)
+			m_rosterNotifier.data()->notifyImportSucceeded(account());
 	}
 	else
 	{
 		emit stateMachineGetFailed();
-		if (MyRosterNotifier)
-			MyRosterNotifier.data()->notifyImportFailed(account());
+		if (m_rosterNotifier)
+			m_rosterNotifier.data()->notifyImportFailed(account());
 	}
 }
 
 void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 {
-	if (!StateMachine->isPerformingGet())
+	if (!m_stateMachine->isPerformingGet())
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got unexpected userlist 100 get reply, ignoring\n");
 		return;
 	}
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
+	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
 	{
 		getFinished(false);
@@ -141,7 +142,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		return;
 	}
 
-	const char *content = e->event.userlist100_reply.reply;
+	auto content = e->event.userlist100_reply.reply;
 	if (!content)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply without any content\n");
@@ -153,8 +154,8 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 
 	if (accountDetails->userlistVersion() != (int)e->event.userlist100_reply.version)
 	{
-		QByteArray content2(content);
-		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
+		auto content2 = QByteArray{content};
+		auto buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
 		getFinished(true);
 
 		Core::instance()->rosterReplacer()->replaceRoster(account(), buddies, haveToAskForAddingContacts());
@@ -164,9 +165,9 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		// cleanup references, so buddy and contact instances can be removed
 		// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
 		// or just only store managed only, i dont know yet
-		foreach (Buddy buddy, buddies)
+		for (auto &&buddy : buddies)
 		{
-			foreach (Contact contact, buddy.contacts())
+			for (auto &&contact : buddy.contacts())
 				contact.data()->aboutToBeRemoved();
 			buddy.data()->aboutToBeRemoved();
 		}
@@ -181,7 +182,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 
 void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 {
-	if (!StateMachine->isPerformingPut())
+	if (!m_stateMachine->isPerformingPut())
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got unexpected userlist 100 put reply, ignoring\n");
 		return;
@@ -189,12 +190,12 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 
 	if (e->event.userlist100_reply.type == GG_USERLIST100_REPLY_ACK)
 	{
-		GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
+		auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 		if (accountDetails)
 		{
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
-			for (auto &&contact : ExportedContacts)
+			for (auto &&contact : m_exportedContacts)
 				contact.rosterEntry()->setState(RosterEntryState::Synchronized);
 
 			putFinished(true);
@@ -225,7 +226,7 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 {
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "new version of userlist available: %d\n", e->event.userlist100_version.version);
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
+	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (accountDetails && accountDetails->userlistVersion() != (int)e->event.userlist100_version.version)
 		emit stateMachineRemoteDirty();
 }
@@ -237,7 +238,7 @@ void GaduContactListService::rosterChanged()
 
 bool GaduContactListService::haveToAskForAddingContacts() const
 {
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
+	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails) // assert?
 		return true;
 
@@ -255,12 +256,12 @@ bool GaduContactListService::haveToAskForAddingContacts() const
 
 void GaduContactListService::importContactList()
 {
-	if (!Connection || !Connection.data()->hasSession())
+	if (!m_connection || !m_connection.data()->hasSession())
 		return;
 
 	emit stateMachineGetStarted();
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
+	auto writableSessionToken = m_connection.data()->writableSessionToken();
 	int ret = gg_userlist100_request(writableSessionToken.rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 	if (-1 == ret)
 		getFinished(false);
@@ -273,28 +274,28 @@ void GaduContactListService::exportContactList()
 
 void GaduContactListService::exportContactList(const BuddyList &buddies)
 {
-	if (!Connection || !Connection.data()->hasSession())
+	if (!m_connection || !m_connection.data()->hasSession())
 		return;
 
 	emit stateMachinePutStarted();
 
-	ExportedContacts.clear();
+	m_exportedContacts.clear();
 	for (auto &&buddy : buddies)
-		ExportedContacts += buddy.contacts(account());
+		m_exportedContacts += buddy.contacts(account());
 
-	auto contacts = GaduListHelper::contactListToByteArray(ExportedContacts);
+	auto contacts = GaduListHelper::contactListToByteArray(m_exportedContacts);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
+	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
 	{
 		putFinished(false);
 		return;
 	}
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
-	int ret = gg_userlist100_request(writableSessionToken.rawSession(),
+	auto writableSessionToken = m_connection.data()->writableSessionToken();
+	auto ret = gg_userlist100_request(writableSessionToken.rawSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
 	if (-1 == ret)
 		putFinished(false);

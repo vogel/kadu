@@ -23,8 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_CONTACT_LIST_SERVICE_H
-#define GADU_CONTACT_LIST_SERVICE_H
+#pragma once
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
@@ -41,26 +40,6 @@ class RosterService;
 class GaduContactListService : public AccountService
 {
 	Q_OBJECT
-
-	QPointer<GaduConnection> Connection;
-	QPointer<RosterNotifier> MyRosterNotifier;
-	QPointer<RosterService> MyRosterService;
-	GaduRosterStateMachine *StateMachine;
-	QVector<Contact> ExportedContacts;
-
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventUserlist100Version(struct gg_event *e);
-	void handleEventUserlist100PutReply(struct gg_event *e);
-	void handleEventUserlist100GetReply(struct gg_event *e);
-	void handleEventUserlist100Reply(struct gg_event *e);
-
-	void putFinished(bool ok);
-	void getFinished(bool ok);
-
-	bool haveToAskForAddingContacts() const;
-
-private slots:
-	void rosterChanged();
 
 public:
 	explicit GaduContactListService(const Account &account, Protocol *protocol);
@@ -89,6 +68,25 @@ signals:
 	void stateMachineLocalDirty();
 	void stateMachineRemoteDirty();
 
-};
+private:
+	QPointer<GaduConnection> m_connection;
+	QPointer<RosterNotifier> m_rosterNotifier;
+	QPointer<RosterService> m_rosterService;
+	GaduRosterStateMachine *m_stateMachine;
+	QVector<Contact> m_exportedContacts;
 
-#endif // GADU_CONTACT_LIST_SERVICE_H
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventUserlist100Version(struct gg_event *e);
+	void handleEventUserlist100PutReply(struct gg_event *e);
+	void handleEventUserlist100GetReply(struct gg_event *e);
+	void handleEventUserlist100Reply(struct gg_event *e);
+
+	void putFinished(bool ok);
+	void getFinished(bool ok);
+
+	bool haveToAskForAddingContacts() const;
+
+private slots:
+	void rosterChanged();
+
+};
