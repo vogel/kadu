@@ -31,7 +31,7 @@ class KADUAPI RosterNotifier : public QObject
 	Q_OBJECT
 
 public:
-	explicit RosterNotifier(QObject *parent = nullptr);
+	Q_INVOKABLE explicit RosterNotifier(QObject *parent = nullptr);
 	virtual ~RosterNotifier();
 
 	QList<NotifyEvent *> notifyEvents();

@@ -19,9 +19,11 @@
 
 #include "roster-module.h"
 
+#include "roster/roster-notifier.h"
 #include "roster/roster-replacer.h"
 
 RosterModule::RosterModule()
 {
+	add_type<RosterNotifier>();
 	add_type<RosterReplacer>();
 }

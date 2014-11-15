@@ -190,7 +190,6 @@ Core::Core(injeqt::injector &injector) :
 		CurrentChatConfigurationWidgetFactoryRepository{nullptr},
 		CurrentChatTopBarWidgetFactoryRepository{nullptr},
 		CurrentUnreadMessageRepository{nullptr},
-		CurrentRosterNotifier{nullptr},
 		CurrentChatWidgetActions{nullptr},
 		CurrentChatWidgetActivationService{nullptr},
 		CurrentChatWidgetContainerHandlerMapper{nullptr},
@@ -647,8 +646,8 @@ void Core::runServices()
 	CurrentChatTopBarWidgetFactoryRepository = new ChatTopBarWidgetFactoryRepository(this);
 	CurrentUnreadMessageRepository = new UnreadMessageRepository(this);
 
-	CurrentRosterNotifier = new RosterNotifier(this);
-	foreach (const auto &notifyEvent, CurrentRosterNotifier->notifyEvents())
+	auto rosterNotifier = m_injector.get<RosterNotifier>();
+	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
 		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
 
 	CurrentChatWidgetActions = new ChatWidgetActions(this);
@@ -898,7 +897,7 @@ UnreadMessageRepository * Core::unreadMessageRepository() const
 
 RosterNotifier * Core::rosterNotifier() const
 {
-	return CurrentRosterNotifier;
+	return m_injector.get<RosterNotifier>();
 }
 
 ChatWidgetContainerHandlerMapper * Core::chatWidgetContainerHandlerMapper() const
