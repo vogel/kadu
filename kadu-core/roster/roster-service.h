@@ -27,7 +27,7 @@
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
-#include "protocols/services/account-service.h"
+#include "protocols/services/protocol-service.h"
 #include "roster/roster-task.h"
 
 #include "exports.h"
@@ -67,7 +67,7 @@ class Protocol;
  * initialization the rest of contacts is removed from local roster. In this case Detached flag of @link RosterEntry @endlink
  * does not count as it is only used for detaching from data synchronization.
  */
-class KADUAPI RosterService : public AccountService
+class KADUAPI RosterService : public ProtocolService
 {
 	Q_OBJECT
 
@@ -82,13 +82,8 @@ public:
 	virtual ~RosterService();
 
 	/**
-	 * @return protocol bounded with this service
-	 */
-	Protocol * protocol() const;
-
-	/**
 	 * @short Return true if protocol supports concept of eoster tasks.
-	 * 
+	 *
 	 * GaduGadu does not support this - all roster changes are done in one go, and it may be impossible
 	 * to split them in tasks. In Gadu if we have the same version of contact list as server then it can
 	 * be safely updated in one go. If not - server version is merged with local one. That means local

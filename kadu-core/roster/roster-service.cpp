@@ -31,8 +31,7 @@
 #include "roster/roster-task-type.h"
 
 RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
-		AccountService{protocol->account(), parent},
-		m_protocol{protocol},
+		ProtocolService{protocol, parent},
 		m_contacts{std::move(contacts)}
 {
 	for (auto &&contact : m_contacts)
@@ -41,11 +40,6 @@ RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contact
 
 RosterService::~RosterService()
 {
-}
-
-Protocol * RosterService::protocol() const
-{
-	return m_protocol;
 }
 
 void RosterService::contactDirtinessChanged()
