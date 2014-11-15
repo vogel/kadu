@@ -53,6 +53,8 @@ class GaduContactListService : public ContactListService
 	void putFinished(bool ok);
 	void getFinished(bool ok);
 
+	bool haveToAskForAddingContacts() const;
+
 private slots:
 	void rosterChanged();
 
@@ -63,8 +65,6 @@ public:
 	void setConnection(GaduConnection *connection);
 	void setRosterNotifier(RosterNotifier *rosterNotifier);
 	void setRosterService(RosterService *rosterService);
-
-	virtual bool haveToAskForAddingContacts() const;
 
 	virtual void exportContactList(const BuddyList &buddies);
 

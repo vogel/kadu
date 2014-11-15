@@ -39,19 +39,15 @@ class KADUAPI ContactListService : public AccountService
 	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
 	QVector<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
 	void performRenames(const QMap<Buddy, Contact> &contactsToRename);
-	QVector<Contact> registerBuddies(const BuddyList &buddies);
+	QVector<Contact> registerBuddies(const BuddyList &buddies, bool ask);
 
 public:
 	explicit ContactListService(Account account, QObject *parent = 0);
 	virtual ~ContactListService();
 
-	// it is useful when migrating from 0.9.x to a newer version
-	// TODO 0.14: remove
-	virtual bool haveToAskForAddingContacts() const = 0;
-
 	void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 
-	QList<Contact> setBuddiesList(const BuddyList &buddies);
+	QList<Contact> setBuddiesList(const BuddyList &buddies, bool ask);
 
 };
 

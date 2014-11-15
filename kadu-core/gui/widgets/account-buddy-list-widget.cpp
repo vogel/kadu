@@ -126,7 +126,7 @@ void AccountBuddyListWidget::restoreFromFile()
 			return;
 		}
 
-		auto unImportedContacts = service2->setBuddiesList(list);
+		auto unImportedContacts = service2->setBuddiesList(list, false);
 		auto contactsList = QStringList{};
 		for (auto &&contact : unImportedContacts)
 			contactsList.append(contact.display(true) + " (" + contact.id() + ')');

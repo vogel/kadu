@@ -117,7 +117,7 @@ void ContactListService::performRenames(const QMap<Buddy, Contact> &contactsToRe
 		BuddyManager::instance()->removeBuddyIfEmpty(buddy, true);
 }
 
-QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
+QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies, bool ask)
 {
 	QVector<Contact> resultContacts;
 	QMap<Buddy, Contact> contactsToAdd;
@@ -148,7 +148,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 				// do not import dirty removed contacts unless we will be asking the user
 				// (We will be asking only if we are migrating from 0.9.x. Remember that
 				// all migrated contacts, including those with anynomous buddies, are initially marked dirty.)
-				if (!(knownContact.rosterEntry()->requiresSynchronization() && knownContact.isAnonymous() && !haveToAskForAddingContacts()))
+				if (!(knownContact.rosterEntry()->requiresSynchronization() && knownContact.isAnonymous() && !ask))
 				{
 					if (knownContact.isAnonymous())
 						contactsToAdd.insert(targetBuddy, knownContact);
@@ -173,7 +173,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 		}
 	}
 
-	if (haveToAskForAddingContacts() && !askForAddingContacts(contactsToAdd, contactsToRename))
+	if (ask && !askForAddingContacts(contactsToAdd, contactsToRename))
 		return resultContacts;
 
 	resultContacts += performAdds(contactsToAdd);
@@ -193,7 +193,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 	return resultContacts;
 }
 
-QList<Contact> ContactListService::setBuddiesList(const BuddyList &buddies)
+QList<Contact> ContactListService::setBuddiesList(const BuddyList &buddies, bool ask)
 {
 	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(account()).toList();
 
@@ -202,7 +202,7 @@ QList<Contact> ContactListService::setBuddiesList(const BuddyList &buddies)
 
 	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS
 
-	QVector<Contact> managedContacts = registerBuddies(buddies);
+	QVector<Contact> managedContacts = registerBuddies(buddies, ask);
 	for (auto &&contact : managedContacts)
 		unImportedContacts.removeAll(contact);
 

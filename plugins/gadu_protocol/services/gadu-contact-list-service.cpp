@@ -156,7 +156,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
 		getFinished(true);
 
-		setBuddiesList(buddies);
+		setBuddiesList(buddies, haveToAskForAddingContacts());
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 		accountDetails->setInitialRosterImport(false);
 
