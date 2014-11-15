@@ -333,7 +333,7 @@ void JabberRosterService::deleteMarkedContacts()
 void JabberRosterService::prepareRoster()
 {
 	resetSynchronizingToDesynchronized();
-	m_tasks->addTasks(updateTasksForContacts());
+	m_tasks->addTasks(m_tasks->updateTasksForContacts(contacts()));
 
 	Q_ASSERT(JabberRosterState::NonInitialized == state());
 	Q_ASSERT(XmppClient);

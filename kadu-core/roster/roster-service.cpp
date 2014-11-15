@@ -28,7 +28,6 @@
 #include "protocols/protocol.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
-#include "roster/roster-service-tasks.h"
 #include "roster/roster-task-type.h"
 
 RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
@@ -54,11 +53,6 @@ void RosterService::contactDirtinessChanged()
 		return;
 
 	emit contactUpdated(contact);
-}
-
-QVector<RosterTask> RosterService::updateTasksForContacts() const
-{
-	return RosterServiceTasks::updateTasksForContacts(m_contacts);
 }
 
 void RosterService::resetSynchronizingToDesynchronized()

@@ -150,13 +150,6 @@ protected:
 	 */
 	void resetSynchronizingToDesynchronized();
 
-	/**
-	 * @return List of tasks required to update known contacts.
-	 * 
-	 * For each known contact that has a RosterEntry and is in desynchronized state a new RosterTask with Update mode is returned.
-	 */
-	QVector<RosterTask> updateTasksForContacts() const;
-
 protected slots:
 	/**
 	 * @short Add new synchronized contact to be watched.
