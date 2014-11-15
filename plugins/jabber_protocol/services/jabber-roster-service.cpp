@@ -254,7 +254,7 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 
-	RosterTaskType rosterTaskType = tasks()->taskType(contact.id());
+	RosterTaskType rosterTaskType = m_tasks->taskType(contact.id());
 	if (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType)
 	{
 		contact.rosterEntry()->setState(RosterEntryState::Synchronizing);
@@ -305,7 +305,7 @@ void JabberRosterService::markContactsForDeletion()
 			continue;
 
 		RosterEntry *rosterEntry = contact.rosterEntry();
-		RosterTaskType rosterTaskType = tasks()->taskType(contact.id());
+		RosterTaskType rosterTaskType = m_tasks->taskType(contact.id());
 
 		if (rosterEntry && (RosterEntryState::Synchronized == rosterEntry->state())
 				&& (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType))
@@ -333,7 +333,7 @@ void JabberRosterService::deleteMarkedContacts()
 void JabberRosterService::prepareRoster()
 {
 	resetSynchronizingToDesynchronized();
-	tasks()->addTasks(updateTasksForContacts());
+	m_tasks->addTasks(updateTasksForContacts());
 
 	Q_ASSERT(JabberRosterState::NonInitialized == state());
 	Q_ASSERT(XmppClient);
@@ -380,7 +380,15 @@ bool JabberRosterService::canPerformRemoteUpdate(const Contact &contact) const
 	if (!contact.rosterEntry()->canAcceptRemoteUpdate())
 		return false;
 
-	return !tasks()->containsTask(contact.id());
+	return !m_tasks->containsTask(contact.id());
+}
+
+void JabberRosterService::executeAllTasks()
+{
+	while (!m_tasks->isEmpty())
+	{
+		executeTask(m_tasks->dequeue());
+	}
 }
 
 void JabberRosterService::executeTask(const RosterTask& task)

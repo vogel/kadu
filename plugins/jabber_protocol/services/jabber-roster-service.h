@@ -141,7 +141,8 @@ protected:
 	 */
 	bool canPerformRemoteUpdate(const Contact &contact) const;
 
-	virtual void executeTask(const RosterTask &task);
+	void executeAllTasks();
+	void executeTask(const RosterTask &task);
 
 public:
 	explicit JabberRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = 0);

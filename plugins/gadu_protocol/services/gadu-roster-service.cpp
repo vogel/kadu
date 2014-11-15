@@ -67,10 +67,6 @@ GaduRosterService::~GaduRosterService()
 {
 }
 
-void GaduRosterService::executeTask(const RosterTask &)
-{
-}
-
 void GaduRosterService::setConnection(GaduConnection *connection)
 {
 	m_connection = connection;

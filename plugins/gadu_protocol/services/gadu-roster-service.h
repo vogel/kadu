@@ -45,9 +45,6 @@ public:
 	void setRosterNotifier(RosterNotifier *rosterNotifier);
 	void setRosterReplacer(RosterReplacer *rosterReplacer);
 
-protected:
-	virtual void executeTask(const RosterTask &task);
-
 signals:
 	// state machine signals
 	void stateMachinePutStarted();

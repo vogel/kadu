@@ -143,21 +143,6 @@ signals:
 
 protected:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute given roster task.
-	 * @param task to execute
-	 */
-	virtual void executeTask(const RosterTask &task) = 0;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute all stored RosterTasks.
-	 *
-	 * This method executes all stored tasks. List of not-executed tasks will be empty after this call.
-	 */
-	void executeAllTasks();
-
-	/**
 	 * @short Resets all synchronizing contacts to desynchronized.
 	 * 
 	 * Should be used just after connection has been made. In case when synchronization operation was interrupted

@@ -92,15 +92,6 @@ const QVector<Contact> & RosterService::contacts() const
 	return m_contacts;
 }
 
-void RosterService::executeAllTasks()
-{
-	if (tasks())
-		while (!tasks()->isEmpty())
-		{
-			executeTask(tasks()->dequeue());
-		}
-}
-
 void RosterService::addContact(const Contact &contact)
 {
 	if (contact.contactAccount() != account() || contact.isAnonymous())
