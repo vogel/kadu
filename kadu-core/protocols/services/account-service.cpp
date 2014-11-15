@@ -21,14 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "protocols/protocol.h"
-
 #include "account-service.h"
 
 AccountService::AccountService(Account account, QObject *parent) :
-		QObject(parent), ServiceAccount(account)
+		QObject{parent},
+		m_account{account}
 {
-	Q_ASSERT(ServiceAccount);
+	Q_ASSERT(m_account);
 }
 
 AccountService::~AccountService()
@@ -37,7 +36,7 @@ AccountService::~AccountService()
 
 Account AccountService::account() const
 {
-	return ServiceAccount;
+	return m_account;
 }
 
 #include "moc_account-service.cpp"

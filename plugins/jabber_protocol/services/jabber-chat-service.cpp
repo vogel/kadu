@@ -124,7 +124,7 @@ void JabberChatService::chatOpened(const Chat &chat)
 
 void JabberChatService::chatClosed(const Chat &chat)
 {
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(ServiceAccount.protocolHandler());
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
 
 	if (protocol)
 	{
@@ -218,7 +218,7 @@ XMPP::Jid JabberChatService::chatJid(const Chat &chat)
 		ContactSet contacts = chat.contacts();
 		Q_ASSERT(1 == contacts.size());
 
-		XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(ServiceAccount.protocolHandler());
+		XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
 
 		if (protocol)
 		{
@@ -346,7 +346,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 		chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 
-		XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(ServiceAccount.protocolHandler());
+		XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
 
 		if (protocol)
 		{

@@ -20,13 +20,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_SERVICE_H
-#define ACCOUNT_SERVICE_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "accounts/account.h"
 #include "exports.h"
+
+#include <QtCore/QObject>
 
 /**
  * @addtogroup Protocol
@@ -44,12 +43,6 @@ class KADUAPI AccountService : public QObject
 {
 	Q_OBJECT
 
-protected:
-	Account ServiceAccount;
-
-	explicit AccountService(Account account, QObject *parent = 0);
-	virtual ~AccountService();
-
 public:
 	/**
 	 * @short Returns account bounded with this service.
@@ -57,10 +50,16 @@ public:
 	 * @return account bounded with this service
 	 */
 	Account account() const;
+
+protected:
+	explicit AccountService(Account account, QObject *parent = nullptr);
+	virtual ~AccountService();
+
+private:
+	Account m_account;
+
 };
 
 /**
  * @}
  */
-
-#endif // ACCOUNT_SERVICE_H
