@@ -43,7 +43,6 @@
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-chat-state-service.h"
-#include "services/gadu-contact-list-service.h"
 #include "services/gadu-contact-personal-info-service.h"
 #include "services/gadu-file-transfer-service.h"
 #include "services/gadu-multilogon-service.h"
@@ -96,7 +95,6 @@ private:
 	GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
 	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;
-	GaduContactListService *CurrentContactListService;
 	GaduContactPersonalInfoService *CurrentContactPersonalInfoService;
 	GaduFileTransferService *CurrentFileTransferService;
 	GaduPersonalInfoService *CurrentPersonalInfoService;

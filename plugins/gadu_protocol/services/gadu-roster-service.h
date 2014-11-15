@@ -27,21 +27,64 @@
 
 struct gg_session;
 
+class BuddyList;
 class GaduConnection;
+class GaduRosterStateMachine;
+class RosterNotifier;
 
 class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
 public:
-	explicit GaduRosterService(Account account, const QVector<Contact> &contacts, QObject *parent = nullptr);
+	explicit GaduRosterService(Account account, Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = nullptr);
 	virtual ~GaduRosterService();
 
 	virtual bool supportsTasks() const override { return false; }
+
+	void setConnection(GaduConnection *connection);
+	void setRosterNotifier(RosterNotifier *rosterNotifier);
 
 	void prepareRoster();
 
 protected:
 	virtual void executeTask(const RosterTask &task);
+
+signals:
+	// state machine signals
+	void stateMachinePutStarted();
+	void stateMachinePutFinished();
+	void stateMachinePutFailed();
+
+	void stateMachineGetStarted();
+	void stateMachineGetFinished();
+	void stateMachineGetFailed();
+
+	void stateMachineLocalDirty();
+	void stateMachineRemoteDirty();
+
+private:
+	QPointer<GaduConnection> m_connection;
+	QPointer<RosterNotifier> m_rosterNotifier;
+	QPointer<RosterService> m_rosterService;
+	GaduRosterStateMachine *m_stateMachine;
+	QVector<Contact> m_exportedContacts;
+
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventUserlist100Version(struct gg_event *e);
+	void handleEventUserlist100PutReply(struct gg_event *e);
+	void handleEventUserlist100GetReply(struct gg_event *e);
+	void handleEventUserlist100Reply(struct gg_event *e);
+
+	void putFinished(bool ok);
+	void getFinished(bool ok);
+
+	void exportContactList(const BuddyList &buddies);
+	bool haveToAskForAddingContacts() const;
+
+private slots:
+	void exportContactList();
+	void importContactList();
+	void rosterChanged();
 
 };

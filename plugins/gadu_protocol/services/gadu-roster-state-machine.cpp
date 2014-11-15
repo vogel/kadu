@@ -20,7 +20,7 @@
 
 #include "gadu-roster-state-machine.h"
 
-#include "services/gadu-contact-list-service.h"
+#include "services/gadu-roster-service.h"
 
 #include "protocols/protocol.h"
 #include "debug.h"
@@ -29,7 +29,7 @@
 #include <QtCore/QHistoryState>
 #include <QtCore/QStringList>
 
-GaduRosterStateMachine::GaduRosterStateMachine(GaduContactListService *service, Protocol *protocol) :
+GaduRosterStateMachine::GaduRosterStateMachine(GaduRosterService *service, Protocol *protocol) :
 		QStateMachine{service}
 {
 	auto globalState = new QState{ParallelStates};

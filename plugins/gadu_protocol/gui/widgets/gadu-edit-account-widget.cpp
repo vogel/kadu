@@ -55,7 +55,6 @@
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
 
-#include "services/gadu-contact-list-service.h"
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 

@@ -26,14 +26,14 @@
 
 class Protocol;
 
-class GaduContactListService;
+class GaduRosterService;
 
 class GaduRosterStateMachine : public QStateMachine
 {
 	Q_OBJECT
 
 public:
-	explicit GaduRosterStateMachine(GaduContactListService *service, Protocol *protocol);
+	explicit GaduRosterStateMachine(GaduRosterService *service, Protocol *protocol);
 	virtual ~GaduRosterStateMachine();
 
 	bool shouldPerformPut() const;

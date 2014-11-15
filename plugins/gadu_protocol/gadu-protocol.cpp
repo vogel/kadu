@@ -101,10 +101,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
-	CurrentContactListService = new GaduContactListService(account, this);
-	CurrentContactListService->setConnection(Connection);
-	CurrentContactListService->setRosterNotifier(Core::instance()->rosterNotifier());
-
 	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(account, this);
 	CurrentContactPersonalInfoService->setConnection(Connection);
 
@@ -124,8 +120,9 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
-	GaduRosterService *rosterService = new GaduRosterService(account, contacts, this);
-	rosterService->setProtocol(this);
+	GaduRosterService *rosterService = new GaduRosterService(account, this, contacts, this);
+	rosterService->setConnection(Connection);
+	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
 
 	CurrentNotifyService = new GaduNotifyService{Connection, this};
 	connect(rosterService, SIGNAL(contactAdded(Contact)), CurrentNotifyService, SLOT(contactAdded(Contact)));
@@ -135,8 +132,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	setChatService(CurrentChatService);
 	setChatStateService(CurrentChatStateService);
 	setRosterService(rosterService);
-
-	CurrentContactListService->setRosterService(rosterService);
 
 	configureServices();
 
