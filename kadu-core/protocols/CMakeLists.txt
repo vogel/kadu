@@ -11,6 +11,7 @@ set (protocols_SRCS
 	services/chat-image-service.cpp
 	services/chat-service.cpp
 	services/chat-state-service.cpp
+	services/protocol-service.cpp
 
 	connection-error-notification.cpp
 	protocol.cpp
