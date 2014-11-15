@@ -65,13 +65,13 @@ set (SOURCES
 	services/gadu-chat-service.cpp
 	services/gadu-chat-state-service.cpp
 	services/gadu-contact-list-service.cpp
-	services/gadu-contact-list-state-machine.cpp
 	services/gadu-contact-personal-info-service.cpp
 	services/gadu-file-transfer-service.cpp
 	services/gadu-multilogon-service.cpp
 	services/gadu-notify-service.cpp
 	services/gadu-personal-info-service.cpp
 	services/gadu-roster-service.cpp
+	services/gadu-roster-state-machine.cpp
 	services/gadu-search-service.cpp
 
 	services/multilogon/gadu-multilogon-session.cpp
@@ -119,7 +119,6 @@ set (MOC_SOURCES
 	services/gadu-chat-service.h
 	services/gadu-chat-state-service.h
 	services/gadu-contact-list-service.h
-	services/gadu-contact-list-state-machine.h
 	services/gadu-contact-personal-info-service.h
 	services/gadu-file-transfer-service.h
 	services/gadu-multilogon-service.h

@@ -26,9 +26,9 @@
 
 #include "services/gadu-contact-list-service.h"
 
-#include "gadu-contact-list-state-machine.h"
+#include "gadu-roster-state-machine.h"
 
-GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService *service, Protocol *protocol) :
+GaduRosterStateMachine::GaduRosterStateMachine(GaduContactListService *service, Protocol *protocol) :
 		QStateMachine(service)
 {
 	auto globalState = new QState(ParallelStates);
@@ -118,11 +118,11 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	setInitialState(globalState);
 }
 
-GaduContactListStateMachine::~GaduContactListStateMachine()
+GaduRosterStateMachine::~GaduRosterStateMachine()
 {
 }
 
-void GaduContactListStateMachine::printConfiguration()
+void GaduRosterStateMachine::printConfiguration()
 {
 	QStringList states;
 
@@ -158,7 +158,7 @@ void GaduContactListStateMachine::printConfiguration()
 	kdebugm(KDEBUG_INFO, "Gadu contact list state machine: [%s]\n", qPrintable(states.join(", ")));
 }
 
-void GaduContactListStateMachine::checkIfSynchronizationRequired()
+void GaduRosterStateMachine::checkIfSynchronizationRequired()
 {
 	if (shouldPerformGet())
 		emit performGet();
@@ -166,24 +166,24 @@ void GaduContactListStateMachine::checkIfSynchronizationRequired()
 		emit performPut();
 }
 
-bool GaduContactListStateMachine::shouldPerformPut() const
+bool GaduRosterStateMachine::shouldPerformPut() const
 {
 	return configuration().contains(IdleState) && configuration().contains(LocalDirtyState) && !configuration().contains(RemoteDirtyState);
 }
 
-bool GaduContactListStateMachine::isPerformingPut() const
+bool GaduRosterStateMachine::isPerformingPut() const
 {
 	return configuration().contains(PutState);
 }
 
-bool GaduContactListStateMachine::shouldPerformGet() const
+bool GaduRosterStateMachine::shouldPerformGet() const
 {
 	return configuration().contains(IdleState) && configuration().contains(RemoteDirtyState);
 }
 
-bool GaduContactListStateMachine::isPerformingGet() const
+bool GaduRosterStateMachine::isPerformingGet() const
 {
 	return configuration().contains(GetState);
 }
 
-#include "moc_gadu-contact-list-state-machine.cpp"
+#include "moc_gadu-roster-state-machine.cpp"

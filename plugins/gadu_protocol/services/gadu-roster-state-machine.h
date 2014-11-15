@@ -29,7 +29,7 @@ class Protocol;
 
 class GaduContactListService;
 
-class GaduContactListStateMachine : public QStateMachine
+class GaduRosterStateMachine : public QStateMachine
 {
 	Q_OBJECT
 
@@ -58,8 +58,8 @@ private slots:
 	void printConfiguration();
 
 public:
-	explicit GaduContactListStateMachine(GaduContactListService *service, Protocol *protocol);
-	virtual ~GaduContactListStateMachine();
+	explicit GaduRosterStateMachine(GaduContactListService *service, Protocol *protocol);
+	virtual ~GaduRosterStateMachine();
 
 	bool shouldPerformPut() const;
 	bool isPerformingPut() const;

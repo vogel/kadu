@@ -39,13 +39,13 @@
 #include "helpers/gadu-list-helper.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
-#include "services/gadu-contact-list-state-machine.h"
+#include "services/gadu-roster-state-machine.h"
 #include "gadu-account-details.h"
 
 #include "gadu-contact-list-service.h"
 
 GaduContactListService::GaduContactListService(const Account &account, Protocol *protocol) :
-		AccountService(account, protocol), StateMachine(new GaduContactListStateMachine(this, protocol))
+		AccountService(account, protocol), StateMachine(new GaduRosterStateMachine(this, protocol))
 {
 	connect(StateMachine, SIGNAL(performGet()), SLOT(importContactList()));
 	connect(StateMachine, SIGNAL(performPut()), SLOT(exportContactList()));

@@ -31,8 +31,8 @@
 #include "protocols/services/account-service.h"
 
 class BuddyList;
-class GaduContactListStateMachine;
 class GaduConnection;
+class GaduRosterStateMachine;
 class RosterNotifier;
 
 class GaduContactListService : public AccountService
@@ -42,7 +42,7 @@ class GaduContactListService : public AccountService
 	QPointer<GaduConnection> Connection;
 	QPointer<RosterNotifier> MyRosterNotifier;
 	QPointer<RosterService> MyRosterService;
-	GaduContactListStateMachine *StateMachine;
+	GaduRosterStateMachine *StateMachine;
 	QVector<Contact> ExportedContacts;
 
 	friend class GaduProtocolSocketNotifiers;
