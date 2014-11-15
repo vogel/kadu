@@ -142,8 +142,6 @@ signals:
 	void contactUpdated(Contact contact);
 
 protected:
-	virtual bool canPerformLocalUpdate() const;
-
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Execute given roster task.

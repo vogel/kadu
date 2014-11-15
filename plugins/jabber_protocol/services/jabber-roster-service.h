@@ -128,7 +128,7 @@ protected:
 	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
 	 * method and add more conditions.
 	 */
-	virtual bool canPerformLocalUpdate() const override;
+	bool canPerformLocalUpdate() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

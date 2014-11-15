@@ -56,11 +56,6 @@ void RosterService::contactDirtinessChanged()
 	emit contactUpdated(contact);
 }
 
-bool RosterService::canPerformLocalUpdate() const
-{
-	return false;
-}
-
 QVector<RosterTask> RosterService::updateTasksForContacts() const
 {
 	return RosterServiceTasks::updateTasksForContacts(m_contacts);
