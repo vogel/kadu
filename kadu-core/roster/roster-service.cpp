@@ -28,10 +28,12 @@
 #include "protocols/protocol.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-service-tasks.h"
 #include "roster/roster-task-type.h"
 
 RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
 		ProtocolService{protocol, parent},
+		m_tasks{new RosterServiceTasks{this}},
 		m_contacts{std::move(contacts)}
 {
 	for (auto &&contact : m_contacts)
@@ -57,7 +59,7 @@ void RosterService::contactDirtinessChanged()
 	if (!supportsTasks() || !contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask{RosterTaskType::Update, contact.id()});
+	m_tasks->addTask(RosterTask{RosterTaskType::Update, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -67,27 +69,9 @@ bool RosterService::canPerformLocalUpdate() const
 	return false;
 }
 
-QVector<RosterTask> RosterService::updateTasksForContacts(const QVector<Contact> &contacts)
-{
-	auto result = QVector<RosterTask>{};
-	for (auto &&contact : contacts)
-	{
-		if (!contact.rosterEntry())
-			continue;
-		if (contact.rosterEntry()->requiresSynchronization())
-			result.append(RosterTask{RosterTaskType::Update, contact.id()});
-	}
-	return result;
-}
-
 QVector<RosterTask> RosterService::updateTasksForContacts() const
 {
-	return updateTasksForContacts(m_contacts);
-}
-
-bool RosterService::containsTask(const QString &id) const
-{
-	return m_idToTask.contains(id);
+	return RosterServiceTasks::updateTasksForContacts(m_contacts);
 }
 
 void RosterService::resetSynchronizingToDesynchronized()
@@ -101,25 +85,6 @@ void RosterService::resetSynchronizingToDesynchronized()
 	}
 }
 
-QVector<RosterTask> RosterService::tasks()
-{
-	return m_tasks.toVector();
-}
-
-bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType)
-{
-	Q_ASSERT(RosterTaskType::None != taskType);
-	Q_ASSERT(RosterTaskType::None != replacementType);
-
-	if (RosterTaskType::Delete == taskType)
-		return true;
-
-	if (RosterTaskType::Add == taskType)
-		return RosterTaskType::Delete == replacementType;
-
-	return RosterTaskType::Update != replacementType;
-}
-
 void RosterService::connectContact(const Contact &contact)
 {
 	connect(contact, SIGNAL(dirtinessChanged()), this, SLOT(contactDirtinessChanged()));
@@ -130,29 +95,9 @@ void RosterService::disconnectContact(const Contact &contact)
 	disconnect(contact, SIGNAL(dirtinessChanged()), this, SLOT(contactDirtinessChanged()));
 }
 
-void RosterService::addTask(const RosterTask &task)
+RosterServiceTasks * RosterService::tasks() const
 {
-	if (!m_idToTask.contains(task.id()))
-	{
-		m_tasks.enqueue(task);
-		return;
-	}
-
-	auto existingTask = m_idToTask.value(task.id());
-	if (shouldReplaceTask(existingTask.type(), task.type()))
-	{
-		m_tasks.removeAll(existingTask);
-		m_idToTask.remove(task.id());
-		m_idToTask.insert(task.id(), task);
-		m_tasks.enqueue(task);
-	}
-}
-
-void RosterService::addTasks(const QVector<RosterTask> &tasks)
-{
-	if (supportsTasks())
-		for (auto const &task : tasks)
-			addTask(task);
+	return m_tasks.get();
 }
 
 const QVector<Contact> & RosterService::contacts() const
@@ -160,21 +105,11 @@ const QVector<Contact> & RosterService::contacts() const
 	return m_contacts;
 }
 
-RosterTaskType RosterService::taskType(const QString &id)
-{
-	if (!m_idToTask.contains(id))
-		return RosterTaskType::None;
-	else
-		return m_idToTask.value(id).type();
-}
-
 void RosterService::executeAllTasks()
 {
-	while (!m_tasks.isEmpty())
+	while (!m_tasks->isEmpty())
 	{
-		RosterTask task = m_tasks.dequeue();
-		m_idToTask.remove(task.id());
-		executeTask(task);
+		executeTask(m_tasks->dequeue());
 	}
 }
 
@@ -194,7 +129,7 @@ void RosterService::addContact(const Contact &contact)
 	if (!supportsTasks() || !contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask{RosterTaskType::Add, contact.id()});
+	m_tasks->addTask(RosterTask{RosterTaskType::Add, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -231,7 +166,7 @@ void RosterService::removeContact(const Contact &contact)
 	if (!supportsTasks() || !contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask{RosterTaskType::Delete, contact.id()});
+	m_tasks->addTask(RosterTask{RosterTaskType::Delete, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }

@@ -54,25 +54,6 @@ public:
 
 	QVector<RosterTask> tasks();
 
-	void addTasks(const QVector<RosterTask> &tasks);
-
-	/**
-	 * @return type of task for given id
-	 *
-	 * If no task for given id is found then RosterTaskType::None is returned.
-	 */
-	RosterTaskType taskType(const QString &id);
-
-	bool isEmpty() const;
-
-	RosterTask dequeue();
-
-	bool containsTask(const QString &id) const;
-
-private:
-	QQueue<RosterTask> m_tasks;
-	QMap<QString, RosterTask> m_idToTask;
-
 	/**
 	 * @short Add new task for later execution.
 	 * @param task new task
@@ -82,6 +63,39 @@ private:
 	 * can be replaced by any non-update task.
 	 */
 	void addTask(const RosterTask &task);
+
+	/**
+	 * @short Add new tasks for later execution.
+	 * @param tasks new tasks
+	 */
+	void addTasks(const QVector<RosterTask> &tasks);
+
+	/**
+	 * @return type of task for given id
+	 *
+	 * If no task for given id is found then RosterTaskType::None is returned.
+	 */
+	RosterTaskType taskType(const QString &id);
+
+	/**
+	 * @return true, if no tasks are held
+	 */
+	bool isEmpty() const;
+
+	/**
+	 * @return first task from queue
+	 * @pre !isEmpty()
+	 */
+	RosterTask dequeue();
+
+	/**
+	 * @return true if task with given id is on the list
+	 */
+	bool containsTask(const QString &id) const;
+
+private:
+	QQueue<RosterTask> m_tasks;
+	QMap<QString, RosterTask> m_idToTask;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

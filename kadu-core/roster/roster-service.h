@@ -27,16 +27,16 @@
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "misc/memory.h"
 #include "protocols/services/protocol-service.h"
-#include "roster/roster-task.h"
 
 #include "exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtCore/QQueue>
 
 class Protocol;
+class RosterServiceTasks;
 
 /**
  * @addtogroup Protocol
@@ -94,18 +94,9 @@ public:
 	virtual bool supportsTasks() const = 0;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return list of current non-executed roster tasks.
-	 * @return list of current non-executed roster tasks
+	 * @return RosterServiceTasks instance that contains all roster tasks
 	 */
-	QVector<RosterTask> tasks();
-
-	/**
-	 * @short Add tasks for later execution.
-	 * @param tasks list of tasks
-	 * @see addTask(const RosterTask &)
-	 */
-	void addTasks(const QVector<RosterTask> &tasks);
+	RosterServiceTasks * tasks() const;
 
 	const QVector<Contact> & contacts() const;
 
@@ -161,16 +152,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return type of task for given id.
-	 * @param id id of contact to check task for
-	 * @return type of task for given id
-	 *
-	 * If no task for given id is found then RosterTaskType::None is returned.
-	 */
-	RosterTaskType taskType(const QString &id);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Execute given roster task.
 	 * @param task to execute
 	 */
@@ -193,20 +174,11 @@ protected:
 	void resetSynchronizingToDesynchronized();
 
 	/**
-	 * @return List of tasks required to update @p contacts
-	 * 
-	 * For each contact that has a RosterEntry and is in desynchronized state a new RosterTask with Update mode is returned.
-	 */
-	static QVector<RosterTask> updateTasksForContacts(const QVector<Contact> &contacts);
-
-	/**
 	 * @return List of tasks required to update known contacts.
 	 * 
 	 * For each known contact that has a RosterEntry and is in desynchronized state a new RosterTask with Update mode is returned.
 	 */
 	QVector<RosterTask> updateTasksForContacts() const;
-
-	bool containsTask(const QString &id) const;
 
 protected slots:
 	/**
@@ -219,29 +191,9 @@ protected slots:
 	void addSynchronizedContact(const Contact &contact);
 
 private:
+	owned_qptr<RosterServiceTasks> m_tasks;
 	QPointer<Protocol> m_protocol;
-
 	QVector<Contact> m_contacts;
-	QQueue<RosterTask> m_tasks;
-	QMap<QString, RosterTask> m_idToTask;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new task for later execution.
-	 * @param task new task
-	 *
-	 * If existing task for given id is available then this service decides which one to use and which one to ignore.
-	 * If existing task is deletion, then it is always replaced. Addition task can be only replaced by deletion task. Update task
-	 * can be replaced by any non-update task.
-	 */
-	void addTask(const RosterTask &task);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if task of second type should replace task of first type on list of task to execute.
-	 * @return true if task of second type should replace task of first type on list of task to execute
-	 */
-	bool shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

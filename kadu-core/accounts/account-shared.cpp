@@ -38,6 +38,7 @@
 #include "protocols/protocols-manager.h"
 #include "roster/roster-service.h"
 #include "roster/roster-task-collection-storage.h"
+#include "roster/roster-service-tasks.h"
 #include "status/status-setter.h"
 
 #include "account-shared.h"
@@ -197,8 +198,8 @@ void AccountShared::load()
 			protocolRegistered(factory);
 	}
 
-	if (protocolHandler() && protocolHandler()->rosterService())
-		protocolHandler()->rosterService()->addTasks(loadRosterTasks());
+	if (protocolHandler() && protocolHandler()->rosterService() && protocolHandler()->rosterService()->tasks())
+		protocolHandler()->rosterService()->tasks()->addTasks(loadRosterTasks());
 }
 
 void AccountShared::storeRosterTasks(const QVector<RosterTask> &tasks)
@@ -238,8 +239,8 @@ void AccountShared::store()
 	if (Details)
 		Details->ensureStored();
 
-	if (protocolHandler() && protocolHandler()->rosterService())
-		storeRosterTasks(protocolHandler()->rosterService()->tasks());
+	if (protocolHandler() && protocolHandler()->rosterService() && protocolHandler()->rosterService()->tasks())
+		storeRosterTasks(protocolHandler()->rosterService()->tasks()->tasks());
 }
 
 bool AccountShared::shouldStore()
@@ -313,8 +314,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-	if (protocolHandler() && protocolHandler()->rosterService())
-		protocolHandler()->rosterService()->addTasks(loadRosterTasks());
+	if (protocolHandler() && protocolHandler()->rosterService() && protocolHandler()->rosterService()->tasks())
+		protocolHandler()->rosterService()->tasks()->addTasks(loadRosterTasks());
 
 	MyStatusContainer->triggerStatusUpdated();
 
@@ -333,8 +334,8 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 	if (!ProtocolHandler || (factory->name() != ProtocolName) || !Details)
 		return;
 
-	if (protocolHandler() && protocolHandler()->rosterService())
-		storeRosterTasks(protocolHandler()->rosterService()->tasks());
+	if (protocolHandler() && protocolHandler()->rosterService() && protocolHandler()->rosterService()->tasks())
+		storeRosterTasks(protocolHandler()->rosterService()->tasks()->tasks());
 
 	disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 	disconnect(ProtocolHandler, 0, this, 0);

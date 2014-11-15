@@ -109,6 +109,8 @@ bool RosterServiceTasks::isEmpty() const
 
 RosterTask RosterServiceTasks::dequeue()
 {
+	Q_ASSERT(!isEmpty());
+
 	auto result = m_tasks.dequeue();
 	m_idToTask.remove(result.id());
 	return result;
