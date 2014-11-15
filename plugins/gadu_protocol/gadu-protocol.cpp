@@ -123,6 +123,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	GaduRosterService *rosterService = new GaduRosterService(account, this, contacts, this);
 	rosterService->setConnection(Connection);
 	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
+	rosterService->setRosterReplacer(Core::instance()->rosterReplacer());
 
 	CurrentNotifyService = new GaduNotifyService{Connection, this};
 	connect(rosterService, SIGNAL(contactAdded(Contact)), CurrentNotifyService, SLOT(contactAdded(Contact)));

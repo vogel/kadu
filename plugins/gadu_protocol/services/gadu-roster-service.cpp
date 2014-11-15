@@ -33,7 +33,6 @@
 #include "roster/roster-notifier.h"
 #include "roster/roster-replacer.h"
 #include "roster/roster-state.h"
-#include "core/core.h"
 #include "debug.h"
 
 #include <QtCore/QScopedArrayPointer>
@@ -89,6 +88,11 @@ void GaduRosterService::setConnection(GaduConnection *connection)
 void GaduRosterService::setRosterNotifier(RosterNotifier *rosterNotifier)
 {
 	m_rosterNotifier = rosterNotifier;
+}
+
+void GaduRosterService::setRosterReplacer(RosterReplacer *rosterReplacer)
+{
+	m_rosterReplacer = rosterReplacer;
 }
 
 void GaduRosterService::putFinished(bool ok)
@@ -161,7 +165,7 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 		auto buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
 		getFinished(true);
 
-		Core::instance()->rosterReplacer()->replaceRoster(account(), buddies, haveToAskForAddingContacts());
+		m_rosterReplacer->replaceRoster(account(), buddies, haveToAskForAddingContacts());
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 		accountDetails->setInitialRosterImport(false);
 

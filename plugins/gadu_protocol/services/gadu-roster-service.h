@@ -31,6 +31,7 @@ class BuddyList;
 class GaduConnection;
 class GaduRosterStateMachine;
 class RosterNotifier;
+class RosterReplacer;
 
 class GaduRosterService : public RosterService
 {
@@ -44,6 +45,7 @@ public:
 
 	void setConnection(GaduConnection *connection);
 	void setRosterNotifier(RosterNotifier *rosterNotifier);
+	void setRosterReplacer(RosterReplacer *rosterReplacer);
 
 	void prepareRoster();
 
@@ -66,7 +68,7 @@ signals:
 private:
 	QPointer<GaduConnection> m_connection;
 	QPointer<RosterNotifier> m_rosterNotifier;
-	QPointer<RosterService> m_rosterService;
+	QPointer<RosterReplacer> m_rosterReplacer;
 	GaduRosterStateMachine *m_stateMachine;
 	QVector<Contact> m_exportedContacts;
 
