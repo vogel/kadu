@@ -82,7 +82,7 @@ public:
 	virtual ~RosterService();
 
 	/**
-	 * @short Return true if protocol supports concept of eoster tasks.
+	 * @short Return true if protocol supports concept of roster tasks.
 	 *
 	 * GaduGadu does not support this - all roster changes are done in one go, and it may be impossible
 	 * to split them in tasks. In Gadu if we have the same version of contact list as server then it can
