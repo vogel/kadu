@@ -5,6 +5,7 @@ set (roster_SRCS
 	roster-notifier.cpp
 	roster-replacer.cpp
 	roster-service.cpp
+	roster-service-tasks.cpp
 	roster-task.cpp
 	roster-task-collection-storage.cpp
 )
