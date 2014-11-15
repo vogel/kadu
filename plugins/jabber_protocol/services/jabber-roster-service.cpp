@@ -65,6 +65,10 @@ JabberRosterService::JabberRosterService(Protocol *protocol, const QVector<Conta
 		State{JabberRosterState::NonInitialized}
 {
 	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
+
+	connect(this, SIGNAL(contactAdded(Contact)), this, SLOT(contactAddedSlot(Contact)));
+	connect(this, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemovedSlot(Contact)));
+	connect(this, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdatedSlot(Contact)));
 }
 
 JabberRosterService::~JabberRosterService()
@@ -112,6 +116,36 @@ void JabberRosterService::disconnected()
 void JabberRosterService::setState(JabberRosterState state)
 {
 	State = state;
+}
+
+void JabberRosterService::contactAddedSlot(Contact contact)
+{
+	if (contact.rosterEntry()->detached())
+		return;
+
+	m_tasks->addTask(RosterTask{RosterTaskType::Add, contact.id()});
+	if (canPerformLocalUpdate())
+		executeAllTasks();
+}
+
+void JabberRosterService::contactRemovedSlot(Contact contact)
+{
+	if (contact.rosterEntry()->detached())
+		return;
+
+	m_tasks->addTask(RosterTask{RosterTaskType::Delete, contact.id()});
+	if (canPerformLocalUpdate())
+		executeAllTasks();
+}
+
+void JabberRosterService::contactUpdatedSlot(Contact contact)
+{
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	m_tasks->addTask(RosterTask{RosterTaskType::Update, contact.id()});
+	if (canPerformLocalUpdate())
+		executeAllTasks();
 }
 
 void JabberRosterService::ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display)

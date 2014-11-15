@@ -54,13 +54,6 @@ void RosterService::contactDirtinessChanged()
 		return;
 
 	emit contactUpdated(contact);
-
-	if (!tasks() || !contact.rosterEntry()->requiresSynchronization())
-		return;
-
-	tasks()->addTask(RosterTask{RosterTaskType::Update, contact.id()});
-	if (canPerformLocalUpdate())
-		executeAllTasks();
 }
 
 bool RosterService::canPerformLocalUpdate() const
@@ -125,13 +118,6 @@ void RosterService::addContact(const Contact &contact)
 	connectContact(contact);
 
 	emit contactAdded(contact);
-
-	if (!tasks() || !contact.rosterEntry()->requiresSynchronization())
-		return;
-
-	tasks()->addTask(RosterTask{RosterTaskType::Add, contact.id()});
-	if (canPerformLocalUpdate())
-		executeAllTasks();
 }
 
 void RosterService::addSynchronizedContact(const Contact& contact)
@@ -158,17 +144,10 @@ void RosterService::removeContact(const Contact &contact)
 	if (index < 0)
 		return;
 
-	emit contactRemoved(contact);
-
 	m_contacts.remove(index);
 	disconnectContact(contact);
 
-	if (!tasks() || !contact.rosterEntry()->requiresSynchronization())
-		return;
-
-	tasks()->addTask(RosterTask{RosterTaskType::Delete, contact.id()});
-	if (canPerformLocalUpdate())
-		executeAllTasks();
+	emit contactRemoved(contact);
 }
 
 #include "moc_roster-service.cpp"

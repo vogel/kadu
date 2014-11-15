@@ -107,6 +107,10 @@ private slots:
 	 */
 	void disconnected();
 
+	void contactAddedSlot(Contact contact);
+	void contactRemovedSlot(Contact contact);
+	void contactUpdatedSlot(Contact contact);
+
 	void remoteContactUpdated(const RosterItem &item);
 	void remoteContactDeleted(const RosterItem &item);
 
