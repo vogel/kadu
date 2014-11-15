@@ -68,8 +68,6 @@ public:
 
 	virtual void exportContactList(const BuddyList &buddies);
 
-	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
-
 public slots:
 	virtual void exportContactList();
 	virtual void importContactList();

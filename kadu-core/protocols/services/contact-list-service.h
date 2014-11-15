@@ -49,7 +49,7 @@ public:
 	// TODO 0.14: remove
 	virtual bool haveToAskForAddingContacts() const = 0;
 
-	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source) = 0;
+	void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 
 	QList<Contact> setBuddiesList(const BuddyList &buddies);
 

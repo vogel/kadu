@@ -299,9 +299,4 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 		putFinished(false);
 }
 
-void GaduContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)
-{
-	GaduListHelper::setSupportedBuddyInformation(destination, source);
-}
-
 #include "moc_gadu-contact-list-service.cpp"

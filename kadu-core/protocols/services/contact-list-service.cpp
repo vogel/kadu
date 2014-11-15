@@ -21,6 +21,7 @@
  */
 
 #include "buddies/buddy-manager.h"
+#include "buddies/group.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
@@ -228,6 +229,19 @@ QList<Contact> ContactListService::setBuddiesList(const BuddyList &buddies)
 	// (unless we are importing from 0.9.x)
 
 	return unImportedContacts;
+}
+
+void ContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)
+{
+	destination.setFirstName(source.firstName());
+	destination.setLastName(source.lastName());
+	destination.setNickName(source.nickName());
+	destination.setDisplay(source.display());
+	destination.setMobile(source.mobile());
+	destination.setGroups(source.groups());
+	destination.setEmail(source.email());
+	destination.setOfflineTo(source.isOfflineTo());
+	destination.setHomePhone(source.homePhone());
 }
 
 #include "moc_contact-list-service.cpp"

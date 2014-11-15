@@ -41,19 +41,6 @@
 
 #include "gadu-list-helper.h"
 
-void GaduListHelper::setSupportedBuddyInformation(const Buddy &destination, const Buddy &source)
-{
-	destination.setFirstName(source.firstName());
-	destination.setLastName(source.lastName());
-	destination.setNickName(source.nickName());
-	destination.setDisplay(source.display());
-	destination.setMobile(source.mobile());
-	destination.setGroups(source.groups());
-	destination.setEmail(source.email());
-	destination.setOfflineTo(source.isOfflineTo());
-	destination.setHomePhone(source.homePhone());
-}
-
 QString GaduListHelper::contactToLine70(Contact contact)
 {
 	QStringList list;
