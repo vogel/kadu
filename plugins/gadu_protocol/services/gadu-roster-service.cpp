@@ -27,6 +27,7 @@
 #include "server/gadu-writable-session-token.h"
 #include "gadu-account-details.h"
 
+#include "buddies/buddy-manager.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-notifier.h"
@@ -158,6 +159,15 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 
 		for (auto &&contact : result.first)
 			contact.rosterEntry()->setSynchronized();
+
+		for (auto &&contact : result.second)
+		{
+			auto ownerBuddy = contact.ownerBuddy();
+			contact.setOwnerBuddy(Buddy::null);
+			BuddyManager::instance()->removeBuddyIfEmpty(ownerBuddy, true);
+			removeContact(contact);
+			contact.rosterEntry()->setSynchronized();
+		}
 
 		// cleanup references, so buddy and contact instances can be removed
 		// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
