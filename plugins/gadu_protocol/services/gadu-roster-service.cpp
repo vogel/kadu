@@ -254,6 +254,9 @@ void GaduRosterService::importContactList()
 
 	emit stateMachineGetStarted();
 
+	for (auto &&contact : contacts())
+		contact.rosterEntry()->setSynchronizingFromRemote();
+
 	auto writableSessionToken = m_connection.data()->writableSessionToken();
 	int ret = gg_userlist100_request(writableSessionToken.rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 	if (-1 == ret)
