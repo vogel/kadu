@@ -190,7 +190,7 @@ void GaduRosterService::handleEventUserlist100PutReply(struct gg_event *e)
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
 			for (auto &&contact : m_exportedContacts)
-				contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+				contact.rosterEntry()->setSynchronized();
 
 			putFinished(true);
 			return;

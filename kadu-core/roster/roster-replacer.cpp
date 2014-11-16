@@ -95,7 +95,7 @@ QVector<Contact> RosterReplacer::performAdds(const QMap<Buddy, Contact> &contact
 	{
 		ContactManager::instance()->addItem(i.value());
 		i.value().setOwnerBuddy(i.key());
-		i.value().rosterEntry()->setState(RosterEntryState::Synchronized);
+		i.value().rosterEntry()->setSynchronized();
 		resultContacts.append(i.value());
 
 		Roster::instance()->addContact(i.value());
@@ -112,7 +112,7 @@ void RosterReplacer::performRenames(const QMap<Buddy, Contact> &contactsToRename
 		// do not remove now as theoretically it could be used in next loop run
 		buddiesToRemove.append(i.value().ownerBuddy());
 		i.value().setOwnerBuddy(i.key());
-		i.value().rosterEntry()->setState(RosterEntryState::Synchronized);
+		i.value().rosterEntry()->setSynchronized();
 	}
 
 	for (auto &&buddy : buddiesToRemove)
@@ -161,7 +161,7 @@ QVector<Contact> RosterReplacer::registerBuddies(Account account, const BuddyLis
 						if (knownContact.ownerBuddy() != targetBuddy)
 							contactsToRename.insert(targetBuddy, knownContact);
 						else
-							knownContact.rosterEntry()->setState(RosterEntryState::Synchronized);
+							knownContact.rosterEntry()->setSynchronized();
 					}
 
 					personalInfoSourceBuddies.insert(targetBuddy, buddy);
@@ -218,7 +218,7 @@ QList<Contact> RosterReplacer::replaceRoster(Account account, const BuddyList &b
 		{
 			// local dirty removed contacts are no longer dirty if they were absent on server
 			if (i->rosterEntry()->requiresSynchronization() && i->isAnonymous())
-				i->rosterEntry()->setState(RosterEntryState::Synchronized);
+				i->rosterEntry()->setSynchronized();
 
 			i = unImportedContacts.erase(i);
 		}

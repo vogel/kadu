@@ -38,6 +38,31 @@ RosterEntry::~RosterEntry()
 {
 }
 
+void RosterEntry::setSynchronized()
+{
+	setState(RosterEntryState::Synchronized);
+}
+
+void RosterEntry::setHasLocalChanges()
+{
+	if (m_state == RosterEntryState::SynchronizingToRemote)
+		return;
+	if (m_state == RosterEntryState::SynchronizingFromRemote)
+		return;
+
+	setState(RosterEntryState::HasLocalChanges);
+}
+
+void RosterEntry::setSynchronizingToRemote()
+{
+	setState(RosterEntryState::SynchronizingToRemote);
+}
+
+void RosterEntry::setSynchronizingFromRemote()
+{
+	setState(RosterEntryState::SynchronizingFromRemote);
+}
+
 void RosterEntry::setState(RosterEntryState state)
 {
 	if (m_state == state)

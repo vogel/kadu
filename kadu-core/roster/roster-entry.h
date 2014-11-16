@@ -58,13 +58,6 @@ public:
 	virtual ~RosterEntry();
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set new value of State property.
-	 * @param state new value of State property
-	 */
-	void setState(RosterEntryState state);
-
-	/**
 	 * @short Set state to RosterEntryState::Desynchronized if equal to RosterEntryState::Synchronizing
 	 *
 	 * Call after initializing roster. Roster entry state set RosterEntryState::Synchronizing during roster
@@ -79,6 +72,31 @@ public:
 	 * @return current value of State property
 	 */
 	RosterEntryState state() const;
+
+	/**
+	 * @short Set state to Synchronized.
+	 */
+	void setSynchronized();
+
+	/**
+	 * @short Set state to HasLocalChanges
+	 * 
+	 * Does nothing if state is SynchronizingToRemote or SynchronizingFromRemote. It means we can lost some local
+	 * changes in some scenerios. Not serious, should occur very rarely.
+	 * 
+	 * If succeeds, emits hasLocalChangesNotifier().
+	 */
+	void setHasLocalChanges();
+
+	/**
+	 * @short Set state to SynchronizingToRemote.
+	 */
+	void setSynchronizingToRemote();
+
+	/**
+	 * @short Set state to SynchronizingFromRemote.
+	 */
+	void setSynchronizingFromRemote();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -148,6 +166,13 @@ private:
 	bool m_detached;
 	bool m_remotelyDeleted;
 	ChangeNotifier m_hasLocalChangesNotifier;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set new value of State property.
+	 * @param state new value of State property
+	 */
+	void setState(RosterEntryState state);
 
 };
 

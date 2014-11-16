@@ -156,7 +156,7 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 		// so next data from roster overrides our changes
 		// this is not perfect solution but i'm unable to figure out a perfect one now
 		if (!item->rosterDetached() && contact.rosterEntry()->detached())
-			contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+			contact.rosterEntry()->setSynchronized();
 
 		contact.rosterEntry()->setDetached(item->rosterDetached());
 		return;

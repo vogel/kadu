@@ -124,7 +124,7 @@ void ContactManager::itemRegistered(Contact item)
 	emit contactAdded(item);
 
 	if (Core::instance()->myself() == item.ownerBuddy())
-		item.rosterEntry()->setState(RosterEntryState::Synchronized);
+		item.rosterEntry()->setSynchronized();
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
@@ -161,7 +161,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	ChangeNotifierLock lock(contact.rosterEntry()->hasLocalChangesNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
 	contact.setId(id);
 	contact.setContactAccount(account);
-	contact.rosterEntry()->setState(RosterEntryState::Synchronized); // TODO: setId and setContactAccount desynchronized it, make a factory
+	contact.rosterEntry()->setSynchronized(); // TODO: setId and setContactAccount desynchronized it, make a factory
 
 	if (action == ActionCreateAndAdd)
 		addItem(contact);
@@ -172,7 +172,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
-	contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+	contact.rosterEntry()->setSynchronized();
 
 	return contact;
 }

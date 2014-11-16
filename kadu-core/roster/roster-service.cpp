@@ -119,7 +119,7 @@ void RosterService::addSynchronizedContact(const Contact& contact)
 	if (m_contacts.contains(contact))
 		return;
 
-	contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+	contact.rosterEntry()->setSynchronized();
 	m_contacts.append(contact);
 	connectContact(contact);
 

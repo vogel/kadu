@@ -110,9 +110,9 @@ void ContactShared::load()
 	Priority = loadValue<int>("Priority", -1);
 
 	if (loadValue<bool>("Dirty", true))  // ROSTER: not sure
-		Entry->setState(RosterEntryState::HasLocalChanges);
+		Entry->setHasLocalChanges();
 	else
-		Entry->setState(RosterEntryState::Synchronized);
+		Entry->setSynchronized();
 
 	// It's an explicit hack for update path from 0.10.1-0.11.x to 0.12+. 0.10/0.11 didn't
 	// have Detached property. But they did have an explicit hack for totally ignoring
@@ -222,7 +222,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	Entry->setState(RosterEntryState::HasLocalChanges); // ROSTER: not sure
+	Entry->setHasLocalChanges(); // ROSTER: not sure
 	changeNotifier().notify();
 
 	emit buddyUpdated();
@@ -243,7 +243,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	Entry->setState(RosterEntryState::HasLocalChanges); // ROSTER: not sure
+	Entry->setHasLocalChanges(); // ROSTER: not sure
 	changeNotifier().notify();
 }
 

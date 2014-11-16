@@ -228,11 +228,11 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 	if (!isIntrestedIn(item))
 	{
-		contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+		contact.rosterEntry()->setSynchronized();
 		return;
 	}
 
-	contact.rosterEntry()->setState(RosterEntryState::SynchronizingFromRemote);
+	contact.rosterEntry()->setSynchronizingFromRemote();
 
 	ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
 
@@ -257,9 +257,9 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 	RosterTaskType rosterTaskType = m_tasks->taskType(contact.id());
 	if (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType)
 	{
-		contact.rosterEntry()->setState(RosterEntryState::SynchronizingFromRemote);
+		contact.rosterEntry()->setSynchronizingFromRemote();
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-		contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+		contact.rosterEntry()->setSynchronized();
 
 		RosterService::removeContact(contact);
 	}
@@ -280,7 +280,7 @@ void JabberRosterService::rosterTaskFinished()
 
 	if (rosterTask->success())
 	{
-		contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+		contact.rosterEntry()->setSynchronized();
 		return;
 	}
 
@@ -288,7 +288,7 @@ void JabberRosterService::rosterTaskFinished()
 	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
 		contact.rosterEntry()->setDetached(true);
 
-	contact.rosterEntry()->setState(RosterEntryState::HasLocalChanges);
+	contact.rosterEntry()->setHasLocalChanges();
 }
 
 void JabberRosterService::rosterTaskDeleted(QObject* object)
@@ -326,7 +326,7 @@ void JabberRosterService::deleteMarkedContacts()
 			continue;
 
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-		contact.rosterEntry()->setState(RosterEntryState::Synchronized);
+		contact.rosterEntry()->setSynchronized();
 	}
 }
 
@@ -406,7 +406,7 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	{
 		if (!contact.rosterEntry()->requiresSynchronization())
 			return;
-		contact.rosterEntry()->setState(RosterEntryState::SynchronizingToRemote);
+		contact.rosterEntry()->setSynchronizingToRemote();
 	}
 
 	switch (taskType)

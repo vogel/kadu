@@ -66,7 +66,7 @@ void Roster::addContact(const Contact &contact) const
 	auto service = rosterService(contact);
 	if (service)
 	{
-		contact.rosterEntry()->setState(RosterEntryState::HasLocalChanges);
+		contact.rosterEntry()->setHasLocalChanges();
 		service->addContact(contact);
 	}
 }
