@@ -80,7 +80,7 @@ void GaduRosterService::prepareRoster()
 			requiresSynchronization |= contact.rosterEntry()->requiresSynchronization();
 		}
 	if (requiresSynchronization)
-		emit stateMachineLocalDirty();
+		rosterChanged();
 }
 
 void GaduRosterService::putFinished(bool ok)
