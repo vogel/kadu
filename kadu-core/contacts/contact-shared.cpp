@@ -111,7 +111,7 @@ void ContactShared::load()
 	Priority = loadValue<int>("Priority", -1);
 
 	if (loadValue<bool>("Dirty", true))  // ROSTER: not sure
-		Entry->setState(RosterEntryState::Desynchronized);
+		Entry->setState(RosterEntryState::HasLocalChanges);
 	else
 		Entry->setState(RosterEntryState::Synchronized);
 
@@ -223,7 +223,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	Entry->setState(RosterEntryState::Desynchronized); // ROSTER: not sure
+	Entry->setState(RosterEntryState::HasLocalChanges); // ROSTER: not sure
 	changeNotifier().notify();
 
 	emit buddyUpdated();
@@ -244,7 +244,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	Entry->setState(RosterEntryState::Desynchronized); // ROSTER: not sure
+	Entry->setState(RosterEntryState::HasLocalChanges); // ROSTER: not sure
 	changeNotifier().notify();
 }
 

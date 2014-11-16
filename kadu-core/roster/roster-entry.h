@@ -118,6 +118,11 @@ public:
 	ChangeNotifier & changeNotifier();
 
 	/**
+	 * @return true when roster entry is beging synchronized to or from remote
+	 */
+	bool isSynchronizing() const;
+
+	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Check if this entry requires synchronization with server.
 	 * @return true if this entry requires synchronization with server

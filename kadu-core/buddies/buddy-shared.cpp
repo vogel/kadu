@@ -521,8 +521,9 @@ void BuddyShared::markContactsDirty()
 	ensureLoaded();
 
 	for (auto &&contact : Contacts)
-		if (contact.rosterEntry() && contact.rosterEntry()->state() != RosterEntryState::Synchronizing)
-			contact.rosterEntry()->setState(RosterEntryState::Desynchronized);
+		// if contact.rosterEntry()->state() == RosterEntryState::SynchronizingFromRemote our changed will be overwritten anyways
+		if (contact.rosterEntry() && contact.rosterEntry()->state() != RosterEntryState::SynchronizingFromRemote)
+			contact.rosterEntry()->setState(RosterEntryState::HasLocalChanges);
 }
 
 quint16 BuddyShared::unreadMessagesCount()

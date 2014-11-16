@@ -49,8 +49,8 @@ void RosterEntry::setState(RosterEntryState state)
 
 void RosterEntry::fixupInitialState()
 {
-	if (m_state == RosterEntryState::Synchronizing)
-		m_state = RosterEntryState::Desynchronized;
+	if (m_state == RosterEntryState::SynchronizingToRemote)
+		m_state = RosterEntryState::HasLocalChanges;
 }
 
 RosterEntryState RosterEntry::state() const
@@ -91,14 +91,19 @@ ChangeNotifier & RosterEntry::changeNotifier()
 	return m_changeNotifier;
 }
 
+bool RosterEntry::isSynchronizing() const
+{
+	return RosterEntryState::SynchronizingFromRemote == m_state || RosterEntryState::SynchronizingToRemote == m_state;
+}
+
 bool RosterEntry::requiresSynchronization() const
 {
-	return !m_detached && RosterEntryState::Desynchronized == m_state;
+	return !m_detached && RosterEntryState::HasLocalChanges == m_state;
 }
 
 bool RosterEntry::canAcceptRemoteUpdate() const
 {
-	return !m_detached && RosterEntryState::Desynchronized != m_state && RosterEntryState::Synchronizing != m_state;
+	return !m_detached && RosterEntryState::HasLocalChanges != m_state && !isSynchronizing();
 }
 
 #include "moc_roster-entry.cpp"

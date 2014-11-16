@@ -43,13 +43,17 @@ enum class RosterEntryState
 	 */
 	Synchronized,
 	/**
-	 * Entries with this state have different value on local and remote roster. At first opportunity new value must be sent to remote roster.
+	 * Entries with this state have local changes and shoud be sent to remote server (if not detached).
 	 */
-	Desynchronized,
+	HasLocalChanges,
 	/**
-	 * Entries with this state are being synchronized with remote server.
+	 * Entries with this state are being synchronized to remote server.
 	 */
-	Synchronizing
+	SynchronizingToRemote,
+	/**
+	 * Entries with this state are being synchronized from remote server.
+	 */
+	SynchronizingFromRemote
 };
 
 /**

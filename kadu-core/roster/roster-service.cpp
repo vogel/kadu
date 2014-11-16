@@ -55,15 +55,11 @@ void RosterService::contactDirtinessChanged()
 	emit contactUpdated(contact);
 }
 
-void RosterService::resetSynchronizingToDesynchronized()
+void RosterService::fixupInitialState()
 {
 	for (auto &&contact : m_contacts)
-	{
-		if (!contact.rosterEntry())
-			continue;
-		if (contact.rosterEntry()->state() == RosterEntryState::Synchronizing)
-			contact.rosterEntry()->setState(RosterEntryState::Desynchronized);
-	}
+		if (contact.rosterEntry())
+			contact.rosterEntry()->fixupInitialState();
 }
 
 void RosterService::connectContact(const Contact &contact)

@@ -232,7 +232,7 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 		return;
 	}
 
-	contact.rosterEntry()->setState(RosterEntryState::Synchronizing);
+	contact.rosterEntry()->setState(RosterEntryState::SynchronizingFromRemote);
 
 	ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
 
@@ -257,7 +257,7 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 	RosterTaskType rosterTaskType = m_tasks->taskType(contact.id());
 	if (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType)
 	{
-		contact.rosterEntry()->setState(RosterEntryState::Synchronizing);
+		contact.rosterEntry()->setState(RosterEntryState::SynchronizingFromRemote);
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 		contact.rosterEntry()->setState(RosterEntryState::Synchronized);
 
@@ -288,7 +288,7 @@ void JabberRosterService::rosterTaskFinished()
 	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
 		contact.rosterEntry()->setDetached(true);
 
-	contact.rosterEntry()->setState(RosterEntryState::Desynchronized);
+	contact.rosterEntry()->setState(RosterEntryState::HasLocalChanges);
 }
 
 void JabberRosterService::rosterTaskDeleted(QObject* object)
@@ -332,7 +332,7 @@ void JabberRosterService::deleteMarkedContacts()
 
 void JabberRosterService::prepareRoster()
 {
-	resetSynchronizingToDesynchronized();
+	fixupInitialState();
 	m_tasks->addTasks(m_tasks->updateTasksForContacts(contacts()));
 
 	Q_ASSERT(JabberRosterState::NonInitialized == state());
@@ -406,7 +406,7 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	{
 		if (!contact.rosterEntry()->requiresSynchronization())
 			return;
-		contact.rosterEntry()->setState(RosterEntryState::Synchronizing);
+		contact.rosterEntry()->setState(RosterEntryState::SynchronizingToRemote);
 	}
 
 	switch (taskType)
