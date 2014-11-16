@@ -243,7 +243,6 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	Entry->setHasLocalChanges(); // ROSTER: not sure
 	changeNotifier().notify();
 }
 

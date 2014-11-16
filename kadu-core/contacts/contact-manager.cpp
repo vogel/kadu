@@ -161,7 +161,6 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	ChangeNotifierLock lock(contact.rosterEntry()->hasLocalChangesNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
 	contact.setId(id);
 	contact.setContactAccount(account);
-	contact.rosterEntry()->setSynchronized(); // TODO: setId and setContactAccount desynchronized it, make a factory
 
 	if (action == ActionCreateAndAdd)
 		addItem(contact);
@@ -172,7 +171,6 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
-	contact.rosterEntry()->setSynchronized();
 
 	return contact;
 }
