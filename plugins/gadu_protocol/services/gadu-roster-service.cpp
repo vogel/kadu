@@ -151,9 +151,12 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 		auto buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
 		getFinished(true);
 
-		m_rosterReplacer->replaceRoster(account(), buddies, haveToAskForAddingContacts());
+		auto result = m_rosterReplacer->replaceRoster(account(), buddies, haveToAskForAddingContacts());
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 		accountDetails->setInitialRosterImport(false);
+
+		for (auto &&contact : result.first)
+			contact.rosterEntry()->setSynchronized();
 
 		// cleanup references, so buddy and contact instances can be removed
 		// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too

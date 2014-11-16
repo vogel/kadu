@@ -32,7 +32,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "protocols/protocol.h"
-#include "roster/roster.h"
 
 #include "misc/misc.h"
 #include "debug.h"
@@ -250,8 +249,6 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 				contact.setId(numberElement.text());
 				contact.data()->setState(StorableObject::StateNew);
 				contact.setOwnerBuddy(buddy);
-
-				Roster::instance()->addContact(contact);
 			}
 
 			buddy.setAnonymous(false);
@@ -312,8 +309,6 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 				details->setState(StorableObject::StateNew);
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
-
-			Roster::instance()->addContact(contact);
 		}
 	}
 
@@ -385,8 +380,6 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 				details->setState(StorableObject::StateNew);
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
-
-			Roster::instance()->addContact(contact);
 		}
 	}
 

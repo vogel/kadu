@@ -126,7 +126,8 @@ void AccountBuddyListWidget::restoreFromFile()
 			return;
 		}
 
-		auto unImportedContacts = Core::instance()->rosterReplacer()->replaceRoster(CurrentAccount, list, false);
+		auto result = Core::instance()->rosterReplacer()->replaceRoster(CurrentAccount, list, false);
+		auto unImportedContacts = result.second;
 		auto contactsList = QStringList{};
 		for (auto &&contact : unImportedContacts)
 			contactsList.append(contact.display(true) + " (" + contact.id() + ')');

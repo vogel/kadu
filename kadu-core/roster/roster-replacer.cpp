@@ -87,15 +87,14 @@ bool RosterReplacer::askForAddingContacts(const QMap<Buddy, Contact> &contactsTo
 	return dialog->ask();
 }
 
-QVector<Contact> RosterReplacer::performAdds(const QMap<Buddy, Contact> &contactsToAdd)
+QList<Contact> RosterReplacer::performAdds(const QMap<Buddy, Contact> &contactsToAdd)
 {
-	QVector<Contact> resultContacts;
+	QList<Contact> resultContacts;
 
 	for (QMap<Buddy, Contact>::const_iterator i = contactsToAdd.constBegin(); i != contactsToAdd.constEnd(); i++)
 	{
 		ContactManager::instance()->addItem(i.value());
 		i.value().setOwnerBuddy(i.key());
-		i.value().rosterEntry()->setSynchronized();
 		resultContacts.append(i.value());
 
 		Roster::instance()->addContact(i.value());
@@ -112,16 +111,16 @@ void RosterReplacer::performRenames(const QMap<Buddy, Contact> &contactsToRename
 		// do not remove now as theoretically it could be used in next loop run
 		buddiesToRemove.append(i.value().ownerBuddy());
 		i.value().setOwnerBuddy(i.key());
-		i.value().rosterEntry()->setSynchronized();
 	}
 
 	for (auto &&buddy : buddiesToRemove)
 		BuddyManager::instance()->removeBuddyIfEmpty(buddy, true);
 }
 
-QVector<Contact> RosterReplacer::registerBuddies(Account account, const BuddyList &buddies, bool ask)
+QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account account, const BuddyList &buddies, bool ask)
 {
-	QVector<Contact> resultContacts;
+	QList<Contact> resultContacts;
+	QList<Contact> allContacts;
 	QMap<Buddy, Contact> contactsToAdd;
 	QMap<Buddy, Contact> contactsToRename;
 	QMap<Buddy, Buddy> personalInfoSourceBuddies;
@@ -147,6 +146,8 @@ QVector<Contact> RosterReplacer::registerBuddies(Account account, const BuddyLis
 			Contact knownContact = ContactManager::instance()->byId(account, contact.id(), ActionReturnNull);
 			if (knownContact)
 			{
+				allContacts.append(knownContact);
+
 				// do not import dirty removed contacts unless we will be asking the user
 				// (We will be asking only if we are migrating from 0.9.x. Remember that
 				// all migrated contacts, including those with anynomous buddies, are initially marked dirty.)
@@ -160,8 +161,6 @@ QVector<Contact> RosterReplacer::registerBuddies(Account account, const BuddyLis
 
 						if (knownContact.ownerBuddy() != targetBuddy)
 							contactsToRename.insert(targetBuddy, knownContact);
-						else
-							knownContact.rosterEntry()->setSynchronized();
 					}
 
 					personalInfoSourceBuddies.insert(targetBuddy, buddy);
@@ -169,6 +168,8 @@ QVector<Contact> RosterReplacer::registerBuddies(Account account, const BuddyLis
 			}
 			else
 			{
+				allContacts.append(contact);
+
 				contactsToAdd.insert(targetBuddy, contact);
 				personalInfoSourceBuddies.insert(targetBuddy, buddy);
 			}
@@ -176,7 +177,7 @@ QVector<Contact> RosterReplacer::registerBuddies(Account account, const BuddyLis
 	}
 
 	if (ask && !askForAddingContacts(contactsToAdd, contactsToRename))
-		return resultContacts;
+		return qMakePair(allContacts, resultContacts);
 
 	resultContacts += performAdds(contactsToAdd);
 	performRenames(contactsToRename);
@@ -192,10 +193,10 @@ QVector<Contact> RosterReplacer::registerBuddies(Account account, const BuddyLis
 		BuddyManager::instance()->addItem(i.key());
 	}
 
-	return resultContacts;
+	return qMakePair(allContacts, resultContacts);
 }
 
-QList<Contact> RosterReplacer::replaceRoster(Account account, const BuddyList &buddies, bool ask)
+QPair<QList<Contact>, QList<Contact>> RosterReplacer::replaceRoster(Account account, const BuddyList &buddies, bool ask)
 {
 	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(account).toList();
 
@@ -204,7 +205,9 @@ QList<Contact> RosterReplacer::replaceRoster(Account account, const BuddyList &b
 
 	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS
 
-	QVector<Contact> managedContacts = registerBuddies(account, buddies, ask);
+	auto registered = registerBuddies(account, buddies, ask);
+	auto allContacts = registered.first;
+	auto managedContacts = registered.second;
 	for (auto &&contact : managedContacts)
 		unImportedContacts.removeAll(contact);
 
@@ -218,10 +221,12 @@ QList<Contact> RosterReplacer::replaceRoster(Account account, const BuddyList &b
 		{
 			// local dirty removed contacts are no longer dirty if they were absent on server
 			if (i->rosterEntry()->requiresSynchronization() && i->isAnonymous())
-				i->rosterEntry()->setSynchronized();
+				allContacts.append(*i);
 
 			i = unImportedContacts.erase(i);
 		}
+		else
+			++i;
 	}
 
 	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS) -
@@ -230,7 +235,7 @@ QList<Contact> RosterReplacer::replaceRoster(Account account, const BuddyList &b
 	//                        = NOT_PRESENT_ON_SERVER_BUT_PRESENT_LOCALLY_CONTACTS - LOCAL_DIRTY_ADDED_CONTACTS
 	// (unless we are importing from 0.9.x)
 
-	return unImportedContacts;
+	return qMakePair(allContacts, unImportedContacts);
 }
 
 void RosterReplacer::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)

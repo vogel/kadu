@@ -50,13 +50,13 @@ public:
 	Q_INVOKABLE explicit RosterReplacer(QObject *parent = nullptr);
 	virtual ~RosterReplacer();
 
-	QList<Contact> replaceRoster(Account account, const BuddyList &buddies, bool ask);
+	QPair<QList<Contact>, QList<Contact>> replaceRoster(Account account, const BuddyList &buddies, bool ask);
 
 private:
 	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
-	QVector<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
+	QList<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
 	void performRenames(const QMap<Buddy, Contact> &contactsToRename);
-	QVector<Contact> registerBuddies(Account account, const BuddyList &buddies, bool ask);
+	QPair<QList<Contact>, QList<Contact>> registerBuddies(Account account, const BuddyList &buddies, bool ask);
 	void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 
 };
