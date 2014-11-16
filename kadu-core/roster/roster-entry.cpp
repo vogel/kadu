@@ -44,7 +44,8 @@ void RosterEntry::setState(RosterEntryState state)
 		return;
 
 	m_state = state;
-	m_changeNotifier.notify();
+	if (m_state == RosterEntryState::HasLocalChanges)
+		m_hasLocalChangesNotifier.notify();
 }
 
 void RosterEntry::fixupInitialState()
@@ -64,7 +65,6 @@ void RosterEntry::setDetached(bool detached)
 		return;
 
 	m_detached = detached;
-	m_changeNotifier.notify();
 }
 
 bool RosterEntry::detached() const
@@ -78,7 +78,6 @@ void RosterEntry::setRemotelyDeleted(bool remotelyDeleted)
 		return;
 
 	m_remotelyDeleted = remotelyDeleted;
-	m_changeNotifier.notify();
 }
 
 bool RosterEntry::remotelyDeleted() const
@@ -86,9 +85,9 @@ bool RosterEntry::remotelyDeleted() const
 	return m_remotelyDeleted;
 }
 
-ChangeNotifier & RosterEntry::changeNotifier()
+ChangeNotifier & RosterEntry::hasLocalChangesNotifier()
 {
-	return m_changeNotifier;
+	return m_hasLocalChangesNotifier;
 }
 
 bool RosterEntry::isSynchronizing() const

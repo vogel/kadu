@@ -132,7 +132,7 @@ public:
 signals:
 	void updated();
 	void buddyUpdated();
-	void dirtinessChanged();
+	void updatedLocally();
 
 };
 

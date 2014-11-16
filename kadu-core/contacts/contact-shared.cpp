@@ -62,7 +62,7 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
 	Entry = new RosterEntry(this);
-	connect(&Entry->changeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
+	connect(&Entry->hasLocalChangesNotifier(), SIGNAL(changed()), this, SIGNAL(updatedLocally()));
 
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
@@ -73,7 +73,6 @@ ContactShared::ContactShared(const QUuid &uuid) :
 	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
 
-	connect(&Entry->changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
 	connect(&changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
 }
 

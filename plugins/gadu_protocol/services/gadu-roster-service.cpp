@@ -43,7 +43,7 @@ GaduRosterService::GaduRosterService(Protocol *protocol, const QVector<Contact> 
 {
 	connect(this, SIGNAL(contactAdded(Contact)), this, SLOT(rosterChanged()));
 	connect(this, SIGNAL(contactRemoved(Contact)), this, SLOT(rosterChanged()));
-	connect(this, SIGNAL(contactUpdated(Contact)), this, SLOT(rosterChanged()));
+	connect(this, SIGNAL(contactUpdatedLocally(Contact)), this, SLOT(rosterChanged()));
 
 	connect(m_stateMachine, SIGNAL(performGet()), SLOT(importContactList()));
 	connect(m_stateMachine, SIGNAL(performPut()), SLOT(exportContactList()));

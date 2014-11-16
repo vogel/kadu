@@ -42,7 +42,7 @@ RosterService::~RosterService()
 {
 }
 
-void RosterService::contactDirtinessChanged()
+void RosterService::contactUpdated()
 {
 	auto contact = Contact{sender()};
 
@@ -55,6 +55,19 @@ void RosterService::contactDirtinessChanged()
 	emit contactUpdated(contact);
 }
 
+void RosterService::contactUpdatedLocally()
+{
+	auto contact = Contact{sender()};
+
+	Q_ASSERT(contact);
+	Q_ASSERT(m_contacts.contains(contact));
+
+	if (contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	emit contactUpdatedLocally(contact);
+}
+
 void RosterService::fixupInitialState()
 {
 	for (auto &&contact : m_contacts)
@@ -64,12 +77,14 @@ void RosterService::fixupInitialState()
 
 void RosterService::connectContact(const Contact &contact)
 {
-	connect(contact, SIGNAL(dirtinessChanged()), this, SLOT(contactDirtinessChanged()));
+	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	connect(contact, SIGNAL(updatedLocally()), this, SLOT(contactUpdatedLocally()));
 }
 
 void RosterService::disconnectContact(const Contact &contact)
 {
-	disconnect(contact, SIGNAL(dirtinessChanged()), this, SLOT(contactDirtinessChanged()));
+	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	disconnect(contact, SIGNAL(updatedLocally()), this, SLOT(contactUpdatedLocally()));
 }
 
 RosterServiceTasks * RosterService::tasks() const

@@ -158,7 +158,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Contact contact = Contact::create();
 
-	ChangeNotifierLock lock(contact.rosterEntry()->changeNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
+	ChangeNotifierLock lock(contact.rosterEntry()->hasLocalChangesNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
 	contact.setId(id);
 	contact.setContactAccount(account);
 	contact.rosterEntry()->setState(RosterEntryState::Synchronized); // TODO: setId and setContactAccount desynchronized it, make a factory

@@ -115,7 +115,7 @@ public:
 	 *
 	 * Each time a property of this object changes returned ChangeNotifier will emit changed() signal.
 	 */
-	ChangeNotifier & changeNotifier();
+	ChangeNotifier & hasLocalChangesNotifier();
 
 	/**
 	 * @return true when roster entry is beging synchronized to or from remote
@@ -147,7 +147,7 @@ private:
 	RosterEntryState m_state;
 	bool m_detached;
 	bool m_remotelyDeleted;
-	ChangeNotifier m_changeNotifier;
+	ChangeNotifier m_hasLocalChangesNotifier;
 
 };
 

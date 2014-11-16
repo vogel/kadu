@@ -141,6 +141,15 @@ signals:
 	 */
 	void contactUpdated(Contact contact);
 
+	/**
+	 * @short Signal emitted when contact is updated locally
+	 * @param contact updated contact
+	 * 
+	 * Signal is emitted for detached and attached contacts. Is not emitted when changes
+	 * comes from synchronization from remote roster.
+	 */
+	void contactUpdatedLocally(Contact contact);
+
 protected:
 	/**
 	 * @short Resets all synchronizing contacts to desynchronized.
@@ -187,7 +196,17 @@ private slots:
 	 * This slot can only by called for contacts that were previously added to roster using addContact() methods
 	 * and were not removed.
 	 */
-	void contactDirtinessChanged();
+	void contactUpdated();
+
+	/**
+	 * @enum RosterState
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called when data of contact or contact's owner buddy changed locally.
+	 *
+	 * This slot can only by called for contacts that were previously added to roster using addContact() methods
+	 * and were not removed.
+	 */
+	void contactUpdatedLocally();
 
 };
 

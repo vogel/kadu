@@ -68,7 +68,7 @@ JabberRosterService::JabberRosterService(Protocol *protocol, const QVector<Conta
 
 	connect(this, SIGNAL(contactAdded(Contact)), this, SLOT(contactAddedSlot(Contact)));
 	connect(this, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemovedSlot(Contact)));
-	connect(this, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdatedSlot(Contact)));
+	connect(this, SIGNAL(contactUpdatedLocally(Contact)), this, SLOT(contactUpdatedSlot(Contact)));
 }
 
 JabberRosterService::~JabberRosterService()
