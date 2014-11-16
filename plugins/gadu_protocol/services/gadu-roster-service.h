@@ -45,6 +45,8 @@ public:
 	void setRosterNotifier(RosterNotifier *rosterNotifier);
 	void setRosterReplacer(RosterReplacer *rosterReplacer);
 
+	void prepareRoster();
+
 signals:
 	// state machine signals
 	void stateMachinePutStarted();

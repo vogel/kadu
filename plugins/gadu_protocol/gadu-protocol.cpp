@@ -338,6 +338,8 @@ void GaduProtocol::afterLoggedIn()
 	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
 	CurrentNotifyService->sendInitialData(contacts);
 
+	static_cast<GaduRosterService *>(rosterService())->prepareRoster();
+
 	sendStatusToServer();
 }
 

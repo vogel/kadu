@@ -48,18 +48,6 @@ GaduRosterService::GaduRosterService(Protocol *protocol, const QVector<Contact> 
 	connect(m_stateMachine, SIGNAL(performPut()), SLOT(exportContactList()));
 
 	m_stateMachine->start();
-
-	for (auto &&contact : contacts)
-	{
-		auto requiresSynchronization = false;
-		if (contact.rosterEntry())
-		{
-			contact.rosterEntry()->fixupInitialState();
-			requiresSynchronization |= contact.rosterEntry()->requiresSynchronization();
-		}
-		if (requiresSynchronization)
-			emit stateMachineLocalDirty();
-	}
 }
 
 GaduRosterService::~GaduRosterService()
@@ -79,6 +67,19 @@ void GaduRosterService::setRosterNotifier(RosterNotifier *rosterNotifier)
 void GaduRosterService::setRosterReplacer(RosterReplacer *rosterReplacer)
 {
 	m_rosterReplacer = rosterReplacer;
+}
+
+void GaduRosterService::prepareRoster()
+{
+	auto requiresSynchronization = false;
+	for (auto &&contact : contacts())
+		if (contact.rosterEntry())
+		{
+			contact.rosterEntry()->fixupInitialState();
+			requiresSynchronization |= contact.rosterEntry()->requiresSynchronization();
+		}
+	if (requiresSynchronization)
+		emit stateMachineLocalDirty();
 }
 
 void GaduRosterService::putFinished(bool ok)
