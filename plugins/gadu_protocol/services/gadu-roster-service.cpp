@@ -27,7 +27,6 @@
 #include "server/gadu-writable-session-token.h"
 #include "gadu-account-details.h"
 
-#include "buddies/buddy-manager.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-notifier.h"
@@ -263,19 +262,14 @@ void GaduRosterService::importContactList()
 
 void GaduRosterService::exportContactList()
 {
-	exportContactList(BuddyManager::instance()->buddies(account()));
-}
-
-void GaduRosterService::exportContactList(const BuddyList &buddies)
-{
 	if (!m_connection || !m_connection.data()->hasSession())
 		return;
 
 	emit stateMachinePutStarted();
 
-	m_exportedContacts.clear();
-	for (auto &&buddy : buddies)
-		m_exportedContacts += buddy.contacts(account());
+	m_exportedContacts = contacts();
+	for (auto &&contact : m_exportedContacts)
+		contact.rosterEntry()->setSynchronizingToRemote();
 
 	auto contacts = GaduListHelper::contactListToByteArray(m_exportedContacts);
 

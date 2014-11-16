@@ -74,7 +74,6 @@ private:
 	void putFinished(bool ok);
 	void getFinished(bool ok);
 
-	void exportContactList(const BuddyList &buddies);
 	bool haveToAskForAddingContacts() const;
 
 private slots:
