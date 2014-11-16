@@ -170,7 +170,6 @@ protected slots:
 	void addSynchronizedContact(const Contact &contact);
 
 private:
-	QPointer<Protocol> m_protocol;
 	QVector<Contact> m_contacts;
 
 	/**
