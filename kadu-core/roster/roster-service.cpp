@@ -111,21 +111,6 @@ void RosterService::addContact(const Contact &contact)
 	emit contactAdded(contact);
 }
 
-void RosterService::addSynchronizedContact(const Contact& contact)
-{
-	if (contact.contactAccount() != account() || contact.isAnonymous())
-		return;
-
-	if (m_contacts.contains(contact))
-		return;
-
-	contact.rosterEntry()->setSynchronized();
-	m_contacts.append(contact);
-	connectContact(contact);
-
-	emit contactAdded(contact);
-}
-
 void RosterService::removeContact(const Contact &contact)
 {
 	if (contact.contactAccount() != account())

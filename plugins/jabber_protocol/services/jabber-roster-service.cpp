@@ -244,7 +244,9 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 		groups << GroupManager::instance()->byName(group);
 	buddy.setGroups(groups);
 
-	addSynchronizedContact(contact);
+	contact.rosterEntry()->setSynchronized();
+
+	addContact(contact);
 }
 
 void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
