@@ -396,12 +396,6 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	Q_ASSERT(JabberRosterState::Initialized == state());
 
 	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
-	XMPP::JT_Roster *rosterTask = createContactTask(contact);
-	if (!rosterTask)
-		return;
-
-	RosterTaskType taskType = contact ? task.type() : RosterTaskType::Delete;
-
 	if (contact)
 	{
 		if (!contact.rosterEntry()->requiresSynchronization())
@@ -409,6 +403,11 @@ void JabberRosterService::executeTask(const RosterTask& task)
 		contact.rosterEntry()->setSynchronizingToRemote();
 	}
 
+	XMPP::JT_Roster *rosterTask = createContactTask(contact);
+	if (!rosterTask)
+		return;
+
+	RosterTaskType taskType = contact ? task.type() : RosterTaskType::Delete;
 	switch (taskType)
 	{
 		case RosterTaskType::Add:

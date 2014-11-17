@@ -521,8 +521,7 @@ void BuddyShared::markContactsDirty()
 	ensureLoaded();
 
 	for (auto &&contact : Contacts)
-		// if contact.rosterEntry()->state() == RosterEntryState::SynchronizingFromRemote our changed will be overwritten anyways
-		if (contact.rosterEntry() && contact.rosterEntry()->state() != RosterEntryState::SynchronizingFromRemote)
+		if (contact.rosterEntry())
 			contact.rosterEntry()->setHasLocalChanges();
 }
 

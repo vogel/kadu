@@ -80,7 +80,6 @@ void Roster::removeContact(const Contact &contact) const
 	if (service)
 	{
 		service->removeContact(contact);
-		// contact.rosterEntry()->setState(RosterEntryState::Unknown); ROSTER: prove it
 	}
 }
 

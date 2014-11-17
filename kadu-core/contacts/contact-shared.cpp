@@ -222,7 +222,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	Entry->setHasLocalChanges(); // ROSTER: not sure
+	Entry->setHasLocalChanges();
 	changeNotifier().notify();
 
 	emit buddyUpdated();
