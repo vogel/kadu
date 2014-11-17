@@ -160,7 +160,10 @@ void disableIfContactSelected(Action *action)
 
 void disableMerge(Action *action)
 {
-	disableIfContactSelected(action);
+	if (action->context()->buddies().contains(Core::instance()->myself()))
+		action->setEnabled(false);
+	else
+		action->setEnabled(true);
 
 	if (1 != action->context()->buddies().size())
 		action->setEnabled(false);
