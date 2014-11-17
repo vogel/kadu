@@ -307,7 +307,7 @@ Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 		if ("gadu" == item->itemAccount().protocolName())
 			return QAbstractItemModel::flags(index);
 		else
-			return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+			return (QAbstractItemModel::flags(index) | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable) & ~Qt::ItemIsEditable;
 	}
 
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
@@ -379,12 +379,11 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 		{
 			switch (role)
 			{
-				case Qt::DisplayRole:
-				case Qt::EditRole:
+				case Qt::CheckStateRole:
 					if ("gadu" == item->itemAccount().protocolName())
-						return true;
+						return QVariant(Qt::Checked);
 					else
-						return !item->rosterDetached();
+						return item->rosterDetached() ? QVariant(Qt::Unchecked) : QVariant(Qt::Checked);
 			}
 
 			return QVariant();
@@ -413,8 +412,8 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 			break;
 
 		case 2:
-			if (Qt::EditRole == role && "gadu" != item->itemAccount().protocolName())
-				item->setRosterDetached(!value.toBool());
+			if (Qt::CheckStateRole == role && "gadu" != item->itemAccount().protocolName())
+				item->setRosterDetached(value.toInt() != Qt::Checked);
 			break;
 	}
 

@@ -20,8 +20,6 @@ set (gui_SRCS
 	menu/menu-inventory.cpp
 	menu/menu-item.cpp
 
-	model/checkbox-styled-item-delegate.cpp
-
 	services/clipboard-html-transformer-service.cpp
 
 	widgets/chat-widget/chat-widget.cpp
@@ -244,8 +242,6 @@ set (gui_MOC_SRCS
 
 	menu/kadu-menu.h
 	menu/menu-inventory.h
-
-	model/checkbox-styled-item-delegate.h
 
 	services/clipboard-html-transformer-service.h
 
