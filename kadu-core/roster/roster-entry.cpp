@@ -74,7 +74,9 @@ void RosterEntry::setState(RosterEntryState state)
 
 void RosterEntry::fixupInitialState()
 {
-	if (m_state == RosterEntryState::SynchronizingToRemote)
+	if (m_detached)
+		m_state = RosterEntryState::Synchronized;
+	else if (m_state == RosterEntryState::SynchronizingToRemote)
 		m_state = RosterEntryState::HasLocalChanges;
 }
 

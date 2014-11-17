@@ -31,7 +31,9 @@ QVector<RosterTask> RosterServiceTasks::updateTasksForContacts(const QVector<Con
 	{
 		if (!contact.rosterEntry())
 			continue;
-		if (contact.rosterEntry()->requiresSynchronization())
+		// add also synchronizing and detached contacts, roster service will take care
+		// of whether it should really do the merging
+		if (contact.rosterEntry()->state() != RosterEntryState::Synchronized)
 			result.append(RosterTask{RosterTaskType::Update, contact.id()});
 	}
 	return result;

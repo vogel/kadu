@@ -189,12 +189,6 @@ bool JabberRosterService::isIntrestedIn(const XMPP::RosterItem &item)
 	if (item.ask() == "subscribe")
 		return true;
 
-	if (!item.name().isEmpty())
-		return true;
-
-	if (!item.groups().isEmpty())
-		return true;
-
 	return false;
 }
 
@@ -222,15 +216,19 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	if (!contact || contact == account().accountContact())
 		return;
 
-	m_markedForDelete.remove(contact);
 	if (!canPerformRemoteUpdate(contact))
+	{
+		m_markedForDelete.remove(contact);
 		return;
+	}
 
 	if (!isIntrestedIn(item))
 	{
 		contact.rosterEntry()->setSynchronized();
 		return;
 	}
+	else
+		m_markedForDelete.remove(contact);
 
 	contact.rosterEntry()->setSynchronizingFromRemote();
 
@@ -300,8 +298,7 @@ void JabberRosterService::rosterTaskDeleted(QObject* object)
 
 void JabberRosterService::markContactsForDeletion()
 {
-	QVector<Contact> accountContacts = ContactManager::instance()->contacts(account());
-	foreach (const Contact &contact, accountContacts)
+	for (auto &&contact : contacts())
 	{
 		if (contact == account().accountContact())
 			continue;
