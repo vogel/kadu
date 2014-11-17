@@ -59,8 +59,7 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	Contact knownContact = ContactManager::instance()->byId(CurrentContact.contactAccount(), CurrentContact.id(), ActionReturnNull);
 	if (knownContact)
 		CurrentContact = knownContact;
-	else if (CurrentContact)
-		CurrentContact.rosterEntry()->setSynchronized();
+	else
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);
