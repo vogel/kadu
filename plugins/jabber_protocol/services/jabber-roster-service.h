@@ -47,6 +47,7 @@ class JabberRosterService : public RosterService
 
 	QPointer<Client> XmppClient;
 
+	QSet<Contact> m_markedForDelete;
 	owned_qptr<RosterServiceTasks> m_tasks;
 	QMap<JT_Roster *, Contact> ContactForTask;
 	JabberRosterState State;

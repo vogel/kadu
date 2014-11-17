@@ -29,8 +29,7 @@
 RosterEntry::RosterEntry(QObject *parent) :
 		QObject{parent},
 		m_state{RosterEntryState::Unknown},
-		m_detached{false},
-		m_remotelyDeleted{false}
+		m_detached{false}
 {
 }
 
@@ -95,19 +94,6 @@ void RosterEntry::setDetached(bool detached)
 bool RosterEntry::detached() const
 {
 	return m_detached;
-}
-
-void RosterEntry::setRemotelyDeleted(bool remotelyDeleted)
-{
-	if (m_remotelyDeleted == remotelyDeleted)
-		return;
-
-	m_remotelyDeleted = remotelyDeleted;
-}
-
-bool RosterEntry::remotelyDeleted() const
-{
-	return m_remotelyDeleted;
 }
 
 ChangeNotifier & RosterEntry::hasLocalChangesNotifier()

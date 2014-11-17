@@ -114,20 +114,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set new value of RemotelyDeleted property.
-	 * @param remotelyDeleted new value of RemotelyDeleted property
-	 */
-	void setRemotelyDeleted(bool remotelyDeleted);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get current value of RemotelyDeleted property.
-	 * @return current value of RemotelyDeleted property
-	 */
-	bool remotelyDeleted() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Get change notifier for this object.
 	 * @return change notifier of this object
 	 *
@@ -164,7 +150,6 @@ public:
 private:
 	RosterEntryState m_state;
 	bool m_detached;
-	bool m_remotelyDeleted;
 	ChangeNotifier m_hasLocalChangesNotifier;
 
 	/**
