@@ -181,8 +181,7 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 	}
 	else
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "ignoring userlist 100 reply as we already know that version\n");
-
+		markSynchronizingAsSynchronized();
 		getFinished(true);
 	}
 }
@@ -201,10 +200,7 @@ void GaduRosterService::handleEventUserlist100PutReply(struct gg_event *e)
 		if (accountDetails)
 		{
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
-
-			for (auto &&contact : m_exportedContacts)
-				contact.rosterEntry()->setSynchronized();
-
+			markSynchronizingAsSynchronized();
 			putFinished(true);
 			return;
 		}
@@ -243,6 +239,12 @@ void GaduRosterService::rosterChanged()
 	QMetaObject::invokeMethod(this, "stateMachineLocalDirty", Qt::QueuedConnection);
 }
 
+void GaduRosterService::markSynchronizingAsSynchronized()
+{
+	for (auto &&contact : m_synchronizingContacts)
+		contact.rosterEntry()->setSynchronized();
+}
+
 bool GaduRosterService::haveToAskForAddingContacts() const
 {
 	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
@@ -264,31 +266,37 @@ bool GaduRosterService::haveToAskForAddingContacts() const
 void GaduRosterService::importContactList()
 {
 	if (!m_connection || !m_connection.data()->hasSession())
+	{
+		emit getFinished(false);
 		return;
+	}
 
-	emit stateMachineGetStarted();
-
-	for (auto &&contact : contacts())
+	m_synchronizingContacts = contacts();
+	for (auto &&contact : m_synchronizingContacts)
 		contact.rosterEntry()->setSynchronizingFromRemote();
 
 	auto writableSessionToken = m_connection.data()->writableSessionToken();
 	int ret = gg_userlist100_request(writableSessionToken.rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 	if (-1 == ret)
-		getFinished(false);
+	{
+		markSynchronizingAsSynchronized();
+		emit getFinished(false);
+	}
 }
 
 void GaduRosterService::exportContactList()
 {
 	if (!m_connection || !m_connection.data()->hasSession())
+	{
+		putFinished(false);
 		return;
+	}
 
-	emit stateMachinePutStarted();
-
-	m_exportedContacts = contacts();
-	for (auto &&contact : m_exportedContacts)
+	m_synchronizingContacts = contacts();
+	for (auto &&contact : m_synchronizingContacts)
 		contact.rosterEntry()->setSynchronizingToRemote();
 
-	auto contacts = GaduListHelper::contactListToByteArray(m_exportedContacts);
+	auto contacts = GaduListHelper::contactListToByteArray(m_synchronizingContacts);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
@@ -296,6 +304,7 @@ void GaduRosterService::exportContactList()
 	if (!accountDetails)
 	{
 		putFinished(false);
+		markSynchronizingAsSynchronized();
 		return;
 	}
 
@@ -303,7 +312,10 @@ void GaduRosterService::exportContactList()
 	auto ret = gg_userlist100_request(writableSessionToken.rawSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
 	if (-1 == ret)
+	{
+		markSynchronizingAsSynchronized();
 		putFinished(false);
+	}
 }
 
 #include "moc_gadu-roster-service.cpp"

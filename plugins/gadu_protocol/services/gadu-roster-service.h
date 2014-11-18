@@ -49,11 +49,9 @@ public:
 
 signals:
 	// state machine signals
-	void stateMachinePutStarted();
 	void stateMachinePutFinished();
 	void stateMachinePutFailed();
 
-	void stateMachineGetStarted();
 	void stateMachineGetFinished();
 	void stateMachineGetFailed();
 
@@ -65,7 +63,7 @@ private:
 	QPointer<RosterNotifier> m_rosterNotifier;
 	QPointer<RosterReplacer> m_rosterReplacer;
 	GaduRosterStateMachine *m_stateMachine;
-	QVector<Contact> m_exportedContacts;
+	QVector<Contact> m_synchronizingContacts;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventUserlist100Version(struct gg_event *e);
@@ -77,6 +75,7 @@ private:
 	void getFinished(bool ok);
 
 	bool haveToAskForAddingContacts() const;
+	void markSynchronizingAsSynchronized();
 
 private slots:
 	void exportContactList();

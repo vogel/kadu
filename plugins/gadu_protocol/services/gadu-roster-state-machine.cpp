@@ -41,8 +41,8 @@ GaduRosterStateMachine::GaduRosterStateMachine(GaduRosterService *service, Proto
 	m_getState = new QState{m_workState};
 
 	m_offlineState->addTransition(protocol, SIGNAL(connected(Account)), m_idleState);
-	m_idleState->addTransition(service, SIGNAL(stateMachinePutStarted()), m_putState);
-	m_idleState->addTransition(service, SIGNAL(stateMachineGetStarted()), m_getState);
+	m_idleState->addTransition(this, SIGNAL(putRequested()), m_putState);
+	m_idleState->addTransition(this, SIGNAL(getRequested()), m_getState);
 	m_idleState->addTransition(protocol, SIGNAL(disconnected(Account)), m_offlineState);
 	m_putState->addTransition(service, SIGNAL(stateMachinePutFinished()), m_idleState);
 	m_putState->addTransition(service, SIGNAL(stateMachinePutFailed()), m_idleState);
@@ -59,7 +59,7 @@ GaduRosterStateMachine::GaduRosterStateMachine(GaduRosterService *service, Proto
 	m_localFailedState = new QState{m_localState};
 
 	m_localCleanState->addTransition(service, SIGNAL(stateMachineLocalDirty()), m_localDirtyState);
-	m_localDirtyState->addTransition(service, SIGNAL(stateMachinePutStarted()), m_localCleaningState);
+	m_localDirtyState->addTransition(this, SIGNAL(putRequested()), m_localCleaningState);
 	m_localCleaningState->addTransition(service, SIGNAL(stateMachineLocalDirty()), m_localCleaningDirtyState);
 	m_localCleaningState->addTransition(service, SIGNAL(stateMachinePutFinished()), m_localCleanState);
 	m_localCleaningState->addTransition(service, SIGNAL(stateMachinePutFailed()), m_localFailedState);
@@ -79,7 +79,7 @@ GaduRosterStateMachine::GaduRosterStateMachine(GaduRosterService *service, Proto
 	m_remoteFailedState = new QState{m_remoteState};
 
 	m_remoteCleanState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), m_remoteDirtyState);
-	m_remoteDirtyState->addTransition(service, SIGNAL(stateMachineGetStarted()), m_remoteCleaningState);
+	m_remoteDirtyState->addTransition(this, SIGNAL(getRequested()), m_remoteCleaningState);
 	m_remoteCleaningState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), m_remoteCleaningDirtyState);
 	m_remoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFinished()), m_remoteCleanState);
 	m_remoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFailed()), m_remoteFailedState);
@@ -162,9 +162,15 @@ void GaduRosterStateMachine::printConfiguration()
 void GaduRosterStateMachine::checkIfSynchronizationRequired()
 {
 	if (shouldPerformGet())
+	{
+		emit getRequested();
 		emit performGet();
+	}
 	else if (shouldPerformPut())
+	{
+		emit putRequested();
 		emit performPut();
+	}
 }
 
 bool GaduRosterStateMachine::shouldPerformPut() const

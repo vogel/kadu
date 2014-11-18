@@ -43,6 +43,9 @@ public:
 	bool isPerformingGet() const;
 
 signals:
+	void putRequested();
+	void getRequested();
+
 	void performPut();
 	void performGet();
 
