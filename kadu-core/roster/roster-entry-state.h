@@ -21,13 +21,12 @@
 #pragma once
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Roster
  * @{
  */
 
 /**
  * @enum RosterEntryState
- * @author Rafał 'Vogel' Malinowski
  * @short Description of state of roster entry.
  *
  * This enum describes state of roster entry that can be either synchronized, desynchronized or being synchronizing with remote entry.
@@ -43,7 +42,7 @@ enum class RosterEntryState
 	 */
 	Synchronized,
 	/**
-	 * Entries with this state have local changes and shoud be sent to remote server (if not detached).
+	 * Entries with this state have local changes and should be sent to remote server (if not detached).
 	 */
 	HasLocalChanges,
 	/**

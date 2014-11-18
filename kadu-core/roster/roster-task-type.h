@@ -21,7 +21,7 @@
 #pragma once
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Roster
  * @{
  */
 

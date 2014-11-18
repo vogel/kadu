@@ -27,7 +27,7 @@ class StoragePoint;
 class RosterTask;
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Roster
  * @{
  */
 
@@ -44,7 +44,14 @@ public:
 	 */
 	RosterTaskCollectionStorage(std::shared_ptr<StoragePoint> storage);
 
+	/**
+	 * @return List of tasks found in storage passed to constructor
+	 */
 	QVector<RosterTask> loadRosterTasks();
+
+	/**
+	 * @short Stores @p tasks in storage passed to constructor.
+	 */
 	void storeRosterTasks(const QVector<RosterTask> &tasks);
 
 private:

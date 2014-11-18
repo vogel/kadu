@@ -26,6 +26,24 @@
 class Account;
 class NotifyEvent;
 
+/**
+ * @addtogroup Roster
+ * @{
+ */
+
+/**
+ * @enum RosterNotifier
+ * @short Notifier for roster-based events.
+ *
+ * Provides five user events:
+ * * rosterNotifyEvent;
+ * * importSucceededNotifyEvent;
+ * * importFailedNotifyEvent;
+ * * exportSucceededNotifyEvent;
+ * * exportFailedNotifyEvent;
+ *
+ * First one is used as a base for rest.
+ */
 class KADUAPI RosterNotifier : public QObject
 {
 	Q_OBJECT
@@ -58,3 +76,7 @@ private:
 	void notify(const QString &topic, const Account &account, const QString &message);
 
 };
+
+/**
+ * @}
+ */

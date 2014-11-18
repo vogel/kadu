@@ -28,18 +28,17 @@
 enum class RosterEntryState;
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Roster
  * @{
  */
 
 /**
  * @enum RosterEntry
- * @author Rafał 'Vogel' Malinowski
  * @short Entry in local and remote roster.
  *
  * This class describes entry in local and remote roster and its synchronization state. It also has two flags. When Detached flag is true,
- * no synchronization of data is made between local and remote roster. When Deleted flag is true, the entry is assumed to be deleted from remote
- * roster.
+ * no synchronization of data is made between local and remote roster. However, deleting detached entries is reflected both locally
+ * and remotely.
  */
 class KADUAPI RosterEntry : public QObject
 {
@@ -48,7 +47,6 @@ class KADUAPI RosterEntry : public QObject
 
 public:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new RosterEntry instance.
 	 * @param parent QObject parent of new instance
 	 *
@@ -58,17 +56,18 @@ public:
 	virtual ~RosterEntry();
 
 	/**
-	 * @short Set state to RosterEntryState::Desynchronized if equal to RosterEntryState::Synchronizing
+	 * @short Fixup state when initializing roster.
 	 *
-	 * Call after initializing roster. Roster entry state set RosterEntryState::Synchronizing during roster
-	 * initialization means that this entry was not propely synchonized and must be synchronized again.
+	 * Call after initializing roster. Roster state can be invalid if protocol was disconnected during
+	 * roster operation. All detached entries are set to RosterEntryState::Synchronized. Entries
+	 * with state RosterEntryState::SynchronizingToRemote to RosterEntryState::HasLocalChanges. It forces
+	 * Roster code to synchronize to remote again.
+	 *
 	 * This method does not invoke changeNotifier() signals.
 	 */
 	void fixupInitialState();
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get current value of State property.
 	 * @return current value of State property
 	 */
 	RosterEntryState state() const;
@@ -83,7 +82,8 @@ public:
 	 * @return true if change was successfull
 	 *
 	 * Does nothing if state is SynchronizingToRemote or SynchronizingFromRemote. It means we can lost some local
-	 * changes in some scenerios. Not serious, should occur very rarely.
+	 * changes in some scenerios. Not very serious issue, should occur very rarely. Fix for that would be hard
+	 * and may be not worth it.
 	 *
 	 * If succeeds, emits hasLocalChangesNotifier().
 	 */
@@ -100,25 +100,23 @@ public:
 	void setSynchronizingFromRemote();
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set new value of Detached property.
 	 * @param detached new value of Detached property
+	 * @todo maybe a RosterEntryState::Detached should be added instead of separate field
+	 *
+	 * If new value of Detached is true, state is updated to RosterEntryState::Synchronized.
 	 */
 	void setDetached(bool detached);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get current value of Detached property.
 	 * @return current value of Detached property
 	 */
 	bool detached() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get change notifier for this object.
-	 * @return change notifier of this object
+	 * @return has local changes notifier of this object
+	 * @todo find out if bare signal would do here
 	 *
-	 * Each time a property of this object changes returned ChangeNotifier will emit changed() signal.
+	 * This change notifier is called when state is set to RosterEntryState::HasLocalChanges.
 	 */
 	ChangeNotifier & hasLocalChangesNotifier();
 
@@ -128,8 +126,6 @@ public:
 	bool isSynchronizing() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Check if this entry requires synchronization with server.
 	 * @return true if this entry requires synchronization with server
 	 *
 	 * This method returns true only if state is RosterEntryDesynchronized and this entry is not Detached.
@@ -137,8 +133,6 @@ public:
 	bool requiresSynchronization() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Check if this entry can be updated by remote roster.
 	 * @return true if this entry can be updated by remote roster
 	 *
 	 * Always return false for detached entries.
@@ -154,9 +148,10 @@ private:
 	ChangeNotifier m_hasLocalChangesNotifier;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Set new value of State property.
 	 * @param state new value of State property
+	 *
+	 * Emits signals from hasLocalChangesNotifier() if new state if RosterEntryState::HasLocalChanges and previous was different.
 	 */
 	void setState(RosterEntryState state);
 

@@ -23,6 +23,19 @@
 
 #include <injeqt/module.h>
 
+/**
+ * @addtogroup Roster
+ * @{
+ */
+
+/**
+ * @enum RosterModule
+ * @short Module with classes for Roster handling.
+ *
+ * Currently provides two classes:
+ * * RosterNotifier
+ * * RosterReplacer
+ */
 class KADUAPI RosterModule : public injeqt::module
 {
 
@@ -31,3 +44,7 @@ public:
 	virtual ~RosterModule() {}
 
 };
+
+/**
+ * @}
+ */

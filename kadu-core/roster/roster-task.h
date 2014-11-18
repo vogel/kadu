@@ -27,7 +27,7 @@
 enum class RosterTaskType;
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Roster
  * @{
  */
 

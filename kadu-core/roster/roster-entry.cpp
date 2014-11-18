@@ -92,6 +92,8 @@ void RosterEntry::setDetached(bool detached)
 		return;
 
 	m_detached = detached;
+	if (m_detached)
+		m_state = RosterEntryState::Synchronized;
 }
 
 bool RosterEntry::detached() const

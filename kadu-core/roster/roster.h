@@ -30,13 +30,12 @@
 class RosterService;
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Roster
  * @{
  */
 
 /**
  * @class Roster
- * @author Rafał 'Vogel' Malinowski
  * @short Generic interface to all RosterService objects
  *
  * This class allows adding, removing and updating contacts on remote roster. Adding contacts is done by addContact() method,
@@ -52,35 +51,26 @@ class KADUAPI Roster : public QObject
 
 public:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return singleton instance of Roster calss.
 	 * @return singleton instance of Roster calss
 	 */
 	static Roster * instance();
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return RosterService instance suitable to given contact.
-	 * @param contact contact to find RosterService for
-	 * @return RosterService instance suitable to given contact
+	 * @return RosterService instance suitable to given @p contact
 	 */
 	static RosterService * rosterService(const Contact &contact);
 
 public slots:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new contact to remote roster.
-	 * @param contact new contact to be added
-	 * 
+	 * @short Add new @p contact to remote roster.
+	 *
 	 * Roster state of newly added contact is set to RosterEntryDesynchronized so it will be uploaded to server
 	 * as soon as possible.
 	 */
 	void addContact(const Contact &contact) const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Remove contact from remote roster.
-	 * @param contact contact to be removed
+	 * @short Remove @p contact from remote roster.
 	 */
 	void removeContact(const Contact &contact) const;
 

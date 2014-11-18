@@ -50,21 +50,10 @@ class RosterServiceTasks;
  * This service allows adding, removing and updating contacts on remote roster. Every added contact is watched
  * for changes and updated automatically, until it is removed.
  *
- * If an action cannot be executed immediately it is stored as @link RosterTask @endlink object for later execution.
- * List of tasks is available by calling tasks() getter and can be update by addTasks(). This allows for storing
- * and restoring this list between program invocations. Only one @link RosterTask @endlink for each contact id can be on
- * the list at a time. This service is responsible of choosing which task should be left on the list and which one should
- * be removed in case when second one is added for given id.
+ * Implementation depends on protocol.
  *
- * When receiving updates from the remote roster, list of tasks is checked for id of contact from remote roster. Requests for
- * contact removal or update from remote roster will be ignored if an update or addition task is on the task list. This service
- * assumes that its changes are more important that these of remote roster. Update requests are ignored if Detached flag
- * of @link RosterEntry @endlink of given contact is set to true.
- *
- * At the beginning of roster initialization all contacts of service's account that do not have any tasks are marked as deleted by
- * remote roster. During initialization deletion mark is removed from contacts that have data on remote roster. After
- * initialization the rest of contacts is removed from local roster. In this case Detached flag of @link RosterEntry @endlink
- * does not count as it is only used for detaching from data synchronization.
+ * For example, XMPP uses tasks based roster. For XMPP tasks() return valid instance of RosterServiceTasks.
+ * For GaduGadu it returns nullptr, as GaduGadu uses batch mode to update roster.
  */
 class KADUAPI RosterService : public ProtocolService
 {
@@ -87,16 +76,18 @@ public:
 	 * to split them in tasks. In Gadu if we have the same version of contact list as server then it can
 	 * be safely updated in one go. If not - server version is merged with local one. That means local
 	 * deletion may be reverted. So GaduGadu return null for this method.
-	 * 
+	 *
 	 * XMPP fully supports roster task.
 	 */
 	virtual RosterServiceTasks * tasks() const;
 
+	/**
+	 * @return List of contacts on local roster. These contacts are watched for changes.
+	 */
 	const QVector<Contact> & contacts() const;
 
 public slots:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Add new contact to roster.
 	 * @param contact new contact
 	 *
@@ -106,7 +97,6 @@ public slots:
 	void addContact(const Contact &contact);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Remove contact from roster.
 	 * @param contact contact to remove
 	 *
@@ -119,7 +109,7 @@ signals:
 	/**
 	 * @short Signal emitted when new contact is added to roster
 	 * @param contact added contact
-	 * 
+	 *
 	 * Signal is not emitted for contacts added as initial in constructor.
 	 * Signal is emitted for detached and attached contacts.
 	 */
@@ -136,7 +126,7 @@ signals:
 	/**
 	 * @short Signal emitted when contact is updated on roster
 	 * @param contact updated contact
-	 * 
+	 *
 	 * Signal is emitted for detached and attached contacts.
 	 */
 	void contactUpdated(Contact contact);
@@ -144,7 +134,7 @@ signals:
 	/**
 	 * @short Signal emitted when contact is updated locally
 	 * @param contact updated contact
-	 * 
+	 *
 	 * Signal is emitted for detached and attached contacts. Is not emitted when changes
 	 * comes from synchronization from remote roster.
 	 */
@@ -153,7 +143,7 @@ signals:
 protected:
 	/**
 	 * @short Resets all synchronizing contacts to desynchronized.
-	 * 
+	 *
 	 * Should be used just after connection has been made. In case when synchronization operation was interrupted
 	 * and roster entry can be lest in synchronizing state. This method fixes that by resetting it to desynchronized.
 	 */
@@ -163,14 +153,12 @@ private:
 	QVector<Contact> m_contacts;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Connects to data emitted by given contact when its roster data changes.
 	 * @param contact contact to connect to
 	 */
 	void connectContact(const Contact &contact);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Disconnects data emitted by given contact when its roster data changes.
 	 * @param contact contact to disconnect from
 	 */
@@ -178,8 +166,6 @@ private:
 
 private slots:
 	/**
-	 * @enum RosterState
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Slot called when data of contact or contact's owner buddy changed.
 	 *
 	 * This slot can only by called for contacts that were previously added to roster using addContact() methods
@@ -188,8 +174,6 @@ private slots:
 	void contactUpdated();
 
 	/**
-	 * @enum RosterState
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Slot called when data of contact or contact's owner buddy changed locally.
 	 *
 	 * This slot can only by called for contacts that were previously added to roster using addContact() methods
