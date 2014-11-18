@@ -76,7 +76,10 @@ void GaduRosterService::prepareRoster()
 	for (auto &&contact : contacts())
 		if (contact.rosterEntry())
 		{
-			contact.rosterEntry()->fixupInitialState();
+			if (contact.rosterEntry()->state() == RosterEntryState::Detached) // GG does not support detached contacts
+				contact.rosterEntry()->setHasLocalChanges();
+			else
+				contact.rosterEntry()->fixupInitialState();
 			requiresSynchronization |= contact.rosterEntry()->requiresSynchronization();
 		}
 	if (requiresSynchronization)

@@ -241,11 +241,11 @@ void BuddyDataWindow::updateBuddy()
 
 	ChangeNotifierLock lock(MyBuddy.changeNotifier());
 
-	applyBuddyConfigurationWidgets();
-
-	ContactTab->save();
+	ContactTab->save(); // first update contacts
 	GroupsTab->save();
 	OptionsTab->save();
+
+	applyBuddyConfigurationWidgets();
 }
 
 void BuddyDataWindow::updateBuddyAndClose()

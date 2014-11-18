@@ -109,11 +109,6 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 	Priority = loadValue<int>("Priority", -1);
 
-	if (loadValue<bool>("Dirty", true))  // ROSTER: not sure
-		Entry->setHasLocalChanges();
-	else
-		Entry->setSynchronized();
-
 	// It's an explicit hack for update path from 0.10.1-0.11.x to 0.12+. 0.10/0.11 didn't
 	// have Detached property. But they did have an explicit hack for totally ignoring
 	// what Facebook says about groups, thus allowing users to place their Facebook contacts
@@ -121,10 +116,16 @@ void ContactShared::load()
 	// by useless a Facebook-provided group until we try to upload something to roster
 	// for the first time, we fail and only then we set Detached to true, when group
 	// information is already lost.
-	if (!hasValue("Detached"))
-		Entry->setDetached(Id.endsWith(QLatin1String("@chat.facebook.com")));
+	bool detached = hasValue("Detached")
+		? loadValue<bool>("Detached", false)
+		: Id.endsWith(QLatin1String("@chat.facebook.com"));
+	bool dirty = loadValue<bool>("Dirty", true);
+	if (detached)
+		Entry->setDetached();
+	else if (dirty)
+		Entry->setHasLocalChanges();
 	else
-		Entry->setDetached(loadValue<bool>("Detached", false));
+		Entry->setSynchronized();
 
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 	doSetOwnerBuddy(BuddyManager::instance()->byUuid(loadValue<QString>("Buddy")));
@@ -162,7 +163,7 @@ void ContactShared::store()
 
 	storeValue("Dirty", RosterEntryState::Synchronized != Entry->state());
 	// Detached property needs to be always stored, see the load() method.
-	storeValue("Detached", Entry->detached());
+	storeValue("Detached", RosterEntryState::Detached == Entry->state());
 
 	storeValue("Account", ContactAccount->uuid().toString());
 	storeValue("Buddy", !isAnonymous()

@@ -120,9 +120,6 @@ void JabberRosterService::setState(JabberRosterState state)
 
 void JabberRosterService::contactAddedSlot(Contact contact)
 {
-	if (contact.rosterEntry()->detached())
-		return;
-
 	m_tasks->addTask(RosterTask{RosterTaskType::Add, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
@@ -130,9 +127,6 @@ void JabberRosterService::contactAddedSlot(Contact contact)
 
 void JabberRosterService::contactRemovedSlot(Contact contact)
 {
-	if (contact.rosterEntry()->detached())
-		return;
-
 	m_tasks->addTask(RosterTask{RosterTaskType::Delete, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
@@ -140,9 +134,6 @@ void JabberRosterService::contactRemovedSlot(Contact contact)
 
 void JabberRosterService::contactUpdatedSlot(Contact contact)
 {
-	if (!contact.rosterEntry()->requiresSynchronization())
-		return;
-
 	m_tasks->addTask(RosterTask{RosterTaskType::Update, contact.id()});
 	if (canPerformLocalUpdate())
 		executeAllTasks();
@@ -286,9 +277,9 @@ void JabberRosterService::rosterTaskFinished()
 
 	XMPP::Stanza::Error error;
 	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
-		contact.rosterEntry()->setDetached(true);
-
-	contact.rosterEntry()->setHasLocalChanges();
+		contact.rosterEntry()->setDetached();
+	else
+		contact.rosterEntry()->setHasLocalChanges();
 }
 
 void JabberRosterService::rosterTaskDeleted(QObject* object)
@@ -386,19 +377,19 @@ void JabberRosterService::executeTask(const RosterTask& task)
 {
 	Q_ASSERT(JabberRosterState::Initialized == state());
 
-	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
+	auto contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
+	auto taskType = contact ? task.type() : RosterTaskType::Delete;
 	if (contact)
 	{
-		if (!contact.rosterEntry()->requiresSynchronization())
+		if ((taskType == RosterTaskType::Update) && !contact.rosterEntry()->requiresSynchronization())
 			return;
 		contact.rosterEntry()->setSynchronizingToRemote();
 	}
 
-	XMPP::JT_Roster *rosterTask = createContactTask(contact);
+	auto rosterTask = createContactTask(contact);
 	if (!rosterTask)
 		return;
 
-	RosterTaskType taskType = contact ? task.type() : RosterTaskType::Delete;
 	switch (taskType)
 	{
 		case RosterTaskType::Add:

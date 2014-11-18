@@ -52,7 +52,12 @@ enum class RosterEntryState
 	/**
 	 * Entries with this state are being synchronized from remote server.
 	 */
-	SynchronizingFromRemote
+	SynchronizingFromRemote,
+	/**
+	 * Entries with this state are not synchronized at all with remote server. However, when one of remote or local rosters removes them
+	 * then on second roster it will be removed as well.
+	 */
+	Detached
 };
 
 /**

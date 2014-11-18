@@ -64,8 +64,8 @@ public slots:
 	/**
 	 * @short Add new @p contact to remote roster.
 	 *
-	 * Roster state of newly added contact is set to RosterEntryDesynchronized so it will be uploaded to server
-	 * as soon as possible.
+	 * Roster state of newly added contact is set to HasLocalChanges (if is not already Detached)
+	 * so it will be uploaded to server as soon as possible.
 	 */
 	void addContact(const Contact &contact) const;
 

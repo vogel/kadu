@@ -50,7 +50,7 @@ public:
 	 * @short Create new RosterEntry instance.
 	 * @param parent QObject parent of new instance
 	 *
-	 * New instance has Detached property set to false and RosterEntryUnkown synchronization state.
+	 * New instance has RosterEntryUnkown synchronization state.
 	 */
 	explicit RosterEntry(QObject *parent = nullptr);
 	virtual ~RosterEntry();
@@ -59,9 +59,8 @@ public:
 	 * @short Fixup state when initializing roster.
 	 *
 	 * Call after initializing roster. Roster state can be invalid if protocol was disconnected during
-	 * roster operation. All detached entries are set to RosterEntryState::Synchronized. Entries
-	 * with state RosterEntryState::SynchronizingToRemote to RosterEntryState::HasLocalChanges. It forces
-	 * Roster code to synchronize to remote again.
+	 * roster operation. Entries with state RosterEntryState::SynchronizingToRemote to
+	 * RosterEntryState::HasLocalChanges. It forces Roster code to synchronize to remote again.
 	 *
 	 * This method does not invoke changeNotifier() signals.
 	 */
@@ -81,9 +80,9 @@ public:
 	 * @short Set state to HasLocalChanges
 	 * @return true if change was successfull
 	 *
-	 * Does nothing if state is SynchronizingToRemote or SynchronizingFromRemote. It means we can lost some local
-	 * changes in some scenerios. Not very serious issue, should occur very rarely. Fix for that would be hard
-	 * and may be not worth it.
+	 * Does nothing if state is SynchronizingToRemote or SynchronizingFromRemote or Detached. It means we
+	 * can lost some local changes in some scenerios. Not very serious issue, should occur very rarely.
+	 * Fix for that would be hard and may be not worth it.
 	 *
 	 * If succeeds, emits hasLocalChangesNotifier().
 	 */
@@ -100,17 +99,9 @@ public:
 	void setSynchronizingFromRemote();
 
 	/**
-	 * @param detached new value of Detached property
-	 * @todo maybe a RosterEntryState::Detached should be added instead of separate field
-	 *
-	 * If new value of Detached is true, state is updated to RosterEntryState::Synchronized.
+	 * @short Set state to Detached.
 	 */
-	void setDetached(bool detached);
-
-	/**
-	 * @return current value of Detached property
-	 */
-	bool detached() const;
+	void setDetached();
 
 	/**
 	 * @return has local changes notifier of this object
@@ -128,7 +119,7 @@ public:
 	/**
 	 * @return true if this entry requires synchronization with server
 	 *
-	 * This method returns true only if state is RosterEntryDesynchronized and this entry is not Detached.
+	 * This method returns true only if state is HasLocalChanges.
 	 */
 	bool requiresSynchronization() const;
 
@@ -144,7 +135,6 @@ public:
 
 private:
 	RosterEntryState m_state;
-	bool m_detached;
 	ChangeNotifier m_hasLocalChangesNotifier;
 
 	/**

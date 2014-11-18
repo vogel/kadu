@@ -151,10 +151,10 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 
 	if (contact.contactAccount() == item->itemAccount() && contact.id() == item->id())
 	{
-		if (!item->rosterDetached() && contact.rosterEntry()->detached())
+		if (item->rosterDetached())
+			contact.rosterEntry()->setDetached();
+		else
 			contact.rosterEntry()->setSynchronized(); // set as synchronized so next remote update fixes our data
-
-		contact.rosterEntry()->setDetached(item->rosterDetached());
 		return;
 	}
 
@@ -166,7 +166,10 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 	Roster::instance()->removeContact(contact);
 	contact.setContactAccount(item->itemAccount());
 	contact.setId(item->id());
-	contact.rosterEntry()->setDetached(item->rosterDetached());
+	if (item->rosterDetached())
+		contact.rosterEntry()->setDetached();
+	else
+		contact.rosterEntry()->setSynchronized();
 	Roster::instance()->addContact(contact);
 	sendAuthorization(contact);
 }
@@ -176,7 +179,10 @@ void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(ModelBuddy);
 	contact.setPriority(item->itemContactPriority());
-	contact.rosterEntry()->setDetached(item->rosterDetached());
+	if (item->rosterDetached())
+		contact.rosterEntry()->setDetached();
+	else
+		contact.rosterEntry()->setSynchronized();
 
 	Roster::instance()->addContact(contact);
 	sendAuthorization(contact);

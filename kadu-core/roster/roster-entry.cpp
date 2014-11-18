@@ -28,8 +28,7 @@
 
 RosterEntry::RosterEntry(QObject *parent) :
 		QObject{parent},
-		m_state{RosterEntryState::Unknown},
-		m_detached{false}
+		m_state{RosterEntryState::Unknown}
 {
 }
 
@@ -48,6 +47,8 @@ bool RosterEntry::setHasLocalChanges()
 		return false;
 	if (m_state == RosterEntryState::SynchronizingFromRemote)
 		return false;
+	if (m_state == RosterEntryState::Detached)
+		return false;
 
 	setState(RosterEntryState::HasLocalChanges);
 	return true;
@@ -63,6 +64,11 @@ void RosterEntry::setSynchronizingFromRemote()
 	setState(RosterEntryState::SynchronizingFromRemote);
 }
 
+void RosterEntry::setDetached()
+{
+	setState(RosterEntryState::Detached);
+}
+
 void RosterEntry::setState(RosterEntryState state)
 {
 	if (m_state == state)
@@ -75,30 +81,13 @@ void RosterEntry::setState(RosterEntryState state)
 
 void RosterEntry::fixupInitialState()
 {
-	if (m_detached)
-		m_state = RosterEntryState::Synchronized;
-	else if (m_state == RosterEntryState::SynchronizingToRemote)
+	if (m_state == RosterEntryState::SynchronizingToRemote)
 		m_state = RosterEntryState::HasLocalChanges;
 }
 
 RosterEntryState RosterEntry::state() const
 {
 	return m_state;
-}
-
-void RosterEntry::setDetached(bool detached)
-{
-	if (m_detached == detached)
-		return;
-
-	m_detached = detached;
-	if (m_detached)
-		m_state = RosterEntryState::Synchronized;
-}
-
-bool RosterEntry::detached() const
-{
-	return m_detached;
 }
 
 ChangeNotifier & RosterEntry::hasLocalChangesNotifier()
@@ -108,17 +97,27 @@ ChangeNotifier & RosterEntry::hasLocalChangesNotifier()
 
 bool RosterEntry::isSynchronizing() const
 {
-	return RosterEntryState::SynchronizingFromRemote == m_state || RosterEntryState::SynchronizingToRemote == m_state;
+	if (m_state == RosterEntryState::SynchronizingFromRemote)
+		return true;
+	if (m_state == RosterEntryState::SynchronizingToRemote)
+		return true;
+	return false;
 }
 
 bool RosterEntry::requiresSynchronization() const
 {
-	return !m_detached && RosterEntryState::HasLocalChanges == m_state;
+	if (m_state == RosterEntryState::HasLocalChanges)
+		return true;
+	return false;
 }
 
 bool RosterEntry::canAcceptRemoteUpdate() const
 {
-	return !m_detached && RosterEntryState::HasLocalChanges != m_state && !isSynchronizing();
+	if (m_state == RosterEntryState::Synchronized)
+		return true;
+	if (m_state == RosterEntryState::Unknown)
+		return true;
+	return false;
 }
 
 #include "moc_roster-entry.cpp"

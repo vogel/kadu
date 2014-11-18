@@ -169,6 +169,8 @@ void BuddyGeneralConfigurationWidget::updateStateNotifier()
 
 void BuddyGeneralConfigurationWidget::save()
 {
+	ContactsTable->save(); // first update contacts
+
 	MyBuddy.setDisplay(DisplayEdit->text());
 	MyBuddy.setHomePhone(PhoneEdit->text());
 	MyBuddy.setMobile(MobileEdit->text());
@@ -181,8 +183,6 @@ void BuddyGeneralConfigurationWidget::save()
 		removeBuddyAvatar();
 	else
 		setBuddyAvatar(avatar);
-
-	ContactsTable->save();
 }
 
 void BuddyGeneralConfigurationWidget::removeBuddyAvatar()
