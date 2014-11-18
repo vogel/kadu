@@ -42,14 +42,15 @@ void RosterEntry::setSynchronized()
 	setState(RosterEntryState::Synchronized);
 }
 
-void RosterEntry::setHasLocalChanges()
+bool RosterEntry::setHasLocalChanges()
 {
 	if (m_state == RosterEntryState::SynchronizingToRemote)
-		return;
+		return false;
 	if (m_state == RosterEntryState::SynchronizingFromRemote)
-		return;
+		return false;
 
 	setState(RosterEntryState::HasLocalChanges);
+	return true;
 }
 
 void RosterEntry::setSynchronizingToRemote()

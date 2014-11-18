@@ -80,13 +80,14 @@ public:
 
 	/**
 	 * @short Set state to HasLocalChanges
-	 * 
+	 * @return true if change was successfull
+	 *
 	 * Does nothing if state is SynchronizingToRemote or SynchronizingFromRemote. It means we can lost some local
 	 * changes in some scenerios. Not serious, should occur very rarely.
-	 * 
+	 *
 	 * If succeeds, emits hasLocalChangesNotifier().
 	 */
-	void setHasLocalChanges();
+	bool setHasLocalChanges();
 
 	/**
 	 * @short Set state to SynchronizingToRemote.
