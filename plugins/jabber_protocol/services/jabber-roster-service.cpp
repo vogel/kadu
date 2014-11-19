@@ -271,7 +271,9 @@ void JabberRosterService::rosterTaskFinished()
 
 	if (rosterTask->success())
 	{
-		contact.rosterEntry()->setSynchronized();
+		// we dont want marking just-added detached contact as synchronized
+		if (contact.rosterEntry()->state() != RosterEntryState::Detached)
+			contact.rosterEntry()->setSynchronized();
 		return;
 	}
 
@@ -383,7 +385,9 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	{
 		if ((taskType == RosterTaskType::Update) && !contact.rosterEntry()->requiresSynchronization())
 			return;
-		contact.rosterEntry()->setSynchronizingToRemote();
+		// we don't want marking just-added detached contacts as synchronizing
+		if (contact.rosterEntry()->state() != RosterEntryState::Detached)
+			contact.rosterEntry()->setSynchronizingToRemote();
 	}
 
 	auto rosterTask = createContactTask(contact);
