@@ -100,12 +100,8 @@ set (CONFIGURATION_FILES
 )
 
 pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
-pkg_check_modules (INJEQT REQUIRED injeqt)
 
-include_directories (${INJEQT_INCLUDEDIR})
-link_directories (${INJEQT_LIBRARY_DIRS})
-
-set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt ${INJEQT_LIBRARIES})
+set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt)
 
 kadu_plugin (encryption_otr
 	PLUGIN_SOURCES ${SOURCES}

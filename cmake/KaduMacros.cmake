@@ -26,6 +26,11 @@ find_package (Qt5Core 5.2 REQUIRED)
 find_package (Qt5LinguistTools REQUIRED)
 find_package (Qt5X11Extras REQUIRED)
 
+include (FindPkgConfig)
+pkg_check_modules (INJEQT REQUIRED injeqt)
+include_directories (${INJEQT_INCLUDEDIR})
+link_directories (${INJEQT_LIBRARY_DIRS})
+
 macro (kadu_numeric_version _version _result_variable)
 	# Remove non-digit suffixes like "-git".
 	string (REGEX REPLACE "-[^0-9].*" "" ${_result_variable} ${_version})
@@ -182,6 +187,8 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 	if (KADU_PLUGIN_ADDITIONAL_QT_MODULES)
 		qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_ADDITIONAL_QT_MODULES})
 	endif ()
+
+	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE ${INJEQT_LIBRARIES})
 
 	foreach (_plugin_dependency ${KADU_PLUGIN_DEPENDENCIES})
 		include_directories (${KADU_INCLUDE_DIR}/plugins/${_plugin_dependency})
