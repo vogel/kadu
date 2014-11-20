@@ -79,15 +79,9 @@ class MessageHtmlRendererService;
 class MessageRenderInfoFactory;
 class MessageTransformerService;
 class NotificationService;
-class PluginActivationErrorHandler;
 class PluginActivationService;
 class PluginConflictResolver;
-class PluginDependencyGraphBuilder;
 class PluginDependencyHandler;
-class PluginManager;
-class PluginMetadataFinder;
-class PluginMetadataProvider;
-class PluginMetadataReader;
 class PluginStateManager;
 class PluginStateService;
 class RawMessageTransformerService;
@@ -140,17 +134,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWindowManager *CurrentChatWindowManager;
 	ChatWindowStorage *CurrentChatWindowStorage;
 	ChatWindowRepository *CurrentChatWindowRepository;
-	StoragePointFactory *CurrentStoragePointFactory;
-	PluginActivationService *CurrentPluginActivationService;
-	PluginActivationErrorHandler *CurrentPluginActivationErrorHandler;
-	PluginConflictResolver *CurrentPluginConflictResolver;
-	PluginDependencyGraphBuilder *CurrentPluginDependencyGraphBuilder;
-	PluginDependencyHandler *CurrentPluginDependencyHandler;
-	PluginMetadataFinder *CurrentPluginMetadataFinder;
-	PluginMetadataReader *CurrentPluginMetadataReader;
-	PluginStateManager *CurrentPluginStateManager;
-	PluginStateService *CurrentPluginStateService;
-	PluginManager *CurrentPluginManager;
+
 	owned_qptr<ConfiguredChatStyleRendererFactoryProvider> CurrentChatStyleRendererFactoryProvider;
 	owned_qptr<WebkitMessagesViewDisplayFactory> CurrentWebkitMessagesViewDisplayFactory;
 	owned_qptr<WebkitMessagesViewFactory> CurrentWebkitMessagesViewFactory;
@@ -234,16 +218,13 @@ public:
 	ChatWindowStorage * chatWindowStorage() const;
 	ChatWindowRepository * chatWindowRepository() const;
 	StoragePointFactory * storagePointFactory() const;
-	PluginActivationErrorHandler * pluginActivationErrorHandler() const;
+
 	PluginActivationService * pluginActivationService() const;
 	PluginConflictResolver * pluginConflictResolver() const;
-	PluginDependencyGraphBuilder * pluginDependencyGraphBuilder() const;
 	PluginDependencyHandler * pluginDependencyHandler() const;
-	PluginMetadataProvider * pluginMetadataProvider() const;
-	PluginMetadataReader * pluginMetadataReader() const;
-	PluginManager * pluginManager() const;
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
+
 	ChatStyleRendererFactoryProvider * chatStyleRendererFactoryProvider() const;
 	ConfiguredChatStyleRendererFactoryProvider * configuredChatStyleRendererFactoryProvider() const;
 	WebkitMessagesViewDisplayFactory * webkitMessagesViewDisplayFactory() const;

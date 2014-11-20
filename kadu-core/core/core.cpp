@@ -201,24 +201,13 @@ Core::Core(injeqt::injector &injector) :
 		CurrentChatWindowManager{nullptr},
 		CurrentChatWindowStorage{nullptr},
 		CurrentChatWindowRepository{nullptr},
-		CurrentStoragePointFactory{nullptr},
-		CurrentPluginActivationService{nullptr},
-		CurrentPluginActivationErrorHandler{nullptr},
-		CurrentPluginConflictResolver{nullptr},
-		CurrentPluginDependencyGraphBuilder{nullptr},
-		CurrentPluginDependencyHandler{nullptr},
-		CurrentPluginMetadataFinder{nullptr},
-		CurrentPluginMetadataReader{nullptr},
-		CurrentPluginStateManager{nullptr},
-		CurrentPluginStateService{nullptr},
-		CurrentPluginManager{nullptr},
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true)
 {
 	// must be created first
-	CurrentStoragePointFactory = new StoragePointFactory(this);
-	CurrentStoragePointFactory->setConfigurationFile(Application::instance()->configuration()->api());
+	// TODO: should be maybe created by factory factory?
+	m_injector.get<StoragePointFactory>()->setConfigurationFile(Application::instance()->configuration()->api());
 	Instance = this; // TODO: fix this hack
 
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
@@ -240,7 +229,8 @@ Core::~Core()
 {
 	IsClosing = true;
 
-	CurrentPluginStateManager->storePluginStates();
+	m_injector.get<PluginStateManager>()->storePluginStates();
+	// CurrentPluginStateManager->storePluginStates();
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
@@ -251,7 +241,8 @@ Core::~Core()
 	ConfigurationManager::instance()->flush();
 	Application::instance()->backupConfiguration();
 
-	CurrentPluginManager->deactivatePlugins();
+	m_injector.get<PluginManager>()->deactivatePlugins();
+	// CurrentPluginManager->deactivatePlugins();
 
 	stopServices();
 
@@ -503,8 +494,8 @@ void Core::init()
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	{
-		auto changeNotifierLock = ChangeNotifierLock{CurrentPluginStateService->changeNotifier()};
-		CurrentPluginManager->activateProtocolPlugins();
+		auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
+		m_injector.get<PluginManager>()->activateProtocolPlugins();
 	}
 
 	Myself.setAnonymous(false);
@@ -689,7 +680,7 @@ void Core::runServices()
 
 	CurrentChatWindowStorage = new ChatWindowStorage(this);
 	CurrentChatWindowStorage->setChatManager(ChatManager::instance());
-	CurrentChatWindowStorage->setStoragePointFactory(CurrentStoragePointFactory);
+	CurrentChatWindowStorage->setStoragePointFactory(m_injector.get<StoragePointFactory>());
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
 
@@ -719,44 +710,9 @@ void Core::runServices()
 	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
 	CurrentMessageRenderInfoFactory->setChatStyleManager(ChatStyleManager::instance());
 
-	CurrentPluginActivationErrorHandler = new PluginActivationErrorHandler{this};
-	CurrentPluginActivationService = new PluginActivationService(this);
-
-	CurrentPluginMetadataFinder = new PluginMetadataFinder(this);
-	CurrentPluginMetadataReader = new PluginMetadataReader(this);
-	CurrentPluginStateManager = new PluginStateManager(this);
-	CurrentPluginStateService = new PluginStateService(this);
-
-	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
-
-	CurrentPluginMetadataFinder->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
-	CurrentPluginMetadataFinder->setPluginMetadataReader(CurrentPluginMetadataReader);
-
-	CurrentPluginDependencyHandler = new PluginDependencyHandler(this);
-	CurrentPluginDependencyHandler->setPluginDependencyGraphBuilder(CurrentPluginDependencyGraphBuilder);
-	CurrentPluginDependencyHandler->setPluginMetadataProvider(CurrentPluginMetadataFinder);
-
-	CurrentPluginConflictResolver = new PluginConflictResolver{this};
-	CurrentPluginConflictResolver->setPluginDependencyHandler(CurrentPluginDependencyHandler);
-
-	CurrentPluginActivationService->setPluginActivationErrorHandler(CurrentPluginActivationErrorHandler);
-	CurrentPluginActivationService->setPluginDependencyHandler(CurrentPluginDependencyHandler);
-	CurrentPluginActivationService->setPluginStateService(CurrentPluginStateService);
-
-	CurrentPluginManager = new PluginManager(this);
-	CurrentPluginManager->setPluginActivationService(CurrentPluginActivationService);
-	CurrentPluginManager->setPluginDependencyHandler(CurrentPluginDependencyHandler);
-	CurrentPluginManager->setPluginStateService(CurrentPluginStateService);
-
-	CurrentPluginActivationErrorHandler->setPluginActivationService(CurrentPluginActivationService);
-	CurrentPluginActivationErrorHandler->setPluginStateService(CurrentPluginStateService);
-
-	CurrentPluginStateManager->setPluginDependencyHandler(CurrentPluginDependencyHandler);
-	CurrentPluginStateManager->setPluginStateService(CurrentPluginStateService);
-	CurrentPluginStateManager->setStoragePointFactory(CurrentStoragePointFactory);
-
-	CurrentPluginDependencyHandler->initialize();
-	CurrentPluginStateManager->loadPluginStates();
+	m_injector.get<PluginMetadataFinder>()->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
+	m_injector.get<PluginDependencyHandler>()->initialize();
+	m_injector.get<PluginStateManager>()->loadPluginStates();
 
 	CurrentChatStyleRendererFactoryProvider = make_owned<ConfiguredChatStyleRendererFactoryProvider>(this);
 
@@ -800,9 +756,9 @@ void Core::stopServices()
 
 void Core::activatePlugins()
 {
-	auto changeNotifierLock = ChangeNotifierLock{CurrentPluginStateService->changeNotifier()};
-	CurrentPluginManager->activatePlugins();
-	CurrentPluginManager->activateReplacementPlugins();
+	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
+	m_injector.get<PluginManager>()->activatePlugins();
+	m_injector.get<PluginManager>()->activateReplacementPlugins();
 }
 
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
@@ -952,57 +908,32 @@ ChatWindowRepository * Core::chatWindowRepository() const
 
 StoragePointFactory * Core::storagePointFactory() const
 {
-	return CurrentStoragePointFactory;
-}
-
-PluginActivationErrorHandler * Core::pluginActivationErrorHandler() const
-{
-	return CurrentPluginActivationErrorHandler;
+	return m_injector.get<StoragePointFactory>();
 }
 
 PluginActivationService * Core::pluginActivationService() const
 {
-	return CurrentPluginActivationService;
+	return m_injector.get<PluginActivationService>();
 }
 
 PluginConflictResolver * Core::pluginConflictResolver() const
 {
-	return CurrentPluginConflictResolver;
-}
-
-PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
-{
-	return CurrentPluginDependencyGraphBuilder;
+	return m_injector.get<PluginConflictResolver>();
 }
 
 PluginDependencyHandler * Core::pluginDependencyHandler() const
 {
-	return CurrentPluginDependencyHandler;
-}
-
-PluginMetadataProvider * Core::pluginMetadataProvider() const
-{
-	return CurrentPluginMetadataFinder;
-}
-
-PluginMetadataReader * Core::pluginMetadataReader() const
-{
-	return CurrentPluginMetadataReader;
+	return m_injector.get<PluginDependencyHandler>();
 }
 
 PluginStateManager * Core::pluginStateManager() const
 {
-	return CurrentPluginStateManager;
+	return m_injector.get<PluginStateManager>();
 }
 
 PluginStateService * Core::pluginStateService() const
 {
-	return CurrentPluginStateService;
-}
-
-PluginManager * Core::pluginManager() const
-{
-	return CurrentPluginManager;
+	return m_injector.get<PluginStateService>();
 }
 
 ChatStyleRendererFactoryProvider * Core::chatStyleRendererFactoryProvider() const

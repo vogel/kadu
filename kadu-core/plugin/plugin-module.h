@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,25 +21,26 @@
 
 #include "exports.h"
 
-#include <QtCore/QObject>
-#include <memory>
+#include <injeqt/module.h>
 
-class StoragePoint;
-class ConfigurationApi;
+/**
+ * @addtogroup Plugin
+ * @{
+ */
 
-class KADUAPI StoragePointFactory : public QObject
+/**
+ * @enum Plugin
+ * @short Module with classes for Plugin handling.
+ */
+class KADUAPI PluginModule : public injeqt::module
 {
-	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit StoragePointFactory(QObject *parent = 0);
-	virtual ~StoragePointFactory();
-
-	void setConfigurationFile(ConfigurationApi *configurationFile);
-
-	std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0);
-
-private:
-	ConfigurationApi *m_configurationFile;
+	PluginModule();
+	virtual ~PluginModule() {}
 
 };
+
+/**
+ * @}
+ */

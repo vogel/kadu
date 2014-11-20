@@ -68,6 +68,7 @@
 #include "os/qtsingleapplication/qtlocalpeer.h"
 #include "os/win/wsa-exception.h"
 #include "os/win/wsa-handler.h"
+#include "plugin/plugin-module.h"
 #include "protocols/protocols-manager.h"
 #include "roster/roster-module.h"
 #include "debug.h"
@@ -211,6 +212,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<ChatWidgetModule>());
 	modules.emplace_back(make_unique<CoreModule>(std::move(profileDirectory)));
 	modules.emplace_back(make_unique<ConfigurationModule>());
+	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());
 
 	auto injector = injeqt::injector{std::move(modules)};

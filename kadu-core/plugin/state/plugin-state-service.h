@@ -51,7 +51,7 @@ class KADUAPI PluginStateService : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginStateService(QObject *parent = nullptr) noexcept;
+	Q_INVOKABLE explicit PluginStateService(QObject *parent = nullptr) noexcept;
 	virtual ~PluginStateService() noexcept;
 
 	/**

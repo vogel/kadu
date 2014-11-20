@@ -27,6 +27,7 @@
 #include "plugin/metadata/plugin-metadata-provider.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class PluginMetadata;
 class PluginMetadataReader;
@@ -47,22 +48,14 @@ class PluginMetadataFinder : public PluginMetadataProvider
 	Q_OBJECT
 
 public:
-	explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
+	Q_INVOKABLE explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
 	virtual ~PluginMetadataFinder() noexcept;
-
 
 	/**
 	 * @short Set directory to search for metadata files.
 	 * @param directory directory to search for metadata files.
 	 */
 	void setDirectory(QString directory);
-
-	/**
-	 * @short Set PluginMetadataReader service instance.
-	 *
-	 * PluginMetadataReader is used to read metadata from .desc files.
-	 */
-	void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 
 	/**
 	 * @short Read metadata files from configured directory.
@@ -76,6 +69,14 @@ public:
 private:
 	QString m_directory;
 	QPointer<PluginMetadataReader> m_pluginMetadataReader;
+
+private slots:
+	/**
+	 * @short Set PluginMetadataReader service instance.
+	 *
+	 * PluginMetadataReader is used to read metadata from .desc files.
+	 */
+	INJEQT_SETTER void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 
 };
 

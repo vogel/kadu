@@ -29,6 +29,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <set>
+#include <injeqt/injeqt.h>
 
 class PluginDependencyHandler;
 
@@ -37,14 +38,15 @@ class KADUAPI PluginConflictResolver : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginConflictResolver(QObject *parent = nullptr);
+	Q_INVOKABLE explicit PluginConflictResolver(QObject *parent = nullptr);
 	virtual ~PluginConflictResolver();
-
-	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 
 	std::set<QString> conflictingPlugins(const std::set<QString> &activePluginSet, const QString &pluginName);
 
 private:
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+
+public slots: // TODO: make private, public only because of tests, should be done by injector
+	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 
 };

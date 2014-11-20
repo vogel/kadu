@@ -23,6 +23,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <set>
+#include <injeqt/injeqt.h>
 
 class PluginDependencyHandler;
 class PluginStateService;
@@ -49,12 +50,8 @@ class PluginStateManager : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginStateManager(QObject *parent = nullptr);
+	Q_INVOKABLE explicit PluginStateManager(QObject *parent = nullptr);
 	virtual ~PluginStateManager();
-
-	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	void setPluginStateService(PluginStateService *pluginStateService);
-	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 	/**
 	 * @short Load plugin states from configuration file to PluginStateService.
@@ -82,6 +79,10 @@ private:
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 
 private slots:
+	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
+	INJEQT_SETTER void setStoragePointFactory(StoragePointFactory *storagePointFactory);
+
 	void storePluginStatesAndFlush();
 
 };

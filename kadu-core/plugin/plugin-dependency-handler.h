@@ -30,6 +30,7 @@
 #include <map>
 #include <memory>
 #include <set>
+#include <injeqt/injeqt.h>
 
 class PluginDependencyGraphBuilder;
 class PluginMetadataProvider;
@@ -62,23 +63,8 @@ class KADUAPI PluginDependencyHandler : public QObject
 public:
 	using Iterator = IteratorWrapper<WrappedIterator, PluginMetadata>;
 
-	explicit PluginDependencyHandler(QObject *parent = nullptr);
+	Q_INVOKABLE explicit PluginDependencyHandler(QObject *parent = nullptr);
 	virtual ~PluginDependencyHandler();
-
-	/**
-	 * @short Set PluginDependencyGraphBuilder service.
-	 *
-	 * PluginDependencyGraphBuilder is used to create dependency graph from metadata loaded by
-	 * PluginMetadataProvider.
-	 */
-	void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
-
-	/**
-	 * @short Set PluginMetadataProvider service.
-	 *
-	 * PluginMetadataProvider is used to get list of all plugins available for application.
-	 */
-	void setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider);
 
 	/**
 	 * @return Return begin iterator for PluginMetadata list.
@@ -164,6 +150,22 @@ private:
 
 	std::map<QString, PluginMetadata> m_allPluginMetadata;
 	PluginDependencyGraph m_pluginDependencyDAG;
+
+public slots: // TODO: make private, public only because of tests, should be done by injector
+	/**
+	 * @short Set PluginDependencyGraphBuilder service.
+	 *
+	 * PluginDependencyGraphBuilder is used to create dependency graph from metadata loaded by
+	 * PluginMetadataProvider.
+	 */
+	INJEQT_SETTER void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
+
+	/**
+	 * @short Set PluginMetadataProvider service.
+	 *
+	 * PluginMetadataProvider is used to get list of all plugins available for application.
+	 */
+	INJEQT_SETTER void setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider);
 
 };
 

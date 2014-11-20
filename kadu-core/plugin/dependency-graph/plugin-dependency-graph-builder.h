@@ -42,7 +42,7 @@ class KADUAPI PluginDependencyGraphBuilder : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
+	Q_INVOKABLE explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
 	virtual ~PluginDependencyGraphBuilder();
 
 	/**

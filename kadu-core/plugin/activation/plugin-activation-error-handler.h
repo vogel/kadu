@@ -28,6 +28,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class PluginStateService;
 class PluginActivationService;
@@ -60,11 +61,8 @@ class KADUAPI PluginActivationErrorHandler : public QObject
 	Q_DISABLE_COPY(PluginActivationErrorHandler)
 
 public:
-	explicit PluginActivationErrorHandler(QObject *parent = nullptr);
+	Q_INVOKABLE explicit PluginActivationErrorHandler(QObject *parent = nullptr);
 	virtual ~PluginActivationErrorHandler();
-
-	void setPluginActivationService(PluginActivationService *pluginActivationService);
-	void setPluginStateService(PluginStateService *pluginStateService);
 
 	/**
 	 * @author Bartosz 'beevvy' Brachaczek
@@ -83,6 +81,9 @@ private:
 	QPointer<PluginStateService> m_pluginStateService;
 
 private slots:
+	INJEQT_SETTER void setPluginActivationService(PluginActivationService *pluginActivationService);
+	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
+
 	/**
 	 * @author Bartosz 'beevvy' Brachaczek
 	 * @short Sets state enablement of plugin if it is inactive.

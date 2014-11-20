@@ -42,7 +42,7 @@ class PluginMetadataReader : public QObject
 	Q_OBJECT
 
 public:
-	explicit PluginMetadataReader(QObject *parent = nullptr) noexcept;
+	Q_INVOKABLE explicit PluginMetadataReader(QObject *parent = nullptr) noexcept;
 	virtual ~PluginMetadataReader() noexcept;
 
 	/**

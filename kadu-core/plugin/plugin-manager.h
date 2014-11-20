@@ -37,6 +37,7 @@
 #include <QtCore/QPointer>
 #include <QtCore/QVector>
 #include <functional>
+#include <injeqt/injeqt.h>
 
 class PluginActivationService;
 class PluginDependencyHandler;
@@ -79,12 +80,8 @@ class KADUAPI PluginManager : public QObject
 	Q_DISABLE_COPY(PluginManager)
 
 public:
-	explicit PluginManager(QObject *parent = nullptr);
+	Q_INVOKABLE explicit PluginManager(QObject *parent = nullptr);
 	virtual ~PluginManager();
-
-	void setPluginActivationService(PluginActivationService *pluginActivationService);
-	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	void setPluginStateService(PluginStateService *pluginStateService);
 
 	/**
 	 * @short Activate all protocols plugins that are enabled.
@@ -136,6 +133,11 @@ private:
 	 */
 	bool shouldActivate(const PluginMetadata &pluginMetadata) const noexcept;
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
+
+private slots:
+	INJEQT_SETTER void setPluginActivationService(PluginActivationService *pluginActivationService);
+	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
 
 };
 
