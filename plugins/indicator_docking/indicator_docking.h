@@ -34,12 +34,6 @@
 template<typename T> class QList;
 class QMouseEvent;
 
-namespace QIndicate
-{
-	class Indicator;
-	class Server;
-}
-
 class ChatNotification;
 class ChatWidget;
 
@@ -49,26 +43,21 @@ class IndicatorDocking : public Notifier, public Docker
 
 	static IndicatorDocking *Instance;
 
-	typedef QMultiMap<QIndicate::Indicator *, ChatNotification *> IndMMap;
-
-	QIndicate::Server *Server;
-	IndMMap IndicatorsMap;
-
 	IndicatorDocking();
 	virtual ~IndicatorDocking();
 
 	void createDefaultConfiguration();
-
+/*
 	IndMMap::iterator iteratorForChat(const Chat &chat);
 	QList<IndMMap::iterator> iteratorsForAggregateChat(const Chat &chat);
-
-	void removeNotification(ChatNotification *chatNotification);
+*/
+	void removeNotification(ChatNotification */*chatNotification*/);
 
 private slots:
 	void indicateUnreadMessages();
 
 	void showMainWindow();
-	void displayIndicator(QIndicate::Indicator *indicator);
+	void displayIndicator(/*QIndicate::Indicator *indicator*/);
 
 	void notificationClosed(Notification *notification);
 

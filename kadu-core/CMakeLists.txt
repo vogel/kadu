@@ -11,33 +11,6 @@ else ()
 	message (STATUS "Fast (re)linking disabled")
 endif ()
 
-#if (UNIX AND NOT APPLE AND NOT Qt5Core_FOUND)
-#	if (NOT DEFINED WITH_LIBINDICATE_QT OR WITH_LIBINDICATE_QT)
-#		find_package (PkgConfig)
-#		pkg_search_module (LIBINDICATE_QT indicate-qt)
-#	endif ()
-#
-#	option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support through libindicate-qt" "${LIBINDICATE_QT_FOUND}")
-#	set (KADU_WITH_LIBINDICATE_QT ${WITH_LIBINDICATE_QT} PARENT_SCOPE)  # Do not use it here, it's in parent scope
-#
-#	if (WITH_LIBINDICATE_QT)
-#		if (NOT LIBINDICATE_QT_FOUND)
-#			message (SEND_ERROR "Could NOT find libindicate-qt")
-#		else ()
-#			message (STATUS "Found libindicate-qt. Enabling Ayatana support")
-#			# We need to link core to libindicate-qt so that indicator_docking
-#			# doesn't crash at unloading. And it crashes mainly because dbus-glib
-#			# doesn't support being dlclose()'d, so there is no better workaround.
-#			link_directories (${LIBINDICATE_QT_LIBRARY_DIRS})
-#			add_definitions (${LIBINDICATE_QT_CFLAGS_OTHER})
-#			include_directories (${LIBINDICATE_QT_INCLUDE_DIRS})
-#			list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${LIBINDICATE_QT_LIBRARIES})
-#		endif ()
-#	else ()
-#		message (STATUS "Could NOT find libindicate-qt. Disabling Ayatana support")
-#	endif ()
-#endif ()
-
 # if ((NOT DEFINED NETWORK_IMPLEMENTATION AND NOT Qt5Core_FOUND) OR "${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 # 	find_package (QNtrack 010)
 # endif ()

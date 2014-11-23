@@ -28,9 +28,6 @@
 #include <QtGui/QImage>
 #include <QtGui/QMouseEvent>
 
-#include <libindicate-qt/qindicateindicator.h>
-#include <libindicate-qt/qindicateserver.h>
-
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy.h"
@@ -80,13 +77,14 @@ IndicatorDocking * IndicatorDocking::instance()
 
 IndicatorDocking::IndicatorDocking() :
 		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail"))
-{
+{/*
 	Server = QIndicate::Server::defaultInstance();
 	Server->setDesktopFile(Application::instance()->pathsProvider()->desktopFilePath());
 	Server->setType("message.im");
 	Server->show();
 
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
+*/
 	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
 	connect(Core::instance()->notificationService(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
@@ -104,10 +102,10 @@ IndicatorDocking::~IndicatorDocking()
 	NotificationManager::instance()->unregisterNotifier(this);
 	DockingManager::instance()->setDocker(0);
 
-	disconnect(Server, 0, this, 0);
+//	disconnect(Server, 0, this, 0);
 	disconnect(ChatManager::instance(), 0, this, 0);
 	disconnect(Core::instance()->chatWidgetRepository(), 0, this, 0);
-
+/*
 	QSet<QIndicate::Indicator *> indicatorsToDelete;
 	IndMMap::const_iterator end = IndicatorsMap.constEnd();
 	for (IndMMap::const_iterator it = IndicatorsMap.constBegin(); it != end; ++it)
@@ -117,27 +115,29 @@ IndicatorDocking::~IndicatorDocking()
 		// because it is a multimap, keys may repeat
 		indicatorsToDelete.insert(it.key());
 	}
+*/
+//	IndicatorsMap.clear();
+//	qDeleteAll(indicatorsToDelete);
 
-	IndicatorsMap.clear();
-	qDeleteAll(indicatorsToDelete);
-
-	Server->hide();
+//	Server->hide();
 }
 
 void IndicatorDocking::indicateUnreadMessages()
-{
+{/*
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
 		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
+*/
 }
 
-void IndicatorDocking::silentModeToggled(bool silentMode)
-{
+void IndicatorDocking::silentModeToggled(bool/* silentMode*/)
+{/*
 	foreach (QIndicate::Indicator *indicator, IndicatorsMap.uniqueKeys())
 		indicator->setDrawAttentionProperty(!silentMode);
 
 	if (!silentMode)
 		indicateUnreadMessages();
+*/
 }
 
 void IndicatorDocking::showMainWindow()
@@ -163,6 +163,7 @@ void IndicatorDocking::notify(Notification *notification)
 	chatNotification->acquire(this);
 
 	// First we need to search for exactly the same chat.
+/*
 	QIndicate::Indicator *indicator = 0;
 	IndMMap::iterator it = iteratorForChat(chat);
 	if (it != IndicatorsMap.end())
@@ -213,6 +214,7 @@ void IndicatorDocking::notify(Notification *notification)
 	indicator->setTimeProperty(QDateTime::currentDateTime());
 	indicator->setDrawAttentionProperty(true);
 	indicator->show();
+*/
 }
 
 void IndicatorDocking::notificationClosed(Notification *notification)
@@ -224,8 +226,9 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 	removeNotification(chatNotification);
 }
 
-void IndicatorDocking::chatUpdated(const Chat &chat)
+void IndicatorDocking::chatUpdated(const Chat &/*chat*/)
 {
+/*
 	// When a chat widget is activated, it contains only messages from its own chat, not aggregate chat.
 	if (!chat || chat.unreadMessagesCount() > 0)
 		return;
@@ -233,12 +236,13 @@ void IndicatorDocking::chatUpdated(const Chat &chat)
 	IndMMap::iterator it = iteratorForChat(chat);
 	if (it != IndicatorsMap.end())
 		removeNotification(it.value());
+*/
 }
 
-void IndicatorDocking::chatWidgetAdded(ChatWidget *chatWidget)
+void IndicatorDocking::chatWidgetAdded(ChatWidget */*chatWidget*/)
 {
 	// When a chat widget is created, it is filled with all messages from given aggregate chat.
-
+/*
 	if (!chatWidget)
 		return;
 
@@ -256,22 +260,24 @@ void IndicatorDocking::chatWidgetAdded(ChatWidget *chatWidget)
 
 	foreach (ChatNotification *chatNotification, notificationsToRemove)
 		removeNotification(chatNotification);
+*/
 }
 
-void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
+void IndicatorDocking::displayIndicator(/*QIndicate::Indicator *indicator*/)
 {
 	// In case we have multiple chats for that indicator, the most recently inserted one will be opened.
+	/*
 	ChatNotification *chatNotification = IndicatorsMap.value(indicator);
 	if (!chatNotification)
 		return;
 
 	chatNotification->openChat();
-
+*/
 	// chatUpdated() or chatWidgetAdded() slot will take care of deleting indicator
 }
 
-void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
-{
+void IndicatorDocking::removeNotification(ChatNotification */*chatNotification*/)
+{/*
 	if (!chatNotification)
 		return;
 
@@ -285,9 +291,9 @@ void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 	IndicatorsMap.erase(it);
 
 	if (!IndicatorsMap.contains(indicator))
-		delete indicator;
+		delete indicator;*/
 }
-
+/*
 QMap<QIndicate::Indicator *, ChatNotification *>::iterator IndicatorDocking::iteratorForChat(const Chat &chat)
 {
 	IndMMap::iterator end = IndicatorsMap.end();
@@ -321,11 +327,13 @@ QList<IndicatorDocking::IndMMap::iterator> IndicatorDocking::iteratorsForAggrega
 
 	return list;
 }
-
+*/
 void IndicatorDocking::createDefaultConfiguration()
 {
+/*
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_IndicatorNotify", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_IndicatorNotify", true);
+*/
 }
 
 #include "moc_indicator_docking.cpp"

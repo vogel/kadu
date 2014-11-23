@@ -41,6 +41,8 @@ set (DEFAULT_PLUGINS
 	docking
 	# Always on top window docking plugin
 	desktop_docking
+	# Indicator docking support
+	indicator_docking
 	# Qt tray docking techniques module (works everywhere)
 	qt4_docking
 
@@ -129,15 +131,6 @@ if (UNIX AND NOT APPLE)
 		# MPD mediaplayer support
 		mpd_mediaplayer
 	)
-
-	if (KADU_WITH_LIBINDICATE_QT)
-		list (APPEND DEFAULT_PLUGINS
-
-		# docking
-			# Indicator docking support
-			indicator_docking
-		)
-	endif ()
 endif (UNIX AND NOT APPLE)
 
 if (APPLE)
