@@ -38,7 +38,7 @@
 IndicatorDocking::IndicatorDocking(QObject *parent) :
 	QObject{parent}
 {
-	m_messagingMenuApp = new QMessagingMenuApp("kadu.desktop", this);
+	m_messagingMenuApp = new QMessagingMenuApp{"kadu.desktop", this};
 	m_messagingMenuApp->registerMenu();
 
 	connect(m_messagingMenuApp, SIGNAL(sourceActivated(QString)), this, SLOT(sourceActivated(QString)));
