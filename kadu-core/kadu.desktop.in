@@ -14,3 +14,4 @@ Exec=${CMAKE_INSTALL_FULL_BINDIR}/kadu
 Categories=Network;InstantMessaging;Qt;
 Terminal=false
 StartupNotify=true
+X-MessagingMenu-UsesChatSection=true
