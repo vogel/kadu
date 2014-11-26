@@ -6,6 +6,7 @@
 * gui: #1510 implemented: hide description option also affects notifications (Vogel)
 * plugins: #2825 implemented: plugin categories are now translated (Vogel)
 * core: #2885 done: remove support for configuration files of Kadu 0.6.5 (Vogel)
+* indicator_docking: #2682 done: support for new versions of Unity (Vogel)
 
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)
