@@ -24,12 +24,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INDICATOR_DOCKING_PLUGIN_H
-#define INDICATOR_DOCKING_PLUGIN_H
+#pragma once
 
-#include <QtCore/QObject>
 
 #include "plugin/plugin-root-component.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+
+class IndicatorDocking;
 
 class IndicatorDockingPlugin : public QObject, public PluginRootComponent
 {
@@ -43,6 +46,7 @@ public:
 	virtual bool init(bool firstLoad);
 	virtual void done();
 
-};
+private:
+	QPointer<IndicatorDocking> m_indicatorDocking;
 
-#endif // INDICATOR_DOCKING_PLUGIN_H
+};

@@ -23,9 +23,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "indicator_docking-plugin.h"
+
 #include "indicator_docking.h"
 
-#include "indicator_docking-plugin.h"
+#include "chat/chat-manager.h"
+#include "core/core.h"
 
 IndicatorDockingPlugin::~IndicatorDockingPlugin()
 {
@@ -35,13 +38,17 @@ bool IndicatorDockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	IndicatorDocking::createInstance();
+	m_indicatorDocking = new IndicatorDocking{};
+	m_indicatorDocking->setChatManager(ChatManager::instance());
+	m_indicatorDocking->setChatWidgetManager(Core::instance()->chatWidgetManager());
+	m_indicatorDocking->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());
+
 	return true;
 }
 
 void IndicatorDockingPlugin::done()
 {
-	IndicatorDocking::destroyInstance();
+	m_indicatorDocking.clear();
 }
 
 Q_EXPORT_PLUGIN2(indicator_docking, IndicatorDockingPlugin)
