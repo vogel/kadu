@@ -50,6 +50,7 @@ bool IndicatorDockingPlugin::init(bool firstLoad)
 
 void IndicatorDockingPlugin::done()
 {
+	delete m_indicatorDocking;
 	m_indicatorDocking.clear();
 }
 
