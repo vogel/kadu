@@ -35,6 +35,8 @@ class ChatDetails;
 class ChatType;
 class StoragePoint;
 
+class QString;
+
 /**
  * @addtogroup Chat
  * @{
@@ -141,6 +143,8 @@ public:
 	void setOpen(bool open);
 
 };
+
+KADUAPI QString title(const Chat &chat);
 
 /**
  * @}

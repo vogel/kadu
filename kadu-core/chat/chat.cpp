@@ -172,3 +172,11 @@ void Chat::setOpen(bool open)
 	if (!isNull())
 		data()->setOpen(open);
 }
+
+QString title(const Chat& chat)
+{
+	if (!chat.display().isEmpty())
+		return chat.display();
+	else
+		return chat.name();
+}
