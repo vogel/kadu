@@ -29,7 +29,9 @@ class ChatManager;
 class ChatWidgetManager;
 class Message;
 class QMessagingMenuApp;
+class StatusContainer;
 class UnreadMessageRepository;
+enum class QMessagingMenuStatus;
 
 class IndicatorDocking : public QObject
 {
@@ -41,11 +43,13 @@ public:
 
 	void setChatManager(ChatManager *chatManager);
 	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	void setStatusContainer(StatusContainer *statusContainer);
 	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<StatusContainer> m_statusContainer;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	QMessagingMenuApp *m_messagingMenuApp;
@@ -55,5 +59,7 @@ private slots:
 	void unreadMessageRemoved(const Message &message);
 
 	void sourceActivated(const QString &id);
+	void statusChanged(QMessagingMenuStatus status);
+	void statusContainerUpdated(StatusContainer *statusContainer);
 
 };

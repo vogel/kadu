@@ -25,7 +25,7 @@
 #include <glib.h>
 
 class QMessagingMenuSource;
-
+enum class QMessagingMenuStatus;
 typedef struct _MessagingMenuApp MessagingMenuApp;
 
 class QMessagingMenuApp : public QObject
@@ -43,17 +43,22 @@ public:
 	void removeSource(const QString &id);
 	QMessagingMenuSource * source(const QString &id);
 
+	void setStatus(QMessagingMenuStatus status);
+
+public Q_SLOTS:
+	void sourceActivatedSlot(const QString &id);
+	void statusChangedSlot(QMessagingMenuStatus status);
+
 Q_SIGNALS:
 	void sourceActivated(const QString &id);
+	void statusChanged(QMessagingMenuStatus status);
 
 private:
 	friend class QMessagingMenuSource;
-	friend void source_activated(MessagingMenuApp *app, const gchar *id, gpointer user_data);
 
 	MessagingMenuApp *m_app;
 	QMap<QString, QMessagingMenuSource *> m_sources;
 
 	MessagingMenuApp * app() const;
-	void sourceActivatedSlot(const QString &id);
 
 };

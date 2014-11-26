@@ -29,6 +29,7 @@
 
 #include "chat/chat-manager.h"
 #include "core/core.h"
+#include "status/status-container-manager.h"
 
 IndicatorDockingPlugin::~IndicatorDockingPlugin()
 {
@@ -41,6 +42,7 @@ bool IndicatorDockingPlugin::init(bool firstLoad)
 	m_indicatorDocking = new IndicatorDocking{};
 	m_indicatorDocking->setChatManager(ChatManager::instance());
 	m_indicatorDocking->setChatWidgetManager(Core::instance()->chatWidgetManager());
+	m_indicatorDocking->setStatusContainer(StatusContainerManager::instance());
 	m_indicatorDocking->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());
 
 	return true;

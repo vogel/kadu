@@ -23,10 +23,12 @@
 #include "qmessaging-menu-app.h"
 
 #include "qmessaging-menu-source.h"
+#include "qmessaging-menu-status.h"
 
 #include <messaging-menu/messaging-menu-app.h>
 
-void source_activated(MessagingMenuApp *app, const gchar *id, gpointer user_data);
+static void source_activated(MessagingMenuApp *app, const gchar *id, gpointer user_data);
+static void status_changed(MessagingMenuApp *app, MessagingMenuStatus status, gpointer user_data);
 
 QMessagingMenuApp::QMessagingMenuApp(const QString &desktopId, QObject* parent) :
 	QObject{parent},
@@ -34,6 +36,7 @@ QMessagingMenuApp::QMessagingMenuApp(const QString &desktopId, QObject* parent) 
 {
 	m_app = messaging_menu_app_new(desktopId.toAscii());
 	g_signal_connect(m_app, "activate-source", G_CALLBACK(source_activated), this);
+	g_signal_connect(m_app, "status-changed", G_CALLBACK(status_changed), this);
 }
 
 QMessagingMenuApp::~QMessagingMenuApp()
@@ -83,6 +86,11 @@ QMessagingMenuSource * QMessagingMenuApp::source(const QString &id)
 	return m_sources.value(id);
 }
 
+void QMessagingMenuApp::setStatus(QMessagingMenuStatus status)
+{
+	messaging_menu_app_set_status(m_app, static_cast<MessagingMenuStatus>(status));
+}
+
 MessagingMenuApp * QMessagingMenuApp::app() const
 {
 	return m_app;
@@ -93,12 +101,25 @@ void QMessagingMenuApp::sourceActivatedSlot(const QString &id)
 	emit sourceActivated(id);
 }
 
-void source_activated(MessagingMenuApp *app, const gchar *id, gpointer user_data)
+void QMessagingMenuApp::statusChangedSlot(QMessagingMenuStatus status)
+{
+	emit statusChanged(status);
+}
+
+static void source_activated(MessagingMenuApp *app, const gchar *id, gpointer user_data)
 {
 	Q_UNUSED(app);
 
 	auto messagingMenuApp = static_cast<QMessagingMenuApp *>(user_data);
 	messagingMenuApp->sourceActivatedSlot(QString::fromUtf8(id));
+}
+
+void status_changed(MessagingMenuApp *app, MessagingMenuStatus status, gpointer user_data)
+{
+	Q_UNUSED(app);
+
+	auto messagingMenuApp = static_cast<QMessagingMenuApp *>(user_data);
+	messagingMenuApp->statusChangedSlot(static_cast<QMessagingMenuStatus>(status));
 }
 
 #include "moc_qmessaging-menu-app.cpp"

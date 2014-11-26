@@ -29,9 +29,11 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
+#include "status/status-container.h"
 
 #include <libqmessagingmenu/qmessaging-menu-app.h>
 #include <libqmessagingmenu/qmessaging-menu-source.h>
+#include <libqmessagingmenu/qmessaging-menu-status.h>
 
 IndicatorDocking::IndicatorDocking(QObject *parent) :
 	QObject{parent}
@@ -40,6 +42,7 @@ IndicatorDocking::IndicatorDocking(QObject *parent) :
 	m_messagingMenuApp->registerMenu();
 
 	connect(m_messagingMenuApp, SIGNAL(sourceActivated(QString)), this, SLOT(sourceActivated(QString)));
+	connect(m_messagingMenuApp, SIGNAL(statusChanged(QMessagingMenuStatus)), this, SLOT(statusChanged(QMessagingMenuStatus)));
 }
 
 IndicatorDocking::~IndicatorDocking()
@@ -61,6 +64,14 @@ void IndicatorDocking::setChatManager(ChatManager *chatManager)
 void IndicatorDocking::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
+}
+
+void IndicatorDocking::setStatusContainer(StatusContainer *statusContainer)
+{
+	m_statusContainer = statusContainer;
+
+	statusContainerUpdated(m_statusContainer);
+	connect(m_statusContainer, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(statusContainerUpdated(StatusContainer*)));
 }
 
 void IndicatorDocking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -106,6 +117,57 @@ void IndicatorDocking::sourceActivated(const QString &id)
 		return;
 
 	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+}
+
+void IndicatorDocking::statusChanged(QMessagingMenuStatus status)
+{
+	auto currentStatus = m_statusContainer->status();
+	switch (status)
+	{
+		case QMessagingMenuStatus::Available:
+			currentStatus.setType(StatusTypeOnline);
+			break;
+		case QMessagingMenuStatus::Away:
+			currentStatus.setType(StatusTypeAway);
+			break;
+		case QMessagingMenuStatus::Busy:
+			currentStatus.setType(StatusTypeDoNotDisturb);
+			break;
+		case QMessagingMenuStatus::Invisible:
+			currentStatus.setType(StatusTypeInvisible);
+			break;
+		case QMessagingMenuStatus::Offline:
+			currentStatus.setType(StatusTypeOffline);
+			break;
+	}
+
+	m_statusContainer->setStatus(currentStatus, SourceUser);
+}
+
+void IndicatorDocking::statusContainerUpdated(StatusContainer *statusContainer)
+{
+	switch (statusContainer->status().type())
+	{
+		case StatusTypeFreeForChat:
+		case StatusTypeOnline:
+			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Available);
+			break;
+		case StatusTypeAway:
+			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Away);
+			break;
+		case StatusTypeNotAvailable:
+		case StatusTypeDoNotDisturb:
+			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Busy);
+			break;
+		case StatusTypeInvisible:
+			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Invisible);
+			break;
+		case StatusTypeOffline:
+			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Offline);
+			break;
+		default:
+			break;
+	}
 }
 
 #include "moc_indicator_docking.cpp"
