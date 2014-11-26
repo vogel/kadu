@@ -39,7 +39,7 @@ bool IndicatorDockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	m_indicatorDocking = new IndicatorDocking{};
+	m_indicatorDocking.reset(new IndicatorDocking{});
 	m_indicatorDocking->setChatManager(ChatManager::instance());
 	m_indicatorDocking->setChatWidgetManager(Core::instance()->chatWidgetManager());
 	m_indicatorDocking->setStatusContainer(StatusContainerManager::instance());
@@ -50,8 +50,7 @@ bool IndicatorDockingPlugin::init(bool firstLoad)
 
 void IndicatorDockingPlugin::done()
 {
-	delete m_indicatorDocking;
-	m_indicatorDocking.clear();
+	m_indicatorDocking.reset();
 }
 
 Q_EXPORT_PLUGIN2(indicator_docking, IndicatorDockingPlugin)

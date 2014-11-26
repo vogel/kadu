@@ -30,7 +30,7 @@
 #include "plugin/plugin-root-component.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <QtCore/QScopedPointer>
 
 class IndicatorDocking;
 
@@ -47,6 +47,6 @@ public:
 	virtual void done();
 
 private:
-	QPointer<IndicatorDocking> m_indicatorDocking;
+	QScopedPointer<IndicatorDocking> m_indicatorDocking;
 
 };
