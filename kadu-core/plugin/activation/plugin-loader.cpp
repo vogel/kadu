@@ -68,7 +68,17 @@ PluginLoader::~PluginLoader() noexcept
 		// belonging to already unloaded plugins, which can result in segfaults.
 
 		QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
-		m_pluginLoader->unload();
+
+		// probably we don't really need to unload plugins
+		// root component gets its done() method called anyways, need to check
+		// multiple loads/unloads if any problems arise
+		// unloading plugins has some problems and disabling it is very easy way
+		// to fix them
+		// for example: if plugin after load adds some static data to glib,
+		// like messaging-menu used in indicator-docking does, then after unload
+		// and next load we are in trouble - application crashes
+		// anyway, I don't expect users to unload plugins very frequently
+		// m_pluginLoader->unload();
 	}
 }
 
