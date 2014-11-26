@@ -6,3 +6,4 @@ Description[pl]=Integruje powiadomienia z Ubuntu (Message Indicator)
 Author=Marcin Dawidziuk, Kadu Team
 Version=core
 Category=Notifications
+LoadByDefault=true
