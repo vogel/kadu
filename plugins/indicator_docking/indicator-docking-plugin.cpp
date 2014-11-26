@@ -23,9 +23,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "indicator_docking-plugin.h"
+#include "indicator-docking-plugin.h"
 
-#include "indicator_docking.h"
+#include "indicator-docking.h"
 
 #include "chat/chat-manager.h"
 #include "core/core.h"
@@ -55,4 +55,4 @@ void IndicatorDockingPlugin::done()
 
 Q_EXPORT_PLUGIN2(indicator_docking, IndicatorDockingPlugin)
 
-#include "moc_indicator_docking-plugin.cpp"
+#include "moc_indicator-docking-plugin.cpp"

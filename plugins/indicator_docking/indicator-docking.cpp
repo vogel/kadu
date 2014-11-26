@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "indicator_docking.h"
+#include "indicator-docking.h"
 
 #include "avatars/avatar.h"
 #include "chat/chat-manager.h"
@@ -170,4 +170,4 @@ void IndicatorDocking::statusContainerUpdated(StatusContainer *statusContainer)
 	}
 }
 
-#include "moc_indicator_docking.cpp"
+#include "moc_indicator-docking.cpp"
