@@ -1,0 +1,9 @@
+[Module]
+DisplayName=Integration with Unity
+DisplayName[pl]=Integracja z Unity
+Description=Better integration with Unity Launcher
+Description[pl]=Integruje z paskiem uruchamiania Unity
+Author=Marcin Kadu Team
+Version=core
+Category=Integration
+LoadByDefault=true

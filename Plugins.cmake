@@ -41,8 +41,6 @@ set (DEFAULT_PLUGINS
 	docking
 	# Always on top window docking plugin
 	desktop_docking
-	# Indicator docking support
-	indicator_docking
 	# Qt tray docking techniques module (works everywhere)
 	qt4_docking
 
@@ -118,6 +116,14 @@ endif (UNIX)
 
 if (UNIX AND NOT APPLE)
 	list (APPEND DEFAULT_PLUGINS
+
+	# docking
+		# Indicator docking support
+		indicator_docking
+
+	# integration
+		# integration with Unity
+		unity_integration
 
 	# notifiers
 		# Freedesktop notification support
