@@ -110,7 +110,9 @@ Buddy ChatDetailsBuddy::buddy() const
  */
 void ChatDetailsBuddy::setChats(const QVector<Chat> &chats)
 {
-	Chats = chats;
+	Chats.clear();
+	for (auto &&chat : chats)
+		addChat(chat);
 }
 
 /**
@@ -126,7 +128,7 @@ const QVector<Chat> & ChatDetailsBuddy::chats() const
 
 void ChatDetailsBuddy::addChat(const Chat &chat)
 {
-	if (!Chats.contains(chat))
+	if (chat && !Chats.contains(chat))
 		Chats.append(chat);
 }
 

@@ -1,3 +1,6 @@
++++ version 1.3
+* gui: #2869 fixed: uuids visible in info panel after adding new buddy (Vogel)
+
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)
 * windows: #2880 fixed: improve hiding Kadu button on taskbar (Vogel)
