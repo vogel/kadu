@@ -134,7 +134,8 @@ About::About(QWidget *parent) :
 	QString thanks = Qt::escape(loadFile("THANKS"));
 	thanks.prepend("<b>");
 	thanks.replace("\n\n", QLatin1String("</b><br/><br/>"));
-	thanks.replace("\n   ", "<br/>&nbsp;&nbsp;&nbsp;");
+	thanks.replace("\n", "<br/>");
+	thanks.replace(" ", "&nbsp;");
 	tb_thanks->setHtml(thanks);
 
 	// license
