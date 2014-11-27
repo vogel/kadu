@@ -34,6 +34,7 @@ QUnity::QUnity(const QString &desktopId, QObject* parent) :
 
 QUnity::~QUnity()
 {
+	unity_launcher_entry_set_count_visible(m_launcher, false);
 	g_object_unref(m_launcher);
 	m_launcher = nullptr;
 }
