@@ -35,6 +35,8 @@ QMessagingMenuApp::QMessagingMenuApp(const QString &desktopId, QObject* parent) 
 	m_app{nullptr}
 {
 	m_app = messaging_menu_app_new(desktopId.toAscii());
+	g_object_ref(m_app);
+
 	g_signal_connect(m_app, "activate-source", G_CALLBACK(source_activated), this);
 	g_signal_connect(m_app, "status-changed", G_CALLBACK(status_changed), this);
 }
