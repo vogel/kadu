@@ -24,7 +24,10 @@ endif ()
 # TODO: support cmake parameters for this
 find_package (Qt5Core 5.2 REQUIRED)
 find_package (Qt5LinguistTools REQUIRED)
-find_package (Qt5X11Extras REQUIRED)
+
+if (UNIX AND NOT APPLE)
+	find_package (Qt5X11Extras REQUIRED)
+endif ()
 
 include (FindPkgConfig)
 pkg_check_modules (INJEQT REQUIRED injeqt)
