@@ -170,7 +170,3 @@ add_library (3rdparty STATIC ${SOURCES_IRIS})
 kadu_set_flags (3rdparty)
 qt5_use_modules (3rdparty LINK_PUBLIC Core Gui Network Xml)
 set_property (TARGET 3rdparty PROPERTY POSITION_INDEPENDENT_CODE TRUE)
-
-if (NOT MSVC)
-	set_property (TARGET 3rdparty APPEND_STRING PROPERTY COMPILE_FLAGS " -Wno-error -Wno-conversion -Wno-unused-parameter -Wno-unused-function -Wno-cast-align")
-endif ()

@@ -84,5 +84,3 @@ std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactor
 	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
 	return std::move(result);
 }
-
-#include "moc_adium-style-engine.cpp"
