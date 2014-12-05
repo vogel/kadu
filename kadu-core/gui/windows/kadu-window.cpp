@@ -394,8 +394,8 @@ void KaduWindow::setHiddenParent()
 void KaduWindow::hideWindowFromTaskbar()
 {
 	auto *w = window();
-	auto newWindowLongPtr = GetWindowLongPtr(w->winId(), GWL_EXSTYLE);
-	bool hideFromTaskbar = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar");
+	auto newWindowLongPtr = GetWindowLongPtr(reinterpret_cast<HWND>(w->winId()), GWL_EXSTYLE);
+	auto hideFromTaskbar = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar");
 	if (hideFromTaskbar == !(newWindowLongPtr & WS_EX_APPWINDOW))
 		return;
 
@@ -406,7 +406,7 @@ void KaduWindow::hideWindowFromTaskbar()
 
 	auto wasVisible = w->isVisible();
 	w->setVisible(false);
-	SetWindowLongPtr(w->winId(), GWL_EXSTYLE, newWindowLongPtr);
+	SetWindowLongPtr(reinterpret_cast<HWND>(w->winId()), GWL_EXSTYLE, newWindowLongPtr);
 	w->setVisible(wasVisible);
 }
 #endif
