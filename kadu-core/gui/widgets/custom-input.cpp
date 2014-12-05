@@ -35,7 +35,6 @@
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
-#include <QtDBus/qdbusconnection.h>
 
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
