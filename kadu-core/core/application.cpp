@@ -56,7 +56,7 @@ Application::Application() :
 {
 #ifdef Q_OS_WIN32
 	// Fix for #2491
-	setStyleSheet("QToolBar{border:0px}");
+	qApp->setStyleSheet("QToolBar{border:0px}");
 #endif
 
 	m_instance = this;
