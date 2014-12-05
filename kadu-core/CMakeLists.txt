@@ -213,6 +213,7 @@ target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBKADU_LIBRARIES})
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
 qt5_use_modules (kadu LINK_PRIVATE Core Gui Widgets Network Xml)
+find_package (QCA2 REQUIRED)
 target_link_libraries (kadu LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES} ${QCA2_LIBRARIES})
 
 if (NOT IS_ABSOLUTE "${KADU_INSTALL_LIB_DIR}")
@@ -245,6 +246,8 @@ if (WIN32)
 
 	set_property (TARGET kadu_c APPEND PROPERTY COMPILE_DEFINITIONS KADU_CONSOLE)
 	set_property (TARGET kadu_c PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
+	set_property (TARGET kadu PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
+	set_property (TARGET libkadu PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
 
 	target_link_libraries (kadu LINK_PRIVATE ws2_32)
 	target_link_libraries (libkadu LINK_PRIVATE ws2_32)
