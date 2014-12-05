@@ -529,8 +529,12 @@ void ConfigurationWidget::changeSection(const QString &newSectionName)
 		CurrentSection->hide();
 
 	CurrentSection = newSection;
-	newSection->show();
-	newSection->activate();
+
+	if (CurrentSection)
+	{
+		CurrentSection->show();
+		CurrentSection->activate();
+	}
 }
 
 void ConfigurationWidget::configSectionDestroyed(QObject *obj)
