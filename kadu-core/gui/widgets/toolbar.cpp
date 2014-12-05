@@ -150,14 +150,18 @@ ToolBarSpacer * ToolBar::createSpacer(QAction *before, ToolBarAction &action)
 QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 {
 	if (!Actions::instance()->contains(action.actionName))
-		return 0;
+		return nullptr;
 
 	MainWindow *kaduMainWindow = qobject_cast<MainWindow *>(parentWidget());
 	if (!kaduMainWindow)
-		return 0;
+		return nullptr;
 
-	if (!kaduMainWindow->supportsActionType(Actions::instance()->value(action.actionName)->type()))
-		return 0;
+	auto actionByName = Actions::instance()->value(action.actionName);
+	if (!actionByName)
+		return nullptr;
+
+	if (!kaduMainWindow->supportsActionType(actionByName->type()))
+		return nullptr;
 
 	action.action = Actions::instance()->createAction(action.actionName, kaduMainWindow->actionContext(), kaduMainWindow);
 	insertAction(before, action.action);
