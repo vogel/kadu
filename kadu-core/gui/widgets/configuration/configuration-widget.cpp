@@ -112,7 +112,7 @@ ConfigurationWidget::~ConfigurationWidget()
 void ConfigurationWidget::init()
 {
 	QString lastSection = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
-	if (ConfigSections.contains(lastSection))
+	if (ConfigSections.contains(lastSection) && ConfigSections.value(lastSection))
 		ConfigSections.value(lastSection)->activate();
 	else if (SectionsListWidget->count() > 0)
 		ConfigSections.value(SectionsListWidget->item(0)->text())->activate();
