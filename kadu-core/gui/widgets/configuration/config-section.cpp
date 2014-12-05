@@ -92,7 +92,13 @@ void ConfigSection::activate()
 
 	QString tab = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
 	if (ConfigTabs.contains(tab))
-		TabWidget->setCurrentWidget(ConfigTabs.value(tab)->widget());
+	{
+		auto configTab = ConfigTabs.value(tab);
+		if (configTab)
+		{
+			TabWidget->setCurrentWidget(configTab->widget());
+		}
+	}
 	Activated = true;
 }
 
