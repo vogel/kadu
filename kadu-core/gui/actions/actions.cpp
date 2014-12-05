@@ -59,7 +59,7 @@ void Actions::remove(ActionDescription *action)
 
 QAction * Actions::createAction(const QString &name, ActionContext *context, QObject *parent)
 {
-	if (!contains(name))
+	if (!contains(name) || !value(name))
 		return 0;
 
 	Action *result = value(name)->createAction(context, parent);
