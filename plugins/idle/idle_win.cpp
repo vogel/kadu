@@ -38,7 +38,7 @@ QLibrary *lib;
 Idle::Idle(QObject *parent) :
 		QObject(parent)
 {
-	void *p;
+	QFunctionPointer p;
 
 	GetLastInputInfoFun = 0;
 	IdleUIGetLastInputTime = 0;
