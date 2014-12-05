@@ -53,17 +53,11 @@ set (kadu_SRCS
 	updates.cpp
 
 	os/qtsingleapplication/qtlocalpeer.cpp
-	os/qtsingleapplication/qtlockedfile.cpp
 )
 
 if (WIN32)
 	list (APPEND kadu_SRCS
-		os/qtsingleapplication/qtlockedfile_win.cpp
 		kadu.rc
-	)
-else ()
-	list (APPEND kadu_SRCS
-		os/qtsingleapplication/qtlockedfile_unix.cpp
 	)
 endif ()
 

@@ -46,6 +46,7 @@
 
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QLockFile>
 #include <QtCore/QTime>
 #include "qtlocalpeer.h"
 
@@ -61,19 +62,10 @@ static PProcessIdToSessionId pProcessIdToSessionId = 0;
 #include <unistd.h>
 #endif
 
-namespace QtLP_Private {
-#include "qtlockedfile.cpp"
-#if defined(Q_OS_WIN)
-#include "qtlockedfile_win.cpp"
-#else
-#include "qtlockedfile_unix.cpp"
-#endif
-}
-
 KADUAPI const char* QtLocalPeer::ack = "ack";
 
 QtLocalPeer::QtLocalPeer(QObject* parent, const QString &appId)
-    : QObject(parent), id(appId)
+    : QObject(parent), id(appId), lockFile{nullptr}
 {
     QString prefix = id;
     if (id.isEmpty()) {
@@ -109,21 +101,21 @@ QtLocalPeer::QtLocalPeer(QObject* parent, const QString &appId)
     QString lockName = QDir(QDir::tempPath()).absolutePath()
                        + QLatin1Char('/') + socketName
                        + QLatin1String("-lockfile");
-    lockFile.setFileName(lockName);
-    lockFile.open(QIODevice::ReadWrite);
+    lockFile = new QLockFile{lockName};
 }
 
 QtLocalPeer::~QtLocalPeer()
 {
-    lockFile.close();
+    lockFile->unlock();
+	delete lockFile;
 }
 
 bool QtLocalPeer::isClient()
 {
-    if (lockFile.isLocked())
+    if (lockFile->isLocked())
         return false;
 
-    if (!lockFile.lock(QtLP_Private::QtLockedFile::WriteLock, false))
+    if (!lockFile->tryLock())
         return true;
 
     bool res = server->listen(socketName);
