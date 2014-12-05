@@ -315,7 +315,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 		MainWindow *mainWindow = 0;
 		if (ActionDrag::decode(event, actionName, style) &&
 				(event->source() == this ||
-				(Actions::instance()->contains(actionName) &&
+				(Actions::instance()->contains(actionName) && Actions::instance()->value(actionName) &&
 					(mainWindow = qobject_cast<MainWindow *>(parentWidget())) &&
 					mainWindow->supportsActionType(Actions::instance()->value(actionName)->type())) ||
 				actionName.startsWith(QLatin1String("__separator")) ||
