@@ -74,6 +74,8 @@ void AccountEditWidget::factoryUnregistered(AccountConfigurationWidgetFactory *f
 	if (AccountConfigurationWidgets.contains(factory))
 	{
 		AccountConfigurationWidget *widget = AccountConfigurationWidgets.value(factory);
+		if (!widget)
+			return;
 		if (widget->stateNotifier())
 			CompositeStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
 		emit widgetRemoved(widget);
