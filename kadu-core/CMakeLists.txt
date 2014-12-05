@@ -244,6 +244,7 @@ if (WIN32)
 	set_property (TARGET kadu_c PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
 
 	target_link_libraries (kadu LINK_PRIVATE ws2_32)
+	target_link_libraries (libkadu LINK_PRIVATE ws2_32)
 	qt5_use_modules (kadu_c LINK_PRIVATE Core Gui Widgets Network Xml)
 	target_link_libraries (kadu_c LINK_PRIVATE libkadu ws2_32)
 
