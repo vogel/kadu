@@ -306,11 +306,11 @@ void KaduWebView::saveImage()
 				if (!removeMe.remove())
 				{
 					MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image: %1").arg(removeMe.errorString()));
-					continue;
+					break;
 				}
 			}
 			else
-				continue;
+				break;
 		}
 
 		QString dst = file;
@@ -322,7 +322,7 @@ void KaduWebView::saveImage()
 			if (!image.save(dst, "PNG"))
 			{
 				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image"));
-				continue;
+				break;
 			}
 		}
 		else
@@ -331,7 +331,7 @@ void KaduWebView::saveImage()
 			if (!src.copy(dst))
 			{
 				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
-				continue;
+				break;
 			}
 		}
 
