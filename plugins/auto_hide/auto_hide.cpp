@@ -40,7 +40,8 @@
 AutoHide::AutoHide(QObject *parent) :
 		ConfigurationUiHandler{parent},
 		MyIdle{nullptr},
-		IdleTime{0}
+		IdleTime{0},
+		Enabled{false}
 {
 }
 
