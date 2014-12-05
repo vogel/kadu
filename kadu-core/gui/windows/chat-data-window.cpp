@@ -109,10 +109,13 @@ void ChatDataWindow::factoryUnregistered(ChatConfigurationWidgetFactory *factory
 	if (ChatConfigurationWidgets.contains(factory))
 	{
 		ChatConfigurationWidget *widget = ChatConfigurationWidgets.value(factory);
-		if (widget->stateNotifier())
-			ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
-		emit widgetRemoved(widget);
-		widget->deleteLater();
+		if (widget)
+		{
+			if (widget->stateNotifier())
+				ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
+			emit widgetRemoved(widget);
+			widget->deleteLater();
+		}
 		ChatConfigurationWidgets.remove(factory);
 	}
 }
