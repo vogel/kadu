@@ -319,7 +319,7 @@ void Core::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DescriptionHeight", 60);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DisconnectWithCurrentDescription", true);
 #ifdef Q_OS_WIN32
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("General", "HideMainWindowFromTaskbar", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "HideMainWindowFromTaskbar", false);
 #endif
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "Language",  QLocale::system().name().left(2));
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "Nick", tr("Me"));
@@ -595,7 +595,7 @@ void Core::configurationUpdated()
 #ifdef Q_OS_WIN
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
 		       QSettings::NativeFormat);
-	if(KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunOnStartup"))
+	if(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunOnStartup"))
 		settings.setValue("Kadu",
 				QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
 	else
