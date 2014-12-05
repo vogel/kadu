@@ -49,7 +49,8 @@
 #include "autoresponder.h"
 
 AutoResponder::AutoResponder(QObject *parent) :
-		MessageFilter(parent)
+		MessageFilter(parent),
+		UiHandler(nullptr)
 {
 }
 
