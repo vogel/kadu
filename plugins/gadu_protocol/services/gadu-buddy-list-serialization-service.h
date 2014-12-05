@@ -21,9 +21,11 @@
 
 #include "protocols/services/buddy-list-serialization-service.h"
 
+#include "gadu-exports.h"
+
 class BuddyList;
 
-class KADUAPI GaduBuddyListSerializationService : public BuddyListSerializationService
+class GADUAPI GaduBuddyListSerializationService : public BuddyListSerializationService
 {
 	Q_OBJECT
 
