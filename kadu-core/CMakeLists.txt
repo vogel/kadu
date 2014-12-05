@@ -240,6 +240,9 @@ if (WIN32)
 	add_executable (kadu_c ${main_SRCS})
 	kadu_set_flags (kadu_c)
 
+	# Do not link against qtmain on Windows
+	cmake_policy(SET CMP0020 OLD)
+
 	set_property (TARGET kadu_c APPEND PROPERTY COMPILE_DEFINITIONS KADU_CONSOLE)
 	set_property (TARGET kadu_c PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
 
