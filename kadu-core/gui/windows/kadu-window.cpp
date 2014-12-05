@@ -393,8 +393,8 @@ void KaduWindow::setHiddenParent()
 
 void KaduWindow::hideWindowFromTaskbar()
 {
-	QWidget *w = window();
-	LONG_PTR newWindowLongPtr = GetWindowLongPtr(w->winId(), GWL_EXSTYLE);
+	auto *w = window();
+	auto newWindowLongPtr = GetWindowLongPtr(w->winId(), GWL_EXSTYLE);
 	bool hideFromTaskbar = KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar");
 	if (hideFromTaskbar == !(newWindowLongPtr & WS_EX_APPWINDOW))
 		return;
@@ -404,7 +404,7 @@ void KaduWindow::hideWindowFromTaskbar()
 	else
 		newWindowLongPtr |= WS_EX_APPWINDOW;
 
-	bool wasVisible = w->isVisible();
+	auto wasVisible = w->isVisible();
 	w->setVisible(false);
 	SetWindowLongPtr(w->winId(), GWL_EXSTYLE, newWindowLongPtr);
 	w->setVisible(wasVisible);
@@ -422,7 +422,7 @@ void KaduWindow::changeEvent(QEvent *event)
 #ifdef Q_OS_WIN32
 	else if (event->type() == QEvent::WindowStateChange)
 	{
-		if (Docked && isMinimized() && KaduApplication::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
+		if (Docked && isMinimized() && Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
 			QMetaObject::invokeMethod(this, "hide", Qt::QueuedConnection);
 	}
 #endif
