@@ -196,7 +196,7 @@ void HintManager::setHint()
 	{
 		newPosition = QPoint(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintsPositionX"), Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintsPositionY"));
 
-//		kdebugm(KDEBUG_INFO, "%d %d %d\n", KaduApplication::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
+//		kdebugm(KDEBUG_INFO, "%d %d %d\n", Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
 		switch(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Corner"))
 		{
 			case 1: // "TopRight"
@@ -593,26 +593,26 @@ void HintManager::createDefaultConfiguration()
 {
 	// TODO: this should be more like: if (plugins.loaded(freedesktop_notify) && this_is_first_time_we_are_loaded_or_whatever)
 #if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
 #endif
 
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
