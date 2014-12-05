@@ -4,7 +4,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
+
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include <QtX11Extras/QX11Info>
+#endif
 
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
