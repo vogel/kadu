@@ -178,7 +178,7 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\libp11-kit-0.dll"
 	File "${BIN_DIR}\libpng16-16.dll"
 	File "${BIN_DIR}\libprotobuf-c-1.dll"
-	File "${BIN_DIR}\libqca.dll"
+	File "${BIN_DIR}\libqca-qt5.dll"
 	File "${BIN_DIR}\libsqlite3-0.dll"
 	File "${BIN_DIR}\libssl-10.dll"
 	File "${BIN_DIR}\libstdc++-6.dll"
@@ -194,16 +194,7 @@ Section -section_qt
 	SetOverwrite on
 
 	SetOutPath "$INSTDIR"
-	File "${BIN_DIR}\QtCore4.dll"
-	File "${BIN_DIR}\QtDeclarative4.dll"
-	File "${BIN_DIR}\QtGui4.dll"
-	File "${BIN_DIR}\QtNetwork4.dll"
-	File "${BIN_DIR}\QtScript4.dll"
-	File "${BIN_DIR}\QtSql4.dll"
-	File "${BIN_DIR}\QtSvg4.dll"
-	File "${BIN_DIR}\QtWebKit4.dll"
-	File "${BIN_DIR}\QtXml4.dll"
-	File "${BIN_DIR}\QtXmlPatterns4.dll"
+	File "${BIN_DIR}\Qt5*.dll"
 	File "${BIN_DIR}\qt.conf"
 
 	SetOutPath "$INSTDIR\qt-plugins"
@@ -465,7 +456,7 @@ SectionGroup $(section_plugins) SectionPlugins
 	SectionEnd
 
 	!insertmacro kadu_plugin qt4_sound qt4_sound
-	!insertmacro kadu_plugin screenshot screenshot
+#	!insertmacro kadu_plugin screenshot screenshot
 	!insertmacro kadu_plugin simpleview simpleview
 	!insertmacro kadu_plugin single_window single_window
 	!insertmacro kadu_obligatory_plugin sms sms
@@ -502,22 +493,22 @@ SectionGroupEnd
 
 SectionGroup $(section_external_plugins) SectionExternalPlugins
 
-	!insertmacro kadu_external_plugin anonymous_check anonymous_check
-	!insertmacro kadu_external_plugin import_history import_history
-	!insertmacro kadu_external_plugin kadu_completion kadu_completion
-	!insertmacro kadu_external_plugin lednotify lednotify
-	!insertmacro kadu_external_plugin messagessplitter messagessplitter
+#	!insertmacro kadu_external_plugin anonymous_check anonymous_check
+#	!insertmacro kadu_external_plugin import_history import_history
+#	!insertmacro kadu_external_plugin kadu_completion kadu_completion
+#	!insertmacro kadu_external_plugin lednotify lednotify
+#	!insertmacro kadu_external_plugin messagessplitter messagessplitter
 
-	Section /o mime_tex
-		!insertmacro kadu_plugin_content mime_tex
+#	Section /o mime_tex
+#		!insertmacro kadu_plugin_content mime_tex
 
-		SetOutPath "$INSTDIR\plugins\bin\mime_tex\"
-		File /r "${LIB_DIR}\kadu\plugins\bin\mime_tex\mimetex.exe"
-	SectionEnd
+#		SetOutPath "$INSTDIR\plugins\bin\mime_tex\"
+#		File /r "${LIB_DIR}\kadu\plugins\bin\mime_tex\mimetex.exe"
+#	SectionEnd
 
-	!insertmacro kadu_external_plugin networkping networkping
-	!insertmacro kadu_external_plugin nextinfo nextinfo
-	!insertmacro kadu_external_plugin senthistory senthistory
+#	!insertmacro kadu_external_plugin networkping networkping
+#	!insertmacro kadu_external_plugin nextinfo nextinfo
+#	!insertmacro kadu_external_plugin senthistory senthistory
 
 SectionGroupEnd
 
