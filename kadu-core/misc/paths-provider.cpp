@@ -47,14 +47,6 @@ QString PathsProvider::homePath()
 
 QString PathsProvider::webKitPath(const QString &path)
 {
-#ifdef Q_OS_WIN
-	QString winPath = path;
-	if (winPath.startsWith(QLatin1String("file:///")))
-		return winPath.remove(0, 8);
-	if (winPath.startsWith(QLatin1String("file://")))
-		return winPath.remove(0, 7);
-	return winPath;
-#else
 	if (path.isEmpty())
 		return path;
 	if (path.startsWith(QLatin1String("file:///")))
@@ -62,7 +54,6 @@ QString PathsProvider::webKitPath(const QString &path)
 	if (path.startsWith('/'))
 		return "file://" + path;
 	return "file:///" + path;
-#endif
 }
 
 PathsProvider::PathsProvider(const QString &customProfileDir, QObject *parent) :
