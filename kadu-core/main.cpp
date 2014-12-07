@@ -250,7 +250,7 @@ int main(int argc, char *argv[]) try
 	QCoreApplication::installTranslator(&qt_qm);
 	QCoreApplication::installTranslator(&kadu_qm);
 
-	QtLocalPeer *peer = new QtLocalPeer(&application, Application::instance()->pathsProvider()->profilePath());
+	QtLocalPeer *peer = new QtLocalPeer(&application, "Kadu");
 	if (peer->isClient())
 	{
 		if (!executionArguments.openIds().isEmpty())

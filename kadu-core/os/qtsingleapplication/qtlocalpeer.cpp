@@ -115,7 +115,7 @@ bool QtLocalPeer::isClient()
     if (lockFile->isLocked())
         return false;
 
-    if (!lockFile->tryLock())
+    if (!lockFile->tryLock(1000))
         return true;
 
     bool res = server->listen(socketName);
