@@ -158,6 +158,7 @@ Section -section_generic_libraries
 
 	SetOutPath "$INSTDIR"
 	File "${BIN_DIR}\bz2-1.dll"
+	File "${BIN_DIR}\libinjeqt.dll"
 	File "${BIN_DIR}\libarchive-12.dll"
 	File "${BIN_DIR}\libcrypto-10.dll"
 	File "${BIN_DIR}\libffi-6.dll"
