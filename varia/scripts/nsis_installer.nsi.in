@@ -188,6 +188,22 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\zlib1.dll"
 	File "${BIN_DIR}\libotr-5.dll"
 	File "${BIN_DIR}\libssp-0.dll"
+	File "${BIN_DIR}\icudata53.dll"
+	File "${BIN_DIR}\icui18n53.dll"
+	File "${BIN_DIR}\icuio53.dll"
+	File "${BIN_DIR}\icule53.dll"
+	File "${BIN_DIR}\iculx53.dll"
+	File "${BIN_DIR}\icutest53.dll"
+	File "${BIN_DIR}\icutu53.dll"
+	File "${BIN_DIR}\icuuc53.dll"
+	File "${BIN_DIR}\libEGL.dll"
+	File "${BIN_DIR}\libGLESv2.dll"
+	File "${BIN_DIR}\libexslt-0.dll"
+	File "${BIN_DIR}\libpcre-1.dll"
+	File "${BIN_DIR}\libpcre16-0.dll"
+	File "${BIN_DIR}\libwebp-4.dll"
+	File "${BIN_DIR}\libxml2-2.dll"
+	File "${BIN_DIR}\libxslt-1.dll"
 SectionEnd
 
 Section -section_qt
