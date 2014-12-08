@@ -148,8 +148,8 @@ QString AdiumStyleRenderer::preprocessStyleBaseHtml(bool useTransparency)
 	}
 	else
 	{
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (m_style->styleViewVersion() < 3 && m_style->defaultVariant() == m_style->currentVariant()) ? Qt::escape(m_style->mainHref()) : "Variants/" + Qt::escape(m_style->currentVariant()));
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (m_style->styleViewVersion() < 3) ? QString() : QString("@import url( \"" + Qt::escape(m_style->mainHref()) + "\" );"));
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (m_style->styleViewVersion() < 3 && m_style->defaultVariant() == m_style->currentVariant()) ? Qt::escape(PathsProvider::webKitPath(m_style->mainHref())) : "Variants/" + Qt::escape(m_style->currentVariant()));
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (m_style->styleViewVersion() < 3) ? QString() : QString("@import url( \"" + Qt::escape(PathsProvider::webKitPath(m_style->mainHref())) + "\" );"));
 	}
 
 	if (useTransparency && !m_style->defaultBackgroundIsTransparent())
