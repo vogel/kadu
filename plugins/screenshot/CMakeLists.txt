@@ -54,6 +54,10 @@ if (UNIX AND NOT APPLE)
 	list (APPEND LIBRARIES ${X11_X11_LIB} ${X11_Xext_LIB})
 endif ()
 
+if (WIN32)
+	set (PLUGIN_ADDITIONAL_QT_MODULES WinExtras)
+endif ()
+
 kadu_plugin (screenshot
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}

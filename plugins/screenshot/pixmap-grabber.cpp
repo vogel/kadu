@@ -38,6 +38,7 @@
 #ifdef Q_OS_WIN32
 #include <QtCore/QLibrary>
 #include <windows.h>
+#include <QtWinExtras/QWinFunctions>
 #undef MessageBox
 typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
 #include <debug.h>
@@ -283,7 +284,7 @@ QPixmap PixmapGrabber::grabCurrent()
 			DeleteDC(hdcMem);
 			ReleaseDC(winId, hDC);
 
-			QPixmap ret = QPixmap::fromWinHBITMAP(hBitmap);
+			QPixmap ret = QWinExtras::toHBITMAP(hBitmap);
 
 			DeleteObject(hBitmap);
 			return ret;
