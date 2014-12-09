@@ -38,7 +38,7 @@
 #ifdef Q_OS_WIN32
 #include <QtCore/QLibrary>
 #include <windows.h>
-#include <QtWinExtras/QWinFunctions>
+#include <QtWinExtras/QWinExtras>
 #undef MessageBox
 typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
 #include <debug.h>
