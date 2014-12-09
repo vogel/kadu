@@ -284,7 +284,7 @@ QPixmap PixmapGrabber::grabCurrent()
 			DeleteDC(hdcMem);
 			ReleaseDC(winId, hDC);
 
-			QPixmap ret = QWinExtras::toHBITMAP(hBitmap);
+			QPixmap ret = QtWin::fromHBITMAP(hBitmap);
 
 			DeleteObject(hBitmap);
 			return ret;
