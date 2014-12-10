@@ -22,6 +22,7 @@
 #define FORMATTED_STRING_FACTORY_H
 
 #include <memory>
+#include <vector>
 #include <QtCore/QPointer>
 
 #include "formatted-string/formatted-string.h"

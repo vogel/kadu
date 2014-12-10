@@ -102,6 +102,10 @@ pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
 
 set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt)
 
+if (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+	include_directories (${LIBOTR_INCLUDE_DIRS})
+endif ()
+
 kadu_plugin (encryption_otr
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}

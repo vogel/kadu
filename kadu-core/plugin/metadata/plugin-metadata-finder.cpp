@@ -48,7 +48,7 @@ void PluginMetadataFinder::setPluginMetadataReader(PluginMetadataReader *pluginM
 std::map<QString, PluginMetadata> PluginMetadataFinder::provide() noexcept
 {
 	if (m_directory.isEmpty() || !m_pluginMetadataReader)
-		return {};
+		return std::map<QString, PluginMetadata>{};
 
 	auto result = std::map<QString, PluginMetadata>{};
 

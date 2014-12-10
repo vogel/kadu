@@ -19,6 +19,10 @@ set (CONFIGURATION_FILES
 	configuration/single_window.ui
 )
 
+if (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+	include_directories (${X11_X11_INCLUDE_PATH})
+endif ()
+
 kadu_plugin (single_window
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
