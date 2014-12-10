@@ -30,7 +30,7 @@
 #include "image-expander.h"
 
 ImageExpander::ImageExpander() :
-		DomTextRegexpVisitor(QRegExp("https?://.*(\\.gif|\\.jpg|\\.png)"))
+		DomTextRegexpVisitor(QRegExp("https?://([^\\s]*)(\\.gif|\\.jpg|\\.png)\\??""([^\\s]*)#?([^\\s]*)")) // "" required to ignore trigraph
 {
 }
 
