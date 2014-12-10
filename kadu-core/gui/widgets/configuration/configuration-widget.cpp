@@ -111,11 +111,16 @@ ConfigurationWidget::~ConfigurationWidget()
 
 void ConfigurationWidget::init()
 {
-	QString lastSection = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
-	if (ConfigSections.contains(lastSection) && ConfigSections.value(lastSection))
-		ConfigSections.value(lastSection)->activate();
+	auto lastSection = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
+	auto section = ConfigSections.value(lastSection);
+	if (section)
+		section->activate();
 	else if (SectionsListWidget->count() > 0)
-		ConfigSections.value(SectionsListWidget->item(0)->text())->activate();
+	{
+		auto firstSection = ConfigSections.value(SectionsListWidget->item(0)->text());
+		if (firstSection)
+			firstSection->activate();
+	}
 }
 
 QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName, bool load)
