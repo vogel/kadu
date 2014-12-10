@@ -40,7 +40,7 @@ void PluginConflictResolver::setPluginDependencyHandler(PluginDependencyHandler 
 std::set<QString> PluginConflictResolver::conflictingPlugins(const std::set<QString> &activePluginSet, const QString &pluginName)
 {
 	if (!m_pluginDependencyHandler || contains(activePluginSet, pluginName))
-		return {};
+		return std::set<QString>{}; 
 
 	auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
 	auto withoutActive = decltype(withDependencies){};

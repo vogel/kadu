@@ -23,6 +23,10 @@ set (CONFIGURATION_FILES
 	configuration/tabs.ui
 )
 
+if (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+	include_directories (${X11_X11_INCLUDE_PATH})
+endif ()
+
 kadu_plugin (tabs
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}

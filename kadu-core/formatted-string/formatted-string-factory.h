@@ -23,6 +23,7 @@
 
 #include <QtCore/QPointer>
 #include <memory>
+#include <vector>
 
 #include "formatted-string/formatted-string.h"
 #include "exports.h"

@@ -9,6 +9,7 @@
 * indicator_docking: #2682 done: support for new versions of Unity (Vogel)
 * unity_integration: #2892 done: display number of unread messages in Unity Launcher (Vogel)
 * gui: #2869 fixed: uuids visible in info panel after adding new buddy (Vogel)
+* bsd: #2894 fixed: fix build on FreeBSD (Pekala)
 
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)
