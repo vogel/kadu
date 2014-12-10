@@ -139,10 +139,13 @@ void BuddyDataWindow::factoryUnregistered(BuddyConfigurationWidgetFactory *facto
 	if (BuddyConfigurationWidgets.contains(factory))
 	{
 		BuddyConfigurationWidget *widget = BuddyConfigurationWidgets.value(factory);
-		if (widget->stateNotifier())
-			ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
-		emit widgetRemoved(widget);
-		widget->deleteLater();
+		if (widget)
+		{
+			if (widget->stateNotifier())
+				ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
+			emit widgetRemoved(widget);
+			widget->deleteLater();
+		}
 		BuddyConfigurationWidgets.remove(factory);
 	}
 }
