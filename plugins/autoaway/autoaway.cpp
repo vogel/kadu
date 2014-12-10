@@ -83,7 +83,8 @@ AutoAway::AutoAway() :
 		autoInvisibleSpinBox{},
 		autoOfflineSpinBox{},
 		autoRefreshSpinBox{},
-		descriptionTextLineEdit{}
+		descriptionTextLineEdit{},
+		changeTo{AutoAwayStatusChanger::NoChangeDescription}
 {
 }
 
