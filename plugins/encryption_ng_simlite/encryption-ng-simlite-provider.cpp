@@ -99,10 +99,10 @@ bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat) const
 	if (1 != chat.contacts().size())
 		return false;
 
-	if (!Decryptors.contains(chat.chatAccount()) || !Decryptors.value(chat.chatAccount()))
-		return false;
-
-	return Decryptors.value(chat.chatAccount())->isValid();
+	auto decryptor = Decryptors.value(chat.chatAccount());
+	return decryptor
+		? decryptor->isValid()
+		: false;
 }
 
 bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat) const
