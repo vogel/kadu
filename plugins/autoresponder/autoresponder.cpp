@@ -50,7 +50,8 @@
 
 AutoResponder::AutoResponder(QObject *parent) :
 		MessageFilter(parent),
-		UiHandler(nullptr)
+		UiHandler(nullptr),
+		Configurator{nullptr}
 {
 }
 
