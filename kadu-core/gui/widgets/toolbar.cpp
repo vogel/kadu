@@ -312,14 +312,21 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 		QString actionName;
 		Qt::ToolButtonStyle style;
 
-		MainWindow *mainWindow = 0;
-		if (ActionDrag::decode(event, actionName, style) &&
-				(event->source() == this ||
-				(Actions::instance()->contains(actionName) && Actions::instance()->value(actionName) &&
-					(mainWindow = qobject_cast<MainWindow *>(parentWidget())) &&
-					mainWindow->supportsActionType(Actions::instance()->value(actionName)->type())) ||
-				actionName.startsWith(QLatin1String("__separator")) ||
-				actionName.startsWith(QLatin1String("__spacer"))))
+		auto decoded = ActionDrag::decode(event, actionName, style);
+		if (!decoded)
+		{
+			event->ignore();
+			return;
+		}
+
+		auto mine = source == this;
+		auto action = Actions::instance()->value(actionName);
+		auto mainWindow = qobject_cast<MainWindow *>(parentWidget());
+		auto supportedAction = action && mainWindow && mainWindow->supportsActionType(action->type());
+		auto isSeparator = actionName.startsWith(QLatin1String("__separator"));
+		auto isSpacer = actionName.startsWith(QLatin1String("__spacer"));
+
+		if (mine || supportedAction || isSeparator || isSpacer)
 		{
 			dragging = true;
 			updateDropMarker();
