@@ -27,7 +27,6 @@
 #include "formatted-string-is-plain-text-visitor.h"
 
 FormattedStringIsPlainTextVisitor::FormattedStringIsPlainTextVisitor() :
-		m_first{true},
 		m_isPlain{true}
 {
 }
@@ -47,14 +46,11 @@ void FormattedStringIsPlainTextVisitor::endVisit(const CompositeFormattedString 
 void FormattedStringIsPlainTextVisitor::visit(const FormattedStringImageBlock * const)
 {
 	m_first = false;
+	m_isPlain = false;
 }
 
 void FormattedStringIsPlainTextVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	if (!m_first)
-		m_isPlain = false;
-	m_first = false;
-
 	// ignore colors
 	if (formattedStringTextBlock->bold() || formattedStringTextBlock->italic() || formattedStringTextBlock->underline())
 		m_isPlain = false;
