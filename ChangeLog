@@ -11,6 +11,7 @@
 * gui: #2869 fixed: uuids visible in info panel after adding new buddy (Vogel)
 * bsd: #2894 fixed: fix build on FreeBSD (Pekala)
 * imagelink: #2896 fixed: support more image urls (Vogel)
+* gadu: #2877 fixed: receiving images works again (Vogel)
 
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)

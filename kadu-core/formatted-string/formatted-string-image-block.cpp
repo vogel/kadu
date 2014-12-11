@@ -27,7 +27,7 @@ FormattedStringImageBlock::FormattedStringImageBlock()
 }
 
 FormattedStringImageBlock::FormattedStringImageBlock(QString imagePath) :
-		ImagePath{std::move(imagePath)}, Image{imagePath, 0}
+		ImagePath{imagePath}, Image{imagePath, 0}
 {
 }
 
