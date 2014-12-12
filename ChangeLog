@@ -14,6 +14,7 @@
 * gadu: #2877 fixed: receiving images works again (Vogel)
 * notify: #2897 fixed: new chat notification is now closed after opening chat widget (Vogel)
 * gui: #2899 fixed: leaving conference properly closes chat widget (Vogel)
+* bsd: #2898 fixed: fix scripts on FreeBSD (Pekala)
 
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)

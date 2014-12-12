@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ERROR_NO_ERROR=0
 ERROR_SQLITE3_NOT_EXECUTABLE=1

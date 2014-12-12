@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # %kadu copyright begin%
 # Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
