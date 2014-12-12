@@ -23,6 +23,8 @@
 
 #include <QtGui/QTextDocument>
 
+#include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "icons/icons-manager.h"
 #include "message/message.h"
 #include "notify/notification-manager.h"
@@ -62,10 +64,12 @@ void MessageNotification::unregisterEvents()
 	NewMessageNotifyEvent = 0;
 }
 
-MessageNotification::MessageNotification(MessageType messageType, const Message &message) :
+MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :
 		ChatNotification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
 		KaduIcon("protocols/common/message")), CurrentMessage(message)
 {
+	connect(chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
+
 	QString syntax;
 
 	if (messageType == NewChat)
@@ -83,5 +87,10 @@ MessageNotification::MessageNotification(MessageType messageType, const Message 
 	setDetails(message.htmlContent());
 }
 
+void MessageNotification::chatWidgetAdded(ChatWidget *chatWidget)
+{
+	if (chatWidget->chat() == chat())
+		close();
+}
 
 #include "moc_new-message-notification.cpp"
