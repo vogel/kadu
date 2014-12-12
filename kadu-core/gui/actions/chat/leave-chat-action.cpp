@@ -48,7 +48,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 {
 	Q_UNUSED(toggled)
 
-	const Chat &chat = context->chat();
+	auto chat = context->chat();
 	if (!chat)
 		return;
 
@@ -56,7 +56,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chatWidget)
 		return;
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"),
+	auto dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"),
 						      tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"),
 						      widget);
 	dialog->addButton(QMessageBox::Yes, tr("Leave conference"));
@@ -65,7 +65,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 		return;
 
 	chat.setIgnoreAllMessages(true);
-	chatWidget->close();
+	chatWidget->requestClose();
 }
 
 #include "moc_leave-chat-action.cpp"
