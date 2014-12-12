@@ -27,13 +27,16 @@ class KADUAPI AggregateNotification : public Notification
 	Q_OBJECT
 
 	QString GroupKey;
+	QString Identifier;
 	QList<Notification *> Notifications;
+	bool IsPeriodic;
+	int Period;
 
 public:
 	void addNotification(Notification * notification);
 	AggregateNotification(Notification *firstNotification);
 
-	QString identifier() { return Notifications.first()->identifier(); }
+	QString identifier() { return Identifier; }
 
 	virtual const QString title() const;
 
@@ -57,8 +60,8 @@ public:
 
 	virtual bool requireCallback();
 
-	virtual bool isPeriodic() { return Notifications.first()->isPeriodic(); }
-	virtual int period() { return Notifications.first()->period(); }
+	virtual bool isPeriodic() { return IsPeriodic; }
+	virtual int period() { return Period; }
 
 protected slots:
 	void partialNotificationClosed(Notification *notification);

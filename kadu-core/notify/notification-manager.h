@@ -67,7 +67,7 @@ class KADUAPI NotificationManager : public QObject
 	NotificationManager();
 	virtual ~NotificationManager();
 
-	Notification * findGroup(Notification *notification);
+	AggregateNotification * findGroup(Notification *notification);
 
 private slots:
 	void removeGrouped(Notification *notification);
