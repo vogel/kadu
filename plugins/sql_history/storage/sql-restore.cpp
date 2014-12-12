@@ -80,7 +80,7 @@ SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFileP
 		return ErrorNoRestoreScriptExecutable;
 
 	QProcess restoreProcess;
-	restoreProcess.execute("/bin/bash", QStringList() << recoveryScriptPath << databaseFilePath);
+	restoreProcess.execute("bash", QStringList() << recoveryScriptPath << databaseFilePath);
 	restoreProcess.waitForFinished(-1);
 
 	if (restoreProcess.exitCode() < 0 || restoreProcess.exitCode() > ErrorRecovering)

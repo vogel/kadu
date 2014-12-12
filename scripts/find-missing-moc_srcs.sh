@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "The following header files need to be included in MOC_SRCS part of respecting CMakeLists.txt files:"
 
