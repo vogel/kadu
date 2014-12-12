@@ -127,7 +127,7 @@ void IndicatorDocking::indicateUnreadMessages()
 {
 	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
 		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
-			notify(new MessageNotification(MessageNotification::NewChat, message));
+			notify(new MessageNotification(Core::instance()->chatWidgetRepository(), MessageNotification::NewChat, message));
 }
 
 void IndicatorDocking::silentModeToggled(bool silentMode)
