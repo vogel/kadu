@@ -29,6 +29,8 @@
 #include "chat-notification.h"
 #include "exports.h"
 
+class ChatWidget;
+class ChatWidgetRepository;
 class NotifyEvent;
 
 class KADUAPI MessageNotification : public ChatNotification
@@ -51,8 +53,11 @@ public:
 	static void registerEvents();
 	static void unregisterEvents();
 
-	MessageNotification(MessageType messageType, const Message &message);
+	MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message);
 	virtual ~MessageNotification() {}
+
+private slots:
+	void chatWidgetAdded(ChatWidget *chatWidget);
 
 };
 

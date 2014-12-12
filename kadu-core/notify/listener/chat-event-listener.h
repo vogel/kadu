@@ -40,7 +40,6 @@ public:
 	ChatEventListener(NotificationService *service);
 	virtual ~ChatEventListener();
 
-	
 };
 
 #endif // CHAT_EVENT_LISTENER_H

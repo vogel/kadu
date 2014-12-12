@@ -12,6 +12,7 @@
 * bsd: #2894 fixed: fix build on FreeBSD (Pekala)
 * imagelink: #2896 fixed: support more image urls (Vogel)
 * gadu: #2877 fixed: receiving images works again (Vogel)
+* notify: #2897 fixed: new chat notification is now closed after opening chat widget (Vogel)
 
 +++ version 1.2
 * gui: #2881 fixed: after some imported configuration no contacts are displayed at all (Vogel)

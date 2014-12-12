@@ -47,10 +47,9 @@ void ChatEventListener::messageReceived(const Message &message)
 	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(message.messageChat());
 
 	if (!chatWidget)
-		Service->notify(new MessageNotification(MessageNotification::NewChat, message));
+		Service->notify(new MessageNotification(Core::instance()->chatWidgetRepository(), MessageNotification::NewChat, message));
 	else if (!Service->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
-		Service->notify(new MessageNotification(MessageNotification::NewMessage, message));
+		Service->notify(new MessageNotification(Core::instance()->chatWidgetRepository(), MessageNotification::NewMessage, message));
 }
-
 
 #include "moc_chat-event-listener.cpp"
