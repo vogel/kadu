@@ -162,8 +162,6 @@ public:
 	 **/
 	virtual void close();
 
-	void partialClose();
-
 	/**
 		Usuwa akcje u�ytkownika
 	 **/
@@ -226,6 +224,7 @@ public:
 	 **/
 	virtual void setDetails(const QStringList &details);
 	virtual void setDetails(const QString &details);
+
 	/**
 		Szczeg��y zdarzenia
 	 **/
@@ -270,7 +269,6 @@ public slots:
 
 signals:
 	void updated(Notification *);
-	void partialClosed(Notification *);
 	void closed(Notification *);
 
 

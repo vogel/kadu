@@ -81,13 +81,6 @@ void Notification::close()
 {
 	kdebugf();
 
-	emit closed(this);
-}
-
-void Notification::partialClose()
-{
-	kdebugf();
-
 	if (!Closing)
 	{
 		Closing = true;

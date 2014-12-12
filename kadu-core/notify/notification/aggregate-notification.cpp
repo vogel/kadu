@@ -23,9 +23,12 @@
 
 #include "aggregate-notification.h"
 
-
-AggregateNotification::AggregateNotification(Notification *firstNotification)
-		: Notification(firstNotification->type(), firstNotification->icon()), GroupKey(firstNotification->groupKey())
+AggregateNotification::AggregateNotification(Notification *firstNotification) :
+		Notification(firstNotification->type(), firstNotification->icon()),
+		GroupKey(firstNotification->groupKey()),
+		Identifier{firstNotification->identifier()},
+		IsPeriodic{firstNotification->isPeriodic()},
+		Period{firstNotification->period()}
 {
 	Notifications = QList<Notification *>();
 	addNotification(firstNotification);
@@ -35,7 +38,7 @@ void AggregateNotification::addNotification(Notification* notification)
 {
 	Notifications.append(notification);
 
-	connect(notification, SIGNAL(partialClosed(Notification *)), this, SLOT(partialNotificationClosed(Notification *)));
+	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(partialNotificationClosed(Notification *)));
 
 	emit updated(this);
 }
@@ -48,7 +51,7 @@ void AggregateNotification::close()
 
 		foreach (Notification *n, Notifications)
 		{
-			n->partialClose();
+			n->close();
 		}
 
 		emit closed(this);
@@ -84,37 +87,46 @@ const QStringList AggregateNotification::details() const
 
 void AggregateNotification::clearCallbacks()
 {
-	Notifications.first()->clearCallbacks();
+	if (!Notifications.empty())
+		Notifications.first()->clearCallbacks();
 }
 
 void AggregateNotification::addCallback ( const QString& caption, const char* slot, const char* signature )
 {
-	Notifications.first()->addCallback(caption, slot, signature);
+	if (!Notifications.empty())
+		Notifications.first()->addCallback(caption, slot, signature);
 }
 
 void AggregateNotification::setDefaultCallback ( int timeout, const char* slot )
 {
-	Notifications.first()->setDefaultCallback(timeout, slot);
+	if (!Notifications.empty())
+		Notifications.first()->setDefaultCallback(timeout, slot);
 }
 
 bool AggregateNotification::requireCallback()
 {
-	return Notifications.first()->requireCallback();
+	if (!Notifications.empty())
+		return Notifications.first()->requireCallback();
+	else
+		return false;
 }
 
 void AggregateNotification::callbackAccept()
 {
-	Notifications.first()->callbackAccept();
+	if (!Notifications.empty())
+		Notifications.first()->callbackAccept();
 }
 
 void AggregateNotification::callbackDiscard()
 {
-	Notifications.first()->callbackDiscard();
+	if (!Notifications.empty())
+		Notifications.first()->callbackDiscard();
 }
 
 void AggregateNotification::clearDefaultCallback()
 {
-	Notifications.first()->clearDefaultCallback();
+	if (!Notifications.empty())
+		Notifications.first()->clearDefaultCallback();
 }
 
 void AggregateNotification::partialNotificationClosed(Notification *notification)
@@ -123,6 +135,5 @@ void AggregateNotification::partialNotificationClosed(Notification *notification
 
 	close();
 }
-
 
 #include "moc_aggregate-notification.cpp"

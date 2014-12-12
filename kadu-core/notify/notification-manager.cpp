@@ -175,13 +175,19 @@ void NotificationManager::notify(Notification *rawNotification)
 		}
 	}
 
-	Notification *notification = findGroup(rawNotification);
+	auto notification = findGroup(rawNotification);
+	if (notification) // should update details
+		return;
 
-	QString notifyType = rawNotification->key();
-	bool foundNotifier = false;
-	bool foundNotifierWithCallbackSupported = !rawNotification->requireCallback();
+	notification = new AggregateNotification(rawNotification);
+	connect(notification, SIGNAL(closed(Notification*)), this, SLOT(removeGrouped(Notification*)));
+	ActiveNotifications.insert(notification->identifier(), notification);
 
-	foreach (Notifier *notifier, Notifiers)
+	auto notifyType = rawNotification->key();
+	auto foundNotifier = false;
+	auto foundNotifierWithCallbackSupported = !rawNotification->requireCallback();
+
+	for (auto notifier : Notifiers)
 	{
 		if (config_file.readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{
@@ -193,7 +199,7 @@ void NotificationManager::notify(Notification *rawNotification)
 	}
 
 	if (!foundNotifierWithCallbackSupported)
-		foreach (Notifier *notifier, Notifiers)
+		for (auto notifier : Notifiers)
 		{
 			if (Notifier::CallbackSupported == notifier->callbackCapacity())
 			{
@@ -213,21 +219,11 @@ void NotificationManager::notify(Notification *rawNotification)
 	kdebugf2();
 }
 
-Notification * NotificationManager::findGroup(Notification *rawNotification)
+AggregateNotification * NotificationManager::findGroup(Notification *rawNotification)
 {
-	AggregateNotification *aggregate = ActiveNotifications.value(rawNotification->identifier());
-
+	auto aggregate = ActiveNotifications.value(rawNotification->identifier());
 	if (aggregate)
-	{
 		aggregate->addNotification(rawNotification);
-	}
-	else
-	{
-		aggregate = new AggregateNotification(rawNotification);
-		connect(aggregate, SIGNAL(closed(Notification*)), this, SLOT(removeGrouped(Notification*)));
-	}
-
-	ActiveNotifications.insert(aggregate->identifier(), aggregate);
 
 	return aggregate;
 }
