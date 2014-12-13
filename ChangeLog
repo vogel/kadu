@@ -1,5 +1,6 @@
 +++ version 1.5
 * otr: #2895 fixed: strange error messages when using libotr5-4.1.0 (Vogel)
+* history: #2902 fixed: clear history menu item dissappears after a second (Vogel)
 
 +++ version 1.4
 * hints: #2905 fixed: crash after clicking on hint (Vogel)
