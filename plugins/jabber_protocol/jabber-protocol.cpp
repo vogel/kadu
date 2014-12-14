@@ -28,6 +28,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
@@ -48,6 +49,7 @@
 #include "services/jabber-client-info-service.h"
 #include "services/jabber-connection-service.h"
 #include "services/jabber-pep-service.h"
+#include "services/jabber-room-chat-service.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-server-info-service.h"
 #include "services/jabber-stream-debug-service.h"
@@ -80,10 +82,17 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(XmppClient, SIGNAL(resourceAvailable(Jid,Resource)), this, SLOT(clientAvailableResourceReceived(Jid,Resource)));
 	connect(XmppClient, SIGNAL(resourceUnavailable(Jid,Resource)), this, SLOT(clientUnavailableResourceReceived(Jid,Resource)));
 
+	auto roomChatService = new XMPP::JabberRoomChatService{account, this};
+	roomChatService->setBuddyManager(BuddyManager::instance());
+	roomChatService->setChatManager(ChatManager::instance());
+	roomChatService->setContactManager(ContactManager::instance());
+	roomChatService->setXmppClient(XmppClient);
+
 	CurrentAvatarService = new JabberAvatarService(account, this);
 	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
+	chatService->setRoomChatService(roomChatService);
 
 	XMPP::JabberChatStateService *chatStateService = new XMPP::JabberChatStateService(account, this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);

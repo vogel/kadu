@@ -90,6 +90,7 @@ set (SOURCES
 	services/jabber-file-transfer-service.cpp
 	services/jabber-pep-service.cpp
 	services/jabber-personal-info-service.cpp
+	services/jabber-room-chat-service.cpp
 	services/jabber-roster-service.cpp
 	services/jabber-server-info-service.cpp
 	services/jabber-stream-debug-service.cpp

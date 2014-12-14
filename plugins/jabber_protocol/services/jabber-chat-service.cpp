@@ -47,6 +47,7 @@
 
 #include "debug.h"
 
+#include "services/jabber-room-chat-service.h"
 #include "iris-status-adapter.h"
 #include "jabber-protocol.h"
 
@@ -97,114 +98,14 @@ void JabberChatService::setXmppClient(Client *xmppClient)
 		connectClient();
 }
 
+void JabberChatService::setRoomChatService(JabberRoomChatService *roomChatService)
+{
+	RoomChatService = roomChatService;
+}
+
 int JabberChatService::maxMessageLength() const
 {
 	return 100000;
-}
-
-ChatDetailsRoom * JabberChatService::myRoomChatDetails(const Chat &chat) const
-{
-	if (chat.chatAccount() != account())
-		return 0;
-
-	return qobject_cast<ChatDetailsRoom *>(chat.details());
-}
-
-void JabberChatService::chatOpened(const Chat &chat)
-{
-	ChatDetailsRoom *details = myRoomChatDetails(chat);
-	if (!details)
-		return;
-
-	OpenedRoomChats.insert(details->room(), chat);
-
-	Jid jid = details->room();
-	XmppClient.data()->groupChatJoin(jid.domain(), jid.node(), details->nick());
-}
-
-void JabberChatService::chatClosed(const Chat &chat)
-{
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
-
-	if (protocol)
-	{
-		protocol->resourcePool()->removeAllResources(chat.contacts().toContact().id());
-	}
-
-	ChatDetailsRoom *details = myRoomChatDetails(chat);
-	if (!details)
-		return;
-
-	OpenedRoomChats.remove(details->room());
-	ClosedRoomChats.insert(details->room(), chat);
-
-	Jid jid = details->room();
-	XmppClient.data()->groupChatLeave(jid.domain(), jid.node());
-}
-
-void JabberChatService::groupChatJoined(const Jid &jid)
-{
-	QString chatId = jid.bare();
-	if (!OpenedRoomChats.contains(chatId))
-		return;
-
-	Chat chat = OpenedRoomChats.value(chatId);
-	ChatDetailsRoom *details = myRoomChatDetails(chat);
-	if (details)
-		details->setConnected(true);
-}
-
-void JabberChatService::groupChatLeft(const Jid &jid)
-{
-	QString chatId = jid.bare();
-	Chat chat;
-
-	if (!ClosedRoomChats.contains(chatId))
-	{
-		if (!OpenedRoomChats.contains(chatId))
-			return;
-		chat = OpenedRoomChats.value(chatId);
-	}
-	else
-		chat = ClosedRoomChats.value(chatId);
-
-	ChatDetailsRoom *details = myRoomChatDetails(chat);
-	if (details)
-	{
-		details->setConnected(false);
-
-		ContactSet contacts = details->contacts();
-		foreach (const Contact &contact, contacts)
-			details->removeContact(contact);
-	}
-
-	ClosedRoomChats.remove(chatId);
-}
-
-void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
-{
-	Chat chat = OpenedRoomChats.value(jid.bare());
-
-	ChatDetailsRoom *chatDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
-	if (!chatDetails)
-		return;
-
-	::Status contactStatus = IrisStatusAdapter::fromIrisStatus(status);
-	Contact contact = ContactManager::instance()->byId(account(), jid.full(), ActionCreateAndAdd);
-
-	if (!contactStatus.isDisconnected())
-	{
-		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-		buddy.setDisplay(jid.resource());
-		buddy.setTemporary(true);
-	}
-
-	contact.setCurrentStatus(contactStatus);
-
-	if (contactStatus.isDisconnected())
-		chatDetails->removeContact(contact);
-	else
-		chatDetails->addContact(contact);
 }
 
 XMPP::Jid JabberChatService::chatJid(const Chat &chat)
@@ -322,60 +223,13 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (msg.type() == "error")
 		return;
 
-	Chat chat;
-	Contact contact;
+	auto message = RoomChatService->shouldHandleReceivedMessage(msg)
+		? RoomChatService->handleReceivedMessage(msg)
+		: handleNormalReceivedMessage(msg);
+	if (message.isNull())
+		return;
 
-	if (OpenedRoomChats.contains(msg.from().bare()))
-	{
-		chat = OpenedRoomChats.value(msg.from().bare());
-		ChatDetailsRoom *details = myRoomChatDetails(chat);
-
-		if (!details)
-			return;
-
-		if (msg.from().resource() == details->nick()) // message from myself
-			return;
-
-		contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
-		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-		buddy.setDisplay(msg.from().resource());
-		buddy.setTemporary(true);
-	}
-	else
-	{
-		contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
-		chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-
-		XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
-
-		if (protocol)
-		{
-			// make sure current resource is in pool
-			protocol->resourcePool()->addResource(msg.from().bare(), msg.from().resource());
-
-			//if we have a locked resource, we simply talk to it
-			JabberResource *resource = protocol->resourcePool()->lockedJabberResource(msg.from().bare());
-			if (resource)
-			{
-				// if new resource appears, we remove locked resource, so that messages will be sent
-				// to bare JID until some full JID talks and we lock to it then
-				if (msg.from().resource() != resource->resource().name())
-				{
-					protocol->resourcePool()->removeLock(msg.from().bare());
-				}
-			}
-			else
-			{
-				// first message from full JID - lock to this resource
-				protocol->resourcePool()->lockToResource(msg.from().bare(), msg.from().resource());
-			}
-		}
-	}
-
-	::Message message = ::Message::create();
-	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
-	message.setMessageSender(contact);
 	message.setSendDate(msg.timeStamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
@@ -397,6 +251,41 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	ContactMessageTypes.insert(msg.from().bare(), messageType);
 
 	emit messageReceived(message);
+}
+
+::Message JabberChatService::handleNormalReceivedMessage(const XMPP::Message &msg)
+{
+	auto contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
+	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+
+	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+
+	if (protocol)
+	{
+		// make sure current resource is in pool
+		protocol->resourcePool()->addResource(msg.from().bare(), msg.from().resource());
+
+		//if we have a locked resource, we simply talk to it
+		auto resource = protocol->resourcePool()->lockedJabberResource(msg.from().bare());
+		if (resource)
+		{
+			// if new resource appears, we remove locked resource, so that messages will be sent
+			// to bare JID until some full JID talks and we lock to it then
+			if (msg.from().resource() != resource->resource().name())
+				protocol->resourcePool()->removeLock(msg.from().bare());
+		}
+		else
+		{
+			// first message from full JID - lock to this resource
+			protocol->resourcePool()->lockToResource(msg.from().bare(), msg.from().resource());
+		}
+	}
+
+	::Message message = ::Message::create();
+	message.setMessageChat(chat);
+	message.setMessageSender(contact);
+
+	return message;
 }
 
 }

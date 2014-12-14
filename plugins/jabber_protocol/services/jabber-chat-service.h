@@ -33,16 +33,13 @@
 #include "protocols/services/chat-service.h"
 
 class Chat;
-class ChatDetailsRoom;
 class FormattedStringFactory;
-class JabberProtocol;
-
-Q_DECLARE_METATYPE(XMPP::Status)
 
 namespace XMPP
 {
 
 class Client;
+class JabberRoomChatService;
 
 class JabberChatService : public ChatService
 {
@@ -50,25 +47,16 @@ class JabberChatService : public ChatService
 
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QPointer<Client> XmppClient;
+	QPointer<JabberRoomChatService> RoomChatService;
 
 	QMap<QString, QString> ContactMessageTypes;
-	QMap<QString, Chat> OpenedRoomChats;
- 	QMap<QString, Chat> ClosedRoomChats;
 
 	void connectClient();
 	void disconnectClient();
 
-	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
 	XMPP::Jid chatJid(const Chat &chat);
 	QString chatMessageType(const Chat &chat, const XMPP::Jid &jid);
-
-private slots:
-	void chatOpened(const Chat &chat);
-	void chatClosed(const Chat &chat);
-
-	void groupChatJoined(const Jid &jid);
-	void groupChatLeft(const Jid &jid);
-	void groupChatPresence(const Jid &jid, const Status &status);
+	::Message handleNormalReceivedMessage(const Message &msg);
 
 public:
 	explicit JabberChatService(Account account, QObject *parent = 0);
@@ -77,6 +65,7 @@ public:
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void setXmppClient(Client *xmppClient);
+	void setRoomChatService(JabberRoomChatService *roomChatService);
 
 	virtual int maxMessageLength() const;
 
