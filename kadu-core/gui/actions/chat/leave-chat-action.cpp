@@ -26,6 +26,8 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/protocol.h"
+#include "protocols/services/chat-service.h"
 
 #include "leave-chat-action.h"
 
@@ -52,19 +54,28 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chat)
 		return;
 
+	auto account = chat.chatAccount();
+	auto protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	auto chatService = protocol->chatService();
+	if (!chatService)
+		return;
+
 	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 	if (!chatWidget)
 		return;
 
 	auto dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"),
-						      tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"),
-						      widget);
+		tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"),
+		widget);
 	dialog->addButton(QMessageBox::Yes, tr("Leave conference"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 	if (!dialog->ask())
 		return;
 
-	chat.setIgnoreAllMessages(true);
+	chatService->leaveChat(chat);
 	chatWidget->requestClose();
 }
 

@@ -57,6 +57,7 @@ public:
 public slots:
 	virtual bool sendMessage(const ::Message &message);
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage);
+	virtual void leaveChat(const Chat &chat);
 
 	void handleReceivedMessage(const Message &msg);
 

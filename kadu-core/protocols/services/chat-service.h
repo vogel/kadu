@@ -110,6 +110,14 @@ public slots:
 	 */
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) = 0;
 
+	/**
+	 * @short Leave @p chat.
+	 *
+	 * Use to leave chats in GG and room chats in XMPP. In current implemntations does nothing for single
+	 * contact chats in XMPP. May change in future.
+	 */
+	virtual void leaveChat(const Chat &chat) = 0;
+
 signals:
 	/**
 	 * @short Signal emitted when sent message status has changed.

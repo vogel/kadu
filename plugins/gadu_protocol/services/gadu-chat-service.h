@@ -119,8 +119,15 @@ public:
 	virtual int maxMessageLength() const;
 
 public slots:
-	virtual bool sendMessage(const Message &message);
-	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage);
+	virtual bool sendMessage(const Message &message) override;
+	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) override;
+
+	/**
+	 * @short Leave @p chat.
+	 *
+	 * Use to leave chat. Sets IgnoreAllMessages property to true.
+	 */
+	virtual void leaveChat(const Chat &chat) override;
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);

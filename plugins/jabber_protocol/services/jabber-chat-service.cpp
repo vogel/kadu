@@ -285,6 +285,11 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	return message;
 }
 
+void JabberChatService::leaveChat(const Chat& chat)
+{
+	Q_UNUSED(chat);
+}
+
 }
 
 #include "moc_jabber-chat-service.cpp"

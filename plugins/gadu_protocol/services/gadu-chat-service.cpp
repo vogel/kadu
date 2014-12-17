@@ -385,4 +385,9 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 	}
 }
 
+void GaduChatService::leaveChat(const Chat& chat)
+{
+	chat.setIgnoreAllMessages(true);
+}
+
 #include "moc_gadu-chat-service.cpp"
