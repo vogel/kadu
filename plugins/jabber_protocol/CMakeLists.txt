@@ -5,6 +5,8 @@ cmake_minimum_required (VERSION 2.8)
 # Needed for FindQCA2.cmake when building externally
 list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
 
+set (EXTERNAL_LIBIRS "" CACHE STRING "Path to directory with libiris.a and libirisnet.a file")
+
 find_package (Kadu REQUIRED CONFIG)
 
 find_package (PkgConfig)
@@ -184,7 +186,13 @@ set (MOC_SOURCES
 )
 
 add_definitions (${QCA2_DEFINITIONS} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC)
-add_subdirectory (3rdparty)
+
+if ("${EXTERNAL_LIBIRS}" STREQUAL "")
+	add_subdirectory (3rdparty)
+	set (LIBRARIES 3rdparty)
+else ()
+	set (LIBRARIES "${EXTERNAL_LIBIRS}/lib/libiris.a" "${EXTERNAL_LIBIRS}/lib/libirisnet.a")
+endif ()
 
 include_directories (
 	${QCA2_INCLUDE_DIR}
@@ -198,7 +206,7 @@ include_directories (
 	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src
 )
 
-set (LIBRARIES 3rdparty ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES})
+set (LIBRARIES ${LIBRARIES} ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES})
 if (WIN32)
 	set (LIBRARIES ${LIBRARIES} advapi32 ws2_32)
 endif ()
