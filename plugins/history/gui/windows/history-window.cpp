@@ -143,7 +143,7 @@ void HistoryWindow::keyPressEvent(QKeyEvent *event)
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 {
 	// TODO: fix it right, this is workaround only for crash when closing kadu with this window open
-	if (Core::instance()->isClosing())
+	if (Core::instance() && Core::instance()->isClosing())
 		return;
 
 	if (historyStorage)

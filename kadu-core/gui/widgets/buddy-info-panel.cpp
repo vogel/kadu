@@ -78,7 +78,7 @@ void BuddyInfoPanel::buddyUpdated(const Buddy &buddy)
 
 void BuddyInfoPanel::update()
 {
-	if (Core::instance()->isClosing())
+	if (Core::instance() && Core::instance()->isClosing())
 		return;
 
 	QFont font = Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont");

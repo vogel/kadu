@@ -99,7 +99,7 @@ void Protocol::passwordProvided()
 
 void Protocol::setAllOffline()
 {
-	if (Core::instance()->isClosing())
+	if (Core::instance() && Core::instance()->isClosing())
 		return;
 
 	Status status;

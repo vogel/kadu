@@ -335,7 +335,7 @@ void MainWindow::refreshToolBars()
 {
 	// We don't need it when closing.
 	// BTW, on Mac it caused crashes on exit. TODO: check out why, as there is probably a bug somewhere.
-	if (Core::instance()->isClosing())
+	if (Core::instance() && Core::instance()->isClosing())
 		return;
 
 	loadToolBarsFromConfig();
