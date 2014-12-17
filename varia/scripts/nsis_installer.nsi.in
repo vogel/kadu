@@ -157,7 +157,7 @@ Section -section_generic_libraries
 	SetOverwrite on
 
 	SetOutPath "$INSTDIR"
-	File "${BIN_DIR}\bz2-1.dll"
+	File "${BIN_DIR}\libbz2-1.dll"
 	File "${BIN_DIR}\libinjeqt.dll"
 	File "${BIN_DIR}\libarchive-12.dll"
 	File "${BIN_DIR}\libcrypto-10.dll"
