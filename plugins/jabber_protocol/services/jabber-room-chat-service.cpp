@@ -33,8 +33,7 @@ namespace XMPP
 {
 
 JabberRoomChatService::JabberRoomChatService(Account account, QObject *parent) :
-		AccountService{account, parent},
-		m_leaveOnChatClose{true}
+		AccountService{account, parent}
 {
 }
 
@@ -67,11 +66,6 @@ void JabberRoomChatService::setXmppClient(Client *xmppClient)
 	connect(m_client.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
 }
 
-void JabberRoomChatService::setLeaveOnChatClose(bool leaveOnChatClose)
-{
-	m_leaveOnChatClose = leaveOnChatClose;
-}
-
 ChatDetailsRoom * JabberRoomChatService::myRoomChatDetails(const Chat &chat) const
 {
 	if (chat.chatAccount() != account())
@@ -86,6 +80,9 @@ void JabberRoomChatService::chatOpened(const Chat &chat)
 	if (!details)
 		return;
 
+	if (m_openedRoomChats.contains(details->room()))
+		return;
+
 	m_openedRoomChats.insert(details->room(), chat);
 
 	auto jid = Jid{details->room()};
@@ -94,7 +91,8 @@ void JabberRoomChatService::chatOpened(const Chat &chat)
 
 void JabberRoomChatService::chatClosed(const Chat &chat)
 {
-	if (m_leaveOnChatClose)
+	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (!details || !details->stayInRoomAfterClosingWindow())
 		leaveChat(chat);
 }
 
@@ -111,7 +109,7 @@ void JabberRoomChatService::leaveChat(const Chat &chat)
 	m_openedRoomChats.remove(details->room());
 	m_closedRoomChats.insert(details->room(), chat);
 
-	Jid jid = details->room();
+	auto jid = Jid{details->room()};
 	m_client.data()->groupChatLeave(jid.domain(), jid.node());
 }
 

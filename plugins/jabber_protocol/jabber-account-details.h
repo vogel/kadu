@@ -66,6 +66,7 @@ private:
 	PROPERTY_DEC(bool, SendGoneNotification)
 	PROPERTY_DEC(bool, PublishSystemInfo)
 	PROPERTY_DEC(bool, StayInRoomAfterClosingWindow)
+
 protected:
 	virtual void load();
 	virtual void store();

@@ -53,8 +53,6 @@ public:
 
 	void setXmppClient(Client *xmppClient);
 
-	void setLeaveOnChatClose(bool leaveOnChatClose);
-
 	bool shouldHandleReceivedMessage(const XMPP::Message &msg) const;
 	::Message handleReceivedMessage(const XMPP::Message &msg) const;
 
@@ -75,7 +73,6 @@ private:
 	QPointer<ContactManager> m_contactManager;
 
 	QPointer<Client> m_client;
-	bool m_leaveOnChatClose;
 
 	QMap<QString, Chat> m_openedRoomChats;
  	QMap<QString, Chat> m_closedRoomChats;
