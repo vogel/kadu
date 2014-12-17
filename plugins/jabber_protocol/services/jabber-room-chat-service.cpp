@@ -33,7 +33,8 @@ namespace XMPP
 {
 
 JabberRoomChatService::JabberRoomChatService(Account account, QObject *parent) :
-		AccountService{account, parent}
+		AccountService{account, parent},
+		m_leaveOnChatClose{true}
 {
 }
 
@@ -66,6 +67,11 @@ void JabberRoomChatService::setXmppClient(Client *xmppClient)
 	connect(m_client.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
 }
 
+void JabberRoomChatService::setLeaveOnChatClose(bool leaveOnChatClose)
+{
+	m_leaveOnChatClose = leaveOnChatClose;
+}
+
 ChatDetailsRoom * JabberRoomChatService::myRoomChatDetails(const Chat &chat) const
 {
 	if (chat.chatAccount() != account())
@@ -87,6 +93,12 @@ void JabberRoomChatService::chatOpened(const Chat &chat)
 }
 
 void JabberRoomChatService::chatClosed(const Chat &chat)
+{
+	if (m_leaveOnChatClose)
+		leaveChat(chat);
+}
+
+void JabberRoomChatService::leaveChat(const Chat &chat)
 {
 	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
 	if (protocol)
@@ -163,6 +175,11 @@ void JabberRoomChatService::groupChatPresence(const Jid &jid, const Status &stat
 		chatDetails->removeContact(contact);
 	else
 		chatDetails->addContact(contact);
+}
+
+bool JabberRoomChatService::isRoomChat(const Chat &chat) const
+{
+	return myRoomChatDetails(chat) != nullptr;
 }
 
 bool JabberRoomChatService::shouldHandleReceivedMessage(const Message& msg) const

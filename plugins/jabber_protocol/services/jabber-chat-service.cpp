@@ -287,7 +287,8 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 void JabberChatService::leaveChat(const Chat& chat)
 {
-	Q_UNUSED(chat);
+	if (m_roomChatService->isRoomChat(chat))
+		m_roomChatService->leaveChat(chat);
 }
 
 }

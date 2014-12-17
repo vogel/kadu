@@ -57,6 +57,10 @@ public:
 public slots:
 	virtual bool sendMessage(const ::Message &message);
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage);
+
+	/**
+	 * @short If @p chat is a room chat, leave it. Otherwise do nothing.
+	 */
 	virtual void leaveChat(const Chat &chat);
 
 	void handleReceivedMessage(const Message &msg);
