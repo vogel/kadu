@@ -21,16 +21,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_CHAT_SERVICE_H
-#define JABBER_CHAT_SERVICE_H
+#pragma once
 
-#include <QtCore/QMap>
-#include <QtCore/QPointer>
+#include "protocols/services/chat-service.h"
 
 #include <im.h>
 #include <xmpp.h>
-
-#include "protocols/services/chat-service.h"
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
 
 class Chat;
 class FormattedStringFactory;
@@ -45,21 +43,8 @@ class JabberChatService : public ChatService
 {
 	Q_OBJECT
 
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-	QPointer<Client> XmppClient;
-	QPointer<JabberRoomChatService> RoomChatService;
-
-	QMap<QString, QString> ContactMessageTypes;
-
-	void connectClient();
-	void disconnectClient();
-
-	XMPP::Jid chatJid(const Chat &chat);
-	QString chatMessageType(const Chat &chat, const XMPP::Jid &jid);
-	::Message handleNormalReceivedMessage(const Message &msg);
-
 public:
-	explicit JabberChatService(Account account, QObject *parent = 0);
+	explicit JabberChatService(Account account, QObject *parent = nullptr);
 	virtual ~JabberChatService();
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
@@ -78,8 +63,20 @@ public slots:
 signals:
 	void messageAboutToSend(Message &message);
 
+private:
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<Client> m_client;
+	QPointer<JabberRoomChatService> m_roomChatService;
+
+	QMap<QString, QString> m_contactMessageTypes;
+
+	void connectClient();
+	void disconnectClient();
+
+	XMPP::Jid chatJid(const Chat &chat);
+	QString chatMessageType(const Chat &chat, const XMPP::Jid &jid);
+	::Message handleNormalReceivedMessage(const Message &msg);
+
 };
 
 }
-
-#endif // JABBER_CHAT_SERVICE_H

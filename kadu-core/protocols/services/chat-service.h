@@ -25,6 +25,8 @@
 #ifndef CHAT_SERVICE_H
 #define CHAT_SERVICE_H
 
+#include <QtCore/QPointer>
+
 #include "buddies/buddy-list.h"
 
 #include "chat/chat.h"
