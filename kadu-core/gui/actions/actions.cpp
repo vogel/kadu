@@ -53,7 +53,7 @@ void Actions::remove(ActionDescription *action)
 {
 	QMap<QString, ActionDescription *>::remove(action->name());
 
-	if (!Core::instance()->isClosing())
+	if (Core::instance() && !Core::instance()->isClosing())
 		emit actionUnloaded(action);
 }
 
