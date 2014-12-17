@@ -42,7 +42,7 @@ public:
 		Encryption_Auto = 2,
 		Encryption_Legacy = 3
 	};
-	
+
 	enum AllowPlainType
 	{
 		NoAllowPlain = 0,
@@ -65,6 +65,7 @@ private:
 	PROPERTY_DEC(bool, SendTypingNotification)
 	PROPERTY_DEC(bool, SendGoneNotification)
 	PROPERTY_DEC(bool, PublishSystemInfo)
+	PROPERTY_DEC(bool, StayInRoomAfterClosingWindow)
 protected:
 	virtual void load();
 	virtual void store();
@@ -87,6 +88,7 @@ public:
 	PROPERTY_DEF(bool, sendTypingNotification, setSendTypingNotification, SendTypingNotification)
 	PROPERTY_DEF(bool, sendGoneNotification, setSendGoneNotification, SendGoneNotification)
 	PROPERTY_DEF(bool, publishSystemInfo, setPublishSystemInfo, PublishSystemInfo)
+	PROPERTY_DEF(bool, stayInRoomAfterClosingWindow, setStayInRoomAfterClosingWindow, StayInRoomAfterClosingWindow)
 
 };
 
