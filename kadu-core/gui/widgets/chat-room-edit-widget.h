@@ -23,6 +23,7 @@
 
 #include "gui/widgets/chat-edit-widget.h"
 
+class QCheckBox;
 class QLineEdit;
 
 class AccountsComboBox;
@@ -36,6 +37,7 @@ class ChatRoomEditWidget : public ChatEditWidget
 	QLineEdit *RoomEdit;
 	QLineEdit *NickEdit;
 	QLineEdit *PasswordEdit;
+	QCheckBox *StayInRoomAfterClosingWindowCheckBox;
 	ChatDetailsRoom *RoomDetails;
 
 	void createGui();

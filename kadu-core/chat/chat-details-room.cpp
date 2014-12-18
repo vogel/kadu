@@ -34,7 +34,9 @@
  * Creates empty ChatDetailsRoom object assigned to chatData object.
  */
 ChatDetailsRoom::ChatDetailsRoom(ChatShared *chatData) :
-		ChatDetails(chatData), Connected(false)
+		ChatDetails{chatData},
+		StayInRoomAfterClosingWindow{false},
+		Connected{false}
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
 	if (protocol)
@@ -62,6 +64,7 @@ void ChatDetailsRoom::load()
 	Room = loadValue<QString>("Room");
 	Nick = loadValue<QString>("Nick");
 	Password = pwHash(loadValue<QString>("Password"));
+	StayInRoomAfterClosingWindow = loadValue<bool>("StayInRoomAfterClosingWindow", false);
 }
 
 /**
@@ -81,6 +84,7 @@ void ChatDetailsRoom::store()
 	storeValue("Room", Room);
 	storeValue("Nick", Nick);
 	storeValue("Password", pwHash(Password));
+	storeValue("StayInRoomAfterClosingWindow", StayInRoomAfterClosingWindow);
 }
 
 /**
@@ -137,6 +141,16 @@ void ChatDetailsRoom::setPassword(const QString &password)
 QString ChatDetailsRoom::password() const
 {
 	return Password;
+}
+
+void ChatDetailsRoom::setStayInRoomAfterClosingWindow(bool stayInRoomAfterClosingWindow)
+{
+	StayInRoomAfterClosingWindow = stayInRoomAfterClosingWindow;
+}
+
+bool ChatDetailsRoom::stayInRoomAfterClosingWindow() const
+{
+	return StayInRoomAfterClosingWindow;
 }
 
 /**

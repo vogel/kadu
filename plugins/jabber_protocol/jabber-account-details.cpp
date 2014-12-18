@@ -36,8 +36,7 @@
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
 		AccountDetails(data), AutoResource(false), Priority{}, UseCustomHostPort(false), CustomPort(5222),
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS),
-		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true),
-		StayInRoomAfterClosingWindow{false}
+		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
 	OpenChatRunner = new JabberOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
@@ -87,7 +86,6 @@ void JabberAccountDetails::load()
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
 	SendGoneNotification = loadValue<bool>("SendGoneNotification", true);
 	PublishSystemInfo = loadValue<bool>("PublishSystemInfo", true);
-	StayInRoomAfterClosingWindow = loadValue<bool>("StayInRoomAfterClosingWindow", false);
 }
 
 void JabberAccountDetails::store()
@@ -112,5 +110,4 @@ void JabberAccountDetails::store()
 	storeValue("SendTypingNotification", SendTypingNotification);
 	storeValue("SendGoneNotification", SendGoneNotification);
 	storeValue("PublishSystemInfo", PublishSystemInfo);
-	storeValue("StayInRoomAfterClosingWindow", StayInRoomAfterClosingWindow);
 }

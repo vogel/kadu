@@ -47,6 +47,7 @@ class KADUAPI ChatDetailsRoom : public ChatDetails
 	QString Room;
 	QString Nick;
 	QString Password;
+	bool StayInRoomAfterClosingWindow;
 
 	ContactSet Contacts;
 
@@ -132,6 +133,9 @@ public:
 	 * @return current password for this chat
 	 */
 	QString password() const;
+
+	void setStayInRoomAfterClosingWindow(bool stayInRoomAfterClosingWindow);
+	bool stayInRoomAfterClosingWindow() const;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

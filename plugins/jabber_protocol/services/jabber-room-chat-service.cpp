@@ -91,7 +91,7 @@ void JabberRoomChatService::chatOpened(const Chat &chat)
 
 void JabberRoomChatService::chatClosed(const Chat &chat)
 {
-	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
+	auto details = myRoomChatDetails(chat);
 	if (!details || !details->stayInRoomAfterClosingWindow())
 		leaveChat(chat);
 }

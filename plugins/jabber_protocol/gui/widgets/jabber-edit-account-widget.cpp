@@ -306,10 +306,6 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	connect(PublishSystemInfo, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	optionsLayout->addRow(PublishSystemInfo);
 
-	StayInRoomAfterClosingWindow = new QCheckBox{tr("Stay in chat room after closing chat window")};
-	connect(StayInRoomAfterClosingWindow, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	optionsLayout->addRow(StayInRoomAfterClosingWindow);
-
 	layout->addWidget(options);
 
 	layout->addStretch(100);
@@ -385,7 +381,6 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->sendGoneNotification() == SendGoneNotification->isChecked()
 		&& AccountDetails->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& AccountDetails->publishSystemInfo() == PublishSystemInfo->isChecked()
-		&& AccountDetails->stayInRoomAfterClosingWindow() == StayInRoomAfterClosingWindow->isChecked()
 		&& !PersonalInfoWidget->isModified())
 	{
 		simpleStateNotifier()->setState(StateNotChanged);
@@ -439,7 +434,6 @@ void JabberEditAccountWidget::loadAccountDetailsData()
 	SendTypingNotification->setChecked(AccountDetails->sendTypingNotification());
 
 	PublishSystemInfo->setChecked(AccountDetails->publishSystemInfo());
-	StayInRoomAfterClosingWindow->setChecked(AccountDetails->stayInRoomAfterClosingWindow());
 }
 
 void JabberEditAccountWidget::apply()
@@ -472,7 +466,6 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setSendGoneNotification(SendGoneNotification->isChecked());
 	AccountDetails->setSendTypingNotification(SendTypingNotification->isChecked());
 	AccountDetails->setPublishSystemInfo(PublishSystemInfo->isChecked());
-	AccountDetails->setStayInRoomAfterClosingWindow(StayInRoomAfterClosingWindow->isChecked());
 
 	if (PersonalInfoWidget->isModified())
 		PersonalInfoWidget->apply();
