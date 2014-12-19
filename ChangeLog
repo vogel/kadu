@@ -11,6 +11,9 @@
 * history: #2902 fixed: clear history menu item dissappear after a second (Vogel)
 * jabber: #2886 fixed: add option to stay in chat room after closing chat window (Vogel)
 
++++ version 1.4
+* hints: #2905 fixed: crash after clicking on hint (Vogel)
+
 +++ version 1.3
 * gui: #2869 fixed: uuids visible in info panel after adding new buddy (Vogel)
 * bsd: #2894 fixed: fix build on FreeBSD (Pekala)
