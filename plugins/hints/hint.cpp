@@ -107,11 +107,6 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 Hint::~Hint()
 {
-	kdebugf();
-
-	disconnect(notification, 0, this, 0);
-
-	kdebugf2();
 }
 
 void Hint::configurationUpdated()
