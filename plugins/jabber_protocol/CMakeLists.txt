@@ -192,6 +192,7 @@ if ("${EXTERNAL_LIBIRS}" STREQUAL "")
 	set (LIBRARIES 3rdparty)
 else ()
 	set (LIBRARIES "${EXTERNAL_LIBIRS}/lib/libiris.a" "${EXTERNAL_LIBIRS}/lib/libirisnet.a")
+	include_directories ("${EXTERNAL_LIBIRS}/include/iris/")
 endif ()
 
 include_directories (
