@@ -192,7 +192,13 @@ if ("${EXTERNAL_LIBIRS}" STREQUAL "")
 	set (LIBRARIES 3rdparty)
 else ()
 	set (LIBRARIES "${EXTERNAL_LIBIRS}/lib/libiris.a" "${EXTERNAL_LIBIRS}/lib/libirisnet.a")
+	include_directories ("${EXTERNAL_LIBIRS}/include/")
 	include_directories ("${EXTERNAL_LIBIRS}/include/iris/")
+	include_directories ("${EXTERNAL_LIBIRS}/src/irisnet/corelib/")
+	include_directories ("${EXTERNAL_LIBIRS}/src/xmpp/base64/")
+	include_directories ("${EXTERNAL_LIBIRS}/src/xmpp/jid/")
+	include_directories ("${EXTERNAL_LIBIRS}/src/xmpp/xmpp-core/")
+	include_directories ("${EXTERNAL_LIBIRS}/src/")
 endif ()
 
 include_directories (
