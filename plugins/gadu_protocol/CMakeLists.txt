@@ -12,7 +12,7 @@ set (QT_USE_QTWEBKIT 1)
 
 find_package (Kadu REQUIRED CONFIG)
 
-set (LIBGADU_MIN_VERSION "1.12.0")
+set (LIBGADU_MIN_VERSION "1.12.1")
 
 kadu_api_directories (plugins/gadu_protocol
 	dcc
