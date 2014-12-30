@@ -7,7 +7,7 @@ list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Module
 
 find_package (Kadu REQUIRED CONFIG)
 
-set (LIBGADU_MIN_VERSION "1.12.0")
+set (LIBGADU_MIN_VERSION "1.12.1")
 
 kadu_api_directories (plugins/gadu_protocol
 	dcc

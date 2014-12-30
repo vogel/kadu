@@ -13,6 +13,7 @@
 
 +++ version 1.4
 * hints: #2905 fixed: crash after clicking on hint (Vogel)
+* gadu: #2906 fixed: random disconnections (Vogel)
 
 +++ version 1.3
 * gui: #2869 fixed: uuids visible in info panel after adding new buddy (Vogel)
