@@ -1,4 +1,4 @@
-+++ version 2.0
++++ version 2.0-alpha1
 * qt: port to Qt 5.2 (beevvy)
 * chat: #2669 implemented: store content of input box in chat widgets (Vogel)
 * mediaplayer: #943 fixed: disable mediaplayer statuses after changing it manually (Vogel)
