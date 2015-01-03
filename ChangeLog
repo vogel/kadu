@@ -9,7 +9,7 @@
 * core: #2885 done: remove support for configuration files of Kadu 0.6.5 (Vogel)
 * indicator_docking: #2682 done: support for new versions of Unity (Vogel)
 * unity_integration: #2892 done: display number of unread messages in Unity Launcher (Vogel)
-* history: #2902 fixed: clear history menu item dissappear after a second (Vogel)
+* history: #2902 fixed: clear history menu item disappear after a second (Vogel)
 * jabber: #2886 fixed: add option to stay in chat room after closing chat window (Vogel)
 
 +++ version 1.4

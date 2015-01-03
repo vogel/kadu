@@ -176,12 +176,12 @@ $line"
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe Pobierz Instalator Windows (Kadu.im)]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 Suma MD5]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 Suma SHA1]
-		:: [http://download.kadu.im/external-plugins/unstable/ Zewnętrzne wtyczki]
 
 		Lista zmian:
 		$CHANGELOG
 
 		Przed instalacją zalecane jest zrobienie kopii katalogu z danymi ~/.kadu lub C:\Users\..\AppData\Roaming\Kadu.
+
 		Błędy prosimy zgłaszać w naszym systemie śledzenia błędów [http://www.kadu.im/redmine Redmine], a propozycje zmian na [http://www.kadu.im/forum forum] w dziale o odpowiednim tytule. Listę znany błędów zaplanowanych do poprawienia w przyszłych wersjach również można znaleźć w Redmine, w [http://www.kadu.im/redmine/projects/kadu/roadmap mapie dla projektu Kadu].
 
 		<p>
@@ -232,12 +232,12 @@ $line"
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe  Download Windows Installer (Kadu.im)]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 MD5 Checksum]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 SHA1 Checksum]
-		:: [http://download.kadu.im/external-plugins/unstable/ Sources of external plugins]
 
 		Fixed bugs:
 		$CHANGELOG
 
 		Please create backup of data directory ~/.kadu or C:\Users\..\AppData\Roaming\Kadu before installing.
+
 		Please report all found issues in our [http://www.kadu.im/redmine Redmine] system.
 
 		<p>
