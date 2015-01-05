@@ -45,37 +45,38 @@
 ****************************************************************************/
 
 
-#include <QtCore/QDir>
-#include <QtNetwork/QLocalServer>
-#include <QtNetwork/QLocalSocket>
 #include "exports.h"
 
+#include <QtCore/QObject>
+
+class QLocalServer;
 class QLockFile;
 
 class KADUAPI QtLocalPeer : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    QtLocalPeer(QObject *parent = 0, const QString &appId = QString());
-    virtual ~QtLocalPeer();
-    bool isClient();
-    bool sendMessage(const QString &message, int timeout);
-    QString applicationId() const
-        { return id; }
+	explicit QtLocalPeer(QObject *parent = nullptr, const QString &appId = QString{});
+	virtual ~QtLocalPeer();
 
-Q_SIGNALS:
-    void messageReceived(const QString &message);
+	bool isClient();
+	bool sendMessage(const QString &message, int timeout);
+	QString applicationId() const { return m_id; }
 
-protected Q_SLOTS:
-    void receiveConnection();
+signals:
+	void messageReceived(const QString &message);
 
 protected:
-    QString id;
-    QString socketName;
-    QLocalServer* server;
-    QLockFile *lockFile;
+	QString m_id;
+	QString m_socketName;
+	QLocalServer *m_server;
+	QLockFile *m_lockFile;
+
+protected slots:
+	void receiveConnection();
 
 private:
-    static const char* ack;
+	static const char* ack;
+
 };
