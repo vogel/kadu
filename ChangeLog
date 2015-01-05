@@ -1,3 +1,6 @@
++++ version 2.0-alpha2
+* windows: #2858 fixed: blinking main window on Kadu exit (Vogel)
+
 +++ version 2.0-alpha1
 * qt: port to Qt 5.2 (beevvy)
 * chat: #2669 implemented: store content of input box in chat widgets (Vogel)

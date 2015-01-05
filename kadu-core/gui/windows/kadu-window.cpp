@@ -311,12 +311,14 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 
 void KaduWindow::storeConfiguration()
 {
+#ifndef Q_OS_WIN32
 	// see bug 1948 - this is a hack to get real values of info panel height
 	if (!isVisible())
 	{
 		show();
 		hide();
 	}
+#endif
 
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 	{
