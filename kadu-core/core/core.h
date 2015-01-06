@@ -243,7 +243,7 @@ public:
 	const std::shared_ptr<DefaultProvider<QWidget *>> & mainWindowProvider() const;
 
 public slots:
-	void receivedSignal(const QString &signal);
+	void executeRemoteCommand(const QString &signal);
 
 	void quit();
 

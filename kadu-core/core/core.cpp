@@ -990,12 +990,12 @@ const std::shared_ptr<DefaultProvider<QWidget *>> & Core::mainWindowProvider() c
 	return MainWindowProvider;
 }
 
-void Core::receivedSignal(const QString &signal)
+void Core::executeRemoteCommand(const QString &remoteCommand)
 {
-	if ("activate" == signal)
+	if ("activate" == remoteCommand)
 		_activateWindow(MainWindowProvider->provide());
 	else
-		UrlHandlerManager::instance()->openUrl(signal.toUtf8(), true);
+		UrlHandlerManager::instance()->openUrl(remoteCommand.toUtf8(), true);
 }
 
 void Core::quit()

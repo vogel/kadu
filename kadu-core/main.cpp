@@ -268,12 +268,12 @@ int main(int argc, char *argv[]) try
 	Core::instance()->createGui();
 	Core::instance()->runGuiServices();
 	QObject::connect(peer, SIGNAL(messageReceived(const QString &)),
-			Core::instance(), SLOT(receivedSignal(const QString &)));
+			Core::instance(), SLOT(executeRemoteCommand(const QString &)));
 
 	Core::instance()->activatePlugins();
 
 	for (auto const &id : executionArguments.openIds())
-		Core::instance()->receivedSignal(id);
+		Core::instance()->executeRemoteCommand(id);
 
 	// it has to be called after loading modules (docking might want to block showing the window)
 	Core::instance()->showMainWindow();
