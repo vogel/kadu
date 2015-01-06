@@ -58,20 +58,18 @@ class KADUAPI QtLocalPeer : public QObject
 	Q_OBJECT
 
 public:
-	explicit QtLocalPeer(QObject *parent = nullptr, const QString &appId = QString{});
+	explicit QtLocalPeer(QString appId = QString{}, QObject *parent = nullptr);
 	virtual ~QtLocalPeer();
 
 	bool isClient() const;
 	bool startServer();
 
 	bool sendMessage(const QString &message, int timeout);
-	QString applicationId() const { return m_id; }
 
 signals:
 	void messageReceived(const QString &message);
 
 protected:
-	QString m_id;
 	QString m_socketName;
 	QLocalServer *m_server;
 	std::unique_ptr<LongLivedLockFile> m_lockFile;

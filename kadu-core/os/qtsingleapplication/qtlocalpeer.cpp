@@ -71,24 +71,23 @@
 
 KADUAPI const char * QtLocalPeer::ack = "ack";
 
-QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId) :
+QtLocalPeer::QtLocalPeer(QString appId, QObject *parent) :
 		QObject{parent},
-		m_id{appId},
 		m_lockFile{nullptr}
 {
-	auto prefix = m_id;
-	if (m_id.isEmpty())
+	auto prefix = appId;
+	if (appId.isEmpty())
 	{
-		m_id = QCoreApplication::applicationFilePath();
+		appId = QCoreApplication::applicationFilePath();
 #if defined(Q_OS_WIN)
-		m_id = m_id.toLower();
+		appId = appId.toLower();
 #endif
-		prefix = m_id.section(QLatin1Char('/'), -1);
+		prefix = appId.section(QLatin1Char('/'), -1);
 	}
 	prefix.remove(QRegExp("[^a-zA-Z]"));
 	prefix.truncate(24);
 
-	auto idc = m_id.toUtf8();
+	auto idc = appId.toUtf8();
 	auto idNum = qChecksum(idc.constData(), static_cast<uint>(idc.size()));
 	m_socketName = QLatin1String{"qtsingleapp-"} + prefix +
 		QLatin1Char('-') + QString::number(idNum, 16);
@@ -110,10 +109,9 @@ QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId) :
 	m_socketName += QLatin1Char('-') + QString::number(::getuid(), 16);
 #endif
 
-	m_server = new QLocalServer{this};
-	QString lockName = QDir(QDir::tempPath()).absolutePath()
-		+ QLatin1Char('/') + m_socketName
-		+ QLatin1String("-lockfile");
+	auto lockName = QString{QDir{QDir::tempPath()}.absolutePath()
+		+ QLatin1Char{'/'} + m_socketName
+		+ QLatin1String{"-lockfile"}};
 	m_lockFile = std::unique_ptr<LongLivedLockFile>{new LongLivedLockFile{lockName}};
 }
 
@@ -128,6 +126,7 @@ bool QtLocalPeer::isClient() const
 
 bool QtLocalPeer::startServer()
 {
+	m_server = new QLocalServer{this};
 	auto res = m_server->listen(m_socketName);
 
 #if defined(Q_OS_UNIX)
