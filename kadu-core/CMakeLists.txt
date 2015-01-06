@@ -52,6 +52,7 @@ set (kadu_SRCS
 	themes.cpp
 	updates.cpp
 
+	os/qtsingleapplication/long-lived-lock-file.cpp
 	os/qtsingleapplication/qtlocalpeer.cpp
 )
 

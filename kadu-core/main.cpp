@@ -261,6 +261,8 @@ int main(int argc, char *argv[]) try
 
 		return 1;
 	}
+	else
+		peer->startServer();
 
 	Core::createInstance(injector);
 	Core::instance()->createGui();

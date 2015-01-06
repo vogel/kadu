@@ -48,9 +48,10 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <memory>
 
 class QLocalServer;
-class QLockFile;
+class LongLivedLockFile;
 
 class KADUAPI QtLocalPeer : public QObject
 {
@@ -60,7 +61,9 @@ public:
 	explicit QtLocalPeer(QObject *parent = nullptr, const QString &appId = QString{});
 	virtual ~QtLocalPeer();
 
-	bool isClient();
+	bool isClient() const;
+	bool startServer();
+
 	bool sendMessage(const QString &message, int timeout);
 	QString applicationId() const { return m_id; }
 
@@ -71,7 +74,7 @@ protected:
 	QString m_id;
 	QString m_socketName;
 	QLocalServer *m_server;
-	QLockFile *m_lockFile;
+	std::unique_ptr<LongLivedLockFile> m_lockFile;
 
 protected slots:
 	void receiveConnection();

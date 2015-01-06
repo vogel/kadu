@@ -46,6 +46,8 @@
 
 #include "qtlocalpeer.h"
 
+#include "os/qtsingleapplication/long-lived-lock-file.h"
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QLockFile>
@@ -112,38 +114,20 @@ QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId) :
 	QString lockName = QDir(QDir::tempPath()).absolutePath()
 		+ QLatin1Char('/') + m_socketName
 		+ QLatin1String("-lockfile");
-	m_lockFile = new QLockFile{lockName};
+	m_lockFile = std::unique_ptr<LongLivedLockFile>{new LongLivedLockFile{lockName}};
 }
 
 QtLocalPeer::~QtLocalPeer()
 {
-	if (m_lockFile)
-	{
-	  m_lockFile->unlock();
-	  delete m_lockFile;
-	  m_lockFile = 0;
-	}
 }
 
-bool QtLocalPeer::isClient()
+bool QtLocalPeer::isClient() const
 {
-	if (m_lockFile->isLocked())
-		return false;
+	return !m_lockFile->isLocked();
+}
 
-	m_lockFile->setStaleLockTime(0);
-	if (!m_lockFile->tryLock(10))
-	{
-		if (m_lockFile->removeStaleLockFile())
-		{
-			if (!m_lockFile->tryLock(10))
-				return true;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
+bool QtLocalPeer::startServer()
+{
 	auto res = m_server->listen(m_socketName);
 
 #if defined(Q_OS_UNIX)
@@ -156,10 +140,13 @@ bool QtLocalPeer::isClient()
 #endif
 
 	if (!res)
+	{
 		qWarning("QtSingleCoreApplication: listen on local socket failed, %s", qPrintable(m_server->errorString()));
+		return false;
+	}
 
 	QObject::connect(m_server, SIGNAL(newConnection()), SLOT(receiveConnection()));
-	return false;
+	return true;
 }
 
 bool QtLocalPeer::sendMessage(const QString &message, int timeout)
