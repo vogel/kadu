@@ -117,8 +117,12 @@ QtLocalPeer::QtLocalPeer(QObject *parent, const QString &appId) :
 
 QtLocalPeer::~QtLocalPeer()
 {
-	m_lockFile->unlock();
-	delete m_lockFile;
+	if (m_lockFile)
+	{
+	  m_lockFile->unlock();
+	  delete m_lockFile;
+	  m_lockFile = 0;
+	}
 }
 
 bool QtLocalPeer::isClient()
@@ -126,8 +130,19 @@ bool QtLocalPeer::isClient()
 	if (m_lockFile->isLocked())
 		return false;
 
-	if (!m_lockFile->tryLock(1000))
-		return true;
+	m_lockFile->setStaleLockTime(0);
+	if (!m_lockFile->tryLock(10))
+	{
+		if (m_lockFile->removeStaleLockFile())
+		{
+			if (!m_lockFile->tryLock(10))
+				return true;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
 	auto res = m_server->listen(m_socketName);
 
@@ -146,7 +161,6 @@ bool QtLocalPeer::isClient()
 	QObject::connect(m_server, SIGNAL(newConnection()), SLOT(receiveConnection()));
 	return false;
 }
-
 
 bool QtLocalPeer::sendMessage(const QString &message, int timeout)
 {
