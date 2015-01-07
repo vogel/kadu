@@ -24,7 +24,7 @@
 
 LongLivedLockFile::LongLivedLockFile(const QString &fileName, int timeout)
 {
-	m_lockFile = new QLockFile{fileName};
+	m_lockFile = std::unique_ptr<QLockFile>{new QLockFile{fileName}};
 	m_lockFile->setStaleLockTime(0);
 
 	if (m_lockFile->tryLock(timeout))
@@ -37,7 +37,6 @@ LongLivedLockFile::LongLivedLockFile(const QString &fileName, int timeout)
 LongLivedLockFile::~LongLivedLockFile()
 {
 	m_lockFile->unlock();
-	delete m_lockFile;
 }
 
 bool LongLivedLockFile::isLocked() const

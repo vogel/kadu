@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <memory>
+
 class QLockFile;
 class QString;
 
@@ -35,6 +37,6 @@ public:
 	bool isLocked() const;
 
 private:
-	QLockFile *m_lockFile;
+	std::unique_ptr<QLockFile> m_lockFile;
 
 };
