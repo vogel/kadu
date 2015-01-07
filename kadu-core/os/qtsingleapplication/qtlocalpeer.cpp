@@ -46,7 +46,7 @@
 
 #include "qtlocalpeer.h"
 
-#include "os/qtsingleapplication/long-lived-lock-file.h"
+#include "os/single-application//long-lived-lock-file.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
