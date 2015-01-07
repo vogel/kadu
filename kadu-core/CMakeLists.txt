@@ -52,8 +52,8 @@ set (kadu_SRCS
 	themes.cpp
 	updates.cpp
 
-	os/qtsingleapplication/qtlocalpeer.cpp
 	os/single-application/long-lived-lock-file.cpp
+	os/single-application/single-application.cpp
 )
 
 if (WIN32)
@@ -70,6 +70,9 @@ endif ()
 
 set (main_SRCS
 	main.cpp
+
+	os/single-application/long-lived-lock-file.cpp
+	os/single-application/single-application.cpp
 )
 
 if (WIN32)
@@ -86,8 +89,6 @@ endif ()
 set (kadu_MOC_SRCS
 	themes.h
 	updates.h
-
-	os/qtsingleapplication/qtlocalpeer.h
 )
 
 set (kadu_SUBDIRS

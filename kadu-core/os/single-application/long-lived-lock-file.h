@@ -25,10 +25,12 @@ class QString;
 
 class LongLivedLockFile
 {
-
 public:
 	explicit LongLivedLockFile(const QString &fileName, int timeout = 10);
+	LongLivedLockFile(const LongLivedLockFile &) = delete;
 	~LongLivedLockFile();
+
+	LongLivedLockFile & operator = (const LongLivedLockFile &) = delete;
 
 	bool isLocked() const;
 

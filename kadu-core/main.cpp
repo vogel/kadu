@@ -65,7 +65,7 @@
 #include "icons/icons-manager.h"
 #include "misc/date-time.h"
 #include "misc/paths-provider.h"
-#include "os/qtsingleapplication/qtlocalpeer.h"
+#include "os/single-application/single-application.h"
 #include "os/win/wsa-exception.h"
 #include "os/win/wsa-handler.h"
 #include "plugin/plugin-module.h"
@@ -250,39 +250,43 @@ int main(int argc, char *argv[]) try
 	QCoreApplication::installTranslator(&qt_qm);
 	QCoreApplication::installTranslator(&kadu_qm);
 
-	auto peer = new QtLocalPeer(QString{"kadu-%1"}.arg(Application::instance()->pathsProvider()->profilePath()), &application);
-	if (peer->isClient())
-	{
+	auto ret = 0;
+	auto applicationId = QString{"kadu-%1"}.arg(Application::instance()->pathsProvider()->profilePath());
+
+	auto executeAsFirst = [&](){
+		Core::createInstance(injector);
+		Core::instance()->createGui();
+		Core::instance()->runGuiServices();
+
+		Core::instance()->activatePlugins();
+
+		for (auto const &id : executionArguments.openIds())
+			Core::instance()->executeRemoteCommand(id);
+
+		// it has to be called after loading modules (docking might want to block showing the window)
+		Core::instance()->showMainWindow();
+		Core::instance()->initialized();
+
+		ret = QApplication::exec();
+		kdebugm(KDEBUG_INFO, "after exec\n");
+		kdebugm(KDEBUG_INFO, "exiting main\n");
+	};
+
+	auto executeAsNext = [&](SingleApplication &singleApplication){
 		if (!executionArguments.openIds().isEmpty())
 			for (auto const &id : executionArguments.openIds())
-				peer->sendMessage(id, 1000);
+				singleApplication.sendMessage(id, 1000);
 		else
-			peer->sendMessage("activate", 1000);
+			singleApplication.sendMessage("activate", 1000);
 
-		return 1;
-	}
-	else
-		peer->startServer();
+		ret = 1;
+	};
 
-	Core::createInstance(injector);
-	Core::instance()->createGui();
-	Core::instance()->runGuiServices();
-	QObject::connect(peer, SIGNAL(messageReceived(const QString &)),
-			Core::instance(), SLOT(executeRemoteCommand(const QString &)));
+	auto receivedMessage = [&](const QString &message){
+		Core::instance()->executeRemoteCommand(message);
+	};
 
-	Core::instance()->activatePlugins();
-
-	for (auto const &id : executionArguments.openIds())
-		Core::instance()->executeRemoteCommand(id);
-
-	// it has to be called after loading modules (docking might want to block showing the window)
-	Core::instance()->showMainWindow();
-	Core::instance()->initialized();
-
-	int ret = QApplication::exec();
-	kdebugm(KDEBUG_INFO, "after exec\n");
-
-	kdebugm(KDEBUG_INFO, "exiting main\n");
+	SingleApplication singleApplication{applicationId, executeAsFirst, executeAsNext, receivedMessage};
 
 	return ret;
 }
