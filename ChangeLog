@@ -17,6 +17,9 @@
 * jabber: #2886 fixed: add option to stay in chat room after closing chat window (Vogel)
 
 +++ version 1.4
+* otr: #2895 fixed: strange error messages when using libotr5-4.1.0 (Vogel)
+
++++ version 1.4
 * hints: #2905 fixed: crash after clicking on hint (Vogel)
 * gadu: #2906 fixed: random disconnections (Vogel)
 
