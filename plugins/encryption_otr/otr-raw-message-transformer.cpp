@@ -20,10 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/userstate.h>
-}
+#include "otr-raw-message-transformer.h"
+
+#include "otr-app-ops-service.h"
+#include "otr-op-data-factory.h"
+#include "otr-op-data.h"
+#include "otr-session-service.h"
+#include "otr-user-state-service.h"
 
 #include "accounts/account.h"
 #include "chat/chat-details.h"
@@ -34,16 +37,13 @@ extern "C" {
 #include "message/message.h"
 #include "message/raw-message.h"
 
-#include "otr-app-ops-service.h"
-#include "otr-op-data-factory.h"
-#include "otr-op-data.h"
-#include "otr-session-service.h"
-#include "otr-user-state-service.h"
-
-#include "otr-raw-message-transformer.h"
+extern "C" {
+#	include <libotr/proto.h>
+#	include <libotr/userstate.h>
+}
 
 OtrRawMessageTransformer::OtrRawMessageTransformer() :
-		EnableFragments(false)
+		EnableFragments{false}
 {
 }
 
@@ -94,22 +94,22 @@ RawMessage OtrRawMessageTransformer::transformReceived(const RawMessage &rawMess
 	if (!AppOpsService || !OpDataFactory || !UserStateService || message.messageChat().contacts().size() != 1)
 		return rawMessage;
 
-	OtrlUserState userState = UserStateService.data()->userState();
+	auto userState = UserStateService.data()->userState();
 	if (!userState)
 		return rawMessage;
 
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
-	Account account = message.messageChat().chatAccount();
+	auto opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
+	auto account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 	OtrlTLV *tlvs = 0;
 
-	bool ignoreMessage = otrl_message_receiving(userState, AppOpsService.data()->appOps(), &opData,
+	auto ignoreMessage = otrl_message_receiving(userState, AppOpsService.data()->appOps(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
 			rawMessage.rawXmlContent().data(),
 			&newMessage, &tlvs, 0, 0, 0);
 
-	OtrlTLV *tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
+	auto tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
 	if (tlv)
 		emit peerEndedSession(message.messageSender());
 	otrl_tlv_free(tlvs);
@@ -119,7 +119,7 @@ RawMessage OtrRawMessageTransformer::transformReceived(const RawMessage &rawMess
 
 	if (newMessage)
 	{
-		QByteArray result = newMessage;
+		auto result = QByteArray{newMessage};
 		otrl_message_free(newMessage);
 		return {result, result};
 	}
@@ -132,25 +132,25 @@ RawMessage OtrRawMessageTransformer::transformSent(const RawMessage &rawMessage,
 	if (!AppOpsService || !OpDataFactory || !UserStateService || message.messageChat().contacts().size() != 1)
 		return rawMessage;
 
-	OtrlUserState userState = UserStateService.data()->userState();
+	auto userState = UserStateService.data()->userState();
 	if (!userState)
 		return rawMessage;
 
-	Contact receiver = message.messageChat().contacts().toContact();
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
-	Account account = message.messageChat().chatAccount();
+	auto receiver = message.messageChat().contacts().toContact();
+	auto opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
+	auto account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 
-	gcry_error_t err = otrl_message_sending(userState, AppOpsService.data()->appOps(), &opData,
+	auto err = otrl_message_sending(userState, AppOpsService.data()->appOps(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			receiver.id().toUtf8().data(), OTRL_INSTAG_BEST,
 			rawMessage.rawXmlContent().data(), 0,
-			&newMessage, EnableFragments ? OTRL_FRAGMENT_SEND_ALL : OTRL_FRAGMENT_SEND_SKIP,
+			&newMessage, EnableFragments ? OTRL_FRAGMENT_SEND_ALL_BUT_LAST : OTRL_FRAGMENT_SEND_SKIP,
 			0, 0, 0);
 
 	if (!err && newMessage)
 	{
-		QByteArray result = newMessage;
+		auto result = QByteArray{newMessage};
 		otrl_message_free(newMessage);
 		return {result, result};
 	}
