@@ -40,10 +40,10 @@ class GaduConnection;
  * gg_notify messages must be sent to GG server to let it know in which presences we are interested.
  * After every connection gg_notify_ex must be sent (even when contacts list is empty) with list of
  * all our contacts and their notify modes (buddy, friend, blocked).
- * 
+ *
  * After adding/removing contacts from roster or after change of notify mode, a set of gg_add_notify_ex
  * and gg_remove_notify_ex messages must be sent to update status.
- * 
+ *
  * This service is connected to RosterService to get update information about notify modes and new and
  * removed contacts.
  */
@@ -54,7 +54,7 @@ class GaduNotifyService : public QObject
 public:
 	/**
 	 * @return GG notify mode for given contact
-	 * 
+	 *
 	 * Return value of this method is based on blocked and offline to contact properties.
 	 */
 	static int notifyTypeFromContact(const Contact &contact);
@@ -76,7 +76,7 @@ public:
 public slots:
 	void contactAdded(Contact contact);
 	void contactRemoved(Contact contact);
-	void contactUpdated(Contact contact);
+	void contactUpdatedLocally(Contact contact);
 
 private:
 	QPointer<GaduConnection> m_connection;

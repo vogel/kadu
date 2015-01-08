@@ -101,7 +101,7 @@ void GaduNotifyService::contactRemoved(Contact contact)
 	sendNewFlags(contact, 0);
 }
 
-void GaduNotifyService::contactUpdated(Contact contact)
+void GaduNotifyService::contactUpdatedLocally(Contact contact)
 {
 	sendNewFlags(contact, notifyTypeFromContact(contact));
 }
