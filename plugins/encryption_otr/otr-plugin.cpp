@@ -66,10 +66,7 @@ OtrPlugin::~OtrPlugin()
 
 bool OtrPlugin::fragmentsFixAvailable() const
 {
-	return false;
-
-	// seems like there is bug in 4.1.0 that makes it unstable
-	// return (OTRL_VERSION_MAJOR > 4) || (OTRL_VERSION_MINOR > 0) || (OTRL_VERSION_SUB > 0);
+	return (OTRL_VERSION_MAJOR > 4) || (OTRL_VERSION_MINOR > 0) || (OTRL_VERSION_SUB > 0);
 }
 
 bool OtrPlugin::init(bool firstLoad)
