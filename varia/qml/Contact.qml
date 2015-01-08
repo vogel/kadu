@@ -43,7 +43,7 @@ Rectangle
 						margins: 1
 					}
 					fillMode: Image.PreserveAspectFit
-					source: avatarPath
+					source: "file:///" + avatarPath
 				}
 
 				Image
