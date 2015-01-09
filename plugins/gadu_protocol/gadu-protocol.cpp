@@ -397,7 +397,11 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.async = 1;
 
-	GaduLoginParams.status = (GaduProtocolHelper::gaduStatusFromStatus(loginStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
+	// always start with inivisible, after sending notify data new status is resent again
+	auto gaduStatus = loginStatus().description().isEmpty()
+		? GG_STATUS_INVISIBLE
+		: GG_STATUS_INVISIBLE_DESCR;
+	GaduLoginParams.status = gaduStatus | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!loginStatus().description().isEmpty())
 		GaduLoginParams.status_descr = qstrdup(loginStatus().description().toUtf8().constData());
