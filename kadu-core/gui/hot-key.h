@@ -19,7 +19,7 @@ public:
 	 **/
 	static bool shortCut(QKeyEvent *e, const QString &groupname, const QString &name);
 
-	static QString keyEventToString(QKeyEvent *e);
+	static QString keyEventToString(QKeyEvent *e, QKeySequence::SequenceFormat format);
 
 };
 

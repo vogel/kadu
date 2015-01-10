@@ -291,25 +291,25 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 	#else
 		#define TAB_SWITCH_MODIFIER "Alt"
 	#endif
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+0")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+0")
 		setCurrentIndex(count() - 1);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+1")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+1")
 		setCurrentIndex(0);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+2")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+2")
 		setCurrentIndex(1);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+3")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+3")
 		setCurrentIndex(2);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+4")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+4")
 		setCurrentIndex(3);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+5")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+5")
 		setCurrentIndex(4);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+6")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+6")
 		setCurrentIndex(5);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+7")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+7")
 		setCurrentIndex(6);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+8")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+8")
 		setCurrentIndex(7);
-	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+9")
+	else if (HotKey::keyEventToString(e, QKeySequence::PortableText) == TAB_SWITCH_MODIFIER "+9")
 		setCurrentIndex(8);
 	else
 		// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej

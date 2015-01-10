@@ -36,10 +36,10 @@ QKeySequence HotKey::shortCutFromFile(const QString &groupname, const QString &n
 bool HotKey::shortCut(QKeyEvent *e, const QString &groupname, const QString &name)
 {
 	QString config = Application::instance()->configuration()->deprecatedApi()->readEntry(groupname, name);
-	return !config.isEmpty() && config == keyEventToString(e);
+	return !config.isEmpty() && config == keyEventToString(e, QKeySequence::PortableText);
 }
 
-QString HotKey::keyEventToString(QKeyEvent *e)
+QString HotKey::keyEventToString(QKeyEvent *e, QKeySequence::SequenceFormat format)
 {
 	QString result;
 	if ((e->modifiers() & Qt::ControlModifier) || (e->key() == Qt::Key_Control))
@@ -59,7 +59,7 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 		(e->key() == Qt::Key_Shift) ||
 		(e->key() == Qt::Key_Alt) ||
 		(e->key() == Qt::Key_Meta)))
-		result += QKeySequence(e->key()).toString(QKeySequence::NativeText);
+		result += QKeySequence(e->key()).toString(format);
 
 	return result;
 }
@@ -94,7 +94,7 @@ void HotKeyEdit::setShortCut(const QKeySequence &shortcut)
 
 void HotKeyEdit::keyPressEvent(QKeyEvent *e)
 {
-	setText(HotKey::keyEventToString(e));
+	setText(HotKey::keyEventToString(e, QKeySequence::NativeText));
 }
 
 void HotKeyEdit::keyReleaseEvent(QKeyEvent *)
