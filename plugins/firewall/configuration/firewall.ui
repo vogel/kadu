@@ -5,7 +5,7 @@
 				<line-edit caption="Notification syntax" config-section="Firewall" config-item="notification_syntax" tool-tip="%u - uin, %m - message" id="firewall/notify_syntax"/>
 				<check-box caption="Save anonymous chat attempt in history" config-section="Firewall" config-item="write_history" id="firewall/write_history" />
 				<check-box caption="Save anonymous chat attempt in log file" config-section="Firewall" config-item="write_log" id="firewall/write_log" />
-				<line-edit caption="Log file path" config-section="Firewall" config-item="log_file" id="firewall/log_file" parent-widget="firewall/write_log" />
+				<select-file caption="Log file path" config-section="Firewall" config-item="logFile" id="firewall/log_file" parent-widget="firewall/write_log" type="all" />
 				<check-box caption="Search for unknown person in directory and show window with his personal data." config-section="Firewall" config-item="search" />
 			</group-box>
 		</tab>

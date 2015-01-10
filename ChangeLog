@@ -4,6 +4,7 @@
 * windows: #2915 fixed: invalid tray tooltip (Vogel)
 * windows: #2914 fixed: avatars not displayed properly in Open Chat with... window (Vogel)
 * gadu: #2893 fixed: never show as online to buddies with 'Offline to' option on (Vogel)
+* firewall: #2917 fixed: unable to set log file path (Vogel)
 
 +++ version 2.0-alpha1
 * qt: port to Qt 5.2 (beevvy)

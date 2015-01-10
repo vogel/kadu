@@ -47,6 +47,7 @@ SelectFile::SelectFile(const QString &type, QWidget *parent)
 	layout->addWidget(selectFile);
 
 	setLayout(layout);
+	layout->setMargin(0);
 }
 
 SelectFile::SelectFile(QWidget *parent)
@@ -64,6 +65,7 @@ SelectFile::SelectFile(QWidget *parent)
 	layout->addWidget(selectFile);
 
 	setLayout(layout);
+	layout->setMargin(0);
 }
 
 void SelectFile::selectFileClicked()
