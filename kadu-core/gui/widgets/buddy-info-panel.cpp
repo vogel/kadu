@@ -140,8 +140,9 @@ void BuddyInfoPanel::update()
 	}
 
 	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
-		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{x-office-address-book:32x32}\"></td><td> "
+		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{x-office-address-book:32x32}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
+	Syntax = Syntax.remove("file:///");
 	displayItem(Item);
 
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))

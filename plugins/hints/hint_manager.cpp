@@ -100,9 +100,9 @@ HintManager::HintManager(QObject *parent) :
 "</td>"
 "<td width=\"100%\">"
 "<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
-"[<div><img height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
-"[<div><img height=\"16\" width=\"16\" src=\"file:///@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
-"[<div><img height=\"16\" width=\"16\" src=\"file:///@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
 "</td>"
 "</tr>"
 "</table>"
@@ -493,10 +493,8 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkab
 {
 	QString text = Parser::parse(Application::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax"), talkable, ParserEscape::HtmlEscape);
 
-	/* Dorr: the file:// in img tag doesn't generate the image on hint.
-	 * for compatibility with other syntaxes we're allowing to put the file://
-	 * so we have to remove it here */
-	text = text.remove("file://");
+	// file:/// is added by parser where required
+	text = text.remove("file:///");
 
 	while (text.endsWith(QLatin1String("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
