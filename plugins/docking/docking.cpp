@@ -308,7 +308,7 @@ void DockingManager::defaultToolTip()
 
 		Status status = StatusContainerManager::instance()->status();
 
-		tiptext += QString("%1:\n%2").arg(tr("Status"), status.displayName());
+		tiptext += QString("%1: %2").arg(tr("Status"), status.displayName());
 
 		if (!status.description().isEmpty())
 			tiptext += QString("\n\n%1:\n%2").arg(tr("Description"), status.description());
