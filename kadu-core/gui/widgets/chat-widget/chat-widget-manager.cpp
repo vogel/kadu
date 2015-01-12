@@ -59,7 +59,7 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 	if (!chat || !m_chatWidgetFactory || !m_chatWidgetRepository)
 		return;
 
-	auto chatWidget = getOrCreateChatWidget(chat);
+	auto chatWidget = getOrCreateChatWidget(chat, activation);
 	if (!chatWidget)
 		return;
 
@@ -77,13 +77,13 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 		}
 }
 
-ChatWidget * ChatWidgetManager::getOrCreateChatWidget(const Chat &chat)
+ChatWidget * ChatWidgetManager::getOrCreateChatWidget(const Chat &chat, OpenChatActivation activation)
 {
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
 	if (chatWidget)
 		return chatWidget;
 
-	auto newChatWidget = m_chatWidgetFactory.data()->createChatWidget(chat);
+	auto newChatWidget = m_chatWidgetFactory.data()->createChatWidget(chat, activation);
 	if (!newChatWidget)
 		return nullptr;
 

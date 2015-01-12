@@ -470,8 +470,6 @@ void TabWidget::tabInserted(int index)
 
 	updateTabsListButton();
 	updateTabsMenu();
-
-	show();
 }
 
 void TabWidget::tabRemoved(int index)

@@ -179,6 +179,8 @@ void SingleWindow::addChatWidget(ChatWidget *chatWidget)
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+
+	chatWidget->setActivation(OpenChatActivation::Ignore);
 }
 
 void SingleWindow::removeChatWidget(ChatWidget *chatWidget)

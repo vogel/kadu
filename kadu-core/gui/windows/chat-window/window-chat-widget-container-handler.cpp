@@ -24,6 +24,7 @@
 
 #include "window-chat-widget-container-handler.h"
 
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
@@ -71,7 +72,17 @@ void WindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
 		connect(chatWindow, SIGNAL(activated(ChatWindow*)), this, SLOT(chatWindowActivated(ChatWindow*)));
 	}
 
-	chatWindow->show();
+
+	switch (chatWidget->activation())
+	{
+		case OpenChatActivation::Minimize:
+			chatWindow->showMinimized();
+			break;
+		default:
+			chatWindow->show();
+			break;
+	}
+	chatWidget->setActivation(OpenChatActivation::Ignore);
 }
 
 void WindowChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)

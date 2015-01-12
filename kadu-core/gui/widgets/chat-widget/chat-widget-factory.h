@@ -30,6 +30,8 @@ class Chat;
 class ChatWidget;
 class FormattedStringFactory;
 
+enum class OpenChatActivation;
+
 /**
  * @addtogroup Gui
  * @{
@@ -49,7 +51,7 @@ public:
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	std::unique_ptr<ChatWidget> createChatWidget(Chat chat);
+	std::unique_ptr<ChatWidget> createChatWidget(Chat chat, OpenChatActivation activation);
 
 private:
 	QPointer<FormattedStringFactory> m_formattedStringFactory;

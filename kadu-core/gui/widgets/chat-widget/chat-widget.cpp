@@ -96,8 +96,8 @@
 
 #include "chat-widget.h"
 
-ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
-		QWidget(parent), CurrentChat(chat),
+ChatWidget::ChatWidget(const Chat &chat, OpenChatActivation activation, QWidget *parent) :
+		QWidget(parent), CurrentChat(chat), Activation{activation},
 		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
 		SplittersInitialized(false), UnreadMessagesCount(0)
@@ -317,6 +317,16 @@ void ChatWidget::configurationUpdated()
 	InputBox->inputBox()->setPalette(palette);
 
 	refreshTitle();
+}
+
+OpenChatActivation ChatWidget::activation() const
+{
+	return Activation;
+}
+
+void ChatWidget::setActivation(OpenChatActivation activation)
+{
+	Activation = activation;
 }
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)

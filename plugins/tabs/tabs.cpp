@@ -357,6 +357,19 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
 	TabDialog->insertTab(TargetTabs, chatWidget, chatWidget->icon(), QString());
+	if (TabDialog->count() == 1) // first tab
+	{
+		switch (chatWidget->activation())
+		{
+			case OpenChatActivation::Minimize:
+				TabDialog->showMinimized();
+				break;
+			default:
+				TabDialog->show();
+				break;
+		}
+	}
+	chatWidget->setActivation(OpenChatActivation::Ignore);
 
 	if (restoreChatGeometry)
 		chatWidget->kaduRestoreGeometry();

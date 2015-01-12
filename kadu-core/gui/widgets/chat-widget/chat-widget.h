@@ -53,6 +53,8 @@ class Protocol;
 class SortedMessages;
 class TalkableProxyModel;
 
+enum class OpenChatActivation;
+
 class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -62,6 +64,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat CurrentChat;
+	OpenChatActivation Activation;
 
 	ChatTopBarContainerWidget *TopBarContainer;
 	owned_qptr<WebkitMessagesView> MessagesView;
@@ -112,12 +115,15 @@ protected:
 	bool keyPressEventHandled(QKeyEvent *);
 
 public:
-	explicit ChatWidget(const Chat &chat, QWidget *parent = 0);
+	explicit ChatWidget(const Chat &chat, OpenChatActivation activation, QWidget *parent = 0);
 	virtual ~ChatWidget();
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	Chat chat() const { return CurrentChat; }
+
+	OpenChatActivation activation() const;
+	void setActivation(OpenChatActivation activation);
 
 	void appendSystemMessage(const QString &content);
 	void appendSystemMessage(std::unique_ptr<FormattedString> &&content);

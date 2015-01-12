@@ -1,6 +1,7 @@
 +++ version 2.0-alpha3
 * docking: #2921 done: change tooltip text on Windows (Vogel)
 * hints: #2922 fixed: invalid images on Windows (Vogel)
+* gui: #2920 fixed: problems with Open chat minimized option (Vogel)
 
 +++ version 2.0-alpha2
 * windows: #2858 fixed: blinking main window on Kadu exit (Vogel)
