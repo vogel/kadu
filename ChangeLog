@@ -3,6 +3,7 @@
 * hints: #2922 fixed: invalid images on Windows (Vogel)
 * gui: #2920 fixed: problems with Open chat minimized option (Vogel)
 * windows: #2923 fixed: Kadu hangs for few seconds from time to time (Vogel)
+* hints: #2924 fixed: not displaying avatars (Vogel)
 
 +++ version 2.0-alpha2
 * windows: #2858 fixed: blinking main window on Kadu exit (Vogel)

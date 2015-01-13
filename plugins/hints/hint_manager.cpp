@@ -491,11 +491,11 @@ void HintManager::setLayoutDirection()
 
 void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable)
 {
-	QString text = Parser::parse(Application::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax"), talkable, ParserEscape::HtmlEscape);
-
+	auto syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax");
 	// file:/// is added by parser where required
-	text = text.remove("file:///");
+	syntax = syntax.remove("file:///");
 
+	auto text = Parser::parse(syntax, talkable, ParserEscape::HtmlEscape);
 	while (text.endsWith(QLatin1String("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 	while (text.startsWith(QLatin1String("<br/>")))
