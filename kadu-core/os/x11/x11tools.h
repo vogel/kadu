@@ -100,6 +100,7 @@ X11TOOLSEXPORT bool X11_isWholeWindowOnOneDesktop( Display *display, Window wind
 X11TOOLSEXPORT bool X11_isWindowCovered( Display *display, Window window );
 X11TOOLSEXPORT bool X11_isWindowShaded( Display *display, Window window );
 X11TOOLSEXPORT void X11_shadeWindow( Display *display, Window window, bool shade );
+X11TOOLSEXPORT bool X11_isWindowMinimized( Display *display, Window window );
 
 X11TOOLSEXPORT std::pair<int,int> X11_getWindowPos( Display *display, Window window );
 X11TOOLSEXPORT std::pair<int,int> X11_getWindowSize( Display *display, Window window );

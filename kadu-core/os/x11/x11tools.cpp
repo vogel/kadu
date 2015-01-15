@@ -26,7 +26,10 @@
 #include <unistd.h>
 
 #include <X11/Xatom.h>
+#include <X11/Xmd.h>
 #include <X11/Xutil.h>
+#include <X11/Xlib.h>
+#include <X11/Xresource.h>
 
 #include "x11tools.h"
 
@@ -550,14 +553,39 @@ bool X11_isWindowShaded( Display *display, Window window )
 	return X11_isPropertyAtomSet( display, window, "_NET_WM_STATE", "_NET_WM_STATE_SHADED" );
 }
 
-
 void X11_shadeWindow( Display *display, Window window, bool shade )
 {
 	X11_windowSendXEvent( display, window, "_NET_WM_STATE", "_NET_WM_STATE_SHADED", shade );
 }
 
+bool X11_isWindowMinimized( Display *display, Window window )
+{
+	if (X11_isPropertyAtomSet( display, window, "_NET_WM_STATE", "_NET_WM_STATE_HIDDEN" ))
+	{
+		return true;
+	}
 
+	Atom r_type;
+	int r_format;
+	unsigned long count, after;
 
+	unsigned char *p = nullptr;
+
+	Atom property = XInternAtom(display, "WM_STATE", False);
+	if (property == None)
+		return false;
+	if (!XGetWindowProperty(display, window, property, 0, 2, False, property,
+		&r_type, &r_format, &count, &after, &p))
+	{
+		if (!p)
+			return true;
+		auto ret = (long)*p == 3;
+		XFree(p);
+		return ret;
+	}
+
+	return false;
+}
 
 std::pair<int,int> X11_getWindowPos( Display *display, Window window )
 {
