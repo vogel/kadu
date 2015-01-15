@@ -106,7 +106,7 @@ void ChatWindow::configurationUpdated()
 	m_showNewMessagesNum = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false);
 	m_blinkChatTitle = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true);
 
-	if (m_chatWidget->chat().unreadMessagesCount())
+	if (m_chatWidget->chat().unreadMessagesCount() && !m_titleTimer->isActive())
 		blinkTitle();
 }
 
@@ -191,10 +191,6 @@ void ChatWindow::updateIcon()
 void ChatWindow::updateTitle()
 {
 	setWindowTitle(m_chatWidget->title());
-
-	// TODO 0.10.0: is that really needed here? this method is called only on chat widget title change
-	if (m_showNewMessagesNum && m_chatWidget->chat().unreadMessagesCount()) // if we don't have new messages or don't want them to be shown
-		showNewMessagesNumInTitle();
 }
 
 void ChatWindow::blinkTitle()
@@ -218,13 +214,19 @@ void ChatWindow::blinkTitle()
 		}
 	}
 	else
-		setWindowTitle(m_chatWidget->title());
+		if (!m_showNewMessagesNum) // if we don't show number od new messages waiting
+			setWindowTitle(m_chatWidget->title());
+		else
+			showNewMessagesNumInTitle();
 }
 
 void ChatWindow::showNewMessagesNumInTitle()
 {
-	if (!_isActiveWindow(this))
-		setWindowTitle('[' + QString::number(m_chatWidget->chat().unreadMessagesCount()) + "] " + m_chatWidget->title());
+	auto count = m_chatWidget->chat().unreadMessagesCount();
+	if (count > 0)
+		setWindowTitle('[' + QString::number(count) + "] " + m_chatWidget->title());
+	else
+		setWindowTitle(m_chatWidget->title());
 }
 
 void ChatWindow::changeEvent(QEvent *event)

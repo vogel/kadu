@@ -135,7 +135,9 @@ void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 	auto unreadMessagesAppended = chat.property("message:unreadMessagesAppended", false).toBool();
 
 	auto messages = unreadMessagesAppended ? m_unreadMessageRepository.data()->unreadMessagesForChat(chat) : loadAllUnreadMessages(chat);
-	m_unreadMessageRepository.data()->markMessagesAsRead(messages);
+	auto chatIsActive = m_chatWidgetActivationService ? m_chatWidgetActivationService.data()->isChatWidgetActive(chatWidget) : false;
+	if (chatIsActive)
+		m_unreadMessageRepository.data()->markMessagesAsRead(messages);
 
 	if (!unreadMessagesAppended)
 	{

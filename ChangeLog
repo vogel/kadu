@@ -5,6 +5,7 @@
 * windows: #2923 fixed: Kadu hangs for few seconds from time to time (Vogel)
 * hints: #2924 fixed: not displaying avatars (Vogel)
 * gui: #2925 fixed: invalid plugin category names on Windows (Vogel)
+* chat: #2930 fixed: count of unread messages is now proper when chat window is minimized (Vogel)
 
 +++ version 2.0-alpha2
 * windows: #2858 fixed: blinking main window on Kadu exit (Vogel)

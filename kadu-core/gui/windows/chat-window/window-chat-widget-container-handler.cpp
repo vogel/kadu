@@ -100,7 +100,7 @@ bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget
 		return false;
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chatWidget->chat());
-	return chatWindow ? _isWindowActiveOrFullyVisible(chatWindow) : false;
+	return chatWindow ? chatWindow->isChatWidgetActive(chatWidget) : false;
 }
 
 void WindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidget)
