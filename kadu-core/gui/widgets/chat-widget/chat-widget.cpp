@@ -97,10 +97,17 @@
 #include "chat-widget.h"
 
 ChatWidget::ChatWidget(const Chat &chat, OpenChatActivation activation, QWidget *parent) :
-		QWidget(parent), CurrentChat(chat), Activation{activation},
-		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
-		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
-		SplittersInitialized(false), UnreadMessagesCount(0)
+		QWidget{parent},
+		CurrentChat{chat},
+		Activation{activation},
+		BuddiesWidget{0},
+		ProxyModel{0},
+		InputBox{0},
+		HorizontalSplitter{0},
+		IsComposing{false},
+		CurrentContactActivity{ChatStateService::StateNone},
+		SplittersInitialized{false},
+		UnreadMessagesCount{CurrentChat.unreadMessagesCount()}
 {
 	kdebugf();
 

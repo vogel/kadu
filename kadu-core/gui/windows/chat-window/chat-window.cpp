@@ -57,8 +57,8 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	kdebugf();
 
 	setWindowRole("kadu-chat");
-	if (chatWidget && chatWidget->chat().details() && chatWidget->chat().details()->type())
-		setWindowRole(chatWidget->chat().details()->type()->windowRole());
+	if (m_chatWidget && m_chatWidget->chat().details() && m_chatWidget->chat().details()->type())
+		setWindowRole(m_chatWidget->chat().details()->type()->windowRole());
 
 #ifdef Q_OS_MAC
 	setAttribute(Qt::WA_MacBrushedMetal);

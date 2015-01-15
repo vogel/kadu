@@ -31,6 +31,8 @@
 #include "gui/windows/chat-window/chat-window.h"
 #include "activate.h"
 
+#include <QtWidgets/QApplication>
+
 WindowChatWidgetContainerHandler::WindowChatWidgetContainerHandler(QObject *parent) :
 		ChatWidgetContainerHandler{parent}
 {
@@ -82,6 +84,10 @@ void WindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
 			chatWindow->show();
 			break;
 	}
+
+	if (chatWidget->unreadMessagesCount() != 0)
+		qApp->alert(chatWindow);
+
 	chatWidget->setActivation(OpenChatActivation::Ignore);
 }
 
