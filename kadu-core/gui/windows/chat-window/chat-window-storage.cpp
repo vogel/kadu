@@ -57,7 +57,7 @@ std::unique_ptr<StoragePoint> ChatWindowStorage::storagePoint() const
 QVector<Chat> ChatWindowStorage::loadChats() const
 {
 	auto storage = storagePoint();
-	if (!storage)
+	if (!storage || !m_configuration.storeOpenedChatWindows())
 		return {};
 
 	auto chatListStorage = ChatListStorage{storage.get(), QLatin1String("Chat")};
@@ -68,7 +68,7 @@ QVector<Chat> ChatWindowStorage::loadChats() const
 void ChatWindowStorage::storeChats(const QVector<Chat> &chats)
 {
 	auto storage = storagePoint();
-	if (!storage)
+	if (!storage || !m_configuration.storeOpenedChatWindows())
 		return;
 
 	auto chatListStorage = ChatListStorage{storage.get(), QLatin1String("Chat")};
