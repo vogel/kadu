@@ -7,6 +7,7 @@
 * gui: #2925 fixed: invalid plugin category names on Windows (Vogel)
 * chat: #2930 fixed: count of unread messages is now proper when chat window is minimized (Vogel)
 * chat: #2929 fixed: improve blinking timing on chat window with new messages (Vogel)
+* tabs: #2934 fixed: properly handle common close button settings (Vogel)
 
 +++ version 2.0-alpha2
 * windows: #2858 fixed: blinking main window on Kadu exit (Vogel)

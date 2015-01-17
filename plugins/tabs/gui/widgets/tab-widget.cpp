@@ -512,7 +512,7 @@ void TabWidget::configurationUpdated()
 
 	bool isOpenChatButtonEnabled = (cornerWidget(Qt::TopLeftCorner) == OpenChatButtonsWidget);
 	bool shouldEnableOpenChatButton = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OpenChatButton");
-	bool isCloseButtonEnabled = (cornerWidget(Qt::TopRightCorner) == CloseChatButton);
+	bool isCloseButtonEnabled = CloseChatButton->isVisible();
 	bool shouldEnableCloseButton = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButton");
 
 	if (isOpenChatButtonEnabled != shouldEnableOpenChatButton)
