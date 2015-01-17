@@ -320,6 +320,7 @@ kadu_api_directories (kadu-core
 	gui/widgets/configuration
 	gui/widgets/dialog
 	gui/widgets/chat-widget
+	gui/widgets/group-tab-bar
 	gui/widgets/webkit-messages-view
 	chat-style/engine
 	gui/windows
@@ -343,13 +344,17 @@ kadu_api_directories (kadu-core
 	os/qtsingleapplication
 	parser
 	plugin
+	plugin/activation
+	plugin/metadata
 	plugin/model
+	plugin/state
 	protocols
 	protocols/filter
 	protocols/model
 	protocols/services
 	protocols/services/roster
 	provider
+	roster
 	qt
 	services
 	status
