@@ -253,10 +253,10 @@ END
 
 VERSION=$1
 
-#update_version_file $VERSION
-#git_tag $VERSION
-#create_package $VERSION
-#build_binary $VERSION
+update_version_file $VERSION
+git_tag $VERSION
+create_package $VERSION
+build_binary $VERSION
 write_forum_entry $VERSION
 write_mailing_list_entry $VERSION
 write_pl_wiki_entry $VERSION
