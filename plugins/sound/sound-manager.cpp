@@ -88,13 +88,16 @@ SoundManager::~SoundManager()
 
 	PlayThreadObject->end();
 
-	PlayThread->wait(5000);
+	PlayThread->wait(500);
 	if (PlayThread->isRunning())
 	{
 		kdebugm(KDEBUG_WARNING, "terminating play_thread!\n");
 		PlayThread->terminate();
-		PlayThread->wait(2000);
+		PlayThread->wait(200);
 	}
+
+	PlayThread->deleteLater();
+	PlayThreadObject->deleteLater();
 
 	kdebugf2();
 }

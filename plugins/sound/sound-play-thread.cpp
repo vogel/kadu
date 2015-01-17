@@ -69,8 +69,6 @@ void SoundPlayThread::start()
 
 	emit finished();
 
-	deleteLater();
-
 	kdebugf2();
 }
 
@@ -84,9 +82,7 @@ void SoundPlayThread::end()
 	while (CurrentlyNotWaiting)
 	{
 		NewSoundToPlay.unlock();
-// 		QThread::msleep(200);
-		Q_ASSERT(QThread::currentThread() != thread());
-		thread()->wait(200);
+		thread()->msleep(200);
 		NewSoundToPlay.lock();
 	}
 	WaitForNewSoundToPlay.wakeAll();
