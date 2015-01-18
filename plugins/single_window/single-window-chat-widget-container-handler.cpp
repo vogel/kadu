@@ -43,11 +43,11 @@ void SingleWindowChatWidgetContainerHandler::setSingleWindow(SingleWindow *singl
 			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
 }
 
-bool SingleWindowChatWidgetContainerHandler::acceptChatWidget(ChatWidget *chatWidget) const
+bool SingleWindowChatWidgetContainerHandler::acceptChat(Chat chat) const
 {
-	Q_UNUSED(chatWidget);
+	Q_UNUSED(chat);
 
-	return m_singleWindow;
+	return m_singleWindow != nullptr;
 }
 
 void SingleWindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)

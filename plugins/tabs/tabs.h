@@ -130,7 +130,7 @@ public:
 
 	void updateTabTextAndTooltip(int index, const QString &text, const QString &tooltip);
 
-	bool acceptChatWidget(ChatWidget *chatWidget) const;
+	bool acceptChat(Chat chat) const;
 	void addChatWidget(ChatWidget *chatWidget);
 	void removeChatWidget(ChatWidget *chatWidget);
 

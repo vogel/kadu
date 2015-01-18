@@ -172,18 +172,18 @@ void TabsManager::storeOpenedChatTabs()
 		ensureStored();
 }
 
-bool TabsManager::acceptChatWidget(ChatWidget *chatWidget) const
+bool TabsManager::acceptChat(Chat chat) const
 {
-	if (!chatWidget)
+	if (!chat)
 		return false;
 
-	if (chatWidget->chat().property("tabs:tmp-attached", false).toBool())
+	if (chat.property("tabs:tmp-attached", false).toBool())
 		return true;
-	if (chatWidget->chat().property("tabs:tmp-detached", false).toBool())
+	if (chat.property("tabs:tmp-detached", false).toBool())
 		return false;
-	if (chatWidget->chat().property("tabs:attached", false).toBool())
+	if (chat.property("tabs:attached", false).toBool())
 		return true;
-	if (chatWidget->chat().property("tabs:detached", false).toBool())
+	if (chat.property("tabs:detached", false).toBool())
 		return false;
 
 	return ConfigDefaultTabs;

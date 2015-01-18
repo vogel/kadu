@@ -28,6 +28,7 @@
 
 #include <QtCore/QObject>
 
+class Chat;
 class ChatWidget;
 
 /**
@@ -62,15 +63,15 @@ public:
 	virtual ~ChatWidgetContainerHandler();
 
 	/**
-	 * @short Check if container accepts given chat widget.
+	 * @short Check if container accepts given chat.
 	 */
-	virtual bool acceptChatWidget(ChatWidget *chatWidget) const = 0;
+	virtual bool acceptChat(Chat chat) const = 0;
 
 	/**
 	 * @short Add chat widget to container.
 	 *
-	 * This method will fail silently if acceptChatWidget(chatWidget) returns false.
-	 * This method will not fail if acceptChatWidget(chatWidget) returns true.
+	 * This method will fail silently if acceptChat(chatWidget) returns false.
+	 * This method will not fail if acceptChat(chatWidget) returns true.
 	 */
 	virtual void addChatWidget(ChatWidget *chatWidget) = 0;
 

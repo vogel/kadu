@@ -23,6 +23,7 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 
 #include <algorithm>
 
@@ -81,7 +82,7 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(Chat
 
 	auto chatWidgets = m_mapping.keys();
 	for (auto chatWidget : chatWidgets)
-		if (chatWidgetContainerHandler->acceptChatWidget(chatWidget))
+		if (chatWidgetContainerHandler->acceptChat(chatWidget->chat()))
 		{
 			unmap(chatWidget);
 			map(chatWidgetContainerHandler, chatWidget);
@@ -130,11 +131,12 @@ void ChatWidgetContainerHandlerMapper::unmap(ChatWidget *chatWidget)
 
 ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::bestContainerHandler(ChatWidget *chatWidget) const
 {
-	if (!m_chatWidgetContainerHandlerRepository)
+	if (!m_chatWidgetContainerHandlerRepository || !chatWidget || !chatWidget->chat())
 		return {};
 
 	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
-	auto accepted = [chatWidget](ChatWidgetContainerHandler *chatWidgetContainerHandler){ return chatWidgetContainerHandler->acceptChatWidget(chatWidget); };
+	auto chat = chatWidget->chat();
+	auto accepted = [chat](ChatWidgetContainerHandler *chatWidgetContainerHandler){ return chatWidgetContainerHandler->acceptChat(chat); };
 	auto result = std::find_if(chatWidgetContainerHandlers.begin(), chatWidgetContainerHandlers.end(), accepted);
 	return result == chatWidgetContainerHandlers.end() ? nullptr : *result;
 }

@@ -44,7 +44,7 @@ public:
 	void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
 	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
 
-	virtual bool acceptChatWidget(ChatWidget *chatWidget) const override;
+	virtual bool acceptChat(Chat chat) const override;
 	virtual void addChatWidget(ChatWidget *chatWidget) override;
 	virtual void removeChatWidget(ChatWidget *chatWidget) override;
 
