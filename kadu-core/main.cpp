@@ -60,6 +60,7 @@
 #include "core/core-module.h"
 #include "execution-arguments/execution-arguments-parser.h"
 #include "execution-arguments/execution-arguments.h"
+#include "gui/gui-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -212,6 +213,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<ChatWidgetModule>());
 	modules.emplace_back(make_unique<CoreModule>(std::move(profileDirectory)));
 	modules.emplace_back(make_unique<ConfigurationModule>());
+	modules.emplace_back(make_unique<GuiModule>());
 	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());
 

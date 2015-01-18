@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,37 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "gui-module.h"
 
-#include <QtCore/QObject>
-#include <memory>
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
+#include "gui/windows/chat-window/chat-window-factory.h"
 
-#include "exports.h"
-
-class ChatWidget;
-class ChatWindow;
-
-/**
- * @addtogroup Gui
- * @{
- */
-
-/**
- * @class ChatWindowFactory
- * @short Factory for ChatWidget instances
- */
-class KADUAPI ChatWindowFactory : public QObject
+GuiModule::GuiModule()
 {
-	Q_OBJECT
+	add_type<ChatWidgetFactory>();
+	add_type<ChatWindowFactory>();
+}
 
-public:
-	Q_INVOKABLE explicit ChatWindowFactory(QObject *parent = 0);
-	virtual ~ChatWindowFactory();
-
-	std::unique_ptr<ChatWindow> createChatWindow(ChatWidget *chatWidget);
-
-};
-
-/**
- * @}
- */
+GuiModule::~GuiModule()
+{
+}

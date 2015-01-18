@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <memory>
 
 #include "exports.h"
@@ -46,12 +47,13 @@ class KADUAPI ChatWidgetFactory : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatWidgetFactory(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatWidgetFactory(QObject *parent = 0);
 	virtual ~ChatWidgetFactory();
 
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-
 	std::unique_ptr<ChatWidget> createChatWidget(Chat chat, OpenChatActivation activation);
+
+private slots:
+	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 private:
 	QPointer<FormattedStringFactory> m_formattedStringFactory;

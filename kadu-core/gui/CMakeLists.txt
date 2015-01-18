@@ -218,6 +218,7 @@ set (gui_SRCS
 	windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	windows/open-chat-with/open-chat-with-runner-manager.cpp
 
+	gui-module.cpp
 	hot-key.cpp
 	status-icon.cpp
 	web-view-highlighter.cpp

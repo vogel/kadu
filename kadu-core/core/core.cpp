@@ -194,10 +194,8 @@ Core::Core(injeqt::injector &injector) :
 		CurrentChatWidgetActivationService{nullptr},
 		CurrentChatWidgetContainerHandlerMapper{nullptr},
 		CurrentChatWidgetContainerHandlerRepository{nullptr},
-		CurrentChatWidgetFactory{nullptr},
 		CurrentChatWidgetManager{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
-		CurrentChatWindowFactory{nullptr},
 		CurrentChatWindowManager{nullptr},
 		CurrentChatWindowStorage{nullptr},
 		CurrentChatWindowRepository{nullptr},
@@ -643,14 +641,10 @@ void Core::runServices()
 
 	CurrentChatWidgetActions = new ChatWidgetActions(this);
 
-	CurrentChatWidgetFactory = new ChatWidgetFactory(this);
-	CurrentChatWidgetFactory->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
-
-	CurrentChatWindowFactory = new ChatWindowFactory(this);
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
 
 	auto windowChatWidgetContainerHandler = new WindowChatWidgetContainerHandler(this);
-	windowChatWidgetContainerHandler->setChatWindowFactory(CurrentChatWindowFactory);
+	windowChatWidgetContainerHandler->setChatWindowFactory(m_injector.get<ChatWindowFactory>());
 	windowChatWidgetContainerHandler->setChatWindowRepository(CurrentChatWindowRepository);
 
 	CurrentChatWidgetContainerHandlerRepository = new ChatWidgetContainerHandlerRepository(this);
@@ -666,7 +660,7 @@ void Core::runServices()
 
 	CurrentChatWidgetManager = new ChatWidgetManager(this);
 	CurrentChatWidgetManager->setChatWidgetActivationService(CurrentChatWidgetActivationService);
-	CurrentChatWidgetManager->setChatWidgetFactory(CurrentChatWidgetFactory);
+	CurrentChatWidgetManager->setChatWidgetFactory(m_injector.get<ChatWidgetFactory>());
 	CurrentChatWidgetManager->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
 
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
@@ -883,7 +877,7 @@ ChatWidgetManager * Core::chatWidgetManager() const
 
 ChatWidgetFactory * Core::chatWidgetFactory() const
 {
-	return CurrentChatWidgetFactory;
+	return m_injector.get<ChatWidgetFactory>();
 }
 
 ChatWidgetRepository * Core::chatWidgetRepository() const
@@ -893,7 +887,7 @@ ChatWidgetRepository * Core::chatWidgetRepository() const
 
 ChatWindowFactory * Core::chatWindowFactory() const
 {
-	return CurrentChatWindowFactory;
+	return m_injector.get<ChatWindowFactory>();
 }
 
 ChatWindowManager * Core::chatWindowManager() const
