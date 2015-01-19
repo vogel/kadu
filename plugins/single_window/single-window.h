@@ -14,6 +14,7 @@ class QSplitter;
 class QTabWidget;
 
 class ChatWidget;
+enum class OpenChatActivation;
 
 class SingleWindow : public QWidget
 {
@@ -23,8 +24,8 @@ public:
 	SingleWindow();
 	~SingleWindow();
 
-	void addChatWidget(ChatWidget *chatWidget);
-	void removeChatWidget(ChatWidget *chatWidget);
+	ChatWidget * addChat(Chat chat, OpenChatActivation activation);
+	void removeChat(Chat chat);
 
 	virtual void changeEvent(QEvent *event);
 
@@ -41,6 +42,7 @@ public slots:
 	void onTabChange(int index);
 	void onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled);
 	void onkaduKeyPressed(QKeyEvent *e);
+	void closeTab(ChatWidget *chatWidget);
 	void closeTab(int index);
 	void onIconChanged();
 	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);

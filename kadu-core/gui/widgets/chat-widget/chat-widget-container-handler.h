@@ -24,12 +24,13 @@
 
 #pragma once
 
+#include "chat/chat.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
 
-class Chat;
 class ChatWidget;
+enum class OpenChatActivation;
 
 /**
  * @addtogroup Gui
@@ -51,7 +52,7 @@ class ChatWidget;
  *   <li>activating chat widget in a container</li>
  * </ul>
  *
- * Signal chatWidgetAcceptanceChanged(ChatWidget*) is emitted when acceptance state
+ * Signal chatAcceptanceChanged(Chat) is emitted when acceptance state
  * for given chat widget changes.
  */
 class KADUAPI ChatWidgetContainerHandler : public QObject
@@ -68,19 +69,19 @@ public:
 	virtual bool acceptChat(Chat chat) const = 0;
 
 	/**
-	 * @short Add chat widget to container.
+	 * @short Add chat to container.
 	 *
 	 * This method will fail silently if acceptChat(chatWidget) returns false.
 	 * This method will not fail if acceptChat(chatWidget) returns true.
 	 */
-	virtual void addChatWidget(ChatWidget *chatWidget) = 0;
+	virtual ChatWidget * addChat(Chat chat, OpenChatActivation activation) = 0;
 
 	/**
-	 * @short Add chat widget from container.
+	 * @short Remove chat from container.
 	 *
 	 * If container does not contain given chat widget this method does nothing.
 	 */
-	virtual void removeChatWidget(ChatWidget *chatWidget) = 0;
+	virtual void removeChat(Chat chat) = 0;
 
 	/**
 	 * @short Return true if given chat widget is active and its container is active.
@@ -106,7 +107,7 @@ signals:
 	/**
 	 * @short Signal emitted when acceptance state for given chat widget changes.
 	 */
-	void chatWidgetAcceptanceChanged(ChatWidget *chatWidget);
+	void chatAcceptanceChanged(Chat chat);
 
 };
 

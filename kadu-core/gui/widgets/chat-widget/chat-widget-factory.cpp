@@ -42,9 +42,9 @@ void ChatWidgetFactory::setFormattedStringFactory(FormattedStringFactory *format
 	m_formattedStringFactory = formattedStringFactory;
 }
 
-std::unique_ptr<ChatWidget> ChatWidgetFactory::createChatWidget(Chat chat, OpenChatActivation activation)
+std::unique_ptr<ChatWidget> ChatWidgetFactory::createChatWidget(Chat chat, OpenChatActivation activation, QWidget *parent)
 {
-	auto result = make_unique<ChatWidget>(chat, activation);
+	auto result = make_unique<ChatWidget>(chat, activation, parent);
 	result.get()->setFormattedStringFactory(m_formattedStringFactory.data());
 
 	return result;

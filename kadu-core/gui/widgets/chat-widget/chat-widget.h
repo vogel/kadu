@@ -115,7 +115,7 @@ protected:
 	bool keyPressEventHandled(QKeyEvent *);
 
 public:
-	explicit ChatWidget(const Chat &chat, OpenChatActivation activation, QWidget *parent = 0);
+	explicit ChatWidget(Chat chat, OpenChatActivation activation, QWidget *parent = 0);
 	virtual ~ChatWidget();
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);

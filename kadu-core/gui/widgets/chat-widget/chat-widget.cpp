@@ -96,7 +96,7 @@
 
 #include "chat-widget.h"
 
-ChatWidget::ChatWidget(const Chat &chat, OpenChatActivation activation, QWidget *parent) :
+ChatWidget::ChatWidget(Chat chat, OpenChatActivation activation, QWidget *parent) :
 		QWidget{parent},
 		CurrentChat{chat},
 		Activation{activation},

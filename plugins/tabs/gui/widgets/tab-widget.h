@@ -61,7 +61,6 @@ class TabWidget : public QTabWidget, CompositingAwareObject
 
 	bool config_oldStyleClosing;
 
-	void closeTab(QWidget *tabWidget);
 	void updateTabsMenu();
 	void updateTabsListButton();
 	bool isTabVisible(int index);
@@ -101,16 +100,14 @@ private slots:
 	*/
 	void openRecentChat(QAction *action);
 
-	/**
-	* Slot zostaje wywołany w celu zmiany pozycji karty.
-	* @param from pozycja karty źródłowej.
-	* @param to pozycja karty docelowej.
-	*/
 	void deleteTab();
 
 	void openTabsList();
 	void currentTabChanged(int index);
 	void tabsMenuSelected(QAction *action);
+
+	void closeTab(ChatWidget *chatWidget);
+
 protected:
 	/**
 	* Metoda wywoływana w chwili naciśnięcia x na ?pasku dekoracji?

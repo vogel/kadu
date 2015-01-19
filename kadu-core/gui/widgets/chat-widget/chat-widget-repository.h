@@ -56,7 +56,7 @@ class KADUAPI ChatWidgetRepository : public QObject
 {
 	Q_OBJECT
 
-	using Storage = std::map<Chat, std::unique_ptr<ChatWidget>>;
+	using Storage = std::map<Chat, ChatWidget *>;
 	using WrappedIterator = Storage::iterator;
 
 public:
@@ -84,16 +84,7 @@ public:
 	 * In case of successfull addition ownership of chatWidget is taken by repository
 	 * and chatWidgetAdded(ChatWidget*) signal is emitted.
 	 */
-	void addChatWidget(std::unique_ptr<ChatWidget> chatWidget);
-
-	/**
-	 * @short Remove chatWidget from repository and destroy it.
-	 *
-	 * Remove chatWidget from repository only if it is  already in repository.
-	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
-	 * Then provided chat widget is destroyed.
-	 */
-	void removeChatWidget(ChatWidget *chatWidget);
+	void addChatWidget(ChatWidget *chatWidget);
 
 	/**
 	 * @short Return true if repository has chat widget for given chat.
@@ -109,6 +100,23 @@ public:
 	 * it is returned. Else nullptr is returned.
 	 */
 	ChatWidget * widgetForChat(const Chat &chat);
+
+public slots:
+	/**
+	 * @short Remove chatWidget from repository
+	 *
+	 * Remove chatWidget from repository only if it is  already in repository.
+	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
+	 */
+	void removeChatWidget(ChatWidget *chatWidget);
+
+	/**
+	 * @short Remove chatWidget for given chat from repository and destroy it.
+	 *
+	 * Remove chatWidget from repository only if it is  already in repository.
+	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
+	 */
+	void removeChatWidget(Chat chat);
 
 signals:
 	/**

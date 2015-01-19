@@ -660,6 +660,7 @@ void Core::runServices()
 
 	CurrentChatWidgetManager = new ChatWidgetManager(this);
 	CurrentChatWidgetManager->setChatWidgetActivationService(CurrentChatWidgetActivationService);
+	CurrentChatWidgetManager->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
 	CurrentChatWidgetManager->setChatWidgetFactory(m_injector.get<ChatWidgetFactory>());
 	CurrentChatWidgetManager->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
 

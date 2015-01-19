@@ -45,6 +45,7 @@
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -189,11 +190,14 @@ bool TabsManager::acceptChat(Chat chat) const
 	return ConfigDefaultTabs;
 }
 
-void TabsManager::addChatWidget(ChatWidget *chatWidget)
+ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 {
 	kdebugf();
 
-	auto chat = chatWidget->chat();
+	Q_UNUSED(activation);
+
+	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, OpenChatActivation::Activate, nullptr).release();
+
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
 
@@ -204,35 +208,43 @@ void TabsManager::addChatWidget(ChatWidget *chatWidget)
 
 	if (!tmpAttached && tmpDetached)
 	{
-		DetachedChats.append(chatWidget);
-		return;
+		DetachedChats.append(chat);
+		return chatWidget;
 	}
 
 	if (tmpAttached)
 	{
 		insertTab(chatWidget);
-		return;
+		return chatWidget;
 	}
 
 	if (!attached && detached)
 	{
-		DetachedChats.append(chatWidget);
-		return;
+		DetachedChats.append(chat);
+		return chatWidget;
 	}
 
 	if (attached || ConfigDefaultTabs)
 		insertTab(chatWidget);
+
+	return chatWidget;
 }
 
-void TabsManager::removeChatWidget(ChatWidget *chatWidget)
+void TabsManager::removeChat(Chat chat)
 {
-	if (!chatWidget)
+	if (!chat)
 		return;
 
-	chatWidget->setParent(nullptr);
-	auto index = TabDialog->indexOf(chatWidget);
-	if (index >= 0)
-		TabDialog->removeTab(index);
+	auto count = TabDialog->count();
+	for (auto i = 0; i < count; i++)
+	{
+		auto chatWidget = qobject_cast<ChatWidget *>(TabDialog->widget(i));
+		if (chatWidget && chatWidget->chat() == chat)
+		{
+			TabDialog->removeTab(i);
+			return;
+		}
+	}
 }
 
 void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
@@ -244,7 +256,7 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 	if (TabDialog->indexOf(chatWidget) != -1)
 		TabDialog->removeTab(TabDialog->indexOf(chatWidget));
 
-	DetachedChats.removeAll(chatWidget);
+	DetachedChats.removeAll(chatWidget->chat());
 
 	disconnect(chatWidget->edit(), 0, TabDialog, 0);
 	disconnect(chatWidget, 0, this, 0);
@@ -347,7 +359,7 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	ContactSet contacts = chatWidget->chat().contacts();
 
-	DetachedChats.removeAll(chatWidget);
+	DetachedChats.removeAll(chatWidget->chat());
 
 	for (Action *action : AttachToTabsActionDescription->actions())
 	{
@@ -475,7 +487,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 		auto chat = chatWidget->chat();
 		chat.removeProperty("tabs:detached");
 		chat.addProperty("tabs:attached", true, CustomProperties::Storable);
-		emit chatWidgetAcceptanceChanged(chatWidget);
+		emit chatAcceptanceChanged(chat);
 	}
 }
 
@@ -564,7 +576,7 @@ void TabsManager::detachChat(ChatWidget *chatWidget)
 	auto chat = chatWidget->chat();
 	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 	chat.removeProperty("tabs:attached");
-	emit chatWidgetAcceptanceChanged(chatWidget);
+	emit chatAcceptanceChanged(chat);
 }
 
 void TabsManager::load()
@@ -622,7 +634,7 @@ void TabsManager::store()
 		if (!chat)
 			continue;
 
-		if ((TabDialog->indexOf(chatWidget) == -1) && (DetachedChats.indexOf(chatWidget) == -1))
+		if ((TabDialog->indexOf(chatWidget) == -1) && (DetachedChats.indexOf(chat) == -1))
 			continue;
 
 		QDomElement window_elem = storageFile->createElement(point, "Tab");
@@ -630,7 +642,7 @@ void TabsManager::store()
 		window_elem.setAttribute("chat", chat.uuid().toString());
 		if (TabDialog->indexOf(chatWidget) != -1)
 			window_elem.setAttribute("type", "tab");
-		else if (DetachedChats.indexOf(chatWidget) != -1)
+		else if (DetachedChats.indexOf(chat) != -1)
 			window_elem.setAttribute("type", "detachedChat");
 	}
 }

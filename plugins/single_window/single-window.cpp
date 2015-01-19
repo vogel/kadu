@@ -20,6 +20,7 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -139,7 +140,7 @@ SingleWindow::~SingleWindow()
 			ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->widget(i));
 			const Chat &chat = chatWidget->chat();
 			m_tabs->removeTab(i);
-			chatWidget->requestClose();
+			delete chatWidget;
 			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
 		}
 	}
@@ -166,8 +167,15 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 	m_split->insertWidget(m_rosterPos, Core::instance()->kaduWindow());
 }
 
-void SingleWindow::addChatWidget(ChatWidget *chatWidget)
+ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 {
+	Q_UNUSED(activation);
+
+	if (!chat)
+		return nullptr;
+
+	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, OpenChatActivation::Activate, m_tabs).release();
+
 	m_tabs->addTab(chatWidget, chatWidget->icon(), QString());
 	updateTabName(chatWidget);
 
@@ -179,19 +187,27 @@ void SingleWindow::addChatWidget(ChatWidget *chatWidget)
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+	connect(chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(closeTab(ChatWidget*)));
 
 	chatWidget->setActivation(OpenChatActivation::Ignore);
+	return chatWidget;
 }
 
-void SingleWindow::removeChatWidget(ChatWidget *chatWidget)
+void SingleWindow::removeChat(Chat chat)
 {
-	if (!chatWidget)
+	if (!chat)
 		return;
 
-	chatWidget->setParent(nullptr);
-	int index = m_tabs->indexOf(chatWidget);
-	if (index >= 0)
-		closeTab(index);
+	auto count = m_tabs->count();
+	for (auto i = 0; i < count; i++)
+	{
+		auto chatWidget = qobject_cast<ChatWidget *>(m_tabs->widget(i));
+		if (chatWidget && chatWidget->chat() == chat)
+		{
+			closeTab(i);
+			return;
+		}
+	}
 }
 
 void SingleWindow::updateTabIcon(ChatWidget *chatWidget)
@@ -244,15 +260,22 @@ void SingleWindow::updateTabName(ChatWidget *chatWidget)
 	}
 }
 
-void SingleWindow::closeTab(int index)
+void SingleWindow::closeTab(ChatWidget *chatWidget)
 {
-	ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->widget(index));
+	if (!chatWidget)
+		return;
 
 	disconnect(chatWidget->edit(), 0, this, 0);
 	disconnect(chatWidget, 0, this, 0);
 
-	chatWidget->requestClose();
-	m_tabs->removeTab(index);
+	m_tabs->removeTab(m_tabs->indexOf(chatWidget));
+
+	delete chatWidget;
+}
+
+void SingleWindow::closeTab(int index)
+{
+	closeTab(static_cast<ChatWidget *>(m_tabs->widget(index)));
 }
 
 void SingleWindow::closeEvent(QCloseEvent *event)

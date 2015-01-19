@@ -24,6 +24,8 @@
 
 #include "chat-window-factory.h"
 
+#include "chat/chat.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/windows/chat-window/chat-window.h"
 
 ChatWindowFactory::ChatWindowFactory(QObject *parent) :
@@ -35,9 +37,14 @@ ChatWindowFactory::~ChatWindowFactory()
 {
 }
 
-std::unique_ptr<ChatWindow> ChatWindowFactory::createChatWindow(ChatWidget *chatWidget)
+void ChatWindowFactory::setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory)
 {
-	return std::unique_ptr<ChatWindow>(new ChatWindow(chatWidget));
+	m_chatWidgetFactory = chatWidgetFactory;
+}
+
+std::unique_ptr<ChatWindow> ChatWindowFactory::createChatWindow(Chat chat)
+{
+	return std::unique_ptr<ChatWindow>(new ChatWindow(m_chatWidgetFactory.data(), chat));
 }
 
 #include "moc_chat-window-factory.cpp"

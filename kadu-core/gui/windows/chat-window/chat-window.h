@@ -36,13 +36,14 @@ class QTimer;
 
 class Chat;
 class ChatWidget;
+class ChatWidgetFactory;
 
 class KADUAPI ChatWindow : public QWidget, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
 {
 	Q_OBJECT
 
 public:
-	explicit ChatWindow(ChatWidget *chatWidget, QWidget *parent = 0);
+	explicit ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget *parent = 0);
 	virtual ~ChatWindow();
 
 	Chat chat() const;

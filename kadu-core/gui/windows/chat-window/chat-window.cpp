@@ -40,6 +40,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/application.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
@@ -50,13 +51,16 @@
 #include "activate.h"
 #include "debug.h"
 
-ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
-		QWidget(parent), DesktopAwareObject(this), m_chatWidget(chatWidget),
+ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget *parent) :
+		QWidget(parent), DesktopAwareObject(this),
 		m_titleTimer(new QTimer(this)), m_showNewMessagesNum(false), m_blinkChatTitle(true)
 {
 	kdebugf();
 
 	setWindowRole("kadu-chat");
+
+	m_chatWidget = chatWidgetFactory->createChatWidget(chat, OpenChatActivation::Activate, this).release();
+
 	if (m_chatWidget && m_chatWidget->chat().details() && m_chatWidget->chat().details()->type())
 		setWindowRole(m_chatWidget->chat().details()->type()->windowRole());
 
@@ -65,8 +69,6 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 #endif
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	m_chatWidget->setParent(this);
-	m_chatWidget->show();
 	m_chatWidget->edit()->setFocus();
 	m_chatWidget->kaduRestoreGeometry();
 
@@ -94,8 +96,6 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 
 ChatWindow::~ChatWindow()
 {
-	m_chatWidget->setParent(nullptr);
-
 	emit windowDestroyed(this);
 }
 
@@ -179,7 +179,6 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 		}
 	}
 
-	m_chatWidget->requestClose();
  	QWidget::closeEvent(e);
 }
 

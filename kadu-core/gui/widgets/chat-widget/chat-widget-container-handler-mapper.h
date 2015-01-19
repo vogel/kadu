@@ -27,10 +27,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
+class Chat;
 class ChatWidget;
 class ChatWidgetContainerHandler;
 class ChatWidgetContainerHandlerRepository;
 class ChatWidgetRepository;
+enum class OpenChatActivation;
 
 /**
  * @addtogroup Gui
@@ -45,7 +47,7 @@ class ChatWidgetRepository;
  * ChatWidgetContainerHandler from given ChatWidgetContainerHandlerRepository.
  *
  * It reacts on changes of content of two provided repositories and adds/removes
- * mapping as neccessary. It also reacts on chatWidgetAcceptanceChanged(ChatWidget*)
+ * mapping as neccessary. It also reacts on chatAcceptanceChanged(Chat)
  * from ChatWidgetContainerHandlerRepository to update mapping.
  *
  * When mapping is applied, ChatWidget is added to ChatWidgetContainerHandler.
@@ -62,25 +64,24 @@ public:
 	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	ChatWidgetContainerHandler * chatWidgetContainerHandlerForWidget(ChatWidget *chatWidget) const;
+	ChatWidgetContainerHandler * chatWidgetContainerHandlerForChat(Chat chat) const;
+
+	ChatWidget * mapToDefault(Chat chat, OpenChatActivation activation);
+	void unmap(Chat chat);
 
 private:
 	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
-	QMap<ChatWidget *, ChatWidgetContainerHandler *> m_mapping;
+	QMap<Chat, ChatWidgetContainerHandler *> m_mapping;
 
-	void mapToDefault(ChatWidget *chatWidget);
-	void map(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget);
-	void unmap(ChatWidget *chatWidget);
-	ChatWidgetContainerHandler * bestContainerHandler(ChatWidget *chatWidget) const;
+	ChatWidget * map(ChatWidgetContainerHandler *chatWidgetContainerHandler, Chat chat, OpenChatActivation activation);
+	ChatWidgetContainerHandler * bestContainerHandler(Chat chat) const;
 
 private slots:
 	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void chatWidgetAcceptanceChanged(ChatWidget *chatWidget);
-
-	void chatWidgetAdded(ChatWidget *chatWidget);
+	void chatAcceptanceChanged(Chat chat);
 	void chatWidgetRemoved(ChatWidget *chatWidget);
 
 };

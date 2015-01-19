@@ -215,9 +215,8 @@ void TabWidget::tryMinimizeChatWidget(ChatWidget *chatWidget)
 		window()->showMinimized();
 }
 
-void TabWidget::closeTab(QWidget *tabWidget)
+void TabWidget::closeTab(ChatWidget *chatWidget)
 {
-	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(tabWidget);
 	if (!chatWidget)
 		return;
 
@@ -237,7 +236,7 @@ void TabWidget::closeTab(QWidget *tabWidget)
 		}
 	}
 
-	chatWidget->requestClose();
+	delete chatWidget;
 }
 
 bool TabWidget::isChatWidgetActive(const ChatWidget *chatWidget)
@@ -256,10 +255,10 @@ void TabWidget::closeEvent(QCloseEvent *e)
 
 	//w zaleznosci od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywna
 	if (config_oldStyleClosing)
-		closeTab(currentWidget());
+		closeTab(static_cast<ChatWidget *>(currentWidget()));
 	else
 		for (int i = count() - 1; i >= 0; i--)
-			closeTab(widget(i));
+			closeTab(static_cast<ChatWidget *>(widget(i)));
 
 	if (count() > 0)
 		e->ignore();
@@ -343,7 +342,7 @@ void TabWidget::moveTab(int from, int to)
 
 void TabWidget::onDeleteTab(int id)
 {
-	closeTab(widget(id));
+	closeTab(static_cast<ChatWidget *>(widget(id)));
 }
 
 void TabWidget::switchTabLeft()
@@ -461,12 +460,15 @@ void TabWidget::openRecentChat(QAction *action)
 
 void TabWidget::deleteTab()
 {
-	closeTab(currentWidget());
+	closeTab(static_cast<ChatWidget *>(currentWidget()));
 }
 
 void TabWidget::tabInserted(int index)
 {
 	Q_UNUSED(index)
+
+	auto chatWidget = static_cast<ChatWidget *>(widget(index));
+	connect(chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(closeTab(ChatWidget*)));
 
 	updateTabsListButton();
 	updateTabsMenu();

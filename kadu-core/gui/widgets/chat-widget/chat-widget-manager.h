@@ -32,6 +32,7 @@
 class Chat;
 class ChatWidget;
 class ChatWidgetActivationService;
+class ChatWidgetContainerHandlerMapper;
 class ChatWidgetFactory;
 class ChatWidgetRepository;
 
@@ -62,6 +63,7 @@ public:
 	virtual ~ChatWidgetManager();
 
 	void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
+	void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
@@ -75,22 +77,13 @@ public slots:
 	 * If activation is set to OpenChatActivation::Minimize and window is not yet
 	 * opened then it will be minimized after opening.
 	 */
-	void openChat(const Chat &chat, OpenChatActivation activation);
-
-	/**
-	 * @short Close given chat.
-	 */
-	void closeChat(const Chat &chat);
+	ChatWidget * openChat(const Chat &chat, OpenChatActivation activation);
 
 private:
 	QPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
+	QPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<ChatWidgetFactory> m_chatWidgetFactory;
-
-	ChatWidget * getOrCreateChatWidget(const Chat &chat, OpenChatActivation activation);
-
-private slots:
-	void closeChatWidget(ChatWidget *chatWidget);
 
 };
 
