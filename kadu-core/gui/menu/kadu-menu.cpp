@@ -136,7 +136,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 		if (!firstItem && latestSection != menuItem->section())
 			currentMenu->addSeparator();
 
-		Action *action = menuItem->actionDescription()->createAction(actionContext, currentMenu);
+		Action *action = menuItem->actionDescription()->createAction(actionContext, currentMenu->parent());
 		currentMenu->addAction(action);
 		action->checkState();
 

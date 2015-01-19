@@ -9,8 +9,7 @@
 * chat: #2929 fixed: improve blinking timing on chat window with new messages (Vogel)
 * tabs: #2934 fixed: properly handle common close button settings (Vogel)
 * chat: #2928 fixed: properly hadnle disabling "Store opened chats" option (Vogel)
-* sound: #2931 fixed: player thread could block itself on exit and never end (Vogel)
-* history: #2932 fixed: crash on Kadu close when using history window (Vogel)
+* sound: ##2931 fixed: player thread could block itself on exit and never end (Vogel)
 
 +++ version 2.0-alpha2
 * windows: #2858 fixed: blinking main window on Kadu exit (Vogel)
