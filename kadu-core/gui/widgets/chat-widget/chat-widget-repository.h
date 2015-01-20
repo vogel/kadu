@@ -24,6 +24,7 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 #include <map>
 #include <memory>
 
@@ -62,7 +63,7 @@ class KADUAPI ChatWidgetRepository : public QObject
 public:
 	using Iterator = IteratorWrapper<WrappedIterator, ChatWidget *>;
 
-	explicit ChatWidgetRepository(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatWidgetRepository(QObject *parent = nullptr);
 	virtual ~ChatWidgetRepository();
 
 	/**

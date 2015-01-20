@@ -19,13 +19,8 @@
 
 #include "gui-module.h"
 
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
-#include "gui/windows/chat-window/chat-window-factory.h"
-
 GuiModule::GuiModule()
 {
-	add_type<ChatWidgetFactory>();
-	add_type<ChatWindowFactory>();
 }
 
 GuiModule::~GuiModule()

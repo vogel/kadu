@@ -26,6 +26,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Chat;
 class ChatWidget;
@@ -58,11 +59,8 @@ class ChatWidgetContainerHandlerMapper : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatWidgetContainerHandlerMapper(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatWidgetContainerHandlerMapper(QObject *parent = 0);
 	virtual ~ChatWidgetContainerHandlerMapper();
-
-	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	ChatWidgetContainerHandler * chatWidgetContainerHandlerForChat(Chat chat) const;
 
@@ -79,6 +77,9 @@ private:
 	ChatWidgetContainerHandler * bestContainerHandler(Chat chat) const;
 
 private slots:
+	INJEQT_SETTER void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void chatAcceptanceChanged(Chat chat);

@@ -24,16 +24,11 @@
 
 #include <injeqt/module.h>
 
-class ChatWidgetRepository;
-
 class KADUAPI ChatWidgetModule : public injeqt::module
 {
 
 public:
 	ChatWidgetModule();
 	virtual ~ChatWidgetModule();
-
-private:
-	not_owned_qptr<ChatWidgetRepository> m_chatWidgetRepository;
 
 };

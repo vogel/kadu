@@ -28,6 +28,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Chat;
 class ChatWidget;
@@ -59,13 +60,8 @@ class KADUAPI ChatWidgetManager : public QObject
 	Q_DISABLE_COPY(ChatWidgetManager)
 
 public:
-	explicit ChatWidgetManager(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatWidgetManager(QObject *parent = nullptr);
 	virtual ~ChatWidgetManager();
-
-	void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
-	void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 public slots:
 	/**
@@ -84,6 +80,12 @@ private:
 	QPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<ChatWidgetFactory> m_chatWidgetFactory;
+
+private slots:
+	INJEQT_SETTER void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
+	INJEQT_SETTER void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SETTER void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 };
 

@@ -23,6 +23,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "exports.h"
 
@@ -49,11 +50,8 @@ class KADUAPI ChatWidgetActivationService : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatWidgetActivationService(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatWidgetActivationService(QObject *parent = nullptr);
 	virtual ~ChatWidgetActivationService();
-
-	void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
-	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 
 	bool isChatWidgetActive(ChatWidget *chatWidget) const;
 	void tryActivateChatWidget(ChatWidget *chatWidget);
@@ -67,6 +65,9 @@ private:
 	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 
 private slots:
+	INJEQT_SETTER void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
+	INJEQT_SETTER void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+
 	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 

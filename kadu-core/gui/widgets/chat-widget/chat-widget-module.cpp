@@ -19,15 +19,25 @@
 
 #include "chat-widget-module.h"
 
+#include "gui/widgets/chat-widget/chat-widget-activation-service.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
+#include "gui/windows/chat-window/chat-window-factory.h"
 
 ChatWidgetModule::ChatWidgetModule()
 {
-	m_chatWidgetRepository = make_not_owned<ChatWidgetRepository>();
-
-	add_ready_object<ChatWidgetRepository>(m_chatWidgetRepository.get());
+	add_type<ChatWidgetActivationService>();
+	add_type<ChatWidgetContainerHandlerMapper>();
+	add_type<ChatWidgetContainerHandlerRepository>();
+	add_type<ChatWidgetFactory>();
+	add_type<ChatWidgetManager>();
+	add_type<ChatWidgetRepository>();
 	add_type<ChatWidgetStatePersistenceService>();
+	add_type<ChatWindowFactory>();
 }
 
 ChatWidgetModule::~ChatWidgetModule()
