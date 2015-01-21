@@ -398,6 +398,8 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 
+	unreadMessagesCountChanged(chatWidget);
+
 	kdebugf2();
 }
 
