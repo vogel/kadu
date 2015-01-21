@@ -62,6 +62,7 @@
 #include "execution-arguments/execution-arguments.h"
 #include "gui/gui-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
+#include "gui/windows/chat-window/chat-window-module.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "misc/date-time.h"
@@ -211,6 +212,7 @@ int main(int argc, char *argv[]) try
 
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
 	modules.emplace_back(make_unique<ChatWidgetModule>());
+	modules.emplace_back(make_unique<ChatWindowModule>());
 	modules.emplace_back(make_unique<CoreModule>(std::move(profileDirectory)));
 	modules.emplace_back(make_unique<ConfigurationModule>());
 	modules.emplace_back(make_unique<GuiModule>());

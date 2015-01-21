@@ -26,6 +26,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ChatWidgetManager;
 class ChatWindowStorage;
@@ -36,12 +37,8 @@ class ChatWindowManager : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatWindowManager(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatWindowManager(QObject *parent = 0);
 	virtual ~ChatWindowManager();
-
-	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
-	void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
 
 	void openStoredChatWindows();
 	void storeOpenedChatWindows();
@@ -50,5 +47,10 @@ private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ChatWindowRepository> m_chatWindowRepository;
 	QPointer<ChatWindowStorage> m_chatWindowStorage;
+
+private slots:
+	INJEQT_SETTER void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SETTER void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+	INJEQT_SETTER void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
 
 };

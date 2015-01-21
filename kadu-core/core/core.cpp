@@ -192,8 +192,6 @@ Core::Core(injeqt::injector &injector) :
 		CurrentUnreadMessageRepository{nullptr},
 		CurrentChatWidgetActions{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
-		CurrentChatWindowStorage{nullptr},
-		CurrentChatWindowRepository{nullptr},
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true)
@@ -227,7 +225,7 @@ Core::~Core()
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
-	CurrentChatWindowManager->storeOpenedChatWindows();
+	m_injector.get<ChatWindowManager>()->storeOpenedChatWindows();
 
 	// some plugins crash on deactivation
 	// ensure we have at least some configuration stored
@@ -636,14 +634,8 @@ void Core::runServices()
 
 	CurrentChatWidgetActions = new ChatWidgetActions(this);
 
-	CurrentChatWindowRepository = new ChatWindowRepository(this);
-
-	auto windowChatWidgetContainerHandler = new WindowChatWidgetContainerHandler(this);
-	windowChatWidgetContainerHandler->setChatWindowFactory(m_injector.get<ChatWindowFactory>());
-	windowChatWidgetContainerHandler->setChatWindowRepository(CurrentChatWindowRepository);
-
 	auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
-	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(windowChatWidgetContainerHandler);
+	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_injector.get<WindowChatWidgetContainerHandler>());
 
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
 	CurrentChatWidgetMessageHandler->setChatWidgetActivationService(m_injector.get<ChatWidgetActivationService>());
@@ -654,16 +646,9 @@ void Core::runServices()
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
 
-	CurrentChatWindowStorage = new ChatWindowStorage(this);
-	CurrentChatWindowStorage->setChatManager(ChatManager::instance());
-	CurrentChatWindowStorage->setStoragePointFactory(m_injector.get<StoragePointFactory>());
+	m_injector.get<ChatWindowStorage>()->setChatManager(ChatManager::instance());
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
-	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
-
-	CurrentChatWindowManager = new ChatWindowManager(this);
-	CurrentChatWindowManager->setChatWidgetManager(m_injector.get<ChatWidgetManager>());
-	CurrentChatWindowManager->setChatWindowRepository(CurrentChatWindowRepository);
-	CurrentChatWindowManager->setChatWindowStorage(CurrentChatWindowStorage);
+	chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -720,7 +705,7 @@ void Core::runGuiServices()
 	CurrentNotificationService = new NotificationService(this);
 	CurrentChatWidgetMessageHandler->setNotificationService(CurrentNotificationService);
 
-	CurrentChatWindowManager->openStoredChatWindows();
+	m_injector.get<ChatWindowManager>()->openStoredChatWindows();
 }
 
 void Core::stopServices()
@@ -855,11 +840,6 @@ ChatWidgetFactory * Core::chatWidgetFactory() const
 ChatWidgetRepository * Core::chatWidgetRepository() const
 {
 	return m_injector.get<ChatWidgetRepository>();
-}
-
-ChatWindowRepository * Core::chatWindowRepository() const
-{
-	return CurrentChatWindowRepository;
 }
 
 StoragePointFactory * Core::storagePointFactory() const

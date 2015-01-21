@@ -59,9 +59,6 @@ class ChatWidgetFactory;
 class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
-class ChatWindowManager;
-class ChatWindowStorage;
-class ChatWindowRepository;
 class ClipboardHtmlTransformerService;
 class ConfiguredChatStyleRendererFactoryProvider;
 class DomProcessorService;
@@ -122,9 +119,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	UnreadMessageRepository *CurrentUnreadMessageRepository;
 	ChatWidgetActions *CurrentChatWidgetActions;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
-	ChatWindowManager *CurrentChatWindowManager;
-	ChatWindowStorage *CurrentChatWindowStorage;
-	ChatWindowRepository *CurrentChatWindowRepository;
 
 	owned_qptr<ConfiguredChatStyleRendererFactoryProvider> CurrentChatStyleRendererFactoryProvider;
 	owned_qptr<WebkitMessagesViewDisplayFactory> CurrentWebkitMessagesViewDisplayFactory;
@@ -202,8 +196,6 @@ public:
 	ChatWidgetFactory * chatWidgetFactory() const;
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
-	ChatWindowStorage * chatWindowStorage() const;
-	ChatWindowRepository * chatWindowRepository() const;
 	StoragePointFactory * storagePointFactory() const;
 
 	PluginActivationService * pluginActivationService() const;

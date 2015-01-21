@@ -26,7 +26,6 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
-#include "gui/windows/chat-window/chat-window-factory.h"
 
 ChatWidgetModule::ChatWidgetModule()
 {
@@ -37,7 +36,6 @@ ChatWidgetModule::ChatWidgetModule()
 	add_type<ChatWidgetManager>();
 	add_type<ChatWidgetRepository>();
 	add_type<ChatWidgetStatePersistenceService>();
-	add_type<ChatWindowFactory>();
 }
 
 ChatWidgetModule::~ChatWidgetModule()

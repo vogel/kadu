@@ -21,6 +21,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
 #include "misc/iterator.h"
@@ -56,7 +57,7 @@ class KADUAPI ChatWindowRepository : public QObject
 public:
 	using Iterator = IteratorWrapper<WrappedIterator, ChatWindow *>;
 
-	explicit ChatWindowRepository(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatWindowRepository(QObject *parent = nullptr);
 	virtual ~ChatWindowRepository();
 
 	/**
