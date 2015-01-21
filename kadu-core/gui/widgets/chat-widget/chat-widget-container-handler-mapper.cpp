@@ -25,6 +25,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "message/sorted-messages.h"
 
 #include <algorithm>
 
@@ -95,8 +96,15 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(Ch
 
 void ChatWidgetContainerHandlerMapper::chatAcceptanceChanged(Chat chat)
 {
+	auto oldChatWidget = m_chatWidgetRepository ? m_chatWidgetRepository->widgetForChat(chat) : nullptr;
+	auto messages = oldChatWidget ? oldChatWidget->messages() : SortedMessages{};
+
 	unmap(chat);
 	mapToDefault(chat, OpenChatActivation::Ignore);
+
+	auto newChatWidget = m_chatWidgetRepository ? m_chatWidgetRepository->widgetForChat(chat) : nullptr;
+	if (newChatWidget)
+		newChatWidget->addMessages(messages);
 }
 
 ChatWidget * ChatWidgetContainerHandlerMapper::mapToDefault(Chat chat, OpenChatActivation activation)
