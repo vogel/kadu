@@ -65,15 +65,13 @@ ChatWidget * WindowChatWidgetContainerHandler::addChat(Chat chat, OpenChatActiva
 	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chat);
 	if (!chatWindow)
 	{
-		auto newChatWindow = m_chatWindowFactory.data()->createChatWindow(chat);
-		chatWindow = newChatWindow.get();
+		chatWindow = m_chatWindowFactory.data()->createChatWindow(chat).release();
 		if (!chatWindow)
 			return nullptr;
 
-		m_chatWindowRepository.data()->addChatWindow(std::move(newChatWindow));
+		m_chatWindowRepository.data()->addChatWindow(chatWindow);
 		connect(chatWindow, SIGNAL(activated(ChatWindow*)), this, SLOT(chatWindowActivated(ChatWindow*)));
 	}
-
 
 	switch (activation)
 	{
@@ -97,7 +95,7 @@ void WindowChatWidgetContainerHandler::removeChat(Chat chat)
 		return;
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chat);
-	m_chatWindowRepository.data()->removeChatWindow(chatWindow);
+	delete chatWindow;
 }
 
 bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)

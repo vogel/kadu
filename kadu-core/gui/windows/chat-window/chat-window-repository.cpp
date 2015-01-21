@@ -25,7 +25,7 @@
 
 ChatWindow * ChatWindowRepository::converter(ChatWindowRepository::WrappedIterator iterator)
 {
-	return iterator->second.get();
+	return iterator->second;
 }
 
 ChatWindowRepository::ChatWindowRepository(QObject *parent) :
@@ -37,7 +37,7 @@ ChatWindowRepository::~ChatWindowRepository()
 {
 	// neeed to emit signals on finish
 	while (!m_windows.empty())
-		removeChatWindow((*m_windows.begin()).second.get());
+		delete (*m_windows.begin()).second;
 }
 
 ChatWindowRepository::Iterator ChatWindowRepository::begin()
@@ -50,12 +50,13 @@ ChatWindowRepository::Iterator ChatWindowRepository::end()
 	return Iterator{m_windows.end(), converter};
 }
 
-void ChatWindowRepository::addChatWindow(std::unique_ptr<ChatWindow> chatWindow)
+void ChatWindowRepository::addChatWindow(ChatWindow *chatWindow)
 {
-	if (!chatWindow || hasWindowForChat(chatWindow.get()->chat()))
+	if (!chatWindow || hasWindowForChat(chatWindow->chat()))
 		return;
 
-	m_windows.insert(std::make_pair(chatWindow->chat(), std::move(chatWindow)));
+	m_windows.insert(std::make_pair(chatWindow->chat(), chatWindow));
+	connect(chatWindow, SIGNAL(windowDestroyed(ChatWindow*)), this, SLOT(removeChatWindow(ChatWindow*)));
 }
 
 void ChatWindowRepository::removeChatWindow(ChatWindow *chatWindow)
@@ -78,7 +79,7 @@ ChatWindow * ChatWindowRepository::windowForChat(const Chat &chat)
 
 	auto it = m_windows.find(chat);
 	return it != m_windows.end()
-			? it->second.get()
+			? it->second
 			: nullptr;
 }
 
