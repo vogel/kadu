@@ -71,7 +71,6 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -96,10 +95,9 @@
 
 #include "chat-widget.h"
 
-ChatWidget::ChatWidget(Chat chat, OpenChatActivation activation, QWidget *parent) :
+ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		QWidget{parent},
 		CurrentChat{chat},
-		Activation{activation},
 		BuddiesWidget{0},
 		ProxyModel{0},
 		InputBox{0},
@@ -324,16 +322,6 @@ void ChatWidget::configurationUpdated()
 	InputBox->inputBox()->setPalette(palette);
 
 	refreshTitle();
-}
-
-OpenChatActivation ChatWidget::activation() const
-{
-	return Activation;
-}
-
-void ChatWidget::setActivation(OpenChatActivation activation)
-{
-	Activation = activation;
 }
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)

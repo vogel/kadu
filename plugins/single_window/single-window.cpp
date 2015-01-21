@@ -174,7 +174,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 	if (!chat)
 		return nullptr;
 
-	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, OpenChatActivation::Activate, m_tabs).release();
+	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, m_tabs).release();
 
 	m_tabs->addTab(chatWidget, chatWidget->icon(), QString());
 	updateTabName(chatWidget);
@@ -189,7 +189,6 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
 	connect(chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(closeTab(ChatWidget*)));
 
-	chatWidget->setActivation(OpenChatActivation::Ignore);
 	return chatWidget;
 }
 

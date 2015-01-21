@@ -194,9 +194,7 @@ ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 {
 	kdebugf();
 
-	Q_UNUSED(activation);
-
-	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, OpenChatActivation::Activate, nullptr).release();
+	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, nullptr).release();
 
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
@@ -215,17 +213,29 @@ ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 	if (tmpAttached)
 	{
 		insertTab(chatWidget);
-		return chatWidget;
 	}
-
-	if (!attached && detached)
+	else if (!attached && detached)
 	{
 		DetachedChats.append(chat);
-		return chatWidget;
+	}
+	else if (attached || ConfigDefaultTabs)
+		insertTab(chatWidget);
+
+	if (TabDialog->count() == 1) // first tab
+	{
+		switch (activation)
+		{
+			case OpenChatActivation::Minimize:
+				TabDialog->showMinimized();
+				break;
+			default:
+				TabDialog->show();
+				break;
+		}
 	}
 
-	if (attached || ConfigDefaultTabs)
-		insertTab(chatWidget);
+	if (activation == OpenChatActivation::Activate)
+		_activateWindow(TabDialog);
 
 	return chatWidget;
 }
@@ -369,19 +379,6 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
 	TabDialog->insertTab(TargetTabs, chatWidget, chatWidget->icon(), QString());
-	if (TabDialog->count() == 1) // first tab
-	{
-		switch (chatWidget->activation())
-		{
-			case OpenChatActivation::Minimize:
-				TabDialog->showMinimized();
-				break;
-			default:
-				TabDialog->show();
-				break;
-		}
-	}
-	chatWidget->setActivation(OpenChatActivation::Ignore);
 
 	if (restoreChatGeometry)
 		chatWidget->kaduRestoreGeometry();

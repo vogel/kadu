@@ -31,8 +31,6 @@ class Chat;
 class ChatWidget;
 class FormattedStringFactory;
 
-enum class OpenChatActivation;
-
 /**
  * @addtogroup Gui
  * @{
@@ -50,7 +48,7 @@ public:
 	Q_INVOKABLE explicit ChatWidgetFactory(QObject *parent = 0);
 	virtual ~ChatWidgetFactory();
 
-	std::unique_ptr<ChatWidget> createChatWidget(Chat chat, OpenChatActivation activation, QWidget *parent = nullptr);
+	std::unique_ptr<ChatWidget> createChatWidget(Chat chat, QWidget *parent = nullptr);
 
 private slots:
 	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);

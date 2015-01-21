@@ -59,7 +59,7 @@ ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget 
 
 	setWindowRole("kadu-chat");
 
-	m_chatWidget = chatWidgetFactory->createChatWidget(chat, OpenChatActivation::Activate, this).release();
+	m_chatWidget = chatWidgetFactory->createChatWidget(chat, this).release();
 
 	if (m_chatWidget && m_chatWidget->chat().details() && m_chatWidget->chat().details()->type())
 		setWindowRole(m_chatWidget->chat().details()->type()->windowRole());
