@@ -265,6 +265,11 @@ void WebkitMessagesView::add(const SortedMessages &messages)
 	emit messagesUpdated();
 }
 
+SortedMessages WebkitMessagesView::messages() const
+{
+	return m_handler->messages();
+}
+
 void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory)
 {
 	m_chatStyleRendererFactory = chatStyleRendererFactory;

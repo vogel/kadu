@@ -55,6 +55,7 @@ public:
 
 	void add(const Message &message);
 	void add(const SortedMessages &messages);
+	SortedMessages messages() const;
 
 	int countMessages();
 

@@ -141,7 +141,7 @@ void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 
 	if (!unreadMessagesAppended)
 	{
-		chatWidget->appendMessages(messages);
+		chatWidget->addMessages(messages);
 		chat.addProperty("message:unreadMessagesAppended", true, CustomProperties::NonStorable);
 	}
 }
@@ -168,7 +168,7 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 
 	if (chatWidget)
 	{
-		chatWidget->appendMessage(message);
+		chatWidget->addMessage(message);
 		return;
 	}
 
@@ -217,7 +217,7 @@ void ChatWidgetMessageHandler::messageSent(const Message &message)
 	auto chat = message.messageChat();
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
 	if (chatWidget)
-		chatWidget->appendMessage(message);
+		chatWidget->addMessage(message);
 }
 
 void ChatWidgetMessageHandler::handleUnreadMessageChange(const Message &message)

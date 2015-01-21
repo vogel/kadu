@@ -151,15 +151,15 @@ public:
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
 
+	void addMessages(const SortedMessages &messages);
+	void addMessage(const Message &message);
+	SortedMessages messages() const;
 	int countMessages() const;
 
 	void setUnreadMessagesCount(int unreadMessagesCount);
 	int unreadMessagesCount() const;
 
 public slots:
-	void appendMessages(const SortedMessages &messages);
-	void appendMessage(const Message &message);
-
 	void sendMessage();
 	void colorSelectorAboutToClose();
 	void clearChatWindow();

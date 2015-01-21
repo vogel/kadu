@@ -470,7 +470,7 @@ QIcon ChatWidget::icon()
 	return KaduIcon("internet-group-chat").icon();
 }
 
-void ChatWidget::appendMessages(const SortedMessages &messages)
+void ChatWidget::addMessages(const SortedMessages &messages)
 {
 	if (messages.empty())
 		return;
@@ -485,7 +485,7 @@ void ChatWidget::appendMessages(const SortedMessages &messages)
 		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
-void ChatWidget::appendMessage(const Message &message)
+void ChatWidget::addMessage(const Message &message)
 {
 	MessagesView->add(message);
 
@@ -494,6 +494,11 @@ void ChatWidget::appendMessage(const Message &message)
 
 	LastReceivedMessageTime = QDateTime::currentDateTime();
 	emit messageReceived(this);
+}
+
+SortedMessages ChatWidget::messages() const
+{
+	return MessagesView->messages();
 }
 
 void ChatWidget::appendSystemMessage(const QString &content)
