@@ -75,9 +75,6 @@ private:
 
 	QMap<QString, QString> m_contactMessageTypes;
 
-	void connectClient();
-	void disconnectClient();
-
 	XMPP::Jid chatJid(const Chat &chat);
 	QString chatMessageType(const Chat &chat, const XMPP::Jid &jid);
 	::Message handleNormalReceivedMessage(const Message &msg);

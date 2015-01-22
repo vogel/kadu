@@ -60,25 +60,10 @@ namespace XMPP
 JabberChatService::JabberChatService(Account account, QObject *parent) :
 		ChatService{account, parent}
 {
-	connect(ChatManager::instance(), SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
-	connect(ChatManager::instance(), SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));
 }
 
 JabberChatService::~JabberChatService()
 {
-	disconnect(ChatManager::instance(), nullptr, this, nullptr);
-}
-
-void JabberChatService::connectClient()
-{
-	connect(m_client.data(), SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
-	connect(m_client.data(), SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
-	connect(m_client.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
-}
-
-void JabberChatService::disconnectClient()
-{
-	disconnect(m_client.data(), 0, this, 0);
 }
 
 void JabberChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
@@ -88,13 +73,7 @@ void JabberChatService::setFormattedStringFactory(FormattedStringFactory *format
 
 void JabberChatService::setXmppClient(Client *xmppClient)
 {
-	if (m_client)
-		disconnectClient();
-
 	m_client = xmppClient;
-
-	if (m_client)
-		connectClient();
 }
 
 void JabberChatService::setRoomChatService(JabberRoomChatService *roomChatService)
