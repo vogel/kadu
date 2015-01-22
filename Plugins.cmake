@@ -51,8 +51,6 @@ set (DEFAULT_PLUGINS
 	phonon_sound
 	# External sound player support
 	ext_sound
-	# QtSound sound support
-	qt4_sound
 
 # mediaplayer
 	# Media players support plugin

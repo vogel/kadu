@@ -472,7 +472,6 @@ SectionGroup $(section_plugins) SectionPlugins
 		!insertmacro kadu_plugin_file libqt4_docking_notify
 	SectionEnd
 
-	!insertmacro kadu_plugin qt4_sound qt4_sound
 	!insertmacro kadu_plugin screenshot screenshot
 	!insertmacro kadu_plugin simpleview simpleview
 	!insertmacro kadu_plugin single_window single_window

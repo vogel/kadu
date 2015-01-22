@@ -33,6 +33,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QThread>
+#include <QtMultimedia/QSound>
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -60,14 +61,15 @@ void SoundManager::destroyInstance()
 }
 
 SoundManager::SoundManager() :
-		Player(0), Mute(false)
+		Player{nullptr},
+		CurrentSound{nullptr},
+		Mute{false}
 {
 	kdebugf();
 
 	createDefaultConfiguration();
 
 	setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
-
 
 	PlayThread = new QThread();
 	PlayThreadObject = new SoundPlayThread();
@@ -98,6 +100,8 @@ SoundManager::~SoundManager()
 
 	PlayThread->deleteLater();
 	PlayThreadObject->deleteLater();
+
+	delete CurrentSound;
 
 	kdebugf2();
 }
@@ -134,8 +138,21 @@ void SoundManager::playFile(const QString &path, bool force)
 	if (isMuted() && !force)
 		return;
 
-	if (Player && QFile::exists(path))
+	if (!QFile::exists(path))
+		return;
+
+	if (CurrentSound && !CurrentSound->isFinished())
+		return;
+
+	if (Player)
+	{
 		PlayThreadObject->play(Player, path);
+		return;
+	}
+
+	delete CurrentSound;
+	CurrentSound = new QSound{path};
+	CurrentSound->play();
 }
 
 void SoundManager::playSoundByName(const QString &soundName)
