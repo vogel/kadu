@@ -83,7 +83,6 @@ class KADUAPI WindowGeometryManager : public QObject
 
 private slots:
 	void saveGeometry();
-	void visibleChanged(bool visible);
 
 public:
 	/**

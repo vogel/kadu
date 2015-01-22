@@ -93,7 +93,7 @@ bool WindowGeometryManager::eventFilter(QObject *watched, QEvent *event)
 
 		if (event->type() == QEvent::QEvent::Show)
 		{
-			visibleChanged(true);
+			restoreGeometry();
 		}
 		else if (event->type() == QEvent::Move || event->type() == QEvent::Resize)
 		{
@@ -152,18 +152,6 @@ void WindowGeometryManager::saveGeometry()
 #endif
 }
 
-void WindowGeometryManager::visibleChanged(bool visible)
-{
-	QWidget *parentWidget = qobject_cast<QWidget *>(parent());
-	Q_ASSERT(parentWidget);
-
-	if (!visible)
-		return;
-
-	disconnect(parentWidget->window()->windowHandle(), SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
-	restoreGeometry();
-}
-
 void WindowGeometryManager::restoreGeometry()
 {
 	QWidget *parentWidget = qobject_cast<QWidget *>(parent());
@@ -171,7 +159,6 @@ void WindowGeometryManager::restoreGeometry()
 
 	if (!parentWidget->window()->isVisible())
 	{
-		connect(parentWidget->window()->windowHandle(), SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
 		return;
 	}
 
