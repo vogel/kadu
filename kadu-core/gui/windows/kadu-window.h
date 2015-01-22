@@ -112,6 +112,7 @@ private:
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 
+private slots:
 #ifdef Q_OS_WIN32
 	void setHiddenParent();
 #endif
