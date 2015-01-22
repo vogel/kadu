@@ -42,6 +42,7 @@
  */
 
 #include <QtCore/QVariant>
+#include <QtGui/QWindow>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QWidget>
@@ -90,7 +91,11 @@ bool WindowGeometryManager::eventFilter(QObject *watched, QEvent *event)
 		QWidget *parentWidget = qobject_cast<QWidget *>(parent());
 		Q_ASSERT(parentWidget);
 
-		if (event->type() == QEvent::Move || event->type() == QEvent::Resize)
+		if (event->type() == QEvent::QEvent::Show)
+		{
+			visibleChanged(true);
+		}
+		else if (event->type() == QEvent::Move || event->type() == QEvent::Resize)
 		{
 			if (parentWidget->isWindow())
 			{
@@ -106,7 +111,7 @@ bool WindowGeometryManager::eventFilter(QObject *watched, QEvent *event)
 				restoreGeometry();
 		}
 
-		return false;
+		return QObject::eventFilter(watched, event);
 	}
 
 	return QObject::eventFilter(watched, event);
@@ -116,6 +121,9 @@ void WindowGeometryManager::saveGeometry()
 {
 	QWidget *parentWidget = qobject_cast<QWidget *>(parent());
 	Q_ASSERT(parentWidget);
+
+	if (!parentWidget->isVisible())
+		return;
 
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
@@ -144,10 +152,28 @@ void WindowGeometryManager::saveGeometry()
 #endif
 }
 
+void WindowGeometryManager::visibleChanged(bool visible)
+{
+	QWidget *parentWidget = qobject_cast<QWidget *>(parent());
+	Q_ASSERT(parentWidget);
+
+	if (!visible)
+		return;
+
+	disconnect(parentWidget->window()->windowHandle(), SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
+	restoreGeometry();
+}
+
 void WindowGeometryManager::restoreGeometry()
 {
 	QWidget *parentWidget = qobject_cast<QWidget *>(parent());
 	Q_ASSERT(parentWidget);
+
+	if (!parentWidget->window()->isVisible())
+	{
+		connect(parentWidget->window()->windowHandle(), SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
+		return;
+	}
 
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
