@@ -78,6 +78,9 @@ $line"
 		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
 		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
 
+		Wtyczki zewnętrzne:
+		 http://download.kadu.im/external-plugins/2.0/
+
 		Przed instalacją zalecane jest zrobienie kopii katalogu z danymi ~/.kadu lub C:\Users\..\AppData\Roaming\Kadu.
 		Błędy jak zawsze proszę zgłaszac na redmine: http://www.kadu.im/redmine/
 END
@@ -124,6 +127,9 @@ $line"
 		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download
 		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
 		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
+
+		External plugins:
+		 http://download.kadu.im/external-plugins/2.0/
 
 		Please create backup of data directory ~/.kadu or C:\Users\..\AppData\Roaming\Kadu before installing.
 		Please report all found bugs in redmine: http://www.kadu.im/redmine/
@@ -176,6 +182,8 @@ $line"
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe Pobierz Instalator Windows (Kadu.im)]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 Suma MD5]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 Suma SHA1]
+		:: Wtyczki zewnętrzne:
+		::: [http://download.kadu.im/external-plugins/2.0/ Źródła]
 
 		Lista zmian:
 		$CHANGELOG
@@ -232,6 +240,8 @@ $line"
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe  Download Windows Installer (Kadu.im)]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 MD5 Checksum]
 		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 SHA1 Checksum]
+		:: External plugins:
+		::: [http://download.kadu.im/external-plugins/2.0/ Sources]
 
 		Fixed bugs:
 		$CHANGELOG
