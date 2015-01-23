@@ -1,4 +1,4 @@
-+++ version 2.0-alpha3
++++ version 2.0-beta1
 * docking: #2921 done: change tooltip text on Windows (Vogel)
 * hints: #2922 fixed: invalid images on Windows (Vogel)
 * gui: #2920 fixed: problems with Open chat minimized option (Vogel)
