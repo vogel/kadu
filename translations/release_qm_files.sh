@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-LRELEASE=$(which lrelease-qt4) || LRELEASE=$(which lrelease) || LRELEASE=$QTDIR/bin/lrelease
+LRELEASE=LRELEASE=$(which lrelease) || LRELEASE=$QTDIR/bin/lrelease
 NAME=kadu
 echo "*****************************************************"
 echo "Angielskie -->"

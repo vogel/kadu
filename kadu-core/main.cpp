@@ -247,11 +247,33 @@ int main(int argc, char *argv[]) try
 
 	enableSignalHandling();
 
-	const QString lang = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
-	QTranslator qt_qm, kadu_qm;
-	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+	auto lang = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
+
+	QTranslator qt_qm;
+	QTranslator qtbase_qm;
+	QTranslator qtdeclarative_qm;
+	QTranslator qtmultimedia_qm;
+	QTranslator qtquick1_qm;
+	QTranslator qtscript_qm;
+	QTranslator qtxmlpatterns_qm;
+	QTranslator kadu_qm;
+
+	qt_qm.load("qt_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtbase_qm.load("qtbase_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtdeclarative_qm.load("qtdeclarative_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtmultimedia_qm.load("qtmultimedia_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtquick1_qm.load("qtquick1_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtscript_qm.load("qtscript_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtxmlpatterns_qm.load("qtxmlpatterns_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
 	kadu_qm.load("kadu_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+
 	QCoreApplication::installTranslator(&qt_qm);
+	QCoreApplication::installTranslator(&qtbase_qm);
+	QCoreApplication::installTranslator(&qtdeclarative_qm);
+	QCoreApplication::installTranslator(&qtmultimedia_qm);
+	QCoreApplication::installTranslator(&qtquick1_qm);
+	QCoreApplication::installTranslator(&qtscript_qm);
+	QCoreApplication::installTranslator(&qtxmlpatterns_qm);
 	QCoreApplication::installTranslator(&kadu_qm);
 
 	auto ret = 0;
