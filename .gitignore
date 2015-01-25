@@ -5,3 +5,5 @@ CMakeLists.txt.user
 .configuration-ui-translations.cpp
 docs
 /.tx/
+/package
+/package-build
