@@ -26,6 +26,7 @@
 
 #include "gadu-protocol-socket-notifiers.h"
 
+#include "services/gadu-imtoken-service.h"
 #include "services/gadu-roster-service.h"
 
 #include "accounts/account.h"
@@ -57,10 +58,18 @@ GaduProtocolSocketNotifiers::~GaduProtocolSocketNotifiers()
 {
 }
 
+void GaduProtocolSocketNotifiers::setGaduIMTokenService(GaduIMTokenService *imTokenService)
+{
+	m_imTokenService = imTokenService;
+}
+
 void GaduProtocolSocketNotifiers::watchFor(gg_session *sess)
 {
 	m_session = sess;
 	GaduSocketNotifiers::watchFor(m_session ? m_session->fd : -1);
+
+	if (!m_session)
+		m_imTokenService->setIMToken({});
 }
 
 bool GaduProtocolSocketNotifiers::checkRead()
@@ -343,6 +352,11 @@ void GaduProtocolSocketNotifiers::socketEvent()
 
 		case GG_EVENT_USERLIST100_REPLY:
 			static_cast<GaduRosterService *>(m_protocol->rosterService())->handleEventUserlist100Reply(e);
+			break;
+
+		case GG_EVENT_IMTOKEN:
+			printf("go imtoken!\n");
+			m_imTokenService->setIMToken(e->event.imtoken.imtoken);
 			break;
 	}
 

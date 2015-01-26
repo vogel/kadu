@@ -66,6 +66,7 @@ set (SOURCES
 	services/gadu-chat-state-service.cpp
 	services/gadu-contact-personal-info-service.cpp
 	services/gadu-file-transfer-service.cpp
+	services/gadu-imtoken-service.cpp
 	services/gadu-multilogon-service.cpp
 	services/gadu-notify-service.cpp
 	services/gadu-personal-info-service.cpp

@@ -59,6 +59,7 @@
 class DccManager;
 class GaduContactDetails;
 class GaduContactListHandler;
+class GaduIMTokenService;
 class GaduNotifyService;
 class GaduProtocolSocketNotifiers;
 class ProtocolGaduConnection;
@@ -102,6 +103,7 @@ private:
 	GaduMultilogonService *CurrentMultilogonService;
 	GaduChatStateService *CurrentChatStateService;
 	GaduNotifyService *CurrentNotifyService;
+	GaduIMTokenService *CurrentImTokenService;
 
 	GaduServersManager::GaduServer ActiveServer;
 

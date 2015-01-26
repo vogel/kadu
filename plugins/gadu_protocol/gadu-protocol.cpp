@@ -72,6 +72,7 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "helpers/gadu-proxy-helper.h"
 #include "server/gadu-writable-session-token.h"
+#include "services/gadu-imtoken-service.h"
 #include "services/gadu-notify-service.h"
 #include "services/gadu-roster-service.h"
 #include "gadu-account-details.h"
@@ -118,6 +119,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
+
+	CurrentImTokenService = new GaduIMTokenService{this};
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
 	auto rosterService = new GaduRosterService(this, contacts, this);
@@ -304,6 +307,7 @@ void GaduProtocol::login()
 	}
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
+	SocketNotifiers->setGaduIMTokenService(CurrentImTokenService);
 	connectSocketNotifiersToServices();
 	SocketNotifiers->watchFor(GaduSession);
 }
