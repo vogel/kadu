@@ -59,6 +59,9 @@ set (SOURCES
 	server/gadu-writable-session-token.cpp
 	server/protocol-gadu-connection.cpp
 
+	services/drive/gadu-drive-authorization.cpp
+	services/drive/gadu-drive-session-token.cpp
+
 	services/gadu-avatar-service.cpp
 	services/gadu-buddy-list-serialization-service.cpp
 	services/gadu-chat-image-service.cpp
