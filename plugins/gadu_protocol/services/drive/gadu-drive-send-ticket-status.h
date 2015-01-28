@@ -19,22 +19,8 @@
 
 #pragma once
 
-#include <QtCore/QString>
-
-class GaduDriveSessionToken
+enum class GaduDriveSendTicketStatus
 {
-
-public:
-	GaduDriveSessionToken();
-	GaduDriveSessionToken(QString sessionId, QString securityToken);
-
-	QString sessionId() const;
-	QString securityToken() const;
-
-	bool isValid() const;
-
-private:
-	QString m_sessionId;
-	QString m_securityToken;
-
+	InProgress,
+	Complete
 };
