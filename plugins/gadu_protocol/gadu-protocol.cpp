@@ -72,6 +72,7 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "helpers/gadu-proxy-helper.h"
 #include "server/gadu-writable-session-token.h"
+#include "services/drive/gadu-drive-service.h"
 #include "services/gadu-imtoken-service.h"
 #include "services/gadu-notify-service.h"
 #include "services/gadu-roster-service.h"
@@ -121,6 +122,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
 	CurrentImTokenService = new GaduIMTokenService{this};
+	CurrentDriveService = new GaduDriveService{account, this};
+	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
 	auto rosterService = new GaduRosterService(this, contacts, this);
@@ -600,6 +603,11 @@ void GaduProtocol::enableSocketNotifiers()
 {
 	if (SocketNotifiers)
 		SocketNotifiers->enable();
+}
+
+GaduDriveService * GaduProtocol::driveService() const
+{
+	return CurrentDriveService;
 }
 
 void GaduProtocol::configurationUpdated()

@@ -61,6 +61,7 @@ set (SOURCES
 
 	services/drive/gadu-drive-authorization.cpp
 	services/drive/gadu-drive-send-ticket.cpp
+	services/drive/gadu-drive-service.cpp
 	services/drive/gadu-drive-session-token.cpp
 
 	services/gadu-avatar-service.cpp

@@ -19,23 +19,39 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "services/drive/gadu-drive-session-token.h"
 
-class GaduIMTokenService : public QObject
+#include "misc/memory.h"
+#include "protocols/services/account-service.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+
+class GaduDriveAuthorization;
+class GaduIMTokenService;
+
+class QNetworkAccessManager;
+
+class GaduDriveService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit GaduIMTokenService(QObject *parent = nullptr);
-	virtual ~GaduIMTokenService();
+	explicit GaduDriveService(Account account, QObject *parent = nullptr);
+	virtual ~GaduDriveService();
 
-	void setIMToken(QByteArray imToken);
-	QByteArray imToken() const;
+	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
 
-signals:
-	void imTokenChanged(QByteArray imToken);
+	void requestSendTicket();
 
 private:
-	QByteArray m_imToken;
+	owned_qptr<QNetworkAccessManager> m_networkAccessManager;
+	owned_qptr<GaduDriveAuthorization> m_authorization;
+	QPointer<GaduIMTokenService> m_imTokenService;
+	GaduDriveSessionToken m_sessionToken;
+
+private slots:
+	void authorized(GaduDriveSessionToken sessionToken);
+	void imTokenChanged(QByteArray);
 
 };

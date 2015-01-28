@@ -355,7 +355,6 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			break;
 
 		case GG_EVENT_IMTOKEN:
-			printf("go imtoken!\n");
 			m_imTokenService->setIMToken(e->event.imtoken.imtoken);
 			break;
 	}

@@ -59,6 +59,7 @@
 class DccManager;
 class GaduContactDetails;
 class GaduContactListHandler;
+class GaduDriveService;
 class GaduIMTokenService;
 class GaduNotifyService;
 class GaduProtocolSocketNotifiers;
@@ -104,6 +105,7 @@ private:
 	GaduChatStateService *CurrentChatStateService;
 	GaduNotifyService *CurrentNotifyService;
 	GaduIMTokenService *CurrentImTokenService;
+	GaduDriveService *CurrentDriveService;
 
 	GaduServersManager::GaduServer ActiveServer;
 
@@ -174,6 +176,8 @@ public:
 	void enableSocketNotifiers();
 	void disableSocketNotifiers();
 	gg_session * gaduSession() { return GaduSession; }
+
+	GaduDriveService * driveService() const;
 
 signals:
 	/**

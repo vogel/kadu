@@ -27,11 +27,14 @@
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
+#include "services/drive/gadu-drive-service.h"
+
 #include "gadu-file-transfer-handler.h"
 
-GaduFileTransferHandler::GaduFileTransferHandler(FileTransfer fileTransfer) :
+GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
 		FileTransferHandler(fileTransfer),
-		SocketNotifiers(0), WaitingForSocketNotifiers(false)
+		SocketNotifiers(0), WaitingForSocketNotifiers(false),
+		CurrentProtocol{protocol}
 {
 }
 
@@ -110,6 +113,13 @@ void GaduFileTransferHandler::send()
 	if (TypeSend != transfer().transferType()) // maybe assert here?
 		return;
 
+	if (!CurrentProtocol)
+		return;
+
+	auto driveService = CurrentProtocol->driveService();
+	driveService->requestSendTicket();
+/*
+
 	if (SocketNotifiers || WaitingForSocketNotifiers) // already sending/receiving
 		return;
 
@@ -138,6 +148,7 @@ void GaduFileTransferHandler::send()
 
 	if (gaduProtocol->fileTransferService())
 		static_cast<GaduFileTransferService *>(gaduProtocol->fileTransferService())->attachSendFileTransferSocket(this);
+*/
 }
 
 void GaduFileTransferHandler::stop()

@@ -31,6 +31,7 @@ GaduIMTokenService::~GaduIMTokenService()
 void GaduIMTokenService::setIMToken(QByteArray imToken)
 {
 	m_imToken = std::move(imToken);
+	emit imTokenChanged(m_imToken);
 }
 
 QByteArray GaduIMTokenService::imToken() const

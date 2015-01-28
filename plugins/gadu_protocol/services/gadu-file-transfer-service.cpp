@@ -47,7 +47,7 @@ GaduFileTransferService::~GaduFileTransferService()
 
 FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
-	GaduFileTransferHandler *handler = new GaduFileTransferHandler(fileTransfer);
+	GaduFileTransferHandler *handler = new GaduFileTransferHandler(Protocol, fileTransfer);
 	fileTransfer.setHandler(handler);
 
 	return handler;

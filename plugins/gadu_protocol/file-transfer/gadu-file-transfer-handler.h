@@ -27,6 +27,8 @@
 
 #include "file-transfer/file-transfer-handler.h"
 
+#include <QtCore/QPointer>
+
 class DccSocketNotifiers;
 class GaduProtocol;
 
@@ -38,6 +40,7 @@ class GaduFileTransferHandler : public FileTransferHandler
 	friend class DccSocketNotifiers;
 	DccSocketNotifiers *SocketNotifiers;
 	bool WaitingForSocketNotifiers;
+	QPointer<GaduProtocol> CurrentProtocol;
 
 	void finished(bool ok);
 
@@ -48,7 +51,7 @@ protected:
 	virtual void updateFileInfo();
 
 public:
-	GaduFileTransferHandler(FileTransfer fileTransfer);
+	GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
 	virtual ~GaduFileTransferHandler();
 
 	void setFileTransferNotifiers(DccSocketNotifiers *);
