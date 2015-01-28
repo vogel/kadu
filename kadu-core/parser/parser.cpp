@@ -26,7 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
 #include <QtCore/QStack>
 #include <QtCore/QVariant>
@@ -669,11 +669,16 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 							filePath = joinParserTokens(tokens.mid(0, firstSpaceTokenIdx)) +
 									tokens.at(firstSpaceTokenIdx).rawContent().left(spacePos);
 
-						if (filePath.startsWith(QLatin1String("file://")))
+#ifdef Q_OS_WIN
+						if (filePath.startsWith(QLatin1String("file:///")))
+							filePath = filePath.mid(static_cast<int>(qstrlen("file:///")));
+#else
+						if (filePath.startsWith(QLatin1String("file:///")))
 							filePath = filePath.mid(static_cast<int>(qstrlen("file://")));
+#endif
 
 						bool checkFileExists = (pe2.type() == PT_CHECK_FILE_EXISTS);
-						if (QFile::exists(filePath) == checkFileExists)
+						if (QFileInfo::exists(filePath) == checkFileExists)
 						{
 							pe.setType(PT_STRING);
 
