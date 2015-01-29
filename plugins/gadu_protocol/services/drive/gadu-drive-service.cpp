@@ -21,6 +21,7 @@
 
 #include "services/drive/gadu-drive-authorization.h"
 #include "services/drive/gadu-drive-put-transfer.h"
+#include "services/drive/gadu-drive-send-status-update-request.h"
 #include "services/drive/gadu-drive-send-ticket-request.h"
 
 #include "services/gadu-imtoken-service.h"
@@ -67,6 +68,11 @@ GaduDriveSendTicketRequest * GaduDriveService::requestSendTicket(QString recipie
 GaduDrivePutTransfer * GaduDriveService::putInOutbox(GaduDriveSendTicket ticket, QString localFileName)
 {
 	return new GaduDrivePutTransfer{m_sessionToken, ticket, localFileName, m_networkAccessManager.get(), this};
+}
+
+GaduDriveSendStatusUpdateRequest * GaduDriveService::requestSendStatusUpdate(QString ticketId)
+{
+	return new GaduDriveSendStatusUpdateRequest(m_sessionToken, ticketId, m_networkAccessManager.get(), this);
 }
 
 void GaduDriveService::authorized(GaduDriveSessionToken sessionToken)

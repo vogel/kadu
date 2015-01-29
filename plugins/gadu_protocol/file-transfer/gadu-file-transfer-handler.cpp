@@ -23,8 +23,10 @@
 
 #include "helpers/gadu-protocol-helper.h"
 #include "services/drive/gadu-drive-put-transfer.h"
+#include "services/drive/gadu-drive-send-status-update-request.h"
 #include "services/drive/gadu-drive-send-ticket-ack-status.h"
 #include "services/drive/gadu-drive-send-ticket-request.h"
+#include "services/drive/gadu-drive-send-ticket-status.h"
 #include "services/drive/gadu-drive-service.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
@@ -32,6 +34,7 @@
 #include "accounts/account.h"
 
 #include <QtCore/QFileInfo>
+#include <QTimer>
 
 GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
 		FileTransferHandler{fileTransfer},
@@ -66,42 +69,72 @@ void GaduFileTransferHandler::send()
 	}
 
 	auto contact = transfer().peer();
-	transfer().setRemoteFileName(QString{});
-
 	auto driveService = m_protocol->driveService();
 	auto fileInfo = QFileInfo{transfer().localFileName()};
 
 	auto sendTicketRequest = driveService->requestSendTicket(contact.id(), fileInfo.baseName(), fileInfo.size());
-	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(sendTickedReceived(GaduDriveSendTicket)));
+	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(statusUpdateReceived(GaduDriveSendTicket)));
 
+	transfer().setFileSize(fileInfo.size());
+	transfer().setRemoteFileName(QString{});
 	transfer().setTransferStatus(StatusWaitingForConnection);
 }
 
-void GaduFileTransferHandler::sendTickedReceived(GaduDriveSendTicket ticket)
+void GaduFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
 {
 	m_ticket = std::move(ticket);
+	updateStatus();
+}
 
+void GaduFileTransferHandler::updateStatus()
+{
 	if (!m_ticket.isValid())
 	{
 		finished(false);
 		return;
 	}
 
-	if (m_ticket.ackStatus() == GaduDriveSendTicketAckStatus::Allowed)
-		startOutgoingTransfer();
-	else
+	transfer().setFileSize(m_ticket.fileSize());
+	transfer().setTransferredSize(m_ticket.progress() * m_ticket.fileSize());
+
+	if (m_ticket.status() == GaduDriveSendTicketStatus::Completed)
+	{
+		transfer().setTransferStatus(StatusFinished);
+		transfer().setTransferredSize(m_ticket.fileSize());
+		finished(true);
+		return;
+	}
+
+	if (m_ticket.ackStatus() != GaduDriveSendTicketAckStatus::Allowed)
+	{
 		transfer().setTransferStatus(StatusWaitingForAccept);
+		transfer().setTransferredSize(0);
+	}
+	else
+	{
+		startOutgoingTransferIfNotStarted();
+		transfer().setTransferStatus(StatusTransfer);
+	}
+
+	QTimer::singleShot(1000, this, SLOT(requestSendStatusUpdate()));
 }
 
-void GaduFileTransferHandler::startOutgoingTransfer()
+void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
 {
 	if (m_putTransfer)
 		return;
 
-	transfer().setTransferStatus(StatusTransfer);
-
 	auto driveService = m_protocol->driveService();
 	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().localFileName());
+}
+
+void GaduFileTransferHandler::requestSendStatusUpdate()
+{
+	auto driveService = m_protocol->driveService();
+	auto updateSendStatusRequest = driveService->requestSendStatusUpdate(m_ticket.ticketId());
+
+	connect(updateSendStatusRequest, SIGNAL(statusUpdateReceived(GaduDriveSendTicket)),
+		this, SLOT(statusUpdateReceived(GaduDriveSendTicket)));
 }
 
 void GaduFileTransferHandler::stop()

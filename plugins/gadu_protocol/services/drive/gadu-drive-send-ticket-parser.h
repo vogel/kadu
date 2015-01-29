@@ -19,8 +19,11 @@
 
 #pragma once
 
-enum class GaduDriveSendTicketStatus
+class GaduDriveSendTicket;
+
+class QJsonDocument;
+
+namespace GaduDriveSendTicketParser
 {
-	InProgress,
-	Completed
-};
+	GaduDriveSendTicket fromJson(QJsonDocument);
+}

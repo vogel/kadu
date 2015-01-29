@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-drive-send-ticket-request.h"
+#include "gadu-drive-send-status-update-request.h"
 
 #include "services/drive/gadu-drive-send-ticket-parser.h"
 #include "services/drive/gadu-drive-session-token.h"
@@ -28,68 +28,50 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDriveSendTicketRequest::GaduDriveSendTicketRequest(QString recipient, QString fileName, qint64 fileSize,
-	GaduDriveSessionToken sessionToken, QNetworkAccessManager *networkAccessManager, QObject *parent) :
+GaduDriveSendStatusUpdateRequest::GaduDriveSendStatusUpdateRequest(GaduDriveSessionToken sessionToken, QString ticketId,
+	QNetworkAccessManager *networkAccessManager, QObject *parent) :
 		QObject{parent},
-		m_recipient{recipient},
-		m_fileName{fileName},
-		m_fileSize{fileSize},
 		m_sessionToken{std::move(sessionToken)},
+		m_ticketId{ticketId},
 		m_networkAccessManager{networkAccessManager}
 {
-	if (m_sessionToken.isValid())
-		sendRequest();
-}
-
-GaduDriveSendTicketRequest::~GaduDriveSendTicketRequest()
-{
-}
-
-void GaduDriveSendTicketRequest::authorized(GaduDriveSessionToken sessionToken)
-{
-	m_sessionToken = std::move(sessionToken);
-
 	if (!m_sessionToken.isValid())
 	{
-		emit sendTickedReceived({});
+		emit statusUpdateReceived({});
 		deleteLater();
 	}
 	else
 		sendRequest();
 }
 
-void GaduDriveSendTicketRequest::sendRequest()
+GaduDriveSendStatusUpdateRequest::~GaduDriveSendStatusUpdateRequest()
+{
+}
+
+void GaduDriveSendStatusUpdateRequest::sendRequest()
 {
 	if (m_reply != nullptr)
 		return;
 
-	auto sendTicket = QJsonObject{};
-	sendTicket["recipient"] = m_recipient;
-	sendTicket["file_name"] = m_fileName;
-	sendTicket["file_size"] = QString::number(m_fileSize); // gg expects string
-
-	auto requestContent = QJsonObject{};
-	requestContent["send_ticket"] = sendTicket;
-
 	QNetworkRequest request;
-	request.setUrl(QUrl{"https://drive.mpa.gg.pl/send_ticket"});
+	request.setUrl(QUrl{QString{"https://drive.mpa.gg.pl/send_ticket/%1"}.arg(m_ticketId)});
 	request.setRawHeader("Connection", "keep-alive");
 	request.setRawHeader("X-gged-api-version", "6");
 	request.setRawHeader("X-gged-security-token", m_sessionToken.securityToken().toAscii());
 
-	m_reply = m_networkAccessManager->put(request, QJsonDocument{requestContent}.toJson());
+	m_reply = m_networkAccessManager->get(request);
 	connect(m_reply.get(), SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
-void GaduDriveSendTicketRequest::requestFinished()
+void GaduDriveSendStatusUpdateRequest::requestFinished()
 {
 	auto ticket = QNetworkReply::NoError == m_reply->error()
 		? GaduDriveSendTicketParser::fromJson(QJsonDocument::fromJson(m_reply->readAll()))
 		: GaduDriveSendTicket{};
 
-	emit sendTickedReceived(ticket);
+	emit statusUpdateReceived(ticket);
 	m_reply->deleteLater();
 	deleteLater();
 }
 
-#include "moc_gadu-drive-send-ticket-request.cpp"
+#include "moc_gadu-drive-send-status-update-request.cpp"

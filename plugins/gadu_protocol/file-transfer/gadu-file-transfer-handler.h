@@ -54,9 +54,11 @@ private:
 	GaduDriveSendTicket m_ticket;
 	QPointer<GaduDrivePutTransfer> m_putTransfer;
 
-	void startOutgoingTransfer();
+	void startOutgoingTransferIfNotStarted();
+	void updateStatus();
 
 private slots:
-	void sendTickedReceived(GaduDriveSendTicket);
+	void statusUpdateReceived(GaduDriveSendTicket);
+	void requestSendStatusUpdate();
 
 };
