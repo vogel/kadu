@@ -31,14 +31,14 @@ class GaduDriveSendTicket
 public:
 	GaduDriveSendTicket();
 	GaduDriveSendTicket(QString tickedId, QString sender, QString recipient, QString fileName,
-		unsigned long fileSize, double progress, GaduDriveSendTicketAckStatus ackStatus,
+		qint64 fileSize, double progress, GaduDriveSendTicketAckStatus ackStatus,
 		GaduDriveSendTicketMode mode, GaduDriveSendTicketStatus status);
 
 	QString tickedId() const;
 	QString sender() const;
 	QString recipient() const;
 	QString fileName() const;
-	unsigned long fileSize() const;
+	qint64 fileSize() const;
 	double progress() const;
 	GaduDriveSendTicketAckStatus ackStatus() const;
 	GaduDriveSendTicketMode mode() const;
@@ -51,7 +51,7 @@ private:
 	QString m_sender;
 	QString m_recipient;
 	QString m_fileName;
-	unsigned long m_fileSize;
+	qint64 m_fileSize;
 	double m_progress;
 	GaduDriveSendTicketAckStatus m_ackStatus;
 	GaduDriveSendTicketMode m_mode;

@@ -19,40 +19,43 @@
 
 #pragma once
 
+#include "services/drive/gadu-drive-send-ticket.h"
 #include "services/drive/gadu-drive-session-token.h"
 
 #include "misc/memory.h"
-#include "protocols/services/account-service.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-class GaduDriveAuthorization;
-class GaduDriveSendTicketRequest;
-class GaduIMTokenService;
-
 class QNetworkAccessManager;
+class QNetworkReply;
 
-class GaduDriveService : public AccountService
+class GaduDriveSendTicketRequest : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit GaduDriveService(Account account, QObject *parent = nullptr);
-	virtual ~GaduDriveService();
+	explicit GaduDriveSendTicketRequest(QString recipient, QString fileName, qint64 fileSize,
+		GaduDriveSessionToken sessionToken, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
+	virtual ~GaduDriveSendTicketRequest();
 
-	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
+public slots:
+	void authorized(GaduDriveSessionToken sessionToken);
 
-	GaduDriveSendTicketRequest * requestSendTicket(QString recipient, QString fileName, qint64 fileSize);
+signals:
+	void sendTickedReceived(GaduDriveSendTicket);
 
 private:
-	owned_qptr<QNetworkAccessManager> m_networkAccessManager;
-	owned_qptr<GaduDriveAuthorization> m_authorization;
-	QPointer<GaduIMTokenService> m_imTokenService;
+	QString m_recipient;
+	QString m_fileName;
+	qint64 m_fileSize;
 	GaduDriveSessionToken m_sessionToken;
+	QNetworkAccessManager *m_networkAccessManager;
+	owned_qptr<QNetworkReply> m_reply;
+
+	void sendRequest();
 
 private slots:
-	void authorized(GaduDriveSessionToken sessionToken);
-	void imTokenChanged(QByteArray);
+	void requestFinished();
 
 };

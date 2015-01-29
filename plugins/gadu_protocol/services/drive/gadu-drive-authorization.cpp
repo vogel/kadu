@@ -78,7 +78,7 @@ void GaduDriveAuthorization::requestFinished()
 	else
 		emit authorized({});
 
-	m_reply.release()->deleteLater();
+	deleteLater();
 }
 
 #include "moc_gadu-drive-authorization.cpp"

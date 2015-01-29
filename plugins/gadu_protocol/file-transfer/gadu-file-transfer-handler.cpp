@@ -19,6 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
+
 #include "accounts/account.h"
 #include "dcc/dcc-socket-notifiers.h"
 #include "helpers/gadu-protocol-helper.h"
@@ -116,8 +118,20 @@ void GaduFileTransferHandler::send()
 	if (!CurrentProtocol)
 		return;
 
+	auto contact = transfer().peer();
+	auto account = contact.contactAccount();
+	transfer().setRemoteFileName(QString());
+
+	if (account.isNull() || transfer().localFileName().isEmpty())
+	{
+		transfer().setTransferStatus(StatusNotConnected);
+		deleteLater();
+		return; // TODO: notify
+	}
+
 	auto driveService = CurrentProtocol->driveService();
-	driveService->requestSendTicket();
+	auto fileInfo = QFileInfo{transfer().localFileName()};
+	driveService->requestSendTicket(contact.id(), fileInfo.baseName(), fileInfo.size());
 /*
 
 	if (SocketNotifiers || WaitingForSocketNotifiers) // already sending/receiving

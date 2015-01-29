@@ -21,5 +21,6 @@
 
 enum class GaduDriveSendTicketMode
 {
-	Normal
+	Normal,
+	Publink
 };

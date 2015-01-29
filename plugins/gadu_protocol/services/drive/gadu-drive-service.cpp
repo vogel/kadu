@@ -20,6 +20,8 @@
 #include "gadu-drive-service.h"
 
 #include "services/drive/gadu-drive-authorization.h"
+#include "services/drive/gadu-drive-send-ticket-request.h"
+
 #include "services/gadu-imtoken-service.h"
 
 #include "core/core.h"
@@ -42,14 +44,23 @@ void GaduDriveService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
 	connect(m_imTokenService, SIGNAL(imTokenChanged(QByteArray)), this, SLOT(imTokenChanged(QByteArray)));
 }
 
-void GaduDriveService::requestSendTicket()
+GaduDriveSendTicketRequest * GaduDriveService::requestSendTicket(QString recipient, QString fileName, qint64 fileSize)
 {
+	auto sendTicketRequest = new GaduDriveSendTicketRequest{recipient, fileName, fileSize, m_sessionToken, m_networkAccessManager.get(), this};
+
 	if (!m_sessionToken.isValid())
 	{
-		m_authorization = new GaduDriveAuthorization{account().id(), m_imTokenService->imToken(), Core::nameWithVersion(), m_networkAccessManager.get(), this};
-		connect(m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), this, SLOT(authorized(GaduDriveSessionToken)));
-		m_authorization->authorize();
+		if (!m_authorization)
+		{
+			m_authorization = new GaduDriveAuthorization{account().id(), m_imTokenService->imToken(), Core::nameWithVersion(), m_networkAccessManager.get(), this};
+			connect(m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), this, SLOT(authorized(GaduDriveSessionToken)));
+			m_authorization->authorize();
+		}
+
+		connect(m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), sendTicketRequest, SLOT(authorized(GaduDriveSessionToken)));
 	}
+
+	return sendTicketRequest;
 }
 
 void GaduDriveService::authorized(GaduDriveSessionToken sessionToken)
