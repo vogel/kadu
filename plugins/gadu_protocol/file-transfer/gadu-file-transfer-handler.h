@@ -30,6 +30,7 @@
 #include <QtCore/QPointer>
 
 class DccSocketNotifiers;
+class GaduDriveSendTicket;
 class GaduProtocol;
 
 class GaduFileTransferHandler : public FileTransferHandler
@@ -46,6 +47,7 @@ class GaduFileTransferHandler : public FileTransferHandler
 
 private slots:
 	void socketNotifiersDeleted();
+	void sendTickedReceived(GaduDriveSendTicket);
 
 protected:
 	virtual void updateFileInfo();

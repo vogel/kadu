@@ -30,11 +30,11 @@ class GaduDriveSendTicket
 
 public:
 	GaduDriveSendTicket();
-	GaduDriveSendTicket(QString tickedId, QString sender, QString recipient, QString fileName,
+	GaduDriveSendTicket(QString ticketId, QString sender, QString recipient, QString fileName,
 		qint64 fileSize, double progress, GaduDriveSendTicketAckStatus ackStatus,
 		GaduDriveSendTicketMode mode, GaduDriveSendTicketStatus status);
 
-	QString tickedId() const;
+	QString ticketId() const;
 	QString sender() const;
 	QString recipient() const;
 	QString fileName() const;

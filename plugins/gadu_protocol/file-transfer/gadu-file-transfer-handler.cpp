@@ -29,6 +29,7 @@
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
+#include "services/drive/gadu-drive-send-ticket-request.h"
 #include "services/drive/gadu-drive-service.h"
 
 #include "gadu-file-transfer-handler.h"
@@ -131,7 +132,11 @@ void GaduFileTransferHandler::send()
 
 	auto driveService = CurrentProtocol->driveService();
 	auto fileInfo = QFileInfo{transfer().localFileName()};
-	driveService->requestSendTicket(contact.id(), fileInfo.baseName(), fileInfo.size());
+	auto sendTicketRequest = driveService->requestSendTicket(contact.id(), fileInfo.baseName(), fileInfo.size());
+
+	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(sendTickedReceived(GaduDriveSendTicket)));
+
+	transfer().setTransferStatus(StatusWaitingForConnection);
 /*
 
 	if (SocketNotifiers || WaitingForSocketNotifiers) // already sending/receiving
@@ -163,6 +168,21 @@ void GaduFileTransferHandler::send()
 	if (gaduProtocol->fileTransferService())
 		static_cast<GaduFileTransferService *>(gaduProtocol->fileTransferService())->attachSendFileTransferSocket(this);
 */
+}
+
+void GaduFileTransferHandler::sendTickedReceived(GaduDriveSendTicket ticket)
+{
+	if (!ticket.isValid())
+	{
+		transfer().setTransferStatus(StatusNotConnected);
+		return;
+	}
+
+	transfer().setTransferStatus(StatusTransfer);
+
+	auto driveService = CurrentProtocol->driveService();
+	auto putTransfer = driveService->putInOutbox(ticket, transfer().localFileName());
+	(void)putTransfer;
 }
 
 void GaduFileTransferHandler::stop()

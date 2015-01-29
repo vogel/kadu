@@ -32,10 +32,10 @@ GaduDriveSendTicket::GaduDriveSendTicket() :
 {
 }
 
-GaduDriveSendTicket::GaduDriveSendTicket(QString tickedId, QString sender, QString recipient, QString fileName,
+GaduDriveSendTicket::GaduDriveSendTicket(QString ticketId, QString sender, QString recipient, QString fileName,
 	qint64 fileSize, double progress, GaduDriveSendTicketAckStatus ackStatus,
 	GaduDriveSendTicketMode mode, GaduDriveSendTicketStatus status) :
-		m_tickedId{tickedId},
+		m_tickedId{ticketId},
 		m_sender{sender},
 		m_recipient{recipient},
 		m_fileName{fileName},
@@ -47,7 +47,7 @@ GaduDriveSendTicket::GaduDriveSendTicket(QString tickedId, QString sender, QStri
 {
 }
 
-QString GaduDriveSendTicket::tickedId() const
+QString GaduDriveSendTicket::ticketId() const
 {
 	return m_tickedId;
 }

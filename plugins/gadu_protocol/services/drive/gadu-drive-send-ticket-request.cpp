@@ -89,7 +89,7 @@ void GaduDriveSendTicketRequest::requestFinished()
 	{
 		auto json = QJsonDocument::fromJson(m_reply->readAll());
 		auto sendTicket = json.object().value("result").toObject().value("send_ticket").toObject();
-		auto tickedId = sendTicket.value("id").toString();
+		auto ticketId = sendTicket.value("id").toString();
 		auto sender = sendTicket.value("sender").toString();
 		auto recipient = sendTicket.value("recipient").toString();
 		auto fileName = sendTicket.value("file_name").toString();
@@ -110,13 +110,14 @@ void GaduDriveSendTicketRequest::requestFinished()
 			? GaduDriveSendTicketStatus::Complete
 			: GaduDriveSendTicketStatus::InProgress;
 
-		auto ticket = GaduDriveSendTicket{std::move(tickedId), std::move(sender), std::move(recipient), std::move(fileName),
+		auto ticket = GaduDriveSendTicket{std::move(ticketId), std::move(sender), std::move(recipient), std::move(fileName),
 			fileSize, progress, ackStatus, mode, status};
 		emit sendTickedReceived(ticket);
 	}
 	else
 		emit sendTickedReceived({});
 
+	m_reply->deleteLater();
 	deleteLater();
 }
 

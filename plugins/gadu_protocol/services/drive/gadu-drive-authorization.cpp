@@ -78,6 +78,7 @@ void GaduDriveAuthorization::requestFinished()
 	else
 		emit authorized({});
 
+	m_reply->deleteLater();
 	deleteLater();
 }
 
