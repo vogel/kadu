@@ -41,9 +41,9 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, G
 	auto metadata = QJsonObject{};
 	metadata["node_type"] = "file";
 
-	auto url = QString{"https://drive.mpa.gg.pl/me/file/outbox/%1%%2C%2"}
-		.arg(ticket.ticketId())
-		.arg(QString::fromUtf8(QUrl::toPercentEncoding(QFileInfo{localFileName}.baseName())));
+	// sigh, %2C inside string forbits me from using .arg().arg()
+	auto url = QString{"https://drive.mpa.gg.pl/me/file/outbox/%1%2%3"}
+		.arg(ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(QFileInfo{localFileName}.baseName())));
 
 	QNetworkRequest request;
 	request.setUrl(QUrl{url});
@@ -52,8 +52,6 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, G
 	request.setRawHeader("X-gged-local-revision", "0");
 	request.setRawHeader("X-gged-metadata", QJsonDocument{metadata}.toJson(QJsonDocument::Compact).data());
 	request.setRawHeader("X-gged-security-token", sessionToken.securityToken().toAscii());
-
-	printf("start transfer\n");
 
 	m_reply = networkAccessManager->put(request, m_file.get());
 	connect(m_reply.get(), SIGNAL(finished()), this, SLOT(requestFinished()));
@@ -65,7 +63,6 @@ GaduDrivePutTransfer::~GaduDrivePutTransfer()
 
 void GaduDrivePutTransfer::requestFinished()
 {
-	printf("finished sending: %s\n", m_reply->readAll().data());
 	m_reply->deleteLater();
 	deleteLater();
 }
