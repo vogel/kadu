@@ -29,6 +29,7 @@
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
+#include "services/drive/gadu-drive-send-ticket-ack-status.h"
 #include "services/drive/gadu-drive-send-ticket-request.h"
 #include "services/drive/gadu-drive-service.h"
 
@@ -181,8 +182,11 @@ void GaduFileTransferHandler::sendTickedReceived(GaduDriveSendTicket ticket)
 	transfer().setTransferStatus(StatusTransfer);
 
 	auto driveService = CurrentProtocol->driveService();
-	auto putTransfer = driveService->putInOutbox(ticket, transfer().localFileName());
-	(void)putTransfer;
+	if (ticket.ackStatus() == GaduDriveSendTicketAckStatus::Allowed)
+	{
+		auto putTransfer = driveService->putInOutbox(ticket, transfer().localFileName());
+		(void)putTransfer;
+	}
 }
 
 void GaduFileTransferHandler::stop()
