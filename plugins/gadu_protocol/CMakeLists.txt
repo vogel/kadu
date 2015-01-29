@@ -10,7 +10,6 @@ find_package (Kadu REQUIRED CONFIG)
 set (LIBGADU_MIN_VERSION "1.12.1")
 
 kadu_api_directories (plugins/gadu_protocol
-	dcc
 	file-transfers
 	gui/widgets
 	gui/windows
@@ -26,8 +25,6 @@ kadu_api_directories (plugins/gadu_protocol
 )
 
 set (SOURCES
-	dcc/dcc-socket-notifiers.cpp
-
 	file-transfer/gadu-file-transfer-handler.cpp
 
 	gui/widgets/gadu-add-account-widget.cpp
@@ -99,8 +96,6 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	dcc/dcc-socket-notifiers.h
-
 	file-transfer/gadu-file-transfer-handler.h
 
 	gui/widgets/gadu-add-account-widget.h

@@ -62,7 +62,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;
-	QCheckBox *AllowFileTransfers;
 	QCheckBox *UseTlsEncryption;
 
 	QCheckBox *ShowStatusToEveryone;

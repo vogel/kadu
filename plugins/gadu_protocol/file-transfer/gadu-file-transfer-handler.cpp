@@ -22,10 +22,7 @@
 #include <QtCore/QFileInfo>
 
 #include "accounts/account.h"
-#include "dcc/dcc-socket-notifiers.h"
 #include "helpers/gadu-protocol-helper.h"
-#include "misc/change-notifier-lock.h"
-#include "misc/change-notifier.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
@@ -37,65 +34,12 @@
 
 GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
 		FileTransferHandler(fileTransfer),
-		SocketNotifiers(0), WaitingForSocketNotifiers(false),
 		CurrentProtocol{protocol}
 {
 }
 
 GaduFileTransferHandler::~GaduFileTransferHandler()
 {
-	if (SocketNotifiers)
-	{
-		delete SocketNotifiers;
-		SocketNotifiers = 0;
-	}
-}
-
-void GaduFileTransferHandler::updateFileInfo()
-{
-	ChangeNotifierLock lock(transfer().changeNotifier());
-
-	if (SocketNotifiers)
-	{
-		transfer().setFileSize(SocketNotifiers->fileSize());
-		transfer().setTransferredSize(SocketNotifiers->transferredFileSize());
-	}
-	else
-	{
-		transfer().setFileSize(0);
-		transfer().setTransferredSize(0);
-	}
-}
-
-void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socketNotifiers)
-{
-	if (!socketNotifiers)
-	{
-		socketNotAvailable();
-		return;
-	}
-
-	SocketNotifiers = socketNotifiers;
-	if (SocketNotifiers)
-	{
-		SocketNotifiers->setGaduFileTransferHandler(this);
-
-		transfer().setRemoteFileName(SocketNotifiers->remoteFileName());
-		transfer().setFileSize(SocketNotifiers->fileSize());
-		transfer().setTransferredSize(SocketNotifiers->transferredFileSize());
-
-		connect(SocketNotifiers, SIGNAL(destroyed()), this, SLOT(socketNotifiersDeleted()));
-	}
-
-	WaitingForSocketNotifiers = false;
-}
-
-void GaduFileTransferHandler::socketNotAvailable()
-{
-	WaitingForSocketNotifiers = false;
-
-	transfer().setTransferStatus(StatusNotConnected);
-	deleteLater();
 }
 
 void GaduFileTransferHandler::finished(bool ok)
@@ -104,12 +48,6 @@ void GaduFileTransferHandler::finished(bool ok)
 			? StatusFinished
 			: StatusNotConnected);
 	deleteLater();
-}
-
-void GaduFileTransferHandler::socketNotifiersDeleted()
-{
-	// TODO: shouldn't socketNotAvailable() be called here? (btw, if not, we can use QPointer for SocketNotifiers)
-	SocketNotifiers = 0;
 }
 
 void GaduFileTransferHandler::send()
@@ -138,37 +76,6 @@ void GaduFileTransferHandler::send()
 	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(sendTickedReceived(GaduDriveSendTicket)));
 
 	transfer().setTransferStatus(StatusWaitingForConnection);
-/*
-
-	if (SocketNotifiers || WaitingForSocketNotifiers) // already sending/receiving
-		return;
-
-	Contact contact = transfer().peer();
-	Account account = contact.contactAccount();
-	transfer().setRemoteFileName(QString());
-
-	if (account.isNull() || transfer().localFileName().isEmpty())
-	{
-		transfer().setTransferStatus(StatusNotConnected);
-		deleteLater();
-		return; // TODO: notify
-	}
-
-	GaduProtocol *gaduProtocol = qobject_cast<GaduProtocol *>(account.protocolHandler());
-	if (!gaduProtocol || !GaduProtocolHelper::gaduContactDetails(contact))
-	{
-		transfer().setTransferStatus(StatusNotConnected);
-		deleteLater();
-		return;
-	}
-
-	// async call, will return in setFileTransferNotifiers
-	transfer().setTransferStatus(StatusWaitingForConnection);
-	WaitingForSocketNotifiers = true;
-
-	if (gaduProtocol->fileTransferService())
-		static_cast<GaduFileTransferService *>(gaduProtocol->fileTransferService())->attachSendFileTransferSocket(this);
-*/
 }
 
 void GaduFileTransferHandler::sendTickedReceived(GaduDriveSendTicket ticket)
@@ -191,27 +98,20 @@ void GaduFileTransferHandler::sendTickedReceived(GaduDriveSendTicket ticket)
 
 void GaduFileTransferHandler::stop()
 {
-	if (SocketNotifiers)
-	{
-		delete SocketNotifiers;
-		SocketNotifiers = 0;
-		transfer().setTransferStatus(StatusNotConnected);
-	}
-
+	transfer().setTransferStatus(StatusNotConnected);
 	deleteLater();
 }
 
 bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfer)
 {
+	Q_UNUSED(resumeTransfer);
+
 	transfer().accept(fileName);
-	return SocketNotifiers->acceptFileTransfer(fileName, resumeTransfer);
+	return false;
 }
 
 void GaduFileTransferHandler::reject()
 {
-	if (SocketNotifiers)
-		SocketNotifiers->rejectFileTransfer();
-
 	deleteLater();
 }
 

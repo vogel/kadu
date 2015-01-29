@@ -417,7 +417,6 @@ void Core::createDefaultConfiguration()
 	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 2);
 #endif
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "AllowDCC", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "DefaultPort", 0);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "isDefServers", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "Server", QString());

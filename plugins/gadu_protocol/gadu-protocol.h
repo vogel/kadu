@@ -56,7 +56,6 @@
 
 #include "protocols/protocol.h"
 
-class DccManager;
 class GaduContactDetails;
 class GaduContactListHandler;
 class GaduDriveService;

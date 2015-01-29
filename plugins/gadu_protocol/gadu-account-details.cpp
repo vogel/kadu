@@ -35,7 +35,7 @@
 #include "gadu-account-details.h"
 
 GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
-		AccountDetails(data), AllowDcc(true), ReceiveImagesDuringInvisibility(true),
+		AccountDetails(data), ReceiveImagesDuringInvisibility(true),
 		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
 		SendTypingNotification(true), ExternalPort(0), UserlistVersion(-1), ReceiveSpam(true)
 {
@@ -57,7 +57,6 @@ void GaduAccountDetails::load()
 
 	AccountDetails::load();
 
-	AllowDcc = loadValue<bool>("AllowDcc", true);
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	ChatImageSizeWarning = loadValue<bool>("ChatImageSizeWarning", true);
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", true);
@@ -74,7 +73,6 @@ void GaduAccountDetails::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("AllowDcc", AllowDcc);
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("ChatImageSizeWarning", ChatImageSizeWarning);
 	storeValue("InitialRosterImport", InitialRosterImport);

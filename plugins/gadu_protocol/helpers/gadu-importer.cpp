@@ -105,7 +105,6 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 	if (accountDetails)
 	{
 		accountDetails->setState(StorableObject::StateNew);
-		accountDetails->setAllowDcc(readEntry(xmlQuery, "Network", "AllowDCC").toBool());
 		accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
 	}
 
@@ -179,7 +178,6 @@ void GaduImporter::importAccounts()
 	if (accountDetails)
 	{
 		accountDetails->setState(StorableObject::StateNew);
-		accountDetails->setAllowDcc(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "AllowDCC"));
 		accountDetails->setReceiveImagesDuringInvisibility(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
 	}
 

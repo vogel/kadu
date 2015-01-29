@@ -32,7 +32,6 @@
 
 class GaduAccountDetails : public AccountDetails
 {
-	PROPERTY_DEC(bool, AllowDcc)
 	PROPERTY_DEC(bool, ReceiveImagesDuringInvisibility)
 	PROPERTY_DEC(bool, ChatImageSizeWarning)
 	PROPERTY_DEC(bool, InitialRosterImport)
@@ -55,7 +54,6 @@ public:
 
 	UinType uin();
 
-	PROPERTY_DEF(bool, allowDcc, setAllowDcc, AllowDcc)
 	PROPERTY_DEF(bool, receiveImagesDuringInvisibility, setReceiveImagesDuringInvisibility, ReceiveImagesDuringInvisibility)
 	PROPERTY_DEF(bool, chatImageSizeWarning, setChatImageSizeWarning, ChatImageSizeWarning)
 	PROPERTY_DEF(bool, initialRosterImport, setInitialRosterImport, InitialRosterImport)

@@ -339,7 +339,7 @@ void GaduProtocol::afterLoggedIn()
 	// fetch current avatar after connection
 	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
 
-	// set up DCC if needed
+	// set up file transfer if needed
 	setUpFileTransferService();
 
 	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
@@ -489,14 +489,6 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 	bool close = forceClose;
 	if (!close)
 		close = !isConnected();
-	if (!close)
-	{
-		GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-		if (!gaduAccountDetails)
-			close = true;
-		else
-			close = !gaduAccountDetails->allowDcc();
-	}
 
 	if (close)
 		stopFileTransferService();

@@ -266,15 +266,11 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 							"91.214.237.1 ; 91.214.237.3 ; 91.214.237.10:8074 ; 91.214.237.11-20 ; 91.214.237.21-30:8074");
 	generalLayout->addRow(ipAddressesLabel, ipAddresses);
 
-	AllowFileTransfers = new QCheckBox(tr("Enable file transfers"), general);
-	generalLayout->addRow(AllowFileTransfers);
-
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
 
 	connect(useDefaultServers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 	connect(ipAddresses, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	connect(AllowFileTransfers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 
 	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), general);
 	generalLayout->addRow(UseTlsEncryption);
@@ -340,7 +336,6 @@ void GaduEditAccountWidget::apply()
 
 		Details->setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
 
-		Details->setAllowDcc(AllowFileTransfers->isChecked());
 		if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
 			Details->setTlsEncryption(UseTlsEncryption->isChecked());
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
@@ -394,8 +389,6 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& Details->chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
 
-		&& Details->allowDcc() == AllowFileTransfers->isChecked()
-
 		&& Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
@@ -438,7 +431,6 @@ void GaduEditAccountWidget::loadAccountData()
 
 		ChatImageSizeWarning->setChecked(details->chatImageSizeWarning());
 
-		AllowFileTransfers->setChecked(details->allowDcc());
 		UseTlsEncryption->setChecked(gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) ? details->tlsEncryption() : false);
 		SendTypingNotification->setChecked(details->sendTypingNotification());
 		ReceiveSpam->setChecked(!details->receiveSpam());

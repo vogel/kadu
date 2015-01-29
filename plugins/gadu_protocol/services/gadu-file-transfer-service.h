@@ -30,7 +30,6 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 
-class DccSocketNotifiers;
 class GaduFileTransferHandler;
 class GaduProtocol;
 
@@ -39,27 +38,6 @@ class GaduFileTransferService : public FileTransferService
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
-
-	QHash<struct gg_dcc7 *, DccSocketNotifiers *> SocketNotifiers;
-
-	void connectSocketNotifiers(DccSocketNotifiers *notifiers);
-	void disconnectSocketNotifiers(DccSocketNotifiers *notifiers);
-
-	bool connectionAcceptable(UinType uin, UinType peerUin);
-	void needIncomingFileTransferAccept(DccSocketNotifiers *socket);
-
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventDcc7New(struct gg_event *e);
-	void handleEventDcc7Accept(struct gg_event *e);
-	void handleEventDcc7Reject(struct gg_event *e);
-	void handleEventDcc7Pending(struct gg_event *e);
-	void handleEventDcc7Error(struct gg_event *e);
-
-	friend class GaduFileTransferHandler;
-	void attachSendFileTransferSocket(GaduFileTransferHandler *handler);
-
-private slots:
-	void socketNotifiersDestroyed(QObject *socketNotifiers);
 
 public:
 	explicit GaduFileTransferService(GaduProtocol *protocol);
@@ -71,4 +49,4 @@ public:
 
 #endif // GADU_FILE_TRANSFER_SERVICE_H
 
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 
+// kate: indent-mode cstyle; replace-tabs off; tab-width 4;

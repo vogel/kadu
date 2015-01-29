@@ -38,8 +38,6 @@ class KADUAPI FileTransferService : public QObject
 {
 	Q_OBJECT
 
-	friend class DccManager;
-
 public:
 	explicit FileTransferService(QObject *parent) : QObject(parent) {}
 

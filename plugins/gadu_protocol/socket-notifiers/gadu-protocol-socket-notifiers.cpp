@@ -299,53 +299,6 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			m_protocol->CurrentChatImageService->handleEventImageReply(e);
 			break;
 
-		case GG_EVENT_DCC7_NEW:
-			if (!m_protocol->CurrentFileTransferService)
-			{
-				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
-				gg_dcc7_free(e->event.dcc7_new);
-				e->event.dcc7_new = NULL;
-			}
-			else
-				m_protocol->CurrentFileTransferService->handleEventDcc7New(e);
-			break;
-
-		case GG_EVENT_DCC7_ACCEPT:
-			if (!m_protocol->CurrentFileTransferService)
-			{
-				gg_dcc7_free(e->event.dcc7_accept.dcc7);
-				e->event.dcc7_accept.dcc7 = NULL;
-			}
-			else
-				m_protocol->CurrentFileTransferService->handleEventDcc7Accept(e);
-			break;
-
-		case GG_EVENT_DCC7_REJECT:
-			if (!m_protocol->CurrentFileTransferService)
-			{
-				gg_dcc7_free(e->event.dcc7_reject.dcc7);
-				e->event.dcc7_reject.dcc7 = NULL;
-			}
-			else
-				m_protocol->CurrentFileTransferService->handleEventDcc7Reject(e);
-			break;
-
-		case GG_EVENT_DCC7_ERROR:
-			if (m_protocol->CurrentFileTransferService)
-				m_protocol->CurrentFileTransferService->handleEventDcc7Error(e);
-			break;
-
-		case GG_EVENT_DCC7_PENDING:
-			if (!m_protocol->CurrentFileTransferService)
-			{
-				gg_dcc7_reject(e->event.dcc7_pending.dcc7, GG_DCC7_REJECT_USER);
-				gg_dcc7_free(e->event.dcc7_pending.dcc7);
-				e->event.dcc7_pending.dcc7 = NULL;
-			}
-			else
-				m_protocol->CurrentFileTransferService->handleEventDcc7Pending(e);
-			break;
-
 		case GG_EVENT_USERLIST100_VERSION:
 			static_cast<GaduRosterService *>(m_protocol->rosterService())->handleEventUserlist100Version(e);
 			break;

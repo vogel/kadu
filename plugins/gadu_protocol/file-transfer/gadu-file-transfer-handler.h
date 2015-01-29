@@ -29,7 +29,6 @@
 
 #include <QtCore/QPointer>
 
-class DccSocketNotifiers;
 class GaduDriveSendTicket;
 class GaduProtocol;
 
@@ -37,27 +36,16 @@ class GaduFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
 
-	friend class DccManager;
-	friend class DccSocketNotifiers;
-	DccSocketNotifiers *SocketNotifiers;
-	bool WaitingForSocketNotifiers;
 	QPointer<GaduProtocol> CurrentProtocol;
 
 	void finished(bool ok);
 
 private slots:
-	void socketNotifiersDeleted();
 	void sendTickedReceived(GaduDriveSendTicket);
 
-protected:
-	virtual void updateFileInfo();
-
 public:
-	GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
+	explicit GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
 	virtual ~GaduFileTransferHandler();
-
-	void setFileTransferNotifiers(DccSocketNotifiers *);
-	void socketNotAvailable();
 
 	virtual void send();
 	virtual void stop();

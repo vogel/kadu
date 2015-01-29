@@ -29,7 +29,6 @@
 #include "notify/notification/chat-notification.h"
 
 class FileTransferManager;
-class DccSocket;
 class NotifyEvent;
 
 class NewFileTransferNotification : public ChatNotification
