@@ -79,7 +79,7 @@ struct owned_qobject_deleter
 		if (!qobject)
 			return;
 
-		assert(qobject->parent() != nullptr);
+		// assert(qobject->parent() != nullptr); could be already deleted here
 		// parent will delete this object when needed
 	}
 };
