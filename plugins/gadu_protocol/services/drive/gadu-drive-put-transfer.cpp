@@ -54,15 +54,15 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, G
 	request.setRawHeader("X-gged-security-token", sessionToken.securityToken().toAscii());
 
 	m_reply = networkAccessManager->put(request, m_file.get());
-	connect(m_reply.get(), SIGNAL(finished()), this, SLOT(requestFinished()));
+	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 GaduDrivePutTransfer::~GaduDrivePutTransfer()
 {
+	m_reply->deleteLater();
 }
 
 void GaduDrivePutTransfer::requestFinished()
 {
-	m_reply->deleteLater();
 	deleteLater();
 }

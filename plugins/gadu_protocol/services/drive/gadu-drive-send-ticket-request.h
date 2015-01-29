@@ -22,8 +22,6 @@
 #include "services/drive/gadu-drive-send-ticket.h"
 #include "services/drive/gadu-drive-session-token.h"
 
-#include "misc/memory.h"
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
@@ -51,7 +49,7 @@ private:
 	qint64 m_fileSize;
 	GaduDriveSessionToken m_sessionToken;
 	QNetworkAccessManager *m_networkAccessManager;
-	owned_qptr<QNetworkReply> m_reply;
+	QPointer<QNetworkReply> m_reply;
 
 	void sendRequest();
 

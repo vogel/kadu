@@ -22,6 +22,7 @@
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 class GaduDriveSessionToken;
 class GaduDriveSendTicket;
@@ -40,7 +41,7 @@ public:
 	virtual ~GaduDrivePutTransfer();
 
 private:
-	owned_qptr<QNetworkReply> m_reply;
+	QPointer<QNetworkReply> m_reply;
 	owned_qptr<QFile> m_file;
 
 private slots:

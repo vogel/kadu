@@ -46,6 +46,7 @@ GaduDriveSendStatusUpdateRequest::GaduDriveSendStatusUpdateRequest(GaduDriveSess
 
 GaduDriveSendStatusUpdateRequest::~GaduDriveSendStatusUpdateRequest()
 {
+	m_reply->deleteLater();
 }
 
 void GaduDriveSendStatusUpdateRequest::sendRequest()
@@ -60,7 +61,7 @@ void GaduDriveSendStatusUpdateRequest::sendRequest()
 	request.setRawHeader("X-gged-security-token", m_sessionToken.securityToken().toAscii());
 
 	m_reply = m_networkAccessManager->get(request);
-	connect(m_reply.get(), SIGNAL(finished()), this, SLOT(requestFinished()));
+	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void GaduDriveSendStatusUpdateRequest::requestFinished()
@@ -70,7 +71,6 @@ void GaduDriveSendStatusUpdateRequest::requestFinished()
 		: GaduDriveSendTicket{};
 
 	emit statusUpdateReceived(ticket);
-	m_reply->deleteLater();
 	deleteLater();
 }
 

@@ -43,6 +43,7 @@ GaduDriveSendTicketRequest::GaduDriveSendTicketRequest(QString recipient, QStrin
 
 GaduDriveSendTicketRequest::~GaduDriveSendTicketRequest()
 {
+	m_reply->deleteLater();
 }
 
 void GaduDriveSendTicketRequest::authorized(GaduDriveSessionToken sessionToken)
@@ -78,7 +79,7 @@ void GaduDriveSendTicketRequest::sendRequest()
 	request.setRawHeader("X-gged-security-token", m_sessionToken.securityToken().toAscii());
 
 	m_reply = m_networkAccessManager->put(request, QJsonDocument{requestContent}.toJson());
-	connect(m_reply.get(), SIGNAL(finished()), this, SLOT(requestFinished()));
+	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void GaduDriveSendTicketRequest::requestFinished()
@@ -88,7 +89,6 @@ void GaduDriveSendTicketRequest::requestFinished()
 		: GaduDriveSendTicket{};
 
 	emit sendTickedReceived(ticket);
-	m_reply->deleteLater();
 	deleteLater();
 }
 
