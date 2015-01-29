@@ -22,26 +22,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_FILE_TRANSFER_H
-#define GADU_FILE_TRANSFER_H
+#pragma once
 
 #include "file-transfer/file-transfer-handler.h"
 
+#include "services/drive/gadu-drive-send-ticket.h"
+
 #include <QtCore/QPointer>
 
-class GaduDriveSendTicket;
+class GaduDrivePutTransfer;
 class GaduProtocol;
 
 class GaduFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
 
-	QPointer<GaduProtocol> CurrentProtocol;
-
 	void finished(bool ok);
-
-private slots:
-	void sendTickedReceived(GaduDriveSendTicket);
 
 public:
 	explicit GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
@@ -53,6 +49,14 @@ public:
 	virtual bool accept(const QString &fileName, bool resumeTransfer);
 	virtual void reject();
 
-};
+private:
+	QPointer<GaduProtocol> m_protocol;
+	GaduDriveSendTicket m_ticket;
+	QPointer<GaduDrivePutTransfer> m_putTransfer;
 
-#endif // GADU_FILE_TRANSFER_H
+	void startOutgoingTransfer();
+
+private slots:
+	void sendTickedReceived(GaduDriveSendTicket);
+
+};
