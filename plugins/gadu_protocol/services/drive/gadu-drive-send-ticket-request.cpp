@@ -43,7 +43,8 @@ GaduDriveSendTicketRequest::GaduDriveSendTicketRequest(QString recipient, QStrin
 
 GaduDriveSendTicketRequest::~GaduDriveSendTicketRequest()
 {
-	m_reply->deleteLater();
+	if (m_reply)
+		m_reply->deleteLater();
 }
 
 void GaduDriveSendTicketRequest::authorized(GaduDriveSessionToken sessionToken)

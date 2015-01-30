@@ -38,6 +38,8 @@ GaduDriveAuthorization::GaduDriveAuthorization(QString accountId, QString imToke
 
 GaduDriveAuthorization::~GaduDriveAuthorization()
 {
+	if (m_reply)
+		m_reply->deleteLater();
 }
 
 void GaduDriveAuthorization::authorize()
@@ -78,7 +80,6 @@ void GaduDriveAuthorization::requestFinished()
 	else
 		emit authorized({});
 
-	m_reply->deleteLater();
 	deleteLater();
 }
 

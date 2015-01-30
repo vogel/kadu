@@ -46,7 +46,8 @@ GaduDriveSendStatusUpdateRequest::GaduDriveSendStatusUpdateRequest(GaduDriveSess
 
 GaduDriveSendStatusUpdateRequest::~GaduDriveSendStatusUpdateRequest()
 {
-	m_reply->deleteLater();
+	if (m_reply)
+		m_reply->deleteLater();
 }
 
 void GaduDriveSendStatusUpdateRequest::sendRequest()

@@ -59,7 +59,8 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, G
 
 GaduDrivePutTransfer::~GaduDrivePutTransfer()
 {
-	m_reply->deleteLater();
+	if (m_reply)
+		m_reply->deleteLater();
 }
 
 void GaduDrivePutTransfer::requestFinished()
