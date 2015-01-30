@@ -37,7 +37,7 @@
 GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
 		AccountDetails(data), ReceiveImagesDuringInvisibility(true),
 		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
-		SendTypingNotification(true), ExternalPort(0), UserlistVersion(-1), ReceiveSpam(true)
+		SendTypingNotification(true), UserlistVersion(-1), ReceiveSpam(true)
 {
 	OpenChatRunner = new GaduOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
@@ -62,8 +62,6 @@ void GaduAccountDetails::load()
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", true);
 	TlsEncryption = loadValue<bool>("TlsEncryption", false);
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
-	ExternalIp = loadValue<QString>("ExternalIp");
-	ExternalPort = loadValue<unsigned int>("ExternalPort", 0);
 	UserlistVersion = loadValue<int>("UserlistVersion", -1);
 	ReceiveSpam = loadValue<bool>("ReceiveSpam", true);
 }
@@ -78,8 +76,6 @@ void GaduAccountDetails::store()
 	storeValue("InitialRosterImport", InitialRosterImport);
 	storeValue("TlsEncryption", TlsEncryption);
 	storeValue("SendTypingNotification", SendTypingNotification);
-	storeValue("ExternalIp", ExternalIp);
-	storeValue("ExternalPort", ExternalPort);
 	storeValue("UserlistVersion", UserlistVersion);
 	storeValue("ReceiveSpam", ReceiveSpam);
 }

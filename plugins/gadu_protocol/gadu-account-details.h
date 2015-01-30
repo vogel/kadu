@@ -37,8 +37,6 @@ class GaduAccountDetails : public AccountDetails
 	PROPERTY_DEC(bool, InitialRosterImport)
 	PROPERTY_DEC(bool, TlsEncryption)
 	PROPERTY_DEC(bool, SendTypingNotification)
-	PROPERTY_DEC(QString, ExternalIp)
-	PROPERTY_DEC(unsigned int, ExternalPort)
 	PROPERTY_DEC(int, UserlistVersion)
 	PROPERTY_DEC(bool, ReceiveSpam)
 
@@ -59,8 +57,6 @@ public:
 	PROPERTY_DEF(bool, initialRosterImport, setInitialRosterImport, InitialRosterImport)
 	PROPERTY_DEF(bool, tlsEncryption, setTlsEncryption, TlsEncryption)
 	PROPERTY_DEF(bool, sendTypingNotification, setSendTypingNotification, SendTypingNotification)
-	PROPERTY_DEF(QString, externalIp, setExternalIp, ExternalIp)
-	PROPERTY_DEF(unsigned int, externalPort, setExternalPort, ExternalPort)
 	PROPERTY_DEF(int, userlistVersion, setUserlistVersion, UserlistVersion)
 	PROPERTY_DEF(bool, receiveSpam, setReceiveSpam, ReceiveSpam)
 

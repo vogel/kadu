@@ -307,6 +307,11 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			static_cast<GaduRosterService *>(m_protocol->rosterService())->handleEventUserlist100Reply(e);
 			break;
 
+		case GG_EVENT_JSON_EVENT:
+			printf("json type: %s\n", e->event.json_event.type);
+			printf("json data: %s\n", e->event.json_event.data);
+			break;
+
 		case GG_EVENT_IMTOKEN:
 			m_imTokenService->setIMToken(e->event.imtoken.imtoken);
 			break;

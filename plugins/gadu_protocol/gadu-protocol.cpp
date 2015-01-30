@@ -421,26 +421,13 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
-	if (!gaduAccountDetails->externalIp().isEmpty())
-	{
-		QHostAddress externalIp(gaduAccountDetails->externalIp());
-		if (!externalIp.isNull())
-			GaduLoginParams.external_addr = htonl(externalIp.toIPv4Address());
-	}
-
-	GaduLoginParams.external_port = gaduAccountDetails->externalPort();
-	GaduLoginParams.protocol_version = 0;
+	GaduLoginParams.protocol_version = GG_PROTOCOL_VERSION_110;
+	GaduLoginParams.compatibility = GG_COMPAT_1_12_0;
 	GaduLoginParams.client_version = qstrdup(Core::nameWithVersion().toUtf8().constData());
 	GaduLoginParams.protocol_features =
-			GG_FEATURE_UNKNOWN_4 | // GG_FEATURE_STATUS80
-			GG_FEATURE_DND_FFC |
-			GG_FEATURE_IMAGE_DESCR |
-			GG_FEATURE_UNKNOWN_40 |
-			GG_FEATURE_UNKNOWN_100 |
-			GG_FEATURE_USER_DATA |
-			GG_FEATURE_MSG_ACK |
-			GG_FEATURE_TYPING_NOTIFICATION |
-			GG_FEATURE_MULTILOGON;
+		GG_FEATURE_DND_FFC |
+		GG_FEATURE_TYPING_NOTIFICATION | GG_FEATURE_MULTILOGON |
+		GG_FEATURE_USER_DATA;
 
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 

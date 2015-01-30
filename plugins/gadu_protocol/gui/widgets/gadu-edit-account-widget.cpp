@@ -286,17 +286,6 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	QGroupBox *connection = new QGroupBox(tr("Network"), this);
 	QFormLayout *connectionLayout = new QFormLayout(connection);
 
-	ExternalIp = new QLineEdit(connection);
-	connect(ExternalIp, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-
-	connectionLayout->addRow(new QLabel(tr("External IP") + ':', connection), ExternalIp);
-
-	ExternalPort = new QLineEdit(connection);
-	ExternalPort->setValidator(new QIntValidator(0, 99999, ExternalPort));
-	connect(ExternalPort, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-
-	connectionLayout->addRow(new QLabel(tr("External port") + ':', connection), ExternalPort);
-
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration") + ':', connection);
 	ProxyCombo = new ProxyComboBox(connection);
 	ProxyCombo->enableDefaultProxyAction();
@@ -340,9 +329,6 @@ void GaduEditAccountWidget::apply()
 			Details->setTlsEncryption(UseTlsEncryption->isChecked());
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
 		Details->setReceiveSpam(!ReceiveSpam->isChecked());
-
-		Details->setExternalIp(ExternalIp->text());
-		Details->setExternalPort(ExternalPort->text().toUInt());
 	}
 
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
@@ -394,10 +380,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& Details->receiveSpam() != ReceiveSpam->isChecked()
-		&& !gpiw->isModified()
-
-		&& Details->externalIp() == ExternalIp->text()
-		&& Details->externalPort() == ExternalPort->text().toUInt())
+		&& !gpiw->isModified())
 	{
 		simpleStateNotifier()->setState(StateNotChanged);
 		return;
@@ -434,9 +417,6 @@ void GaduEditAccountWidget::loadAccountData()
 		UseTlsEncryption->setChecked(gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) ? details->tlsEncryption() : false);
 		SendTypingNotification->setChecked(details->sendTypingNotification());
 		ReceiveSpam->setChecked(!details->receiveSpam());
-
-		ExternalIp->setText(details->externalIp());
-		ExternalPort->setText(QString::number(details->externalPort()));
 	}
 
 	useDefaultServers->setChecked(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));

@@ -68,9 +68,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QCheckBox *SendTypingNotification;
 	QCheckBox *ReceiveSpam;
 
-	QLineEdit *ExternalIp;
-	QLineEdit *ExternalPort;
-
 	ProxyComboBox *ProxyCombo;
 
 	QPushButton *ApplyButton;
