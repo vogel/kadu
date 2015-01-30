@@ -63,6 +63,11 @@ GaduDrivePutTransfer::~GaduDrivePutTransfer()
 		m_reply->deleteLater();
 }
 
+bool GaduDrivePutTransfer::fileOpened() const
+{
+	return m_file && m_file->isOpen();
+}
+
 void GaduDrivePutTransfer::requestFinished()
 {
 	deleteLater();

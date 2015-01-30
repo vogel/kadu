@@ -90,6 +90,7 @@ void GaduFileTransferHandler::updateStatus()
 {
 	if (!m_ticket.isValid())
 	{
+		transfer().setTransferError(ErrorNetworkError);
 		finished(false);
 		return;
 	}
@@ -126,6 +127,12 @@ void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
 
 	auto driveService = m_protocol->driveService();
 	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().localFileName());
+
+	if (!m_putTransfer->fileOpened())
+	{
+		transfer().setTransferError(ErrorUnableToOpenFile);
+		finished(false);
+	}
 }
 
 void GaduFileTransferHandler::requestSendStatusUpdate()

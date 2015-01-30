@@ -40,6 +40,8 @@ public:
 		QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 	virtual ~GaduDrivePutTransfer();
 
+	bool fileOpened() const;
+
 private:
 	QPointer<QNetworkReply> m_reply;
 	owned_qptr<QFile> m_file;
