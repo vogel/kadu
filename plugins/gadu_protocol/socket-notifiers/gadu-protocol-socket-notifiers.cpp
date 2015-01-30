@@ -308,8 +308,6 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			break;
 
 		case GG_EVENT_JSON_EVENT:
-			printf("json type: %s\n", e->event.json_event.type);
-			printf("json data: %s\n", e->event.json_event.data);
 			break;
 
 		case GG_EVENT_IMTOKEN:
