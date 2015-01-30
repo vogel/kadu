@@ -22,5 +22,6 @@
 enum class GaduDriveSendTicketStatus
 {
 	InProgress,
-	Completed
+	Completed,
+	Expired
 };

@@ -49,6 +49,8 @@ GaduDriveSendTicket GaduDriveSendTicketParser::fromJson(QJsonDocument json)
 	auto statusString = sendTicket.value("send_status").toString();
 	auto status = statusString == "completed"
 		? GaduDriveSendTicketStatus::Completed
+		: statusString == "expired"
+		? GaduDriveSendTicketStatus::Expired
 		: GaduDriveSendTicketStatus::InProgress;
 
 	return GaduDriveSendTicket{std::move(ticketId), std::move(sender), std::move(recipient), std::move(fileName),
