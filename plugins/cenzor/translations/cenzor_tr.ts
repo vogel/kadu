@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Cenzor</source>
-        <translation>Sansü</translation>
+        <translation>Sansür</translation>
     </message>
     <message>
         <source>General</source>

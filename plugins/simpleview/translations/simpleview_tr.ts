@@ -3,34 +3,34 @@
     <name>@default</name>
     <message>
         <source>Keep contact list size</source>
-        <translation type="unfinished"/>
+        <translation>Kişi listesi boyutunu sakla</translation>
     </message>
     <message>
         <source>Hide scroll bar</source>
-        <translation type="unfinished"/>
+        <translation>Kaydırma çubuğunu gizle</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Ekstralar</translation>
     </message>
     <message>
         <source>Simple View</source>
-        <translation type="unfinished"/>
+        <translation>Basit Görünüm</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Ayarlar</translation>
     </message>
     <message>
         <source>Hide window borders</source>
-        <translation type="unfinished"/>
+        <translation>Pencere kenarlarını gizle</translation>
     </message>
 </context>
 <context>
     <name>SimpleView</name>
     <message>
         <source>Simple view</source>
-        <translation type="unfinished"/>
+        <translation>Basti görünüm</translation>
     </message>
 </context>
 </TS>

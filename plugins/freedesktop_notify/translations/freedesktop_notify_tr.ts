@@ -3,39 +3,39 @@
     <name>@default</name>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Uyarılar</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n saniye</numerusform><numerusform>%n saniye</numerusform></translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"/>
+        <translation>Alıntı karakter sayısı</translation>
     </message>
     <message>
         <source>System notifications</source>
-        <translation type="unfinished"/>
+        <translation>Sistem uyarıları</translation>
     </message>
     <message>
         <source>Use custom expiration timeout</source>
-        <translation type="unfinished"/>
+        <translation>Özel son kullanım zaman aşımını kullan</translation>
     </message>
     <message>
         <source>Expiration timeout</source>
-        <translation type="unfinished"/>
+        <translation>Son kullanım zaman aşımı</translation>
     </message>
     <message>
         <source>Show message content</source>
-        <translation type="unfinished"/>
+        <translation>Mesaj içeriğini göster</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Hiçbir Zaman</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Ayarlar</translation>
     </message>
 </context>
 </TS>

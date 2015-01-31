@@ -3,57 +3,57 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Konuşma</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Seçenekler</translation>
     </message>
     <message>
         <source>Only for the first time</source>
-        <translation type="unfinished"/>
+        <translation>Sadece ilk sefer için</translation>
     </message>
     <message>
         <source>Respond to conferences</source>
-        <translation type="unfinished"/>
+        <translation>Konferansları yanıtla</translation>
     </message>
     <message>
         <source>Status invisible</source>
-        <translation type="unfinished"/>
+        <translation>Durum görünmez</translation>
     </message>
     <message>
         <source>Status busy</source>
-        <translation type="unfinished"/>
+        <translation>Durum meşgul</translation>
     </message>
     <message>
         <source>Status available</source>
-        <translation type="unfinished"/>
+        <translation>Durum müsait</translation>
     </message>
     <message>
         <source>Auto Responder</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik Yanıtlayıcı</translation>
     </message>
     <message>
         <source>Auto answer text</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik yanıt yazısı</translation>
     </message>
     <message>
         <source>Choose Status</source>
-        <translation type="unfinished"/>
+        <translation>Durum Seçiniz</translation>
     </message>
 </context>
 <context>
     <name>AutoResponder</name>
     <message>
         <source>KADU AUTORESPONDER:</source>
-        <translation type="unfinished"/>
+        <translation>KADU OTO-YANITLAYICI:</translation>
     </message>
 </context>
 <context>
     <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"/>
+        <translation>Meşgulüm.</translation>
     </message>
 </context>
 </TS>

@@ -1117,11 +1117,11 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Open chat window minimized</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít okno s rozhovory zmenšené</translation>
     </message>
     <message>
         <source>Open chat window on new message in minimized mode</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít okno s rozhovory při příchodu nové zprávy zmenšené</translation>
     </message>
 </context>
 <context>
@@ -2149,7 +2149,7 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
     <message>
         <source>Paste and send</source>
-        <translation type="unfinished"/>
+        <translation>Vložit a poslat</translation>
     </message>
 </context>
 <context>
@@ -3154,43 +3154,43 @@ poradu</translation>
     <name>PluginModel</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Rozhovor</translation>
     </message>
     <message>
         <source>Chats history</source>
-        <translation type="unfinished"/>
+        <translation>Historie rozhovorů</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"/>
+        <translation>Plocha</translation>
     </message>
     <message>
         <source>Media players</source>
-        <translation type="unfinished"/>
+        <translation>Přehrávače</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Oznámení</translation>
     </message>
     <message>
         <source>Privacy</source>
-        <translation type="unfinished"/>
+        <translation>Soukromí</translation>
     </message>
     <message>
         <source>Protocols</source>
-        <translation type="unfinished"/>
+        <translation>Protokoly</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Zvuk</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Stav</translation>
     </message>
     <message>
         <source>Misc</source>
-        <translation type="unfinished"/>
+        <translation>Různé</translation>
     </message>
 </context>
 <context>

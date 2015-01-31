@@ -3,50 +3,50 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Konuşma</translation>
     </message>
     <message>
         <source>Words fix</source>
-        <translation type="unfinished"/>
+        <translation>Kelimeleri düzelt</translation>
     </message>
     <message>
         <source>Enable word fix</source>
-        <translation type="unfinished"/>
+        <translation>Kelime düzeltme açık</translation>
     </message>
     <message>
         <source>Spelling</source>
-        <translation type="unfinished"/>
+        <translation>İmlâ</translation>
     </message>
 </context>
 <context>
     <name>WordFix</name>
     <message>
         <source>A word to be replaced</source>
-        <translation type="unfinished"/>
+        <translation>Bir kelime değiştirildi</translation>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation type="unfinished"/>
+        <translation>Değeri şununla değiştir</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Ekle</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Değiştir</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Sil</translation>
     </message>
     <message>
         <source>Word</source>
-        <translation type="unfinished"/>
+        <translation>Kelime</translation>
     </message>
     <message>
         <source>Replace with</source>
-        <translation type="unfinished"/>
+        <translation>Şununla değiştir</translation>
     </message>
 </context>
 </TS>

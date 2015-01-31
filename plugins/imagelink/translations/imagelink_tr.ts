@@ -3,23 +3,23 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Konuşma</translation>
     </message>
     <message>
         <source>Show YouTube movies in chat window</source>
-        <translation type="unfinished"/>
+        <translation>YouTube videolarını konuşma penceresinde göster</translation>
     </message>
     <message>
         <source>Show images in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Resimleri konuşma penceresinde göster</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"/>
+        <translation>Mesajlar</translation>
     </message>
 </context>
 </TS>

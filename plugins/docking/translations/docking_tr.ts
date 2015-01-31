@@ -3,74 +3,74 @@
     <name>@default</name>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"/>
+        <translation>Sistem tepsisi</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Yanıp Sönen Zarf</translation>
     </message>
     <message>
         <source>Static Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Sabit Zarf</translation>
     </message>
     <message>
         <source>Animated Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Animasyonlu Zarf</translation>
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"/>
+        <translation>Açılış</translation>
     </message>
     <message>
         <source>Start minimized</source>
-        <translation type="unfinished"/>
+        <translation>Simge durumda başlat</translation>
     </message>
     <message>
         <source>Show tooltip over tray icon</source>
-        <translation type="unfinished"/>
+        <translation>Sistem tepsisi üzerinde ipucu göster</translation>
     </message>
     <message>
         <source>Tray icon indicating new message</source>
-        <translation type="unfinished"/>
+        <translation>Yeni mesajı gösteren sistem tepsisi simgesi</translation>
     </message>
 </context>
 <context>
     <name>DockingManager</name>
     <message>
         <source>&amp;Restore</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Önceki Boyut</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Simge Durumuna</translation>
     </message>
     <message>
         <source>&amp;Exit Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu&apos;dan &amp;Çık</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Durum</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Tanımlama</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Durumlar</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Tanımlamalar</translation>
     </message>
     <message>
         <source>Silent mode</source>
-        <translation type="unfinished"/>
+        <translation>Sessiz mod</translation>
     </message>
 </context>
 </TS>

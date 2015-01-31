@@ -3,92 +3,92 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Konuşma</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>Enable encrytpion after receiving encrypted message</source>
-        <translation type="unfinished"/>
+        <translation>Şifrelemeyi açtıktan sonra alınan mesaj şifrelenecek</translation>
     </message>
 </context>
 <context>
     <name>EncryptioNgSimliteEncryptor</name>
     <message>
         <source>Cannot use public key: not a valid RSA key</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar kullanamazsınız: geçerli bir RSA anahtarı değil</translation>
     </message>
     <message>
         <source>Cannot use public key: invalid BASE64 encoding</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar kullanamazsınız: hatalı BASE64 kodlama</translation>
     </message>
     <message>
         <source>Cannot use public key: invalid PKCS1 certificate</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar kullanamazsınız: hatalı PKCS1 sertifikası</translation>
     </message>
     <message>
         <source>Cannot use public key: this key does not allow encrypttion</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar kullanılamaz: bu anahtar şifrelenmeye izin verilmiyor</translation>
     </message>
     <message>
         <source>Cannot encrypt: valid public key not available</source>
-        <translation type="unfinished"/>
+        <translation>Şifrelenemez: geçerli public anahtarı yok</translation>
     </message>
     <message>
         <source>Cannot encrypt: valid blowfish key not available</source>
-        <translation type="unfinished"/>
+        <translation>Şifrelenemez: geçerli blowfish anahtarı yok</translation>
     </message>
     <message>
         <source>Cannot encrypt: unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme hatası: bilinmeyen hata</translation>
     </message>
 </context>
 <context>
     <name>EncryptioNgSimliteProvider</name>
     <message>
         <source>Simlite</source>
-        <translation type="unfinished"/>
+        <translation>Simlite</translation>
     </message>
 </context>
 <context>
     <name>SimliteSendPublicKeyActionDescription</name>
     <message>
         <source>Send My Public Key (Simlite)</source>
-        <translation type="unfinished"/>
+        <translation>Public Anahtarımı Gönder (Simlite)</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>Cannot send keys. Check if encryption_ng_simlite plugin is loaded</source>
-        <translation type="unfinished"/>
+        <translation>Anahtarlar gönderilemez. encryption_ng_simlite eklentisi yüklü mü kontrol edin</translation>
     </message>
     <message>
         <source>Public key dont exist. Do you want to create new one?</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar bulunmuyor. Yeni bir tane oluşturmak ister misiniz?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"/>
+        <translation>Evet</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"/>
+        <translation>Hayır</translation>
     </message>
     <message>
         <source>Error generating key</source>
-        <translation type="unfinished"/>
+        <translation>Anahtar oluşturma hatası</translation>
     </message>
     <message>
         <source>No public key available</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar yok</translation>
     </message>
 </context>
 </TS>

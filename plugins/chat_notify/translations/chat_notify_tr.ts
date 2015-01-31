@@ -2,8 +2,8 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Indicator</source>
-        <translation>Gösterge</translation>
+        <source>Chat window notifications</source>
+        <translation>Konuşma penceresi uyarıları</translation>
     </message>
 </context>
 </TS>
