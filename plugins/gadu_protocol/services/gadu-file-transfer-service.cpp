@@ -46,10 +46,27 @@ GaduFileTransferService::~GaduFileTransferService()
 
 FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
-	GaduFileTransferHandler *handler = new GaduFileTransferHandler(Protocol, fileTransfer);
+	auto handler = new GaduFileTransferHandler(Protocol, fileTransfer);
 	fileTransfer.setHandler(handler);
 
 	return handler;
+}
+
+void GaduFileTransferService::fileTransferReceived(Contact peer, QString fileName)
+{
+	auto transfer = FileTransfer::create();
+	transfer.setPeer(peer);
+	transfer.setTransferType(TypeReceive);
+	transfer.setRemoteFileName(fileName);
+	transfer.setFileSize(0); // we don't know file size yet
+
+	transfer.createHandler();
+
+	auto handler = qobject_cast<GaduFileTransferHandler *>(transfer.handler());
+	Q_UNUSED(handler);
+	// ..
+
+	emit incomingFileTransfer(transfer);
 }
 
 #include "moc_gadu-file-transfer-service.cpp"

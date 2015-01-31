@@ -45,6 +45,8 @@ public:
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
 
+	void fileTransferReceived(Contact peer, QString fileName);
+
 };
 
 #endif // GADU_FILE_TRANSFER_SERVICE_H

@@ -461,14 +461,16 @@ void GaduProtocol::startFileTransferService()
 	{
 		CurrentFileTransferService = new GaduFileTransferService(this);
 		account().data()->fileTransferServiceChanged(CurrentFileTransferService);
+		CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
 	}
 }
 
 void GaduProtocol::stopFileTransferService()
 {
 	delete CurrentFileTransferService;
-	CurrentFileTransferService = 0;
-	account().data()->fileTransferServiceChanged(0);
+	CurrentFileTransferService = nullptr;
+	account().data()->fileTransferServiceChanged(nullptr);
+	CurrentChatService->setGaduFileTransferService(nullptr);
 }
 
 void GaduProtocol::setUpFileTransferService(bool forceClose)

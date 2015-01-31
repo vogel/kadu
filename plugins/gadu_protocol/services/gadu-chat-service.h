@@ -38,6 +38,7 @@ class QTimer;
 class FormattedStringFactory;
 class GaduChatImageService;
 class GaduConnection;
+class GaduFileTransferService;
 class ImageStorageService;
 class RawMessage;
 
@@ -59,6 +60,7 @@ class GaduChatService : public ChatService
 	Q_OBJECT
 
 	QPointer<GaduChatImageService> CurrentGaduChatImageService;
+	QPointer<GaduFileTransferService> CurrentFileTransferService;
 	QPointer<ImageStorageService> CurrentImageStorageService;
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
@@ -92,6 +94,8 @@ public:
 	 * @param gaduChatImageService chat image service for this service
 	 */
 	void setGaduChatImageService(GaduChatImageService *gaduChatImageService);
+
+	void setGaduFileTransferService(GaduFileTransferService *gaduFileTransferService);
 
 	/**
 	 * @short Set image storage service for this service.
