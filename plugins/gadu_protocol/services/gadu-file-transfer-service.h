@@ -45,7 +45,7 @@ public:
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
 
-	void fileTransferReceived(Contact peer, QString fileName);
+	void fileTransferReceived(Contact peer, QString downloadId, QString fileName);
 
 };
 

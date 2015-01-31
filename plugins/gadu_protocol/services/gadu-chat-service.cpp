@@ -256,12 +256,12 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (CurrentFileTransferService)
 	{
 		auto content = QString::fromUtf8(reinterpret_cast<const char *>(e->event.msg.message));
-		auto fileTransferRegExp = QRegularExpression{"^http\\:\\/\\/www\\.gg\\.pl\\/dysk\\/([a-zA-Z0-9-]{23})\\/(.+)$"};
+		auto fileTransferRegExp = QRegularExpression{"^http\\:\\/\\/www\\.gg\\.pl\\/dysk\\/([a-zA-Z0-9-_]{23})\\/(.+)$"};
 		auto fileTransferMatch = fileTransferRegExp.match(content);
 
 		if (fileTransferMatch.hasMatch())
 		{
-			CurrentFileTransferService->fileTransferReceived(sender, fileTransferMatch.captured(2));
+			CurrentFileTransferService->fileTransferReceived(sender, fileTransferMatch.captured(1), fileTransferMatch.captured(2));
 			return;
 		}
 	}

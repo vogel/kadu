@@ -22,6 +22,7 @@
 #include "gadu-file-transfer-handler.h"
 
 #include "helpers/gadu-protocol-helper.h"
+#include "services/drive/gadu-drive-get-transfer.h"
 #include "services/drive/gadu-drive-put-transfer.h"
 #include "services/drive/gadu-drive-send-status-update-request.h"
 #include "services/drive/gadu-drive-send-ticket-ack-status.h"
@@ -146,6 +147,8 @@ void GaduFileTransferHandler::requestSendStatusUpdate()
 
 void GaduFileTransferHandler::stop()
 {
+	if (m_getTransfer)
+		m_getTransfer->deleteLater();
 	if (m_putTransfer)
 		m_putTransfer->deleteLater();
 
@@ -157,8 +160,42 @@ bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfe
 {
 	Q_UNUSED(resumeTransfer);
 
+	if (m_getTransfer)
+		return false;
+
+	auto driveService = m_protocol->driveService();
+	m_getTransfer = driveService->getFromDrive(transfer().property("gg:downloadId", QString{}).toString(), transfer().remoteFileName(), fileName);
+
+	if (!m_getTransfer->fileOpened())
+	{
+		transfer().setTransferError(ErrorUnableToOpenFile);
+		finished(false);
+		return false;
+	}
+
+	connect(m_getTransfer, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
+	connect(m_getTransfer, SIGNAL(finished(bool)), this, SLOT(downloadFinished(bool)));
+
 	transfer().accept(fileName);
-	return false;
+	transfer().setTransferStatus(StatusTransfer);
+	transfer().setTransferredSize(0);
+
+	return true;
+}
+
+void GaduFileTransferHandler::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+{
+	transfer().setTransferredSize(bytesReceived);
+	transfer().setFileSize(bytesTotal);
+}
+
+void GaduFileTransferHandler::downloadFinished(bool ok)
+{
+	if (ok)
+		transfer().setTransferStatus(StatusFinished);
+	else
+		transfer().setTransferError(ErrorNetworkError);
+	deleteLater();
 }
 
 void GaduFileTransferHandler::reject()

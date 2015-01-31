@@ -30,6 +30,7 @@
 
 #include <QtCore/QPointer>
 
+class GaduDriveGetTransfer;
 class GaduDrivePutTransfer;
 class GaduProtocol;
 
@@ -52,6 +53,7 @@ public:
 private:
 	QPointer<GaduProtocol> m_protocol;
 	GaduDriveSendTicket m_ticket;
+	QPointer<GaduDriveGetTransfer> m_getTransfer;
 	QPointer<GaduDrivePutTransfer> m_putTransfer;
 
 	void startOutgoingTransferIfNotStarted();
@@ -60,5 +62,7 @@ private:
 private slots:
 	void statusUpdateReceived(GaduDriveSendTicket);
 	void requestSendStatusUpdate();
+	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+	void downloadFinished(bool ok);
 
 };

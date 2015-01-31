@@ -52,19 +52,15 @@ FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTra
 	return handler;
 }
 
-void GaduFileTransferService::fileTransferReceived(Contact peer, QString fileName)
+void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloadId, QString fileName)
 {
 	auto transfer = FileTransfer::create();
 	transfer.setPeer(peer);
 	transfer.setTransferType(TypeReceive);
 	transfer.setRemoteFileName(fileName);
 	transfer.setFileSize(0); // we don't know file size yet
-
+	transfer.addProperty("gg:downloadId", downloadId, CustomProperties::Storable);
 	transfer.createHandler();
-
-	auto handler = qobject_cast<GaduFileTransferHandler *>(transfer.handler());
-	Q_UNUSED(handler);
-	// ..
 
 	emit incomingFileTransfer(transfer);
 }

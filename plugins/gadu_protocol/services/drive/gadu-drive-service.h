@@ -28,6 +28,7 @@
 #include <QtCore/QPointer>
 
 class GaduDriveAuthorization;
+class GaduDriveGetTransfer;
 class GaduDrivePutTransfer;
 class GaduDriveSendStatusUpdateRequest;
 class GaduDriveSendTicket;
@@ -47,6 +48,7 @@ public:
 	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
 
 	GaduDriveSendTicketRequest * requestSendTicket(QString recipient, QString fileName, qint64 fileSize);
+	GaduDriveGetTransfer * getFromDrive(QString downloadId, QString remoteFileName, QString localFileName);
 	GaduDrivePutTransfer * putInOutbox(GaduDriveSendTicket ticket, QString localFileName);
 	GaduDriveSendStatusUpdateRequest * requestSendStatusUpdate(QString ticketId);
 

@@ -57,6 +57,7 @@ set (SOURCES
 	server/protocol-gadu-connection.cpp
 
 	services/drive/gadu-drive-authorization.cpp
+	services/drive/gadu-drive-get-transfer.cpp
 	services/drive/gadu-drive-put-transfer.cpp
 	services/drive/gadu-drive-send-status-update-request.cpp
 	services/drive/gadu-drive-send-ticket-parser.cpp

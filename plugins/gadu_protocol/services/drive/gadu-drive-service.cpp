@@ -20,6 +20,7 @@
 #include "gadu-drive-service.h"
 
 #include "services/drive/gadu-drive-authorization.h"
+#include "services/drive/gadu-drive-get-transfer.h"
 #include "services/drive/gadu-drive-put-transfer.h"
 #include "services/drive/gadu-drive-send-status-update-request.h"
 #include "services/drive/gadu-drive-send-ticket-request.h"
@@ -63,6 +64,11 @@ GaduDriveSendTicketRequest * GaduDriveService::requestSendTicket(QString recipie
 	}
 
 	return sendTicketRequest;
+}
+
+GaduDriveGetTransfer * GaduDriveService::getFromDrive(QString downloadId, QString remoteFileName, QString localFileName)
+{
+	return new GaduDriveGetTransfer{downloadId, remoteFileName, localFileName, m_networkAccessManager.get(), this};
 }
 
 GaduDrivePutTransfer * GaduDriveService::putInOutbox(GaduDriveSendTicket ticket, QString localFileName)
