@@ -3,423 +3,424 @@
     <name>@default</name>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz, sunucu bulunamadı</translation>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Şifre değiştir / e-posta&quot; penceresinde e-postanızı değiştirin. Yeni şifre alanını boş bırakın.</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz, sunucu bilinmeyen veri döndürdü</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz, okuma sırasında bağlantı kesildi</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz, yazma sırasında bağlantı kesildi</translation>
     </message>
     <message>
         <source>Unable to connect, invalid password</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz, hatalı şifre</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz, TLS anlaşma hatası</translation>
     </message>
     <message>
         <source>Too many connection attempts with bad password!</source>
-        <translation type="unfinished"/>
+        <translation>Çok fazla hatalı şifre denemesi!</translation>
     </message>
     <message>
         <source>Unable to connect, servers are down</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılamaz, sunucular kapalı</translation>
     </message>
     <message>
         <source>Connection broken</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı bozuk</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı zaman aşımı!</translation>
     </message>
     <message>
         <source>Disconnection has occurred</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı kesilmesi meydana geldi</translation>
     </message>
 </context>
 <context>
     <name>GaduAddAccountWidget</name>
     <message>
         <source>Gadu-Gadu number</source>
-        <translation type="unfinished"/>
+        <translation>Gadu-Gadu numarası</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Remember Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifremi Hatırla</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Kimliği</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Seçin veya bu hesapla ilişkili olacak kimliğini girin.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Ekle</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Register Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Kayıt Et</translation>
     </message>
     <message>
         <source>Remind GG number</source>
-        <translation type="unfinished"/>
+        <translation>GG numarasını hatırlat</translation>
     </message>
     <message>
         <source>Remind Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifreyi Hatırlat</translation>
     </message>
 </context>
 <context>
     <name>GaduChatImageService</name>
     <message>
         <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
-        <translation type="unfinished"/>
+        <translation>Bu resim %1 KB ve tavsiye edilen %2 KB boyutunu geçiyor. Bazı istemciler çok büyük resimlerde sorun çıkartabiliyor.</translation>
     </message>
     <message>
         <source>Do you really want to send this image?</source>
-        <translation type="unfinished"/>
+        <translation>Bu resmi göndermeyi gerçekten istiyor musunuz?</translation>
     </message>
 </context>
 <context>
     <name>GaduChatService</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Message too long (%1 &gt;= %2)</source>
-        <translation type="unfinished"/>
+        <translation>Mesaj çok uzun (%1 &gt;= %2)</translation>
     </message>
 </context>
 <context>
     <name>GaduContactPersonalInfoWidget</name>
     <message>
         <source>First Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <source>Last Name</source>
-        <translation type="unfinished"/>
+        <translation>Soyisim</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"/>
+        <translation>Takma isim</translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation type="unfinished"/>
+        <translation>Cinsiyet</translation>
     </message>
     <message>
         <source>Birthdate</source>
-        <translation type="unfinished"/>
+        <translation>Doğum Tarihi</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Şehir</translation>
     </message>
     <message>
         <source>State/Province</source>
-        <translation type="unfinished"/>
+        <translation>Devlet / İl</translation>
     </message>
     <message>
         <source>IP Address</source>
-        <translation type="unfinished"/>
+        <translation>IP Adresi</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <source>DNS Name</source>
-        <translation type="unfinished"/>
+        <translation>IP Adresi</translation>
     </message>
     <message>
         <source>Protocol Version</source>
-        <translation type="unfinished"/>
+        <translation>Protokol Versiyonu</translation>
     </message>
     <message>
         <source>Female</source>
-        <translation type="unfinished"/>
+        <translation>Kadın</translation>
     </message>
     <message>
         <source>Male</source>
-        <translation type="unfinished"/>
+        <translation>Erkek</translation>
     </message>
 </context>
 <context>
     <name>GaduEditAccountWidget</name>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Uygula</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Delete account</source>
-        <translation type="unfinished"/>
+        <translation>Hesabı sil</translation>
     </message>
     <message>
         <source>Gadu-Gadu number</source>
-        <translation type="unfinished"/>
+        <translation>Gadu-Gadu numarası</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Remember password</source>
-        <translation type="unfinished"/>
+        <translation>Şifreyi hatırla</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Kimliği</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Seçin veya bu hesapla ilişkili olacak kimliğini girin.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Personal info</source>
-        <translation type="unfinished"/>
+        <translation>Kişisel bilgi</translation>
     </message>
     <message>
         <source>Buddies</source>
-        <translation type="unfinished"/>
+        <translation>Arkadaşlar</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Ayarlar</translation>
     </message>
     <message>
         <source>Use default servers</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan sunucuları kullan</translation>
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Şifreli bağlantı kullan</translation>
     </message>
     <message>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Hesabı kaldır</translation>
     </message>
     <message>
         <source>External port</source>
-        <translation type="unfinished"/>
+        <translation>Harici port</translation>
     </message>
     <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Şifreli bağlantı yapabilmek için SSL destekli libgadu derlemeniz lazım</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"/>
+        <translation>Diğer</translation>
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Proxy ayarı</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"/>
+        <translation>Resimler</translation>
     </message>
     <message>
         <source>Receive images also when I am Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Görünmez olsam bile resimler alınsın</translation>
     </message>
     <message>
         <source>Warn me when the image being sent may be too large</source>
-        <translation type="unfinished"/>
+        <translation>Gönderilen resmin çok büyük olduğunda beni uyar</translation>
     </message>
     <message>
         <source>Some clients may have trouble with too large images (over 256 KiB).</source>
-        <translation type="unfinished"/>
+        <translation>Bazı istemciler çok büyük resimlerde sorun çıkartabilirler (256 KB&apos;ın üzeri)</translation>
     </message>
     <message>
         <source>Show my status only to buddies on my list</source>
-        <translation type="unfinished"/>
+        <translation>Durumumu sadece arkadaş listesindekilere göster</translation>
     </message>
     <message>
         <source>When disabled, anyone can see your status.</source>
-        <translation type="unfinished"/>
+        <translation>Devre dışı bırakırsanız herkes durumunuzu görür.</translation>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"/>
+        <translation>Yazma olaylarını etkinleştirin</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Konuştuğunuz kişi siz mesajı yazarken, göndermeden önce ve tam tersi durumda uyarılacaktır.</translation>
     </message>
     <message>
         <source>Block links from anonymous buddies</source>
-        <translation type="unfinished"/>
+        <translation>Anonim arkadaşlardan gelen linkleri engelle</translation>
     </message>
     <message>
         <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
-        <translation type="unfinished"/>
+        <translation>Bilinmeyen arkadaşlardan gelen mesajlarda potansiyel zararlı linklere karşı korur</translation>
     </message>
     <message>
         <source>Gadu-Gadu Server</source>
-        <translation type="unfinished"/>
+        <translation>Gadu-Gadu Sunucu</translation>
     </message>
     <message>
         <source>Custom server IP addresses</source>
-        <translation type="unfinished"/>
+        <translation>Özel sunucu IP adresi</translation>
     </message>
     <message>
         <source>Enable file transfers</source>
-        <translation type="unfinished"/>
+        <translation>Dosya aktarımına izin ver</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Ağ</translation>
     </message>
     <message>
         <source>External IP</source>
-        <translation type="unfinished"/>
+        <translation>Harici IP</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Kaldırmayı Onayla</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2) hesabını kaldırmak istediğinize emin misiniz?</translation>
     </message>
     <message>
         <source>Status Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Durum Görünürlüğü</translation>
     </message>
     <message>
         <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
 Are you sure to allow them to know you are available?</source>
-        <translation type="unfinished"/>
+        <translation>Birkaç arkadaşınıza durumunuzu gösteriyorsunuz hangilerinin göremeyeceğine bakın.
+Müsait olduğunuzu bilmelerine izin veriyor musunuz?</translation>
     </message>
     <message>
         <source>Make my status visible anyway</source>
-        <translation type="unfinished"/>
+        <translation>Her halükârda durumumu görünür yap</translation>
     </message>
     <message>
         <source>Stay with private status</source>
-        <translation type="unfinished"/>
+        <translation>Özel durumda kal</translation>
     </message>
     <message>
         <source>Remind GG number</source>
-        <translation type="unfinished"/>
+        <translation>GG numarasını hatırlat</translation>
     </message>
     <message>
         <source>Remind Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifreyi Hatırlat</translation>
     </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
     <message>
         <source>Unknown Gender</source>
-        <translation type="unfinished"/>
+        <translation>Cinsiyet Bilinmiyor</translation>
     </message>
     <message>
         <source>Male</source>
-        <translation type="unfinished"/>
+        <translation>Erkek</translation>
     </message>
     <message>
         <source>Female</source>
-        <translation type="unfinished"/>
+        <translation>Kadın</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"/>
+        <translation>Takma isim</translation>
     </message>
     <message>
         <source>First name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <source>Last name</source>
-        <translation type="unfinished"/>
+        <translation>Soyisim</translation>
     </message>
     <message>
         <source>Sex</source>
-        <translation type="unfinished"/>
+        <translation>Cinsiyet</translation>
     </message>
     <message>
         <source>Family name</source>
-        <translation type="unfinished"/>
+        <translation>Aile adı</translation>
     </message>
     <message>
         <source>Birth year</source>
-        <translation type="unfinished"/>
+        <translation>Doğum yılı</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Şehir</translation>
     </message>
     <message>
         <source>Family city</source>
-        <translation type="unfinished"/>
+        <translation>Aile şehir</translation>
     </message>
 </context>
 <context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
     <name>GaduProtocolFactory</name>
     <message>
         <source>Gadu-Gadu number:</source>
-        <translation type="unfinished"/>
+        <translation>Gadu-Gadu numarası:</translation>
     </message>
 </context>
 <context>
     <name>GaduProtocolPlugin</name>
     <message>
         <source>Gadu-Gadu Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Gadu-Gadu Protokolü</translation>
     </message>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation type="unfinished"/>
+        <translation>Gadu-Gadu Protocol eklentisi yüklenemiyor. Lütfen libgadu yu zlib ile derleyiniz.</translation>
     </message>
 </context>
 </TS>

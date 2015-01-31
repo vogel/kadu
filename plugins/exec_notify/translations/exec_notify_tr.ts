@@ -2,8 +2,8 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Indicator</source>
-        <translation>Gösterge</translation>
+        <source>Run command</source>
+        <translation>Komut çalıştır</translation>
     </message>
 </context>
 </TS>

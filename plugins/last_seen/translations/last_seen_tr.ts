@@ -3,7 +3,7 @@
     <name>Infos</name>
     <message>
         <source>&amp;Show infos about buddies</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Arkadaşlar hakkında bilgiler göster</translation>
     </message>
 </context>
 <context>
@@ -34,7 +34,7 @@
     </message>
     <message>
         <source>Description</source>
-        <translation>Tanım</translation>
+        <translation>Tanımlama</translation>
     </message>
     <message>
         <source>State</source>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı</translation>
     </message>
 </context>
 </TS>

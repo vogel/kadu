@@ -3,86 +3,87 @@
     <name>HistorySqlStorage</name>
     <message>
         <source>Preparing history database...</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş veritabanı hazırlanıyor...</translation>
     </message>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş</translation>
     </message>
     <message>
         <source>Opening database failed. Error message:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanı açma başarısız. Hata mesajı:
+%1</translation>
     </message>
 </context>
 <context>
     <name>SqlInitializer</name>
     <message>
         <source>Copying history file to new location: %1 ...</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş dosyası yeni yerine kopyalanıyor: %1...</translation>
     </message>
     <message>
         <source>Unable to copy history file to new location. Check if disk is full.</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş dosyası yeni yerine kopyalanamıyor. Disk dolu olabilir kontrol edin.</translation>
     </message>
     <message>
         <source>Unable to open database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanı açılamıyor: %1</translation>
     </message>
     <message>
         <source>History file is corrupted, performing recovery...</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş dosyası bozulmuş, kurtarma gerçekleştiriliyor...</translation>
     </message>
     <message>
         <source>Recovery completed.</source>
-        <translation type="unfinished"/>
+        <translation>Kurtama tamamlandı.</translation>
     </message>
     <message>
         <source>Recovery failed: %s</source>
-        <translation type="unfinished"/>
+        <translation>Kurtarma başarısız: %s</translation>
     </message>
     <message>
         <source>History file is outdated, performing import...</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş dosyası zaman aşımına uğramış, yükleme gerçekleştiriliyor...</translation>
     </message>
     <message>
         <source>Import completed.</source>
-        <translation type="unfinished"/>
+        <translation>Yükleme tamamlandı.</translation>
     </message>
     <message>
         <source>Copying completed.</source>
-        <translation type="unfinished"/>
+        <translation>Kopyalama tamamlandı.</translation>
     </message>
 </context>
 <context>
     <name>SqlRestore</name>
     <message>
         <source>No error.</source>
-        <translation type="unfinished"/>
+        <translation>Hata yok.</translation>
     </message>
     <message>
         <source>sqlite3 executable not found.</source>
-        <translation type="unfinished"/>
+        <translation>sqlite3 uygulaması bulunamadı.</translation>
     </message>
     <message>
         <source>Invalid invocation of recovery script.</source>
-        <translation type="unfinished"/>
+        <translation>Hatalı kurtarma kodu çağırımı.</translation>
     </message>
     <message>
         <source>Unable to read corrupted database.</source>
-        <translation type="unfinished"/>
+        <translation>Bozuk veritabanı okunamıyor.</translation>
     </message>
     <message>
         <source>Unable to create backup file. Disc may be full.</source>
-        <translation type="unfinished"/>
+        <translation>Yedek dosyası oluşturulamıyor. Disk dolu olabilir.</translation>
     </message>
     <message>
         <source>Recovery script not found or not executable.</source>
-        <translation type="unfinished"/>
+        <translation>Kurtarma kodu bulunamadı veya çalıştırılamadı.</translation>
     </message>
     <message>
         <source>Unknown error during database recovery.</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanı kurtarılırken bilinmeyen hata meydana geldi.</translation>
     </message>
 </context>
 </TS>

@@ -3,50 +3,50 @@
     <name>@default</name>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Durum</translation>
     </message>
     <message>
         <source>Autostatus file</source>
-        <translation type="unfinished"/>
+        <translation>Otodurum dosyası</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Zaman</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n saniye</numerusform><numerusform>%n saniye</numerusform></translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Çevrimiçi</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Meşgul</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Görünmez</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Davranış</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Tanımlama</translation>
     </message>
     <message>
         <source>AutoStatus</source>
-        <translation type="unfinished"/>
+        <translation>OtoDurum</translation>
     </message>
 </context>
 <context>
     <name>AutostatusActions</name>
     <message>
         <source>&amp;Autostatus</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Otodurum</translation>
     </message>
 </context>
 </TS>

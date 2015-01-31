@@ -3,49 +3,49 @@
     <name>@default</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>Public key has been sent</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar gönderildi</translation>
     </message>
     <message>
         <source>Error during sending public key</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar gönderilirken hata meydana geldi</translation>
     </message>
     <message>
         <source>Encryption error has occured</source>
-        <translation type="unfinished"/>
+        <translation>Şifrelemede hata meydana geldi</translation>
     </message>
 </context>
 <context>
     <name>EncryptionNgNotification</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>Public key has been send to: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar gönderildi: %1 (%2)</translation>
     </message>
     <message>
         <source>Error sending public key to: %1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>Public anahtar gönderilirken hata: %1 (%2)</translation>
     </message>
     <message>
         <source>Error occured during encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifrelenirken hata meydana geldi</translation>
     </message>
 </context>
 <context>
     <name>EncryptionNgPlugin</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>The QCA OSSL plugin for libqca2 is not present!</source>
-        <translation type="unfinished"/>
+        <translation>libqca2 için QCA OSSL eklentisi mevcut değil!</translation>
     </message>
 </context>
 <context>
@@ -53,72 +53,73 @@
     <message>
         <source>Buddy %1 is sending you his public key.
 Do you want to save it?</source>
-        <translation type="unfinished"/>
+        <translation>%1 arkadaşın public anahtarı gönderdi.
+Kaydedecek misiniz?</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Kaydet</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
+        <translation>Atla</translation>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpActionDescription</name>
     <message>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Şifrele</translation>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpMenu</name>
     <message>
         <source>No Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme Yok</translation>
     </message>
     <message>
         <source>%1 Encryption</source>
-        <translation type="unfinished"/>
+        <translation>%1 Şifreleme</translation>
     </message>
 </context>
 <context>
     <name>GenerateKeysActionDescription</name>
     <message>
         <source>Generate Encryption Keys</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme Anahtarları Oluştur</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>Keys have been generated</source>
-        <translation type="unfinished"/>
+        <translation>Anahtarlar oluşturuldu</translation>
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished"/>
+        <translation>Anahtar oluşturmada hata</translation>
     </message>
     <message>
         <source>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</source>
-        <translation type="unfinished"/>
+        <translation>Anahtar oluşturulamaz. encryption_ng_simlite eklentisi yüklüyse kontrol edin</translation>
     </message>
     <message>
         <source>Keys already exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"/>
+        <translation>Anahtarlar zaten mevcut. Üzerine yazmak istediğinize emin misiniz?</translation>
     </message>
     <message>
         <source>Overwrite keys</source>
-        <translation type="unfinished"/>
+        <translation>Anahtarların üzerine yaz</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 </TS>

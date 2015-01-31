@@ -3,219 +3,220 @@
     <name>@default</name>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"/>
+        <translation>SMS</translation>
     </message>
     <message>
         <source>Application</source>
-        <translation type="unfinished"/>
+        <translation>Uygulama</translation>
     </message>
     <message>
         <source>Use built-in SMS application</source>
-        <translation type="unfinished"/>
+        <translation>Dahili SMS uygulamasını kullanın</translation>
     </message>
     <message>
         <source>Custom SMS application</source>
-        <translation type="unfinished"/>
+        <translation>Özel SMS uygulaması</translation>
     </message>
     <message>
         <source>Gateways</source>
-        <translation type="unfinished"/>
+        <translation>Geçitler</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Kısayollar</translation>
     </message>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished"/>
+        <translation>SMS Gönder</translation>
     </message>
     <message>
         <source>SMS T-Mobile.pl Gateway</source>
-        <translation type="unfinished"/>
+        <translation>SMS T-Mobile.pl Geçidi</translation>
     </message>
     <message>
         <source>Sponsored</source>
-        <translation type="unfinished"/>
+        <translation>Sponsorlu</translation>
     </message>
     <message>
         <source>OmnixMultimedia</source>
-        <translation type="unfinished"/>
+        <translation>OmnixMultimedia</translation>
     </message>
     <message>
         <source>User ID (48xxxxxxxxx)</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı ID (48xxxxxxxxx)</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
-        <translation type="unfinished"/>
+        <translation>Bu kutuyu işaretlerseniz eğer sms uygulaması argümanları anlamayabilir: numara &amp;mesaj&amp;
+Argümanları boşlukla ayırın. %k argümanı numaraya, %m mesaj olarak çevirilecek</translation>
     </message>
     <message>
         <source>SMS proxy for built-in application</source>
-        <translation type="unfinished"/>
+        <translation>Dahili SMS uygulaması için proxy</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Ekstralar</translation>
     </message>
     <message>
         <source>Your nick for SMS</source>
-        <translation type="unfinished"/>
+        <translation>SMS için takma isim</translation>
     </message>
     <message>
         <source>Use application custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>Uygulama özel argümanlarını kullan</translation>
     </message>
     <message>
         <source>SMS custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>SMS özel argümanları</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Davranış</translation>
     </message>
 </context>
 <context>
     <name>SmsActions</name>
     <message>
         <source>Send SMS...</source>
-        <translation type="unfinished"/>
+        <translation>SMS Gönder...</translation>
     </message>
 </context>
 <context>
     <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished"/>
+        <translation>SMS Gönder</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"/>
+        <translation>Alıcı</translation>
     </message>
     <message>
         <source>Select automatically</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik olarak seç</translation>
     </message>
     <message>
         <source>GSM provider</source>
-        <translation type="unfinished"/>
+        <translation>GSM sağlayıcı</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"/>
+        <translation>İçerik</translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation type="unfinished"/>
+        <translation>İmza</translation>
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished"/>
+        <translation>SMS geçmişini kaydet</translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Gönder</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Kapat</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Temizle</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>SMS application was not specified. Visit the configuration section</source>
-        <translation type="unfinished"/>
+        <translation>SMS uygulaması belirtilmedi. Ayarlar bölümünü ziyaret edin</translation>
     </message>
     <message>
         <source> - Select recipient - </source>
-        <translation type="unfinished"/>
+        <translation>- Alıcı seçin -</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"/>
+        <translation>SMS gönderiliyor...</translation>
     </message>
 </context>
 <context>
     <name>SmsExternalSender</name>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation type="unfinished"/>
+        <translation>Alt işlem oluşturulamadı. Programın çalışıp çalışmadığını kontrol edin</translation>
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation type="unfinished"/>
+        <translation>İşlemden anormal olarak çıkıldı. SMS gönderilemeyebilir.</translation>
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"/>
+        <translation>SMS gönder</translation>
     </message>
 </context>
 <context>
     <name>SmsInternalSender</name>
     <message>
         <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
-        <translation type="unfinished"/>
+        <translation>Geçit otomatik seçilemiyor. Lütfen SMS geçidini seçin.</translation>
     </message>
     <message>
         <source>Signature can&apos;t be empty.</source>
-        <translation type="unfinished"/>
+        <translation>İmza boş olamaz.</translation>
     </message>
     <message>
         <source>Detecting gateway...</source>
-        <translation type="unfinished"/>
+        <translation>Geçit algılanıyor...</translation>
     </message>
     <message>
         <source>Detected gateway: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Geçit algılandı: %1.</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"/>
+        <translation>SMS gönderiliyor...</translation>
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"/>
+        <translation>SMS gönder</translation>
     </message>
 </context>
 <context>
     <name>SmsTokenReadJob</name>
     <message>
         <source>Invalid paremeters for token read job.</source>
-        <translation type="unfinished"/>
+        <translation>Jeton okuma görevi için hatalı parametreler.</translation>
     </message>
     <message>
         <source>Downloading token image...</source>
-        <translation type="unfinished"/>
+        <translation>Jeton imajı indiriliyor...</translation>
     </message>
     <message>
         <source>Unable to fetch token image.</source>
-        <translation type="unfinished"/>
+        <translation>Jeton imajı alınamaz.</translation>
     </message>
     <message>
         <source>Unable to read token image.</source>
-        <translation type="unfinished"/>
+        <translation>Jeton imajı okunamaz.</translation>
     </message>
     <message>
         <source>Waiting for entry of token value...</source>
-        <translation type="unfinished"/>
+        <translation>Jeton değerinin girilmesi için bekleniyor...</translation>
     </message>
     <message>
         <source>No token value provided.</source>
-        <translation type="unfinished"/>
+        <translation>Sağlanan jeton değeri yok.</translation>
     </message>
     <message>
         <source>Received token value.</source>
-        <translation type="unfinished"/>
+        <translation>Jeton değeri alındı.</translation>
     </message>
 </context>
 </TS>

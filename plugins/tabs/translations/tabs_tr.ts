@@ -3,173 +3,173 @@
     <name>@default</name>
     <message>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Sekmeler</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Görünüm</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Kısayollar</translation>
     </message>
     <message>
         <source>Move tab left</source>
-        <translation type="unfinished"/>
+        <translation>Sekmeyi sola taşı</translation>
     </message>
     <message>
         <source>Move tab right</source>
-        <translation type="unfinished"/>
+        <translation>Sekmeyi sağa taşı</translation>
     </message>
     <message>
         <source>Switch to previous tab</source>
-        <translation type="unfinished"/>
+        <translation>Önceki sekmeye geç</translation>
     </message>
     <message>
         <source>Switch to next tab</source>
-        <translation type="unfinished"/>
+        <translation>Sonraki sekmeye geç</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Mesajlaşma</translation>
     </message>
     <message>
         <source>Enable tabs in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Sekmeli konuşma penceresine izin ver</translation>
     </message>
     <message>
         <source>With this option, each chat will be opened in a separate tab in single window</source>
-        <translation type="unfinished"/>
+        <translation>Bu seçenekle birlikte, her konuşma ayrı sekmeler halinde aynı pencere içinde açılacaktır</translation>
     </message>
     <message>
         <source>Closing window closes current tab only</source>
-        <translation type="unfinished"/>
+        <translation>Pencereyi kapatırken sadece şuanki sekmeyi kapat</translation>
     </message>
     <message>
         <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
-        <translation type="unfinished"/>
+        <translation>Aktif edilirse, pencereyi ve tüm sekmeleri kapatmak yerine sadece şuanki sekme kapatırlır</translation>
     </message>
     <message>
         <source>Tab bar position</source>
-        <translation type="unfinished"/>
+        <translation>Sekme çubuğu konumu</translation>
     </message>
     <message>
         <source>Choose where you want the tab bar to be placed in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Sekmelerin konuşma penceresinde nerede olmasını istediğini seçin</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"/>
+        <translation>Üst</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished"/>
+        <translation>Alt</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Davranış</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Kapanmış sekmeyi aç</translation>
     </message>
     <message>
         <source>Show &apos;Open chat&apos; button</source>
-        <translation type="unfinished"/>
+        <translation>&apos;Konuşmayı Aç&apos; butonunu göster</translation>
     </message>
     <message>
         <source>Show common &apos;Close Tab&apos; button on tab bar</source>
-        <translation type="unfinished"/>
+        <translation>Sekmelerde &apos;Sekmeyi Kapat&apos; butonunu göster</translation>
     </message>
     <message>
         <source>Show &apos;Close&apos; button on each tab</source>
-        <translation type="unfinished"/>
+        <translation>Her sekmede &apos;Kapat&apos; butonunu göster</translation>
     </message>
 </context>
 <context>
     <name>TabWidget</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation type="unfinished"/>
+        <translation>Yeni mesaj alındı, pencere yinede kapansın mı?</translation>
     </message>
     <message>
         <source>Recent Chats</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş Konuşmalar</translation>
     </message>
     <message>
         <source>Open Chat with...</source>
-        <translation type="unfinished"/>
+        <translation>Şununla Konuş...</translation>
     </message>
     <message>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Sekmeler</translation>
     </message>
     <message>
         <source>Close Tab</source>
-        <translation type="unfinished"/>
+        <translation>Sekmeyi Kapat</translation>
     </message>
     <message>
         <source>Close window</source>
-        <translation type="unfinished"/>
+        <translation>Pencereyi kapat</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
     <name>TabsManager</name>
     <message>
         <source>Chat in New Window</source>
-        <translation type="unfinished"/>
+        <translation>Yeni Pencerede Konuşma</translation>
     </message>
     <message>
         <source>Chat in New Tab</source>
-        <translation type="unfinished"/>
+        <translation>Yeni Sekmede Konuşma</translation>
     </message>
     <message>
         <source>Attach Chat to Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Konuşmayı Sekmelere Bağla</translation>
     </message>
     <message>
         <source>NEW MESSAGE(S)</source>
-        <translation type="unfinished"/>
+        <translation>YENİ MESAJ(LAR)</translation>
     </message>
     <message>
         <source>Detach</source>
-        <translation type="unfinished"/>
+        <translation>Ayır</translation>
     </message>
     <message>
         <source>Detach all</source>
-        <translation type="unfinished"/>
+        <translation>Tümünü ayır</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Kapat</translation>
     </message>
     <message>
         <source>Close all</source>
-        <translation type="unfinished"/>
+        <translation>Tümünü kapat</translation>
     </message>
     <message>
         <source>Conference [%1]</source>
-        <translation type="unfinished"/>
+        <translation>Konferans [%1]</translation>
     </message>
     <message>
         <source>Close other tabs</source>
-        <translation type="unfinished"/>
+        <translation>Diğer sekmeleri kapat</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Kapanmış sekmeyi aç</translation>
     </message>
 </context>
 </TS>

@@ -3,34 +3,34 @@
     <name>@default</name>
     <message>
         <source>Autohide idle time</source>
-        <translation type="unfinished"/>
+        <translation>Meşgul iken oto-gizleme süresi</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n saniye</numerusform><numerusform>%n saniye</numerusform></translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"/>
+        <translation>Arkadaşlar listesi</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Buddies window</source>
-        <translation type="unfinished"/>
+        <translation>Arkadaşlar penceresi</translation>
     </message>
     <message>
         <source>Hide buddy list window when unused</source>
-        <translation type="unfinished"/>
+        <translation>Kullanılmadığında arkadaşlar listesini gizle</translation>
     </message>
 </context>
 <context>
     <name>AutoHide</name>
     <message>
         <source>Don&apos;t hide</source>
-        <translation type="unfinished"/>
+        <translation>Gizleme</translation>
     </message>
 </context>
 </TS>

@@ -3,49 +3,49 @@
     <name>@default</name>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Ses</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Uyarılar</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Sound theme</source>
-        <translation type="unfinished"/>
+        <translation>Ses teması</translation>
     </message>
     <message>
         <source>Sound paths</source>
-        <translation type="unfinished"/>
+        <translation>Ses yolları</translation>
     </message>
     <message>
         <source>Test sound playing</source>
-        <translation type="unfinished"/>
+        <translation>Ses çalarak test edin</translation>
     </message>
     <message>
         <source>Play a sound</source>
-        <translation type="unfinished"/>
+        <translation>Bir ses çal</translation>
     </message>
     <message>
         <source>Enable sound notifications</source>
-        <translation type="unfinished"/>
+        <translation>Sesli uyarılar olsun</translation>
     </message>
 </context>
 <context>
     <name>SoundActions</name>
     <message>
         <source>Play Sounds</source>
-        <translation type="unfinished"/>
+        <translation>Sesleri Çal</translation>
     </message>
 </context>
 <context>
     <name>SoundConfigurationUiHandler</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Özel</translation>
     </message>
 </context>
 </TS>

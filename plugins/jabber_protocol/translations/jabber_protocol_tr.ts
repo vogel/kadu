@@ -3,23 +3,23 @@
     <name>@default</name>
     <message>
         <source>External address</source>
-        <translation type="unfinished"/>
+        <translation>Harici adres</translation>
     </message>
     <message>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı kesildi</translation>
     </message>
     <message>
         <source>XML Parsing Error</source>
-        <translation type="unfinished"/>
+        <translation>XML Ayrıştırma Hata</translation>
     </message>
     <message>
         <source>XMPP Protocol Error</source>
-        <translation type="unfinished"/>
+        <translation>XMPP Protokol Hatası</translation>
     </message>
     <message>
         <source>Generic stream error</source>
-        <translation type="unfinished"/>
+        <translation>Genel akış hatası</translation>
     </message>
     <message>
         <source>Conflict(remote login replacing this one)</source>
@@ -27,59 +27,59 @@
     </message>
     <message>
         <source>Timed out from inactivity</source>
-        <translation type="unfinished"/>
+        <translation>Aktifsizlikten zaman aşımı</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"/>
+        <translation>İç Sunucu Hatası</translation>
     </message>
     <message>
         <source>Invalid XML</source>
-        <translation type="unfinished"/>
+        <translation>Hatalı XML</translation>
     </message>
     <message>
         <source>Policy violation</source>
-        <translation type="unfinished"/>
+        <translation>Politika ihlali</translation>
     </message>
     <message>
         <source>Server out of resources</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu kaynakları dışında</translation>
     </message>
     <message>
         <source>Server is shutting down</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu kapatılıyor</translation>
     </message>
     <message>
         <source>XMPP Stream Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>XMPP Akış Hata: %1</translation>
     </message>
     <message>
         <source>Unable to connect to server</source>
-        <translation type="unfinished"/>
+        <translation>Sunucuya bağlanılamıyor</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"/>
+        <translation>Host bulunamadı</translation>
     </message>
     <message>
         <source>Error connecting to proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy bağlantı hatası</translation>
     </message>
     <message>
         <source>Error during proxy negotiation</source>
-        <translation type="unfinished"/>
+        <translation>Proxy anlaşması sırasında hata</translation>
     </message>
     <message>
         <source>Proxy authentication failed</source>
-        <translation type="unfinished"/>
+        <translation>Proxy doğrulama hatası</translation>
     </message>
     <message>
         <source>Socket/stream error</source>
-        <translation type="unfinished"/>
+        <translation>Soket/akış hatası</translation>
     </message>
     <message>
         <source>Connection Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı Hatası: %1</translation>
     </message>
     <message>
         <source>Host no longer hosted</source>
@@ -87,23 +87,23 @@
     </message>
     <message>
         <source>Host unknown</source>
-        <translation type="unfinished"/>
+        <translation>Host bilinmiyor</translation>
     </message>
     <message>
         <source>A required remote connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Gerekli uzak bağlantı başarısız oldu</translation>
     </message>
     <message>
         <source>See other host: %1</source>
-        <translation type="unfinished"/>
+        <translation>Diğer hosta bakın: %1</translation>
     </message>
     <message>
         <source>Server does not support proper XMPP version</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu uygun XMPP verisyonunu desteklemiyor</translation>
     </message>
     <message>
         <source>Stream Negotiation Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Akış Anlaşma Hatası: %1</translation>
     </message>
     <message>
         <source>Server rejected STARTTLS</source>
@@ -111,7 +111,7 @@
     </message>
     <message>
         <source>TLS handshake error</source>
-        <translation type="unfinished"/>
+        <translation>TLS el sıkışma hatası</translation>
     </message>
     <message>
         <source>Broken security layer (TLS)</source>
@@ -119,7 +119,7 @@
     </message>
     <message>
         <source>Unable to login</source>
-        <translation type="unfinished"/>
+        <translation>Giriş yapılamıyor</translation>
     </message>
     <message>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
@@ -127,19 +127,19 @@
     </message>
     <message>
         <source>Bad server response</source>
-        <translation type="unfinished"/>
+        <translation>Kötü sunucu yanıtı</translation>
     </message>
     <message>
         <source>Server failed mutual authentication</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu karşılıklı kimlik doğrulaması başarısız oldu</translation>
     </message>
     <message>
         <source>Encryption required for chosen SASL mechanism</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme için gerekli olan seçilmiş SASL mekanizması</translation>
     </message>
     <message>
         <source>Invalid account information</source>
-        <translation type="unfinished"/>
+        <translation>Hatalı hesap bilgisi</translation>
     </message>
     <message>
         <source>Invalid SASL mechanism</source>
@@ -163,7 +163,7 @@
     </message>
     <message>
         <source>Authentication error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Doğrulama hatası: %1</translation>
     </message>
     <message>
         <source>Broken security layer (SASL)</source>
@@ -171,19 +171,19 @@
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Yok</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş</translation>
     </message>
     <message>
         <source>XMPP/Jabber</source>
-        <translation type="unfinished"/>
+        <translation>XMPP/Jabber</translation>
     </message>
     <message>
         <source>Port for data transfers</source>
@@ -194,11 +194,11 @@
     <name>CertificateDisplayDialog</name>
     <message>
         <source>Certificate Information</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika Bilgisi</translation>
     </message>
     <message>
         <source>Certificate Validation</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika Doğrulama</translation>
     </message>
     <message>
         <source>Valid From</source>
@@ -214,23 +214,23 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Kapat</translation>
     </message>
     <message>
         <source>The certificate is valid.</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika geçerli</translation>
     </message>
     <message>
         <source>The certificate is NOT valid!</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika geçersiz!</translation>
     </message>
     <message>
         <source>Reason: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Sebep: %1.</translation>
     </message>
     <message>
         <source>Subject Details:</source>
-        <translation type="unfinished"/>
+        <translation>Konu Detayları:</translation>
     </message>
     <message>
         <source>Issuer Details:</source>
@@ -254,7 +254,7 @@
     </message>
     <message>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>Şehir:</translation>
     </message>
     <message>
         <source>Common name:</source>
@@ -266,11 +266,11 @@
     </message>
     <message>
         <source>XMPP name:</source>
-        <translation type="unfinished"/>
+        <translation>XMPP adı</translation>
     </message>
     <message>
         <source>Email:</source>
-        <translation type="unfinished"/>
+        <translation>Email:</translation>
     </message>
 </context>
 <context>
@@ -293,18 +293,18 @@
     </message>
     <message>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Bağlan</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
     <name>FacebookProtocolFactory</name>
     <message>
         <source>Facebook ID:</source>
-        <translation type="unfinished"/>
+        <translation>Facebook ID:</translation>
     </message>
     <message>
         <source>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</source>
@@ -322,15 +322,15 @@
     <name>HttpConnect</name>
     <message>
         <source>Authentication failed</source>
-        <translation type="unfinished"/>
+        <translation>Doğrulama başarısız</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"/>
+        <translation>Host bulunamadı</translation>
     </message>
     <message>
         <source>Access denied</source>
-        <translation type="unfinished"/>
+        <translation>Erişim engellendi</translation>
     </message>
     <message>
         <source>Connection refused</source>
@@ -349,11 +349,11 @@
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"/>
+        <translation>Host bulunamadı</translation>
     </message>
     <message>
         <source>Access denied</source>
-        <translation type="unfinished"/>
+        <translation>Erişim engellendi</translation>
     </message>
     <message>
         <source>Connection refused</source>
@@ -372,11 +372,11 @@
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"/>
+        <translation>Host bulunamadı</translation>
     </message>
     <message>
         <source>Access denied</source>
-        <translation type="unfinished"/>
+        <translation>Erişim engellendi</translation>
     </message>
     <message>
         <source>Connection refused</source>
@@ -406,23 +406,23 @@
     <name>JabberAddAccountWidget</name>
     <message>
         <source>&lt;a href=&apos;#&apos;&gt;What is my username?&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&apos;#&apos;&gt;Benim kullanıcı adım ne?&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Remember Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifremi Hatırla</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Kimliği</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
@@ -430,22 +430,22 @@
     </message>
     <message>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Ekle</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
     <name>JabberChangePasswordWindow</name>
     <message>
         <source>Change Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre Değiştir</translation>
     </message>
     <message>
         <source>Old Password</source>
-        <translation type="unfinished"/>
+        <translation>Eski Şifre</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter current password for your XMPP/Jabber account.&lt;/i&gt;&lt;/font&gt;</source>
@@ -453,7 +453,7 @@
     </message>
     <message>
         <source>New password</source>
-        <translation type="unfinished"/>
+        <translation>Yeni şifre</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter new password for your XMPP/Jabber account.&lt;/i&gt;&lt;/font&gt;</source>
@@ -465,11 +465,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Changing password was successful.</source>
@@ -502,19 +502,19 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
     </message>
     <message>
         <source>Birthdate</source>
-        <translation type="unfinished"/>
+        <translation>Doğum tarihi</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Şehir</translation>
     </message>
     <message>
         <source>E-Mail</source>
-        <translation type="unfinished"/>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished"/>
+        <translation>Website</translation>
     </message>
 </context>
 <context>
@@ -525,7 +525,7 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Retype Password</source>
@@ -557,23 +557,23 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Host</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Encrypt connection</source>
-        <translation type="unfinished"/>
+        <translation>Şifreli bağlantı</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation type="unfinished"/>
+        <translation>Her zaman</translation>
     </message>
     <message>
         <source>When available</source>
-        <translation type="unfinished"/>
+        <translation>Mümkün olduğunda</translation>
     </message>
     <message>
         <source>Legacy SSL</source>
@@ -589,11 +589,11 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
@@ -614,35 +614,35 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     <name>JabberEditAccountWidget</name>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Uygula</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Delete account</source>
-        <translation type="unfinished"/>
+        <translation>Hesabı sil</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Remember password</source>
-        <translation type="unfinished"/>
+        <translation>Şifremi hatırla</translation>
     </message>
     <message>
         <source>Change your password</source>
-        <translation type="unfinished"/>
+        <translation>Şifrenizi değiştirin</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Kimliği</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
@@ -650,31 +650,31 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
     <message>
         <source>Personal Information</source>
-        <translation type="unfinished"/>
+        <translation>Kişisel Bilgiler</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Hiç bir zaman</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation type="unfinished"/>
+        <translation>Her zaman</translation>
     </message>
     <message>
         <source>When available</source>
-        <translation type="unfinished"/>
+        <translation>Mümkün olduğunda</translation>
     </message>
     <message>
         <source>Allow plaintext authentication</source>
@@ -686,15 +686,15 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Ayarlar</translation>
     </message>
     <message>
         <source>Resource</source>
-        <translation type="unfinished"/>
+        <translation>Kaynak</translation>
     </message>
     <message>
         <source>Priority</source>
-        <translation type="unfinished"/>
+        <translation>Öncelik</translation>
     </message>
     <message>
         <source>Data transfer proxy</source>
@@ -702,7 +702,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
@@ -738,7 +738,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Şifreli bağlantı kullan</translation>
     </message>
     <message>
         <source>Only in older version</source>
@@ -746,7 +746,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Ağ</translation>
     </message>
     <message>
         <source>Use computer name as a resource</source>
@@ -774,7 +774,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Hesap Kaldırma Onayı</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
@@ -785,31 +785,31 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     <name>JabberPersonalInfoWidget</name>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"/>
+        <translation>Takma isim</translation>
     </message>
     <message>
         <source>Family name</source>
-        <translation type="unfinished"/>
+        <translation>Aile adı</translation>
     </message>
     <message>
         <source>Birth year</source>
-        <translation type="unfinished"/>
+        <translation>Doğum yılı</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Şehir</translation>
     </message>
     <message>
         <source>E-Mail</source>
-        <translation type="unfinished"/>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished"/>
+        <translation>Website</translation>
     </message>
 </context>
 <context>
@@ -823,7 +823,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     <name>JabberServerRegisterAccount</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>This server does not support registration</source>
@@ -860,11 +860,11 @@ Now please add your friends to the buddy list.</source>
     <name>MiniClient</name>
     <message>
         <source>Server Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu Doğrulaması</translation>
     </message>
     <message>
         <source>Server Error</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu Hatası</translation>
     </message>
     <message>
         <source>The server does not support TLS encryption.</source>
@@ -884,7 +884,7 @@ Details: %1</source>
     </message>
     <message>
         <source>Certificate is valid.</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika geçerli.</translation>
     </message>
     <message>
         <source>The hostname does not match the one the certificate was issued to.</source>
@@ -892,7 +892,7 @@ Details: %1</source>
     </message>
     <message>
         <source>General certificate validation error.</source>
-        <translation type="unfinished"/>
+        <translation>Genel sertifika doğrulama hatası.</translation>
     </message>
     <message>
         <source>No certificate presented.</source>
@@ -900,51 +900,51 @@ Details: %1</source>
     </message>
     <message>
         <source>Hostname mismatch.</source>
-        <translation type="unfinished"/>
+        <translation>Host adı eşleşmiyor.</translation>
     </message>
     <message>
         <source>Invalid Certificate.</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz sertifika.</translation>
     </message>
     <message>
         <source>General validation error.</source>
-        <translation type="unfinished"/>
+        <translation>Genel doğrulama hatası.</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"/>
+        <translation>Takma isim</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <source>First Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <source>Last Name</source>
-        <translation type="unfinished"/>
+        <translation>Soyisim</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"/>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"/>
+        <translation>Adres</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Şehir</translation>
     </message>
     <message>
         <source>State</source>
@@ -952,11 +952,11 @@ Details: %1</source>
     </message>
     <message>
         <source>Zipcode</source>
-        <translation type="unfinished"/>
+        <translation>Posta Kodu</translation>
     </message>
     <message>
         <source>Phone</source>
-        <translation type="unfinished"/>
+        <translation>Telefon</translation>
     </message>
     <message>
         <source>URL</source>
@@ -964,33 +964,33 @@ Details: %1</source>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Tarih</translation>
     </message>
     <message>
         <source>Misc</source>
-        <translation type="unfinished"/>
+        <translation>Çeşitli</translation>
     </message>
 </context>
 <context>
     <name>ShowXmlConsoleActionDescription</name>
     <message>
         <source>Show XML Console</source>
-        <translation type="unfinished"/>
+        <translation>XML Konsolunu Göster</translation>
     </message>
 </context>
 <context>
     <name>TestDlg</name>
     <message>
         <source>XMPP Test</source>
-        <translation type="unfinished"/>
+        <translation>XMPP Test</translation>
     </message>
     <message>
         <source>&amp;Connect</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Bağlan</translation>
     </message>
     <message>
         <source>About %1</source>
-        <translation type="unfinished"/>
+        <translation>Hakkında %1</translation>
     </message>
     <message>
         <source>%1 v1.0
@@ -1006,7 +1006,7 @@ Copyright (C) 2003 Justin Karneges</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Hata</translation>
     </message>
     <message>
         <source>Please enter the Full JID to connect with.</source>
@@ -1038,7 +1038,7 @@ Copyright (C) 2003 Justin Karneges</source>
     </message>
     <message>
         <source>&amp;Disconnect</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Bağlantıyı Kes</translation>
     </message>
     <message>
         <source>Bad XML input (%1,%2): %3
@@ -1055,7 +1055,7 @@ Please correct and try again.</source>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Şifre</translation>
     </message>
     <message>
         <source>Enter the password for %1</source>

@@ -155,15 +155,15 @@
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>在线</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>隐身</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>离线</translation>
     </message>
     <message>
         <source>Define description which will be set on startup</source>
@@ -199,15 +199,15 @@
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"/>
+        <translation>聊天窗口</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"/>
+        <translation>背景色</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>字体</translation>
     </message>
     <message>
         <source>Descriptions font</source>
@@ -231,7 +231,7 @@
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished"/>
+        <translation>风格</translation>
     </message>
     <message>
         <source>Choose style of chat window</source>
@@ -239,7 +239,7 @@
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>预览</translation>
     </message>
     <message>
         <source>Display group tabs</source>
@@ -251,7 +251,7 @@
     </message>
     <message>
         <source>Use background image</source>
-        <translation type="unfinished"/>
+        <translation>使用背景图</translation>
     </message>
     <message>
         <source>Background file</source>
@@ -271,7 +271,7 @@
     </message>
     <message>
         <source>Stretched</source>
-        <translation type="unfinished"/>
+        <translation>拉伸</translation>
     </message>
     <message>
         <source>Choose information panel style</source>
@@ -279,7 +279,7 @@
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>快捷方式</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -295,19 +295,19 @@
     </message>
     <message>
         <source>Clear chat</source>
-        <translation type="unfinished"/>
+        <translation>清除会话</translation>
     </message>
     <message>
         <source>Close chat</source>
-        <translation type="unfinished"/>
+        <translation>关闭会话</translation>
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished"/>
+        <translation>加粗文本</translation>
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished"/>
+        <translation>倾斜文本</translation>
     </message>
     <message>
         <source>Underline text</source>
@@ -427,27 +427,27 @@
     </message>
     <message>
         <source>to free for chat</source>
-        <translation type="unfinished"/>
+        <translation>找我聊天吧</translation>
     </message>
     <message>
         <source>to online</source>
-        <translation type="unfinished"/>
+        <translation>我在线上</translation>
     </message>
     <message>
         <source>to away</source>
-        <translation type="unfinished"/>
+        <translation>离开</translation>
     </message>
     <message>
         <source>to not available</source>
-        <translation type="unfinished"/>
+        <translation>忙碌</translation>
     </message>
     <message>
         <source>to do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>请勿打扰</translation>
     </message>
     <message>
         <source>to offline</source>
-        <translation type="unfinished"/>
+        <translation>下线</translation>
     </message>
     <message>
         <source>Blocked</source>
@@ -455,7 +455,7 @@
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished"/>
+        <translation>加入黑名单</translation>
     </message>
     <message>
         <source>Headers and Separators</source>
@@ -463,7 +463,7 @@
     </message>
     <message>
         <source>Server Time</source>
-        <translation type="unfinished"/>
+        <translation>服务端时间</translation>
     </message>
     <message>
         <source>Window Title</source>
@@ -996,11 +996,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Events</source>
-        <translation type="unfinished"/>
+        <translation>事件</translation>
     </message>
     <message>
         <source>Remember opened chats</source>
-        <translation type="unfinished"/>
+        <translation>记住打开的会话</translation>
     </message>
     <message>
         <source>Save opened chat windows when exiting and restore them on next statup</source>
@@ -1072,7 +1072,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Plugins</source>
-        <translation type="unfinished"/>
+        <translation>插件</translation>
     </message>
     <message>
         <source>Show tab Everybody</source>
@@ -1084,7 +1084,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Roster</source>
-        <translation type="unfinished"/>
+        <translation>列表</translation>
     </message>
     <message>
         <source>Import from server succeeded</source>
@@ -1119,35 +1119,35 @@ changes upon establishing connection to the server</source>
     <name>About</name>
     <message>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>关于</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation>关闭(C)</translation>
     </message>
     <message>
         <source>A&amp;uthors</source>
-        <translation type="unfinished"/>
+        <translation>作者(u)</translation>
     </message>
     <message>
         <source>&amp;Thanks</source>
-        <translation type="unfinished"/>
+        <translation>感谢(T)</translation>
     </message>
     <message>
         <source>&amp;ChangeLog</source>
-        <translation type="unfinished"/>
+        <translation>更新日志(C)</translation>
     </message>
     <message>
         <source>&amp;License</source>
-        <translation type="unfinished"/>
+        <translation>许可证(L)</translation>
     </message>
     <message>
         <source>Instant Messenger</source>
-        <translation type="unfinished"/>
+        <translation>即时通讯软件</translation>
     </message>
     <message>
         <source>Support:</source>
-        <translation type="unfinished"/>
+        <translation>支持:</translation>
     </message>
     <message>
         <source>Version %1</source>
@@ -1155,7 +1155,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>&amp;About</source>
-        <translation type="unfinished"/>
+        <translation>关于(A)</translation>
     </message>
     <message>
         <source>Qt %2 (compiled with Qt %3)</source>
@@ -1166,15 +1166,15 @@ changes upon establishing connection to the server</source>
     <name>AccountAvatarWidget</name>
     <message>
         <source>Remove Photo...</source>
-        <translation type="unfinished"/>
+        <translation>移除照片...</translation>
     </message>
     <message>
         <source>Change Photo...</source>
-        <translation type="unfinished"/>
+        <translation>替换照片..</translation>
     </message>
     <message>
         <source>Select avatar file</source>
-        <translation type="unfinished"/>
+        <translation>选择头像文件</translation>
     </message>
     <message>
         <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
@@ -1185,11 +1185,11 @@ changes upon establishing connection to the server</source>
     <name>AccountBuddyListWidget</name>
     <message>
         <source>Restore from file</source>
-        <translation type="unfinished"/>
+        <translation>从文件恢复</translation>
     </message>
     <message>
         <source>Store to file</source>
-        <translation type="unfinished"/>
+        <translation>保存到文件</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -1269,11 +1269,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Add buddy</source>
-        <translation type="unfinished"/>
+        <translation>添加好友</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Mobile</source>
@@ -1281,19 +1281,19 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"/>
+        <translation>邮件</translation>
     </message>
     <message>
         <source>User ID:</source>
-        <translation type="unfinished"/>
+        <translation>用户 ID:</translation>
     </message>
     <message>
         <source>Mobile number:</source>
-        <translation type="unfinished"/>
+        <translation>手机号:</translation>
     </message>
     <message>
         <source>E-mail address:</source>
-        <translation type="unfinished"/>
+        <translation>邮件地址:</translation>
     </message>
     <message>
         <source>Account is not selected</source>
@@ -1371,7 +1371,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Account:</source>
-        <translation type="unfinished"/>
+        <translation>账户:</translation>
     </message>
     <message>
         <source>Visible name:</source>
@@ -1387,7 +1387,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Account is not selected</source>
@@ -2681,11 +2681,11 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Send E-Mail</source>
-        <translation type="unfinished"/>
+        <translation>发送邮件</translation>
     </message>
     <message>
         <source>Search in Directory</source>
-        <translation type="unfinished"/>
+        <translation>在目录中搜索</translation>
     </message>
     <message>
         <source>Show Offline Buddies</source>
@@ -2721,7 +2721,7 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Your Accounts</source>
-        <translation type="unfinished"/>
+        <translation>我的账号</translation>
     </message>
     <message>
         <source>Multilogons</source>
@@ -2729,19 +2729,19 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Report a Bug</source>
-        <translation type="unfinished"/>
+        <translation>反馈问题</translation>
     </message>
     <message>
         <source>Get Involved</source>
-        <translation type="unfinished"/>
+        <translation>参与开发</translation>
     </message>
     <message>
         <source>Translate Kadu</source>
-        <translation type="unfinished"/>
+        <translation>翻译 Kadu</translation>
     </message>
     <message>
         <source>Open Description Link in Browser</source>
-        <translation type="unfinished"/>
+        <translation>在浏览器里打开介绍</translation>
     </message>
     <message>
         <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
@@ -2749,7 +2749,7 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"/>
+        <translation>合并</translation>
     </message>
     <message>
         <source>Please enter the name for the new group</source>
@@ -2757,7 +2757,7 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>添加分组</translation>
     </message>
     <message>
         <source>Contact:</source>
@@ -2765,15 +2765,15 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>First name:</source>
-        <translation type="unfinished"/>
+        <translation>名:</translation>
     </message>
     <message>
         <source>Last name:</source>
-        <translation type="unfinished"/>
+        <translation>姓:</translation>
     </message>
     <message>
         <source>Mobile:</source>
-        <translation type="unfinished"/>
+        <translation>手机:</translation>
     </message>
     <message>
         <source>Delete Chat</source>
@@ -2781,7 +2781,7 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Delete Buddy</source>
-        <translation type="unfinished"/>
+        <translation>删除好友</translation>
     </message>
     <message>
         <source>Forum</source>
@@ -2792,7 +2792,7 @@ Do you want to accept this image anyway?</source>
     <name>LeaveChatAction</name>
     <message>
         <source>Leave</source>
-        <translation type="unfinished"/>
+        <translation>离开</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -2809,25 +2809,25 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
     <name>LineEditWithClearButton</name>
     <message>
         <source>Clear this field</source>
-        <translation type="unfinished"/>
+        <translation>清空</translation>
     </message>
 </context>
 <context>
     <name>MainConfigurationWindow</name>
     <message>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>空</translation>
     </message>
     <message>
         <source>Kadu configuration</source>
-        <translation type="unfinished"/>
+        <translation>配置 Kadu</translation>
     </message>
     <message>
         <source>Advanced chat&apos;s look configuration</source>
@@ -2839,7 +2839,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Installation failed</source>
-        <translation type="unfinished"/>
+        <translation>安装失败</translation>
     </message>
     <message>
         <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
@@ -2850,14 +2850,14 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>MainWindow</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished"/>
+        <translation>新建工具栏</translation>
     </message>
 </context>
 <context>
     <name>MergeBuddiesDialogWidget</name>
     <message>
         <source>Merge Buddies</source>
-        <translation type="unfinished"/>
+        <translation>合并好友</translation>
     </message>
     <message>
         <source>Buddy to merge</source>
@@ -2891,26 +2891,26 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>MultilogonModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名称</translation>
     </message>
     <message>
         <source>Ip</source>
-        <translation type="unfinished"/>
+        <translation>IP</translation>
     </message>
     <message>
         <source>Logon time</source>
-        <translation type="unfinished"/>
+        <translation>登录时间</translation>
     </message>
 </context>
 <context>
     <name>MultilogonNotification</name>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
+        <translation>忽略</translation>
     </message>
     <message>
         <source>Disconnect session</source>
-        <translation type="unfinished"/>
+        <translation>断开连接</translation>
     </message>
 </context>
 <context>
@@ -2929,14 +2929,14 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
     <name>NewFileTransferNotification</name>
     <message>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>来电转接</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
@@ -2960,11 +2960,11 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>接受</translation>
     </message>
     <message>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>拒绝</translation>
     </message>
 </context>
 <context>
@@ -2986,7 +2986,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Silent Mode</source>
-        <translation type="unfinished"/>
+        <translation>静音模式</translation>
     </message>
 </context>
 <context>
@@ -3000,11 +3000,11 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>NotifyTreeWidget</name>
     <message>
         <source>Event</source>
-        <translation type="unfinished"/>
+        <translation>事件</translation>
     </message>
     <message>
         <source>Notification</source>
-        <translation type="unfinished"/>
+        <translation>通知</translation>
     </message>
 </context>
 <context>
@@ -3034,7 +3034,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>密码</translation>
     </message>
     <message>
         <source>Store this password</source>
@@ -3045,7 +3045,7 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>PathListEdit</name>
     <message>
         <source>Select</source>
-        <translation type="unfinished"/>
+        <translation>选择</translation>
     </message>
 </context>
 <context>
@@ -3056,7 +3056,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>添加</translation>
     </message>
     <message>
         <source>Change</source>
@@ -3064,11 +3064,11 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>移除</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>确定</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -3098,11 +3098,11 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Plugin activation</source>
-        <translation type="unfinished"/>
+        <translation>加载插件</translation>
     </message>
     <message>
         <source>Plugin deactivation</source>
-        <translation type="unfinished"/>
+        <translation>卸载插件</translation>
     </message>
 </context>
 <context>
@@ -3144,11 +3144,11 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Chats history</source>
-        <translation type="unfinished"/>
+        <translation>聊天记录</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"/>
+        <translation>桌面</translation>
     </message>
     <message>
         <source>Media players</source>
@@ -3164,48 +3164,48 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Protocols</source>
-        <translation type="unfinished"/>
+        <translation>协议</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>声音</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>状态</translation>
     </message>
     <message>
         <source>Misc</source>
-        <translation type="unfinished"/>
+        <translation>杂项</translation>
     </message>
 </context>
 <context>
     <name>ProgressWindow</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Progress:</source>
-        <translation type="unfinished"/>
+        <translation>进度:</translation>
     </message>
     <message>
         <source>Show details &gt;&gt;&gt;</source>
-        <translation type="unfinished"/>
+        <translation>详细信息&gt;&gt;&gt;</translation>
     </message>
 </context>
 <context>
     <name>ProtocolsComboBox</name>
     <message>
         <source> - Select network - </source>
-        <translation type="unfinished"/>
+        <translation>-选择网络-</translation>
     </message>
 </context>
 <context>
     <name>ProxyComboBox</name>
     <message>
         <source> - No proxy - </source>
-        <translation type="unfinished"/>
+        <translation>-无代理-</translation>
     </message>
     <message>
         <source>Edit proxy configuration...</source>
@@ -3224,7 +3224,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Add new proxy</source>
-        <translation type="unfinished"/>
+        <translation>添加代理</translation>
     </message>
     <message>
         <source>HTTP CONNECT method</source>
@@ -3248,55 +3248,55 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>主机</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>端口</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"/>
+        <translation>用户</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>密码</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>添加</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>移除</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>保存</translation>
     </message>
     <message>
         <source>Confirm proxy removal</source>
-        <translation type="unfinished"/>
+        <translation>确认删除代理</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove this proxy?</source>
-        <translation type="unfinished"/>
+        <translation>你确定要删除此代理?</translation>
     </message>
     <message>
         <source>Remove proxy</source>
-        <translation type="unfinished"/>
+        <translation>删除代理</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"/>
+        <translation>代理</translation>
     </message>
     <message>
         <source>You have unsaved changes in current proxy.&lt;br /&gt;Do you want to save them?</source>
@@ -3340,7 +3340,7 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>RosterNotifier</name>
     <message>
         <source>Roster</source>
-        <translation type="unfinished"/>
+        <translation>列表</translation>
     </message>
     <message>
         <source>%1: roster import succeded</source>
@@ -3382,15 +3382,15 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Male</source>
-        <translation type="unfinished"/>
+        <translation>男</translation>
     </message>
     <message>
         <source>Female</source>
-        <translation type="unfinished"/>
+        <translation>女</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>城市</translation>
     </message>
     <message>
         <source>Uin</source>
@@ -3406,15 +3406,15 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>状态</translation>
     </message>
     <message>
         <source>Searching...</source>
-        <translation type="unfinished"/>
+        <translation>搜索...</translation>
     </message>
     <message>
         <source>Done searching</source>
-        <translation type="unfinished"/>
+        <translation>搜索完成</translation>
     </message>
     <message>
         <source>Search User in Directory</source>
@@ -3422,7 +3422,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Search Criteria</source>
-        <translation type="unfinished"/>
+        <translation>搜索建议</translation>
     </message>
     <message>
         <source>Search for this uin exclusively</source>
@@ -3442,51 +3442,51 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Personal Data</source>
-        <translation type="unfinished"/>
+        <translation>个人数据</translation>
     </message>
     <message>
         <source>Nick:</source>
-        <translation type="unfinished"/>
+        <translation>昵称:</translation>
     </message>
     <message>
         <source>Gender:</source>
-        <translation type="unfinished"/>
+        <translation>性别:</translation>
     </message>
     <message>
         <source>First name:</source>
-        <translation type="unfinished"/>
+        <translation>名字:</translation>
     </message>
     <message>
         <source>Last name:</source>
-        <translation type="unfinished"/>
+        <translation>姓:</translation>
     </message>
     <message>
         <source>Birth year from:</source>
-        <translation type="unfinished"/>
+        <translation>出生年份</translation>
     </message>
     <message>
         <source>to:</source>
-        <translation type="unfinished"/>
+        <translation>到:</translation>
     </message>
     <message>
         <source>City:</source>
-        <translation type="unfinished"/>
+        <translation>城市:</translation>
     </message>
     <message>
         <source>Search only for active users</source>
-        <translation type="unfinished"/>
+        <translation>只搜索在线用户</translation>
     </message>
     <message>
         <source>First Name</source>
-        <translation type="unfinished"/>
+        <translation>名字:</translation>
     </message>
     <message>
         <source>Birth Year</source>
-        <translation type="unfinished"/>
+        <translation>出生年份</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"/>
+        <translation>就绪</translation>
     </message>
     <message>
         <source>To be able to search you have to set up an account first.</source>
@@ -3581,19 +3581,19 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>StatusButton</name>
     <message>
         <source>Identity</source>
-        <translation type="unfinished"/>
+        <translation>身份</translation>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>账户</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>状态</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>描述</translation>
     </message>
 </context>
 <context>
@@ -3604,14 +3604,14 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Status changed</source>
-        <translation type="unfinished"/>
+        <translation>状态已更改</translation>
     </message>
 </context>
 <context>
     <name>StatusContainerManager</name>
     <message>
         <source>All</source>
-        <translation type="unfinished"/>
+        <translation>全部</translation>
     </message>
 </context>
 <context>
@@ -3622,7 +3622,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Change status</source>
-        <translation type="unfinished"/>
+        <translation>修改状态</translation>
     </message>
     <message>
         <source>Change account status: %1</source>
@@ -3630,7 +3630,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>状态</translation>
     </message>
     <message>
         <source>Select Previously Used Description</source>
