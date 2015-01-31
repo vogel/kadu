@@ -1,4 +1,4 @@
-+++ version 2.0-beta2
++++ version 2.0-rc1
 * translations: #2943 fixed: re-added Qt translation files (Vogel)
 * hints: #2924 fixed: not displaying avatars (Vogel)
 * translations: add Turkish translation (kardanadam26)
