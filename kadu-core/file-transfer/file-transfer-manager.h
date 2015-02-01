@@ -24,18 +24,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_MANAGER_H
-#define FILE_TRANSFER_MANAGER_H
-
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtCore/QUuid>
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "file-transfer/file-transfer.h"
 #include "storage/simple-manager.h"
-
 #include "exports.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QUuid>
 
 class FileTransferActions;
 class FileTransferWindow;
@@ -45,34 +43,6 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(FileTransferManager)
-
-	static FileTransferManager * Instance;
-
-	FileTransferActions *Actions;
-	QPointer<FileTransferWindow> Window;
-
-	FileTransferManager();
-	virtual ~FileTransferManager();
-
-	FileTransfer byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName);
-
-	void addFileTransferService(Account account);
-	void removeFileTransferService(Account account);
-
-private slots:
-	void incomingFileTransfer(FileTransfer fileTransfer);
-
-	void fileTransferServiceRegistered();
-	void fileTransferServiceUnregistered();
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
-	virtual void itemAboutToBeAdded(FileTransfer fileTransfer);
-	virtual void itemAdded(FileTransfer fileTransfer);
-	virtual void itemAboutToBeRemoved(FileTransfer fileTransfer);
-	virtual void itemRemoved(FileTransfer fileTransfer);
 
 public:
 	static FileTransferManager * instance();
@@ -93,6 +63,33 @@ signals:
 	void fileTransferAboutToBeRemoved(FileTransfer fileTransfer);
 	void fileTransferRemoved(FileTransfer fileTransfer);
 
-};
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
-#endif // FILE_TRANSFER_MANAGER_H
+	virtual void itemAboutToBeAdded(FileTransfer fileTransfer);
+	virtual void itemAdded(FileTransfer fileTransfer);
+	virtual void itemAboutToBeRemoved(FileTransfer fileTransfer);
+	virtual void itemRemoved(FileTransfer fileTransfer);
+
+private:
+	static FileTransferManager * m_instance;
+
+	FileTransferActions *m_actions;
+	QPointer<FileTransferWindow> m_window;
+
+	explicit FileTransferManager(QObject *parent = nullptr);
+	virtual ~FileTransferManager();
+
+	FileTransfer byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName);
+
+	void addFileTransferService(Account account);
+	void removeFileTransferService(Account account);
+
+private slots:
+	void incomingFileTransfer(FileTransfer fileTransfer);
+
+	void fileTransferServiceRegistered();
+	void fileTransferServiceUnregistered();
+
+};
