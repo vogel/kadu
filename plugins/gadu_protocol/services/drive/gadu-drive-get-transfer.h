@@ -44,13 +44,18 @@ public:
 
 signals:
 	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+	void finished(bool ok);
 
 private:
+	QString m_downloadId;
+	QString m_remoteFileName;
+	QNetworkAccessManager *m_networkAccessManager;
 	QPointer<QNetworkReply> m_reply;
 	owned_qptr<QFile> m_file;
 
 private slots:
 	void readyRead();
+	void managedPageVisited();
 	void requestFinished();
 
 };

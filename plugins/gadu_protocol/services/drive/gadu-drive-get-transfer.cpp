@@ -27,22 +27,23 @@
 
 GaduDriveGetTransfer::GaduDriveGetTransfer(QString downloadId, QString remoteFileName, QString localFileName,
 	QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_downloadId{downloadId},
+		m_remoteFileName{remoteFileName},
+		m_networkAccessManager{networkAccessManager}
 {
 	m_file = new QFile{localFileName, this};
 	if (!m_file->open(QFile::WriteOnly | QIODevice::Truncate))
 		return;
 
-	auto url = QString{"http://p.gg.pl/p/d/%1/%2"}.arg(downloadId).arg(remoteFileName);
+	auto url = QString{"http://p.gg.pl/p/c/%1/%2"}.arg(m_downloadId).arg(m_remoteFileName);
 
 	QNetworkRequest request;
 	request.setUrl(QUrl{url});
 	request.setRawHeader("Connection", "keep-alive");
 
 	m_reply = networkAccessManager->get(request);
-	connect(m_reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
-	connect(m_reply, SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
-	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+	connect(m_reply, SIGNAL(finished()), this, SLOT(managedPageVisited()));
 }
 
 GaduDriveGetTransfer::~GaduDriveGetTransfer()
@@ -61,7 +62,32 @@ void GaduDriveGetTransfer::readyRead()
 	m_file->write(m_reply->readAll());
 }
 
+void GaduDriveGetTransfer::managedPageVisited()
+{
+	if (m_reply->error() != QNetworkReply::NoError)
+	{
+		emit finished(false);
+		deleteLater();
+		return;
+	}
+
+	m_reply->deleteLater();
+
+	auto url = QString{"http://p.gg.pl/p/d/%1/%2"}.arg(m_downloadId).arg(m_remoteFileName);
+
+	QNetworkRequest request;
+	request.setUrl(QUrl{url});
+	request.setRawHeader("Connection", "keep-alive");
+
+	m_reply = m_networkAccessManager->get(request);
+	connect(m_reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
+	connect(m_reply, SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
+	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+}
+
 void GaduDriveGetTransfer::requestFinished()
 {
+	emit finished(m_reply->error() == QNetworkReply::NoError);
+
 	deleteLater();
 }
