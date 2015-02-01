@@ -38,17 +38,17 @@ class ChatWidget;
 /**
  * @class ChatWidgetRepository
  * @short Repository of ChatWidget instances.
- * @note This class is experimental in Kadu, watch for unique_ptr!
  *
- * This repository holds instances of ChatWidget. All instances are owned
- * by this class and can only be deleted by it.
+ * This repository holds instances of ChatWidget. Instances are not owned
+ * by repository and must be deleted elsewhere.
  *
- * Instances are added by addChatWidget(std::unique_ptr&lt;ChatWidget&gt;) which
- * transfers ownership of chat widget to repository. It also emits
+ * Instances are added by addChatWidget(ChatWidget*) It also emits
  * chatWidgetAdded(ChatWidget*) signals.
  *
  * Instances are removed by removeChatWidget(ChatWidget*) methods. Signal
- * chatWidgetRemoved(ChatWidget*) is removed and chat widget is destroyed.
+ * chatWidgetRemoved(ChatWidget*) is emitted. This method does not delete
+ * ChatWidget instance. It is also automatically called when ChatWidget
+ * is deleted elsewhere.
  *
  * Instances can be enumerated as ChatWidget* in standard for-range loop as
  * begin() and end() iterators are provided.
@@ -80,10 +80,9 @@ public:
 	 * @short Add new chatWidget to repository.
 	 *
 	 * Add new chatWidget to repository only if it is valid and chat widget for given
-	 * chat is not already in repository. In other case argument is destroyed.
+	 * chat is not already in repository. In other case nothing happens.
 	 *
-	 * In case of successfull addition ownership of chatWidget is taken by repository
-	 * and chatWidgetAdded(ChatWidget*) signal is emitted.
+	 * In case of successfull addition ownership chatWidgetAdded(ChatWidget*) signal is emitted.
 	 */
 	void addChatWidget(ChatWidget *chatWidget);
 
@@ -108,27 +107,29 @@ public slots:
 	 *
 	 * Remove chatWidget from repository only if it is  already in repository.
 	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
+	 * ChatWidget instance is not destroyed after removal.
 	 */
 	void removeChatWidget(ChatWidget *chatWidget);
 
 	/**
-	 * @short Remove chatWidget for given chat from repository and destroy it.
+	 * @short Remove ChatWidget for given chat from repository and destroy it.
 	 *
-	 * Remove chatWidget from repository only if it is  already in repository.
+	 * Remove chatWidget for given chat from repository only if it is  already in repository.
 	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
+	 * ChatWidget instance is not destroyed after removal.
 	 */
 	void removeChatWidget(Chat chat);
 
 signals:
 	/**
-	 * @short Signal emitted when new ChatWidget was created for this repository.
-	 * @param chatWidget newly created ChatWidget instance
+	 * @short Signal emitted when new ChatWidget was added to this repository.
+	 * @param chatWidget newly added ChatWidget instance
 	 */
 	void chatWidgetAdded(ChatWidget *chatWidget);
 
 	/**
-	 * @short Signal emitted when new ChatWidget was destroyed in this repository.
-	 * @param chatWidget just destroyed ChatWidget instance
+	 * @short Signal emitted when new ChatWidget was removed from this repository.
+	 * @param chatWidget removed ChatWidget instance
 	 */
 	void chatWidgetRemoved(ChatWidget *chatWidget);
 
