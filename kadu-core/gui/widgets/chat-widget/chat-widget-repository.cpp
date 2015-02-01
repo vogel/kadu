@@ -27,7 +27,7 @@ ChatWidget * ChatWidgetRepository::converter(ChatWidgetRepository::WrappedIterat
 }
 
 ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
-		QObject(parent)
+		QObject{parent}
 {
 }
 
