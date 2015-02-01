@@ -77,6 +77,8 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(Chat
 		if (chatWidgetContainerHandler->acceptChat(chat))
 		{
 			unmap(chat);
+			if (m_chatWidgetRepository)
+				m_chatWidgetRepository->removeChatWidget(chat);
 			map(chatWidgetContainerHandler, chat);
 			createHandledChatWidget(chat, OpenChatActivation::Ignore);
 		}
@@ -98,6 +100,8 @@ void ChatWidgetContainerHandlerMapper::chatAcceptanceChanged(Chat chat)
 	auto messages = oldChatWidget ? oldChatWidget->messages() : SortedMessages{};
 
 	unmap(chat);
+	if (m_chatWidgetRepository)
+		m_chatWidgetRepository->removeChatWidget(chat);
 	createHandledChatWidget(chat, OpenChatActivation::Ignore);
 
 	auto newChatWidget = m_chatWidgetRepository ? m_chatWidgetRepository->widgetForChat(chat) : nullptr;
@@ -134,8 +138,6 @@ void ChatWidgetContainerHandlerMapper::unmap(Chat chat)
 		return;
 
 	chatWidgetContainerHandler->removeChat(chat);
-	if (m_chatWidgetRepository)
-		m_chatWidgetRepository->removeChatWidget(chat);
 }
 
 ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::bestContainerHandler(Chat chat) const

@@ -95,7 +95,7 @@ void WindowChatWidgetContainerHandler::removeChat(Chat chat)
 		return;
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chat);
-	delete chatWindow;
+	chatWindow->deleteLater();
 }
 
 bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)

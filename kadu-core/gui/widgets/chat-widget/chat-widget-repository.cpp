@@ -61,8 +61,8 @@ void ChatWidgetRepository::removeChatWidget(ChatWidget *chatWidget)
 	if (!chatWidget || (widgetForChat(chatWidget->chat()) != chatWidget))
 		return;
 
-	emit chatWidgetRemoved(chatWidget);
 	m_widgets.erase(chatWidget->chat());
+	emit chatWidgetRemoved(chatWidget);
 }
 
 void ChatWidgetRepository::removeChatWidget(Chat chat)
