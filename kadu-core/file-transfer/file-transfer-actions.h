@@ -22,8 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_ACTIONS_H
-#define FILE_TRANSFER_ACTIONS_H
+#pragma once
 
 #include <QtWidgets/QAction>
 
@@ -35,8 +34,13 @@ class FileTransferActions : public QObject
 {
 	Q_OBJECT
 
-	ActionDescription *SendFileActionDescription;
-	ActionDescription *FileTransferWindowActionDescription;
+public:
+	explicit FileTransferActions(QObject *parent = nullptr);
+	virtual ~FileTransferActions();
+
+private:
+	ActionDescription *m_sendFileActionDescription;
+	ActionDescription *m_fileTransferWindowActionDescription;
 
 	QStringList selectFilesToSend();
 	void selectFilesAndSend(const ContactSet &contacts);
@@ -46,10 +50,4 @@ private slots:
 	void sendFileActionActivated(QAction *sender, bool toggled);
 	void toggleFileTransferWindow(QAction *sender, bool toggled);
 
-public:
-	explicit FileTransferActions(QObject *parent = 0);
-	virtual ~FileTransferActions();
-
 };
-
-#endif // FILE_TRANSFER_ACTIONS_H
