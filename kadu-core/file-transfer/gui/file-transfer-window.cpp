@@ -37,7 +37,7 @@
 
 #include "debug.h"
 
-#include "gui/widgets/file-transfer-widget.h"
+#include "file-transfer/gui/file-transfer-widget.h"
 
 #include "file-transfer-window.h"
 

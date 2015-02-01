@@ -89,7 +89,6 @@ set (gui_SRCS
 	widgets/custom-input-menu-item.cpp
 	widgets/custom-input-menu-manager.cpp
 	widgets/delayed-line-edit.cpp
-	widgets/file-transfer-widget.cpp
 	widgets/filter-widget.cpp
 	widgets/filtered-tree-view.cpp
 	widgets/group-list.cpp
@@ -192,7 +191,6 @@ set (gui_SRCS
 	windows/chat-data-window.cpp
 	windows/chat-data-window-repository.cpp
 	windows/configuration-window.cpp
-	windows/file-transfer-window.cpp
 	windows/group-properties-window.cpp
 	windows/kadu-dialog.cpp
 	windows/kadu-window.cpp
@@ -289,7 +287,6 @@ set (gui_MOC_SRCS
 	widgets/custom-input.h
 	widgets/custom-input-menu-manager.h
 	widgets/delayed-line-edit.h
-	widgets/file-transfer-widget.h
 	widgets/filter-widget.h
 	widgets/filtered-tree-view.h
 	widgets/group-list.h
@@ -372,7 +369,6 @@ set (gui_MOC_SRCS
 	windows/chat-data-window.h
 	windows/chat-data-window-repository.h
 	windows/configuration-window.h
-	windows/file-transfer-window.h
 	windows/group-properties-window.h
 	windows/kadu-dialog.h
 	windows/kadu-window.h
