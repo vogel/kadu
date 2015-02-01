@@ -73,7 +73,7 @@ void GaduFileTransferHandler::send()
 	auto driveService = m_protocol->driveService();
 	auto fileInfo = QFileInfo{transfer().localFileName()};
 
-	auto sendTicketRequest = driveService->requestSendTicket(contact.id(), fileInfo.baseName(), fileInfo.size());
+	auto sendTicketRequest = driveService->requestSendTicket(contact.id(), fileInfo.fileName(), fileInfo.size());
 	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(statusUpdateReceived(GaduDriveSendTicket)));
 
 	transfer().setFileSize(fileInfo.size());

@@ -43,7 +43,7 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, G
 
 	// sigh, %2C inside string forbits me from using .arg().arg()
 	auto url = QString{"https://drive.mpa.gg.pl/me/file/outbox/%1%2%3"}
-		.arg(ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(QFileInfo{localFileName}.baseName())));
+		.arg(ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(QFileInfo{localFileName}.fileName())));
 
 	QNetworkRequest request;
 	request.setUrl(QUrl{url});
