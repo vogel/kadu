@@ -25,13 +25,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
+#include "file-transfer.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
@@ -40,9 +42,7 @@
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
 
-#include "buddies/buddy-manager.h"
-#include "contacts/contact-manager.h"
-#include "file-transfer.h"
+#include <QtCore/QFile>
 
 KaduSharedBaseClassImpl(FileTransfer)
 

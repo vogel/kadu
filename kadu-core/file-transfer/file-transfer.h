@@ -21,12 +21,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_H
-#define FILE_TRANSFER_H
+#pragma once
 
 #include "file-transfer/file-transfer-shared.h"
 #include "storage/shared-base.h"
-
 #include "exports.h"
 
 class QFile;
@@ -67,5 +65,3 @@ public:
 };
 
 Q_DECLARE_METATYPE(FileTransfer)
-
-#endif // FILE_TRANSFER_H
