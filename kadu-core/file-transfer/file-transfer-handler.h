@@ -39,11 +39,11 @@ class KADUAPI FileTransferHandler : public QObject
 	FileTransfer Transfer;
 
 public:
-	FileTransferHandler(FileTransfer transfer) { Transfer = transfer; }
-	virtual ~FileTransferHandler() {}
+	FileTransferHandler(FileTransfer transfer);
+	virtual ~FileTransferHandler();
 
-	FileTransfer transfer() { return Transfer; }
-	void setTransfer(FileTransfer transfer) { Transfer = transfer; }
+	FileTransfer transfer();
+	void setTransfer(FileTransfer transfer);
 
 	virtual void send() = 0;
 	virtual void stop() = 0;
