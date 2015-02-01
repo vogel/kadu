@@ -22,8 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_NOTIFICATION_H
-#define FILE_TRANSFER_NOTIFICATION_H
+#pragma once
 
 #include "file-transfer/file-transfer.h"
 #include "notify/notification/chat-notification.h"
@@ -36,32 +35,30 @@ class NewFileTransferNotification : public ChatNotification
 {
 	Q_OBJECT
 
-	static NotifyEvent *FileTransferNotifyEvent;
-	static NotifyEvent *FileTransferIncomingFileNotifyEvent;
-
-	bool Continue;
-
-	FileTransfer ft;
-
-	QString fileName;
-
-private slots:
-	void callbackAcceptAsNew();
-
-public slots:
-	virtual void callbackAccept();
-	virtual void callbackReject();
-
 public:
 	static void registerEvents();
 	static void unregisterEvents();
 
 	static void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
 
-	NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, FileTransferStartType startType);
+	NewFileTransferNotification(const QString &type, FileTransfer transfer, Chat chat, FileTransferStartType startType);
 
 	virtual bool requireCallback() { return true; }
 
-};
+public slots:
+	virtual void callbackAccept();
+	virtual void callbackReject();
 
-#endif // FILE_TRANSFER_NOTIFICATION_H
+private:
+	static NotifyEvent *m_fileTransferNotifyEvent;
+	static NotifyEvent *m_fileTransferIncomingFileNotifyEvent;
+
+	bool _continue;
+
+	FileTransfer _transfer;
+	QString _fileName;
+
+private slots:
+	void callbackAcceptAsNew();
+
+};
