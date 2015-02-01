@@ -44,15 +44,19 @@ enum class OpenChatActivation;
  * @class ChatWidgetContainerHandlerMapper
  * @short Mapper between ChatWidget and ChatWidgetContainerHandler.
  *
- * This class maps all ChatWidget from given ChatWidgetRepository to
- * ChatWidgetContainerHandler from given ChatWidgetContainerHandlerRepository.
+ * This class maps chats to ChatWidgetContainerHandler. This allows to showing chats
+ * in different containers (separate windows, tabs, one window common with roster).
+ *
+ * ChatWidget instances are stored in ChatWidgetRepository.
+ * ChatWidgetContainerHandler instances are taken from ChatWidgetContainerHandlerRepository
  *
  * It reacts on changes of content of two provided repositories and adds/removes
  * mapping as neccessary. It also reacts on chatAcceptanceChanged(Chat)
  * from ChatWidgetContainerHandlerRepository to update mapping.
  *
- * When mapping is applied, ChatWidget is added to ChatWidgetContainerHandler.
+ * When mapping is applied, ChatWidget is created with ChatWidgetContainerHandler.
  * When mapping is removed, ChatWidget is removed from ChatWidgetContainerHandler.
+ * ChatWidgetContainerHandler should delete removed ChatWidgets.
  */
 class ChatWidgetContainerHandlerMapper : public QObject
 {
@@ -65,15 +69,18 @@ public:
 	/**
 	 * @short Return ChatWidgetContainerHandler for given @p chat.
 	 *
-	 * If chat is currently not mappet, returns nullptr.
+	 * If chat is currently not mapped, returns nullptr.
 	 */
 	ChatWidgetContainerHandler * chatWidgetContainerHandlerForChat(Chat chat) const;
 
 	/**
-	 * @short Maps @p chat to first ChatWidgetContainerHandler that accepts it.
-	 * @param chat chat to accept
+	 * @short Create ChatWidget instance that is stored in ChatWidgetContainerHandler.
+	 * @param chat chat for ChatWidget
 	 * @param activation activation mode for new chat
-	 * @return ChatWidget instance created for @p chat and mapped to first ChatWidgetContainerHandler.
+	 *
+	 * If @p chat is not mapped then first ChatWidgetContainerHandler that accepts it is
+	 * mapped to it. Then ChatWidget is created using its mapped ChatWidgetContainerHandler
+	 * addChat method. Newly created ChatWidget is added to ChatWidgetRepository.
 	 */
 	ChatWidget * createHandledChatWidget(Chat chat, OpenChatActivation activation);
 
