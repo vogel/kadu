@@ -28,8 +28,11 @@
 #include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
@@ -130,7 +133,7 @@ void FileTransferWidget::createGui()
 	if (fileName.isEmpty())
 		fileName = m_transfer.remoteFileName();
 
-	if (TypeSend == m_transfer.transferType())
+	if (FileTransferType::Outgoing == m_transfer.transferType())
 	{
 		icon->setPixmap(KaduIcon("kadu_icons/transfer-send").icon().pixmap(64, 64));
 		m_descriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
@@ -148,7 +151,7 @@ void FileTransferWidget::startTransfer()
 {
 	if (!m_transfer.handler())
 		m_transfer.createHandler();
-	if (TypeSend == m_transfer.transferType() && m_transfer.handler())
+	if (FileTransferType::Outgoing == m_transfer.transferType() && m_transfer.handler())
 		m_transfer.handler()->send();
 }
 
@@ -163,7 +166,7 @@ void FileTransferWidget::removeTransfer()
 	if (!m_transfer)
 		return;
 
-	if (StatusFinished != m_transfer.transferStatus())
+	if (FileTransferStatus::Finished != m_transfer.transferStatus())
 	{
 		auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
 		dialog->addButton(QMessageBox::Yes, tr("Remove"));
@@ -191,22 +194,22 @@ void FileTransferWidget::fileTransferUpdate()
 		return;
 	}
 
-	if (ErrorOk != m_transfer.transferError())
+	if (FileTransferError::NoError != m_transfer.transferError())
 	{
 		m_statusLabel->setText(tr("<b>Error</b>"));
 		m_stopButton->hide();
 
-		if (TypeSend == m_transfer.transferType())
+		if (FileTransferType::Outgoing == m_transfer.transferType())
 			m_startButton->show();
 		return;
 	}
 
-	if (StatusFinished != m_transfer.transferStatus())
+	if (FileTransferStatus::Finished != m_transfer.transferStatus())
 		m_progressBar->setValue(static_cast<int>(m_transfer.percent()));
 	else
 		m_progressBar->setValue(100);
 
-	if (StatusTransfer == m_transfer.transferStatus())
+	if (FileTransferStatus::Transfer == m_transfer.transferStatus())
 	{
 		if (m_lastUpdateTime.isValid())
 		{
@@ -229,36 +232,36 @@ void FileTransferWidget::fileTransferUpdate()
 
 	switch (m_transfer.transferStatus())
 	{
-		case StatusNotConnected:
+		case FileTransferStatus::NotConnected:
 			m_statusLabel->setText(tr("<b>Not connected</b>"));
 			m_stopButton->hide();
-			if (TypeSend == m_transfer.transferType())
+			if (FileTransferType::Outgoing == m_transfer.transferType())
 				m_startButton->show();
 			break;
 
-		case StatusWaitingForConnection:
+		case FileTransferStatus::WaitingForConnection:
 			m_statusLabel->setText(tr("<b>Wait for connection</b>"));
 			m_startButton->hide();
 			break;
 
-		case StatusWaitingForAccept:
+		case FileTransferStatus::WaitingForAccept:
 			m_statusLabel->setText(tr("<b>Wait for accept</b>"));
 			m_startButton->hide();
 			break;
 
-		case StatusTransfer:
+		case FileTransferStatus::Transfer:
 			m_statusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(m_speed)));
 			m_stopButton->show();
 			m_startButton->hide();
 			break;
 
-		case StatusFinished:
+		case FileTransferStatus::Finished:
 			m_statusLabel->setText(tr("<b>Finished</b>"));
 			m_stopButton->hide();
 			m_startButton->hide();
 			break;
 
-		case StatusRejected:
+		case FileTransferStatus::Rejected:
 			m_statusLabel->setText(tr("<b>Rejected</b>"));
 			m_stopButton->hide();
 			m_startButton->hide();

@@ -23,6 +23,7 @@
 
 #include "chat/type/chat-type-contact.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-start-type.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
@@ -64,7 +65,7 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 {
 	Chat chat = ChatTypeContact::findChat(fileTransfer.peer(), ActionCreateAndAdd);
 	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
-			chat, fileTransfer.localFileName().isEmpty() ? StartNew : StartRestore);
+			chat, fileTransfer.localFileName().isEmpty() ? FileTransferStartType::New : FileTransferStartType::Restore);
 	notification->setTitle(tr("Incoming transfer"));
 
 	QString textFileSize = QString("%1 kB");
@@ -111,10 +112,10 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 	NotificationManager::instance()->notify(notification);
 }
 
-NewFileTransferNotification::NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, StartType startType) :
+NewFileTransferNotification::NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, FileTransferStartType startType) :
 		ChatNotification(chat, type, KaduIcon()), ft(ft)
 {
-	if (startType == StartRestore)
+	if (startType == FileTransferStartType::Restore)
 	{
 		addCallback(tr("Continue"), SLOT(callbackAccept()), "callbackAccept()");
 		addCallback(tr("Save file under new name"), SLOT(callbackAcceptAsNew()), "callbackAcceptAsNew()");

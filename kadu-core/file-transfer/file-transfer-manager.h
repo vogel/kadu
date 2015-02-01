@@ -32,7 +32,6 @@
 #include <QtCore/QUuid>
 
 #include "accounts/accounts-aware-object.h"
-#include "file-transfer/file-transfer-enums.h"
 #include "file-transfer/file-transfer.h"
 #include "storage/simple-manager.h"
 

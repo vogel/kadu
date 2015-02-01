@@ -33,6 +33,9 @@
 #include "gadu-protocol.h"
 
 #include "accounts/account.h"
+#include "file-transfer/file-transfer-error.h"
+#include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-type.h"
 
 #include <QtCore/QFileInfo>
 #include <QTimer>
@@ -50,14 +53,14 @@ GaduFileTransferHandler::~GaduFileTransferHandler()
 void GaduFileTransferHandler::finished(bool ok)
 {
 	transfer().setTransferStatus(ok
-			? StatusFinished
-			: StatusNotConnected);
+			? FileTransferStatus::Finished
+			: FileTransferStatus::NotConnected);
 	deleteLater();
 }
 
 void GaduFileTransferHandler::send()
 {
-	if (TypeSend != transfer().transferType()) // maybe assert here?
+	if (FileTransferType::Outgoing != transfer().transferType()) // maybe assert here?
 	{
 		finished(false);
 		return;
@@ -78,7 +81,7 @@ void GaduFileTransferHandler::send()
 
 	transfer().setFileSize(fileInfo.size());
 	transfer().setRemoteFileName(QString{});
-	transfer().setTransferStatus(StatusWaitingForConnection);
+	transfer().setTransferStatus(FileTransferStatus::WaitingForConnection);
 }
 
 void GaduFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
@@ -91,7 +94,7 @@ void GaduFileTransferHandler::updateStatus()
 {
 	if (!m_ticket.isValid())
 	{
-		transfer().setTransferError(ErrorNetworkError);
+		transfer().setTransferError(FileTransferError::NetworkError);
 		finished(false);
 		return;
 	}
@@ -101,7 +104,7 @@ void GaduFileTransferHandler::updateStatus()
 
 	if (m_ticket.status() == GaduDriveSendTicketStatus::Completed)
 	{
-		transfer().setTransferStatus(StatusFinished);
+		transfer().setTransferStatus(FileTransferStatus::Finished);
 		transfer().setTransferredSize(m_ticket.fileSize());
 		finished(true);
 		return;
@@ -109,13 +112,13 @@ void GaduFileTransferHandler::updateStatus()
 
 	if (m_ticket.ackStatus() != GaduDriveSendTicketAckStatus::Allowed)
 	{
-		transfer().setTransferStatus(StatusWaitingForAccept);
+		transfer().setTransferStatus(FileTransferStatus::WaitingForAccept);
 		transfer().setTransferredSize(0);
 	}
 	else
 	{
 		startOutgoingTransferIfNotStarted();
-		transfer().setTransferStatus(StatusTransfer);
+		transfer().setTransferStatus(FileTransferStatus::Transfer);
 	}
 
 	QTimer::singleShot(1000, this, SLOT(requestSendStatusUpdate()));
@@ -131,7 +134,7 @@ void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
 
 	if (!m_putTransfer->fileOpened())
 	{
-		transfer().setTransferError(ErrorUnableToOpenFile);
+		transfer().setTransferError(FileTransferError::UnableToOpenFile);
 		finished(false);
 	}
 }
@@ -152,7 +155,7 @@ void GaduFileTransferHandler::stop()
 	if (m_putTransfer)
 		m_putTransfer->deleteLater();
 
-	transfer().setTransferStatus(StatusNotConnected);
+	transfer().setTransferStatus(FileTransferStatus::NotConnected);
 	deleteLater();
 }
 
@@ -170,7 +173,7 @@ bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfe
 
 	if (!m_getTransfer->fileOpened())
 	{
-		transfer().setTransferError(ErrorUnableToOpenFile);
+		transfer().setTransferError(FileTransferError::UnableToOpenFile);
 		finished(false);
 		return false;
 	}
@@ -179,7 +182,7 @@ bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfe
 	connect(m_getTransfer, SIGNAL(finished(bool)), this, SLOT(downloadFinished(bool)));
 
 	transfer().accept(fileName);
-	transfer().setTransferStatus(StatusTransfer);
+	transfer().setTransferStatus(FileTransferStatus::Transfer);
 	transfer().setTransferredSize(0);
 
 	return true;
@@ -194,9 +197,9 @@ void GaduFileTransferHandler::downloadProgress(qint64 bytesReceived, qint64 byte
 void GaduFileTransferHandler::downloadFinished(bool ok)
 {
 	if (ok)
-		transfer().setTransferStatus(StatusFinished);
+		transfer().setTransferStatus(FileTransferStatus::Finished);
 	else
-		transfer().setTransferError(ErrorNetworkError);
+		transfer().setTransferError(FileTransferError::NetworkError);
 	deleteLater();
 }
 

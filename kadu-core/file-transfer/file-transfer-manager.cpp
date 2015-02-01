@@ -39,6 +39,8 @@
 #include "file-transfer/file-transfer-actions.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-notifications.h"
+#include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-window.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -144,7 +146,7 @@ void FileTransferManager::cleanUp()
 	QList<FileTransfer> toRemove;
 
 	foreach (const FileTransfer &fileTransfer, items())
-		if (StatusFinished == fileTransfer.transferStatus())
+		if (FileTransferStatus::Finished == fileTransfer.transferStatus())
 			toRemove.append(fileTransfer);
 
 	foreach (const FileTransfer &fileTransfer, toRemove)
@@ -233,7 +235,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 	}
 
 	FileTransferManager::instance()->addItem(transfer);
-	transfer.setTransferStatus(StatusTransfer);
+	transfer.setTransferStatus(FileTransferStatus::Transfer);
 
 	FileTransferManager::instance()->showFileTransferWindow();
 }
@@ -260,7 +262,7 @@ FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QS
 	QMutexLocker locker(&mutex());
 
 	foreach (const FileTransfer &transfer, items())
-		if (transfer.transferType() == TypeReceive && transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
+		if (transfer.transferType() == FileTransferType::Incoming && transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
 			return transfer;
 
 	return FileTransfer::null;
@@ -277,7 +279,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 			fileTransfer.setLocalFileName(alreadyTransferred.localFileName());
 	}
 
-	fileTransfer.setTransferStatus(StatusWaitingForAccept);
+	fileTransfer.setTransferStatus(FileTransferStatus::WaitingForAccept);
 
 	NewFileTransferNotification::notifyIncomingFileTransfer(fileTransfer);
 }

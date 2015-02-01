@@ -25,6 +25,9 @@
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-error.h"
+#include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-type.h"
 #include "misc/change-notifier.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
@@ -48,8 +51,8 @@ FileTransferShared * FileTransferShared::loadFromStorage(const std::shared_ptr<S
 FileTransferShared::FileTransferShared(const QUuid &uuid) :
 		Shared(uuid),
 		FileSize(0), TransferredSize(0),
-		TransferType(TypeReceive), TransferStatus(StatusNotConnected),
-		TransferError(ErrorOk), Handler(0)
+		TransferType(FileTransferType::Incoming), TransferStatus(FileTransferStatus::NotConnected),
+		TransferError(FileTransferError::NoError), Handler(0)
 {
 	Peer = new Contact();
 
@@ -83,12 +86,12 @@ void FileTransferShared::load()
 	*Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
-	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
+	TransferType = ("Send" == loadValue<QString>("TransferType")) ? FileTransferType::Outgoing : FileTransferType::Incoming;
 	FileSize = loadValue<qulonglong>("FileSize");
 	TransferredSize = loadValue<qulonglong>("TransferredSize");
 
-	if (FileSize == TransferredSize)
-		TransferStatus = StatusFinished;
+	if ((FileSize == TransferredSize) && FileSize != 0)
+		TransferStatus = FileTransferStatus::Finished;
 }
 
 void FileTransferShared::store()
@@ -101,7 +104,7 @@ void FileTransferShared::store()
 	storeValue("Peer", Peer->uuid().toString());
 	storeValue("LocalFileName", LocalFileName);
 	storeValue("RemoteFileName", RemoteFileName);
-	storeValue("TransferType", TypeSend == TransferType ? "Send" : "Receive");
+	storeValue("TransferType", FileTransferType::Outgoing == TransferType ? "Send" : "Receive");
 	storeValue("FileSize", (qulonglong)FileSize);
 	storeValue("TransferredSize", (qulonglong)TransferredSize);
 }
@@ -122,10 +125,10 @@ void FileTransferShared::setTransferError(FileTransferError transferError)
 {
 	ensureLoaded();
 
-	if (TransferStatus == StatusNotConnected && TransferError == transferError)
+	if (TransferStatus == FileTransferStatus::NotConnected && TransferError == transferError)
 		return;
 
-	TransferStatus = StatusNotConnected;
+	TransferStatus = FileTransferStatus::NotConnected;
 	TransferError = transferError;
 	emit statusChanged();
 	changeNotifier().notify();

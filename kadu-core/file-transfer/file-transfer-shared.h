@@ -22,11 +22,13 @@
 #ifndef FILE_TRANSFER_SHARED_H
 #define FILE_TRANSFER_SHARED_H
 
-#include "file-transfer/file-transfer-enums.h"
 #include "storage/shared.h"
 
 class Contact;
 class FileTransferHandler;
+enum class FileTransferError;
+enum class FileTransferStatus;
+enum class FileTransferType;
 
 class KADUAPI FileTransferShared : public QObject, public Shared
 {

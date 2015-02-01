@@ -24,6 +24,7 @@
  */
 
 #include "contacts/contact-manager.h"
+#include "file-transfer/file-transfer-type.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -33,8 +34,9 @@
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
+#include <QtCore/QUrl>
+
 #include "gadu-file-transfer-service.h"
-#include <QUrl>
 
 GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
@@ -57,7 +59,7 @@ void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloa
 {
 	auto transfer = FileTransfer::create();
 	transfer.setPeer(peer);
-	transfer.setTransferType(TypeReceive);
+	transfer.setTransferType(FileTransferType::Incoming);
 	transfer.setRemoteFileName(QUrl::fromPercentEncoding(fileName.toUtf8()));
 	transfer.setFileSize(0); // we don't know file size yet
 	transfer.addProperty("gg:downloadId", downloadId, CustomProperties::Storable);

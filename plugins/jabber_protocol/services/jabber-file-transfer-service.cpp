@@ -26,6 +26,7 @@
 #include <iris/filetransfer.h>
 
 #include "contacts/contact-manager.h"
+#include "file-transfer/file-transfer-type.h"
 
 #include "file-transfer/jabber-file-transfer-handler.h"
 #include "file-transfer/s5b-server-manager.h"
@@ -80,7 +81,7 @@ void JabberFileTransferService::incomingFileTransferSlot()
 	Contact peer = ContactManager::instance()->byId(Protocol->account(), jTransfer->peer().bare(), ActionCreateAndAdd);
 	FileTransfer transfer = FileTransfer::create();
 	transfer.setPeer(peer);
-	transfer.setTransferType(TypeReceive);
+	transfer.setTransferType(FileTransferType::Incoming);
 	transfer.setRemoteFileName(jTransfer->fileName());
 	transfer.setFileSize(jTransfer->fileSize());
 

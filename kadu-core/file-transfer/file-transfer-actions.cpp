@@ -30,6 +30,7 @@
 #include "core/core.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-type.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -159,7 +160,7 @@ void FileTransferActions::selectFilesAndSend(const ContactSet &contacts)
 		{
 			auto fileTransfer = FileTransfer::create();
 			fileTransfer.setPeer(contact);
-			fileTransfer.setTransferType(TypeSend);
+			fileTransfer.setTransferType(FileTransferType::Outgoing);
 			fileTransfer.setLocalFileName(file);
 
 			FileTransferManager::instance()->addItem(fileTransfer);

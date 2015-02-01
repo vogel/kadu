@@ -32,7 +32,10 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "contacts/contact.h"
+#include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-type.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
@@ -110,7 +113,7 @@ KaduSharedBase_PropertyDefCRW(FileTransfer, QString, localFileName, LocalFileNam
 KaduSharedBase_PropertyDefCRW(FileTransfer, QString, remoteFileName, RemoteFileName, QString())
 KaduSharedBase_PropertyDef(FileTransfer, unsigned long, fileSize, FileSize, 0)
 KaduSharedBase_PropertyDef(FileTransfer, unsigned long, transferredSize, TransferredSize, 0)
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferType, transferType, TransferType, TypeSend)
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferStatus, transferStatus, TransferStatus, StatusNotConnected)
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferError, transferError, TransferError, ErrorOk)
+KaduSharedBase_PropertyDef(FileTransfer, FileTransferType, transferType, TransferType, FileTransferType::Outgoing)
+KaduSharedBase_PropertyDef(FileTransfer, FileTransferStatus, transferStatus, TransferStatus, FileTransferStatus::NotConnected)
+KaduSharedBase_PropertyDef(FileTransfer, FileTransferError, transferError, TransferError, FileTransferError::NoError)
 KaduSharedBase_PropertyDef(FileTransfer, FileTransferHandler *, handler, Handler, 0)

@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009, 2010, 2011, 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,32 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_ENUMS_H
-#define FILE_TRANSFER_ENUMS_H
+#pragma once
 
-enum FileTransferType {
-	TypeSend,
-	TypeReceive
+enum class FileTransferStatus {
+	NotConnected,
+	WaitingForConnection,
+	WaitingForAccept,
+	Transfer,
+	Finished,
+	Rejected
 };
-
-enum FileTransferStatus {
-	StatusNotConnected,
-	StatusWaitingForConnection,
-	StatusWaitingForAccept,
-	StatusTransfer,
-	StatusFinished,
-	StatusRejected
-};
-
-enum FileTransferError {
-	ErrorOk,
-	ErrorNetworkError,
-	ErrorUnableToOpenFile
-};
-
-enum StartType {
-	StartNew,
-	StartRestore
-};
-
-#endif // FILE_TRANSFER_ENUMS_H
