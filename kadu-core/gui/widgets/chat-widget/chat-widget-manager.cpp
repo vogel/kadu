@@ -68,7 +68,7 @@ ChatWidget * ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation ac
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
 	if (!chatWidget)
 	{
-		chatWidget = m_chatWidgetContainerHandlerMapper->mapToDefault(chat, activation);
+		chatWidget = m_chatWidgetContainerHandlerMapper->createHandledChatWidget(chat, activation);
 		if (!chatWidget)
 			return nullptr;
 	}

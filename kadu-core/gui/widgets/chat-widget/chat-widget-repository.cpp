@@ -58,7 +58,7 @@ void ChatWidgetRepository::addChatWidget(ChatWidget *chatWidget)
 
 void ChatWidgetRepository::removeChatWidget(ChatWidget *chatWidget)
 {
-	if (!chatWidget || !hasWidgetForChat(chatWidget->chat()))
+	if (!chatWidget || (widgetForChat(chatWidget->chat()) != chatWidget))
 		return;
 
 	emit chatWidgetRemoved(chatWidget);

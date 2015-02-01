@@ -52,7 +52,7 @@ enum class OpenChatActivation;
  * from ChatWidgetContainerHandlerRepository to update mapping.
  *
  * When mapping is applied, ChatWidget is added to ChatWidgetContainerHandler.
- * When mapping is removed, ChatWidget is removed to ChatWidgetContainerHandler.
+ * When mapping is removed, ChatWidget is removed from ChatWidgetContainerHandler.
  */
 class ChatWidgetContainerHandlerMapper : public QObject
 {
@@ -62,10 +62,20 @@ public:
 	Q_INVOKABLE explicit ChatWidgetContainerHandlerMapper(QObject *parent = 0);
 	virtual ~ChatWidgetContainerHandlerMapper();
 
+	/**
+	 * @short Return ChatWidgetContainerHandler for given @p chat.
+	 *
+	 * If chat is currently not mappet, returns nullptr.
+	 */
 	ChatWidgetContainerHandler * chatWidgetContainerHandlerForChat(Chat chat) const;
 
-	ChatWidget * mapToDefault(Chat chat, OpenChatActivation activation);
-	void unmap(Chat chat);
+	/**
+	 * @short Maps @p chat to first ChatWidgetContainerHandler that accepts it.
+	 * @param chat chat to accept
+	 * @param activation activation mode for new chat
+	 * @return ChatWidget instance created for @p chat and mapped to first ChatWidgetContainerHandler.
+	 */
+	ChatWidget * createHandledChatWidget(Chat chat, OpenChatActivation activation);
 
 private:
 	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
@@ -73,7 +83,8 @@ private:
 
 	QMap<Chat, ChatWidgetContainerHandler *> m_mapping;
 
-	ChatWidget * map(ChatWidgetContainerHandler *chatWidgetContainerHandler, Chat chat, OpenChatActivation activation);
+	void map(ChatWidgetContainerHandler *chatWidgetContainerHandler, Chat chat);
+	void unmap(Chat chat);
 	ChatWidgetContainerHandler * bestContainerHandler(Chat chat) const;
 
 private slots:
