@@ -22,6 +22,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "file-transfer-window.h"
+
+#include "configuration/config-file-variant-wrapper.h"
+#include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer.h"
+#include "file-transfer/gui/file-transfer-widget.h"
+#include "os/generic/window-geometry-manager.h"
+
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
@@ -30,46 +38,29 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "configuration/config-file-variant-wrapper.h"
-#include "file-transfer/file-transfer-manager.h"
-#include "file-transfer/file-transfer.h"
-#include "os/generic/window-geometry-manager.h"
-
-#include "debug.h"
-
-#include "file-transfer/gui/file-transfer-widget.h"
-
-#include "file-transfer-window.h"
-
 FileTransferWindow::FileTransferWindow(QWidget *parent) :
-	QFrame(parent), DesktopAwareObject(this)
+		QFrame{parent},
+		DesktopAwareObject{this}
 {
-	kdebugf();
-
 	setWindowRole("kadu-file-transfer");
 
 	createGui();
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "TransferWindowGeometry"), QRect(200, 200, 500, 300), this);
+	new WindowGeometryManager{new ConfigFileVariantWrapper{"General", "TransferWindowGeometry"}, QRect(200, 200, 500, 300), this};
 
-	foreach (FileTransfer fileTransfer, FileTransferManager::instance()->items())
-			fileTransferAdded(fileTransfer);
+	for (auto &&fileTransfer : FileTransferManager::instance()->items())
+		fileTransferAdded(fileTransfer);
+
 	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer)),
 			this, SLOT(fileTransferAdded(FileTransfer)));
 	connect(FileTransferManager::instance(), SIGNAL(fileTransferRemoved(FileTransfer)),
 			this, SLOT(fileTransferRemoved(FileTransfer)));
 
 	contentsChanged();
-
-	kdebugf2();
 }
 
 FileTransferWindow::~FileTransferWindow()
 {
-	kdebugf();
-
 	disconnect(FileTransferManager::instance(), 0, this, 0);
-
-	kdebugf2();
 }
 
 void FileTransferWindow::createGui()
@@ -79,28 +70,28 @@ void FileTransferWindow::createGui()
 
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	auto layout = new QVBoxLayout{this};
 
-	ScrollView = new QScrollArea(this);
+	m_scrollView = new QScrollArea{this};
 
-	layout->addWidget(ScrollView);
-	ScrollView->move(0, 0);
+	layout->addWidget(m_scrollView.get());
+	m_scrollView->move(0, 0);
 
-	InnerFrame = new QFrame(this);
- 	InnerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+	m_innerFrame = new QFrame{this};
+ 	m_innerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-	TransfersLayout = new QVBoxLayout(InnerFrame);
-	TransfersLayout->setDirection(QBoxLayout::Up);
+	m_transfersLayout = new QVBoxLayout{m_innerFrame.get()};
+	m_transfersLayout->setDirection(QBoxLayout::Up);
 
- 	ScrollView->setWidget(InnerFrame);
-	ScrollView->setWidgetResizable(true);
+ 	m_scrollView->setWidget(m_innerFrame.get());
+	m_scrollView->setWidgetResizable(true);
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	auto buttons = new QDialogButtonBox{Qt::Horizontal, this};
 
-	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"), buttons);
+	auto clearButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"), buttons};
 	connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clearClicked()));
 
-	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"), this);
+	auto closeButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"), this};
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
@@ -123,21 +114,21 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 
 void FileTransferWindow::fileTransferAdded(FileTransfer fileTransfer)
 {
-	FileTransferWidget *ftm = new FileTransferWidget(fileTransfer, InnerFrame);
-	TransfersLayout->addWidget(ftm);
-	Widgets.append(ftm);
+	auto ftm = new FileTransferWidget{fileTransfer, m_innerFrame.get()};
+	m_transfersLayout->addWidget(ftm);
+	m_widgets.append(ftm);
 
 	contentsChanged();
 }
 
 void FileTransferWindow::fileTransferRemoved(FileTransfer fileTransfer)
 {
-	foreach (FileTransferWidget *ftm, Widgets)
+	for (auto &&ftm : m_widgets)
 		if (ftm->fileTransfer() == fileTransfer)
 		{
 			ftm->deleteLater();
 			contentsChanged();
-			Widgets.removeAll(ftm);
+			m_widgets.removeAll(ftm);
 			return;
 		}
 }
@@ -149,9 +140,7 @@ void FileTransferWindow::clearClicked()
 
 void FileTransferWindow::contentsChanged()
 {
-	kdebugf();
-
-	TransfersLayout->invalidate();
+	m_transfersLayout->invalidate();
 }
 
 #include "moc_file-transfer-window.cpp"

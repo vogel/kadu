@@ -20,13 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_WINDOW
-#define FILE_TRANSFER_WINDOW
-
-#include <QtWidgets/QFrame>
+#pragma once
 
 #include "file-transfer/file-transfer.h"
+#include "misc/memory.h"
 #include "os/generic/desktop-aware-object.h"
+
+#include <QtWidgets/QFrame>
 
 class QScrollArea;
 class QVBoxLayout;
@@ -37,12 +37,22 @@ class FileTransferWindow : public QFrame, DesktopAwareObject
 {
 	Q_OBJECT
 
-	QList<FileTransferWidget *> Widgets;
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
 
-	QScrollArea *ScrollView;
+	void contentsChanged();
 
-	QFrame *InnerFrame;
-	QVBoxLayout *TransfersLayout;
+public:
+	explicit FileTransferWindow(QWidget *parent = nullptr);
+	virtual ~FileTransferWindow();
+
+private:
+	QList<FileTransferWidget *> m_widgets;
+
+	owned_qptr<QScrollArea> m_scrollView;
+
+	owned_qptr<QFrame> m_innerFrame;
+	owned_qptr<QVBoxLayout> m_transfersLayout;
 
 	void createGui();
 
@@ -52,15 +62,4 @@ private slots:
 
 	void clearClicked();
 
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-
-	void contentsChanged();
-
-public:
-	FileTransferWindow(QWidget *parent = 0);
-	virtual ~FileTransferWindow();
-
 };
-
-#endif
