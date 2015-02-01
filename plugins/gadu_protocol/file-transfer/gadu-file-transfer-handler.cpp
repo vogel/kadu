@@ -164,7 +164,9 @@ bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfe
 		return false;
 
 	auto driveService = m_protocol->driveService();
-	m_getTransfer = driveService->getFromDrive(transfer().property("gg:downloadId", QString{}).toString(), transfer().remoteFileName(), fileName);
+	auto downloadId = transfer().property("gg:downloadId", QString{}).toString();
+	auto remoteFileName = transfer().property("gg:remoteFileName", QString{}).toString();
+	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, fileName);
 
 	if (!m_getTransfer->fileOpened())
 	{

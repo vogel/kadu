@@ -34,6 +34,7 @@
 #include "gadu-protocol.h"
 
 #include "gadu-file-transfer-service.h"
+#include <QUrl>
 
 GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
@@ -57,9 +58,10 @@ void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloa
 	auto transfer = FileTransfer::create();
 	transfer.setPeer(peer);
 	transfer.setTransferType(TypeReceive);
-	transfer.setRemoteFileName(fileName);
+	transfer.setRemoteFileName(QUrl::fromPercentEncoding(fileName.toUtf8()));
 	transfer.setFileSize(0); // we don't know file size yet
 	transfer.addProperty("gg:downloadId", downloadId, CustomProperties::Storable);
+	transfer.addProperty("gg:remoteFileName", fileName, CustomProperties::Storable);
 	transfer.createHandler();
 
 	emit incomingFileTransfer(transfer);
