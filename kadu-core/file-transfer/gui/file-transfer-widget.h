@@ -21,34 +21,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_WIDGET
-#define FILE_TRANSFER_WIDGET
+#pragma once
+
+#include "file-transfer/file-transfer.h"
+#include "misc/memory.h"
 
 #include <QtCore/QDateTime>
 #include <QtWidgets/QFrame>
 
-#include "file-transfer/file-transfer.h"
-
 class QLabel;
 class QProgressBar;
 class QPushButton;
-class QTimer;
 
 class FileTransferWidget : public QFrame
 {
 	Q_OBJECT
 
-	FileTransfer CurrentTransfer;
+public:
+	explicit FileTransferWidget(FileTransfer transfer = FileTransfer::null, QWidget *parent = nullptr);
+	virtual ~FileTransferWidget();
 
-	QDateTime LastUpdateTime;
-	unsigned long LastTransferredSize;
-	unsigned long Speed;
+	FileTransfer fileTransfer() const;
 
-	QLabel *DescriptionLabel;
-	QLabel *StatusLabel;
-	QProgressBar *ProgressBar;
-	QPushButton *StartButton;
-	QPushButton *StopButton;
+private:
+	FileTransfer m_transfer;
+
+	QDateTime m_lastUpdateTime;
+	unsigned long m_lastTransferredSize;
+	unsigned long m_speed;
+
+	owned_qptr<QLabel> m_descriptionLabel;
+	owned_qptr<QLabel> m_statusLabel;
+	owned_qptr<QProgressBar> m_progressBar;
+	owned_qptr<QPushButton> m_startButton;
+	owned_qptr<QPushButton> m_stopButton;
 
 	void createGui();
 
@@ -59,12 +65,4 @@ private slots:
 	void stopTransfer();
 	void removeTransfer();
 
-public:
-	explicit FileTransferWidget(FileTransfer fileTransfer = FileTransfer::null, QWidget *parent = 0);
-	virtual ~FileTransferWidget();
-
-	FileTransfer fileTransfer() { return CurrentTransfer; }
-
 };
-
-#endif // FILE_TRANSFER_WIDGET

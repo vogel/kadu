@@ -23,13 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTimer>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QProgressBar>
-#include <QtWidgets/QPushButton>
+#include "file-transfer-widget.h"
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
@@ -41,19 +35,23 @@
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 
-#include "debug.h"
+#include <QtCore/QCoreApplication>
+#include <QtCore/QFileInfo>
+#include <QtCore/QTimer>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QPushButton>
 
-#include "file-transfer-widget.h"
-
-FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
-	: QFrame(parent), CurrentTransfer(ft), Speed(0)
+FileTransferWidget::FileTransferWidget(FileTransfer transfer, QWidget *parent) :
+		QFrame{parent},
+		m_transfer{std::move(transfer)},
+		m_speed{0}
 {
-	kdebugf();
-
 	createGui();
 
-	LastTransferredSize = CurrentTransfer.transferredSize();
-	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()), Qt::QueuedConnection);
+	m_lastTransferredSize = m_transfer.transferredSize();
+	connect(m_transfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()), Qt::QueuedConnection);
 	fileTransferUpdate();
 
 	show();
@@ -61,9 +59,12 @@ FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
 
 FileTransferWidget::~FileTransferWidget()
 {
-	kdebugf();
+	disconnect(m_transfer, 0, this, 0);
+}
 
-	disconnect(CurrentTransfer, 0, this, 0);
+FileTransfer FileTransferWidget::fileTransfer() const
+{
+	return m_transfer;
 }
 
 void FileTransferWidget::createGui()
@@ -76,196 +77,196 @@ void FileTransferWidget::createGui()
 	setFrameStyle(QFrame::Box | QFrame::Sunken);
 	setLineWidth(1);
 
-	QGridLayout *layout = new QGridLayout(this);
+	auto layout = new QGridLayout{this};
 	layout->setMargin(10);
 	layout->setColumnStretch(0, 1);
 	layout->setColumnStretch(1, 20);
 	layout->setColumnStretch(2, 20);
 	layout->setSizeConstraint(QLayout::SetMinimumSize);
 
-	QLabel *icon = new QLabel(this);
+	auto icon = new QLabel{this};
 	icon->setBackgroundRole(QPalette::Base);
 	layout->addWidget(icon, 0, 0, 3, 1, Qt::AlignTop);
 
-	DescriptionLabel = new QLabel(this);
-	DescriptionLabel->setBackgroundRole(QPalette::Base);
-	layout->addWidget(DescriptionLabel, 0, 1, 1, 2);
+	m_descriptionLabel = new QLabel{this};
+	m_descriptionLabel->setBackgroundRole(QPalette::Base);
+	layout->addWidget(m_descriptionLabel.get(), 0, 1, 1, 2);
 
-	ProgressBar = new QProgressBar(this);
-	ProgressBar->setMinimum(0);
-	ProgressBar->setMaximum(100);
-	ProgressBar->setBackgroundRole(QPalette::Base);
-	layout->addWidget(ProgressBar, 1, 1, 1, 2);
+	m_progressBar = new QProgressBar{this};
+	m_progressBar->setMinimum(0);
+	m_progressBar->setMaximum(100);
+	m_progressBar->setBackgroundRole(QPalette::Base);
+	layout->addWidget(m_progressBar.get(), 1, 1, 1, 2);
 
-	StatusLabel = new QLabel(this);
-	StatusLabel->setBackgroundRole(QPalette::Base);
-	layout->addWidget(StatusLabel, 2, 1);
+	m_statusLabel = new QLabel{this};
+	m_statusLabel->setBackgroundRole(QPalette::Base);
+	layout->addWidget(m_statusLabel.get(), 2, 1);
 
-	QWidget *buttons = new QWidget(this);
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
+	auto buttons = new QWidget{this};
+	auto buttonsLayout = new QHBoxLayout{buttons};
 	buttons->setBackgroundRole(QPalette::Base);
 	buttonsLayout->setSpacing(2);
 
-	StopButton = new QPushButton(tr("Stop"), this);
-	StopButton->hide();
-	connect(StopButton, SIGNAL(clicked()), this, SLOT(stopTransfer()));
+	m_stopButton = new QPushButton{tr("Stop"), this};
+	m_stopButton->hide();
+	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stopTransfer()));
 
-	StartButton = new QPushButton(tr("Start"), this);
-	StartButton->hide();
-	connect(StartButton, SIGNAL(clicked()), this, SLOT(startTransfer()));
+	m_startButton = new QPushButton{tr("Start"), this};
+	m_startButton->hide();
+	connect(m_startButton.get(), SIGNAL(clicked()), this, SLOT(startTransfer()));
 
-	QPushButton *deleteThis = new QPushButton(tr("Remove"), this);
+	auto deleteThis = new QPushButton{tr("Remove"), this};
 	connect(deleteThis, SIGNAL(clicked()), this, SLOT(removeTransfer()));
 
-	buttonsLayout->addWidget(StartButton);
-	buttonsLayout->addWidget(StopButton);
+	buttonsLayout->addWidget(m_startButton.get());
+	buttonsLayout->addWidget(m_stopButton.get());
 	buttonsLayout->addWidget(deleteThis);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
-	Contact contact = CurrentTransfer.peer();
-	Account account = contact.contactAccount();
+	auto contact = m_transfer.peer();
+	auto account = contact.contactAccount();
 
-	QString fileName = QFileInfo(CurrentTransfer.localFileName()).fileName();
+	auto fileName = QFileInfo{m_transfer.localFileName()}.fileName();
 	if (fileName.isEmpty())
-		fileName = CurrentTransfer.remoteFileName();
+		fileName = m_transfer.remoteFileName();
 
-	if (TypeSend == CurrentTransfer.transferType())
+	if (TypeSend == m_transfer.transferType())
 	{
 		icon->setPixmap(KaduIcon("kadu_icons/transfer-send").icon().pixmap(64, 64));
-		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
+		m_descriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(contact.display(true)).arg(account.accountIdentity().name()));
 	}
 	else
 	{
 		icon->setPixmap(KaduIcon("kadu_icons/transfer-receive").icon().pixmap(64, 64));
-		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
+		m_descriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(contact.display(true)).arg(account.accountIdentity().name()));
 	}
 }
 
 void FileTransferWidget::startTransfer()
 {
-	if (!CurrentTransfer.handler())
-		CurrentTransfer.createHandler();
-	if (TypeSend == CurrentTransfer.transferType() && CurrentTransfer.handler())
-		CurrentTransfer.handler()->send();
+	if (!m_transfer.handler())
+		m_transfer.createHandler();
+	if (TypeSend == m_transfer.transferType() && m_transfer.handler())
+		m_transfer.handler()->send();
 }
 
 void FileTransferWidget::stopTransfer()
 {
-	if (CurrentTransfer.handler())
-		CurrentTransfer.handler()->stop();
+	if (m_transfer.handler())
+		m_transfer.handler()->stop();
 }
 
 void FileTransferWidget::removeTransfer()
 {
-	if (!CurrentTransfer)
+	if (!m_transfer)
 		return;
 
-	if (StatusFinished != CurrentTransfer.transferStatus())
+	if (StatusFinished != m_transfer.transferStatus())
 	{
-		MessageDialog *dialog = MessageDialog::create(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
+		auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
 		dialog->addButton(QMessageBox::Yes, tr("Remove"));
 		dialog->addButton(QMessageBox::No, tr("Cancel"));
 
 		if (!dialog->ask())
 			return;
 		else
-			if (CurrentTransfer.handler())
-				CurrentTransfer.handler()->stop();
+			if (m_transfer.handler())
+				m_transfer.handler()->stop();
 	}
 
-	FileTransferManager::instance()->removeItem(CurrentTransfer);
+	FileTransferManager::instance()->removeItem(m_transfer);
 
 	deleteLater();
 }
 
 void FileTransferWidget::fileTransferUpdate()
 {
-	if (!CurrentTransfer)
+	if (!m_transfer)
 	{
-		StatusLabel->setText(tr("<b>Not connected</b>"));
-		StopButton->hide();
-		StartButton->hide();
+		m_statusLabel->setText(tr("<b>Not connected</b>"));
+		m_stopButton->hide();
+		m_startButton->hide();
 		return;
 	}
 
-	if (ErrorOk != CurrentTransfer.transferError())
+	if (ErrorOk != m_transfer.transferError())
 	{
-		StatusLabel->setText(tr("<b>Error</b>"));
-		StopButton->hide();
+		m_statusLabel->setText(tr("<b>Error</b>"));
+		m_stopButton->hide();
 
-		if (TypeSend == CurrentTransfer.transferType())
-			StartButton->show();
+		if (TypeSend == m_transfer.transferType())
+			m_startButton->show();
 		return;
 	}
 
-	if (StatusFinished != CurrentTransfer.transferStatus())
-		ProgressBar->setValue(static_cast<int>(CurrentTransfer.percent()));
+	if (StatusFinished != m_transfer.transferStatus())
+		m_progressBar->setValue(static_cast<int>(m_transfer.percent()));
 	else
-		ProgressBar->setValue(100);
+		m_progressBar->setValue(100);
 
-	if (StatusTransfer == CurrentTransfer.transferStatus())
+	if (StatusTransfer == m_transfer.transferStatus())
 	{
-		if (LastUpdateTime.isValid())
+		if (m_lastUpdateTime.isValid())
 		{
-			QDateTime now = QDateTime::currentDateTime();
-			uint timeDiff = now.toTime_t() - LastUpdateTime.toTime_t();
+			auto now = QDateTime::currentDateTime();
+			auto timeDiff = now.toTime_t() - m_lastUpdateTime.toTime_t();
 			if (0 < timeDiff)
 			{
-				Speed = ((CurrentTransfer.transferredSize() - LastTransferredSize) / 1024) / timeDiff;
-				LastUpdateTime = QDateTime::currentDateTime();
-				LastTransferredSize = CurrentTransfer.transferredSize();
+				m_speed = ((m_transfer.transferredSize() - m_lastTransferredSize) / 1024) / timeDiff;
+				m_lastUpdateTime = QDateTime::currentDateTime();
+				m_lastTransferredSize = m_transfer.transferredSize();
 			}
 		}
 		else
 		{
-			Speed = 0;
-			LastUpdateTime = QDateTime::currentDateTime();
-			LastTransferredSize = CurrentTransfer.transferredSize();
+			m_speed = 0;
+			m_lastUpdateTime = QDateTime::currentDateTime();
+			m_lastTransferredSize = m_transfer.transferredSize();
 		}
 	}
 
-	switch (CurrentTransfer.transferStatus())
+	switch (m_transfer.transferStatus())
 	{
 		case StatusNotConnected:
-			StatusLabel->setText(tr("<b>Not connected</b>"));
-			StopButton->hide();
-			if (TypeSend == CurrentTransfer.transferType())
-				StartButton->show();
+			m_statusLabel->setText(tr("<b>Not connected</b>"));
+			m_stopButton->hide();
+			if (TypeSend == m_transfer.transferType())
+				m_startButton->show();
 			break;
 
 		case StatusWaitingForConnection:
-			StatusLabel->setText(tr("<b>Wait for connection</b>"));
-			StartButton->hide();
+			m_statusLabel->setText(tr("<b>Wait for connection</b>"));
+			m_startButton->hide();
 			break;
 
 		case StatusWaitingForAccept:
-			StatusLabel->setText(tr("<b>Wait for accept</b>"));
-			StartButton->hide();
+			m_statusLabel->setText(tr("<b>Wait for accept</b>"));
+			m_startButton->hide();
 			break;
 
 		case StatusTransfer:
-			StatusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(Speed)));
-			StopButton->show();
-			StartButton->hide();
+			m_statusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(m_speed)));
+			m_stopButton->show();
+			m_startButton->hide();
 			break;
 
 		case StatusFinished:
-			StatusLabel->setText(tr("<b>Finished</b>"));
-			StopButton->hide();
-			StartButton->hide();
+			m_statusLabel->setText(tr("<b>Finished</b>"));
+			m_stopButton->hide();
+			m_startButton->hide();
 			break;
 
 		case StatusRejected:
-			StatusLabel->setText(tr("<b>Rejected</b>"));
-			StopButton->hide();
-			StartButton->hide();
+			m_statusLabel->setText(tr("<b>Rejected</b>"));
+			m_stopButton->hide();
+			m_startButton->hide();
 			break;
 
 		default:
-			StopButton->hide();
-			StartButton->hide();
+			m_stopButton->hide();
+			m_startButton->hide();
 	}
 
 	QCoreApplication::processEvents();
