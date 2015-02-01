@@ -19,23 +19,19 @@
 
 #include "file-transfer-handler.h"
 
-FileTransferHandler::FileTransferHandler(FileTransfer transfer)
+FileTransferHandler::FileTransferHandler(FileTransfer transfer, QObject *parent) :
+		QObject{parent}
 {
-	Transfer = transfer;
+	m_transfer = transfer;
 }
 
 FileTransferHandler::~FileTransferHandler()
 {
 }
 
-FileTransfer FileTransferHandler::transfer()
+FileTransfer FileTransferHandler::transfer() const
 {
-	return Transfer;
-}
-
-void FileTransferHandler::setTransfer(FileTransfer transfer)
-{
-	Transfer = transfer;
+	return m_transfer;
 }
 
 #include "moc_file-transfer-handler.cpp"

@@ -24,26 +24,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILE_TRANSFER_HANDLER_H
-#define FILE_TRANSFER_HANDLER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "file-transfer/file-transfer.h"
 #include "exports.h"
+
+#include <QtCore/QObject>
 
 class KADUAPI FileTransferHandler : public QObject
 {
 	Q_OBJECT
 
-	FileTransfer Transfer;
-
 public:
-	FileTransferHandler(FileTransfer transfer);
+	explicit FileTransferHandler(FileTransfer transfer, QObject *parent = nullptr);
 	virtual ~FileTransferHandler();
 
-	FileTransfer transfer();
-	void setTransfer(FileTransfer transfer);
+	FileTransfer transfer() const;
 
 	virtual void send() = 0;
 	virtual void stop() = 0;
@@ -51,6 +47,7 @@ public:
 	virtual bool accept(const QString &fileName, bool resumeTransfer) = 0;
 	virtual void reject() = 0;
 
-};
+private:
+	FileTransfer m_transfer;
 
-#endif // FILE_TRANSFER_HANDLER_H
+};
