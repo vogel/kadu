@@ -53,10 +53,10 @@ private:
 	static NotifyEvent *m_fileTransferNotifyEvent;
 	static NotifyEvent *m_fileTransferIncomingFileNotifyEvent;
 
-	bool _continue;
+	bool m_continue;
 
-	FileTransfer _transfer;
-	QString _fileName;
+	FileTransfer m_transfer;
+	QString m_fileName;
 
 private slots:
 	void callbackAcceptAsNew();

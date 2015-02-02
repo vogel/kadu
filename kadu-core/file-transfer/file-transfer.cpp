@@ -68,19 +68,19 @@ FileTransfer::FileTransfer()
 }
 
 FileTransfer::FileTransfer(FileTransferShared *data) :
-		SharedBase<FileTransferShared>(data)
+		SharedBase<FileTransferShared>{data}
 {
 }
 
 FileTransfer::FileTransfer(QObject *data)
 {
-	FileTransferShared *shared = qobject_cast<FileTransferShared *>(data);
+	auto shared = qobject_cast<FileTransferShared *>(data);
 	if (shared)
 		setData(shared);
 }
 
 FileTransfer::FileTransfer(const FileTransfer &copy) :
-		SharedBase<FileTransferShared>(copy)
+		SharedBase<FileTransferShared>{copy}
 {
 }
 

@@ -113,7 +113,7 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 
 NewFileTransferNotification::NewFileTransferNotification(const QString &type, FileTransfer transfer, FileTransferStartType startType) :
 		Notification{type, KaduIcon{}},
-		_transfer{transfer}
+		m_transfer{transfer}
 {
 	if (startType == FileTransferStartType::Restore)
 	{
@@ -121,14 +121,14 @@ NewFileTransferNotification::NewFileTransferNotification(const QString &type, Fi
 		addCallback(tr("Save file under new name"), SLOT(callbackAcceptAsNew()), "callbackAcceptAsNew()");
 		addCallback(tr("Ignore transfer"), SLOT(callbackDiscard()), "callbackDiscard()");
 
-		_continue = true;
+		m_continue = true;
 	}
 	else
 	{
 		addCallback(tr("Accept"), SLOT(callbackAccept()), "callbackAccept()");
 		addCallback(tr("Reject"), SLOT(callbackReject()), "callbackReject()");
 
-		_continue = false;
+		m_continue = false;
 	}
 
 	setDefaultCallback(30 * 60 * 1000, SLOT(callbackDiscard()));
@@ -139,25 +139,25 @@ void NewFileTransferNotification::callbackAcceptAsNew()
 	close();
 
 	// let user choose new file name
-	_transfer.setLocalFileName(QString{});
-	FileTransferManager::instance()->acceptFileTransfer(_transfer);
+	m_transfer.setLocalFileName(QString{});
+	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
 }
 
 void NewFileTransferNotification::callbackAccept()
 {
 	close();
 
-	if (!_continue) // let user choose new file name
-		_transfer.setLocalFileName(QString{});
+	if (!m_continue) // let user choose new file name
+		m_transfer.setLocalFileName(QString{});
 
-	FileTransferManager::instance()->acceptFileTransfer(_transfer);
+	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
 }
 
 void NewFileTransferNotification::callbackReject()
 {
 	close();
 
-	FileTransferManager::instance()->rejectFileTransfer(_transfer);
+	FileTransferManager::instance()->rejectFileTransfer(m_transfer);
 }
 
 #include "moc_file-transfer-notifications.cpp"
