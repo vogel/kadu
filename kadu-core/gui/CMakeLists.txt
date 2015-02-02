@@ -85,6 +85,7 @@ set (gui_SRCS
 	widgets/color-selector.cpp
 	widgets/composite-configuration-value-state-notifier.cpp
 	widgets/configuration-value-state-notifier.cpp
+	widgets/contact-avatar-display.cpp
 	widgets/custom-input.cpp
 	widgets/custom-input-menu-item.cpp
 	widgets/custom-input-menu-manager.cpp
