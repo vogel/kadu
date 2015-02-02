@@ -25,6 +25,7 @@
 
 #include "file-transfer-widget.h"
 
+#include "avatars/avatar.h"
 #include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
@@ -34,6 +35,7 @@
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer.h"
+#include "gui/widgets/contact-avatar-display.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
@@ -47,7 +49,7 @@
 #include <QtWidgets/QPushButton>
 
 FileTransferWidget::FileTransferWidget(FileTransfer transfer, QWidget *parent) :
-		QFrame{parent},
+		QWidget{parent},
 		m_transfer{std::move(transfer)},
 		m_speed{0}
 {
@@ -72,43 +74,36 @@ FileTransfer FileTransferWidget::fileTransfer() const
 
 void FileTransferWidget::createGui()
 {
-	setBackgroundRole(QPalette::Base);
+	setAutoFillBackground(true);
+	setMinimumSize(QSize(100, 50));
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	setMinimumSize(QSize(100, 100));
+	auto mainLayout = new QVBoxLayout{this};
+	mainLayout->setMargin(10);
+	mainLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
-	setFrameStyle(QFrame::Box | QFrame::Sunken);
-	setLineWidth(1);
+	auto topLayout = new QHBoxLayout{this};
+	topLayout->setMargin(0);
 
-	auto layout = new QGridLayout{this};
-	layout->setMargin(10);
-	layout->setColumnStretch(0, 1);
-	layout->setColumnStretch(1, 20);
-	layout->setColumnStretch(2, 20);
-	layout->setSizeConstraint(QLayout::SetMinimumSize);
+	auto statusLayout = new QVBoxLayout{this};
+	statusLayout->setMargin(0);
 
-	auto icon = new QLabel{this};
-	icon->setBackgroundRole(QPalette::Base);
-	layout->addWidget(icon, 0, 0, 3, 1, Qt::AlignTop);
+	auto buttonsLayout = new QVBoxLayout{this};
+	buttonsLayout->setMargin(0);
+	buttonsLayout->setSpacing(2);
+
+	auto bottomLayout = new QHBoxLayout{this};
+	bottomLayout->setMargin(0);
+
+	auto avatar = new ContactAvatarDisplay{m_transfer.peer(), QSize{64, 64}, this};
 
 	m_descriptionLabel = new QLabel{this};
-	m_descriptionLabel->setBackgroundRole(QPalette::Base);
-	layout->addWidget(m_descriptionLabel.get(), 0, 1, 1, 2);
-
-	m_progressBar = new QProgressBar{this};
-	m_progressBar->setMinimum(0);
-	m_progressBar->setMaximum(100);
-	m_progressBar->setBackgroundRole(QPalette::Base);
-	layout->addWidget(m_progressBar.get(), 1, 1, 1, 2);
+	auto fileName = QFileInfo{m_transfer.localFileName()}.fileName();
+	if (fileName.isEmpty())
+		fileName = m_transfer.remoteFileName();
+	m_descriptionLabel->setText(QString{"File: <b>%1</b>"}.arg(fileName));
 
 	m_statusLabel = new QLabel{this};
-	m_statusLabel->setBackgroundRole(QPalette::Base);
-	layout->addWidget(m_statusLabel.get(), 2, 1);
-
-	auto buttons = new QWidget{this};
-	auto buttonsLayout = new QHBoxLayout{buttons};
-	buttons->setBackgroundRole(QPalette::Base);
-	buttonsLayout->setSpacing(2);
 
 	m_stopButton = new QPushButton{tr("Stop"), this};
 	m_stopButton->hide();
@@ -121,30 +116,34 @@ void FileTransferWidget::createGui()
 	auto deleteThis = new QPushButton{tr("Remove"), this};
 	connect(deleteThis, SIGNAL(clicked()), this, SLOT(removeTransfer()));
 
+	auto icon = new QLabel{this};
+	auto iconName = FileTransferType::Outgoing == m_transfer.transferType()
+		? "kadu_icons/transfer-send"
+		: "kadu_icons/transfer-receive";
+	icon->setPixmap(KaduIcon{iconName}.icon().pixmap(22, 22));
+
+	m_progressBar = new QProgressBar{this};
+	m_progressBar->setMinimum(0);
+	m_progressBar->setMaximum(100);
+
+	mainLayout->addLayout(topLayout);
+	mainLayout->addLayout(bottomLayout);
+
+	topLayout->addWidget(avatar, 1, Qt::AlignTop | Qt::AlignLeft);
+	topLayout->addLayout(statusLayout, 100);
+	topLayout->addLayout(buttonsLayout, 1);
+
+	statusLayout->addWidget(m_descriptionLabel.get(), Qt::AlignLeft);
+	statusLayout->addWidget(m_statusLabel.get());
+	statusLayout->addStretch(100);
+
 	buttonsLayout->addWidget(m_startButton.get());
 	buttonsLayout->addWidget(m_stopButton.get());
 	buttonsLayout->addWidget(deleteThis);
- 	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
+	buttonsLayout->addStretch(100);
 
-	auto contact = m_transfer.peer();
-	auto account = contact.contactAccount();
-
-	auto fileName = QFileInfo{m_transfer.localFileName()}.fileName();
-	if (fileName.isEmpty())
-		fileName = m_transfer.remoteFileName();
-
-	if (FileTransferType::Outgoing == m_transfer.transferType())
-	{
-		icon->setPixmap(KaduIcon("kadu_icons/transfer-send").icon().pixmap(64, 64));
-		m_descriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
-				.arg(fileName).arg(contact.display(true)).arg(account.accountIdentity().name()));
-	}
-	else
-	{
-		icon->setPixmap(KaduIcon("kadu_icons/transfer-receive").icon().pixmap(64, 64));
-		m_descriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
-				.arg(fileName).arg(contact.display(true)).arg(account.accountIdentity().name()));
-	}
+	bottomLayout->addWidget(icon);
+	bottomLayout->addWidget(m_progressBar.get());
 }
 
 void FileTransferWidget::startTransfer()

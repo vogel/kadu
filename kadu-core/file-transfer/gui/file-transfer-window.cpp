@@ -78,10 +78,15 @@ void FileTransferWindow::createGui()
 	m_scrollView->move(0, 0);
 
 	m_innerFrame = new QFrame{this};
+	m_innerFrame->setAutoFillBackground(true);
+	m_innerFrame->setBackgroundRole(QPalette::Base);
+	m_innerFrame->setFrameStyle(QFrame::NoFrame);
  	m_innerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 	m_transfersLayout = new QVBoxLayout{m_innerFrame.get()};
 	m_transfersLayout->setDirection(QBoxLayout::Up);
+	m_transfersLayout->setMargin(0);
+	m_transfersLayout->setSpacing(0);
 
  	m_scrollView->setWidget(m_innerFrame.get());
 	m_scrollView->setWidgetResizable(true);
@@ -140,6 +145,13 @@ void FileTransferWindow::clearClicked()
 
 void FileTransferWindow::contentsChanged()
 {
+	auto alternate = false;
+	for (auto &&widget : m_widgets)
+	{
+		widget->setBackgroundRole(alternate ? QPalette::AlternateBase : QPalette::Base);
+		alternate = !alternate;
+	}
+
 	m_transfersLayout->invalidate();
 }
 

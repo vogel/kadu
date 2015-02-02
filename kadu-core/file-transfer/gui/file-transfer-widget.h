@@ -27,13 +27,13 @@
 #include "misc/memory.h"
 
 #include <QtCore/QDateTime>
-#include <QtWidgets/QFrame>
+#include <QtWidgets/QWidget>
 
 class QLabel;
 class QProgressBar;
 class QPushButton;
 
-class FileTransferWidget : public QFrame
+class FileTransferWidget : public QWidget
 {
 	Q_OBJECT
 
