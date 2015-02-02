@@ -25,13 +25,13 @@
 #pragma once
 
 #include "file-transfer/file-transfer.h"
-#include "notify/notification/chat-notification.h"
+#include "notify/notification/notification.h"
 
 class FileTransferManager;
 class NotifyEvent;
 enum class FileTransferStartType;
 
-class NewFileTransferNotification : public ChatNotification
+class NewFileTransferNotification : public Notification
 {
 	Q_OBJECT
 
@@ -41,7 +41,7 @@ public:
 
 	static void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
 
-	NewFileTransferNotification(const QString &type, FileTransfer transfer, Chat chat, FileTransferStartType startType);
+	NewFileTransferNotification(const QString &type, FileTransfer transfer, FileTransferStartType startType);
 
 	virtual bool requireCallback() { return true; }
 
