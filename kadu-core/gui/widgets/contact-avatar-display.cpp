@@ -54,7 +54,7 @@ void ContactAvatarDisplay::displayAvatar()
 	auto pixmap = m_avatar.pixmap();
 	if (pixmap.isNull())
 		pixmap = KaduIcon{"kadu_icons/buddy0"}.icon().pixmap(m_size);
-	if (!pixmap.isNull() && (pixmap.width() > m_size.width() || pixmap.height() > m_size.height()))
+	if (!pixmap.isNull())
 		pixmap = pixmap.scaled(m_size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
 	setPixmap(pixmap);

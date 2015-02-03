@@ -95,7 +95,7 @@ void FileTransferWidget::createGui()
 	auto bottomLayout = new QHBoxLayout{this};
 	bottomLayout->setMargin(0);
 
-	auto avatar = new ContactAvatarDisplay{m_transfer.peer(), QSize{64, 64}, this};
+	auto avatar = new ContactAvatarDisplay{m_transfer.peer(), QSize{48, 48}, this};
 
 	m_descriptionLabel = new QLabel{this};
 	auto fileName = QFileInfo{m_transfer.localFileName()}.fileName();
