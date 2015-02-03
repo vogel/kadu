@@ -132,8 +132,8 @@ void FileTransferWindow::fileTransferRemoved(FileTransfer fileTransfer)
 		if (ftm->fileTransfer() == fileTransfer)
 		{
 			ftm->deleteLater();
-			contentsChanged();
 			m_widgets.removeAll(ftm);
+			contentsChanged();
 			return;
 		}
 }
