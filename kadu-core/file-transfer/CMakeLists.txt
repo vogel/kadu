@@ -1,9 +1,11 @@
 set (file-transfer_SRCS
+	gui/file-transfer-actions.cpp
 	gui/file-transfer-widget.cpp
 	gui/file-transfer-window.cpp
+	gui/send-file-action.cpp
+	gui/show-file-transfer-window-action.cpp
 
 	file-transfer.cpp
-	file-transfer-actions.cpp
 	file-transfer-handler.cpp
 	file-transfer-manager.cpp
 	file-transfer-notifications.cpp

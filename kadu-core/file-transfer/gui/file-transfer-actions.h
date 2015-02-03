@@ -24,11 +24,10 @@
 
 #pragma once
 
-#include <QtWidgets/QAction>
+#include <QtCore/QObject>
 
-class Action;
-class ActionDescription;
-class ContactSet;
+class SendFileAction;
+class ShowFileTransferWindowAction;
 
 class FileTransferActions : public QObject
 {
@@ -39,15 +38,7 @@ public:
 	virtual ~FileTransferActions();
 
 private:
-	ActionDescription *m_sendFileActionDescription;
-	ActionDescription *m_fileTransferWindowActionDescription;
-
-	QStringList selectFilesToSend();
-	void selectFilesAndSend(const ContactSet &contacts);
-
-private slots:
-	void sendFileActionCreated(Action *action);
-	void sendFileActionActivated(QAction *sender, bool toggled);
-	void toggleFileTransferWindow(QAction *sender, bool toggled);
+	SendFileAction *m_sendFileAction;
+	ShowFileTransferWindowAction *m_showFileTransferWindow;
 
 };
