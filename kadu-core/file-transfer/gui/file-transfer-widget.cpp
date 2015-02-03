@@ -43,6 +43,8 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
+#include <QtCore/QUrl>
+#include <QtGui/QDesktopServices>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QProgressBar>
@@ -105,16 +107,29 @@ void FileTransferWidget::createGui()
 
 	m_statusLabel = new QLabel{this};
 
+	m_sendButton = new QPushButton{tr("Send"), this};
+	m_sendButton->hide();
+	connect(m_sendButton.get(), SIGNAL(clicked()), this, SLOT(send()));
+
+	m_openButton = new QPushButton{tr("Open"), this};
+	m_openButton->hide();
+	connect(m_openButton.get(), SIGNAL(clicked()), this, SLOT(open()));
+
 	m_stopButton = new QPushButton{tr("Stop"), this};
 	m_stopButton->hide();
-	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stopTransfer()));
+	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stop()));
 
-	m_startButton = new QPushButton{tr("Start"), this};
-	m_startButton->hide();
-	connect(m_startButton.get(), SIGNAL(clicked()), this, SLOT(startTransfer()));
+	m_removeButton = new QPushButton{tr("Remove"), this};
+	m_removeButton->hide();
+	connect(m_removeButton.get(), SIGNAL(clicked()), this, SLOT(remove()));
 
-	auto deleteThis = new QPushButton{tr("Remove"), this};
-	connect(deleteThis, SIGNAL(clicked()), this, SLOT(removeTransfer()));
+	m_acceptButton = new QPushButton{tr("Accept"), this};
+	m_acceptButton->hide();
+	connect(m_acceptButton.get(), SIGNAL(clicked()), this, SLOT(accept()));
+
+	m_rejectButton = new QPushButton{tr("Reject"), this};
+	m_rejectButton->hide();
+	connect(m_rejectButton.get(), SIGNAL(clicked()), this, SLOT(reject()));
 
 	auto icon = new QLabel{this};
 	auto iconName = FileTransferType::Outgoing == m_transfer.transferType()
@@ -137,69 +152,31 @@ void FileTransferWidget::createGui()
 	statusLayout->addWidget(m_statusLabel.get());
 	statusLayout->addStretch(100);
 
-	buttonsLayout->addWidget(m_startButton.get());
+	buttonsLayout->addWidget(m_sendButton.get());
+	buttonsLayout->addWidget(m_openButton.get());
 	buttonsLayout->addWidget(m_stopButton.get());
-	buttonsLayout->addWidget(deleteThis);
+	buttonsLayout->addWidget(m_removeButton.get());
+	buttonsLayout->addWidget(m_acceptButton.get());
+	buttonsLayout->addWidget(m_rejectButton.get());
 	buttonsLayout->addStretch(100);
 
 	bottomLayout->addWidget(icon);
 	bottomLayout->addWidget(m_progressBar.get());
 }
 
-void FileTransferWidget::startTransfer()
-{
-	if (!m_transfer.handler())
-		m_transfer.createHandler();
-	if (FileTransferType::Outgoing == m_transfer.transferType() && m_transfer.handler())
-		m_transfer.handler()->send();
-}
-
-void FileTransferWidget::stopTransfer()
-{
-	if (m_transfer.handler())
-		m_transfer.handler()->stop();
-}
-
-void FileTransferWidget::removeTransfer()
-{
-	if (!m_transfer)
-		return;
-
-	if (FileTransferStatus::Finished != m_transfer.transferStatus())
-	{
-		auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
-		dialog->addButton(QMessageBox::Yes, tr("Remove"));
-		dialog->addButton(QMessageBox::No, tr("Cancel"));
-
-		if (!dialog->ask())
-			return;
-		else
-			if (m_transfer.handler())
-				m_transfer.handler()->stop();
-	}
-
-	FileTransferManager::instance()->removeItem(m_transfer);
-
-	deleteLater();
-}
-
 void FileTransferWidget::fileTransferUpdate()
 {
+	updateButtons();
+
 	if (!m_transfer)
 	{
 		m_statusLabel->setText(tr("<b>Not connected</b>"));
-		m_stopButton->hide();
-		m_startButton->hide();
 		return;
 	}
 
 	if (FileTransferError::NoError != m_transfer.transferError())
 	{
 		m_statusLabel->setText(tr("<b>Error</b>"));
-		m_stopButton->hide();
-
-		if (FileTransferType::Outgoing == m_transfer.transferType())
-			m_startButton->show();
 		return;
 	}
 
@@ -233,45 +210,136 @@ void FileTransferWidget::fileTransferUpdate()
 	{
 		case FileTransferStatus::NotConnected:
 			m_statusLabel->setText(tr("<b>Not connected</b>"));
-			m_stopButton->hide();
-			if (FileTransferType::Outgoing == m_transfer.transferType())
-				m_startButton->show();
 			break;
 
 		case FileTransferStatus::WaitingForConnection:
 			m_statusLabel->setText(tr("<b>Wait for connection</b>"));
-			m_startButton->hide();
 			break;
 
 		case FileTransferStatus::WaitingForAccept:
 			m_statusLabel->setText(tr("<b>Wait for accept</b>"));
-			m_startButton->hide();
 			break;
 
 		case FileTransferStatus::Transfer:
 			m_statusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(m_speed)));
-			m_stopButton->show();
-			m_startButton->hide();
 			break;
 
 		case FileTransferStatus::Finished:
 			m_statusLabel->setText(tr("<b>Finished</b>"));
-			m_stopButton->hide();
-			m_startButton->hide();
 			break;
 
 		case FileTransferStatus::Rejected:
 			m_statusLabel->setText(tr("<b>Rejected</b>"));
-			m_stopButton->hide();
-			m_startButton->hide();
 			break;
-
-		default:
-			m_stopButton->hide();
-			m_startButton->hide();
 	}
 
 	QCoreApplication::processEvents();
+}
+
+bool FileTransferWidget::canSend() const
+{
+	if (FileTransferType::Outgoing != m_transfer.transferType())
+		return false;
+	if (m_transfer.handler())
+		return false;
+	return true;
+}
+
+bool FileTransferWidget::canOpen() const
+{
+	if (FileTransferType::Outgoing == m_transfer.transferType())
+		return true;
+	if (m_transfer.transferError() != FileTransferError::NoError)
+		return false;
+	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
+		return true;
+	return false;
+}
+
+void FileTransferWidget::open()
+{
+	if (canOpen())
+		QDesktopServices::openUrl(QUrl::fromLocalFile(m_transfer.localFileName()));
+}
+
+void FileTransferWidget::send()
+{
+	if (!canSend())
+		return;
+
+	m_transfer.createHandler();
+	if (m_transfer.handler())
+		m_transfer.handler()->send();
+
+	updateButtons();
+}
+
+bool FileTransferWidget::canStop() const
+{
+	return m_transfer.handler() != nullptr;
+}
+
+void FileTransferWidget::stop()
+{
+	m_transfer.handler()->stop();
+
+	updateButtons();
+}
+
+bool FileTransferWidget::canRemove() const
+{
+	return m_transfer.handler() == nullptr;
+}
+
+void FileTransferWidget::remove()
+{
+	if (!m_transfer)
+		return;
+
+	if (FileTransferStatus::Finished != m_transfer.transferStatus())
+	{
+		auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
+		dialog->addButton(QMessageBox::Yes, tr("Remove"));
+		dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+		if (!dialog->ask())
+			return;
+		else
+			if (m_transfer.handler())
+				m_transfer.handler()->stop();
+	}
+
+	FileTransferManager::instance()->removeItem(m_transfer);
+
+	deleteLater();
+}
+
+bool FileTransferWidget::canAccept() const
+{
+	return false;
+}
+
+void FileTransferWidget::accept()
+{
+}
+
+bool FileTransferWidget::canReject() const
+{
+	return false;
+}
+
+void FileTransferWidget::reject()
+{
+}
+
+void FileTransferWidget::updateButtons()
+{
+	m_sendButton->setVisible(canSend());
+	m_openButton->setVisible(canOpen());
+	m_stopButton->setVisible(canStop());
+	m_removeButton->setVisible(canRemove());
+	m_acceptButton->setVisible(canAccept());
+	m_rejectButton->setVisible(canReject());
 }
 
 #include "moc_file-transfer-widget.cpp"

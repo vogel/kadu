@@ -53,16 +53,35 @@ private:
 	owned_qptr<QLabel> m_descriptionLabel;
 	owned_qptr<QLabel> m_statusLabel;
 	owned_qptr<QProgressBar> m_progressBar;
-	owned_qptr<QPushButton> m_startButton;
+	owned_qptr<QPushButton> m_sendButton;
+	owned_qptr<QPushButton> m_openButton;
 	owned_qptr<QPushButton> m_stopButton;
+	owned_qptr<QPushButton> m_removeButton;
+	owned_qptr<QPushButton> m_acceptButton;
+	owned_qptr<QPushButton> m_rejectButton;
 
 	void createGui();
 
 private slots:
 	void fileTransferUpdate();
+	void updateButtons();
 
-	void startTransfer();
-	void stopTransfer();
-	void removeTransfer();
+	bool canSend() const;
+	void send();
+
+	bool canOpen() const;
+	void open();
+
+	bool canStop() const;
+	void stop();
+
+	bool canRemove() const;
+	void remove();
+
+	bool canAccept() const;
+	void accept();
+
+	bool canReject() const;
+	void reject();
 
 };
