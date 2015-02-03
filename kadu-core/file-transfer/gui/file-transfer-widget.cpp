@@ -25,8 +25,6 @@
 
 #include "file-transfer-widget.h"
 
-#include "avatars/avatar.h"
-#include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-error.h"
@@ -38,17 +36,17 @@
 #include "gui/widgets/contact-avatar-display.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
-#include "identities/identity.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
-#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
 FileTransferWidget::FileTransferWidget(FileTransfer transfer, QWidget *parent) :
 		QWidget{parent},
@@ -58,8 +56,8 @@ FileTransferWidget::FileTransferWidget(FileTransfer transfer, QWidget *parent) :
 	createGui();
 
 	m_lastTransferredSize = m_transfer.transferredSize();
-	connect(m_transfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()), Qt::QueuedConnection);
-	fileTransferUpdate();
+	connect(m_transfer, SIGNAL(updated()), this, SLOT(update()), Qt::QueuedConnection);
+	update();
 
 	show();
 }
@@ -164,78 +162,6 @@ void FileTransferWidget::createGui()
 	bottomLayout->addWidget(m_progressBar.get());
 }
 
-void FileTransferWidget::fileTransferUpdate()
-{
-	updateButtons();
-
-	if (!m_transfer)
-	{
-		m_statusLabel->setText(tr("<b>Not connected</b>"));
-		return;
-	}
-
-	if (FileTransferError::NoError != m_transfer.transferError())
-	{
-		m_statusLabel->setText(tr("<b>Error</b>"));
-		return;
-	}
-
-	if (FileTransferStatus::Finished != m_transfer.transferStatus())
-		m_progressBar->setValue(static_cast<int>(m_transfer.percent()));
-	else
-		m_progressBar->setValue(100);
-
-	if (FileTransferStatus::Transfer == m_transfer.transferStatus())
-	{
-		if (m_lastUpdateTime.isValid())
-		{
-			auto now = QDateTime::currentDateTime();
-			auto timeDiff = now.toTime_t() - m_lastUpdateTime.toTime_t();
-			if (0 < timeDiff)
-			{
-				m_speed = ((m_transfer.transferredSize() - m_lastTransferredSize) / 1024) / timeDiff;
-				m_lastUpdateTime = QDateTime::currentDateTime();
-				m_lastTransferredSize = m_transfer.transferredSize();
-			}
-		}
-		else
-		{
-			m_speed = 0;
-			m_lastUpdateTime = QDateTime::currentDateTime();
-			m_lastTransferredSize = m_transfer.transferredSize();
-		}
-	}
-
-	switch (m_transfer.transferStatus())
-	{
-		case FileTransferStatus::NotConnected:
-			m_statusLabel->setText(tr("<b>Not connected</b>"));
-			break;
-
-		case FileTransferStatus::WaitingForConnection:
-			m_statusLabel->setText(tr("<b>Wait for connection</b>"));
-			break;
-
-		case FileTransferStatus::WaitingForAccept:
-			m_statusLabel->setText(tr("<b>Wait for accept</b>"));
-			break;
-
-		case FileTransferStatus::Transfer:
-			m_statusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(m_speed)));
-			break;
-
-		case FileTransferStatus::Finished:
-			m_statusLabel->setText(tr("<b>Finished</b>"));
-			break;
-
-		case FileTransferStatus::Rejected:
-			m_statusLabel->setText(tr("<b>Rejected</b>"));
-			break;
-	}
-
-	QCoreApplication::processEvents();
-}
-
 bool FileTransferWidget::canSend() const
 {
 	if (FileTransferType::Outgoing != m_transfer.transferType())
@@ -332,6 +258,17 @@ void FileTransferWidget::reject()
 {
 }
 
+void FileTransferWidget::update()
+{
+	updateButtons();
+	updateStatusLabel();
+	updateProgressBar();
+	updateTransferData();
+
+	// not sure if needed
+	QCoreApplication::processEvents();
+}
+
 void FileTransferWidget::updateButtons()
 {
 	m_sendButton->setVisible(canSend());
@@ -340,6 +277,90 @@ void FileTransferWidget::updateButtons()
 	m_removeButton->setVisible(canRemove());
 	m_acceptButton->setVisible(canAccept());
 	m_rejectButton->setVisible(canReject());
+}
+
+void FileTransferWidget::updateStatusLabel()
+{
+	if (!m_transfer)
+	{
+		m_statusLabel->setText(tr("<b>Not connected</b>"));
+		return;
+	}
+
+	if (FileTransferError::NoError != m_transfer.transferError())
+	{
+		m_statusLabel->setText(tr("<b>Error</b>"));
+		return;
+	}
+
+	switch (m_transfer.transferStatus())
+	{
+		case FileTransferStatus::NotConnected:
+			m_statusLabel->setText(tr("<b>Not connected</b>"));
+			break;
+
+		case FileTransferStatus::WaitingForConnection:
+			m_statusLabel->setText(tr("<b>Wait for connection</b>"));
+			break;
+
+		case FileTransferStatus::WaitingForAccept:
+			m_statusLabel->setText(tr("<b>Wait for accept</b>"));
+			break;
+
+		case FileTransferStatus::Transfer:
+			m_statusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(m_speed)));
+			break;
+
+		case FileTransferStatus::Finished:
+			m_statusLabel->setText(tr("<b>Finished</b>"));
+			break;
+
+		case FileTransferStatus::Rejected:
+			m_statusLabel->setText(tr("<b>Rejected</b>"));
+			break;
+	}
+}
+
+void FileTransferWidget::updateProgressBar()
+{
+	if (m_transfer.transferError() != FileTransferError::NoError)
+	{
+		m_progressBar->setValue(0);
+		return;
+	}
+
+	switch (m_transfer.transferStatus())
+	{
+		case FileTransferStatus::Finished:
+			m_progressBar->setValue(100);
+			break;
+		case FileTransferStatus::Transfer:
+			m_progressBar->setValue(static_cast<int>(m_transfer.percent()));
+			break;
+		default:
+			m_progressBar->setValue(0);
+			break;
+	}
+}
+
+void FileTransferWidget::updateTransferData()
+{
+	if (m_transfer.transferError() != FileTransferError::NoError || FileTransferStatus::Transfer != m_transfer.transferStatus() || !m_lastUpdateTime.isValid())
+	{
+		m_speed = 0;
+		m_lastUpdateTime = QDateTime::currentDateTime();
+		m_lastTransferredSize = m_transfer.transferredSize();
+		return;
+	}
+
+	auto now = QDateTime::currentDateTime();
+	auto timeDiff = now.toTime_t() - m_lastUpdateTime.toTime_t();
+	if (0 < timeDiff)
+	{
+		m_speed = ((m_transfer.transferredSize() - m_lastTransferredSize) / 1024) / timeDiff;
+		m_lastUpdateTime = QDateTime::currentDateTime();
+		m_lastTransferredSize = m_transfer.transferredSize();
+	}
 }
 
 #include "moc_file-transfer-widget.cpp"

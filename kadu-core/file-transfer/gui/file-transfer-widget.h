@@ -63,8 +63,11 @@ private:
 	void createGui();
 
 private slots:
-	void fileTransferUpdate();
+	void update();
 	void updateButtons();
+	void updateStatusLabel();
+	void updateProgressBar();
+	void updateTransferData();
 
 	bool canSend() const;
 	void send();
