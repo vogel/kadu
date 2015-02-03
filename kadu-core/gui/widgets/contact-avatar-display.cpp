@@ -30,6 +30,8 @@ ContactAvatarDisplay::ContactAvatarDisplay(Contact contact, QSize size, QWidget 
 		m_avatar{m_contact.avatar(true)},
 		m_size{size}
 {
+	setFixedSize(m_size);
+
 	connect(m_contact, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 	connect(m_avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 
