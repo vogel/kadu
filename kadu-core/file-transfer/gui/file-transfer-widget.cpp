@@ -46,6 +46,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 
 FileTransferWidget::FileTransferWidget(FileTransfer transfer, QWidget *parent) :
@@ -88,7 +89,7 @@ void FileTransferWidget::createGui()
 	auto statusLayout = new QVBoxLayout{this};
 	statusLayout->setMargin(0);
 
-	auto buttonsLayout = new QVBoxLayout{this};
+	auto buttonsLayout = new QHBoxLayout{this};
 	buttonsLayout->setMargin(0);
 	buttonsLayout->setSpacing(2);
 
@@ -106,27 +107,24 @@ void FileTransferWidget::createGui()
 	m_statusLabel = new QLabel{this};
 
 	m_sendButton = new QPushButton{tr("Send"), this};
-	m_sendButton->hide();
 	connect(m_sendButton.get(), SIGNAL(clicked()), this, SLOT(send()));
 
 	m_openButton = new QPushButton{tr("Open"), this};
-	m_openButton->hide();
 	connect(m_openButton.get(), SIGNAL(clicked()), this, SLOT(open()));
 
 	m_stopButton = new QPushButton{tr("Stop"), this};
-	m_stopButton->hide();
 	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stop()));
 
-	m_removeButton = new QPushButton{tr("Remove"), this};
-	m_removeButton->hide();
+	m_removeButton = new QToolButton{this};
+	m_removeButton->setAutoRaise(true);
+	m_removeButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
+	m_removeButton->setToolTip(tr("Remove"));
 	connect(m_removeButton.get(), SIGNAL(clicked()), this, SLOT(remove()));
 
 	m_acceptButton = new QPushButton{tr("Accept"), this};
-	m_acceptButton->hide();
 	connect(m_acceptButton.get(), SIGNAL(clicked()), this, SLOT(accept()));
 
 	m_rejectButton = new QPushButton{tr("Reject"), this};
-	m_rejectButton->hide();
 	connect(m_rejectButton.get(), SIGNAL(clicked()), this, SLOT(reject()));
 
 	auto icon = new QLabel{this};
@@ -153,10 +151,10 @@ void FileTransferWidget::createGui()
 	buttonsLayout->addWidget(m_sendButton.get());
 	buttonsLayout->addWidget(m_openButton.get());
 	buttonsLayout->addWidget(m_stopButton.get());
-	buttonsLayout->addWidget(m_removeButton.get());
 	buttonsLayout->addWidget(m_acceptButton.get());
 	buttonsLayout->addWidget(m_rejectButton.get());
 	buttonsLayout->addStretch(100);
+	buttonsLayout->addWidget(m_removeButton.get(), 0, Qt::AlignTop | Qt::AlignRight);
 
 	bottomLayout->addWidget(icon);
 	bottomLayout->addWidget(m_progressBar.get());
@@ -212,6 +210,24 @@ void FileTransferWidget::stop()
 	updateButtons();
 }
 
+bool FileTransferWidget::canAccept() const
+{
+	return false;
+}
+
+void FileTransferWidget::accept()
+{
+}
+
+bool FileTransferWidget::canReject() const
+{
+	return false;
+}
+
+void FileTransferWidget::reject()
+{
+}
+
 bool FileTransferWidget::canRemove() const
 {
 	return m_transfer.handler() == nullptr;
@@ -240,24 +256,6 @@ void FileTransferWidget::remove()
 	deleteLater();
 }
 
-bool FileTransferWidget::canAccept() const
-{
-	return false;
-}
-
-void FileTransferWidget::accept()
-{
-}
-
-bool FileTransferWidget::canReject() const
-{
-	return false;
-}
-
-void FileTransferWidget::reject()
-{
-}
-
 void FileTransferWidget::update()
 {
 	updateButtons();
@@ -271,6 +269,11 @@ void FileTransferWidget::update()
 
 void FileTransferWidget::updateButtons()
 {
+	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
+		m_sendButton->setText(tr("Send again"));
+	else
+		m_sendButton->setText(tr("Send"));
+
 	m_sendButton->setVisible(canSend());
 	m_openButton->setVisible(canOpen());
 	m_stopButton->setVisible(canStop());

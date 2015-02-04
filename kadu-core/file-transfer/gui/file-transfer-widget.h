@@ -32,6 +32,7 @@
 class QLabel;
 class QProgressBar;
 class QPushButton;
+class QToolButton;
 
 class FileTransferWidget : public QWidget
 {
@@ -56,9 +57,9 @@ private:
 	owned_qptr<QPushButton> m_sendButton;
 	owned_qptr<QPushButton> m_openButton;
 	owned_qptr<QPushButton> m_stopButton;
-	owned_qptr<QPushButton> m_removeButton;
 	owned_qptr<QPushButton> m_acceptButton;
 	owned_qptr<QPushButton> m_rejectButton;
+	owned_qptr<QToolButton> m_removeButton;
 
 	void createGui();
 
@@ -78,13 +79,13 @@ private slots:
 	bool canStop() const;
 	void stop();
 
-	bool canRemove() const;
-	void remove();
-
 	bool canAccept() const;
 	void accept();
 
 	bool canReject() const;
 	void reject();
+
+	bool canRemove() const;
+	void remove();
 
 };
