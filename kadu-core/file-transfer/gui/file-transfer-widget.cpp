@@ -42,6 +42,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QProgressBar>
@@ -79,32 +80,29 @@ void FileTransferWidget::createGui()
 	setMinimumSize(QSize(100, 50));
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	auto mainLayout = new QVBoxLayout{this};
-	mainLayout->setMargin(10);
+	auto mainLayout = new QGridLayout{this};
+	mainLayout->setMargin(6);
+	mainLayout->setSpacing(6);
 	mainLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
-	auto topLayout = new QHBoxLayout{this};
-	topLayout->setMargin(0);
-
-	auto statusLayout = new QVBoxLayout{this};
-	statusLayout->setMargin(0);
+	auto descriptionLayout = new QGridLayout{this};
+	descriptionLayout->setMargin(0);
+	descriptionLayout->setSpacing(2);
 
 	auto buttonsLayout = new QHBoxLayout{this};
 	buttonsLayout->setMargin(0);
 	buttonsLayout->setSpacing(2);
 
-	auto bottomLayout = new QHBoxLayout{this};
-	bottomLayout->setMargin(0);
-
 	auto avatar = new ContactAvatarDisplay{m_transfer.peer(), QSize{48, 48}, this};
 
-	m_descriptionLabel = new QLabel{this};
+	auto fileNameLabel = new QLabel{this};
 	auto fileName = QFileInfo{m_transfer.localFileName()}.fileName();
 	if (fileName.isEmpty())
 		fileName = m_transfer.remoteFileName();
-	m_descriptionLabel->setText(QString{"File: <b>%1</b>"}.arg(fileName));
+	fileNameLabel->setText(fileName);
 
 	m_statusLabel = new QLabel{this};
+	m_statusLabel->setWordWrap(true);
 
 	m_sendButton = new QPushButton{tr("Send"), this};
 	connect(m_sendButton.get(), SIGNAL(clicked()), this, SLOT(send()));
@@ -117,6 +115,7 @@ void FileTransferWidget::createGui()
 
 	m_removeButton = new QToolButton{this};
 	m_removeButton->setAutoRaise(true);
+	m_removeButton->setFixedSize({22, 22});
 	m_removeButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 	m_removeButton->setToolTip(tr("Remove"));
 	connect(m_removeButton.get(), SIGNAL(clicked()), this, SLOT(remove()));
@@ -136,28 +135,32 @@ void FileTransferWidget::createGui()
 	m_progressBar = new QProgressBar{this};
 	m_progressBar->setMinimum(0);
 	m_progressBar->setMaximum(100);
+	m_progressBar->setMaximumHeight(8);
+	m_progressBar->setTextVisible(false);
 
-	mainLayout->addLayout(topLayout);
-	mainLayout->addLayout(bottomLayout);
+	mainLayout->addWidget(avatar, 0, 0, 2, 1, Qt::AlignTop | Qt::AlignLeft);
+	mainLayout->addLayout(descriptionLayout, 0, 1, 2, 1, Qt::AlignTop | Qt::AlignLeft);
+	mainLayout->addWidget(m_removeButton.get(), 0, 2, Qt::AlignTop | Qt::AlignRight);
+	mainLayout->addLayout(buttonsLayout, 1, 2, Qt::AlignTop | Qt::AlignLeft);
+	mainLayout->addWidget(m_progressBar.get(), 2, 0, 1, 3);
 
-	topLayout->addWidget(avatar, 1, Qt::AlignTop | Qt::AlignLeft);
-	topLayout->addLayout(statusLayout, 100);
-	topLayout->addLayout(buttonsLayout, 1);
+	mainLayout->setColumnStretch(0, 1);
+	mainLayout->setColumnStretch(1, 100);
+	mainLayout->setColumnStretch(2, 1);
 
-	statusLayout->addWidget(m_descriptionLabel.get(), Qt::AlignLeft);
-	statusLayout->addWidget(m_statusLabel.get());
-	statusLayout->addStretch(100);
+	descriptionLayout->addWidget(icon, 0, 0, Qt::AlignTop | Qt::AlignLeft);
+	descriptionLayout->addWidget(fileNameLabel, 0, 1, Qt::AlignTop | Qt::AlignLeft);
+	descriptionLayout->addWidget(m_statusLabel.get(), 1, 0, 1, 2, Qt::AlignTop | Qt::AlignLeft);
 
-	buttonsLayout->addWidget(m_sendButton.get());
-	buttonsLayout->addWidget(m_openButton.get());
-	buttonsLayout->addWidget(m_stopButton.get());
-	buttonsLayout->addWidget(m_acceptButton.get());
-	buttonsLayout->addWidget(m_rejectButton.get());
+	descriptionLayout->setColumnStretch(0, 1);
+	descriptionLayout->setColumnStretch(1, 100);
+
 	buttonsLayout->addStretch(100);
-	buttonsLayout->addWidget(m_removeButton.get(), 0, Qt::AlignTop | Qt::AlignRight);
-
-	bottomLayout->addWidget(icon);
-	bottomLayout->addWidget(m_progressBar.get());
+	buttonsLayout->addWidget(m_sendButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_openButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_stopButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_acceptButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_rejectButton.get(), 1, Qt::AlignBottom);
 }
 
 bool FileTransferWidget::canSend() const
@@ -277,9 +280,9 @@ void FileTransferWidget::updateButtons()
 	m_sendButton->setVisible(canSend());
 	m_openButton->setVisible(canOpen());
 	m_stopButton->setVisible(canStop());
-	m_removeButton->setVisible(canRemove());
 	m_acceptButton->setVisible(canAccept());
 	m_rejectButton->setVisible(canReject());
+	m_removeButton->setEnabled(canRemove());
 }
 
 void FileTransferWidget::updateStatusLabel()
