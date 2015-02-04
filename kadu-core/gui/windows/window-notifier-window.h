@@ -37,7 +37,7 @@ class WindowNotifierWindow : public QDialog, DesktopAwareObject
 	Notification *CurrentNotification;
 
 	void createGui();
-	void addButton(QWidget *parent, const QString &caption, const char *slot);
+	void addButton(Notification *notification, QWidget *parent, const QString &caption, const char *slot);
 
 public:
 	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = 0);

@@ -26,6 +26,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "icons/icons-manager.h"
+#include "notify/notification/aggregate-notification.h"
 #include "notify/notification/notification.h"
 #include "debug.h"
 
@@ -84,25 +85,30 @@ void WindowNotifierWindow::createGui()
 	layout->addWidget(buttons, 0, Qt::AlignCenter);
 
 	const QList<Notification::Callback> callbacks = CurrentNotification->getCallbacks();
+	auto callbackNotifiation = CurrentNotification;
+	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
+		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
 
 	if (!callbacks.isEmpty())
 		foreach(const Notification::Callback &i, callbacks)
-			addButton(buttons, i.Caption, i.Slot);
+		{
+			addButton(callbackNotifiation, buttons, i.Caption, i.Slot);
+		}
 	else
-		addButton(buttons, tr("OK"), SLOT(callbackAccept()));
+		addButton(callbackNotifiation, buttons, tr("OK"), SLOT(callbackAccept()));
 
 	connect(CurrentNotification, SIGNAL(closed(Notification *)), this, SLOT(close()));
 
 	buttons->setMaximumSize(buttons->sizeHint());
 }
 
-void WindowNotifierWindow::addButton(QWidget *parent, const QString &caption, const char *slot)
+void WindowNotifierWindow::addButton(Notification *notification, QWidget *parent, const QString &caption, const char *slot)
 {
 	QPushButton *button = new QPushButton();
 	parent->layout()->addWidget(button);
 	button->setText(caption);
-	connect(button, SIGNAL(clicked()), CurrentNotification, slot);
-	connect(button, SIGNAL(clicked()), CurrentNotification, SLOT(clearDefaultCallback()));
+	connect(button, SIGNAL(clicked()), notification, slot);
+	connect(button, SIGNAL(clicked()), notification, SLOT(clearDefaultCallback()));
 }
 
 #include "moc_window-notifier-window.cpp"
