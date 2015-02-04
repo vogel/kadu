@@ -145,7 +145,7 @@ void FileTransferWindow::clearClicked()
 
 void FileTransferWindow::contentsChanged()
 {
-	auto alternate = false;
+	auto alternate = m_widgets.size() % 2 == 0;
 	for (auto &&widget : m_widgets)
 	{
 		widget->setBackgroundRole(alternate ? QPalette::AlternateBase : QPalette::Base);
