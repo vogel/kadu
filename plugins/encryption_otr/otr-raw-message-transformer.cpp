@@ -150,9 +150,13 @@ RawMessage OtrRawMessageTransformer::transformSent(const RawMessage &rawMessage,
 
 	if (!err && newMessage)
 	{
-		auto result = QByteArray{newMessage};
+		auto transformed = QByteArray{newMessage};
+		auto result = (rawMessage.rawXmlContent() == transformed.trimmed())
+			? rawMessage
+			: RawMessage{transformed, transformed};
+
 		otrl_message_free(newMessage);
-		return {result, result};
+		return result;
 	}
 
 	if (newMessage)
