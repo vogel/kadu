@@ -112,7 +112,7 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 }
 
 NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer, FileTransferStartType startType) :
-		ChatNotification{chat, type, KaduIcon{}},
+		ChatNotification{chat, type, KaduIcon{}, false},
 		m_transfer{transfer}
 {
 	if (startType == FileTransferStartType::Restore)

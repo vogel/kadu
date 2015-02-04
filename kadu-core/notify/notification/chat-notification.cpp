@@ -28,11 +28,14 @@
 
 #include "chat-notification.h"
 
-ChatNotification::ChatNotification(const Chat &chat, const QString &type, const KaduIcon &icon) :
+ChatNotification::ChatNotification(const Chat &chat, const QString &type, const KaduIcon &icon, bool showChatCallbacks) :
 		AccountNotification(chat.chatAccount(), type, icon), CurrentChat(chat)
 {
-	addCallback(tr("Chat"), SLOT(callbackAccept()), "callbackAccept()");
-	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
+	if (showChatCallbacks)
+	{
+		addCallback(tr("Chat"), SLOT(callbackAccept()), "callbackAccept()");
+		addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
+	}
 }
 
 void ChatNotification::openChat()
