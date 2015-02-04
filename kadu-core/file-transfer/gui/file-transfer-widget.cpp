@@ -158,8 +158,8 @@ void FileTransferWidget::createGui()
 	mainLayout->setColumnStretch(1, 100);
 	mainLayout->setColumnStretch(2, 1);
 
-	descriptionLayout->addWidget(icon, 0, 0, Qt::AlignTop | Qt::AlignLeft);
-	descriptionLayout->addWidget(fileNameLabel, 0, 1, Qt::AlignTop | Qt::AlignLeft);
+	descriptionLayout->addWidget(icon, 0, 0, Qt::AlignHCenter | Qt::AlignLeft);
+	descriptionLayout->addWidget(fileNameLabel, 0, 1, Qt::AlignHCenter | Qt::AlignLeft);
 	descriptionLayout->addWidget(m_statusLabel.get(), 1, 0, 1, 2, Qt::AlignTop | Qt::AlignLeft);
 
 	descriptionLayout->setColumnStretch(0, 1);
