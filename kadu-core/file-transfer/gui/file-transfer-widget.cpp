@@ -38,13 +38,16 @@
 #include "icons/kadu-icon.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QToolButton>
@@ -108,7 +111,14 @@ void FileTransferWidget::createGui()
 	connect(m_sendButton.get(), SIGNAL(clicked()), this, SLOT(send()));
 
 	m_openButton = new QPushButton{tr("Open"), this};
-	connect(m_openButton.get(), SIGNAL(clicked()), this, SLOT(open()));
+	auto openMenu = new QMenu{m_openButton.get()};
+	m_openFileAction = new QAction{tr("Open file"), openMenu};
+	connect(m_openFileAction.get(), SIGNAL(triggered(bool)), this, SLOT(openFile()));
+	m_openFolderAction = new QAction{tr("Open folder"), openMenu};
+	connect(m_openFolderAction.get(), SIGNAL(triggered(bool)), this, SLOT(openFolder()));
+	openMenu->addAction(m_openFileAction.get());
+	openMenu->addAction(m_openFolderAction.get());
+	m_openButton->setMenu(openMenu);
 
 	m_stopButton = new QPushButton{tr("Stop"), this};
 	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stop()));
@@ -172,8 +182,10 @@ bool FileTransferWidget::canSend() const
 	return true;
 }
 
-bool FileTransferWidget::canOpen() const
+bool FileTransferWidget::canOpenFile() const
 {
+	if (!canOpenFolder())
+		return false;
 	if (FileTransferType::Outgoing == m_transfer.transferType())
 		return true;
 	if (m_transfer.transferError() != FileTransferError::NoError)
@@ -183,10 +195,22 @@ bool FileTransferWidget::canOpen() const
 	return false;
 }
 
-void FileTransferWidget::open()
+void FileTransferWidget::openFile()
 {
-	if (canOpen())
+	if (canOpenFile())
 		QDesktopServices::openUrl(QUrl::fromLocalFile(m_transfer.localFileName()));
+}
+
+bool FileTransferWidget::canOpenFolder() const
+{
+	QFileInfo info{m_transfer.localFileName()};
+	return info.absoluteDir().exists();
+}
+
+void FileTransferWidget::openFolder()
+{
+	if (canOpenFolder())
+		QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(m_transfer.localFileName()).absoluteDir().absolutePath()));
 }
 
 void FileTransferWidget::send()
@@ -278,7 +302,8 @@ void FileTransferWidget::updateButtons()
 		m_sendButton->setText(tr("Send"));
 
 	m_sendButton->setVisible(canSend());
-	m_openButton->setVisible(canOpen());
+	m_openButton->setVisible(canOpenFolder());
+	m_openFileAction->setEnabled(canOpenFile());
 	m_stopButton->setVisible(canStop());
 	m_acceptButton->setVisible(canAccept());
 	m_rejectButton->setVisible(canReject());

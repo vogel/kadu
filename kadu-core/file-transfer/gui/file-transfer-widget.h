@@ -54,6 +54,8 @@ private:
 	owned_qptr<QLabel> m_statusLabel;
 	owned_qptr<QProgressBar> m_progressBar;
 	owned_qptr<QPushButton> m_sendButton;
+	owned_qptr<QAction> m_openFileAction;
+	owned_qptr<QAction> m_openFolderAction;
 	owned_qptr<QPushButton> m_openButton;
 	owned_qptr<QPushButton> m_stopButton;
 	owned_qptr<QPushButton> m_acceptButton;
@@ -72,8 +74,11 @@ private slots:
 	bool canSend() const;
 	void send();
 
-	bool canOpen() const;
-	void open();
+	bool canOpenFile() const;
+	void openFile();
+
+	bool canOpenFolder() const;
+	void openFolder();
 
 	bool canStop() const;
 	void stop();
