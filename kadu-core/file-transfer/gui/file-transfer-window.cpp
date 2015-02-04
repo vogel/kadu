@@ -79,7 +79,6 @@ void FileTransferWindow::createGui()
 
 	m_innerFrame = new QFrame{this};
 	m_innerFrame->setAutoFillBackground(true);
-	m_innerFrame->setBackgroundRole(QPalette::Base);
 	m_innerFrame->setFrameStyle(QFrame::NoFrame);
  	m_innerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
