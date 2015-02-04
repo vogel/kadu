@@ -63,7 +63,7 @@ void NewFileTransferNotification::unregisterEvents()
 void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)
 {
 	auto chat = ChatTypeContact::findChat(fileTransfer.peer(), ActionCreateAndAdd);
-	auto notification = new NewFileTransferNotification{"FileTransfer/IncomingFile", fileTransfer,
+	auto notification = new NewFileTransferNotification{chat, "FileTransfer/IncomingFile", fileTransfer,
 			fileTransfer.localFileName().isEmpty() ? FileTransferStartType::New : FileTransferStartType::Restore};
 	notification->setTitle(tr("Incoming transfer"));
 
@@ -111,8 +111,8 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 	NotificationManager::instance()->notify(notification);
 }
 
-NewFileTransferNotification::NewFileTransferNotification(const QString &type, FileTransfer transfer, FileTransferStartType startType) :
-		Notification{type, KaduIcon{}},
+NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer, FileTransferStartType startType) :
+		ChatNotification{chat, type, KaduIcon{}},
 		m_transfer{transfer}
 {
 	if (startType == FileTransferStartType::Restore)
