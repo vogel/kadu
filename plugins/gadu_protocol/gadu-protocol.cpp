@@ -82,7 +82,7 @@
 #include "gadu-protocol.h"
 
 GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), CurrentFileTransferService(0),
+		Protocol(account, factory),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0)
 {
 	Connection = new ProtocolGaduConnection(this);
@@ -95,10 +95,13 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatImageService = new GaduChatImageService(account, this);
 	CurrentChatImageService->setConnection(Connection);
 
+	CurrentFileTransferService = new GaduFileTransferService{this};
+
 	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setConnection(Connection);
 	CurrentChatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	CurrentChatService->setGaduChatImageService(CurrentChatImageService);
+	CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
 	CurrentChatService->setImageStorageService(Core::instance()->imageStorageService());
 	CurrentChatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
@@ -251,8 +254,6 @@ void GaduProtocol::configureServices()
 void GaduProtocol::accountUpdated()
 {
 	sendStatusToServer();
-	setUpFileTransferService();
-
 	configureServices();
 }
 
@@ -339,9 +340,6 @@ void GaduProtocol::afterLoggedIn()
 	// fetch current avatar after connection
 	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
 
-	// set up file transfer if needed
-	setUpFileTransferService();
-
 	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
 	CurrentNotifyService->sendInitialData(contacts);
 
@@ -365,8 +363,6 @@ void GaduProtocol::logout()
 void GaduProtocol::disconnectedCleanup()
 {
 	Protocol::disconnectedCleanup();
-
-	setUpFileTransferService(true);
 
 	if (PingTimer)
 	{
@@ -453,36 +449,6 @@ void GaduProtocol::cleanUpLoginParams()
 
 	delete [] GaduLoginParams.status_descr;
 	GaduLoginParams.status_descr = 0;
-}
-
-void GaduProtocol::startFileTransferService()
-{
-	if (!CurrentFileTransferService)
-	{
-		CurrentFileTransferService = new GaduFileTransferService(this);
-		account().data()->fileTransferServiceChanged(CurrentFileTransferService);
-		CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
-	}
-}
-
-void GaduProtocol::stopFileTransferService()
-{
-	delete CurrentFileTransferService;
-	CurrentFileTransferService = nullptr;
-	account().data()->fileTransferServiceChanged(nullptr);
-	CurrentChatService->setGaduFileTransferService(nullptr);
-}
-
-void GaduProtocol::setUpFileTransferService(bool forceClose)
-{
-	bool close = forceClose;
-	if (!close)
-		close = !isConnected();
-
-	if (close)
-		stopFileTransferService();
-	else
-		startFileTransferService();
 }
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)

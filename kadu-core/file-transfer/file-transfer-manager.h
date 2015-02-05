@@ -89,7 +89,4 @@ private:
 private slots:
 	void incomingFileTransfer(FileTransfer fileTransfer);
 
-	void fileTransferServiceRegistered();
-	void fileTransferServiceUnregistered();
-
 };

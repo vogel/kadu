@@ -110,22 +110,9 @@ void FileTransferManager::removeFileTransferService(Account account)
 	disconnect(service, 0, this, 0);
 }
 
-void FileTransferManager::fileTransferServiceRegistered()
-{
-	addFileTransferService(Account{sender()});
-}
-
-void FileTransferManager::fileTransferServiceUnregistered()
-{
-	removeFileTransferService(Account{sender()});
-}
-
 void FileTransferManager::accountRegistered(Account account)
 {
 	QMutexLocker locker(&mutex());
-
-	connect(account, SIGNAL(fileTransferServiceRegistered()), this, SLOT(fileTransferServiceRegistered()));
-	connect(account, SIGNAL(fileTransferServiceUnregistered()), this, SLOT(fileTransferServiceUnregistered()));
 
 	addFileTransferService(account);
 }
@@ -133,8 +120,6 @@ void FileTransferManager::accountRegistered(Account account)
 void FileTransferManager::accountUnregistered(Account account)
 {
 	QMutexLocker locker(&mutex());
-
-	disconnect(account, 0, this, 0);
 
 	removeFileTransferService(account);
 }

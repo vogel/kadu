@@ -425,14 +425,6 @@ void AccountShared::setPrivateStatus(bool isPrivate)
 		ProtocolHandler->changePrivateMode();
 }
 
-void AccountShared::fileTransferServiceChanged(FileTransferService *service)
-{
-	if (service)
-		emit fileTransferServiceRegistered();
-	else
-		emit fileTransferServiceUnregistered();
-}
-
 KaduShared_PropertyPtrReadDef(AccountShared, Identity, accountIdentity, AccountIdentity)
 
 #include "moc_account-shared.cpp"

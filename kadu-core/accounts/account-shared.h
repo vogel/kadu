@@ -127,10 +127,6 @@ public:
 	KaduShared_Property(bool, useDefaultProxy, UseDefaultProxy)
 	KaduShared_Property(const NetworkProxy &, proxy, Proxy)
 
-	// TODO: 0.11, find better API
-	// this is only for GG now
-	void fileTransferServiceChanged(FileTransferService *service);
-
 signals:
 	void buddyStatusChanged(const Contact &contact, const Status &oldStatus);
 
@@ -138,11 +134,6 @@ signals:
 	void disconnected();
 
 	void updated();
-
-	// TODO: 0.11, find better API
-	// this is only for GG now
-	void fileTransferServiceRegistered();
-	void fileTransferServiceUnregistered();
 
 };
 

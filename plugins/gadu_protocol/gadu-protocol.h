@@ -124,8 +124,6 @@ private:
 	void startFileTransferService();
 	void stopFileTransferService();
 
-	void setUpFileTransferService(bool forceClose = false);
-
 	void socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize);
 	void socketConnFailed(GaduError error);
 	void connectedToServer();

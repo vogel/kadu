@@ -57,8 +57,7 @@ void SendFileAction::actionInstanceCreated(Action *action)
 	if (!account)
 		return;
 
-	connect(account, SIGNAL(fileTransferServiceRegistered()), action, SLOT(checkState()));
-	connect(account, SIGNAL(fileTransferServiceUnregistered()), action, SLOT(checkState()));
+	//
 }
 
 void SendFileAction::triggered(QWidget* widget, ActionContext* context, bool toggled)
