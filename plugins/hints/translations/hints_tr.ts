@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Hints</source>
-        <translation>Tavsiyeler</translation>
+        <translation>İpucular</translation>
     </message>
     <message>
         <source>Look</source>
@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>New hints go</source>
-        <translation>Yeni tavsiyelere git</translation>
+        <translation>Yeni ipuculara git</translation>
     </message>
     <message>
         <source>Auto</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Own hints position</source>
-        <translation>Tavsiye özeş konumu</translation>
+        <translation>İpucu özel konumu</translation>
     </message>
     <message>
         <source>X</source>
@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Hints position preview</source>
-        <translation>Tavsiye konumı ön izleme</translation>
+        <translation>İpucu konumu ön izleme</translation>
     </message>
     <message>
         <source>Timeout</source>
@@ -83,19 +83,19 @@
     </message>
     <message>
         <source>&apos;Open chat&apos; works on all events</source>
-        <translation type="unfinished"/>
+        <translation>Tüm olaylarda &apos;Konuşmayı Aç&apos;</translation>
     </message>
     <message>
         <source>Show message content in hint</source>
-        <translation type="unfinished"/>
+        <translation>Mesaj içeriğinde ipucu göster</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"/>
+        <translation>Alıntı karakter sayısı</translation>
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı ipuçlarını silerken bekleyen mesajı sil</translation>
     </message>
     <message>
         <source>Buddy List</source>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <source>Hint Over Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Arkadaşın Üstündeyken İpucu</translation>
     </message>
     <message>
         <source>Border color</source>
@@ -175,31 +175,31 @@
     </message>
     <message>
         <source>Hint&apos;s corner</source>
-        <translation>Tavsiye&apos;nin köşesi</translation>
+        <translation>İpucu&apos;nun köşesi</translation>
     </message>
     <message>
         <source>On Top</source>
-        <translation type="unfinished"/>
+        <translation>En Üstte</translation>
     </message>
     <message>
         <source>On Bottom</source>
-        <translation type="unfinished"/>
+        <translation>En Altta</translation>
     </message>
     <message>
         <source>Top Left</source>
-        <translation type="unfinished"/>
+        <translation>Sol Üst</translation>
     </message>
     <message>
         <source>Top Right</source>
-        <translation type="unfinished"/>
+        <translation>Sağ Üst</translation>
     </message>
     <message>
         <source>Bottom Left</source>
-        <translation type="unfinished"/>
+        <translation>Sol Alt</translation>
     </message>
     <message>
         <source>Bottom Right</source>
-        <translation type="unfinished"/>
+        <translation>Sağ Alt</translation>
     </message>
     <message>
         <source>Open Chat</source>
@@ -207,23 +207,23 @@
     </message>
     <message>
         <source>Delete Hint</source>
-        <translation>Tavsiyeyi Sil</translation>
+        <translation>İpucunu Sil</translation>
     </message>
     <message>
         <source>Delete All Hints</source>
-        <translation>Tüm Tavsiyeleri Sil</translation>
+        <translation>Tüm İpuçlarını Sil</translation>
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Buradan&lt;/b&gt; ön izleme yapabilirsiniz</translation>
     </message>
     <message>
         <source>Show buttons only if notification requires user&apos;s action</source>
-        <translation type="unfinished"/>
+        <translation>Uyarıda kullanıcı etkileşimi gerekliyse sadece butonları göster</translation>
     </message>
     <message>
         <source>Hints size and position...</source>
-        <translation>Tavsiye boyut ve konumu...</translation>
+        <translation>İpucu boyut ve konumu...</translation>
     </message>
 </context>
 <context>
@@ -237,7 +237,7 @@
     <name>HintOverUserConfigurationWindow</name>
     <message>
         <source>Hint Over Buddy Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Arkadaşın Üstündeyken İpucu Ayarı</translation>
     </message>
     <message>
         <source>Update preview</source>
@@ -256,11 +256,11 @@
     </message>
     <message>
         <source>Hint over buddy list: </source>
-        <translation type="unfinished"/>
+        <translation>Arkadaş listesinin üzerinde ipucu:</translation>
     </message>
     <message>
         <source>Advanced hints&apos; configuration</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş ipucu ayarları</translation>
     </message>
 </context>
 <context>
@@ -271,14 +271,14 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Buradan&lt;/b&gt; ön izleme yapabilirsiniz</translation>
     </message>
 </context>
 <context>
     <name>HintsConfigurationWindow</name>
     <message>
         <source>Hints configuration</source>
-        <translation>Tavsiye ayarı</translation>
+        <translation>İpuçları ayarı</translation>
     </message>
     <message>
         <source>Don&apos;t hide</source>
@@ -286,7 +286,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Buradan&lt;/b&gt; ön izleme yapabilirsiniz</translation>
     </message>
 </context>
 </TS>

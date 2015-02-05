@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>MediaPlayer statuses in description</source>
-        <translation type="unfinished"/>
+        <translation>Medya Oynatıcı durumlardaki tanımı</translation>
     </message>
     <message>
         <source>Replace</source>
@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Here specify format which will replace &apos;#{player}&apos; tag when you will use it in description while setting status.</source>
-        <translation type="unfinished"/>
+        <translation>Durum ayarlanırken açıklama olarak kullanılacak &apos;#{player}&apos; etiketini buradaki formatla değiştir.</translation>
     </message>
     <message>
         <source>Signatures to cut</source>
@@ -51,7 +51,7 @@
     </message>
     <message>
         <source>Enables pseudo-OSD done by Kadu hints. Shows currently played title in hint.</source>
-        <translation type="unfinished"/>
+        <translation>Kadu ipucu olarak pseudo-OSD izin ver. Şuan oynatılanın başlığını ipucu olarak göster.</translation>
     </message>
     <message>
         <source>Enable MediaPlayer keyboard shortcuts in chat window</source>
@@ -59,11 +59,11 @@
     </message>
     <message>
         <source>Put statuses switch to dock menu</source>
-        <translation type="unfinished"/>
+        <translation>Dock menü üzerinden durumları değiştirmeyi koyun</translation>
     </message>
     <message>
         <source>Enable this to put MediaPlayer statuses switch into docked icon menu.</source>
-        <translation type="unfinished"/>
+        <translation>Medya Oynatıcı durumlarını değiştirmek için dock simge menüsüne koyun</translation>
     </message>
     <message>
         <source>Signature Cutting</source>
@@ -77,13 +77,17 @@
         <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation type="unfinished"/>
+        <translation>Bu seçeneği aktif ettiğinizde konuşma penceresinde Medya 
+Oynatıcınızı klavye kısayol tuşlarıyla kontrol edebilceksiniz:
+Control+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation type="unfinished"/>
+        <translation>Bu seçeneği aktif ettiğinizde konuşma penceresinde Medya 
+Oynatıcınızı klavye kısayol tuşlarıyla kontrol edebilceksiniz:
+Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Add in the Front</source>
@@ -115,7 +119,7 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
     </message>
     <message>
         <source>Enable removing non-essential stuff from audio file titles</source>
-        <translation type="unfinished"/>
+        <translation>Ses dosya başlıklarının gerekli olmayan kısımlarını kaldır</translation>
     </message>
 </context>
 <context>
@@ -154,7 +158,7 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
     </message>
     <message>
         <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be split and sent in few messages&lt;br&gt;Are you sure to do that?</source>
-        <translation type="unfinished"/>
+        <translation>%2 çalma listesinin %1 girdilerini göndermeye çalışıyorsunuz.&lt;br&gt;Bunlar ayırılacak ve bir kaç mesaj halinde gönderilecek&lt;br&gt;Bunu yapmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <source>Playback stopped.</source>
@@ -198,7 +202,7 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
     </message>
     <message>
         <source>More than 1/10 of titles you&apos;re trying to send are empty.&lt;br&gt;Perhaps %1 hasn&apos;t read all titles yet, give its some more time.&lt;br&gt;Do you want to send playlist anyway?</source>
-        <translation type="unfinished"/>
+        <translation>1/10 dan fazla boş başlık göndermeye çalışıyorsunuz.&lt;br&gt; Muhtemelen %1 bütün başlıkları henüz okuyamayacak, biraz daha fazla zaman verin.&lt;br&gt;Yinede çalma listesini göndermek istediğinizden emin  misiniz?</translation>
     </message>
     <message>
         <source>Pause</source>

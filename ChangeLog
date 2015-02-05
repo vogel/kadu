@@ -1,6 +1,7 @@
 +++ version 2.0-rc2
 * gui: #2940 fixed: crash on exit when not using tabs plugin (Vogel)
 * otr: #2947 fixed: <span> marks in GG messages when otr is enabled (Vogel)
+* translations: complete Turkish translation (kardanadam26)
 
 +++ version 2.0-rc1
 * translations: #2943 fixed: re-added Qt translation files (Vogel)

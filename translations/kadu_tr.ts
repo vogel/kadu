@@ -427,7 +427,7 @@
     </message>
     <message>
         <source>to free for chat</source>
-        <translation>ücretsiz konuşmada iken</translation>
+        <translation>konuşmaya müsait iken</translation>
     </message>
     <message>
         <source>to online</source>
@@ -617,7 +617,7 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>Not available</source>
-        <translation>Mevcut değil</translation>
+        <translation>Müsait değil</translation>
     </message>
     <message>
         <source>Do not disturb</source>
@@ -625,7 +625,7 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>Free for chat</source>
-        <translation>Ücretsiz konuşma</translation>
+        <translation>Konuşmaya müsait</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
@@ -681,7 +681,7 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>Free for Chat</source>
-        <translation>Ücretsiz Konuşma</translation>
+        <translation>Konuşmaya Müsait</translation>
     </message>
     <message>
         <source>Do Not Disturb</source>
@@ -1334,7 +1334,7 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>No user identification entered</source>
-        <translation>Kullanıcı kimliklendirme girilmedi</translation>
+        <translation>Kullanıcı kimliği girilmedi</translation>
     </message>
     <message>
         <source>No mobile number entered</source>
@@ -1917,7 +1917,7 @@ Yine bu resmi kabul edecek misiniz?</translation>
     </message>
     <message>
         <source>Chat with </source>
-        <translation>Konuşma Yap</translation>
+        <translation>Konuşma Yap </translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
@@ -1964,7 +1964,7 @@ Yine bu resmi kabul edecek misiniz?</translation>
     </message>
     <message>
         <source>Return Sends Message</source>
-        <translation>Dönüş Mesajı Gönderir</translation>
+        <translation>Enter Tuşu Mesajı Gönderir</translation>
     </message>
     <message>
         <source>Clear Messages in Chat Window</source>
