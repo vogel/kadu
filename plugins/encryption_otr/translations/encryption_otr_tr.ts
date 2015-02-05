@@ -126,11 +126,11 @@
     </message>
     <message>
         <source>We are receiving our own OTR messages from %1. Either restart or close your private conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Biz % 1 den kendimizin OTR mesajlarını alıyoruz. Yeniden başlatın ya da özel konuşmayı kapatın.</translation>
     </message>
     <message>
         <source>Last message was resent: %1</source>
-        <translation type="unfinished"/>
+        <translation>Son mesaj yeniden gönderildi: %1</translation>
     </message>
     <message>
         <source>Message from %1 was unreadable, as you are not currently communicating privately.</source>
@@ -158,7 +158,7 @@
     </message>
     <message>
         <source>%1 has sent a message intended for different session. If you are logged in multiple times another session may have received the message.</source>
-        <translation type="unfinished"/>
+        <translation>%1 farklı oturuma yönelik bir mesaj gönderdi. Eğer birden fazla oturum açmışsanız diğer oturumunuz mesaj alabilir.</translation>
     </message>
     <message>
         <source>Malformed message received</source>
@@ -184,11 +184,11 @@
     </message>
     <message>
         <source>%1: trying to refresh private conversation</source>
-        <translation type="unfinished"/>
+        <translation>%1: özel konuşma yenilenmesi deneniyor</translation>
     </message>
     <message>
         <source>%1: peer ended private conversation; you should do the same</source>
-        <translation type="unfinished"/>
+        <translation>%1: özel konuşmayı eş bitirdi: sizde aynısını yapmalısınız</translation>
     </message>
     <message>
         <source>%1: private conversation started</source>
@@ -204,38 +204,38 @@
     </message>
     <message>
         <source>%1: creating private key, it can took a few minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1: özel anahtar oluşturuluyor, bir kaç dakika sürebilir</translation>
     </message>
     <message>
         <source>%1: private key created, you can start a private conversation now</source>
-        <translation type="unfinished"/>
+        <translation>%1: özel anahtar oluşturuldu, şimdi özel konuşma başlatabilirsiniz</translation>
     </message>
     <message>
         <source>%1: private key creation failed</source>
-        <translation type="unfinished"/>
+        <translation>%1: özel anahtar oluşturma başarısız</translation>
     </message>
 </context>
 <context>
     <name>OtrPeerIdentityVerificationFingerprintExchangePage</name>
     <message>
         <source>Fingerprint Exchange</source>
-        <translation type="unfinished"/>
+        <translation>Parmak izi Değişimi</translation>
     </message>
     <message>
         <source>Your Key Fingerprint (%1: %2):</source>
-        <translation type="unfinished"/>
+        <translation>Parmak izi Anahtarınız (%1: %2):</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; Key Fingerprint (%2: %3):</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; Parmak izi Anahtarı (%2: %3):</translation>
     </message>
     <message>
         <source>I&apos;m not sure if above Key Fingerprint belongs to %1</source>
-        <translation type="unfinished"/>
+        <translation>Yukarıdaki Parmak izi Anahtarının %1 e ait olduğundan emin değilim</translation>
     </message>
     <message>
         <source>I confirm that above Key Fingerprint belongs to %1</source>
-        <translation type="unfinished"/>
+        <translation>Yukardaki Parmak izi Anahtarının %1 e ait olduğunu onaylıyorum</translation>
     </message>
 </context>
 <context>
@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>Respond to Question and Answer</source>
-        <translation type="unfinished"/>
+        <translation>Soru ve Cevap&apos;ı Yanıtlayın</translation>
     </message>
     <message>
         <source>%1 wants to verify your identity using Question and Answer method.</source>
-        <translation type="unfinished"/>
+        <translation>%1 sizin kimliğinizi Soru ve Cevap metoduyla doğrulamak istiyor.</translation>
     </message>
     <message>
         <source>%1 question:</source>
@@ -299,15 +299,15 @@
     </message>
     <message>
         <source>Respond to Shared Secret</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşılan Sır&apos;ı Yanıtla</translation>
     </message>
     <message>
         <source>%1 wants to verify your identity using Shared Secret method.</source>
-        <translation type="unfinished"/>
+        <translation>%1 sizin kimliğinizi Paylaşılan Sır metoduyla doğrulamak istiyor.</translation>
     </message>
     <message>
         <source>Shared Secret that is known only for you and %1:</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşılan Sır&apos;ı sadece siz ve %1 için biliniyor:</translation>
     </message>
 </context>
 <context>
@@ -318,15 +318,15 @@
     </message>
     <message>
         <source>Verificationof %1 failed. You are probably talking to an imposter. Either close conversation or try other verification method.</source>
-        <translation type="unfinished"/>
+        <translation>%1 doğrulaması başarısız. Muhtemelen taklitçi biriyle konuşuyorsunuz. Konuşmayı kapatın ya da diğer doğrulama metodlarını deneyin.</translation>
     </message>
     <message>
         <source>%1 has verified you. You should do the same.</source>
-        <translation type="unfinished"/>
+        <translation>%1 sizi doğruladı, Sizde aynısını yapmalısınız.</translation>
     </message>
     <message>
         <source>Verification of %1 succeeded.</source>
-        <translation type="unfinished"/>
+        <translation>%1 doğrulaması başarılı.</translation>
     </message>
     <message>
         <source>Unknown.</source>
@@ -341,7 +341,7 @@
     </message>
     <message>
         <source>Question and Answer</source>
-        <translation type="unfinished"/>
+        <translation>Soru ve Cevap</translation>
     </message>
     <message>
         <source>Shared Secred</source>
@@ -349,19 +349,19 @@
     </message>
     <message>
         <source>Fingerprint Exchange</source>
-        <translation type="unfinished"/>
+        <translation>Parmak izi Değişimi</translation>
     </message>
     <message>
         <source>Ask peer a question that only you and he/she know the answer for. If your peer answer it properly, he/she will be marked as verified.</source>
-        <translation type="unfinished"/>
+        <translation>Karşıdaki kişiye sizin ve onun bildiği bir şeyi sorun. Eğer karşıdaki doğru cevap verirse, doğrulanmış olacaktır.</translation>
     </message>
     <message>
         <source>Exchange a secret message with peer. This message should be agreed to on another secure channel (face-to-face conversation or a phone).</source>
-        <translation type="unfinished"/>
+        <translation>Karşıdaki ile bir sır mesajı paylaşın. Bu mesajı diğer güvenli kanallardan kararlaştırın (yüz yüze konuşma veya bir telefonla).</translation>
     </message>
     <message>
         <source>Check your peer&apos;s fingerprint manually. Fingreprint information shoud be exchanged on another secure channel (face-to-face conversation or a phone).</source>
-        <translation type="unfinished"/>
+        <translation>Karşıdakinin parmak izi el ile kontrol edin. Parmak izi bilgisi diğer güvenli kanallardan takas edin (yüz yüze konuşma veya bir telefonla).</translation>
     </message>
 </context>
 <context>
@@ -376,14 +376,14 @@
     </message>
     <message>
         <source>Shared Secret that is known only for you and %1:</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşılan Sır&apos;ı sadece siz ve %1 için biliniyor:</translation>
     </message>
 </context>
 <context>
     <name>OtrPeerIdentityVerificationWindow</name>
     <message>
         <source>Verify Identity of %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 Kimlik Doğrulama</translation>
     </message>
 </context>
 </TS>
