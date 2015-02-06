@@ -501,6 +501,10 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkab
 	while (text.startsWith(QLatin1String("<br/>")))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
+#ifdef Q_OS_UNIX
+	text = text.remove("file://");
+#endif
+
 	tipLabel->setFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
 
