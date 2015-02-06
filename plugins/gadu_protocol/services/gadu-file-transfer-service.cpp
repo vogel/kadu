@@ -44,6 +44,8 @@
 GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
 {
+	connect(Protocol, SIGNAL(connected(Account)), this, SIGNAL(canSendChanged()));
+	connect(Protocol, SIGNAL(disconnected(Account)), this, SIGNAL(canSendChanged()));
 }
 
 GaduFileTransferService::~GaduFileTransferService()
@@ -53,6 +55,8 @@ GaduFileTransferService::~GaduFileTransferService()
 void GaduFileTransferService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
 {
 	m_imTokenService = imTokenService;
+
+	connect(m_imTokenService, SIGNAL(imTokenChanged(QByteArray)), this, SIGNAL(canSendChanged()));
 }
 
 FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)

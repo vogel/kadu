@@ -46,6 +46,7 @@ public:
 	virtual FileTransferCanSendResult canSend(Contact contact) = 0;
 
 signals:
+	void canSendChanged();
 	void incomingFileTransfer(FileTransfer fileTransfer);
 
 };

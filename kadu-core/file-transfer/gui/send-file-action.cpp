@@ -55,10 +55,10 @@ SendFileAction::~SendFileAction()
 void SendFileAction::actionInstanceCreated(Action *action)
 {
 	auto account = action->context()->chat().chatAccount();
-	if (!account)
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
 		return;
 
-	//
+	connect(account.protocolHandler()->fileTransferService(), SIGNAL(canSendChanged()), action, SLOT(checkState()));
 }
 
 void SendFileAction::triggered(QWidget* widget, ActionContext* context, bool toggled)
@@ -77,6 +77,7 @@ void SendFileAction::triggered(QWidget* widget, ActionContext* context, bool tog
 void SendFileAction::updateActionState(Action *action)
 {
 	action->setEnabled(false);
+	action->setToolTip(text());
 
 	auto contacts = action->context()->contacts();
 
@@ -95,7 +96,8 @@ void SendFileAction::updateActionState(Action *action)
 		auto canSend = account.protocolHandler()->fileTransferService()->canSend(contact);
 		if (!canSend.canSend())
 		{
-			action->setToolTip(canSend.reason());
+			if (!canSend.reason().isEmpty())
+				action->setToolTip(canSend.reason());
 			return;
 		}
 	}
