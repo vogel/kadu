@@ -115,6 +115,7 @@ private:
 	GaduProtocolSocketNotifiers *SocketNotifiers;
 
 	QTimer *PingTimer;
+	bool SecureConnection;
 
 	void setupLoginParams();
 	void cleanUpLoginParams();
@@ -169,6 +170,8 @@ public:
 	virtual QString statusPixmapPath();
 
 	virtual int maxDescriptionLength();
+
+	bool secureConnection() const;
 
 	void enableSocketNotifiers();
 	void disableSocketNotifiers();

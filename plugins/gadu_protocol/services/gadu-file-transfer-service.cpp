@@ -23,10 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "contacts/contact-manager.h"
-#include "file-transfer/file-transfer-type.h"
-#include "misc/misc.h"
-#include "debug.h"
+#include "gadu-file-transfer-service.h"
+#include "gadu-imtoken-service.h"
 
 #include "file-transfer/gadu-file-transfer-handler.h"
 #include "helpers/gadu-protocol-helper.h"
@@ -34,9 +32,14 @@
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
+#include "contacts/contact-manager.h"
+#include "core/core.h"
+#include "file-transfer/file-transfer-type.h"
+#include "file-transfer/gui/file-transfer-can-send-result.h"
+#include "misc/misc.h"
+
 #include <QtCore/QUrl>
 
-#include "gadu-file-transfer-service.h"
 
 GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
@@ -47,12 +50,34 @@ GaduFileTransferService::~GaduFileTransferService()
 {
 }
 
+void GaduFileTransferService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
+{
+	m_imTokenService = imTokenService;
+}
+
 FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
 	auto handler = new GaduFileTransferHandler(Protocol, fileTransfer);
 	fileTransfer.setHandler(handler);
 
 	return handler;
+}
+
+FileTransferCanSendResult GaduFileTransferService::canSend(Contact contact)
+{
+	if (Core::instance()->myself() == contact.ownerBuddy())
+		return {false, {}};
+
+	if (!Protocol->isConnected())
+		return {false, tr("Connect before sending files.")};
+
+	if (!Protocol->secureConnection())
+		return {false, tr("Enable SSL in account configuration and reconnect before sending files.")};
+
+	if (m_imTokenService->imToken().isEmpty())
+		return {false, tr("Unable to login to GG Drive. Reconnect before sending files.")};
+
+	return {true, {}};
 }
 
 void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloadId, QString fileName)

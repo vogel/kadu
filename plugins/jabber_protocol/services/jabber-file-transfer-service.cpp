@@ -26,7 +26,9 @@
 #include <iris/filetransfer.h>
 
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "file-transfer/file-transfer-type.h"
+#include "file-transfer/gui/file-transfer-can-send-result.h"
 
 #include "file-transfer/jabber-file-transfer-handler.h"
 #include "file-transfer/s5b-server-manager.h"
@@ -58,6 +60,14 @@ FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileT
 	fileTransfer.setHandler(handler);
 
 	return handler;
+}
+
+FileTransferCanSendResult JabberFileTransferService::canSend(Contact contact)
+{
+	if (Core::instance()->myself() == contact.ownerBuddy())
+		return {false, {}};
+
+	return {true, {}};
 }
 
 void JabberFileTransferService::loggedIn()

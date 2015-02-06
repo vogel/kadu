@@ -32,6 +32,7 @@
 
 #include "exports.h"
 
+class FileTransferCanSendResult;
 class FileTransferHandler;
 
 class KADUAPI FileTransferService : public QObject
@@ -42,6 +43,7 @@ public:
 	explicit FileTransferService(QObject *parent) : QObject(parent) {}
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) = 0;
+	virtual FileTransferCanSendResult canSend(Contact contact) = 0;
 
 signals:
 	void incomingFileTransfer(FileTransfer fileTransfer);

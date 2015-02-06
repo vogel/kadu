@@ -1,5 +1,6 @@
 set (file-transfer_SRCS
 	gui/file-transfer-actions.cpp
+	gui/file-transfer-can-send-result.cpp
 	gui/file-transfer-widget.cpp
 	gui/file-transfer-window.cpp
 	gui/send-file-action.cpp

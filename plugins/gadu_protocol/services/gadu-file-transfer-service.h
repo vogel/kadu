@@ -31,6 +31,7 @@
 #include "protocols/services/file-transfer-service.h"
 
 class GaduFileTransferHandler;
+class GaduIMTokenService;
 class GaduProtocol;
 
 class GaduFileTransferService : public FileTransferService
@@ -43,9 +44,15 @@ public:
 	explicit GaduFileTransferService(GaduProtocol *protocol);
 	virtual ~GaduFileTransferService();
 
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
+	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
+
+	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) override;
+	virtual FileTransferCanSendResult canSend(Contact contact) override;
 
 	void fileTransferReceived(Contact peer, QString downloadId, QString fileName);
+
+private:
+	QPointer<GaduIMTokenService> m_imTokenService;
 
 };
 

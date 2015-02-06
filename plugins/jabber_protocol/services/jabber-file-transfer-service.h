@@ -49,7 +49,8 @@ public:
 	explicit JabberFileTransferService(XMPP::JabberProtocol *protocol);
 	virtual ~JabberFileTransferService();
 
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
+	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) override;
+	virtual FileTransferCanSendResult canSend(Contact contact) override;
 
 };
 

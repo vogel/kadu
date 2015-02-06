@@ -279,17 +279,17 @@ void Protocol::passwordRequiredStateEntered()
 	emit invalidPassword(CurrentAccount);
 }
 
-bool Protocol::isConnected()
+bool Protocol::isConnected() const
 {
 	return Machine->isLoggedIn();
 }
 
-bool Protocol::isConnecting()
+bool Protocol::isConnecting() const
 {
 	return Machine->isLoggingIn();
 }
 
-bool Protocol::isDisconnecting()
+bool Protocol::isDisconnecting() const
 {
 	return Machine->isLoggingOut();
 }

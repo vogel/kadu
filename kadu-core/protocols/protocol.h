@@ -145,9 +145,9 @@ public:
 	virtual bool contactsListReadOnly() = 0;
 	virtual bool supportsPrivateStatus() { return false; }
 
-	bool isConnected();
-	bool isConnecting();
-	bool isDisconnecting();
+	bool isConnected() const;
+	bool isConnecting() const;
+	bool isDisconnecting() const;
 
 	// method called by user
 	void setStatus(Status status, StatusChangeSource source);

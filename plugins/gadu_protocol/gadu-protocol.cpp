@@ -83,7 +83,8 @@
 
 GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
-		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0)
+		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0),
+		SecureConnection{false}
 {
 	Connection = new ProtocolGaduConnection(this);
 	Connection->setConnectionProtocol(this);
@@ -95,7 +96,10 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatImageService = new GaduChatImageService(account, this);
 	CurrentChatImageService->setConnection(Connection);
 
+	CurrentImTokenService = new GaduIMTokenService{this};
+
 	CurrentFileTransferService = new GaduFileTransferService{this};
+	CurrentFileTransferService->setGaduIMTokenService(CurrentImTokenService);
 
 	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setConnection(Connection);
@@ -124,7 +128,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
-	CurrentImTokenService = new GaduIMTokenService{this};
 	CurrentDriveService = new GaduDriveService{account, this};
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
@@ -409,6 +412,7 @@ void GaduProtocol::setupLoginParams()
 	if (!loginStatus().description().isEmpty())
 		GaduLoginParams.status_descr = qstrdup(loginStatus().description().toUtf8().constData());
 
+	SecureConnection = gaduAccountDetails->tlsEncryption();
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? GG_SSL_ENABLED : GG_SSL_DISABLED;
 
 	ActiveServer = GaduServersManager::instance()->getServer(1 == GaduLoginParams.tls);
@@ -563,6 +567,13 @@ void GaduProtocol::configurationUpdated()
 	// 8 bits for gadu debug
 	gg_debug_level = debug_mask & 255;
 #endif
+}
+
+bool GaduProtocol::secureConnection() const
+{
+	return isConnected()
+			? SecureConnection
+			: false;
 }
 
 #include "moc_gadu-protocol.cpp"
