@@ -29,6 +29,7 @@
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-type.h"
+#include "file-transfer/gui/file-transfer-can-send-result.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
 #include "protocols/protocol.h"
@@ -90,6 +91,13 @@ void SendFileAction::updateActionState(Action *action)
 		auto account = contact.contactAccount();
 		if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
 			return;
+
+		auto canSend = account.protocolHandler()->fileTransferService()->canSend(contact);
+		if (!canSend.canSend())
+		{
+			action->setToolTip(canSend.reason());
+			return;
+		}
 	}
 
 	action->setEnabled(true);
