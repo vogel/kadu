@@ -19,7 +19,7 @@
 
 #pragma once
 
-enum class FileTransferType {
+enum class FileTransferDirection {
 	Outgoing,
 	Incoming
 };

@@ -25,11 +25,11 @@
 #include "accounts/account.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-status.h"
-#include "file-transfer/file-transfer-type.h"
 #include "misc/change-notifier.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
@@ -52,7 +52,7 @@ FileTransferShared::FileTransferShared(const QUuid &uuid) :
 		Shared{uuid},
 		m_fileSize{0},
 		m_transferredSize{0},
-		m_transferType{FileTransferType::Incoming},
+		m_transferType{FileTransferDirection::Incoming},
 		m_transferStatus{FileTransferStatus::NotConnected},
 		m_transferError{FileTransferError::NoError},
 		m_handler{0}
@@ -89,7 +89,7 @@ void FileTransferShared::load()
 	*m_peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
 	m_localFileName = loadValue<QString>("LocalFileName");
 	m_remoteFileName = loadValue<QString>("RemoteFileName");
-	m_transferType = ("Send" == loadValue<QString>("TransferType")) ? FileTransferType::Outgoing : FileTransferType::Incoming;
+	m_transferType = ("Send" == loadValue<QString>("TransferType")) ? FileTransferDirection::Outgoing : FileTransferDirection::Incoming;
 	m_fileSize = loadValue<qulonglong>("FileSize");
 	m_transferredSize = loadValue<qulonglong>("TransferredSize");
 
@@ -107,7 +107,7 @@ void FileTransferShared::store()
 	storeValue("Peer", m_peer->uuid().toString());
 	storeValue("LocalFileName", m_localFileName);
 	storeValue("RemoteFileName", m_remoteFileName);
-	storeValue("TransferType", FileTransferType::Outgoing == m_transferType ? "Send" : "Receive");
+	storeValue("TransferType", FileTransferDirection::Outgoing == m_transferType ? "Send" : "Receive");
 	storeValue("FileSize", (qulonglong)m_fileSize);
 	storeValue("TransferredSize", (qulonglong)m_transferredSize);
 }

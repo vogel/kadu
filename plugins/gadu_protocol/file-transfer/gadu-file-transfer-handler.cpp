@@ -33,9 +33,9 @@
 #include "gadu-protocol.h"
 
 #include "accounts/account.h"
+#include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-status.h"
-#include "file-transfer/file-transfer-type.h"
 
 #include <QtCore/QFileInfo>
 #include <QTimer>
@@ -60,7 +60,7 @@ void GaduFileTransferHandler::finished(bool ok)
 
 void GaduFileTransferHandler::send()
 {
-	if (FileTransferType::Outgoing != transfer().transferType()) // maybe assert here?
+	if (FileTransferDirection::Outgoing != transfer().transferType()) // maybe assert here?
 	{
 		finished(false);
 		return;

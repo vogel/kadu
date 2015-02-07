@@ -26,9 +26,9 @@
 #include "core/core.h"
 #include "core/application.h"
 #include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
@@ -125,7 +125,7 @@ void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 		{
 			auto fileTransfer = FileTransfer::create();
 			fileTransfer.setPeer(contact);
-			fileTransfer.setTransferType(FileTransferType::Outgoing);
+			fileTransfer.setTransferType(FileTransferDirection::Outgoing);
 			fileTransfer.setLocalFileName(file);
 
 			FileTransferManager::instance()->addItem(fileTransfer);

@@ -27,7 +27,7 @@
 
 #include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "file-transfer/file-transfer-type.h"
+#include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 
 #include "file-transfer/jabber-file-transfer-handler.h"
@@ -91,7 +91,7 @@ void JabberFileTransferService::incomingFileTransferSlot()
 	Contact peer = ContactManager::instance()->byId(Protocol->account(), jTransfer->peer().bare(), ActionCreateAndAdd);
 	FileTransfer transfer = FileTransfer::create();
 	transfer.setPeer(peer);
-	transfer.setTransferType(FileTransferType::Incoming);
+	transfer.setTransferType(FileTransferDirection::Incoming);
 	transfer.setRemoteFileName(jTransfer->fileName());
 	transfer.setFileSize(jTransfer->fileSize());
 

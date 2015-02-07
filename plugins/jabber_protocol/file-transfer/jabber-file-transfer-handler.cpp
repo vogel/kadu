@@ -27,9 +27,9 @@
 #include <xmpp/xmpp-im/xmpp_bytestream.h>
 #include <filetransfer.h>
 
+#include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-status.h"
-#include "file-transfer/file-transfer-type.h"
 
 #include "resource/jabber-resource-pool.h"
 #include "jabber-protocol.h"
@@ -101,7 +101,7 @@ void JabberFileTransferHandler::updateFileInfo()
 
 void JabberFileTransferHandler::send()
 {
-	if (FileTransferType::Outgoing != transfer().transferType()) // maybe assert here?
+	if (FileTransferDirection::Outgoing != transfer().transferType()) // maybe assert here?
 		return;
 
 	if (InProgress) // already sending/receiving
@@ -187,7 +187,7 @@ bool JabberFileTransferHandler::accept(const QString &fileName, bool resumeTrans
 	transfer().setTransferStatus(FileTransferStatus::Transfer);
 	transfer().setTransferredSize(BytesTransferred);
 
-	if (FileTransferType::Incoming == transfer().transferType())
+	if (FileTransferDirection::Incoming == transfer().transferType())
 		transfer().setFileSize(JabberTransfer->fileSize());
 
 	JabberTransfer->accept(BytesTransferred);
@@ -210,7 +210,7 @@ void JabberFileTransferHandler::fileTransferAccepted()
 
 void JabberFileTransferHandler::fileTransferConnected()
 {
-	if (FileTransferType::Outgoing == transfer().transferType())
+	if (FileTransferDirection::Outgoing == transfer().transferType())
 	{
 		if (LocalFile.isOpen()) // ?? assert
 		{

@@ -28,7 +28,7 @@ class FileTransferHandler;
 
 enum class FileTransferError;
 enum class FileTransferStatus;
-enum class FileTransferType;
+enum class FileTransferDirection;
 
 class KADUAPI FileTransferShared : public QObject, public Shared
 {
@@ -55,7 +55,7 @@ public:
 	KaduShared_Property_M(const QString &, remoteFileName, RemoteFileName)
 	KaduShared_Property_M(unsigned long, fileSize, FileSize)
 	KaduShared_Property_M(unsigned long, transferredSize, TransferredSize)
-	KaduShared_Property_M(FileTransferType, transferType, TransferType)
+	KaduShared_Property_M(FileTransferDirection, transferType, TransferType)
 	KaduShared_PropertyRead_M(FileTransferStatus, transferStatus)
 	KaduShared_PropertyRead_M(FileTransferError, transferError)
 	KaduShared_PropertyRead_M(FileTransferHandler *, handler)
@@ -77,7 +77,7 @@ private:
 	unsigned long m_fileSize;
 	unsigned long m_transferredSize;
 
-	FileTransferType m_transferType;
+	FileTransferDirection m_transferType;
 	FileTransferStatus m_transferStatus;
 	FileTransferError m_transferError;
 
