@@ -60,6 +60,7 @@ private:
 	owned_qptr<QPushButton> m_stopButton;
 	owned_qptr<QPushButton> m_acceptButton;
 	owned_qptr<QPushButton> m_rejectButton;
+	owned_qptr<QPushButton> m_saveButton;
 	owned_qptr<QToolButton> m_removeButton;
 
 	void createGui();
@@ -88,6 +89,9 @@ private slots:
 
 	bool canReject() const;
 	void reject();
+
+	bool canSave() const;
+	void save();
 
 	bool canRemove() const;
 	void remove();

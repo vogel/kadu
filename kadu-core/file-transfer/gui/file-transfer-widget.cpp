@@ -32,6 +32,7 @@
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer.h"
 #include "gui/widgets/contact-avatar-display.h"
 #include "gui/windows/message-dialog.h"
@@ -123,18 +124,21 @@ void FileTransferWidget::createGui()
 	m_stopButton = new QPushButton{tr("Stop"), this};
 	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stop()));
 
+	m_acceptButton = new QPushButton{tr("Accept"), this};
+	connect(m_acceptButton.get(), SIGNAL(clicked()), this, SLOT(accept()));
+
+	m_rejectButton = new QPushButton{tr("Reject"), this};
+	connect(m_rejectButton.get(), SIGNAL(clicked()), this, SLOT(reject()));
+
+	m_saveButton = new QPushButton{tr("Save"), this};
+	connect(m_saveButton.get(), SIGNAL(clicked()), this, SLOT(save()));
+
 	m_removeButton = new QToolButton{this};
 	m_removeButton->setAutoRaise(true);
 	m_removeButton->setFixedSize({22, 22});
 	m_removeButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 	m_removeButton->setToolTip(tr("Remove"));
 	connect(m_removeButton.get(), SIGNAL(clicked()), this, SLOT(remove()));
-
-	m_acceptButton = new QPushButton{tr("Accept"), this};
-	connect(m_acceptButton.get(), SIGNAL(clicked()), this, SLOT(accept()));
-
-	m_rejectButton = new QPushButton{tr("Reject"), this};
-	connect(m_rejectButton.get(), SIGNAL(clicked()), this, SLOT(reject()));
 
 	auto icon = new QLabel{this};
 	auto iconName = FileTransferDirection::Outgoing == m_transfer.transferDirection()
@@ -170,6 +174,7 @@ void FileTransferWidget::createGui()
 	buttonsLayout->addWidget(m_openButton.get(), 1, Qt::AlignBottom);
 	buttonsLayout->addWidget(m_stopButton.get(), 1, Qt::AlignBottom);
 	buttonsLayout->addWidget(m_acceptButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_saveButton.get(), 1, Qt::AlignBottom);
 	buttonsLayout->addWidget(m_rejectButton.get(), 1, Qt::AlignBottom);
 }
 
@@ -230,9 +235,15 @@ void FileTransferWidget::send()
 
 bool FileTransferWidget::canStop() const
 {
-	if (canReject())
+	if (!m_transfer.handler())
 		return false;
-	return m_transfer.handler() != nullptr;
+	if (FileTransferStatus::WaitingForConnection == m_transfer.transferStatus())
+		return true;
+	if (FileTransferDirection::Outgoing == m_transfer.transferDirection() && FileTransferStatus::WaitingForAccept == m_transfer.transferStatus())
+		return true;
+	if (FileTransferStatus::Transfer == m_transfer.transferStatus())
+		return true;
+	return false;
 }
 
 void FileTransferWidget::stop()
@@ -245,6 +256,8 @@ void FileTransferWidget::stop()
 bool FileTransferWidget::canAccept() const
 {
 	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
+		return false;
+	if (FileTransferType::Stream != m_transfer.transferType())
 		return false;
 	if (m_transfer.transferStatus() == FileTransferStatus::WaitingForAccept)
 		return true;
@@ -262,6 +275,8 @@ bool FileTransferWidget::canReject() const
 {
 	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return false;
+	if (FileTransferType::Stream != m_transfer.transferType())
+		return false;
 	if (m_transfer.transferStatus() == FileTransferStatus::WaitingForAccept)
 		return true;
 	return false;
@@ -270,6 +285,22 @@ bool FileTransferWidget::canReject() const
 void FileTransferWidget::reject()
 {
 	FileTransferManager::instance()->rejectFileTransfer(m_transfer);
+
+	updateButtons();
+}
+
+bool FileTransferWidget::canSave() const
+{
+	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
+		return false;
+	if (FileTransferType::Url != m_transfer.transferType())
+		return false;
+	return true;
+}
+
+void FileTransferWidget::save()
+{
+	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
 
 	updateButtons();
 }
@@ -326,6 +357,7 @@ void FileTransferWidget::updateButtons()
 	m_stopButton->setVisible(canStop());
 	m_acceptButton->setVisible(canAccept());
 	m_rejectButton->setVisible(canReject());
+	m_saveButton->setVisible(canSave());
 	m_removeButton->setEnabled(canRemove());
 }
 
