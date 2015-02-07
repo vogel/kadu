@@ -50,9 +50,6 @@ TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 
 TalkableDelegate::~TalkableDelegate()
 {
-	disconnect(ContactManager::instance(), 0, this, 0);
-	disconnect(BuddyPreferredManager::instance(), 0, this, 0);
-	disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
 }
 
 void TalkableDelegate::setChain(ModelChain *chain)
