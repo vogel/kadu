@@ -399,6 +399,8 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 
 	unreadMessagesCountChanged(chatWidget);
+	if (_isActiveWindow(TabDialog) && TabDialog->currentWidget() == chatWidget)
+		emit chatWidgetActivated(chatWidget);
 
 	kdebugf2();
 }
