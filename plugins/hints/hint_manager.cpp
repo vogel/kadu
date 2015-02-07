@@ -127,19 +127,19 @@ HintManager::~HintManager()
 {
 	kdebugf();
 
-	hint_timer->stop();
+	if (hint_timer)
+		hint_timer->stop();
 
 	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	disconnect();
-	disconnect(ChatManager::instance(), 0, this, 0);
 
-	delete tipFrame;
-	tipFrame = 0;
+	if (tipFrame)
+		tipFrame->deleteLater();
 
-	delete frame;
-	frame = 0;
+	if (frame)
+		frame->deleteLater();
 
 	kdebugf2();
 }
