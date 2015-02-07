@@ -137,7 +137,7 @@ void FileTransferWidget::createGui()
 	connect(m_rejectButton.get(), SIGNAL(clicked()), this, SLOT(reject()));
 
 	auto icon = new QLabel{this};
-	auto iconName = FileTransferDirection::Outgoing == m_transfer.transferType()
+	auto iconName = FileTransferDirection::Outgoing == m_transfer.transferDirection()
 		? "kadu_icons/transfer-send"
 		: "kadu_icons/transfer-receive";
 	icon->setPixmap(KaduIcon{iconName}.icon().pixmap(22, 22));
@@ -175,7 +175,7 @@ void FileTransferWidget::createGui()
 
 bool FileTransferWidget::canSend() const
 {
-	if (FileTransferDirection::Outgoing != m_transfer.transferType())
+	if (FileTransferDirection::Outgoing != m_transfer.transferDirection())
 		return false;
 	if (m_transfer.handler())
 		return false;
@@ -186,7 +186,7 @@ bool FileTransferWidget::canOpenFile() const
 {
 	if (!canOpenFolder())
 		return false;
-	if (FileTransferDirection::Outgoing == m_transfer.transferType())
+	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return true;
 	if (m_transfer.transferError() != FileTransferError::NoError)
 		return false;
@@ -244,7 +244,7 @@ void FileTransferWidget::stop()
 
 bool FileTransferWidget::canAccept() const
 {
-	if (FileTransferDirection::Outgoing == m_transfer.transferType())
+	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return false;
 	if (m_transfer.transferStatus() == FileTransferStatus::WaitingForAccept)
 		return true;
@@ -260,7 +260,7 @@ void FileTransferWidget::accept()
 
 bool FileTransferWidget::canReject() const
 {
-	if (FileTransferDirection::Outgoing == m_transfer.transferType())
+	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return false;
 	if (m_transfer.transferStatus() == FileTransferStatus::WaitingForAccept)
 		return true;

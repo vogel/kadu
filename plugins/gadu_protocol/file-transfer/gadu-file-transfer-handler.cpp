@@ -60,7 +60,7 @@ void GaduFileTransferHandler::finished(bool ok)
 
 void GaduFileTransferHandler::send()
 {
-	if (FileTransferDirection::Outgoing != transfer().transferType()) // maybe assert here?
+	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
 	{
 		finished(false);
 		return;

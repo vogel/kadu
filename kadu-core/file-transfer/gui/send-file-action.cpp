@@ -125,7 +125,7 @@ void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 		{
 			auto fileTransfer = FileTransfer::create();
 			fileTransfer.setPeer(contact);
-			fileTransfer.setTransferType(FileTransferDirection::Outgoing);
+			fileTransfer.setTransferDirection(FileTransferDirection::Outgoing);
 			fileTransfer.setLocalFileName(file);
 
 			FileTransferManager::instance()->addItem(fileTransfer);

@@ -101,7 +101,7 @@ void JabberFileTransferHandler::updateFileInfo()
 
 void JabberFileTransferHandler::send()
 {
-	if (FileTransferDirection::Outgoing != transfer().transferType()) // maybe assert here?
+	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
 		return;
 
 	if (InProgress) // already sending/receiving
@@ -187,7 +187,7 @@ bool JabberFileTransferHandler::accept(const QString &fileName, bool resumeTrans
 	transfer().setTransferStatus(FileTransferStatus::Transfer);
 	transfer().setTransferredSize(BytesTransferred);
 
-	if (FileTransferDirection::Incoming == transfer().transferType())
+	if (FileTransferDirection::Incoming == transfer().transferDirection())
 		transfer().setFileSize(JabberTransfer->fileSize());
 
 	JabberTransfer->accept(BytesTransferred);
@@ -210,7 +210,7 @@ void JabberFileTransferHandler::fileTransferAccepted()
 
 void JabberFileTransferHandler::fileTransferConnected()
 {
-	if (FileTransferDirection::Outgoing == transfer().transferType())
+	if (FileTransferDirection::Outgoing == transfer().transferDirection())
 	{
 		if (LocalFile.isOpen()) // ?? assert
 		{

@@ -52,9 +52,10 @@ public:
 	KaduSharedBase_PropertyCRW(QString, remoteFileName, RemoteFileName)
 	KaduSharedBase_Property(unsigned long, fileSize, FileSize)
 	KaduSharedBase_Property(unsigned long, transferredSize, TransferredSize)
-	KaduSharedBase_Property(FileTransferDirection, transferType, TransferType)
-	KaduSharedBase_Property(FileTransferStatus, transferStatus, TransferStatus)
+	KaduSharedBase_Property(FileTransferDirection, transferDirection, TransferDirection)
 	KaduSharedBase_Property(FileTransferError, transferError, TransferError)
+	KaduSharedBase_Property(FileTransferStatus, transferStatus, TransferStatus)
+	KaduSharedBase_Property(FileTransferType, transferType, TransferType)
 	KaduSharedBase_Property(FileTransferHandler *, handler, Handler)
 
 	virtual bool accept(const QString &file);
