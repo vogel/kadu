@@ -203,6 +203,9 @@ void FileTransferWidget::openFile()
 
 bool FileTransferWidget::canOpenFolder() const
 {
+	if (m_transfer.localFileName().isEmpty())
+		return false;
+
 	QFileInfo info{m_transfer.localFileName()};
 	return info.absoluteDir().exists();
 }
@@ -227,6 +230,8 @@ void FileTransferWidget::send()
 
 bool FileTransferWidget::canStop() const
 {
+	if (canReject())
+		return false;
 	return m_transfer.handler() != nullptr;
 }
 
@@ -239,20 +244,34 @@ void FileTransferWidget::stop()
 
 bool FileTransferWidget::canAccept() const
 {
+	if (FileTransferType::Outgoing == m_transfer.transferType())
+		return false;
+	if (m_transfer.transferStatus() == FileTransferStatus::WaitingForAccept)
+		return true;
 	return false;
 }
 
 void FileTransferWidget::accept()
 {
+	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
+
+	updateButtons();
 }
 
 bool FileTransferWidget::canReject() const
 {
+	if (FileTransferType::Outgoing == m_transfer.transferType())
+		return false;
+	if (m_transfer.transferStatus() == FileTransferStatus::WaitingForAccept)
+		return true;
 	return false;
 }
 
 void FileTransferWidget::reject()
 {
+	FileTransferManager::instance()->rejectFileTransfer(m_transfer);
+
+	updateButtons();
 }
 
 bool FileTransferWidget::canRemove() const

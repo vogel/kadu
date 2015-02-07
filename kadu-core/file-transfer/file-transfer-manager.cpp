@@ -213,10 +213,9 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 		break;
 	}
 
-	FileTransferManager::instance()->addItem(transfer);
 	transfer.setTransferStatus(FileTransferStatus::Transfer);
 
-	FileTransferManager::instance()->showFileTransferWindow();
+	showFileTransferWindow();
 }
 
 void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
@@ -241,6 +240,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 	QMutexLocker locker(&mutex());
 
 	fileTransfer.setTransferStatus(FileTransferStatus::WaitingForAccept);
+	addItem(fileTransfer);
 
 	NewFileTransferNotification::notifyIncomingFileTransfer(fileTransfer);
 }
