@@ -81,8 +81,6 @@ private:
 	explicit FileTransferManager(QObject *parent = nullptr);
 	virtual ~FileTransferManager();
 
-	FileTransfer byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName);
-
 	void addFileTransferService(Account account);
 	void removeFileTransferService(Account account);
 

@@ -142,10 +142,6 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
 	QMutexLocker locker(&mutex());
 
-	auto alreadyTransferred = byPeerAndRemoteFileName(transfer.peer(), transfer.remoteFileName());
-	if (alreadyTransferred)
-		FileTransferManager::instance()->removeItem(alreadyTransferred);
-
 	auto fileName = transfer.localFileName();
 
 	auto haveFileName = !fileName.isEmpty();
@@ -240,27 +236,9 @@ void FileTransferManager::showFileTransferWindow()
 	_activateWindow(m_window.data());
 }
 
-FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName)
-{
-	QMutexLocker locker(&mutex());
-
-	for (auto &&transfer : items())
-		if (transfer.transferType() == FileTransferType::Incoming && transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
-			return transfer;
-
-	return FileTransfer::null;
-}
-
 void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	QMutexLocker locker(&mutex());
-
-	if (fileTransfer.localFileName().isEmpty())
-	{
-		auto alreadyTransferred = byPeerAndRemoteFileName(fileTransfer.peer(), fileTransfer.remoteFileName());
-		if (alreadyTransferred)
-			fileTransfer.setLocalFileName(alreadyTransferred.localFileName());
-	}
 
 	fileTransfer.setTransferStatus(FileTransferStatus::WaitingForAccept);
 
