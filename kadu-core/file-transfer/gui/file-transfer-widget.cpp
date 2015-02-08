@@ -54,8 +54,9 @@
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 
-FileTransferWidget::FileTransferWidget(FileTransfer transfer, QWidget *parent) :
+FileTransferWidget::FileTransferWidget(FileTransferManager *manager, FileTransfer transfer, QWidget *parent) :
 		QWidget{parent},
+		m_manager{manager},
 		m_transfer{std::move(transfer)},
 		m_speed{0}
 {
@@ -265,7 +266,8 @@ bool FileTransferWidget::canAccept() const
 
 void FileTransferWidget::accept()
 {
-	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
+	if (m_manager)
+		m_manager->acceptFileTransfer(m_transfer);
 
 	updateButtons();
 }
@@ -283,7 +285,8 @@ bool FileTransferWidget::canReject() const
 
 void FileTransferWidget::reject()
 {
-	FileTransferManager::instance()->rejectFileTransfer(m_transfer);
+	if (m_manager)
+		m_manager->rejectFileTransfer(m_transfer);
 
 	updateButtons();
 }
@@ -300,7 +303,8 @@ bool FileTransferWidget::canSave() const
 void FileTransferWidget::save()
 {
 	m_transfer.setLocalFileName({}); // reset, so can be re-downloaded under different name
-	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
+	if (m_manager)
+		m_manager->acceptFileTransfer(m_transfer);
 
 	updateButtons();
 }
@@ -328,7 +332,8 @@ void FileTransferWidget::remove()
 				m_transfer.handler()->stop();
 	}
 
-	FileTransferManager::instance()->removeItem(m_transfer);
+	if (m_manager)
+		m_manager->removeItem(m_transfer);
 
 	deleteLater();
 }

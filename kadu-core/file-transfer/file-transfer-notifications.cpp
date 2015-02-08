@@ -22,6 +22,7 @@
 #include "file-transfer-notifications.h"
 
 #include "chat/type/chat-type-contact.h"
+#include "core/core.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-start-type.h"
 #include "identities/identity.h"
@@ -140,7 +141,7 @@ void NewFileTransferNotification::callbackAcceptAsNew()
 
 	// let user choose new file name
 	m_transfer.setLocalFileName(QString{});
-	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
+	Core::instance()->fileTransferManager()->acceptFileTransfer(m_transfer);
 }
 
 void NewFileTransferNotification::callbackAccept()
@@ -150,14 +151,14 @@ void NewFileTransferNotification::callbackAccept()
 	if (!m_continue) // let user choose new file name
 		m_transfer.setLocalFileName(QString{});
 
-	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
+	Core::instance()->fileTransferManager()->acceptFileTransfer(m_transfer);
 }
 
 void NewFileTransferNotification::callbackReject()
 {
 	close();
 
-	FileTransferManager::instance()->rejectFileTransfer(m_transfer);
+	Core::instance()->fileTransferManager()->rejectFileTransfer(m_transfer);
 }
 
 #include "moc_file-transfer-notifications.cpp"

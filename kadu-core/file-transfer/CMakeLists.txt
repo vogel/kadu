@@ -9,6 +9,7 @@ set (file-transfer_SRCS
 	file-transfer.cpp
 	file-transfer-handler.cpp
 	file-transfer-manager.cpp
+	file-transfer-module.cpp
 	file-transfer-notifications.cpp
 	file-transfer-shared.cpp
 )

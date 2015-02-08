@@ -25,6 +25,7 @@
 #include "accounts/account.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-handler.h"
@@ -73,7 +74,7 @@ FileTransferShared::~FileTransferShared()
 
 StorableObject * FileTransferShared::storageParent()
 {
-	return FileTransferManager::instance();
+	return Core::instance()->fileTransferManager();
 }
 
 QString FileTransferShared::storageNodeName()

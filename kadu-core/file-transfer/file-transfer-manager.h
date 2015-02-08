@@ -45,7 +45,8 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 	Q_DISABLE_COPY(FileTransferManager)
 
 public:
-	static FileTransferManager * instance();
+	Q_INVOKABLE explicit FileTransferManager(QObject *parent = nullptr);
+	virtual ~FileTransferManager();
 
 	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
 	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
@@ -73,13 +74,8 @@ protected:
 	virtual void itemRemoved(FileTransfer fileTransfer);
 
 private:
-	static FileTransferManager * m_instance;
-
 	FileTransferActions *m_actions;
 	QPointer<FileTransferWindow> m_window;
-
-	explicit FileTransferManager(QObject *parent = nullptr);
-	virtual ~FileTransferManager();
 
 	void addFileTransferService(Account account);
 	void removeFileTransferService(Account account);

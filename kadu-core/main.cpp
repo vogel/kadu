@@ -60,6 +60,7 @@
 #include "core/core-module.h"
 #include "execution-arguments/execution-arguments-parser.h"
 #include "execution-arguments/execution-arguments.h"
+#include "file-transfer/file-transfer-module.h"
 #include "gui/gui-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
 #include "gui/windows/chat-window/chat-window-module.h"
@@ -215,6 +216,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<ChatWindowModule>());
 	modules.emplace_back(make_unique<CoreModule>(std::move(profileDirectory)));
 	modules.emplace_back(make_unique<ConfigurationModule>());
+	modules.emplace_back(make_unique<FileTransferModule>());
 	modules.emplace_back(make_unique<GuiModule>());
 	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());

@@ -55,16 +55,6 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 
-FileTransferManager * FileTransferManager::m_instance = 0;
-
-FileTransferManager * FileTransferManager::instance()
-{
-	if (0 == m_instance)
-		m_instance = new FileTransferManager{};
-
-	return m_instance;
-}
-
 FileTransferManager::FileTransferManager(QObject *parent) :
 		QObject{parent}
 {
@@ -76,7 +66,7 @@ FileTransferManager::FileTransferManager(QObject *parent) :
 
 FileTransferManager::~FileTransferManager()
 {
-	delete m_window.data();
+	m_window.data()->deleteLater();
 
 	triggerAllAccountsUnregistered();
 
@@ -231,7 +221,7 @@ void FileTransferManager::showFileTransferWindow()
 	QMutexLocker locker(&mutex());
 
 	if (!m_window)
-		m_window = new FileTransferWindow{};
+		m_window = new FileTransferWindow{this};
 	_activateWindow(m_window.data());
 }
 

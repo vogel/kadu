@@ -27,7 +27,10 @@
 #include "misc/memory.h"
 
 #include <QtCore/QDateTime>
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+
+class FileTransferManager;
 
 class QLabel;
 class QProgressBar;
@@ -39,12 +42,13 @@ class FileTransferWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit FileTransferWidget(FileTransfer transfer = FileTransfer::null, QWidget *parent = nullptr);
+	explicit FileTransferWidget(FileTransferManager *manager, FileTransfer transfer = FileTransfer::null, QWidget *parent = nullptr);
 	virtual ~FileTransferWidget();
 
 	FileTransfer fileTransfer() const;
 
 private:
+	QPointer<FileTransferManager> m_manager;
 	FileTransfer m_transfer;
 
 	QDateTime m_lastUpdateTime;

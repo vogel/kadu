@@ -606,7 +606,7 @@ void Core::createGui()
 	KaduWindowProvider->provideValue(Window);
 
 	// initialize file transfers
-	FileTransferManager::instance();
+	static_cast<void>(fileTransferManager());
 }
 
 void Core::runServices()
@@ -899,6 +899,11 @@ WebkitMessagesViewHandlerFactory * Core::webkitMessagesViewHandlerFactory() cons
 RosterReplacer * Core::rosterReplacer() const
 {
 	return m_injector.get<RosterReplacer>();
+}
+
+FileTransferManager * Core::fileTransferManager() const
+{
+	return m_injector.get<FileTransferManager>();
 }
 
 void Core::showMainWindow()

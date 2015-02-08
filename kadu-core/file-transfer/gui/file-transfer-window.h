@@ -26,11 +26,13 @@
 #include "misc/memory.h"
 #include "os/generic/desktop-aware-object.h"
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
 
 class QScrollArea;
 class QVBoxLayout;
 
+class FileTransferManager;
 class FileTransferWidget;
 
 class FileTransferWindow : public QFrame, DesktopAwareObject
@@ -43,10 +45,11 @@ protected:
 	void contentsChanged();
 
 public:
-	explicit FileTransferWindow(QWidget *parent = nullptr);
+	explicit FileTransferWindow(FileTransferManager *manager, QWidget *parent = nullptr);
 	virtual ~FileTransferWindow();
 
 private:
+	QPointer<FileTransferManager> m_manager;
 	QList<FileTransferWidget *> m_widgets;
 
 	owned_qptr<QScrollArea> m_scrollView;

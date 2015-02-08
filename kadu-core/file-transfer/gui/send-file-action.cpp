@@ -23,8 +23,8 @@
 #include "chat/chat.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
@@ -128,13 +128,13 @@ void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 			fileTransfer.setTransferDirection(FileTransferDirection::Outgoing);
 			fileTransfer.setLocalFileName(file);
 
-			FileTransferManager::instance()->addItem(fileTransfer);
+			Core::instance()->fileTransferManager()->addItem(fileTransfer);
 
 			fileTransfer.createHandler();
 			if (fileTransfer.handler())
 				fileTransfer.handler()->send();
 
-			FileTransferManager::instance()->showFileTransferWindow();
+			Core::instance()->fileTransferManager()->showFileTransferWindow();
 		}
 	}
 }

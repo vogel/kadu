@@ -17,33 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "show-file-transfer-window-action.h"
+#include "file-transfer-module.h"
 
-#include "core/core.h"
 #include "file-transfer/file-transfer-manager.h"
 
-ShowFileTransferWindowAction::ShowFileTransferWindowAction(QObject *parent) :
-		ActionDescription{parent}
+FileTransferModule::FileTransferModule()
 {
-	setIcon(KaduIcon("document-send"));
-	setName("sendFileWindowAction");
-	setText(tr("View File Transfers"));
-	setType(ActionDescription::TypeMainMenu);
-
-	registerAction();
+	add_type<FileTransferManager>();
 }
 
-ShowFileTransferWindowAction::~ShowFileTransferWindowAction()
+FileTransferModule::~FileTransferModule()
 {
 }
-
-void ShowFileTransferWindowAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
-{
-	Q_UNUSED(widget)
-	Q_UNUSED(context)
-	Q_UNUSED(toggled)
-
-	Core::instance()->fileTransferManager()->showFileTransferWindow();
-}
-
-#include "moc_show-file-transfer-window-action.cpp"

@@ -62,6 +62,7 @@ class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
 class ConfiguredChatStyleRendererFactoryProvider;
 class DomProcessorService;
+class FileTransferManager;
 class FormattedStringFactory;
 class ImageStorageService;
 class Application;
@@ -210,6 +211,8 @@ public:
 	WebkitMessagesViewFactory * webkitMessagesViewFactory() const;
 	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
 	RosterReplacer * rosterReplacer() const;
+
+	FileTransferManager * fileTransferManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

@@ -38,21 +38,22 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-FileTransferWindow::FileTransferWindow(QWidget *parent) :
+FileTransferWindow::FileTransferWindow(FileTransferManager *manager, QWidget *parent) :
 		QFrame{parent},
-		DesktopAwareObject{this}
+		DesktopAwareObject{this},
+		m_manager{manager}
 {
 	setWindowRole("kadu-file-transfer");
 
 	createGui();
 	new WindowGeometryManager{new ConfigFileVariantWrapper{"General", "TransferWindowGeometry"}, QRect(200, 200, 500, 300), this};
 
-	for (auto &&fileTransfer : FileTransferManager::instance()->items())
+	for (auto &&fileTransfer : m_manager->items())
 		fileTransferAdded(fileTransfer);
 
-	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer)),
+	connect(m_manager, SIGNAL(fileTransferAdded(FileTransfer)),
 			this, SLOT(fileTransferAdded(FileTransfer)));
-	connect(FileTransferManager::instance(), SIGNAL(fileTransferRemoved(FileTransfer)),
+	connect(m_manager, SIGNAL(fileTransferRemoved(FileTransfer)),
 			this, SLOT(fileTransferRemoved(FileTransfer)));
 
 	contentsChanged();
@@ -60,7 +61,6 @@ FileTransferWindow::FileTransferWindow(QWidget *parent) :
 
 FileTransferWindow::~FileTransferWindow()
 {
-	disconnect(FileTransferManager::instance(), 0, this, 0);
 }
 
 void FileTransferWindow::createGui()
@@ -118,7 +118,7 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 
 void FileTransferWindow::fileTransferAdded(FileTransfer fileTransfer)
 {
-	auto ftm = new FileTransferWidget{fileTransfer, m_innerFrame.get()};
+	auto ftm = new FileTransferWidget{m_manager, fileTransfer, m_innerFrame.get()};
 	m_transfersLayout->addWidget(ftm);
 	m_widgets.append(ftm);
 
@@ -139,7 +139,8 @@ void FileTransferWindow::fileTransferRemoved(FileTransfer fileTransfer)
 
 void FileTransferWindow::clearClicked()
 {
-	FileTransferManager::instance()->cleanUp();
+	if (m_manager)
+		m_manager->cleanUp();
 }
 
 void FileTransferWindow::contentsChanged()
