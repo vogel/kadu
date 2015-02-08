@@ -144,7 +144,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 	auto fileName = transfer.localFileName();
 
 	auto haveFileName = !fileName.isEmpty();
-	auto resumeTransfer = haveFileName;
+	// auto resumeTransfer = haveFileName;
 
 	QFileInfo fi;
 
@@ -173,18 +173,18 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 				parent = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 
 			auto question = tr("File %1 already exists.").arg(fileName);
-			switch (QMessageBox::question(parent, tr("Save file"), question, tr("Overwrite"), tr("Resume"),
+			switch (QMessageBox::question(parent, tr("Save file"), question, tr("Overwrite"), //tr("Resume"),
 			                                 tr("Select another file"), 0, 2))
 			{
 				case 0:
-					resumeTransfer = false;
+					//resumeTransfer = false;
 					break;
 
 				case 1:
-					resumeTransfer = true;
-					break;
+					//resumeTransfer = true;
+					//break;
 
-				case 2:
+				//case 2:
 					fileName = QString{};
 					haveFileName = false;
 					continue;
@@ -200,12 +200,17 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 
 		if (transfer.handler())
 		{
-			if (!transfer.handler()->accept(fileName, resumeTransfer))
+			auto file = new QFile{fileName};
+			if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
 			{
 				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
 				fileName.clear();
+				file->deleteLater();
 				continue;
 			}
+
+			transfer.setLocalFileName(fileName);
+			transfer.handler()->accept(file);
 		}
 
 		break;

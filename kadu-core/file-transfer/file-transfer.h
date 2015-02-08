@@ -58,8 +58,6 @@ public:
 	KaduSharedBase_Property(FileTransferType, transferType, TransferType)
 	KaduSharedBase_Property(FileTransferHandler *, handler, Handler)
 
-	virtual bool accept(const QString &file);
-
 	unsigned int percent();
 
 };

@@ -97,12 +97,6 @@ unsigned int FileTransfer::percent()
 		return 0;
 }
 
-bool FileTransfer::accept(const QString &localFileName)
-{
-	setLocalFileName(localFileName);
-	return true;
-}
-
 KaduSharedBase_PropertyDefCRW(FileTransfer, Contact, peer, Peer, Contact::null)
 KaduSharedBase_PropertyDefCRW(FileTransfer, QString, localFileName, LocalFileName, QString())
 KaduSharedBase_PropertyDefCRW(FileTransfer, QString, remoteFileName, RemoteFileName, QString())

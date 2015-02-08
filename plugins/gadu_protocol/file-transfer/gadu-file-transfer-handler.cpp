@@ -172,36 +172,25 @@ void GaduFileTransferHandler::stop()
 	deleteLater();
 }
 
-bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfer)
+void GaduFileTransferHandler::accept(QIODevice *destination)
 {
-	Q_UNUSED(resumeTransfer);
-
 	if (m_getTransfer)
-		return false;
+	{
+		destination->close();
+		destination->deleteLater();
+	}
 
 	auto driveService = m_protocol->driveService();
 	auto downloadId = transfer().property("gg:downloadId", QString{}).toString();
 	auto remoteFileName = transfer().property("gg:remoteFileName", QString{}).toString();
 
-	auto file = new QFile{fileName};
-	if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
-	{
-		file->deleteLater();
-		transfer().setTransferError(FileTransferError::UnableToOpenFile);
-		finished(false);
-		return false;
-	}
-
-	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, file);
+	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, destination);
 
 	connect(m_getTransfer, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
 	connect(m_getTransfer, SIGNAL(finished(bool)), this, SLOT(downloadFinished(bool)));
 
-	transfer().accept(fileName);
 	transfer().setTransferStatus(FileTransferStatus::Transfer);
 	transfer().setTransferredSize(0);
-
-	return true;
 }
 
 void GaduFileTransferHandler::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)

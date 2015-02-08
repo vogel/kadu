@@ -25,6 +25,7 @@
 #define JABBER_FILE_TRANSFER_HANDLER_H
 
 #include <QtCore/QFile>
+#include <QtCore/QPointer>
 
 #include <jid.h>
 #include <s5b.h>
@@ -48,6 +49,7 @@ class JabberFileTransferHandler : public FileTransferHandler
 
 	bool InProgress;
 	qlonglong BytesTransferred;
+	QPointer<QIODevice> Destination;
 	QFile LocalFile;
 
 	void connectJabberTransfer();
@@ -75,7 +77,7 @@ public:
 	virtual void send();
 	virtual void stop();
 
-	virtual bool accept(const QString &fileName, bool resumeTransfer);
+	virtual void accept(QIODevice *destination);
 	virtual void reject();
 
 signals:

@@ -31,6 +31,8 @@
 
 #include <QtCore/QObject>
 
+class QIODevice;
+
 class KADUAPI FileTransferHandler : public QObject
 {
 	Q_OBJECT
@@ -44,7 +46,7 @@ public:
 	virtual void send() = 0;
 	virtual void stop() = 0;
 
-	virtual bool accept(const QString &fileName, bool resumeTransfer) = 0;
+	virtual void accept(QIODevice *destination) = 0;
 	virtual void reject() = 0;
 
 private:
