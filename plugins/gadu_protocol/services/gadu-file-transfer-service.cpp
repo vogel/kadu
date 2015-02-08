@@ -67,6 +67,9 @@ FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTra
 	auto handler = new GaduFileTransferHandler(Protocol, fileTransfer);
 	fileTransfer.setHandler(handler);
 
+	if (fileTransfer.transferDirection() == FileTransferDirection::Incoming)
+		fileTransfer.setTransferType(FileTransferType::Url);
+
 	return handler;
 }
 

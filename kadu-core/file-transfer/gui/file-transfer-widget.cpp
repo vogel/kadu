@@ -178,15 +178,6 @@ void FileTransferWidget::createGui()
 	buttonsLayout->addWidget(m_rejectButton.get(), 1, Qt::AlignBottom);
 }
 
-bool FileTransferWidget::canSend() const
-{
-	if (FileTransferDirection::Outgoing != m_transfer.transferDirection())
-		return false;
-	if (m_transfer.handler())
-		return false;
-	return true;
-}
-
 bool FileTransferWidget::canOpenFile() const
 {
 	if (!canOpenFolder())
@@ -219,6 +210,21 @@ void FileTransferWidget::openFolder()
 {
 	if (canOpenFolder())
 		QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(m_transfer.localFileName()).absoluteDir().absolutePath()));
+}
+
+bool FileTransferWidget::canSend() const
+{
+	if (FileTransferDirection::Outgoing != m_transfer.transferDirection())
+		return false;
+	if (!m_transfer.handler())
+		return false;
+	if (m_transfer.transferStatus() == FileTransferStatus::NotConnected)
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::Rejected)
+		return true;
+	return false;
 }
 
 void FileTransferWidget::send()
@@ -256,6 +262,8 @@ void FileTransferWidget::stop()
 
 bool FileTransferWidget::canAccept() const
 {
+	if (!m_transfer.handler())
+		return false;
 	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return false;
 	if (FileTransferType::Stream != m_transfer.transferType())
@@ -275,6 +283,8 @@ void FileTransferWidget::accept()
 
 bool FileTransferWidget::canReject() const
 {
+	if (!m_transfer.handler())
+		return false;
 	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return false;
 	if (FileTransferType::Stream != m_transfer.transferType())
