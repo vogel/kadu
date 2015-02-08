@@ -29,7 +29,6 @@
 
 class FileTransferManager;
 class NotifyEvent;
-enum class FileTransferStartType;
 
 class NewFileTransferNotification : public ChatNotification
 {
@@ -41,7 +40,7 @@ public:
 
 	static void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
 
-	NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer, FileTransferStartType startType);
+	NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer);
 
 	virtual bool requireCallback() { return true; }
 
@@ -53,12 +52,7 @@ private:
 	static NotifyEvent *m_fileTransferNotifyEvent;
 	static NotifyEvent *m_fileTransferIncomingFileNotifyEvent;
 
-	bool m_continue;
-
 	FileTransfer m_transfer;
 	QString m_fileName;
-
-private slots:
-	void callbackAcceptAsNew();
 
 };

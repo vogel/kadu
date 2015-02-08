@@ -24,7 +24,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "file-transfer/file-transfer-start-type.h"
+#include "file-transfer/file-transfer-type.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
@@ -64,8 +64,7 @@ void NewFileTransferNotification::unregisterEvents()
 void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)
 {
 	auto chat = ChatTypeContact::findChat(fileTransfer.peer(), ActionCreateAndAdd);
-	auto notification = new NewFileTransferNotification{chat, "FileTransfer/IncomingFile", fileTransfer,
-			fileTransfer.localFileName().isEmpty() ? FileTransferStartType::New : FileTransferStartType::Restore};
+	auto notification = new NewFileTransferNotification{chat, "FileTransfer/IncomingFile", fileTransfer};
 	notification->setTitle(tr("Incoming transfer"));
 
 	auto textFileSize = QString("%1 kB");
@@ -112,44 +111,27 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 	NotificationManager::instance()->notify(notification);
 }
 
-NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer, FileTransferStartType startType) :
+NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer) :
 		ChatNotification{chat, type, KaduIcon{}, false},
 		m_transfer{transfer}
 {
-	if (startType == FileTransferStartType::Restore)
-	{
-		addCallback(tr("Continue"), SLOT(callbackAccept()), "callbackAccept()");
-		addCallback(tr("Save file under new name"), SLOT(callbackAcceptAsNew()), "callbackAcceptAsNew()");
-		addCallback(tr("Ignore transfer"), SLOT(callbackDiscard()), "callbackDiscard()");
-
-		m_continue = true;
-	}
-	else
+	if (m_transfer.transferType() == FileTransferType::Stream)
 	{
 		addCallback(tr("Accept"), SLOT(callbackAccept()), "callbackAccept()");
 		addCallback(tr("Reject"), SLOT(callbackReject()), "callbackReject()");
-
-		m_continue = false;
+	}
+	else
+	{
+		addCallback(tr("Save"), SLOT(callbackAccept()), "callbackAccept()");
+		addCallback(tr("Ignore"), SLOT(callbackReject()), "callbackReject()");
 	}
 
 	setDefaultCallback(30 * 60 * 1000, SLOT(callbackDiscard()));
 }
 
-void NewFileTransferNotification::callbackAcceptAsNew()
-{
-	close();
-
-	// let user choose new file name
-	m_transfer.setLocalFileName(QString{});
-	Core::instance()->fileTransferManager()->acceptFileTransfer(m_transfer);
-}
-
 void NewFileTransferNotification::callbackAccept()
 {
 	close();
-
-	if (!m_continue) // let user choose new file name
-		m_transfer.setLocalFileName(QString{});
 
 	Core::instance()->fileTransferManager()->acceptFileTransfer(m_transfer);
 }
