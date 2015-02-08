@@ -299,6 +299,7 @@ bool FileTransferWidget::canSave() const
 
 void FileTransferWidget::save()
 {
+	m_transfer.setLocalFileName({}); // reset, so can be re-downloaded under different name
 	FileTransferManager::instance()->acceptFileTransfer(m_transfer);
 
 	updateButtons();
