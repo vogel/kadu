@@ -60,7 +60,6 @@ public:
 
 	virtual bool accept(const QString &file);
 
-	void createHandler();
 	unsigned int percent();
 
 };

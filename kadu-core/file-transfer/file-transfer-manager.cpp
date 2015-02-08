@@ -130,7 +130,18 @@ void FileTransferManager::cleanUp()
 
 void FileTransferManager::createHandlerForTransfer(FileTransfer transfer)
 {
-	transfer.createHandler();
+	if (!transfer || transfer.handler())
+		return;
+
+	auto protocol = transfer.peer().contactAccount().protocolHandler();
+	if (!protocol)
+		return;
+
+	auto service = protocol->fileTransferService();
+	if (!service)
+		return;
+
+	transfer.setHandler(service->createFileTransferHandler(transfer));
 }
 
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer)

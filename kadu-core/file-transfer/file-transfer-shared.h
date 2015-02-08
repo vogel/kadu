@@ -49,7 +49,6 @@ public:
 	void setTransferStatus(FileTransferStatus transferStatus);
 	void setTransferError(FileTransferError transferError);
 	void setHandler(FileTransferHandler *handler);
-	void createHandler();
 
 	KaduShared_PropertyDeclCRW(Contact, peer, Peer)
 	KaduShared_Property_M(const QString &, localFileName, LocalFileName)

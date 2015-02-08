@@ -163,22 +163,6 @@ void FileTransferShared::setHandler(FileTransferHandler *handler)
 	changeNotifier().notify();
 }
 
-void FileTransferShared::createHandler()
-{
-	if (m_handler)
-		return;
-
-	auto protocol = m_peer->contactAccount().protocolHandler();
-	if (!protocol)
-		return;
-
-	auto service = protocol->fileTransferService();
-	if (!service)
-		return;
-
-	m_handler = service->createFileTransferHandler(this);
-}
-
 void FileTransferShared::handlerDestroyed()
 {
 	m_handler = 0;

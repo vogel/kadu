@@ -89,12 +89,6 @@ FileTransfer::~FileTransfer()
 {
 }
 
-void FileTransfer::createHandler()
-{
-	if (!isNull())
-		data()->createHandler();
-}
-
 unsigned int FileTransfer::percent()
 {
 	if (fileSize() != 0)
