@@ -35,6 +35,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
+#include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-type.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
@@ -97,7 +98,8 @@ void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloa
 	transfer.setFileSize(0); // we don't know file size yet
 	transfer.addProperty("gg:downloadId", downloadId, CustomProperties::Storable);
 	transfer.addProperty("gg:remoteFileName", fileName, CustomProperties::Storable);
-	transfer.createHandler();
+
+	Core::instance()->fileTransferManager()->createHandlerForTransfer(transfer);
 
 	emit incomingFileTransfer(transfer);
 }

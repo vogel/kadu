@@ -28,6 +28,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
+#include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
@@ -99,7 +100,7 @@ void JabberFileTransferService::incomingFileTransferSlot()
 	transfer.setRemoteFileName(jTransfer->fileName());
 	transfer.setFileSize(jTransfer->fileSize());
 
-	transfer.createHandler();
+	Core::instance()->fileTransferManager()->createHandlerForTransfer(transfer);
 
 	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
 	if (handler)

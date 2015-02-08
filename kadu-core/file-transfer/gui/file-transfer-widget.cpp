@@ -226,7 +226,8 @@ void FileTransferWidget::send()
 	if (!canSend())
 		return;
 
-	m_transfer.createHandler();
+	if (m_manager)
+		m_manager->createHandlerForTransfer(m_transfer);
 	if (m_transfer.handler())
 		m_transfer.handler()->send();
 

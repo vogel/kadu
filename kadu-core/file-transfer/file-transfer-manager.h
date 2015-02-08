@@ -53,6 +53,7 @@ public:
 
 	void acceptFileTransfer(FileTransfer transfer);
 	void rejectFileTransfer(FileTransfer transfer);
+	void createHandlerForTransfer(FileTransfer transfer);
 
 	void showFileTransferWindow();
 

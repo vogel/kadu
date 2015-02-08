@@ -128,6 +128,11 @@ void FileTransferManager::cleanUp()
 		removeItem(fileTransfer);
 }
 
+void FileTransferManager::createHandlerForTransfer(FileTransfer transfer)
+{
+	transfer.createHandler();
+}
+
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
 	QMutexLocker locker(&mutex());
@@ -189,7 +194,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			continue;
 		}
 
-		transfer.createHandler();
+		createHandlerForTransfer(transfer);
 		if (transfer.handler())
 		{
 			if (!transfer.handler()->accept(fileName, resumeTransfer))

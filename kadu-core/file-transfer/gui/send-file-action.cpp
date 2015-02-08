@@ -129,8 +129,8 @@ void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 			fileTransfer.setLocalFileName(file);
 
 			Core::instance()->fileTransferManager()->addItem(fileTransfer);
+			Core::instance()->fileTransferManager()->createHandlerForTransfer(fileTransfer);
 
-			fileTransfer.createHandler();
 			if (fileTransfer.handler())
 				fileTransfer.handler()->send();
 
