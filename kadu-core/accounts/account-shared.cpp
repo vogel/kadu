@@ -322,6 +322,7 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	AccountManager::instance()->registerItem(this);
 
 	emit updated();
+	emit protocolHandlerChanged();
 }
 
 void AccountShared::protocolUnregistered(ProtocolFactory* factory)
@@ -354,6 +355,7 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 	ProtocolHandler = 0;
 
 	emit updated();
+	emit protocolHandlerChanged();
 }
 
 void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)

@@ -134,6 +134,7 @@ signals:
 	void disconnected();
 
 	void updated();
+	void protocolHandlerChanged();
 
 };
 
