@@ -25,17 +25,14 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDriveGetTransfer::GaduDriveGetTransfer(QString downloadId, QString remoteFileName, QString localFileName,
+GaduDriveGetTransfer::GaduDriveGetTransfer(QString downloadId, QString remoteFileName, QIODevice *destination,
 	QNetworkAccessManager *networkAccessManager, QObject *parent) :
 		QObject{parent},
 		m_downloadId{downloadId},
 		m_remoteFileName{remoteFileName},
+		m_destination{destination},
 		m_networkAccessManager{networkAccessManager}
 {
-	m_file = new QFile{localFileName, this};
-	if (!m_file->open(QFile::WriteOnly | QIODevice::Truncate))
-		return;
-
 	auto url = QString{"http://p.gg.pl/p/c/%1/%2"}.arg(m_downloadId).arg(m_remoteFileName);
 
 	QNetworkRequest request;
@@ -50,16 +47,17 @@ GaduDriveGetTransfer::~GaduDriveGetTransfer()
 {
 	if (m_reply)
 		m_reply->deleteLater();
-}
 
-bool GaduDriveGetTransfer::fileOpened() const
-{
-	return m_file && m_file->isOpen();
+	if (m_destination)
+	{
+		m_destination->close();
+		m_destination->deleteLater();
+	}
 }
 
 void GaduDriveGetTransfer::readyRead()
 {
-	m_file->write(m_reply->readAll());
+	m_destination->write(m_reply->readAll());
 }
 
 void GaduDriveGetTransfer::managedPageVisited()

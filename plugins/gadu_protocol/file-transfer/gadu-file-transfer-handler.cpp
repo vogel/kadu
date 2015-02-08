@@ -169,14 +169,17 @@ bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfe
 	auto driveService = m_protocol->driveService();
 	auto downloadId = transfer().property("gg:downloadId", QString{}).toString();
 	auto remoteFileName = transfer().property("gg:remoteFileName", QString{}).toString();
-	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, fileName);
 
-	if (!m_getTransfer->fileOpened())
+	auto file = new QFile{fileName, this};
+	if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
 	{
+		file->deleteLater();
 		transfer().setTransferError(FileTransferError::UnableToOpenFile);
 		finished(false);
 		return false;
 	}
+
+	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, file);
 
 	connect(m_getTransfer, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
 	connect(m_getTransfer, SIGNAL(finished(bool)), this, SLOT(downloadFinished(bool)));

@@ -66,9 +66,9 @@ GaduDriveSendTicketRequest * GaduDriveService::requestSendTicket(QString recipie
 	return sendTicketRequest;
 }
 
-GaduDriveGetTransfer * GaduDriveService::getFromDrive(QString downloadId, QString remoteFileName, QString localFileName)
+GaduDriveGetTransfer * GaduDriveService::getFromDrive(QString downloadId, QString remoteFileName, QIODevice *destination)
 {
-	return new GaduDriveGetTransfer{downloadId, remoteFileName, localFileName, m_networkAccessManager.get(), this};
+	return new GaduDriveGetTransfer{downloadId, remoteFileName, destination, m_networkAccessManager.get(), this};
 }
 
 GaduDrivePutTransfer * GaduDriveService::putInOutbox(GaduDriveSendTicket ticket, QString localFileName)

@@ -27,7 +27,7 @@
 class GaduDriveSessionToken;
 class GaduDriveSendTicket;
 
-class QFile;
+class QIODevice;
 class QNetworkAccessManager;
 class QNetworkReply;
 
@@ -36,11 +36,9 @@ class GaduDriveGetTransfer : public QObject
 	Q_OBJECT
 
 public:
-	explicit GaduDriveGetTransfer(QString downloadId, QString remoteFileName, QString localFileName,
+	explicit GaduDriveGetTransfer(QString downloadId, QString remoteFileName, QIODevice *destination,
 		QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 	virtual ~GaduDriveGetTransfer();
-
-	bool fileOpened() const;
 
 signals:
 	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
@@ -49,9 +47,9 @@ signals:
 private:
 	QString m_downloadId;
 	QString m_remoteFileName;
+	QPointer<QIODevice> m_destination;
 	QNetworkAccessManager *m_networkAccessManager;
 	QPointer<QNetworkReply> m_reply;
-	owned_qptr<QFile> m_file;
 
 private slots:
 	void readyRead();
