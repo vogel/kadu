@@ -281,6 +281,8 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)
 {
+	createHandlerForTransfer(fileTransfer);
+
 	emit fileTransferAboutToBeAdded(fileTransfer);
 }
 
@@ -292,6 +294,8 @@ void FileTransferManager::itemAdded(FileTransfer fileTransfer)
 void FileTransferManager::itemAboutToBeRemoved(FileTransfer fileTransfer)
 {
 	emit fileTransferAboutToBeRemoved(fileTransfer);
+
+	removeHandlerFromTransfer(fileTransfer);
 }
 
 void FileTransferManager::itemRemoved(FileTransfer fileTransfer)
