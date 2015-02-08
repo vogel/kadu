@@ -29,6 +29,7 @@
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-type.h"
+#include "file-transfer/file-transfer-status.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 
 #include "file-transfer/jabber-file-transfer-handler.h"
@@ -94,6 +95,7 @@ void JabberFileTransferService::incomingFileTransferSlot()
 	transfer.setPeer(peer);
 	transfer.setTransferDirection(FileTransferDirection::Incoming);
 	transfer.setTransferType(FileTransferType::Stream);
+	transfer.setTransferStatus(FileTransferStatus::WaitingForAccept);
 	transfer.setRemoteFileName(jTransfer->fileName());
 	transfer.setFileSize(jTransfer->fileSize());
 

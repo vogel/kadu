@@ -106,7 +106,6 @@ void FileTransferWidget::createGui()
 	fileNameLabel->setText(fileName);
 
 	m_statusLabel = new QLabel{this};
-	m_statusLabel->setWordWrap(true);
 
 	m_sendButton = new QPushButton{tr("Send"), this};
 	connect(m_sendButton.get(), SIGNAL(clicked()), this, SLOT(send()));
@@ -387,6 +386,10 @@ void FileTransferWidget::updateStatusLabel()
 
 		case FileTransferStatus::WaitingForAccept:
 			m_statusLabel->setText(tr("<b>Wait for accept</b>"));
+			break;
+
+		case FileTransferStatus::ReadyToDownload:
+			m_statusLabel->setText(tr("<b>Ready to download</b>"));
 			break;
 
 		case FileTransferStatus::Transfer:

@@ -238,10 +238,7 @@ void FileTransferManager::showFileTransferWindow()
 void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	QMutexLocker locker(&mutex());
-
-	fileTransfer.setTransferStatus(FileTransferStatus::WaitingForAccept);
 	addItem(fileTransfer);
-
 	NewFileTransferNotification::notifyIncomingFileTransfer(fileTransfer);
 }
 
