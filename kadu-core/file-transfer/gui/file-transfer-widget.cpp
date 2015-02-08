@@ -232,11 +232,7 @@ void FileTransferWidget::send()
 	if (!canSend())
 		return;
 
-	if (m_manager)
-		m_manager->createHandlerForTransfer(m_transfer);
-	if (m_transfer.handler())
-		m_transfer.handler()->send();
-
+	m_transfer.handler()->send();
 	updateButtons();
 }
 
