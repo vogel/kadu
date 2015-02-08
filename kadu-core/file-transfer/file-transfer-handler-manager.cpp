@@ -63,7 +63,7 @@ void FileTransferHandlerManager::removeHandlers(Account account)
 void FileTransferHandlerManager::accountRegistered(Account account)
 {
 	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
-	removeHandlers(account);
+	createHandlers(account);
 }
 
 void FileTransferHandlerManager::accountUnregistered(Account account)
