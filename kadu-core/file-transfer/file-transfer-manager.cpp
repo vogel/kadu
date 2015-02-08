@@ -85,10 +85,18 @@ void FileTransferManager::addFileTransferService(Account account)
 
 	connect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
 			this, SLOT(incomingFileTransfer(FileTransfer)));
+
+	for (auto &&transfer : items())
+		if (transfer.peer().contactAccount() == account)
+			createHandlerForTransfer(transfer);
 }
 
 void FileTransferManager::removeFileTransferService(Account account)
 {
+	for (auto &&transfer : items())
+		if (transfer.peer().contactAccount() == account)
+			removeHandlerFromTransfer(transfer);
+
 	auto protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -104,6 +112,7 @@ void FileTransferManager::accountRegistered(Account account)
 {
 	QMutexLocker locker(&mutex());
 
+	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
 	addFileTransferService(account);
 }
 
@@ -112,6 +121,19 @@ void FileTransferManager::accountUnregistered(Account account)
 	QMutexLocker locker(&mutex());
 
 	removeFileTransferService(account);
+	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+}
+
+void FileTransferManager::protocolHandlerChanged()
+{
+	auto account = Account{sender()};
+	if (!account)
+		return;
+
+	if (account.protocolHandler())
+		addFileTransferService(account);
+	else
+		removeFileTransferService(account);
 }
 
 void FileTransferManager::cleanUp()
@@ -142,6 +164,15 @@ void FileTransferManager::createHandlerForTransfer(FileTransfer transfer)
 		return;
 
 	transfer.setHandler(service->createFileTransferHandler(transfer));
+}
+
+void FileTransferManager::removeHandlerFromTransfer(FileTransfer transfer)
+{
+	if (!transfer || !transfer.handler())
+		return;
+
+	transfer.handler()->deleteLater();
+	transfer.setHandler(nullptr);
 }
 
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer)

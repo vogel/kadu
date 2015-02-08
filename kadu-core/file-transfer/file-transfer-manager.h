@@ -54,6 +54,7 @@ public:
 	void acceptFileTransfer(FileTransfer transfer);
 	void rejectFileTransfer(FileTransfer transfer);
 	void createHandlerForTransfer(FileTransfer transfer);
+	void removeHandlerFromTransfer(FileTransfer transfer);
 
 	void showFileTransferWindow();
 
@@ -82,6 +83,7 @@ private:
 	void removeFileTransferService(Account account);
 
 private slots:
+	void protocolHandlerChanged();
 	void incomingFileTransfer(FileTransfer fileTransfer);
 
 };
