@@ -62,6 +62,7 @@ class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
 class ConfiguredChatStyleRendererFactoryProvider;
 class DomProcessorService;
+class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
 class ImageStorageService;
@@ -212,6 +213,7 @@ public:
 	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
 	RosterReplacer * rosterReplacer() const;
 
+	FileTransferHandlerManager * fileTransferHandlerManager() const;
 	FileTransferManager * fileTransferManager() const;
 
 	void setShowMainWindowOnStart(bool show);

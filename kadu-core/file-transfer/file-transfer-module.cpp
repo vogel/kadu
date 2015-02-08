@@ -19,10 +19,12 @@
 
 #include "file-transfer-module.h"
 
+#include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 
 FileTransferModule::FileTransferModule()
 {
+	add_type<FileTransferHandlerManager>();
 	add_type<FileTransferManager>();
 }
 

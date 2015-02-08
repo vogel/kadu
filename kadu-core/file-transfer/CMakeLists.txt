@@ -7,6 +7,7 @@ set (file-transfer_SRCS
 	gui/show-file-transfer-window-action.cpp
 
 	file-transfer.cpp
+	file-transfer-handler-manager.cpp
 	file-transfer-handler.cpp
 	file-transfer-manager.cpp
 	file-transfer-module.cpp

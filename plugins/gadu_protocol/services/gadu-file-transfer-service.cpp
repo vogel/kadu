@@ -102,8 +102,6 @@ void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloa
 	transfer.addProperty("gg:downloadId", downloadId, CustomProperties::Storable);
 	transfer.addProperty("gg:remoteFileName", fileName, CustomProperties::Storable);
 
-	Core::instance()->fileTransferManager()->createHandlerForTransfer(transfer);
-
 	emit incomingFileTransfer(transfer);
 }
 

@@ -35,6 +35,7 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
+#include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-notifications.h"
 #include "file-transfer/file-transfer-status.h"
@@ -73,6 +74,11 @@ FileTransferManager::~FileTransferManager()
 	NewFileTransferNotification::unregisterEvents();
 }
 
+void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
+{
+	m_fileTransferHandlerManager = fileTransferHandlerManager;
+}
+
 void FileTransferManager::addFileTransferService(Account account)
 {
 	auto protocol = account.protocolHandler();
@@ -85,18 +91,10 @@ void FileTransferManager::addFileTransferService(Account account)
 
 	connect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
 			this, SLOT(incomingFileTransfer(FileTransfer)));
-
-	for (auto &&transfer : items())
-		if (transfer.peer().contactAccount() == account)
-			createHandlerForTransfer(transfer);
 }
 
 void FileTransferManager::removeFileTransferService(Account account)
 {
-	for (auto &&transfer : items())
-		if (transfer.peer().contactAccount() == account)
-			removeHandlerFromTransfer(transfer);
-
 	auto protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -112,7 +110,6 @@ void FileTransferManager::accountRegistered(Account account)
 {
 	QMutexLocker locker(&mutex());
 
-	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
 	addFileTransferService(account);
 }
 
@@ -121,19 +118,6 @@ void FileTransferManager::accountUnregistered(Account account)
 	QMutexLocker locker(&mutex());
 
 	removeFileTransferService(account);
-	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
-}
-
-void FileTransferManager::protocolHandlerChanged()
-{
-	auto account = Account{sender()};
-	if (!account)
-		return;
-
-	if (account.protocolHandler())
-		addFileTransferService(account);
-	else
-		removeFileTransferService(account);
 }
 
 void FileTransferManager::cleanUp()
@@ -150,34 +134,12 @@ void FileTransferManager::cleanUp()
 		removeItem(fileTransfer);
 }
 
-void FileTransferManager::createHandlerForTransfer(FileTransfer transfer)
-{
-	if (!transfer || transfer.handler())
-		return;
-
-	auto protocol = transfer.peer().contactAccount().protocolHandler();
-	if (!protocol)
-		return;
-
-	auto service = protocol->fileTransferService();
-	if (!service)
-		return;
-
-	transfer.setHandler(service->createFileTransferHandler(transfer));
-}
-
-void FileTransferManager::removeHandlerFromTransfer(FileTransfer transfer)
-{
-	if (!transfer || !transfer.handler())
-		return;
-
-	transfer.handler()->deleteLater();
-	transfer.setHandler(nullptr);
-}
-
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
 	QMutexLocker locker(&mutex());
+
+	if (!m_fileTransferHandlerManager->ensureHandler(transfer))
+		return;
 
 	auto fileName = transfer.localFileName();
 
@@ -236,7 +198,6 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			continue;
 		}
 
-		createHandlerForTransfer(transfer);
 		if (transfer.handler())
 		{
 			if (!transfer.handler()->accept(fileName, resumeTransfer))
@@ -259,7 +220,7 @@ void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
 {
 	QMutexLocker locker(&mutex());
 
-	if (transfer.handler())
+	if (m_fileTransferHandlerManager->ensureHandler(transfer))
 		transfer.handler()->reject();
 }
 
@@ -281,8 +242,6 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)
 {
-	createHandlerForTransfer(fileTransfer);
-
 	emit fileTransferAboutToBeAdded(fileTransfer);
 }
 
@@ -294,8 +253,6 @@ void FileTransferManager::itemAdded(FileTransfer fileTransfer)
 void FileTransferManager::itemAboutToBeRemoved(FileTransfer fileTransfer)
 {
 	emit fileTransferAboutToBeRemoved(fileTransfer);
-
-	removeHandlerFromTransfer(fileTransfer);
 }
 
 void FileTransferManager::itemRemoved(FileTransfer fileTransfer)

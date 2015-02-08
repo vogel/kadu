@@ -50,6 +50,7 @@
 #include "contacts/contact-manager.h"
 #include "core/application.h"
 #include "dom/dom-processor-service.h"
+#include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
@@ -606,7 +607,8 @@ void Core::createGui()
 	KaduWindowProvider->provideValue(Window);
 
 	// initialize file transfers
-	static_cast<void>(fileTransferManager());
+	m_injector.get<FileTransferHandlerManager>();
+	m_injector.get<FileTransferManager>();
 }
 
 void Core::runServices()
@@ -899,6 +901,11 @@ WebkitMessagesViewHandlerFactory * Core::webkitMessagesViewHandlerFactory() cons
 RosterReplacer * Core::rosterReplacer() const
 {
 	return m_injector.get<RosterReplacer>();
+}
+
+FileTransferHandlerManager * Core::fileTransferHandlerManager() const
+{
+	return m_injector.get<FileTransferHandlerManager>();
 }
 
 FileTransferManager * Core::fileTransferManager() const

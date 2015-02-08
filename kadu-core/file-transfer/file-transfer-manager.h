@@ -34,8 +34,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QUuid>
+#include <injeqt/injeqt.h>
 
 class FileTransferActions;
+class FileTransferHandlerManager;
 class FileTransferWindow;
 class ConfigurationApi;
 
@@ -53,8 +55,6 @@ public:
 
 	void acceptFileTransfer(FileTransfer transfer);
 	void rejectFileTransfer(FileTransfer transfer);
-	void createHandlerForTransfer(FileTransfer transfer);
-	void removeHandlerFromTransfer(FileTransfer transfer);
 
 	void showFileTransferWindow();
 
@@ -77,13 +77,15 @@ protected:
 
 private:
 	FileTransferActions *m_actions;
+	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
 
 	void addFileTransferService(Account account);
 	void removeFileTransferService(Account account);
 
 private slots:
-	void protocolHandlerChanged();
+	INJEQT_SETTER void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+
 	void incomingFileTransfer(FileTransfer fileTransfer);
 
 };
