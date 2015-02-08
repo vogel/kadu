@@ -322,7 +322,17 @@ void FileTransferWidget::save()
 
 bool FileTransferWidget::canRemove() const
 {
-	return m_transfer.handler() == nullptr;
+	if (!m_transfer.handler())
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::NotConnected)
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::ReadyToDownload)
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::Rejected)
+		return true;
+	return false;
 }
 
 void FileTransferWidget::remove()
