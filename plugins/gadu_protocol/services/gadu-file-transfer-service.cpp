@@ -68,7 +68,11 @@ FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTra
 	fileTransfer.setHandler(handler);
 
 	if (fileTransfer.transferDirection() == FileTransferDirection::Incoming)
+	{
 		fileTransfer.setTransferType(FileTransferType::Url);
+		if (fileTransfer.transferStatus() == FileTransferStatus::NotConnected)
+			fileTransfer.setTransferStatus(FileTransferStatus::ReadyToDownload);
+	}
 
 	return handler;
 }

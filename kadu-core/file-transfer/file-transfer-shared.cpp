@@ -103,8 +103,9 @@ void FileTransferShared::load()
 	m_fileSize = loadValue<qulonglong>("FileSize");
 	m_transferredSize = loadValue<qulonglong>("TransferredSize");
 
-	if ((m_fileSize == m_transferredSize) && m_fileSize != 0)
-		m_transferStatus = FileTransferStatus::Finished;
+	m_transferStatus = loadValue<bool>("Finished", false)
+			? FileTransferStatus::Finished
+			: FileTransferStatus::NotConnected;
 }
 
 void FileTransferShared::store()
@@ -120,6 +121,7 @@ void FileTransferShared::store()
 	storeValue("TransferDirection", FileTransferDirection::Outgoing == m_transferDirection ? "Send" : "Receive");
 	storeValue("FileSize", (qulonglong)m_fileSize);
 	storeValue("TransferredSize", (qulonglong)m_transferredSize);
+	storeValue("Finished", FileTransferStatus::Finished == m_transferStatus);
 }
 
 void FileTransferShared::setTransferStatus(FileTransferStatus transferStatus)

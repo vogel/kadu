@@ -387,7 +387,7 @@ void FileTransferWidget::updateStatusLabel()
 {
 	if (!m_transfer)
 	{
-		m_statusLabel->setText(tr("<b>Not connected</b>"));
+		m_statusLabel->setText({});
 		return;
 	}
 
@@ -400,7 +400,7 @@ void FileTransferWidget::updateStatusLabel()
 	switch (m_transfer.transferStatus())
 	{
 		case FileTransferStatus::NotConnected:
-			m_statusLabel->setText(tr("<b>Not connected</b>"));
+			m_statusLabel->setText({});
 			break;
 
 		case FileTransferStatus::WaitingForConnection:
