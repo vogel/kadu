@@ -42,7 +42,8 @@
 
 GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
 		FileTransferHandler{fileTransfer},
-		m_protocol{protocol}
+		m_protocol{protocol},
+		m_putFinished{false}
 {
 }
 
@@ -92,6 +93,9 @@ void GaduFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
 
 void GaduFileTransferHandler::updateStatus()
 {
+	if (m_putFinished)
+		return;
+
 	if (!m_ticket.isValid())
 	{
 		transfer().setTransferError(FileTransferError::NetworkError);
@@ -129,14 +133,23 @@ void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
 	if (m_putTransfer)
 		return;
 
-	auto driveService = m_protocol->driveService();
-	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().localFileName());
-
-	if (!m_putTransfer->fileOpened())
+	auto file = new QFile{transfer().localFileName()};
+	if (!file->exists() || !file->open(QFile::ReadOnly))
 	{
 		transfer().setTransferError(FileTransferError::UnableToOpenFile);
+		file->deleteLater();
 		finished(false);
+		return;
 	}
+
+	auto driveService = m_protocol->driveService();
+	m_putTransfer = driveService->putInOutbox(m_ticket, QFileInfo{file->fileName()}.fileName(), file);
+	connect(m_putTransfer, SIGNAL(finished()), this, SLOT(putFinished()));
+}
+
+void GaduFileTransferHandler::putFinished()
+{
+	m_putFinished = true;
 }
 
 void GaduFileTransferHandler::requestSendStatusUpdate()
@@ -170,7 +183,7 @@ bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfe
 	auto downloadId = transfer().property("gg:downloadId", QString{}).toString();
 	auto remoteFileName = transfer().property("gg:remoteFileName", QString{}).toString();
 
-	auto file = new QFile{fileName, this};
+	auto file = new QFile{fileName};
 	if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
 	{
 		file->deleteLater();

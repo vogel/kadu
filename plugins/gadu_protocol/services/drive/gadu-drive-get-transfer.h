@@ -36,7 +36,7 @@ class GaduDriveGetTransfer : public QObject
 	Q_OBJECT
 
 public:
-	explicit GaduDriveGetTransfer(QString downloadId, QString remoteFileName, QIODevice *destination,
+	explicit GaduDriveGetTransfer(QString downloadId, QString fileName, QIODevice *destination,
 		QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 	virtual ~GaduDriveGetTransfer();
 
@@ -46,7 +46,7 @@ signals:
 
 private:
 	QString m_downloadId;
-	QString m_remoteFileName;
+	QString m_fileName;
 	QPointer<QIODevice> m_destination;
 	QNetworkAccessManager *m_networkAccessManager;
 	QPointer<QNetworkReply> m_reply;

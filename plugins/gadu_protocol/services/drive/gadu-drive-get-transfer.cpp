@@ -25,15 +25,15 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDriveGetTransfer::GaduDriveGetTransfer(QString downloadId, QString remoteFileName, QIODevice *destination,
+GaduDriveGetTransfer::GaduDriveGetTransfer(QString downloadId, QString fileName, QIODevice *destination,
 	QNetworkAccessManager *networkAccessManager, QObject *parent) :
 		QObject{parent},
 		m_downloadId{downloadId},
-		m_remoteFileName{remoteFileName},
+		m_fileName{fileName},
 		m_destination{destination},
 		m_networkAccessManager{networkAccessManager}
 {
-	auto url = QString{"http://p.gg.pl/p/c/%1/%2"}.arg(m_downloadId).arg(m_remoteFileName);
+	auto url = QString{"http://p.gg.pl/p/c/%1/%2"}.arg(m_downloadId).arg(m_fileName);
 
 	QNetworkRequest request;
 	request.setUrl(QUrl{url});
@@ -71,7 +71,7 @@ void GaduDriveGetTransfer::managedPageVisited()
 
 	m_reply->deleteLater();
 
-	auto url = QString{"http://p.gg.pl/p/d/%1/%2"}.arg(m_downloadId).arg(m_remoteFileName);
+	auto url = QString{"http://p.gg.pl/p/d/%1/%2"}.arg(m_downloadId).arg(m_fileName);
 
 	QNetworkRequest request;
 	request.setUrl(QUrl{url});

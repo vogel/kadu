@@ -22,28 +22,23 @@
 #include "services/drive/gadu-drive-send-ticket.h"
 #include "services/drive/gadu-drive-session-token.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, GaduDriveSendTicket ticket, QString localFileName,
+GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, GaduDriveSendTicket ticket, QString fileName, QIODevice *source,
 	QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_source{source}
 {
-	m_file = new QFile{localFileName, this};
-	if (!m_file->exists() || !m_file->open(QFile::ReadOnly))
-		return;
-
 	auto metadata = QJsonObject{};
 	metadata["node_type"] = "file";
 
 	// sigh, %2C inside string forbits me from using .arg().arg()
 	auto url = QString{"https://drive.mpa.gg.pl/me/file/outbox/%1%2%3"}
-		.arg(ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(QFileInfo{localFileName}.fileName())));
+		.arg(ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(fileName)));
 
 	QNetworkRequest request;
 	request.setUrl(QUrl{url});
@@ -53,7 +48,7 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, G
 	request.setRawHeader("X-gged-metadata", QJsonDocument{metadata}.toJson(QJsonDocument::Compact).data());
 	request.setRawHeader("X-gged-security-token", sessionToken.securityToken().toAscii());
 
-	m_reply = networkAccessManager->put(request, m_file.get());
+	m_reply = networkAccessManager->put(request, m_source);
 	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
@@ -61,14 +56,16 @@ GaduDrivePutTransfer::~GaduDrivePutTransfer()
 {
 	if (m_reply)
 		m_reply->deleteLater();
-}
 
-bool GaduDrivePutTransfer::fileOpened() const
-{
-	return m_file && m_file->isOpen();
+	if (m_source)
+	{
+		m_source->close();
+		m_source->deleteLater();
+	}
 }
 
 void GaduDrivePutTransfer::requestFinished()
 {
+	emit finished();
 	deleteLater();
 }

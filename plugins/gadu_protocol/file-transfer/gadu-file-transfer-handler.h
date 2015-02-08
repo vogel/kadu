@@ -55,6 +55,7 @@ private:
 	GaduDriveSendTicket m_ticket;
 	QPointer<GaduDriveGetTransfer> m_getTransfer;
 	QPointer<GaduDrivePutTransfer> m_putTransfer;
+	bool m_putFinished;
 
 	void startOutgoingTransferIfNotStarted();
 	void updateStatus();
@@ -64,5 +65,6 @@ private slots:
 	void requestSendStatusUpdate();
 	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 	void downloadFinished(bool ok);
+	void putFinished();
 
 };

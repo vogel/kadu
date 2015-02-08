@@ -48,8 +48,8 @@ public:
 	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
 
 	GaduDriveSendTicketRequest * requestSendTicket(QString recipient, QString fileName, qint64 fileSize);
-	GaduDriveGetTransfer * getFromDrive(QString downloadId, QString remoteFileName, QIODevice *destination);
-	GaduDrivePutTransfer * putInOutbox(GaduDriveSendTicket ticket, QString localFileName);
+	GaduDriveGetTransfer * getFromDrive(QString downloadId, QString fileName, QIODevice *destination);
+	GaduDrivePutTransfer * putInOutbox(GaduDriveSendTicket ticket, QString fileName, QIODevice *source);
 	GaduDriveSendStatusUpdateRequest * requestSendStatusUpdate(QString ticketId);
 
 private:
