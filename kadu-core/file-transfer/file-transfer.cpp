@@ -35,7 +35,6 @@
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "file-transfer/file-transfer-direction.h"
-#include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-type.h"
@@ -102,8 +101,8 @@ KaduSharedBase_PropertyDefCRW(FileTransfer, QString, localFileName, LocalFileNam
 KaduSharedBase_PropertyDefCRW(FileTransfer, QString, remoteFileName, RemoteFileName, QString())
 KaduSharedBase_PropertyDef(FileTransfer, unsigned long, fileSize, FileSize, 0)
 KaduSharedBase_PropertyDef(FileTransfer, unsigned long, transferredSize, TransferredSize, 0)
+KaduSharedBase_PropertyDef(FileTransfer, QString, error, Error, QString{})
 KaduSharedBase_PropertyDef(FileTransfer, FileTransferDirection, transferDirection, TransferDirection, FileTransferDirection::Outgoing)
 KaduSharedBase_PropertyDef(FileTransfer, FileTransferHandler *, handler, Handler, 0)
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferError, transferError, TransferError, FileTransferError::NoError)
 KaduSharedBase_PropertyDef(FileTransfer, FileTransferStatus, transferStatus, TransferStatus, FileTransferStatus::NotConnected)
 KaduSharedBase_PropertyDef(FileTransfer, FileTransferType, transferType, TransferType, FileTransferType::Unknown)

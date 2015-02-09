@@ -64,7 +64,7 @@ void GaduDriveGetTransfer::managedPageVisited()
 {
 	if (m_reply->error() != QNetworkReply::NoError)
 	{
-		emit finished(false);
+		emit finished(m_reply);
 		deleteLater();
 		return;
 	}
@@ -85,7 +85,7 @@ void GaduDriveGetTransfer::managedPageVisited()
 
 void GaduDriveGetTransfer::requestFinished()
 {
-	emit finished(m_reply->error() == QNetworkReply::NoError);
+	emit finished(m_reply);
 
 	deleteLater();
 }

@@ -42,7 +42,7 @@ public:
 
 signals:
 	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-	void finished(bool ok);
+	void finished(QNetworkReply *reply);
 
 private:
 	QString m_downloadId;

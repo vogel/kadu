@@ -34,6 +34,8 @@ class GaduDriveGetTransfer;
 class GaduDrivePutTransfer;
 class GaduProtocol;
 
+class QNetworkReply;
+
 class GaduFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
@@ -64,7 +66,7 @@ private slots:
 	void statusUpdateReceived(GaduDriveSendTicket);
 	void requestSendStatusUpdate();
 	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-	void downloadFinished(bool ok);
+	void downloadFinished(QNetworkReply*);
 	void putFinished();
 
 };

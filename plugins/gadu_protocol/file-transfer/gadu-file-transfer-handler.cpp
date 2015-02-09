@@ -34,11 +34,11 @@
 
 #include "accounts/account.h"
 #include "file-transfer/file-transfer-direction.h"
-#include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-status.h"
 
 #include <QtCore/QFileInfo>
-#include <QTimer>
+#include <QtCore/QTimer>
+#include <QtNetwork/QNetworkReply>
 
 GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
 		FileTransferHandler{fileTransfer},
@@ -98,7 +98,7 @@ void GaduFileTransferHandler::updateStatus()
 
 	if (!m_ticket.isValid())
 	{
-		transfer().setTransferError(FileTransferError::NetworkError);
+		transfer().setError(tr("Valid GG Drive ticket not available"));
 		finished(false);
 		return;
 	}
@@ -136,7 +136,7 @@ void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
 	auto file = new QFile{transfer().localFileName()};
 	if (!file->exists() || !file->open(QFile::ReadOnly))
 	{
-		transfer().setTransferError(FileTransferError::UnableToOpenFile);
+		transfer().setError(tr("Unable to open file"));
 		file->deleteLater();
 		finished(false);
 		return;
@@ -187,7 +187,7 @@ void GaduFileTransferHandler::accept(QIODevice *destination)
 	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, destination);
 
 	connect(m_getTransfer, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
-	connect(m_getTransfer, SIGNAL(finished(bool)), this, SLOT(downloadFinished(bool)));
+	connect(m_getTransfer, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
 
 	transfer().setTransferStatus(FileTransferStatus::Transfer);
 	transfer().setTransferredSize(0);
@@ -199,12 +199,19 @@ void GaduFileTransferHandler::downloadProgress(qint64 bytesReceived, qint64 byte
 	transfer().setFileSize(bytesTotal);
 }
 
-void GaduFileTransferHandler::downloadFinished(bool ok)
+void GaduFileTransferHandler::downloadFinished(QNetworkReply *reply)
 {
-	if (ok)
-		transfer().setTransferStatus(FileTransferStatus::Finished);
-	else
-		transfer().setTransferError(FileTransferError::NetworkError);
+	switch (reply->error())
+	{
+		case QNetworkReply::NoError:
+			transfer().setTransferStatus(FileTransferStatus::Finished);
+			break;
+
+		default:
+			transfer().setError(tr("Network error: %1").arg(reply->error()));
+			break;
+	}
+
 	deleteLater();
 }
 

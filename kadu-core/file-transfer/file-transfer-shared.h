@@ -27,7 +27,6 @@ class Contact;
 class FileTransferHandler;
 
 enum class FileTransferDirection;
-enum class FileTransferError;
 enum class FileTransferStatus;
 enum class FileTransferType;
 
@@ -46,8 +45,8 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
+	void setError(QString error);
 	void setTransferStatus(FileTransferStatus transferStatus);
-	void setTransferError(FileTransferError transferError);
 	void setHandler(FileTransferHandler *handler);
 
 	KaduShared_PropertyDeclCRW(Contact, peer, Peer)
@@ -57,8 +56,8 @@ public:
 	KaduShared_Property_M(unsigned long, transferredSize, TransferredSize)
 	KaduShared_Property_M(FileTransferDirection, transferDirection, TransferDirection)
 	KaduShared_Property_M(FileTransferType, transferType, TransferType)
+	KaduShared_PropertyRead_M(QString, error)
 	KaduShared_PropertyRead_M(FileTransferStatus, transferStatus)
-	KaduShared_PropertyRead_M(FileTransferError, transferError)
 	KaduShared_PropertyRead_M(FileTransferHandler *, handler)
 
 signals:
@@ -78,8 +77,8 @@ private:
 	unsigned long m_fileSize;
 	unsigned long m_transferredSize;
 
+	QString m_error;
 	FileTransferDirection m_transferDirection;
-	FileTransferError m_transferError;
 	FileTransferStatus m_transferStatus;
 	FileTransferType m_transferType;
 

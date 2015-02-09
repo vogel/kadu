@@ -28,7 +28,6 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-direction.h"
-#include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
@@ -184,7 +183,7 @@ bool FileTransferWidget::canOpenFile() const
 		return false;
 	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return true;
-	if (m_transfer.transferError() != FileTransferError::NoError)
+	if (!m_transfer.error().isEmpty())
 		return false;
 	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
 		return true;
@@ -391,9 +390,9 @@ void FileTransferWidget::updateStatusLabel()
 		return;
 	}
 
-	if (FileTransferError::NoError != m_transfer.transferError())
+	if (!m_transfer.error().isEmpty())
 	{
-		m_statusLabel->setText(tr("<b>Error</b>"));
+		m_statusLabel->setText(QString{"<b>%1</b>"}.arg(m_transfer.error()));
 		return;
 	}
 
@@ -431,7 +430,7 @@ void FileTransferWidget::updateStatusLabel()
 
 void FileTransferWidget::updateProgressBar()
 {
-	if (m_transfer.transferError() != FileTransferError::NoError)
+	if (!m_transfer.error().isEmpty())
 	{
 		m_progressBar->setValue(0);
 		return;
@@ -453,7 +452,7 @@ void FileTransferWidget::updateProgressBar()
 
 void FileTransferWidget::updateTransferData()
 {
-	if (m_transfer.transferError() != FileTransferError::NoError || FileTransferStatus::Transfer != m_transfer.transferStatus() || !m_lastUpdateTime.isValid())
+	if (!m_transfer.error().isEmpty() || FileTransferStatus::Transfer != m_transfer.transferStatus() || !m_lastUpdateTime.isValid())
 	{
 		m_speed = 0;
 		m_lastUpdateTime = QDateTime::currentDateTime();

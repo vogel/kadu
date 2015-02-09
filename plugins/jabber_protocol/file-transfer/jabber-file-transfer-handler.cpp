@@ -28,7 +28,6 @@
 #include <filetransfer.h>
 
 #include "file-transfer/file-transfer-direction.h"
-#include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-status.h"
 
 #include "resource/jabber-resource-pool.h"

@@ -27,7 +27,6 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
-#include "file-transfer/file-transfer-error.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
@@ -55,7 +54,6 @@ FileTransferShared::FileTransferShared(const QUuid &uuid) :
 		m_fileSize{0},
 		m_transferredSize{0},
 		m_transferDirection{FileTransferDirection::Incoming},
-		m_transferError{FileTransferError::NoError},
 		m_transferStatus{FileTransferStatus::NotConnected},
 		m_transferType{FileTransferType::Unknown},
 		m_handler{0}
@@ -136,15 +134,12 @@ void FileTransferShared::setTransferStatus(FileTransferStatus transferStatus)
 	changeNotifier().notify();
 }
 
-void FileTransferShared::setTransferError(FileTransferError transferError)
+void FileTransferShared::setError(QString error)
 {
 	ensureLoaded();
 
-	if (m_transferStatus == FileTransferStatus::NotConnected && m_transferError == transferError)
-		return;
-
 	m_transferStatus = FileTransferStatus::NotConnected;
-	m_transferError = transferError;
+	m_error = error;
 	emit statusChanged();
 	changeNotifier().notify();
 }
