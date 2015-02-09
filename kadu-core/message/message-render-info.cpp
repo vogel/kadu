@@ -33,7 +33,7 @@
 static QString getMessage(const ParserData * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
-	if (messageRenderInfo)
+	if (messageRenderInfo && Core::instance()) // TODO: can be run on app exit when Core does not exist
 		return Core::instance()->messageHtmlRendererService()->renderMessage(messageRenderInfo->message());
 	else
 		return QString();
