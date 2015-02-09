@@ -85,7 +85,7 @@ void FileTransferShared::load()
 	if (!isValidStorage())
 		return;
 
-	StorableObject::load();
+	Shared::load();
 
 	*m_peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
 	m_localFileName = loadValue<QString>("LocalFileName");
@@ -112,6 +112,8 @@ void FileTransferShared::store()
 		return;
 
 	ensureLoaded();
+
+	Shared::store();
 
 	storeValue("Peer", m_peer->uuid().toString());
 	storeValue("LocalFileName", m_localFileName);
