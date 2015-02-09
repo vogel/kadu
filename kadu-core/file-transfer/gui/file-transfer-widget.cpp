@@ -309,6 +309,9 @@ bool FileTransferWidget::canSave() const
 void FileTransferWidget::save()
 {
 	m_transfer.setLocalFileName({}); // reset, so can be re-downloaded under different name
+	m_transfer.setTransferredSize(0);
+	m_lastTransferredSize = 0;
+
 	if (m_manager)
 		m_manager->acceptFileTransfer(m_transfer);
 
@@ -462,7 +465,7 @@ void FileTransferWidget::updateTransferData()
 
 	auto now = QDateTime::currentDateTime();
 	auto timeDiff = now.toTime_t() - m_lastUpdateTime.toTime_t();
-	if (0 < timeDiff)
+	if (0 < timeDiff && m_lastTransferredSize <= m_transfer.transferredSize())
 	{
 		m_speed = ((m_transfer.transferredSize() - m_lastTransferredSize) / 1024) / timeDiff;
 		m_lastUpdateTime = QDateTime::currentDateTime();
