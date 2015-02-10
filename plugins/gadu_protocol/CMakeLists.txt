@@ -25,7 +25,8 @@ kadu_api_directories (plugins/gadu_protocol
 )
 
 set (SOURCES
-	file-transfer/gadu-file-transfer-handler.cpp
+	file-transfer/gadu-outgoing-file-transfer-handler.cpp
+	file-transfer/gadu-url-incoming-file-transfer-handler.cpp
 
 	gui/widgets/gadu-add-account-widget.cpp
 	gui/widgets/gadu-contact-personal-info-widget.cpp
@@ -99,8 +100,6 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	file-transfer/gadu-file-transfer-handler.h
-
 	gui/widgets/gadu-add-account-widget.h
 	gui/widgets/gadu-contact-personal-info-widget.h
 	gui/widgets/gadu-edit-account-widget.h

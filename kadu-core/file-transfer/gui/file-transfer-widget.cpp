@@ -28,11 +28,11 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-direction.h"
-#include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer.h"
+#include "file-transfer/outgoing-file-transfer-handler.h"
 #include "gui/widgets/contact-avatar-display.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
@@ -286,7 +286,9 @@ bool FileTransferWidget::canStop() const
 
 void FileTransferWidget::stop()
 {
-	m_transfer.handler()->stop();
+	auto handler = qobject_cast<OutgoingFileTransferHandler *>(m_transfer.handler());
+	if (handler)
+		handler->stop();
 
 	updateButtons();
 }
@@ -353,9 +355,6 @@ void FileTransferWidget::remove()
 
 		if (!dialog->ask())
 			return;
-		else
-			if (m_transfer.handler())
-				m_transfer.handler()->stop();
 	}
 
 	if (m_manager)

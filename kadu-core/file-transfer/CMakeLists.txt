@@ -13,6 +13,9 @@ set (file-transfer_SRCS
 	file-transfer-module.cpp
 	file-transfer-notifications.cpp
 	file-transfer-shared.cpp
+	outgoing-file-transfer-handler.cpp
+	stream-incoming-file-transfer-handler.cpp
+	url-incoming-file-transfer-handler.cpp
 )
 
 kadu_subdirectory (file-transfer "${file-transfer_SRCS}" "" "")

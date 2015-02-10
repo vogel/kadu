@@ -1,11 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2015 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,36 +19,31 @@
 
 #pragma once
 
-#include "file-transfer/file-transfer-handler.h"
+#include "file-transfer/outgoing-file-transfer-handler.h"
 
 #include "services/drive/gadu-drive-send-ticket.h"
 
 #include <QtCore/QPointer>
 
-class GaduDriveGetTransfer;
 class GaduDrivePutTransfer;
 class GaduProtocol;
 
 class QNetworkReply;
 
-class GaduFileTransferHandler : public FileTransferHandler
+class GaduOutgoingFileTransferHandler : public OutgoingFileTransferHandler
 {
 	Q_OBJECT
 
 public:
-	explicit GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
-	virtual ~GaduFileTransferHandler();
+	explicit GaduOutgoingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
+	virtual ~GaduOutgoingFileTransferHandler();
 
-	virtual void send(QIODevice *source);
-	virtual void stop();
-
-	virtual void accept(QIODevice *destination);
-	virtual void reject();
+	virtual void send(QIODevice *source) override;
+	virtual void stop() override;
 
 private:
 	QPointer<GaduProtocol> m_protocol;
 	GaduDriveSendTicket m_ticket;
-	QPointer<GaduDriveGetTransfer> m_getTransfer;
 	QPointer<GaduDrivePutTransfer> m_putTransfer;
 	QPointer<QIODevice> m_source;
 	bool m_putStarted;
@@ -65,7 +55,5 @@ private:
 private slots:
 	void statusUpdateReceived(GaduDriveSendTicket);
 	void requestSendStatusUpdate();
-	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-	void downloadFinished(QNetworkReply*);
 
 };

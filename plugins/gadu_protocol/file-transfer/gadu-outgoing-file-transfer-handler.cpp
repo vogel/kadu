@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009, 2010, 2011, 2012, 2013, 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011, 2012, 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2015 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,56 +17,47 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-file-transfer-handler.h"
+#include "gadu-outgoing-file-transfer-handler.h"
 
-#include "helpers/gadu-protocol-helper.h"
-#include "services/drive/gadu-drive-get-transfer.h"
 #include "services/drive/gadu-drive-put-transfer.h"
 #include "services/drive/gadu-drive-send-status-update-request.h"
 #include "services/drive/gadu-drive-send-ticket-ack-status.h"
 #include "services/drive/gadu-drive-send-ticket-request.h"
 #include "services/drive/gadu-drive-send-ticket-status.h"
 #include "services/drive/gadu-drive-service.h"
-#include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
-#include "accounts/account.h"
-#include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-status.h"
 
 #include <QtCore/QTimer>
-#include <QtNetwork/QNetworkReply>
 
-GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
-		FileTransferHandler{fileTransfer},
+GaduOutgoingFileTransferHandler::GaduOutgoingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
+		OutgoingFileTransferHandler{fileTransfer},
 		m_protocol{protocol},
 		m_putStarted{false}
 {
 }
 
-GaduFileTransferHandler::~GaduFileTransferHandler()
+GaduOutgoingFileTransferHandler::~GaduOutgoingFileTransferHandler()
 {
 	clenaup();
 }
 
-void GaduFileTransferHandler::clenaup()
+void GaduOutgoingFileTransferHandler::clenaup()
 {
 	if (m_source)
 	{
 		m_source->close();
 		m_source->deleteLater();
 	}
+
+	if (m_putTransfer)
+		m_putTransfer->deleteLater();
 }
 
-void GaduFileTransferHandler::send(QIODevice *source)
+void GaduOutgoingFileTransferHandler::send(QIODevice *source)
 {
 	m_source = source;
-
-	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
-	{
-		transfer().setTransferStatus(FileTransferStatus::NotConnected);
-		return;
-	}
 
 	if (!m_protocol)
 	{
@@ -84,13 +73,13 @@ void GaduFileTransferHandler::send(QIODevice *source)
 	transfer().setTransferStatus(FileTransferStatus::WaitingForConnection);
 }
 
-void GaduFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
+void GaduOutgoingFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
 {
 	m_ticket = std::move(ticket);
 	updateStatus();
 }
 
-void GaduFileTransferHandler::updateStatus()
+void GaduOutgoingFileTransferHandler::updateStatus()
 {
 	if (!m_ticket.isValid())
 	{
@@ -125,7 +114,7 @@ void GaduFileTransferHandler::updateStatus()
 	QTimer::singleShot(1000, this, SLOT(requestSendStatusUpdate()));
 }
 
-void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
+void GaduOutgoingFileTransferHandler::startOutgoingTransferIfNotStarted()
 {
 	if (m_putStarted)
 		return;
@@ -135,7 +124,7 @@ void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
 	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().remoteFileName(), m_source);
 }
 
-void GaduFileTransferHandler::requestSendStatusUpdate()
+void GaduOutgoingFileTransferHandler::requestSendStatusUpdate()
 {
 	auto driveService = m_protocol->driveService();
 	auto updateSendStatusRequest = driveService->requestSendStatusUpdate(m_ticket.ticketId());
@@ -144,10 +133,8 @@ void GaduFileTransferHandler::requestSendStatusUpdate()
 		this, SLOT(statusUpdateReceived(GaduDriveSendTicket)));
 }
 
-void GaduFileTransferHandler::stop()
+void GaduOutgoingFileTransferHandler::stop()
 {
-	if (m_getTransfer)
-		m_getTransfer->deleteLater();
 	if (m_putTransfer)
 		m_putTransfer->deleteLater();
 
@@ -155,53 +142,4 @@ void GaduFileTransferHandler::stop()
 	clenaup();
 }
 
-void GaduFileTransferHandler::accept(QIODevice *destination)
-{
-	if (m_getTransfer)
-	{
-		destination->close();
-		destination->deleteLater();
-	}
-
-	auto driveService = m_protocol->driveService();
-	auto downloadId = transfer().property("gg:downloadId", QString{}).toString();
-	auto remoteFileName = transfer().property("gg:remoteFileName", QString{}).toString();
-
-	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, destination);
-
-	connect(m_getTransfer, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
-	connect(m_getTransfer, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
-
-	transfer().setTransferStatus(FileTransferStatus::Transfer);
-	transfer().setTransferredSize(0);
-}
-
-void GaduFileTransferHandler::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
-{
-	transfer().setTransferredSize(bytesReceived);
-	transfer().setFileSize(bytesTotal);
-}
-
-void GaduFileTransferHandler::downloadFinished(QNetworkReply *reply)
-{
-	switch (reply->error())
-	{
-		case QNetworkReply::NoError:
-			transfer().setTransferStatus(FileTransferStatus::Finished);
-			break;
-
-		default:
-			transfer().setError(tr("Network error: %1").arg(reply->error()));
-			break;
-	}
-
-	clenaup();
-}
-
-void GaduFileTransferHandler::reject()
-{
-	transfer().setTransferStatus(FileTransferStatus::Rejected);
-	clenaup();
-}
-
-#include "moc_gadu-file-transfer-handler.cpp"
+#include "moc_gadu-outgoing-file-transfer-handler.cpp"

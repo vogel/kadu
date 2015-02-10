@@ -1,11 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2009, 2010, 2011, 2012, 2013, 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010, 2011, 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2015 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -27,50 +22,48 @@
 #include <xmpp/xmpp-im/xmpp_bytestream.h>
 #include <filetransfer.h>
 
-#include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-status.h"
 
 #include "resource/jabber-resource-pool.h"
 #include "jabber-protocol.h"
 
-#include "jabber-file-transfer-handler.h"
+#include "jabber-outgoing-file-transfer-handler.h"
 
-JabberFileTransferHandler::JabberFileTransferHandler(::FileTransfer transfer) :
-		FileTransferHandler(transfer), JabberTransfer(0), InProgress(false), BytesTransferred(0)
+JabberOutgoingFileTransferHandler::JabberOutgoingFileTransferHandler(::FileTransfer transfer) :
+		OutgoingFileTransferHandler(transfer), JabberTransfer(0), InProgress(false), BytesTransferred(0)
 {
 }
 
-JabberFileTransferHandler::~JabberFileTransferHandler()
+JabberOutgoingFileTransferHandler::~JabberOutgoingFileTransferHandler()
 {
 	cleanup(transfer().transferStatus());
 }
 
-void JabberFileTransferHandler::connectJabberTransfer()
+void JabberOutgoingFileTransferHandler::connectJabberTransfer()
 {
 	if (!JabberTransfer)
 		return;
 
 	connect(JabberTransfer, SIGNAL(accepted()), this, SLOT(fileTransferAccepted()));
 	connect(JabberTransfer, SIGNAL(connected()), this, SLOT(fileTransferConnected()));
-	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(fileTransferReadyRead(const QByteArray &)));
 	connect(JabberTransfer, SIGNAL(bytesWritten(int)), this, SLOT(fileTransferBytesWritten(int)));
 	connect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
 }
 
-void JabberFileTransferHandler::disconnectJabberTransfer()
+void JabberOutgoingFileTransferHandler::disconnectJabberTransfer()
 {
 	if (JabberTransfer)
 		disconnect(JabberTransfer, 0, this, 0);
 }
 
-void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
+void JabberOutgoingFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
 {
 	disconnectJabberTransfer();
 	JabberTransfer = jTransfer;
 	connectJabberTransfer();
 }
 
-void JabberFileTransferHandler::cleanup(FileTransferStatus status)
+void JabberOutgoingFileTransferHandler::cleanup(FileTransferStatus status)
 {
 	InProgress = false;
 
@@ -82,12 +75,6 @@ void JabberFileTransferHandler::cleanup(FileTransferStatus status)
 		JabberTransfer = nullptr;
 	}
 
-	if (Destination)
-	{
-		Destination->close();
-		Destination->deleteLater();
-	}
-
 	if (Source)
 	{
 		Source->close();
@@ -97,7 +84,7 @@ void JabberFileTransferHandler::cleanup(FileTransferStatus status)
 	deleteLater();
 }
 
-void JabberFileTransferHandler::updateFileInfo()
+void JabberOutgoingFileTransferHandler::updateFileInfo()
 {
 	if (JabberTransfer)
 		transfer().setTransferredSize(BytesTransferred);
@@ -107,15 +94,12 @@ void JabberFileTransferHandler::updateFileInfo()
 	emit statusChanged();
 }
 
-void JabberFileTransferHandler::send(QIODevice *source)
+void JabberOutgoingFileTransferHandler::send(QIODevice *source)
 {
 	if (InProgress) // already sending/receiving
 		return;
 
 	Source = source;
-
-	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
-		return;
 
 	Account account = transfer().peer().contactAccount();
 	if (account.isNull())
@@ -164,7 +148,7 @@ void JabberFileTransferHandler::send(QIODevice *source)
 	JabberTransfer->sendFile(PeerJid, transfer().remoteFileName(), transfer().fileSize(), QString(), XMPP::FTThumbnail());
 }
 
-void JabberFileTransferHandler::stop()
+void JabberOutgoingFileTransferHandler::stop()
 {
 	if (JabberTransfer)
 		JabberTransfer->close();
@@ -172,71 +156,33 @@ void JabberFileTransferHandler::stop()
 	cleanup(FileTransferStatus::NotConnected);
 }
 
-void JabberFileTransferHandler::accept(QIODevice *destination)
-{
-	Destination = destination;
-	BytesTransferred = 0;
-
-	transfer().setTransferStatus(FileTransferStatus::Transfer);
-	transfer().setTransferredSize(BytesTransferred);
-
-	if (FileTransferDirection::Incoming == transfer().transferDirection())
-		transfer().setFileSize(JabberTransfer->fileSize());
-
-	JabberTransfer->accept(BytesTransferred);
-}
-
-void JabberFileTransferHandler::reject()
-{
-	if (JabberTransfer)
-		JabberTransfer->close();
-
-	deleteLater();
-}
-
-void JabberFileTransferHandler::fileTransferAccepted()
+void JabberOutgoingFileTransferHandler::fileTransferAccepted()
 {
 	transfer().setTransferStatus(FileTransferStatus::WaitingForConnection);
 }
 
-void JabberFileTransferHandler::fileTransferConnected()
+void JabberOutgoingFileTransferHandler::fileTransferConnected()
 {
-	if (FileTransferDirection::Outgoing == transfer().transferDirection())
+	if (!Source->isOpen()) // ?? assert
 	{
-		if (!Source->isOpen()) // ?? assert
-		{
-			cleanup(FileTransferStatus::NotConnected);
-			return;
-		}
-
-		BytesTransferred = JabberTransfer->offset();
-		if (0 != BytesTransferred && !Source->seek(BytesTransferred))
-		{
-			cleanup(FileTransferStatus::NotConnected);
-			return;
-		}
-
-		transfer().setTransferredSize(BytesTransferred);
-		fileTransferBytesWritten(0);
+		cleanup(FileTransferStatus::NotConnected);
+		return;
 	}
-	// on TypeReceive fileTransferReadyRead will be called automatically
+
+	BytesTransferred = JabberTransfer->offset();
+	if (0 != BytesTransferred && !Source->seek(BytesTransferred))
+	{
+		cleanup(FileTransferStatus::NotConnected);
+		return;
+	}
+
+	transfer().setTransferredSize(BytesTransferred);
+	fileTransferBytesWritten(0);
 
 	transfer().setTransferStatus(FileTransferStatus::Transfer);
 }
 
-void JabberFileTransferHandler::fileTransferReadyRead(const QByteArray &a)
-{
-	if (Destination)
-		Destination->write(a);
-
-	BytesTransferred += a.size();
-	updateFileInfo();
-
-	if (BytesTransferred == JabberTransfer->fileSize())
-		cleanup(FileTransferStatus::Finished);
-}
-
-void JabberFileTransferHandler::fileTransferBytesWritten(int written)
+void JabberOutgoingFileTransferHandler::fileTransferBytesWritten(int written)
 {
 	BytesTransferred += written;
 	updateFileInfo();
@@ -269,7 +215,7 @@ void JabberFileTransferHandler::fileTransferBytesWritten(int written)
 	JabberTransfer->writeFileData(data);
 }
 
-FileTransferStatus JabberFileTransferHandler::errorToStatus(int error)
+FileTransferStatus JabberOutgoingFileTransferHandler::errorToStatus(int error)
 {
 	switch (error)
 	{
@@ -285,9 +231,9 @@ FileTransferStatus JabberFileTransferHandler::errorToStatus(int error)
 	}
 }
 
-void JabberFileTransferHandler::fileTransferError(int error)
+void JabberOutgoingFileTransferHandler::fileTransferError(int error)
 {
 	cleanup(errorToStatus(error));
 }
 
-#include "moc_jabber-file-transfer-handler.cpp"
+#include "moc_jabber-outgoing-file-transfer-handler.cpp"

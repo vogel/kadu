@@ -34,7 +34,8 @@
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 
-#include "file-transfer/jabber-file-transfer-handler.h"
+#include "file-transfer/jabber-outgoing-file-transfer-handler.h"
+#include "file-transfer/jabber-stream-incoming-file-transfer-handler.h"
 #include "file-transfer/s5b-server-manager.h"
 #include "services/jabber-connection-service.h"
 #include "jabber-protocol.h"
@@ -60,10 +61,15 @@ JabberFileTransferService::~JabberFileTransferService()
 
 FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
-	JabberFileTransferHandler *handler = new JabberFileTransferHandler(fileTransfer);
-	fileTransfer.setHandler(handler);
-
-	return handler;
+	switch (fileTransfer.transferDirection())
+	{
+		case FileTransferDirection::Incoming:
+			return new JabberStreamIncomingFileTransferHandler{fileTransfer};
+		case FileTransferDirection::Outgoing:
+			return new JabberOutgoingFileTransferHandler{fileTransfer};
+		default:
+			return nullptr;
+	}
 }
 
 FileTransferCanSendResult JabberFileTransferService::canSend(Contact contact)
@@ -104,7 +110,7 @@ void JabberFileTransferService::incomingFileTransferSlot()
 	if (!Core::instance()->fileTransferHandlerManager()->ensureHandler(transfer))
 		return;
 
-	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
+	auto handler = qobject_cast<JabberStreamIncomingFileTransferHandler *>(transfer.handler());
 	if (handler)
 		handler->setJTransfer(jTransfer);
 

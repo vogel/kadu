@@ -1,10 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2015 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,22 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_FILE_TRANSFER_HANDLER_H
-#define JABBER_FILE_TRANSFER_HANDLER_H
+#pragma once
 
 #include <QtCore/QPointer>
 
 #include <jid.h>
 #include <s5b.h>
 
-#include "file-transfer/file-transfer-handler.h"
+#include "file-transfer/outgoing-file-transfer-handler.h"
 
 namespace XMPP
 {
 	class FileTransfer;
 };
 
-class JabberFileTransferHandler : public FileTransferHandler
+class JabberOutgoingFileTransferHandler : public OutgoingFileTransferHandler
 {
 	Q_OBJECT
 
@@ -48,7 +43,6 @@ class JabberFileTransferHandler : public FileTransferHandler
 
 	bool InProgress;
 	qlonglong BytesTransferred;
-	QPointer<QIODevice> Destination;
 	QPointer<QIODevice> Source;
 
 	void connectJabberTransfer();
@@ -63,25 +57,19 @@ protected:
 private slots:
 	void fileTransferAccepted();
 	void fileTransferConnected();
-	void fileTransferReadyRead(const QByteArray &a);
 	void fileTransferBytesWritten(int);
 	void fileTransferError(int);
 
 public:
-	JabberFileTransferHandler(FileTransfer fileTransfer);
-	virtual ~JabberFileTransferHandler();
+	explicit JabberOutgoingFileTransferHandler(FileTransfer fileTransfer);
+	virtual ~JabberOutgoingFileTransferHandler();
 
 	void setJTransfer(XMPP::FileTransfer *jTransfer);
 
 	virtual void send(QIODevice *source);
 	virtual void stop();
 
-	virtual void accept(QIODevice *destination);
-	virtual void reject();
-
 signals:
 	void statusChanged();
 
 };
-
-#endif // JABBER_FILE_TRANSFER_HANDLER_H

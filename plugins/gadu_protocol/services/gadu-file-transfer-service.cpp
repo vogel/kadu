@@ -26,7 +26,8 @@
 #include "gadu-file-transfer-service.h"
 #include "gadu-imtoken-service.h"
 
-#include "file-transfer/gadu-file-transfer-handler.h"
+#include "file-transfer/gadu-outgoing-file-transfer-handler.h"
+#include "file-transfer/gadu-url-incoming-file-transfer-handler.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
@@ -64,17 +65,10 @@ void GaduFileTransferService::setGaduIMTokenService(GaduIMTokenService *imTokenS
 
 FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
-	auto handler = new GaduFileTransferHandler(Protocol, fileTransfer);
-	fileTransfer.setHandler(handler);
-
 	if (fileTransfer.transferDirection() == FileTransferDirection::Incoming)
-	{
-		fileTransfer.setTransferType(FileTransferType::Url);
-		if (fileTransfer.transferStatus() == FileTransferStatus::NotConnected)
-			fileTransfer.setTransferStatus(FileTransferStatus::ReadyToDownload);
-	}
-
-	return handler;
+		return new GaduUrlIncomingFileTransferHandler{Protocol, fileTransfer};
+	else
+		return new GaduOutgoingFileTransferHandler{Protocol, fileTransfer};
 }
 
 FileTransferCanSendResult GaduFileTransferService::canSend(Contact contact)

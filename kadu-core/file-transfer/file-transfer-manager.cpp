@@ -36,12 +36,14 @@
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
-#include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-notifications.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-actions.h"
 #include "file-transfer/gui/file-transfer-window.h"
+#include "file-transfer/outgoing-file-transfer-handler.h"
+#include "file-transfer/stream-incoming-file-transfer-handler.h"
+#include "file-transfer/url-incoming-file-transfer-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -163,7 +165,14 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, QString loca
 		}
 
 		transfer.setLocalFileName(saveFileName);
-		transfer.handler()->accept(file);
+
+		auto streamHandler = qobject_cast<StreamIncomingFileTransferHandler *>(transfer.handler());
+		if (streamHandler)
+			streamHandler->accept(file);
+
+		auto urlHandler = qobject_cast<UrlIncomingFileTransferHandler *>(transfer.handler());
+		if (urlHandler)
+			urlHandler->save(file);
 
 		transfer.setTransferStatus(FileTransferStatus::Transfer);
 		showFileTransferWindow();
@@ -175,8 +184,10 @@ void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
 {
 	QMutexLocker locker(&mutex());
 
-	if (m_fileTransferHandlerManager->ensureHandler(transfer))
-		transfer.handler()->reject();
+	m_fileTransferHandlerManager->ensureHandler(transfer);
+	auto streamHandler = qobject_cast<StreamIncomingFileTransferHandler *>(transfer.handler());
+	if (streamHandler)
+		streamHandler->reject();
 }
 
 void FileTransferManager::sendFile(FileTransfer transfer, QString fileName)
@@ -190,11 +201,13 @@ void FileTransferManager::sendFile(FileTransfer transfer, QString fileName)
 	transfer.setRemoteFileName(fileInfo.fileName());
 	transfer.setTransferredSize(0);
 
-	if (transfer.handler())
+	auto handler = qobject_cast<OutgoingFileTransferHandler *>(transfer.handler());
+
+	if (handler)
 	{
 		auto file = new QFile{fileName};
 		if (file->open(QIODevice::ReadOnly))
-			transfer.handler()->send(file);
+			handler->send(file);
 		else
 			file->deleteLater();
 	}
