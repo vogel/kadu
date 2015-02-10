@@ -48,19 +48,16 @@ GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTra
 
 GaduFileTransferHandler::~GaduFileTransferHandler()
 {
+	clenaup();
+}
+
+void GaduFileTransferHandler::clenaup()
+{
 	if (m_source)
 	{
 		m_source->close();
 		m_source->deleteLater();
 	}
-}
-
-void GaduFileTransferHandler::finished(bool ok)
-{
-	transfer().setTransferStatus(ok
-			? FileTransferStatus::Finished
-			: FileTransferStatus::NotConnected);
-	deleteLater();
 }
 
 void GaduFileTransferHandler::send(QIODevice *source)
@@ -69,13 +66,13 @@ void GaduFileTransferHandler::send(QIODevice *source)
 
 	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
 	{
-		finished(false);
+		transfer().setTransferStatus(FileTransferStatus::NotConnected);
 		return;
 	}
 
-	if (!m_protocol || transfer().localFileName().isEmpty())
+	if (!m_protocol)
 	{
-		finished(false);
+		transfer().setTransferStatus(FileTransferStatus::NotConnected);
 		return;
 	}
 
@@ -98,7 +95,8 @@ void GaduFileTransferHandler::updateStatus()
 	if (!m_ticket.isValid())
 	{
 		transfer().setError(tr("Valid GG Drive ticket not available"));
-		finished(false);
+		transfer().setTransferStatus(FileTransferStatus::NotConnected);
+		clenaup();
 		return;
 	}
 
@@ -109,7 +107,7 @@ void GaduFileTransferHandler::updateStatus()
 	{
 		transfer().setTransferStatus(FileTransferStatus::Finished);
 		transfer().setTransferredSize(m_ticket.fileSize());
-		finished(true);
+		clenaup();
 		return;
 	}
 
@@ -154,7 +152,7 @@ void GaduFileTransferHandler::stop()
 		m_putTransfer->deleteLater();
 
 	transfer().setTransferStatus(FileTransferStatus::NotConnected);
-	deleteLater();
+	clenaup();
 }
 
 void GaduFileTransferHandler::accept(QIODevice *destination)
@@ -197,12 +195,13 @@ void GaduFileTransferHandler::downloadFinished(QNetworkReply *reply)
 			break;
 	}
 
-	deleteLater();
+	clenaup();
 }
 
 void GaduFileTransferHandler::reject()
 {
-	deleteLater();
+	transfer().setTransferStatus(FileTransferStatus::Rejected);
+	clenaup();
 }
 
 #include "moc_gadu-file-transfer-handler.cpp"

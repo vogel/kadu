@@ -40,8 +40,6 @@ class GaduFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
 
-	void finished(bool ok);
-
 public:
 	explicit GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
 	virtual ~GaduFileTransferHandler();
@@ -60,6 +58,7 @@ private:
 	QPointer<QIODevice> m_source;
 	bool m_putStarted;
 
+	void clenaup();
 	void startOutgoingTransferIfNotStarted();
 	void updateStatus();
 
