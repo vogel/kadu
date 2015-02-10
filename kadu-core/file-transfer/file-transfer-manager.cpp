@@ -136,89 +136,40 @@ void FileTransferManager::cleanUp()
 
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
-	QMutexLocker locker(&mutex());
-
 	if (!m_fileTransferHandlerManager->ensureHandler(transfer))
 		return;
 
-	auto fileName = transfer.localFileName();
+	auto chat = ChatTypeContact::findChat(transfer.peer(), ActionReturnNull);
+	QWidget *parent = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
+	if (parent == nullptr)
+		parent = Core::instance()->kaduWindow();
 
-	auto haveFileName = !fileName.isEmpty();
-	// auto resumeTransfer = haveFileName;
-
-	QFileInfo fi;
+	auto localFileName = transfer.localFileName();
+	auto remoteFileName = transfer.remoteFileName();
+	auto saveFileName = localFileName;
 
 	while (true)
 	{
-		if (fileName.isEmpty())
-			fileName = QFileDialog::getSaveFileName(Core::instance()->kaduWindow(), tr("Select file location"),
-					Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + transfer.remoteFileName(),
-							QString(), 0, QFileDialog::DontConfirmOverwrite);
+		saveFileName = getSaveFileName(saveFileName, remoteFileName, parent);
+		if (saveFileName.isEmpty())
+			break;
 
-		if (fileName.isEmpty())
-		{
-			if (transfer.handler())
-				transfer.handler()->reject();
-			return;
-		}
-
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
-		fi.setFile(fileName);
-
-		if (!haveFileName && fi.exists())
-		{
-			QWidget *parent = nullptr;
-			auto chat = ChatTypeContact::findChat(transfer.peer(), ActionReturnNull);
-			if (chat)
-				parent = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
-
-			auto question = tr("File %1 already exists.").arg(fileName);
-			switch (QMessageBox::question(parent, tr("Save file"), question, tr("Overwrite"), //tr("Resume"),
-			                                 tr("Select another file"), 0, 2))
-			{
-				case 0:
-					//resumeTransfer = false;
-					break;
-
-				case 1:
-					//resumeTransfer = true;
-					//break;
-
-				//case 2:
-					fileName = QString{};
-					haveFileName = false;
-					continue;
-			}
-		}
-
-		if (fi.exists() && !fi.isWritable())
+		auto file = new QFile{saveFileName};
+		if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
 		{
 			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
-			fileName.clear();
+			saveFileName.clear();
+			file->deleteLater();
 			continue;
 		}
 
-		if (transfer.handler())
-		{
-			auto file = new QFile{fileName};
-			if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
-			{
-				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
-				fileName.clear();
-				file->deleteLater();
-				continue;
-			}
+		transfer.setLocalFileName(saveFileName);
+		transfer.handler()->accept(file);
 
-			transfer.setLocalFileName(fileName);
-			transfer.handler()->accept(file);
-		}
-
+		transfer.setTransferStatus(FileTransferStatus::Transfer);
+		showFileTransferWindow();
 		break;
 	}
-
-	transfer.setTransferStatus(FileTransferStatus::Transfer);
-
-	showFileTransferWindow();
 }
 
 void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
@@ -247,6 +198,56 @@ void FileTransferManager::sendFile(FileTransfer transfer, QString fileName)
 			transfer.handler()->send(file);
 		else
 			file->deleteLater();
+	}
+}
+
+QString FileTransferManager::getSaveFileName(QString fileName, QString remoteFileName, QWidget *parent)
+{
+	auto haveFileName = !fileName.isEmpty();
+	// auto resumeTransfer = haveFileName;
+
+	while (true)
+	{
+		if (fileName.isEmpty())
+			fileName = QFileDialog::getSaveFileName(parent, tr("Select file location"),
+					Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + remoteFileName,
+							QString(), 0, QFileDialog::DontConfirmOverwrite);
+
+		if (fileName.isEmpty())
+			return fileName;
+
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
+		auto info = QFileInfo{fileName};
+
+		if (!haveFileName && info.exists())
+		{
+			auto question = tr("File %1 already exists.").arg(fileName);
+			switch (QMessageBox::question(parent, tr("Save file"), question, tr("Overwrite"), //tr("Resume"),
+			                                 tr("Select another file"), 0, 2))
+			{
+				case 0:
+					//resumeTransfer = false;
+					break;
+
+				case 1:
+					//resumeTransfer = true;
+					//break;
+
+				//case 2:
+					fileName = QString{};
+					haveFileName = false;
+					continue;
+			}
+		}
+
+		if (info.exists() && !info.isWritable())
+		{
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
+			fileName.clear();
+			continue;
+		}
+
+		return fileName;
 	}
 }
 

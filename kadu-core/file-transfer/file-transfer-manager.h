@@ -55,11 +55,9 @@ public:
 
 	void acceptFileTransfer(FileTransfer transfer);
 	void rejectFileTransfer(FileTransfer transfer);
-
 	void sendFile(FileTransfer transfer, QString fileName);
-
+	QString getSaveFileName(QString localFileName, QString remoteFileName, QWidget *parent = nullptr);
 	void showFileTransferWindow();
-
 	void cleanUp();
 
 signals:
