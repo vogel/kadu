@@ -43,7 +43,7 @@ public:
 
 	FileTransfer transfer() const;
 
-	virtual void send() = 0;
+	virtual void send(QIODevice *source) = 0;
 	virtual void stop() = 0;
 
 	virtual void accept(QIODevice *destination) = 0;

@@ -88,6 +88,12 @@ void JabberFileTransferHandler::cleanup(FileTransferStatus status)
 		Destination->deleteLater();
 	}
 
+	if (Source)
+	{
+		Source->close();
+		Source->deleteLater();
+	}
+
 	deleteLater();
 }
 
@@ -101,22 +107,18 @@ void JabberFileTransferHandler::updateFileInfo()
 	emit statusChanged();
 }
 
-void JabberFileTransferHandler::send()
+void JabberFileTransferHandler::send(QIODevice *source)
 {
-	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
-		return;
-
 	if (InProgress) // already sending/receiving
 		return;
 
-	QFileInfo localFile(transfer().localFileName());
-	transfer().setRemoteFileName(localFile.fileName());
+	Source = source;
 
-	QFileInfo fileInfo(transfer().localFileName());
-	transfer().setFileSize(fileInfo.size());
+	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
+		return;
 
 	Account account = transfer().peer().contactAccount();
-	if (account.isNull() || transfer().localFileName().isEmpty())
+	if (account.isNull())
 	{
 		transfer().setTransferStatus(FileTransferStatus::NotConnected);
 		deleteLater();
@@ -201,26 +203,20 @@ void JabberFileTransferHandler::fileTransferConnected()
 {
 	if (FileTransferDirection::Outgoing == transfer().transferDirection())
 	{
-		if (LocalFile.isOpen()) // ?? assert
-		{
-			cleanup(FileTransferStatus::NotConnected);
-			return;
-		}
-
-		LocalFile.setFileName(transfer().localFileName());
-		if (!LocalFile.open(QIODevice::ReadOnly))
+		if (!Source->isOpen()) // ?? assert
 		{
 			cleanup(FileTransferStatus::NotConnected);
 			return;
 		}
 
 		BytesTransferred = JabberTransfer->offset();
-		if (0 != BytesTransferred && !LocalFile.seek(BytesTransferred))
+		if (0 != BytesTransferred && !Source->seek(BytesTransferred))
 		{
 			cleanup(FileTransferStatus::NotConnected);
 			return;
 		}
 
+		transfer().setTransferredSize(BytesTransferred);
 		fileTransferBytesWritten(0);
 	}
 	// on TypeReceive fileTransferReadyRead will be called automatically
@@ -260,7 +256,7 @@ void JabberFileTransferHandler::fileTransferBytesWritten(int written)
 	int dataSize = JabberTransfer->dataSizeNeeded();
 	QByteArray data(dataSize, (char)0);
 
-	int sizeRead = LocalFile.read(data.data(), data.size());
+	int sizeRead = Source->read(data.data(), data.size());
 	if (sizeRead < 0)
 	{
 		cleanup(FileTransferStatus::NotConnected);

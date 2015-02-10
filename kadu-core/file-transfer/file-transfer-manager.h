@@ -56,6 +56,8 @@ public:
 	void acceptFileTransfer(FileTransfer transfer);
 	void rejectFileTransfer(FileTransfer transfer);
 
+	void sendFile(FileTransfer transfer, QString fileName);
+
 	void showFileTransferWindow();
 
 	void cleanUp();

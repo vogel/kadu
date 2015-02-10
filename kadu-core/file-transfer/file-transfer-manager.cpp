@@ -229,6 +229,27 @@ void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
 		transfer.handler()->reject();
 }
 
+void FileTransferManager::sendFile(FileTransfer transfer, QString fileName)
+{
+	if (transfer.transferDirection() != FileTransferDirection::Outgoing)
+		return;
+
+	auto fileInfo = QFileInfo{fileName};
+	transfer.setFileSize(fileInfo.size());
+	transfer.setLocalFileName(fileName);
+	transfer.setRemoteFileName(fileInfo.fileName());
+	transfer.setTransferredSize(0);
+
+	if (transfer.handler())
+	{
+		auto file = new QFile{fileName};
+		if (file->open(QIODevice::ReadOnly))
+			transfer.handler()->send(file);
+		else
+			file->deleteLater();
+	}
+}
+
 void FileTransferManager::showFileTransferWindow()
 {
 	QMutexLocker locker(&mutex());

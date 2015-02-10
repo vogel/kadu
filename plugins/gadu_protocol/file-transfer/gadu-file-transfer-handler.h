@@ -46,7 +46,7 @@ public:
 	explicit GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
 	virtual ~GaduFileTransferHandler();
 
-	virtual void send();
+	virtual void send(QIODevice *source);
 	virtual void stop();
 
 	virtual void accept(QIODevice *destination);
@@ -57,7 +57,8 @@ private:
 	GaduDriveSendTicket m_ticket;
 	QPointer<GaduDriveGetTransfer> m_getTransfer;
 	QPointer<GaduDrivePutTransfer> m_putTransfer;
-	bool m_putFinished;
+	QPointer<QIODevice> m_source;
+	bool m_putStarted;
 
 	void startOutgoingTransferIfNotStarted();
 	void updateStatus();
@@ -67,6 +68,5 @@ private slots:
 	void requestSendStatusUpdate();
 	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 	void downloadFinished(QNetworkReply*);
-	void putFinished();
 
 };

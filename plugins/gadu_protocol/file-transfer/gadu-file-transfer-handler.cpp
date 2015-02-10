@@ -36,19 +36,23 @@
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-status.h"
 
-#include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
 #include <QtNetwork/QNetworkReply>
 
 GaduFileTransferHandler::GaduFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
 		FileTransferHandler{fileTransfer},
 		m_protocol{protocol},
-		m_putFinished{false}
+		m_putStarted{false}
 {
 }
 
 GaduFileTransferHandler::~GaduFileTransferHandler()
 {
+	if (m_source)
+	{
+		m_source->close();
+		m_source->deleteLater();
+	}
 }
 
 void GaduFileTransferHandler::finished(bool ok)
@@ -59,8 +63,10 @@ void GaduFileTransferHandler::finished(bool ok)
 	deleteLater();
 }
 
-void GaduFileTransferHandler::send()
+void GaduFileTransferHandler::send(QIODevice *source)
 {
+	m_source = source;
+
 	if (FileTransferDirection::Outgoing != transfer().transferDirection()) // maybe assert here?
 	{
 		finished(false);
@@ -75,13 +81,9 @@ void GaduFileTransferHandler::send()
 
 	auto contact = transfer().peer();
 	auto driveService = m_protocol->driveService();
-	auto fileInfo = QFileInfo{transfer().localFileName()};
-
-	auto sendTicketRequest = driveService->requestSendTicket(contact.id(), fileInfo.fileName(), fileInfo.size());
+	auto sendTicketRequest = driveService->requestSendTicket(contact.id(), transfer().remoteFileName(), transfer().fileSize());
 	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(statusUpdateReceived(GaduDriveSendTicket)));
 
-	transfer().setFileSize(fileInfo.size());
-	transfer().setRemoteFileName(QString{});
 	transfer().setTransferStatus(FileTransferStatus::WaitingForConnection);
 }
 
@@ -93,9 +95,6 @@ void GaduFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
 
 void GaduFileTransferHandler::updateStatus()
 {
-	if (m_putFinished)
-		return;
-
 	if (!m_ticket.isValid())
 	{
 		transfer().setError(tr("Valid GG Drive ticket not available"));
@@ -130,26 +129,12 @@ void GaduFileTransferHandler::updateStatus()
 
 void GaduFileTransferHandler::startOutgoingTransferIfNotStarted()
 {
-	if (m_putTransfer)
+	if (m_putStarted)
 		return;
-
-	auto file = new QFile{transfer().localFileName()};
-	if (!file->exists() || !file->open(QFile::ReadOnly))
-	{
-		transfer().setError(tr("Unable to open file"));
-		file->deleteLater();
-		finished(false);
-		return;
-	}
 
 	auto driveService = m_protocol->driveService();
-	m_putTransfer = driveService->putInOutbox(m_ticket, QFileInfo{file->fileName()}.fileName(), file);
-	connect(m_putTransfer, SIGNAL(finished()), this, SLOT(putFinished()));
-}
-
-void GaduFileTransferHandler::putFinished()
-{
-	m_putFinished = true;
+	m_putStarted = true;
+	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().remoteFileName(), m_source);
 }
 
 void GaduFileTransferHandler::requestSendStatusUpdate()

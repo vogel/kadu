@@ -44,7 +44,6 @@ signals:
 	void finished();
 
 private:
-	QPointer<QIODevice> m_source;
 	QPointer<QNetworkReply> m_reply;
 
 private slots:

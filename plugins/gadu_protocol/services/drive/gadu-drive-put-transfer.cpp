@@ -30,8 +30,7 @@
 
 GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, GaduDriveSendTicket ticket, QString fileName, QIODevice *source,
 	QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject{parent},
-		m_source{source}
+		QObject{parent}
 {
 	auto metadata = QJsonObject{};
 	metadata["node_type"] = "file";
@@ -48,7 +47,7 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, G
 	request.setRawHeader("X-gged-metadata", QJsonDocument{metadata}.toJson(QJsonDocument::Compact).data());
 	request.setRawHeader("X-gged-security-token", sessionToken.securityToken().toAscii());
 
-	m_reply = networkAccessManager->put(request, m_source);
+	m_reply = networkAccessManager->put(request, source);
 	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
@@ -56,12 +55,6 @@ GaduDrivePutTransfer::~GaduDrivePutTransfer()
 {
 	if (m_reply)
 		m_reply->deleteLater();
-
-	if (m_source)
-	{
-		m_source->close();
-		m_source->deleteLater();
-	}
 }
 
 void GaduDrivePutTransfer::requestFinished()

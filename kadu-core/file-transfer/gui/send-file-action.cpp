@@ -107,8 +107,8 @@ void SendFileAction::updateActionState(Action *action)
 
 void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 {
-	auto files = selectFilesToSend();
-	if (files.isEmpty())
+	auto filesNames = selectFilesToSend();
+	if (filesNames.isEmpty())
 		return;
 
 	for (auto &&contact : contacts)
@@ -121,18 +121,14 @@ void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 		if (!service)
 			continue;
 
-		for (auto &&file : files)
+		for (auto &&fileName : filesNames)
 		{
 			auto fileTransfer = FileTransfer::create();
 			fileTransfer.setPeer(contact);
 			fileTransfer.setTransferDirection(FileTransferDirection::Outgoing);
-			fileTransfer.setLocalFileName(file);
 
 			Core::instance()->fileTransferManager()->addItem(fileTransfer);
-
-			if (fileTransfer.handler())
-				fileTransfer.handler()->send();
-
+			Core::instance()->fileTransferManager()->sendFile(fileTransfer, fileName);
 			Core::instance()->fileTransferManager()->showFileTransferWindow();
 		}
 	}

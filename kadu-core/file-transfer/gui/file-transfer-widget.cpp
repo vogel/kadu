@@ -231,7 +231,7 @@ void FileTransferWidget::send()
 	if (!canSend())
 		return;
 
-	m_transfer.handler()->send();
+	m_manager->sendFile(m_transfer, m_transfer.localFileName());
 	updateButtons();
 }
 
