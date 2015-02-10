@@ -73,6 +73,9 @@ void ChatNotifier::notify(Notification *notification)
 	if (!m_chatWidgetRepository)
 		return;
 
+	if (notification->requireCallback())
+		return;
+
 	auto aggregateNotification = qobject_cast<AggregateNotification *>(notification);
 	if (!aggregateNotification)
 		return;
