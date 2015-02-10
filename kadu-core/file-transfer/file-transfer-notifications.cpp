@@ -133,7 +133,7 @@ void NewFileTransferNotification::callbackAccept()
 {
 	close();
 
-	Core::instance()->fileTransferManager()->acceptFileTransfer(m_transfer);
+	Core::instance()->fileTransferManager()->acceptFileTransfer(m_transfer, m_transfer.localFileName());
 }
 
 void NewFileTransferNotification::callbackReject()

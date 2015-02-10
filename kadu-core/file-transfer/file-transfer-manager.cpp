@@ -134,7 +134,7 @@ void FileTransferManager::cleanUp()
 		removeItem(fileTransfer);
 }
 
-void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
+void FileTransferManager::acceptFileTransfer(FileTransfer transfer, QString localFileName)
 {
 	if (!m_fileTransferHandlerManager->ensureHandler(transfer))
 		return;
@@ -144,7 +144,6 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 	if (parent == nullptr)
 		parent = Core::instance()->kaduWindow();
 
-	auto localFileName = transfer.localFileName();
 	auto remoteFileName = transfer.remoteFileName();
 	auto saveFileName = localFileName;
 

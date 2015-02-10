@@ -193,7 +193,7 @@ bool FileTransferWidget::canAccept() const
 void FileTransferWidget::accept()
 {
 	if (m_manager)
-		m_manager->acceptFileTransfer(m_transfer);
+		m_manager->acceptFileTransfer(m_transfer, m_transfer.localFileName());
 
 	updateButtons();
 }
@@ -238,12 +238,11 @@ bool FileTransferWidget::canSave() const
 
 void FileTransferWidget::save()
 {
-	m_transfer.setLocalFileName({}); // reset, so can be re-downloaded under different name
 	m_transfer.setTransferredSize(0);
 	m_lastTransferredSize = 0;
 
 	if (m_manager)
-		m_manager->acceptFileTransfer(m_transfer);
+		m_manager->acceptFileTransfer(m_transfer, {});
 
 	updateButtons();
 }

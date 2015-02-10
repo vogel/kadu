@@ -53,7 +53,7 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
 	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
 
-	void acceptFileTransfer(FileTransfer transfer);
+	void acceptFileTransfer(FileTransfer transfer, QString localFileName);
 	void rejectFileTransfer(FileTransfer transfer);
 	void sendFile(FileTransfer transfer, QString fileName);
 	QString getSaveFileName(QString localFileName, QString remoteFileName, QWidget *parent = nullptr);
