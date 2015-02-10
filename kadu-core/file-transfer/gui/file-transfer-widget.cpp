@@ -107,8 +107,20 @@ void FileTransferWidget::createGui()
 
 	m_statusLabel = new QLabel{this};
 
+	m_acceptButton = new QPushButton{tr("Accept"), this};
+	connect(m_acceptButton.get(), SIGNAL(clicked()), this, SLOT(accept()));
+
+	m_rejectButton = new QPushButton{tr("Reject"), this};
+	connect(m_rejectButton.get(), SIGNAL(clicked()), this, SLOT(reject()));
+
+	m_saveButton = new QPushButton{tr("Save"), this};
+	connect(m_saveButton.get(), SIGNAL(clicked()), this, SLOT(save()));
+
 	m_sendButton = new QPushButton{tr("Send"), this};
 	connect(m_sendButton.get(), SIGNAL(clicked()), this, SLOT(send()));
+
+	m_stopButton = new QPushButton{tr("Stop"), this};
+	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stop()));
 
 	m_openButton = new QPushButton{tr("Open"), this};
 	auto openMenu = new QMenu{m_openButton.get()};
@@ -119,18 +131,6 @@ void FileTransferWidget::createGui()
 	openMenu->addAction(m_openFileAction.get());
 	openMenu->addAction(m_openFolderAction.get());
 	m_openButton->setMenu(openMenu);
-
-	m_stopButton = new QPushButton{tr("Stop"), this};
-	connect(m_stopButton.get(), SIGNAL(clicked()), this, SLOT(stop()));
-
-	m_acceptButton = new QPushButton{tr("Accept"), this};
-	connect(m_acceptButton.get(), SIGNAL(clicked()), this, SLOT(accept()));
-
-	m_rejectButton = new QPushButton{tr("Reject"), this};
-	connect(m_rejectButton.get(), SIGNAL(clicked()), this, SLOT(reject()));
-
-	m_saveButton = new QPushButton{tr("Save"), this};
-	connect(m_saveButton.get(), SIGNAL(clicked()), this, SLOT(save()));
 
 	m_removeButton = new QToolButton{this};
 	m_removeButton->setAutoRaise(true);
@@ -169,90 +169,12 @@ void FileTransferWidget::createGui()
 	descriptionLayout->setColumnStretch(1, 100);
 
 	buttonsLayout->addStretch(100);
-	buttonsLayout->addWidget(m_sendButton.get(), 1, Qt::AlignBottom);
-	buttonsLayout->addWidget(m_openButton.get(), 1, Qt::AlignBottom);
-	buttonsLayout->addWidget(m_stopButton.get(), 1, Qt::AlignBottom);
 	buttonsLayout->addWidget(m_acceptButton.get(), 1, Qt::AlignBottom);
-	buttonsLayout->addWidget(m_saveButton.get(), 1, Qt::AlignBottom);
 	buttonsLayout->addWidget(m_rejectButton.get(), 1, Qt::AlignBottom);
-}
-
-bool FileTransferWidget::canOpenFile() const
-{
-	if (!canOpenFolder())
-		return false;
-	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
-		return true;
-	if (!m_transfer.error().isEmpty())
-		return false;
-	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
-		return true;
-	return false;
-}
-
-void FileTransferWidget::openFile()
-{
-	if (canOpenFile())
-		QDesktopServices::openUrl(QUrl::fromLocalFile(m_transfer.localFileName()));
-}
-
-bool FileTransferWidget::canOpenFolder() const
-{
-	if (m_transfer.localFileName().isEmpty())
-		return false;
-
-	QFileInfo info{m_transfer.localFileName()};
-	return info.absoluteDir().exists();
-}
-
-void FileTransferWidget::openFolder()
-{
-	if (canOpenFolder())
-		QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(m_transfer.localFileName()).absoluteDir().absolutePath()));
-}
-
-bool FileTransferWidget::canSend() const
-{
-	if (FileTransferDirection::Outgoing != m_transfer.transferDirection())
-		return false;
-	if (!m_transfer.handler())
-		return false;
-	if (m_transfer.transferStatus() == FileTransferStatus::NotConnected)
-		return true;
-	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
-		return true;
-	if (m_transfer.transferStatus() == FileTransferStatus::Rejected)
-		return true;
-	return false;
-}
-
-void FileTransferWidget::send()
-{
-	if (!canSend())
-		return;
-
-	m_manager->sendFile(m_transfer, m_transfer.localFileName());
-	updateButtons();
-}
-
-bool FileTransferWidget::canStop() const
-{
-	if (!m_transfer.handler())
-		return false;
-	if (FileTransferStatus::WaitingForConnection == m_transfer.transferStatus())
-		return true;
-	if (FileTransferDirection::Outgoing == m_transfer.transferDirection() && FileTransferStatus::WaitingForAccept == m_transfer.transferStatus())
-		return true;
-	if (FileTransferStatus::Transfer == m_transfer.transferStatus())
-		return true;
-	return false;
-}
-
-void FileTransferWidget::stop()
-{
-	m_transfer.handler()->stop();
-
-	updateButtons();
+	buttonsLayout->addWidget(m_saveButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_sendButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_stopButton.get(), 1, Qt::AlignBottom);
+	buttonsLayout->addWidget(m_openButton.get(), 1, Qt::AlignBottom);
 }
 
 bool FileTransferWidget::canAccept() const
@@ -301,6 +223,14 @@ bool FileTransferWidget::canSave() const
 {
 	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
 		return false;
+	if (FileTransferStatus::WaitingForConnection == m_transfer.transferStatus())
+		return false;
+	if (FileTransferStatus::WaitingForAccept == m_transfer.transferStatus())
+		return false;
+	if (FileTransferStatus::Transfer == m_transfer.transferStatus())
+		return false;
+	if (FileTransferStatus::Rejected == m_transfer.transferStatus())
+		return false;
 	if (FileTransferType::Url != m_transfer.transferType())
 		return false;
 	return true;
@@ -316,6 +246,84 @@ void FileTransferWidget::save()
 		m_manager->acceptFileTransfer(m_transfer);
 
 	updateButtons();
+}
+
+bool FileTransferWidget::canSend() const
+{
+	if (FileTransferDirection::Outgoing != m_transfer.transferDirection())
+		return false;
+	if (!m_transfer.handler())
+		return false;
+	if (m_transfer.transferStatus() == FileTransferStatus::NotConnected)
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
+		return true;
+	if (m_transfer.transferStatus() == FileTransferStatus::Rejected)
+		return true;
+	return false;
+}
+
+void FileTransferWidget::send()
+{
+	if (!canSend())
+		return;
+
+	m_manager->sendFile(m_transfer, m_transfer.localFileName());
+	updateButtons();
+}
+
+bool FileTransferWidget::canStop() const
+{
+	if (!m_transfer.handler())
+		return false;
+	if (FileTransferStatus::WaitingForConnection == m_transfer.transferStatus())
+		return true;
+	if (FileTransferDirection::Outgoing == m_transfer.transferDirection() && FileTransferStatus::WaitingForAccept == m_transfer.transferStatus())
+		return true;
+	if (FileTransferStatus::Transfer == m_transfer.transferStatus())
+		return true;
+	return false;
+}
+
+void FileTransferWidget::stop()
+{
+	m_transfer.handler()->stop();
+
+	updateButtons();
+}
+
+bool FileTransferWidget::canOpenFile() const
+{
+	if (!canOpenFolder())
+		return false;
+	if (FileTransferDirection::Outgoing == m_transfer.transferDirection())
+		return true;
+	if (!m_transfer.error().isEmpty())
+		return false;
+	if (m_transfer.transferStatus() == FileTransferStatus::Finished)
+		return true;
+	return false;
+}
+
+void FileTransferWidget::openFile()
+{
+	if (canOpenFile())
+		QDesktopServices::openUrl(QUrl::fromLocalFile(m_transfer.localFileName()));
+}
+
+bool FileTransferWidget::canOpenFolder() const
+{
+	if (m_transfer.localFileName().isEmpty())
+		return false;
+
+	QFileInfo info{m_transfer.localFileName()};
+	return info.absoluteDir().exists();
+}
+
+void FileTransferWidget::openFolder()
+{
+	if (canOpenFolder())
+		QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(m_transfer.localFileName()).absoluteDir().absolutePath()));
 }
 
 bool FileTransferWidget::canRemove() const
@@ -375,13 +383,13 @@ void FileTransferWidget::updateButtons()
 	else
 		m_sendButton->setText(tr("Send"));
 
-	m_sendButton->setVisible(canSend());
-	m_openButton->setVisible(canOpenFolder());
-	m_openFileAction->setEnabled(canOpenFile());
-	m_stopButton->setVisible(canStop());
 	m_acceptButton->setVisible(canAccept());
 	m_rejectButton->setVisible(canReject());
 	m_saveButton->setVisible(canSave());
+	m_sendButton->setVisible(canSend());
+	m_stopButton->setVisible(canStop());
+	m_openButton->setVisible(canOpenFolder());
+	m_openFileAction->setEnabled(canOpenFile());
 	m_removeButton->setEnabled(canRemove());
 }
 

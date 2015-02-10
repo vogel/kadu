@@ -60,11 +60,11 @@ private:
 	owned_qptr<QPushButton> m_sendButton;
 	owned_qptr<QAction> m_openFileAction;
 	owned_qptr<QAction> m_openFolderAction;
-	owned_qptr<QPushButton> m_openButton;
-	owned_qptr<QPushButton> m_stopButton;
 	owned_qptr<QPushButton> m_acceptButton;
 	owned_qptr<QPushButton> m_rejectButton;
 	owned_qptr<QPushButton> m_saveButton;
+	owned_qptr<QPushButton> m_stopButton;
+	owned_qptr<QPushButton> m_openButton;
 	owned_qptr<QToolButton> m_removeButton;
 
 	void createGui();
@@ -76,18 +76,6 @@ private slots:
 	void updateProgressBar();
 	void updateTransferData();
 
-	bool canSend() const;
-	void send();
-
-	bool canOpenFile() const;
-	void openFile();
-
-	bool canOpenFolder() const;
-	void openFolder();
-
-	bool canStop() const;
-	void stop();
-
 	bool canAccept() const;
 	void accept();
 
@@ -96,6 +84,18 @@ private slots:
 
 	bool canSave() const;
 	void save();
+
+	bool canSend() const;
+	void send();
+
+	bool canStop() const;
+	void stop();
+
+	bool canOpenFile() const;
+	void openFile();
+
+	bool canOpenFolder() const;
+	void openFolder();
 
 	bool canRemove() const;
 	void remove();
