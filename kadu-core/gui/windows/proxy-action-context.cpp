@@ -47,6 +47,13 @@ void ProxyActionContext::setForwardActionContext(ActionContext *forwardActionCon
 	emit changed();
 }
 
+QWidget * ProxyActionContext::widget()
+{
+	return ForwardActionContext
+			? ForwardActionContext->widget()
+			: nullptr;
+}
+
 ContactSet ProxyActionContext::contacts()
 {
 	return ForwardActionContext

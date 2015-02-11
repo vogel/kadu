@@ -87,7 +87,7 @@ protected:
 	void setTransparency(bool enable);
 	void setBlur(bool enable);
 	virtual void showEvent (QShowEvent * event);
-	
+
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 
 protected slots:
@@ -112,7 +112,7 @@ public:
 	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
 
 	// ActionContextProvider implementation
-	ActionContext * actionContext();
+	ActionContext * actionContext() override;
 
 public slots:
 	void addTopToolbar();

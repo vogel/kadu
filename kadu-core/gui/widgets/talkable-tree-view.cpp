@@ -78,7 +78,7 @@
 TalkableTreeView::TalkableTreeView(QWidget *parent) :
 		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
-	Context = new BaseActionContext();
+	Context = new BaseActionContext{this};
 	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	Delegate = new TalkableDelegate(this);

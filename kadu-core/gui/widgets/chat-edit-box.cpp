@@ -65,7 +65,7 @@
 QList<ChatEditBox *> chatEditBoxes;
 
 ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
-		MainWindow(new BaseActionContext(), "chat", parent), CurrentChat(chat)
+		MainWindow(new BaseActionContext(this), "chat", parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
 

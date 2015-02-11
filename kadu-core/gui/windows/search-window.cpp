@@ -82,7 +82,7 @@ void SearchWindow::createDefaultToolbars(const QDomElement &toolbarsConfig)
 }
 
 SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
-		MainWindow(new BaseActionContext(), "search", parent),
+		MainWindow(new BaseActionContext(this), "search", parent),
 		CurrentSearchService(0), UinEdit(0), FirstNameEdit(0), LastNameEdit(0), NickNameEdit(0),
 		StartBirthYearEdit(0), EndBirthYearEdit(0), CityEdit(0),
 		GenderComboBox(0), OnlyActiveCheckBox(0), UinRadioButton(0), PersonalDataRadioButton(0),

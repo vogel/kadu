@@ -147,7 +147,7 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 	if (!contact)
 		return;
 
-	BaseActionContext actionContext;
+	BaseActionContext actionContext{this};
 	actionContext.setBuddies(BuddySet(contact.ownerBuddy()));
 	actionContext.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
 	actionContext.setContacts(ContactSet(contact));

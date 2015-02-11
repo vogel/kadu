@@ -34,11 +34,12 @@ public:
 
 	void setForwardActionContext(ActionContext *forwardActionContext);
 
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
-	virtual StatusContainer * statusContainer();
-	virtual RoleSet roles();
+	virtual QWidget * widget() override;
+	virtual ContactSet contacts() override;
+	virtual BuddySet buddies() override;
+	virtual Chat chat() override;
+	virtual StatusContainer * statusContainer() override;
+	virtual RoleSet roles() override;
 
 };
 

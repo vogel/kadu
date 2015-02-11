@@ -59,6 +59,12 @@ class ActionContext : public QObject
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns widget for given action data source.
+	 */
+	virtual QWidget * widget() = 0;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns contact set for given action data source.
 	 *
 	 * Returns contact set for given action data source. May return empty contact set.

@@ -78,7 +78,7 @@ public:
 	TalkableProxyModel * talkableProxyModel();
 
 	// ActionContextProvider implementation
-	virtual ActionContext * actionContext();
+	virtual ActionContext * actionContext() override;
 
 public slots:
 	void storeConfiguration();

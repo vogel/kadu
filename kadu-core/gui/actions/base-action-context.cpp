@@ -20,8 +20,9 @@
 
 #include "base-action-context.h"
 
-BaseActionContext::BaseActionContext() :
-		CurrentStatusContainer(0)
+BaseActionContext::BaseActionContext(QWidget *widget) :
+		Widget{widget},
+		CurrentStatusContainer{nullptr}
 {
 	connect(&MyChangeNotifier, SIGNAL(changed()), this, SIGNAL(changed()));
 }
@@ -33,6 +34,11 @@ BaseActionContext::~BaseActionContext()
 ChangeNotifier & BaseActionContext::changeNotifier()
 {
 	return MyChangeNotifier;
+}
+
+QWidget * BaseActionContext::widget()
+{
+	return Widget;
 }
 
 ContactSet BaseActionContext::contacts()

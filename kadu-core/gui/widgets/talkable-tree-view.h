@@ -122,7 +122,7 @@ public:
 	void setContextMenuEnabled(bool enabled);
 
 	// ActionContextProvider implementation
-	virtual ActionContext * actionContext();
+	virtual ActionContext * actionContext() override;
 
 signals:
 	void talkableActivated(const Talkable &talkable);
