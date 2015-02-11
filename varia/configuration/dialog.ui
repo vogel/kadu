@@ -63,13 +63,11 @@
 			</group-box>
 		</tab>
 		<tab name="Buddies list">
-			<group-box name="Buddy Photos">
+			<group-box name="General">
 				<check-box caption="Show buddies' photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
 				<check-box caption="Add border to buddies' photos" config-section="Look" config-item="AvatarBorder" id="avatarBorder" parent-widget="showAvatars" />
 				<check-box caption="Grey out offline buddies' photos" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut" parent-widget="showAvatars"
 					tool-tip="Buddies who are offline will have their photos greyed out" />
-			</group-box>
-			<group-box name="Descriptions">
 				<check-box caption="Show buddies' descriptions" config-section="Look" config-item="ShowDesc" id="showDescription"
 					tool-tip="Displays descriptions in the buddy list" />
 				<check-box caption="Split long descriptions into multiple lines" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
