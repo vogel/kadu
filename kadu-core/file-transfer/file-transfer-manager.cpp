@@ -129,8 +129,12 @@ void FileTransferManager::cleanUp()
 	auto toRemove = QList<FileTransfer>{};
 
 	for (auto &&fileTransfer : items())
+	{
 		if (FileTransferStatus::Finished == fileTransfer.transferStatus())
 			toRemove.append(fileTransfer);
+		if (FileTransferStatus::Rejected == fileTransfer.transferStatus() && FileTransferDirection::Incoming == fileTransfer.transferDirection())
+			toRemove.append(fileTransfer);
+	}
 
 	for (auto &&fileTransfer : toRemove)
 		removeItem(fileTransfer);
