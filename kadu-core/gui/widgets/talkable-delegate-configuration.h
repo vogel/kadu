@@ -41,6 +41,7 @@ class TalkableDelegateConfiguration : private ConfigurationAwareObject
 	QFont DescriptionFont;
 
 	bool AlignTop;
+	bool AlwaysShowIdentityName;
 	bool ShowIdentityName;
 	bool ShowBold;
 	bool ShowDescription;
@@ -68,6 +69,7 @@ public:
 	const QFont & descriptionFont() const { return DescriptionFont; }
 
 	bool alignTop() const { return AlignTop; }
+	bool alwaysShowIdentityName() const { return AlwaysShowIdentityName; }
 	bool showIdentityName() const { return ShowIdentityName; }
 	bool showBold() const { return ShowBold; }
 	bool showDescription() const { return ShowDescription; }

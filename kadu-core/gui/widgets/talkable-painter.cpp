@@ -184,6 +184,9 @@ bool TalkablePainter::showMessagePixmap() const
 
 bool TalkablePainter::showIdentityName() const
 {
+	if (Configuration.alwaysShowIdentityName())
+		return true;
+
 	if (!Configuration.showIdentityName())
 		return false;
 

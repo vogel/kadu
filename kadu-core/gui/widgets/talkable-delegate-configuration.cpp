@@ -28,7 +28,7 @@
 #include "talkable-delegate-configuration.h"
 
 TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView) :
-		ListView(listView), ShowIdentityName(true), ShowMessagePixmap(true), UseConfigurationColors(false)
+		ListView(listView), AlwaysShowIdentityName(false), ShowIdentityName(true), ShowMessagePixmap(true), UseConfigurationColors(false)
 {
 	Q_ASSERT(ListView);
 
@@ -47,6 +47,7 @@ void TalkableDelegateConfiguration::configurationUpdated()
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
+	AlwaysShowIdentityName = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "TalkableListAlwaysShowIdentityName");
 	ShowAvatars = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars");
 	AvatarBorder = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarBorder");
 	AvatarGreyOut = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarGreyOut");

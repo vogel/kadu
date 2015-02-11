@@ -1,5 +1,6 @@
 +++ version 3.0-alpha1:
 * gadu: #2937 fixed: file transfers are now compatible with GG 12 and GG Drive (Vogel)
+* gui: #1713 implemented: added option to always show identity in buddies list (Vogel)
 
 +++ version 2.0-rc2
 * gui: #2940 fixed: crash on exit when not using tabs plugin (Vogel)

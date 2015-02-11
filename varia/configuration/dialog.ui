@@ -72,6 +72,7 @@
 					tool-tip="Displays descriptions in the buddy list" />
 				<check-box caption="Split long descriptions into multiple lines" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
 					tool-tip="Dislpays multiline descriptions in the buddy list" parent-widget="showDescription" />
+				<check-box caption="Always show identity" config-section="Look" config-item="TalkableListAlwaysShowIdentityName" />
 			</group-box>
 			<group-box name="Transparency" id="userboxTransparencyGroup">
 				<check-box caption="Enable transparency in buddy list" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
