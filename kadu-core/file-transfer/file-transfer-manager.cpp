@@ -210,10 +210,14 @@ void FileTransferManager::sendFile(FileTransfer transfer, QString fileName)
 	if (handler)
 	{
 		auto file = new QFile{fileName};
-		if (file->open(QIODevice::ReadOnly))
-			handler->send(file);
-		else
+		if (!file->open(QIODevice::ReadOnly))
+		{
+			transfer.setError(tr("Unable to open local file"));
 			file->deleteLater();
+			return;
+		}
+
+		handler->send(file);
 	}
 }
 
