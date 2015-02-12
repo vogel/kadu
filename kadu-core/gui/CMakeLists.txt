@@ -3,6 +3,9 @@ set (gui_SRCS
 	actions/chat/add-room-chat-action.cpp
 	actions/chat/leave-chat-action.cpp
 
+	actions/talkable-tree-view/collapse-action.cpp
+	actions/talkable-tree-view/expand-action.cpp
+
 	actions/action.cpp
 	actions/actions.cpp
 	actions/action-description.cpp

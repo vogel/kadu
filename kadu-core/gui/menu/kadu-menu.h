@@ -52,6 +52,7 @@ public:
 		SectionAbout,
 		SectionChat,
 		SectionSend,
+		SectionActionsGui,
 		SectionActions,
 		SectionView,
 		SectionManagement,

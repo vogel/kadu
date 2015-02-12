@@ -49,6 +49,8 @@
 #include "gui/actions/delete-talkable-action.h"
 #include "gui/actions/edit-talkable-action.h"
 #include "gui/actions/recent-chats-action.h"
+#include "gui/actions/talkable-tree-view/collapse-action.h"
+#include "gui/actions/talkable-tree-view/expand-action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/buddy-info-panel.h"
@@ -277,6 +279,16 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon(), tr("Show Myself Buddy"), true
 	);
 	connect(ShowMyself, SIGNAL(actionCreated(Action *)), this, SLOT(showMyselfActionCreated(Action *)));
+
+	auto expandAction = new ExpandAction{this};
+	auto collapseAction = new CollapseAction{this};
+
+	MenuInventory::instance()
+		->menu("buddy-list")
+		->addAction(expandAction, KaduMenu::SectionActionsGui, 2);
+	MenuInventory::instance()
+		->menu("buddy-list")
+		->addAction(collapseAction, KaduMenu::SectionActionsGui, 1);
 
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
@@ -779,6 +791,20 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
+
+	auto widget = action->context()->widget();
+	auto treeViewWidget = qobject_cast<QTreeView *>(widget);
+	if (treeViewWidget)
+	{
+		auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
+		for (auto &&selectedIndex : selectedIndexes)
+		{
+			if (treeViewWidget->isExpanded(selectedIndex))
+				treeViewWidget->collapse(selectedIndex);
+			else
+				treeViewWidget->expand(selectedIndex);
+		}
+	}
 
 	ContactSet contacts = action->context()->contacts();
 

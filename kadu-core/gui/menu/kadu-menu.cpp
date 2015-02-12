@@ -119,7 +119,8 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 		? context
 		: getActionContext();
 
-	bool firstItem = true;
+	auto firstItem = true;
+	auto actionsFirstItem = true;
 	MenuSection latestSection = KaduMenu::SectionAbout; // prevent 4.9 from complaining
 
 	QMenu *actions = new QMenu(tr("More Actions..."), menu);
@@ -129,11 +130,15 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 		if (!menuItem->actionDescription())
 			continue;
 
-		QMenu *currentMenu = menuItem->section() == KaduMenu::SectionActions
+		auto isActions = menuItem->section() == KaduMenu::SectionActions || menuItem->section() == KaduMenu::KaduMenu::SectionActionsGui;
+		auto currentMenu = isActions
 			? actions
 			: menu;
+		auto menuFirstItem = isActions
+			? &actionsFirstItem
+			: &firstItem;
 
-		if (!firstItem && latestSection != menuItem->section())
+		if (!*menuFirstItem && latestSection != menuItem->section())
 			currentMenu->addSeparator();
 
 		auto parent = currentMenu->parent() ? currentMenu->parent() : currentMenu;
@@ -142,7 +147,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 		action->checkState();
 
 		latestSection = menuItem->section();
-		firstItem = false;
+		*menuFirstItem = false;
 	}
 
 	if ("buddy-list" != Category)
