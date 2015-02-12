@@ -18,18 +18,9 @@ set (SOURCES
 	notify/sound-notifier.cpp
 	sound-actions.cpp
 	sound-manager.cpp
+	sound-player.cpp
 	sound-plugin.cpp
 	sound-theme-manager.cpp
-)
-
-set (MOC_SOURCES
-	configuration/gui/sound-configuration-ui-handler.h
-	gui/widgets/configuration/sound-configuration-widget.h
-	notify/sound-notifier.h
-	sound-actions.h
-	sound-manager.h
-	sound-player.h
-	sound-plugin.h
 )
 
 set (CONFIGURATION_FILES
@@ -38,7 +29,6 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (sound
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_ADDITIONAL_QT_MODULES Multimedia
 )
