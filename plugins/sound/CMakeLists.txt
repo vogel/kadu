@@ -18,7 +18,6 @@ set (SOURCES
 	notify/sound-notifier.cpp
 	sound-actions.cpp
 	sound-manager.cpp
-	sound-play-thread.cpp
 	sound-plugin.cpp
 	sound-theme-manager.cpp
 )
@@ -29,7 +28,6 @@ set (MOC_SOURCES
 	notify/sound-notifier.h
 	sound-actions.h
 	sound-manager.h
-	sound-play-thread.h
 	sound-player.h
 	sound-plugin.h
 )

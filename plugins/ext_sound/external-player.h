@@ -36,12 +36,17 @@
 
 #include "plugins/sound/sound-player.h"
 
+#include <QtCore/QPointer>
+
+class QProcess;
+
 class ExternalPlayer : public SoundPlayer
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ExternalPlayer)
 
 	static ExternalPlayer * Instance;
+	QPointer<QProcess> PlayerProcess;
 
 	ExternalPlayer();
 	virtual ~ExternalPlayer();

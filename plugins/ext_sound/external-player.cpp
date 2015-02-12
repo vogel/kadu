@@ -60,11 +60,19 @@ ExternalPlayer::ExternalPlayer()
 
 ExternalPlayer::~ExternalPlayer()
 {
+	if (PlayerProcess)
+	{
+		PlayerProcess->kill();
+		PlayerProcess->deleteLater();
+	}
 }
 
 void ExternalPlayer::playSound(const QString &path)
 {
 	kdebugf();
+
+	if (PlayerProcess)
+		return;
 
 	QString playerCommand = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
 	QString volumeArguments;
@@ -78,9 +86,9 @@ void ExternalPlayer::playSound(const QString &path)
 	QStringList argumentList;
 	argumentList.append(path);
 
-	QProcess process;
-	process.start(playerCommand, argumentList);
-	process.waitForFinished();
+	PlayerProcess = new QProcess{this};
+	PlayerProcess->start(playerCommand, argumentList);
+	connect(PlayerProcess, SIGNAL(finished(int)), PlayerProcess, SLOT(deleteLater()));
 }
 
 void ExternalPlayer::createDefaultConfiguration()

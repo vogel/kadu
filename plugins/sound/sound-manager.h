@@ -42,7 +42,6 @@ class QSound;
 class QThread;
 
 class SoundPlayer;
-class SoundPlayThread;
 
 class SOUNDAPI SoundManager : public QObject
 {
@@ -54,9 +53,6 @@ class SOUNDAPI SoundManager : public QObject
 	QSound *CurrentSound;
 
 	bool Mute;
-
-	SoundPlayThread *PlayThreadObject;
-	QThread *PlayThread;
 
 	SoundManager();
 	virtual ~SoundManager();

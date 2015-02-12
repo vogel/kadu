@@ -41,7 +41,7 @@
 #include "debug.h"
 #include "themes.h"
 
-#include "sound-play-thread.h"
+#include "sound-player.h"
 #include "sound-theme-manager.h"
 
 #include "sound-manager.h"
@@ -56,7 +56,7 @@ void SoundManager::createInstance()
 
 void SoundManager::destroyInstance()
 {
-	delete Instance;
+	Instance->deleteLater();
 	Instance = 0;
 }
 
@@ -65,45 +65,13 @@ SoundManager::SoundManager() :
 		CurrentSound{nullptr},
 		Mute{false}
 {
-	kdebugf();
-
 	createDefaultConfiguration();
-
 	setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
-
-	PlayThread = new QThread();
-	PlayThreadObject = new SoundPlayThread();
-	PlayThreadObject->moveToThread(PlayThread);
-
-	connect(PlayThread, SIGNAL(started()), PlayThreadObject, SLOT(start()));
-	connect(PlayThreadObject, SIGNAL(finished()), PlayThread, SLOT(quit()), Qt::DirectConnection);
-	connect(PlayThreadObject, SIGNAL(finished()), PlayThread, SLOT(deleteLater()), Qt::DirectConnection);
-
-	PlayThread->start();
-
-	kdebugf2();
 }
 
 SoundManager::~SoundManager()
 {
-	kdebugf();
-
-	PlayThreadObject->end();
-
-	PlayThread->wait(500);
-	if (PlayThread->isRunning())
-	{
-		kdebugm(KDEBUG_WARNING, "terminating play_thread!\n");
-		PlayThread->terminate();
-		PlayThread->wait(200);
-	}
-
-	PlayThread->deleteLater();
-	PlayThreadObject->deleteLater();
-
-	delete CurrentSound;
-
-	kdebugf2();
+	CurrentSound->deleteLater();
 }
 
 void SoundManager::createDefaultConfiguration()
@@ -146,11 +114,11 @@ void SoundManager::playFile(const QString &path, bool force)
 
 	if (Player)
 	{
-		PlayThreadObject->play(Player, path);
+		Player->playSound(path);
 		return;
 	}
 
-	delete CurrentSound;
+	CurrentSound->deleteLater();
 	CurrentSound = new QSound{path};
 	CurrentSound->play();
 }

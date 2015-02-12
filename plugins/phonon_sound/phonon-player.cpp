@@ -24,14 +24,10 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QUrl>
 
-#include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
 #include <phonon/phononnamespace.h>
 
 #include "plugins/sound/sound-manager.h"
-#include "plugins/sound/sound-play-thread.h"
-
-#include "debug.h"
 
 #include "phonon-player.h"
 
@@ -54,70 +50,32 @@ PhononPlayer * PhononPlayer::instance()
 	return Instance;
 }
 
-PhononPlayer::PhononPlayer() :
-    Media(0)
+PhononPlayer::PhononPlayer()
 {
-	kdebugf();
-
-	// Phonon produces Qt warnings when is run not in QApplication's thread.
-	// It is a workaround.
-	int type = QMetaType::type("MediaSource");
-	if (type == 0 || !QMetaType::isRegistered(type))
-		qRegisterMetaType<Phonon::MediaSource>("MediaSource");
-
-	// Queued connection, bacause this signal will be emitted from different thread
-	connect(this, SIGNAL(createRequest()), this, SLOT(createMediaObject()), Qt::QueuedConnection);
-
-	kdebugf2();
 }
 
 PhononPlayer::~PhononPlayer()
 {
-	delete Media;
-}
-
-void PhononPlayer::createMediaObject()
-{
-	MediaObjectMutex.lock();
-
-	// this methos is always called from main thread
-	Media = Phonon::createPlayer(Phonon::NotificationCategory);
-
-	MediaObjectCreation.wakeAll();
-	MediaObjectMutex.unlock();
-
+	if (Media)
+	{
+		Media->stop();
+		Media->deleteLater();
+	}
 }
 
 void PhononPlayer::playSound(const QString &path)
 {
-	kdebugf();
+	if (Media)
+		return;
 
 	auto fileInfo = QFileInfo{path};
 	if (!fileInfo.exists())
 		return;
 
-	if (!Media)
-	{
-		MediaObjectMutex.lock();
-
-		// Double check of !Media is required. We are not locking whole playSound method but only when
-		// media object doesn't exists. In theory it is possible that two thread will be checking this at the same time,
-		// so the second check prevents possible race condition.
-		// Probably it will be never a problem in Kadu, as single thread is accessing this method, but this code is technically
-		// more correct
-		if (!Media)
-		{
-			emit createRequest();
-
-			MediaObjectCreation.wait(&MediaObjectMutex);
-		}
-		MediaObjectMutex.unlock();
-	}
-
+	Media = Phonon::createPlayer(Phonon::NotificationCategory);
+	connect(Media, SIGNAL(finished()), Media, SLOT(deleteLater()));
 	Media->setCurrentSource(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 	Media->play();
-
-	kdebugf2();
 }
 
 #include "moc_phonon-player.cpp"
