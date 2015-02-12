@@ -61,7 +61,7 @@
 #include "core/core.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory.h"
-#include "gui/widgets/buddy-configuration-widget-tab-adapter.h"
+#include "gui/widgets/buddy-configuration-widget-tab-group-boxes-adapter.h"
 #include "gui/widgets/buddy-configuration-widget.h"
 #include "gui/widgets/buddy-general-configuration-widget.h"
 #include "gui/widgets/buddy-groups-configuration-widget.h"
@@ -139,6 +139,8 @@ void BuddyDataWindow::factoryUnregistered(BuddyConfigurationWidgetFactory *facto
 	if (BuddyConfigurationWidgets.contains(factory))
 	{
 		BuddyConfigurationWidget *widget = BuddyConfigurationWidgets.value(factory);
+		BuddyConfigurationWidgets.remove(factory);
+		printf("removed, empty? %d\n", BuddyConfigurationWidgets.size());
 		if (widget)
 		{
 			if (widget->stateNotifier())
@@ -146,7 +148,6 @@ void BuddyDataWindow::factoryUnregistered(BuddyConfigurationWidgetFactory *facto
 			emit widgetRemoved(widget);
 			widget->deleteLater();
 		}
-		BuddyConfigurationWidgets.remove(factory);
 	}
 }
 
@@ -180,7 +181,7 @@ void BuddyDataWindow::createTabs(QLayout *layout)
 {
 	TabWidget = new QTabWidget(this);
 
-	new BuddyConfigurationWidgetTabAdapter(this, TabWidget, this);
+	new BuddyConfigurationWidgetTabGroupBoxesAdapter(this, TabWidget, this);
 
 	createGeneralTab(TabWidget);
 	createGroupsTab(TabWidget);

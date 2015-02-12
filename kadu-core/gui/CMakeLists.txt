@@ -59,7 +59,7 @@ set (gui_SRCS
 	widgets/buddy-avatar-widget.cpp
 	widgets/buddy-configuration-widget.cpp
 	widgets/buddy-configuration-widget-factory-repository.cpp
-	widgets/buddy-configuration-widget-tab-adapter.cpp
+	widgets/buddy-configuration-widget-tab-group-boxes-adapter.cpp
 	widgets/buddy-contacts-table-delegate.cpp
 	widgets/buddy-contacts-table-item.cpp
 	widgets/buddy-contacts-table-model.cpp
@@ -262,7 +262,6 @@ set (gui_MOC_SRCS
 	widgets/buddy-avatar-widget.h
 	widgets/buddy-configuration-widget.h
 	widgets/buddy-configuration-widget-factory-repository.h
-	widgets/buddy-configuration-widget-tab-adapter.h
 	widgets/buddy-contacts-table-delegate.h
 	widgets/buddy-contacts-table-item.h
 	widgets/buddy-contacts-table-model.h
