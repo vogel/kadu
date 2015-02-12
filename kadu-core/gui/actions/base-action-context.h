@@ -23,7 +23,6 @@
 #define BASE_ACTION_CONTEXT_H
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
 
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
@@ -40,7 +39,7 @@ class KADUAPI BaseActionContext : public ActionContext
 
 	ChangeNotifier MyChangeNotifier;
 
-	QPointer<QWidget> Widget;
+	QWidget *Widget;
 	ContactSet Contacts;
 	BuddySet Buddies;
 	Chat CurrentChat;
