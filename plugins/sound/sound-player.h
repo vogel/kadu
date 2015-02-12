@@ -21,23 +21,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_PLAYER_H
-#define SOUND_PLAYER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "sound-exports.h"
+
+#include <QtCore/QObject>
 
 class SOUNDAPI SoundPlayer : public QObject
 {
 	Q_OBJECT
 
 public:
-	SoundPlayer() {}
-	virtual ~SoundPlayer() {}
+	explicit SoundPlayer(QObject *parent = nullptr);
+	virtual ~SoundPlayer();
 
-	virtual void playSound(const QString &sound) = 0;
+	virtual void playSound(const QString &soundFilePath) = 0;
 
 };
-
-#endif // SOUND_PLAYER_H

@@ -19,4 +19,13 @@
 
 #include "sound-player.h"
 
+SoundPlayer::SoundPlayer(QObject *parent) :
+		QObject{parent}
+{
+}
+
+SoundPlayer::~SoundPlayer()
+{
+}
+
 #include "moc_sound-player.cpp"
