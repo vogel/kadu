@@ -25,42 +25,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_ACTIONS_H
-#define SOUND_ACTIONS_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
-class QAction;
+#include <QtCore/QObject>
 
 class ActionDescription;
+
+class QAction;
 
 class SoundActions : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SoundActions)
 
-	static SoundActions *Instance;
-
-	ActionDescription *MuteActionDescription;
-
-	SoundActions();
+public:
+	explicit SoundActions(QObject *parent = nullptr);
 	virtual ~SoundActions();
+
+protected:
+	virtual void configurationUpdated();
+
+private:
+	ActionDescription *m_muteActionDescription;
 
 private slots:
 	void setMuteActionState();
 	void muteActionActivated(QAction *action, bool is_on);
 
-protected:
-	virtual void configurationUpdated();
-
-public:
-	static void registerActions();
-	static void unregisterActions();
-
-	static SoundActions * instance();
-
 };
-
-#endif // SOUND_ACTIONS_H

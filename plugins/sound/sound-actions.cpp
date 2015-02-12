@@ -32,67 +32,40 @@
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
-#include "debug.h"
-#include "themes.h"
 
 #include "sound-manager.h"
-#include "sound-theme-manager.h"
 
 #include "sound-actions.h"
 
-SoundActions * SoundActions::Instance = 0;
-
-void SoundActions::registerActions()
+SoundActions::SoundActions(QObject *parent) :
+		QObject{parent}
 {
-	if (Instance)
-		return;
-
-	Instance = new SoundActions();
-}
-
-void SoundActions::unregisterActions()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-SoundActions * SoundActions::instance()
-{
-	return Instance;
-}
-
-SoundActions::SoundActions()
-{
-	kdebugf();
-
-	MuteActionDescription = new ActionDescription(this,
+	m_muteActionDescription = new ActionDescription{this,
 		ActionDescription::TypeGlobal, "muteSoundsAction",
 		this, SLOT(muteActionActivated(QAction *, bool)),
 		KaduIcon("audio-volume-high"), tr("Play Sounds"), true
-	);
-	connect(MuteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
+	};
+	connect(m_muteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 
 	MenuInventory::instance()
 		->menu("main")
-		->addAction(MuteActionDescription, KaduMenu::SectionMiscTools, 7)
+		->addAction(m_muteActionDescription, KaduMenu::SectionMiscTools, 7)
 		->update();
 
 	setMuteActionState();
-
-	kdebugf2();
 }
 
 SoundActions::~SoundActions()
 {
 	MenuInventory::instance()
 		->menu("main")
-		->removeAction(MuteActionDescription)
+		->removeAction(m_muteActionDescription)
 		->update();
 }
 
 void SoundActions::setMuteActionState()
 {
-	foreach (Action *action, MuteActionDescription->actions())
+	for (auto action : m_muteActionDescription->actions())
 		action->setChecked(!SoundManager::instance()->isMuted());
 }
 

@@ -47,7 +47,7 @@ bool SoundPlugin::init(bool firstLoad)
 	SoundNotifier::createInstance();
 	SoundConfigurationUiHandler::registerConfigurationUi();
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
-	SoundActions::registerActions();
+	m_soundActions = new SoundActions{this};
 
 	return true;
 
@@ -55,7 +55,9 @@ bool SoundPlugin::init(bool firstLoad)
 
 void SoundPlugin::done()
 {
-	SoundActions::unregisterActions();
+	if (m_soundActions)
+		m_soundActions->deleteLater();
+
 	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
 	SoundConfigurationUiHandler::unregisterConfigurationUi();
 	SoundNotifier::destroyInstance();

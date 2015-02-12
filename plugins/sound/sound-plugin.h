@@ -29,6 +29,8 @@
 
 #include "plugin/plugin-root-component.h"
 
+class SoundActions;
+
 class SoundPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
@@ -40,6 +42,10 @@ public:
 
 	virtual bool init(bool firstLoad);
 	virtual void done();
+
+private:
+	QPointer<SoundActions> m_soundActions;
+
 };
 
 #endif // SOUND_PLUGIN_H
