@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_EXPORTS_H
-#define SOUND_EXPORTS_H
+#pragma once
 
 #include <QtCore/QtGlobal>
 
@@ -31,5 +30,3 @@
 #else
 #define SOUNDAPI Q_DECL_IMPORT
 #endif
-
-#endif // SOUND_EXPORTS_H
