@@ -17,22 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QTabWidget>
+#include "buddy-configuration-widget-tab-adapter.h"
 
 #include "gui/widgets/buddy-configuration-widget.h"
 #include "gui/windows/buddy-data-window.h"
 
-#include "buddy-configuration-widget-tab-adapter.h"
+#include <QtWidgets/QTabWidget>
 
 BuddyConfigurationWidgetTabAdapter::BuddyConfigurationWidgetTabAdapter(BuddyDataWindow *buddyDataWindow, QTabWidget *tabWidget, QObject *parent) :
-		QObject(parent), MyBuddyDataWindow(buddyDataWindow), MyTabWidget(tabWidget)
+		QObject{parent},
+		m_buddyDataWindow{buddyDataWindow},
+		m_tabWidget{tabWidget}
 {
-	if (!MyBuddyDataWindow || !MyTabWidget)
+	if (!m_buddyDataWindow || !m_tabWidget)
 		return;
 
-	connect(MyBuddyDataWindow, SIGNAL(widgetAdded(BuddyConfigurationWidget*)), this, SLOT(widgetAdded(BuddyConfigurationWidget*)));
+	connect(m_buddyDataWindow, SIGNAL(widgetAdded(BuddyConfigurationWidget*)), this, SLOT(widgetAdded(BuddyConfigurationWidget*)));
 
-	foreach (BuddyConfigurationWidget *widget, MyBuddyDataWindow->buddyConfigurationWidgets())
+	for (auto widget : m_buddyDataWindow->buddyConfigurationWidgets())
 		widgetAdded(widget);
 }
 
@@ -42,7 +44,7 @@ BuddyConfigurationWidgetTabAdapter::~BuddyConfigurationWidgetTabAdapter()
 
 void BuddyConfigurationWidgetTabAdapter::widgetAdded(BuddyConfigurationWidget *widget)
 {
-	MyTabWidget->addTab(widget, widget->windowTitle());
+	m_tabWidget->addTab(widget, widget->windowTitle());
 }
 
 #include "moc_buddy-configuration-widget-tab-adapter.cpp"

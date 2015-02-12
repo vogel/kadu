@@ -21,33 +21,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_CONFIGURATION_WIDGET_TAB_ADAPTER_H
-#define BUDDY_CONFIGURATION_WIDGET_TAB_ADAPTER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "exports.h"
 
-class QTab;
-class QTabWidget;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 class BuddyConfigurationWidget;
 class BuddyDataWindow;
+
+class QTab;
+class QTabWidget;
 
 class KADUAPI BuddyConfigurationWidgetTabAdapter : public QObject
 {
 	Q_OBJECT
 
-	BuddyDataWindow *MyBuddyDataWindow;
-	QTabWidget *MyTabWidget;
+public:
+	explicit BuddyConfigurationWidgetTabAdapter(BuddyDataWindow *buddyDataWindow, QTabWidget *tabWidget, QObject *parent = nullptr);
+	virtual ~BuddyConfigurationWidgetTabAdapter();
+
+private:
+	QPointer<BuddyDataWindow> m_buddyDataWindow;
+	QPointer<QTabWidget> m_tabWidget;
 
 private slots:
 	void widgetAdded(BuddyConfigurationWidget *widget);
 
-public:
-	explicit BuddyConfigurationWidgetTabAdapter(BuddyDataWindow *buddyDataWindow, QTabWidget *tabWidget, QObject *parent = 0);
-	virtual ~BuddyConfigurationWidgetTabAdapter();
-
 };
-
-#endif // BUDDY_CONFIGURATION_WIDGET_TAB_ADAPTER_H
