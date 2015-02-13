@@ -43,10 +43,14 @@ public:
 	explicit SoundActions(QObject *parent = nullptr);
 	virtual ~SoundActions();
 
+	void setManager(SoundManager *manager);
+
 protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<SoundManager> m_manager;
+
 	ActionDescription *m_muteActionDescription;
 
 private slots:

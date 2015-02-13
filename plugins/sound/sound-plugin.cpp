@@ -34,8 +34,15 @@
 
 #include "sound-plugin.h"
 
+QPointer<SoundManager> SoundPlugin::m_staticSoundManager;
+
 SoundPlugin::~SoundPlugin()
 {
+}
+
+SoundManager * SoundPlugin::soundManager()
+{
+	return m_staticSoundManager;
 }
 
 bool SoundPlugin::init(bool firstLoad)
@@ -43,14 +50,17 @@ bool SoundPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	SoundThemeManager::createInstance();
-	SoundManager::createInstance();
+	m_soundManager = new SoundManager{this};
+	m_staticSoundManager = m_soundManager;
 	SoundNotifier::createInstance();
+	SoundNotifier::instance()->setManager(m_soundManager);
 	SoundConfigurationUiHandler::registerConfigurationUi();
+	SoundConfigurationUiHandler::instance()->setManager(m_soundManager);
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
 	m_soundActions = new SoundActions{this};
+	m_soundActions->setManager(m_soundManager);
 
 	return true;
-
 }
 
 void SoundPlugin::done()
@@ -61,7 +71,10 @@ void SoundPlugin::done()
 	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
 	SoundConfigurationUiHandler::unregisterConfigurationUi();
 	SoundNotifier::destroyInstance();
-	SoundManager::destroyInstance();
+
+	if (m_soundManager)
+		m_soundManager->deleteLater();
+
 	SoundThemeManager::destroyInstance();
 }
 

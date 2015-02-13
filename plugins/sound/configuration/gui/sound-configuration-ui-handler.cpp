@@ -105,11 +105,16 @@ void SoundConfigurationUiHandler::connectWidgets()
 	}
 }
 
+void SoundConfigurationUiHandler::setManager(SoundManager *manager)
+{
+	m_manager = manager;
+}
+
 void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), SoundManager::instance(), SLOT(testSoundPlaying()));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), m_manager, SLOT(testSoundPlaying()));
 
 	ThemesComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
 	ThemesPaths = static_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
@@ -122,7 +127,7 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)
 {
-	ConfigurationWidget = new SoundConfigurationWidget(parent);
+	ConfigurationWidget = new SoundConfigurationWidget(m_manager, parent);
 	connect(ConfigurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
 
 	connectWidgets();

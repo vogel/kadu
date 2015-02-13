@@ -30,53 +30,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_MANAGER_H
-#define SOUND_MANAGER_H
-
-#include <QtCore/QObject>
-#include <QtCore/QTime>
+#pragma once
 
 #include "sound-exports.h"
 
-class QSound;
-class QThread;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 class SoundPlayer;
+
+class QSound;
 
 class SOUNDAPI SoundManager : public QObject
 {
 	Q_OBJECT
 
-	static SoundManager *Instance;
-
-	SoundPlayer *Player;
-	QSound *CurrentSound;
-
-	bool Mute;
-
-	SoundManager();
+public:
+	explicit SoundManager(QObject *parent = nullptr);
 	virtual ~SoundManager();
+
+public slots:
+	void playFile(const QString &soundFile, bool force = false);
+	void playSoundByName(const QString &soundName);
+
+	void setMute(bool mute);
+	void testSoundPlaying();
+
+public:
+	void setPlayer(SoundPlayer *player);
+	bool isMuted() const;
+
+private:
+	QPointer<SoundPlayer> m_player;
+	QPointer<QSound> m_playingSound;
+
+	bool m_mute;
 
 	void createDefaultConfiguration();
 
-public slots:
-	void playFile(const QString &path, bool force = false);
-	void playSoundByName(const QString &soundName);
-
-	void setMute(bool enable);
-
-public:
-	static void createInstance();
-	static void destroyInstance();
-	static SoundManager * instance() { return Instance; }
-
-	void setPlayer(SoundPlayer *player);
-
-	bool isMuted() const;
-
-public slots:
-	void testSoundPlaying();
-
 };
-
-#endif // SOUND_MANAGER_H

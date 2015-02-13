@@ -25,12 +25,17 @@
 
 #include "notify/notifier.h"
 
+#include <QtCore/QPointer>
+
+class SoundManager;
+
 class SoundNotifier : public Notifier
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(SoundNotifier)
 
 	static SoundNotifier *Instance;
+	QPointer<SoundManager> m_manager;
 
 	SoundNotifier();
 	virtual ~SoundNotifier();
@@ -39,6 +44,8 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 	static SoundNotifier * instance();
+
+	void setManager(SoundManager *manager);
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 	virtual void notify(Notification *notification);

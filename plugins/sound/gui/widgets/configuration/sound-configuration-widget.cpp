@@ -34,8 +34,9 @@
 
 #include "sound-configuration-widget.h"
 
-SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent) :
-		NotifierConfigurationWidget(parent), CurrentNotifyEvent(QString())
+SoundConfigurationWidget::SoundConfigurationWidget(SoundManager *manager, QWidget *parent) :
+		NotifierConfigurationWidget(parent), CurrentNotifyEvent(QString()),
+		m_manager{manager}
 {
 	QPushButton *testButton = new QPushButton(KaduIcon("external_modules/mediaplayer-media-playback-play").icon(), QString(), this);
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
@@ -57,7 +58,7 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 
 void SoundConfigurationWidget::test()
 {
-	SoundManager::instance()->playFile(SoundFileSelectFile->file(), true);
+	m_manager->playFile(SoundFileSelectFile->file(), true);
 }
 
 void SoundConfigurationWidget::saveNotifyConfigurations()

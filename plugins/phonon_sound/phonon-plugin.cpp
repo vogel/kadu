@@ -23,6 +23,7 @@
  */
 
 #include "plugins/sound/sound-manager.h"
+#include "plugins/sound/sound-plugin.h"
 
 #include "phonon-player.h"
 
@@ -37,14 +38,14 @@ bool PhononPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	PhononPlayer::createInstance();
-	SoundManager::instance()->setPlayer(PhononPlayer::instance());
+	SoundPlugin::soundManager()->setPlayer(PhononPlayer::instance());
 
 	return true;
 }
 
 void PhononPlugin::done()
 {
-	SoundManager::instance()->setPlayer(0);
+	SoundPlugin::soundManager()->setPlayer(nullptr);
 	PhononPlayer::destroyInstance();
 }
 

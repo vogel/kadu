@@ -25,9 +25,12 @@
 
 #include "gui/windows/main-configuration-window.h"
 
+#include <QtCore/QPointer>
+
 class NotifierConfigurationWidget;
 class PathListEdit;
 class SoundConfigurationWidget;
+class SoundManager;
 
 class SoundConfigurationUiHandler : public ConfigurationUiHandler
 {
@@ -37,6 +40,7 @@ class SoundConfigurationUiHandler : public ConfigurationUiHandler
 	static SoundConfigurationUiHandler *Instance;
 
 	SoundConfigurationWidget *ConfigurationWidget;
+	QPointer<SoundManager> m_manager;
 
 	ConfigComboBox *ThemesComboBox;
 	PathListEdit *ThemesPaths;
@@ -59,6 +63,8 @@ public:
 	static void unregisterConfigurationUi();
 
 	static SoundConfigurationUiHandler * instance();
+
+	void setManager(SoundManager *manager);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);

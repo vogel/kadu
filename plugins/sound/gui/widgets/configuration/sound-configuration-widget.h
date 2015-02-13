@@ -26,12 +26,14 @@
 #define SOUND_CONFIGURATION_WIDGET_H
 
 #include <QtCore/QMap>
+#include <QtCore/QPointer>
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 class QLabel;
 
 class SelectFile;
+class SoundManager;
 
 class SoundConfigurationWidget : public NotifierConfigurationWidget
 {
@@ -39,6 +41,7 @@ class SoundConfigurationWidget : public NotifierConfigurationWidget
 
 	QMap<QString, QString> SoundFiles;
 	QString CurrentNotifyEvent;
+	QPointer<SoundManager> m_manager;
 
 	SelectFile *SoundFileSelectFile;
 
@@ -46,7 +49,7 @@ private slots:
 	void test();
 
 public:
-	explicit SoundConfigurationWidget(QWidget *parent = 0);
+	explicit SoundConfigurationWidget(SoundManager *manager, QWidget *parent = 0);
 	virtual ~SoundConfigurationWidget();
 
 	virtual void loadNotifyConfigurations() {}

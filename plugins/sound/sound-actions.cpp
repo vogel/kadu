@@ -45,14 +45,11 @@ SoundActions::SoundActions(QObject *parent) :
 		this, SLOT(muteActionActivated(QAction *, bool)),
 		KaduIcon("audio-volume-high"), tr("Play Sounds"), true
 	};
-	connect(m_muteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 
 	MenuInventory::instance()
 		->menu("main")
 		->addAction(m_muteActionDescription, KaduMenu::SectionMiscTools, 7)
 		->update();
-
-	setMuteActionState();
 }
 
 SoundActions::~SoundActions()
@@ -63,17 +60,25 @@ SoundActions::~SoundActions()
 		->update();
 }
 
+void SoundActions::setManager(SoundManager *manager)
+{
+	m_manager = manager;
+
+	setMuteActionState();
+	connect(m_muteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
+}
+
 void SoundActions::setMuteActionState()
 {
 	for (auto action : m_muteActionDescription->actions())
-		action->setChecked(!SoundManager::instance()->isMuted());
+		action->setChecked(!m_manager->isMuted());
 }
 
 void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 {
 	Q_UNUSED(action)
 
-	SoundManager::instance()->setMute(!toggled);
+	m_manager->setMute(!toggled);
 	setMuteActionState();
 
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
@@ -81,7 +86,7 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 
 void SoundActions::configurationUpdated()
 {
-	SoundManager::instance()->setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
+	m_manager->setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 

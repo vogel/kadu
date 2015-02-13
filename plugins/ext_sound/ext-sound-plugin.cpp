@@ -25,6 +25,7 @@
 #include "misc/paths-provider.h"
 
 #include "plugins/sound/sound-manager.h"
+#include "plugins/sound/sound-plugin.h"
 
 #include "external-player.h"
 
@@ -39,7 +40,7 @@ bool ExtSoundPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	ExternalPlayer::createInstance();
-	SoundManager::instance()->setPlayer(ExternalPlayer::instance());
+	SoundPlugin::soundManager()->setPlayer(ExternalPlayer::instance());
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
 
 	return true;
@@ -48,7 +49,7 @@ bool ExtSoundPlugin::init(bool firstLoad)
 void ExtSoundPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
-	SoundManager::instance()->setPlayer(0);
+	SoundPlugin::soundManager()->setPlayer(0);
 	ExternalPlayer::destroyInstance();
 }
 

@@ -27,24 +27,31 @@
 #ifndef SOUND_PLUGIN_H
 #define SOUND_PLUGIN_H
 
+#include "sound-exports.h"
+
 #include "plugin/plugin-root-component.h"
 
 class SoundActions;
+class SoundManager;
 
-class SoundPlugin : public QObject, public PluginRootComponent
+class SOUNDAPI SoundPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
+	static SoundManager * soundManager();
+
 	virtual ~SoundPlugin();
 
 	virtual bool init(bool firstLoad);
 	virtual void done();
 
 private:
+	static QPointer<SoundManager> m_staticSoundManager; // wont be needed when we have subinjectors and some other magic
 	QPointer<SoundActions> m_soundActions;
+	QPointer<SoundManager> m_soundManager;
 
 };
 

@@ -31,39 +31,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QThread>
-#include <QtMultimedia/QSound>
-
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
-#include "debug.h"
-#include "themes.h"
+#include "sound-manager.h"
 
 #include "sound-player.h"
 #include "sound-theme-manager.h"
 
-#include "sound-manager.h"
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
+#include "themes.h"
 
-SoundManager * SoundManager::Instance = 0;
+#include <QtCore/QFileInfo>
+#include <QtMultimedia/QSound>
 
-void SoundManager::createInstance()
-{
-	if (!Instance)
-		Instance = new SoundManager();
-}
-
-void SoundManager::destroyInstance()
-{
-	Instance->deleteLater();
-	Instance = 0;
-}
-
-SoundManager::SoundManager() :
-		Player{nullptr},
-		CurrentSound{nullptr},
-		Mute{false}
+SoundManager::SoundManager(QObject *parent) :
+		QObject{parent},
+		m_mute{false}
 {
 	createDefaultConfiguration();
 	setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
@@ -71,7 +54,8 @@ SoundManager::SoundManager() :
 
 SoundManager::~SoundManager()
 {
-	CurrentSound->deleteLater();
+	if (m_playingSound)
+		m_playingSound->deleteLater();
 }
 
 void SoundManager::createDefaultConfiguration()
@@ -93,34 +77,34 @@ void SoundManager::createDefaultConfiguration()
 
 bool SoundManager::isMuted() const
 {
-	return Mute;
+	return m_mute;
 }
 
-void SoundManager::setMute(bool enable)
+void SoundManager::setMute(bool mute)
 {
-	Mute = enable;
+	m_mute = mute;
 }
 
-void SoundManager::playFile(const QString &path, bool force)
+void SoundManager::playFile(const QString &soundFile, bool force)
 {
 	if (isMuted() && !force)
 		return;
 
-	if (!QFile::exists(path))
+	if (!QFileInfo::exists(soundFile))
 		return;
 
-	if (CurrentSound && !CurrentSound->isFinished())
+	if (m_playingSound && !m_playingSound->isFinished())
 		return;
 
-	if (Player)
+	if (m_player)
 	{
-		Player->playSound(path);
+		m_player->playSound(soundFile);
 		return;
 	}
 
-	CurrentSound->deleteLater();
-	CurrentSound = new QSound{path};
-	CurrentSound->play();
+	m_playingSound->deleteLater();
+	m_playingSound = new QSound{soundFile};
+	m_playingSound->play();
 }
 
 void SoundManager::playSoundByName(const QString &soundName)
@@ -128,18 +112,18 @@ void SoundManager::playSoundByName(const QString &soundName)
 	if (isMuted())
 		return;
 
-	QString file = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", soundName + "_sound");
+	auto file = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", soundName + "_sound");
 	playFile(file);
 }
 
 void SoundManager::setPlayer(SoundPlayer *player)
 {
-	Player = player;
+	m_player = player;
 }
 
 void SoundManager::testSoundPlaying()
 {
-	QString soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
+	auto soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
 	playFile(soundFile, true);
 }
 
