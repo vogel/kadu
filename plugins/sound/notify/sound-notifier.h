@@ -25,6 +25,7 @@
 #include "notify/notifier.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class SoundConfigurationUiHandler;
 class SoundManager;
@@ -38,13 +39,14 @@ class SoundNotifier : public Notifier
 	QPointer<SoundManager> m_soundManager;
 
 public:
-	explicit SoundNotifier(QObject *parent = nullptr);
+	Q_INVOKABLE explicit SoundNotifier(QObject *parent = nullptr);
 	virtual ~SoundNotifier();
-
-	void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
-	void setSoundManager(SoundManager *soundManager);
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr) override;
 	virtual void notify(Notification *notification) override;
+
+private slots:
+	INJEQT_SETTER void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
+	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
 
 };

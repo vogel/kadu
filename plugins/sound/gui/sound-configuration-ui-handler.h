@@ -25,6 +25,7 @@
 #include "gui/windows/main-configuration-window.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class NotifierConfigurationWidget;
 class PathListEdit;
@@ -37,11 +38,8 @@ class SoundConfigurationUiHandler : public ConfigurationUiHandler
 	Q_OBJECT
 
 public:
-	explicit SoundConfigurationUiHandler(QObject *parent = nullptr);
+	Q_INVOKABLE explicit SoundConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~SoundConfigurationUiHandler();
-
-	void setSoundManager(SoundManager *soundManager);
-	void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 
 	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
 
@@ -60,6 +58,9 @@ private:
 	void setSoundThemes();
 
 private slots:
+	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
+	INJEQT_SETTER void setSoundThemeManager(SoundThemeManager *soundThemeManager);
+
 	void themeChanged(const QString &theme);
 	void soundFileEdited();
 

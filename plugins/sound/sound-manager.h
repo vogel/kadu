@@ -47,7 +47,7 @@ class SOUNDAPI SoundManager : public QObject
 	Q_OBJECT
 
 public:
-	explicit SoundManager(QObject *parent = nullptr);
+	Q_INVOKABLE explicit SoundManager(QObject *parent = nullptr);
 	virtual ~SoundManager();
 
 	void setSoundThemeManager(SoundThemeManager *soundThemeManager);

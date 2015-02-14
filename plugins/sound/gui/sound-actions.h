@@ -31,6 +31,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class SoundManager;
 class SoundMuteAction;
@@ -42,17 +43,17 @@ class SoundActions : public QObject, public ConfigurationAwareObject
 	Q_OBJECT
 
 public:
-	explicit SoundActions(QObject *parent = nullptr);
+	Q_INVOKABLE explicit SoundActions(QObject *parent = nullptr);
 	virtual ~SoundActions();
-
-	void setSoundManager(SoundManager *soundManager);
 
 protected:
 	virtual void configurationUpdated();
 
 private:
 	QPointer<SoundManager> m_soundManager;
-
 	SoundMuteAction *m_soundMuteAction;
+
+private slots:
+	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
 
 };

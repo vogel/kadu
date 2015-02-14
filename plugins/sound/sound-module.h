@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
+ * Copyright 2015 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -22,24 +19,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <memory>
+#include <injeqt/module.h>
 
-class Themes;
-
-class SoundThemeManager : public QObject
+class SoundModule : public injeqt::module
 {
-	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SoundThemeManager(QObject *parent = nullptr);
-	virtual ~SoundThemeManager();
-
-	void applyTheme(const QString &themeName);
-
-	Themes * themes() const;
-
-private:
-	std::unique_ptr<Themes> m_themes;
+	explicit SoundModule();
+	virtual ~SoundModule();
 
 };

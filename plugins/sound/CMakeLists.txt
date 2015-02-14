@@ -17,6 +17,7 @@ set (SOURCES
 	gui/sound-mute-action.cpp
 	notify/sound-notifier.cpp
 	sound-manager.cpp
+	sound-module.cpp
 	sound-player.cpp
 	sound-plugin.cpp
 	sound-theme-manager.cpp

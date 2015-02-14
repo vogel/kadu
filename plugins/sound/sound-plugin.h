@@ -30,11 +30,9 @@
 
 #include "sound-exports.h"
 
-class SoundActions;
-class SoundConfigurationUiHandler;
+#include <injeqt/injector.h>
+
 class SoundManager;
-class SoundNotifier;
-class SoundThemeManager;
 
 class SOUNDAPI SoundPlugin : public QObject, public PluginRootComponent
 {
@@ -53,11 +51,6 @@ public:
 
 private:
 	static QPointer<SoundManager> m_staticSoundManager; // wont be needed when we have subinjectors and some other magic
-
-	QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
-	QPointer<SoundActions> m_soundActions;
-	QPointer<SoundManager> m_soundManager;
-	QPointer<SoundNotifier> m_soundNotifier;
-	QPointer<SoundThemeManager> m_soundThemeManager;
+	std::unique_ptr<injeqt::injector> m_injector;
 
 };

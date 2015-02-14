@@ -29,9 +29,11 @@
 #include "gui/sound-actions.h"
 #include "notify/sound-notifier.h"
 #include "sound-manager.h"
+#include "sound-module.h"
 #include "sound-theme-manager.h"
 
 #include "core/application.h"
+#include "misc/memory.h"
 #include "misc/paths-provider.h"
 
 #include "notify/notification-manager.h"
@@ -56,53 +58,28 @@ bool SoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	m_soundThemeManager = new SoundThemeManager{this};
+	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	modules.emplace_back(make_unique<SoundModule>());
 
-	m_soundManager = new SoundManager{this};
-	m_soundManager->setSoundThemeManager(m_soundThemeManager);
-	m_staticSoundManager = m_soundManager;
+	m_injector = make_unique<injeqt::injector>(std::move(modules));
+	m_staticSoundManager = m_injector->get<SoundManager>();
 
-	m_soundConfigurationUiHandler = new SoundConfigurationUiHandler{this};
-	m_soundConfigurationUiHandler->setSoundManager(m_soundManager);
-	m_soundConfigurationUiHandler->setSoundThemeManager(m_soundThemeManager);
-
-	m_soundNotifier = new SoundNotifier{this};
-	m_soundNotifier->setSoundManager(m_soundManager);
-	m_soundNotifier->setSoundConfigurationUiHandler(m_soundConfigurationUiHandler);
-	NotificationManager::instance()->registerNotifier(m_soundNotifier);
+	NotificationManager::instance()->registerNotifier(m_injector->get<SoundNotifier>());
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
-	MainConfigurationWindow::registerUiHandler(m_soundConfigurationUiHandler);
-
-	m_soundActions = new SoundActions{this};
-	m_soundActions->setSoundManager(m_soundManager);
+	MainConfigurationWindow::registerUiHandler(m_injector->get<SoundConfigurationUiHandler>());
 
 	return true;
 }
 
 void SoundPlugin::done()
 {
-	if (m_soundActions)
-		m_soundActions->deleteLater();
+	MainConfigurationWindow::unregisterUiHandler(m_injector->get<SoundConfigurationUiHandler>());
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
 
-	if (m_soundConfigurationUiHandler)
-	{
-		MainConfigurationWindow::unregisterUiHandler(m_soundConfigurationUiHandler);
-		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
-		m_soundConfigurationUiHandler->deleteLater();
-	}
+	NotificationManager::instance()->unregisterNotifier(m_injector->get<SoundNotifier>());
 
-	if (m_soundNotifier)
-	{
-		NotificationManager::instance()->unregisterNotifier(m_soundNotifier);
-		m_soundNotifier->deleteLater();
-	}
-
-	if (m_soundManager)
-		m_soundManager->deleteLater();
-
-	if (m_soundThemeManager)
-		m_soundThemeManager->deleteLater();
+	m_injector.reset();
 }
 
 Q_EXPORT_PLUGIN2(sound, SoundPlugin)
