@@ -32,6 +32,7 @@
 #include "plugin/plugin-root-component.h"
 
 class SoundActions;
+class SoundConfigurationUiHandler;
 class SoundManager;
 
 class SOUNDAPI SoundPlugin : public QObject, public PluginRootComponent
@@ -50,6 +51,8 @@ public:
 
 private:
 	static QPointer<SoundManager> m_staticSoundManager; // wont be needed when we have subinjectors and some other magic
+
+	QPointer<SoundConfigurationUiHandler> m_configurationUiHandler;
 	QPointer<SoundActions> m_soundActions;
 	QPointer<SoundManager> m_soundManager;
 

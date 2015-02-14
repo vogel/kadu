@@ -58,6 +58,11 @@ SoundNotifier::~SoundNotifier()
 {
 }
 
+void SoundNotifier::setConfigurationUiHandler(SoundConfigurationUiHandler *configurationUiHandler)
+{
+	m_configurationUiHandler = configurationUiHandler;
+}
+
 void SoundNotifier::setManager(SoundManager *manager)
 {
 	m_manager = manager;
@@ -70,7 +75,9 @@ void SoundNotifier::notify(Notification *notification)
 
 NotifierConfigurationWidget * SoundNotifier::createConfigurationWidget(QWidget* parent)
 {
-	return SoundConfigurationUiHandler::instance()->createConfigurationWidget(parent);
+	return m_configurationUiHandler
+			? m_configurationUiHandler->createConfigurationWidget(parent)
+			: nullptr;
 }
 
 #include "moc_sound-notifier.cpp"

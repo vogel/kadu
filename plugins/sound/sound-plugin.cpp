@@ -25,7 +25,9 @@
 
 #include "notify/notification-manager.h"
 
+#include "core/application.h"
 #include "configuration/gui/sound-configuration-ui-handler.h"
+#include "misc/paths-provider.h"
 #include "notify/sound-notifier.h"
 
 #include "sound-actions.h"
@@ -54,8 +56,13 @@ bool SoundPlugin::init(bool firstLoad)
 	m_staticSoundManager = m_soundManager;
 	SoundNotifier::createInstance();
 	SoundNotifier::instance()->setManager(m_soundManager);
-	SoundConfigurationUiHandler::registerConfigurationUi();
-	SoundConfigurationUiHandler::instance()->setManager(m_soundManager);
+	m_configurationUiHandler = new SoundConfigurationUiHandler{this};
+	m_configurationUiHandler->setManager(m_soundManager);
+	SoundNotifier::instance()->setConfigurationUiHandler(m_configurationUiHandler);
+
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	MainConfigurationWindow::registerUiHandler(m_configurationUiHandler);
+
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
 	m_soundActions = new SoundActions{this};
 	m_soundActions->setManager(m_soundManager);
@@ -68,8 +75,14 @@ void SoundPlugin::done()
 	if (m_soundActions)
 		m_soundActions->deleteLater();
 
+	if (m_configurationUiHandler)
+	{
+		MainConfigurationWindow::unregisterUiHandler(m_configurationUiHandler);
+		m_configurationUiHandler->deleteLater();
+		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	}
+
 	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
-	SoundConfigurationUiHandler::unregisterConfigurationUi();
 	SoundNotifier::destroyInstance();
 
 	if (m_soundManager)

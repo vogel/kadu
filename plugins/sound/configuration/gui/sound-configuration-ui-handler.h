@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_CONFIGURATION_UI_HANDLER_H
-#define SOUND_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include "gui/windows/main-configuration-window.h"
 
@@ -35,40 +34,30 @@ class SoundManager;
 class SoundConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SoundConfigurationUiHandler)
 
-	static SoundConfigurationUiHandler *Instance;
-
-	SoundConfigurationWidget *ConfigurationWidget;
-	QPointer<SoundManager> m_manager;
-
-	ConfigComboBox *ThemesComboBox;
-	PathListEdit *ThemesPaths;
-
-	explicit SoundConfigurationUiHandler(QObject *parent = 0);
+public:
+	explicit SoundConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~SoundConfigurationUiHandler();
 
 	void connectWidgets();
 	void setSoundThemes();
-
-private slots:
-	void themeChanged(const QString &theme);
-	void soundFileEdited();
-
-	void configurationWindowApplied();
-	void configurationWindowDestroyed();
-
-public:
-	static void registerConfigurationUi();
-	static void unregisterConfigurationUi();
-
-	static SoundConfigurationUiHandler * instance();
 
 	void setManager(SoundManager *manager);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 
-};
+private:
+	QPointer<SoundManager> m_manager;
 
-#endif // SOUND_CONFIGURATION_UI_HANDLER_H
+	QPointer<SoundConfigurationWidget> m_configurationWidget;
+	QPointer<ConfigComboBox> m_themesComboBox;
+	QPointer<PathListEdit> m_themesPaths;
+
+private slots:
+	void themeChanged(const QString &theme);
+	void soundFileEdited();
+
+	void configurationWindowApplied();
+
+};
