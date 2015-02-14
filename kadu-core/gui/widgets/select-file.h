@@ -36,13 +36,16 @@ class KADUAPI SelectFile : public QWidget
 	QString Type;
 	QLineEdit *LineEdit;
 
+	void createGui();
+
 private slots:
 	void selectFileClicked();
 	void fileEdited();
 
 public:
-	SelectFile(const QString &type, QWidget *parent = 0);
-	SelectFile(QWidget *parent = 0);
+	explicit SelectFile(const QString &type, QWidget *parent = nullptr);
+	explicit SelectFile(QWidget *parent = nullptr);
+	virtual ~SelectFile();
 
 	void setType(const QString &type) { Type = type; }
 

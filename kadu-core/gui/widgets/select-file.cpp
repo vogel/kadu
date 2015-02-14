@@ -25,7 +25,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -35,30 +35,29 @@
 SelectFile::SelectFile(const QString &type, QWidget *parent)
 	: QWidget(parent), Type(type)
 {
-	QHBoxLayout *layout = new QHBoxLayout;
-
-	LineEdit = new QLineEdit(this);
-	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
-
-	QPushButton *selectFile = new QPushButton(KaduIcon("document-open").icon(), QString(), this);
-	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
-
-	layout->addWidget(LineEdit);
-	layout->addWidget(selectFile);
-
-	setLayout(layout);
-	layout->setMargin(0);
+	createGui();
 }
 
 SelectFile::SelectFile(QWidget *parent)
 	: QWidget(parent)
+{
+	createGui();
+}
+
+SelectFile::~SelectFile()
+{
+}
+
+void SelectFile::createGui()
 {
 	QHBoxLayout *layout = new QHBoxLayout;
 
 	LineEdit = new QLineEdit(this);
 	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
-	QPushButton *selectFile = new QPushButton(KaduIcon("document-open").icon(), QString(), this);
+	QToolButton *selectFile = new QToolButton(this);
+	selectFile->setAutoRaise(true);
+	selectFile->setIcon(KaduIcon("document-open").icon());
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);
@@ -66,6 +65,7 @@ SelectFile::SelectFile(QWidget *parent)
 
 	setLayout(layout);
 	layout->setMargin(0);
+	layout->setSpacing(0);
 }
 
 void SelectFile::selectFileClicked()
