@@ -32,13 +32,15 @@
 #include "icons/kadu-icon.h"
 
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 
 SoundSelectFile::SoundSelectFile(SoundManager *manager, QWidget *parent) :
 		QWidget{parent},
 		m_manager{manager}
 {
-	auto testButton = new QPushButton{KaduIcon{"external_modules/mediaplayer-media-playback-play"}.icon(), QString{}, this};
+	auto testButton = new QToolButton{this};
+	testButton->setAutoRaise(true);
+	testButton->setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-play"}.icon());
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
 	m_selectFile = new SelectFile{"audio", this};
