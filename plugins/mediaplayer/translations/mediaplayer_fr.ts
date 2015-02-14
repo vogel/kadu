@@ -103,11 +103,11 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Suppléments</translation>
     </message>
     <message>
         <source>Media Player</source>
-        <translation type="unfinished"/>
+        <translation>Lecteur Multimédia</translation>
     </message>
     <message>
         <source>MediaPlayer message format in chat window</source>
@@ -146,7 +146,7 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
         <source>Enable MediaPlayer statuses</source>
-        <translation type="unfinished"/>
+        <translation>Activer des états MediaPlayer</translation>
     </message>
     <message>
         <source>MediaPlayer</source>
@@ -214,15 +214,15 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
         <source>Send anyway</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer malgré tout</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer</translation>
     </message>
 </context>
 </TS>

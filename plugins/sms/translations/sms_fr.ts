@@ -61,15 +61,15 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Suppléments</translation>
     </message>
     <message>
         <source>Your nick for SMS</source>
-        <translation type="unfinished"/>
+        <translation>Votre pseudonyme pour les SMS</translation>
     </message>
     <message>
         <source>Use application custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser les paramètres passés à l&apos;application</translation>
     </message>
     <message>
         <source>SMS custom arguments</source>
@@ -77,7 +77,7 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportement</translation>
     </message>
 </context>
 <context>

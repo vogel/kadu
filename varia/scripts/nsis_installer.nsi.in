@@ -325,6 +325,7 @@ SectionGroupEnd
 	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_en.qm"
 	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_pl.qm"
 	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_tr.qm"
+	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_fr.qm"
 !macroend
 
 !macro kadu_plugin_data_files name

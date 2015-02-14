@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportement</translation>
     </message>
 </context>
 <context>

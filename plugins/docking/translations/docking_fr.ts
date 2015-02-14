@@ -23,19 +23,19 @@
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"/>
+        <translation>Lancement</translation>
     </message>
     <message>
         <source>Start minimized</source>
-        <translation type="unfinished"/>
+        <translation>Démarrer en mode réduit</translation>
     </message>
     <message>
         <source>Show tooltip over tray icon</source>
-        <translation type="unfinished"/>
+        <translation>Afficher les notification au dessus de l&apos;icône de notification</translation>
     </message>
     <message>
         <source>Tray icon indicating new message</source>
-        <translation type="unfinished"/>
+        <translation>L’icône de la zone de notification indique les nouveaux messages</translation>
     </message>
 </context>
 <context>
@@ -54,23 +54,23 @@
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>État</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>États</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Descriptions</translation>
     </message>
     <message>
         <source>Silent mode</source>
-        <translation type="unfinished"/>
+        <translation>Mode silencieux</translation>
     </message>
 </context>
 </TS>

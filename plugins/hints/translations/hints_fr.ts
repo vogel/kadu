@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>New hints go</source>
-        <translation type="unfinished"/>
+        <translation>La nouvelle notification vient de</translation>
     </message>
     <message>
         <source>Auto</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Own hints position</source>
-        <translation type="unfinished"/>
+        <translation>Position de l&apos;indication</translation>
     </message>
     <message>
         <source>X</source>
@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Hints position preview</source>
-        <translation type="unfinished"/>
+        <translation>Aperçu de la position de l&apos;indice</translation>
     </message>
     <message>
         <source>Timeout</source>
@@ -83,27 +83,27 @@
     </message>
     <message>
         <source>&apos;Open chat&apos; works on all events</source>
-        <translation type="unfinished"/>
+        <translation>&apos;ouvrir la conversation&apos; actif sur tous les évènements</translation>
     </message>
     <message>
         <source>Show message content in hint</source>
-        <translation type="unfinished"/>
+        <translation>Afficher le contenu du message dans la notification</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de caractères cités</translation>
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les messages en attentes lorsque l&apos;utilisateur ferme la notification</translation>
     </message>
     <message>
         <source>Buddy List</source>
-        <translation type="unfinished"/>
+        <translation>Liste de Contacts</translation>
     </message>
     <message>
         <source>Hint Over Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Notification par dessus le contact</translation>
     </message>
     <message>
         <source>Border color</source>
@@ -175,7 +175,7 @@
     </message>
     <message>
         <source>Hint&apos;s corner</source>
-        <translation type="unfinished"/>
+        <translation>Coin de la notification</translation>
     </message>
     <message>
         <source>On Top</source>
@@ -207,11 +207,11 @@
     </message>
     <message>
         <source>Delete Hint</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer Notification</translation>
     </message>
     <message>
         <source>Delete All Hints</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer Toutes les Notification</translation>
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
@@ -219,11 +219,11 @@
     </message>
     <message>
         <source>Show buttons only if notification requires user&apos;s action</source>
-        <translation type="unfinished"/>
+        <translation>Afficher les boutons que si la notification requiert l&apos;action de l&apos;utilisateur</translation>
     </message>
     <message>
         <source>Hints size and position...</source>
-        <translation type="unfinished"/>
+        <translation>Taille et positionnement de la zone de notification</translation>
     </message>
 </context>
 <context>
@@ -237,7 +237,7 @@
     <name>HintOverUserConfigurationWindow</name>
     <message>
         <source>Hint Over Buddy Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Notifier par dessus la configuration des contacts</translation>
     </message>
     <message>
         <source>Update preview</source>
@@ -256,11 +256,11 @@
     </message>
     <message>
         <source>Hint over buddy list: </source>
-        <translation type="unfinished"/>
+        <translation>Notifier par dessus la liste des contacts</translation>
     </message>
     <message>
         <source>Advanced hints&apos; configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuration avancée des notifications</translation>
     </message>
 </context>
 <context>
@@ -278,7 +278,7 @@
     <name>HintsConfigurationWindow</name>
     <message>
         <source>Hints configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuration Notification</translation>
     </message>
     <message>
         <source>Don&apos;t hide</source>

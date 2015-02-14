@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"/>
+        <translation>Liste de contacts</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Général</translation>
     </message>
     <message>
         <source>Buddies window</source>
-        <translation type="unfinished"/>
+        <translation>Fenêtre de contacts</translation>
     </message>
     <message>
         <source>Hide buddy list window when unused</source>
-        <translation type="unfinished"/>
+        <translation>Masquer la fenêtre de contact lorsque non utilisé</translation>
     </message>
 </context>
 <context>

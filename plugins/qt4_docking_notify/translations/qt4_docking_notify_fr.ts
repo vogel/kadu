@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Notifications</translation>
     </message>
 </context>
 <context>

@@ -59,27 +59,27 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Suppléments</translation>
     </message>
     <message>
         <source>Screenshot file format</source>
-        <translation type="unfinished"/>
+        <translation>Format du fichier de la capture</translation>
     </message>
     <message>
         <source>Paste image to chat window automatically</source>
-        <translation type="unfinished"/>
+        <translation>Automatiquement coller l&apos;image dans la fenêtre de conversation</translation>
     </message>
     <message>
         <source>When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation type="unfinished"/>
+        <translation>Quand activé, le plugin va automatiquement coller la clause près à envoyer[IMAGE] dans la conversation.</translation>
     </message>
     <message>
         <source>When enabled, plugin will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation type="unfinished"/>
+        <translation>Quand activé, le plugin va vérifier la taille du répertoire de capture d&apos;écran et vous notifier si la taille atteint la taille spécifié ici.</translation>
     </message>
     <message>
         <source>Define, how many kbytes can shots take in the directory before plugin will warn you.</source>
-        <translation type="unfinished"/>
+        <translation>Définir l&apos;espace maximal en k octets que peut prendre le répertoire de captures avant de vous avertir.</translation>
     </message>
 </context>
 <context>
