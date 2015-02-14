@@ -5,18 +5,16 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 kadu_api_directories (plugins/sound
-	configuration/gui
-	configuration
-	gui/widgets
 	gui
+	notify
 	.
 )
 
 set (SOURCES
-	configuration/gui/sound-configuration-ui-handler.cpp
-	gui/widgets/configuration/sound-configuration-widget.cpp
+	gui/sound-actions.cpp
+	gui/sound-configuration-ui-handler.cpp
+	gui/sound-configuration-widget.cpp
 	notify/sound-notifier.cpp
-	sound-actions.cpp
 	sound-manager.cpp
 	sound-player.cpp
 	sound-plugin.cpp
@@ -24,7 +22,7 @@ set (SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/sound.ui
+	data/configuration/sound.ui
 )
 
 kadu_plugin (sound

@@ -25,7 +25,7 @@
 
 #include "sound-notifier.h"
 
-#include "configuration/gui/sound-configuration-ui-handler.h"
+#include "gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
 
 #include "notify/notification/notification.h"

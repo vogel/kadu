@@ -25,9 +25,9 @@
 
 #include "sound-plugin.h"
 
-#include "configuration/gui/sound-configuration-ui-handler.h"
+#include "gui/sound-configuration-ui-handler.h"
+#include "gui/sound-actions.h"
 #include "notify/sound-notifier.h"
-#include "sound-actions.h"
 #include "sound-manager.h"
 #include "sound-theme-manager.h"
 
