@@ -27,6 +27,7 @@
 #include "gui/menu/menu-inventory.h"
 
 #include "encryption-chat-data.h"
+#include "encryption-depreceated-message.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
@@ -84,6 +85,8 @@ void EncryptionSetUpMenu::encryptionMethodSelected(QAction *selectedAction)
 	Chat chat = MenuAction->context()->chat();
 	if (!chat)
 		return;
+
+	EncryptionDepreceatedMessage::instance()->showIfNotSeen();
 
 	EncryptionProvider *encryptionProvider = selectedAction->data().value<EncryptionProvider *>();
 	EncryptionManager::instance()->chatEncryption(chat)->setEncrypt(encryptionProvider);

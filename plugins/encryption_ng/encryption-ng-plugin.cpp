@@ -35,6 +35,7 @@
 #include "keys/keys-manager.h"
 #include "notify/encryption-ng-notification.h"
 #include "encryption-actions.h"
+#include "encryption-depreceated-message.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
@@ -59,6 +60,7 @@ bool EncryptionNgPlugin::init(bool firstLoad)
 		return false;
 	}
 
+	EncryptionDepreceatedMessage::createInstance();
 	EncryptionNgNotification::registerNotifications();
 
 	EncryptionProviderManager::createInstance();
@@ -77,6 +79,7 @@ void EncryptionNgPlugin::done()
 	EncryptionNgNotification::unregisterNotifications();
 
 	KeysManager::destroyInstance();
+	EncryptionDepreceatedMessage::destroyInstance();
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_plugin, EncryptionNgPlugin)

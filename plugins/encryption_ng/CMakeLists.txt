@@ -30,6 +30,7 @@ set (SOURCES
 	decryptor-wrapper.cpp
 	encryption-actions.cpp
 	encryption-chat-data.cpp
+	encryption-depreceated-message.cpp
 	encryption-manager.cpp
 	encryption-ng-plugin.cpp
 	encryption-provider-manager.cpp

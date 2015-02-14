@@ -35,6 +35,7 @@
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
 
+#include "encryption-depreceated-message.h"
 #include "keys/key.h"
 #include "encryption-manager.h"
 #include "key-generator.h"
@@ -159,6 +160,8 @@ void GenerateKeysActionDescription::menuActionTriggered(QAction *action)
 		MessageDialog::show(KaduIcon("dialog-information"), tr("Encryption"), tr("Keys have been generated"));
 	else
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Encryption"), tr("Error generating keys"));
+
+	EncryptionDepreceatedMessage::instance()->showIfNotSeen();
 }
 
 #include "moc_generate-keys-action-description.cpp"
