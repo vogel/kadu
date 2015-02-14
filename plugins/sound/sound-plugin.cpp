@@ -66,7 +66,7 @@ bool SoundPlugin::init(bool firstLoad)
 
 	NotificationManager::instance()->registerNotifier(m_injector->get<SoundNotifier>());
 
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
 	MainConfigurationWindow::registerUiHandler(m_injector->get<SoundConfigurationUiHandler>());
 
 	return true;
@@ -75,7 +75,7 @@ bool SoundPlugin::init(bool firstLoad)
 void SoundPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(m_injector->get<SoundConfigurationUiHandler>());
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
 
 	NotificationManager::instance()->unregisterNotifier(m_injector->get<SoundNotifier>());
 
