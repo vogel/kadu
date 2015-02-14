@@ -302,6 +302,11 @@ public:
 		return QToolButton::MenuButtonPopup;
 	}
 
+	/**
+	 * @short Updates states of all actions of this type.
+	 */
+	void updateActionStates();
+
 signals:
 	void actionCreated(Action *);
 

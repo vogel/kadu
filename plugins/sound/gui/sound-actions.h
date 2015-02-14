@@ -30,9 +30,10 @@
 #include "configuration/configuration-aware-object.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 
-class ActionDescription;
 class SoundManager;
+class SoundMuteAction;
 
 class QAction;
 
@@ -52,10 +53,6 @@ protected:
 private:
 	QPointer<SoundManager> m_soundManager;
 
-	ActionDescription *m_muteActionDescription;
-
-private slots:
-	void setMuteActionState();
-	void muteActionActivated(QAction *action, bool is_on);
+	SoundMuteAction *m_soundMuteAction;
 
 };

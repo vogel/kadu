@@ -14,6 +14,7 @@ set (SOURCES
 	gui/sound-actions.cpp
 	gui/sound-configuration-ui-handler.cpp
 	gui/sound-configuration-widget.cpp
+	gui/sound-mute-action.cpp
 	notify/sound-notifier.cpp
 	sound-manager.cpp
 	sound-player.cpp

@@ -148,6 +148,12 @@ void ActionDescription::updateActionState(Action *action)
 		(*EnableCallback)(action);
 }
 
+void ActionDescription::updateActionStates()
+{
+	for (auto &&action : actions())
+		updateActionState(action);
+}
+
 Action * ActionDescription::createAction(ActionContext *context, QObject *parent)
 {
 	Action *result = MappedActions.value(context);

@@ -26,29 +26,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
-#include "gui/menu/menu-inventory.h"
+#include "sound-actions.h"
 
+#include "gui/sound-mute-action.h"
 #include "sound-manager.h"
 
-#include "sound-actions.h"
+#include "gui/menu/menu-inventory.h"
 
 SoundActions::SoundActions(QObject *parent) :
 		QObject{parent}
 {
-	m_muteActionDescription = new ActionDescription{this,
-		ActionDescription::TypeGlobal, "muteSoundsAction",
-		this, SLOT(muteActionActivated(QAction *, bool)),
-		KaduIcon("audio-volume-high"), tr("Play Sounds"), true
-	};
+	m_soundMuteAction = new SoundMuteAction{this};
 
 	MenuInventory::instance()
 		->menu("main")
-		->addAction(m_muteActionDescription, KaduMenu::SectionMiscTools, 7)
+		->addAction(m_soundMuteAction, KaduMenu::SectionMiscTools, 7)
 		->update();
 }
 
@@ -56,38 +48,20 @@ SoundActions::~SoundActions()
 {
 	MenuInventory::instance()
 		->menu("main")
-		->removeAction(m_muteActionDescription)
+		->removeAction(m_soundMuteAction)
 		->update();
 }
 
 void SoundActions::setSoundManager(SoundManager *soundManager)
 {
 	m_soundManager = soundManager;
-
-	setMuteActionState();
-	connect(m_muteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
-}
-
-void SoundActions::setMuteActionState()
-{
-	for (auto action : m_muteActionDescription->actions())
-		action->setChecked(!m_soundManager->isMuted());
-}
-
-void SoundActions::muteActionActivated(QAction  *action, bool toggled)
-{
-	Q_UNUSED(action)
-
-	m_soundManager->setMute(!toggled);
-	setMuteActionState();
-
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
+	m_soundMuteAction->setSoundManager(m_soundManager);
+	m_soundMuteAction->updateActionStates();
 }
 
 void SoundActions::configurationUpdated()
 {
-	m_soundManager->setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
-	setMuteActionState();
+	m_soundMuteAction->updateActionStates();
 }
 
 #include "moc_sound-actions.cpp"
