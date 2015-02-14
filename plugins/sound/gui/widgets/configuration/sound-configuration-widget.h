@@ -22,13 +22,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_CONFIGURATION_WIDGET_H
-#define SOUND_CONFIGURATION_WIDGET_H
+#pragma once
+
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
-
-#include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 class QLabel;
 
@@ -39,17 +38,8 @@ class SoundConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
-	QMap<QString, QString> SoundFiles;
-	QString CurrentNotifyEvent;
-	QPointer<SoundManager> m_manager;
-
-	SelectFile *SoundFileSelectFile;
-
-private slots:
-	void test();
-
 public:
-	explicit SoundConfigurationWidget(SoundManager *manager, QWidget *parent = 0);
+	explicit SoundConfigurationWidget(SoundManager *manager, QWidget *parent = nullptr);
 	virtual ~SoundConfigurationWidget();
 
 	virtual void loadNotifyConfigurations() {}
@@ -62,6 +52,15 @@ public slots:
 signals:
 	void soundFileEdited();
 
-};
+private:
+	QPointer<SoundManager> m_manager;
 
-#endif // SOUND_CONFIGURATION_WIDGET_H
+	QMap<QString, QString> m_soundFiles;
+	QString m_currentNotifyEvent;
+
+	SelectFile *m_soundSelectFile;
+
+private slots:
+	void test();
+
+};

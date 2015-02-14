@@ -20,8 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QPushButton>
+#include "sound-configuration-widget.h"
+
+#include "sound-manager.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -30,24 +31,23 @@
 #include "gui/widgets/select-file.h"
 #include "icons/kadu-icon.h"
 
-#include "sound-manager.h"
-
-#include "sound-configuration-widget.h"
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QPushButton>
 
 SoundConfigurationWidget::SoundConfigurationWidget(SoundManager *manager, QWidget *parent) :
-		NotifierConfigurationWidget(parent), CurrentNotifyEvent(QString()),
+		NotifierConfigurationWidget{parent},
 		m_manager{manager}
 {
-	QPushButton *testButton = new QPushButton(KaduIcon("external_modules/mediaplayer-media-playback-play").icon(), QString(), this);
+	auto testButton = new QPushButton{KaduIcon{"external_modules/mediaplayer-media-playback-play"}.icon(), QString{}, this};
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
-	SoundFileSelectFile = new SelectFile("audio", this);
-	connect(SoundFileSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
+	m_soundSelectFile = new SelectFile{"audio", this};
+	connect(m_soundSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
+	auto layout = new QHBoxLayout{this};
 	layout->insertSpacing(0, 20);
 	layout->addWidget(testButton);
-	layout->addWidget(SoundFileSelectFile);
+	layout->addWidget(m_soundSelectFile);
 
 	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
@@ -58,28 +58,28 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 
 void SoundConfigurationWidget::test()
 {
-	m_manager->playFile(SoundFileSelectFile->file(), true);
+	m_manager->playFile(m_soundSelectFile->file(), true);
 }
 
 void SoundConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!CurrentNotifyEvent.isEmpty())
-		SoundFiles[CurrentNotifyEvent] = SoundFileSelectFile->file();
+	if (!m_currentNotifyEvent.isEmpty())
+		m_soundFiles[m_currentNotifyEvent] = m_soundSelectFile->file();
 
-	for (QMap<QString, QString>::const_iterator it = SoundFiles.constBegin(), end = SoundFiles.constEnd(); it != end; ++it)
+	for (auto it = m_soundFiles.constBegin(), end = m_soundFiles.constEnd(); it != end; ++it)
 		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", it.key() + "_sound", it.value());
 }
 
 void SoundConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (!CurrentNotifyEvent.isEmpty())
-		SoundFiles[CurrentNotifyEvent] = SoundFileSelectFile->file();
-	CurrentNotifyEvent = event;
+	if (!m_currentNotifyEvent.isEmpty())
+		m_soundFiles[m_currentNotifyEvent] = m_soundSelectFile->file();
+	m_currentNotifyEvent = event;
 
-	if (SoundFiles.contains(event))
-		SoundFileSelectFile->setFile(SoundFiles[event]);
+	if (m_soundFiles.contains(event))
+		m_soundSelectFile->setFile(m_soundFiles[event]);
 	else
-		SoundFileSelectFile->setFile(Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", event + "_sound"));
+		m_soundSelectFile->setFile(Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", event + "_sound"));
 }
 
 void SoundConfigurationWidget::themeChanged(int index)
@@ -88,11 +88,11 @@ void SoundConfigurationWidget::themeChanged(int index)
 		return;
 
 	//refresh soundFiles
-	for (QMap<QString, QString>::iterator it = SoundFiles.begin(), end = SoundFiles.end(); it != end; ++it)
+	for (auto it = m_soundFiles.begin(), end = m_soundFiles.end(); it != end; ++it)
 	{
 		it.value() = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", it.key() + "_sound");
-		if (it.key() == CurrentNotifyEvent)
-			SoundFileSelectFile->setFile(it.value());
+		if (it.key() == m_currentNotifyEvent)
+			m_soundSelectFile->setFile(it.value());
 	}
 }
 
