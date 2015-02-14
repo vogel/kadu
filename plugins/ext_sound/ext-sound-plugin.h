@@ -23,10 +23,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EXT_SOUND_PLUGIN_H
-#define EXT_SOUND_PLUGIN_H
+#pragma once
 
 #include "plugin/plugin-root-component.h"
+
+#include <QtCore/QPointer>
+
+class ExternalPlayer;
 
 class ExtSoundPlugin : public QObject, public PluginRootComponent
 {
@@ -35,11 +38,13 @@ class ExtSoundPlugin : public QObject, public PluginRootComponent
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
+	explicit ExtSoundPlugin(QObject *parent = nullptr);
 	virtual ~ExtSoundPlugin();
 
 	virtual bool init(bool firstLoad);
 	virtual void done();
 
-};
+private:
+	QPointer<ExternalPlayer> m_externalPlayer;
 
-#endif // EXT_SOUND_PLUGIN_H
+};

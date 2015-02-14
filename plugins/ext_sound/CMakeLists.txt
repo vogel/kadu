@@ -15,7 +15,7 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/ext_sound.ui
+	data/configuration/ext_sound.ui
 )
 
 kadu_plugin (ext_sound

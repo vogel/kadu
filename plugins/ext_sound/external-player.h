@@ -31,8 +31,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EXTERNAL_PLAYER_H
-#define EXTERNAL_PLAYER_H
+#pragma once
 
 #include "plugins/sound/sound-player.h"
 
@@ -43,23 +42,16 @@ class QProcess;
 class ExternalPlayer : public SoundPlayer
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ExternalPlayer)
-
-	static ExternalPlayer * Instance;
-	QPointer<QProcess> PlayerProcess;
-
-	ExternalPlayer();
-	virtual ~ExternalPlayer();
-
-	void createDefaultConfiguration();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static ExternalPlayer * instance();
+	explicit ExternalPlayer(QObject *parent = nullptr);
+	virtual ~ExternalPlayer();
 
 	virtual void playSound(const QString &path);
 
-};
+private:
+	QPointer<QProcess> m_playerProcess;
 
-#endif // EXTERNAL_PLAYER_H
+	void createDefaultConfiguration();
+
+};

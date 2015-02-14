@@ -25,70 +25,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QProcess>
+#include "external-player.h"
+
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
-#include "debug.h"
 
-#include "external-player.h"
+#include <QtCore/QProcess>
 
-ExternalPlayer * ExternalPlayer::Instance = 0;
-
-void ExternalPlayer::createInstance()
-{
-	if (!Instance)
-		Instance = new ExternalPlayer();
-}
-
-void ExternalPlayer::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-ExternalPlayer * ExternalPlayer::instance()
-{
-	return Instance;
-}
-
-ExternalPlayer::ExternalPlayer()
+ExternalPlayer::ExternalPlayer(QObject *parent) :
+		SoundPlayer{parent}
 {
 	createDefaultConfiguration();
 }
 
 ExternalPlayer::~ExternalPlayer()
 {
-	if (PlayerProcess)
+	if (m_playerProcess)
 	{
-		PlayerProcess->kill();
-		PlayerProcess->deleteLater();
+		m_playerProcess->kill();
+		m_playerProcess->deleteLater();
 	}
 }
 
 void ExternalPlayer::playSound(const QString &path)
 {
-	kdebugf();
-
-	if (PlayerProcess)
+	if (m_playerProcess)
 		return;
 
-	QString playerCommand = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
-	QString volumeArguments;
-
+	auto playerCommand = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
 	if (playerCommand.isEmpty())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: player path is empty\n");
 		return;
-	}
 
-	QStringList argumentList;
+	auto argumentList = QStringList{};
 	argumentList.append(path);
 
-	PlayerProcess = new QProcess{this};
-	PlayerProcess->start(playerCommand, argumentList);
-	connect(PlayerProcess, SIGNAL(finished(int)), PlayerProcess, SLOT(deleteLater()));
+	m_playerProcess = new QProcess{this};
+	m_playerProcess->start(playerCommand, argumentList);
+	connect(m_playerProcess, SIGNAL(finished(int)), m_playerProcess, SLOT(deleteLater()));
 }
 
 void ExternalPlayer::createDefaultConfiguration()
