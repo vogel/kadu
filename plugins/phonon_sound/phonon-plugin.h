@@ -23,10 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_PLUGIN_H
-#define PHONON_PLUGIN_H
+#pragma once
 
 #include "plugin/plugin-root-component.h"
+
+class PhononPlayer;
 
 class PhononPlugin : public QObject, public PluginRootComponent
 {
@@ -35,11 +36,13 @@ class PhononPlugin : public QObject, public PluginRootComponent
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
+	explicit PhononPlugin(QObject *parent = nullptr);
 	virtual ~PhononPlugin();
 
 	virtual bool init(bool firstLoad);
 	virtual void done();
 
-};
+private:
+	QPointer<PhononPlayer> m_phononPlayer;
 
-#endif // PHONON_PLUGIN_H
+};

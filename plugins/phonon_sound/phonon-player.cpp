@@ -21,61 +21,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "phonon-player.h"
+
 #include <QtCore/QFileInfo>
 #include <QtCore/QUrl>
-
 #include <phonon/mediaobject.h>
 #include <phonon/phononnamespace.h>
 
-#include "plugins/sound/sound-manager.h"
-
-#include "phonon-player.h"
-
-PhononPlayer * PhononPlayer::Instance = 0;
-
-void PhononPlayer::createInstance()
-{
-	if (!Instance)
-		Instance = new PhononPlayer();
-}
-
-void PhononPlayer::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-PhononPlayer * PhononPlayer::instance()
-{
-	return Instance;
-}
-
-PhononPlayer::PhononPlayer()
+PhononPlayer::PhononPlayer(QObject *parent) :
+		SoundPlayer{parent}
 {
 }
 
 PhononPlayer::~PhononPlayer()
 {
-	if (Media)
+	if (m_phononPlayer)
 	{
-		Media->stop();
-		Media->deleteLater();
+		m_phononPlayer->stop();
+		m_phononPlayer->deleteLater();
 	}
 }
 
 void PhononPlayer::playSound(const QString &path)
 {
-	if (Media)
+	if (m_phononPlayer)
 		return;
 
 	auto fileInfo = QFileInfo{path};
 	if (!fileInfo.exists())
 		return;
 
-	Media = Phonon::createPlayer(Phonon::NotificationCategory);
-	connect(Media, SIGNAL(finished()), Media, SLOT(deleteLater()));
-	Media->setCurrentSource(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
-	Media->play();
+	m_phononPlayer = Phonon::createPlayer(Phonon::NotificationCategory);
+	connect(m_phononPlayer, SIGNAL(finished()), m_phononPlayer, SLOT(deleteLater()));
+	m_phononPlayer->setCurrentSource(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+	m_phononPlayer->play();
 }
 
 #include "moc_phonon-player.cpp"

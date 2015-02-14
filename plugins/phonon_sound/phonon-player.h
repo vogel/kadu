@@ -24,13 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_SOUND_H
-#define PHONON_SOUND_H
-
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#pragma once
 
 #include "plugins/sound/sound-player.h"
+
+#include <QtCore/QPointer>
 
 namespace Phonon
 {
@@ -40,22 +38,14 @@ namespace Phonon
 class PhononPlayer : public SoundPlayer
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(PhononPlayer)
-
-	static PhononPlayer * Instance;
-
-	QPointer<Phonon::MediaObject> Media;
-
-	PhononPlayer();
-	virtual ~PhononPlayer();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static PhononPlayer * instance();
+	explicit PhononPlayer(QObject *parent = nullptr);
+	virtual ~PhononPlayer();
 
 	virtual void playSound(const QString &path);
 
-};
+private:
+	QPointer<Phonon::MediaObject> m_phononPlayer;
 
-#endif // PHONON_SOUND_H
+};

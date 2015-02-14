@@ -22,12 +22,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugins/sound/sound-manager.h"
-#include "plugins/sound/sound-plugin.h"
+#include "phonon-plugin.h"
 
 #include "phonon-player.h"
 
-#include "phonon-plugin.h"
+#include "plugins/sound/sound-manager.h"
+#include "plugins/sound/sound-plugin.h"
+
+PhononPlugin::PhononPlugin(QObject *parent) :
+		QObject{parent}
+{
+}
 
 PhononPlugin::~PhononPlugin()
 {
@@ -37,8 +42,8 @@ bool PhononPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	PhononPlayer::createInstance();
-	SoundPlugin::soundManager()->setPlayer(PhononPlayer::instance());
+	m_phononPlayer = new PhononPlayer{this};
+	SoundPlugin::soundManager()->setPlayer(m_phononPlayer);
 
 	return true;
 }
@@ -46,7 +51,8 @@ bool PhononPlugin::init(bool firstLoad)
 void PhononPlugin::done()
 {
 	SoundPlugin::soundManager()->setPlayer(nullptr);
-	PhononPlayer::destroyInstance();
+	if (m_phononPlayer)
+		m_phononPlayer->deleteLater();
 }
 
 Q_EXPORT_PLUGIN2(phonon_sound, PhononPlugin)
