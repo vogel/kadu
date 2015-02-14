@@ -29,6 +29,8 @@
 #include "contacts/contact.h"
 
 #include "avatar-job-manager.h"
+#include <core/application.h>
+#include <configuration/deprecated-configuration-api.h>
 
 AvatarJobManager * AvatarJobManager::Instance = 0;
 
@@ -67,6 +69,9 @@ void AvatarJobManager::runJob()
 		return;
 
 	if (!hasJob())
+		return;
+
+	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
 		return;
 
 	IsJobRunning = true;
