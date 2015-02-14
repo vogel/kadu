@@ -28,32 +28,14 @@
 
 #include "sound-theme-manager.h"
 
-SoundThemeManager * SoundThemeManager::Instance = 0;
-
-void SoundThemeManager::createInstance()
+SoundThemeManager::SoundThemeManager(QObject *parent) :
+		QObject{parent},
+		m_themes{make_unique<Themes>("sounds", "sound.conf")}
 {
-	if (!Instance)
-		Instance = new SoundThemeManager();
-}
+	m_themes->setPaths(Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
-void SoundThemeManager::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-SoundThemeManager * SoundThemeManager::instance()
-{
-	return Instance;
-}
-
-SoundThemeManager::SoundThemeManager() :
-		MyThemes{make_unique<Themes>("sounds", "sound.conf")}
-{
-	MyThemes->setPaths(Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
-
-	QStringList soundThemes = themes()->themes();
-	QString soundTheme = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundTheme");
+	auto soundThemes = themes()->themes();
+	auto soundTheme = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
 		soundTheme = "default";
@@ -70,13 +52,20 @@ SoundThemeManager::~SoundThemeManager()
 
 void SoundThemeManager::applyTheme(const QString &themeName)
 {
-	MyThemes->setTheme(themeName);
-	QMap<QString, QString> entries = MyThemes->getEntries();
-	QMap<QString, QString>::const_iterator i = entries.constBegin();
+	m_themes->setTheme(themeName);
+	auto entries = m_themes->getEntries();
+	auto i = entries.constBegin();
 
 	while (i != entries.constEnd())
 	{
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", m_themes->themePath() + i.value());
 		++i;
 	}
 }
+
+Themes * SoundThemeManager::themes() const
+{
+	return m_themes.get();
+}
+
+#include "moc_sound-theme-manager.cpp"

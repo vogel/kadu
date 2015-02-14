@@ -30,6 +30,7 @@ class NotifierConfigurationWidget;
 class PathListEdit;
 class SoundConfigurationWidget;
 class SoundManager;
+class SoundThemeManager;
 
 class SoundConfigurationUiHandler : public ConfigurationUiHandler
 {
@@ -39,20 +40,24 @@ public:
 	explicit SoundConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~SoundConfigurationUiHandler();
 
-	void connectWidgets();
-	void setSoundThemes();
-
 	void setManager(SoundManager *manager);
+	void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
+	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
+
+protected:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 
 private:
 	QPointer<SoundManager> m_manager;
+	QPointer<SoundThemeManager> m_soundThemeManager;
 
 	QPointer<SoundConfigurationWidget> m_configurationWidget;
 	QPointer<ConfigComboBox> m_themesComboBox;
 	QPointer<PathListEdit> m_themesPaths;
+
+	void connectWidgets();
+	void setSoundThemes();
 
 private slots:
 	void themeChanged(const QString &theme);

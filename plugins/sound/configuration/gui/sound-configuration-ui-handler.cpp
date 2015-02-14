@@ -46,14 +46,24 @@ SoundConfigurationUiHandler::~SoundConfigurationUiHandler()
 {
 }
 
+void SoundConfigurationUiHandler::setManager(SoundManager *manager)
+{
+	m_manager = manager;
+}
+
+void SoundConfigurationUiHandler::setSoundThemeManager(SoundThemeManager *soundThemeManager)
+{
+	m_soundThemeManager = soundThemeManager;
+}
+
 void SoundConfigurationUiHandler::setSoundThemes()
 {
 	if (!m_themesComboBox)
 		return;
 
-	SoundThemeManager::instance()->themes()->setPaths(m_themesPaths->pathList());
+	m_soundThemeManager->themes()->setPaths(m_themesPaths->pathList());
 
-	auto soundThemeNames = SoundThemeManager::instance()->themes()->themes();
+	auto soundThemeNames = m_soundThemeManager->themes()->themes();
 	soundThemeNames.sort();
 
 	auto soundThemeValues = soundThemeNames;
@@ -62,7 +72,7 @@ void SoundConfigurationUiHandler::setSoundThemes()
 	soundThemeValues.prepend("Custom");
 
 	m_themesComboBox->setItems(soundThemeValues, soundThemeNames);
-	m_themesComboBox->setCurrentIndex(m_themesComboBox->findText(SoundThemeManager::instance()->themes()->theme()));
+	m_themesComboBox->setCurrentIndex(m_themesComboBox->findText(m_soundThemeManager->themes()->theme()));
 }
 
 void SoundConfigurationUiHandler::connectWidgets()
@@ -73,11 +83,6 @@ void SoundConfigurationUiHandler::connectWidgets()
 	connect(m_themesComboBox, SIGNAL(activated(int)), m_configurationWidget, SLOT(themeChanged(int)));
 	connect(m_themesComboBox, SIGNAL(activated(const QString &)), this, SLOT(themeChanged(const QString &)));
 	m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
-}
-
-void SoundConfigurationUiHandler::setManager(SoundManager *manager)
-{
-	m_manager = manager;
 }
 
 void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -106,7 +111,7 @@ NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWi
 
 void SoundConfigurationUiHandler::themeChanged(const QString &theme)
 {
-	SoundThemeManager::instance()->applyTheme(theme);
+	m_soundThemeManager->applyTheme(theme);
 }
 
 void SoundConfigurationUiHandler::soundFileEdited()
@@ -120,7 +125,7 @@ void SoundConfigurationUiHandler::configurationWindowApplied()
 	kdebugf();
 
 	if (m_themesComboBox->currentIndex() != 0)
-		SoundThemeManager::instance()->applyTheme(m_themesComboBox->currentText());
+		m_soundThemeManager->applyTheme(m_themesComboBox->currentText());
 
 	m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
 }

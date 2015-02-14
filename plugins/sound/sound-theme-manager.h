@@ -20,32 +20,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_THEME_MANAGER_H
-#define SOUND_THEME_MANAGER_H
+#pragma once
 
-#include <QtCore/QString>
+#include <QtCore/QObject>
 #include <memory>
 
 class Themes;
 
-class SoundThemeManager
+class SoundThemeManager : public QObject
 {
-	static SoundThemeManager * Instance;
 
-	std::unique_ptr<Themes> MyThemes;
-
-	SoundThemeManager();
-	~SoundThemeManager();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static SoundThemeManager * instance();
+	explicit SoundThemeManager(QObject *parent = nullptr);
+	virtual ~SoundThemeManager();
 
 	void applyTheme(const QString &themeName);
 
-	Themes * themes() { return MyThemes.get(); }
+	Themes * themes() const;
+
+private:
+	std::unique_ptr<Themes> m_themes;
 
 };
-
-#endif // SOUND_THEME_MANAGER_H

@@ -51,13 +51,15 @@ bool SoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	SoundThemeManager::createInstance();
+	m_soundThemeManager = new SoundThemeManager{this};
 
 	m_soundManager = new SoundManager{this};
+	m_soundManager->setSoundThemeManager(m_soundThemeManager);
 	m_staticSoundManager = m_soundManager;
 
 	m_configurationUiHandler = new SoundConfigurationUiHandler{this};
 	m_configurationUiHandler->setManager(m_soundManager);
+	m_configurationUiHandler->setSoundThemeManager(m_soundThemeManager);
 
 	m_soundNotifier = new SoundNotifier{this};
 	m_soundNotifier->setManager(m_soundManager);
@@ -85,7 +87,6 @@ void SoundPlugin::done()
 		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
 	}
 
-
 	if (m_soundNotifier)
 	{
 		NotificationManager::instance()->unregisterNotifier(m_soundNotifier);
@@ -95,7 +96,8 @@ void SoundPlugin::done()
 	if (m_soundManager)
 		m_soundManager->deleteLater();
 
-	SoundThemeManager::destroyInstance();
+	if (m_soundThemeManager)
+		m_soundThemeManager->deleteLater();
 }
 
 Q_EXPORT_PLUGIN2(sound, SoundPlugin)

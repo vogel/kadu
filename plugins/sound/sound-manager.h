@@ -38,6 +38,7 @@
 #include <QtCore/QPointer>
 
 class SoundPlayer;
+class SoundThemeManager;
 
 class QSound;
 
@@ -49,6 +50,10 @@ public:
 	explicit SoundManager(QObject *parent = nullptr);
 	virtual ~SoundManager();
 
+	void setSoundThemeManager(SoundThemeManager *soundThemeManager);
+	void setPlayer(SoundPlayer *player);
+	bool isMuted() const;
+
 public slots:
 	void playFile(const QString &soundFile, bool force = false);
 	void playSoundByName(const QString &soundName);
@@ -56,11 +61,8 @@ public slots:
 	void setMute(bool mute);
 	void testSoundPlaying();
 
-public:
-	void setPlayer(SoundPlayer *player);
-	bool isMuted() const;
-
 private:
+	QPointer<SoundThemeManager> m_soundThemeManager;
 	QPointer<SoundPlayer> m_player;
 	QPointer<QSound> m_playingSound;
 

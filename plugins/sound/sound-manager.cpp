@@ -58,6 +58,11 @@ SoundManager::~SoundManager()
 		m_playingSound->deleteLater();
 }
 
+void SoundManager::setSoundThemeManager(SoundThemeManager *soundThemeManager)
+{
+	m_soundThemeManager = soundThemeManager;
+}
+
 void SoundManager::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_Sound", false);
@@ -123,7 +128,7 @@ void SoundManager::setPlayer(SoundPlayer *player)
 
 void SoundManager::testSoundPlaying()
 {
-	auto soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
+	auto soundFile = m_soundThemeManager->themes()->themePath() + m_soundThemeManager->themes()->getThemeEntry("NewChat");
 	playFile(soundFile, true);
 }
 
