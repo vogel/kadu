@@ -28,8 +28,11 @@
 #include "gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
 
+#include "notify/notification/aggregate-notification.h"
+#include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 
+#include <QtCore/QFileInfo>
 
 SoundNotifier::SoundNotifier(QObject *parent) :
 		Notifier{"Sound", QT_TRANSLATE_NOOP("@default", "Play a sound"), KaduIcon{"audio-volume-high"}, parent}
@@ -52,6 +55,30 @@ void SoundNotifier::setSoundManager(SoundManager *soundManager)
 
 void SoundNotifier::notify(Notification *notification)
 {
+	auto aggregate = qobject_cast<AggregateNotification *>(notification);
+	if (aggregate)
+		notification = aggregate->notifications().front();
+
+	auto chatNotification = qobject_cast<ChatNotification *>(notification);
+	if (chatNotification)
+	{
+		auto chat = chatNotification->chat();
+		if (!chat.contacts().isEmpty())
+		{
+			auto buddy = chat.contacts().begin()->ownerBuddy();
+			if (buddy && buddy.property("sound:use_custom_sound", false).toBool())
+			{
+				auto customSound = buddy.property("sound:custom_sound", QString{}).toString();
+				auto fileInfo = QFileInfo{customSound};
+				if (fileInfo.exists())
+				{
+					m_soundManager->playFile(customSound);
+					return;
+				}
+			}
+		}
+	}
+
 	m_soundManager->playSoundByName(notification->key());
 }
 
