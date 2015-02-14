@@ -22,13 +22,13 @@
 
 #include "sound-configuration-widget.h"
 
+#include "gui/sound-select-file.h"
 #include "sound-manager.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "gui/widgets/configuration/notify-group-box.h"
-#include "gui/widgets/select-file.h"
 #include "icons/kadu-icon.h"
 
 #include <QtWidgets/QHBoxLayout>
@@ -38,15 +38,13 @@ SoundConfigurationWidget::SoundConfigurationWidget(SoundManager *manager, QWidge
 		NotifierConfigurationWidget{parent},
 		m_manager{manager}
 {
-	auto testButton = new QPushButton{KaduIcon{"external_modules/mediaplayer-media-playback-play"}.icon(), QString{}, this};
-	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
-
-	m_soundSelectFile = new SelectFile{"audio", this};
+	m_soundSelectFile = new SoundSelectFile{m_manager, this};
 	connect(m_soundSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
 
 	auto layout = new QHBoxLayout{this};
+	layout->setMargin(0);
+	layout->setSpacing(0);
 	layout->insertSpacing(0, 20);
-	layout->addWidget(testButton);
 	layout->addWidget(m_soundSelectFile);
 
 	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
@@ -54,11 +52,6 @@ SoundConfigurationWidget::SoundConfigurationWidget(SoundManager *manager, QWidge
 
 SoundConfigurationWidget::~SoundConfigurationWidget()
 {
-}
-
-void SoundConfigurationWidget::test()
-{
-	m_manager->playFile(m_soundSelectFile->file(), true);
 }
 
 void SoundConfigurationWidget::saveNotifyConfigurations()

@@ -24,40 +24,33 @@
 
 #pragma once
 
-#include "gui/widgets/configuration/notifier-configuration-widget.h"
-
-#include <QtCore/QMap>
 #include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
 
 class QLabel;
 
+class SelectFile;
 class SoundManager;
-class SoundSelectFile;
 
-class SoundConfigurationWidget : public NotifierConfigurationWidget
+class SoundSelectFile : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit SoundConfigurationWidget(SoundManager *manager, QWidget *parent = nullptr);
-	virtual ~SoundConfigurationWidget();
+	explicit SoundSelectFile(SoundManager *manager, QWidget *parent = nullptr);
+	virtual ~SoundSelectFile();
 
-	virtual void loadNotifyConfigurations() {}
-	virtual void saveNotifyConfigurations();
-	virtual void switchToEvent(const QString &event);
-
-public slots:
-	void themeChanged(int index);
+	QString file() const;
+	void setFile(const QString &file);
 
 signals:
-	void soundFileEdited();
+	void fileChanged();
 
 private:
 	QPointer<SoundManager> m_manager;
+	SelectFile *m_selectFile;
 
-	QMap<QString, QString> m_soundFiles;
-	QString m_currentNotifyEvent;
-
-	SoundSelectFile *m_soundSelectFile;
+private slots:
+	void test();
 
 };
