@@ -4,6 +4,7 @@
 * gui: #2309 implemented: added expand/collapse items to buddies list popup menu (Vogel)
 * gadu: TLS enabled by default for new accounts (Vogel)
 * sound: #383 implemented: option to configure per-buddy sound file (Vogel)
+* gui: #2811 fixed: do not show "Move to group" menu option if moving from Everybody or Ungroupped (Vogel)
 
 +++ version 2.0-rc3
 * core: various crashes fixed (Vogel)

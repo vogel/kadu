@@ -116,7 +116,10 @@ void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
 			setCurrentIndex(configuration.currentGroupTab());
 	}
 	else
-		emit currentGroupFilterChanged(GroupFilter{GroupFilterEverybody});
+	{
+		CurrentGroupFilter = GroupFilter{GroupFilterEverybody};
+		emit currentGroupFilterChanged(CurrentGroupFilter);
+	}
 }
 
 void GroupTabBar::updateUngrouppedTab()
@@ -173,10 +176,12 @@ void GroupTabBar::currentChangedSlot(int index)
 {
 	Configuration.setCurrentGroupTab(index);
 	if (Configuration.displayGroupTabs())
-		emit currentGroupFilterChanged(groupFilterAt(index));
+		CurrentGroupFilter = groupFilterAt(index);
 	else
-		emit currentGroupFilterChanged(GroupFilter{GroupFilterEverybody});
-		
+		CurrentGroupFilter = GroupFilter{GroupFilterEverybody};
+
+	emit currentGroupFilterChanged(CurrentGroupFilter);
+
 }
 
 void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
@@ -303,7 +308,8 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 	if (clickedGroup)
 	{
 		QMenu menu;
-		menu.addAction(tr("Move to group %1").arg(clickedGroup.name()), this, SLOT(moveToGroup()))->setData(clickedGroup);
+		if (CurrentGroupFilter.filterType() == GroupFilterRegular)
+			menu.addAction(tr("Move to group %1").arg(clickedGroup.name()), this, SLOT(moveToGroup()))->setData(clickedGroup);
 		menu.addAction(tr("Add to group %1").arg(clickedGroup.name()), this, SLOT(addToGroup()))->setData(clickedGroup);
 		menu.exec(QCursor::pos());
 	}

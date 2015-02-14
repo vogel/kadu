@@ -38,6 +38,7 @@ class KADUAPI GroupTabBar : public QTabBar
 	Q_OBJECT
 
 	GroupTabBarConfiguration Configuration;
+	GroupFilter CurrentGroupFilter;
 
 	// for dnd support
 	BuddyList DNDBuddies;
