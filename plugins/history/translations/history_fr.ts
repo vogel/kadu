@@ -47,19 +47,19 @@
     </message>
     <message>
         <source>Save chats in history</source>
-        <translation type="unfinished"/>
+        <translation>Sauvegarder l&apos;historique des conversations</translation>
     </message>
     <message>
         <source>History in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Historique dans le fenêtre de conversation</translation>
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation type="unfinished"/>
+        <translation>Afficher l&apos;historique des messages depuis</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Choisissez la période dans laquelle les messages peuvent être cités dans la fenêtre de conversation</translation>
     </message>
     <message>
         <source>yesterday</source>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"/>
+        <translation>Limiter le nombre de messages à partir de l&apos;historique</translation>
     </message>
     <message>
         <source>Behavior</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"/>
+        <translation>Fenêtre de conversation</translation>
     </message>
 </context>
 <context>
@@ -115,7 +115,7 @@
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Conserver l&apos;historique</translation>
     </message>
 </context>
 <context>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Conserver l&apos;historique</translation>
     </message>
 </context>
 <context>
@@ -149,7 +149,7 @@
     </message>
     <message>
         <source>Delete history</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer l&apos;historique</translation>
     </message>
     <message>
         <source>Cancel</source>

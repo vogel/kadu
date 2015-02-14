@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversation</translation>
     </message>
     <message>
         <source>General</source>
@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Cryptage</translation>
     </message>
     <message>
         <source>Enable encrytpion after receiving encrypted message</source>
-        <translation type="unfinished"/>
+        <translation>Activer le cryptage après la réception d&apos;une message crypté</translation>
     </message>
 </context>
 <context>
@@ -53,7 +53,7 @@
     <name>EncryptioNgSimliteProvider</name>
     <message>
         <source>Simlite</source>
-        <translation type="unfinished"/>
+        <translation>Simlite</translation>
     </message>
 </context>
 <context>
@@ -64,15 +64,15 @@
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Cryptage</translation>
     </message>
     <message>
         <source>Cannot send keys. Check if encryption_ng_simlite plugin is loaded</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;envoyer la clé. Vérifier que le module encryption_ng_simlite est chargé</translation>
     </message>
     <message>
         <source>Public key dont exist. Do you want to create new one?</source>
-        <translation type="unfinished"/>
+        <translation>La clé publique n&apos;existe pas. Voulez vous en créer une nouvelle?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -84,11 +84,11 @@
     </message>
     <message>
         <source>Error generating key</source>
-        <translation type="unfinished"/>
+        <translation>Erreur pendant la génération de la clé</translation>
     </message>
     <message>
         <source>No public key available</source>
-        <translation type="unfinished"/>
+        <translation>Aucune clef publique disponible</translation>
     </message>
 </context>
 </TS>

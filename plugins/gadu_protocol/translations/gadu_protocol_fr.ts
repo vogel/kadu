@@ -15,43 +15,43 @@
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter au serveur, le serveur a retourné des données inconnus</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter au serveur, la connexion a été interrompu pendant la lecture</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter au serveur, la connexion a été interrompu pendant la l&apos;écriture</translation>
     </message>
     <message>
         <source>Unable to connect, invalid password</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter au serveur, mot de passe non valide</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter au serveur, erreur de négociation TLS</translation>
     </message>
     <message>
         <source>Too many connection attempts with bad password!</source>
-        <translation type="unfinished"/>
+        <translation>Trop de tentatives de connexions avec un mot de passe incorrect!</translation>
     </message>
     <message>
         <source>Unable to connect, servers are down</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter au serveur, le serveur est indisponible</translation>
     </message>
     <message>
         <source>Connection broken</source>
-        <translation type="unfinished"/>
+        <translation>Connexion interrompue</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation type="unfinished"/>
+        <translation>délai de connexion!</translation>
     </message>
     <message>
         <source>Disconnection has occurred</source>
-        <translation type="unfinished"/>
+        <translation>Une déconnexion s&apos;est produite</translation>
     </message>
 </context>
 <context>
@@ -74,7 +74,7 @@
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt; Sélectionnez ou entrez l&apos;identité qui va être associée avec le compte &lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Add Account</source>
@@ -86,15 +86,15 @@
     </message>
     <message>
         <source>Register Account</source>
-        <translation type="unfinished"/>
+        <translation>Inscription de compte</translation>
     </message>
     <message>
         <source>Remind GG number</source>
-        <translation type="unfinished"/>
+        <translation>Mémoriser nombre GG</translation>
     </message>
     <message>
         <source>Remind Password</source>
-        <translation type="unfinished"/>
+        <translation>Retenir le mot de passe</translation>
     </message>
 </context>
 <context>
@@ -105,7 +105,7 @@
     </message>
     <message>
         <source>Do you really want to send this image?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez vous vraiment envoyer cette image?</translation>
     </message>
 </context>
 <context>
@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>Message too long (%1 &gt;= %2)</source>
-        <translation type="unfinished"/>
+        <translation>Message trop long (%1 &gt;= %2)</translation>
     </message>
 </context>
 <context>
@@ -206,7 +206,7 @@
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Sélectionnez ou entrez l&apos;identité qui va être associé avec ce compte.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>General</source>
@@ -246,7 +246,7 @@
     </message>
     <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez compiler libgadu avec le support du SSL pour être en mesure de crypter la connexion</translation>
     </message>
     <message>
         <source>Other</source>
@@ -258,11 +258,11 @@
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"/>
+        <translation>Images</translation>
     </message>
     <message>
         <source>Receive images also when I am Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Recevoir les images même quand je suis invisible</translation>
     </message>
     <message>
         <source>Warn me when the image being sent may be too large</source>
@@ -298,7 +298,7 @@
     </message>
     <message>
         <source>Gadu-Gadu Server</source>
-        <translation type="unfinished"/>
+        <translation>Serveur Gadu-Gadu</translation>
     </message>
     <message>
         <source>Custom server IP addresses</source>
@@ -306,27 +306,27 @@
     </message>
     <message>
         <source>Enable file transfers</source>
-        <translation type="unfinished"/>
+        <translation>Activer le transfert de fichiers</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Réseau IM</translation>
     </message>
     <message>
         <source>External IP</source>
-        <translation type="unfinished"/>
+        <translation>IP externe</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmer la suppression du compte</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"/>
+        <translation>Êtes vous certain de vouloir supprimer ce compte %1 (%2)</translation>
     </message>
     <message>
         <source>Status Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Visibilité du statut</translation>
     </message>
     <message>
         <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
@@ -335,19 +335,19 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Make my status visible anyway</source>
-        <translation type="unfinished"/>
+        <translation>Mettre mon état visible malgrès tout</translation>
     </message>
     <message>
         <source>Stay with private status</source>
-        <translation type="unfinished"/>
+        <translation>Rester en occupé</translation>
     </message>
     <message>
         <source>Remind GG number</source>
-        <translation type="unfinished"/>
+        <translation>Mémoriser nombre GG</translation>
     </message>
     <message>
         <source>Remind Password</source>
-        <translation type="unfinished"/>
+        <translation>Mémoriser le mot de passe</translation>
     </message>
 </context>
 <context>
@@ -419,7 +419,7 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de charger le module Gadu-Gadu. Veuillez Compiler libgadu avec le support de zlib.</translation>
     </message>
 </context>
 </TS>

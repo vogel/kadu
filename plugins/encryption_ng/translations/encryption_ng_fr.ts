@@ -62,29 +62,29 @@ Voulez-vous l&apos;enregistrer ?</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
+        <translation>Ignorer</translation>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpActionDescription</name>
     <message>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Crypter</translation>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpMenu</name>
     <message>
         <source>No Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Pas de Cryptage</translation>
     </message>
     <message>
         <source>%1 Encryption</source>
-        <translation type="unfinished"/>
+        <translation>%1 Cryptage</translation>
     </message>
 </context>
 <context>
@@ -107,19 +107,19 @@ Voulez-vous l&apos;enregistrer ?</translation>
     </message>
     <message>
         <source>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de générer la clé. Vérifiez si le module encryption_ng_simlite est chargé</translation>
     </message>
     <message>
         <source>Keys already exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"/>
+        <translation>La clé existe déjà. Voulez vous l&apos;écrasez?</translation>
     </message>
     <message>
         <source>Overwrite keys</source>
-        <translation type="unfinished"/>
+        <translation>Écraser clés</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
 </context>
 </TS>

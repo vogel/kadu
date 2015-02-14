@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Spelling</source>
-        <translation type="unfinished"/>
+        <translation>Orthographe</translation>
     </message>
 </context>
 <context>

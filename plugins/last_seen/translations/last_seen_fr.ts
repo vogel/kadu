@@ -3,7 +3,7 @@
     <name>Infos</name>
     <message>
         <source>&amp;Show infos about buddies</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Afficher les infos à propos des contacts</translation>
     </message>
 </context>
 <context>

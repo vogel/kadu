@@ -27,15 +27,15 @@
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportement</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Always add description to status</source>
-        <translation type="unfinished"/>
+        <translation>Toujours ajouter la description sur l&apos;état d&apos;activité</translation>
     </message>
 </context>
 </TS>

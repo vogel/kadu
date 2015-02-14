@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>You must confirm each message sent to these people</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez confirmer chaque message envoyé à ces personnes</translation>
     </message>
     <message>
         <source>Message was firewalled</source>
@@ -63,19 +63,19 @@
     </message>
     <message>
         <source>Anonymous chat attempt</source>
-        <translation type="unfinished"/>
+        <translation>Tentative de conversation anonyme</translation>
     </message>
     <message>
         <source>Save anonymous chat attempt in history</source>
-        <translation type="unfinished"/>
+        <translation>Sauvegarder les conversations anonymes dans l&apos;historique</translation>
     </message>
     <message>
         <source>Save anonymous chat attempt in log file</source>
-        <translation type="unfinished"/>
+        <translation>Sauvegarder les conversations anonymes dans le journal</translation>
     </message>
     <message>
         <source>Log file path</source>
-        <translation type="unfinished"/>
+        <translation>Chemin d&apos;accès au fichier journal</translation>
     </message>
     <message>
         <source>Kadu will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
@@ -107,7 +107,8 @@
     <message>
         <source>Chat with anonim silently dropped.
 </source>
-        <translation type="unfinished"/>
+        <translation>La conversation avec le contact anonyme a été perdu
+</translation>
     </message>
     <message>
         <source>OK, now say hello, and introduce yourself ;-)</source>
@@ -116,7 +117,8 @@
     <message>
         <source>User wrote right answer!
 </source>
-        <translation type="unfinished"/>
+        <translation>L&apos;utilisateur a écrit la bonne réponse!
+</translation>
     </message>
     <message>
         <source>This message has been generated AUTOMATICALLY!
@@ -134,7 +136,7 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another
     </message>
     <message>
         <source>Yes and allow until chat closed</source>
-        <translation type="unfinished"/>
+        <translation>Oui et autoriser jusqu&apos;a la fermeture de la conversation</translation>
     </message>
     <message>
         <source>&amp;No</source>
@@ -186,7 +188,7 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats with the pers
     </message>
     <message>
         <source>Right answer for question above - you can use regexp.</source>
-        <translation type="unfinished"/>
+        <translation>Bonne réponse pour la question ci-dessus - vous pouvez utiliser regexp.</translation>
     </message>
     <message>
         <source>Answer:</source>

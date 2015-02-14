@@ -39,27 +39,27 @@
     </message>
     <message>
         <source>Enable tabs in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Activer les onglets dans la fenêtre de conversation</translation>
     </message>
     <message>
         <source>With this option, each chat will be opened in a separate tab in single window</source>
-        <translation type="unfinished"/>
+        <translation>Avec cette option, chaque conversation va s&apos;ouvrir dans une fenêtre séparé.</translation>
     </message>
     <message>
         <source>Closing window closes current tab only</source>
-        <translation type="unfinished"/>
+        <translation>Fermer la fenêtre ferme seulement l&apos;onglet courant</translation>
     </message>
     <message>
         <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
-        <translation type="unfinished"/>
+        <translation>Quand activé, fermer la fenêtre de conversation ne fermera uniquement que l&apos;onglet courant au lieu de fermer la fenêtre</translation>
     </message>
     <message>
         <source>Tab bar position</source>
-        <translation type="unfinished"/>
+        <translation>Position de la barre d&apos;onglets</translation>
     </message>
     <message>
         <source>Choose where you want the tab bar to be placed in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Choisissez où vous voulez positionner la barre d&apos;onglets dans la fenêtre de conversation</translation>
     </message>
     <message>
         <source>Top</source>
@@ -75,19 +75,19 @@
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Ré-ouvrir l&apos;onglet fermé</translation>
     </message>
     <message>
         <source>Show &apos;Open chat&apos; button</source>
-        <translation type="unfinished"/>
+        <translation>Afficher le bouton &apos;Conversation ouverte&apos;</translation>
     </message>
     <message>
         <source>Show common &apos;Close Tab&apos; button on tab bar</source>
-        <translation type="unfinished"/>
+        <translation>Afficher le bouton commun &apos;Fermer Onglet&apos; sur la barre d&apos;onglet</translation>
     </message>
     <message>
         <source>Show &apos;Close&apos; button on each tab</source>
-        <translation type="unfinished"/>
+        <translation>Afficher le bouton &apos;Fermer&apos; sur chaque onglet</translation>
     </message>
 </context>
 <context>
@@ -102,23 +102,23 @@
     </message>
     <message>
         <source>Recent Chats</source>
-        <translation type="unfinished"/>
+        <translation>Conversation Récentes</translation>
     </message>
     <message>
         <source>Open Chat with...</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir la Conversation avec...</translation>
     </message>
     <message>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Onglets</translation>
     </message>
     <message>
         <source>Close Tab</source>
-        <translation type="unfinished"/>
+        <translation>Fermer Onglet</translation>
     </message>
     <message>
         <source>Close window</source>
-        <translation type="unfinished"/>
+        <translation>Fermer la fenêtre</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -165,11 +165,11 @@
     </message>
     <message>
         <source>Close other tabs</source>
-        <translation type="unfinished"/>
+        <translation>Fermer les autres onglets</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Ré-ouvrir l&apos;onglet fermé</translation>
     </message>
 </context>
 </TS>

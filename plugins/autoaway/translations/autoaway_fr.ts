@@ -47,15 +47,15 @@
     </message>
     <message>
         <source>Inactivity</source>
-        <translation type="unfinished"/>
+        <translation>Inactivité</translation>
     </message>
     <message>
         <source>Refresh status every</source>
-        <translation type="unfinished"/>
+        <translation>Rafraichir l&apos;état tous les</translation>
     </message>
     <message>
         <source>Switch to &apos;away&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Passer en &apos;absent&apos;</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
@@ -63,31 +63,31 @@
     </message>
     <message>
         <source>Switch to &apos;auto extended away&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Mettre en veille prolongée après</translation>
     </message>
     <message>
         <source>Switch to &apos;invisible&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Passer en &apos;invisible&quot;</translation>
     </message>
     <message>
         <source>Switch to &apos;offline&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Passer en &apos;hors ligne&apos;</translation>
     </message>
     <message>
         <source>Set status to offline after</source>
-        <translation type="unfinished"/>
+        <translation>Mettre en invisible après</translation>
     </message>
     <message>
         <source>Status description when inactive</source>
-        <translation type="unfinished"/>
+        <translation>Description de l&apos;état lorsque inactif</translation>
     </message>
     <message>
         <source>Prepend</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter avant</translation>
     </message>
     <message>
         <source>Append</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter après</translation>
     </message>
 </context>
 <context>
