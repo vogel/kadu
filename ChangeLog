@@ -2,6 +2,7 @@
 * gadu: #2937 fixed: file transfers are now compatible with GG 12 and GG Drive (Vogel)
 * gui: #1713 implemented: added option to always show identity in buddies list (Vogel)
 * gui: #2309 implemented: added expand/collapse items to buddies list popup menu (Vogel)
+* gadu: TLS enabled by default for new accounts (Vogel)
 
 +++ version 2.0-rc3
 * core: various crashes fixed (Vogel)
