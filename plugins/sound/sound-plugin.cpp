@@ -23,20 +23,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification-manager.h"
+#include "sound-plugin.h"
 
-#include "core/application.h"
 #include "configuration/gui/sound-configuration-ui-handler.h"
-#include "misc/paths-provider.h"
 #include "notify/sound-notifier.h"
-
 #include "sound-actions.h"
 #include "sound-manager.h"
 #include "sound-theme-manager.h"
 
-#include "sound-plugin.h"
+#include "core/application.h"
+#include "misc/paths-provider.h"
+
+#include "notify/notification-manager.h"
 
 QPointer<SoundManager> SoundPlugin::m_staticSoundManager;
+
+SoundPlugin::SoundPlugin(QObject *parent) :
+		QObject{parent}
+{
+}
 
 SoundPlugin::~SoundPlugin()
 {

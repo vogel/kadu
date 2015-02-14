@@ -24,12 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_PLUGIN_H
-#define SOUND_PLUGIN_H
-
-#include "sound-exports.h"
+#pragma once
 
 #include "plugin/plugin-root-component.h"
+
+#include "sound-exports.h"
 
 class SoundActions;
 class SoundConfigurationUiHandler;
@@ -46,6 +45,7 @@ class SOUNDAPI SoundPlugin : public QObject, public PluginRootComponent
 public:
 	static SoundManager * soundManager();
 
+	explicit SoundPlugin(QObject *parent = nullptr);
 	virtual ~SoundPlugin();
 
 	virtual bool init(bool firstLoad);
@@ -61,5 +61,3 @@ private:
 	QPointer<SoundThemeManager> m_soundThemeManager;
 
 };
-
-#endif // SOUND_PLUGIN_H
