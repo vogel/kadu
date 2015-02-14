@@ -31,26 +31,19 @@
 class BuddyConfigurationWidget;
 class BuddyDataWindow;
 
-class QTab;
-class QTabWidget;
-class QVBoxLayout;
-
-class KADUAPI BuddyConfigurationWidgetTabGroupBoxesAdapter : public QObject
+class KADUAPI BuddyConfigurationWidgetGroupBoxesAdapter : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit BuddyConfigurationWidgetTabGroupBoxesAdapter(BuddyDataWindow *buddyDataWindow, QTabWidget *tabWidget, QObject *parent = nullptr);
-	virtual ~BuddyConfigurationWidgetTabGroupBoxesAdapter();
+	explicit BuddyConfigurationWidgetGroupBoxesAdapter(BuddyDataWindow *buddyDataWindow, QWidget *widget);
+	virtual ~BuddyConfigurationWidgetGroupBoxesAdapter();
 
 private:
 	QPointer<BuddyDataWindow> m_buddyDataWindow;
-	QPointer<QTabWidget> m_tabWidget;
 	QPointer<QWidget> m_widget;
-	QPointer<QVBoxLayout> m_widgetLayout;
 
 private slots:
 	void widgetAdded(BuddyConfigurationWidget *widget);
-	void widgetRemoved(BuddyConfigurationWidget *widget);
 
 };

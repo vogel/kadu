@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddy-configuration-widget-tab-group-boxes-adapter.h"
+#include "buddy-configuration-widget-group-boxes-adapter.h"
 
 #include "gui/widgets/buddy-configuration-widget.h"
 #include "gui/windows/buddy-data-window.h"
@@ -26,38 +26,26 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
-BuddyConfigurationWidgetTabGroupBoxesAdapter::BuddyConfigurationWidgetTabGroupBoxesAdapter(BuddyDataWindow *buddyDataWindow, QTabWidget *tabWidget, QObject *parent) :
-		QObject{parent},
+BuddyConfigurationWidgetGroupBoxesAdapter::BuddyConfigurationWidgetGroupBoxesAdapter(BuddyDataWindow *buddyDataWindow, QWidget *widget) :
+		QObject{buddyDataWindow},
 		m_buddyDataWindow{buddyDataWindow},
-		m_tabWidget{tabWidget}
+		m_widget{widget}
 {
-	if (!m_buddyDataWindow || !m_tabWidget)
+	if (!m_buddyDataWindow || !m_widget)
 		return;
 
 	connect(m_buddyDataWindow, SIGNAL(widgetAdded(BuddyConfigurationWidget*)), this, SLOT(widgetAdded(BuddyConfigurationWidget*)));
-	connect(m_buddyDataWindow, SIGNAL(widgetRemoved(BuddyConfigurationWidget*)), this, SLOT(widgetRemoved(BuddyConfigurationWidget*)));
 
-	for (auto widget : m_buddyDataWindow->buddyConfigurationWidgets())
-		widgetAdded(widget);
+	for (auto buddyConfigurationWidget : m_buddyDataWindow->buddyConfigurationWidgets())
+		widgetAdded(buddyConfigurationWidget);
 }
 
-BuddyConfigurationWidgetTabGroupBoxesAdapter::~BuddyConfigurationWidgetTabGroupBoxesAdapter()
+BuddyConfigurationWidgetGroupBoxesAdapter::~BuddyConfigurationWidgetGroupBoxesAdapter()
 {
 }
 
-void BuddyConfigurationWidgetTabGroupBoxesAdapter::widgetAdded(BuddyConfigurationWidget *widget)
+void BuddyConfigurationWidgetGroupBoxesAdapter::widgetAdded(BuddyConfigurationWidget *widget)
 {
-	if (!m_widget)
-	{
-		m_widget = new QWidget{m_buddyDataWindow};
-		m_widgetLayout = new QVBoxLayout{m_widget};
-		m_widgetLayout->setMargin(8);
-		m_widgetLayout->setSpacing(4);
-		m_widgetLayout->addStretch(100);
-
-		m_tabWidget->addTab(m_widget, tr("Other"));
-	}
-
 	auto groupBox = new QGroupBox{m_widget};
 	connect(widget, SIGNAL(destroyed(QObject*)), groupBox, SLOT(deleteLater()));
 	groupBox->setFlat(true);
@@ -68,18 +56,9 @@ void BuddyConfigurationWidgetTabGroupBoxesAdapter::widgetAdded(BuddyConfiguratio
 	groupBoxLayout->setSpacing(4);
 	groupBoxLayout->addWidget(widget);
 
-	m_widgetLayout->insertWidget(m_widgetLayout->count() - 1, groupBox);
+	auto layout = qobject_cast<QBoxLayout *>(m_widget->layout());
+	if (layout)
+		layout->insertWidget(layout->count() - 1, groupBox);
 }
 
-void BuddyConfigurationWidgetTabGroupBoxesAdapter::widgetRemoved(BuddyConfigurationWidget *widget)
-{
-	Q_UNUSED(widget);
-
-	if (m_buddyDataWindow->buddyConfigurationWidgets().isEmpty() && m_widget)
-	{
-		m_tabWidget->removeTab(m_tabWidget->indexOf(m_widget));
-		m_widget->deleteLater();
-	}
-}
-
-#include "moc_buddy-configuration-widget-tab-group-boxes-adapter.cpp"
+#include "moc_buddy-configuration-widget-group-boxes-adapter.cpp"

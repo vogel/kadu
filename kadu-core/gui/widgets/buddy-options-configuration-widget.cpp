@@ -59,28 +59,41 @@ void BuddyOptionsConfigurationWidget::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	OfflineToCheckBox = new QCheckBox(tr("Allow buddy to see when I'm available"), this);
+	auto groupBox = new QGroupBox{this};
+	groupBox->setFlat(true);
+	groupBox->setTitle(tr("General"));
+
+	auto groupBoxLayout = new QVBoxLayout{groupBox};
+	groupBoxLayout->setMargin(0);
+	groupBoxLayout->setSpacing(4);
+
+	auto internalWidget = new QWidget{groupBox};
+	auto internalLayout = new QVBoxLayout{internalWidget};
+	groupBoxLayout->addWidget(internalWidget);
+
+	OfflineToCheckBox = new QCheckBox(tr("Allow buddy to see when I'm available"), internalWidget);
 	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
 	connect(OfflineToCheckBox, SIGNAL(clicked(bool)), this, SLOT(offlineToToggled(bool)));
-	layout->addWidget(OfflineToCheckBox);
+	internalLayout->addWidget(OfflineToCheckBox);
 
-	BlockCheckBox = new QCheckBox(tr("Block buddy"), this);
+	BlockCheckBox = new QCheckBox(tr("Block buddy"), internalWidget);
 	BlockCheckBox->setChecked(MyBuddy.isBlocked());
-	layout->addWidget(BlockCheckBox);
+	internalLayout->addWidget(BlockCheckBox);
 
-	NotifyCheckBox = new QCheckBox(tr("Notify when buddy's status changes"), this);
-	layout->addWidget(NotifyCheckBox);
+	NotifyCheckBox = new QCheckBox(tr("Notify when buddy's status changes"), internalWidget);
+	internalLayout->addWidget(NotifyCheckBox);
 
-	HideDescriptionCheckBox = new QCheckBox(tr("Hide description"), this);
-	layout->addWidget(HideDescriptionCheckBox);
-
-	layout->addStretch(100);
+	HideDescriptionCheckBox = new QCheckBox(tr("Hide description"), internalWidget);
+	internalLayout->addWidget(HideDescriptionCheckBox);
 
 	if (MyBuddy)
 	{
 		HideDescriptionCheckBox->setChecked(MyBuddy.property("kadu:HideDescription", false).toBool());
 		NotifyCheckBox->setChecked(MyBuddy.property("notify:Notify", true).toBool());
 	}
+
+	layout->addWidget(groupBox);
+	layout->addStretch(100);
 }
 
 void BuddyOptionsConfigurationWidget::save()
