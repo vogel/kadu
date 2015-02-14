@@ -12,6 +12,8 @@ kadu_api_directories (plugins/sound
 
 set (SOURCES
 	gui/sound-actions.cpp
+	gui/sound-buddy-configuration-widget.cpp
+	gui/sound-buddy-configuration-widget-factory.cpp
 	gui/sound-configuration-ui-handler.cpp
 	gui/sound-configuration-widget.cpp
 	gui/sound-mute-action.cpp

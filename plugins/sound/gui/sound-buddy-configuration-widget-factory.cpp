@@ -17,25 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sound-module.h"
+#include "sound-buddy-configuration-widget-factory.h"
 
-#include "gui/sound-actions.h"
-#include "gui/sound-buddy-configuration-widget-factory.h"
-#include "gui/sound-configuration-ui-handler.h"
-#include "notify/sound-notifier.h"
+#include "gui/sound-buddy-configuration-widget.h"
 #include "sound-manager.h"
-#include "sound-theme-manager.h"
 
-SoundModule::SoundModule()
+SoundBuddyConfigurationWidgetFactory::SoundBuddyConfigurationWidgetFactory(QObject *parent) :
+		QObject{parent}
 {
-	add_type<SoundActions>();
-	add_type<SoundBuddyConfigurationWidgetFactory>();
-	add_type<SoundConfigurationUiHandler>();
-	add_type<SoundManager>();
-	add_type<SoundNotifier>();
-	add_type<SoundThemeManager>();
 }
 
-SoundModule::~SoundModule()
+SoundBuddyConfigurationWidgetFactory::~SoundBuddyConfigurationWidgetFactory()
 {
+}
+
+void SoundBuddyConfigurationWidgetFactory::setSoundManager(SoundManager *soundManager)
+{
+	m_soundManager = soundManager;
+}
+
+BuddyConfigurationWidget * SoundBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
+{
+	return new SoundBuddyConfigurationWidget{buddy, m_soundManager, parent};
 }
