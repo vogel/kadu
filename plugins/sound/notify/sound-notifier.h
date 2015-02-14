@@ -34,15 +34,15 @@ class SoundNotifier : public Notifier
 	Q_OBJECT
 
 	static SoundNotifier *Instance;
-	QPointer<SoundConfigurationUiHandler> m_configurationUiHandler;
-	QPointer<SoundManager> m_manager;
+	QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
+	QPointer<SoundManager> m_soundManager;
 
 public:
 	explicit SoundNotifier(QObject *parent = nullptr);
 	virtual ~SoundNotifier();
 
-	void setConfigurationUiHandler(SoundConfigurationUiHandler *configurationUiHandler);
-	void setManager(SoundManager *manager);
+	void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
+	void setSoundManager(SoundManager *soundManager);
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr) override;
 	virtual void notify(Notification *notification) override;

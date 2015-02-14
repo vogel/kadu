@@ -32,6 +32,7 @@
 #include <QtCore/QObject>
 
 class ActionDescription;
+class SoundManager;
 
 class QAction;
 
@@ -43,13 +44,13 @@ public:
 	explicit SoundActions(QObject *parent = nullptr);
 	virtual ~SoundActions();
 
-	void setManager(SoundManager *manager);
+	void setSoundManager(SoundManager *soundManager);
 
 protected:
 	virtual void configurationUpdated();
 
 private:
-	QPointer<SoundManager> m_manager;
+	QPointer<SoundManager> m_soundManager;
 
 	ActionDescription *m_muteActionDescription;
 

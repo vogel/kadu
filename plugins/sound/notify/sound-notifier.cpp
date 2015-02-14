@@ -40,25 +40,25 @@ SoundNotifier::~SoundNotifier()
 {
 }
 
-void SoundNotifier::setConfigurationUiHandler(SoundConfigurationUiHandler *configurationUiHandler)
+void SoundNotifier::setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler)
 {
-	m_configurationUiHandler = configurationUiHandler;
+	m_soundConfigurationUiHandler = soundConfigurationUiHandler;
 }
 
-void SoundNotifier::setManager(SoundManager *manager)
+void SoundNotifier::setSoundManager(SoundManager *soundManager)
 {
-	m_manager = manager;
+	m_soundManager = soundManager;
 }
 
 void SoundNotifier::notify(Notification *notification)
 {
-	m_manager->playSoundByName(notification->key());
+	m_soundManager->playSoundByName(notification->key());
 }
 
 NotifierConfigurationWidget * SoundNotifier::createConfigurationWidget(QWidget* parent)
 {
-	return m_configurationUiHandler
-			? m_configurationUiHandler->createConfigurationWidget(parent)
+	return m_soundConfigurationUiHandler
+			? m_soundConfigurationUiHandler->createConfigurationWidget(parent)
 			: nullptr;
 }
 

@@ -60,9 +60,9 @@ SoundActions::~SoundActions()
 		->update();
 }
 
-void SoundActions::setManager(SoundManager *manager)
+void SoundActions::setSoundManager(SoundManager *soundManager)
 {
-	m_manager = manager;
+	m_soundManager = soundManager;
 
 	setMuteActionState();
 	connect(m_muteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
@@ -71,14 +71,14 @@ void SoundActions::setManager(SoundManager *manager)
 void SoundActions::setMuteActionState()
 {
 	for (auto action : m_muteActionDescription->actions())
-		action->setChecked(!m_manager->isMuted());
+		action->setChecked(!m_soundManager->isMuted());
 }
 
 void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 {
 	Q_UNUSED(action)
 
-	m_manager->setMute(!toggled);
+	m_soundManager->setMute(!toggled);
 	setMuteActionState();
 
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
@@ -86,7 +86,7 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 
 void SoundActions::configurationUpdated()
 {
-	m_manager->setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
+	m_soundManager->setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 

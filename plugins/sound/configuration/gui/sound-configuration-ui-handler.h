@@ -40,7 +40,7 @@ public:
 	explicit SoundConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~SoundConfigurationUiHandler();
 
-	void setManager(SoundManager *manager);
+	void setSoundManager(SoundManager *soundManager);
 	void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 
 	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
@@ -49,7 +49,7 @@ protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 
 private:
-	QPointer<SoundManager> m_manager;
+	QPointer<SoundManager> m_soundManager;
 	QPointer<SoundThemeManager> m_soundThemeManager;
 
 	QPointer<SoundConfigurationWidget> m_configurationWidget;
