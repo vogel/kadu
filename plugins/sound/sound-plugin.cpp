@@ -65,6 +65,7 @@ bool SoundPlugin::init(bool firstLoad)
 	modules.emplace_back(make_unique<SoundModule>());
 
 	m_injector = make_unique<injeqt::injector>(std::move(modules));
+	static_cast<void>(m_injector->get<SoundActions>()); // register actions
 	m_staticSoundManager = m_injector->get<SoundManager>();
 
 	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(m_injector->get<SoundBuddyConfigurationWidgetFactory>());
