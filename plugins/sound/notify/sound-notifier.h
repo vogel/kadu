@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_NOTIFIER_H
-#define SOUND_NOTIFIER_H
+#pragma once
 
 #include "notify/notifier.h"
 
@@ -33,26 +32,19 @@ class SoundManager;
 class SoundNotifier : public Notifier
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SoundNotifier)
 
 	static SoundNotifier *Instance;
 	QPointer<SoundConfigurationUiHandler> m_configurationUiHandler;
 	QPointer<SoundManager> m_manager;
 
-	SoundNotifier();
-	virtual ~SoundNotifier();
-
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static SoundNotifier * instance();
+	explicit SoundNotifier(QObject *parent = nullptr);
+	virtual ~SoundNotifier();
 
 	void setConfigurationUiHandler(SoundConfigurationUiHandler *configurationUiHandler);
 	void setManager(SoundManager *manager);
 
-	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
-	virtual void notify(Notification *notification);
+	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr) override;
+	virtual void notify(Notification *notification) override;
 
 };
-
-#endif // SOUND_NOTIFIER_H

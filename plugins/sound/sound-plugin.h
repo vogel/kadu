@@ -34,6 +34,7 @@
 class SoundActions;
 class SoundConfigurationUiHandler;
 class SoundManager;
+class SoundNotifier;
 
 class SOUNDAPI SoundPlugin : public QObject, public PluginRootComponent
 {
@@ -55,6 +56,7 @@ private:
 	QPointer<SoundConfigurationUiHandler> m_configurationUiHandler;
 	QPointer<SoundActions> m_soundActions;
 	QPointer<SoundManager> m_soundManager;
+	QPointer<SoundNotifier> m_soundNotifier;
 
 };
 

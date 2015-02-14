@@ -52,18 +52,21 @@ bool SoundPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	SoundThemeManager::createInstance();
+
 	m_soundManager = new SoundManager{this};
 	m_staticSoundManager = m_soundManager;
-	SoundNotifier::createInstance();
-	SoundNotifier::instance()->setManager(m_soundManager);
+
 	m_configurationUiHandler = new SoundConfigurationUiHandler{this};
 	m_configurationUiHandler->setManager(m_soundManager);
-	SoundNotifier::instance()->setConfigurationUiHandler(m_configurationUiHandler);
+
+	m_soundNotifier = new SoundNotifier{this};
+	m_soundNotifier->setManager(m_soundManager);
+	m_soundNotifier->setConfigurationUiHandler(m_configurationUiHandler);
+	NotificationManager::instance()->registerNotifier(m_soundNotifier);
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
 	MainConfigurationWindow::registerUiHandler(m_configurationUiHandler);
 
-	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
 	m_soundActions = new SoundActions{this};
 	m_soundActions->setManager(m_soundManager);
 
@@ -82,8 +85,12 @@ void SoundPlugin::done()
 		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
 	}
 
-	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
-	SoundNotifier::destroyInstance();
+
+	if (m_soundNotifier)
+	{
+		NotificationManager::instance()->unregisterNotifier(m_soundNotifier);
+		m_soundNotifier->deleteLater();
+	}
 
 	if (m_soundManager)
 		m_soundManager->deleteLater();

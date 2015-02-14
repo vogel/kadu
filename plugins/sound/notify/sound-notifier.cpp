@@ -23,34 +23,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification/notification.h"
+#include "sound-notifier.h"
 
 #include "configuration/gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
 
-#include "sound-notifier.h"
+#include "notify/notification/notification.h"
 
-SoundNotifier * SoundNotifier::Instance = 0;
 
-void SoundNotifier::createInstance()
-{
-	if (!Instance)
-		Instance = new SoundNotifier();
-}
-
-void SoundNotifier::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-SoundNotifier * SoundNotifier::instance()
-{
-	return Instance;
-}
-
-SoundNotifier::SoundNotifier() :
-		Notifier("Sound", QT_TRANSLATE_NOOP("@default", "Play a sound"), KaduIcon("audio-volume-high"))
+SoundNotifier::SoundNotifier(QObject *parent) :
+		Notifier{"Sound", QT_TRANSLATE_NOOP("@default", "Play a sound"), KaduIcon{"audio-volume-high"}, parent}
 {
 }
 
