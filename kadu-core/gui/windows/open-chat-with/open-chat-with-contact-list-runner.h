@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009, 2010, 2011, 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009, 2010, 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

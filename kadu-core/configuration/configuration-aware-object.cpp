@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009, 2010, 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

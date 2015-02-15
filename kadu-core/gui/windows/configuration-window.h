@@ -5,8 +5,8 @@
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009 Maciej Płaza (plaza.maciej@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2008, 2009, 2010, 2011, 2013, 2014 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2010, 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2009, 2010, 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

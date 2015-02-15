@@ -2,9 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2011 Tomasz Rostanski (rozteck@interia.pl)
  * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2010, 2011, 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

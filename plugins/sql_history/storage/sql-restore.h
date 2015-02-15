@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2012 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  * Copyright 2011 Wojciech Treter (juzefwt@gmail.com)
  *

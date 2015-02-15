@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2011 Marcin Dawidziuk (cinekdawidziuk@gmail.com)
- * Copyright 2011, 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011, 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

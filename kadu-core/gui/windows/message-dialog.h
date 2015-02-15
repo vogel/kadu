@@ -1,14 +1,10 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010, 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2004 Tomasz Jarzynka (tomee@cpi.pl)
- * Copyright 2008, 2009 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2003, 2005 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010, 2011, 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
- * Copyright 2004, 2007 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2010, 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

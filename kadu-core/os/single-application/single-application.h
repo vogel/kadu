@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * Contains code from QtSingleApplication.
