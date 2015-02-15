@@ -66,7 +66,7 @@ void AvatarManager::init()
 	triggerAllAccountsRegistered();
 
 	UpdateTimer = new QTimer(this);
-	UpdateTimer->setInterval(5 * 60 * 1000); // 5 minutes
+	UpdateTimer->setInterval(30 * 60 * 1000); // half an hour
 	connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
 	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 
@@ -114,9 +114,14 @@ void AvatarManager::contactAdded(Contact contact)
 {
 	QMutexLocker locker(&mutex());
 
-	Protocol *protocol = contact.contactAccount().protocolHandler();
-	if (protocol && protocol->isConnected())
-		updateAvatar(contact, true);
+	auto protocol = contact.contactAccount().protocolHandler();
+	if (!protocol || !protocol->isConnected() || !protocol->avatarService())
+		return;
+
+	if (protocol->avatarService()->eventBasedUpdates())
+		return;
+
+	updateAvatar(contact, true);
 }
 
 bool AvatarManager::needUpdate(const Contact &contact)
@@ -170,7 +175,16 @@ void AvatarManager::updateAvatars()
 
 	foreach (const Contact &contact, ContactManager::instance()->items())
 		if (!contact.isAnonymous())
+		{
+			auto account = contact.contactAccount();
+			if (!account || !account.protocolHandler() || !account.protocolHandler()->avatarService())
+				continue;
+
+			if (account.protocolHandler()->avatarService()->eventBasedUpdates())
+				continue;
+
 			updateAvatar(contact);
+		}
 }
 
 void AvatarManager::updateAccountAvatars()
@@ -178,7 +192,10 @@ void AvatarManager::updateAccountAvatars()
 	QMutexLocker locker(&mutex());
 
 	Account account(sender());
-	if (!account)
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->avatarService())
+		return;
+
+	if (account.protocolHandler()->avatarService()->eventBasedUpdates())
 		return;
 
 	foreach (const Contact &contact, ContactManager::instance()->contacts(account))

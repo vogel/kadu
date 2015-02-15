@@ -57,8 +57,9 @@ public:
 	explicit GaduAvatarService(Account account, QObject *parent = 0);
 	virtual ~GaduAvatarService();
 
-	virtual AvatarDownloader * createAvatarDownloader();
-	virtual AvatarUploader * createAvatarUploader();
+	virtual AvatarDownloader * createAvatarDownloader() override;
+	virtual AvatarUploader * createAvatarUploader() override;
+	virtual bool eventBasedUpdates() override { return true; }
 
 };
 

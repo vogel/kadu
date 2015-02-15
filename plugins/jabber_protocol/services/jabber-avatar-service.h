@@ -85,8 +85,9 @@ public:
 	 */
 	void setVCardService(XMPP::JabberVCardService *vCardService);
 
-	virtual AvatarDownloader * createAvatarDownloader();
-	virtual AvatarUploader * createAvatarUploader();
+	virtual AvatarDownloader * createAvatarDownloader() override;
+	virtual AvatarUploader * createAvatarUploader() override;
+	virtual bool eventBasedUpdates() override { return false; }
 
 };
 
