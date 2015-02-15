@@ -19,8 +19,8 @@
 
 #include "roster-task-collection-storage.h"
 
-#include "roster/roster-task.h"
 #include "roster/roster-task-type.h"
+#include "roster/roster-task.h"
 #include "storage/storage-point.h"
 
 #include <QtCore/QVector>

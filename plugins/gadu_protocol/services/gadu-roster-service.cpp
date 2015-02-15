@@ -21,14 +21,14 @@
 #include "gadu-roster-service.h"
 
 #include "helpers/gadu-list-helper.h"
-#include "services/gadu-roster-state-machine.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
+#include "services/gadu-roster-state-machine.h"
 #include "gadu-account-details.h"
 
 #include "buddies/buddy-manager.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
 #include "roster/roster-notifier.h"
 #include "roster/roster-replacer.h"
 #include "debug.h"

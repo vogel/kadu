@@ -35,8 +35,8 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
 
 #include "contact-shared.h"
 

@@ -27,8 +27,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-#include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 
 #include "buddy-avatar-widget.h"

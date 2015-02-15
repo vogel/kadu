@@ -36,8 +36,8 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "misc/change-notifier.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
 #include "storage/storage-point.h"
 
 #include "buddy-shared.h"

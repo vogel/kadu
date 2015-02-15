@@ -24,8 +24,8 @@
 #include <QtWebKitWidgets/QWebFrame>
 
 #include "accounts/account.h"
-#include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "configuration/configuration.h"

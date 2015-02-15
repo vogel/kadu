@@ -25,8 +25,8 @@
 
 #include <QtCore/QPointer>
 #include <QtCore/QVector>
-#include <functional>
 #include <injeqt/injeqt.h>
+#include <functional>
 
 class PluginActivationService;
 class PluginDependencyHandler;

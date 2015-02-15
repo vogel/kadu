@@ -21,9 +21,9 @@
 
 #include "accounts/account.h"
 #include "protocols/protocol.h"
-#include "roster/roster-service.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
+#include "roster/roster-service.h"
 
 Roster * Roster::sm_instance = nullptr;
 

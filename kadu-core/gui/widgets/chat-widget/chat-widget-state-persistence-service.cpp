@@ -21,8 +21,8 @@
 
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 
 ChatWidgetStatePersistenceService::ChatWidgetStatePersistenceService()

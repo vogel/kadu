@@ -24,9 +24,9 @@
 #include "jabber-protocol.h"
 
 #include "buddies/buddy-manager.h"
-#include "chat/chat.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "contacts/contact-manager.h"
 
 namespace XMPP

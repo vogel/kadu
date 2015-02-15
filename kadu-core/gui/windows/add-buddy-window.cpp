@@ -61,9 +61,9 @@
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
-#include "roster/roster.h"
-#include "roster/roster-service.h"
 #include "protocols/services/subscription-service.h"
+#include "roster/roster-service.h"
+#include "roster/roster.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "url-handlers/url-handler-manager.h"
 

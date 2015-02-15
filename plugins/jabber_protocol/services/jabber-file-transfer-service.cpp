@@ -25,8 +25,8 @@
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 
 #include "file-transfer/jabber-outgoing-file-transfer-handler.h"

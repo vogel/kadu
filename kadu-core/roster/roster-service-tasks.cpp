@@ -20,8 +20,8 @@
 #include "roster-service-tasks.h"
 
 #include "contacts/contact.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
 #include "roster/roster-task-type.h"
 
 QVector<RosterTask> RosterServiceTasks::updateTasksForContacts(const QVector<Contact> &contacts)

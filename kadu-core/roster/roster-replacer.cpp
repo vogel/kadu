@@ -20,18 +20,18 @@
 #include "roster-replacer.h"
 
 #include "accounts/account.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy.h"
 #include "buddies/group.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
-#include "roster/roster.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
+#include "roster/roster.h"
 
 #include <QtWidgets/QMessageBox>
 

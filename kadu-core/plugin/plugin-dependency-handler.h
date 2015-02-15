@@ -27,10 +27,10 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <map>
 #include <memory>
 #include <set>
-#include <injeqt/injeqt.h>
 
 class PluginDependencyGraphBuilder;
 class PluginMetadataProvider;

@@ -32,8 +32,8 @@
 #include "gui/windows/add-buddy-window.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
 
 #include "subscription-window.h"
 

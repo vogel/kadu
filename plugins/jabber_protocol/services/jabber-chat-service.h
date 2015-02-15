@@ -23,10 +23,10 @@
 
 #include "protocols/services/chat-service.h"
 
-#include <im.h>
-#include <xmpp.h>
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
+#include <im.h>
+#include <xmpp.h>
 
 class Chat;
 class FormattedStringFactory;

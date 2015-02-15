@@ -24,11 +24,11 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
-#include "roster/roster-entry.h"
 #include "roster/roster-entry-state.h"
+#include "roster/roster-entry.h"
 #include "roster/roster-service-tasks.h"
-#include "roster/roster-task.h"
 #include "roster/roster-task-type.h"
+#include "roster/roster-task.h"
 #include "debug.h"
 
 #include "services/jabber-roster-state.h"

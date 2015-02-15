@@ -25,9 +25,9 @@
 
 #include <QtWidgets/QDialog>
 
-#include "exports.h"
 #include "os/generic/desktop-aware-object.h"
 #include "status/status.h"
+#include "exports.h"
 
 class QComboBox;
 class QLabel;

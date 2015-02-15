@@ -24,9 +24,9 @@
 #include "avatars/avatar-job-runner.h"
 #include "contacts/contact.h"
 
-#include "avatar-job-manager.h"
-#include <core/application.h>
 #include <configuration/deprecated-configuration-api.h>
+#include <core/application.h>
+#include "avatar-job-manager.h"
 
 AvatarJobManager * AvatarJobManager::Instance = 0;
 

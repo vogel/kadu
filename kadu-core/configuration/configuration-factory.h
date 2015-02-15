@@ -24,8 +24,8 @@
 #include "misc/memory.h"
 #include "exports.h"
 
-#include <injeqt/injeqt.h>
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 class Configuration;
 

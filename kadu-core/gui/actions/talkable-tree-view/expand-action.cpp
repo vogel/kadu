@@ -19,8 +19,8 @@
 
 #include "expand-action.h"
 
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
+#include "gui/actions/action.h"
 
 #include <QtWidgets/QTreeView>
 

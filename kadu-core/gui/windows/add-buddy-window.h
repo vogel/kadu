@@ -29,8 +29,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
-#include "exports.h"
 #include "os/generic/desktop-aware-object.h"
+#include "exports.h"
 
 class QCheckBox;
 class QFormLayout;

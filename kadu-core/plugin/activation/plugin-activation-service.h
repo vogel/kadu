@@ -24,9 +24,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QSet>
+#include <injeqt/injeqt.h>
 #include <map>
 #include <memory>
-#include <injeqt/injeqt.h>
 
 class ActivePlugin;
 class PluginActivationErrorHandler;

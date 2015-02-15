@@ -21,9 +21,9 @@
 
 #include "sound-manager.h"
 
-#include "core/application.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
 #include "gui/actions/action.h"
 
 SoundMuteAction::SoundMuteAction(QObject *parent) :

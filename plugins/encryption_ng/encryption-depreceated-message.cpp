@@ -19,15 +19,15 @@
 
 #include "encryption-depreceated-message.h"
 
-#include "core/application.h"
-#include "core/core.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "plugin/activation/plugin-activation-service.h"
-#include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
+#include "plugin/state/plugin-state.h"
 
 EncryptionDepreceatedMessage * EncryptionDepreceatedMessage::m_instance = nullptr;
 

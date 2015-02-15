@@ -22,8 +22,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <set>
 #include <injeqt/injeqt.h>
+#include <set>
 
 class PluginDependencyHandler;
 class PluginStateService;

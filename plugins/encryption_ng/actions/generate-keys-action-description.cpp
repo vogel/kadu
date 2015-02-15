@@ -30,8 +30,8 @@
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
 
-#include "encryption-depreceated-message.h"
 #include "keys/key.h"
+#include "encryption-depreceated-message.h"
 #include "encryption-manager.h"
 #include "key-generator.h"
 
