@@ -76,6 +76,7 @@
 #include "services/gadu-imtoken-service.h"
 #include "services/gadu-notify-service.h"
 #include "services/gadu-roster-service.h"
+#include "services/user-data/gadu-user-data-service.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 
@@ -130,6 +131,10 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentDriveService = new GaduDriveService{account, this};
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
+
+	CurrentUserDataService = new GaduUserDataService{account, this};
+	CurrentUserDataService->setAvatarManager(AvatarManager::instance());
+	CurrentUserDataService->setContactManager(ContactManager::instance());
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
 	auto rosterService = new GaduRosterService(this, contacts, this);
@@ -315,6 +320,7 @@ void GaduProtocol::login()
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
 	SocketNotifiers->setGaduIMTokenService(CurrentImTokenService);
+	SocketNotifiers->setGaduUserDataService(CurrentUserDataService);
 	connectSocketNotifiersToServices();
 	SocketNotifiers->watchFor(GaduSession);
 }
@@ -435,6 +441,8 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.last_sysmsg = Application::instance()->configuration()->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
 
 	GaduLoginParams.image_size = qMax(qMin(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
+
+	GaduLoginParams.struct_size = sizeof(struct gg_login_params);
 
 	setStatusFlags();
 }
@@ -559,6 +567,11 @@ void GaduProtocol::enableSocketNotifiers()
 GaduDriveService * GaduProtocol::driveService() const
 {
 	return CurrentDriveService;
+}
+
+GaduUserDataService * GaduProtocol::userDataService() const
+{
+	return CurrentUserDataService;
 }
 
 void GaduProtocol::configurationUpdated()

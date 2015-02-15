@@ -78,6 +78,7 @@ public:
 	Avatar byContact(Contact contact, NotFoundAction action);
 
 	void updateAvatar(const Contact &contact, bool force = false);
+	void removeAvatar(const Contact &contact);
 
 signals:
 	void avatarAboutToBeAdded(Avatar avatar);

@@ -153,6 +153,17 @@ void AvatarManager::updateAvatar(const Contact &contact, bool force)
 	AvatarJobManager::instance()->addJob(contact);
 }
 
+void AvatarManager::removeAvatar(const Contact &contact)
+{
+	auto avatar = byContact(contact, ActionReturnNull);
+	if (!avatar)
+		return;
+
+	avatar.setLastUpdated(QDateTime::currentDateTime());
+	avatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+	avatar.setPixmap(QPixmap{});
+}
+
 void AvatarManager::updateAvatars()
 {
 	QMutexLocker locker(&mutex());

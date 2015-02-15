@@ -28,6 +28,7 @@
 
 #include "services/gadu-imtoken-service.h"
 #include "services/gadu-roster-service.h"
+#include "services/user-data/gadu-user-data-service.h"
 
 #include "accounts/account.h"
 #include "buddies/buddy-set.h"
@@ -61,6 +62,11 @@ GaduProtocolSocketNotifiers::~GaduProtocolSocketNotifiers()
 void GaduProtocolSocketNotifiers::setGaduIMTokenService(GaduIMTokenService *imTokenService)
 {
 	m_imTokenService = imTokenService;
+}
+
+void GaduProtocolSocketNotifiers::setGaduUserDataService(GaduUserDataService *userDataService)
+{
+	m_userDataService = userDataService;
 }
 
 void GaduProtocolSocketNotifiers::watchFor(gg_session *sess)
@@ -307,7 +313,8 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			static_cast<GaduRosterService *>(m_protocol->rosterService())->handleEventUserlist100Reply(e);
 			break;
 
-		case GG_EVENT_JSON_EVENT:
+		case GG_EVENT_USER_DATA:
+			m_userDataService->handleUserDataEvent(e->event.user_data);
 			break;
 
 		case GG_EVENT_IMTOKEN:

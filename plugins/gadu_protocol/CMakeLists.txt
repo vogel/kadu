@@ -67,6 +67,8 @@ set (SOURCES
 	services/drive/gadu-drive-service.cpp
 	services/drive/gadu-drive-session-token.cpp
 
+	services/user-data/gadu-user-data-service.cpp
+
 	services/gadu-avatar-service.cpp
 	services/gadu-buddy-list-serialization-service.cpp
 	services/gadu-chat-image-service.cpp

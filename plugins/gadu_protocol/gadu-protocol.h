@@ -62,6 +62,7 @@ class GaduDriveService;
 class GaduIMTokenService;
 class GaduNotifyService;
 class GaduProtocolSocketNotifiers;
+class GaduUserDataService;
 class ProtocolGaduConnection;
 
 class GADUAPI GaduProtocol : public Protocol, public ConfigurationAwareObject
@@ -105,6 +106,7 @@ private:
 	GaduNotifyService *CurrentNotifyService;
 	GaduIMTokenService *CurrentImTokenService;
 	GaduDriveService *CurrentDriveService;
+	GaduUserDataService *CurrentUserDataService;
 
 	GaduServersManager::GaduServer ActiveServer;
 
@@ -178,6 +180,7 @@ public:
 	gg_session * gaduSession() { return GaduSession; }
 
 	GaduDriveService * driveService() const;
+	GaduUserDataService * userDataService() const;
 
 signals:
 	/**

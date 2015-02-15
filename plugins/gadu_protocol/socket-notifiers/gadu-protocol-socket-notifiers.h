@@ -32,6 +32,7 @@
 #include "accounts/account.h"
 
 class GaduIMTokenService;
+class GaduUserDataService;
 
 class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 {
@@ -42,6 +43,7 @@ public:
 	virtual ~GaduProtocolSocketNotifiers();
 
 	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
+	void setGaduUserDataService(GaduUserDataService *userDataService);
 
 	void watchFor(gg_session *sess);
 
@@ -65,6 +67,7 @@ private:
 	GaduProtocol *m_protocol;
 	gg_session *m_session;
 	QPointer<GaduIMTokenService> m_imTokenService;
+	QPointer<GaduUserDataService> m_userDataService;
 
 	void dumpConnectionState();
 	void handleEventNotify(struct gg_event *e);
