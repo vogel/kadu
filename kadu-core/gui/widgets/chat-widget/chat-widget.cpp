@@ -371,7 +371,7 @@ void ChatWidget::refreshTitle()
 	if (!chat().display().isEmpty())
 	{
 		title = chat().display();
-		setTitle(title);
+		setChatWidgetTitle(title);
 		return;
 	}
 
@@ -426,12 +426,12 @@ void ChatWidget::refreshTitle()
 	title.replace("<br/>", " ");
 	title.replace("&nbsp;", " ");
 
-	setTitle(title);
+	setChatWidgetTitle(title);
 
 	kdebugf2();
 }
 
-void ChatWidget::setTitle(const QString &title)
+void ChatWidget::setChatWidgetTitle(const QString &title)
 {
 	if (title != Title)
 	{

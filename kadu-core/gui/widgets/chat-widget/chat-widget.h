@@ -84,6 +84,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
 	void composingStopped();
+	void setChatWidgetTitle(const QString &title);
 
 private slots:
 	void configurationUpdated();
@@ -129,7 +130,6 @@ public:
 	Protocol * currentProtocol() const;
 
 	const QString & title() { return Title; }
-	void setTitle(const QString &title);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
