@@ -436,8 +436,13 @@ void ChatWidget::setChatWidgetTitle(const QString &title)
 	if (title != Title)
 	{
 		Title = title;
-		emit titleChanged(this, title);
+		emit chatWidgetTitleChanged(this, title);
 	}
+}
+
+QString ChatWidget::chatWidgetTitle() const
+{
+	return Title;
 }
 
 QIcon ChatWidget::icon()

@@ -129,7 +129,7 @@ public:
 
 	Protocol * currentProtocol() const;
 
-	const QString & title() { return Title; }
+	QString chatWidgetTitle() const;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -174,7 +174,7 @@ signals:
 	void fileDropped(Chat chat, const QString &fileName);
 
 	void iconChanged();
-	void titleChanged(ChatWidget *chatWidget, const QString &newTitle);
+	void chatWidgetTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
 
 	void widgetDestroyed(Chat chat);
 	void widgetDestroyed(ChatWidget *widget);

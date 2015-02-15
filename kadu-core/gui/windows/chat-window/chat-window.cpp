@@ -83,7 +83,7 @@ ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget 
 	connect(m_chatWidget, SIGNAL(unreadMessagesCountChanged(ChatWidget*)),
 			this, SLOT(unreadMessagesCountChanged(ChatWidget*)));
 	connect(m_chatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
-	connect(m_chatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
+	connect(m_chatWidget, SIGNAL(chatWidgetTitleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(m_titleTimer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
 }
 
@@ -182,22 +182,22 @@ void ChatWindow::updateIcon()
 
 void ChatWindow::updateTitle()
 {
-	setWindowTitle(m_chatWidget->title());
+	setWindowTitle(m_chatWidget->chatWidgetTitle());
 }
 
 void ChatWindow::blinkTitle()
 {
  	if (!_isActiveWindow(this))
   	{
-		if (!windowTitle().contains(m_chatWidget->title()) || !m_blinkChatTitle)
+		if (!windowTitle().contains(m_chatWidget->chatWidgetTitle()) || !m_blinkChatTitle)
 		{
   			if (!m_showNewMessagesNum) // if we don't show number od new messages waiting
-  				setWindowTitle(m_chatWidget->title());
+  				setWindowTitle(m_chatWidget->chatWidgetTitle());
   			else
 				showNewMessagesNumInTitle();
 		}
 		else
-			setWindowTitle(QString(m_chatWidget->title().length() + 5, ' '));
+			setWindowTitle(QString(m_chatWidget->chatWidgetTitle().length() + 5, ' '));
 
 		if (m_blinkChatTitle) // timer will not be started, if configuration option was changed
 		{
@@ -207,7 +207,7 @@ void ChatWindow::blinkTitle()
 	}
 	else
 		if (!m_showNewMessagesNum) // if we don't show number od new messages waiting
-			setWindowTitle(m_chatWidget->title());
+			setWindowTitle(m_chatWidget->chatWidgetTitle());
 		else
 			showNewMessagesNumInTitle();
 }
@@ -216,9 +216,9 @@ void ChatWindow::showNewMessagesNumInTitle()
 {
 	auto count = m_chatWidget->chat().unreadMessagesCount();
 	if (count > 0)
-		setWindowTitle('[' + QString::number(count) + "] " + m_chatWidget->title());
+		setWindowTitle('[' + QString::number(count) + "] " + m_chatWidget->chatWidgetTitle());
 	else
-		setWindowTitle(m_chatWidget->title());
+		setWindowTitle(m_chatWidget->chatWidgetTitle());
 }
 
 void ChatWindow::changeEvent(QEvent *event)
@@ -240,7 +240,7 @@ void ChatWindow::unreadMessagesCountChanged(ChatWidget *chatWidget)
 	if (chatWidget->unreadMessagesCount() == 0)
 	{
 		m_titleTimer->stop();
-		setWindowTitle(m_chatWidget->title());
+		setWindowTitle(m_chatWidget->chatWidgetTitle());
 		return;
 	}
 

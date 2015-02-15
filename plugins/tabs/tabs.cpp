@@ -308,7 +308,7 @@ void TabsManager::onTabChange(int index)
 	if (chat.unreadMessagesCount() > 0)
 		emit chatWidgetActivated(chatWidget);
 
-	TabDialog->setWindowTitle(chatWidget->title());
+	TabDialog->setWindowTitle(chatWidget->chatWidgetTitle());
 	TabDialog->setWindowIcon(chatWidget->icon());
 
 	chatWidget->edit()->setFocus();
@@ -388,7 +388,7 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	connect(chatWidget, SIGNAL(unreadMessagesCountChanged(ChatWidget*)),
 			this, SLOT(unreadMessagesCountChanged(ChatWidget*)));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
-	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
+	connect(chatWidget, SIGNAL(chatWidgetTitleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
 
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
@@ -424,20 +424,20 @@ void TabsManager::onTimer()
 		{
 			if (ConfigBlinkChatTitle)
 				TabDialog->setWindowTitle(msg
-						? QString(currentChatWidget->title().length() + 5, ' ')
-						: currentChatWidget->title());
+						? QString(currentChatWidget->chatWidgetTitle().length() + 5, ' ')
+						: currentChatWidget->chatWidgetTitle());
 			else if (ConfigShowNewMessagesNum)
-				TabDialog->setWindowTitle('[' + QString::number(currentChatWidget->chat().unreadMessagesCount()) + "] " + currentChatWidget->title());
+				TabDialog->setWindowTitle('[' + QString::number(currentChatWidget->chat().unreadMessagesCount()) + "] " + currentChatWidget->chatWidgetTitle());
 			else
-				TabDialog->setWindowTitle(currentChatWidget->title());
+				TabDialog->setWindowTitle(currentChatWidget->chatWidgetTitle());
 		}
 		else if (ConfigBlinkChatTitle && !msg)
 			TabDialog->setWindowTitle(tr("NEW MESSAGE(S)"));
 		else
-			TabDialog->setWindowTitle(unreadChatWidget->title());
+			TabDialog->setWindowTitle(unreadChatWidget->chatWidgetTitle());
 	}
 	else
-		TabDialog->setWindowTitle(currentChatWidget->title());
+		TabDialog->setWindowTitle(currentChatWidget->chatWidgetTitle());
 
 	msg = !msg;
 
@@ -693,7 +693,7 @@ void TabsManager::updateTabName(ChatWidget *chatWidget)
 	auto chatTitle = shortChatTitle(defaultChatTitle(chatWidget->chat()));
 	if (chatWidget->unreadMessagesCount() > 0)
 		updateTabTextAndTooltip(index, QString("%1 [%2]").arg(chatTitle).arg(chatWidget->unreadMessagesCount()),
-				QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chatWidget->unreadMessagesCount()));
+				QString("%1\n%2 new message(s)").arg(chatWidget->chatWidgetTitle()).arg(chatWidget->unreadMessagesCount()));
 	else
 		updateTabTextAndTooltip(index, chatTitle, chatTitle);
 }

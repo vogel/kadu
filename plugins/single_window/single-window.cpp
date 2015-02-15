@@ -185,7 +185,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 	connect(chatWidget, SIGNAL(unreadMessagesCountChanged(ChatWidget*)),
 			this, SLOT(unreadMessagesCountChanged(ChatWidget*)));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
-	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
+	connect(chatWidget, SIGNAL(chatWidgetTitleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
 	connect(chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(closeTab(ChatWidget*)));
 
@@ -250,12 +250,12 @@ void SingleWindow::updateTabName(ChatWidget *chatWidget)
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("SingleWindow", "NumMessagesInTab", false) && chatWidget->unreadMessagesCount() > 0)
 	{
 		m_tabs->setTabText(i, QString("%1 [%2]").arg(baseTabName).arg(chatWidget->unreadMessagesCount()));
-		m_tabs->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chatWidget->unreadMessagesCount()));
+		m_tabs->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->chatWidgetTitle()).arg(chatWidget->unreadMessagesCount()));
 	}
 	else
 	{
 		m_tabs->setTabText(i, baseTabName);
-		m_tabs->setTabToolTip(i, chatWidget->title());
+		m_tabs->setTabToolTip(i, chatWidget->chatWidgetTitle());
 	}
 }
 
