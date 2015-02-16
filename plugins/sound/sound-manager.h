@@ -22,6 +22,7 @@
 
 #include "sound-exports.h"
 
+#include <injeqt/injeqt.h>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
@@ -38,7 +39,6 @@ public:
 	Q_INVOKABLE explicit SoundManager(QObject *parent = nullptr);
 	virtual ~SoundManager();
 
-	void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 	void setPlayer(SoundPlayer *player);
 	bool isMuted() const;
 
@@ -57,5 +57,8 @@ private:
 	bool m_mute;
 
 	void createDefaultConfiguration();
+
+private slots:
+	INJEQT_SETTER void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 
 };
