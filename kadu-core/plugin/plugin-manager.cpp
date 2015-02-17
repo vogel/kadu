@@ -32,6 +32,7 @@
 PluginManager::PluginManager(QObject *parent) :
 		QObject{parent}
 {
+	m_runningUnity = QString::compare(qgetenv("XDG_CURRENT_DESKTOP"), "unity", Qt::CaseInsensitive) == 0;
 }
 
 PluginManager::~PluginManager()
@@ -87,6 +88,14 @@ bool PluginManager::shouldActivate(const PluginMetadata &pluginMetadata) const n
 {
 	if (!m_pluginStateService)
 		return false;
+
+	if (m_runningUnity)
+	{
+		if (pluginMetadata.name().contains("indicator_docking"))
+			return true;
+		if (pluginMetadata.name().contains("docking"))
+			return false;
+	}
 
 	switch (m_pluginStateService->pluginState(pluginMetadata.name()))
 	{

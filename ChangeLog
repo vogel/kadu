@@ -8,6 +8,9 @@
 * encryption_ng: #2952 implemented: add depreceation message (Vogel)
 * gadu: #2241 implemented: update contact's avatars on GG event (Vogel)
 
++++ version 2.0
+* unity: #2699 fixed: force indicator_docking on Unity (Vogel)
+
 +++ version 2.0-rc3
 * core: various crashes fixed (Vogel)
 * gui: #2732 implemented: do not download avatars when showing them is disabled (Vogel)

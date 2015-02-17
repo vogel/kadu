@@ -106,6 +106,7 @@ private:
 	QPointer<PluginActivationService> m_pluginActivationService;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateService> m_pluginStateService;
+	bool m_runningUnity;
 
 	QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &){ return true; }) const;
 
