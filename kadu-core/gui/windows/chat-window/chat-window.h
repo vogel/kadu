@@ -27,8 +27,6 @@
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
-class QTimer;
-
 class Chat;
 class ChatWidget;
 class ChatWidgetFactory;
@@ -48,11 +46,6 @@ public:
 
 	void setWindowTitle(QString title);
 
-public slots:
-	// TODO: rename
-	void blinkTitle();
-	void showNewMessagesNumInTitle();
-
 signals:
 	void activated(ChatWindow *chatWindow);
 	void windowDestroyed(ChatWindow *chatWindow);
@@ -68,16 +61,11 @@ protected:
 
 private:
 	ChatWidget *m_chatWidget;
-	QTimer *m_titleTimer;
-
-	bool m_showNewMessagesNum;
-	bool m_blinkChatTitle;
 
 	QRect defaultGeometry() const;
 
 private slots:
-	void unreadMessagesCountChanged(ChatWidget *chatWidget);
-	void updateIcon();
+	void chatUpdated();
 	void updateTitle();
 
 };

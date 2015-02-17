@@ -203,6 +203,10 @@
 			<group-box name="Chat">
 				<check-box caption="Notify about chat events in chat window" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
 				<check-box caption="Notify about chat events in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
+				<combo-box caption="Notification position" config-section="Chat" config-item="ContactStateWindowTitlePosition" id="contactStateWindowTitlePosition" parent-widget="contactStateWindowTitle" >
+					<item value="0" caption="Beginning of title" />
+					<item value="1" caption="End of title" />
+				</combo-box>
 			</group-box>
 			<group-box name="New Message">
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify"

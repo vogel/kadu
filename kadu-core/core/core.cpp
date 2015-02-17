@@ -346,7 +346,6 @@ void Core::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AlignUserboxIconsTop", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AvatarBorder", false);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AvatarGreyOut", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatContents", QString());
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ForceCustomChatFont", false);
 	QFont chatFont = qApp->font();
 #ifdef Q_OS_WIN32
@@ -373,8 +372,6 @@ void Core::createDefaultConfiguration()
 		Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor") != QColor("#ffffff"));
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ChatTextFontColor", QColor("#000000"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ConferenceContents", QString());
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ConferencePrefix", QString());
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "DescriptionColor", w.palette().text().color());
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "HeaderSeparatorHeight", 1);

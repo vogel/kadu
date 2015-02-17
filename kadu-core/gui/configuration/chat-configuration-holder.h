@@ -25,7 +25,11 @@
 
 #include "configuration/configuration-holder.h"
 
-class ChatConfigurationHolder : public ConfigurationHolder
+#include "exports.h"
+
+enum class ChatWidgetTitleComposingStatePosition;
+
+class KADUAPI ChatConfigurationHolder : public ConfigurationHolder
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatConfigurationHolder)
@@ -42,9 +46,6 @@ class ChatConfigurationHolder : public ConfigurationHolder
 	QColor ChatTextFontColor;
 	bool ForceCustomChatFont;
 	QFont ChatFont;
-	QString ChatContents;
-	QString ConferenceContents;
-	QString ConferencePrefix;
 	QString MyBackgroundColor;
 	QString MyFontColor;
 	QString MyNickColor;
@@ -58,7 +59,6 @@ class ChatConfigurationHolder : public ConfigurationHolder
 	bool ContactStateChats;
 	bool ContactStateWindowTitle;
 	int ContactStateWindowTitlePosition;
-	QString ContactStateWindowTitleComposingSyntax;
 
 public:
 	static ChatConfigurationHolder * instance();
@@ -71,9 +71,6 @@ public:
 	const QColor &chatTextFontColor() const { return ChatTextFontColor; }
 	bool forceCustomChatFont() const { return ForceCustomChatFont; }
 	const QFont &chatFont() const { return ChatFont; }
-	const QString &chatContents() const { return ChatContents; }
-	const QString &conferenceContents() const { return ConferenceContents; }
-	const QString &conferencePrefix() const { return ConferencePrefix; }
 	const QString &myBackgroundColor() const { return MyBackgroundColor; }
 	const QString &myFontColor() const { return MyFontColor; }
 	const QString &myNickColor() const { return MyNickColor; }
@@ -87,7 +84,7 @@ public:
 	bool contactStateChats() const { return ContactStateChats; }
 	bool contactStateWindowTitle() const { return ContactStateWindowTitle; }
 	int contactStateWindowTitlePosition() const { return ContactStateWindowTitlePosition; }
-	const QString &contactStateWindowTitleComposingSyntax() const { return ContactStateWindowTitleComposingSyntax; }
+	ChatWidgetTitleComposingStatePosition composingStatePosition() const;
 
 signals:
 	void chatConfigurationUpdated();

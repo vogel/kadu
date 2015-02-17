@@ -78,8 +78,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QAction *CloseOtherTabsMenuAction;
 	QAction *ReopenClosedTabMenuAction;
 
-	void updateTabName(ChatWidget *chatWidget);
-	void updateTabIcon(ChatWidget *chatWidget);
+	void updateTabTitle(ChatWidget *chatWidget);
 
 	/**
 	* Zmienne konfiguracyjne.
@@ -90,9 +89,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	bool ConfigShowNewMessagesNum;
 
 	ChatWidget * chatWidgetWithUnreadMessage() const;
-
-	QString defaultChatTitle(const Chat &chat) const;
-	QString shortChatTitle(const QString &chatTitle) const;
+	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
 	void onTimer();
@@ -128,16 +125,13 @@ public:
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
 
-	void updateTabTextAndTooltip(int index, const QString &text, const QString &tooltip);
-
 	bool acceptChat(Chat chat) const;
 	ChatWidget * addChat(Chat chat, OpenChatActivation activation);
 	void removeChat(Chat chat);
 
 public slots:
 	void onDestroyingChat(ChatWidget *chatWidget);
-	void onIconChanged();
-	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
+	void onTitleChanged(ChatWidget *chatWidget);
 
 	void onTabChange(int index);
 
@@ -148,7 +142,6 @@ public slots:
 	void attachToTabsActionCreated(Action *action);
 
 	void closeChat();
-	void unreadMessagesCountChanged(ChatWidget *chatWidget);
 
 signals:
 	void chatWidgetActivated(ChatWidget *chatWidget);

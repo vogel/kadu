@@ -37,15 +37,15 @@
 class QSplitter;
 
 class ChatEditBox;
-class WebkitMessagesView;
 class ChatTopBarContainerWidget;
-class ChatWidget;
+class ChatWidgetTitle;
 class CustomInput;
 class FilteredTreeView;
 class FormattedStringFactory;
 class Protocol;
 class SortedMessages;
 class TalkableProxyModel;
+class WebkitMessagesView;
 
 class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 {
@@ -71,10 +71,9 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	bool SplittersInitialized;
 
-	QString Title;
+	ChatWidgetTitle *Title;
 
 	QDateTime LastReceivedMessageTime;
-	int UnreadMessagesCount;
 
 	void createGui();
 	void createContactsList();
@@ -84,7 +83,6 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
 	void composingStopped();
-	void setChatWidgetTitle(const QString &title);
 
 private slots:
 	void configurationUpdated();
@@ -129,16 +127,7 @@ public:
 
 	Protocol * currentProtocol() const;
 
-	QString chatWidgetTitle() const;
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Icon of chat.
-	 *
-	 * Chat icon is used to display in window titles. For 'contact' chats it is icon of status
-	 * of peer, for 'conference' chats it is generic icon.
-	 */
-	QIcon icon();
+	ChatWidgetTitle * title() const;
 
 	const QDateTime & lastReceivedMessageTime() const { return LastReceivedMessageTime; }
 
@@ -150,8 +139,7 @@ public:
 	SortedMessages messages() const;
 	int countMessages() const;
 
-	void setUnreadMessagesCount(int unreadMessagesCount);
-	int unreadMessagesCount() const;
+	ChatStateService::State chatState() const;
 
 public slots:
 	void sendMessage();
@@ -160,12 +148,6 @@ public slots:
 
 	void requestClose();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Updates chat title.
-	 */
-	void refreshTitle();
-
 signals:
 	void messageReceived(ChatWidget *chatWidget);
 	void messageSendRequested(ChatWidget *chat);
@@ -173,14 +155,12 @@ signals:
 
 	void fileDropped(Chat chat, const QString &fileName);
 
-	void iconChanged();
-	void chatWidgetTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
-
 	void widgetDestroyed(Chat chat);
 	void widgetDestroyed(ChatWidget *widget);
 
 	void closeRequested(ChatWidget *chatWidget);
 	void unreadMessagesCountChanged(ChatWidget *chatWidget);
+	void chatStateChanged(ChatStateService::State state);
 
 };
 

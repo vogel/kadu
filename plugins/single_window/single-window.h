@@ -16,7 +16,7 @@ class QTabWidget;
 class ChatWidget;
 enum class OpenChatActivation;
 
-class SingleWindow : public QWidget
+class SingleWindow : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -44,11 +44,12 @@ public slots:
 	void onkaduKeyPressed(QKeyEvent *e);
 	void closeTab(ChatWidget *chatWidget);
 	void closeTab(int index);
-	void onIconChanged();
-	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
+	void onTitleChanged(ChatWidget *chatWidget);
 	void closeChat();
 
 protected:
+    virtual void configurationUpdated() override;
+
 	void closeEvent(QCloseEvent *event);
 	void keyPressEvent(QKeyEvent *event);
 	void resizeEvent(QResizeEvent *event);
@@ -59,11 +60,8 @@ private:
 	QList<int> m_splitSizes;
 	int m_rosterPos;
 
-	void updateTabIcon(ChatWidget *chatWidget);
-	void updateTabName(ChatWidget *chatWidget);
-
-private slots:
-	void unreadMessagesCountChanged(ChatWidget *chatWidget);
+	void updateTabTitle(ChatWidget *chatWidget);
+	void setConfiguration(ChatWidget *chatWidget);
 
 };
 

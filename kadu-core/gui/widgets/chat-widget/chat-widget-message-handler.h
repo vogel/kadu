@@ -93,8 +93,6 @@ private slots:
 	void messageReceived(const Message &message);
 	void messageSent(const Message &message);
 
-	void handleUnreadMessageChange(const Message &message);;
-
 };
 
 /**

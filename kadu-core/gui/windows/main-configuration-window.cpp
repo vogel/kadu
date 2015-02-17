@@ -394,10 +394,6 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
 		lookChatAdvanced.data()->widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
-
-		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
-		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
-		lookChatAdvanced.data()->widget()->widgetById("conferenceSyntax")->setToolTip(QCoreApplication::translate("@default", SyntaxText));
 	}
 
 	lookChatAdvanced.data()->show();

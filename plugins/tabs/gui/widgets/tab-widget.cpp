@@ -415,10 +415,7 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(currentWidget());
 		if (chatWidget && _isActiveWindow(this))
-		{
-			chatWidget->setUnreadMessagesCount(0);
 			emit chatWidgetActivated(chatWidget);
-		}
 		kdebugf2();
 	}
 }

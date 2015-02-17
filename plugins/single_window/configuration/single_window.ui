@@ -6,7 +6,6 @@
 					<item value="0" caption="Left" />
 					<item value="1" caption="Right" />
 				</combo-box>
-				<check-box caption="Show number of messages on tab" config-section="SingleWindow" config-item="NumMessagesInTab" />
 			</group-box>
 		</tab>
 	</section>

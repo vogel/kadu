@@ -56,6 +56,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -89,10 +90,11 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		HorizontalSplitter{0},
 		IsComposing{false},
 		CurrentContactActivity{ChatStateService::StateNone},
-		SplittersInitialized{false},
-		UnreadMessagesCount{CurrentChat.unreadMessagesCount()}
+		SplittersInitialized{false}
 {
 	kdebugf();
+
+	Title = new ChatWidgetTitle{this};
 
 	setAcceptDrops(true);
 
@@ -104,32 +106,9 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 
 	connect(edit(), SIGNAL(textChanged()), this, SLOT(updateComposing()));
 
-	foreach (const Contact &contact, CurrentChat.contacts())
-	{
-		connect(contact, SIGNAL(updated()), this, SLOT(refreshTitle()));
-
-		if (contact.ownerBuddy())
-			connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
-	}
-
 	// icon for conference never changes
 	if (CurrentChat.contacts().count() == 1)
 	{
-		foreach (const Contact &contact, CurrentChat.contacts())
-		{
-			// Actually we only need to send iconChanged() on CurrentStatus update,
-			// but we don't have a signal for that in ContactShared.
-			// TODO 0.12.0: Consider adding currentStatusChanged() signal to ContactShared.
-			// We need QueuedConnection for this scenario: 1. The user opens chat with unread
-			// messages in tabs. 2. Contact is updated to not have unread messages and we emit
-			// iconChanged(). 3. Tab catches it before Chat is updated and incorrectly sets
-			// tab icon to the envelope. This could be fixed correctly if we would fix the above TODO.
-			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()), Qt::QueuedConnection);
-
-			if (contact.ownerBuddy())
-				connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
-		}
-
 		if (currentProtocol() && currentProtocol()->chatStateService())
 			connect(currentProtocol()->chatStateService(), SIGNAL(peerStateChanged(const Contact &, ChatStateService::State)),
 					this, SLOT(contactActivityChanged(const Contact &, ChatStateService::State)));
@@ -305,8 +284,6 @@ void ChatWidget::configurationUpdated()
 	QPalette palette = InputBox->inputBox()->palette();
 	palette.setBrush(QPalette::Text, color);
 	InputBox->inputBox()->setPalette(palette);
-
-	refreshTitle();
 }
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
@@ -363,101 +340,9 @@ void ChatWidget::resizeEvent(QResizeEvent *e)
 		commonHeightChanged(ChatEditBoxSizeManager::instance()->commonHeight());
 }
 
-void ChatWidget::refreshTitle()
-{
-	kdebugf();
-	QString title;
-
-	if (!chat().display().isEmpty())
-	{
-		title = chat().display();
-		setChatWidgetTitle(title);
-		return;
-	}
-
-	int contactsCount = chat().contacts().count();
-	kdebugmf(KDEBUG_FUNCTION_START, "chat().contacts().size() = %d\n", contactsCount);
-	if (contactsCount > 1)
-	{
-		title = ChatConfigurationHolder::instance()->conferencePrefix();
-		if (title.isEmpty())
-			title = tr("Conference with ");
-
-		QString conferenceContents = ChatConfigurationHolder::instance()->conferenceContents();
-		QStringList contactslist;
-		foreach (Contact contact, chat().contacts())
-			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, Talkable(contact), ParserEscape::NoEscape));
-
-		title.append(contactslist.join(", "));
-	}
-	else if (contactsCount == 1)
-	{
-		Contact contact = chat().contacts().toContact();
-
-		if (ChatConfigurationHolder::instance()->chatContents().isEmpty())
-		{
-			title = tr("Chat with ");
-			if (contact.isAnonymous())
-				title += Parser::parse("%a", Talkable(contact), ParserEscape::NoEscape);
-			else
-				title += Parser::parse("%a (%s[: %d])", Talkable(contact), ParserEscape::NoEscape);
-		}
-		else
-			title = Parser::parse(ChatConfigurationHolder::instance()->chatContents(), Talkable(contact), ParserEscape::NoEscape);
-
-		if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
-		{
-			QString message;
-			if (CurrentContactActivity == ChatStateService::StateComposing)
-			{
-				if (ChatConfigurationHolder::instance()->contactStateWindowTitleComposingSyntax().isEmpty())
-					message = tr("(Composing...)");
-				else
-					message = ChatConfigurationHolder::instance()->contactStateWindowTitleComposingSyntax();
-			}
-			else if (CurrentContactActivity == ChatStateService::StateInactive)
-				message = tr("(Inactive)");
-			title = ChatConfigurationHolder::instance()->contactStateWindowTitlePosition() == 0 ? message + " " + title : title + " "  + message;
-		}
-	}
-
-	title.replace("\n", " ");
-	title.replace("\r", " ");
-	title.replace("<br/>", " ");
-	title.replace("&nbsp;", " ");
-
-	setChatWidgetTitle(title);
-
-	kdebugf2();
-}
-
-void ChatWidget::setChatWidgetTitle(const QString &title)
-{
-	if (title != Title)
-	{
-		Title = title;
-		emit chatWidgetTitleChanged(this, title);
-	}
-}
-
-QString ChatWidget::chatWidgetTitle() const
+ChatWidgetTitle * ChatWidget::title() const
 {
 	return Title;
-}
-
-QIcon ChatWidget::icon()
-{
-	int contactsCount = chat().contacts().count();
-	if (contactsCount == 1)
-	{
-		Contact contact = chat().contacts().toContact();
-		if (contact)
-			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
-	}
-	else if (contactsCount > 1)
-		return ChatTypeManager::instance()->chatType("ContactSet")->icon().icon();
-
-	return KaduIcon("internet-group-chat").icon();
 }
 
 void ChatWidget::addMessages(const SortedMessages &messages)
@@ -796,11 +681,13 @@ void ChatWidget::updateComposing()
 	IsComposing = true;
 }
 
+ChatStateService::State ChatWidget::chatState() const
+{
+	return CurrentContactActivity;
+}
+
 void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
-	if (!CurrentFormattedStringFactory)
-		return;
-
 	if (CurrentContactActivity == state)
 		return;
 
@@ -808,12 +695,13 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 		return;
 
 	CurrentContactActivity = state;
+	emit chatStateChanged(CurrentContactActivity);
+
+	if (!CurrentFormattedStringFactory)
+		return;
 
 	if (ChatConfigurationHolder::instance()->contactStateChats())
 		MessagesView->contactActivityChanged(contact, state);
-
-	if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
-		refreshTitle();
 
 	if (CurrentContactActivity == ChatStateService::StateGone)
 	{
@@ -843,20 +731,6 @@ void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled)
 		return;
 
 	handled = keyPressEventHandled(e);
-}
-
-void ChatWidget::setUnreadMessagesCount(int unreadMessagesCount)
-{
-	if (UnreadMessagesCount == unreadMessagesCount)
-		return;
-
-	UnreadMessagesCount = unreadMessagesCount;
-	emit unreadMessagesCountChanged(this);
-}
-
-int ChatWidget::unreadMessagesCount() const
-{
-	return UnreadMessagesCount;
 }
 
 #include "moc_chat-widget.cpp"
