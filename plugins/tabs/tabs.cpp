@@ -44,6 +44,7 @@
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-set-title.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -82,13 +83,14 @@ TabsManager::TabsManager(QObject *parent) :
 
 	createDefaultConfiguration();
 
-	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
-
 	TabDialog = new TabWidget(this);
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
 			this, SLOT(onContextMenu(QWidget *, const QPoint &)));
+
+	Title = new ChatWidgetSetTitle{this};
+	connect(Title, SIGNAL(titleChanged()), this, SLOT(onTitleChanged()));
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("Chat", "TabWindowsGeometry"), QRect(30, 30, 550, 400), TabDialog);
 
@@ -127,7 +129,6 @@ TabsManager::~TabsManager()
 		->removeAction(OpenInNewTabActionDescription)
 		->update();
 
-	Timer.stop();
 	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
 
 	if (m_chatWidgetRepository)
@@ -287,10 +288,16 @@ void TabsManager::onTitleChanged(ChatWidget *chatWidget)
 		return;
 
 	updateTabTitle(chatWidget);
-	if (TabDialog->currentIndex() == chatIndex)
-		TabDialog->setWindowTitle(TabDialog->tabText(chatIndex));
+	//if (TabDialog->currentIndex() == chatIndex)
+		//TabDialog->setWindowTitle(TabDialog->tabText(chatIndex));
 
 	kdebugf2();
+}
+
+void TabsManager::onTitleChanged()
+{
+	TabDialog->setWindowTitle(Title->fullTitle());
+	TabDialog->setWindowIcon(Title->icon());
 }
 
 void TabsManager::onTabChange(int index)
@@ -299,13 +306,14 @@ void TabsManager::onTabChange(int index)
 		return;
 
 	ChatWidget *chatWidget = static_cast<ChatWidget *>(TabDialog->widget(index));
+	Title->setActiveChatWidget(chatWidget);
 
 	const Chat &chat = chatWidget->chat();
 	if (chat.unreadMessagesCount() > 0)
 		emit chatWidgetActivated(chatWidget);
 
-	TabDialog->setWindowTitle(chatWidget->title()->title());
-	TabDialog->setWindowIcon(chatWidget->title()->icon());
+	//TabDialog->setWindowTitle(chatWidget->title()->title());
+	//TabDialog->setWindowIcon(chatWidget->title()->icon());
 
 	chatWidget->edit()->setFocus();
 }
@@ -349,6 +357,7 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 {
 	kdebugf();
 
+	Title->addChatWidget(chatWidget);
 	bool restoreChatGeometry = true;
 
 	// jeśli jest otwarty chatwindow przypisany do chat to zostanie on zamknięty
@@ -369,7 +378,7 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	}
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
-	TabDialog->insertTab(TargetTabs, chatWidget, chatWidget->title()->icon(), QString());
+	TabDialog->insertTab(TargetTabs, chatWidget, chatWidget->title()->blinkingIcon(), QString());
 
 	if (restoreChatGeometry)
 		chatWidget->kaduRestoreGeometry();
@@ -390,72 +399,6 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 		emit chatWidgetActivated(chatWidget);
 
 	kdebugf2();
-}
-
-// uff, troche dziwne to ale dziala tak jak trzeba
-// TODO: review this!!!
-void TabsManager::onTimer()
-{
-	kdebugf();
-	static bool msg = true;
-
-	bool tabsActive = _isWindowActiveOrFullyVisible(TabDialog);
-	ChatWidget *currentChatWidget = static_cast<ChatWidget *>(TabDialog->currentWidget());
-	if (!currentChatWidget)
-	{
-		// that means we are closing window now
-		return;
-	}
-
-	auto unreadChatWidget = chatWidgetWithUnreadMessage();
-	if (unreadChatWidget && !tabsActive)
-	{
-		qApp->alert(TabDialog);
-
-		if (currentChatWidget->chat().unreadMessagesCount() > 0)
-		{
-			if (ConfigBlinkChatTitle)
-				TabDialog->setWindowTitle(msg
-						? QString(currentChatWidget->title()->title().length() + 5, ' ')
-						: currentChatWidget->title()->title());
-			else if (ConfigShowNewMessagesNum)
-				TabDialog->setWindowTitle('[' + QString::number(currentChatWidget->chat().unreadMessagesCount()) + "] " + currentChatWidget->title()->title());
-			else
-				TabDialog->setWindowTitle(currentChatWidget->title()->title());
-		}
-		else if (ConfigBlinkChatTitle && !msg)
-			TabDialog->setWindowTitle(tr("NEW MESSAGE(S)"));
-		else
-			TabDialog->setWindowTitle(unreadChatWidget->title()->title());
-	}
-	else
-		TabDialog->setWindowTitle(currentChatWidget->title()->title());
-
-	msg = !msg;
-
-	if (unreadChatWidget && !Timer.isActive())
-		Timer.start(500);
-	else if (!unreadChatWidget && Timer.isActive())
-		Timer.stop();
-
-	kdebugf2();
-}
-
-ChatWidget * TabsManager::chatWidgetWithUnreadMessage() const
-{
-	auto count = TabDialog->count();
-	for (auto i = 0; i < count; i++)
-	{
-		auto chatWidget = qobject_cast<ChatWidget *>(TabDialog->widget(i));
-		if (chatWidget)
-		{
-			auto chat = chatWidget->chat();
-			if (chat.unreadMessagesCount() > 0)
-				return chatWidget;
-		}
-	}
-
-	return {};
 }
 
 void TabsManager::onTabAttach(QAction *sender, bool toggled)
@@ -651,8 +594,6 @@ void TabsManager::configurationUpdated()
 
 	ConfigTabsBelowChats = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "TabsBelowChats");
 	ConfigDefaultTabs = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs");
-	ConfigBlinkChatTitle = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle");
-	ConfigShowNewMessagesNum = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle");
 
 	TabDialog->setTabPosition(ConfigTabsBelowChats ? QTabWidget::South : QTabWidget::North);
 
@@ -670,8 +611,9 @@ void TabsManager::configurationUpdated()
 
 void TabsManager::setConfiguration(ChatWidget* chatWidget)
 {
-	chatWidget->title()->setBlinkIconWhenUnreadMessages(
-		Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true));
+	auto blinkChatTitle = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true);
+	chatWidget->title()->setBlinkIconWhenUnreadMessages(blinkChatTitle);
+	chatWidget->title()->setBlinkTitleWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setComposingStatePosition(ChatConfigurationHolder::instance()->composingStatePosition());
 	chatWidget->title()->setShowUnreadMessagesCount(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
@@ -688,7 +630,7 @@ void TabsManager::updateTabTitle(ChatWidget *chatWidget)
 
 	TabDialog->setTabText(index, chatWidget->title()->shortTitle());
 	TabDialog->setTabToolTip(index, chatWidget->title()->tooltip());
-	TabDialog->setTabIcon(index, chatWidget->title()->icon());
+	TabDialog->setTabIcon(index, chatWidget->title()->blinkingIcon());
 	if (TabDialog->currentIndex() == index)
 		TabDialog->setWindowIcon(TabDialog->tabIcon(index));
 }

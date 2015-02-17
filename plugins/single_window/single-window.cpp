@@ -179,7 +179,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, m_tabs).release();
 	setConfiguration(chatWidget);
 
-	m_tabs->addTab(chatWidget, chatWidget->title()->icon(), QString());
+	m_tabs->addTab(chatWidget, chatWidget->title()->blinkingIcon(), QString());
 	updateTabTitle(chatWidget);
 
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
@@ -221,7 +221,7 @@ void SingleWindow::updateTabTitle(ChatWidget *chatWidget)
 
 	m_tabs->setTabText(i, chatWidget->title()->shortTitle());
 	m_tabs->setTabToolTip(i, chatWidget->title()->tooltip());
-	m_tabs->setTabIcon(i, chatWidget->title()->icon());
+	m_tabs->setTabIcon(i, chatWidget->title()->blinkingIcon());
 }
 
 void SingleWindow::closeTab(ChatWidget *chatWidget)

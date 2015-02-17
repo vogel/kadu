@@ -159,7 +159,6 @@ signals:
 	void widgetDestroyed(ChatWidget *widget);
 
 	void closeRequested(ChatWidget *chatWidget);
-	void unreadMessagesCountChanged(ChatWidget *chatWidget);
 	void chatStateChanged(ChatStateService::State state);
 
 };

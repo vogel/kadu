@@ -68,6 +68,11 @@ QString ChatWidgetTitle::shortTitle() const
 
 QString ChatWidgetTitle::fullTitle() const
 {
+	return m_fullTitle;
+}
+
+QString ChatWidgetTitle::blinkingFullTitle() const
+{
 	return m_blinkTimer && m_blink && m_blinkTitleWhenUnreadMessages
 			? QString{" "} // do not emit empty title
 			: m_fullTitle;
@@ -79,6 +84,13 @@ QString ChatWidgetTitle::tooltip() const
 }
 
 QIcon ChatWidgetTitle::icon() const
+{
+	return chatWidget()->chat().unreadMessagesCount() > 0
+			? KaduIcon("protocols/common/message").icon()
+			: m_icon;
+}
+
+QIcon ChatWidgetTitle::blinkingIcon() const
 {
 	auto showMessageIcon = m_blinkTimer && m_blinkIconWhenUnreadMessages
 			? m_blink

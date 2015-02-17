@@ -176,8 +176,8 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 void ChatWindow::updateTitle()
 {
-	setWindowTitle(m_chatWidget->title()->fullTitle());
-	setWindowIcon(m_chatWidget->title()->icon());
+	setWindowTitle(m_chatWidget->title()->blinkingFullTitle());
+	setWindowIcon(m_chatWidget->title()->blinkingIcon());
 }
 
 void ChatWindow::changeEvent(QEvent *event)

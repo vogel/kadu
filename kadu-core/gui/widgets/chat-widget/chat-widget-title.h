@@ -43,9 +43,11 @@ public:
 	QString title() const;
 	QString shortTitle() const;
 	QString fullTitle() const;
+	QString blinkingFullTitle() const;
 	QString tooltip() const;
 
 	QIcon icon() const;
+	QIcon blinkingIcon() const;
 
 	void setComposingStatePosition(ChatWidgetTitleComposingStatePosition composingStatePosition);
 	void setShowUnreadMessagesCount(bool showUnreadMessagesCount);

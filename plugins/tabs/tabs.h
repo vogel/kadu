@@ -46,6 +46,7 @@ class Action;
 class ActionDescription;
 class ChatWidget;
 class ChatWidgetRepository;
+class ChatWidgetSetTitle;
 
 enum class OpenChatActivation;
 
@@ -64,7 +65,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	ActionDescription *OpenInNewTabActionDescription;
 	ActionDescription *AttachToTabsActionDescription;
 	TabWidget *TabDialog;
-	QTimer Timer;
 	QList<Chat> DetachedChats;
 	QList<Chat> ClosedChats;
 
@@ -77,6 +77,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QAction *CloseTabMenuAction;
 	QAction *CloseOtherTabsMenuAction;
 	QAction *ReopenClosedTabMenuAction;
+	ChatWidgetSetTitle *Title;
 
 	void updateTabTitle(ChatWidget *chatWidget);
 
@@ -85,14 +86,10 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	*/
 	bool ConfigTabsBelowChats;
 	bool ConfigDefaultTabs;
-	bool ConfigBlinkChatTitle;
-	bool ConfigShowNewMessagesNum;
 
-	ChatWidget * chatWidgetWithUnreadMessage() const;
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
-	void onTimer();
 	void onContextMenu(QWidget *w, const QPoint &pos);
 	void onMenuActionDetach();
 	void onMenuActionDetachAll();
@@ -132,6 +129,7 @@ public:
 public slots:
 	void onDestroyingChat(ChatWidget *chatWidget);
 	void onTitleChanged(ChatWidget *chatWidget);
+	void onTitleChanged();
 
 	void onTabChange(int index);
 
