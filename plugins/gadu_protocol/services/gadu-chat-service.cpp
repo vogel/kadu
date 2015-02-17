@@ -343,41 +343,16 @@ void GaduChatService::handleEventMultilogonMsg(gg_event *e)
 	handleMsg(sender, recipients, MessageTypeSent, e);
 }
 
-void GaduChatService::handleEventAck(struct gg_event *e)
+void GaduChatService::handleEventAck11(gg_event *e)
 {
-	kdebugf();
-
-	int messageId = e->event.ack.seq;
+	auto messageId = e->event.ack110.seq;
 	if (!UndeliveredMessages.contains(messageId))
 		return;
 
-	UinType uin = e->event.ack.recipient;
-	Q_UNUSED(uin) // only in debug mode
-
-	switch (e->event.ack.status)
-	{
-		case GG_ACK_DELIVERED:
-		case GG_ACK_QUEUED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d, status: %d)\n", uin, messageId, e->event.ack.status);
-			UndeliveredMessages[messageId].setStatus(MessageStatusDelivered);
-			emit sentMessageStatusChanged(UndeliveredMessages[messageId]);
-			break;
-		case GG_ACK_BLOCKED:
-		case GG_ACK_MBOXFULL:
-		case GG_ACK_NOT_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d, status: %d)\n", uin, messageId, e->event.ack.status);
-			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
-			emit sentMessageStatusChanged(UndeliveredMessages[messageId]);
-			break;
-		default:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %u, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
-			return;
-	}
-	UndeliveredMessages.remove(messageId);
+	UndeliveredMessages[messageId].setStatus(MessageStatusDelivered);
+	emit sentMessageStatusChanged(UndeliveredMessages[messageId]);
 
 	removeTimeoutUndeliveredMessages();
-
-	kdebugf2();
 }
 
 void GaduChatService::removeTimeoutUndeliveredMessages()

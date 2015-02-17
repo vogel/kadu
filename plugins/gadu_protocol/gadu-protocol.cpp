@@ -260,8 +260,8 @@ void GaduProtocol::connectSocketNotifiersToServices()
 	        CurrentChatService, SLOT(handleEventMsg(gg_event*)));
 	connect(SocketNotifiers, SIGNAL(multilogonMsgEventReceived(gg_event*)),
 	        CurrentChatService, SLOT(handleEventMultilogonMsg(gg_event*)));
-	connect(SocketNotifiers, SIGNAL(ackEventReceived(gg_event*)),
-	        CurrentChatService, SLOT(handleEventAck(gg_event*)));
+	connect(SocketNotifiers, SIGNAL(ack11EventReceived(gg_event*)),
+	        CurrentChatService, SLOT(handleEventAck11(gg_event*)));
 	connect(SocketNotifiers, SIGNAL(typingNotifyEventReceived(gg_event*)),
 	        CurrentChatStateService, SLOT(handleEventTypingNotify(gg_event*)));
 }

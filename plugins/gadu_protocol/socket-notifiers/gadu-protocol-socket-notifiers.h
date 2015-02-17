@@ -45,7 +45,7 @@ public:
 signals:
 	void msgEventReceived(struct gg_event *e);
 	void multilogonMsgEventReceived(struct gg_event *e);
-	void ackEventReceived(struct gg_event *e);
+	void ack11EventReceived(struct gg_event *e);
 
 	void typingNotifyEventReceived(struct gg_event *e);
 
