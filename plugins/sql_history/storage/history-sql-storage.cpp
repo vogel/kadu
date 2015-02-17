@@ -296,7 +296,7 @@ int HistorySqlStorage::findOrCreateDate(const QDate &date)
 	if (query.next())
 	{
 		dateId = query.value(0).toInt();
-		Q_ASSERT(!query.next());
+		// Q_ASSERT(!query.next());
 	}
 	else
 	{
