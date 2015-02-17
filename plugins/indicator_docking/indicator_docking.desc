@@ -7,3 +7,4 @@ Author=Marcin Dawidziuk, Kadu Team
 Version=core
 Category=Notifications
 LoadByDefault=true
+Provides=desktop_integration
