@@ -7,6 +7,7 @@
 * gui: #2811 fixed: do not show "Move to group" menu option if moving from Everybody or Ungroupped (Vogel)
 * encryption_ng: #2952 implemented: add depreceation message (Vogel)
 * gadu: #2241 implemented: update contact's avatars on GG event (Vogel)
+* gui: #2944 fixed: proper behavior with different combination of window title blinking and new message count included in title (Vogel)
 
 +++ version 2.0
 * unity: #2699 fixed: force indicator_docking on Unity (Vogel)
