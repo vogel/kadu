@@ -24,6 +24,7 @@
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-set-title.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
@@ -110,7 +111,11 @@ SingleWindow::SingleWindow()
 	}
 	m_split->setSizes(m_splitSizes);
 
-	setWindowTitle(kadu->windowTitle());
+	m_title = new ChatWidgetSetTitle{this};
+	connect(m_title, SIGNAL(titleChanged()), this, SLOT(titleChanged()));
+
+	m_title->setDefaultTile(kadu->windowTitle());
+	m_title->setDefaultIcon(kadu->windowIcon());
 
 	connect(m_tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	connect(m_tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
@@ -152,6 +157,12 @@ SingleWindow::~SingleWindow()
 		kadu->setVisible(visible);
 }
 
+void SingleWindow::titleChanged()
+{
+	setWindowTitle(m_title->fullTitle());
+	setWindowIcon(m_title->icon());
+}
+
 void SingleWindow::changeEvent(QEvent *event)
 {
 	QWidget::changeEvent(event);
@@ -177,6 +188,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 		return nullptr;
 
 	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, m_tabs).release();
+	m_title->addChatWidget(chatWidget);
 	setConfiguration(chatWidget);
 
 	m_tabs->addTab(chatWidget, chatWidget->title()->blinkingIcon(), QString());
@@ -185,8 +197,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 
-	connect(chatWidget->title(), SIGNAL(titleChanged(ChatWidget)),
-			this, SLOT(onTitleChanged(ChatWidget*)));
+	connect(chatWidget->title(), SIGNAL(titleChanged(ChatWidget*)), this, SLOT(onTitleChanged(ChatWidget*)));
 	connect(chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(closeTab(ChatWidget*)));
 
 	return chatWidget;
@@ -233,6 +244,7 @@ void SingleWindow::closeTab(ChatWidget *chatWidget)
 	disconnect(chatWidget, 0, this, 0);
 
 	m_tabs->removeTab(m_tabs->indexOf(chatWidget));
+	m_title->setActiveChatWidget(static_cast<ChatWidget *>(m_tabs->currentWidget()));
 
 	chatWidget->deleteLater();
 }
@@ -251,8 +263,9 @@ void SingleWindow::configurationUpdated()
 
 void SingleWindow::setConfiguration(ChatWidget *chatWidget)
 {
-	chatWidget->title()->setBlinkIconWhenUnreadMessages(
-		Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true));
+	auto blinkChatTitle = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true);
+	chatWidget->title()->setBlinkIconWhenUnreadMessages(blinkChatTitle);
+	chatWidget->title()->setBlinkTitleWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setComposingStatePosition(ChatConfigurationHolder::instance()->composingStatePosition());
 	chatWidget->title()->setShowUnreadMessagesCount(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
@@ -317,7 +330,8 @@ void SingleWindow::onTabChange(int index)
 	if (index == -1)
 		return;
 
-	ChatWidget *chatWidget = (ChatWidget *)m_tabs->widget(index);
+	auto chatWidget = (ChatWidget *)m_tabs->widget(index);
+	m_title->setActiveChatWidget(chatWidget);
 	if (isChatWidgetActive(chatWidget))
 		emit chatWidgetActivated(chatWidget);
 }

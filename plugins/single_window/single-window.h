@@ -14,6 +14,8 @@ class QSplitter;
 class QTabWidget;
 
 class ChatWidget;
+class ChatWidgetSetTitle;
+
 enum class OpenChatActivation;
 
 class SingleWindow : public QWidget, ConfigurationAwareObject
@@ -59,9 +61,13 @@ private:
 	QTabWidget *m_tabs;
 	QList<int> m_splitSizes;
 	int m_rosterPos;
+	ChatWidgetSetTitle *m_title;
 
 	void updateTabTitle(ChatWidget *chatWidget);
 	void setConfiguration(ChatWidget *chatWidget);
+
+private slots:
+	void titleChanged();
 
 };
 
