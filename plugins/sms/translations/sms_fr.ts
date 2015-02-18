@@ -73,7 +73,7 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     </message>
     <message>
         <source>SMS custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>Arguments SMS personnalisés</translation>
     </message>
     <message>
         <source>Behavior</source>
@@ -192,31 +192,31 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     <name>SmsTokenReadJob</name>
     <message>
         <source>Invalid paremeters for token read job.</source>
-        <translation type="unfinished"/>
+        <translation>Paramètre invalide pour la lecture de l&apos;image symbolique.</translation>
     </message>
     <message>
         <source>Downloading token image...</source>
-        <translation type="unfinished"/>
+        <translation>Téléchargement de l&apos;image symbolique...</translation>
     </message>
     <message>
         <source>Unable to fetch token image.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer l&apos;image symbolique.</translation>
     </message>
     <message>
         <source>Unable to read token image.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de lire l&apos;image symbolique.</translation>
     </message>
     <message>
         <source>Waiting for entry of token value...</source>
-        <translation type="unfinished"/>
+        <translation>En attente de saisie de l&apos;image symbolique...</translation>
     </message>
     <message>
         <source>No token value provided.</source>
-        <translation type="unfinished"/>
+        <translation>Aucune valeur de fourni pour l&apos;image symbolique.</translation>
     </message>
     <message>
         <source>Received token value.</source>
-        <translation type="unfinished"/>
+        <translation>Image symbolique reçu.</translation>
     </message>
 </context>
 </TS>

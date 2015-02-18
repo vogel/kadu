@@ -79,15 +79,15 @@
     </message>
     <message>
         <source>Kadu will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
-        <translation type="unfinished"/>
+        <translation>Kadu va demander la question saisie ci-dessous, si quelqu&apos;un veut vous parler et ne vous a pas dans sa liste de contacts.</translation>
     </message>
     <message>
         <source>Drop chats with unknown person when I am invisible/unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Fermer les conversations avec les anonymes lorsque je suis invisible/indisponible</translation>
     </message>
     <message>
         <source>Reaction on right answer</source>
-        <translation type="unfinished"/>
+        <translation>Comportement sur bonne réponse</translation>
     </message>
 </context>
 <context>
@@ -124,7 +124,9 @@
         <source>This message has been generated AUTOMATICALLY!
 
 I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
-        <translation type="unfinished"/>
+        <translation>Ce message a été généré automatiquement
+
+Je suis une personne occupé et je n&apos;ai pas le temps pour les conversations stupides. Chercher une autre personne avec qui parler. Si vous voulez RÉELLEMENT quelque chose de ma part, saisissez simplement &quot;je veux quelque chose&quot; ( lettres capitales n&apos;importent pas )</translation>
     </message>
     <message>
         <source>Are you sure you want to send this message?</source>
@@ -150,12 +152,14 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another
         <source>This message has been generated AUTOMATICALLY!
 
 I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
-        <translation type="unfinished"/>
+        <translation>Ce message a été généré automatiquement
+
+Je suis une personne occupé et je n&apos;ai pas le temps pour les conversations stupides. Si vous voulez me parler changez d&apos;abord votre état en Disponible ou Occupé.</translation>
     </message>
     <message>
         <source>Chat with invisible anonim ignored.
 </source>
-        <translation type="unfinished"/>
+        <translation>Les conversations avec les anonymes invisibles sont ignorés.</translation>
     </message>
     <message>
         <source>      DATA AND TIME      ::   ID      :: MESSAGE

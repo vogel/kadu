@@ -1093,7 +1093,7 @@ les changements interviendront à la connexion du serveur</translation>
     </message>
     <message>
         <source>Roster</source>
-        <translation type="unfinished"/>
+        <translation>Liste de contacts</translation>
     </message>
     <message>
         <source>Import from server succeeded</source>
@@ -3352,23 +3352,23 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>RosterNotifier</name>
     <message>
         <source>Roster</source>
-        <translation type="unfinished"/>
+        <translation>Liste de contacts</translation>
     </message>
     <message>
         <source>%1: roster import succeded</source>
-        <translation type="unfinished"/>
+        <translation>%1: Liste de contacts importée avec succès</translation>
     </message>
     <message>
         <source>%1: roster import failed</source>
-        <translation type="unfinished"/>
+        <translation>%1: échec d&apos;import de la liste des contacts</translation>
     </message>
     <message>
         <source>%1: roster export succeded</source>
-        <translation type="unfinished"/>
+        <translation>%1: Liste de contacts exportée avec succès</translation>
     </message>
     <message>
         <source>%1: roster export failed</source>
-        <translation type="unfinished"/>
+        <translation>%1: échec de l&apos;export de liste de contacts</translation>
     </message>
 </context>
 <context>
