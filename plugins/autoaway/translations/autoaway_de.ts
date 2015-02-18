@@ -35,31 +35,31 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Sekunde</numerusform><numerusform>%n Sekunden</numerusform></translation>
     </message>
     <message>
         <source>Do Not Change</source>
-        <translation type="unfinished"/>
+        <translation>Nicht ändern</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Verhalten</translation>
     </message>
     <message>
         <source>Inactivity</source>
-        <translation type="unfinished"/>
+        <translation>Untätigkeit</translation>
     </message>
     <message>
         <source>Refresh status every</source>
-        <translation type="unfinished"/>
+        <translation>Aktualisierung des Status alle</translation>
     </message>
     <message>
         <source>Switch to &apos;away&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Status &quot;Abwesend&quot; setzen</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Minute</numerusform><numerusform>%n Minuten</numerusform></translation>
     </message>
     <message>
         <source>Switch to &apos;auto extended away&apos;</source>
@@ -67,27 +67,27 @@
     </message>
     <message>
         <source>Switch to &apos;invisible&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Status &quot;Unsichtbar&quot; setzen</translation>
     </message>
     <message>
         <source>Switch to &apos;offline&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Status &quot;Offline&quot; setzen</translation>
     </message>
     <message>
         <source>Set status to offline after</source>
-        <translation type="unfinished"/>
+        <translation>Setze &quot;Offline&quot; nach</translation>
     </message>
     <message>
         <source>Status description when inactive</source>
-        <translation type="unfinished"/>
+        <translation>Statusbeschreibung, wenn inaktiv</translation>
     </message>
     <message>
         <source>Prepend</source>
-        <translation type="unfinished"/>
+        <translation>Voranstellen</translation>
     </message>
     <message>
         <source>Append</source>
-        <translation type="unfinished"/>
+        <translation>Anhängen</translation>
     </message>
 </context>
 <context>

@@ -157,7 +157,7 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"/>
+        <translation>SMS versandt</translation>
     </message>
 </context>
 <context>
@@ -184,7 +184,7 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"/>
+        <translation>SMS versandt</translation>
     </message>
 </context>
 <context>

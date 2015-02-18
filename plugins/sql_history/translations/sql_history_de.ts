@@ -3,86 +3,87 @@
     <name>HistorySqlStorage</name>
     <message>
         <source>Preparing history database...</source>
-        <translation type="unfinished"/>
+        <translation>Bereite Verlaufsdatenbank vor...</translation>
     </message>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Verlauf</translation>
     </message>
     <message>
         <source>Opening database failed. Error message:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Öffnen der Datenbank fehlgeschlagen. Fehlermeldung:
+%1</translation>
     </message>
 </context>
 <context>
     <name>SqlInitializer</name>
     <message>
         <source>Copying history file to new location: %1 ...</source>
-        <translation type="unfinished"/>
+        <translation>Kopiere Verlaufsdatei an neuen Speicherort: %1...</translation>
     </message>
     <message>
         <source>Unable to copy history file to new location. Check if disk is full.</source>
-        <translation type="unfinished"/>
+        <translation>Verlaufsdatei kann nicht an neuen Speicherort kopiert werden. Überprüfe, ob das Speichermedium voll ist.</translation>
     </message>
     <message>
         <source>Unable to open database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Datenbank kann nicht geöffnet werden: %1</translation>
     </message>
     <message>
         <source>History file is corrupted, performing recovery...</source>
-        <translation type="unfinished"/>
+        <translation>Verlaufsdatei beschädigt. Wiederherstellung wird ausgeführt...</translation>
     </message>
     <message>
         <source>Recovery completed.</source>
-        <translation type="unfinished"/>
+        <translation>Wiederherstellung abgeschlossen.</translation>
     </message>
     <message>
         <source>Recovery failed: %s</source>
-        <translation type="unfinished"/>
+        <translation>Wiederherstellung fehlgeschlagen: %s</translation>
     </message>
     <message>
         <source>History file is outdated, performing import...</source>
-        <translation type="unfinished"/>
+        <translation>Verlaufsdatei ist veraltet, Import wird ausgeführt...</translation>
     </message>
     <message>
         <source>Import completed.</source>
-        <translation type="unfinished"/>
+        <translation>Import abgeschlossen.</translation>
     </message>
     <message>
         <source>Copying completed.</source>
-        <translation type="unfinished"/>
+        <translation>Kopieren abgeschlossen.</translation>
     </message>
 </context>
 <context>
     <name>SqlRestore</name>
     <message>
         <source>No error.</source>
-        <translation type="unfinished"/>
+        <translation>Kein Fehler.</translation>
     </message>
     <message>
         <source>sqlite3 executable not found.</source>
-        <translation type="unfinished"/>
+        <translation>sqlite3 Programmdatei nicht gefunden.</translation>
     </message>
     <message>
         <source>Invalid invocation of recovery script.</source>
-        <translation type="unfinished"/>
+        <translation>Ungültiger Aufruf des Wiederherstellungsskripts.</translation>
     </message>
     <message>
         <source>Unable to read corrupted database.</source>
-        <translation type="unfinished"/>
+        <translation>Beschädigte Datenbank kann nicht gelesen werden.</translation>
     </message>
     <message>
         <source>Unable to create backup file. Disc may be full.</source>
-        <translation type="unfinished"/>
+        <translation>Erstellen einer Sicherungsdatei nicht möglich. Möglicherweise ist das Speichermedium voll.</translation>
     </message>
     <message>
         <source>Recovery script not found or not executable.</source>
-        <translation type="unfinished"/>
+        <translation> Wiederherstellungsskript konnte nicht gefunden werden oder ist nicht ausführbar.</translation>
     </message>
     <message>
         <source>Unknown error during database recovery.</source>
-        <translation type="unfinished"/>
+        <translation>Unbekannter Fehler während Datenbankwiederherstellung.</translation>
     </message>
 </context>
 </TS>

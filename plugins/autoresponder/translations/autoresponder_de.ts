@@ -31,15 +31,15 @@
     </message>
     <message>
         <source>Auto Responder</source>
-        <translation type="unfinished"/>
+        <translation>Automatische Antwort</translation>
     </message>
     <message>
         <source>Auto answer text</source>
-        <translation type="unfinished"/>
+        <translation>Automatischer Antworttext</translation>
     </message>
     <message>
         <source>Choose Status</source>
-        <translation type="unfinished"/>
+        <translation>Wähle Status</translation>
     </message>
 </context>
 <context>

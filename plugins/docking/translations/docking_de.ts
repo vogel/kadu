@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Start minimized</source>
-        <translation type="unfinished"/>
+        <translation>Minimiert starten</translation>
     </message>
     <message>
         <source>Show tooltip over tray icon</source>
@@ -54,15 +54,15 @@
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Beschreibung</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Descriptions</source>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>Silent mode</source>
-        <translation type="unfinished"/>
+        <translation>Stiller Modus</translation>
     </message>
 </context>
 </TS>

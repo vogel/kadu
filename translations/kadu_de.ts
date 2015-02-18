@@ -455,7 +455,7 @@
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished"/>
+        <translation>Blockieren</translation>
     </message>
     <message>
         <source>Headers and Separators</source>
@@ -649,11 +649,11 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Beginning of title</source>
-        <translation type="unfinished"/>
+        <translation>Anfang des Titels</translation>
     </message>
     <message>
         <source>End of title</source>
-        <translation type="unfinished"/>
+        <translation>Ende des Titels</translation>
     </message>
     <message>
         <source>Custom composing notification syntax</source>
@@ -661,55 +661,55 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Move the Window to the Active Desktop</source>
-        <translation type="unfinished"/>
+        <translation>Fenster auf aktiven Desktop verschieben</translation>
     </message>
     <message>
         <source>Switch Desktop Making the Window Visible</source>
-        <translation type="unfinished"/>
+        <translation>Umschalten des Desktops macht Fenster unsichtbar</translation>
     </message>
     <message>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Wähle Status</translation>
     </message>
     <message>
         <source>For All Accounts</source>
-        <translation type="unfinished"/>
+        <translation>Für alle Konten</translation>
     </message>
     <message>
         <source>Last Status</source>
-        <translation type="unfinished"/>
+        <translation>Letzter Status</translation>
     </message>
     <message>
         <source>Free for Chat</source>
-        <translation type="unfinished"/>
+        <translation>Bereit zum Chatten</translation>
     </message>
     <message>
         <source>Do Not Disturb</source>
-        <translation type="unfinished"/>
+        <translation>Nicht stören</translation>
     </message>
     <message>
         <source>My nick color</source>
-        <translation type="unfinished"/>
+        <translation>Farbe des Benutzernamens</translation>
     </message>
     <message>
         <source>Buddy&apos;s nick color</source>
-        <translation type="unfinished"/>
+        <translation>Farbe des Namens des Chatpartners</translation>
     </message>
     <message>
         <source>My messages&apos; background</source>
-        <translation type="unfinished"/>
+        <translation>Hintergrund meiner Nachrichten</translation>
     </message>
     <message>
         <source>Buddy&apos;s messages&apos; background</source>
-        <translation type="unfinished"/>
+        <translation>Hintergrund der Nachrichten der Chatpartner</translation>
     </message>
     <message>
         <source>Use custom chat background color</source>
-        <translation type="unfinished"/>
+        <translation>Benutze eigene Hintergrundfarbe</translation>
     </message>
     <message>
         <source>Chat background</source>
-        <translation type="unfinished"/>
+        <translation>Chat Hintergrund</translation>
     </message>
     <message>
         <source>Use custom text edit colors</source>
@@ -725,22 +725,25 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Information panel</source>
-        <translation type="unfinished"/>
+        <translation>Informationspanel</translation>
     </message>
     <message>
         <source>Tiled and Centered</source>
-        <translation type="unfinished"/>
+        <translation>Gekachelt und zentriert</translation>
     </message>
     <message>
         <source>Open chat window only when I am online</source>
-        <translation type="unfinished"/>
+        <translation>Chatfenster nur öffnen, wenn ich &quot;online&quot; bin</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
-        <translation type="unfinished"/>
+        <translation>Syntax: %s - Status, %d - Beschreibung, %i - ip, %n - nick, %a - altnick, %f - Vorname
+%r - Nachname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - E-Mail, %x - max. Bildergröße, %z - Geschlecht (0/1/2)
+</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -749,23 +752,28 @@ wenn Kontakte sich mit dem Server verbinden</translation>
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
 </source>
-        <translation type="unfinished"/>
+        <translation>Syntax: %s - Status, %d - Beschreibung, %i - ip, %n - nick, %a - altnick, %f - Vorname
+%r - Nachname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - E-Mail, %x - max. Bildergröße, %z - Geschlecht (0/1/2),
+#{protocol} - Protokoll das Event auslöste,
+#{event} - Eventname,
+</translation>
     </message>
     <message>
         <source>Personal</source>
-        <translation type="unfinished"/>
+        <translation>Persönliches</translation>
     </message>
     <message>
         <source>Default proxy</source>
-        <translation type="unfinished"/>
+        <translation>Default proxy</translation>
     </message>
     <message>
         <source>Hide main window icon from taskbar</source>
-        <translation type="unfinished"/>
+        <translation>Hauptfenster nicht in Taskleiste anzeigen</translation>
     </message>
     <message>
         <source>Select window activation method</source>
-        <translation type="unfinished"/>
+        <translation>Wähle Fensteraktivierungsmethode</translation>
     </message>
     <message>
         <source>Turn on blur</source>
@@ -773,147 +781,147 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Background colors</source>
-        <translation type="unfinished"/>
+        <translation>Hintergrundfarben</translation>
     </message>
     <message>
         <source>We&apos;re sorry, but Kadu cannot be loaded. Profile is inaccessible. Please check permissions in the &apos;%1&apos; directory.</source>
-        <translation type="unfinished"/>
+        <translation>Entschuldige, aber Kadu kann nicht geladen werden. Auf das Profil kann nicht zugegriffen werden. Bitte überprüfe die Berechtigungen im &apos;%1&apos; Verzeichnis.</translation>
     </message>
     <message>
         <source>Profile Inaccessible</source>
-        <translation type="unfinished"/>
+        <translation>Profil nicht zugreifbar</translation>
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"/>
+        <translation>Systemstart</translation>
     </message>
     <message>
         <source>Launch Kadu at startup</source>
-        <translation type="unfinished"/>
+        <translation>Kadu beim Systemstart ausführen</translation>
     </message>
     <message>
         <source>Inform about new versions of Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Über neue Versionen von Kadu benachrichtigen</translation>
     </message>
     <message>
         <source>Kadu main window will not be visible in window list on your taskbar</source>
-        <translation type="unfinished"/>
+        <translation>Das Kadu Hauptfenster wird nicht in der Fensterliste auf der Taskleiste angezeigt</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"/>
+        <translation>Verbindung</translation>
     </message>
     <message>
         <source>Parser</source>
-        <translation type="unfinished"/>
+        <translation>Parser</translation>
     </message>
     <message>
         <source>Misc</source>
-        <translation type="unfinished"/>
+        <translation>Anderes</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation type="unfinished"/>
+        <translation>Symbole</translation>
     </message>
     <message>
         <source>Install new icons...</source>
-        <translation type="unfinished"/>
+        <translation>Installiere neue Symbole...</translation>
     </message>
     <message>
         <source>Enable transparency in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Transparenz im Chatfenster aktivieren</translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"/>
+        <translation>Kontaktliste</translation>
     </message>
     <message>
         <source>Show buddies&apos; photos</source>
-        <translation type="unfinished"/>
+        <translation>Bilder von Kontakten anzeigen</translation>
     </message>
     <message>
         <source>Add border to buddies&apos; photos</source>
-        <translation type="unfinished"/>
+        <translation>Rand zu Fotos von Chatpartner hinzufügen</translation>
     </message>
     <message>
         <source>Show buddies&apos; descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Beschreibung von Chatpartner</translation>
     </message>
     <message>
         <source>Split long descriptions into multiple lines</source>
-        <translation type="unfinished"/>
+        <translation>Teile lange Beschreibungen in mehrere Zeilen</translation>
     </message>
     <message>
         <source>Transparency</source>
-        <translation type="unfinished"/>
+        <translation>Transparenz</translation>
     </message>
     <message>
         <source>Enable transparency in buddy list</source>
-        <translation type="unfinished"/>
+        <translation>Aktiviere Transparenz in Kontaktliste</translation>
     </message>
     <message>
         <source>Transparency level</source>
-        <translation type="unfinished"/>
+        <translation>Transparenzstärke</translation>
     </message>
     <message>
         <source>0</source>
-        <translation type="unfinished"/>
+        <translation>0</translation>
     </message>
     <message>
         <source>My message font color</source>
-        <translation type="unfinished"/>
+        <translation>Meine Textfarbe</translation>
     </message>
     <message>
         <source>Buddy&apos;s message font color</source>
-        <translation type="unfinished"/>
+        <translation>Textfarbe des Chatpartners</translation>
     </message>
     <message>
         <source>Use custom font in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Benutze benutzerdefinierte Schriftart im Chatfenster</translation>
     </message>
     <message>
         <source>Use custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
-        <translation type="unfinished"/>
+        <translation>Benutze benutzerdefinierte Schriftarten selbst bei Chatstilen, die ihre eigenen Schriftarten definieren (die meisten Adium Stile machen das)</translation>
     </message>
     <message>
         <source>Limit visible messages in chat window to</source>
-        <translation type="unfinished"/>
+        <translation>Begrenze die Anzahl sichtbarer Nachrichten im Chatfenster auf</translation>
     </message>
     <message>
         <source>Maximum number of messages visible in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Maximale Anzahl sichtbarer Nachrichten im Chatfenster</translation>
     </message>
     <message>
         <source>Fold links in messages</source>
-        <translation type="unfinished"/>
+        <translation>Verkürze Links in Nachrichten</translation>
     </message>
     <message>
         <source>Shorten ugly, long links to save space in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Verkürze lange unleserliche Links, um Platz im Chatfenster zu sparen</translation>
     </message>
     <message>
         <source>Use descriptive date format</source>
-        <translation type="unfinished"/>
+        <translation>Benutze wörtliches Datumsformat</translation>
     </message>
     <message>
         <source>Display dates like Today, Yesterday or Friday, 2:30PM</source>
-        <translation type="unfinished"/>
+        <translation>Datumsangaben menschenfreundlich darstellen, wie: Heute, Gestern, am Freitag, 2:30 nachmittags</translation>
     </message>
     <message>
         <source>Chat syntax</source>
-        <translation type="unfinished"/>
+        <translation>Chatsyntax</translation>
     </message>
     <message>
         <source>Configure...</source>
-        <translation type="unfinished"/>
+        <translation>Konfigurieren...</translation>
     </message>
     <message>
         <source>Buddies window</source>
-        <translation type="unfinished"/>
+        <translation>Kontaktfenster</translation>
     </message>
     <message>
         <source>Show buddy information panel</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Informationspanel des Chatpartners</translation>
     </message>
     <message>
         <source>Displays buddy information panel below the buddy list</source>

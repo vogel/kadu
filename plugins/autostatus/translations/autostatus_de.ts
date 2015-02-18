@@ -3,50 +3,50 @@
     <name>@default</name>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Autostatus file</source>
-        <translation type="unfinished"/>
+        <translation>Autostatus Datei</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Zeit</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Sekunde</numerusform><numerusform>%n Sekunden</numerusform></translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Online</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Beschäfigt</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Unsichtbar</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Verhalten</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Beschreibung</translation>
     </message>
     <message>
         <source>AutoStatus</source>
-        <translation type="unfinished"/>
+        <translation>AutoStatus</translation>
     </message>
 </context>
 <context>
     <name>AutostatusActions</name>
     <message>
         <source>&amp;Autostatus</source>
-        <translation type="unfinished"/>
+        <translation>$Autostatus</translation>
     </message>
 </context>
 </TS>

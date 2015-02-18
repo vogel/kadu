@@ -7,30 +7,30 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Sekunde</numerusform><numerusform>%n Sekunden</numerusform></translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"/>
+        <translation>Kontaktliste</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Buddies window</source>
-        <translation type="unfinished"/>
+        <translation>Kontaktfenster</translation>
     </message>
     <message>
         <source>Hide buddy list window when unused</source>
-        <translation type="unfinished"/>
+        <translation>Kontaktlistenfenster ausblenden, wenn es nicht benutzt wird</translation>
     </message>
 </context>
 <context>
     <name>AutoHide</name>
     <message>
         <source>Don&apos;t hide</source>
-        <translation type="unfinished"/>
+        <translation>Nicht ausblenden</translation>
     </message>
 </context>
 </TS>

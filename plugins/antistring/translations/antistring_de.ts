@@ -19,19 +19,19 @@
     </message>
     <message>
         <source>Block message</source>
-        <translation>Blockieren Sie die Nachricht</translation>
+        <translation>Nachricht blockieren</translation>
     </message>
     <message>
         <source>Admonition</source>
-        <translation type="unfinished"/>
+        <translation>Ermahnung</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation type="unfinished"/>
+        <translation>Protokoll</translation>
     </message>
     <message>
         <source>Write log to file</source>
-        <translation type="unfinished"/>
+        <translation>Protokoll in Datei speichern</translation>
     </message>
     <message>
         <source>Conditions</source>
@@ -54,15 +54,15 @@
     <name>AntistringConfigurationUiHandler</name>
     <message>
         <source>Condition</source>
-        <translation type="unfinished"/>
+        <translation>Bedingung</translation>
     </message>
     <message>
         <source>Don&apos;t use</source>
-        <translation type="unfinished"/>
+        <translation>Nicht benutzen</translation>
     </message>
     <message>
         <source>Factor</source>
-        <translation type="unfinished"/>
+        <translation>Faktor</translation>
     </message>
     <message>
         <source>Add</source>

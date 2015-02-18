@@ -3,69 +3,69 @@
     <name>@default</name>
     <message>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>Voreinstellung</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation type="unfinished"/>
+        <translation>Symbole</translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation type="unfinished"/>
+        <translation>Emoticon</translation>
     </message>
     <message>
         <source>Enable emoticons</source>
-        <translation type="unfinished"/>
+        <translation>Emoticons aktivieren</translation>
     </message>
     <message>
         <source>Animate emoticons</source>
-        <translation type="unfinished"/>
+        <translation>Animierte Emoticons</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation type="unfinished"/>
+        <translation>Symbol-Thema</translation>
     </message>
     <message>
         <source>Choose emoticons theme</source>
-        <translation type="unfinished"/>
+        <translation>Wählen Sie ein Symbol-Thema aus</translation>
     </message>
     <message>
         <source>Install new emoticons...</source>
-        <translation type="unfinished"/>
+        <translation>Installiere neue Emoticons...</translation>
     </message>
 </context>
 <context>
     <name>EmoticonsConfigurationUiHandler</name>
     <message>
         <source>Open icon theme archive</source>
-        <translation type="unfinished"/>
+        <translation>Öffne Symbol-Thema</translation>
     </message>
     <message>
         <source>Installation failed</source>
-        <translation type="unfinished"/>
+        <translation>Installation fehlgeschlagen</translation>
     </message>
     <message>
         <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
-        <translation type="unfinished"/>
+        <translation>Archiv (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</translation>
     </message>
 </context>
 <context>
     <name>InsertEmoticonAction</name>
     <message>
         <source>Insert Emoticon</source>
-        <translation type="unfinished"/>
+        <translation>Emoticon einfügen</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation type="unfinished"/>
+        <translation>Emoticon einfügen</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation type="unfinished"/>
+        <translation>Emoticon hinzufügen - in der Konfiguration einschalten</translation>
     </message>
 </context>
 </TS>
