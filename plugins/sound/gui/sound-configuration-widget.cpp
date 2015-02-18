@@ -62,6 +62,8 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 
 void SoundConfigurationWidget::switchToEvent(const QString &event)
 {
+	m_soundSelectFile->stopSound();
+
 	if (!m_currentNotifyEvent.isEmpty())
 		m_soundFiles[m_currentNotifyEvent] = m_soundSelectFile->file();
 	m_currentNotifyEvent = event;

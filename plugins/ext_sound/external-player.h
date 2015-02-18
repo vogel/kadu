@@ -41,7 +41,7 @@ public:
 	explicit ExternalPlayer(QObject *parent = nullptr);
 	virtual ~ExternalPlayer();
 
-	virtual void playSound(const QString &path);
+	virtual QObject * playSound(const QString &path);
 
 private:
 	QPointer<QProcess> m_playerProcess;

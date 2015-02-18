@@ -38,11 +38,14 @@ public:
 	QString file() const;
 	void setFile(const QString &file);
 
+	void stopSound();
+
 signals:
 	void fileChanged();
 
 private:
 	QPointer<SoundManager> m_manager;
+	QPointer<QObject> m_sound;
 	SelectFile *m_selectFile;
 
 private slots:

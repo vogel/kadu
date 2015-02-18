@@ -36,20 +36,17 @@ ExternalPlayer::ExternalPlayer(QObject *parent) :
 ExternalPlayer::~ExternalPlayer()
 {
 	if (m_playerProcess)
-	{
-		m_playerProcess->kill();
 		m_playerProcess->deleteLater();
-	}
 }
 
-void ExternalPlayer::playSound(const QString &path)
+QObject * ExternalPlayer::playSound(const QString &path)
 {
 	if (m_playerProcess)
-		return;
+		return nullptr;
 
 	auto playerCommand = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
 	if (playerCommand.isEmpty())
-		return;
+		return nullptr;
 
 	auto argumentList = QStringList{};
 	argumentList.append(path);
@@ -57,6 +54,7 @@ void ExternalPlayer::playSound(const QString &path)
 	m_playerProcess = new QProcess{this};
 	m_playerProcess->start(playerCommand, argumentList);
 	connect(m_playerProcess, SIGNAL(finished(int)), m_playerProcess, SLOT(deleteLater()));
+	return m_playerProcess;
 }
 
 void ExternalPlayer::createDefaultConfiguration()

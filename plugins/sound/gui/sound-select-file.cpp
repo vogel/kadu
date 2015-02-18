@@ -52,6 +52,7 @@ SoundSelectFile::SoundSelectFile(SoundManager *manager, QWidget *parent) :
 
 SoundSelectFile::~SoundSelectFile()
 {
+	stopSound();
 }
 
 QString SoundSelectFile::file() const
@@ -66,7 +67,14 @@ void SoundSelectFile::setFile(const QString& file)
 
 void SoundSelectFile::test()
 {
-	m_manager->playFile(m_selectFile->file(), true);
+	stopSound();
+	m_sound = m_manager->playFile(m_selectFile->file(), true, true);
+}
+
+void SoundSelectFile::stopSound()
+{
+	if (m_sound)
+		delete m_sound.data();
 }
 
 #include "moc_sound-select-file.cpp"

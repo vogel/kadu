@@ -41,8 +41,7 @@ SoundManager::SoundManager(QObject *parent) :
 
 SoundManager::~SoundManager()
 {
-	if (m_playingSound)
-		m_playingSound->deleteLater();
+	stopSound();
 }
 
 void SoundManager::setSoundThemeManager(SoundThemeManager *soundThemeManager)
@@ -77,43 +76,54 @@ void SoundManager::setMute(bool mute)
 	m_mute = mute;
 }
 
-void SoundManager::playFile(const QString &soundFile, bool force)
+QObject * SoundManager::playFile(const QString &soundFile, bool force, bool stopCurrentlyPlaying)
 {
 	if (isMuted() && !force)
-		return;
+		return nullptr;
+
+	if (stopCurrentlyPlaying)
+		stopSound();
 
 	if (m_playingSound && !m_playingSound->isFinished())
-		return;
+		return nullptr;
 
 	if (m_player)
 	{
-		m_player->playSound(soundFile);
-		return;
+		m_soundObject = m_player->playSound(soundFile);
+		return m_soundObject;
 	}
 
 	m_playingSound->deleteLater();
 	m_playingSound = new QSound{soundFile};
 	m_playingSound->play();
+	m_soundObject = m_playingSound;
+	return m_soundObject;
 }
 
-void SoundManager::playSoundByName(const QString &soundName)
+QObject * SoundManager::playSoundByName(const QString &soundName)
 {
 	if (isMuted())
-		return;
+		return nullptr;
 
 	auto file = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", soundName + "_sound");
-	playFile(file);
+	return playFile(file);
+}
+
+QObject * SoundManager::testSoundPlaying()
+{
+	auto soundFile = QString{m_soundThemeManager->themes()->themePath("default") + "msg.wav"};
+	return playFile(soundFile, true, true);
+}
+
+void SoundManager::stopSound()
+{
+	if (m_soundObject)
+		delete m_soundObject.data();
 }
 
 void SoundManager::setPlayer(SoundPlayer *player)
 {
 	m_player = player;
-}
-
-void SoundManager::testSoundPlaying()
-{
-	auto soundFile = QString{m_soundThemeManager->themes()->themePath("default") + "msg.wav"};
-	playFile(soundFile, true);
 }
 
 #include "moc_sound-manager.cpp"

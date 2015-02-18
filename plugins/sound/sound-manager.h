@@ -43,16 +43,18 @@ public:
 	bool isMuted() const;
 
 public slots:
-	void playFile(const QString &soundFile, bool force = false);
-	void playSoundByName(const QString &soundName);
+	QObject * playFile(const QString &soundFile, bool force = false, bool stopCurrentlyPlaying = false);
+	QObject * playSoundByName(const QString &soundName);
+	QObject * testSoundPlaying();
+	void stopSound();
 
 	void setMute(bool mute);
-	void testSoundPlaying();
 
 private:
 	QPointer<SoundThemeManager> m_soundThemeManager;
 	QPointer<SoundPlayer> m_player;
 	QPointer<QSound> m_playingSound;
+	QPointer<QObject> m_soundObject;
 
 	bool m_mute;
 

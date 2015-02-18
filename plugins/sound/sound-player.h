@@ -31,6 +31,6 @@ public:
 	explicit SoundPlayer(QObject *parent = nullptr);
 	virtual ~SoundPlayer();
 
-	virtual void playSound(const QString &soundFilePath) = 0;
+	virtual QObject *  playSound(const QString &soundFilePath) = 0;
 
 };

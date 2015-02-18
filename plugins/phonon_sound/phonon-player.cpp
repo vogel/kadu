@@ -34,25 +34,23 @@ PhononPlayer::PhononPlayer(QObject *parent) :
 PhononPlayer::~PhononPlayer()
 {
 	if (m_phononPlayer)
-	{
-		m_phononPlayer->stop();
 		m_phononPlayer->deleteLater();
-	}
 }
 
-void PhononPlayer::playSound(const QString &path)
+QObject * PhononPlayer::playSound(const QString &path)
 {
 	if (m_phononPlayer)
-		return;
+		return nullptr;
 
 	auto fileInfo = QFileInfo{path};
 	if (!fileInfo.exists())
-		return;
+		return nullptr;
 
 	m_phononPlayer = Phonon::createPlayer(Phonon::NotificationCategory);
 	connect(m_phononPlayer, SIGNAL(finished()), m_phononPlayer, SLOT(deleteLater()));
 	m_phononPlayer->setCurrentSource(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 	m_phononPlayer->play();
+	return m_phononPlayer;
 }
 
 #include "moc_phonon-player.cpp"

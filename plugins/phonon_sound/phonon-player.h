@@ -37,7 +37,7 @@ public:
 	explicit PhononPlayer(QObject *parent = nullptr);
 	virtual ~PhononPlayer();
 
-	virtual void playSound(const QString &path);
+	virtual QObject * playSound(const QString &path);
 
 private:
 	QPointer<Phonon::MediaObject> m_phononPlayer;
