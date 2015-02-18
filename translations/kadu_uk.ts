@@ -3,523 +3,523 @@
     <name>@default</name>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Опис</translation>
     </message>
     <message>
         <source>Yesterday at </source>
-        <translation type="unfinished"/>
+        <translation>Учора о</translation>
     </message>
     <message>
         <source>dddd at </source>
-        <translation type="unfinished"/>
+        <translation>dddd о</translation>
     </message>
     <message>
         <source>%1 weeks ago at </source>
-        <translation type="unfinished"/>
+        <translation>%1 тижнів тому о</translation>
     </message>
     <message>
         <source>%1 weeks and %2 days ago at </source>
-        <translation type="unfinished"/>
+        <translation>%1 тижнів і %2 дні тому о</translation>
     </message>
     <message>
         <source>%1 weeks and day ago at </source>
-        <translation type="unfinished"/>
+        <translation>%1 тижнів і 1 день тому о</translation>
     </message>
     <message>
         <source>week ago at </source>
-        <translation type="unfinished"/>
+        <translation>тиждень тому о</translation>
     </message>
     <message>
         <source>week and day ago at </source>
-        <translation type="unfinished"/>
+        <translation>тиждень і 1 день тому о</translation>
     </message>
     <message>
         <source>week and %2 days ago at </source>
-        <translation type="unfinished"/>
+        <translation>тиждень і %2 днів тому о</translation>
     </message>
     <message>
         <source>d MMMM yyyy at </source>
-        <translation type="unfinished"/>
+        <translation>d MMMM yyyy о</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Вигляд</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Спілкування</translation>
     </message>
     <message>
         <source>Chat header separators height</source>
-        <translation type="unfinished"/>
+        <translation>Висота роздільників заголовку чату</translation>
     </message>
     <message>
         <source>Message separators height</source>
-        <translation type="unfinished"/>
+        <translation>Висота роздільників повідомлення</translation>
     </message>
     <message>
         <source>Remove chat header repetitions</source>
-        <translation type="unfinished"/>
+        <translation>Видалити повторення заголовку чату</translation>
     </message>
     <message>
         <source>Interval between header removal</source>
-        <translation type="unfinished"/>
+        <translation>Інтервал між видаленнями заголовку</translation>
     </message>
     <message>
         <source>Hide server time</source>
-        <translation type="unfinished"/>
+        <translation>Сховати серверний час</translation>
     </message>
     <message>
         <source>Maximum time difference</source>
-        <translation type="unfinished"/>
+        <translation>Найбільна часова різниця</translation>
     </message>
     <message>
         <source>Chat window title syntax</source>
-        <translation type="unfinished"/>
+        <translation>Синтаксис заголовку вікна чату</translation>
     </message>
     <message>
         <source>Conference window title prefix</source>
-        <translation type="unfinished"/>
+        <translation>Префікс заголовку вікна конференції</translation>
     </message>
     <message>
         <source>Conference window title syntax</source>
-        <translation type="unfinished"/>
+        <translation>Синтаксис заголовку вікна конференції</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"/>
+        <translation>Мова інтерфейсу</translation>
     </message>
     <message>
         <source>Choose your language</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть свою мову</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished"/>
+        <translation>Застосунки</translation>
     </message>
     <message>
         <source>Custom browser</source>
-        <translation type="unfinished"/>
+        <translation>Вкажіть браузер</translation>
     </message>
     <message>
         <source>Write specific path to your browser</source>
-        <translation type="unfinished"/>
+        <translation>Введіть повний шлях до свого браузера</translation>
     </message>
     <message>
         <source>Custom e-mail client</source>
-        <translation type="unfinished"/>
+        <translation>Вкаіжть поштовий клієнт</translation>
     </message>
     <message>
         <source>Write specific path to your email client</source>
-        <translation type="unfinished"/>
+        <translation>Введіть повний шлях до свого поштового клієнта</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Просунуті</translation>
     </message>
     <message>
         <source>Allow executing commands by parser</source>
-        <translation type="unfinished"/>
+        <translation>Дозволити запуск команд парсером</translation>
     </message>
     <message>
         <source>Debugging mask</source>
-        <translation type="unfinished"/>
+        <translation>Маска відлагодження</translation>
     </message>
     <message>
         <source>Filters</source>
-        <translation type="unfinished"/>
+        <translation>Фільтри</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
-        <translation type="unfinished"/>
+        <translation>Ігнорувати повідомлення від невідомих користувачів</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
-        <translation type="unfinished"/>
+        <translation>Ігнорувати форматовані повідомлення від невідомих користувачів</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Статус</translation>
     </message>
     <message>
         <source>On startup, set</source>
-        <translation type="unfinished"/>
+        <translation>Під час запуску встановити</translation>
     </message>
     <message>
         <source>Choose status which will be set on startup</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть статус, який буде встановленно під час запуску</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>В мережі</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Невидимий</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Поза мережею</translation>
     </message>
     <message>
         <source>Define description which will be set on startup</source>
-        <translation type="unfinished"/>
+        <translation>Вкажіть опис, який буде встановлено під час запуску</translation>
     </message>
     <message>
         <source>Define description which will be set on shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Вкажіть опис, який буде встановлено під час вимкнення</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Кількість збережених описів</translation>
     </message>
     <message>
         <source>Allow using variables in status</source>
-        <translation type="unfinished"/>
+        <translation>Дозволити використання змінних у статусі</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation type="unfinished"/>
+        <translation>Тема іконок</translation>
     </message>
     <message>
         <source>Choose icon theme</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть тему іконок</translation>
     </message>
     <message>
         <source>Show status changing button</source>
-        <translation type="unfinished"/>
+        <translation>Показувати кнопку зміни статусу</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished"/>
+        <translation>Кольори</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"/>
+        <translation>Вікно повідомлень</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"/>
+        <translation>Тло</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <source>Descriptions font</source>
-        <translation type="unfinished"/>
+        <translation>Шрифт описів</translation>
     </message>
     <message>
         <source>Information Panel</source>
-        <translation type="unfinished"/>
+        <translation>Інформаційна панель</translation>
     </message>
     <message>
         <source>Use custom background color</source>
-        <translation type="unfinished"/>
+        <translation>Встановити інше тло</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"/>
+        <translation>Шрифти</translation>
     </message>
     <message>
         <source>Show number of new messages on chat title</source>
-        <translation type="unfinished"/>
+        <translation>Показувати кількість нових повідомлень у заголовку чату</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished"/>
+        <translation>Стиль</translation>
     </message>
     <message>
         <source>Choose style of chat window</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть стиль вікна повідомлень</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>Попередній перегляд</translation>
     </message>
     <message>
         <source>Display group tabs</source>
-        <translation type="unfinished"/>
+        <translation>Показувати вкладки груп</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Описи</translation>
     </message>
     <message>
         <source>Use background image</source>
-        <translation type="unfinished"/>
+        <translation>Використовувати зображення тла</translation>
     </message>
     <message>
         <source>Background file</source>
-        <translation type="unfinished"/>
+        <translation>Файл тла</translation>
     </message>
     <message>
         <source>Display style</source>
-        <translation type="unfinished"/>
+        <translation>Стиль відображення</translation>
     </message>
     <message>
         <source>Tiled</source>
-        <translation type="unfinished"/>
+        <translation>Фреймовий</translation>
     </message>
     <message>
         <source>Centered</source>
-        <translation type="unfinished"/>
+        <translation>Центрований</translation>
     </message>
     <message>
         <source>Stretched</source>
-        <translation type="unfinished"/>
+        <translation>Розтягнений</translation>
     </message>
     <message>
         <source>Choose information panel style</source>
-        <translation type="unfinished"/>
+        <translation>Оберіть стиль інформаційної панелі</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Скорочення</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <source>Manage modules</source>
-        <translation type="unfinished"/>
+        <translation>Керувати модулями</translation>
     </message>
     <message>
         <source>Open chat with...</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити чат з...</translation>
     </message>
     <message>
         <source>Clear chat</source>
-        <translation type="unfinished"/>
+        <translation>Очистити чат</translation>
     </message>
     <message>
         <source>Close chat</source>
-        <translation type="unfinished"/>
+        <translation>Закрити чат</translation>
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished"/>
+        <translation>Напівжирний текст</translation>
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished"/>
+        <translation>Курсивний текст</translation>
     </message>
     <message>
         <source>Underline text</source>
-        <translation type="unfinished"/>
+        <translation>Підкреслений текст</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Поведінка</translation>
     </message>
     <message>
         <source>Remember chat windows positions</source>
-        <translation type="unfinished"/>
+        <translation>Запам&apos;ятати положення вікон чату</translation>
     </message>
     <message>
         <source>Open chat window on new message</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити вікно чату при новому повідомленні</translation>
     </message>
     <message>
         <source>Open chat window when a new message arrives</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити вікно чату, коли отримане нове повідомлення</translation>
     </message>
     <message>
         <source>Open chat window on new message only when online</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити вікно чату при новому повідомленні лише коли в мережі</translation>
     </message>
     <message>
         <source>Clear recent chats list on exit</source>
-        <translation type="unfinished"/>
+        <translation>Очистити списки останніх чатів під час виходу</translation>
     </message>
     <message>
         <source>Block chat window when a new message arrives</source>
-        <translation type="unfinished"/>
+        <translation>Блокувати вікно чату, коли прибуває нове повідомлення</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"/>
+        <translation>Повідомлення</translation>
     </message>
     <message>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>за промовчуванням</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation type="unfinished"/>
+        <translation>Властивості</translation>
     </message>
     <message>
         <source>Set invisible if last status was &apos;Offline&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Встановити &quot;Невидимий&quot;, якщо останній статус був &quot;Не в мережі&quot;</translation>
     </message>
     <message>
         <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
-        <translation type="unfinished"/>
+        <translation>Показує повідомлення від невідомих користувачів без форматування (кольори, зобаження, шрифти, жирність...).</translation>
     </message>
     <message>
         <source>Connection error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка з&apos;єднання</translation>
     </message>
     <message>
         <source>New chat</source>
-        <translation type="unfinished"/>
+        <translation>Новий чат</translation>
     </message>
     <message>
         <source>New message</source>
-        <translation type="unfinished"/>
+        <translation>Нове повідомлення</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Загальні</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Опції</translation>
     </message>
     <message>
         <source>Silent Mode</source>
-        <translation type="unfinished"/>
+        <translation>Мовчазний режим</translation>
     </message>
     <message>
         <source>Disable notifications when my status is set to &apos;Do not Disturb&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Вимкнути сповіщення, коли мій статус - &quot;Не турбувати&quot;</translation>
     </message>
     <message>
         <source>Disable notifications when a fullscreen application is active</source>
-        <translation type="unfinished"/>
+        <translation>Вимкнути сповіщення, коли активна повноекранна програма</translation>
     </message>
     <message>
         <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
-        <translation type="unfinished"/>
+        <translation>Вимикає сповіщення, коли запущена повноекранна програма: програвач відео, гра тощо.</translation>
     </message>
     <message>
         <source>Notify about new messages only when window is inactive</source>
-        <translation type="unfinished"/>
+        <translation>Сповіщати про нові повідомлення лиш коли вікно неактивне</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
-        <translation type="unfinished"/>
+        <translation>Ігнорувати зміни одразу після з&apos;єднання із сервером</translation>
     </message>
     <message>
         <source>Multilogon</source>
-        <translation type="unfinished"/>
+        <translation>Багатокористувацький вхід</translation>
     </message>
     <message>
         <source>Multilogon session connected</source>
-        <translation type="unfinished"/>
+        <translation>Багатокористувацька сесія встановлена</translation>
     </message>
     <message>
         <source>Multilogon session disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Багатокористувацька сесія роз&apos;єднана</translation>
     </message>
     <message>
         <source>User changed status</source>
-        <translation type="unfinished"/>
+        <translation>Користувач змінив свій статус</translation>
     </message>
     <message>
         <source>to free for chat</source>
-        <translation type="unfinished"/>
+        <translation>на &quot;Готовий потеревенити&quot;</translation>
     </message>
     <message>
         <source>to online</source>
-        <translation type="unfinished"/>
+        <translation>на &quot;В мережі&quot;</translation>
     </message>
     <message>
         <source>to away</source>
-        <translation type="unfinished"/>
+        <translation>на &quot;Відійшов&quot;</translation>
     </message>
     <message>
         <source>to not available</source>
-        <translation type="unfinished"/>
+        <translation>на &quot;Недоступний&quot;</translation>
     </message>
     <message>
         <source>to do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>на &quot;Не турбувати&quot;</translation>
     </message>
     <message>
         <source>to offline</source>
-        <translation type="unfinished"/>
+        <translation>на &quot;Поза мережею&quot;</translation>
     </message>
     <message>
         <source>Blocked</source>
-        <translation type="unfinished"/>
+        <translation>Заблоковано</translation>
     </message>
     <message>
         <source>Blocking</source>
-        <translation type="unfinished"/>
+        <translation>Блокується</translation>
     </message>
     <message>
         <source>Headers and Separators</source>
-        <translation type="unfinished"/>
+        <translation>Заголовки і роздільники</translation>
     </message>
     <message>
         <source>Server Time</source>
-        <translation type="unfinished"/>
+        <translation>Серверний час</translation>
     </message>
     <message>
         <source>Window Title</source>
-        <translation type="unfinished"/>
+        <translation>Заголовок вікна</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"/>
+        <translation>Псевдонім</translation>
     </message>
     <message>
         <source>Enter a nickname for your account.</source>
-        <translation type="unfinished"/>
+        <translation>Введіть псевдонім для свого облікового запису</translation>
     </message>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
-        <translation type="unfinished"/>
+        <translation>Kadu потребує перезапуску, щоб відбулася зміна мовних налаштувань.</translation>
     </message>
     <message>
         <source>Web and E-Mail</source>
-        <translation type="unfinished"/>
+        <translation>Web та E-Mail</translation>
     </message>
     <message>
         <source>Kadu will use default applications to open links from chat messages and buddy descriptions.</source>
-        <translation type="unfinished"/>
+        <translation>Kadu використає типові програми, щоб відкривати посилання з переписки і описів контактів.</translation>
     </message>
     <message>
         <source>Use System Web Browser</source>
-        <translation type="unfinished"/>
+        <translation>Використовувати системний веб-браузер</translation>
     </message>
     <message>
         <source>Use System E-Mail Client</source>
-        <translation type="unfinished"/>
+        <translation>Використовувати системний поштовий клієнт</translation>
     </message>
     <message>
         <source>Check for updates when Kadu is opened</source>
-        <translation type="unfinished"/>
+        <translation>Перевіряти оновлення, коли Kadu запущено</translation>
     </message>
     <message>
         <source>Automatically open Kadu at startup</source>
-        <translation type="unfinished"/>
+        <translation>Автоматично відкривати Kadu під час запуску</translation>
     </message>
     <message>
         <source>Show offline buddies</source>
-        <translation type="unfinished"/>
+        <translation>Показувати контакти поза мережею</translation>
     </message>
     <message>
         <source>Show buddies that are ignored</source>
-        <translation type="unfinished"/>
+        <translation>Показувати ігноровани контакти</translation>
     </message>
     <message>
         <source>Show buddies which are blocking me</source>
-        <translation type="unfinished"/>
+        <translation>Показувати людей, які мене блокують</translation>
     </message>
     <message>
         <source>Chat Window</source>
-        <translation type="unfinished"/>
+        <translation>Вікно чату</translation>
     </message>
     <message>
         <source>Buddy List</source>
@@ -527,19 +527,19 @@
     </message>
     <message>
         <source>Buddy list</source>
-        <translation type="unfinished"/>
+        <translation>Список контактів</translation>
     </message>
     <message>
         <source>Displays group tabs on the buddy list</source>
-        <translation type="unfinished"/>
+        <translation>Показувати вкладки груп у списку контактів</translation>
     </message>
     <message>
         <source>Show connected buddies in bold</source>
-        <translation type="unfinished"/>
+        <translation>Показувати під&apos;єднані контакти напівжирним</translation>
     </message>
     <message>
         <source>Buddy Photos</source>
-        <translation type="unfinished"/>
+        <translation>Фото контактів</translation>
     </message>
     <message>
         <source>Grey out offline buddies&apos; photos</source>
