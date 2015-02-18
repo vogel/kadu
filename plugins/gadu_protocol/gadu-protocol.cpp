@@ -417,7 +417,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
 	GaduLoginParams.protocol_version = GG_PROTOCOL_VERSION_110;
-	GaduLoginParams.compatibility = GG_COMPAT_1_12_0;
+	GaduLoginParams.compatibility = GG_COMPAT_LEGACY; // TODO: #2961
 	GaduLoginParams.client_version = qstrdup(Core::nameWithVersion().toUtf8().constData());
 	GaduLoginParams.protocol_features =
 		GG_FEATURE_DND_FFC |
