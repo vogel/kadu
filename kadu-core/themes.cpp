@@ -189,7 +189,7 @@ QString Themes::themePath(const QString &theme) const
 		if (-1 != r.indexIn(theme))
 			return theme;
 
-	return "Custom";;
+	return "Custom";
 }
 
 QString Themes::getThemeEntry(const QString &name) const

@@ -29,7 +29,6 @@
 #include "core/application.h"
 #include "themes.h"
 
-#include <QtCore/QFileInfo>
 #include <QtMultimedia/QSound>
 
 SoundManager::SoundManager(QObject *parent) :
@@ -83,9 +82,6 @@ void SoundManager::playFile(const QString &soundFile, bool force)
 	if (isMuted() && !force)
 		return;
 
-	if (!QFileInfo::exists(soundFile))
-		return;
-
 	if (m_playingSound && !m_playingSound->isFinished())
 		return;
 
@@ -116,7 +112,7 @@ void SoundManager::setPlayer(SoundPlayer *player)
 
 void SoundManager::testSoundPlaying()
 {
-	auto soundFile = m_soundThemeManager->themes()->themePath() + m_soundThemeManager->themes()->getThemeEntry("NewChat");
+	auto soundFile = QString{m_soundThemeManager->themes()->themePath("default") + "msg.wav"};
 	playFile(soundFile, true);
 }
 
