@@ -95,7 +95,7 @@ void ChatWindow::configurationUpdated()
 	m_chatWidget->title()->setBlinkIconWhenUnreadMessages(false);
 		// Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true));
 	m_chatWidget->title()->setBlinkTitleWhenUnreadMessages(
-		Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true));
+		Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false));
 	m_chatWidget->title()->setComposingStatePosition(ChatConfigurationHolder::instance()->composingStatePosition());
 	m_chatWidget->title()->setShowUnreadMessagesCount(
 		Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));

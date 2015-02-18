@@ -284,7 +284,7 @@ void Core::createDefaultConfiguration()
 	QWidget w;
 
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "AutoSend", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "BlinkChatTitle", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "BlinkChatTitle", false);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatCloseTimer", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatCloseTimerPeriod", 2);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "ChatPrune", false);
