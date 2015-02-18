@@ -80,7 +80,6 @@ ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget 
 			"chat-geometry:WindowGeometry", CustomProperties::Storable);
 	new WindowGeometryManager(variantWrapper, defaultGeometry(), this);
 
-	connect(m_chatWidget->chat(), SIGNAL(updated()), this, SLOT(chatUpdated()));
 	connect(m_chatWidget->title(), SIGNAL(titleChanged(ChatWidget*)), this, SLOT(updateTitle()));
 }
 
@@ -192,12 +191,6 @@ void ChatWindow::setWindowTitle(QString title)
 	// qt treats [*] as 'modified placeholder'
 	// we escape each [*] with double [*][*] so it gets properly handled
 	QWidget::setWindowTitle(title.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
-}
-
-void ChatWindow::chatUpdated()
-{
-	if (chatWidget()->chat().unreadMessagesCount() > 0)
-		qApp->alert(this);
 }
 
 bool ChatWindow::isChatWidgetActive(const ChatWidget *chatWidget)

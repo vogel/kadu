@@ -358,6 +358,7 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	kdebugf();
 
 	Title->addChatWidget(chatWidget);
+
 	bool restoreChatGeometry = true;
 
 	// jeśli jest otwarty chatwindow przypisany do chat to zostanie on zamknięty

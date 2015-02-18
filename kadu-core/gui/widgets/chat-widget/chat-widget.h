@@ -86,6 +86,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 private slots:
 	void configurationUpdated();
+	void chatUpdated();
 
 	void setUpVerticalSizes();
 	void commonHeightChanged(int height);

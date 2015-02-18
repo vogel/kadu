@@ -115,6 +115,7 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	}
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
+	connect(CurrentChat, SIGNAL(updated()), this, SLOT(chatUpdated()));
 
 	CurrentChat.setOpen(true);
 
@@ -284,6 +285,11 @@ void ChatWidget::configurationUpdated()
 	QPalette palette = InputBox->inputBox()->palette();
 	palette.setBrush(QPalette::Text, color);
 	InputBox->inputBox()->setPalette(palette);
+}
+
+void ChatWidget::chatUpdated()
+{
+	qApp->alert(window());
 }
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)

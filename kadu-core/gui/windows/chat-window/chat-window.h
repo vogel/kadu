@@ -65,7 +65,6 @@ private:
 	QRect defaultGeometry() const;
 
 private slots:
-	void chatUpdated();
 	void updateTitle();
 
 };
