@@ -1,5 +1,6 @@
 +++ version 2.0
 * unity: #2699 fixed: force indicator_docking on Unity (Vogel)
+* translations: complete French translation (darkpumpkins)
 
 +++ version 2.0-rc3
 * core: various crashes fixed (Vogel)

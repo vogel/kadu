@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez changer votre email dans la fenêtre &quot;changer mot de passe / email&quot;. Laissez le champ nouveau mot de passe à blanc.</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
@@ -101,7 +101,7 @@
     <name>GaduChatImageService</name>
     <message>
         <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
-        <translation type="unfinished"/>
+        <translation>Cette image a fait %1 ko et dépasse la taille maximale recommandé de %2 ko. Certains client pourraient rencontrer des problèmes avec des fichiers trop volumineux.</translation>
     </message>
     <message>
         <source>Do you really want to send this image?</source>
@@ -266,35 +266,35 @@
     </message>
     <message>
         <source>Warn me when the image being sent may be too large</source>
-        <translation type="unfinished"/>
+        <translation>M&apos;avertir lorsque l&apos;image sur le point d&apos;être envoyé est trop volumineuse</translation>
     </message>
     <message>
         <source>Some clients may have trouble with too large images (over 256 KiB).</source>
-        <translation type="unfinished"/>
+        <translation>Certains clients pourraient rencontrer des problèmes avec une image trop volumineuse ( au dessus de 256Ko ).</translation>
     </message>
     <message>
         <source>Show my status only to buddies on my list</source>
-        <translation type="unfinished"/>
+        <translation>Afficher mon état seulement pour les contacts de ma liste</translation>
     </message>
     <message>
         <source>When disabled, anyone can see your status.</source>
-        <translation type="unfinished"/>
+        <translation>Quand désactivé, tout le monde peut voir mon état.</translation>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"/>
+        <translation>Activer la génération d&apos;évènements</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Votre interlocuteur va être notifié quand vous être en train de saisir un message, avant qu&apos;il soit envoyé. Et vice et versa.</translation>
     </message>
     <message>
         <source>Block links from anonymous buddies</source>
-        <translation type="unfinished"/>
+        <translation>Bloquer les liens des contacts anonymes</translation>
     </message>
     <message>
         <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
-        <translation type="unfinished"/>
+        <translation>Vous protéger contre les menaces potentielles des liens dans les messages de la part de contacts anonymes</translation>
     </message>
     <message>
         <source>Gadu-Gadu Server</source>
@@ -302,7 +302,7 @@
     </message>
     <message>
         <source>Custom server IP addresses</source>
-        <translation type="unfinished"/>
+        <translation>Adresses IP personnalisés serveur</translation>
     </message>
     <message>
         <source>Enable file transfers</source>
@@ -331,7 +331,8 @@
     <message>
         <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
 Are you sure to allow them to know you are available?</source>
-        <translation type="unfinished"/>
+        <translation>Vous êtes sur le point de révéler votre état à de nombreux contacts qui ne sont actuellement pas autorisés à le voir.
+Êtes vous sûr de vouloir les autoriser à voir lorsque vous êtes disponible ?</translation>
     </message>
     <message>
         <source>Make my status visible anyway</source>

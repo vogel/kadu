@@ -123,7 +123,7 @@
     </message>
     <message>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
-        <translation type="unfinished"/>
+        <translation>Pas de mécanisme approprié disponible pour la configuration de sécurité(e.g SASL librairie trop faible ou authentification en texte plain non disponible)</translation>
     </message>
     <message>
         <source>Bad server response</source>
@@ -483,7 +483,9 @@
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"/>
+        <translation>Données saisies dans les champs requis non valides.
+
+Mot de passes entrés dans les 2 champs(&quot;mot de passe&quot; et &quot;saisissez de nouveau votre mot de passe&quot;) doivent être les mêmes!</translation>
     </message>
 </context>
 <context>
@@ -578,11 +580,11 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
     </message>
     <message>
         <source>Legacy SSL</source>
-        <translation type="unfinished"/>
+        <translation>SSL hérité</translation>
     </message>
     <message>
         <source>Probe legacy SSL port</source>
-        <translation type="unfinished"/>
+        <translation>Port SSL probablement hérité</translation>
     </message>
     <message>
         <source>Register Account</source>
@@ -602,7 +604,7 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
     </message>
     <message>
         <source>Legacy secure connection (SSL) is only available in combination with manual host/port.</source>
-        <translation type="unfinished"/>
+        <translation>La connexion sécurisé hérité (SSL) n&apos;est disponible qu&apos;en combinaison avec un hôte/port manuel.</translation>
     </message>
     <message>
         <source>Invalid data entered in required fields.
@@ -711,7 +713,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Legacy SSL is only available in combination with manual host/port.</source>
-        <translation type="unfinished"/>
+        <translation>Le SSL hérité n&apos;est disponible qu&apos;en combinaison avec un hôte/port manuel.</translation>
     </message>
     <message>
         <source>Remove account</source>
@@ -755,11 +757,11 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"/>
+        <translation>Activer la génération d&apos;évènements</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Votre interlocuteur va être notifié quand vous composez un message, avant qu&apos;il soit envoyé et vice versa.</translation>
     </message>
     <message>
         <source>Enable chat activity events</source>
@@ -767,7 +769,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Your interlocutor will be notified when you suspend or end conversation. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Votre interlocuteur va être notifié lorsque vous suspendez ou terminez la conversation.</translation>
     </message>
     <message>
         <source>Others can see your system name/version</source>
@@ -1023,7 +1025,7 @@ Copyright (C) 2003 Justin Karneges</translation>
     </message>
     <message>
         <source>Please enter the Full JID to connect with.</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez saisir le JID complet pour vous connecter avec.</translation>
     </message>
     <message>
         <source>You must specify a host:port for the proxy.</source>
@@ -1043,7 +1045,7 @@ Copyright (C) 2003 Justin Karneges</translation>
     </message>
     <message>
         <source>Error: SSF Min is greater than SSF Max.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur: SSF Min est plus important que SSF Max.</translation>
     </message>
     <message>
         <source>Error: TLS not available.  Disable any TLS options.</source>
@@ -1061,11 +1063,11 @@ Veuillez corriger et essayer encore.</translation>
     </message>
     <message>
         <source>Bad Stanza &apos;%1&apos;.  Must be &apos;message&apos;, &apos;presence&apos;, or &apos;iq&apos;</source>
-        <translation type="unfinished"/>
+        <translation>mauvaise strophe %1. Doit être &apos;message&apos;,&apos;présence&apos;, ou &apos;iq&apos;</translation>
     </message>
     <message>
         <source>You must enter at least one stanza!</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez entrer au moins une strophe!</translation>
     </message>
     <message>
         <source>Password</source>
@@ -1087,7 +1089,7 @@ Veuillez corriger et essayer encore.</translation>
     <name>XMPP::Features::FeatureName</name>
     <message>
         <source>ERROR: Incorrect usage of Features class</source>
-        <translation type="unfinished"/>
+        <translation>Erreur: usage incorrecte de la caractéristique de la classe</translation>
     </message>
     <message>
         <source>None</source>
@@ -1165,7 +1167,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>
-        <translation type="unfinished"/>
+        <translation>Le support du SSL ne peut pas être initialisé pour le compte %1. C&apos;est généralement parce que le module QCA TLS n&apos;est pas installé sur votre système.</translation>
     </message>
 </context>
 <context>
@@ -1192,7 +1194,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The feature requested is not implemented by the recipient or server and therefore cannot be processed.</source>
-        <translation type="unfinished"/>
+        <translation>La fonctionnalité demandée n&apos;est pas implémenté par le destinataire ou le serveur et donc ne peut être traité.</translation>
     </message>
     <message>
         <source>Forbidden</source>
@@ -1200,7 +1202,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The requesting entity does not possess the required permissions to perform the action.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;entité demandé n&apos;a pas l&apos;autorisation d&apos;exécuter l&apos;action.</translation>
     </message>
     <message>
         <source>Gone</source>
@@ -1216,7 +1218,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The server could not process the stanza because of a misconfiguration or an otherwise-undefined internal server error.</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur ne peut traiter la strophe à cause de mauvaise configuration ou une erreur non défini internet dans le serveur.</translation>
     </message>
     <message>
         <source>Item not found</source>
@@ -1232,7 +1234,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The sending entity has provided or communicated an XMPP address (e.g., a value of the &apos;to&apos; attribute) or aspect thereof (e.g., a resource identifier) that does not adhere to the syntax defined in Addressing Scheme.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;entité émettrice a fourni ou communiqué une adresse XMPP (par exemple, une valeur de l&apos;attribut &apos;to&apos;) ou un aspect de celle-ci (par exemple, un identifiant de ressource) qui ne adhère pas à la syntaxe définie dans schéma d&apos;adressage.</translation>
     </message>
     <message>
         <source>Not acceptable</source>
@@ -1240,7 +1242,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The recipient or server understands the request but is refusing to process it because it does not meet criteria defined by the recipient or server (e.g., a local policy regarding acceptable words in messages).</source>
-        <translation type="unfinished"/>
+        <translation>Le destinataire ou le serveur comprends la requête mais refuse de la traiter car elle ne correspond pas aux critères définis par ce dernier (ex, une politique locale en matière de mots acceptables dans les messages).</translation>
     </message>
     <message>
         <source>Not allowed</source>
@@ -1248,7 +1250,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The recipient or server does not allow any entity to perform the action.</source>
-        <translation type="unfinished"/>
+        <translation>Le destinataire ou le serveur n&apos;autorise aucune entité à exécuter cette action.</translation>
     </message>
     <message>
         <source>Not authorized</source>
@@ -1256,7 +1258,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The sender must provide proper credentials before being allowed to perform the action, or has provided improper credentials.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;émetteur doit fournir un certificat approprié avant de pouvoir traiter l&apos;action ou a fourni des certificats incorrects.</translation>
     </message>
     <message>
         <source>Recipient unavailable</source>
@@ -1272,7 +1274,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The recipient or server is redirecting requests for this information to another entity, usually temporarily.</source>
-        <translation type="unfinished"/>
+        <translation>Le destinataire ou le serveur sont en train de rediriger les demandes pour cette information vers une autre entité, habituellement temporaire.</translation>
     </message>
     <message>
         <source>Registration required</source>
@@ -1280,7 +1282,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The requesting entity is not authorized to access the requested service because registration is required.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;entité demandé n&apos;est pas autorisé à accéder au service demandé car l&apos;enregistrement est requis.</translation>
     </message>
     <message>
         <source>Remote server not found</source>
@@ -1288,7 +1290,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>A remote server or service specified as part or all of the JID of the intended recipient does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur distant ou le service spécifié comme élément de tous les JID destinataires attendu n&apos;existe pas.</translation>
     </message>
     <message>
         <source>Remote server timeout</source>
@@ -1296,7 +1298,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>A remote server or service specified as part or all of the JID of the intended recipient (or required to fulfill a request) could not be contacted within a reasonable amount of time.</source>
-        <translation type="unfinished"/>
+        <translation>Un serveur distant ou service spécifié parmi les JID du destinataire attendu( ou attendu à remplir la requête) n&apos;a pas été contacté dans le temps imparti.</translation>
     </message>
     <message>
         <source>Resource constraint</source>
@@ -1304,7 +1306,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The server or recipient lacks the system resources necessary to service the request.</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur ou le destinataire manque de ressources systèmes nécessaire pour traiter la requête.</translation>
     </message>
     <message>
         <source>Service unavailable</source>
@@ -1320,7 +1322,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The requesting entity is not authorized to access the requested service because a subscription is required.</source>
-        <translation type="unfinished"/>
+        <translation>La entité demandé n&apos;est pas autorisé à accéder au service demandé car un enregistrement est requis.</translation>
     </message>
     <message>
         <source>Undefined condition</source>
@@ -1336,7 +1338,7 @@ Détails: %1</translation>
     </message>
     <message>
         <source>The recipient or server understood the request but was not expecting it at this time (e.g., the request was out of order).</source>
-        <translation type="unfinished"/>
+        <translation>Le destinataire ou serveur a compris la requête mais ne l&apos;attendait pas à ce moment la (ex, la requêtes n&apos;était pas ordonné).</translation>
     </message>
 </context>
 <context>
