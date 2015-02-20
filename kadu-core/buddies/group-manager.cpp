@@ -132,6 +132,33 @@ Group GroupManager::byName(const QString &name, bool create)
 	return group;
 }
 
+QString GroupManager::validateGroupName(Group group, const QString &newName)
+{
+	if (newName.isEmpty())
+		return tr("Group name must not be empty");
+
+	if (newName.contains(","))
+		return tr("Group name must not contain '%1'").arg(',');
+
+	if (newName.contains(";"))
+		return tr("Group name must not contain '%1'").arg(';');
+
+	bool number;
+	newName.toLong(&number);
+	if (number)
+		return tr("Group name must not be a number");
+
+	// TODO All translations
+ 	if (newName == tr("All"))
+		return tr("Group name must not be '%1'").arg(newName);
+
+	auto existing = byName(newName, false);
+	if (existing && existing != group)
+		return tr("Group '%1' already exists").arg(newName);
+
+	return QString{};
+}
+
 // TODO: move some of this to %like-encoding, so we don't block normal names
 bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExistingGroupName)
 {

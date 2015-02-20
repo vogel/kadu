@@ -65,6 +65,7 @@ public:
 
 	Group byName(const QString &name, bool create = true);
 
+	QString validateGroupName(Group group, const QString &newName);
 	bool acceptableGroupName(const QString &groupName, bool acceptExistingGroupName = false);
 
 signals:

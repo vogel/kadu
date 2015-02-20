@@ -171,8 +171,6 @@ set (gui_SRCS
 	widgets/configuration/notify-group-box.cpp
 	widgets/configuration/notify-tree-widget.cpp
 
-	widgets/dialog/add-group-dialog-widget.cpp
-	widgets/dialog/edit-group-dialog-widget.cpp
 	widgets/dialog/merge-buddies-dialog-widget.cpp
 	widgets/dialog/password-dialog-widget.cpp
 	widgets/dialog/title-widget.cpp
@@ -197,7 +195,7 @@ set (gui_SRCS
 	windows/chat-data-window.cpp
 	windows/chat-data-window-repository.cpp
 	windows/configuration-window.cpp
-	windows/group-properties-window.cpp
+	windows/group-edit-window.cpp
 	windows/kadu-dialog.cpp
 	windows/kadu-window.cpp
 	windows/kadu-window-actions.cpp
@@ -357,8 +355,6 @@ set (gui_MOC_SRCS
 	widgets/configuration/notifier-configuration-widget.h
 	widgets/configuration/notify-group-box.h
 
-	widgets/dialog/add-group-dialog-widget.h
-	widgets/dialog/edit-group-dialog-widget.h
 	widgets/dialog/dialog-widget.h
 	widgets/dialog/merge-buddies-dialog-widget.h
 	widgets/dialog/password-dialog-widget.h
@@ -374,7 +370,6 @@ set (gui_MOC_SRCS
 	windows/chat-data-window.h
 	windows/chat-data-window-repository.h
 	windows/configuration-window.h
-	windows/group-properties-window.h
 	windows/kadu-dialog.h
 	windows/kadu-window.h
 	windows/kadu-window-actions.h

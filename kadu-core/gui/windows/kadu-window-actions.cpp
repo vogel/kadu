@@ -56,7 +56,6 @@
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/dialog/add-group-dialog-widget.h"
 #include "gui/widgets/dialog/merge-buddies-dialog-widget.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
@@ -65,6 +64,7 @@
 #include "gui/windows/buddy-delete-window.h"
 #include "gui/windows/kadu-dialog.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/group-edit-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/multilogon-window.h"
@@ -613,10 +613,8 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	AddGroupDialogWidget *groupWidget = new AddGroupDialogWidget(tr("Please enter the name for the new group"), sender->parentWidget());
-	KaduDialog *window = new KaduDialog(groupWidget, sender->parentWidget());
-	window->setAcceptButtonText(tr("Add Group"));
-	window->exec();
+	auto window = new GroupEditWindow(GroupManager::instance(), Application::instance()->configuration()->deprecatedApi(), Group::null, sender->parentWidget());
+	window->show();
 }
 
 void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)

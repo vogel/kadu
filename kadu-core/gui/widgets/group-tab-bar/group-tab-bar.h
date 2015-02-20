@@ -57,7 +57,6 @@ private slots:
 	void currentChangedSlot(int index);
 
 	void addBuddy();
-	void renameGroup();
 	void deleteGroup();
 	void createNewGroup();
 	void groupProperties();

@@ -45,8 +45,8 @@ GroupShared * GroupShared::loadFromStorage(const std::shared_ptr<StoragePoint> &
 
 GroupShared::GroupShared(const QUuid &uuid) :
 		Shared(uuid),
-		NotifyAboutStatusChanges(false), ShowInAllGroup(false),
-		OfflineToGroup(false), ShowIcon(false), ShowName(false),
+		NotifyAboutStatusChanges(true), ShowInAllGroup(true),
+		OfflineToGroup(false), ShowIcon(false), ShowName(true),
 		TabPosition(-1)
 {
 	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));

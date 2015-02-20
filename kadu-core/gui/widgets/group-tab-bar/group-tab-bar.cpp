@@ -28,11 +28,10 @@
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "chat/chat-list-mime-data-helper.h"
+#include "core/application.h"
 #include "core/core.h"
-#include "gui/widgets/dialog/add-group-dialog-widget.h"
-#include "gui/widgets/dialog/edit-group-dialog-widget.h"
 #include "gui/windows/add-buddy-window.h"
-#include "gui/windows/group-properties-window.h"
+#include "gui/windows/group-edit-window.h"
 #include "gui/windows/kadu-dialog.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -182,17 +181,11 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 	addBuddyAction->setEnabled(group);
 	addBuddyAction->setData(group);
 
-	QAction *renameGroupAction = menu.addAction(tr("Rename Group"), this, SLOT(renameGroup()));
-	renameGroupAction->setEnabled(group);
-	renameGroupAction->setData(group);
-
-	menu.addSeparator();
+	menu.addAction(tr("Add Group"), this, SLOT(createNewGroup()));
 
 	QAction *deleteGroupAction = menu.addAction(tr("Delete Group"), this, SLOT(deleteGroup()));
 	deleteGroupAction->setEnabled(group);
 	deleteGroupAction->setData(group);
-
-	menu.addAction(tr("Add Group"), this, SLOT(createNewGroup()));
 
 	menu.addSeparator();
 
@@ -318,24 +311,6 @@ void GroupTabBar::addBuddy()
 	addBuddyWindow->show();
 }
 
-void GroupTabBar::renameGroup()
-{
-	QAction *action = qobject_cast<QAction *>(sender());
-	if (!action)
-		return;
-
-	const Group &group = action->data().value<Group>();
-	if (!group)
-		return;
-
-	EditGroupDialogWidget *groupWidget = new EditGroupDialogWidget(group,
-								       tr("Please enter a new name for the <i>%0</i> group").arg(group.name()),
-								       Core::instance()->kaduWindow());
-	KaduDialog *window = new KaduDialog(groupWidget, Core::instance()->kaduWindow());
-	window->setAcceptButtonText(tr("Edit Group"));
-	window->exec();
-}
-
 void GroupTabBar::deleteGroup()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
@@ -359,10 +334,8 @@ void GroupTabBar::deleteGroup()
 
 void GroupTabBar::createNewGroup()
 {
-	AddGroupDialogWidget *groupWidget = new AddGroupDialogWidget(tr("Please enter the name for the new group"), Core::instance()->kaduWindow());
-	KaduDialog *window = new KaduDialog(groupWidget, Core::instance()->kaduWindow());
-	window->setAcceptButtonText(tr("Add Group"));
-	window->exec();
+	auto editWindow = new GroupEditWindow{GroupManager::instance(), Application::instance()->configuration()->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
+	editWindow->show();
 }
 
 void GroupTabBar::groupProperties()
@@ -371,9 +344,12 @@ void GroupTabBar::groupProperties()
 	if (!action)
 		return;
 
-	const Group &group = action->data().value<Group>();
-	if (group)
-		(new GroupPropertiesWindow(group, Core::instance()->kaduWindow()))->show();
+	auto group = action->data().value<Group>();
+	if (!group)
+		return;
+
+	auto editWindow = new GroupEditWindow{GroupManager::instance(), Application::instance()->configuration()->deprecatedApi(), group, Core::instance()->kaduWindow()};
+	editWindow->show();
 }
 
 void GroupTabBar::addToGroup()
