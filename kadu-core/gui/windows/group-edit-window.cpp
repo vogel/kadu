@@ -220,6 +220,7 @@ void GroupEditWindow::accept()
 void GroupEditWindow::apply()
 {
 	storeValues();
+	loadValues();
 }
 
 #include "moc_group-edit-window.cpp"
