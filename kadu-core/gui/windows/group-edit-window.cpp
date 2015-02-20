@@ -56,6 +56,9 @@ GroupEditWindow::GroupEditWindow(GroupManager *groupManager, DeprecatedConfigura
 		m_group = Group::create();
 	loadValues();
 	dataChanged();
+
+	connect(m_groupManager, SIGNAL(groupAdded(Group)), this, SLOT(dataChanged()));
+	connect(m_groupManager, SIGNAL(groupRemoved(Group)), this, SLOT(dataChanged()));
 }
 
 GroupEditWindow::~GroupEditWindow()
