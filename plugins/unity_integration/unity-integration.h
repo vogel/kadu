@@ -23,6 +23,7 @@
 #include <QtCore/QPointer>
 
 class QUnity;
+class FileTransferManager;
 class UnreadMessageRepository;
 
 class UnityIntegration : public QObject
@@ -33,6 +34,7 @@ public:
 	explicit UnityIntegration(QObject *parent = nullptr);
 	virtual ~UnityIntegration();
 
+	void setFileTransferManager(FileTransferManager *fileTransferManager);
 	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 private:
@@ -41,6 +43,7 @@ private:
 	QUnity *m_unity;
 
 private slots:
+	void fileTransferProgressChanged(int progress);
 	void unreadMessagesChanged();
 
 };

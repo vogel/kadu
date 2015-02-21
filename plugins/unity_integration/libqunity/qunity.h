@@ -33,6 +33,7 @@ public:
 	virtual ~QUnity();
 
 	void updateCount(int count);
+	void updateProgress(int progress);
 
 private:
 	UnityLauncherEntry *m_launcher;

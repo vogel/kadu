@@ -57,7 +57,8 @@
 #include <QtWidgets/QMessageBox>
 
 FileTransferManager::FileTransferManager(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_totalProgress{100}
 {
 	m_actions = new FileTransferActions{this};
 	NewFileTransferNotification::registerEvents();
@@ -293,6 +294,8 @@ void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)
 void FileTransferManager::itemAdded(FileTransfer fileTransfer)
 {
 	emit fileTransferAdded(fileTransfer);
+	connect(fileTransfer, SIGNAL(updated()), this, SLOT(updateProgress()));
+	updateProgress();
 }
 
 void FileTransferManager::itemAboutToBeRemoved(FileTransfer fileTransfer)
@@ -303,6 +306,43 @@ void FileTransferManager::itemAboutToBeRemoved(FileTransfer fileTransfer)
 void FileTransferManager::itemRemoved(FileTransfer fileTransfer)
 {
 	emit fileTransferRemoved(fileTransfer);
+	disconnect(fileTransfer, SIGNAL(updated()), this, SLOT(updateProgress()));
+	updateProgress();
+}
+
+void FileTransferManager::updateProgress()
+{
+	auto transferredSize = 0ul;
+	auto totalSize = 0ul;
+
+	for (auto &&fileTransfer : items())
+		if (FileTransferStatus::Transfer == fileTransfer.transferStatus())
+		{
+			transferredSize += fileTransfer.transferredSize();
+			totalSize += fileTransfer.fileSize();
+		}
+
+	if (totalSize == 0 || totalSize == transferredSize)
+	{
+		setTotalProgress(100);
+		return;
+	}
+
+	setTotalProgress(100 * transferredSize / totalSize);
+}
+
+void FileTransferManager::setTotalProgress(int totalProgress)
+{
+	if (m_totalProgress == totalProgress)
+		return;
+
+	m_totalProgress = totalProgress;
+	emit totalProgressChanged(totalProgress);
+}
+
+int FileTransferManager::totalProgress() const
+{
+	return m_totalProgress;
 }
 
 #include "moc_file-transfer-manager.cpp"

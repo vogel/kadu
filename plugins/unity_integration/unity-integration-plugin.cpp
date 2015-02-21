@@ -32,6 +32,7 @@ bool UnityIntegrationPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	m_unityIntegration.reset(new UnityIntegration{});
+	m_unityIntegration->setFileTransferManager(Core::instance()->fileTransferManager());
 	m_unityIntegration->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());
 
 	return true;

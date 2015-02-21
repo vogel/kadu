@@ -48,6 +48,8 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
 	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
 
+	int totalProgress() const;
+
 	void acceptFileTransfer(FileTransfer transfer, QString localFileName);
 	void rejectFileTransfer(FileTransfer transfer);
 	void sendFile(FileTransfer transfer, QString fileName);
@@ -60,6 +62,7 @@ signals:
 	void fileTransferAdded(FileTransfer fileTransfer);
 	void fileTransferAboutToBeRemoved(FileTransfer fileTransfer);
 	void fileTransferRemoved(FileTransfer fileTransfer);
+	void totalProgressChanged(int totalProgress);
 
 protected:
 	virtual void accountRegistered(Account account);
@@ -74,13 +77,16 @@ private:
 	FileTransferActions *m_actions;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
+	int m_totalProgress;
 
 	void addFileTransferService(Account account);
 	void removeFileTransferService(Account account);
+	void setTotalProgress(int totalProgress);
 
 private slots:
 	INJEQT_SETTER void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
 
 	void incomingFileTransfer(FileTransfer fileTransfer);
+	void updateProgress();
 
 };

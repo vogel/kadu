@@ -9,6 +9,7 @@
 * gadu: #2241 implemented: update contact's avatars on GG event (Vogel)
 * gui: #2944 fixed: proper behavior with different combination of window title blinking and new message count included in title (Vogel)
 * gui: #2767 fixed: new look for "Add group" window (Vogel)
+* unity: #2965 fixed: show progress on file transfers on Unity Launcher icon (Vogel)
 
 +++ version 2.0
 * unity: #2699 fixed: force indicator_docking on Unity (Vogel)

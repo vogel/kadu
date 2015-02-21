@@ -52,4 +52,15 @@ void QUnity::updateCount(int count)
 	}
 }
 
+void QUnity::updateProgress(int progress)
+{
+	if (progress < 100)
+	{
+		unity_launcher_entry_set_progress_visible(m_launcher, true);
+		unity_launcher_entry_set_progress(m_launcher, static_cast<double>(progress) / 100.0);
+	}
+	else
+		unity_launcher_entry_set_progress_visible(m_launcher, false);
+}
+
 #include "moc_qunity.cpp"
