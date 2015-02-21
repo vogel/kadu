@@ -59,29 +59,32 @@ $line"
 
 	pushd package
 	cat > forum <<-END
-		Nowa testowa wersja Kadu została właśnie wydana!
+		Nowa stabilna wersja Kadu została właśnie wydana!
+
+		Notka o wydaniu:
+		 http://www.kadu.im/w/NotkaOWydaniu2
+		 http://www.kadu.im/w/English:ReleaseNotes2
 
 		Poprawione błędy:
 		$CHANGELOG
 
 		Instalator Windows i sumy kontrolne:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe
+		 https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/Kadu-$VERSION.exe
+		 http://download.kadu.im/stable/windows/Kadu-$VERSION.exe
 		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1
+		 http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.md5
+		 http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.sha1
 
 		Źródła i sumy kontrolne:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2
+		 https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/kadu-$VERSION.tar.bz2
+		 http://download.kadu.im/stable/kadu-$VERSION.tar.bz2
 		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
+		 http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.md5
+		 http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.sha1
 
 		Wtyczki zewnętrzne:
 		 http://download.kadu.im/external-plugins/2.0/
 
-		Przed instalacją zalecane jest zrobienie kopii katalogu z danymi ~/.kadu lub C:\Users\..\AppData\Roaming\Kadu.
 		Błędy jak zawsze proszę zgłaszac na redmine: http://www.kadu.im/redmine/
 END
 
@@ -109,29 +112,32 @@ $line"
 
 	pushd package
 	cat > mailing-list <<-END
-		New test version of Kadu 2 series is available.
+		New stable version of Kadu 2 series is available.
+
+		Release notes:
+		 http://www.kadu.im/w/English:ReleaseNotes2
+		 http://www.kadu.im/w/NotkaOWydaniu2
 
 		Bugs fixed:
 		$CHANGELOG
 
 		Windows installer and checksums:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe
+		 https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/Kadu-$VERSION.exe
+		 http://download.kadu.im/stable/windows/Kadu-$VERSION.exe
 		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1
+		 http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.md5
+		 http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.sha1
 
 		Source code:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2
+		 https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/kadu-$VERSION.tar.bz2
+		 http://download.kadu.im/stable/kadu-$VERSION.tar.bz2
 		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
+		 http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.md5
+		 http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.sha1
 
 		External plugins:
 		 http://download.kadu.im/external-plugins/2.0/
 
-		Please create backup of data directory ~/.kadu or C:\Users\..\AppData\Roaming\Kadu before installing.
 		Please report all found bugs in redmine: http://www.kadu.im/redmine/
 
 		Regards,
@@ -165,30 +171,32 @@ $line"
 	pushd package
 	cat > wiki-pl <<-END
 		=== Kadu $VERSION wydane ''($DATE)'' ===
-
-		Nowa testowa wersja Kadu została właśnie wydana!
-
 		----
+
+		Nowa stabilna wersja Kadu została właśnie wydana!
+
 		'''Pobierz''':
 		:: Źródła dla systemu Linux ([[Instalacja_ze_źródeł|opis instalacji tej wersji Kadu]]):
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2 Pobierz źródła (Google Drive)]
+		::: [https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/kadu-$VERSION.tar.bz2 Pobierz źródła (Google Drive)]
 		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download Pobierz źródła (serwer SourceForge.net)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2 Pobierz źródła (serwer Kadu.im)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5 Suma MD5]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1 Suma SHA1]
+		::: [http://download.kadu.im/stable/kadu-$VERSION.tar.bz2 Pobierz źródła (serwer Kadu.im)]
+		::: [http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.md5 Suma MD5]
+		::: [http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.sha1 Suma SHA1]
 		:: Instalator Windows:
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe Pobierz Instalator Windows (Google Drive)]
+		::: [https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/Kadu-$VERSION.exe Pobierz Instalator Windows (Google Drive)]
 		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download Pobierz Instalator Windows (SourceForge.net)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe Pobierz Instalator Windows (Kadu.im)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 Suma MD5]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 Suma SHA1]
+		::: [http://download.kadu.im/stable/windows/Kadu-$VERSION.exe Pobierz Instalator Windows (Kadu.im)]
+		::: [http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.md5 Suma MD5]
+		::: [http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.sha1 Suma SHA1]
 		:: Wtyczki zewnętrzne:
 		::: [http://download.kadu.im/external-plugins/2.0/ Źródła]
 
+		Notka o wydaniu:
+		* [[NotkaOWydaniu2|Wersja polska]]
+		* [[English:ReleaseNotes2|Wersja angielska]]
+
 		Lista zmian:
 		$CHANGELOG
-
-		Przed instalacją zalecane jest zrobienie kopii katalogu z danymi ~/.kadu lub C:\Users\..\AppData\Roaming\Kadu.
 
 		Błędy prosimy zgłaszać w naszym systemie śledzenia błędów [http://www.kadu.im/redmine Redmine], a propozycje zmian na [http://www.kadu.im/forum forum] w dziale o odpowiednim tytule. Listę znany błędów zaplanowanych do poprawienia w przyszłych wersjach również można znaleźć w Redmine, w [http://www.kadu.im/redmine/projects/kadu/roadmap mapie dla projektu Kadu].
 
@@ -225,28 +233,30 @@ $line"
 		=== Kadu $VERSION has been released ''($DATE)'' ===
 		----
 
-		New test version of Kadu 2 series is available.
+		New stable version of Kadu 2 series is available.
 
 		'''Download''':
 		:: Source code:
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2 Download Sources (Google Drive)]
+		::: [https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/kadu-$VERSION.tar.bz2 Download Sources (Google Drive)]
 		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download Download Sources (SourceForge.net)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2 Download Sources (Kadu.im)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5 MD5 Checksum]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1 SHA1 Checksum]
+		::: [http://download.kadu.im/stable/kadu-$VERSION.tar.bz2 Download Sources (Kadu.im)]
+		::: [http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.md5 MD5 Checksum]
+		::: [http://download.kadu.im/stable/kadu-$VERSION.tar.bz2.sha1 SHA1 Checksum]
 		:: Windows installer:
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe Download Windows Installer (Google Drive)]
+		::: [https://googledrive.com/host/0B2Jon_7ucnshOFg5NTNzazdmdk0/Kadu-$VERSION.exe Download Windows Installer (Google Drive)]
 		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download Download Windows Installer (SourceForge.net)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe  Download Windows Installer (Kadu.im)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 MD5 Checksum]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 SHA1 Checksum]
+		::: [http://download.kadu.im/stable/windows/Kadu-$VERSION.exe  Download Windows Installer (Kadu.im)]
+		::: [http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.md5 MD5 Checksum]
+		::: [http://download.kadu.im/stable/windows/Kadu-$VERSION.exe.sha1 SHA1 Checksum]
 		:: External plugins:
 		::: [http://download.kadu.im/external-plugins/2.0/ Sources]
 
+		Release notes:
+		* [[English:ReleaseNotes2|English version]]
+		* [[NotkaOWydaniu2|Polish version]]
+
 		Fixed bugs:
 		$CHANGELOG
-
-		Please create backup of data directory ~/.kadu or C:\Users\..\AppData\Roaming\Kadu before installing.
 
 		Please report all found issues in our [http://www.kadu.im/redmine Redmine] system.
 
