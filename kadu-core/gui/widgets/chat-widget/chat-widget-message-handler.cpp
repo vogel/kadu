@@ -84,8 +84,10 @@ void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
 	if (!m_messageManager)
 		return;
 
-	connect(m_messageManager.data(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
-	connect(m_messageManager.data(), SIGNAL(messageSent(Message)), this, SLOT(messageSent(Message)));
+	// some other messageReceived slot may check if message chat is open and this
+	// slot can change this value, so let all other messageReceived be executed before this
+	connect(m_messageManager.data(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)), Qt::QueuedConnection);
+	connect(m_messageManager.data(), SIGNAL(messageSent(Message)), this, SLOT(messageSent(Message)), Qt::QueuedConnection);
 }
 
 void ChatWidgetMessageHandler::setNotificationService(NotificationService *notificationService)

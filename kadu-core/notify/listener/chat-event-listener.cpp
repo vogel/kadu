@@ -46,7 +46,7 @@ void ChatEventListener::messageReceived(const Message &message)
 {
 	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(message.messageChat());
 
-	if (!chatWidget)
+	if (!message.messageChat().isOpen())
 		Service->notify(new MessageNotification(Core::instance()->chatWidgetRepository(), MessageNotification::NewChat, message));
 	else if (!Service->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
 		Service->notify(new MessageNotification(Core::instance()->chatWidgetRepository(), MessageNotification::NewMessage, message));

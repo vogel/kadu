@@ -1,4 +1,7 @@
-+++ version 3.0-alpha1:
++++ version 3.0-alpha1
+* notify: #2963 fixed: do not mix up New chat and New message notifications (Vogel)
+
++++ version 3.0-alpha1
 * gadu: #2937 fixed: file transfers are now compatible with GG 12 and GG Drive (Vogel)
 * gui: #1713 implemented: added option to always show identity in buddies list (Vogel)
 * gui: #2309 implemented: added expand/collapse items to buddies list popup menu (Vogel)
