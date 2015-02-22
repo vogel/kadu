@@ -1,8 +1,68 @@
 #!/usr/bin/env bash
 
+function expand_version()
+{
+	if [[ $VERSION =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]];
+	then
+		export BRANCH=STABLE
+		export EN_TEST=stable
+		export PL_TEST=stabilna
+	else
+		export BRANCH=UNSTABLE
+		export EN_TEST=test
+		export PL_TEST=testowa
+	fi
+
+	[[ $VERSION =~ ^([0-9]+)\..+$ ]]
+	export MAIN=${BASH_REMATCH[1]}
+}
+
+function prepare_links()
+{
+	UNSTABLE_GDRIVE_FOLDER=
+
+	if [ $BRANCH == "STABLE" ];
+	then
+		GDRIVE_FOLDER=0B2Jon_7ucnshOFg5NTNzazdmdk0
+	else
+		GDRIVE_FOLDER=0B2Jon_7ucnshcGVYOExsUjVQQ1k
+	fi
+
+	export SOURCE_GDRIVE=https://googledrive.com/host/$GDRIVE_FOLDER/kadu-$VERSION.tar.bz2
+	export SOURCE_SF=http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download
+	export SOURCE_KADU=http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2
+	export SOURCE_KADU_MD5=http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
+	export SOURCE_KADU_SHA1=http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
+	export EXE_GDRIVE=https://googledrive.com/host/$GDRIVE_FOLDER/Kadu-$VERSION.exe
+	export EXE_SF=http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download
+	export EXE_KADU=http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe
+	export EXE_KADU_MD5=http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5
+	export EXE_KADU_SHA1=http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1
+	export EXTERNAL_PLUGINS=http://download.kadu.im/external-plugins/2.0/
+}
+
+function read_changelog()
+{
+	CHANGELOG=""
+	while read line; do
+		if [[ -z "$line" ]]; then
+			break
+		fi
+		if [[ "$line" =~ ^\*.* ]]; then
+			if [[ -z "$CHANGELOG" ]]; then
+				CHANGELOG=$line
+			else
+				CHANGELOG="$CHANGELOG
+$line"
+			fi
+		fi
+	done < ChangeLog
+
+	export CHANGELOG=$CHANGELOG
+}
+
 function update_version_file()
 {
-	VERSION=$1
 	echo $VERSION > VERSION
 
 	git commit -a -m "version: update to $VERSION"
@@ -10,17 +70,12 @@ function update_version_file()
 
 function git_tag()
 {
-	VERSION=$1
 	git tag $VERSION
 	git push origin $VERSION
 }
 
 function create_package()
 {
-	VERSION=$1
-
-	rm -rf package
-	mkdir package
 	pushd package
 	../scripts/create-package.sh $VERSION
 	popd
@@ -28,8 +83,6 @@ function create_package()
 
 function build_binary()
 {
-	VERSION=$1
-
 	rm -rf package-build
 	mkdir package-build
 	pushd package-build
@@ -40,46 +93,33 @@ function build_binary()
 
 function write_forum_entry()
 {
-	VERSION=$1
-
-	CHANGELOG=""
-	while read line; do
-		if [[ -z "$line" ]]; then
-			break
-		fi
-		if [[ "$line" =~ ^\*.* ]]; then
-			if [[ -z "$CHANGELOG" ]]; then
-				CHANGELOG=$line
-			else
-				CHANGELOG="$CHANGELOG
-$line"
-			fi
-		fi
-	done < ChangeLog
-
 	pushd package
 	cat > forum <<-END
-		Nowa testowa wersja Kadu została właśnie wydana!
+		Nowa $PL_TEST wersja Kadu z serii $MAIN została właśnie wydana!
 
-		Poprawione błędy:
+		Notka o wydaniu:
+		 http://www.kadu.im/w/NotkaOWydaniu$MAIN
+		 http://www.kadu.im/w/English:ReleaseNotes$MAIN
+
+		Zmiany:
 		$CHANGELOG
 
 		Instalator Windows i sumy kontrolne:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe
-		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1
+		 $EXE_GDRIVE
+		 $EXE_SF
+		 $EXE_KADU
+		 $EXE_KADU_MD5
+		 $EXE_KADU_SHA1
 
 		Źródła i sumy kontrolne:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2
-		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
+		 $SOURCE_GDRIVE
+		 $SOURCE_SF
+		 $SOURCE_KADU
+		 $SOURCE_KADU_MD5
+		 $SOURCE_KADU_SHA1
 
 		Wtyczki zewnętrzne:
-		 http://download.kadu.im/external-plugins/2.0/
+		 $EXTERNAL_PLUGINS
 
 		Przed instalacją zalecane jest zrobienie kopii katalogu z danymi ~/.kadu lub C:\Users\..\AppData\Roaming\Kadu.
 		Błędy jak zawsze proszę zgłaszac na redmine: http://www.kadu.im/redmine/
@@ -90,46 +130,33 @@ END
 
 function write_mailing_list_entry()
 {
-	VERSION=$1
-
-	CHANGELOG=""
-	while read line; do
-		if [[ -z "$line" ]]; then
-			break
-		fi
-		if [[ "$line" =~ ^\*.* ]]; then
-			if [[ -z "$CHANGELOG" ]]; then
-				CHANGELOG=$line
-			else
-				CHANGELOG="$CHANGELOG
-$line"
-			fi
-		fi
-	done < ChangeLog
-
 	pushd package
 	cat > mailing-list <<-END
-		New test version of Kadu 2 series is available.
+		New $EN_TEST version of Kadu $MAIN series is available.
 
-		Bugs fixed:
+		Release notes:
+		 http://www.kadu.im/w/English:ReleaseNotes$MAIN
+		 http://www.kadu.im/w/NotkaOWydaniu$MAIN
+
+		Changes:
 		$CHANGELOG
 
 		Windows installer and checksums:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe
-		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5
-		 http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1
+		 $EXE_GDRIVE
+		 $EXE_SF
+		 $EXE_KADU
+		 $EXE_KADU_MD5
+		 $EXE_KADU_SHA1
 
 		Source code:
-		 https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2
-		 http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
-		 http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
+		 $SOURCE_GDRIVE
+		 $SOURCE_SF
+		 $SOURCE_KADU
+		 $SOURCE_KADU_MD5
+		 $SOURCE_KADU_SHA1
 
 		External plugins:
-		 http://download.kadu.im/external-plugins/2.0/
+		 $EXTERNAL_PLUGINS
 
 		Please create backup of data directory ~/.kadu or C:\Users\..\AppData\Roaming\Kadu before installing.
 		Please report all found bugs in redmine: http://www.kadu.im/redmine/
@@ -143,49 +170,36 @@ END
 
 function write_pl_wiki_entry()
 {
-	VERSION=$1
-
-	CHANGELOG=""
-	while read line; do
-		if [[ -z "$line" ]]; then
-			break
-		fi
-		if [[ "$line" =~ ^\*.* ]]; then
-			if [[ -z "$CHANGELOG" ]]; then
-				CHANGELOG=$line
-			else
-				CHANGELOG="$CHANGELOG
-$line"
-			fi
-		fi
-	done < ChangeLog
-
 	DATE=`date +"%d.%m.%Y"`
 
 	pushd package
 	cat > wiki-pl <<-END
 		=== Kadu $VERSION wydane ''($DATE)'' ===
-
-		Nowa testowa wersja Kadu została właśnie wydana!
-
 		----
+
+		Nowa $PL_TEST wersja Kadu z serii $MAIN została właśnie wydana!
+
+		Notka o wydaniu:
+		* [[NotkaOWydaniu$MAIN|Wersja polska]]
+		* [[English:ReleaseNotes$MAIN|Wersja angielska]]
+
 		'''Pobierz''':
 		:: Źródła dla systemu Linux ([[Instalacja_ze_źródeł|opis instalacji tej wersji Kadu]]):
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2 Pobierz źródła (Google Drive)]
-		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download Pobierz źródła (serwer SourceForge.net)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2 Pobierz źródła (serwer Kadu.im)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5 Suma MD5]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1 Suma SHA1]
+		::: [$SOURCE_GDRIVE Pobierz źródła (Google Drive)]
+		::: [$SOURCE_SF Pobierz źródła (serwer SourceForge.net)]
+		::: [$SOURCE_KADU Pobierz źródła (serwer Kadu.im)]
+		::: [$SOURCE_KADU_MD5 Suma MD5]
+		::: [$SOURCE_KADU_SHA1 Suma SHA1]
 		:: Instalator Windows:
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe Pobierz Instalator Windows (Google Drive)]
-		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download Pobierz Instalator Windows (SourceForge.net)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe Pobierz Instalator Windows (Kadu.im)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 Suma MD5]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 Suma SHA1]
+		::: [$EXE_GDRIVE Pobierz Instalator Windows (Google Drive)]
+		::: [$EXE_SF Pobierz Instalator Windows (SourceForge.net)]
+		::: [$EXE_KADU Pobierz Instalator Windows (Kadu.im)]
+		::: [$EXE_KADU_MD5 Suma MD5]
+		::: [$EXE_KADU_SHA1 Suma SHA1]
 		:: Wtyczki zewnętrzne:
-		::: [http://download.kadu.im/external-plugins/2.0/ Źródła]
+		::: [$EXTERNAL_PLUGINS Źródła]
 
-		Lista zmian:
+		Zmiany:
 		$CHANGELOG
 
 		Przed instalacją zalecane jest zrobienie kopii katalogu z danymi ~/.kadu lub C:\Users\..\AppData\Roaming\Kadu.
@@ -201,23 +215,6 @@ END
 
 function write_en_wiki_entry()
 {
-	VERSION=$1
-
-	CHANGELOG=""
-	while read line; do
-		if [[ -z "$line" ]]; then
-			break
-		fi
-		if [[ "$line" =~ ^\*.* ]]; then
-			if [[ -z "$CHANGELOG" ]]; then
-				CHANGELOG=$line
-			else
-				CHANGELOG="$CHANGELOG
-$line"
-			fi
-		fi
-	done < ChangeLog
-
 	DATE=`date +"%d/%m/%Y"`
 
 	pushd package
@@ -225,25 +222,29 @@ $line"
 		=== Kadu $VERSION has been released ''($DATE)'' ===
 		----
 
-		New test version of Kadu 2 series is available.
+		New $EN_TEST version of Kadu $MAIN series is available.
+
+		Release notes:
+		* [[English:ReleaseNotes$MAIN|English version]]
+		* [[NotkaOWydaniu$MAIN|Polish version]]
 
 		'''Download''':
 		:: Source code:
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/kadu-$VERSION.tar.bz2 Download Sources (Google Drive)]
-		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/kadu-$VERSION.tar.bz2/download Download Sources (SourceForge.net)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2 Download Sources (Kadu.im)]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5 MD5 Checksum]
-		::: [http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1 SHA1 Checksum]
+		::: [$SOURCE_GDRIVE Download Sources (Google Drive)]
+		::: [$SOURCE_SF Download Sources (SourceForge.net)]
+		::: [$SOURCE_KADU Download Sources (Kadu.im)]
+		::: [$SOURCE_KADU_MD5 MD5 Checksum]
+		::: [$SOURCE_KADU_SHA1 SHA1 Checksum]
 		:: Windows installer:
-		::: [https://googledrive.com/host/0B2Jon_7ucnshcGVYOExsUjVQQ1k/Kadu-$VERSION.exe Download Windows Installer (Google Drive)]
-		::: [http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download Download Windows Installer (SourceForge.net)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe  Download Windows Installer (Kadu.im)]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5 MD5 Checksum]
-		::: [http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1 SHA1 Checksum]
+		::: [$EXE_GDRIVE Download Windows Installer (Google Drive)]
+		::: [$EXE_SF Download Windows Installer (SourceForge.net)]
+		::: [$EXE_KADU  Download Windows Installer (Kadu.im)]
+		::: [$EXE_KADU_MD5 MD5 Checksum]
+		::: [$EXE_KADU_SHA1 SHA1 Checksum]
 		:: External plugins:
-		::: [http://download.kadu.im/external-plugins/2.0/ Sources]
+		::: [$EXTERNAL_PLUGINS Sources]
 
-		Fixed bugs:
+		Changes:
 		$CHANGELOG
 
 		Please create backup of data directory ~/.kadu or C:\Users\..\AppData\Roaming\Kadu before installing.
@@ -257,13 +258,19 @@ END
 	popd
 }
 
-VERSION=$1
+export VERSION=$1
 
-update_version_file $VERSION
-git_tag $VERSION
-create_package $VERSION
-build_binary $VERSION
-write_forum_entry $VERSION
-write_mailing_list_entry $VERSION
-write_pl_wiki_entry $VERSION
-write_en_wiki_entry $VERSION
+rm -rf package
+mkdir package
+
+expand_version
+prepare_links
+read_changelog
+update_version_file
+git_tag
+create_package
+build_binary
+write_forum_entry
+write_mailing_list_entry
+write_pl_wiki_entry
+write_en_wiki_entry
