@@ -21,6 +21,7 @@
 #include "core/core.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
+#include "gui/taskbar-progress.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -68,6 +69,7 @@ void SingleWindowManager::configurationUpdated()
 
 SingleWindow::SingleWindow()
 {
+	new TaskbarProgress{Core::instance()->fileTransferManager(), this};
 	setWindowRole("kadu-single-window");
 
 	KaduWindow *kadu = Core::instance()->kaduWindow();

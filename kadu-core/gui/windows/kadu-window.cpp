@@ -54,6 +54,7 @@
 #include "gui/hot-key.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/menu/menu-item.h"
+#include "gui/taskbar-progress.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -82,6 +83,7 @@ KaduWindow::KaduWindow() :
 		MainWindow(new ProxyActionContext(), QString(), 0), Docked(false),
 		WindowParent(0), CompositingEnabled(false)
 {
+	new TaskbarProgress{Core::instance()->fileTransferManager(), this};
 	setWindowRole("kadu-main");
 
 #ifdef Q_OS_WIN32

@@ -23,6 +23,7 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-widget.h"
+#include "gui/taskbar-progress.h"
 #include "os/generic/window-geometry-manager.h"
 
 #include <QtGui/QKeyEvent>
@@ -38,6 +39,8 @@ FileTransferWindow::FileTransferWindow(FileTransferManager *manager, QWidget *pa
 		DesktopAwareObject{this},
 		m_manager{manager}
 {
+	new TaskbarProgress{manager, this};
+
 	setWindowRole("kadu-file-transfer");
 
 	createGui();

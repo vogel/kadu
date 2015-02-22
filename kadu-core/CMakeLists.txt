@@ -208,6 +208,9 @@ qt5_use_modules (libkadu LINK_PRIVATE Core Gui Widgets Xml Network WebKit WebKit
 if (UNIX AND NOT APPLE)
 	qt5_use_modules (libkadu LINK_PRIVATE DBus X11Extras)
 endif ()
+if (WIN32)
+	qt5_use_modules (libkadu LINK_PRIVATE WinExtras)
+endif ()
 
 message (${ADDITIONAL_LIBKADU_LIBRARIES})
 target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBKADU_LIBRARIES})

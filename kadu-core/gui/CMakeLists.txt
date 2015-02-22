@@ -224,6 +224,7 @@ set (gui_SRCS
 	gui-module.cpp
 	hot-key.cpp
 	status-icon.cpp
+	taskbar-progress.cpp
 	web-view-highlighter.cpp
 	window-manager.cpp
 )
