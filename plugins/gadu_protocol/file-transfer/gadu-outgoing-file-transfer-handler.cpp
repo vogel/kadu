@@ -53,6 +53,8 @@ void GaduOutgoingFileTransferHandler::clenaup()
 
 	if (m_putTransfer)
 		m_putTransfer->deleteLater();
+
+	m_putStarted = false;
 }
 
 void GaduOutgoingFileTransferHandler::send(QIODevice *source)
