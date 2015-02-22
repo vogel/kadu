@@ -41,12 +41,13 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent)
 {
 	preview = new QLabel(tr("<b>Here</b> you can see the preview"), this);
 	preview->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-	preview->setMargin(3);
 
 	QPushButton *configureButton = new QPushButton(tr("Configure"));
 	connect(configureButton, SIGNAL(clicked()), this, SLOT(showConfigurationWindow()));
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
+	layout->setSpacing(0);
 	layout->addWidget(preview);
 	layout->addWidget(configureButton);
 

@@ -29,10 +29,12 @@
 NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QWidget *parent) :
 		QWidget(parent), Notificator(notificator)
 {
-	new QHBoxLayout(this);
+	auto layout = new QHBoxLayout(this);
+	layout->setMargin(0);
+	layout->setSpacing(0);
 
 	NotifierCheckBox = new QCheckBox(caption);
-	layout()->addWidget(NotifierCheckBox);
+	layout->addWidget(NotifierCheckBox);
 	connect(NotifierCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggledSlot(bool)));
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }

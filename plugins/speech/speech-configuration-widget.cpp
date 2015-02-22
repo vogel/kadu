@@ -36,6 +36,7 @@ SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent) :
 	femaleLineEdit = new QLineEdit(this);
 
 	QGridLayout *gridLayout = new QGridLayout(this);
+	gridLayout->setMargin(0);
 	gridLayout->addWidget(new QLabel(tr("Male format") + ':', this), 0, 0, Qt::AlignRight);
 	gridLayout->addWidget(maleLineEdit, 0, 1);
 	gridLayout->addWidget(new QLabel(tr("Female format") + ':', this), 1, 0, Qt::AlignRight);

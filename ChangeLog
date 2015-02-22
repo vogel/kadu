@@ -1,5 +1,6 @@
 +++ version 3.0-alpha1
 * notify: #2963 fixed: do not mix up New chat and New message notifications (Vogel)
+* notify: #1352 fixed: reduce spacing between notifier configuration widgets (Vogel)
 
 +++ version 3.0-alpha1
 * gadu: #2937 fixed: file transfers are now compatible with GG 12 and GG Drive (Vogel)

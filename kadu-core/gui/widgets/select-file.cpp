@@ -56,6 +56,7 @@ void SelectFile::createGui()
 	QToolButton *selectFile = new QToolButton(this);
 	selectFile->setAutoRaise(true);
 	selectFile->setIcon(KaduIcon("document-open").icon());
+	selectFile->setIconSize(QSize{14, 14});
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);

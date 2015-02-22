@@ -41,7 +41,6 @@ SoundConfigurationWidget::SoundConfigurationWidget(SoundManager *manager, QWidge
 	auto layout = new QHBoxLayout{this};
 	layout->setMargin(0);
 	layout->setSpacing(0);
-	layout->insertSpacing(0, 20);
 	layout->addWidget(m_soundSelectFile);
 
 	static_cast<NotifyGroupBox *>(parent)->addWidget(this);

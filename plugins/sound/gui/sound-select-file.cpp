@@ -38,6 +38,7 @@ SoundSelectFile::SoundSelectFile(SoundManager *manager, QWidget *parent) :
 	auto testButton = new QToolButton{this};
 	testButton->setAutoRaise(true);
 	testButton->setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-play"}.icon());
+	testButton->setIconSize(QSize{14, 14});
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
 	m_selectFile = new SelectFile{"audio", this};

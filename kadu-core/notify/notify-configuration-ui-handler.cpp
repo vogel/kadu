@@ -87,7 +87,7 @@ void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 		notifyConfigurationWidget->loadNotifyConfigurations();
 	}
 
-	notificationsGroupBox->addWidget(configurationGroupBox, true);
+	notifierMainWidgetLayout->addWidget(configurationGroupBox);
 }
 
 void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)
@@ -138,15 +138,21 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Events", "Notifications");
 
+	notifierMainWidget = new QWidget{notificationsGroupBox->widget()};
+	notifierMainWidgetLayout = new QVBoxLayout(notifierMainWidget);
+	notifierMainWidgetLayout->setMargin(0);
+
+	notificationsGroupBox->addWidget(notifierMainWidget, true);
+
 	notifyTreeWidget = new NotifyTreeWidget(this, notificationsGroupBox->widget());
-	notifyTreeWidget->setMinimumHeight(250);
-	notificationsGroupBox->addWidget(notifyTreeWidget, true);
+	notifyTreeWidget->setMinimumHeight(300);
+	notifierMainWidgetLayout->addWidget(notifyTreeWidget, 100);
 	notifyTreeWidget->setCurrentItem(notifyTreeWidget->topLevelItem(0));
 	connect(notifyTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(eventSwitched()));
 
 	useCustomSettingsCheckBox = new QCheckBox(tr("Use custom settings"));
 	connect(useCustomSettingsCheckBox, SIGNAL(toggled(bool)), this, SLOT(customSettingsCheckBoxToggled(bool)));
-	notificationsGroupBox->addWidget(useCustomSettingsCheckBox, true);
+	notifierMainWidgetLayout->addWidget(useCustomSettingsCheckBox);
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 		addConfigurationWidget(notifier);

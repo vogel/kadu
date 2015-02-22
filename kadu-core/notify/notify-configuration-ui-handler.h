@@ -28,6 +28,7 @@
 
 class QCheckBox;
 class QListWidget;
+class QWidget;
 
 class NotifierConfigurationWidget;
 class NotifyGroupBox;
@@ -61,6 +62,8 @@ class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 
 	QCheckBox *useCustomSettingsCheckBox;
 	NotifyTreeWidget *notifyTreeWidget;
+	QWidget *notifierMainWidget;
+	QVBoxLayout *notifierMainWidgetLayout;
 
 	QString CurrentEvent;
 

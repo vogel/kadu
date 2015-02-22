@@ -38,9 +38,11 @@ PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent)
 	soundEdit = new QLineEdit(this);
 	soundEdit->setToolTip(tr("Put the played sounds separate by space, _ for pause, eg. D2 C1# G0"));
 	testButton = new QPushButton(KaduIcon("external_modules/mediaplayer-media-playback-play").icon(), QString(), this);
+	testButton->setIconSize(QSize{14, 14});
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
 	layout->addWidget(testButton);
 	layout->addWidget(soundEdit);
 
