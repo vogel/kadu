@@ -51,6 +51,7 @@ private:
 	unsigned long m_lastTransferredSize;
 	unsigned long m_speed;
 
+	owned_qptr<QLabel> m_fileNameLabel;
 	owned_qptr<QLabel> m_statusLabel;
 	owned_qptr<QProgressBar> m_progressBar;
 	owned_qptr<QPushButton> m_sendButton;
@@ -68,6 +69,7 @@ private:
 private slots:
 	void update();
 	void updateButtons();
+	void updateFileNameLabel();
 	void updateStatusLabel();
 	void updateProgressBar();
 	void updateTransferData();

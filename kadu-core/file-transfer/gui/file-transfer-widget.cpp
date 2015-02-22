@@ -93,12 +93,7 @@ void FileTransferWidget::createGui()
 
 	auto avatar = new ContactAvatarDisplay{m_transfer.peer(), QSize{48, 48}, this};
 
-	auto fileNameLabel = new QLabel{this};
-	auto fileName = QFileInfo{m_transfer.localFileName()}.fileName();
-	if (fileName.isEmpty())
-		fileName = m_transfer.remoteFileName();
-	fileNameLabel->setText(fileName);
-
+	m_fileNameLabel = new QLabel{this};
 	m_statusLabel = new QLabel{this};
 
 	m_acceptButton = new QPushButton{tr("Accept"), this};
@@ -156,7 +151,7 @@ void FileTransferWidget::createGui()
 	mainLayout->setColumnStretch(2, 1);
 
 	descriptionLayout->addWidget(icon, 0, 0, Qt::AlignHCenter | Qt::AlignLeft);
-	descriptionLayout->addWidget(fileNameLabel, 0, 1, Qt::AlignHCenter | Qt::AlignLeft);
+	descriptionLayout->addWidget(m_fileNameLabel.get(), 0, 1, Qt::AlignHCenter | Qt::AlignLeft);
 	descriptionLayout->addWidget(m_statusLabel.get(), 1, 0, 1, 2, Qt::AlignTop | Qt::AlignLeft);
 
 	descriptionLayout->setColumnStretch(0, 1);
@@ -360,6 +355,7 @@ void FileTransferWidget::remove()
 void FileTransferWidget::update()
 {
 	updateButtons();
+	updateFileNameLabel();
 	updateStatusLabel();
 	updateProgressBar();
 	updateTransferData();
@@ -383,6 +379,14 @@ void FileTransferWidget::updateButtons()
 	m_openButton->setVisible(canOpenFolder());
 	m_openFileAction->setEnabled(canOpenFile());
 	m_removeButton->setEnabled(canRemove());
+}
+
+void FileTransferWidget::updateFileNameLabel()
+{
+	auto fileName = QFileInfo{m_transfer.localFileName()}.fileName();
+	if (fileName.isEmpty())
+		fileName = m_transfer.remoteFileName();
+	m_fileNameLabel->setText(fileName);
 }
 
 void FileTransferWidget::updateStatusLabel()
