@@ -790,20 +790,6 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	if (!action)
 		return;
 
-	auto widget = action->context()->widget();
-	auto treeViewWidget = qobject_cast<QTreeView *>(widget);
-	if (treeViewWidget)
-	{
-		auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
-		for (auto &&selectedIndex : selectedIndexes)
-		{
-			if (treeViewWidget->isExpanded(selectedIndex))
-				treeViewWidget->collapse(selectedIndex);
-			else
-				treeViewWidget->expand(selectedIndex);
-		}
-	}
-
 	ContactSet contacts = action->context()->contacts();
 
 	QStringList infoList;
