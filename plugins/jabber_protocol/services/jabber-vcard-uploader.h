@@ -23,14 +23,6 @@
 
 #include <QtCore/QPointer>
 
-#include <xmpp_vcard.h>
-
-namespace XMPP
-{
-	class Client;
-	class JT_VCard;
-}
-
 /**
  * @addtogroup Jabber
  * @{
@@ -48,8 +40,7 @@ class JabberVCardUploader : public QObject
 {
 	Q_OBJECT
 
-	QPointer<XMPP::Client> XmppClient;
-	QPointer<XMPP::JT_VCard> Task;
+	// QPointer<JT_VCard> Task;
 
 	void done();
 	void failed();
@@ -60,11 +51,11 @@ private slots:
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given XMPP::Client.
-	 * @param client instance of XMPP::Client
+	 * @short Create instance attached to given Client.
+	 * @param client instance of Client
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardUploader(XMPP::Client *client, QObject *parent = 0);
+	explicit JabberVCardUploader(/*Client *client,*/ QObject *parent = 0);
 	virtual ~JabberVCardUploader();
 
 	/**
@@ -77,7 +68,7 @@ public:
 	 * note that this method can be only called once. After that this object emits vCardUploaded() and
 	 * deletes itself.
 	 */
-	virtual void uploadVCard(const QString &id, XMPP::VCard vCard);
+	// virtual void uploadVCard(const QString &id, VCard vCard);
 
 signals:
 	/**

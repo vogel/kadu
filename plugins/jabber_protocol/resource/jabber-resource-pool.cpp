@@ -29,27 +29,28 @@
  * for a given JID can be found. It's an empty offline
  * resource.
  */
-XMPP::Resource JabberResourcePool::EmptyResource(QString(), XMPP::Status(QString(), QString(), 0, false));
+// Resource JabberResourcePool::EmptyResource(QString(), Status(QString(), QString(), 0, false));
 
-JabberResourcePool::JabberResourcePool(XMPP::JabberProtocol *protocol) :
+JabberResourcePool::JabberResourcePool(JabberProtocol *protocol) :
 	QObject(protocol), protocol(protocol)
 {
 }
 
 JabberResourcePool::~JabberResourcePool()
 {
-	qDeleteAll(pool);
+	// qDeleteAll(pool);
 }
 
 void JabberResourcePool::slotResourceDestroyed(QObject *sender)
 {
+	Q_UNUSED(sender);
 	kdebug("Resource has been destroyed, collecting the pieces.\n");
 
 	// remove this resource from the lock list if it existed
-	lockList.removeAll(static_cast<JabberResource *>(sender));
+	// lockList.removeAll(static_cast<JabberResource *>(sender));
 }
-
-void JabberResourcePool::addResource(const XMPP::Jid &jid, const XMPP::Resource &resource)
+/*
+void JabberResourcePool::addResource(const Jid &jid, const Resource &resource)
 {
 	kdebugf();
 	// see if the resource already exists
@@ -80,7 +81,7 @@ void JabberResourcePool::addResource(const XMPP::Jid &jid, const XMPP::Resource 
 	kdebugf2();
 }
 
-void JabberResourcePool::removeResource(const XMPP::Jid &jid, const XMPP::Resource &resource)
+void JabberResourcePool::removeResource(const Jid &jid, const Resource &resource)
 {
 	kdebug("Removing resource %s for %s\n", resource.name().toUtf8().constData(), jid.bare().toUtf8().constData());
 
@@ -94,7 +95,7 @@ void JabberResourcePool::removeResource(const XMPP::Jid &jid, const XMPP::Resour
 	}
 }
 
-void JabberResourcePool::removeAllResources(const XMPP::Jid &jid)
+void JabberResourcePool::removeAllResources(const Jid &jid)
 {
 	kdebug("Removing all resources for %s\n", jid.bare().toUtf8().constData());
 
@@ -121,7 +122,7 @@ void JabberResourcePool::clear()
 	pool.clear();
 }
 
-void JabberResourcePool::lockToResource(const XMPP::Jid &jid, const XMPP::Resource &resource)
+void JabberResourcePool::lockToResource(const Jid &jid, const Resource &resource)
 {
 	kdebug("Locking %s to %s\n", jid.full().toUtf8().constData(), resource.name().toUtf8().constData());
 	// remove all existing locks first
@@ -139,7 +140,7 @@ void JabberResourcePool::lockToResource(const XMPP::Jid &jid, const XMPP::Resour
 	}
 }
 
-void JabberResourcePool::removeLock(const XMPP::Jid &jid)
+void JabberResourcePool::removeLock(const Jid &jid)
 {
 	kdebug("Removing resource lock for %s\n", jid.bare().toUtf8().constData());
 
@@ -153,7 +154,7 @@ void JabberResourcePool::removeLock(const XMPP::Jid &jid)
 	}
 }
 
-JabberResource *JabberResourcePool::lockedJabberResource( const XMPP::Jid &jid)
+JabberResource *JabberResourcePool::lockedJabberResource( const Jid &jid)
 {
 	// check if the JID already carries a resource, then we will have to use that one
 	if (!jid.resource().isEmpty())
@@ -188,7 +189,7 @@ JabberResource *JabberResourcePool::lockedJabberResource( const XMPP::Jid &jid)
 }
 
 
-JabberResource *JabberResourcePool::bestJabberResource(const XMPP::Jid &jid, bool honourLock)
+JabberResource *JabberResourcePool::bestJabberResource(const Jid &jid, bool honourLock)
 {
 	kdebug("Determining best resource for %s\n", jid.full().toUtf8().constData());
 
@@ -247,11 +248,11 @@ JabberResource *JabberResourcePool::bestJabberResource(const XMPP::Jid &jid, boo
 	return (bestResource) ? bestResource : 0L;
 }
 
-const XMPP::Resource & JabberResourcePool::bestResource(const XMPP::Jid &jid, bool honourLock)
+const Resource & JabberResourcePool::bestResource(const Jid &jid, bool honourLock)
 {
 	JabberResource *bestResource = bestJabberResource(jid, honourLock);
 
 	return bestResource ? bestResource->resource() : EmptyResource;
 }
-
+*/
 #include "moc_jabber-resource-pool.cpp"

@@ -22,28 +22,25 @@
 #define JABBER_RESOURCE_H
 
 #include <QtCore/QObject>
-
-#include <im.h>
-#include <xmpp_tasks.h>
-
+/*
 class JabberResource : public QObject
 {
 	Q_OBJECT
 
-	XMPP::Jid Jid;
-	XMPP::Resource Resource;
+	// Jid Jid;
+	// Resource Resource;
 
 public:
 
-	explicit JabberResource(const XMPP::Jid &jid, const XMPP::Resource &resource);
+	// explicit JabberResource(const Jid &jid, const Resource &resource);
 
 	virtual ~JabberResource();
 
-	const XMPP::Jid &jid() const { return Jid; }
+	// const Jid &jid() const { return Jid; }
 
-	void setResource (const XMPP::Resource &resource);
-	const XMPP::Resource &resource() const { return Resource; }
+	// void setResource (const Resource &resource);
+	// const Resource &resource() const { return Resource; }
 
 };
-
+*/
 #endif

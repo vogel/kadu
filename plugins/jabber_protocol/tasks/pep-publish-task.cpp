@@ -20,13 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "iris/xmpp_jid.h"
-#include "iris/xmpp_xmlcommon.h"
-
 #include "pep-publish-task.h"
-
-PEPPublishTask::PEPPublishTask(Task *parent, const QString &node, const XMPP::PubSubItem &it, JabberPepService::Access access) :
-		XMPP::Task(parent), node_(node), item_(it)
+/*
+PEPPublishTask::PEPPublishTask(Task *parent, const QString &node, const PubSubItem &it, JabberPepService::Access access) :
+		Task(parent), node_(node), item_(it)
 {
 	iq_ = createIQ(doc(), "set", QString(), id());
 
@@ -97,7 +94,7 @@ void PEPPublishTask::onGo()
 	send(iq_);
 }
 
-const XMPP::PubSubItem & PEPPublishTask::item() const
+const PubSubItem & PEPPublishTask::item() const
 {
 	return item_;
 }
@@ -106,5 +103,5 @@ const QString & PEPPublishTask::node() const
 {
 	return node_;
 }
-
+*/
 #include "moc_pep-publish-task.cpp"

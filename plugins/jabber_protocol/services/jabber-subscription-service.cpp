@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xmpp_tasks.h"
-
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
@@ -34,30 +32,27 @@
 
 #include "jabber-subscription-service.h"
 
-namespace XMPP
-{
-
 JabberSubscriptionService::JabberSubscriptionService(JabberProtocol *protocol) :
-		SubscriptionService(protocol), Protocol(protocol), XmppClient(protocol->xmppClient())
+		SubscriptionService(protocol), Protocol(protocol)
 {
-	connect(XmppClient.data(), SIGNAL(subscription(const Jid &, const QString &, const QString &)),
-		   this, SLOT(subscription(const Jid &, const QString &, const QString &)));
+	//connect(XmppClient.data(), SIGNAL(subscription(const Jid &, const QString &, const QString &)),
+	//	   this, SLOT(subscription(const Jid &, const QString &, const QString &)));
 }
-
-void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString &type, const QString &nick)
+/*
+void JabberSubscriptionService::subscription(const Jid &jid, const QString &type, const QString &nick)
 {
 	Q_UNUSED(nick)
 
 	if (type == "unsubscribed")
 	{
 		kdebug("%s revoked our presence authorization\n", jid.full().toUtf8().constData());
-		/*
+		/ *
 		 * Someone else removed our authorization to see them.
 		 * We want to leave the contact in our contact list.
 		 * In this case, we need to delete all the resources
 		 * we have for it, as the Jabber server won't signal us
 		 * that the contact is offline now.
-		 */
+		 * /
 		::Status offlineStatus;
 		Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
 
@@ -69,7 +64,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 			Protocol->emitContactStatusChanged(contact, oldStatus);
 		}
 
-		Protocol->resourcePool()->removeAllResources(jid);
+		//Protocol->resourcePool()->removeAllResources(jid);
 	}
 
 	if (type == "subscribe")
@@ -78,7 +73,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
 	}
 }
-
+*/
 void JabberSubscriptionService::authorizeContact(Contact contact, bool authorized)
 {
 	if (authorized)
@@ -104,14 +99,15 @@ void JabberSubscriptionService::requestSubscription(const Contact &contact)
 
 void JabberSubscriptionService::sendSubsription(const Contact &contact, const QString &subscription)
 {
+	Q_UNUSED(contact);
+	Q_UNUSED(subscription);
+	/*
 	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->xmppClient() || !Protocol->xmppClient()->isActive())
 		return;
 
-	XMPP::JT_Presence *task = new XMPP::JT_Presence(Protocol->xmppClient()->rootTask());
+	JT_Presence *task = new JT_Presence(Protocol->xmppClient()->rootTask());
 	task->sub(contact.id(), subscription);
-	task->go(true);
-}
-
+	task->go(true);*/
 }
 
 #include "moc_jabber-subscription-service.cpp"

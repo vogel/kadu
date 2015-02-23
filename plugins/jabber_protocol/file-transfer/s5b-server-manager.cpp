@@ -38,8 +38,8 @@ void S5BServerManager::destroyInstance()
 	Instance = 0;
 }
 
-S5BServerManager::S5BServerManager() :
-		Server(new XMPP::S5BServer(this)), Port(-1)
+S5BServerManager::S5BServerManager() // :
+		// Server(new S5BServer(this)), Port(-1)
 {
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -71,11 +71,11 @@ void S5BServerManager::configurationUpdated()
 
 	if (Port != port)
 	{
-		if (Server->isActive())
-			Server->stop();
+		// if (Server->isActive())
+		// 	Server->stop();
 
 		Port = port;
-		Server->start(Port);
+		// Server->start(Port);
 	}
 }
 
@@ -84,7 +84,7 @@ void S5BServerManager::addAddress(const QString &address)
 	Addresses.append(address);
 
 	// remove duplicates
-	server()->setHostList(QSet<QString>::fromList(Addresses).toList());
+	// server()->setHostList(QSet<QString>::fromList(Addresses).toList());
 }
 
 void S5BServerManager::removeAddress(const QString &address)
@@ -92,7 +92,7 @@ void S5BServerManager::removeAddress(const QString &address)
 	Addresses.removeOne(address);
 
 	// remove duplicates
-	server()->setHostList(QSet<QString>::fromList(Addresses).toList());
+	// server()->setHostList(QSet<QString>::fromList(Addresses).toList());
 }
 
 #include "moc_s5b-server-manager.cpp"

@@ -23,22 +23,15 @@
 #define PEP_GET_TASK_H
 
 #include <QtXml/QDomElement>
-
-#include "iris/xmpp_task.h"
-
-namespace XMPP
-{
-	class PubSubItem;
-}
-
-class PEPGetTask : public XMPP::Task
+/*
+class PEPGetTask : public Task
 {
 	Q_OBJECT
 
 	QDomElement iq_;
 	QString jid_;
 	QString node_;
-	QList<XMPP::PubSubItem> items_;
+	QList<PubSubItem> items_;
 
 public:
 	PEPGetTask(Task *parent, const QString &jid, const QString &node, const QString &itemID);
@@ -47,10 +40,10 @@ public:
 	void onGo();
 	bool take(const QDomElement &x);
 
-	const QList<XMPP::PubSubItem> & items() const;
+	const QList<PubSubItem> & items() const;
 	const QString & jid() const;
 	const QString & node() const;
 
 };
-
+*/
 #endif // PEP_GET_TASK_H

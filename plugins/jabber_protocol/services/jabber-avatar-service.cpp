@@ -44,14 +44,14 @@ void JabberAvatarService::setPepService(JabberPepService *pepService)
 	PepService = pepService;
 }
 
-void JabberAvatarService::setVCardService(XMPP::JabberVCardService *vCardService)
+void JabberAvatarService::setVCardService(JabberVCardService *vCardService)
 {
 	VCardService = vCardService;
 }
 
 AvatarDownloader * JabberAvatarService::createAvatarDownloader()
-{
-	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+{/*
+	auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
 	if (!protocol->isConnected() || !protocol->xmppClient())
 		return 0;
 	if (!PepService.data() && !VCardService.data())
@@ -60,12 +60,13 @@ AvatarDownloader * JabberAvatarService::createAvatarDownloader()
 		return new JabberAvatarPepDownloader(PepService.data(), this);
 	if (!PepService.data() && VCardService.data())
 		return new JabberAvatarVCardDownloader(VCardService.data(), this);
-	return new JabberAvatarDownloader(PepService.data(), VCardService.data(), this);
+	return new JabberAvatarDownloader(PepService.data(), VCardService.data(), this);*/
+	return nullptr;
 }
 
 AvatarUploader * JabberAvatarService::createAvatarUploader()
-{
-	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+{/*
+	auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
 	if (!protocol->isConnected() || !protocol->xmppClient())
 		return 0;
 	if (!PepService.data() && !VCardService.data())
@@ -74,7 +75,8 @@ AvatarUploader * JabberAvatarService::createAvatarUploader()
 		return new JabberAvatarPepUploader(PepService.data(), this);
 	if (!PepService.data() && VCardService.data())
 		return new JabberAvatarVCardUploader(VCardService.data(), this);
-	return new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
+	return new JabberAvatarUploader(PepService.data(), VCardService.data(), this);*/
+	return nullptr;
 }
 
 #include "moc_jabber-avatar-service.cpp"

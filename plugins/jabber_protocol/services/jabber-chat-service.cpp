@@ -51,9 +51,6 @@
 
 #include <QtGui/QTextDocument>
 
-namespace XMPP
-{
-
 JabberChatService::JabberChatService(Account account, QObject *parent) :
 		ChatService{account, parent}
 {
@@ -68,11 +65,6 @@ void JabberChatService::setFormattedStringFactory(FormattedStringFactory *format
 	m_formattedStringFactory = formattedStringFactory;
 }
 
-void JabberChatService::setXmppClient(Client *xmppClient)
-{
-	m_client = xmppClient;
-}
-
 void JabberChatService::setRoomChatService(JabberRoomChatService *roomChatService)
 {
 	m_roomChatService = roomChatService;
@@ -82,19 +74,19 @@ int JabberChatService::maxMessageLength() const
 {
 	return 100000;
 }
-
-XMPP::Jid JabberChatService::chatJid(const Chat &chat)
+/*
+Jid JabberChatService::chatJid(const Chat &chat)
 {
 	auto chatType = ChatTypeManager::instance()->chatType(chat.type());
 	if (!chatType)
-		return XMPP::Jid();
+		return Jid();
 
 	if (chatType->name() == "Contact")
 	{
 		auto contacts = chat.contacts();
 		Q_ASSERT(1 == contacts.size());
 
-		auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+		auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
 
 		if (protocol)
 		{
@@ -114,10 +106,10 @@ XMPP::Jid JabberChatService::chatJid(const Chat &chat)
 		return details->room();
 	}
 
-	return XMPP::Jid();
+	return Jid();
 }
 
-QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &jid)
+QString JabberChatService::chatMessageType(const Chat &chat, const Jid &jid)
 {
 	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
 	if (!chatType)
@@ -131,9 +123,9 @@ QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &ji
 	else
 		return m_contactMessageTypes.value(jid.bare());
 }
-
+*/
 bool JabberChatService::sendMessage(const ::Message &message)
-{
+{/*
 	if (!m_client)
 		return false;
 
@@ -141,7 +133,7 @@ bool JabberChatService::sendMessage(const ::Message &message)
 	if (jid.isEmpty())
 		return false;
 
-	auto msg = XMPP::Message{jid};
+	auto msg = Message{jid};
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	message.content()->accept(&plainTextVisitor);
@@ -158,11 +150,17 @@ bool JabberChatService::sendMessage(const ::Message &message)
 	emit messageAboutToSend(msg);
 	m_client.data()->sendMessage(msg);
 
-	return true;
+	return true;*/
+	Q_UNUSED(message);
+	return false;
 }
 
 bool JabberChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMessage)
 {
+	Q_UNUSED(chat);
+	Q_UNUSED(rawMessage);
+	return false;
+	/*
 	if (!m_client)
 		return false;
 
@@ -170,7 +168,7 @@ bool JabberChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMe
 	if (jid.isEmpty())
 		return false;
 
-	auto msg = XMPP::Message{jid};
+	auto msg = Message{jid};
 
 	msg.setType(chatMessageType(chat, jid));
 	msg.setBody(rawMessage);
@@ -180,11 +178,12 @@ bool JabberChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMe
 	emit messageAboutToSend(msg);
 	m_client.data()->sendMessage(msg);
 
-	return true;
+	return true;*/
 }
 
-void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
+void JabberChatService::handleReceivedMessage(const Message &msg)
 {
+	Q_UNUSED(msg);/*
 	if (!m_formattedStringFactory)
 		return;
 
@@ -223,15 +222,17 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	m_contactMessageTypes.insert(msg.from().bare(), messageType);
 
-	emit messageReceived(message);
+	emit messageReceived(message);*/
 }
 
-::Message JabberChatService::handleNormalReceivedMessage(const XMPP::Message &msg)
+Message JabberChatService::handleNormalReceivedMessage(const Message &msg)
 {
+	Q_UNUSED(msg);
+	/*
 	auto contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 
-	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+	auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
 
 	if (protocol)
 	{
@@ -258,15 +259,14 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	message.setMessageChat(chat);
 	message.setMessageSender(contact);
 
-	return message;
+	return message;*/
+	return Message::null;
 }
 
 void JabberChatService::leaveChat(const Chat& chat)
 {
 	if (m_roomChatService->isRoomChat(chat))
 		m_roomChatService->leaveChat(chat);
-}
-
 }
 
 #include "moc_jabber-chat-service.cpp"

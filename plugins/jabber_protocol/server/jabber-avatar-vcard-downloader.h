@@ -23,14 +23,9 @@
 
 #include <QtGui/QPixmap>
 
-#include <xmpp_vcard.h>
-
 #include "protocols/services/avatar-downloader.h"
 
-namespace XMPP
-{
-	class JabberVCardService;
-}
+class JabberVCardService;
 
 /**
  * @addtogroup Jabber
@@ -43,19 +38,19 @@ namespace XMPP
  * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for easy download of avatar for given contact from XMPP server. New instance can be created by
- * constructor that requires XMPP::JabberVCardService argument.
+ * constructor that requires JabberVCardService argument.
  */
 class JabberAvatarVCardDownloader : public AvatarDownloader
 {
 	Q_OBJECT
 
-	QPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberVCardService> VCardService;
 
 	void done(QImage avatar);
 	void failed();
 
 private slots:
-	void vCardDownloaded(bool ok, XMPP::VCard vCard);
+	// void vCardDownloaded(bool ok, VCard vCard);
 
 public:
 	/**
@@ -64,7 +59,7 @@ public:
 	 * @param vCardService vCard service to use in this class
 	 * @param parent QObject parent
 	 */
-	explicit JabberAvatarVCardDownloader(XMPP::JabberVCardService *vCardService, QObject *parent = 0);
+	explicit JabberAvatarVCardDownloader(JabberVCardService *vCardService, QObject *parent = 0);
 	virtual ~JabberAvatarVCardDownloader();
 
 	virtual void downloadAvatar(const QString &id);

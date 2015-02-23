@@ -23,14 +23,7 @@
 
 #include <QtCore/QObject>
 
-#include <iris/xmpp_jid.h>
-
 #include "protocols/services/subscription-service.h"
-
-namespace XMPP
-{
-
-class Client;
 
 class JabberProtocol;
 
@@ -39,10 +32,9 @@ class JabberSubscriptionService : public SubscriptionService
 	Q_OBJECT
 
 	JabberProtocol *Protocol;
-	QPointer<Client> XmppClient;
 
 private slots:
-	void subscription(const Jid &jid, const QString &type, const QString &nick);
+	// void subscription(const Jid &jid, const QString &type, const QString &nick);
 
 public:
 	explicit JabberSubscriptionService(JabberProtocol *protocol);
@@ -57,7 +49,5 @@ public slots:
 	virtual void authorizeContact(Contact contact, bool authorized);
 
 };
-
-}
 
 #endif // JABBER_SUBSCRIPTION_SERVICE_H

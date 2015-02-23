@@ -25,9 +25,8 @@
 
 #include "protocols/services/avatar-service.h"
 
-namespace XMPP { class JabberVCardService; }
-
 class JabberPepService;
+class JabberVCardService;
 
 /**
  * @addtogroup Jabber
@@ -42,10 +41,10 @@ class JabberPepService;
  *
  * See documentation of AvatarService to get general information about this service.
  *
- * JabberAvatarService uses JabberPepService or XMPP::JabberVCardService to create AvatarDownloader and
+ * JabberAvatarService uses JabberPepService or JabberVCardService to create AvatarDownloader and
  * AvatarUploader instances.
  *
- * When neither JabberPepService nor XMPP::JabberVCardService are provided this service will return null
+ * When neither JabberPepService nor JabberVCardService are provided this service will return null
  * AvatarDownloader and AvatarUploader instances. If only one service is available then proper downloader and
  * uploader will be returned. In case both are available then returned instance will try to use PEP protocol
  * first, then VCard in case PEP fails.
@@ -57,7 +56,7 @@ class JabberAvatarService : public AvatarService
 	Q_OBJECT
 
 	QPointer<JabberPepService> PepService;
-	QPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberVCardService> VCardService;
 
 public:
 	/**
@@ -81,7 +80,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param vCardService VCard service object to use
 	 */
-	void setVCardService(XMPP::JabberVCardService *vCardService);
+	void setVCardService(JabberVCardService *vCardService);
 
 	virtual AvatarDownloader * createAvatarDownloader() override;
 	virtual AvatarUploader * createAvatarUploader() override;

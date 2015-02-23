@@ -23,10 +23,8 @@
 #define PEP_RETRACT_TASK_H
 
 #include <QtXml/QDomElement>
-
-#include "iris/xmpp_task.h"
-
-class PEPRetractTask : public XMPP::Task
+/*
+class PEPRetractTask : public Task
 {
 	Q_OBJECT
 
@@ -44,5 +42,5 @@ public:
 	const QString & node() const;
 
 };
-
+*/
 #endif // PEP_RETRACT_TASK_H

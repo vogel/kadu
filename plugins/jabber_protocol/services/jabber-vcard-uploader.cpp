@@ -18,12 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_tasks.h>
-
 #include "jabber-vcard-uploader.h"
 
-JabberVCardUploader::JabberVCardUploader(XMPP::Client *client, QObject *parent) :
-		QObject(parent), XmppClient(client)
+JabberVCardUploader::JabberVCardUploader(/*Client *client,*/ QObject *parent) :
+		QObject(parent)//, XmppClient(client)
 {
 }
 
@@ -45,13 +43,13 @@ void JabberVCardUploader::failed()
 
 void JabberVCardUploader::taskFinished()
 {
-	if (!Task || !Task->success())
-		failed();
-	else
+	// if (!Task || !Task->success())
+		// failed();
+	// else
 		done();
 }
-
-void JabberVCardUploader::uploadVCard(const QString &id, XMPP::VCard vCard)
+/*
+void JabberVCardUploader::uploadVCard(const QString &id, VCard vCard)
 {
 	if (!XmppClient || !XmppClient->rootTask())
 	{
@@ -59,11 +57,11 @@ void JabberVCardUploader::uploadVCard(const QString &id, XMPP::VCard vCard)
 		return;
 	}
 
-	Task = new XMPP::JT_VCard(XmppClient->rootTask());
+	Task = new JT_VCard(XmppClient->rootTask());
 
 	connect(Task.data(), SIGNAL(finished()), this, SLOT(taskFinished()));
 	Task->set(id, vCard);
 	Task->go(true);
-}
+}*/
 
 #include "moc_jabber-vcard-uploader.cpp"

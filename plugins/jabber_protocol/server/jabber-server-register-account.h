@@ -23,8 +23,6 @@
 #include "protocols/protocol.h"
 
 #include <QtCore/QObject>
-#include "im.h"
-#include "xmpp_tasks.h"
 
 #include "client/mini-client.h"
 
@@ -41,10 +39,10 @@ class JabberServerRegisterAccount : public QObject
 	QString Jid;
 	MiniClient *Client;
 
-	XMPP::XData fields;
+	// XData fields;
 
-	XMPP::Form convertFromXData(const XMPP::XData& xdata);
-	XMPP::XData convertToXData(const XMPP::Form& form);
+	// Form convertFromXData(const XData& xdata);
+	// XData convertToXData(const Form& form);
 
 public:
 	JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, quint16 port);

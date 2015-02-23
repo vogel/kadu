@@ -25,16 +25,10 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
-#include <im.h>
-#include <xmpp.h>
 
 class Chat;
 class FormattedStringFactory;
 
-namespace XMPP
-{
-
-class Client;
 class JabberRoomChatService;
 
 class JabberChatService : public ChatService
@@ -47,7 +41,6 @@ public:
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	void setXmppClient(Client *xmppClient);
 	void setRoomChatService(JabberRoomChatService *roomChatService);
 
 	virtual int maxMessageLength() const;
@@ -68,15 +61,12 @@ signals:
 
 private:
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
-	QPointer<Client> m_client;
 	QPointer<JabberRoomChatService> m_roomChatService;
 
 	QMap<QString, QString> m_contactMessageTypes;
 
-	XMPP::Jid chatJid(const Chat &chat);
-	QString chatMessageType(const Chat &chat, const XMPP::Jid &jid);
-	::Message handleNormalReceivedMessage(const Message &msg);
+	// Jid chatJid(const Chat &chat);
+	// QString chatMessageType(const Chat &chat, const Jid &jid);
+	Message handleNormalReceivedMessage(const Message &msg);
 
 };
-
-}

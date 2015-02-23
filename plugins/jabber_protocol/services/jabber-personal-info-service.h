@@ -21,33 +21,27 @@
 #ifndef JABBER_PERSONAL_INFO_SERVICE_H
 #define JABBER_PERSONAL_INFO_SERVICE_H
 
-#include <xmpp_vcard.h>
-
 #include "buddies/buddy.h"
 
 #include "protocols/services/personal-info-service.h"
 
-namespace XMPP
-{
-	class JabberProtocol;
-	class JabberVCardService;
-}
+class JabberVCardService;
 
 class JabberPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
 
-	QPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberVCardService> VCardService;
 	Buddy CurrentBuddy;
 
 private slots:
-	virtual void vCardDownloaded(bool ok, XMPP::VCard vCard);
+	// virtual void vCardDownloaded(bool ok, VCard vCard);
 
 public:
 	explicit JabberPersonalInfoService(Account account, QObject *parent = 0);
 	virtual ~JabberPersonalInfoService();
 
-	void setVCardService(XMPP::JabberVCardService *vCardService);
+	void setVCardService(JabberVCardService *vCardService);
 
 	virtual void fetchPersonalInfo(const QString &id);
 	virtual void updatePersonalInfo(const QString &id, Buddy buddy);

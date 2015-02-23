@@ -18,17 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_client.h>
-
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "jabber-protocol.h"
 
 #include "jabber-chat-state-service.h"
-
-namespace XMPP
-{
 
 JabberChatStateService::JabberChatStateService(Account account, QObject *parent) :
 		ChatStateService(account, parent)
@@ -39,29 +34,27 @@ JabberChatStateService::~JabberChatStateService()
 {
 }
 
-void JabberChatStateService::setClient(Client *xmppClient)
-{
-	XmppClient = xmppClient;
-}
-
 bool JabberChatStateService::shouldSendEvent(const Contact &contact)
 {
+	Q_UNUSED(contact);
+	return false;
+	/*
 	if (!contact)
 		return false;
 
 	ContactInfo &info = ContactInfos[contact];
-	if (!info.UserRequestedEvents && info.ContactChatState == XMPP::StateNone)
+	if (!info.UserRequestedEvents && info.ContactChatState == StateNone)
 		return false;
 
 	// Don't send to offline resource
 	if (contact.currentStatus().isDisconnected())
 	{
 		info.UserRequestedEvents = false;
-		info.LastChatState = XMPP::StateNone;
+		info.LastChatState = StateNone;
 		return false;
 	}
 
-	if (info.ContactChatState == XMPP::StateGone)
+	if (info.ContactChatState == StateGone)
 		return false;
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
@@ -71,10 +64,10 @@ bool JabberChatStateService::shouldSendEvent(const Contact &contact)
 	if (!jabberAccountDetails->sendTypingNotification())
 		return false;
 
-	return true;
+	return true;*/
 }
-
-void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatState state)
+/*
+void JabberChatStateService::setChatState(const Contact &contact, ChatState state)
 {
 	if (!XmppClient)
 		return;
@@ -83,44 +76,44 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 		return;
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (jabberAccountDetails && !jabberAccountDetails->sendGoneNotification() && (state == XMPP::StateGone || state == XMPP::StateInactive))
-		state = XMPP::StatePaused;
+	if (jabberAccountDetails && !jabberAccountDetails->sendGoneNotification() && (state == StateGone || state == StateInactive))
+		state = StatePaused;
 
 	ContactInfo &info = ContactInfos[contact];
 	//this isn't a valid transition, so don't send it, and don't update laststate
-	if (info.LastChatState == XMPP::StateNone && (state != XMPP::StateActive && state != XMPP::StateComposing && state != XMPP::StateGone))
+	if (info.LastChatState == StateNone && (state != StateActive && state != StateComposing && state != StateGone))
 		return;
 
 	// Check if we should send a message
 	if (state == info.LastChatState ||
-			(state == XMPP::StateActive && info.LastChatState == XMPP::StatePaused) ||
-			(info.LastChatState == XMPP::StateActive && state == XMPP::StatePaused))
+			(state == StateActive && info.LastChatState == StatePaused) ||
+			(info.LastChatState == StateActive && state == StatePaused))
 		return;
 
 	// Build event message
-	XMPP::Message m(contact.id());
+	Message m(contact.id());
 	if (info.UserRequestedEvents)
 	{
 		m.setEventId(info.EventId);
-		if (state == XMPP::StateComposing)
-			m.addEvent(XMPP::ComposingEvent);
-		else if (info.LastChatState == XMPP::StateComposing)
-			m.addEvent(XMPP::CancelEvent);
+		if (state == StateComposing)
+			m.addEvent(ComposingEvent);
+		else if (info.LastChatState == StateComposing)
+			m.addEvent(CancelEvent);
 	}
 
-	if (info.ContactChatState != XMPP::StateNone)
+	if (info.ContactChatState != StateNone)
 	{
-		if (info.LastChatState != XMPP::StateGone)
+		if (info.LastChatState != StateGone)
 		{
-			if ((state == XMPP::StateInactive && info.LastChatState == XMPP::StateComposing)
-				|| (state == XMPP::StateComposing && info.LastChatState == XMPP::StateInactive))
+			if ((state == StateInactive && info.LastChatState == StateComposing)
+				|| (state == StateComposing && info.LastChatState == StateInactive))
 			{
 				// First go to the paused or active state
-				XMPP::Message tm(contact.id());
+				Message tm(contact.id());
 				tm.setType("chat");
-				tm.setChatState(info.LastChatState == XMPP::StateComposing
-						? XMPP::StatePaused
-						: XMPP::StateActive);
+				tm.setChatState(info.LastChatState == StateComposing
+						? StatePaused
+						: StateActive);
 
 				if (XmppClient.data()->isActive())
 					XmppClient.data()->sendMessage(tm);
@@ -130,7 +123,7 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 	}
 
 	// Send event message
-	if (m.containsEvents() || m.chatState() != XMPP::StateNone)
+	if (m.containsEvents() || m.chatState() != StateNone)
 	{
 		m.setType("chat");
 		if (XmppClient.data()->isActive())
@@ -138,32 +131,32 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 	}
 
 	// Save last state
-	if (info.LastChatState != XMPP::StateGone || state == XMPP::StateActive)
+	if (info.LastChatState != StateGone || state == StateActive)
 		info.LastChatState = state;
 }
 
-ChatStateService::State JabberChatStateService::xmppStateToContactState(XMPP::ChatState state)
+ChatStateService::State JabberChatStateService::xmppStateToContactState(ChatState state)
 {
 	switch (state)
 	{
-		case XMPP::StateNone:
+		case StateNone:
 			return StateNone;
-		case XMPP::StateActive:
+		case StateActive:
 			return StateActive;
-		case XMPP::StateComposing:
+		case StateComposing:
 			return StateComposing;
-		case XMPP::StatePaused:
+		case StatePaused:
 			return StatePaused;
-		case XMPP::StateInactive:
+		case StateInactive:
 			return StateInactive;
-		case XMPP::StateGone:
+		case StateGone:
 			return StateGone;
 		default:
 			return StateNone;
 	}
 }
 
-void JabberChatStateService::handleReceivedMessage(const XMPP::Message &msg)
+void JabberChatStateService::handleReceivedMessage(const Message &msg)
 {
 	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 	ContactInfo &info = ContactInfos[contact];
@@ -171,18 +164,18 @@ void JabberChatStateService::handleReceivedMessage(const XMPP::Message &msg)
 	if (msg.body().isEmpty())
 	{
 		// Event message
-		if (msg.containsEvent(XMPP::CancelEvent))
+		if (msg.containsEvent(CancelEvent))
 		{
-			info.ContactChatState = XMPP::StatePaused;
+			info.ContactChatState = StatePaused;
 			emit peerStateChanged(contact, StatePaused);
 		}
-		else if (msg.containsEvent(XMPP::ComposingEvent))
+		else if (msg.containsEvent(ComposingEvent))
 		{
-			info.ContactChatState = XMPP::StateComposing;
+			info.ContactChatState = StateComposing;
 			emit peerStateChanged(contact, StateComposing);
 		}
 
-		if (msg.chatState() != XMPP::StateNone)
+		if (msg.chatState() != StateNone)
 		{
 			info.ContactChatState = msg.chatState();
 			emit peerStateChanged(contact, xmppStateToContactState(msg.chatState()));
@@ -192,60 +185,60 @@ void JabberChatStateService::handleReceivedMessage(const XMPP::Message &msg)
 	{
 		// Normal message
 		// Check if user requests event messages XEP22
-		info.UserRequestedEvents = msg.containsEvent(XMPP::ComposingEvent);
+		info.UserRequestedEvents = msg.containsEvent(ComposingEvent);
 
 		if (!msg.eventId().isEmpty())
 			info.EventId = msg.eventId();
 
-		if (msg.containsEvents() || msg.chatState() != XMPP::StateNone)
+		if (msg.containsEvents() || msg.chatState() != StateNone)
 		{
-			info.ContactChatState = XMPP::StateActive;
+			info.ContactChatState = StateActive;
 			emit peerStateChanged(contact, StateActive);
 		}
 		else
 		{
-			info.ContactChatState = XMPP::StateNone;
+			info.ContactChatState = StateNone;
 			emit peerStateChanged(contact, StateNone);
 		}
 	}
 }
 
-void JabberChatStateService::handleMessageAboutToSend(XMPP::Message &message)
+void JabberChatStateService::handleMessageAboutToSend(Message &message)
 {
 	Contact contact = ContactManager::instance()->byId(account(), message.to().bare(), ActionCreateAndAdd);
 
 	if (ContactInfos[contact].UserRequestedEvents)
-		message.addEvent(XMPP::ComposingEvent);
+		message.addEvent(ComposingEvent);
 
-	message.setChatState(XMPP::StateActive);
-	ContactInfos[contact].LastChatState = XMPP::StateActive;
+	message.setChatState(StateActive);
+	ContactInfos[contact].LastChatState = StateActive;
 }
-
+*/
 void JabberChatStateService::sendState(const Contact &contact, State state)
 {
+	Q_UNUSED(contact);
+	Q_UNUSED(state);/*
 	switch (state)
 	{
 		case StateActive:
-			setChatState(contact, XMPP::StateActive);
+			setChatState(contact, StateActive);
 			break;
 		case StateComposing:
-			setChatState(contact, XMPP::StateComposing);
+			setChatState(contact, StateComposing);
 			break;
 		case StateGone:
-			setChatState(contact, XMPP::StateGone);
+			setChatState(contact, StateGone);
 			ContactInfos.remove(contact);
 			break;
 		case StateInactive:
-			setChatState(contact, XMPP::StateInactive);
+			setChatState(contact, StateInactive);
 			break;
 		case StatePaused:
-			setChatState(contact, XMPP::StatePaused);
+			setChatState(contact, StatePaused);
 			break;
 		default:
 			break;
-	}
-}
-
+	}*/
 }
 
 #include "moc_jabber-chat-state-service.cpp"

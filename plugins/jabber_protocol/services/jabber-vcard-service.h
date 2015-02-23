@@ -28,11 +28,6 @@
 class JabberVCardDownloader;
 class JabberVCardUploader;
 
-namespace XMPP
-{
-
-class Client;
-
 /**
  * @addtogroup Jabber
  * @{
@@ -47,14 +42,13 @@ class Client;
  * createVCardUploader() and use returned object to do its job. Each returner object can be used only once. Service
  * can return null values if given operation is not possible at time of call.
  *
- * This service requres XMPP::Client instance for connecting with server. Use setXmppClient() method to provide one.
+ * This service requres Client instance for connecting with server. Use setXmppClient() method to provide one.
  */
 class JabberVCardService : public QObject
 {
 	Q_OBJECT
 
 	Account MyAccount;
-	QPointer<XMPP::Client> XmppClient;
 
 public:
 	/**
@@ -64,23 +58,6 @@ public:
 	 */
 	explicit JabberVCardService(Account account, QObject *parent = 0);
 	virtual ~JabberVCardService();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets instance of XMPP::Client to use by this serivce.
-	 * @param xmppClient instance of XMPP::Client to be used by this service
-	 *
-	 * There is no need to call setXmppClient(0) as this service is aware of object destroying.
-	 * If no XMPP::Client is available all actions will fail.
-	 */
-	void setXmppClient(XMPP::Client *xmppClient);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns XMPP::Client instance used by this service.
-	 * @return XMPP::Client instance used by this service
-	 */
-	XMPP::Client * xmppClient() const;
 
 	/**
 	 * @short Get JabberVCardDownloader for this service.
@@ -113,7 +90,5 @@ public:
 /**
  * @}
  */
-
-}
 
 #endif // JABBER_VCARD_SERVICE_H

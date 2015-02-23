@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_tasks.h>
-
 #include "misc/misc.h"
 
 #include "jabber-protocol.h"
@@ -32,30 +30,30 @@ JabberServerChangePassword::JabberServerChangePassword(Account account, const QS
 }
 
 void JabberServerChangePassword::performAction()
-{
-	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyAccount.protocolHandler());
+{/*
+	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyAccount.protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 	{
 		emit finished(this);
 		return;
 	}
 
-	XMPP::JT_Register *task = new XMPP::JT_Register(jabberProtocol->xmppClient()->rootTask());
+	JT_Register *task = new JT_Register(jabberProtocol->xmppClient()->rootTask());
 	QObject::connect(task, SIGNAL(finished()),
 			 this, SLOT(actionFinished()));
-	XMPP::Jid j = MyAccount.id();
+	Jid j = MyAccount.id();
 	task->reg(j.node(), NewPassword);
-	task->go(true);
+	task->go(true);*/
 }
 
 void JabberServerChangePassword::actionFinished()
-{
-	XMPP::JT_Register *task = (XMPP::JT_Register *)sender();
+{/*
+	JT_Register *task = (JT_Register *)sender();
 	//QString err = task->statusString();
 	//int code = task->statusCode();
 	Result = task->success();
 
-	emit finished(this);
+	emit finished(this);*/
 }
 
 #include "moc_jabber-server-change-password.cpp"

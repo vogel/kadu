@@ -21,25 +21,14 @@
 
 #include <QtCore/QPointer>
 
-#include <jid.h>
-#include <s5b.h>
-
 #include "file-transfer/outgoing-file-transfer-handler.h"
-
-namespace XMPP
-{
-	class FileTransfer;
-};
 
 class JabberOutgoingFileTransferHandler : public OutgoingFileTransferHandler
 {
 	Q_OBJECT
 
-	// a workaround to Qt's MOC not doing really well when mixing namespaces
-	typedef XMPP::StreamHostList StreamHostList;
-
-	XMPP::FileTransfer *JabberTransfer;
-	XMPP::Jid PeerJid;
+	FileTransfer *JabberTransfer;
+	// Jid PeerJid;
 
 	bool InProgress;
 	qlonglong BytesTransferred;
@@ -64,7 +53,7 @@ public:
 	explicit JabberOutgoingFileTransferHandler(FileTransfer fileTransfer);
 	virtual ~JabberOutgoingFileTransferHandler();
 
-	void setJTransfer(XMPP::FileTransfer *jTransfer);
+	void setJTransfer(FileTransfer *jTransfer);
 
 	virtual void send(QIODevice *source);
 	virtual void stop();

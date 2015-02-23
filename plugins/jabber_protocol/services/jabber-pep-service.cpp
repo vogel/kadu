@@ -22,8 +22,6 @@
 
 #include <QtCore/QtDebug>
 
-#include "iris/xmpp_tasks.h"
-#include "iris/xmpp_xmlcommon.h"
 #include "tasks/pep-get-task.h"
 #include "tasks/pep-publish-task.h"
 #include "tasks/pep-retract-task.h"
@@ -36,24 +34,21 @@
 // (subscriptions is not accurate, since one doesn't subscribe to the
 // avatar data node)
 
-JabberPepService::JabberPepService(XMPP::JabberProtocol *protocol) :
-		QObject(protocol), XmppClient(protocol->xmppClient()), Enabled(false)
+JabberPepService::JabberPepService(JabberProtocol *protocol) :
+		QObject(protocol),  Enabled(false)
 {
-	if (XmppClient)
-		connect(XmppClient.data(), SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));
+	// if (XmppClient)
+	// 	connect(XmppClient.data(), SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));
 }
 
 JabberPepService::~JabberPepService()
 {
 }
 
-XMPP::Client * JabberPepService::xmppClient() const
-{
-	return XmppClient.data();
-}
-
 void JabberPepService::setEnabled(bool enabled)
 {
+	Q_UNUSED(enabled);
+	/*
 	if (!XmppClient || Enabled == enabled)
 		return;
 
@@ -65,13 +60,13 @@ void JabberPepService::setEnabled(bool enabled)
 		QStringList pepNodes;
 		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
 		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
-		XmppClient->addExtension("ep", XMPP::Features(pepNodes));
+		XmppClient->addExtension("ep", Features(pepNodes));
 	}
 	else if (!Enabled && XmppClient->extensions().contains("ep"))
-		XmppClient->removeExtension("ep");
+		XmppClient->removeExtension("ep");*/
 }
-
-void JabberPepService::publish(const QString &node, const XMPP::PubSubItem &it, Access access)
+/*
+void JabberPepService::publish(const QString &node, const PubSubItem &it, Access access)
 {
 	if (!Enabled || !XmppClient)
 		return;
@@ -104,7 +99,7 @@ void JabberPepService::publishFinished()
 		emit publishError(task->node(), task->item());
 }
 
-PEPGetTask * JabberPepService::get(const XMPP::Jid &jid, const QString &node, const QString &id)
+PEPGetTask * JabberPepService::get(const Jid &jid, const QString &node, const QString &id)
 {
 	if (!Enabled || !XmppClient)
 		return nullptr;
@@ -118,13 +113,13 @@ PEPGetTask * JabberPepService::get(const XMPP::Jid &jid, const QString &node, co
 
 void JabberPepService::messageReceived(const Message &message)
 {
-	XMPP::Jid from = message.from();
+	Jid from = message.from();
 	QString pubsubNode = message.pubsubNode();
 
-	foreach (const XMPP::PubSubRetraction &item, message.pubsubRetractions())
+	foreach (const PubSubRetraction &item, message.pubsubRetractions())
 		emit itemRetracted(from, pubsubNode, item);
-	foreach (const XMPP::PubSubItem &item, message.pubsubItems())
+	foreach (const PubSubItem &item, message.pubsubItems())
 		emit itemPublished(from, pubsubNode, item);
 }
-
+*/
 #include "moc_jabber-pep-service.cpp"

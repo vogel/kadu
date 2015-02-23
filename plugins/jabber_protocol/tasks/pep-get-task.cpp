@@ -20,12 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "iris/xmpp_jid.h"
-#include "iris/xmpp_pubsubitem.h"
-#include "iris/xmpp_xmlcommon.h"
-
 #include "pep-get-task.h"
-
+/*
 PEPGetTask::PEPGetTask(Task *parent, const QString &jid, const QString &node, const QString &itemID) :
 		Task(parent), jid_(jid), node_(node)
 {
@@ -71,7 +67,7 @@ bool PEPGetTask::take(const QDomElement &x)
 						for (QDomNode n2 = e1.firstChild(); !n2.isNull(); n2 = n2.nextSibling()) {
 							QDomElement e2 = n2.toElement();
 							if (!e2.isNull()) {
-								items_ += XMPP::PubSubItem(e1.attribute("id"),e2);
+								items_ += PubSubItem(e1.attribute("id"),e2);
 							}
 						}
 					}
@@ -86,7 +82,7 @@ bool PEPGetTask::take(const QDomElement &x)
 	return true;
 }
 
-const QList<XMPP::PubSubItem> & PEPGetTask::items() const
+const QList<PubSubItem> & PEPGetTask::items() const
 {
 	return items_;
 }
@@ -100,5 +96,5 @@ const QString & PEPGetTask::node() const
 {
 	return node_;
 }
-
+*/
 #include "moc_pep-get-task.cpp"

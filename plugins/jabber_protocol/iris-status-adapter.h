@@ -20,17 +20,12 @@
 #ifndef IRIS_STATUS_ADAPTER_H
 #define IRIS_STATUS_ADAPTER_H
 
-namespace XMPP
-{
-	class Status;
-}
-
 class Status;
 
 namespace IrisStatusAdapter
 {
-	Status fromIrisStatus(const XMPP::Status &status);
-	XMPP::Status toIrisStatus(Status status);
+	Status fromIrisStatus(const Status &status);
+	Status toIrisStatus(Status status);
 
 	bool statusesEqual(Status status1, Status status2);
 };

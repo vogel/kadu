@@ -23,21 +23,12 @@
 #include "protocols/services/account-service.h"
 
 #include <QtCore/QPointer>
-#include <im.h>
-#include <xmpp.h>
 
 class BuddyManager;
 class Chat;
 class ChatDetailsRoom;
 class ChatManager;
 class ContactManager;
-
-Q_DECLARE_METATYPE(XMPP::Status)
-
-namespace XMPP
-{
-
-class Client;
 
 class JabberRoomChatService : public AccountService
 {
@@ -51,10 +42,8 @@ public:
 	void setChatManager(ChatManager *chatManager);
 	void setContactManager(ContactManager *contactManager);
 
-	void setXmppClient(Client *xmppClient);
-
-	bool shouldHandleReceivedMessage(const XMPP::Message &msg) const;
-	::Message handleReceivedMessage(const XMPP::Message &msg) const;
+	bool shouldHandleReceivedMessage(const Message &msg) const;
+	::Message handleReceivedMessage(const Message &msg) const;
 
 	bool isRoomChat(const Chat &chat) const;
 	void leaveChat(const Chat &chat);
@@ -63,16 +52,14 @@ private slots:
 	void chatOpened(const Chat &chat);
 	void chatClosed(const Chat &chat);
 
-	void groupChatJoined(const Jid &jid);
-	void groupChatLeft(const Jid &jid);
-	void groupChatPresence(const Jid &jid, const Status &status);
+	// void groupChatJoined(const Jid &jid);
+	// void groupChatLeft(const Jid &jid);
+	// void groupChatPresence(const Jid &jid, const Status &status);
 
 private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ContactManager> m_contactManager;
-
-	QPointer<Client> m_client;
 
 	QMap<QString, Chat> m_openedRoomChats;
  	QMap<QString, Chat> m_closedRoomChats;
@@ -80,5 +67,3 @@ private:
 	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
 
 };
-
-}

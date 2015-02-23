@@ -22,16 +22,9 @@
 #ifndef JABBER_ERROR_HELPER_H
 #define JABBER_ERROR_HELPER_H
 
-namespace XMPP
-{
-	class AdvancedConnector;
-	class QCATLSHandler;
-	class Stream;
-}
-
 namespace JabberErrorHelper
 {
-	void getErrorInfo(int err, XMPP::AdvancedConnector *conn, XMPP::Stream *stream, XMPP::QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
+	// void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 }
 
 #endif // JABBER_ERROR_HELPER_H

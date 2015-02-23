@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_tasks.h>
-
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
@@ -37,9 +35,6 @@
 
 #include "jabber-roster-service.h"
 
-namespace XMPP
-{
-
 QStringList JabberRosterService::buddyGroups(const Buddy &buddy)
 {
 	QStringList result;
@@ -49,15 +44,15 @@ QStringList JabberRosterService::buddyGroups(const Buddy &buddy)
 
 	return result;
 }
-
-const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
+/*
+const QString & JabberRosterService::itemDisplay(const RosterItem &item)
 {
 	if (!item.name().isEmpty())
 		return item.name();
 	else
 		return item.jid().bare();
 }
-
+*/
 JabberRosterService::JabberRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
 		RosterService{protocol, std::move(contacts), parent},
 		m_tasks{new RosterServiceTasks{this}},
@@ -80,7 +75,7 @@ RosterServiceTasks * JabberRosterService::tasks() const
 }
 
 void JabberRosterService::connectToClient()
-{
+{/*
 	if (!XmppClient)
 		return;
 
@@ -91,22 +86,22 @@ void JabberRosterService::connectToClient()
 	connect(XmppClient.data(), SIGNAL(rosterItemRemoved(const RosterItem &)),
 	        this, SLOT(remoteContactDeleted(const RosterItem &)));
 	connect(XmppClient.data(), SIGNAL(rosterRequestFinished(bool, int, QString)),
-	        this, SLOT(rosterRequestFinished(bool)));
+	        this, SLOT(rosterRequestFinished(bool)));*/
 }
 
 void JabberRosterService::disconnectFromClient()
 {
-	if (XmppClient)
-		disconnect(XmppClient.data(), 0, this, 0);
+//	if (XmppClient)
+//		disconnect(XmppClient.data(), 0, this, 0);
 }
-
+/*
 void JabberRosterService::setClient(Client *xmppClient)
 {
 	disconnectFromClient();
-	XmppClient = xmppClient;
+//	XmppClient = xmppClient;
 	connectToClient();
 }
-
+*/
 void JabberRosterService::disconnected()
 {
 	setState(JabberRosterState::NonInitialized);
@@ -148,13 +143,13 @@ void JabberRosterService::ensureContactHasBuddyWithDisplay(const Contact &contac
 	else
 		contact.ownerBuddy().setDisplay(display);
 }
-
+/*
 JT_Roster * JabberRosterService::createContactTask(const Contact &contact)
 {
 	if (!XmppClient)
 		return 0;
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	JT_Roster *rosterTask = new JT_Roster(XmppClient->rootTask());
 	connect(rosterTask, SIGNAL(finished()), this, SLOT(rosterTaskFinished()));
 	connect(rosterTask, SIGNAL(destroyed(QObject*)), this, SLOT(rosterTaskDeleted(QObject*)));
 
@@ -163,17 +158,17 @@ JT_Roster * JabberRosterService::createContactTask(const Contact &contact)
 	return rosterTask;
 }
 
-bool JabberRosterService::isIntrestedIn(const XMPP::RosterItem &item)
+bool JabberRosterService::isIntrestedIn(const RosterItem &item)
 {
 	int subscription = item.subscription().type();
 
-	if (XMPP::Subscription::Both == subscription)
+	if (Subscription::Both == subscription)
 		return true;
 
-	if (XMPP::Subscription::To == subscription)
+	if (Subscription::To == subscription)
 		return true;
 
-	if (XMPP::Subscription::None != subscription && XMPP::Subscription::From != subscription)
+	if (Subscription::None != subscription && Subscription::From != subscription)
 		return false;
 
 	if (item.ask() == "subscribe")
@@ -182,12 +177,12 @@ bool JabberRosterService::isIntrestedIn(const XMPP::RosterItem &item)
 	return false;
 }
 
-void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
+void JabberRosterService::remoteContactUpdated(const RosterItem &item)
 {
 	if (JabberRosterState::NonInitialized == state())
 		return;
 
-	/**
+	/ * *
 	 * Subscription types are: Both, From, To, Remove, None.
 	 * Both:   Both sides have authed each other, each side
 	 *         can see each other's presence
@@ -200,7 +195,7 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	 *
 	 * Regardless of the subscription type, we have to add
 	 * a roster item here.
-	 */
+	 * /
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
 	if (!contact || contact == account().accountContact())
@@ -237,7 +232,7 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	addContact(contact);
 }
 
-void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
+void JabberRosterService::remoteContactDeleted(const RosterItem &item)
 {
 	if (JabberRosterState::NonInitialized == state())
 		return;
@@ -254,10 +249,10 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 		RosterService::removeContact(contact);
 	}
 }
-
+*/
 void JabberRosterService::rosterTaskFinished()
-{
-	XMPP::JT_Roster *rosterTask = qobject_cast<XMPP::JT_Roster *>(sender());
+{/*
+	JT_Roster *rosterTask = qobject_cast<JT_Roster *>(sender());
 	if (!rosterTask)
 		return;
 
@@ -276,16 +271,17 @@ void JabberRosterService::rosterTaskFinished()
 		return;
 	}
 
-	XMPP::Stanza::Error error;
-	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
+	Stanza::Error error;
+	if (!error.fromCode(rosterTask->statusCode()) || Stanza::Error::Cancel == error.type)
 		contact.rosterEntry()->setDetached();
 	else
-		contact.rosterEntry()->setHasLocalChanges();
+		contact.rosterEntry()->setHasLocalChanges();*/
 }
 
 void JabberRosterService::rosterTaskDeleted(QObject* object)
 {
-	ContactForTask.remove(static_cast<XMPP::JT_Roster *>(object));
+	Q_UNUSED(object);
+//	ContactForTask.remove(static_cast<JT_Roster *>(object));
 }
 
 void JabberRosterService::markContactsForDeletion()
@@ -319,12 +315,12 @@ void JabberRosterService::prepareRoster()
 	m_tasks->addTasks(m_tasks->updateTasksForContacts(contacts()));
 
 	Q_ASSERT(JabberRosterState::NonInitialized == state());
-	Q_ASSERT(XmppClient);
+	// Q_ASSERT(XmppClient);
 
 	setState(JabberRosterState::Initializing);
 	markContactsForDeletion();
 
-	XmppClient->rosterRequest();
+	// XmppClient->rosterRequest();
 }
 
 void JabberRosterService::rosterRequestFinished(bool success)
@@ -348,10 +344,10 @@ bool JabberRosterService::canPerformLocalUpdate() const
 
 	if (!protocol()->isConnected() || (JabberRosterState::Initialized != State))
 		return false;
-
+/*
 	if (!XmppClient)
 		return false;
-
+*/
 	return true;
 }
 
@@ -388,7 +384,7 @@ void JabberRosterService::executeTask(const RosterTask& task)
 		if (contact.rosterEntry()->state() != RosterEntryState::Detached)
 			contact.rosterEntry()->setSynchronizingToRemote();
 	}
-
+/*
 	auto rosterTask = createContactTask(contact);
 	if (!rosterTask)
 		return;
@@ -413,9 +409,7 @@ void JabberRosterService::executeTask(const RosterTask& task)
 			return;
 	}
 
-	rosterTask->go(true);
-}
-
+	rosterTask->go(true);*/
 }
 
 #include "moc_jabber-roster-service.cpp"

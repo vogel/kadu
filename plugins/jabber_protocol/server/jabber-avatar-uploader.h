@@ -29,9 +29,8 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
-namespace XMPP { class JabberVCardService; }
-
 class JabberPepService;
+class JabberVCardService;
 
 /**
  * @addtogroup Jabber
@@ -44,7 +43,7 @@ class JabberPepService;
  * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
- * JabberPepService and XMPP::JabberVCardService arguments. If both services are null then this class will always fail
+ * JabberPepService and JabberVCardService arguments. If both services are null then this class will always fail
  * to do it job. If one is provided then it will be used to upload avatar. If both are provided then PEP service will
  * be used and VCard only when PEP service is not enabled or when it failed.
  *
@@ -55,7 +54,7 @@ class JabberAvatarUploader : public AvatarUploader
 	Q_OBJECT
 
 	QPointer<JabberPepService> PepService;
-	QPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberVCardService> VCardService;
 
 	QString Id;
 	QString Password;
@@ -85,10 +84,10 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create instance attached to given services.
 	 * @param pepService instance of JabberPepService
-	 * @param vCardService instance of XMPP::JabberVCardService
+	 * @param vCardService instance of JabberVCardService
 	 * @param parent QObject parent
 	 */
-	JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
+	JabberAvatarUploader(JabberPepService *pepService, JabberVCardService *vCardService, QObject *parent);
 	virtual ~JabberAvatarUploader();
 
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);

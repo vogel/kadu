@@ -20,18 +20,13 @@
 
 #include <QtCore/QCryptographicHash>
 
-#include <xmpp_client.h>
-
 #include "jabber-protocol.h"
 
 #include "jabber-client-info-service.h"
 
-namespace XMPP
-{
-
 JabberClientInfoService::JabberClientInfoService(JabberProtocol *protocol) :
-		QObject(protocol), XmppClient(protocol->xmppClient())
-{
+		QObject(protocol)
+{/*
 	setCapsNode("http://kadu.im/caps");
 
 	DiscoItem::Identity identity;
@@ -41,7 +36,7 @@ JabberClientInfoService::JabberClientInfoService(JabberProtocol *protocol) :
 	identity.name = "Kadu";
 
 	if (XmppClient)
-		XmppClient->setIdentity(identity);
+		XmppClient->setIdentity(identity);*/
 }
 
 JabberClientInfoService::~JabberClientInfoService()
@@ -50,24 +45,29 @@ JabberClientInfoService::~JabberClientInfoService()
 
 void JabberClientInfoService::setClientName(const QString &clientName)
 {
+	Q_UNUSED(clientName);
+	/*
 	if (XmppClient)
-		XmppClient->setClientName(clientName);
+		XmppClient->setClientName(clientName);*/
 }
 
 void JabberClientInfoService::setClientVersion(const QString &clientVersion)
 {
+	Q_UNUSED(clientVersion);/*
 	if (XmppClient)
-		XmppClient->setClientVersion(clientVersion);
+		XmppClient->setClientVersion(clientVersion);*/
 }
 
 void JabberClientInfoService::setOSName(const QString &osName)
 {
+	Q_UNUSED(osName);/*
 	if (XmppClient)
-		XmppClient->setOSName(osName);
+		XmppClient->setOSName(osName);*/
 }
 
 QString JabberClientInfoService::calculateCapsVersion() const
 {
+	return QString{};/*
 	if (!XmppClient)
 		return QString();
 
@@ -80,51 +80,53 @@ QString JabberClientInfoService::calculateCapsVersion() const
 	result.append(XmppClient->features().list().join(QLatin1String("<")));
 	result.append('<');
 
-	return QString::fromAscii(QCryptographicHash::hash(result.toAscii(), QCryptographicHash::Sha1).toBase64());
+	return QString::fromAscii(QCryptographicHash::hash(result.toAscii(), QCryptographicHash::Sha1).toBase64());*/
 }
 
 void JabberClientInfoService::setCapsNode(const QString &capsNode)
 {
+	Q_UNUSED(capsNode);/*
 	if (XmppClient)
 	{
 		XmppClient->setCapsNode(capsNode);
 		XmppClient->setCapsVersion(calculateCapsVersion());
-	}
+	}*/
 }
 
-void JabberClientInfoService::fillStatusCapsData(XMPP::Status &status)
+void JabberClientInfoService::fillStatusCapsData(Status &status)
 {
+	Q_UNUSED(status);/*
 	if (!XmppClient)
 		return;
 
 	status.setCapsNode(XmppClient->capsNode());
 	status.setCapsVersion(XmppClient->capsVersion());
 	status.setCapsHashAlgorithm(QLatin1String("sha-1"));
-	status.setCapsExt(XmppClient->capsExt());
+	status.setCapsExt(XmppClient->capsExt());*/
 }
-
+/*
 void JabberClientInfoService::setIdentity(const DiscoItem::Identity &identity)
 {
 	if (XmppClient)
 		XmppClient->setIdentity(identity);
 }
-
+*/
 void JabberClientInfoService::setFeatures(QStringList featureList)
 {
+	Q_UNUSED(featureList);/*
 	featureList.sort();
 	Features features(featureList);
-	setFeatures(features);
+	setFeatures(features);*/
 }
 
 void JabberClientInfoService::setFeatures(const Features &features)
 {
+	Q_UNUSED(features);/*
 	if (XmppClient)
 	{
 		XmppClient->setFeatures(features);
 		XmppClient->setCapsVersion(calculateCapsVersion());
-	}
-}
-
+	}*/
 }
 
 #include "moc_jabber-client-info-service.cpp"

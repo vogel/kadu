@@ -19,9 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCrypto>
-
-#include <xmpp_client.h>
+#include <QtCrypto/QtCrypto>
 
 #include "server/jabber-avatar-uploader.h"
 #include "services/jabber-pep-service.h"
@@ -37,10 +35,10 @@ JabberAvatarPepUploader::JabberAvatarPepUploader(JabberPepService *pepService, Q
 {
 	Q_ASSERT(PepService.data());
 
-	connect(PepService.data(), SIGNAL(publishSuccess(const QString &, const XMPP::PubSubItem &)),
-		this, SLOT(publishSuccess(const QString &, const XMPP::PubSubItem &)));
-	connect(PepService.data(), SIGNAL(publishError(const QString &, const XMPP::PubSubItem &)),
-		this, SLOT(publishError(const QString &, const XMPP::PubSubItem &)));
+	connect(PepService.data(), SIGNAL(publishSuccess(const QString &, const PubSubItem &)),
+		this, SLOT(publishSuccess(const QString &, const PubSubItem &)));
+	connect(PepService.data(), SIGNAL(publishError(const QString &, const PubSubItem &)),
+		this, SLOT(publishError(const QString &, const PubSubItem &)));
 }
 
 JabberAvatarPepUploader::~JabberAvatarPepUploader()
@@ -58,8 +56,8 @@ void JabberAvatarPepUploader::failed()
 	emit avatarUploaded(false, UploadedAvatar);
 	deleteLater();
 }
-
-void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubSubItem &item)
+/*
+void JabberAvatarPepUploader::publishSuccess(const QString &ns, const PubSubItem &item)
 {
 	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
 		return; // not our data
@@ -89,21 +87,23 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 	infoElement.setAttribute("type", "image/png");
 	metaElement.appendChild(infoElement);
 
-	PepService.data()->publish(XMLNS_METADATA, XMPP::PubSubItem(ItemId, metaElement));
+	PepService.data()->publish(XMLNS_METADATA, PubSubItem(ItemId, metaElement));
 
 	done();
 }
 
-void JabberAvatarPepUploader::publishError(const QString &ns, const XMPP::PubSubItem &item)
+void JabberAvatarPepUploader::publishError(const QString &ns, const PubSubItem &item)
 {
 	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
 		return; // not our data
 
 	failed();
 }
-
+*/
 void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 {
+	Q_UNUSED(data);
+	/*
 	if (!PepService || !PepService.data()->xmppClient())
 		return;
 
@@ -115,11 +115,11 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 	dataElement.setAttribute("xmlns", XMLNS_DATA);
 	dataElement.appendChild(doc->createTextNode(QCA::Base64().arrayToString(data)));
 
-	PepService.data()->publish(XMLNS_DATA, XMPP::PubSubItem(ItemId, dataElement));
+	PepService.data()->publish(XMLNS_DATA, PubSubItem(ItemId, dataElement));*/
 }
 
 void JabberAvatarPepUploader::doRemove()
-{
+{/*
 	if (!PepService || !PepService.data()->xmppClient())
 		return;
 
@@ -131,7 +131,7 @@ void JabberAvatarPepUploader::doRemove()
 	metaDataElement.setAttribute("xmlns", XMLNS_METADATA);
 	metaDataElement.appendChild(doc->createElement("stop"));
 
-	PepService.data()->publish(XMLNS_METADATA, XMPP::PubSubItem(ItemId, metaDataElement));
+	PepService.data()->publish(XMLNS_METADATA, PubSubItem(ItemId, metaDataElement));*/
 }
 
 void JabberAvatarPepUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)

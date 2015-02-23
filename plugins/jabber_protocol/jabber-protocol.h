@@ -33,24 +33,13 @@
 #include "services/jabber-subscription-service.h"
 #include "jabber-account-details.h"
 
-namespace XMPP
-{
-	class Resource;
-
-	class JabberClientInfoService;
-	class JabberConnectionService;
-	class JabberServerInfoService;
-	class JabberStreamDebugService;
-	class JabberSubscriptionService;
-	class JabberVCardService;
-}
-
+class JabberClientInfoService;
+class JabberConnectionService;
 class JabberContactDetails;
 class JabberPepService;
 class JabberResourcePool;
-
-namespace XMPP
-{
+class JabberServerInfoService;
+class JabberStreamDebugService;
 
 class JabberProtocol : public Protocol
 {
@@ -60,27 +49,26 @@ class JabberProtocol : public Protocol
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
 	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
-	XMPP::JabberSubscriptionService *CurrentSubscriptionService;
-	XMPP::JabberClientInfoService *CurrentClientInfoService;
-	XMPP::JabberServerInfoService *CurrentServerInfoService;
-	XMPP::JabberConnectionService *CurrentConnectionService;
+	JabberSubscriptionService *CurrentSubscriptionService;
+	JabberClientInfoService *CurrentClientInfoService;
+	JabberServerInfoService *CurrentServerInfoService;
+	JabberConnectionService *CurrentConnectionService;
 	JabberPepService *CurrentPepService;
-	XMPP::JabberStreamDebugService *CurrentStreamDebugService;
-	XMPP::JabberVCardService *CurrentVCardService;
+	JabberStreamDebugService *CurrentStreamDebugService;
+	JabberVCardService *CurrentVCardService;
 
-	XMPP::Client *XmppClient;
 	JabberResourcePool *ResourcePool;
 
 	bool ContactsListReadOnly;
 
-	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
+	// void notifyAboutPresenceChanged(const Jid &jid, const Resource &resource);
 
 private slots:
 	void connectedToServer();
 	void rosterReady(bool success);
 
-	void clientAvailableResourceReceived(const Jid &j, const Resource &r);
-	void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
+	// void clientAvailableResourceReceived(const Jid &j, const Resource &r);
+	// void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
 
 	void connectionClosedSlot(const QString &message);
 	void connectionErrorSlot(const QString &message);
@@ -99,8 +87,6 @@ public:
 	JabberProtocol(Account account, ProtocolFactory *factory);
 	virtual ~JabberProtocol();
 
-	XMPP::Client * xmppClient();
-
 	void setContactsListReadOnly(bool contactsListReadOnly);
 	virtual bool contactsListReadOnly() { return ContactsListReadOnly; }
 
@@ -111,12 +97,12 @@ public:
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
-	virtual XMPP::JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
-	virtual XMPP::JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
-	virtual JabberPepService * pepService() { return CurrentPepService; }
-	virtual XMPP::JabberConnectionService * connectionService() { return CurrentConnectionService; }
-	virtual XMPP::JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
-	virtual XMPP::JabberVCardService * vcardService() { return CurrentVCardService; }
+	// virtual JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
+	// virtual JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
+	// virtual JabberPepService * pepService() { return CurrentPepService; }
+	// virtual JabberConnectionService * connectionService() { return CurrentConnectionService; }
+	// virtual JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
+	// virtual JabberVCardService * vcardService() { return CurrentVCardService; }
 
 	JabberResourcePool *resourcePool();
 
@@ -126,7 +112,5 @@ signals:
 	void userStatusChangeIgnored(Buddy);
 
 };
-
-}
 
 #endif //JABBER_PROTOCOL_H

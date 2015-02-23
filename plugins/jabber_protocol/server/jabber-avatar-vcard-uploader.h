@@ -24,18 +24,10 @@
 
 #include <QtGui/QImage>
 
-#include <iris/xmpp_pubsubitem.h>
-#include <xmpp/jid/jid.h>
-#include <xmpp_vcard.h>
-
 #include "accounts/account.h"
 #include "protocols/services/avatar-uploader.h"
 
-namespace XMPP
-{
-	class JabberProtocol;
-	class JabberVCardService;
-}
+class JabberVCardService;
 
 /**
  * @addtogroup Jabber
@@ -48,14 +40,14 @@ namespace XMPP
  * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
- * XMPP::JabberVCardService argument.
+ * JabberVCardService argument.
  */
 class JabberAvatarVCardUploader : public AvatarUploader
 {
 	Q_OBJECT
 
-	XMPP::Jid MyJid;
-	QPointer<XMPP::JabberVCardService> VCardService;
+	//Jid MyJid;
+	QPointer<JabberVCardService> VCardService;
 
 	QImage UploadedAvatar;
 
@@ -64,16 +56,16 @@ class JabberAvatarVCardUploader : public AvatarUploader
 
 private slots:
 	void vCardUploaded(bool ok);
-	void vCardDownloaded(bool ok, XMPP::VCard vCard);
+	// void vCardDownloaded(bool ok, VCard vCard);
 
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given XMPP::JabberVCardService.
-	 * @param vcardService instance of XMPP::JabberVCardService
+	 * @short Create instance attached to given JabberVCardService.
+	 * @param vcardService instance of JabberVCardService
 	 * @param parent QObject parent
 	 */
-	explicit JabberAvatarVCardUploader(XMPP::JabberVCardService *vcardService, QObject *parent = 0);
+	explicit JabberAvatarVCardUploader(JabberVCardService *vcardService, QObject *parent = 0);
 	virtual ~JabberAvatarVCardUploader();
 
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);

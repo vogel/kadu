@@ -18,15 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_client.h>
-
 #include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-uploader.h"
 
 #include "jabber-vcard-service.h"
-
-namespace XMPP
-{
 
 JabberVCardService::JabberVCardService(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
@@ -37,32 +32,22 @@ JabberVCardService::~JabberVCardService()
 {
 }
 
-void JabberVCardService::setXmppClient(Client *xmppClient)
-{
-	XmppClient = xmppClient;
-}
-
-Client * JabberVCardService::xmppClient() const
-{
-	return XmppClient.data();
-}
-
 JabberVCardDownloader * JabberVCardService::createVCardDownloader()
-{
+{/*
 	if (!XmppClient)
 		return 0;
 
-	return new JabberVCardDownloader(MyAccount, XmppClient.data(), this);
+	return new JabberVCardDownloader(MyAccount, XmppClient.data(), this);*/
+	return nullptr;
 }
 
 JabberVCardUploader * JabberVCardService::createVCardUploader()
-{
+{/*
 	if (!XmppClient)
 		return 0;
 
-	return new JabberVCardUploader(XmppClient.data(), this);
-}
-
+	return new JabberVCardUploader(XmppClient.data(), this);*/
+	return nullptr;
 }
 
 #include "moc_jabber-vcard-service.cpp"

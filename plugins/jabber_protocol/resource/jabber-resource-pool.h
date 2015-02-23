@@ -22,10 +22,8 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 
-#include <im.h>
-
+class JabberProtocol;
 class JabberResource;
-namespace XMPP { class JabberProtocol; }
 
 /**
  * @author Till Gerken <till@tantalo.net>
@@ -35,31 +33,31 @@ class JabberResourcePool : public QObject
 {
 	Q_OBJECT
 
-	QList<JabberResource *> pool;
-	QList<JabberResource *> lockList;
+	//QList<JabberResource *> pool;
+	//QList<JabberResource *> lockList;
 
 	/**
 	 * Pointer to the JabberProtocol instance.
 	 */
-	XMPP::JabberProtocol *protocol;
+	JabberProtocol *protocol;
 
 	/**
 	 * Return a usable JabberResource for a given JID.
 	 */
-	JabberResource * bestJabberResource(const XMPP::Jid &jid, bool honourLock = true);
+	// JabberResource * bestJabberResource(const Jid &jid, bool honourLock = true);
 
 private slots:
 	void slotResourceDestroyed(QObject *sender);
 
 public:
-	static XMPP::Resource EmptyResource;
+	// static Resource EmptyResource;
 
-	typedef QList<JabberResource*> ResourceList;
+//	typedef QList<JabberResource*> ResourceList;
 
 	/**
 	 * Default constructor
 	 */
-	explicit JabberResourcePool(XMPP::JabberProtocol *protocol);
+	explicit JabberResourcePool(JabberProtocol *protocol);
 
 	/**
 	 * Default destructor
@@ -69,48 +67,48 @@ public:
 	/**
 	 * Add a resource to the pool
 	 */
-	void addResource(const XMPP::Jid &jid, const XMPP::Resource &resource);
+	// void addResource(const Jid &jid, const Resource &resource);
 
 	/**
 	 * Remove a resource from the pool
 	 */
-	void removeResource(const XMPP::Jid &jid, const XMPP::Resource &resource);
+	// void removeResource(const Jid &jid, const Resource &resource);
 
 	/**
 	 * Remove all resources for a given address from the pool
 	 */
-	void removeAllResources(const XMPP::Jid &jid);
+	// void removeAllResources(const Jid &jid);
 
 	/**
 	 * Remove all resources from the pool
 	 */
-	void clear();
+	//void clear();
 
 	/**
 	 * Lock to a certain resource
 	 */
-	void lockToResource(const XMPP::Jid &jid, const XMPP::Resource &resource);
+	// void lockToResource(const Jid &jid, const Resource &resource);
 
 	/**
 	 * Remove a resource lock
 	 */
-	void removeLock(const XMPP::Jid &jid);
+	// void removeLock(const Jid &jid);
 
 	/**
 	 * Return the JabberResource instance for the locked resource, if any.
 	 */
-	 JabberResource * lockedJabberResource(const XMPP::Jid &jid);
+	 // JabberResource * lockedJabberResource(const Jid &jid);
 
 	/**
 	 * Return currently locked resource, if any
 	 */
-	const XMPP::Resource & lockedResource (const XMPP::Jid &jid);
+	// const Resource & lockedResource (const Jid &jid);
 
 	/**
 	 * Return usable resource for a given JID
 	 * Matches by userHost(), honors locks for a JID by default
 	 */
-	const XMPP::Resource & bestResource(const XMPP::Jid &jid, bool honourLock = true);
+	// const Resource & bestResource(const Jid &jid, bool honourLock = true);
 
 };
 

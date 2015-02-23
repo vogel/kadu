@@ -25,12 +25,6 @@
 
 #include "protocols/services/avatar-downloader.h"
 
-namespace XMPP
-{
-	class Jid;
-	class PubSubItem;
-}
-
 class JabberPepService;
 
 /**

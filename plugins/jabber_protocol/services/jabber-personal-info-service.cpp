@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_vcard.h>
-
 #include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
@@ -37,7 +35,7 @@ JabberPersonalInfoService::~JabberPersonalInfoService()
 {
 }
 
-void JabberPersonalInfoService::setVCardService(XMPP::JabberVCardService *vCardService)
+void JabberPersonalInfoService::setVCardService(JabberVCardService *vCardService)
 {
 	VCardService = vCardService;
 }
@@ -52,11 +50,11 @@ void JabberPersonalInfoService::fetchPersonalInfo(const QString &id)
 	if (!vCardDownloader)
 		return;
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,VCard)), this, SLOT(vCardDownloaded(bool,VCard)));
 	vCardDownloader->downloadVCard(id);
 }
-
-void JabberPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCard)
+/*
+void JabberPersonalInfoService::vCardDownloaded(bool ok, VCard vCard)
 {
 	if (!ok)
 		return;
@@ -76,9 +74,11 @@ void JabberPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCard)
 
 	emit personalInfoAvailable(CurrentBuddy);
 }
-
+*/
 void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 {
+	Q_UNUSED(id);
+
 	if (!VCardService)
 	{
 		emit personalInfoUpdated(false);
@@ -86,9 +86,9 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 	}
 
 	CurrentBuddy = buddy;
-
-	XMPP::Jid jid = XMPP::Jid(id);
-	XMPP::VCard vcard;
+/*
+	Jid jid = Jid(id);
+	VCard vcard;
 	vcard.setFullName(CurrentBuddy.firstName());
 	vcard.setNickName(CurrentBuddy.nickName());
 	vcard.setFamilyName(CurrentBuddy.familyName());
@@ -96,14 +96,14 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 	birthday.setDate(CurrentBuddy.birthYear(), 1, 1);
 	vcard.setBdayStr(birthday.toString("yyyy-MM-dd"));
 
-	XMPP::VCard::Address addr;
-	XMPP::VCard::AddressList addrList;
+	VCard::Address addr;
+	VCard::AddressList addrList;
 	addr.locality = CurrentBuddy.city();
 	addrList.append(addr);
 	vcard.setAddressList(addrList);
 
-	XMPP::VCard::Email email;
-	XMPP::VCard::EmailList emailList;
+	VCard::Email email;
+	VCard::EmailList emailList;
 	email.userid = CurrentBuddy.email();
 	emailList.append(email);
 	vcard.setEmailList(emailList);
@@ -118,7 +118,7 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 	}
 
 	vCardUploader->uploadVCard(id, vcard);
-	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SIGNAL(personalInfoUpdated(bool)));
+	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SIGNAL(personalInfoUpdated(bool)));*/
 }
 
 #include "moc_jabber-personal-info-service.cpp"

@@ -25,14 +25,6 @@
 
 #include <QtCore/QPointer>
 
-#include <xmpp_vcard.h>
-
-namespace XMPP
-{
-	class Client;
-	class JT_VCard;
-}
-
 /**
  * @addtogroup Jabber
  * @{
@@ -51,10 +43,9 @@ class JabberVCardDownloader : public QObject
 	Q_OBJECT
 
 	Account MyAccount;
-	QPointer<XMPP::Client> XmppClient;
-	QPointer<XMPP::JT_VCard> Task;
+	// QPointer<JT_VCard> Task;
 
-	void done(XMPP::VCard vCard);
+	// void done(VCard vCard);
 	void failed();
 
 private slots:
@@ -63,11 +54,11 @@ private slots:
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given XMPP::Client.
-	 * @param client instance of XMPP::Client
+	 * @short Create instance attached to given Client.
+	 * @param client instance of Client
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardDownloader(Account account, XMPP::Client *client, QObject *parent = 0);
+	explicit JabberVCardDownloader(Account account, /*Client *client, */ QObject *parent = 0);
 	virtual ~JabberVCardDownloader();
 
 	/**
@@ -90,7 +81,7 @@ signals:
 	 *
 	 * If ok is true then VCard downloading was successfull. If ok is false then operation failed.
 	 */
-	void vCardDownloaded(bool ok, XMPP::VCard vCard);
+	// void vCardDownloaded(bool ok, VCard vCard);
 };
 
 /**

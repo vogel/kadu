@@ -20,13 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "iris/xmpp_jid.h"
-#include "iris/xmpp_xmlcommon.h"
-
 #include "pep-retract-task.h"
-
+/*
 PEPRetractTask::PEPRetractTask(Task *parent, const QString &node, const QString &itemId) :
-		XMPP::Task(parent), node_(node), itemId_(itemId)
+		Task(parent), node_(node), itemId_(itemId)
 {
 	iq_ = createIQ(doc(), "set", QString(), id());
 
@@ -70,5 +67,5 @@ const QString & PEPRetractTask::node() const
 {
 	return node_;
 }
-
+*/
 #include "moc_pep-retract-task.cpp"

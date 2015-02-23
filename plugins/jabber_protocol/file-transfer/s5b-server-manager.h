@@ -22,18 +22,15 @@
 
 #include <QtCore/QStringList>
 
-#include <iris/s5b.h>
-
 #include "configuration/configuration-aware-object.h"
 
 class S5BServerManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(S5BServerManager)
 
 	static S5BServerManager * Instance;
 
-	XMPP::S5BServer *Server;
+	// S5BServer *Server;
 	QStringList Addresses;
 
 	quint16 Port;
@@ -53,7 +50,7 @@ public:
 
 	static S5BServerManager * instance() { return Instance; }
 
-	XMPP::S5BServer * server() { return Server; }
+	// S5BServer * server() { return Server; }
 
 	void addAddress(const QString &address);
 	void removeAddress(const QString &address);

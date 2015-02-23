@@ -26,16 +26,9 @@
 
 #include "chat/chat.h"
 
-#include "xmpp_message.h"
-
 #include "protocols/services/chat-state-service.h"
 
 class JabberProtocol;
-
-namespace XMPP
-{
-
-class Client;
 
 class JabberChatStateService : public ChatStateService
 {
@@ -46,24 +39,22 @@ class JabberChatStateService : public ChatStateService
 		bool UserRequestedEvents;
 		QString EventId;
 
-		ChatState ContactChatState;
-		ChatState LastChatState;
+		// ChatState ContactChatState;
+		// ChatState LastChatState;
 
 		ContactInfo() :
-				UserRequestedEvents(false), ContactChatState(::XMPP::StateNone), LastChatState(::XMPP::StateNone)
+				UserRequestedEvents(false)// , ContactChatState(::StateNone), LastChatState(::StateNone)
 		{
 		}
 	};
-
-	QPointer<Client> XmppClient;
 
 	QHash<Contact, ContactInfo> ContactInfos;
 
 	bool shouldSendEvent(const Contact &contact);
 
-	void setChatState(const Contact &contact, ChatState state);
+	// void setChatState(const Contact &contact, ChatState state);
 
-	static State xmppStateToContactState(ChatState state);
+	// static State xmppStateToContactState(ChatState state);
 
 public:
 	explicit JabberChatStateService(Account account, QObject *parent = 0);
@@ -71,14 +62,12 @@ public:
 
 	virtual void sendState(const Contact &contact, State state);
 
-	void setClient(Client *xmppClient);
+	// void setClient(Client *xmppClient);
 
 public slots:
-	void handleReceivedMessage(const Message &m);
-	void handleMessageAboutToSend(Message &message);
+	// void handleReceivedMessage(const Message &m);
+	// void handleMessageAboutToSend(Message &message);
 
 };
-
-}
 
 #endif // JABBER_CHAT_STATE_SERVICE_H

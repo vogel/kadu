@@ -20,8 +20,6 @@
 
 #include <QtCore/QBuffer>
 
-#include <xmpp_client.h>
-
 #include "server/jabber-avatar-pep-uploader.h"
 #include "server/jabber-avatar-vcard-uploader.h"
 #include "services/jabber-pep-service.h"
@@ -42,7 +40,7 @@ QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
 	return data;
 }
 
-JabberAvatarUploader::JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
+JabberAvatarUploader::JabberAvatarUploader(JabberPepService *pepService, JabberVCardService *vCardService, QObject *parent) :
 		AvatarUploader(parent), PepService(pepService), VCardService(vCardService)
 {
 }

@@ -25,9 +25,6 @@
 
 #include <QtCore/QPointer>
 
-#include <jid.h>
-#include <xmpp.h>
-
 #include "jabber-account-details.h"
 
 class QTimer;
@@ -35,36 +32,30 @@ class QTimer;
 class JabberProtocol;
 class NetworkProxy;
 
-namespace XMPP
-{
-
-class Client;
-
 class JabberConnectionService : public QObject
 {
 	Q_OBJECT
 
 	QTimer *CleanUpTimer;
 	JabberProtocol *ParentProtocol;
-	QPointer<XMPP::Client> XmppClient;
 
-	QPointer<XMPP::AdvancedConnector> Connector;
-	QPointer<XMPP::QCATLSHandler> TLSHandler;
-	QPointer<XMPP::ClientStream> Stream;
+//	QPointer<AdvancedConnector> Connector;
+	//QPointer<QCATLSHandler> TLSHandler;
+	//QPointer<ClientStream> Stream;
 
-	XMPP::Jid MyJid;
+	//Jid MyJid;
 	QString Password;
 	QString LocalAddress;
 
 	bool forceTLS() const;
 	bool useSSL() const;
 
-	XMPP::AdvancedConnector::Proxy createProxyConfiguration(NetworkProxy proxy) const;
-	XMPP::AdvancedConnector * createConnector();
-	XMPP::QCATLSHandler * createTLSHandler();
+	//AdvancedConnector::Proxy createProxyConfiguration(NetworkProxy proxy) const;
+	//AdvancedConnector * createConnector();
+	//QCATLSHandler * createTLSHandler();
 
-	static XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
-	XMPP::ClientStream * createClientStream(XMPP::AdvancedConnector *connector, XMPP::QCATLSHandler *tlsHandler) const;
+	//static ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
+	//ClientStream * createClientStream(AdvancedConnector *connector, QCATLSHandler *tlsHandler) const;
 
 private slots:
 	void cleanUp();
@@ -84,7 +75,7 @@ public:
 	void connectToServer();
 	void disconnectFromServer(const ::Status &status);
 
-	XMPP::Jid jid() const;
+	//Jid jid() const;
 	QString host() const;
 	QString localAddress() const;
 
@@ -99,7 +90,5 @@ signals:
 	void tlsCertificateAccepted();
 
 };
-
-}
 
 #endif // JABBER_CONNECTION_SERVICE_H

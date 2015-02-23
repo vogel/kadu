@@ -21,15 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_vcard.h>
-
 #include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-vcard-downloader.h"
 
-JabberAvatarVCardDownloader::JabberAvatarVCardDownloader(XMPP::JabberVCardService *vCardService, QObject *parent) :
+JabberAvatarVCardDownloader::JabberAvatarVCardDownloader(JabberVCardService *vCardService, QObject *parent) :
 		AvatarDownloader(parent), VCardService(vCardService)
 {
 }
@@ -52,6 +50,9 @@ void JabberAvatarVCardDownloader::failed()
 
 void JabberAvatarVCardDownloader::downloadAvatar(const QString &id)
 {
+	Q_UNUSED(id);
+
+	/*
 	if (!VCardService || id.isEmpty())
 	{
 		failed();
@@ -65,11 +66,11 @@ void JabberAvatarVCardDownloader::downloadAvatar(const QString &id)
 		return;
 	}
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
-	vCardDownloader->downloadVCard(id);
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,VCard)), this, SLOT(vCardDownloaded(bool,VCard)));
+	vCardDownloader->downloadVCard(id);*/
 }
-
-void JabberAvatarVCardDownloader::vCardDownloaded(bool ok, XMPP::VCard vCard)
+/*
+void JabberAvatarVCardDownloader::vCardDownloaded(bool ok, VCard vCard)
 {
 	if (!ok)
 	{
@@ -79,5 +80,5 @@ void JabberAvatarVCardDownloader::vCardDownloaded(bool ok, XMPP::VCard vCard)
 
 	done(QImage::fromData(vCard.photo()));
 }
-
+*/
 #include "moc_jabber-avatar-vcard-downloader.cpp"

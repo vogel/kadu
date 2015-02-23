@@ -29,9 +29,6 @@
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
 
-namespace XMPP
-{
-
 JabberRoomChatService::JabberRoomChatService(Account account, QObject *parent) :
 		AccountService{account, parent}
 {
@@ -56,15 +53,11 @@ void JabberRoomChatService::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
 }
-
-void JabberRoomChatService::setXmppClient(Client *xmppClient)
-{
-	m_client = xmppClient;
-
+/*
 	connect(m_client.data(), SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
 	connect(m_client.data(), SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
 	connect(m_client.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
-}
+*/
 
 ChatDetailsRoom * JabberRoomChatService::myRoomChatDetails(const Chat &chat) const
 {
@@ -85,8 +78,8 @@ void JabberRoomChatService::chatOpened(const Chat &chat)
 
 	m_openedRoomChats.insert(details->room(), chat);
 
-	auto jid = Jid{details->room()};
-	m_client.data()->groupChatJoin(jid.domain(), jid.node(), details->nick());
+	// auto jid = Jid{details->room()};
+	// m_client.data()->groupChatJoin(jid.domain(), jid.node(), details->nick());
 }
 
 void JabberRoomChatService::chatClosed(const Chat &chat)
@@ -98,9 +91,9 @@ void JabberRoomChatService::chatClosed(const Chat &chat)
 
 void JabberRoomChatService::leaveChat(const Chat &chat)
 {
-	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
-	if (protocol)
-		protocol->resourcePool()->removeAllResources(chat.contacts().toContact().id());
+	// auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
+	// if (protocol)
+	// 	protocol->resourcePool()->removeAllResources(chat.contacts().toContact().id());
 
 	auto details = myRoomChatDetails(chat);
 	if (!details)
@@ -109,10 +102,10 @@ void JabberRoomChatService::leaveChat(const Chat &chat)
 	m_openedRoomChats.remove(details->room());
 	m_closedRoomChats.insert(details->room(), chat);
 
-	auto jid = Jid{details->room()};
-	m_client.data()->groupChatLeave(jid.domain(), jid.node());
+	// auto jid = Jid{details->room()};
+	// m_client.data()->groupChatLeave(jid.domain(), jid.node());
 }
-
+/*
 void JabberRoomChatService::groupChatJoined(const Jid &jid)
 {
 	auto chatId = jid.bare();
@@ -174,7 +167,7 @@ void JabberRoomChatService::groupChatPresence(const Jid &jid, const Status &stat
 	else
 		chatDetails->addContact(contact);
 }
-
+*/
 bool JabberRoomChatService::isRoomChat(const Chat &chat) const
 {
 	return myRoomChatDetails(chat) != nullptr;
@@ -182,11 +175,15 @@ bool JabberRoomChatService::isRoomChat(const Chat &chat) const
 
 bool JabberRoomChatService::shouldHandleReceivedMessage(const Message& msg) const
 {
-	return m_openedRoomChats.contains(msg.from().bare());
+	Q_UNUSED(msg);
+	// return m_openedRoomChats.contains(msg.from().bare());
+	return false;
 }
 
-::Message JabberRoomChatService::handleReceivedMessage(const Message &msg) const
+Message JabberRoomChatService::handleReceivedMessage(const Message &msg) const
 {
+	Q_UNUSED(msg);
+/*
 	if (!m_openedRoomChats.contains(msg.from().bare()))
 		return ::Message{};
 
@@ -209,8 +206,8 @@ bool JabberRoomChatService::shouldHandleReceivedMessage(const Message& msg) cons
 	result.setMessageSender(contact);
 
 	return result;
-}
-
+	*/
+	return Message::null;
 }
 
 #include "moc_jabber-room-chat-service.cpp"

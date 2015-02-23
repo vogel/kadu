@@ -18,14 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "iris/xmpp.h"
-
 #include "jabber-contact-details.h"
 
 JabberContactDetails::JabberContactDetails(ContactShared *contactShared) :
 		ContactDetails(contactShared)
 {
-	ContactSubscription = XMPP::Subscription();
+//	ContactSubscription = Subscription();
 }
 
 JabberContactDetails::~JabberContactDetails()

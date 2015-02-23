@@ -23,14 +23,8 @@
 
 #include <QtCore/QPointer>
 
-#include "xmpp_discoitem.h"
-
 class JabberProtocol;
 
-namespace XMPP
-{
-
-class Client;
 class Features;
 class Status;
 
@@ -49,15 +43,13 @@ class Status;
  *
  * All this data can be requested at any time by server or other clients.
  *
- * When parent JabberProtocol does not have valid XMPP::Client object this service will do nothing.
+ * When parent JabberProtocol does not have valid Client object this service will do nothing.
  *
  * By default Identity is set to {client, pc, Kadu} and Caps Node to http://kadu.im/caps.
  */
 class JabberClientInfoService : public QObject
 {
 	Q_OBJECT
-
-	QPointer<Client> XmppClient;
 
 	QString calculateCapsVersion() const;
 
@@ -131,14 +123,12 @@ public:
 	 * @short Set value of Identity property of connection.
 	 * @param clientName new value of Identity property of connection
 	 */
-	void setIdentity(const DiscoItem::Identity &identity);
+	// void setIdentity(const DiscoItem::Identity &identity);
 
 };
 
 /**
  * @}
  */
-
-}
 
 #endif // JABBER_CHAT_STATE_SERVICE_H

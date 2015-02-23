@@ -25,9 +25,8 @@
 
 #include "protocols/services/avatar-downloader.h"
 
-namespace XMPP { class JabberVCardService; }
-
 class JabberPepService;
+class JabberVCardService;
 
 /**
  * @addtogroup Jabber
@@ -40,7 +39,7 @@ class JabberPepService;
  * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for easy download of avatar from XMPP server. New instance can be created by constructor that requires
- * JabberPepService and XMPP::JabberVCardService arguments. If both services are null then this class will always fail
+ * JabberPepService and JabberVCardService arguments. If both services are null then this class will always fail
  * to do it job. If one is provided then it will be used to download avatar. If both are provided then PEP service will
  * be used and VCard only when PEP service is not enabled or when it failed.
  *
@@ -52,7 +51,7 @@ class JabberAvatarDownloader : public AvatarDownloader
 
 	QString Id;
 	QPointer<JabberPepService> PepService;
-	QPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberVCardService> VCardService;
 
 	void failed();
 
@@ -71,7 +70,7 @@ public:
 	 * @param vCardService vCard service to use in this class
 	 * @param parent QObject parent
 	 */
-	explicit JabberAvatarDownloader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
+	explicit JabberAvatarDownloader(JabberPepService *pepService, JabberVCardService *vCardService, QObject *parent);
 	virtual ~JabberAvatarDownloader();
 
 	virtual void downloadAvatar(const QString &id);

@@ -28,17 +28,8 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtCrypto>
+#include <QtCrypto/QtCrypto>
 
-#include "jid.h"
-
-
-namespace XMPP {
-	class Client;
-	class ClientStream;
-	class AdvancedConnector;
-	class QCATLSHandler;
-}
 namespace QCA {
 	class TLS;
 }
@@ -49,12 +40,12 @@ class MiniClient : public QObject
 {
 	Q_OBJECT
 
-	XMPP::AdvancedConnector *conn;
-	XMPP::ClientStream *stream;
+	// AdvancedConnector *conn;
+	// ClientStream *stream;
 	QCA::TLS *tls;
-	XMPP::QCATLSHandler *tlsHandler;
-	XMPP::Client *_client;
-	XMPP::Jid j;
+	// QCATLSHandler *tlsHandler;
+	// Client *_client;
+	// Jid j;
 	QString pass;
 	bool auth, force_ssl, error_disconnect;
 	QString TlsOverrideDomain;
@@ -64,9 +55,9 @@ public:
 	~MiniClient();
 
 	void reset();
-	void connectToServer(const XMPP::Jid &j, bool legacy_ssl_probe, bool legacy_ssl, bool force_ssl, const QString &host, quint16 port/*, ProxyManager *pm, QString proxy, QString *pass = NULL*/);
+	// void connectToServer(const Jid &j, bool legacy_ssl_probe, bool legacy_ssl, bool force_ssl, const QString &host, quint16 port/*, ProxyManager *pm, QString proxy, QString *pass = NULL*/);
 	void close();
-	XMPP::Client *client();
+	// Client *client();
 	void setErrorOnDisconnect(bool);
 
 	const QString & tlsOverrideDomain() const { return TlsOverrideDomain; };

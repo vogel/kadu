@@ -20,8 +20,6 @@
 
 #include <QtCore/QRegExp>
 
-#include "iris/xmpp_jid.h"
-
 #include "jabber-id-validator.h"
 
 QValidator *JabberIdValidator::Instance = 0;
@@ -57,11 +55,11 @@ QValidator::State JabberIdValidator::validate(QString &input, int &pos) const
 	QString mid(input.mid(pos));
 	if (mid.isEmpty())
 		return QValidator::Intermediate;
-
-	XMPP::Jid jid = XMPP::Jid(mid);
+/*
+	Jid jid = Jid(mid);
 	if (jid.isValid())
 		return QValidator::Acceptable;
-	else
+	else*/
 		return QValidator::Invalid;
 }
 

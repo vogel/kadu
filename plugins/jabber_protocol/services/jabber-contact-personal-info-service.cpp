@@ -20,9 +20,6 @@
 
 #include <QtCore/QDate>
 
-#include <xmpp_jid.h>
-#include <xmpp_vcard.h>
-
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
 
@@ -40,7 +37,7 @@ JabberContactPersonalInfoService::~JabberContactPersonalInfoService()
 {
 }
 
-void JabberContactPersonalInfoService::setVCardService(XMPP::JabberVCardService *vCardService)
+void JabberContactPersonalInfoService::setVCardService(JabberVCardService *vCardService)
 {
 	VCardService = vCardService;
 }
@@ -55,11 +52,11 @@ void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 	if (!vCardDownloader)
 		return;
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,VCard)), this, SLOT(vCardDownloaded(bool,VCard)));
 	vCardDownloader->downloadVCard(contact.id());
 }
-
-void JabberContactPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCard)
+/*
+void JabberContactPersonalInfoService::vCardDownloaded(bool ok, VCard vCard)
 {
 	if (!ok)
 		return;
@@ -79,5 +76,5 @@ void JabberContactPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCar
 
 	emit personalInfoAvailable(CurrentBuddy);
 }
-
+*/
 #include "moc_jabber-contact-personal-info-service.cpp"

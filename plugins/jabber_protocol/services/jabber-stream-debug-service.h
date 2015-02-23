@@ -25,18 +25,11 @@
 
 #include <QtCore/QPointer>
 
-namespace XMPP
-{
-
-class Client;
-
 class JabberProtocol;
 
 class JabberStreamDebugService : public QObject
 {
 	Q_OBJECT
-
-	QPointer<XMPP::Client> XmppClient;
 
 	QString filterPrivateData(const QString &streamData);
 
@@ -53,7 +46,5 @@ signals:
 	void outgoingStream(const QString &streamData);
 
 };
-
-}
 
 #endif // JABBER_STREAM_DEBUG_SERVICE_H

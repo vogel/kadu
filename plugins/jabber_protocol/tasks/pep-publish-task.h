@@ -24,28 +24,26 @@
 
 #include <QtXml/QDomElement>
 
-#include "iris/xmpp_pubsubitem.h"
-#include "iris/xmpp_task.h"
 #include "services/jabber-pep-service.h"
-
-class PEPPublishTask : public XMPP::Task
+/*
+class PEPPublishTask : public Task
 {
 	Q_OBJECT
 
 	QDomElement iq_;
 	QString node_;
-	XMPP::PubSubItem item_;
+	PubSubItem item_;
 
 public:
-	PEPPublishTask(Task *parent, const QString &node, const XMPP::PubSubItem &it, JabberPepService::Access access);
+	PEPPublishTask(Task *parent, const QString &node, const PubSubItem &it, JabberPepService::Access access);
 	virtual ~PEPPublishTask();
 
 	bool take(const QDomElement &x);
 	void onGo();
 
-	const XMPP::PubSubItem & item() const;
+	const PubSubItem & item() const;
 	const QString & node() const;
 
 };
-
+*/
 #endif // PEP_PUBLISH_TASK_H

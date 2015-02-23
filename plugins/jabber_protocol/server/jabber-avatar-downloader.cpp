@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_client.h>
-
 #include "accounts/account-manager.h"
 #include "server/jabber-avatar-pep-downloader.h"
 #include "server/jabber-avatar-vcard-downloader.h"
@@ -30,7 +28,7 @@
 
 #include "jabber-avatar-downloader.h"
 
-JabberAvatarDownloader::JabberAvatarDownloader( JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
+JabberAvatarDownloader::JabberAvatarDownloader( JabberPepService *pepService, JabberVCardService *vCardService, QObject *parent) :
 		AvatarDownloader(parent), PepService(pepService), VCardService(vCardService)
 {
 }

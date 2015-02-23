@@ -35,13 +35,13 @@ XmlConsole::XmlConsole(Account account) :
 	setWindowTitle(tr("XML Console - %1").arg(WatchedAccount.id()));
 	setWindowRole("kadu-xml-console");
 
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
+	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
 	if (protocol)
 	{
 		createGui();
 
-		connect(protocol->streamDebugService(), SIGNAL(incomingStream(QString)), this, SLOT(xmlIncomingSlot(QString)));
-		connect(protocol->streamDebugService(), SIGNAL(outgoingStream(QString)), this, SLOT(xmlOutgoingSlot(QString)));
+		// connect(protocol->streamDebugService(), SIGNAL(incomingStream(QString)), this, SLOT(xmlIncomingSlot(QString)));
+		// connect(protocol->streamDebugService(), SIGNAL(outgoingStream(QString)), this, SLOT(xmlOutgoingSlot(QString)));
 	}
 	else
 		deleteLater();

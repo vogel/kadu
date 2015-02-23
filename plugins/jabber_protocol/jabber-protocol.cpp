@@ -21,7 +21,7 @@
  */
 
 #include <QtCore/QCoreApplication>
-#include <QtCrypto>
+#include <QtCrypto/QtCrypto>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
@@ -38,8 +38,6 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
-#include "iris/filetransfer.h"
-#include "iris/irisnetglobal.h"
 #include "resource/jabber-resource-pool.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
@@ -62,9 +60,6 @@
 
 #include "jabber-protocol.h"
 
-namespace XMPP
-{
-
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), ResourcePool(0),
 		ContactsListReadOnly(false)
@@ -73,48 +68,48 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
-
-	XmppClient = new XMPP::Client(this);
+/*
+	XmppClient = new Client(this);
 	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
 	connect(XmppClient, SIGNAL(resourceAvailable(Jid,Resource)), this, SLOT(clientAvailableResourceReceived(Jid,Resource)));
 	connect(XmppClient, SIGNAL(resourceUnavailable(Jid,Resource)), this, SLOT(clientUnavailableResourceReceived(Jid,Resource)));
-
-	auto roomChatService = new XMPP::JabberRoomChatService{account, this};
+*/
+	auto roomChatService = new JabberRoomChatService{account, this};
 	roomChatService->setBuddyManager(BuddyManager::instance());
 	roomChatService->setChatManager(ChatManager::instance());
 	roomChatService->setContactManager(ContactManager::instance());
-	roomChatService->setXmppClient(XmppClient);
+	//roomChatService->setXmppClient(XmppClient);
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
-	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(account, this);
+	JabberChatService *chatService = new JabberChatService(account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	chatService->setRoomChatService(roomChatService);
 
-	XMPP::JabberChatStateService *chatStateService = new XMPP::JabberChatStateService(account, this);
+	JabberChatStateService *chatStateService = new JabberChatStateService(account, this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(account, this);
-	CurrentClientInfoService = new XMPP::JabberClientInfoService(this);
+	CurrentClientInfoService = new JabberClientInfoService(this);
 
-	CurrentServerInfoService = new XMPP::JabberServerInfoService(this);
+	CurrentServerInfoService = new JabberServerInfoService(this);
 	connect(CurrentServerInfoService, SIGNAL(updated()), this, SLOT(serverInfoUpdated()));
 
 	CurrentPepService = new JabberPepService(this);
 
 	CurrentAvatarService->setPepService(CurrentPepService);
 
-	CurrentConnectionService = new XMPP::JabberConnectionService(this);
+	CurrentConnectionService = new JabberConnectionService(this);
 	connect(CurrentConnectionService, SIGNAL(connected()), this, SLOT(connectedToServer()));
 	connect(CurrentConnectionService, SIGNAL(connectionClosed(QString)), this, SLOT(connectionClosedSlot(QString)));
 	connect(CurrentConnectionService, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
 	connect(CurrentConnectionService, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
 	connect(CurrentConnectionService, SIGNAL(tlsCertificateAccepted()), this, SLOT(reconnect()));
 
-	CurrentStreamDebugService = new XMPP::JabberStreamDebugService(this);
+	CurrentStreamDebugService = new JabberStreamDebugService(this);
 
-	CurrentVCardService = new XMPP::JabberVCardService(account, this);
-	CurrentVCardService->setXmppClient(XmppClient);
+	CurrentVCardService = new JabberVCardService(account, this);
+	// CurrentVCardService->setXmppClient(XmppClient);
 
 	CurrentAvatarService->setVCardService(CurrentVCardService);
 	CurrentContactPersonalInfoService->setVCardService(CurrentVCardService);
@@ -131,19 +126,19 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentClientInfoService->setFeatures(features);
 
-	connect(XmppClient, SIGNAL(messageReceived(const Message &)),
-	        chatService, SLOT(handleReceivedMessage(Message)));
-	connect(XmppClient, SIGNAL(messageReceived(const Message &)),
-	        chatStateService, SLOT(handleReceivedMessage(const Message &)));
+	// connect(XmppClient, SIGNAL(messageReceived(const Message &)),
+	//         chatService, SLOT(handleReceivedMessage(Message)));
+	// connect(XmppClient, SIGNAL(messageReceived(const Message &)),
+	//         chatStateService, SLOT(handleReceivedMessage(const Message &)));
 	connect(chatService, SIGNAL(messageAboutToSend(Message&)),
 	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
-	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this, contacts, this);
+	JabberRosterService *rosterService = new JabberRosterService(this, contacts, this);
 
-	chatService->setXmppClient(XmppClient);
-	chatStateService->setClient(XmppClient);
-	rosterService->setClient(XmppClient);
+	// chatService->setXmppClient(XmppClient);
+	// chatStateService->setClient(XmppClient);
+	// rosterService->setClient(XmppClient);
 
 	connect(rosterService, SIGNAL(rosterReady(bool)),
 			this, SLOT(rosterReady(bool)));
@@ -151,7 +146,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	setChatService(chatService);
 	setRosterService(rosterService);
 
-	CurrentSubscriptionService = new XMPP::JabberSubscriptionService(this);
+	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
 	kdebugf2();
 }
@@ -159,11 +154,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 JabberProtocol::~JabberProtocol()
 {
 	logout();
-}
-
-XMPP::Client * JabberProtocol::xmppClient()
-{
-	return XmppClient;
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -263,25 +253,25 @@ void JabberProtocol::sendStatusToServer()
 	if (!isConnected() && !isDisconnecting())
 		return;
 
-	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status());
+	Status xmppStatus = IrisStatusAdapter::toIrisStatus(status());
 	CurrentClientInfoService->fillStatusCapsData(xmppStatus);
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (jabberAccountDetails)
 	{
-		xmppStatus.setPriority(jabberAccountDetails->priority());
+		// xmppStatus.setPriority(jabberAccountDetails->priority());
 
-		XMPP::Resource newResource(jabberAccountDetails->resource(), xmppStatus);
+		// Resource newResource(jabberAccountDetails->resource(), xmppStatus);
 
 		// update our resource in the resource pool
-		resourcePool()->addResource(CurrentConnectionService->jid(), newResource);
+		// resourcePool()->addResource(CurrentConnectionService->jid(), newResource);
 
 		// make sure that we only consider our own resource locally
-		resourcePool()->lockToResource(CurrentConnectionService->jid(), newResource);
+		// resourcePool()->lockToResource(CurrentConnectionService->jid(), newResource);
 	}
 
-	if (xmppClient()->isActive() && xmppStatus.show() != QString("connecting"))
-		xmppClient()->setPresence(xmppStatus);
+	// if (xmppClient()->isActive() && xmppStatus.show() != QString("connecting"))
+	// 	xmppClient()->setPresence(xmppStatus);
 
 	account().accountContact().setCurrentStatus(status());
 }
@@ -290,14 +280,14 @@ void JabberProtocol::changePrivateMode()
 {
 	//sendStatusToServer();
 }
-
-void JabberProtocol::clientAvailableResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
+/*
+void JabberProtocol::clientAvailableResourceReceived(const Jid &jid, const Resource &resource)
 {
 	kdebug("New resource available for %s\n", jid.full().toUtf8().constData());
 
 	resourcePool()->addResource(jid, resource);
 
-	XMPP::Resource bestResource = resourcePool()->bestResource(jid);
+	Resource bestResource = resourcePool()->bestResource(jid);
 
 	if (resource.name() == bestResource.name())
 		notifyAboutPresenceChanged(jid, resource);
@@ -305,11 +295,11 @@ void JabberProtocol::clientAvailableResourceReceived(const XMPP::Jid &jid, const
 	kdebugf2();
 }
 
-void JabberProtocol::clientUnavailableResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
+void JabberProtocol::clientUnavailableResourceReceived(const Jid &jid, const Resource &resource)
 {
 	kdebug("New resource unavailable for %s\n", jid.full().toUtf8().constData());
 
-	XMPP::Resource bestResource = resourcePool()->bestResource(jid);
+	Resource bestResource = resourcePool()->bestResource(jid);
 
 	bool notify = bestResource.name() == resource.name();
 
@@ -322,7 +312,7 @@ void JabberProtocol::clientUnavailableResourceReceived(const XMPP::Jid &jid, con
 									? resource : bestResource);
 }
 
-void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource)
+void JabberProtocol::notifyAboutPresenceChanged(const Jid &jid, const Resource &resource)
 {
 	::Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
@@ -339,7 +329,7 @@ void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP
 	else
 		emit contactStatusChanged(contact, oldStatus);
 }
-
+*/
 JabberResourcePool *JabberProtocol::resourcePool()
 {
 	if (!ResourcePool)
@@ -359,8 +349,6 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 		return 0;
 
 	return dynamic_cast<JabberContactDetails *>(contact.details());
-}
-
 }
 
 #include "moc_jabber-protocol.cpp"

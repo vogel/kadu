@@ -23,18 +23,13 @@
 #include "file-transfer/file-transfer-handler.h"
 #include "protocols/services/file-transfer-service.h"
 
-namespace XMPP
-{
-	class S5BServer;
-
-	class JabberProtocol;
-}
+class JabberProtocol;
 
 class JabberFileTransferService : public FileTransferService
 {
 	Q_OBJECT
 
-	XMPP::JabberProtocol *Protocol;
+	JabberProtocol *Protocol;
 
 private slots:
 	void loggedIn();
@@ -43,7 +38,7 @@ private slots:
 	void incomingFileTransferSlot();
 
 public:
-	explicit JabberFileTransferService(XMPP::JabberProtocol *protocol);
+	explicit JabberFileTransferService(JabberProtocol *protocol);
 	virtual ~JabberFileTransferService();
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) override;

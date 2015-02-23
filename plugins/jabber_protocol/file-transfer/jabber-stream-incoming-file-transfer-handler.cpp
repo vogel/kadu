@@ -19,9 +19,6 @@
 
 #include <QtCore/QFileInfo>
 
-#include <xmpp/xmpp-im/xmpp_bytestream.h>
-#include <filetransfer.h>
-
 #include "file-transfer/file-transfer-status.h"
 
 #include "resource/jabber-resource-pool.h"
@@ -44,19 +41,19 @@ void JabberStreamIncomingFileTransferHandler::connectJabberTransfer()
 	if (!JabberTransfer)
 		return;
 
-	connect(JabberTransfer, SIGNAL(accepted()), this, SLOT(fileTransferAccepted()));
-	connect(JabberTransfer, SIGNAL(connected()), this, SLOT(fileTransferConnected()));
-	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(fileTransferReadyRead(const QByteArray &)));
-	connect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
+	// connect(JabberTransfer, SIGNAL(accepted()), this, SLOT(fileTransferAccepted()));
+	// connect(JabberTransfer, SIGNAL(connected()), this, SLOT(fileTransferConnected()));
+	// connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(fileTransferReadyRead(const QByteArray &)));
+	// connect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
 }
 
 void JabberStreamIncomingFileTransferHandler::disconnectJabberTransfer()
 {
-	if (JabberTransfer)
-		disconnect(JabberTransfer, 0, this, 0);
+	// if (JabberTransfer)
+	// 	disconnect(JabberTransfer, 0, this, 0);
 }
 
-void JabberStreamIncomingFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
+void JabberStreamIncomingFileTransferHandler::setJTransfer(FileTransfer *jTransfer)
 {
 	disconnectJabberTransfer();
 	JabberTransfer = jTransfer;
@@ -71,7 +68,7 @@ void JabberStreamIncomingFileTransferHandler::cleanup(FileTransferStatus status)
 
 	if (JabberTransfer)
 	{
-		JabberTransfer->deleteLater();
+		// JabberTransfer->deleteLater();
 		JabberTransfer = nullptr;
 	}
 
@@ -103,13 +100,13 @@ void JabberStreamIncomingFileTransferHandler::accept(QIODevice *destination)
 	transfer().setTransferredSize(BytesTransferred);
 	transfer().setFileSize(JabberTransfer->fileSize());
 
-	JabberTransfer->accept(BytesTransferred);
+	// JabberTransfer->accept(BytesTransferred);
 }
 
 void JabberStreamIncomingFileTransferHandler::reject()
 {
-	if (JabberTransfer)
-		JabberTransfer->close();
+	// if (JabberTransfer)
+// 		JabberTransfer->close();
 
 	deleteLater();
 }
@@ -132,24 +129,25 @@ void JabberStreamIncomingFileTransferHandler::fileTransferReadyRead(const QByteA
 	BytesTransferred += a.size();
 	updateFileInfo();
 
-	if (BytesTransferred == JabberTransfer->fileSize())
-		cleanup(FileTransferStatus::Finished);
+	// if (BytesTransferred == JabberTransfer->fileSize())
+		// cleanup(FileTransferStatus::Finished);
 }
 
 FileTransferStatus JabberStreamIncomingFileTransferHandler::errorToStatus(int error)
 {
-	switch (error)
-	{
-		case XMPP::FileTransfer::ErrReject:
-			return FileTransferStatus::Rejected;
-			break;
-		case XMPP::FileTransfer::ErrNeg:
-		case XMPP::FileTransfer::ErrConnect:
-		case XMPP::FileTransfer::ErrStream:
-		default:
+	Q_UNUSED(error);
+	// switch (error)
+	// {
+		// case FileTransfer::ErrReject:
+			// return FileTransferStatus::Rejected;
+			// break;
+		// case FileTransfer::ErrNeg:
+		// case FileTransfer::ErrConnect:
+		// case FileTransfer::ErrStream:
+		// default:
 			return FileTransferStatus::NotConnected;
-			break;
-	}
+			// break;
+	// }
 }
 
 void JabberStreamIncomingFileTransferHandler::fileTransferError(int error)

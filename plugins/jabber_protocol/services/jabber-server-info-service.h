@@ -26,20 +26,14 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "xmpp_tasks.h"
-
 class JabberProtocol;
-
-namespace XMPP
-{
 
 class JabberServerInfoService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<Client> XmppClient;
-	XMPP::Features ServerFeatures;
-	XMPP::DiscoItem::Identities ServerIdentities;
+	//Features ServerFeatures;
+	//DiscoItem::Identities ServerIdentities;
 
 	bool SupportsPep;
 
@@ -51,8 +45,8 @@ public:
 	explicit JabberServerInfoService(JabberProtocol *protocol);
 	virtual ~JabberServerInfoService();
 
-	const XMPP::Features & features() const;
-	const XMPP::DiscoItem::Identities & identities() const;
+//	const Features & features() const;
+//	const DiscoItem::Identities & identities() const;
 
 	bool supportsPep() const;
 
@@ -62,7 +56,5 @@ signals:
 	void updated();
 
 };
-
-}
 
 #endif // JABBER_SERVER_INFO_SERVICE_H

@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCrypto/QtCrypto>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
@@ -30,7 +31,6 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
-#include <QtCrypto>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

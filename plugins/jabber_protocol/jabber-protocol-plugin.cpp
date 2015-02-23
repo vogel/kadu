@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iris/irisnetglobal.h>
-
 #include "core/application.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -106,7 +104,7 @@ void JabberProtocolPlugin::done()
 
 	S5BServerManager::destroyInstance();
 
-	XMPP::irisNetCleanup();
+	// irisNetCleanup();
 }
 
 Q_EXPORT_PLUGIN2(jabber_protocol, JabberProtocolPlugin)

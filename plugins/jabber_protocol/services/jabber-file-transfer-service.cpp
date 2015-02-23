@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iris/filetransfer.h>
-
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
@@ -37,17 +35,17 @@
 
 #include "jabber-file-transfer-service.h"
 
-JabberFileTransferService::JabberFileTransferService(XMPP::JabberProtocol *protocol) :
+JabberFileTransferService::JabberFileTransferService(JabberProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
 {
 	connect(Protocol, SIGNAL(stateMachineLoggedIn()), this, SLOT(loggedIn()));
 	connect(Protocol, SIGNAL(stateMachineLoggedOut()), this, SLOT(loggedOut()));
 
-	Protocol->xmppClient()->setFileTransferEnabled(true);
-	Protocol->xmppClient()->fileTransferManager()->setDisabled(XMPP::S5BManager::ns(), false);
+	//Protocol->xmppClient()->setFileTransferEnabled(true);
+	//Protocol->xmppClient()->fileTransferManager()->setDisabled(S5BManager::ns(), false);
 
-	connect(Protocol->xmppClient()->fileTransferManager(), SIGNAL(incomingReady()),
-			this, SLOT(incomingFileTransferSlot()));
+	//connect(Protocol->xmppClient()->fileTransferManager(), SIGNAL(incomingReady()),
+	//		this, SLOT(incomingFileTransferSlot()));
 }
 
 JabberFileTransferService::~JabberFileTransferService()
@@ -77,19 +75,19 @@ FileTransferCanSendResult JabberFileTransferService::canSend(Contact contact)
 
 void JabberFileTransferService::loggedIn()
 {
-	S5BServerManager::instance()->addAddress(Protocol->connectionService()->localAddress());
-	Protocol->xmppClient()->s5bManager()->setServer(S5BServerManager::instance()->server());
+	//S5BServerManager::instance()->addAddress(Protocol->connectionService()->localAddress());
+	//Protocol->xmppClient()->s5bManager()->setServer(S5BServerManager::instance()->server());
 }
 
 void JabberFileTransferService::loggedOut()
 {
-	S5BServerManager::instance()->removeAddress(Protocol->connectionService()->localAddress());
-	Protocol->xmppClient()->s5bManager()->setServer(0);
+	//S5BServerManager::instance()->removeAddress(Protocol->connectionService()->localAddress());
+	//Protocol->xmppClient()->s5bManager()->setServer(0);
 }
 
 void JabberFileTransferService::incomingFileTransferSlot()
-{
-	XMPP::FileTransfer *jTransfer = Protocol->xmppClient()->fileTransferManager()->takeIncoming();
+{/*
+	FileTransfer *jTransfer = Protocol->xmppClient()->fileTransferManager()->takeIncoming();
 	if (!jTransfer)
 		return;
 
@@ -109,7 +107,7 @@ void JabberFileTransferService::incomingFileTransferSlot()
 	if (handler)
 		handler->setJTransfer(jTransfer);
 
-	emit incomingFileTransfer(transfer);
+	emit incomingFileTransfer(transfer);*/
 }
 
 #include "moc_jabber-file-transfer-service.cpp"

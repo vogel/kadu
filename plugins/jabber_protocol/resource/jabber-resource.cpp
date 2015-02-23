@@ -21,8 +21,8 @@
 
 
 #include "jabber-resource.h"
-
-JabberResource::JabberResource(const XMPP::Jid &jid, const XMPP::Resource &resource) :
+/*
+JabberResource::JabberResource(const Jid &jid, const Resource &resource) :
 	Jid(jid), Resource(resource)
 {
 }
@@ -31,9 +31,9 @@ JabberResource::~JabberResource()
 {
 }
 
-void JabberResource::setResource(const XMPP::Resource &resource)
+void JabberResource::setResource(const Resource &resource)
 {
 	Resource = resource;
 }
-
+*/
 #include "moc_jabber-resource.cpp"

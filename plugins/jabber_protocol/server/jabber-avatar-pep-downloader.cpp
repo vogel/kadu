@@ -21,10 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "iris/xmpp_tasks.h"
 #include "services/jabber-pep-service.h"
 #include "tasks/pep-get-task.h"
-#include "base64.h"
 
 #include "jabber-avatar-pep-downloader.h"
 
@@ -55,6 +53,8 @@ void JabberAvatarPepDownloader::failed()
 
 void JabberAvatarPepDownloader::downloadAvatar(const QString &id)
 {
+	Q_UNUSED(id);
+	/*
 	Id = id;
 
 	if (!PepService || !PepService.data()->xmppClient() || !PepService.data()->enabled())
@@ -63,26 +63,26 @@ void JabberAvatarPepDownloader::downloadAvatar(const QString &id)
 		return;
 	}
 
-	XMPP::JT_DiscoItems *discoItems = new XMPP::JT_DiscoItems(PepService.data()->xmppClient()->rootTask());
+	JT_DiscoItems *discoItems = new JT_DiscoItems(PepService.data()->xmppClient()->rootTask());
 	connect(discoItems, SIGNAL(finished()), this, SLOT(discoItemsFinished()));
 
 	discoItems->get(Id);
-	discoItems->go(true);
+	discoItems->go(true);*/
 }
 
 void JabberAvatarPepDownloader::discoItemsFinished()
-{
+{/*
 	if (!PepService || !PepService.data()->xmppClient() || !PepService.data()->enabled())
 	{
 		failed();
 		return;
 	}
 
-	XMPP::JT_DiscoItems *discoItems = static_cast<XMPP::JT_DiscoItems *>(sender());
-	XMPP::DiscoList result = discoItems->items();
+	JT_DiscoItems *discoItems = static_cast<JT_DiscoItems *>(sender());
+	DiscoList result = discoItems->items();
 
 	bool hasAvatar = false;
-	foreach (const XMPP::DiscoItem &item, result)
+	foreach (const DiscoItem &item, result)
 		if (item.node() == XMLNS_AVATAR_DATA || item.node() == NS_AVATAR_DATA)
 		{
 			hasAvatar = true;
@@ -102,11 +102,11 @@ void JabberAvatarPepDownloader::discoItemsFinished()
 		return;
 	}
 
-	connect(getTask, SIGNAL(finished()), this, SLOT(avatarMetadataQueryFinished()));
+	connect(getTask, SIGNAL(finished()), this, SLOT(avatarMetadataQueryFinished()));*/
 }
 
 void JabberAvatarPepDownloader::avatarMetadataQueryFinished()
-{
+{/*
 	auto pepTask = static_cast<PEPGetTask *>(sender());
 	if (!pepTask->success())
 	{
@@ -140,11 +140,11 @@ void JabberAvatarPepDownloader::avatarMetadataQueryFinished()
 		return;
 	}
 
-	connect(getTask, SIGNAL(finished()), this, SLOT(avatarDataQueryFinished()));
+	connect(getTask, SIGNAL(finished()), this, SLOT(avatarDataQueryFinished()));*/
 }
 
 void JabberAvatarPepDownloader::avatarDataQueryFinished()
-{
+{/*
 	auto pepTask = static_cast<PEPGetTask *>(sender());
 	if (!pepTask->success())
 	{
@@ -158,11 +158,11 @@ void JabberAvatarPepDownloader::avatarDataQueryFinished()
 		return;
 	}
 
-	QByteArray imageData = XMPP::Base64::decode(pepTask->items().at(0).payload().text());
+	QByteArray imageData = Base64::decode(pepTask->items().at(0).payload().text());
 	if (!imageData.isEmpty())
 		done(QImage::fromData(imageData));
 	else
-		done(QImage());
+		done(QImage());*/
 }
 
 #include "moc_jabber-avatar-pep-downloader.cpp"

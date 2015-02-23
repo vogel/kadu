@@ -31,29 +31,20 @@ class Buddy;
 class Contact;
 class JabberProtocol;
 
-namespace XMPP
-{
-
-class Client;
-class JT_Roster;
-class RosterItem;
-
 class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 
-	QPointer<Client> XmppClient;
-
 	QSet<Contact> m_markedForDelete;
 	owned_qptr<RosterServiceTasks> m_tasks;
-	QMap<JT_Roster *, Contact> ContactForTask;
+//	QMap<JT_Roster *, Contact> ContactForTask;
 	JabberRosterState State;
 
 	static QStringList buddyGroups(const Buddy &buddy);
-	static const QString & itemDisplay(const RosterItem &item);
+	// static const QString & itemDisplay(const RosterItem &item);
 
 	void ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display);
-	JT_Roster * createContactTask(const Contact &contact);
+//	JT_Roster * createContactTask(const Contact &contact);
 
 	void connectToClient();
 	void disconnectFromClient();
@@ -88,7 +79,7 @@ class JabberRosterService : public RosterService
 	 * - items with subscription='none' or subscription='from' and ask='subscribe'. It is ((subscription='none' or subscription='from') and ask='subscribe') ;
 	 * - items with subscription='none' or subscription='from' which have a 'name' attribute or a 'group' child set. It is ((subscription='none' or subscription='from') and (name attribute or group child)).
 	 */
-	bool isIntrestedIn(const XMPP::RosterItem &item);
+	// bool isIntrestedIn(const RosterItem &item);
 
 	/**
 	 * @short Sets state of roster service.
@@ -109,8 +100,8 @@ private slots:
 	void contactRemovedSlot(Contact contact);
 	void contactUpdatedSlot(Contact contact);
 
-	void remoteContactUpdated(const RosterItem &item);
-	void remoteContactDeleted(const RosterItem &item);
+	// void remoteContactUpdated(const RosterItem &item);
+	// void remoteContactDeleted(const RosterItem &item);
 
 	void rosterTaskFinished();
 	void rosterTaskDeleted(QObject *object);
@@ -152,8 +143,6 @@ public:
 
 	void prepareRoster();
 
-	void setClient(Client *xmppClient);
-
 signals:
 	/**
 	 * @short Signal emitted when roster is ready
@@ -162,7 +151,5 @@ signals:
 	void rosterReady(bool ok);
 
 };
-
-}
 
 #endif // JABBER_ROSTER_SERVICE_H

@@ -19,14 +19,14 @@
 
 #include "status/status.h"
 
-#include "iris/xmpp_status.h"
-
 #include "iris-status-adapter.h"
 
 namespace IrisStatusAdapter
 {
-	Status fromIrisStatus(const XMPP::Status &status)
+	Status fromIrisStatus(const Status &status)
 	{
+		Q_UNUSED(status);
+		/*
 		Status newstatus;
 		if (status.isAvailable())
 			newstatus.setType(StatusTypeOnline);
@@ -49,31 +49,33 @@ namespace IrisStatusAdapter
 		description.replace('\r', '\n');
 		newstatus.setDescription(description);
 
-		return newstatus;
+		return newstatus;*/
+		return Status{};
 	}
 
-	XMPP::Status toIrisStatus(Status status)
-	{
-		XMPP::Status s = XMPP::Status();
+	Status toIrisStatus(Status status)
+	{Q_UNUSED(status);
+		return Status{};/*
+		Status s = Status();
 		StatusType type = status.type();
 
 		if (StatusTypeOnline == type)
-			s.setType(XMPP::Status::Online);
+			s.setType(Status::Online);
 		else if (StatusTypeFreeForChat == type)
-			s.setType(XMPP::Status::FFC);
+			s.setType(Status::FFC);
 		else if (StatusTypeDoNotDisturb == type)
-			s.setType(XMPP::Status::DND);
+			s.setType(Status::DND);
 		else if (StatusTypeNotAvailable == type)
-			s.setType(XMPP::Status::XA);
+			s.setType(Status::XA);
 		else if (StatusTypeAway == type)
-			s.setType(XMPP::Status::Away);
+			s.setType(Status::Away);
 		else if (StatusTypeInvisible == type)
-			s.setType(XMPP::Status::DND);
+			s.setType(Status::DND);
 		else
-			s.setType(XMPP::Status::Offline);
+			s.setType(Status::Offline);
 
 		s.setStatus(status.description());
-		return s;
+		return s;*/
 	}
 
 	bool statusesEqual(Status status1, Status status2)

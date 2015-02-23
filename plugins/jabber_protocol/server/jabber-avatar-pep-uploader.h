@@ -24,15 +24,7 @@
 
 #include <QtCore/QPointer>
 
-#include <iris/xmpp_pubsubitem.h>
-#include <xmpp/jid/jid.h>
-
 #include "protocols/services/avatar-uploader.h"
-
-namespace XMPP
-{
-	class JabberProtocol;
-}
 
 class JabberPepService;
 
@@ -66,8 +58,8 @@ class JabberAvatarPepUploader : public AvatarUploader
 	void failed();
 
 private slots:
-	void publishSuccess(const QString &ns, const XMPP::PubSubItem &item);
-	void publishError(const QString &ns, const XMPP::PubSubItem &item);
+	// void publishSuccess(const QString &ns, const PubSubItem &item);
+	// void publishError(const QString &ns, const PubSubItem &item);
 
 public:
 	/**

@@ -25,16 +25,8 @@
 
 #include <QtCore/QPointer>
 
-#include "iris/xmpp_message.h"
-
+class JabberProtocol;
 class ServerInfoManager;
-
-namespace XMPP
-{
-	class Client;
-
-	class JabberProtocol;
-}
 
 class PEPGetTask;
 
@@ -42,14 +34,11 @@ class JabberPepService : public QObject
 {
 	Q_OBJECT
 
-	typedef XMPP::Message Message;
-
-	QPointer<XMPP::Client> XmppClient;
 	bool Enabled;
 
 protected slots:
-	void messageReceived(const Message &message);
-	void publishFinished();
+	// void messageReceived(const Message &message);
+	// void publishFinished();
 
 public:
 	enum Access {
@@ -58,24 +47,24 @@ public:
 		PublicAccess
 	};
 
-	explicit JabberPepService(XMPP::JabberProtocol *protocol);
+	explicit JabberPepService(JabberProtocol *protocol);
 	virtual ~JabberPepService();
 
-	XMPP::Client * xmppClient() const;
+//	Client * xmppClient() const;
 
 	void setEnabled(bool enabled);
 	bool enabled() const { return Enabled; }
 
-	void publish(const QString &node, const XMPP::PubSubItem &item, Access = DefaultAccess);
+	// void publish(const QString &node, const PubSubItem &item, Access = DefaultAccess);
 	void retract(const QString &node, const QString &id);
-	PEPGetTask * get(const XMPP::Jid &jid, const QString &node, const QString &id);
+	// PEPGetTask * get(const Jid &jid, const QString &node, const QString &id);
 
 signals:
-	void publishSuccess(const QString &ns, const XMPP::PubSubItem &item);
-	void publishError(const QString &ns, const XMPP::PubSubItem &item);
+	// void publishSuccess(const QString &ns, const PubSubItem &item);
+	// void publishError(const QString &ns, const PubSubItem &item);
 
-	void itemPublished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
-	void itemRetracted(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubRetraction &retraction);
+	// void itemPublished(const Jid &jid, const QString &node, const PubSubItem &item);
+	// void itemRetracted(const Jid &jid, const QString &node, const PubSubRetraction &retraction);
 
 };
 
