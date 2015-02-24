@@ -237,10 +237,19 @@ void JabberProtocol::login()
 		return;
 	}
 
-	auto proxy = QNetworkProxy{};
+	auto configuration = QXmppConfiguration{};
+	configuration.setAutoAcceptSubscriptions(false);
+	configuration.setAutoReconnectionEnabled(true);
+	configuration.setIgnoreSslErrors(false);
+	configuration.setJid(account().id());
+	configuration.setPassword(account().password());
+	configuration.setResource(details->resource());
+	configuration.setStreamSecurityMode(streamSecurityMode);
+	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
 
 	if (account().proxy())
 	{
+		auto proxy = QNetworkProxy{};
 		if (account().proxy().type() == "socks")
 			proxy.setType(QNetworkProxy::Socks5Proxy);
 		else
@@ -250,23 +259,17 @@ void JabberProtocol::login()
 		proxy.setPort(account().proxy().port());
 		proxy.setUser(account().proxy().user());
 		proxy.setPassword(account().proxy().password());
+		configuration.setNetworkProxy(proxy);
 	}
-	else
-		proxy.setType(QNetworkProxy::NoProxy);
 
-	auto configuration = QXmppConfiguration{};
-	configuration.setAutoAcceptSubscriptions(false);
-	configuration.setAutoReconnectionEnabled(true);
-	configuration.setDomain(details->useCustomHostPort() ? details->customHost() : QString{});
-	configuration.setHost(details->useCustomHostPort() ? details->customHost() : QString{});
-	configuration.setIgnoreSslErrors(false);
-	configuration.setJid(account().id());
-	configuration.setNetworkProxy(proxy);
-	configuration.setPassword(account().password());
-	configuration.setPort(details->useCustomHostPort() ? details->customPort() : 0);
-	configuration.setResource(details->resource());
-	configuration.setStreamSecurityMode(streamSecurityMode);
-	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
+	if (details->useCustomHostPort())
+	{
+		auto atIndex = account().id().indexOf("@");
+		if (atIndex >= 0)
+			configuration.setDomain(account().id().mid(atIndex + 1));
+		configuration.setHost(details->customHost());
+		configuration.setPort(details->customPort());
+	}
 
 	// m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	m_client->connectToServer(configuration);
