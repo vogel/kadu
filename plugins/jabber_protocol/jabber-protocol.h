@@ -74,6 +74,8 @@ private slots:
 
 	void rosterReady(bool success);
 
+	void presenceReceived(const QXmppPresence &presence);
+
 	// void clientAvailableResourceReceived(const Jid &j, const Resource &r);
 	// void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
 

@@ -75,6 +75,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
+	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 /*
 	XmppClient = new Client(this);
 	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
@@ -267,7 +268,7 @@ void JabberProtocol::login()
 	configuration.setStreamSecurityMode(streamSecurityMode);
 	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
 
-	m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
+	// m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	m_client->connectToServer(configuration);
 
 
@@ -443,6 +444,61 @@ void JabberProtocol::notifyAboutPresenceChanged(const Jid &jid, const Resource &
 		emit contactStatusChanged(contact, oldStatus);
 }
 */
+
+void JabberProtocol::presenceReceived(const QXmppPresence &presence)
+{
+	if (presence.isMucSupported())
+		return;
+
+	auto id = presence.from();
+	auto resourceIndex = id.indexOf('/');
+	if (resourceIndex >= 0)
+		id = id.mid(0, resourceIndex);
+
+	auto contact = ContactManager::instance()->byId(account(), id, ActionReturnNull);
+	if (!contact)
+		return;
+
+	auto status = Status{};
+	if (presence.type() == QXmppPresence::Available)
+	{
+		switch (presence.availableStatusType())
+		{
+			case QXmppPresence::AvailableStatusType::Online:
+				status.setType(StatusTypeOnline);
+				break;
+			case QXmppPresence::AvailableStatusType::Away:
+				status.setType(StatusTypeAway);
+				break;
+			case QXmppPresence::AvailableStatusType::XA:
+				status.setType(StatusTypeNotAvailable);
+				break;
+			case QXmppPresence::AvailableStatusType::DND:
+				status.setType(StatusTypeDoNotDisturb);
+				break;
+			case QXmppPresence::AvailableStatusType::Chat:
+				status.setType(StatusTypeFreeForChat);
+				break;
+			case QXmppPresence::AvailableStatusType::Invisible:
+				status.setType(StatusTypeDoNotDisturb);
+				break;
+		}
+	}
+	else
+		status.setType(StatusTypeOffline);
+
+	status.setDescription(presence.statusText());
+
+	auto oldStatus = contact.currentStatus();
+	contact.setCurrentStatus(status);
+
+	// see issue #2159 - we need a way to ignore first status of given contact
+	if (contact.ignoreNextStatusChange())
+		contact.setIgnoreNextStatusChange(false);
+	else
+		emit contactStatusChanged(contact, oldStatus);
+}
+
 JabberResourcePool *JabberProtocol::resourcePool()
 {
 	if (!ResourcePool)
