@@ -367,32 +367,54 @@ void JabberProtocol::sendStatusToServer()
 	if (!isConnected() && !isDisconnecting())
 		return;
 
-	Status xmppStatus = IrisStatusAdapter::toIrisStatus(status());
-	CurrentClientInfoService->fillStatusCapsData(xmppStatus);
+	auto presence = QXmppPresence{};
+	presence.setType(QXmppPresence::Available);
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (jabberAccountDetails)
+	switch (status().type())
 	{
-		// xmppStatus.setPriority(jabberAccountDetails->priority());
+		case StatusTypeFreeForChat:
+			presence.setAvailableStatusType(QXmppPresence::Chat);
+			break;
+		case StatusTypeOnline:
+			presence.setAvailableStatusType(QXmppPresence::Online);
+			break;
+		case StatusTypeAway:
+			presence.setAvailableStatusType(QXmppPresence::Away);
+			break;
+		case StatusTypeNotAvailable:
+			presence.setAvailableStatusType(QXmppPresence::XA);
+			break;
+		case StatusTypeDoNotDisturb:
+			presence.setAvailableStatusType(QXmppPresence::DND);
+			break;
+		case StatusTypeInvisible:
+			presence.setAvailableStatusType(QXmppPresence::DND);
+			break;
+		case StatusTypeOffline:
+		default:
+			presence.setType(QXmppPresence::Unavailable);
+			break;
+	}
 
-		// Resource newResource(jabberAccountDetails->resource(), xmppStatus);
+//	CurrentClientInfoService->fillStatusCapsData(xmppStatus); TODO fix
 
-		// update our resource in the resource pool
+	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (details)
+	{
+		presence.setPriority(details->priority());
+		// presence.setResource(); not available!
 		// resourcePool()->addResource(CurrentConnectionService->jid(), newResource);
-
-		// make sure that we only consider our own resource locally
 		// resourcePool()->lockToResource(CurrentConnectionService->jid(), newResource);
 	}
 
-	// if (xmppClient()->isActive() && xmppStatus.show() != QString("connecting"))
-	// 	xmppClient()->setPresence(xmppStatus);
+	m_client->setClientPresence(presence);
 
 	account().accountContact().setCurrentStatus(status());
 }
 
 void JabberProtocol::changePrivateMode()
 {
-	//sendStatusToServer();
+	sendStatusToServer();
 }
 /*
 void JabberProtocol::clientAvailableResourceReceived(const Jid &jid, const Resource &resource)
@@ -484,8 +506,10 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 				break;
 		}
 	}
-	else
+	else if (presence.type() == QXmppPresence::Unavailable)
 		status.setType(StatusTypeOffline);
+	else
+		return;
 
 	status.setDescription(presence.statusText());
 
