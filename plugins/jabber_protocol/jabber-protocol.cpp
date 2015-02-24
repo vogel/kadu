@@ -89,7 +89,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	//roomChatService->setXmppClient(XmppClient);
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
-	JabberChatService *chatService = new JabberChatService(account, this);
+	JabberChatService *chatService = new JabberChatService(m_client, account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	chatService->setRoomChatService(roomChatService);

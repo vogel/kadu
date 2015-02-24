@@ -31,12 +31,15 @@ class FormattedStringFactory;
 
 class JabberRoomChatService;
 
+class QXmppClient;
+class QXmppMessage;
+
 class JabberChatService : public ChatService
 {
 	Q_OBJECT
 
 public:
-	explicit JabberChatService(Account account, QObject *parent = nullptr);
+	explicit JabberChatService(QXmppClient *client, Account account, QObject *parent = nullptr);
 	virtual ~JabberChatService();
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
@@ -54,12 +57,13 @@ public slots:
 	 */
 	virtual void leaveChat(const Chat &chat);
 
-	void handleReceivedMessage(const Message &msg);
+	void handleReceivedMessage(const QXmppMessage &xmppMessage);
 
 signals:
 	void messageAboutToSend(Message &message);
 
 private:
+	QPointer<QXmppClient> m_client;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<JabberRoomChatService> m_roomChatService;
 
@@ -67,6 +71,6 @@ private:
 
 	// Jid chatJid(const Chat &chat);
 	// QString chatMessageType(const Chat &chat, const Jid &jid);
-	Message handleNormalReceivedMessage(const Message &msg);
+	Message handleNormalReceivedMessage(const QXmppMessage &xmppMessage);
 
 };
