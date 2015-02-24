@@ -23,6 +23,8 @@
 #ifndef JABBER_PROTOCOL_H
 #define JABBER_PROTOCOL_H
 
+#include <qxmpp/QXmppClient.h>
+
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
@@ -34,12 +36,13 @@
 #include "jabber-account-details.h"
 
 class JabberClientInfoService;
-class JabberConnectionService;
 class JabberContactDetails;
 class JabberPepService;
 class JabberResourcePool;
 class JabberServerInfoService;
 class JabberStreamDebugService;
+
+class QXmppClient;
 
 class JabberProtocol : public Protocol
 {
@@ -52,12 +55,13 @@ class JabberProtocol : public Protocol
 	JabberSubscriptionService *CurrentSubscriptionService;
 	JabberClientInfoService *CurrentClientInfoService;
 	JabberServerInfoService *CurrentServerInfoService;
-	JabberConnectionService *CurrentConnectionService;
 	JabberPepService *CurrentPepService;
 	JabberStreamDebugService *CurrentStreamDebugService;
 	JabberVCardService *CurrentVCardService;
 
 	JabberResourcePool *ResourcePool;
+
+	QXmppClient *m_client;
 
 	bool ContactsListReadOnly;
 
@@ -65,13 +69,13 @@ class JabberProtocol : public Protocol
 
 private slots:
 	void connectedToServer();
+	void disconenctedFromServer();
+	void error(QXmppClient::Error error);
+
 	void rosterReady(bool success);
 
 	// void clientAvailableResourceReceived(const Jid &j, const Resource &r);
 	// void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
-
-	void connectionClosedSlot(const QString &message);
-	void connectionErrorSlot(const QString &message);
 
 	void serverInfoUpdated();
 
@@ -100,7 +104,6 @@ public:
 	// virtual JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
 	// virtual JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
 	// virtual JabberPepService * pepService() { return CurrentPepService; }
-	// virtual JabberConnectionService * connectionService() { return CurrentConnectionService; }
 	// virtual JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
 	// virtual JabberVCardService * vcardService() { return CurrentVCardService; }
 

@@ -22,6 +22,9 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCrypto/QtCrypto>
+#include <QNetworkProxy>
+
+#include <qxmpp/QXmppClient.h>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
@@ -42,7 +45,6 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
-#include "services/jabber-connection-service.h"
 #include "services/jabber-pep-service.h"
 #include "services/jabber-room-chat-service.h"
 #include "services/jabber-roster-service.h"
@@ -68,6 +70,11 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
+
+	m_client = new QXmppClient{this};
+	connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
+	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
+	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 /*
 	XmppClient = new Client(this);
 	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
@@ -98,13 +105,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPepService = new JabberPepService(this);
 
 	CurrentAvatarService->setPepService(CurrentPepService);
-
-	CurrentConnectionService = new JabberConnectionService(this);
-	connect(CurrentConnectionService, SIGNAL(connected()), this, SLOT(connectedToServer()));
-	connect(CurrentConnectionService, SIGNAL(connectionClosed(QString)), this, SLOT(connectionClosedSlot(QString)));
-	connect(CurrentConnectionService, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
-	connect(CurrentConnectionService, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
-	connect(CurrentConnectionService, SIGNAL(tlsCertificateAccepted()), this, SLOT(reconnect()));
 
 	CurrentStreamDebugService = new JabberStreamDebugService(this);
 
@@ -161,18 +161,6 @@ void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 	ContactsListReadOnly = contactsListReadOnly;
 }
 
-void JabberProtocol::connectionClosedSlot(const QString &message)
-{
-	emit connectionError(account(), CurrentConnectionService->host(), message);
-	connectionClosed();
-}
-
-void JabberProtocol::connectionErrorSlot(const QString& message)
-{
-	emit connectionError(account(), CurrentConnectionService->host(), message);
-	connectionError();
-}
-
 void JabberProtocol::serverInfoUpdated()
 {
 	CurrentPepService->setEnabled(CurrentServerInfoService->supportsPep());
@@ -209,7 +197,7 @@ void JabberProtocol::login()
 		connectionClosed();
 		return;
 	}
-
+/*
 	if (jabberAccountDetails->publishSystemInfo())
 	{
 		CurrentClientInfoService->setClientName("Kadu");
@@ -224,6 +212,97 @@ void JabberProtocol::login()
 	}
 
 	CurrentConnectionService->connectToServer();
+*/
+
+	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (!details)
+		return;
+
+	auto streamSecurityMode = JabberAccountDetails::Encryption_No == details->encryptionMode()
+			? QXmppConfiguration::StreamSecurityMode::TLSDisabled
+			: JabberAccountDetails::Encryption_Yes == details->encryptionMode()
+			? QXmppConfiguration::StreamSecurityMode::TLSRequired
+			: QXmppConfiguration::StreamSecurityMode::TLSEnabled;
+	auto useNonSASLAuthentication = details->plainAuthMode() == JabberAccountDetails::AllowPlain
+			? true
+			: details->plainAuthMode() == JabberAccountDetails::JabberAccountDetails::AllowPlainOverTLS
+			? QXmppConfiguration::StreamSecurityMode::TLSDisabled != streamSecurityMode
+			: false;
+
+	if (streamSecurityMode != QXmppConfiguration::StreamSecurityMode::TLSDisabled && !QCA::isSupported("tls"))
+	{
+		// emit some error
+		// emit connectionClosed(tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system."));
+		return;
+	}
+
+	auto proxy = QNetworkProxy{};
+
+	if (account().proxy())
+	{
+		if (account().proxy().type() == "socks")
+			proxy.setType(QNetworkProxy::Socks5Proxy);
+		else
+			proxy.setType(QNetworkProxy::HttpProxy);
+
+		proxy.setHostName(account().proxy().address());
+		proxy.setPort(account().proxy().port());
+		proxy.setUser(account().proxy().user());
+		proxy.setPassword(account().proxy().password());
+	}
+	else
+		proxy.setType(QNetworkProxy::NoProxy);
+
+	auto configuration = QXmppConfiguration{};
+	configuration.setAutoAcceptSubscriptions(false);
+	configuration.setAutoReconnectionEnabled(true);
+	configuration.setDomain(details->useCustomHostPort() ? details->customHost() : QString{});
+	configuration.setHost(details->useCustomHostPort() ? details->customHost() : QString{});
+	configuration.setIgnoreSslErrors(false);
+	configuration.setJid(account().id());
+	configuration.setNetworkProxy(proxy);
+	configuration.setPassword(account().password());
+	configuration.setPort(details->useCustomHostPort() ? details->customPort() : 0);
+	configuration.setResource(details->resource());
+	configuration.setStreamSecurityMode(streamSecurityMode);
+	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
+
+	m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
+	m_client->connectToServer(configuration);
+
+
+/*
+
+
+	if (!XmppClient)
+		return;
+
+	cleanUp();
+
+	MyJid = Jid(ParentProtocol->account().id()).withResource(details->resource());
+	Password = ParentProtocol->account().password();
+
+	Connector = createConnector();
+
+	if (forceTLS() || useSSL())
+	{
+		TLSHandler = createTLSHandler();
+		connect(TLSHandler.data(), SIGNAL(tlsHandshaken()), SLOT(tlsHandshaken()));
+
+		QString host = details->useCustomHostPort() ? details->customHost() : Jid(ParentProtocol->account().id()).domain();
+		TLSHandler->startClient(host);
+	}
+
+	Stream = createClientStream(Connector.data(), TLSHandler.data());
+	connect(Stream.data(), SIGNAL(needAuthParams(bool, bool, bool)), this, SLOT(streamNeedAuthParams(bool, bool, bool)));
+	connect(Stream.data(), SIGNAL(authenticated()), this, SLOT(streamAuthenticated()));
+	connect(Stream.data(), SIGNAL(connectionClosed()), this, SIGNAL(connectionError()));
+	connect(Stream.data(), SIGNAL(delayedCloseFinished()), this, SIGNAL(connectionError()));
+	connect(Stream.data(), SIGNAL(warning(int)), this, SLOT(streamWarning(int)));
+	connect(Stream.data(), SIGNAL(error(int)), this, SLOT(streamError(int)));
+
+	XmppClient->connectToServer(Stream.data(), MyJid, true);*/
+
 
 	kdebugf2();
 }
@@ -243,9 +322,43 @@ void JabberProtocol::afterLoggedIn()
 
 void JabberProtocol::logout()
 {
-	CurrentConnectionService->disconnectFromServer(status());
+	m_client->disconnectFromServer();
 
 	loggedOut();
+}
+
+void JabberProtocol::disconenctedFromServer()
+{
+}
+
+void JabberProtocol::error(QXmppClient::Error error)
+{
+	switch (error)
+	{
+		case QXmppClient::Error::SocketError:
+			emit connectionError(account(), m_client->configuration().host(), QString{}); // TODO: add message
+			connectionError();
+			break;
+		case QXmppClient::Error::KeepAliveError:
+			emit connectionError(account(), m_client->configuration().host(), QString{}); // TODO: add message
+			connectionError();
+			break;
+		case QXmppClient::Error::XmppStreamError:
+			switch (m_client->xmppStreamError())
+			{
+				case QXmppStanza::Error::NotAuthorized:
+				case QXmppStanza::Error::BadAuth:
+					passwordRequired();
+					break;
+				default:
+					emit connectionError(account(), m_client->configuration().host(), QString{}); // TODO: add message
+					connectionError();
+					break;
+			}
+			break;
+		default:
+			break;
+	}
 }
 
 void JabberProtocol::sendStatusToServer()

@@ -9,7 +9,8 @@ find_package (Kadu REQUIRED CONFIG)
 
 find_package (PkgConfig)
 pkg_search_module (IDN REQUIRED libidn)
-pkg_search_module (ZLIB zlib)
+pkg_search_module (ZLIB REQUIRED zlib)
+pkg_search_module (QXMPP REQUIRED qxmpp)
 
 if (NOT ZLIB_FOUND)
 	find_package (ZLIB REQUIRED)
@@ -86,7 +87,6 @@ set (SOURCES
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
 	services/jabber-client-info-service.cpp
-	services/jabber-connection-service.cpp
 	services/jabber-contact-personal-info-service.cpp
 	services/jabber-file-transfer-service.cpp
 	services/jabber-pep-service.cpp
@@ -157,7 +157,6 @@ set (MOC_SOURCES
 	services/jabber-chat-service.h
 	services/jabber-chat-state-service.h
 	services/jabber-client-info-service.h
-	services/jabber-connection-service.h
 	services/jabber-contact-personal-info-service.h
 	services/jabber-file-transfer-service.h
 	services/jabber-pep-service.h
@@ -183,14 +182,14 @@ set (MOC_SOURCES
 	jabber-url-handler.h
 )
 
-add_definitions (${QCA2_DEFINITIONS} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC)
+add_definitions (${QCA2_DEFINITIONS} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} ${QXMPP_DEFINITIONS} ${QXMPP_CFLAGS_OTHER})
 
-set (LIBRARIES ${LIBRARIES} ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES})
+set (LIBRARIES ${LIBRARIES} ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QXMPP_LIBRARIES})
 if (WIN32)
 	set (LIBRARIES ${LIBRARIES} advapi32 ws2_32)
 endif ()
 
-link_directories (${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
+link_directories (${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${QXMPP_LIBRARY_DIRS})
 
 set (CONFIGURATION_FILES
 	data/configuration/jabber_protocol.ui

@@ -30,7 +30,6 @@
 #include "file-transfer/jabber-outgoing-file-transfer-handler.h"
 #include "file-transfer/jabber-stream-incoming-file-transfer-handler.h"
 #include "file-transfer/s5b-server-manager.h"
-#include "services/jabber-connection-service.h"
 #include "jabber-protocol.h"
 
 #include "jabber-file-transfer-service.h"
