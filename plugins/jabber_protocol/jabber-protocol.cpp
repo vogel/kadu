@@ -244,9 +244,8 @@ void JabberProtocol::login()
 	configuration.setAutoAcceptSubscriptions(false);
 	configuration.setAutoReconnectionEnabled(true);
 	configuration.setIgnoreSslErrors(false);
-	configuration.setJid(jid.bare());
+	configuration.setJid(jid.full());
 	configuration.setPassword(account().password());
-	configuration.setResource(jid.resource());
 	configuration.setStreamSecurityMode(streamSecurityMode);
 	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
 
@@ -267,7 +266,6 @@ void JabberProtocol::login()
 
 	if (details->useCustomHostPort())
 	{
-		configuration.setDomain(jid.domain());
 		configuration.setHost(details->customHost());
 		configuration.setPort(details->customPort());
 	}
