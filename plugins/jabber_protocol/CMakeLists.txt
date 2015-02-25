@@ -115,6 +115,7 @@ set (SOURCES
 	jabber-status-adapter.cpp
 	jabber-url-dom-visitor-provider.cpp
 	jabber-url-handler.cpp
+	jid.cpp
 	facebook-protocol-factory.cpp
 	gtalk-protocol-factory.cpp
 )

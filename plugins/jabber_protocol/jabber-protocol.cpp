@@ -59,6 +59,7 @@
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "jabber-url-handler.h"
+#include "jid.h"
 
 #include "jabber-protocol.h"
 
@@ -237,13 +238,15 @@ void JabberProtocol::login()
 		return;
 	}
 
+	auto jid = Jid::parse(account().id()).withResource(details->resource());
+
 	auto configuration = QXmppConfiguration{};
 	configuration.setAutoAcceptSubscriptions(false);
 	configuration.setAutoReconnectionEnabled(true);
 	configuration.setIgnoreSslErrors(false);
-	configuration.setJid(account().id());
+	configuration.setJid(jid.bare());
 	configuration.setPassword(account().password());
-	configuration.setResource(details->resource());
+	configuration.setResource(jid.resource());
 	configuration.setStreamSecurityMode(streamSecurityMode);
 	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
 
@@ -264,9 +267,7 @@ void JabberProtocol::login()
 
 	if (details->useCustomHostPort())
 	{
-		auto atIndex = account().id().indexOf("@");
-		if (atIndex >= 0)
-			configuration.setDomain(account().id().mid(atIndex + 1));
+		configuration.setDomain(jid.domain());
 		configuration.setHost(details->customHost());
 		configuration.setPort(details->customPort());
 	}
