@@ -220,11 +220,23 @@ void JabberProtocol::login()
 	if (!details)
 		return;
 
-	auto streamSecurityMode = JabberAccountDetails::Encryption_No == details->encryptionMode()
-			? QXmppConfiguration::StreamSecurityMode::TLSDisabled
-			: JabberAccountDetails::Encryption_Yes == details->encryptionMode()
-			? QXmppConfiguration::StreamSecurityMode::TLSRequired
-			: QXmppConfiguration::StreamSecurityMode::TLSEnabled;
+	auto streamSecurityMode = QXmppConfiguration::StreamSecurityMode{};
+	switch (details->encryptionMode())
+	{
+		case JabberAccountDetails::Encryption_Auto:
+			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSEnabled;
+			break;
+		case JabberAccountDetails::Encryption_Yes:
+			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSRequired;
+			break;
+		case JabberAccountDetails::Encryption_No:
+			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSDisabled;
+			break;
+		case JabberAccountDetails::Encryption_Legacy:
+			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::LegacySSL;
+			break;
+	}
+
 	auto useNonSASLAuthentication = details->plainAuthMode() == JabberAccountDetails::AllowPlain
 			? true
 			: details->plainAuthMode() == JabberAccountDetails::JabberAccountDetails::AllowPlainOverTLS
@@ -282,8 +294,6 @@ void JabberProtocol::login()
 
 	cleanUp();
 
-	MyJid = Jid(ParentProtocol->account().id()).withResource(details->resource());
-	Password = ParentProtocol->account().password();
 
 	Connector = createConnector();
 
@@ -339,11 +349,12 @@ void JabberProtocol::error(QXmppClient::Error error)
 	switch (error)
 	{
 		case QXmppClient::Error::SocketError:
-			emit connectionError(account(), m_client->configuration().host(), QString{}); // TODO: add message
+			setStatus({}, SourceUser);
+			emit connectionError(account(), m_client->configuration().host(), m_client->socketErrorString());
 			connectionError();
 			break;
 		case QXmppClient::Error::KeepAliveError:
-			emit connectionError(account(), m_client->configuration().host(), QString{}); // TODO: add message
+			emit connectionError(account(), m_client->configuration().host(), tr("Connection timeout"));
 			connectionError();
 			break;
 		case QXmppClient::Error::XmppStreamError:
