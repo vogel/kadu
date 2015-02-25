@@ -476,11 +476,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 	if (presence.isMucSupported())
 		return;
 
-	auto id = presence.from();
-	auto resourceIndex = id.indexOf('/');
-	if (resourceIndex >= 0)
-		id = id.mid(0, resourceIndex);
-
+	auto id = Jid::parse(presence.from()).bare();
 	auto contact = ContactManager::instance()->byId(account(), id, ActionReturnNull);
 	if (!contact)
 		return;
