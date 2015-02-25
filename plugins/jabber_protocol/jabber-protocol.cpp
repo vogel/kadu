@@ -254,8 +254,8 @@ void JabberProtocol::login()
 
 	auto configuration = QXmppConfiguration{};
 	configuration.setAutoAcceptSubscriptions(false);
-	configuration.setAutoReconnectionEnabled(true);
-	configuration.setIgnoreSslErrors(false);
+	configuration.setAutoReconnectionEnabled(false); // we do it in protocol state machine
+	configuration.setIgnoreSslErrors(true); // TODO: replace with setCaCertificated
 	configuration.setJid(jid.full());
 	configuration.setPassword(account().password());
 	configuration.setStreamSecurityMode(streamSecurityMode);
