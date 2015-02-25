@@ -32,6 +32,8 @@ MessageManager * MessageManager::Instance = 0;
 
 MessageManager * MessageManager::instance()
 {
+	qRegisterMetaType<Message>();
+
 	if (0 == Instance)
 		Instance = new MessageManager();
 
