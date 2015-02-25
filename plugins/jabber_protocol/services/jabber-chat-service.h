@@ -25,6 +25,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
+#include <qxmpp/QXmppMessage.h>
 
 class Chat;
 class FormattedStringFactory;
@@ -49,7 +50,7 @@ public:
 	virtual int maxMessageLength() const;
 
 public slots:
-	virtual bool sendMessage(const ::Message &message);
+	virtual bool sendMessage(const Message &message);
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage);
 
 	/**
@@ -67,10 +68,10 @@ private:
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<JabberRoomChatService> m_roomChatService;
 
-	QMap<QString, QString> m_contactMessageTypes;
+	QMap<QString, QXmppMessage::Type> m_contactMessageTypes;
 
-	// Jid chatJid(const Chat &chat);
-	// QString chatMessageType(const Chat &chat, const Jid &jid);
+	QString chatJid(const Chat &chat) const;
+	QXmppMessage::Type chatMessageType(const Chat &chat, const QString &bareJid) const;
 	Message handleNormalReceivedMessage(const QXmppMessage &xmppMessage);
 
 };
