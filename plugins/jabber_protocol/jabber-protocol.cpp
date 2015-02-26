@@ -296,7 +296,8 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::afterLoggedIn()
 {
-	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
+	// static_cast<JabberRosterService *>(rosterService())->prepareRoster(); TODO
+	sendStatusToServer();
 }
 
 void JabberProtocol::logout()
@@ -454,7 +455,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 			: bestResource.status();
 
 	auto oldStatus = contact.currentStatus();
-	contact.setCurrentStatus(status);
+	contact.setCurrentStatus(statusToSet);
 
 	// see issue #2159 - we need a way to ignore first status of given contact
 	if (contact.ignoreNextStatusChange())

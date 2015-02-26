@@ -30,7 +30,7 @@
 #include "jabber-account-details.h"
 
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
-		AccountDetails(data), AutoResource(false), Priority{}, UseCustomHostPort(false), CustomPort(5222),
+		AccountDetails(data), AutoResource(false), Priority{100}, UseCustomHostPort(false), CustomPort(5222),
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS),
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
@@ -53,7 +53,7 @@ void JabberAccountDetails::load()
 	AccountDetails::load();
 
 	QString resourceString = loadValue<QString>("Resource");
-	QString priorityString = loadValue<QString>("Priority");
+	QString priorityString = loadValue<QString>("Priority", "100");
 	AutoResource = loadValue<bool>("AutoResource", false);
 
 	if (resourceString.isEmpty() || resourceString == "Kadu")
