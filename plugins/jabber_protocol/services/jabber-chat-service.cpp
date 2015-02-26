@@ -132,7 +132,6 @@ bool JabberChatService::sendMessage(const Message &message)
 		return false;
 
 	auto bareJid = chatJid(message.messageChat());
-	printf("jid is: %s\n", qPrintable(bareJid));
 	if (bareJid.isEmpty())
 		return false;
 
