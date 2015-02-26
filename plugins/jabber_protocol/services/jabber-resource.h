@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,29 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_RESOURCE_H
-#define JABBER_RESOURCE_H
+#pragma once
 
-#include <QtCore/QObject>
-/*
-class JabberResource : public QObject
+#include "jid.h"
+
+#include "status/status.h"
+
+class JabberResource
 {
-	Q_OBJECT
-
-	// Jid Jid;
-	// Resource Resource;
 
 public:
+	explicit JabberResource(Jid jid, int priority, Status status);
 
-	// explicit JabberResource(const Jid &jid, const Resource &resource);
+	Jid jid() const;
+	int priority() const;
+	Status status() const;
 
-	virtual ~JabberResource();
-
-	// const Jid &jid() const { return Jid; }
-
-	// void setResource (const Resource &resource);
-	// const Resource &resource() const { return Resource; }
+private:
+	Jid _jid;
+	int _priority;
+	Status _status;
 
 };
-*/
-#endif

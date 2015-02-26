@@ -22,7 +22,6 @@
 
 #include "jabber-protocol.h"
 #include "jabber-resource-pool.h"
-#include "jabber-resource.h"
 
 /**
  * This resource will be returned if no other resource

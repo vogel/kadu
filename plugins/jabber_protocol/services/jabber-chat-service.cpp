@@ -45,7 +45,6 @@
 #include "message/raw-message.h"
 #include "misc/misc.h"
 #include "resource/jabber-resource-pool.h"
-#include "resource/jabber-resource.h"
 #include "services/raw-message-transformer-service.h"
 #include "debug.h"
 
