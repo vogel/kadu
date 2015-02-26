@@ -145,13 +145,13 @@ bool JabberChatService::sendMessage(const Message &message)
 		plain = QString::fromUtf8(rawMessageTransformerService()->transform(plain.toUtf8(), {message}).rawContent());
 
 	xmppMessage.setBody(plain);
-	xmppMessage.setFrom(account().id()); // TODO: add resource
+	xmppMessage.setFrom(m_client.data()->clientPresence().id());
 	xmppMessage.setStamp(QDateTime::currentDateTime());
 	xmppMessage.setTo(bareJid);
 	xmppMessage.setType(chatMessageType(message.messageChat(), bareJid));
 
 	// emit messageAboutToSend(msg);
-	m_client.data()->sendMessage(bareJid, plain);
+	m_client.data()->sendPacket(xmppMessage);
 
 	return true;
 }
@@ -168,13 +168,14 @@ bool JabberChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMe
 	auto xmppMessage = QXmppMessage{};
 
 	xmppMessage.setBody(rawMessage);
-	xmppMessage.setFrom(account().id()); // TODO: add resource
+	xmppMessage.setFrom(m_client.data()->clientPresence().id());
 	xmppMessage.setStamp(QDateTime::currentDateTime());
 	xmppMessage.setTo(bareJid);
 	xmppMessage.setType(chatMessageType(chat, bareJid));
 
 	// emit messageAboutToSend(msg);
-	m_client.data()->sendMessage(bareJid, rawMessage);
+
+	m_client.data()->sendPacket(xmppMessage);
 
 	return true;
 }
