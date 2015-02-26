@@ -38,6 +38,8 @@ public:
 	void removeResource(const Jid &jid);
 	void clear();
 
+	JabberResource bestResource(const QString &bareJid);
+
 private:
 	QVector<JabberResource> m_resources;
 

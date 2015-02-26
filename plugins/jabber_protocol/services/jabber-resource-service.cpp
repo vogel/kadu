@@ -55,4 +55,13 @@ void JabberResourceService::clear()
 	m_resources.clear();
 }
 
+JabberResource JabberResourceService::bestResource(const QString &bareJid)
+{
+	auto result = JabberResource{};
+	for (auto &&resource : m_resources)
+		if (resource.jid().bare() == bareJid && resource.priority() > result.priority())
+			result = resource;
+	return result;
+}
+
 #include "moc_jabber-resource-service.cpp"

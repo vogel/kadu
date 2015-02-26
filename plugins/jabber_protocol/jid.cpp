@@ -70,6 +70,11 @@ Jid Jid::withResource(QString resource) const
 	return Jid{m_node, m_domain, resource};
 }
 
+bool Jid::isEmpty() const
+{
+	return m_full.isEmpty();
+}
+
 QString Jid::full() const
 {
 	return m_full;

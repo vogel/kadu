@@ -31,6 +31,11 @@ JabberResource::JabberResource(Jid jid, int priority, Status status) :
 {
 }
 
+bool JabberResource::isEmpty() const
+{
+	return _jid.isEmpty();
+}
+
 Jid JabberResource::jid() const
 {
 	return _jid;

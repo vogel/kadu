@@ -397,56 +397,6 @@ void JabberProtocol::changePrivateMode()
 {
 	sendStatusToServer();
 }
-/*
-void JabberProtocol::clientAvailableResourceReceived(const Jid &jid, const Resource &resource)
-{
-	kdebug("New resource available for %s\n", jid.full().toUtf8().constData());
-
-	resourcePool()->addResource(jid, resource);
-
-	Resource bestResource = resourcePool()->bestResource(jid);
-
-	if (resource.name() == bestResource.name())
-		notifyAboutPresenceChanged(jid, resource);
-
-	kdebugf2();
-}
-
-void JabberProtocol::clientUnavailableResourceReceived(const Jid &jid, const Resource &resource)
-{
-	kdebug("New resource unavailable for %s\n", jid.full().toUtf8().constData());
-
-	Resource bestResource = resourcePool()->bestResource(jid);
-
-	bool notify = bestResource.name() == resource.name();
-
-	resourcePool()->removeResource(jid, resource);
-
-	bestResource = resourcePool()->bestResource(jid);
-
-	if (notify)
-		notifyAboutPresenceChanged(jid, bestResource.name() == JabberResourcePool::EmptyResource.name()
-									? resource : bestResource);
-}
-
-void JabberProtocol::notifyAboutPresenceChanged(const Jid &jid, const Resource &resource)
-{
-	::Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
-	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
-
-	if (!contact)
-		return;
-
-	::Status oldStatus = contact.currentStatus();
-	contact.setCurrentStatus(status);
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	if (contact.ignoreNextStatusChange())
-		contact.setIgnoreNextStatusChange(false);
-	else
-		emit contactStatusChanged(contact, oldStatus);
-}
-*/
 
 void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 {
@@ -490,7 +440,6 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 		return;
 
 	status.setDescription(presence.statusText());
-
 	if (status.type() != StatusTypeOffline)
 	{
 		auto jabberResource = JabberResource{jid, presence.priority(), status};
@@ -498,6 +447,11 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 	}
 	else
 		m_jabberResourceService->removeResource(jid);
+
+	auto bestResource = m_jabberResourceService->bestResource(id);
+	auto statusToSet = bestResource.isEmpty()
+			? status
+			: bestResource.status();
 
 	auto oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(status);

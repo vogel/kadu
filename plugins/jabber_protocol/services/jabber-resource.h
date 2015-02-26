@@ -30,6 +30,8 @@ public:
 	JabberResource();
 	explicit JabberResource(Jid jid, int priority, Status status);
 
+	bool isEmpty() const;
+
 	Jid jid() const;
 	int priority() const;
 	Status status() const;

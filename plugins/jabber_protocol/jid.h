@@ -34,6 +34,8 @@ public:
 	Jid withDomain(QString domain) const;
 	Jid withResource(QString resource) const;
 
+	bool isEmpty() const;
+
 	QString full() const;
 	QString bare() const;
 	QString node() const;
