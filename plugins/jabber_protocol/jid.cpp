@@ -38,6 +38,10 @@ Jid Jid::parse(QString jid)
 	return Jid{node, domain, resource};
 }
 
+Jid::Jid()
+{
+}
+
 Jid::Jid(QString node, QString domain, QString resource) :
 		m_node{node},
 		m_domain{domain},

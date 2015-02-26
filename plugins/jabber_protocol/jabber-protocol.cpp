@@ -46,6 +46,7 @@
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
 #include "services/jabber-pep-service.h"
+#include "services/jabber-resource-service.h"
 #include "services/jabber-room-chat-service.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-server-info-service.h"
@@ -64,7 +65,7 @@
 #include "jabber-protocol.h"
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), ResourcePool(0),
+		Protocol(account, factory),
 		ContactsListReadOnly(false)
 {
 	kdebugf();
@@ -144,6 +145,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	connect(rosterService, SIGNAL(rosterReady(bool)),
 			this, SLOT(rosterReady(bool)));
+
+	m_jabberResourceService = new JabberResourceService{this};
 
 	setChatService(chatService);
 	setRosterService(rosterService);
@@ -342,6 +345,7 @@ void JabberProtocol::logout()
 
 void JabberProtocol::disconenctedFromServer()
 {
+	m_jabberResourceService->clear();
 }
 
 void JabberProtocol::error(QXmppClient::Error error)
@@ -382,6 +386,7 @@ void JabberProtocol::sendStatusToServer()
 
 	auto presence = QXmppPresence{};
 	presence.setType(QXmppPresence::Available);
+	presence.setStatusText(status().description());
 
 	switch (status().type())
 	{
@@ -485,7 +490,8 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 	if (presence.isMucSupported())
 		return;
 
-	auto id = Jid::parse(presence.from()).bare();
+	auto jid = Jid::parse(presence.from());
+	auto id = jid.bare();
 	auto contact = ContactManager::instance()->byId(account(), id, ActionReturnNull);
 	if (!contact)
 		return;
@@ -522,6 +528,14 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 
 	status.setDescription(presence.statusText());
 
+	if (status.type() != StatusTypeOffline)
+	{
+		auto jabberResource = JabberResource{jid, presence.priority(), status};
+		m_jabberResourceService->updateResource(jabberResource);
+	}
+	else
+		m_jabberResourceService->removeResource(jid);
+
 	auto oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(status);
 
@@ -530,14 +544,6 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 		contact.setIgnoreNextStatusChange(false);
 	else
 		emit contactStatusChanged(contact, oldStatus);
-}
-
-JabberResourcePool *JabberProtocol::resourcePool()
-{
-	if (!ResourcePool)
-		ResourcePool = new JabberResourcePool(this);
-
-	return ResourcePool;
 }
 
 QString JabberProtocol::statusPixmapPath()

@@ -19,6 +19,11 @@
 
 #include "jabber-resource.h"
 
+JabberResource::JabberResource() :
+		_priority{-1}
+{
+}
+
 JabberResource::JabberResource(Jid jid, int priority, Status status) :
 		_jid{std::move(jid)},
 		_priority{priority},

@@ -19,32 +19,26 @@
 
 #pragma once
 
-#include <QtCore/QString>
+#include "jabber-resource.h"
 
-class Jid
+#include <QtCore/QObject>
+#include <QtCore/QVector>
+
+class Jid;
+
+class JabberResourceService : public QObject
 {
+	Q_OBJECT
 
 public:
-	static Jid parse(QString jid);
+	explicit JabberResourceService(QObject *parent = nullptr);
+	virtual ~JabberResourceService();
 
-	Jid();
-	explicit Jid(QString node, QString domain, QString resource);
-
-	Jid withNode(QString node) const;
-	Jid withDomain(QString domain) const;
-	Jid withResource(QString resource) const;
-
-	QString full() const;
-	QString bare() const;
-	QString node() const;
-	QString domain() const;
-	QString resource() const;
+	void updateResource(JabberResource resource);
+	void removeResource(const Jid &jid);
+	void clear();
 
 private:
-	QString m_full;
-	QString m_bare;
-	QString m_node;
-	QString m_domain;
-	QString m_resource;
+	QVector<JabberResource> m_resources;
 
 };

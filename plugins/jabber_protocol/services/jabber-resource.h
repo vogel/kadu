@@ -27,6 +27,7 @@ class JabberResource
 {
 
 public:
+	JabberResource();
 	explicit JabberResource(Jid jid, int priority, Status status);
 
 	Jid jid() const;

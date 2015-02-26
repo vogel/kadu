@@ -71,7 +71,6 @@ set (SOURCES
 
 	open-chat-with/jabber-open-chat-with-runner.cpp
 
-	resource/jabber-resource.cpp
 	resource/jabber-resource-pool.cpp
 
 	server/jabber-avatar-downloader.cpp
@@ -91,6 +90,8 @@ set (SOURCES
 	services/jabber-file-transfer-service.cpp
 	services/jabber-pep-service.cpp
 	services/jabber-personal-info-service.cpp
+	services/jabber-resource.cpp
+	services/jabber-resource-service.cpp
 	services/jabber-room-chat-service.cpp
 	services/jabber-roster-service.cpp
 	services/jabber-server-info-service.cpp
@@ -142,7 +143,6 @@ set (MOC_SOURCES
 	gui/windows/jabber-wait-for-account-register-window.h
 	gui/windows/xml-console.h
 
-	resource/jabber-resource.h
 	resource/jabber-resource-pool.h
 
 	server/jabber-avatar-downloader.h

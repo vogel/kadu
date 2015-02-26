@@ -38,7 +38,7 @@
 class JabberClientInfoService;
 class JabberContactDetails;
 class JabberPepService;
-class JabberResourcePool;
+class JabberResourceService;
 class JabberServerInfoService;
 class JabberStreamDebugService;
 
@@ -58,8 +58,7 @@ class JabberProtocol : public Protocol
 	JabberPepService *CurrentPepService;
 	JabberStreamDebugService *CurrentStreamDebugService;
 	JabberVCardService *CurrentVCardService;
-
-	JabberResourcePool *ResourcePool;
+	JabberResourceService *m_jabberResourceService;
 
 	QXmppClient *m_client;
 
@@ -108,8 +107,6 @@ public:
 	// virtual JabberPepService * pepService() { return CurrentPepService; }
 	// virtual JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
 	// virtual JabberVCardService * vcardService() { return CurrentVCardService; }
-
-	JabberResourcePool *resourcePool();
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
 
