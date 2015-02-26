@@ -78,12 +78,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
-/*
-	XmppClient = new Client(this);
-	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
-	connect(XmppClient, SIGNAL(resourceAvailable(Jid,Resource)), this, SLOT(clientAvailableResourceReceived(Jid,Resource)));
-	connect(XmppClient, SIGNAL(resourceUnavailable(Jid,Resource)), this, SLOT(clientUnavailableResourceReceived(Jid,Resource)));
-*/
+
 	auto roomChatService = new JabberRoomChatService{account, this};
 	roomChatService->setBuddyManager(BuddyManager::instance());
 	roomChatService->setChatManager(ChatManager::instance());
@@ -287,38 +282,6 @@ void JabberProtocol::login()
 
 	// m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	m_client->connectToServer(configuration);
-
-
-/*
-
-
-	if (!XmppClient)
-		return;
-
-	cleanUp();
-
-
-	Connector = createConnector();
-
-	if (forceTLS() || useSSL())
-	{
-		TLSHandler = createTLSHandler();
-		connect(TLSHandler.data(), SIGNAL(tlsHandshaken()), SLOT(tlsHandshaken()));
-
-		QString host = details->useCustomHostPort() ? details->customHost() : Jid(ParentProtocol->account().id()).domain();
-		TLSHandler->startClient(host);
-	}
-
-	Stream = createClientStream(Connector.data(), TLSHandler.data());
-	connect(Stream.data(), SIGNAL(needAuthParams(bool, bool, bool)), this, SLOT(streamNeedAuthParams(bool, bool, bool)));
-	connect(Stream.data(), SIGNAL(authenticated()), this, SLOT(streamAuthenticated()));
-	connect(Stream.data(), SIGNAL(connectionClosed()), this, SIGNAL(connectionError()));
-	connect(Stream.data(), SIGNAL(delayedCloseFinished()), this, SIGNAL(connectionError()));
-	connect(Stream.data(), SIGNAL(warning(int)), this, SLOT(streamWarning(int)));
-	connect(Stream.data(), SIGNAL(error(int)), this, SLOT(streamError(int)));
-
-	XmppClient->connectToServer(Stream.data(), MyJid, true);*/
-
 
 	kdebugf2();
 }
