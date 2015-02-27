@@ -21,7 +21,6 @@
 
 #include "file-transfer/file-transfer-status.h"
 
-#include "resource/jabber-resource-pool.h"
 #include "jabber-protocol.h"
 
 #include "jabber-stream-incoming-file-transfer-handler.h"

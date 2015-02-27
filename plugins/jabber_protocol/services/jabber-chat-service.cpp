@@ -131,7 +131,6 @@ bool JabberChatService::sendMessage(const Message &message)
 		return false;
 
 	auto jid = chatJid(message.messageChat());
-	printf("sending message to %s\n", qPrintable(jid.full()));
 	if (jid.isEmpty())
 		return false;
 
@@ -230,29 +229,6 @@ Message JabberChatService::handleNormalReceivedMessage(const QXmppMessage &xmppM
 	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 
 	contact.addProperty("jabber:chat-resource", jid.resource(), CustomProperties::NonStorable);
-	printf("received message from %s\n", qPrintable(jid.full()));
-
-	auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
-	if (protocol)
-	{
-		// make sure current resource is in pool
-		// protocol->resourcePool()->addResource(msg.from().bare(), msg.from().resource());
-
-		//if we have a locked resource, we simply talk to it
-		// auto resource = protocol->resourcePool()->lockedJabberResource(msg.from().bare());
-		// if (resource)
-		// {
-			// if new resource appears, we remove locked resource, so that messages will be sent
-			// to bare JID until some full JID talks and we lock to it then
-			// if (msg.from().resource() != resource->resource().name())
-				// protocol->resourcePool()->removeLock(msg.from().bare());
-		//}
-		//else
-		//{
-			// first message from full JID - lock to this resource
-		//	protocol->resourcePool()->lockToResource(msg.from().bare(), msg.from().resource());
-		//}
-	}
 
 	auto message = Message::create();
 	message.setMessageChat(chat);

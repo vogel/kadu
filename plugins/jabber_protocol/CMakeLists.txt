@@ -35,7 +35,6 @@ kadu_api_directories (plugins/jabber_protocol
 	gui/windows
 	gui
 	open-chat-with
-	resource
 	server
 	services
 	tasks
@@ -70,8 +69,6 @@ set (SOURCES
 	gui/windows/xml-console.cpp
 
 	open-chat-with/jabber-open-chat-with-runner.cpp
-
-	resource/jabber-resource-pool.cpp
 
 	server/jabber-avatar-downloader.cpp
 	server/jabber-avatar-pep-downloader.cpp
@@ -142,8 +139,6 @@ set (MOC_SOURCES
 	gui/windows/jabber-change-password-window.h
 	gui/windows/jabber-wait-for-account-register-window.h
 	gui/windows/xml-console.h
-
-	resource/jabber-resource-pool.h
 
 	server/jabber-avatar-downloader.h
 	server/jabber-avatar-pep-downloader.h

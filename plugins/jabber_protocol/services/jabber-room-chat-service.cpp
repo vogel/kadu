@@ -19,7 +19,6 @@
 
 #include "jabber-room-chat-service.h"
 
-#include "resource/jabber-resource-pool.h"
 #include "iris-status-adapter.h"
 #include "jabber-protocol.h"
 

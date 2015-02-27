@@ -41,7 +41,6 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
-#include "resource/jabber-resource-pool.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
@@ -383,12 +382,7 @@ void JabberProtocol::sendStatusToServer()
 
 	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (details)
-	{
 		presence.setPriority(details->priority());
-		// presence.setResource(); not available!
-		// resourcePool()->addResource(CurrentConnectionService->jid(), newResource);
-		// resourcePool()->lockToResource(CurrentConnectionService->jid(), newResource);
-	}
 
 	m_client->setClientPresence(presence);
 

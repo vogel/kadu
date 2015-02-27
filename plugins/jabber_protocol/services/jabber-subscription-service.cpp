@@ -26,7 +26,6 @@
 #include "debug.h"
 
 #include "gui/windows/subscription-window.h"
-#include "resource/jabber-resource-pool.h"
 #include "jabber-contact-details.h"
 #include "jabber-protocol.h"
 
