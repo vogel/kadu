@@ -19,6 +19,12 @@
 
 #include "jabber-resource-service.h"
 
+#include "chat/chat.h"
+#include "chat/chat-details-room.h"
+#include "chat/type/chat-type-manager.h"
+#include "contacts/contact.h"
+#include "contacts/contact-set.h"
+
 JabberResourceService::JabberResourceService(QObject *parent) :
 		QObject{parent}
 {
@@ -55,13 +61,50 @@ void JabberResourceService::clear()
 	m_resources.clear();
 }
 
-JabberResource JabberResourceService::bestResource(const QString &bareJid)
+JabberResource JabberResourceService::bestResource(const QString &bareJid) const
 {
 	auto result = JabberResource{};
 	for (auto &&resource : m_resources)
 		if (resource.jid().bare() == bareJid && resource.priority() > result.priority())
 			result = resource;
 	return result;
+}
+
+Jid JabberResourceService::bestChatJid(const Chat &chat) const
+{
+	if (!chat)
+		return Jid{};
+
+	auto chatType = ChatTypeManager::instance()->chatType(chat.type());
+	if (!chatType)
+		return Jid{};
+
+	if (chatType->name() == "Contact")
+	{
+		Q_ASSERT(1 == chat.contacts().size());
+		return bestContactJid(chat.contacts().toContact());
+	}
+
+	if (chatType->name() == "Room")
+	{
+		auto details = qobject_cast<ChatDetailsRoom *>(chat.details());
+		Q_ASSERT(details);
+
+		return Jid::parse(details->room());
+	}
+
+	return Jid{};
+}
+
+Jid JabberResourceService::bestContactJid(const Contact &contact) const
+{
+	if (!contact)
+		return Jid{};
+
+	auto resource = contact.property("jabber:chat-resource", QString{}).toString();
+	if (resource.isEmpty())
+		resource = bestResource(contact.id()).jid().resource();
+	return Jid::parse(contact.id()).withResource(resource);
 }
 
 #include "moc_jabber-resource-service.cpp"

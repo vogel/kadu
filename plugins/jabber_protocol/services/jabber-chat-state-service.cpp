@@ -18,15 +18,69 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-chat-state-service.h"
+
+#include "services/jabber-resource-service.h"
+#include "jabber-protocol.h"
+#include "jid.h"
+
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "jabber-protocol.h"
+#include "protocols/services/chat-state.h"
 
-#include "jabber-chat-state-service.h"
+#include <qxmpp/QXmppClient.h>
+#include <qxmpp/QXmppMessage.h>
 
-JabberChatStateService::JabberChatStateService(Account account, QObject *parent) :
-		ChatStateService(account, parent)
+namespace {
+
+ChatState xmppStateToState(QXmppMessage::State state)
+{
+	switch (state)
+	{
+		case QXmppMessage::State::None:
+			return ChatState::None;
+		case QXmppMessage::State::Active:
+			return ChatState::Active;
+		case QXmppMessage::State::Composing:
+			return ChatState::Composing;
+		case QXmppMessage::State::Paused:
+			return ChatState::Paused;
+		case QXmppMessage::State::Inactive:
+			return ChatState::Inactive;
+		case QXmppMessage::State::Gone:
+			return ChatState::Gone;
+		default:
+			return ChatState::None;
+	}
+}
+
+QXmppMessage::State stateToXmppState(ChatState state)
+{
+	switch (state)
+	{
+		case ChatState::None:
+			return QXmppMessage::State::None;
+		case ChatState::Active:
+			return QXmppMessage::State::Active;
+		case ChatState::Composing:
+			return QXmppMessage::State::Composing;
+		case ChatState::Paused:
+			return QXmppMessage::State::Paused;
+		case ChatState::Inactive:
+			return QXmppMessage::State::Inactive;
+		case ChatState::Gone:
+			return QXmppMessage::State::Gone;
+		default:
+			return QXmppMessage::State::None;
+	}
+}
+
+}
+
+JabberChatStateService::JabberChatStateService(QXmppClient *client, Account account, QObject *parent) :
+		ChatStateService{account, parent},
+		m_client{client}
 {
 }
 
@@ -34,211 +88,87 @@ JabberChatStateService::~JabberChatStateService()
 {
 }
 
-bool JabberChatStateService::shouldSendEvent(const Contact &contact)
+void JabberChatStateService::setResourceService(JabberResourceService *resourceService)
 {
-	Q_UNUSED(contact);
-	return false;
-	/*
-	if (!contact)
-		return false;
-
-	ContactInfo &info = ContactInfos[contact];
-	if (!info.UserRequestedEvents && info.ContactChatState == StateNone)
-		return false;
-
-	// Don't send to offline resource
-	if (contact.currentStatus().isDisconnected())
-	{
-		info.UserRequestedEvents = false;
-		info.LastChatState = StateNone;
-		return false;
-	}
-
-	if (info.ContactChatState == StateGone)
-		return false;
-
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails)
-		return false;
-
-	if (!jabberAccountDetails->sendTypingNotification())
-		return false;
-
-	return true;*/
+	m_resourceService = resourceService;
 }
-/*
-void JabberChatStateService::setChatState(const Contact &contact, ChatState state)
+
+void JabberChatStateService::extractReceivedChatState(const QXmppMessage &message)
 {
-	if (!XmppClient)
+	auto jid = Jid::parse(message.from());
+	auto contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
+
+	contact.addProperty("jabber:received-chat-state", static_cast<int>(message.state()), CustomProperties::NonStorable);
+	emit peerStateChanged(contact, xmppStateToState(message.state()));
+}
+
+QXmppMessage JabberChatStateService::withSentChatState(QXmppMessage message)
+{
+	auto jid = Jid::parse(message.to());
+	auto contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
+
+	message.setState(QXmppMessage::State::Active);
+	contact.addProperty("jabber:sent-chat-state", static_cast<int>(QXmppMessage::State::Active), CustomProperties::NonStorable);
+	return message;
+}
+
+void JabberChatStateService::sendState(const Contact &contact, ChatState state)
+{
+	if (!m_client || !m_client->isConnected())
 		return;
 
-	if (!shouldSendEvent(contact))
+	if (!contact || contact.currentStatus().isDisconnected())
 		return;
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (jabberAccountDetails && !jabberAccountDetails->sendGoneNotification() && (state == StateGone || state == StateInactive))
-		state = StatePaused;
-
-	ContactInfo &info = ContactInfos[contact];
-	//this isn't a valid transition, so don't send it, and don't update laststate
-	if (info.LastChatState == StateNone && (state != StateActive && state != StateComposing && state != StateGone))
+	auto receivedChatState = static_cast<QXmppMessage::State>(contact.property("jabber:received-chat-state", QXmppMessage::State::None).toInt());
+	if (receivedChatState == QXmppMessage::State::None || receivedChatState == QXmppMessage::State::Gone)
 		return;
 
-	// Check if we should send a message
-	if (state == info.LastChatState ||
-			(state == StateActive && info.LastChatState == StatePaused) ||
-			(info.LastChatState == StateActive && state == StatePaused))
+	auto jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (!jabberAccountDetails || !jabberAccountDetails->sendTypingNotification())
 		return;
 
-	// Build event message
-	Message m(contact.id());
-	if (info.UserRequestedEvents)
+	auto xmppState = stateToXmppState(state);
+	if (!jabberAccountDetails->sendGoneNotification() && (xmppState == QXmppMessage::State::Gone || xmppState == QXmppMessage::State::Inactive))
+		xmppState = QXmppMessage::State::Paused;
+
+	auto sentChatState = static_cast<QXmppMessage::State>(contact.property("jabber:sent-chat-state", QXmppMessage::State::None).toInt());
+	// invalid transition
+	if (sentChatState == QXmppMessage::State::None && (xmppState != QXmppMessage::State::Active && xmppState != QXmppMessage::State::Composing && xmppState != QXmppMessage::State::Gone))
+		return;
+
+	// don't send if it is the same as last sent state
+	if (xmppState == sentChatState || xmppState == QXmppMessage::State::None)
+		return;
+
+	auto jid = m_resourceService->bestContactJid(contact);
+
+	auto xmppMessage = QXmppMessage{};
+	xmppMessage.setFrom(m_client.data()->clientPresence().id());
+	xmppMessage.setStamp(QDateTime::currentDateTime());
+	xmppMessage.setTo(jid.full());
+	xmppMessage.setType(QXmppMessage::Chat);
+
+	if (xmppState == QXmppMessage::State::Inactive && sentChatState == QXmppMessage::State::Composing)
 	{
-		m.setEventId(info.EventId);
-		if (state == StateComposing)
-			m.addEvent(ComposingEvent);
-		else if (info.LastChatState == StateComposing)
-			m.addEvent(CancelEvent);
+		// send intermediate state first
+		xmppMessage.setState(QXmppMessage::State::Paused);
+		m_client->sendPacket(xmppMessage);
 	}
 
-	if (info.ContactChatState != StateNone)
+	if (xmppState == QXmppMessage::State::Composing && sentChatState == QXmppMessage::State::Inactive)
 	{
-		if (info.LastChatState != StateGone)
-		{
-			if ((state == StateInactive && info.LastChatState == StateComposing)
-				|| (state == StateComposing && info.LastChatState == StateInactive))
-			{
-				// First go to the paused or active state
-				Message tm(contact.id());
-				tm.setType("chat");
-				tm.setChatState(info.LastChatState == StateComposing
-						? StatePaused
-						: StateActive);
-
-				if (XmppClient.data()->isActive())
-					XmppClient.data()->sendMessage(tm);
-			}
-			m.setChatState(state);
-		}
+		// send intermediate state first
+		xmppMessage.setState(QXmppMessage::State::Active);
+		m_client->sendPacket(xmppMessage);
 	}
 
-	// Send event message
-	if (m.containsEvents() || m.chatState() != StateNone)
-	{
-		m.setType("chat");
-		if (XmppClient.data()->isActive())
-			XmppClient.data()->sendMessage(m);
-	}
+	xmppMessage.setState(xmppState);
+	m_client->sendPacket(xmppMessage);
 
 	// Save last state
-	if (info.LastChatState != StateGone || state == StateActive)
-		info.LastChatState = state;
-}
-
-ChatStateService::State JabberChatStateService::xmppStateToContactState(ChatState state)
-{
-	switch (state)
-	{
-		case StateNone:
-			return StateNone;
-		case StateActive:
-			return StateActive;
-		case StateComposing:
-			return StateComposing;
-		case StatePaused:
-			return StatePaused;
-		case StateInactive:
-			return StateInactive;
-		case StateGone:
-			return StateGone;
-		default:
-			return StateNone;
-	}
-}
-
-void JabberChatStateService::handleReceivedMessage(const Message &msg)
-{
-	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
-	ContactInfo &info = ContactInfos[contact];
-
-	if (msg.body().isEmpty())
-	{
-		// Event message
-		if (msg.containsEvent(CancelEvent))
-		{
-			info.ContactChatState = StatePaused;
-			emit peerStateChanged(contact, StatePaused);
-		}
-		else if (msg.containsEvent(ComposingEvent))
-		{
-			info.ContactChatState = StateComposing;
-			emit peerStateChanged(contact, StateComposing);
-		}
-
-		if (msg.chatState() != StateNone)
-		{
-			info.ContactChatState = msg.chatState();
-			emit peerStateChanged(contact, xmppStateToContactState(msg.chatState()));
-		}
-	}
-	else
-	{
-		// Normal message
-		// Check if user requests event messages XEP22
-		info.UserRequestedEvents = msg.containsEvent(ComposingEvent);
-
-		if (!msg.eventId().isEmpty())
-			info.EventId = msg.eventId();
-
-		if (msg.containsEvents() || msg.chatState() != StateNone)
-		{
-			info.ContactChatState = StateActive;
-			emit peerStateChanged(contact, StateActive);
-		}
-		else
-		{
-			info.ContactChatState = StateNone;
-			emit peerStateChanged(contact, StateNone);
-		}
-	}
-}
-
-void JabberChatStateService::handleMessageAboutToSend(Message &message)
-{
-	Contact contact = ContactManager::instance()->byId(account(), message.to().bare(), ActionCreateAndAdd);
-
-	if (ContactInfos[contact].UserRequestedEvents)
-		message.addEvent(ComposingEvent);
-
-	message.setChatState(StateActive);
-	ContactInfos[contact].LastChatState = StateActive;
-}
-*/
-void JabberChatStateService::sendState(const Contact &contact, State state)
-{
-	Q_UNUSED(contact);
-	Q_UNUSED(state);/*
-	switch (state)
-	{
-		case StateActive:
-			setChatState(contact, StateActive);
-			break;
-		case StateComposing:
-			setChatState(contact, StateComposing);
-			break;
-		case StateGone:
-			setChatState(contact, StateGone);
-			ContactInfos.remove(contact);
-			break;
-		case StateInactive:
-			setChatState(contact, StateInactive);
-			break;
-		case StatePaused:
-			setChatState(contact, StatePaused);
-			break;
-		default:
-			break;
-	}*/
+	// if (sentChatState != QXmppMessage::State::Gone || xmppState == QXmppMessage::State::Active) I don't know why we have this condition
+	contact.addProperty("jabber:sent-chat-state", static_cast<int>(xmppState), CustomProperties::NonStorable);
 }
 
 #include "moc_jabber-chat-state-service.cpp"

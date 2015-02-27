@@ -85,14 +85,17 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	roomChatService->setContactManager(ContactManager::instance());
 	//roomChatService->setXmppClient(XmppClient);
 
+	auto chatStateService = new JabberChatStateService(m_client, account, this);
+	chatStateService->setResourceService(m_jabberResourceService);
+
 	CurrentAvatarService = new JabberAvatarService(account, this);
 	JabberChatService *chatService = new JabberChatService(m_client, account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
+	chatService->setChatStateService(chatStateService);
 	chatService->setResourceService(m_jabberResourceService);
 	chatService->setRoomChatService(roomChatService);
 
-	JabberChatStateService *chatStateService = new JabberChatStateService(account, this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(account, this);
@@ -143,6 +146,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(rosterReady(bool)));
 
 	setChatService(chatService);
+	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
 	CurrentSubscriptionService = new JabberSubscriptionService(this);

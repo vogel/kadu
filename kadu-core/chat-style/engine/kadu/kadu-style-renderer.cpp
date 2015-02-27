@@ -93,7 +93,7 @@ void KaduStyleRenderer::displayMessageStatus(const QString &id, MessageStatus st
 	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
-void KaduStyleRenderer::displayChatState(ChatStateService::State state, const QString &message, const QString &name)
+void KaduStyleRenderer::displayChatState(ChatState state, const QString &message, const QString &name)
 {
 	configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
 }

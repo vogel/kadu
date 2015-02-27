@@ -30,6 +30,7 @@
 class Chat;
 class FormattedStringFactory;
 
+class JabberChatStateService;
 class JabberResourceService;
 class JabberRoomChatService;
 class Jid;
@@ -47,6 +48,7 @@ public:
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
+	void setChatStateService(JabberChatStateService *chatStateService);
 	void setResourceService(JabberResourceService *resourceService);
 	void setRoomChatService(JabberRoomChatService *roomChatService);
 
@@ -69,12 +71,12 @@ signals:
 private:
 	QPointer<QXmppClient> m_client;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<JabberChatStateService> m_chatStateService;
 	QPointer<JabberResourceService> m_resourceService;
 	QPointer<JabberRoomChatService> m_roomChatService;
 
 	QMap<QString, QXmppMessage::Type> m_contactMessageTypes;
 
-	Jid chatJid(const Chat &chat) const;
 	QXmppMessage::Type chatMessageType(const Chat &chat, const QString &bareJid) const;
 	Message handleNormalReceivedMessage(const QXmppMessage &xmppMessage);
 

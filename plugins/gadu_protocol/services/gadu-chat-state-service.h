@@ -41,7 +41,7 @@ public:
 
 	void setConnection(GaduConnection *connection);
 
-	virtual void sendState(const Contact &contact, State state);
+	virtual void sendState(const Contact &contact, ChatState state) override;
 
 	void setSendTypingNotifications(bool sendTypingNotifications);
 

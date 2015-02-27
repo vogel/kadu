@@ -25,6 +25,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-title-composing-state-position.h"
 #include "icons/kadu-icon.h"
+#include "protocols/services/chat-state.h"
 
 ChatWidgetTitle::ChatWidgetTitle(ChatWidget *parent) :
 		QObject{parent},
@@ -218,10 +219,10 @@ QString ChatWidgetTitle::withCompositionInfo(const QString &title) const
 	auto addon = QString{};
 	switch (chatWidget()->chatState())
 	{
-		case ChatStateService::StateComposing:
+		case ChatState::Composing:
 			addon = tr("(Composing...)");
 			break;
-		case ChatStateService::StateInactive:
+		case ChatState::Inactive:
 			addon = tr("(Inactive)");
 			break;
 		default:

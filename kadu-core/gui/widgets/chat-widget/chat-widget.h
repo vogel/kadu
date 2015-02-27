@@ -67,7 +67,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	QTimer ComposingTimer;
 	bool IsComposing;
-	ChatStateService::State CurrentContactActivity;
+	ChatState CurrentContactActivity;
 
 	bool SplittersInitialized;
 
@@ -94,7 +94,7 @@ private slots:
 
 	void checkComposing();
 	void updateComposing();
-	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
+	void contactActivityChanged(const Contact &contact, ChatState state);
 
 	void keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled);
 
@@ -140,7 +140,7 @@ public:
 	SortedMessages messages() const;
 	int countMessages() const;
 
-	ChatStateService::State chatState() const;
+	ChatState chatState() const;
 
 public slots:
 	void sendMessage();
@@ -160,7 +160,7 @@ signals:
 	void widgetDestroyed(ChatWidget *widget);
 
 	void closeRequested(ChatWidget *chatWidget);
-	void chatStateChanged(ChatStateService::State state);
+	void chatStateChanged(ChatState state);
 
 };
 

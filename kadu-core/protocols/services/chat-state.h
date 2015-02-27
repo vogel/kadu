@@ -19,34 +19,35 @@
 
 #pragma once
 
-#include "jabber-resource.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-
-class Jid;
-
-class Chat;
-class Contact;
-
-class JabberResourceService : public QObject
+/**
+ * @enum State
+ * @short This enum represent state of chat.
+ * @note Values in this enum must be identical with those defined in kadu-core/chat-style/engine/chat-scripts.js
+ */
+enum class ChatState
 {
-	Q_OBJECT
-
-public:
-	explicit JabberResourceService(QObject *parent = nullptr);
-	virtual ~JabberResourceService();
-
-	void updateResource(JabberResource resource);
-	void removeResource(const Jid &jid);
-	void clear();
-
-	JabberResource bestResource(const QString &bareJid) const;
-
-	Jid bestChatJid(const Chat &chat) const;
-	Jid bestContactJid(const Contact &chat) const;
-
-private:
-	QVector<JabberResource> m_resources;
-
+	/**
+	 * Chat is active - window is opened and active.
+	 */
+	Active = 0,
+	/**
+	 * Chat is in compising state - new message is being entered, but not send yet.
+	 */
+	Composing = 1,
+	/**
+	 * Chat is gone - window was closed.
+	 */
+	Gone = 2,
+	/**
+	 * Chat is inactive - window is opened but not active.
+	 */
+	Inactive = 3,
+	/**
+	 * Unknown state.
+	 */
+	None = 4,
+	/**
+	 * Chat is in paused state - new message is written, but entering was paused.
+	 */
+	Paused = 5
 };

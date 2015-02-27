@@ -21,6 +21,7 @@
 
 #include "chat-style/engine/chat-style-renderer.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display.h"
+#include "protocols/services/chat-state.h"
 
 WebkitMessagesViewHandler::WebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer,
 	std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay, QObject *parent) :
@@ -91,7 +92,7 @@ void WebkitMessagesViewHandler::displayMessageStatus(const QString &id, MessageS
 		m_chatStyleRenderer->displayMessageStatus(id, status);
 }
 
-void WebkitMessagesViewHandler::displayChatState(const Contact &contact, ChatStateService::State state)
+void WebkitMessagesViewHandler::displayChatState(const Contact &contact, ChatState state)
 {
 	if (!m_chatStyleRenderer->isReady())
 		return;
@@ -100,21 +101,21 @@ void WebkitMessagesViewHandler::displayChatState(const Contact &contact, ChatSta
 	auto message = QString{};
 	switch (state)
 	{
-		case ChatStateService::StateActive:
+		case ChatState::Active:
 			message = tr("%1 is active").arg(display);
 			break;
-		case ChatStateService::StateComposing:
+		case ChatState::Composing:
 			message = tr("%1 is composing...").arg(display);
 			break;
-		case ChatStateService::StateGone:
+		case ChatState::Gone:
 			message = tr("%1 is gone").arg(display);
 			break;
-		case ChatStateService::StateInactive:
+		case ChatState::Inactive:
 			message = tr("%1 is inactive").arg(display);
 			break;
-		case ChatStateService::StateNone:
+		case ChatState::None:
 			break;
-		case ChatStateService::StatePaused:
+		case ChatState::Paused:
 			message = tr("%1 has paused composing").arg(display);
 			break;
 	}
