@@ -132,7 +132,7 @@ public slots:
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);
-	void handleEventAck11(struct gg_event *e);
+	void handleEventAck(struct gg_event *e);
 
 signals:
 	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);

@@ -262,8 +262,8 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			handleEventStatus(e);
 			break;
 
-		case GG_EVENT_ACK110:
-			emit ack11EventReceived(e);
+		case GG_EVENT_ACK:
+			emit ackEventReceived(e);
 			break;
 
 		case GG_EVENT_CONN_FAILED:
