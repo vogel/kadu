@@ -30,7 +30,9 @@
 class Chat;
 class FormattedStringFactory;
 
+class JabberResourceService;
 class JabberRoomChatService;
+class Jid;
 
 class QXmppClient;
 class QXmppMessage;
@@ -45,6 +47,7 @@ public:
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
+	void setResourceService(JabberResourceService *resourceService);
 	void setRoomChatService(JabberRoomChatService *roomChatService);
 
 	virtual int maxMessageLength() const;
@@ -66,11 +69,12 @@ signals:
 private:
 	QPointer<QXmppClient> m_client;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<JabberResourceService> m_resourceService;
 	QPointer<JabberRoomChatService> m_roomChatService;
 
 	QMap<QString, QXmppMessage::Type> m_contactMessageTypes;
 
-	QString chatJid(const Chat &chat) const;
+	Jid chatJid(const Chat &chat) const;
 	QXmppMessage::Type chatMessageType(const Chat &chat, const QString &bareJid) const;
 	Message handleNormalReceivedMessage(const QXmppMessage &xmppMessage);
 

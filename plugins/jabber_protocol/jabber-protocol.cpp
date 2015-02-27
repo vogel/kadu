@@ -79,6 +79,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
+	m_jabberResourceService = new JabberResourceService{this};
+
 	auto roomChatService = new JabberRoomChatService{account, this};
 	roomChatService->setBuddyManager(BuddyManager::instance());
 	roomChatService->setChatManager(ChatManager::instance());
@@ -89,6 +91,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	JabberChatService *chatService = new JabberChatService(m_client, account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
+	chatService->setResourceService(m_jabberResourceService);
 	chatService->setRoomChatService(roomChatService);
 
 	JabberChatStateService *chatStateService = new JabberChatStateService(account, this);
@@ -140,8 +143,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	connect(rosterService, SIGNAL(rosterReady(bool)),
 			this, SLOT(rosterReady(bool)));
-
-	m_jabberResourceService = new JabberResourceService{this};
 
 	setChatService(chatService);
 	setRosterService(rosterService);
@@ -447,7 +448,11 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 		m_jabberResourceService->updateResource(jabberResource);
 	}
 	else
+	{
+		if (contact.property("jabber:chat-resource", QString{}).toString() == jid.resource())
+			contact.removeProperty("jabber:chat-resource");
 		m_jabberResourceService->removeResource(jid);
+	}
 
 	auto bestResource = m_jabberResourceService->bestResource(id);
 	auto statusToSet = bestResource.isEmpty()
