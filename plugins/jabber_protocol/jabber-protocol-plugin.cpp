@@ -103,8 +103,6 @@ void JabberProtocolPlugin::done()
 	TrustedCertificatesManager::destroyInstance();
 
 	S5BServerManager::destroyInstance();
-
-	// irisNetCleanup();
 }
 
 Q_EXPORT_PLUGIN2(jabber_protocol, JabberProtocolPlugin)

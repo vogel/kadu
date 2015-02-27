@@ -54,7 +54,6 @@
 #include "services/jabber-vcard-service.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
-#include "iris-status-adapter.h"
 #include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"

@@ -102,7 +102,6 @@ set (SOURCES
 	tasks/pep-publish-task.cpp
 	tasks/pep-retract-task.cpp
 
-	iris-status-adapter.cpp
 	jabber-account-details.cpp
 	jabber-contact-details.cpp
 	jabber-error-helper.cpp
