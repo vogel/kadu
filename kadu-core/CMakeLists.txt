@@ -312,10 +312,12 @@ kadu_api_directories (kadu-core
 	execution-arguments
 	file-system
 	file-transfer
+	file-transfer/gui
 	formatted-string
 	gui
 	gui/actions
 	gui/actions/chat
+	gui/configuration
 	gui/menu
 	gui/model
 	gui/services
