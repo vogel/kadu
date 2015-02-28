@@ -167,10 +167,9 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 	if (xmppMessage.type() == QXmppMessage::Type::Error) // #1642
 		return;
 
-	// auto message = m_roomChatService->shouldHandleReceivedMessage(msg)
-	// 	? m_roomChatService->handleReceivedMessage(msg)
-// 		: handleNormalReceivedMessage(msg);
-	auto message = handleNormalReceivedMessage(xmppMessage);
+	auto message = m_roomChatService->shouldHandleReceivedMessage(xmppMessage)
+		? m_roomChatService->handleReceivedMessage(xmppMessage)
+		: handleNormalReceivedMessage(xmppMessage);
 	if (message.isNull())
 		return;
 

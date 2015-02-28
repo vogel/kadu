@@ -21,6 +21,7 @@
 
 #include "message/message.h"
 #include "protocols/services/account-service.h"
+#include <qxmpp/QXmppStanza.h>
 
 #include <QtCore/QPointer>
 
@@ -30,20 +31,24 @@ class ChatDetailsRoom;
 class ChatManager;
 class ContactManager;
 
+class QXmppMessage;
+class QXmppMucManager;
+class QXmppMucRoom;
+
 class JabberRoomChatService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit JabberRoomChatService(Account account, QObject *parent = nullptr);
+	explicit JabberRoomChatService(QXmppMucManager *muc, Account account, QObject *parent = nullptr);
 	virtual ~JabberRoomChatService();
 
 	void setBuddyManager(BuddyManager *buddyManager);
 	void setChatManager(ChatManager *chatManager);
 	void setContactManager(ContactManager *contactManager);
 
-	bool shouldHandleReceivedMessage(const Message &msg) const;
-	::Message handleReceivedMessage(const Message &msg) const;
+	bool shouldHandleReceivedMessage(const QXmppMessage &xmppMessage) const;
+	Message handleReceivedMessage(const QXmppMessage &xmppMessage) const;
 
 	bool isRoomChat(const Chat &chat) const;
 	void leaveChat(const Chat &chat);
@@ -52,11 +57,12 @@ private slots:
 	void chatOpened(const Chat &chat);
 	void chatClosed(const Chat &chat);
 
-	// void groupChatJoined(const Jid &jid);
-	// void groupChatLeft(const Jid &jid);
-	// void groupChatPresence(const Jid &jid, const Status &status);
+    void groupChatJoined();
+    void groupChatLeft();
+    void participantChanged(const QString &id);
 
 private:
+	QPointer<QXmppMucManager> m_muc;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ContactManager> m_contactManager;

@@ -25,6 +25,7 @@
 #include <QNetworkProxy>
 
 #include <qxmpp/QXmppClient.h>
+#include <qxmpp/QXmppMucManager.h>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
@@ -32,6 +33,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
+#include "misc/memory.h"
 #include "os/generic/system-info.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
@@ -71,19 +73,21 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
+	m_mucManager = make_unique<QXmppMucManager>();
+
 	m_client = new QXmppClient{this};
 	connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
+	m_client->addExtension(m_mucManager.get());
 
 	m_jabberResourceService = new JabberResourceService{this};
 
-	auto roomChatService = new JabberRoomChatService{account, this};
+	auto roomChatService = new JabberRoomChatService{m_mucManager.get(), account, this};
 	roomChatService->setBuddyManager(BuddyManager::instance());
 	roomChatService->setChatManager(ChatManager::instance());
 	roomChatService->setContactManager(ContactManager::instance());
-	//roomChatService->setXmppClient(XmppClient);
 
 	auto chatStateService = new JabberChatStateService(m_client, account, this);
 	chatStateService->setResourceService(m_jabberResourceService);
@@ -283,7 +287,7 @@ void JabberProtocol::login()
 		configuration.setPort(details->customPort());
 	}
 
-	// m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
+	//m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	m_client->connectToServer(configuration);
 
 	kdebugf2();

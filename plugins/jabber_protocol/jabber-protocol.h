@@ -43,6 +43,7 @@ class JabberServerInfoService;
 class JabberStreamDebugService;
 
 class QXmppClient;
+class QXmppMucManager;
 
 class JabberProtocol : public Protocol
 {
@@ -61,6 +62,7 @@ class JabberProtocol : public Protocol
 	JabberResourceService *m_jabberResourceService;
 
 	QXmppClient *m_client;
+	std::unique_ptr<QXmppMucManager> m_mucManager;
 
 	bool ContactsListReadOnly;
 
