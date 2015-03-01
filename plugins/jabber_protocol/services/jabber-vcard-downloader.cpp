@@ -23,15 +23,12 @@
 
 #include "jabber-protocol.h"
 
-#include "accounts/account-manager.h"
-
 #include <qxmpp/QXmppVCardIq.h>
 #include <qxmpp/QXmppVCardManager.h>
 
-JabberVCardDownloader::JabberVCardDownloader(QXmppVCardManager *vcardManager, Account account, QObject *parent) :
+JabberVCardDownloader::JabberVCardDownloader(QXmppVCardManager *vcardManager, QObject *parent) :
 		QObject(parent),
-		m_vcardManager{vcardManager},
-		m_account{account}
+		m_vcardManager{vcardManager}
 {
 }
 

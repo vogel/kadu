@@ -19,18 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-avatar-vcard-uploader.h"
+
 #include "server/jabber-avatar-uploader.h"
 #include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
 #include "jabber-protocol.h"
 
-#include "jabber-avatar-vcard-uploader.h"
-
-
-#define NS_METADATA "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata"
-#define NS_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
-#define MAX_AVATAR_DIMENSION 96
+#include <qxmpp/QXmppVCardIq.h>
 
 JabberAvatarVCardUploader::JabberAvatarVCardUploader(JabberVCardService *vcardService, QObject *parent) :
 		AvatarUploader(parent), VCardService(vcardService)
@@ -55,11 +52,8 @@ void JabberAvatarVCardUploader::failed()
 
 void JabberAvatarVCardUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
-	Q_UNUSED(id)
-	Q_UNUSED(password)
-	Q_UNUSED(avatar)
-/*
-	MyJid = id;
+	Q_UNUSED(password);
+
 	UploadedAvatar = avatar;
 
 	if (!VCardService)
@@ -68,18 +62,18 @@ void JabberAvatarVCardUploader::uploadAvatar(const QString &id, const QString &p
 		return;
 	}
 
-	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+	auto vCardDownloader = VCardService.data()->createVCardDownloader();
 	if (!vCardDownloader)
 	{
 		failed();
 		return;
 	}
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,VCard)), this, SLOT(vCardDownloaded(bool,VCard)));
-	vCardDownloader->downloadVCard(id);*/
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,QXmppVCardIq)), this, SLOT(vCardDownloaded(bool,QXmppVCardIq)));
+	vCardDownloader->downloadVCard(id);
 }
-/*
-void JabberAvatarVCardUploader::vCardDownloaded(bool ok, VCard vCard)
+
+void JabberAvatarVCardUploader::vCardDownloaded(bool ok, const QXmppVCardIq &vcard)
 {
 	if (!ok || !VCardService)
 	{
@@ -87,10 +81,10 @@ void JabberAvatarVCardUploader::vCardDownloaded(bool ok, VCard vCard)
 		return;
 	}
 
-	VCard updatedVCard = vCard;
+	auto updatedVCard = vcard;
 	updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
 
-	JabberVCardUploader *vCardUploader = VCardService.data()->createVCardUploader();
+	auto vCardUploader = VCardService.data()->createVCardUploader();
 	if (!vCardUploader)
 	{
 		failed();
@@ -98,9 +92,9 @@ void JabberAvatarVCardUploader::vCardDownloaded(bool ok, VCard vCard)
 	}
 
 	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SLOT(vCardUploaded(bool)));
-	vCardUploader->uploadVCard(MyJid.bare(), updatedVCard);
+	vCardUploader->uploadVCard(updatedVCard);
 }
-*/
+
 void JabberAvatarVCardUploader::vCardUploaded(bool ok)
 {
 	if (ok)

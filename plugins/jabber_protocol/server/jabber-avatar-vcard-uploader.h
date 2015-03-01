@@ -19,15 +19,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_VCARD_UPLOADER_H
-#define JABBER_AVATAR_VCARD_UPLOADER_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtGui/QImage>
 
 #include "accounts/account.h"
 #include "protocols/services/avatar-uploader.h"
 
 class JabberVCardService;
+
+class QXmppVCardIq;
 
 /**
  * @addtogroup Jabber
@@ -46,7 +48,6 @@ class JabberAvatarVCardUploader : public AvatarUploader
 {
 	Q_OBJECT
 
-	//Jid MyJid;
 	QPointer<JabberVCardService> VCardService;
 
 	QImage UploadedAvatar;
@@ -56,7 +57,7 @@ class JabberAvatarVCardUploader : public AvatarUploader
 
 private slots:
 	void vCardUploaded(bool ok);
-	// void vCardDownloaded(bool ok, VCard vCard);
+	void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
 
 public:
 	/**
@@ -71,5 +72,3 @@ public:
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 
 };
-
-#endif // JABBER_AVATAR_VCARD_UPLOADER_H

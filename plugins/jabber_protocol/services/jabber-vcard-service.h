@@ -22,8 +22,6 @@
 
 #include <QtCore/QPointer>
 
-#include "accounts/account.h"
-
 class JabberVCardDownloader;
 class JabberVCardUploader;
 
@@ -55,7 +53,7 @@ public:
 	 * @short Create new instance of JabberVCardService.
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardService(QXmppVCardManager *vcardManager, Account account, QObject *parent = 0);
+	explicit JabberVCardService(QXmppVCardManager *vcardManager, QObject *parent = 0);
 	virtual ~JabberVCardService();
 
 	/**
@@ -86,7 +84,6 @@ public:
 
 private:
 	QPointer<QXmppVCardManager> m_vcardManager;
-	Account m_account;
 
 };
 

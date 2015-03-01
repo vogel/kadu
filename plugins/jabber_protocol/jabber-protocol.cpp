@@ -119,7 +119,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentStreamDebugService = new JabberStreamDebugService(this);
 
-	m_vcardService = new JabberVCardService(&m_client->vCardManager(), account, this);
+	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
 
 	CurrentAvatarService->setVCardService(m_vcardService);
 	CurrentContactPersonalInfoService->setVCardService(m_vcardService);
@@ -289,7 +289,7 @@ void JabberProtocol::login()
 		configuration.setPort(details->customPort());
 	}
 
-	// m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
+	m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
 	m_client->connectToServer(configuration);
 

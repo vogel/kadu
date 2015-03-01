@@ -87,40 +87,35 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 		return;
 	}
 
-	CurrentBuddy = buddy;/*
+	CurrentBuddy = buddy;
 
-	Jid jid = Jid(id);
-	VCard vcard;
+	auto  vcard = QXmppVCardIq{};
 	vcard.setFullName(CurrentBuddy.firstName());
 	vcard.setNickName(CurrentBuddy.nickName());
-	vcard.setFamilyName(CurrentBuddy.familyName());
+	vcard.setMiddleName(CurrentBuddy.familyName());
 	QDate birthday;
 	birthday.setDate(CurrentBuddy.birthYear(), 1, 1);
-	vcard.setBdayStr(birthday.toString("yyyy-MM-dd"));
+	vcard.setBirthday(birthday);
 
-	VCard::Address addr;
-	VCard::AddressList addrList;
-	addr.locality = CurrentBuddy.city();
-	addrList.append(addr);
-	vcard.setAddressList(addrList);
+	auto addr = QXmppVCardAddress{};
+	addr.setLocality(CurrentBuddy.city());
+	vcard.setAddresses({addr});
 
-	VCard::Email email;
-	VCard::EmailList emailList;
-	email.userid = CurrentBuddy.email();
-	emailList.append(email);
-	vcard.setEmailList(emailList);
+	auto email = QXmppVCardEmail{};
+	email.setAddress(CurrentBuddy.email());
+	vcard.setEmails({email});
 
 	vcard.setUrl(CurrentBuddy.website());
 
-	JabberVCardUploader *vCardUploader = VCardService->createVCardUploader();
+	auto vCardUploader = VCardService->createVCardUploader();
 	if (!vCardUploader)
 	{
 		emit personalInfoUpdated(false);
 		return;
 	}
 
-	vCardUploader->uploadVCard(id, vcard);
-	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SIGNAL(personalInfoUpdated(bool)));*/
+	vCardUploader->uploadVCard(vcard);
+	emit personalInfoUpdated(true);
 }
 
 #include "moc_jabber-personal-info-service.cpp"

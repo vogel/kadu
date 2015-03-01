@@ -20,8 +20,6 @@
 
 #pragma once
 
-#include "accounts/account.h"
-
 #include <QtCore/QPointer>
 
 class QXmppVCardIq;
@@ -51,7 +49,7 @@ public:
 	 * @param client instance of Client
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardDownloader(QXmppVCardManager *vcardManager, Account account, QObject *parent = nullptr);
+	explicit JabberVCardDownloader(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
 	virtual ~JabberVCardDownloader();
 
 	/**
@@ -78,7 +76,6 @@ signals:
 
 private:
 	QPointer<QXmppVCardManager> m_vcardManager;
-	Account m_account;
 	QString m_requestId;
 
 	void done(const QXmppVCardIq &vcard);
