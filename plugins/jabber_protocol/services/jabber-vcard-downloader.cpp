@@ -19,56 +19,53 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account-manager.h"
-#include "jabber-protocol.h"
-
 #include "jabber-vcard-downloader.h"
 
-JabberVCardDownloader::JabberVCardDownloader(Account account, QObject *parent) :
-		QObject(parent), MyAccount(account)
+#include "jabber-protocol.h"
+
+#include "accounts/account-manager.h"
+
+#include <qxmpp/QXmppVCardIq.h>
+#include <qxmpp/QXmppVCardManager.h>
+
+JabberVCardDownloader::JabberVCardDownloader(QXmppVCardManager *vcardManager, Account account, QObject *parent) :
+		QObject(parent),
+		m_vcardManager{vcardManager},
+		m_account{account}
 {
 }
 
 JabberVCardDownloader::~JabberVCardDownloader()
 {
 }
-/*
-void JabberVCardDownloader::done(VCard vCard)
+
+void JabberVCardDownloader::done(const QXmppVCardIq &vcard)
 {
-	emit vCardDownloaded(true, vCard);
-	deleteLater();
-}
-*/
-void JabberVCardDownloader::failed()
-{
-//	emit vCardDownloaded(false, VCard());
+	emit vCardDownloaded(true, vcard);
 	deleteLater();
 }
 
-void JabberVCardDownloader::taskFinished()
-{/*
-	if (!Task || !Task->success())
-		failed();
-	else
-		done(Task->vcard());*/
+void JabberVCardDownloader::failed()
+{
+	emit vCardDownloaded(false, QXmppVCardIq{});
+	deleteLater();
 }
 
 void JabberVCardDownloader::downloadVCard(const QString &id)
 {
-	Q_UNUSED(id);
-	/*
-	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(MyAccount.protocolHandler());
-	if (!MyAccount || !protocol || !protocol->isConnected() || !protocol->xmppClient())
-	{
+	m_requestId = m_vcardManager->requestVCard(id);
+	if (m_requestId.isEmpty())
 		failed();
+
+	connect(m_vcardManager, SIGNAL(vCardReceived(QXmppVCardIq)), this, SLOT(vCardReceived(QXmppVCardIq)));
+}
+
+void JabberVCardDownloader::vCardReceived(const QXmppVCardIq &vcard)
+{
+	if (vcard.id() != m_requestId)
 		return;
-	}
 
-	Task = new JT_VCard(XmppClient->rootTask());
-
-	connect(Task.data(), SIGNAL(finished()), this, SLOT(taskFinished()));
-	Task->get(id);
-	Task->go(true);*/
+	done(vcard);
 }
 
 #include "moc_jabber-vcard-downloader.cpp"

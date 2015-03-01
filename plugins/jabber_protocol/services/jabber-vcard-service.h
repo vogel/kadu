@@ -18,15 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_VCARD_SERVICE_H
-#define JABBER_VCARD_SERVICE_H
-
-#include "accounts/account.h"
+#pragma once
 
 #include <QtCore/QPointer>
 
+#include "accounts/account.h"
+
 class JabberVCardDownloader;
 class JabberVCardUploader;
+
+class QXmppVCardManager;
 
 /**
  * @addtogroup Jabber
@@ -48,15 +49,13 @@ class JabberVCardService : public QObject
 {
 	Q_OBJECT
 
-	Account MyAccount;
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of JabberVCardService.
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardService(Account account, QObject *parent = 0);
+	explicit JabberVCardService(QXmppVCardManager *vcardManager, Account account, QObject *parent = 0);
 	virtual ~JabberVCardService();
 
 	/**
@@ -85,10 +84,12 @@ public:
 	 */
 	JabberVCardUploader * createVCardUploader();
 
+private:
+	QPointer<QXmppVCardManager> m_vcardManager;
+	Account m_account;
+
 };
 
 /**
  * @}
  */
-
-#endif // JABBER_VCARD_SERVICE_H

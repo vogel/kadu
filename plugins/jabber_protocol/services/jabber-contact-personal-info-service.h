@@ -23,7 +23,11 @@
 
 #include "protocols/services/contact-personal-info-service.h"
 
+#include <QtCore/QPointer>
+
 class JabberVCardService;
+
+class QXmppVCardIq;
 
 class JabberContactPersonalInfoService : public ContactPersonalInfoService
 {
@@ -33,7 +37,7 @@ class JabberContactPersonalInfoService : public ContactPersonalInfoService
 	Buddy CurrentBuddy;
 
 private slots:
-	// void vCardDownloaded(bool ok, VCard vCard);
+	void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
 	explicit JabberContactPersonalInfoService(Account account, QObject *parent = 0);

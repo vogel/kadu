@@ -27,6 +27,8 @@
 
 class JabberVCardService;
 
+class QXmppVCardIq;
+
 class JabberPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
@@ -35,7 +37,7 @@ class JabberPersonalInfoService : public PersonalInfoService
 	Buddy CurrentBuddy;
 
 private slots:
-	// virtual void vCardDownloaded(bool ok, VCard vCard);
+	virtual void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
 	explicit JabberPersonalInfoService(Account account, QObject *parent = 0);

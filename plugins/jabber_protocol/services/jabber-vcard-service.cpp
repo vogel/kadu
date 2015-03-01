@@ -23,8 +23,12 @@
 
 #include "jabber-vcard-service.h"
 
-JabberVCardService::JabberVCardService(Account account, QObject *parent) :
-		QObject(parent), MyAccount(account)
+#include <qxmpp/QXmppVCardManager.h>
+
+JabberVCardService::JabberVCardService(QXmppVCardManager *vcardManager, Account account, QObject *parent) :
+		QObject{parent},
+		m_vcardManager{vcardManager},
+		m_account{account}
 {
 }
 
@@ -33,12 +37,8 @@ JabberVCardService::~JabberVCardService()
 }
 
 JabberVCardDownloader * JabberVCardService::createVCardDownloader()
-{/*
-	if (!XmppClient)
-		return 0;
-
-	return new JabberVCardDownloader(MyAccount, XmppClient.data(), this);*/
-	return nullptr;
+{
+	return new JabberVCardDownloader(m_vcardManager, m_account, this);
 }
 
 JabberVCardUploader * JabberVCardService::createVCardUploader()

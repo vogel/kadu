@@ -26,6 +26,8 @@
 
 #include "jabber-personal-info-service.h"
 
+#include <qxmpp/QXmppVCardIq.h>
+
 JabberPersonalInfoService::JabberPersonalInfoService(Account account, QObject *parent) :
 		PersonalInfoService(account, parent)
 {
@@ -50,31 +52,31 @@ void JabberPersonalInfoService::fetchPersonalInfo(const QString &id)
 	if (!vCardDownloader)
 		return;
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,VCard)), this, SLOT(vCardDownloaded(bool,VCard)));
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,QXmppVCardIq)), this, SLOT(vCardDownloaded(bool,QXmppVCardIq)));
 	vCardDownloader->downloadVCard(id);
 }
-/*
-void JabberPersonalInfoService::vCardDownloaded(bool ok, VCard vCard)
+
+void JabberPersonalInfoService::vCardDownloaded(bool ok, const QXmppVCardIq &vCard)
 {
 	if (!ok)
 		return;
 
 	CurrentBuddy.setNickName(vCard.nickName());
 	CurrentBuddy.setFirstName(vCard.fullName());
-	CurrentBuddy.setFamilyName(vCard.familyName());
-	QDate bday = QDate::fromString(vCard.bdayStr(), "yyyy-MM-dd");
+	CurrentBuddy.setFamilyName(vCard.middleName());
+	QDate bday = vCard.birthday();
 	if (bday.isValid() && !bday.isNull())
 		CurrentBuddy.setBirthYear(bday.year());
 
-	if (!vCard.addressList().isEmpty())
-		CurrentBuddy.setCity(vCard.addressList().at(0).locality);
-	if (!vCard.emailList().isEmpty())
-		CurrentBuddy.setEmail(vCard.emailList().at(0).userid);
+	if (!vCard.addresses().isEmpty())
+		CurrentBuddy.setCity(vCard.addresses().at(0).locality());
+	if (!vCard.emails().isEmpty())
+		CurrentBuddy.setEmail(vCard.emails().at(0).address());
 	CurrentBuddy.setWebsite(vCard.url());
 
 	emit personalInfoAvailable(CurrentBuddy);
 }
-*/
+
 void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 {
 	Q_UNUSED(id);
@@ -85,8 +87,8 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 		return;
 	}
 
-	CurrentBuddy = buddy;
-/*
+	CurrentBuddy = buddy;/*
+
 	Jid jid = Jid(id);
 	VCard vcard;
 	vcard.setFullName(CurrentBuddy.firstName());

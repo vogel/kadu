@@ -21,11 +21,14 @@
 #ifndef JABBER_AVATAR_VCARD_DOWNLOADER_H
 #define JABBER_AVATAR_VCARD_DOWNLOADER_H
 
+#include <QtCore/QPointer>
 #include <QtGui/QPixmap>
 
 #include "protocols/services/avatar-downloader.h"
 
 class JabberVCardService;
+
+class QXmppVCardIq;
 
 /**
  * @addtogroup Jabber
@@ -50,7 +53,7 @@ class JabberAvatarVCardDownloader : public AvatarDownloader
 	void failed();
 
 private slots:
-	// void vCardDownloaded(bool ok, VCard vCard);
+	void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
 	/**

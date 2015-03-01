@@ -18,12 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_VCARD_DOWNLOADER_H
-#define JABBER_VCARD_DOWNLOADER_H
+#pragma once
 
 #include "accounts/account.h"
 
 #include <QtCore/QPointer>
+
+class QXmppVCardIq;
+class QXmppVCardManager;
 
 /**
  * @addtogroup Jabber
@@ -42,15 +44,6 @@ class JabberVCardDownloader : public QObject
 {
 	Q_OBJECT
 
-	Account MyAccount;
-	// QPointer<JT_VCard> Task;
-
-	// void done(VCard vCard);
-	void failed();
-
-private slots:
-	void taskFinished();
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -58,7 +51,7 @@ public:
 	 * @param client instance of Client
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardDownloader(Account account, /*Client *client, */ QObject *parent = 0);
+	explicit JabberVCardDownloader(QXmppVCardManager *vcardManager, Account account, QObject *parent = nullptr);
 	virtual ~JabberVCardDownloader();
 
 	/**
@@ -81,11 +74,21 @@ signals:
 	 *
 	 * If ok is true then VCard downloading was successfull. If ok is false then operation failed.
 	 */
-	// void vCardDownloaded(bool ok, VCard vCard);
+	void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
+
+private:
+	QPointer<QXmppVCardManager> m_vcardManager;
+	Account m_account;
+	QString m_requestId;
+
+	void done(const QXmppVCardIq &vcard);
+	void failed();
+
+private slots:
+	void vCardReceived(const QXmppVCardIq &vcard);
+
 };
 
 /**
  * @}
  */
-
-#endif // JABBER_VCARD_DOWNLOADER_H

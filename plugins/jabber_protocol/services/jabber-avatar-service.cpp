@@ -50,9 +50,9 @@ void JabberAvatarService::setVCardService(JabberVCardService *vCardService)
 }
 
 AvatarDownloader * JabberAvatarService::createAvatarDownloader()
-{/*
+{
 	auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
-	if (!protocol->isConnected() || !protocol->xmppClient())
+	if (!protocol->isConnected())
 		return 0;
 	if (!PepService.data() && !VCardService.data())
 		return 0;
@@ -60,8 +60,7 @@ AvatarDownloader * JabberAvatarService::createAvatarDownloader()
 		return new JabberAvatarPepDownloader(PepService.data(), this);
 	if (!PepService.data() && VCardService.data())
 		return new JabberAvatarVCardDownloader(VCardService.data(), this);
-	return new JabberAvatarDownloader(PepService.data(), VCardService.data(), this);*/
-	return nullptr;
+	return new JabberAvatarDownloader(PepService.data(), VCardService.data(), this);
 }
 
 AvatarUploader * JabberAvatarService::createAvatarUploader()

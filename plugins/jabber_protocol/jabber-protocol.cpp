@@ -22,10 +22,11 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCrypto/QtCrypto>
-#include <QNetworkProxy>
-
+#include <QtNetwork/QNetworkProxy>
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppMucManager.h>
+#include <qxmpp/QXmppRosterManager.h>
+#include <qxmpp/QXmppVCardManager.h>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
@@ -64,7 +65,6 @@
 #include "jid.h"
 
 #include "jabber-protocol.h"
-#include <../../../qxmpp/git/qxmpp/src/client/QXmppRosterManager.h>
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
@@ -86,7 +86,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 	m_client->addExtension(m_mucManager.get());
 
-	m_jabberResourceService = new JabberResourceService{this};
+	m_resourceService = new JabberResourceService{this};
 
 	m_roomChatService = new JabberRoomChatService{m_client, m_mucManager.get(), account, this};
 	m_roomChatService->setBuddyManager(BuddyManager::instance());
@@ -95,14 +95,14 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	m_roomChatService->initialize();
 
 	auto chatStateService = new JabberChatStateService(m_client, account, this);
-	chatStateService->setResourceService(m_jabberResourceService);
+	chatStateService->setResourceService(m_resourceService);
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
 	JabberChatService *chatService = new JabberChatService(m_client, account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	chatService->setChatStateService(chatStateService);
-	chatService->setResourceService(m_jabberResourceService);
+	chatService->setResourceService(m_resourceService);
 	chatService->setRoomChatService(m_roomChatService);
 
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
@@ -115,16 +115,15 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentPepService = new JabberPepService(this);
 
-	CurrentAvatarService->setPepService(CurrentPepService);
+	// CurrentAvatarService->setPepService(CurrentPepService);
 
 	CurrentStreamDebugService = new JabberStreamDebugService(this);
 
-	CurrentVCardService = new JabberVCardService(account, this);
-	// CurrentVCardService->setXmppClient(XmppClient);
+	m_vcardService = new JabberVCardService(&m_client->vCardManager(), account, this);
 
-	CurrentAvatarService->setVCardService(CurrentVCardService);
-	CurrentContactPersonalInfoService->setVCardService(CurrentVCardService);
-	CurrentPersonalInfoService->setVCardService(CurrentVCardService);
+	CurrentAvatarService->setVCardService(m_vcardService);
+	CurrentContactPersonalInfoService->setVCardService(m_vcardService);
+	CurrentPersonalInfoService->setVCardService(m_vcardService);
 
 	QStringList features;
 	features
@@ -314,7 +313,7 @@ void JabberProtocol::logout()
 
 void JabberProtocol::disconenctedFromServer()
 {
-	m_jabberResourceService->clear();
+	m_resourceService->clear();
 }
 
 void JabberProtocol::error(QXmppClient::Error error)
@@ -384,16 +383,16 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 	if (status.type() != StatusTypeOffline)
 	{
 		auto jabberResource = JabberResource{jid, presence.priority(), status};
-		m_jabberResourceService->updateResource(jabberResource);
+		m_resourceService->updateResource(jabberResource);
 	}
 	else
 	{
 		if (contact.property("jabber:chat-resource", QString{}).toString() == jid.resource())
 			contact.removeProperty("jabber:chat-resource");
-		m_jabberResourceService->removeResource(jid);
+		m_resourceService->removeResource(jid);
 	}
 
-	auto bestResource = m_jabberResourceService->bestResource(id);
+	auto bestResource = m_resourceService->bestResource(id);
 	auto statusToSet = bestResource.isEmpty()
 			? status
 			: bestResource.status();

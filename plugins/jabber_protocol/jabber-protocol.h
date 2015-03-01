@@ -62,8 +62,8 @@ class JabberProtocol : public Protocol
 	JabberPresenceService *m_presenceService;
 	JabberRoomChatService *m_roomChatService;
 	JabberStreamDebugService *CurrentStreamDebugService;
-	JabberVCardService *CurrentVCardService;
-	JabberResourceService *m_jabberResourceService;
+	JabberVCardService *m_vcardService;
+	JabberResourceService *m_resourceService;
 
 	QXmppClient *m_client;
 	std::unique_ptr<QXmppMucManager> m_mucManager;
