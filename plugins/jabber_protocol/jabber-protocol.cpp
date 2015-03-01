@@ -28,6 +28,7 @@
 #include <qxmpp/QXmppRosterManager.h>
 #include <qxmpp/QXmppVCardManager.h>
 
+#include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "chat/chat-manager.h"
@@ -97,7 +98,10 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	auto chatStateService = new JabberChatStateService(m_client, account, this);
 	chatStateService->setResourceService(m_resourceService);
 
-	CurrentAvatarService = new JabberAvatarService(account, this);
+	CurrentAvatarService = new JabberAvatarService{m_client, account, this};
+	CurrentAvatarService->setAvatarManager(AvatarManager::instance());
+	CurrentAvatarService->setContactManager(ContactManager::instance());
+
 	JabberChatService *chatService = new JabberChatService(m_client, account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
@@ -289,7 +293,7 @@ void JabberProtocol::login()
 		configuration.setPort(details->customPort());
 	}
 
-	m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
+	//m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
 	m_client->connectToServer(configuration);
 

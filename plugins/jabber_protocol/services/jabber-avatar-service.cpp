@@ -27,16 +27,36 @@
 #include "services/jabber-pep-service.h"
 #include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
+#include "jid.h"
+
+#include "avatars/avatar-manager.h"
+#include "contacts/contact-manager.h"
 
 #include "jabber-avatar-service.h"
 
-JabberAvatarService::JabberAvatarService(Account account, QObject *parent) :
-		AvatarService(account, parent)
+#include <qxmpp/QXmppClient.h>
+#include <qxmpp/QXmppRosterManager.h>
+
+JabberAvatarService::JabberAvatarService(QXmppClient *client, Account account, QObject *parent) :
+		AvatarService{account, parent},
+		m_client{client}
 {
+	connect(&m_client->rosterManager(), SIGNAL(rosterReceived()), this, SLOT(rosterReceived()));
+	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 }
 
 JabberAvatarService::~JabberAvatarService()
 {
+}
+
+void JabberAvatarService::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void JabberAvatarService::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
 }
 
 void JabberAvatarService::setPepService(JabberPepService *pepService)
@@ -75,6 +95,33 @@ AvatarUploader * JabberAvatarService::createAvatarUploader()
 	if (!PepService.data() && VCardService.data())
 		return new JabberAvatarVCardUploader(VCardService.data(), this);
 	return new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
+}
+
+void JabberAvatarService::rosterReceived()
+{
+	for (auto &&bareId : m_client->rosterManager().getRosterBareJids())
+		for (auto &&presence : m_client->rosterManager().getAllPresencesForBareJid(bareId))
+			presenceReceived(presence);
+}
+
+void JabberAvatarService::presenceReceived(const QXmppPresence &presence)
+{
+	auto jid = Jid::parse(presence.from());
+	auto contact = m_contactManager->byId(account(), jid.bare(), ActionReturnNull);
+	if (!contact)
+		return;
+
+	switch (presence.vCardUpdateType())
+	{
+		case QXmppPresence::VCardUpdateNoPhoto:
+			m_avatarManager->removeAvatar(contact);
+			break;
+		case QXmppPresence::VCardUpdateValidPhoto:
+			m_avatarManager->updateAvatar(contact, true);
+			break;
+		default:
+			break;
+	}
 }
 
 #include "moc_jabber-avatar-service.cpp"

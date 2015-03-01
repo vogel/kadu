@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_SERVICE_H
-#define JABBER_AVATAR_SERVICE_H
+#pragma once
 
 #include <QtCore/QPointer>
 
@@ -27,6 +26,12 @@
 
 class JabberPepService;
 class JabberVCardService;
+
+class AvatarManager;
+class ContactManager;
+
+class QXmppClient;
+class QXmppPresence;
 
 /**
  * @addtogroup Jabber
@@ -55,9 +60,6 @@ class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
 
-	QPointer<JabberPepService> PepService;
-	QPointer<JabberVCardService> VCardService;
-
 public:
 	/**
 	 * @short Create service instance.
@@ -65,8 +67,11 @@ public:
 	 * @param account account of service
 	 * @param parent QObject parent of service
 	 */
-	explicit JabberAvatarService(Account account, QObject *parent = 0);
+	explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = 0);
 	virtual ~JabberAvatarService();
+
+	void setAvatarManager(AvatarManager *avatarManager);
+	void setContactManager(ContactManager *contactManager);
 
 	/**
 	 * @short Set PEP service object to use in this service.
@@ -84,12 +89,22 @@ public:
 
 	virtual AvatarDownloader * createAvatarDownloader() override;
 	virtual AvatarUploader * createAvatarUploader() override;
-	virtual bool eventBasedUpdates() override { return false; }
+	virtual bool eventBasedUpdates() override { return true; }
+
+private:
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<ContactManager> m_contactManager;
+
+	QPointer<QXmppClient> m_client;
+	QPointer<JabberPepService> PepService;
+	QPointer<JabberVCardService> VCardService;
+
+private slots:
+    void rosterReceived();
+	void presenceReceived(const QXmppPresence &presence);
 
 };
 
 /**
  * @}
  */
-
-#endif // JABBER_AVATAR_SERVICE_H
