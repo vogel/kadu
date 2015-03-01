@@ -71,7 +71,7 @@ void JabberRoomChatService::setPresenceService(JabberPresenceService *presenceSe
 void JabberRoomChatService::initialize()
 {
 	for (auto &&chat : m_chatManager->chats(account()))
-		if (myRoomChatDetails(chat))
+		if (chat.isOpen() && myRoomChatDetails(chat))
 			getOrCreateRoomChat(chat);
 }
 
@@ -103,6 +103,9 @@ JabberRoomChat * JabberRoomChatService::getRoomChat(const QString &id) const
 
 JabberRoomChat * JabberRoomChatService::getRoomChat(const Chat &chat) const
 {
+	if (chat.chatAccount() != account())
+		return nullptr;
+
 	if (m_chats.contains(chat))
 		return m_chats[chat];
 	else
@@ -111,6 +114,9 @@ JabberRoomChat * JabberRoomChatService::getRoomChat(const Chat &chat) const
 
 JabberRoomChat * JabberRoomChatService::getOrCreateRoomChat(const Chat &chat)
 {
+	if (chat.chatAccount() != account())
+		return nullptr;
+
 	if (m_chats.contains(chat))
 		return m_chats[chat];
 
@@ -124,18 +130,8 @@ JabberRoomChat * JabberRoomChatService::getOrCreateRoomChat(const Chat &chat)
 	roomChat->setContactManager(m_contactManager);
 	roomChat->setPresenceService(m_presenceService);
 
-	connect(roomChat, SIGNAL(left(Chat)), this, SLOT(removeGroupChat(Chat)));
-
+	m_chats[chat] = roomChat;
 	return roomChat;
-}
-
-void JabberRoomChatService::removeGroupChat(const Chat& chat)
-{
-	if (m_chats.contains(chat))
-	{
-		m_chats[chat]->deleteLater();
-		m_chats.remove(chat);
-	}
 }
 
 void JabberRoomChatService::chatOpened(const Chat &chat)
@@ -155,7 +151,7 @@ void JabberRoomChatService::chatClosed(const Chat &chat)
 		return;
 
 	if (!roomChat->stayInRoomAfterClosingWindow())
-		roomChat->leave();
+		leaveChat(chat);
 }
 
 void JabberRoomChatService::leaveChat(const Chat &chat)
@@ -165,6 +161,8 @@ void JabberRoomChatService::leaveChat(const Chat &chat)
 		return;
 
 	roomChat->leave();
+	m_chats[chat]->deleteLater();
+	m_chats.remove(chat);
 }
 
 bool JabberRoomChatService::isRoomChat(const Chat &chat) const

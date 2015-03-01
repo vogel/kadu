@@ -64,8 +64,6 @@ private slots:
 	void chatOpened(const Chat &chat);
 	void chatClosed(const Chat &chat);
 
-    void removeGroupChat(const Chat &chat);
-
 private:
 	QPointer<QXmppClient> m_client;
 	QPointer<QXmppMucManager> m_muc;
