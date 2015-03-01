@@ -5,6 +5,7 @@ set (chat_SRCS
 	chat-details-contact.cpp
 	chat-details-contact-set.cpp
 	chat-details-room.cpp
+	chat-details.cpp
 	chat-list-mime-data-helper.cpp
 	chat-manager.cpp
 	chat-shared.cpp

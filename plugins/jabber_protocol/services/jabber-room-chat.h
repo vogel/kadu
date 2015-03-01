@@ -64,6 +64,7 @@ private:
 	Chat m_chat;
 
 private slots:
+	void updated();
 	void joined();
 	void left();
 	void participantChanged(const QString &id);

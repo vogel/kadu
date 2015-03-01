@@ -36,7 +36,8 @@ JabberRoomChat::JabberRoomChat(QXmppMucRoom *room, Chat chat, QObject *parent) :
 	Q_ASSERT(nullptr != dynamic_cast<ChatDetailsRoom *>(m_chat.details()));
 
 	auto details = static_cast<ChatDetailsRoom *>(m_chat.details());
-	m_room->setNickName(details->nick());
+	connect(details, SIGNAL(updated()), this, SLOT(updated()));
+	updated();
 
 	connect(m_room, SIGNAL(joined()), this, SLOT(joined()));
 	connect(m_room, SIGNAL(left()), this, SLOT(left()));
@@ -70,6 +71,13 @@ bool JabberRoomChat::stayInRoomAfterClosingWindow() const
 {
 	auto details = static_cast<ChatDetailsRoom *>(m_chat.details());
 	return details->stayInRoomAfterClosingWindow();
+}
+
+void JabberRoomChat::updated()
+{
+	auto details = static_cast<ChatDetailsRoom *>(m_chat.details());
+	m_room->setNickName(details->nick());
+	m_room->setPassword(details->password());
 }
 
 void JabberRoomChat::join()
