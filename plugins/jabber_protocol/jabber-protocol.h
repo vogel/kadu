@@ -38,7 +38,9 @@
 class JabberClientInfoService;
 class JabberContactDetails;
 class JabberPepService;
+class JabberPresenceService;
 class JabberResourceService;
+class JabberRoomChatService;
 class JabberServerInfoService;
 class JabberStreamDebugService;
 
@@ -57,6 +59,8 @@ class JabberProtocol : public Protocol
 	JabberClientInfoService *CurrentClientInfoService;
 	JabberServerInfoService *CurrentServerInfoService;
 	JabberPepService *CurrentPepService;
+	JabberPresenceService *m_presenceService;
+	JabberRoomChatService *m_roomChatService;
 	JabberStreamDebugService *CurrentStreamDebugService;
 	JabberVCardService *CurrentVCardService;
 	JabberResourceService *m_jabberResourceService;

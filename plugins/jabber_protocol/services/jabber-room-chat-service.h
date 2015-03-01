@@ -19,57 +19,66 @@
 
 #pragma once
 
-#include "message/message.h"
 #include "protocols/services/account-service.h"
-#include <qxmpp/QXmppStanza.h>
 
 #include <QtCore/QPointer>
+
+class JabberPresenceService;
+class JabberRoomChat;
 
 class BuddyManager;
 class Chat;
 class ChatDetailsRoom;
 class ChatManager;
 class ContactManager;
+class Message;
 
+class QXmppClient;
 class QXmppMessage;
 class QXmppMucManager;
-class QXmppMucRoom;
 
 class JabberRoomChatService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit JabberRoomChatService(QXmppMucManager *muc, Account account, QObject *parent = nullptr);
+	explicit JabberRoomChatService(QXmppClient *client, QXmppMucManager *muc, Account account, QObject *parent = nullptr);
 	virtual ~JabberRoomChatService();
 
 	void setBuddyManager(BuddyManager *buddyManager);
 	void setChatManager(ChatManager *chatManager);
 	void setContactManager(ContactManager *contactManager);
+	void setPresenceService(JabberPresenceService *presenceService);
+	void initialize();
 
 	bool shouldHandleReceivedMessage(const QXmppMessage &xmppMessage) const;
 	Message handleReceivedMessage(const QXmppMessage &xmppMessage) const;
 
+	void joinOpenedRoomChats();
 	bool isRoomChat(const Chat &chat) const;
 	void leaveChat(const Chat &chat);
 
 private slots:
+	void connected();
+
 	void chatOpened(const Chat &chat);
 	void chatClosed(const Chat &chat);
 
-    void groupChatJoined();
-    void groupChatLeft();
-    void participantChanged(const QString &id);
+    void removeGroupChat(const Chat &chat);
 
 private:
+	QPointer<QXmppClient> m_client;
 	QPointer<QXmppMucManager> m_muc;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<JabberPresenceService> m_presenceService;
 
-	QMap<QString, Chat> m_openedRoomChats;
- 	QMap<QString, Chat> m_closedRoomChats;
+	QMap<Chat, JabberRoomChat *> m_chats;
 
+	JabberRoomChat * getRoomChat(const QString &id) const;
+	JabberRoomChat * getRoomChat(const Chat &chat) const;
+	JabberRoomChat * getOrCreateRoomChat(const Chat &chat);
 	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
 
 };

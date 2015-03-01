@@ -47,6 +47,7 @@
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
 #include "services/jabber-pep-service.h"
+#include "services/jabber-presence-service.h"
 #include "services/jabber-resource-service.h"
 #include "services/jabber-room-chat-service.h"
 #include "services/jabber-roster-service.h"
@@ -73,6 +74,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
+	m_presenceService = new JabberPresenceService{this};
+
 	m_mucManager = make_unique<QXmppMucManager>();
 
 	m_client = new QXmppClient{this};
@@ -84,10 +87,11 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	m_jabberResourceService = new JabberResourceService{this};
 
-	auto roomChatService = new JabberRoomChatService{m_mucManager.get(), account, this};
-	roomChatService->setBuddyManager(BuddyManager::instance());
-	roomChatService->setChatManager(ChatManager::instance());
-	roomChatService->setContactManager(ContactManager::instance());
+	m_roomChatService = new JabberRoomChatService{m_client, m_mucManager.get(), account, this};
+	m_roomChatService->setBuddyManager(BuddyManager::instance());
+	m_roomChatService->setChatManager(ChatManager::instance());
+	m_roomChatService->setContactManager(ContactManager::instance());
+	m_roomChatService->initialize();
 
 	auto chatStateService = new JabberChatStateService(m_client, account, this);
 	chatStateService->setResourceService(m_jabberResourceService);
@@ -98,7 +102,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	chatService->setChatStateService(chatStateService);
 	chatService->setResourceService(m_jabberResourceService);
-	chatService->setRoomChatService(roomChatService);
+	chatService->setRoomChatService(m_roomChatService);
 
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
@@ -305,6 +309,7 @@ void JabberProtocol::afterLoggedIn()
 {
 	// static_cast<JabberRosterService *>(rosterService())->prepareRoster(); TODO
 	sendStatusToServer();
+	// m_roomChatService->joinOpenedRoomChats();
 }
 
 void JabberProtocol::logout()
@@ -355,36 +360,7 @@ void JabberProtocol::sendStatusToServer()
 	if (!isConnected() && !isDisconnecting())
 		return;
 
-	auto presence = QXmppPresence{};
-	presence.setType(QXmppPresence::Available);
-	presence.setStatusText(status().description());
-
-	switch (status().type())
-	{
-		case StatusTypeFreeForChat:
-			presence.setAvailableStatusType(QXmppPresence::Chat);
-			break;
-		case StatusTypeOnline:
-			presence.setAvailableStatusType(QXmppPresence::Online);
-			break;
-		case StatusTypeAway:
-			presence.setAvailableStatusType(QXmppPresence::Away);
-			break;
-		case StatusTypeNotAvailable:
-			presence.setAvailableStatusType(QXmppPresence::XA);
-			break;
-		case StatusTypeDoNotDisturb:
-			presence.setAvailableStatusType(QXmppPresence::DND);
-			break;
-		case StatusTypeInvisible:
-			presence.setAvailableStatusType(QXmppPresence::DND);
-			break;
-		case StatusTypeOffline:
-		default:
-			presence.setType(QXmppPresence::Unavailable);
-			break;
-	}
-
+	auto presence = m_presenceService->statusToPresence(status());
 //	CurrentClientInfoService->fillStatusCapsData(xmppStatus); TODO fix
 
 	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
@@ -392,7 +368,6 @@ void JabberProtocol::sendStatusToServer()
 		presence.setPriority(details->priority());
 
 	m_client->setClientPresence(presence);
-
 	account().accountContact().setCurrentStatus(status());
 }
 
@@ -412,37 +387,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 	if (!contact)
 		return;
 
-	auto status = Status{};
-	if (presence.type() == QXmppPresence::Available)
-	{
-		switch (presence.availableStatusType())
-		{
-			case QXmppPresence::AvailableStatusType::Online:
-				status.setType(StatusTypeOnline);
-				break;
-			case QXmppPresence::AvailableStatusType::Away:
-				status.setType(StatusTypeAway);
-				break;
-			case QXmppPresence::AvailableStatusType::XA:
-				status.setType(StatusTypeNotAvailable);
-				break;
-			case QXmppPresence::AvailableStatusType::DND:
-				status.setType(StatusTypeDoNotDisturb);
-				break;
-			case QXmppPresence::AvailableStatusType::Chat:
-				status.setType(StatusTypeFreeForChat);
-				break;
-			case QXmppPresence::AvailableStatusType::Invisible:
-				status.setType(StatusTypeDoNotDisturb);
-				break;
-		}
-	}
-	else if (presence.type() == QXmppPresence::Unavailable)
-		status.setType(StatusTypeOffline);
-	else
-		return;
-
-	status.setDescription(presence.statusText());
+	auto status = m_presenceService->presenceToStatus(presence);
 	if (status.type() != StatusTypeOffline)
 	{
 		auto jabberResource = JabberResource{jid, presence.priority(), status};
