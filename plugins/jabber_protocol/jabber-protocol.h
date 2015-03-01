@@ -55,7 +55,7 @@ class JabberProtocol : public Protocol
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
 	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
-	JabberSubscriptionService *CurrentSubscriptionService;
+	JabberSubscriptionService *m_subscriptionService;
 	JabberClientInfoService *CurrentClientInfoService;
 	JabberServerInfoService *CurrentServerInfoService;
 	JabberPepService *CurrentPepService;
@@ -77,7 +77,7 @@ private slots:
 	void disconenctedFromServer();
 	void error(QXmppClient::Error error);
 
-	void rosterReady(bool success);
+	void rosterReady();
 
 	void presenceReceived(const QXmppPresence &presence);
 
@@ -87,12 +87,11 @@ private slots:
 	void serverInfoUpdated();
 
 protected:
-	virtual void login();
-	virtual void afterLoggedIn();
-	virtual void logout();
-	virtual void sendStatusToServer();
+	virtual void login() override;
+	virtual void logout() override;
+	virtual void sendStatusToServer() override;
 
-	virtual void changePrivateMode();
+	virtual void changePrivateMode() override;
 
 public:
 	JabberProtocol(Account account, ProtocolFactory *factory);
@@ -107,7 +106,7 @@ public:
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
-	virtual SubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
+	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
 	// virtual JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
 	// virtual JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
 	// virtual JabberPepService * pepService() { return CurrentPepService; }

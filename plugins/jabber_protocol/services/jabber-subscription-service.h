@@ -18,36 +18,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_SUBSCRIPTION_SERVICE_H
-#define JABBER_SUBSCRIPTION_SERVICE_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "protocols/services/subscription-service.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+
 class JabberProtocol;
+
+class ContactManager;
+
+class QXmppRosterManager;
 
 class JabberSubscriptionService : public SubscriptionService
 {
 	Q_OBJECT
 
-	JabberProtocol *Protocol;
-
-private slots:
-	// void subscription(const Jid &jid, const QString &type, const QString &nick);
-
 public:
-	explicit JabberSubscriptionService(JabberProtocol *protocol);
+	explicit JabberSubscriptionService(QXmppRosterManager *roster, JabberProtocol *protocol);
+	virtual ~JabberSubscriptionService();
+
+	void setContactManager(ContactManager *contactManager);
 
 	virtual void resendSubscription(const Contact &contact);
 	virtual void removeSubscription(const Contact &contact);
 	virtual void requestSubscription(const Contact &contact);
 
-	void sendSubsription(const Contact &contact, const QString &subscription);
-
 public slots:
 	virtual void authorizeContact(Contact contact, bool authorized);
 
-};
+private:
+	QPointer<QXmppRosterManager> m_roster;
+	JabberProtocol *m_protocol;
 
-#endif // JABBER_SUBSCRIPTION_SERVICE_H
+	QPointer<ContactManager> m_contactManager;
+
+private slots:
+	void subscriptionReceived(const QString &bareJid);
+
+};

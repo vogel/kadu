@@ -64,6 +64,7 @@
 #include "jid.h"
 
 #include "jabber-protocol.h"
+#include <../../../qxmpp/git/qxmpp/src/client/QXmppRosterManager.h>
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
@@ -144,20 +145,20 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
-	JabberRosterService *rosterService = new JabberRosterService(this, contacts, this);
+	auto rosterService = new JabberRosterService{&m_client->rosterManager(), contacts, this};
 
 	// chatService->setXmppClient(XmppClient);
 	// chatStateService->setClient(XmppClient);
 	// rosterService->setClient(XmppClient);
 
-	connect(rosterService, SIGNAL(rosterReady(bool)),
-			this, SLOT(rosterReady(bool)));
+	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
 	setChatService(chatService);
 	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
-	CurrentSubscriptionService = new JabberSubscriptionService(this);
+	m_subscriptionService = new JabberSubscriptionService{&m_client->rosterManager(), this};
+	m_subscriptionService->setContactManager(ContactManager::instance());
 
 	kdebugf2();
 }
@@ -177,10 +178,8 @@ void JabberProtocol::serverInfoUpdated()
 	CurrentPepService->setEnabled(CurrentServerInfoService->supportsPep());
 }
 
-void JabberProtocol::rosterReady(bool success)
+void JabberProtocol::rosterReady()
 {
-	Q_UNUSED(success)
-
 	/* Since we are online now, set initial presence. Don't do this
 	* before the roster request or we will receive presence
 	* information before we have updated our roster with actual
@@ -291,7 +290,8 @@ void JabberProtocol::login()
 		configuration.setPort(details->customPort());
 	}
 
-	//m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
+	// m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
+	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
 	m_client->connectToServer(configuration);
 
 	kdebugf2();
@@ -303,13 +303,6 @@ void JabberProtocol::login()
 void JabberProtocol::connectedToServer()
 {
 	loggedIn();
-}
-
-void JabberProtocol::afterLoggedIn()
-{
-	// static_cast<JabberRosterService *>(rosterService())->prepareRoster(); TODO
-	sendStatusToServer();
-	// m_roomChatService->joinOpenedRoomChats();
 }
 
 void JabberProtocol::logout()

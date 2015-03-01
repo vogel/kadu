@@ -91,27 +91,9 @@ ChangeNotifier & RosterEntry::hasLocalChangesNotifier()
 	return m_hasLocalChangesNotifier;
 }
 
-bool RosterEntry::isSynchronizing() const
-{
-	if (m_state == RosterEntryState::SynchronizingFromRemote)
-		return true;
-	if (m_state == RosterEntryState::SynchronizingToRemote)
-		return true;
-	return false;
-}
-
 bool RosterEntry::requiresSynchronization() const
 {
 	if (m_state == RosterEntryState::HasLocalChanges)
-		return true;
-	return false;
-}
-
-bool RosterEntry::canAcceptRemoteUpdate() const
-{
-	if (m_state == RosterEntryState::Synchronized)
-		return true;
-	if (m_state == RosterEntryState::Unknown)
 		return true;
 	return false;
 }

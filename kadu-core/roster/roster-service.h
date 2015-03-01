@@ -60,7 +60,7 @@ public:
 	 * @param protocol to bound this service to
 	 * @param contacts initial list of account contacts that should be stored in Roster
 	 */
-	explicit RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = nullptr);
+	explicit RosterService(const QVector<Contact> &contacts, Protocol *protocol);
 	virtual ~RosterService();
 
 	/**

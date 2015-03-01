@@ -126,7 +126,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentUserDataService->setContactManager(ContactManager::instance());
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
-	auto rosterService = new GaduRosterService(this, contacts, this);
+	auto rosterService = new GaduRosterService{contacts, this};
 	rosterService->setConnection(Connection);
 	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
 	rosterService->setRosterReplacer(Core::instance()->rosterReplacer());

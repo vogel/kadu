@@ -56,6 +56,14 @@ void JabberResourceService::removeResource(const Jid& jid)
 		m_resources.erase(it);
 }
 
+void JabberResourceService::removeResources(const QString& bareJid)
+{
+	auto it = std::begin(m_resources);
+	while (it != std::end(m_resources))
+		if (it->jid().bare() == bareJid)
+			it = m_resources.erase(it);
+}
+
 void JabberResourceService::clear()
 {
 	m_resources.clear();

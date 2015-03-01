@@ -186,6 +186,7 @@ if (WIN32)
 	set (LIBRARIES ${LIBRARIES} advapi32 ws2_32)
 endif ()
 
+include_directories (${QXMPP_INCLUDE_DIRS})
 link_directories (${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${QXMPP_LIBRARY_DIRS})
 
 set (CONFIGURATION_FILES

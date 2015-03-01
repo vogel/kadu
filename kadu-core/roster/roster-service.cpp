@@ -24,8 +24,8 @@
 #include "roster/roster-entry.h"
 #include "roster/roster-task-type.h"
 
-RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
-		ProtocolService{protocol, parent},
+RosterService::RosterService(const QVector<Contact> &contacts, Protocol *protocol) :
+		ProtocolService{protocol, protocol},
 		m_contacts{std::move(contacts)}
 {
 	for (auto &&contact : m_contacts)

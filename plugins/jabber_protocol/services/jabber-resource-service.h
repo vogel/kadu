@@ -39,6 +39,7 @@ public:
 
 	void updateResource(JabberResource resource);
 	void removeResource(const Jid &jid);
+	void removeResources(const QString &bareJid);
 	void clear();
 
 	JabberResource bestResource(const QString &bareJid) const;
