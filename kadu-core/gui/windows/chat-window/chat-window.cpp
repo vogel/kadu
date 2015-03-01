@@ -54,6 +54,7 @@ ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget 
 	setWindowRole("kadu-chat");
 
 	m_chatWidget = chatWidgetFactory->createChatWidget(chat, this).release();
+	connect(m_chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(close()));
 
 	if (m_chatWidget && m_chatWidget->chat().details() && m_chatWidget->chat().details()->type())
 		setWindowRole(m_chatWidget->chat().details()->type()->windowRole());
