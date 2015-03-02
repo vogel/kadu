@@ -71,11 +71,7 @@ set (SOURCES
 	open-chat-with/jabber-open-chat-with-runner.cpp
 
 	server/jabber-avatar-downloader.cpp
-	server/jabber-avatar-pep-downloader.cpp
-	server/jabber-avatar-pep-uploader.cpp
 	server/jabber-avatar-uploader.cpp
-	server/jabber-avatar-vcard-downloader.cpp
-	server/jabber-avatar-vcard-uploader.cpp
 	server/jabber-server-change-password.cpp
 	server/jabber-server-register-account.cpp
 
@@ -85,7 +81,6 @@ set (SOURCES
 	services/jabber-client-info-service.cpp
 	services/jabber-contact-personal-info-service.cpp
 	services/jabber-file-transfer-service.cpp
-	services/jabber-pep-service.cpp
 	services/jabber-personal-info-service.cpp
 	services/jabber-presence-service.cpp
 	services/jabber-resource.cpp
@@ -93,16 +88,11 @@ set (SOURCES
 	services/jabber-room-chat-service.cpp
 	services/jabber-room-chat.cpp
 	services/jabber-roster-service.cpp
-	services/jabber-server-info-service.cpp
 	services/jabber-stream-debug-service.cpp
 	services/jabber-subscription-service.cpp
 	services/jabber-vcard-downloader.cpp
 	services/jabber-vcard-service.cpp
 	services/jabber-vcard-uploader.cpp
-
-	tasks/pep-get-task.cpp
-	tasks/pep-publish-task.cpp
-	tasks/pep-retract-task.cpp
 
 	jabber-account-details.cpp
 	jabber-contact-details.cpp
@@ -142,11 +132,7 @@ set (MOC_SOURCES
 	gui/windows/xml-console.h
 
 	server/jabber-avatar-downloader.h
-	server/jabber-avatar-pep-downloader.h
-	server/jabber-avatar-pep-uploader.h
 	server/jabber-avatar-uploader.h
-	server/jabber-avatar-vcard-downloader.h
-	server/jabber-avatar-vcard-uploader.h
 	server/jabber-server-change-password.h
 	server/jabber-server-register-account.h
 
@@ -156,19 +142,13 @@ set (MOC_SOURCES
 	services/jabber-client-info-service.h
 	services/jabber-contact-personal-info-service.h
 	services/jabber-file-transfer-service.h
-	services/jabber-pep-service.h
 	services/jabber-personal-info-service.h
 	services/jabber-roster-service.h
-	services/jabber-server-info-service.h
 	services/jabber-stream-debug-service.h
 	services/jabber-subscription-service.h
 	services/jabber-vcard-downloader.h
 	services/jabber-vcard-service.h
 	services/jabber-vcard-uploader.h
-
-	tasks/pep-get-task.h
-	tasks/pep-publish-task.h
-	tasks/pep-retract-task.h
 
 	facebook-protocol-factory.h
 	gtalk-protocol-factory.h

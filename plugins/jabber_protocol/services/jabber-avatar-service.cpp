@@ -19,12 +19,7 @@
  */
 
 #include "server/jabber-avatar-downloader.h"
-#include "server/jabber-avatar-pep-downloader.h"
-#include "server/jabber-avatar-pep-uploader.h"
 #include "server/jabber-avatar-uploader.h"
-#include "server/jabber-avatar-vcard-downloader.h"
-#include "server/jabber-avatar-vcard-uploader.h"
-#include "services/jabber-pep-service.h"
 #include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
 #include "jid.h"
@@ -59,11 +54,6 @@ void JabberAvatarService::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
-void JabberAvatarService::setPepService(JabberPepService *pepService)
-{
-	PepService = pepService;
-}
-
 void JabberAvatarService::setVCardService(JabberVCardService *vCardService)
 {
 	VCardService = vCardService;
@@ -73,28 +63,16 @@ AvatarDownloader * JabberAvatarService::createAvatarDownloader()
 {
 	auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
 	if (!protocol->isConnected())
-		return 0;
-	if (!PepService.data() && !VCardService.data())
-		return 0;
-	if (PepService.data() && !VCardService.data())
-		return new JabberAvatarPepDownloader(PepService.data(), this);
-	if (!PepService.data() && VCardService.data())
-		return new JabberAvatarVCardDownloader(VCardService.data(), this);
-	return new JabberAvatarDownloader(PepService.data(), VCardService.data(), this);
+		return nullptr;
+	return new JabberAvatarDownloader{VCardService.data(), this};
 }
 
 AvatarUploader * JabberAvatarService::createAvatarUploader()
 {
 	auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
 	if (!protocol->isConnected())
-		return 0;
-	if (!PepService.data() && !VCardService.data())
-		return 0;
-	if (PepService.data() && !VCardService.data())
-		return new JabberAvatarPepUploader(PepService.data(), this);
-	if (!PepService.data() && VCardService.data())
-		return new JabberAvatarVCardUploader(VCardService.data(), this);
-	return new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
+		return nullptr;
+	return new JabberAvatarUploader{VCardService.data(), this};
 }
 
 void JabberAvatarService::rosterReceived()

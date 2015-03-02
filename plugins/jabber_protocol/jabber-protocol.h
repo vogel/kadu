@@ -37,11 +37,9 @@
 
 class JabberClientInfoService;
 class JabberContactDetails;
-class JabberPepService;
 class JabberPresenceService;
 class JabberResourceService;
 class JabberRoomChatService;
-class JabberServerInfoService;
 class JabberStreamDebugService;
 
 class QXmppClient;
@@ -57,8 +55,6 @@ class JabberProtocol : public Protocol
 	JabberPersonalInfoService *CurrentPersonalInfoService;
 	JabberSubscriptionService *m_subscriptionService;
 	JabberClientInfoService *CurrentClientInfoService;
-	JabberServerInfoService *CurrentServerInfoService;
-	JabberPepService *CurrentPepService;
 	JabberPresenceService *m_presenceService;
 	JabberRoomChatService *m_roomChatService;
 	JabberStreamDebugService *CurrentStreamDebugService;
@@ -84,8 +80,6 @@ private slots:
 	// void clientAvailableResourceReceived(const Jid &j, const Resource &r);
 	// void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
 
-	void serverInfoUpdated();
-
 protected:
 	virtual void login() override;
 	virtual void logout() override;
@@ -108,10 +102,8 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
 	// virtual JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
-	// virtual JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
-	// virtual JabberPepService * pepService() { return CurrentPepService; }
 	// virtual JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
-	// virtual JabberVCardService * vcardService() { return CurrentVCardService; }
+	virtual JabberVCardService * vcardService() { return m_vcardService; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
 

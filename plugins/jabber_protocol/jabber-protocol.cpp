@@ -48,12 +48,10 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
-#include "services/jabber-pep-service.h"
 #include "services/jabber-presence-service.h"
 #include "services/jabber-resource-service.h"
 #include "services/jabber-room-chat-service.h"
 #include "services/jabber-roster-service.h"
-#include "services/jabber-server-info-service.h"
 #include "services/jabber-stream-debug-service.h"
 #include "services/jabber-subscription-service.h"
 #include "services/jabber-vcard-service.h"
@@ -114,13 +112,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new JabberPersonalInfoService(account, this);
 	CurrentClientInfoService = new JabberClientInfoService(this);
 
-	CurrentServerInfoService = new JabberServerInfoService(this);
-	connect(CurrentServerInfoService, SIGNAL(updated()), this, SLOT(serverInfoUpdated()));
-
-	CurrentPepService = new JabberPepService(this);
-
-	// CurrentAvatarService->setPepService(CurrentPepService);
-
 	CurrentStreamDebugService = new JabberStreamDebugService(this);
 
 	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
@@ -176,11 +167,6 @@ void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 	ContactsListReadOnly = contactsListReadOnly;
 }
 
-void JabberProtocol::serverInfoUpdated()
-{
-	CurrentPepService->setEnabled(CurrentServerInfoService->supportsPep());
-}
-
 void JabberProtocol::rosterReady()
 {
 	/* Since we are online now, set initial presence. Don't do this
@@ -191,7 +177,6 @@ void JabberProtocol::rosterReady()
 	kdebug("Setting initial presence...\n");
 
 	sendStatusToServer();
-	CurrentServerInfoService->requestServerInfo();
 }
 
 /*

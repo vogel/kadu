@@ -24,7 +24,6 @@
 
 #include "protocols/services/avatar-service.h"
 
-class JabberPepService;
 class JabberVCardService;
 
 class AvatarManager;
@@ -46,15 +45,8 @@ class QXmppPresence;
  *
  * See documentation of AvatarService to get general information about this service.
  *
- * JabberAvatarService uses JabberPepService or JabberVCardService to create AvatarDownloader and
- * AvatarUploader instances.
- *
- * When neither JabberPepService nor JabberVCardService are provided this service will return null
- * AvatarDownloader and AvatarUploader instances. If only one service is available then proper downloader and
- * uploader will be returned. In case both are available then returned instance will try to use PEP protocol
- * first, then VCard in case PEP fails.
- *
- * Use setPepService() and/or setVCardService() to set these services.
+ * JabberAvatarService uses JabberVCardService to create AvatarDownloader and
+ * AvatarUploader instances. Use setVCardService() to set this service.
  */
 class JabberAvatarService : public AvatarService
 {
@@ -74,13 +66,6 @@ public:
 	void setContactManager(ContactManager *contactManager);
 
 	/**
-	 * @short Set PEP service object to use in this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param pepService PEP service object to use
-	 */
-	void setPepService(JabberPepService *pepService);
-
-	/**
 	 * @short Set VCard service object to use in this service.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param vCardService VCard service object to use
@@ -96,7 +81,6 @@ private:
 	QPointer<ContactManager> m_contactManager;
 
 	QPointer<QXmppClient> m_client;
-	QPointer<JabberPepService> PepService;
 	QPointer<JabberVCardService> VCardService;
 
 private slots:
