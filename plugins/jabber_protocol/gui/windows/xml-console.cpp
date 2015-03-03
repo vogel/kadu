@@ -40,8 +40,8 @@ XmlConsole::XmlConsole(Account account) :
 	{
 		createGui();
 
-		// connect(protocol->streamDebugService(), SIGNAL(incomingStream(QString)), this, SLOT(xmlIncomingSlot(QString)));
-		// connect(protocol->streamDebugService(), SIGNAL(outgoingStream(QString)), this, SLOT(xmlOutgoingSlot(QString)));
+		connect(protocol->streamDebugService(), SIGNAL(incomingStream(QString)), this, SLOT(xmlIncomingSlot(QString)));
+		connect(protocol->streamDebugService(), SIGNAL(outgoingStream(QString)), this, SLOT(xmlOutgoingSlot(QString)));
 	}
 	else
 		deleteLater();

@@ -20,31 +20,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_STREAM_DEBUG_SERVICE_H
-#define JABBER_STREAM_DEBUG_SERVICE_H
+#pragma once
 
-#include <QtCore/QPointer>
+#include <QtCore/QObject>
+#include <qxmpp/QXmppLogger.h>
 
-class JabberProtocol;
+class QXmppClient;
 
 class JabberStreamDebugService : public QObject
 {
 	Q_OBJECT
 
-	QString filterPrivateData(const QString &streamData);
-
-private slots:
-	void incomingXml(const QString &xmlData);
-	void outgoingXml(const QString &xmlData);
-
 public:
-	explicit JabberStreamDebugService(JabberProtocol *protocol);
+	explicit JabberStreamDebugService(QXmppClient *m_client, QObject *parent = nullptr);
 	virtual ~JabberStreamDebugService();
 
 signals:
 	void incomingStream(const QString &streamData);
 	void outgoingStream(const QString &streamData);
 
-};
+private:
+	QString filterPrivateData(const QString &streamData);
 
-#endif // JABBER_STREAM_DEBUG_SERVICE_H
+private slots:
+	void message(QXmppLogger::MessageType type, const QString &message);
+
+};

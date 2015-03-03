@@ -20,15 +20,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-protocol.h"
-
 #include "jabber-stream-debug-service.h"
 
-JabberStreamDebugService::JabberStreamDebugService(JabberProtocol *protocol) :
-		QObject(protocol)
+#include <qxmpp/QXmppClient.h>
+
+JabberStreamDebugService::JabberStreamDebugService(QXmppClient *m_client, QObject *parent) :
+		QObject{parent}
 {
-	// connect(XmppClient.data(), SIGNAL(xmlIncoming(QString)), this, SLOT(incomingXml(QString)));
-	// connect(XmppClient.data(), SIGNAL(xmlOutgoing(QString)), this, SLOT(outgoingXml(QString)));
+	m_client->logger()->setLoggingType(QXmppLogger::SignalLogging);
+	connect(m_client->logger(), SIGNAL(message(QXmppLogger::MessageType,QString)), this, SLOT(message(QXmppLogger::MessageType,QString)));
 }
 
 JabberStreamDebugService::~JabberStreamDebugService()
@@ -43,14 +43,12 @@ QString JabberStreamDebugService::filterPrivateData(const QString &streamData)
 			.replace(QRegExp("<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
 }
 
-void JabberStreamDebugService::incomingXml(const QString &xmlData)
+void JabberStreamDebugService::message(QXmppLogger::MessageType type, const QString &message)
 {
-	emit incomingStream(filterPrivateData(xmlData));
-}
-
-void JabberStreamDebugService::outgoingXml(const QString &xmlData)
-{
-	emit outgoingStream(filterPrivateData(xmlData));
+	if (type & QXmppLogger::MessageType::ReceivedMessage)
+		emit incomingStream(filterPrivateData(message));
+	else
+		emit outgoingStream(filterPrivateData(message));
 }
 
 #include "moc_jabber-stream-debug-service.cpp"

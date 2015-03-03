@@ -117,7 +117,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(account, this);
-	CurrentStreamDebugService = new JabberStreamDebugService(this);
+	m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
 	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account, this};
 	m_fileTransferService->setResourceService(m_resourceService);
@@ -261,7 +261,6 @@ void JabberProtocol::login()
 		configuration.setPort(details->customPort());
 	}
 
-	//m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
 	m_client->connectToServer(configuration);
 

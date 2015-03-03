@@ -56,7 +56,7 @@ class JabberProtocol : public Protocol
 	JabberSubscriptionService *m_subscriptionService;
 	JabberPresenceService *m_presenceService;
 	JabberRoomChatService *m_roomChatService;
-	JabberStreamDebugService *CurrentStreamDebugService;
+	JabberStreamDebugService *m_streamDebugService;
 	JabberVCardService *m_vcardService;
 	JabberResourceService *m_resourceService;
 
@@ -102,7 +102,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return m_fileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
-	// virtual JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
+	virtual JabberStreamDebugService * streamDebugService() { return m_streamDebugService; }
 	virtual JabberVCardService * vcardService() { return m_vcardService; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
