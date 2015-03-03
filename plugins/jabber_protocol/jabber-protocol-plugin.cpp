@@ -27,7 +27,6 @@
 #include "certificates/trusted-certificates-manager.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
-#include "file-transfer/s5b-server-manager.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "facebook-protocol-factory.h"
@@ -52,8 +51,6 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
 		return true;
 
-	S5BServerManager::createInstance();
-
 	JabberIdValidator::createInstance();
 
 	JabberActions::registerActions();
@@ -73,15 +70,11 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(UrlDomVisitorProvider, 200);
 
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
-
 	return true;
 }
 
 void JabberProtocolPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
-
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 
 	Core::instance()->domProcessorService()->unregisterVisitorProvider(UrlDomVisitorProvider);
@@ -101,8 +94,6 @@ void JabberProtocolPlugin::done()
 
 	JabberIdValidator::destroyInstance();
 	TrustedCertificatesManager::destroyInstance();
-
-	S5BServerManager::destroyInstance();
 }
 
 Q_EXPORT_PLUGIN2(jabber_protocol, JabberProtocolPlugin)

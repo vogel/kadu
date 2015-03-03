@@ -55,7 +55,6 @@ set (SOURCES
 
 	file-transfer/jabber-outgoing-file-transfer-handler.cpp
 	file-transfer/jabber-stream-incoming-file-transfer-handler.cpp
-	file-transfer/s5b-server-manager.cpp
 
 	gui/widgets/jabber-contact-personal-info-widget.cpp
 	gui/widgets/jabber-add-account-widget.cpp
@@ -118,8 +117,6 @@ set (MOC_SOURCES
 
 	client/mini-client.h
 
-	file-transfer/s5b-server-manager.h
-
 	gui/widgets/jabber-contact-personal-info-widget.h
 	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h
@@ -169,13 +166,8 @@ endif ()
 include_directories (${QXMPP_INCLUDE_DIRS})
 link_directories (${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${QXMPP_LIBRARY_DIRS})
 
-set (CONFIGURATION_FILES
-	data/configuration/jabber_protocol.ui
-)
-
 kadu_plugin (jabber_protocol
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
-	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
