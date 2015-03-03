@@ -238,6 +238,10 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(DataTransferProxy, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	connectionBoxLayout->addRow(dataTransferProxyLabel, DataTransferProxy);
 
+	RequireDataTransferProxy = new QCheckBox{tr("Require data transfer proxy:"), connection};
+	connect(RequireDataTransferProxy, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	connectionBoxLayout->addWidget(RequireDataTransferProxy);
+
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), connection);
 	ProxyCombo = new ProxyComboBox(connection);
 	ProxyCombo->enableDefaultProxyAction();
@@ -372,6 +376,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->resource() == ResourceName->text()
 		&& AccountDetails->priority() == Priority->text().toInt()
 		&& AccountDetails->dataTransferProxy() == DataTransferProxy->text()
+		&& AccountDetails->requireDataTransferProxy() == RequireDataTransferProxy->isChecked()
 		&& AccountDetails->sendGoneNotification() == SendGoneNotification->isChecked()
 		&& AccountDetails->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& AccountDetails->publishSystemInfo() == PublishSystemInfo->isChecked()
@@ -423,6 +428,7 @@ void JabberEditAccountWidget::loadAccountDetailsData()
 	ResourceName->setText(AccountDetails->resource());
 	Priority->setText(QString::number(AccountDetails->priority()));
 	DataTransferProxy->setText(AccountDetails->dataTransferProxy());
+	RequireDataTransferProxy->setChecked(AccountDetails->requireDataTransferProxy());
 
 	SendGoneNotification->setChecked(AccountDetails->sendGoneNotification());
 	SendTypingNotification->setChecked(AccountDetails->sendTypingNotification());
@@ -457,6 +463,7 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setResource(ResourceName->text());
 	AccountDetails->setPriority(Priority->text().toInt());
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
+	AccountDetails->setRequireDataTransferProxy(RequireDataTransferProxy->isChecked());
 	AccountDetails->setSendGoneNotification(SendGoneNotification->isChecked());
 	AccountDetails->setSendTypingNotification(SendTypingNotification->isChecked());
 	AccountDetails->setPublishSystemInfo(PublishSystemInfo->isChecked());

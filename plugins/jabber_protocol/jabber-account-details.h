@@ -61,6 +61,7 @@ private:
 	PROPERTY_DEC(QByteArray, TlsOverrideCert)
 	PROPERTY_DEC(QString, TlsOverrideDomain)
 	PROPERTY_DEC(QString, DataTransferProxy)
+	PROPERTY_DEC(bool, RequireDataTransferProxy)
 	PROPERTY_DEC(bool, SendTypingNotification)
 	PROPERTY_DEC(bool, SendGoneNotification)
 	PROPERTY_DEC(bool, PublishSystemInfo)
@@ -82,7 +83,6 @@ public:
 	PROPERTY_DEF(AllowPlainType, plainAuthMode, setPlainAuthMode, PlainAuthMode)
 	PROPERTY_DEF(QByteArray, tlsOverrideCert, setTlsOverrideCert, TlsOverrideCert)
 	PROPERTY_DEF(QString, tlsOverrideDomain, setTlsOverrideDomain, TlsOverrideDomain)
-	PROPERTY_DEF(QString, dataTransferProxy, setDataTransferProxy, DataTransferProxy)
 	PROPERTY_DEF(bool, sendTypingNotification, setSendTypingNotification, SendTypingNotification)
 	PROPERTY_DEF(bool, sendGoneNotification, setSendGoneNotification, SendGoneNotification)
 	PROPERTY_DEF(bool, publishSystemInfo, setPublishSystemInfo, PublishSystemInfo)
@@ -90,7 +90,14 @@ public:
 	int priority();
 	void setPriority(int priority);
 
+	QString dataTransferProxy();
+	void setDataTransferProxy(const QString &dataTransferProxy);
+
+	bool requireDataTransferProxy();
+	void setRequireDataTransferProxy(bool requireDataTransferProxy);
+
 signals:
 	void priorityChanged();
+	void dataTransferProxyChanged();
 
 };

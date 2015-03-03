@@ -68,6 +68,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *Priority;
 
 	QLineEdit *DataTransferProxy;
+	QCheckBox *RequireDataTransferProxy;
 
 	QCheckBox *SendTypingNotification;
 	QCheckBox *SendGoneNotification;

@@ -50,6 +50,7 @@ private:
 	Account m_account;
 
 private slots:
+	void dataTransferProxyChanged();
 	void fileReceived(QXmppTransferJob *transferJob);
 
 };

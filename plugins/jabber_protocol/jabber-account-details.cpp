@@ -31,7 +31,7 @@
 
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
 		AccountDetails(data), AutoResource(false), Priority{100}, UseCustomHostPort(false), CustomPort(5222),
-		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS),
+		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS), RequireDataTransferProxy{false},
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
 	OpenChatRunner = new JabberOpenChatWithRunner(data);
@@ -69,6 +69,7 @@ void JabberAccountDetails::load()
 		priority = 5;
 	Priority = priority;
 	DataTransferProxy = loadValue<QString>("DataTransferProxy");
+	RequireDataTransferProxy = loadValue<bool>("RequireDataTransferProxy", false);
 
 	UseCustomHostPort = loadValue<bool>("UseCustomHostPort", false);
 	CustomHost = loadValue<QString>("CustomHost");
@@ -93,6 +94,7 @@ void JabberAccountDetails::store()
 	storeValue("Resource", Resource);
 	storeValue("Priority", Priority);
 	storeValue("DataTransferProxy", DataTransferProxy);
+	storeValue("RequireDataTransferProxy", RequireDataTransferProxy);
 
 	storeValue("UseCustomHostPort", UseCustomHostPort);
 	storeValue("CustomHost", CustomHost);
@@ -106,6 +108,34 @@ void JabberAccountDetails::store()
 	storeValue("SendTypingNotification", SendTypingNotification);
 	storeValue("SendGoneNotification", SendGoneNotification);
 	storeValue("PublishSystemInfo", PublishSystemInfo);
+}
+
+QString JabberAccountDetails::dataTransferProxy()
+{
+	ensureLoaded();
+	return DataTransferProxy;
+}
+
+void JabberAccountDetails::setDataTransferProxy(const QString &dataTransferProxy)
+{
+	ensureLoaded();
+	DataTransferProxy = dataTransferProxy;
+
+	emit dataTransferProxyChanged();
+}
+
+bool JabberAccountDetails::requireDataTransferProxy()
+{
+	ensureLoaded();
+	return RequireDataTransferProxy;
+}
+
+void JabberAccountDetails::setRequireDataTransferProxy(bool requireDataTransferProxy)
+{
+	ensureLoaded();
+	RequireDataTransferProxy = requireDataTransferProxy;
+
+	emit dataTransferProxyChanged();
 }
 
 int JabberAccountDetails::priority()
