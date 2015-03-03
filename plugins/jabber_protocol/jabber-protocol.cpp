@@ -27,6 +27,7 @@
 #include <qxmpp/QXmppMucManager.h>
 #include <qxmpp/QXmppRosterManager.h>
 #include <qxmpp/QXmppTransferManager.h>
+#include <qxmpp/QXmppVersionManager.h>
 #include <qxmpp/QXmppVCardManager.h>
 
 #include "avatars/avatar-manager.h"
@@ -48,7 +49,6 @@
 #include "certificates/trusted-certificates-manager.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
-#include "services/jabber-client-info-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-presence-service.h"
 #include "services/jabber-resource-service.h"
@@ -86,6 +86,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
+
 	m_client->addExtension(m_mucManager.get());
 	m_client->addExtension(m_transferManager.get());
 
@@ -113,7 +114,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(account, this);
-	CurrentClientInfoService = new JabberClientInfoService(this);
 	CurrentStreamDebugService = new JabberStreamDebugService(this);
 
 	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account, this};
@@ -125,30 +125,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentContactPersonalInfoService->setVCardService(m_vcardService);
 	CurrentPersonalInfoService->setVCardService(m_vcardService);
 
-	QStringList features;
-	features
-			<< "http://jabber.org/protocol/chatstates"
-			<< "jabber:iq:version"
-			<< "jabber:x:data"
-			<< "urn:xmpp:avatar:data"
-			<< "urn:xmpp:avatar:metadata"
-			<< "urn:xmpp:avatar:metadata+notify";
-
-	CurrentClientInfoService->setFeatures(features);
-
-	// connect(XmppClient, SIGNAL(messageReceived(const Message &)),
-	//         chatService, SLOT(handleReceivedMessage(Message)));
-	// connect(XmppClient, SIGNAL(messageReceived(const Message &)),
-	//         chatStateService, SLOT(handleReceivedMessage(const Message &)));
-	connect(chatService, SIGNAL(messageAboutToSend(Message&)),
-	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
-
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
 	auto rosterService = new JabberRosterService{&m_client->rosterManager(), contacts, this};
-
-	// chatService->setXmppClient(XmppClient);
-	// chatStateService->setClient(XmppClient);
-	// rosterService->setClient(XmppClient);
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
@@ -200,22 +178,19 @@ void JabberProtocol::login()
 		connectionClosed();
 		return;
 	}
-/*
+
 	if (jabberAccountDetails->publishSystemInfo())
 	{
-		CurrentClientInfoService->setClientName("Kadu");
-		CurrentClientInfoService->setClientVersion(Core::instance()->version());
-		CurrentClientInfoService->setOSName(SystemInfo::instance()->osFullName());
+		m_client->versionManager().setClientName("Kadu");
+		m_client->versionManager().setClientVersion(Core::instance()->version());
+		m_client->versionManager().setClientOs(SystemInfo::instance()->osFullName());
 	}
 	else
 	{
-		CurrentClientInfoService->setClientName(QString());
-		CurrentClientInfoService->setClientVersion(QString());
-		CurrentClientInfoService->setOSName(QString());
+		m_client->versionManager().setClientName(QString{});
+		m_client->versionManager().setClientVersion(QString{});
+		m_client->versionManager().setClientOs(QString{});
 	}
-
-	CurrentConnectionService->connectToServer();
-*/
 
 	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!details)
@@ -354,8 +329,6 @@ void JabberProtocol::sendStatusToServer()
 		return;
 
 	auto presence = m_presenceService->statusToPresence(status());
-//	CurrentClientInfoService->fillStatusCapsData(xmppStatus); TODO fix
-
 	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (details)
 		presence.setPriority(details->priority());
