@@ -19,17 +19,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_ACCOUNT
-#define JABBER_ACCOUNT
+#pragma once
 
-#include <QtCore/QString>
+#include <QtCore/QObject>
 
 #include "accounts/account-details.h"
 #include "open-chat-with/jabber-open-chat-with-runner.h"
 #include "protocols/protocol.h"
 
-class JabberAccountDetails : public AccountDetails
+class JabberAccountDetails : public QObject, public AccountDetails
 {
+	Q_OBJECT
+
 	JabberOpenChatWithRunner *OpenChatRunner;
 
 public:
@@ -74,7 +75,6 @@ public:
 
 	PROPERTY_DEF(QString, resource, setResource, Resource)
 	PROPERTY_DEF(bool, autoResource, setAutoResource, AutoResource)
-	PROPERTY_DEF(int, priority, setPriority, Priority)
 	PROPERTY_DEF(bool, useCustomHostPort, setUseCustomHostPort, UseCustomHostPort)
 	PROPERTY_DEF(QString, customHost, setCustomHost, CustomHost)
 	PROPERTY_DEF(int, customPort, setCustomPort, CustomPort)
@@ -87,6 +87,10 @@ public:
 	PROPERTY_DEF(bool, sendGoneNotification, setSendGoneNotification, SendGoneNotification)
 	PROPERTY_DEF(bool, publishSystemInfo, setPublishSystemInfo, PublishSystemInfo)
 
-};
+	int priority();
+	void setPriority(int priority);
 
-#endif // JABBER_ACCOUNT
+signals:
+	void priorityChanged();
+
+};

@@ -107,3 +107,19 @@ void JabberAccountDetails::store()
 	storeValue("SendGoneNotification", SendGoneNotification);
 	storeValue("PublishSystemInfo", PublishSystemInfo);
 }
+
+int JabberAccountDetails::priority()
+{
+	ensureLoaded();
+	return Priority;
+}
+
+void JabberAccountDetails::setPriority(int priority)
+{
+	ensureLoaded();
+	Priority = priority;
+
+	emit priorityChanged();
+}
+
+#include "moc_jabber-account-details.cpp"

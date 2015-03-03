@@ -221,6 +221,8 @@ void JabberProtocol::login()
 	if (!details)
 		return;
 
+	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
+
 	auto streamSecurityMode = QXmppConfiguration::StreamSecurityMode{};
 	switch (details->encryptionMode())
 	{
@@ -339,6 +341,11 @@ void JabberProtocol::error(QXmppClient::Error error)
 		default:
 			break;
 	}
+}
+
+void JabberProtocol::updatePresence()
+{
+	sendStatusToServer();
 }
 
 void JabberProtocol::sendStatusToServer()
