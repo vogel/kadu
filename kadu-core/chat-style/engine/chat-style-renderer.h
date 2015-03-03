@@ -90,7 +90,7 @@ public:
 	 * @param message message to display.
 	 * @param contactDisplayName display name of contact.
 	 */
-	virtual void displayChatState(ChatStateService::State state, const QString &message, const QString &contactDisplayName) = 0;
+	virtual void displayChatState(ChatState state, const QString &message, const QString &contactDisplayName) = 0;
 
 	/**
 	 * @short Display chat image.

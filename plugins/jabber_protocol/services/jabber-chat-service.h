@@ -25,35 +25,37 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
-#include <im.h>
-#include <xmpp.h>
+#include <qxmpp/QXmppMessage.h>
 
 class Chat;
 class FormattedStringFactory;
 
-namespace XMPP
-{
-
-class Client;
+class JabberChatStateService;
+class JabberResourceService;
 class JabberRoomChatService;
+class Jid;
+
+class QXmppClient;
+class QXmppMessage;
 
 class JabberChatService : public ChatService
 {
 	Q_OBJECT
 
 public:
-	explicit JabberChatService(Account account, QObject *parent = nullptr);
+	explicit JabberChatService(QXmppClient *client, Account account, QObject *parent = nullptr);
 	virtual ~JabberChatService();
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	void setXmppClient(Client *xmppClient);
+	void setChatStateService(JabberChatStateService *chatStateService);
+	void setResourceService(JabberResourceService *resourceService);
 	void setRoomChatService(JabberRoomChatService *roomChatService);
 
 	virtual int maxMessageLength() const;
 
 public slots:
-	virtual bool sendMessage(const ::Message &message);
+	virtual bool sendMessage(const Message &message);
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage);
 
 	/**
@@ -61,22 +63,21 @@ public slots:
 	 */
 	virtual void leaveChat(const Chat &chat);
 
-	void handleReceivedMessage(const Message &msg);
+	void handleReceivedMessage(const QXmppMessage &xmppMessage);
 
 signals:
 	void messageAboutToSend(Message &message);
 
 private:
+	QPointer<QXmppClient> m_client;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
-	QPointer<Client> m_client;
+	QPointer<JabberChatStateService> m_chatStateService;
+	QPointer<JabberResourceService> m_resourceService;
 	QPointer<JabberRoomChatService> m_roomChatService;
 
-	QMap<QString, QString> m_contactMessageTypes;
+	QMap<QString, QXmppMessage::Type> m_contactMessageTypes;
 
-	XMPP::Jid chatJid(const Chat &chat);
-	QString chatMessageType(const Chat &chat, const XMPP::Jid &jid);
-	::Message handleNormalReceivedMessage(const Message &msg);
+	QXmppMessage::Type chatMessageType(const Chat &chat, const QString &bareJid) const;
+	Message handleNormalReceivedMessage(const QXmppMessage &xmppMessage);
 
 };
-
-}

@@ -18,20 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_VCARD_DOWNLOADER_H
-#define JABBER_VCARD_DOWNLOADER_H
-
-#include "accounts/account.h"
+#pragma once
 
 #include <QtCore/QPointer>
 
-#include <xmpp_vcard.h>
-
-namespace XMPP
-{
-	class Client;
-	class JT_VCard;
-}
+class QXmppVCardIq;
+class QXmppVCardManager;
 
 /**
  * @addtogroup Jabber
@@ -50,24 +42,14 @@ class JabberVCardDownloader : public QObject
 {
 	Q_OBJECT
 
-	Account MyAccount;
-	QPointer<XMPP::Client> XmppClient;
-	QPointer<XMPP::JT_VCard> Task;
-
-	void done(XMPP::VCard vCard);
-	void failed();
-
-private slots:
-	void taskFinished();
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given XMPP::Client.
-	 * @param client instance of XMPP::Client
+	 * @short Create instance attached to given Client.
+	 * @param client instance of Client
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardDownloader(Account account, XMPP::Client *client, QObject *parent = 0);
+	explicit JabberVCardDownloader(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
 	virtual ~JabberVCardDownloader();
 
 	/**
@@ -90,11 +72,20 @@ signals:
 	 *
 	 * If ok is true then VCard downloading was successfull. If ok is false then operation failed.
 	 */
-	void vCardDownloaded(bool ok, XMPP::VCard vCard);
+	void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
+
+private:
+	QPointer<QXmppVCardManager> m_vcardManager;
+	QString m_requestId;
+
+	void done(const QXmppVCardIq &vcard);
+	void failed();
+
+private slots:
+	void vCardReceived(const QXmppVCardIq &vcard);
+
 };
 
 /**
  * @}
  */
-
-#endif // JABBER_VCARD_DOWNLOADER_H

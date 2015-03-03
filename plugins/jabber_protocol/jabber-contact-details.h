@@ -24,20 +24,18 @@
 class QDomDocument;
 class QDomElement;
 
-#include <xmpp_rosteritem.h>
-
 #include "contacts/contact-details.h"
 #include "contacts/contact.h"
 
 class JabberContactDetails : public ContactDetails
 {
-	PROPERTY_DEC(XMPP::Subscription, ContactSubscription)
+	// PROPERTY_DEC(Subscription, ContactSubscription)
 
 public:
 	explicit JabberContactDetails(ContactShared *contactShared);
 	virtual ~JabberContactDetails();
 
-	PROPERTY_DEF(XMPP::Subscription, subscription, setSubscription, ContactSubscription)
+	// PROPERTY_DEF(Subscription, subscription, setSubscription, ContactSubscription)
 
 };
 

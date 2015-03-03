@@ -21,9 +21,11 @@
 
 #include "jabber-chat-service.h"
 
+#include "services/jabber-chat-state-service.h"
+#include "services/jabber-resource-service.h"
 #include "services/jabber-room-chat-service.h"
-#include "iris-status-adapter.h"
 #include "jabber-protocol.h"
+#include "jid.h"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
@@ -44,19 +46,17 @@
 #include "message/message.h"
 #include "message/raw-message.h"
 #include "misc/misc.h"
-#include "resource/jabber-resource-pool.h"
-#include "resource/jabber-resource.h"
 #include "services/raw-message-transformer-service.h"
 #include "debug.h"
 
 #include <QtGui/QTextDocument>
+#include <qxmpp/QXmppMessage.h>
 
-namespace XMPP
+JabberChatService::JabberChatService(QXmppClient *client, Account account, QObject *parent) :
+		ChatService{account, parent},
+		m_client{client}
 {
-
-JabberChatService::JabberChatService(Account account, QObject *parent) :
-		ChatService{account, parent}
-{
+	connect(m_client, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(handleReceivedMessage(QXmppMessage)));
 }
 
 JabberChatService::~JabberChatService()
@@ -68,9 +68,14 @@ void JabberChatService::setFormattedStringFactory(FormattedStringFactory *format
 	m_formattedStringFactory = formattedStringFactory;
 }
 
-void JabberChatService::setXmppClient(Client *xmppClient)
+void JabberChatService::setChatStateService(JabberChatStateService *chatStateService)
 {
-	m_client = xmppClient;
+	m_chatStateService = chatStateService;
+}
+
+void JabberChatService::setResourceService(JabberResourceService *resourceService)
+{
+	m_resourceService = resourceService;
 }
 
 void JabberChatService::setRoomChatService(JabberRoomChatService *roomChatService)
@@ -80,68 +85,34 @@ void JabberChatService::setRoomChatService(JabberRoomChatService *roomChatServic
 
 int JabberChatService::maxMessageLength() const
 {
-	return 100000;
+	return 60000;
 }
 
-XMPP::Jid JabberChatService::chatJid(const Chat &chat)
+QXmppMessage::Type JabberChatService::chatMessageType(const Chat &chat, const QString &bareJid) const
 {
 	auto chatType = ChatTypeManager::instance()->chatType(chat.type());
 	if (!chatType)
-		return XMPP::Jid();
-
-	if (chatType->name() == "Contact")
-	{
-		auto contacts = chat.contacts();
-		Q_ASSERT(1 == contacts.size());
-
-		auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
-
-		if (protocol)
-		{
-			auto resource = protocol->resourcePool()->lockedJabberResource(contacts.toContact().id());
-			if (resource)
-				return resource->jid().withResource(resource->resource().name());
-		}
-
-		return contacts.toContact().id();
-	}
+		return QXmppMessage::QXmppMessage::Normal;
 
 	if (chatType->name() == "Room")
-	{
-		auto details = qobject_cast<ChatDetailsRoom *>(chat.details());
-		Q_ASSERT(details);
+		return QXmppMessage::GroupChat;
 
-		return details->room();
-	}
-
-	return XMPP::Jid();
-}
-
-QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &jid)
-{
-	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
-	if (!chatType)
-		return QString{};
-
-	if (chatType->name() == "Room")
-		return "groupchat";
-
-	if (m_contactMessageTypes.value(jid.bare()).isEmpty())
-		return "chat";
+	if (m_contactMessageTypes.contains(bareJid))
+		return m_contactMessageTypes.value(bareJid);
 	else
-		return m_contactMessageTypes.value(jid.bare());
+		return QXmppMessage::Chat;
 }
 
-bool JabberChatService::sendMessage(const ::Message &message)
+bool JabberChatService::sendMessage(const Message &message)
 {
 	if (!m_client)
 		return false;
 
-	auto jid = chatJid(message.messageChat());
+	auto jid = m_resourceService->bestChatJid(message.messageChat());
 	if (jid.isEmpty())
 		return false;
 
-	auto msg = XMPP::Message{jid};
+	auto xmppMessage = QXmppMessage{};
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	message.content()->accept(&plainTextVisitor);
@@ -150,13 +121,13 @@ bool JabberChatService::sendMessage(const ::Message &message)
 	if (rawMessageTransformerService())
 		plain = QString::fromUtf8(rawMessageTransformerService()->transform(plain.toUtf8(), {message}).rawContent());
 
-	msg.setType(chatMessageType(message.messageChat(), jid));
-	msg.setBody(plain);
-	msg.setTimeStamp(QDateTime::currentDateTime());
-	msg.setFrom(m_client.data()->jid());
+	xmppMessage.setBody(plain);
+	xmppMessage.setFrom(m_client.data()->clientPresence().id());
+	xmppMessage.setStamp(QDateTime::currentDateTime());
+	xmppMessage.setTo(jid.full());
+	xmppMessage.setType(chatMessageType(message.messageChat(), jid.bare()));
 
-	emit messageAboutToSend(msg);
-	m_client.data()->sendMessage(msg);
+	m_client.data()->sendPacket(m_chatStateService->withSentChatState(xmppMessage));
 
 	return true;
 }
@@ -166,47 +137,47 @@ bool JabberChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMe
 	if (!m_client)
 		return false;
 
-	auto jid = chatJid(chat);
+	auto jid = m_resourceService->bestChatJid(chat);
 	if (jid.isEmpty())
 		return false;
 
-	auto msg = XMPP::Message{jid};
+	auto xmppMessage = QXmppMessage{};
 
-	msg.setType(chatMessageType(chat, jid));
-	msg.setBody(rawMessage);
-	msg.setTimeStamp(QDateTime::currentDateTime());
-	msg.setFrom(m_client.data()->jid());
+	xmppMessage.setBody(rawMessage);
+	xmppMessage.setFrom(m_client.data()->clientPresence().id());
+	xmppMessage.setStamp(QDateTime::currentDateTime());
+	xmppMessage.setTo(jid.full());
+	xmppMessage.setType(chatMessageType(chat, jid.bare()));
 
-	emit messageAboutToSend(msg);
-	m_client.data()->sendMessage(msg);
+	m_client.data()->sendPacket(m_chatStateService->withSentChatState(xmppMessage));
 
 	return true;
 }
 
-void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
+void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 {
 	if (!m_formattedStringFactory)
 		return;
 
-	// skip empty messages
-	if (msg.body().isEmpty())
+	m_chatStateService->extractReceivedChatState(xmppMessage);
+
+	if (xmppMessage.body().isEmpty())
 		return;
 
-	// skip messages with type error == Cancel (fixes bug #1642)
-	if (msg.type() == "error")
+	if (xmppMessage.type() == QXmppMessage::Type::Error) // #1642
 		return;
 
-	auto message = m_roomChatService->shouldHandleReceivedMessage(msg)
-		? m_roomChatService->handleReceivedMessage(msg)
-		: handleNormalReceivedMessage(msg);
+	auto message = m_roomChatService->shouldHandleReceivedMessage(xmppMessage)
+		? m_roomChatService->handleReceivedMessage(xmppMessage)
+		: handleNormalReceivedMessage(xmppMessage);
 	if (message.isNull())
 		return;
 
 	message.setType(MessageTypeReceived);
-	message.setSendDate(msg.timeStamp());
+	message.setSendDate(xmppMessage.stamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	auto body = msg.body();
+	auto body = xmppMessage.body();
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
@@ -217,44 +188,25 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	message.setContent(std::move(formattedString));
 
-	auto messageType = msg.type().isEmpty()
-	        ? QString{"message"}
-	        : msg.type();
-
-	m_contactMessageTypes.insert(msg.from().bare(), messageType);
+	auto id = xmppMessage.from();
+	auto resourceIndex = id.indexOf('/');
+	if (resourceIndex >= 0)
+		id = id.mid(0, resourceIndex);
+	m_contactMessageTypes.insert(id, xmppMessage.type());
 
 	emit messageReceived(message);
 }
 
-::Message JabberChatService::handleNormalReceivedMessage(const XMPP::Message &msg)
+Message JabberChatService::handleNormalReceivedMessage(const QXmppMessage &xmppMessage)
 {
-	auto contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
+	auto jid = Jid::parse(xmppMessage.from());
+
+	auto contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
 	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 
-	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
+	contact.addProperty("jabber:chat-resource", jid.resource(), CustomProperties::NonStorable);
 
-	if (protocol)
-	{
-		// make sure current resource is in pool
-		protocol->resourcePool()->addResource(msg.from().bare(), msg.from().resource());
-
-		//if we have a locked resource, we simply talk to it
-		auto resource = protocol->resourcePool()->lockedJabberResource(msg.from().bare());
-		if (resource)
-		{
-			// if new resource appears, we remove locked resource, so that messages will be sent
-			// to bare JID until some full JID talks and we lock to it then
-			if (msg.from().resource() != resource->resource().name())
-				protocol->resourcePool()->removeLock(msg.from().bare());
-		}
-		else
-		{
-			// first message from full JID - lock to this resource
-			protocol->resourcePool()->lockToResource(msg.from().bare(), msg.from().resource());
-		}
-	}
-
-	auto message = ::Message::create();
+	auto message = Message::create();
 	message.setMessageChat(chat);
 	message.setMessageSender(contact);
 
@@ -265,8 +217,6 @@ void JabberChatService::leaveChat(const Chat& chat)
 {
 	if (m_roomChatService->isRoomChat(chat))
 		m_roomChatService->leaveChat(chat);
-}
-
 }
 
 #include "moc_jabber-chat-service.cpp"

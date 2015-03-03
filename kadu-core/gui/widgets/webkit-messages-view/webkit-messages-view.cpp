@@ -292,7 +292,7 @@ void WebkitMessagesView::sentMessageStatusChanged(const Message &message)
 	m_handler->displayMessageStatus(message.id(), message.status());
 }
 
-void WebkitMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::State state)
+void WebkitMessagesView::contactActivityChanged(const Contact &contact, ChatState state)
 {
 	m_handler->displayChatState(contact, state);
 }

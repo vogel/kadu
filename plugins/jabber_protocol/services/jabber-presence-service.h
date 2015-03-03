@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,32 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_RESOURCE_H
-#define JABBER_RESOURCE_H
+#pragma once
 
 #include <QtCore/QObject>
 
-#include <im.h>
-#include <xmpp_tasks.h>
+class Status;
 
-class JabberResource : public QObject
+class QXmppPresence;
+
+class JabberPresenceService : public QObject
 {
 	Q_OBJECT
 
-	XMPP::Jid Jid;
-	XMPP::Resource Resource;
-
 public:
+	explicit JabberPresenceService(QObject *parent = nullptr);
+	virtual ~JabberPresenceService();
 
-	explicit JabberResource(const XMPP::Jid &jid, const XMPP::Resource &resource);
-
-	virtual ~JabberResource();
-
-	const XMPP::Jid &jid() const { return Jid; }
-
-	void setResource (const XMPP::Resource &resource);
-	const XMPP::Resource &resource() const { return Resource; }
+	QXmppPresence statusToPresence(const Status &status);
+	Status presenceToStatus(const QXmppPresence &presence);
 
 };
-
-#endif

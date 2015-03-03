@@ -1,8 +1,6 @@
 /*
- * Copyright (C) 2006  Remko Troncon
- *
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,38 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PEP_GET_TASK_H
-#define PEP_GET_TASK_H
+#pragma once
 
-#include <QtXml/QDomElement>
+#include <QtCore/QString>
 
-#include "iris/xmpp_task.h"
-
-namespace XMPP
+class Jid
 {
-	class PubSubItem;
-}
-
-class PEPGetTask : public XMPP::Task
-{
-	Q_OBJECT
-
-	QDomElement iq_;
-	QString jid_;
-	QString node_;
-	QList<XMPP::PubSubItem> items_;
 
 public:
-	PEPGetTask(Task *parent, const QString &jid, const QString &node, const QString &itemID);
-	virtual ~PEPGetTask();
+	static Jid parse(QString jid);
 
-	void onGo();
-	bool take(const QDomElement &x);
+	Jid();
+	explicit Jid(QString node, QString domain, QString resource);
 
-	const QList<XMPP::PubSubItem> & items() const;
-	const QString & jid() const;
-	const QString & node() const;
+	Jid withNode(QString node) const;
+	Jid withDomain(QString domain) const;
+	Jid withResource(QString resource) const;
+
+	bool isEmpty() const;
+
+	QString full() const;
+	QString bare() const;
+	QString node() const;
+	QString domain() const;
+	QString resource() const;
+
+private:
+	QString m_full;
+	QString m_bare;
+	QString m_node;
+	QString m_domain;
+	QString m_resource;
 
 };
-
-#endif // PEP_GET_TASK_H

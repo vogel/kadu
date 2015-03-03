@@ -19,66 +19,64 @@
 
 #pragma once
 
-#include "message/message.h"
 #include "protocols/services/account-service.h"
 
 #include <QtCore/QPointer>
-#include <im.h>
-#include <xmpp.h>
+
+class JabberPresenceService;
+class JabberRoomChat;
 
 class BuddyManager;
 class Chat;
 class ChatDetailsRoom;
 class ChatManager;
 class ContactManager;
+class Message;
 
-Q_DECLARE_METATYPE(XMPP::Status)
-
-namespace XMPP
-{
-
-class Client;
+class QXmppClient;
+class QXmppMessage;
+class QXmppMucManager;
 
 class JabberRoomChatService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit JabberRoomChatService(Account account, QObject *parent = nullptr);
+	explicit JabberRoomChatService(QXmppClient *client, QXmppMucManager *muc, Account account, QObject *parent = nullptr);
 	virtual ~JabberRoomChatService();
 
 	void setBuddyManager(BuddyManager *buddyManager);
 	void setChatManager(ChatManager *chatManager);
 	void setContactManager(ContactManager *contactManager);
+	void setPresenceService(JabberPresenceService *presenceService);
+	void initialize();
 
-	void setXmppClient(Client *xmppClient);
+	bool shouldHandleReceivedMessage(const QXmppMessage &xmppMessage) const;
+	Message handleReceivedMessage(const QXmppMessage &xmppMessage) const;
 
-	bool shouldHandleReceivedMessage(const XMPP::Message &msg) const;
-	::Message handleReceivedMessage(const XMPP::Message &msg) const;
-
+	void joinOpenedRoomChats();
 	bool isRoomChat(const Chat &chat) const;
 	void leaveChat(const Chat &chat);
 
 private slots:
+	void connected();
+
 	void chatOpened(const Chat &chat);
 	void chatClosed(const Chat &chat);
 
-	void groupChatJoined(const Jid &jid);
-	void groupChatLeft(const Jid &jid);
-	void groupChatPresence(const Jid &jid, const Status &status);
-
 private:
+	QPointer<QXmppClient> m_client;
+	QPointer<QXmppMucManager> m_muc;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<JabberPresenceService> m_presenceService;
 
-	QPointer<Client> m_client;
+	QMap<Chat, JabberRoomChat *> m_chats;
 
-	QMap<QString, Chat> m_openedRoomChats;
- 	QMap<QString, Chat> m_closedRoomChats;
-
+	JabberRoomChat * getRoomChat(const QString &id) const;
+	JabberRoomChat * getRoomChat(const Chat &chat) const;
+	JabberRoomChat * getOrCreateRoomChat(const Chat &chat);
 	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
 
 };
-
-}

@@ -19,9 +19,10 @@
 
 #include "jabber-room-chat-service.h"
 
-#include "resource/jabber-resource-pool.h"
-#include "iris-status-adapter.h"
+#include "services/jabber-presence-service.h"
+#include "jabber-room-chat.h"
 #include "jabber-protocol.h"
+#include "jid.h"
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-room.h"
@@ -29,12 +30,16 @@
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
 
-namespace XMPP
-{
+#include <qxmpp/QXmppClient.h>
+#include <qxmpp/QXmppMessage.h>
+#include <qxmpp/QXmppMucManager.h>
 
-JabberRoomChatService::JabberRoomChatService(Account account, QObject *parent) :
-		AccountService{account, parent}
+JabberRoomChatService::JabberRoomChatService(QXmppClient *client, QXmppMucManager *muc, Account account, QObject *parent) :
+		AccountService{account, parent},
+		m_client{client},
+		m_muc{muc}
 {
+	connect(m_client, SIGNAL(connected()), this, SLOT(connected()));
 }
 
 JabberRoomChatService::~JabberRoomChatService()
@@ -48,8 +53,9 @@ void JabberRoomChatService::setBuddyManager(BuddyManager *buddyManager)
 
 void JabberRoomChatService::setChatManager(ChatManager *chatManager)
 {
-	connect(chatManager, SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
-	connect(chatManager, SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));
+	m_chatManager = chatManager;
+	connect(m_chatManager, SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
+	connect(m_chatManager, SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));
 }
 
 void JabberRoomChatService::setContactManager(ContactManager *contactManager)
@@ -57,13 +63,16 @@ void JabberRoomChatService::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
-void JabberRoomChatService::setXmppClient(Client *xmppClient)
+void JabberRoomChatService::setPresenceService(JabberPresenceService *presenceService)
 {
-	m_client = xmppClient;
+	m_presenceService = presenceService;
+}
 
-	connect(m_client.data(), SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
-	connect(m_client.data(), SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
-	connect(m_client.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
+void JabberRoomChatService::initialize()
+{
+	for (auto &&chat : m_chatManager->chats(account()))
+		if (chat.isOpen() && myRoomChatDetails(chat))
+			getOrCreateRoomChat(chat);
 }
 
 ChatDetailsRoom * JabberRoomChatService::myRoomChatDetails(const Chat &chat) const
@@ -74,105 +83,86 @@ ChatDetailsRoom * JabberRoomChatService::myRoomChatDetails(const Chat &chat) con
 	return qobject_cast<ChatDetailsRoom *>(chat.details());
 }
 
+void JabberRoomChatService::connected()
+{
+	for (auto &&roomChat : m_chats)
+		roomChat->join();
+}
+
+JabberRoomChat * JabberRoomChatService::getRoomChat(const QString &id) const
+{
+	for (auto &&roomChat : m_chats)
+	{
+		auto details = myRoomChatDetails(roomChat->chat());
+		if (details && details->room() == id)
+			return roomChat;
+	}
+
+	return nullptr;
+}
+
+JabberRoomChat * JabberRoomChatService::getRoomChat(const Chat &chat) const
+{
+	if (chat.chatAccount() != account())
+		return nullptr;
+
+	if (m_chats.contains(chat))
+		return m_chats[chat];
+	else
+		return nullptr;
+}
+
+JabberRoomChat * JabberRoomChatService::getOrCreateRoomChat(const Chat &chat)
+{
+	if (chat.chatAccount() != account())
+		return nullptr;
+
+	if (m_chats.contains(chat))
+		return m_chats[chat];
+
+	auto details = qobject_cast<ChatDetailsRoom *>(chat.details());
+	if (!details)
+		return nullptr;
+
+	auto room = m_muc->addRoom(details->room());
+	auto roomChat = new JabberRoomChat{room, chat, this};
+	roomChat->setBuddyManager(m_buddyManager);
+	roomChat->setContactManager(m_contactManager);
+	roomChat->setPresenceService(m_presenceService);
+
+	m_chats[chat] = roomChat;
+	return roomChat;
+}
+
 void JabberRoomChatService::chatOpened(const Chat &chat)
 {
-	auto details = myRoomChatDetails(chat);
-	if (!details)
+	auto roomChat = getOrCreateRoomChat(chat);
+	if (!roomChat)
 		return;
 
-	if (m_openedRoomChats.contains(details->room()))
-		return;
-
-	m_openedRoomChats.insert(details->room(), chat);
-
-	auto jid = Jid{details->room()};
-	m_client.data()->groupChatJoin(jid.domain(), jid.node(), details->nick());
+	if (m_client->isConnected())
+		roomChat->join();
 }
 
 void JabberRoomChatService::chatClosed(const Chat &chat)
 {
-	auto details = myRoomChatDetails(chat);
-	if (!details || !details->stayInRoomAfterClosingWindow())
+	auto roomChat = getRoomChat(chat);
+	if (!roomChat)
+		return;
+
+	if (!roomChat->stayInRoomAfterClosingWindow())
 		leaveChat(chat);
 }
 
 void JabberRoomChatService::leaveChat(const Chat &chat)
 {
-	auto protocol = qobject_cast<XMPP::JabberProtocol *>(account().protocolHandler());
-	if (protocol)
-		protocol->resourcePool()->removeAllResources(chat.contacts().toContact().id());
-
-	auto details = myRoomChatDetails(chat);
-	if (!details)
+	auto roomChat = getRoomChat(chat);
+	if (!roomChat)
 		return;
 
-	m_openedRoomChats.remove(details->room());
-	m_closedRoomChats.insert(details->room(), chat);
-
-	auto jid = Jid{details->room()};
-	m_client.data()->groupChatLeave(jid.domain(), jid.node());
-}
-
-void JabberRoomChatService::groupChatJoined(const Jid &jid)
-{
-	auto chatId = jid.bare();
-	if (!m_openedRoomChats.contains(chatId))
-		return;
-
-	auto chat = m_openedRoomChats.value(chatId);
-	auto details = myRoomChatDetails(chat);
-	if (details)
-		details->setConnected(true);
-}
-
-void JabberRoomChatService::groupChatLeft(const Jid &jid)
-{
-	auto chatId = jid.bare();
-
-	if (!m_closedRoomChats.contains(chatId) && !m_openedRoomChats.contains(chatId))
-		return;
-
-	auto chat = m_closedRoomChats.contains(chatId)
-		? m_closedRoomChats.value(chatId)
-		: m_openedRoomChats.value(chatId);
-
-	auto details = myRoomChatDetails(chat);
-	if (details)
-	{
-		details->setConnected(false);
-
-		auto contacts = details->contacts();
-		for (auto &&contact : contacts)
-			details->removeContact(contact);
-	}
-
-	m_closedRoomChats.remove(chatId);
-}
-
-void JabberRoomChatService::groupChatPresence(const Jid &jid, const Status &status)
-{
-	auto chat = m_openedRoomChats.value(jid.bare());
-
-	auto chatDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
-	if (!chatDetails)
-		return;
-
-	auto contactStatus = IrisStatusAdapter::fromIrisStatus(status);
-	auto contact = m_contactManager->byId(account(), jid.full(), ActionCreateAndAdd);
-
-	if (!contactStatus.isDisconnected())
-	{
-		auto buddy = m_buddyManager->byContact(contact, ActionCreateAndAdd);
-		buddy.setDisplay(jid.resource());
-		buddy.setTemporary(true);
-	}
-
-	contact.setCurrentStatus(contactStatus);
-
-	if (contactStatus.isDisconnected())
-		chatDetails->removeContact(contact);
-	else
-		chatDetails->addContact(contact);
+	roomChat->leave();
+	m_chats[chat]->deleteLater();
+	m_chats.remove(chat);
 }
 
 bool JabberRoomChatService::isRoomChat(const Chat &chat) const
@@ -180,37 +170,32 @@ bool JabberRoomChatService::isRoomChat(const Chat &chat) const
 	return myRoomChatDetails(chat) != nullptr;
 }
 
-bool JabberRoomChatService::shouldHandleReceivedMessage(const Message& msg) const
+bool JabberRoomChatService::shouldHandleReceivedMessage(const QXmppMessage &xmppMessage) const
 {
-	return m_openedRoomChats.contains(msg.from().bare());
+	auto jid = Jid::parse(xmppMessage.from());
+	return getRoomChat(jid.bare()) != nullptr;
 }
 
-::Message JabberRoomChatService::handleReceivedMessage(const Message &msg) const
+Message JabberRoomChatService::handleReceivedMessage(const QXmppMessage &xmppMessage) const
 {
-	if (!m_openedRoomChats.contains(msg.from().bare()))
-		return ::Message{};
+	auto jid = Jid::parse(xmppMessage.from());
+	auto roomChat = getRoomChat(jid.bare());
+	if (!roomChat)
+		return Message::null;
 
-	auto chat = m_openedRoomChats.value(msg.from().bare());
-	auto details = myRoomChatDetails(chat);
+	if (jid.resource() == roomChat->nick()) // message from myself
+		return Message::null;
 
-	if (!details)
-		return ::Message{};
-
-	if (msg.from().resource() == details->nick()) // message from myself
-		return ::Message{};
-
-	auto contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
+	auto contact = ContactManager::instance()->byId(account(), jid.full(), ActionCreateAndAdd);
 	auto buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-	buddy.setDisplay(msg.from().resource());
+	buddy.setDisplay(jid.resource());
 	buddy.setTemporary(true);
 
-	::Message result = ::Message::create();
-	result.setMessageChat(chat);
+	auto result = Message::create();
+	result.setMessageChat(roomChat->chat());
 	result.setMessageSender(contact);
 
 	return result;
-}
-
 }
 
 #include "moc_jabber-room-chat-service.cpp"

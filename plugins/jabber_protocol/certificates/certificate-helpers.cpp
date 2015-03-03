@@ -31,9 +31,7 @@
 #include <QtCore/QtDebug>
 #include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
-#include <QtCrypto>
-
-#include "xmpp.h"
+#include <QtCrypto/QtCrypto>
 
 #include "core/application.h"
 #include "misc/paths-provider.h"
@@ -185,8 +183,8 @@ QString CertificateHelpers::resultToString(int result, QCA::Validity validity)
 	}
 	return s;
 }
-
-bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, bool blocking, QObject *receiver, const char *slot)
+/*
+bool CertificateHelpers::checkCertificate(QCA::TLS* tls, QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, bool blocking, QObject *receiver, const char *slot)
 {
 	if (!tlsHandler || !tls || tls->peerCertificateChain().isEmpty())
 		return false;
@@ -227,7 +225,7 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 	errorDialog->show();
 	return false;
 }
-
+*/
 QStringList CertificateHelpers::getCertificateStoreDirs()
 {
 	QStringList l;

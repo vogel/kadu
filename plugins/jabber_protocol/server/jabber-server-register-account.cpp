@@ -26,21 +26,27 @@
 JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, quint16 port)
 	: QObject(), Result(0), Server(server), Username(username), Password(password)
 {
+	Q_UNUSED(legacySSLProbe);
+	Q_UNUSED(legacySSL);
+	Q_UNUSED(forceSSL);
+	Q_UNUSED(host);
+	Q_UNUSED(port);
+	/*
 	Client = new MiniClient;
 	connect(Client, SIGNAL(handshaken()), SLOT(clientHandshaken()));
 	connect(Client, SIGNAL(error()), SLOT(clientError()));
-	Client->connectToServer(XMPP::Jid(Server), legacySSLProbe, legacySSL, forceSSL, host, port);
+	Client->connectToServer(Jid(Server), legacySSLProbe, legacySSL, forceSSL, host, port);*/
 }
 
 void JabberServerRegisterAccount::clientHandshaken()
-{
+{/*
 	kdebugf();
 	// try to register an account
-	XMPP::JT_Register *reg = new XMPP::JT_Register(Client->client()->rootTask());
+	JT_Register *reg = new JT_Register(Client->client()->rootTask());
 	connect(reg, SIGNAL(finished()), SLOT(sendRegistrationData()));
 	reg->getForm(Server);
 	reg->go(true);
-	kdebugf();
+	kdebugf();*/
 }
 
 void JabberServerRegisterAccount::clientError()
@@ -52,11 +58,11 @@ void JabberServerRegisterAccount::clientError()
 }
 
 void JabberServerRegisterAccount::sendRegistrationData()
-{
+{/*
 	kdebugf();
-	XMPP::JT_Register *reg = (XMPP::JT_Register *)sender();
+	JT_Register *reg = (JT_Register *)sender();
 	if (reg->success()) {
-		XMPP::XData xdata;
+		XData xdata;
 	//TODO: upewnić się, że to to jest potrzebne tak jak jest
 		bool old;
 		if (reg->hasXData()) {
@@ -68,10 +74,10 @@ void JabberServerRegisterAccount::sendRegistrationData()
 			xdata = convertToXData(reg->form());
 		}
 	//
-		XMPP::JT_Register *reg = new XMPP::JT_Register(Client->client()->rootTask());
+		JT_Register *reg = new JT_Register(Client->client()->rootTask());
 		connect(reg, SIGNAL(finished()), this, SLOT(actionFinished()));
 		if (old) {
-			XMPP::Form form = convertFromXData(fields);
+			Form form = convertFromXData(fields);
 			form.setJid(Server);
 			reg->setForm(form);
 		}
@@ -86,43 +92,43 @@ void JabberServerRegisterAccount::sendRegistrationData()
 		emit finished(this);
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("This server does not support registration"));
 	}
-	kdebugf2();
+	kdebugf2();*/
 }
-
-XMPP::XData JabberServerRegisterAccount::convertToXData(const XMPP::Form& form)
+/*
+XData JabberServerRegisterAccount::convertToXData(const Form& form)
 {
 	kdebugf();
 	// Convert the fields
-	XMPP::XData::FieldList fields;
-	foreach (const XMPP::FormField &f, form) {
-		XMPP::XData::Field field;
+	XData::FieldList fields;
+	foreach (const FormField &f, form) {
+		XData::Field field;
 		field.setLabel(f.fieldName());
 		field.setVar(f.realName());
 		field.setRequired(true);
 		if (f.isSecret()) {
-			field.setType(XMPP::XData::Field::Field_TextPrivate);
+			field.setType(XData::Field::Field_TextPrivate);
 		}
 		else {
-			field.setType(XMPP::XData::Field::Field_TextSingle);
+			field.setType(XData::Field::Field_TextSingle);
 		}
 		fields.push_back(field);
 	}
 
 	// Create the form
-	XMPP::XData xdata;
+	XData xdata;
 	xdata.setInstructions(form.instructions());
 	xdata.setFields(fields);
 	kdebugf2();
 	return xdata;
 }
 
-XMPP::Form JabberServerRegisterAccount::convertFromXData(const XMPP::XData& xdata)
+Form JabberServerRegisterAccount::convertFromXData(const XData& xdata)
 {
 	kdebugf();
-	XMPP::Form form;
-	foreach(const XMPP::XData::Field &field, xdata.fields()) {
+	Form form;
+	foreach(const XData::Field &field, xdata.fields()) {
 		if (!field.value().isEmpty()) {
-			XMPP::FormField f;
+			FormField f;
 			f.setType(field.var());
 			f.setValue(field.value().at(0));
 			form.push_back(f);
@@ -131,11 +137,11 @@ XMPP::Form JabberServerRegisterAccount::convertFromXData(const XMPP::XData& xdat
 	kdebugf2();
 	return form;
 }
-
+*/
 void JabberServerRegisterAccount::actionFinished()
-{
+{/*
 	kdebugf();
-	XMPP::JT_Register *reg = (XMPP::JT_Register *)sender();
+	JT_Register *reg = (JT_Register *)sender();
 	if (reg->success()) {
 		Client->close();
 		Result = true;
@@ -146,34 +152,34 @@ void JabberServerRegisterAccount::actionFinished()
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("There was an error registering the account.\nReason: %1").arg(reg->statusString()));
 		emit finished(this);
 	}
-	kdebugf2();
+	kdebugf2();*/
 }
 
 void JabberServerRegisterAccount::performAction()
-{
+{/*
 	kdebugf();
-	XMPP::XData::FieldList fs;
+	XData::FieldList fs;
 
-	XMPP::XData::Field username;
+	XData::Field username;
 	username.setLabel("Username");
 	username.setVar("username");
 	username.setValue(QStringList(Username));
 	username.setRequired(true);
-	username.setType(XMPP::XData::Field::Field_TextSingle);
+	username.setType(XData::Field::Field_TextSingle);
 	fs.push_back(username);
 
-	Jid = XMPP::Jid(Username, Server).bare();
+	Jid = Jid(Username, Server).bare();
 
-	XMPP::XData::Field pass;
+	XData::Field pass;
 	pass.setLabel("password");
 	pass.setVar("password");
 	pass.setValue(QStringList(Password));
 	pass.setRequired(true);
-	pass.setType(XMPP::XData::Field::Field_TextPrivate);
+	pass.setType(XData::Field::Field_TextPrivate);
 	fs.push_back(pass);
 
 	fields.setFields(fs);
-	kdebugf2();
+	kdebugf2();*/
 }
 
 

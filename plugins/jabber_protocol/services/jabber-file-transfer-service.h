@@ -17,38 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_FILE_TRANSFER_SERVICE_H
-#define JABBER_FILE_TRANSFER_SERVICE_H
+#pragma once
 
-#include "file-transfer/file-transfer-handler.h"
 #include "protocols/services/file-transfer-service.h"
 
-namespace XMPP
-{
-	class S5BServer;
+#include "accounts/account.h"
 
-	class JabberProtocol;
-}
+#include <QtCore/QPointer>
+
+class JabberResourceService;
+
+class QXmppTransferJob;
+class QXmppTransferManager;
 
 class JabberFileTransferService : public FileTransferService
 {
 	Q_OBJECT
 
-	XMPP::JabberProtocol *Protocol;
-
-private slots:
-	void loggedIn();
-	void loggedOut();
-
-	void incomingFileTransferSlot();
-
 public:
-	explicit JabberFileTransferService(XMPP::JabberProtocol *protocol);
+	explicit JabberFileTransferService(QXmppTransferManager *transferManager, Account account, QObject *parent = nullptr);
 	virtual ~JabberFileTransferService();
+
+	void setResourceService(JabberResourceService *resourceService);
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) override;
 	virtual FileTransferCanSendResult canSend(Contact contact) override;
 
-};
+private:
+	QPointer<JabberResourceService> m_resourceService;
 
-#endif // JABBER_FILE_TRANSFER_SERVICE_H
+	QPointer<QXmppTransferManager> m_transferManager;
+	Account m_account;
+
+private slots:
+	void fileReceived(QXmppTransferJob *transferJob);
+
+};

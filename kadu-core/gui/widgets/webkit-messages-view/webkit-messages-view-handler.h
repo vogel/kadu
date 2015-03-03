@@ -134,7 +134,7 @@ public:
 	 *
 	 * Chat state will only be displayed if ChatStyleRenderer is ready.
 	 */
-	void displayChatState(const Contact &contact, ChatStateService::State state);
+	void displayChatState(const Contact &contact, ChatState state);
 
 	/**
 	 * @short Display chat image.

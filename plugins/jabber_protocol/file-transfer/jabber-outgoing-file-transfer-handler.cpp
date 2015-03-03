@@ -19,18 +19,18 @@
 
 #include <QtCore/QFileInfo>
 
-#include <xmpp/xmpp-im/xmpp_bytestream.h>
-#include <filetransfer.h>
-
 #include "file-transfer/file-transfer-status.h"
 
-#include "resource/jabber-resource-pool.h"
+#include "services/jabber-resource-service.h"
+#include "jabber-account-details.h"
 #include "jabber-protocol.h"
 
 #include "jabber-outgoing-file-transfer-handler.h"
 
-JabberOutgoingFileTransferHandler::JabberOutgoingFileTransferHandler(::FileTransfer transfer) :
-		OutgoingFileTransferHandler(transfer), JabberTransfer(0), InProgress(false), BytesTransferred(0)
+JabberOutgoingFileTransferHandler::JabberOutgoingFileTransferHandler(QXmppTransferManager *transferManager, FileTransfer transfer) :
+		OutgoingFileTransferHandler{transfer},
+		m_transferManager{transferManager},
+		m_inProgress{false}
 {
 }
 
@@ -39,69 +39,38 @@ JabberOutgoingFileTransferHandler::~JabberOutgoingFileTransferHandler()
 	cleanup(transfer().transferStatus());
 }
 
-void JabberOutgoingFileTransferHandler::connectJabberTransfer()
+void JabberOutgoingFileTransferHandler::setResourceService(JabberResourceService *resourceService)
 {
-	if (!JabberTransfer)
-		return;
-
-	connect(JabberTransfer, SIGNAL(accepted()), this, SLOT(fileTransferAccepted()));
-	connect(JabberTransfer, SIGNAL(connected()), this, SLOT(fileTransferConnected()));
-	connect(JabberTransfer, SIGNAL(bytesWritten(int)), this, SLOT(fileTransferBytesWritten(int)));
-	connect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
-}
-
-void JabberOutgoingFileTransferHandler::disconnectJabberTransfer()
-{
-	if (JabberTransfer)
-		disconnect(JabberTransfer, 0, this, 0);
-}
-
-void JabberOutgoingFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
-{
-	disconnectJabberTransfer();
-	JabberTransfer = jTransfer;
-	connectJabberTransfer();
+	m_resourceService = resourceService;
 }
 
 void JabberOutgoingFileTransferHandler::cleanup(FileTransferStatus status)
 {
-	InProgress = false;
-
 	transfer().setTransferStatus(status);
+	m_inProgress = false;
 
-	if (JabberTransfer)
+	if (m_transferJob)
 	{
-		JabberTransfer->deleteLater();
-		JabberTransfer = nullptr;
+		if (m_transferJob->state() == QXmppTransferJob::TransferState)
+			m_transferJob->abort();
+		m_transferJob->deleteLater();
 	}
 
-	if (Source)
+	if (m_source)
 	{
-		Source->close();
-		Source->deleteLater();
+		m_source->close();
+		m_source->deleteLater();
 	}
-
-	deleteLater();
-}
-
-void JabberOutgoingFileTransferHandler::updateFileInfo()
-{
-	if (JabberTransfer)
-		transfer().setTransferredSize(BytesTransferred);
-	else
-		transfer().setTransferredSize(0);
-
-	emit statusChanged();
 }
 
 void JabberOutgoingFileTransferHandler::send(QIODevice *source)
 {
-	if (InProgress) // already sending/receiving
+	if (m_inProgress) // already sending/receiving
 		return;
 
-	Source = source;
+	m_source = source;
 
-	Account account = transfer().peer().contactAccount();
+	auto account = transfer().peer().contactAccount();
 	if (account.isNull())
 	{
 		transfer().setTransferStatus(FileTransferStatus::NotConnected);
@@ -109,7 +78,7 @@ void JabberOutgoingFileTransferHandler::send(QIODevice *source)
 		return; // TODO: notify
 	}
 
-	XMPP::JabberProtocol *jabberProtocol = dynamic_cast<XMPP::JabberProtocol *>(account.protocolHandler());
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
 	if (!jabberProtocol)
 	{
 		transfer().setTransferStatus(FileTransferStatus::NotConnected);
@@ -124,116 +93,84 @@ void JabberOutgoingFileTransferHandler::send(QIODevice *source)
 		return;
 	}
 
-	QString jid = transfer().peer().id();
-	// sendFile needs jid with resource so take best from ResourcePool
-	PeerJid = XMPP::Jid(jid).withResource(jabberProtocol->resourcePool()->bestResource(jid).name());
+	auto jid = 	m_resourceService->bestContactJid(transfer().peer());
+	auto fileInfo = QXmppTransferFileInfo{};
+	fileInfo.setName(transfer().remoteFileName());
+	fileInfo.setSize(transfer().fileSize());
+	m_transferJob = m_transferManager->sendFile(jid.full(), m_source, fileInfo);
 
-	if (!JabberTransfer)
+	if (m_transferJob->error() == QXmppTransferJob::Error::NoError)
 	{
-		JabberTransfer = jabberProtocol->xmppClient()->fileTransferManager()->createTransfer();
-		connectJabberTransfer();
+		connect(m_transferJob, SIGNAL(progress(qint64,qint64)), this, SLOT(progress(qint64,qint64)));
+		connect(m_transferJob, SIGNAL(stateChanged(QXmppTransferJob::State)), this, SLOT(stateChanged(QXmppTransferJob::State)));
+		connect(m_transferJob, SIGNAL(error(QXmppTransferJob::Error)), this, SLOT(error(QXmppTransferJob::Error)));
+
+		transfer().setTransferStatus(FileTransferStatus::WaitingForAccept);
+		m_inProgress = true;
 	}
-
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account.details());
-	XMPP::Jid proxy;
-	if (0 != jabberAccountDetails)
-		proxy = jabberAccountDetails->dataTransferProxy();
-
-	if (proxy.isValid())
-		JabberTransfer->setProxy(proxy);
-
-	transfer().setTransferStatus(FileTransferStatus::WaitingForAccept);
-	InProgress = true;
-
-	JabberTransfer->sendFile(PeerJid, transfer().remoteFileName(), transfer().fileSize(), QString(), XMPP::FTThumbnail());
+	else
+		error(m_transferJob->error());
 }
 
 void JabberOutgoingFileTransferHandler::stop()
 {
-	if (JabberTransfer)
-		JabberTransfer->close();
+	if (m_transferJob)
+	{
+		m_transferJob->abort();
+		m_transferJob->deleteLater();
+	}
 
 	cleanup(FileTransferStatus::NotConnected);
 }
 
-void JabberOutgoingFileTransferHandler::fileTransferAccepted()
+void JabberOutgoingFileTransferHandler::progress(qint64 progress, qint64 total)
 {
-	transfer().setTransferStatus(FileTransferStatus::WaitingForConnection);
+	transfer().setTransferredSize(progress);
+	transfer().setFileSize(total);
+
+	emit statusChanged();
 }
 
-void JabberOutgoingFileTransferHandler::fileTransferConnected()
+void JabberOutgoingFileTransferHandler::stateChanged(QXmppTransferJob::State state)
 {
-	if (!Source->isOpen()) // ?? assert
+	switch (state)
 	{
-		cleanup(FileTransferStatus::NotConnected);
-		return;
+		case QXmppTransferJob::State::OfferState:
+			transfer().setTransferStatus(FileTransferStatus::WaitingForAccept);
+			break;
+		case QXmppTransferJob::State::StartState:
+			transfer().setTransferStatus(FileTransferStatus::WaitingForConnection);
+			break;
+		case QXmppTransferJob::State::TransferState:
+			transfer().setTransferStatus(FileTransferStatus::Transfer);
+			break;
+		case QXmppTransferJob::State::FinishedState:
+			transfer().setTransferStatus(FileTransferStatus::Finished);
+			break;
 	}
-
-	BytesTransferred = JabberTransfer->offset();
-	if (0 != BytesTransferred && !Source->seek(BytesTransferred))
-	{
-		cleanup(FileTransferStatus::NotConnected);
-		return;
-	}
-
-	transfer().setTransferredSize(BytesTransferred);
-	fileTransferBytesWritten(0);
-
-	transfer().setTransferStatus(FileTransferStatus::Transfer);
 }
 
-void JabberOutgoingFileTransferHandler::fileTransferBytesWritten(int written)
+void JabberOutgoingFileTransferHandler::error(QXmppTransferJob::Error error)
 {
-	BytesTransferred += written;
-	updateFileInfo();
-
-	if (BytesTransferred == (qlonglong)(transfer().fileSize()))
-	{
-		cleanup(FileTransferStatus::Finished);
-		return;
-	}
-
-	if (!JabberTransfer->bsConnection())
-	{
-		cleanup(FileTransferStatus::NotConnected);
-		return;
-	}
-
-	int dataSize = JabberTransfer->dataSizeNeeded();
-	QByteArray data(dataSize, (char)0);
-
-	int sizeRead = Source->read(data.data(), data.size());
-	if (sizeRead < 0)
-	{
-		cleanup(FileTransferStatus::NotConnected);
-		return;
-	}
-
-	if (sizeRead < data.size())
-		data.resize(sizeRead);
-
-	JabberTransfer->writeFileData(data);
-}
-
-FileTransferStatus JabberOutgoingFileTransferHandler::errorToStatus(int error)
-{
+	auto errorMessage = QString{};
 	switch (error)
 	{
-		case XMPP::FileTransfer::ErrReject:
-			return FileTransferStatus::Rejected;
+		case QXmppTransferJob::Error::AbortError:
+			errorMessage = tr("Aborted");
 			break;
-		case XMPP::FileTransfer::ErrNeg:
-		case XMPP::FileTransfer::ErrConnect:
-		case XMPP::FileTransfer::ErrStream:
+		case QXmppTransferJob::Error::FileCorruptError:
+			errorMessage = tr("File is corrupted");
+			break;
+		case QXmppTransferJob::Error::ProtocolError:
+			errorMessage = tr("Protocol error");
+			break;
 		default:
-			return FileTransferStatus::NotConnected;
+			errorMessage = tr("Unknown error");
 			break;
 	}
-}
 
-void JabberOutgoingFileTransferHandler::fileTransferError(int error)
-{
-	cleanup(errorToStatus(error));
+	transfer().setError(errorMessage);
+	cleanup(FileTransferStatus::NotConnected);
 }
 
 #include "moc_jabber-outgoing-file-transfer-handler.cpp"

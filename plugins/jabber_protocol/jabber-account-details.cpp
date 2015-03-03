@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "base64.h"
-
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
@@ -32,7 +30,7 @@
 #include "jabber-account-details.h"
 
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
-		AccountDetails(data), AutoResource(false), Priority{}, UseCustomHostPort(false), CustomPort(5222),
+		AccountDetails(data), AutoResource(false), Priority{100}, UseCustomHostPort(false), CustomPort(5222),
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS),
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
@@ -55,7 +53,7 @@ void JabberAccountDetails::load()
 	AccountDetails::load();
 
 	QString resourceString = loadValue<QString>("Resource");
-	QString priorityString = loadValue<QString>("Priority");
+	QString priorityString = loadValue<QString>("Priority", "100");
 	AutoResource = loadValue<bool>("AutoResource", false);
 
 	if (resourceString.isEmpty() || resourceString == "Kadu")
@@ -78,7 +76,7 @@ void JabberAccountDetails::load()
 
 	EncryptionMode = (EncryptionFlag)loadValue<int>("EncryptionMode", (int)Encryption_Auto);
 	PlainAuthMode = (AllowPlainType)loadValue<int>("PlainAuthMode", (int)AllowPlainOverTLS);
-	TlsOverrideCert = XMPP::Base64::decode(loadValue<QByteArray>("TlsOverrideCert"));
+	// TlsOverrideCert = Base64::decode(loadValue<QByteArray>("TlsOverrideCert"));
 	TlsOverrideDomain = loadValue<QString>("TlsOverrideDomain");
 
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
@@ -102,7 +100,7 @@ void JabberAccountDetails::store()
 
 	storeValue("EncryptionMode", EncryptionMode);
 	storeValue("PlainAuthMode", PlainAuthMode);
-	storeValue("TlsOverrideCert", XMPP::Base64::encode(TlsOverrideCert).toAscii());
+	// storeValue("TlsOverrideCert", Base64::encode(TlsOverrideCert).toAscii());
 	storeValue("TlsOverrideDomain", TlsOverrideDomain);
 
 	storeValue("SendTypingNotification", SendTypingNotification);

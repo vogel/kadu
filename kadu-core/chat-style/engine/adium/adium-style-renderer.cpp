@@ -323,7 +323,7 @@ void AdiumStyleRenderer::displayMessageStatus(const QString &id, MessageStatus s
 	configuration().webFrame().evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
-void AdiumStyleRenderer::displayChatState(ChatStateService::State state, const QString &message, const QString &name)
+void AdiumStyleRenderer::displayChatState(ChatState state, const QString &message, const QString &name)
 {
 	configuration().webFrame().evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
 }

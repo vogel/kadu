@@ -74,6 +74,7 @@
 #include "model/model-chain.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
+#include "protocols/services/chat-state.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "activate.h"
@@ -89,7 +90,7 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		InputBox{0},
 		HorizontalSplitter{0},
 		IsComposing{false},
-		CurrentContactActivity{ChatStateService::StateNone},
+		CurrentContactActivity{ChatState::None},
 		SplittersInitialized{false}
 {
 	kdebugf();
@@ -110,8 +111,8 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	if (CurrentChat.contacts().count() == 1)
 	{
 		if (currentProtocol() && currentProtocol()->chatStateService())
-			connect(currentProtocol()->chatStateService(), SIGNAL(peerStateChanged(const Contact &, ChatStateService::State)),
-					this, SLOT(contactActivityChanged(const Contact &, ChatStateService::State)));
+			connect(currentProtocol()->chatStateService(), SIGNAL(peerStateChanged(const Contact &, ChatState)),
+					this, SLOT(contactActivityChanged(const Contact &, ChatState)));
 	}
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
@@ -133,7 +134,7 @@ ChatWidget::~ChatWidget()
 	emit widgetDestroyed(this);
 
 	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
-		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatStateService::StateGone);
+		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Gone);
 
 	CurrentChat.setOpen(false);
 
@@ -654,7 +655,7 @@ void ChatWidget::composingStopped()
 	IsComposing = false;
 
 	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
-		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatStateService::StatePaused);
+		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Paused);
 }
 
 void ChatWidget::checkComposing()
@@ -680,19 +681,19 @@ void ChatWidget::updateComposing()
 			return;
 
 		if (chat().contacts().toContact())
-			currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatStateService::StateComposing);
+			currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Composing);
 
 		ComposingTimer.start();
 	}
 	IsComposing = true;
 }
 
-ChatStateService::State ChatWidget::chatState() const
+ChatState ChatWidget::chatState() const
 {
 	return CurrentContactActivity;
 }
 
-void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService::State state)
+void ChatWidget::contactActivityChanged(const Contact &contact, ChatState state)
 {
 	if (CurrentContactActivity == state)
 		return;
@@ -709,7 +710,7 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 	if (ChatConfigurationHolder::instance()->contactStateChats())
 		MessagesView->contactActivityChanged(contact, state);
 
-	if (CurrentContactActivity == ChatStateService::StateGone)
+	if (CurrentContactActivity == ChatState::Gone)
 	{
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
 		Message message = Message::create();

@@ -23,6 +23,8 @@
 #ifndef JABBER_PROTOCOL_H
 #define JABBER_PROTOCOL_H
 
+#include <qxmpp/QXmppClient.h>
+
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
@@ -33,24 +35,16 @@
 #include "services/jabber-subscription-service.h"
 #include "jabber-account-details.h"
 
-namespace XMPP
-{
-	class Resource;
-
-	class JabberClientInfoService;
-	class JabberConnectionService;
-	class JabberServerInfoService;
-	class JabberStreamDebugService;
-	class JabberSubscriptionService;
-	class JabberVCardService;
-}
-
+class JabberClientInfoService;
 class JabberContactDetails;
-class JabberPepService;
-class JabberResourcePool;
+class JabberPresenceService;
+class JabberResourceService;
+class JabberRoomChatService;
+class JabberStreamDebugService;
 
-namespace XMPP
-{
+class QXmppClient;
+class QXmppMucManager;
+class QXmppTransferManager;
 
 class JabberProtocol : public Protocol
 {
@@ -58,48 +52,46 @@ class JabberProtocol : public Protocol
 
 	JabberAvatarService *CurrentAvatarService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
-	JabberFileTransferService *CurrentFileTransferService;
+	JabberFileTransferService *m_fileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
-	XMPP::JabberSubscriptionService *CurrentSubscriptionService;
-	XMPP::JabberClientInfoService *CurrentClientInfoService;
-	XMPP::JabberServerInfoService *CurrentServerInfoService;
-	XMPP::JabberConnectionService *CurrentConnectionService;
-	JabberPepService *CurrentPepService;
-	XMPP::JabberStreamDebugService *CurrentStreamDebugService;
-	XMPP::JabberVCardService *CurrentVCardService;
+	JabberSubscriptionService *m_subscriptionService;
+	JabberClientInfoService *CurrentClientInfoService;
+	JabberPresenceService *m_presenceService;
+	JabberRoomChatService *m_roomChatService;
+	JabberStreamDebugService *CurrentStreamDebugService;
+	JabberVCardService *m_vcardService;
+	JabberResourceService *m_resourceService;
 
-	XMPP::Client *XmppClient;
-	JabberResourcePool *ResourcePool;
+	QXmppClient *m_client;
+	std::unique_ptr<QXmppMucManager> m_mucManager;
+	std::unique_ptr<QXmppTransferManager> m_transferManager;
 
 	bool ContactsListReadOnly;
 
-	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
+	// void notifyAboutPresenceChanged(const Jid &jid, const Resource &resource);
 
 private slots:
 	void connectedToServer();
-	void rosterReady(bool success);
+	void disconenctedFromServer();
+	void error(QXmppClient::Error error);
 
-	void clientAvailableResourceReceived(const Jid &j, const Resource &r);
-	void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
+	void rosterReady();
 
-	void connectionClosedSlot(const QString &message);
-	void connectionErrorSlot(const QString &message);
+	void presenceReceived(const QXmppPresence &presence);
 
-	void serverInfoUpdated();
+	// void clientAvailableResourceReceived(const Jid &j, const Resource &r);
+	// void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
 
 protected:
-	virtual void login();
-	virtual void afterLoggedIn();
-	virtual void logout();
-	virtual void sendStatusToServer();
+	virtual void login() override;
+	virtual void logout() override;
+	virtual void sendStatusToServer() override;
 
-	virtual void changePrivateMode();
+	virtual void changePrivateMode() override;
 
 public:
 	JabberProtocol(Account account, ProtocolFactory *factory);
 	virtual ~JabberProtocol();
-
-	XMPP::Client * xmppClient();
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
 	virtual bool contactsListReadOnly() { return ContactsListReadOnly; }
@@ -108,17 +100,12 @@ public:
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
+	virtual FileTransferService * fileTransferService() { return m_fileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
-	virtual SubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
-	virtual XMPP::JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
-	virtual XMPP::JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
-	virtual JabberPepService * pepService() { return CurrentPepService; }
-	virtual XMPP::JabberConnectionService * connectionService() { return CurrentConnectionService; }
-	virtual XMPP::JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
-	virtual XMPP::JabberVCardService * vcardService() { return CurrentVCardService; }
-
-	JabberResourcePool *resourcePool();
+	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
+	// virtual JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
+	// virtual JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
+	virtual JabberVCardService * vcardService() { return m_vcardService; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
 
@@ -126,7 +113,5 @@ signals:
 	void userStatusChangeIgnored(Buddy);
 
 };
-
-}
 
 #endif //JABBER_PROTOCOL_H

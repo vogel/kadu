@@ -18,16 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_DOWNLOADER_H
-#define JABBER_AVATAR_DOWNLOADER_H
+#pragma once
 
 #include <QtCore/QPointer>
+#include <QtGui/QPixmap>
 
 #include "protocols/services/avatar-downloader.h"
 
-namespace XMPP { class JabberVCardService; }
+class JabberVCardService;
 
-class JabberPepService;
+class QXmppVCardIq;
 
 /**
  * @addtogroup Jabber
@@ -36,42 +36,32 @@ class JabberPepService;
 
 /**
  * @class JabberAvatarDownloader
- * @short Downloads avatar from XMPP server using PEP or VCard.
+ * @short Class for downloading one avatar for Jabber/XMPP protocol using VCard.
  * @author Rafał 'Vogel' Malinowski
  *
- * This class allows for easy download of avatar from XMPP server. New instance can be created by constructor that requires
- * JabberPepService and XMPP::JabberVCardService arguments. If both services are null then this class will always fail
- * to do it job. If one is provided then it will be used to download avatar. If both are provided then PEP service will
- * be used and VCard only when PEP service is not enabled or when it failed.
- *
- * This class internally used JabberAvatarPepDownloader and JabberAvatarVCardDownloader.
+ * This class allows for easy download of avatar for given contact from XMPP server. New instance can be created by
+ * constructor that requires JabberVCardService argument.
  */
 class JabberAvatarDownloader : public AvatarDownloader
 {
 	Q_OBJECT
 
-	QString Id;
-	QPointer<JabberPepService> PepService;
-	QPointer<XMPP::JabberVCardService> VCardService;
+	QPointer<JabberVCardService> VCardService;
 
+	void done(QImage avatar);
 	void failed();
 
-	void downloadAvatarPEP();
-	void downloadAvatarVCard();
-
 private slots:
-	void pepAvatarDownloaded(bool ok, QImage avatar);
-	void vCardAvatarDownloaded(bool ok, QImage avatar);
+	void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
 	/**
-	 * @short Create new JabberAvatarPepDownloader instance.
+	 * @short Create new JabberAvatarDownloader instance.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param pepService pep service to use in this class
 	 * @param vCardService vCard service to use in this class
 	 * @param parent QObject parent
 	 */
-	explicit JabberAvatarDownloader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
+	explicit JabberAvatarDownloader(JabberVCardService *vCardService, QObject *parent = 0);
 	virtual ~JabberAvatarDownloader();
 
 	virtual void downloadAvatar(const QString &id);
@@ -81,5 +71,3 @@ public:
 /**
  * @}
  */
-
-#endif // JABBER_AVATAR_DOWNLOADER_H

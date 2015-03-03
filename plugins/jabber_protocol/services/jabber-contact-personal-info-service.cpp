@@ -18,18 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDate>
-
-#include <xmpp_jid.h>
-#include <xmpp_vcard.h>
-
-#include "buddies/buddy-manager.h"
-#include "contacts/contact.h"
+#include "jabber-contact-personal-info-service.h"
 
 #include "jabber-vcard-downloader.h"
 #include "jabber-vcard-service.h"
 
-#include "jabber-contact-personal-info-service.h"
+#include "buddies/buddy-manager.h"
+#include "contacts/contact.h"
+
+#include <QtCore/QDate>
+#include <qxmpp/QXmppVCardIq.h>
 
 JabberContactPersonalInfoService::JabberContactPersonalInfoService(Account account, QObject *parent) :
 		ContactPersonalInfoService(account, parent)
@@ -40,7 +38,7 @@ JabberContactPersonalInfoService::~JabberContactPersonalInfoService()
 {
 }
 
-void JabberContactPersonalInfoService::setVCardService(XMPP::JabberVCardService *vCardService)
+void JabberContactPersonalInfoService::setVCardService(JabberVCardService *vCardService)
 {
 	VCardService = vCardService;
 }
@@ -55,26 +53,26 @@ void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 	if (!vCardDownloader)
 		return;
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,QXmppVCardIq)), this, SLOT(vCardDownloaded(bool,QXmppVCardIq)));
 	vCardDownloader->downloadVCard(contact.id());
 }
 
-void JabberContactPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCard)
+void JabberContactPersonalInfoService::vCardDownloaded(bool ok, const QXmppVCardIq &vCard)
 {
 	if (!ok)
 		return;
 
 	CurrentBuddy.setNickName(vCard.nickName());
 	CurrentBuddy.setFirstName(vCard.fullName());
-	CurrentBuddy.setFamilyName(vCard.familyName());
-	QDate bday = QDate::fromString(vCard.bdayStr(), "yyyy-MM-dd");
+	CurrentBuddy.setFamilyName(vCard.middleName());
+	auto bday = vCard.birthday();
 	if (bday.isValid() && !bday.isNull())
 		CurrentBuddy.setBirthYear(bday.year());
 
-	if (!vCard.addressList().isEmpty())
-		CurrentBuddy.setCity(vCard.addressList().at(0).locality);
-	if (!vCard.emailList().isEmpty())
-		CurrentBuddy.setEmail(vCard.emailList().at(0).userid);
+	if (!vCard.addresses().isEmpty())
+		CurrentBuddy.setCity(vCard.addresses().at(0).locality());
+	if (!vCard.emails().isEmpty())
+		CurrentBuddy.setEmail(vCard.emails().at(0).address());
 	CurrentBuddy.setWebsite(vCard.url());
 
 	emit personalInfoAvailable(CurrentBuddy);

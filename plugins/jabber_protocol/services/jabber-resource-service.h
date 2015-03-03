@@ -1,8 +1,6 @@
 /*
- * Copyright (C) 2006  Remko Troncon
- *
  * %kadu copyright begin%
- * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,33 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PEP_PUBLISH_TASK_H
-#define PEP_PUBLISH_TASK_H
+#pragma once
 
-#include <QtXml/QDomElement>
+#include "jabber-resource.h"
 
-#include "iris/xmpp_pubsubitem.h"
-#include "iris/xmpp_task.h"
-#include "services/jabber-pep-service.h"
+#include <QtCore/QObject>
+#include <QtCore/QVector>
 
-class PEPPublishTask : public XMPP::Task
+class Jid;
+
+class Chat;
+class Contact;
+
+class JabberResourceService : public QObject
 {
 	Q_OBJECT
 
-	QDomElement iq_;
-	QString node_;
-	XMPP::PubSubItem item_;
-
 public:
-	PEPPublishTask(Task *parent, const QString &node, const XMPP::PubSubItem &it, JabberPepService::Access access);
-	virtual ~PEPPublishTask();
+	explicit JabberResourceService(QObject *parent = nullptr);
+	virtual ~JabberResourceService();
 
-	bool take(const QDomElement &x);
-	void onGo();
+	void updateResource(JabberResource resource);
+	void removeResource(const Jid &jid);
+	void removeResources(const QString &bareJid);
+	void clear();
 
-	const XMPP::PubSubItem & item() const;
-	const QString & node() const;
+	JabberResource bestResource(const QString &bareJid) const;
+
+	Jid bestChatJid(const Chat &chat) const;
+	Jid bestContactJid(const Contact &chat) const;
+
+private:
+	QVector<JabberResource> m_resources;
 
 };
-
-#endif // PEP_PUBLISH_TASK_H

@@ -36,8 +36,8 @@
 #include <QtCore/QScopedArrayPointer>
 #include <libgadu.h>
 
-GaduRosterService::GaduRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent) :
-		RosterService{protocol, contacts, parent},
+GaduRosterService::GaduRosterService(const QVector<Contact> &contacts, Protocol *protocol) :
+		RosterService{contacts, protocol},
 		m_stateMachine{new GaduRosterStateMachine{this, protocol}}
 {
 	connect(this, SIGNAL(contactAdded(Contact)), this, SLOT(rosterChanged()));

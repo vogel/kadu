@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,41 +19,55 @@
 
 #pragma once
 
-#include "protocols/services/subscription-service.h"
+#include "chat/chat.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-class JabberProtocol;
+class JabberPresenceService;
 
+class BuddyManager;
 class ContactManager;
 
-class QXmppRosterManager;
+class QXmppMucRoom;
 
-class JabberSubscriptionService : public SubscriptionService
+class JabberRoomChat : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit JabberSubscriptionService(QXmppRosterManager *roster, JabberProtocol *protocol);
-	virtual ~JabberSubscriptionService();
+	explicit JabberRoomChat(QXmppMucRoom *room, Chat chat, QObject *parent = nullptr);
+	virtual ~JabberRoomChat();
 
+	void setBuddyManager(BuddyManager *buddyManager);
 	void setContactManager(ContactManager *contactManager);
+	void setPresenceService(JabberPresenceService *presenceService);
 
-	virtual void resendSubscription(const Contact &contact);
-	virtual void removeSubscription(const Contact &contact);
-	virtual void requestSubscription(const Contact &contact);
+	bool stayInRoomAfterClosingWindow() const;
 
-public slots:
-	virtual void authorizeContact(Contact contact, bool authorized);
+	void join();
+	void leave();
+
+	Chat chat() const;
+	QString nick() const;
+
+signals:
+	void joined(const Chat &chat);
+	void left(const Chat &chat);
 
 private:
-	QPointer<QXmppRosterManager> m_roster;
-	JabberProtocol *m_protocol;
-
+	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<JabberPresenceService> m_presenceService;
+
+	QPointer<QXmppMucRoom> m_room;
+	Chat m_chat;
 
 private slots:
-	void subscriptionReceived(const QString &bareJid);
+	void updated();
+	void joined();
+	void left();
+	void participantChanged(const QString &id);
+	void participantRemoved(const QString &id);
 
 };

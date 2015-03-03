@@ -1,8 +1,6 @@
 /*
- * Copyright (C) 2006  Remko Troncon
- *
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,30 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PEP_RETRACT_TASK_H
-#define PEP_RETRACT_TASK_H
+#include "jabber-resource.h"
 
-#include <QtXml/QDomElement>
-
-#include "iris/xmpp_task.h"
-
-class PEPRetractTask : public XMPP::Task
+JabberResource::JabberResource() :
+		_priority{-1}
 {
-	Q_OBJECT
+}
 
-	QDomElement iq_;
-	QString node_;
-	QString itemId_;
+JabberResource::JabberResource(Jid jid, int priority, Status status) :
+		_jid{std::move(jid)},
+		_priority{priority},
+		_status{std::move(status)}
+{
+}
 
-public:
-	PEPRetractTask(Task *parent, const QString &node, const QString &itemId);
-	virtual ~PEPRetractTask();
+bool JabberResource::isEmpty() const
+{
+	return _jid.isEmpty();
+}
 
-	bool take(const QDomElement &x);
-	void onGo();
+Jid JabberResource::jid() const
+{
+	return _jid;
+}
 
-	const QString & node() const;
+int JabberResource::priority() const
+{
+	return _priority;
+}
 
-};
-
-#endif // PEP_RETRACT_TASK_H
+Status JabberResource::status() const
+{
+	return _status;
+}

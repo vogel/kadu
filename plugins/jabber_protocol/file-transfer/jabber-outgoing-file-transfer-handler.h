@@ -19,57 +19,45 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
-
-#include <jid.h>
-#include <s5b.h>
-
 #include "file-transfer/outgoing-file-transfer-handler.h"
 
-namespace XMPP
-{
-	class FileTransfer;
-};
+#include <QtCore/QPointer>
+#include <qxmpp/QXmppTransferManager.h>
+
+class JabberResourceService;
 
 class JabberOutgoingFileTransferHandler : public OutgoingFileTransferHandler
 {
 	Q_OBJECT
 
-	// a workaround to Qt's MOC not doing really well when mixing namespaces
-	typedef XMPP::StreamHostList StreamHostList;
-
-	XMPP::FileTransfer *JabberTransfer;
-	XMPP::Jid PeerJid;
-
-	bool InProgress;
-	qlonglong BytesTransferred;
-	QPointer<QIODevice> Source;
-
-	void connectJabberTransfer();
-	void disconnectJabberTransfer();
-
-	FileTransferStatus errorToStatus(int error);
-	void cleanup(FileTransferStatus status);
-
-protected:
-	virtual void updateFileInfo();
-
-private slots:
-	void fileTransferAccepted();
-	void fileTransferConnected();
-	void fileTransferBytesWritten(int);
-	void fileTransferError(int);
-
 public:
-	explicit JabberOutgoingFileTransferHandler(FileTransfer fileTransfer);
+	explicit JabberOutgoingFileTransferHandler(QXmppTransferManager *transferManager, FileTransfer fileTransfer);
 	virtual ~JabberOutgoingFileTransferHandler();
 
-	void setJTransfer(XMPP::FileTransfer *jTransfer);
+	void setResourceService(JabberResourceService *resourceService);
+
+	void setJTransfer(FileTransfer *jTransfer);
 
 	virtual void send(QIODevice *source);
 	virtual void stop();
 
 signals:
 	void statusChanged();
+
+private:
+	QPointer<QXmppTransferManager> m_transferManager;
+	QPointer<JabberResourceService> m_resourceService;
+
+	QPointer<QXmppTransferJob> m_transferJob;
+
+	bool m_inProgress;
+	QPointer<QIODevice> m_source;
+
+	void cleanup(FileTransferStatus status);
+
+private slots:
+	void progress(qint64 progress, qint64 total);
+	void stateChanged(QXmppTransferJob::State state);
+	void error(QXmppTransferJob::Error error);
 
 };

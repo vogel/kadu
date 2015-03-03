@@ -66,7 +66,7 @@ public slots:
 	void refreshView();
 
 	void clearMessages();
-	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
+	void contactActivityChanged(const Contact &contact, ChatState state);
 	void updateAtBottom();
 
 	void pageUp();

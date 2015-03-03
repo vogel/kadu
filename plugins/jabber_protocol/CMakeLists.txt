@@ -5,13 +5,12 @@ cmake_minimum_required (VERSION 2.8)
 # Needed for FindQCA2.cmake when building externally
 list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
 
-set (EXTERNAL_LIBIRS "" CACHE STRING "Path to directory with libiris.a and libirisnet.a file")
-
 find_package (Kadu REQUIRED CONFIG)
 
 find_package (PkgConfig)
 pkg_search_module (IDN REQUIRED libidn)
-pkg_search_module (ZLIB zlib)
+pkg_search_module (ZLIB REQUIRED zlib)
+pkg_search_module (QXMPP REQUIRED qxmpp)
 
 if (NOT ZLIB_FOUND)
 	find_package (ZLIB REQUIRED)
@@ -36,7 +35,6 @@ kadu_api_directories (plugins/jabber_protocol
 	gui/windows
 	gui
 	open-chat-with
-	resource
 	server
 	services
 	tasks
@@ -57,7 +55,6 @@ set (SOURCES
 
 	file-transfer/jabber-outgoing-file-transfer-handler.cpp
 	file-transfer/jabber-stream-incoming-file-transfer-handler.cpp
-	file-transfer/s5b-server-manager.cpp
 
 	gui/widgets/jabber-contact-personal-info-widget.cpp
 	gui/widgets/jabber-add-account-widget.cpp
@@ -72,15 +69,8 @@ set (SOURCES
 
 	open-chat-with/jabber-open-chat-with-runner.cpp
 
-	resource/jabber-resource.cpp
-	resource/jabber-resource-pool.cpp
-
 	server/jabber-avatar-downloader.cpp
-	server/jabber-avatar-pep-downloader.cpp
-	server/jabber-avatar-pep-uploader.cpp
 	server/jabber-avatar-uploader.cpp
-	server/jabber-avatar-vcard-downloader.cpp
-	server/jabber-avatar-vcard-uploader.cpp
 	server/jabber-server-change-password.cpp
 	server/jabber-server-register-account.cpp
 
@@ -88,25 +78,21 @@ set (SOURCES
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
 	services/jabber-client-info-service.cpp
-	services/jabber-connection-service.cpp
 	services/jabber-contact-personal-info-service.cpp
 	services/jabber-file-transfer-service.cpp
-	services/jabber-pep-service.cpp
 	services/jabber-personal-info-service.cpp
+	services/jabber-presence-service.cpp
+	services/jabber-resource.cpp
+	services/jabber-resource-service.cpp
 	services/jabber-room-chat-service.cpp
+	services/jabber-room-chat.cpp
 	services/jabber-roster-service.cpp
-	services/jabber-server-info-service.cpp
 	services/jabber-stream-debug-service.cpp
 	services/jabber-subscription-service.cpp
 	services/jabber-vcard-downloader.cpp
 	services/jabber-vcard-service.cpp
 	services/jabber-vcard-uploader.cpp
 
-	tasks/pep-get-task.cpp
-	tasks/pep-publish-task.cpp
-	tasks/pep-retract-task.cpp
-
-	iris-status-adapter.cpp
 	jabber-account-details.cpp
 	jabber-contact-details.cpp
 	jabber-error-helper.cpp
@@ -117,6 +103,7 @@ set (SOURCES
 	jabber-status-adapter.cpp
 	jabber-url-dom-visitor-provider.cpp
 	jabber-url-handler.cpp
+	jid.cpp
 	facebook-protocol-factory.cpp
 	gtalk-protocol-factory.cpp
 )
@@ -130,8 +117,6 @@ set (MOC_SOURCES
 
 	client/mini-client.h
 
-	file-transfer/s5b-server-manager.h
-
 	gui/widgets/jabber-contact-personal-info-widget.h
 	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h
@@ -143,15 +128,8 @@ set (MOC_SOURCES
 	gui/windows/jabber-wait-for-account-register-window.h
 	gui/windows/xml-console.h
 
-	resource/jabber-resource.h
-	resource/jabber-resource-pool.h
-
 	server/jabber-avatar-downloader.h
-	server/jabber-avatar-pep-downloader.h
-	server/jabber-avatar-pep-uploader.h
 	server/jabber-avatar-uploader.h
-	server/jabber-avatar-vcard-downloader.h
-	server/jabber-avatar-vcard-uploader.h
 	server/jabber-server-change-password.h
 	server/jabber-server-register-account.h
 
@@ -159,22 +137,15 @@ set (MOC_SOURCES
 	services/jabber-chat-service.h
 	services/jabber-chat-state-service.h
 	services/jabber-client-info-service.h
-	services/jabber-connection-service.h
 	services/jabber-contact-personal-info-service.h
 	services/jabber-file-transfer-service.h
-	services/jabber-pep-service.h
 	services/jabber-personal-info-service.h
 	services/jabber-roster-service.h
-	services/jabber-server-info-service.h
 	services/jabber-stream-debug-service.h
 	services/jabber-subscription-service.h
 	services/jabber-vcard-downloader.h
 	services/jabber-vcard-service.h
 	services/jabber-vcard-uploader.h
-
-	tasks/pep-get-task.h
-	tasks/pep-publish-task.h
-	tasks/pep-retract-task.h
 
 	facebook-protocol-factory.h
 	gtalk-protocol-factory.h
@@ -185,52 +156,18 @@ set (MOC_SOURCES
 	jabber-url-handler.h
 )
 
-add_definitions (${QCA2_DEFINITIONS} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC)
+add_definitions (${QCA2_DEFINITIONS} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} ${QXMPP_DEFINITIONS} ${QXMPP_CFLAGS_OTHER})
 
-if ("${EXTERNAL_LIBIRS}" STREQUAL "")
-	add_subdirectory (3rdparty)
-	set (LIBRARIES 3rdparty)
-else ()
-	set (LIBRARIES "${EXTERNAL_LIBIRS}/lib/libiris.a" "${EXTERNAL_LIBIRS}/lib/libirisnet.a")
-	include_directories ("${EXTERNAL_LIBIRS}/include/")
-	include_directories ("${EXTERNAL_LIBIRS}/include/iris/")
-	include_directories ("${EXTERNAL_LIBIRS}/src/irisnet/corelib/")
-	include_directories ("${EXTERNAL_LIBIRS}/src/xmpp/base64/")
-	include_directories ("${EXTERNAL_LIBIRS}/src/xmpp/jid/")
-	include_directories ("${EXTERNAL_LIBIRS}/src/xmpp/xmpp-core/")
-	include_directories ("${EXTERNAL_LIBIRS}/src/")
-endif ()
-
-include_directories (
-	${QCA2_INCLUDE_DIR}
-
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include/iris
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/irisnet/corelib
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/base64/
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/jid/
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src/xmpp/xmpp-core/
-	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src
-)
-
-set (LIBRARIES ${LIBRARIES} ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES})
+set (LIBRARIES ${LIBRARIES} ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QXMPP_LIBRARIES})
 if (WIN32)
 	set (LIBRARIES ${LIBRARIES} advapi32 ws2_32)
 endif ()
 
-link_directories (${CMAKE_CURRENT_BUILD_DIR}/3rdparty ${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
-
-set (CONFIGURATION_FILES
-	data/configuration/jabber_protocol.ui
-)
+include_directories (${QXMPP_INCLUDE_DIRS})
+link_directories (${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${QXMPP_LIBRARY_DIRS})
 
 kadu_plugin (jabber_protocol
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
-	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-)
-
-add_dependencies (jabber_protocol
-	3rdparty
 )

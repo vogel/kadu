@@ -40,7 +40,7 @@ public:
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
 	virtual void removeFirstMessage() override;
 	virtual void displayMessageStatus(const QString &id, MessageStatus) override;
-	virtual void displayChatState(ChatStateService::State, const QString &, const QString &) override;
+	virtual void displayChatState(ChatState, const QString &, const QString &) override;
 	virtual void displayChatImage(const ChatImage &chatImage, const QString &fileName) override;
 
 private:

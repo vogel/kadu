@@ -18,16 +18,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_SERVICE_H
-#define JABBER_AVATAR_SERVICE_H
+#pragma once
 
 #include <QtCore/QPointer>
 
 #include "protocols/services/avatar-service.h"
 
-namespace XMPP { class JabberVCardService; }
+class JabberVCardService;
 
-class JabberPepService;
+class AvatarManager;
+class ContactManager;
+
+class QXmppClient;
+class QXmppPresence;
 
 /**
  * @addtogroup Jabber
@@ -42,22 +45,12 @@ class JabberPepService;
  *
  * See documentation of AvatarService to get general information about this service.
  *
- * JabberAvatarService uses JabberPepService or XMPP::JabberVCardService to create AvatarDownloader and
- * AvatarUploader instances.
- *
- * When neither JabberPepService nor XMPP::JabberVCardService are provided this service will return null
- * AvatarDownloader and AvatarUploader instances. If only one service is available then proper downloader and
- * uploader will be returned. In case both are available then returned instance will try to use PEP protocol
- * first, then VCard in case PEP fails.
- *
- * Use setPepService() and/or setVCardService() to set these services.
+ * JabberAvatarService uses JabberVCardService to create AvatarDownloader and
+ * AvatarUploader instances. Use setVCardService() to set this service.
  */
 class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
-
-	QPointer<JabberPepService> PepService;
-	QPointer<XMPP::JabberVCardService> VCardService;
 
 public:
 	/**
@@ -66,31 +59,36 @@ public:
 	 * @param account account of service
 	 * @param parent QObject parent of service
 	 */
-	explicit JabberAvatarService(Account account, QObject *parent = 0);
+	explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = 0);
 	virtual ~JabberAvatarService();
 
-	/**
-	 * @short Set PEP service object to use in this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param pepService PEP service object to use
-	 */
-	void setPepService(JabberPepService *pepService);
+	void setAvatarManager(AvatarManager *avatarManager);
+	void setContactManager(ContactManager *contactManager);
 
 	/**
 	 * @short Set VCard service object to use in this service.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param vCardService VCard service object to use
 	 */
-	void setVCardService(XMPP::JabberVCardService *vCardService);
+	void setVCardService(JabberVCardService *vCardService);
 
 	virtual AvatarDownloader * createAvatarDownloader() override;
 	virtual AvatarUploader * createAvatarUploader() override;
-	virtual bool eventBasedUpdates() override { return false; }
+	virtual bool eventBasedUpdates() override { return true; }
+
+private:
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<ContactManager> m_contactManager;
+
+	QPointer<QXmppClient> m_client;
+	QPointer<JabberVCardService> VCardService;
+
+private slots:
+    void rosterReceived();
+	void presenceReceived(const QXmppPresence &presence);
 
 };
 
 /**
  * @}
  */
-
-#endif // JABBER_AVATAR_SERVICE_H

@@ -35,7 +35,7 @@ class GaduRosterService : public RosterService
 	Q_OBJECT
 
 public:
-	explicit GaduRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = nullptr);
+	explicit GaduRosterService(const QVector<Contact> &contacts, Protocol *protocol);
 	virtual ~GaduRosterService();
 
 	void setConnection(GaduConnection *connection);

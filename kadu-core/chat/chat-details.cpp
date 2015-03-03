@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IRIS_STATUS_ADAPTER_H
-#define IRIS_STATUS_ADAPTER_H
+#include "chat-details.h"
 
-namespace XMPP
+#include "misc/change-notifier.h"
+
+ChatDetails::ChatDetails(ChatShared *mainData) :
+		QObject{},
+		Details<ChatShared>{mainData}
 {
-	class Status;
+	m_changeNotifier = new ChangeNotifier{this};
+	connect(m_changeNotifier, SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
-class Status;
-
-namespace IrisStatusAdapter
+ChatDetails::~ChatDetails()
 {
-	Status fromIrisStatus(const XMPP::Status &status);
-	XMPP::Status toIrisStatus(Status status);
+}
 
-	bool statusesEqual(Status status1, Status status2);
-};
+void ChatDetails::notifyChanged()
+{
+	m_changeNotifier->notify();
+}
 
-#endif // IRIS_STATUS_ADAPTER_H
+#include "moc_chat-details.cpp"

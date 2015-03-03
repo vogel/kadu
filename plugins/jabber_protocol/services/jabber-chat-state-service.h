@@ -18,67 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_CHAT_STATE_SERVICE_H
-#define JABBER_CHAT_STATE_SERVICE_H
+#pragma once
+
+#include "protocols/services/chat-state-service.h"
 
 #include <QtCore/QHash>
 #include <QtCore/QPointer>
 
-#include "chat/chat.h"
+class JabberResourceService;
+class Jid;
 
-#include "xmpp_message.h"
-
-#include "protocols/services/chat-state-service.h"
-
-class JabberProtocol;
-
-namespace XMPP
-{
-
-class Client;
+class QXmppClient;
+class QXmppMessage;
 
 class JabberChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
-	struct ContactInfo
-	{
-		bool UserRequestedEvents;
-		QString EventId;
-
-		ChatState ContactChatState;
-		ChatState LastChatState;
-
-		ContactInfo() :
-				UserRequestedEvents(false), ContactChatState(::XMPP::StateNone), LastChatState(::XMPP::StateNone)
-		{
-		}
-	};
-
-	QPointer<Client> XmppClient;
-
-	QHash<Contact, ContactInfo> ContactInfos;
-
-	bool shouldSendEvent(const Contact &contact);
-
-	void setChatState(const Contact &contact, ChatState state);
-
-	static State xmppStateToContactState(ChatState state);
-
 public:
-	explicit JabberChatStateService(Account account, QObject *parent = 0);
+	explicit JabberChatStateService(QXmppClient *client, Account account, QObject *parent = nullptr);
 	virtual ~JabberChatStateService();
 
-	virtual void sendState(const Contact &contact, State state);
+	void setResourceService(JabberResourceService *resourceService);
 
-	void setClient(Client *xmppClient);
+	virtual void sendState(const Contact &contact, ChatState state) override;
 
-public slots:
-	void handleReceivedMessage(const Message &m);
-	void handleMessageAboutToSend(Message &message);
+	void extractReceivedChatState(const QXmppMessage &message);
+	QXmppMessage withSentChatState(QXmppMessage message);
+
+private:
+	QPointer<QXmppClient> m_client;
+	QPointer<JabberResourceService> m_resourceService;
 
 };
-
-}
-
-#endif // JABBER_CHAT_STATE_SERVICE_H

@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_ROSTER_SERVICE_H
-#define JABBER_ROSTER_SERVICE_H
+#pragma once
 
 #include <QtCore/QPointer>
 
@@ -27,36 +26,28 @@
 #include "roster/roster-service.h"
 
 enum class JabberRosterState;
+
 class Buddy;
 class Contact;
 class JabberProtocol;
 
-namespace XMPP
-{
-
-class Client;
-class JT_Roster;
-class RosterItem;
+class QXmppRosterEntry;
+class QXmppRosterManager;
 
 class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 
-	QPointer<Client> XmppClient;
+	QPointer<QXmppRosterManager> m_roster;
 
 	QSet<Contact> m_markedForDelete;
 	owned_qptr<RosterServiceTasks> m_tasks;
-	QMap<JT_Roster *, Contact> ContactForTask;
 	JabberRosterState State;
 
-	static QStringList buddyGroups(const Buddy &buddy);
-	static const QString & itemDisplay(const RosterItem &item);
+	static QSet<QString> buddyGroups(const Buddy &buddy);
+	QString itemDisplay(const QString &bareJid);
 
 	void ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display);
-	JT_Roster * createContactTask(const Contact &contact);
-
-	void connectToClient();
-	void disconnectFromClient();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -88,7 +79,7 @@ class JabberRosterService : public RosterService
 	 * - items with subscription='none' or subscription='from' and ask='subscribe'. It is ((subscription='none' or subscription='from') and ask='subscribe') ;
 	 * - items with subscription='none' or subscription='from' which have a 'name' attribute or a 'group' child set. It is ((subscription='none' or subscription='from') and (name attribute or group child)).
 	 */
-	bool isIntrestedIn(const XMPP::RosterItem &item);
+	bool isIntrestedIn(const QString &bareJid);
 
 	/**
 	 * @short Sets state of roster service.
@@ -109,13 +100,10 @@ private slots:
 	void contactRemovedSlot(Contact contact);
 	void contactUpdatedSlot(Contact contact);
 
-	void remoteContactUpdated(const RosterItem &item);
-	void remoteContactDeleted(const RosterItem &item);
+	void remoteContactUpdated(const QString &bareJid);
+	void remoteContactDeleted(const QString &bareJid);
 
-	void rosterTaskFinished();
-	void rosterTaskDeleted(QObject *object);
-
-	void rosterRequestFinished(bool success);
+	void rosterRequestFinished();
 
 protected:
 	/**
@@ -143,7 +131,7 @@ protected:
 	void executeTask(const RosterTask &task);
 
 public:
-	explicit JabberRosterService(Protocol *protocol, const QVector<Contact> &contacts, QObject *parent = 0);
+	explicit JabberRosterService(QXmppRosterManager *roster, const QVector<Contact> &contacts, Protocol *protocol);
 	virtual ~JabberRosterService();
 
     virtual RosterServiceTasks * tasks() const override;
@@ -152,17 +140,10 @@ public:
 
 	void prepareRoster();
 
-	void setClient(Client *xmppClient);
-
 signals:
 	/**
 	 * @short Signal emitted when roster is ready
-	 * @param ok true, if preparing roster was successfull
 	 */
-	void rosterReady(bool ok);
+	void rosterReady();
 
 };
-
-}
-
-#endif // JABBER_ROSTER_SERVICE_H
