@@ -44,6 +44,7 @@ class JabberStreamDebugService;
 
 class QXmppClient;
 class QXmppMucManager;
+class QXmppTransferManager;
 
 class JabberProtocol : public Protocol
 {
@@ -51,7 +52,7 @@ class JabberProtocol : public Protocol
 
 	JabberAvatarService *CurrentAvatarService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
-	JabberFileTransferService *CurrentFileTransferService;
+	JabberFileTransferService *m_fileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
 	JabberSubscriptionService *m_subscriptionService;
 	JabberClientInfoService *CurrentClientInfoService;
@@ -63,6 +64,7 @@ class JabberProtocol : public Protocol
 
 	QXmppClient *m_client;
 	std::unique_ptr<QXmppMucManager> m_mucManager;
+	std::unique_ptr<QXmppTransferManager> m_transferManager;
 
 	bool ContactsListReadOnly;
 
@@ -98,7 +100,7 @@ public:
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
+	virtual FileTransferService * fileTransferService() { return m_fileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
 	// virtual JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }

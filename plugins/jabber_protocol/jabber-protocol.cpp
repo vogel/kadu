@@ -26,6 +26,7 @@
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppMucManager.h>
 #include <qxmpp/QXmppRosterManager.h>
+#include <qxmpp/QXmppTransferManager.h>
 #include <qxmpp/QXmppVCardManager.h>
 
 #include "avatars/avatar-manager.h"
@@ -48,6 +49,7 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
+#include "services/jabber-file-transfer-service.h"
 #include "services/jabber-presence-service.h"
 #include "services/jabber-resource-service.h"
 #include "services/jabber-room-chat-service.h"
@@ -77,6 +79,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	m_presenceService = new JabberPresenceService{this};
 
 	m_mucManager = make_unique<QXmppMucManager>();
+	m_transferManager = make_unique<QXmppTransferManager>();
 
 	m_client = new QXmppClient{this};
 	connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
@@ -84,6 +87,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 	m_client->addExtension(m_mucManager.get());
+	m_client->addExtension(m_transferManager.get());
 
 	m_resourceService = new JabberResourceService{this};
 
@@ -108,11 +112,12 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	chatService->setRoomChatService(m_roomChatService);
 
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
-	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(account, this);
 	CurrentClientInfoService = new JabberClientInfoService(this);
-
 	CurrentStreamDebugService = new JabberStreamDebugService(this);
+
+	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account, this};
+	m_fileTransferService->setResourceService(m_resourceService);
 
 	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
 

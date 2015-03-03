@@ -19,39 +19,22 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
-
 #include "file-transfer/outgoing-file-transfer-handler.h"
+
+#include <QtCore/QPointer>
+#include <qxmpp/QXmppTransferManager.h>
+
+class JabberResourceService;
 
 class JabberOutgoingFileTransferHandler : public OutgoingFileTransferHandler
 {
 	Q_OBJECT
 
-	FileTransfer *JabberTransfer;
-	// Jid PeerJid;
-
-	bool InProgress;
-	qlonglong BytesTransferred;
-	QPointer<QIODevice> Source;
-
-	void connectJabberTransfer();
-	void disconnectJabberTransfer();
-
-	FileTransferStatus errorToStatus(int error);
-	void cleanup(FileTransferStatus status);
-
-protected:
-	virtual void updateFileInfo();
-
-private slots:
-	void fileTransferAccepted();
-	void fileTransferConnected();
-	void fileTransferBytesWritten(int);
-	void fileTransferError(int);
-
 public:
-	explicit JabberOutgoingFileTransferHandler(FileTransfer fileTransfer);
+	explicit JabberOutgoingFileTransferHandler(QXmppTransferManager *transferManager, FileTransfer fileTransfer);
 	virtual ~JabberOutgoingFileTransferHandler();
+
+	void setResourceService(JabberResourceService *resourceService);
 
 	void setJTransfer(FileTransfer *jTransfer);
 
@@ -60,5 +43,21 @@ public:
 
 signals:
 	void statusChanged();
+
+private:
+	QPointer<QXmppTransferManager> m_transferManager;
+	QPointer<JabberResourceService> m_resourceService;
+
+	QPointer<QXmppTransferJob> m_transferJob;
+
+	bool m_inProgress;
+	QPointer<QIODevice> m_source;
+
+	void cleanup(FileTransferStatus status);
+
+private slots:
+	void progress(qint64 progress, qint64 total);
+	void stateChanged(QXmppTransferJob::State state);
+	void error(QXmppTransferJob::Error error);
 
 };
