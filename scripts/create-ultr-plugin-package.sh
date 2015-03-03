@@ -50,7 +50,7 @@ if [ -e $PACKAGE_FILE ]; then
 	rm -rf $PACKAGE_FILE
 fi
 
-git clone --recursive --depth 1 -- git://gitorious.org/ultr-kadu-plugins/$PLUGIN_NAME.git $PACKAGE_DIR
+git clone --recursive --depth 1 -- https://gitlab.com/kadu/$PLUGIN_NAME.git $PACKAGE_DIR
 find $PACKAGE_DIR -name ".git*" | xargs rm -rf
 
 tar cjf $PACKAGE_FILE $PACKAGE_DIR
