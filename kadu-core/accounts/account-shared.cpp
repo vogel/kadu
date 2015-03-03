@@ -300,13 +300,13 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	if (ProtocolHandler || (factory->name() != ProtocolName) || Details)
 		return;
 
-	ProtocolHandler = factory->createProtocolHandler(this);
-	if (!ProtocolHandler)
-		return;
-
 	Details = factory->createAccountDetails(this);
 	if (Details)
 		details()->ensureLoaded();
+
+	ProtocolHandler = factory->createProtocolHandler(this);
+	if (!ProtocolHandler)
+		return;
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),

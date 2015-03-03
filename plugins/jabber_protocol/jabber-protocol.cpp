@@ -73,6 +73,9 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 {
 	kdebugf();
 
+	auto details = dynamic_cast<JabberAccountDetails *>(account.details());
+	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
+
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
@@ -195,8 +198,6 @@ void JabberProtocol::login()
 	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!details)
 		return;
-
-	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
 
 	auto streamSecurityMode = QXmppConfiguration::StreamSecurityMode{};
 	switch (details->encryptionMode())
