@@ -205,7 +205,7 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\libwebp-4.dll"
 	File "${BIN_DIR}\libxml2-2.dll"
 	File "${BIN_DIR}\libxslt-1.dll"
-	File "${BIN_DIR}\qxmpp.0.dll"
+	File "${BIN_DIR}\qxmpp0.dll"
 SectionEnd
 
 Section -section_qt
