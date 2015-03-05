@@ -48,18 +48,19 @@ void JabberChangePassword::iqReceived(const QXmppIq &iq)
 
 	if (iq.type() == QXmppIq::Type::Error)
 	{
-		switch (iq.error().code())
+		switch (iq.error().condition())
 		{
 			case QXmppStanza::Error::NotAuthorized:
 				emit error(tr("Current connection is not safe for password change. Use encrypted connection or change password on provider's site."));
 				break;
 			case QXmppStanza::Error::NotAllowed:
+			case QXmppStanza::Error::FeatureNotImplemented:
 				emit error(tr("Password change is not allowed."));
 				break;
 			case QXmppStanza::Error::BadRequest:
 			case QXmppStanza::Error::UnexpectedRequest:
 			default:
-				emit error(tr("Unknown error: %d %s").arg(iq.error().code()).arg(iq.error().text()));
+				emit error(tr("Unknown error: %1:%2 %3").arg(iq.error().condition()).arg(iq.error().code()).arg(iq.error().text()));
 				break;
 		}
 	}
