@@ -71,10 +71,11 @@ set (SOURCES
 
 	server/jabber-avatar-downloader.cpp
 	server/jabber-avatar-uploader.cpp
-	server/jabber-server-change-password.cpp
 	server/jabber-server-register-account.cpp
 
 	services/jabber-avatar-service.cpp
+	services/jabber-change-password-service.cpp
+	services/jabber-change-password.cpp
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
 	services/jabber-contact-personal-info-service.cpp
@@ -129,7 +130,6 @@ set (MOC_SOURCES
 
 	server/jabber-avatar-downloader.h
 	server/jabber-avatar-uploader.h
-	server/jabber-server-change-password.h
 	server/jabber-server-register-account.h
 
 	services/jabber-avatar-service.h

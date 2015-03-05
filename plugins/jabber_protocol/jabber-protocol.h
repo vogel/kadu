@@ -35,6 +35,7 @@
 #include "services/jabber-subscription-service.h"
 #include "jabber-account-details.h"
 
+class JabberChangePasswordService;
 class JabberContactDetails;
 class JabberPresenceService;
 class JabberResourceService;
@@ -50,6 +51,7 @@ class JabberProtocol : public Protocol
 	Q_OBJECT
 
 	JabberAvatarService *CurrentAvatarService;
+	JabberChangePasswordService *m_changePasswordService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
 	JabberFileTransferService *m_fileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
@@ -104,6 +106,8 @@ public:
 	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
 	virtual JabberStreamDebugService * streamDebugService() { return m_streamDebugService; }
 	virtual JabberVCardService * vcardService() { return m_vcardService; }
+
+	JabberChangePasswordService * changePasswordService() const;
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
 

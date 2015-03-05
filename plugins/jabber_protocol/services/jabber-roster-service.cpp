@@ -213,7 +213,8 @@ void JabberRosterService::prepareRoster()
 
 void JabberRosterService::rosterRequestFinished()
 {
-	Q_ASSERT(JabberRosterState::Initializing == state());
+	if (JabberRosterState::Initializing != state())
+		return;
 
 	deleteMarkedContacts();
 

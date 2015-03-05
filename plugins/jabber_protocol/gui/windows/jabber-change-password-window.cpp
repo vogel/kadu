@@ -18,6 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-change-password-window.h"
+
+#include "services/jabber-change-password-service.h"
+#include "services/jabber-change-password.h"
+
+#include "configuration/config-file-variant-wrapper.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
+#include "os/generic/window-geometry-manager.h"
+#include "protocols/protocol.h"
+
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
@@ -28,17 +39,10 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "configuration/config-file-variant-wrapper.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "os/generic/window-geometry-manager.h"
-
-#include "server/jabber-server-change-password.h"
-
-#include "jabber-change-password-window.h"
-
-JabberChangePasswordWindow::JabberChangePasswordWindow(Account account, QWidget *parent) :
-		QWidget(parent, Qt::Window), MyAccount(account)
+JabberChangePasswordWindow::JabberChangePasswordWindow(JabberChangePasswordService *changePasswordService, Account account, QWidget *parent) :
+		QWidget{parent, Qt::Window},
+		m_changePasswordService{changePasswordService},
+		m_account{account}
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Change Password"));
@@ -47,7 +51,7 @@ JabberChangePasswordWindow::JabberChangePasswordWindow(Account account, QWidget 
 
 	dataChanged();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "JabberChangePasswordGeometry"), QRect(50, 50, 550, 200), this);
+	new WindowGeometryManager{new ConfigFileVariantWrapper{"General", "JabberChangePasswordGeometry"}, QRect{50, 50, 550, 200}, this};
 }
 
 JabberChangePasswordWindow::~JabberChangePasswordWindow()
@@ -56,62 +60,60 @@ JabberChangePasswordWindow::~JabberChangePasswordWindow()
 
 void JabberChangePasswordWindow::createGui()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	auto mainLayout = new QVBoxLayout(this);
 
-	QWidget *formWidget = new QWidget(this);
+	auto formWidget = new QWidget(this);
 	mainLayout->addWidget(formWidget);
 
-	QFormLayout *layout = new QFormLayout(formWidget);
+	auto layout = new QFormLayout(formWidget);
 
-	CurrentPassword = new QLineEdit(this);
-	CurrentPassword->setEchoMode(QLineEdit::Password);
-	connect(CurrentPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Old Password") + ':', CurrentPassword);
+	m_newPassword = new QLineEdit(this);
+	m_newPassword->setEchoMode(QLineEdit::Password);
+	connect(m_newPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	layout->addRow(tr("New password") + ':', m_newPassword);
 
-	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Enter current password for your XMPP/Jabber account.</i></font>"), this);
+	auto infoLabel = new QLabel(tr("<font size='-1'><i>Enter new password for your XMPP/Jabber account.</i></font>"), this);
 	layout->addRow(0, infoLabel);
 
-	NewPassword = new QLineEdit(this);
-	NewPassword->setEchoMode(QLineEdit::Password);
-	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("New password") + ':', NewPassword);
-
-	infoLabel = new QLabel(tr("<font size='-1'><i>Enter new password for your XMPP/Jabber account.</i></font>"), this);
-	layout->addRow(0, infoLabel);
-
-	ReNewPassword = new QLineEdit(this);
-	ReNewPassword->setEchoMode(QLineEdit::Password);
-	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Retype new password") + ':', ReNewPassword);
+	m_reNewPassword = new QLineEdit(this);
+	m_reNewPassword->setEchoMode(QLineEdit::Password);
+	connect(m_reNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	layout->addRow(tr("Retype new password") + ':', m_reNewPassword);
 
 	mainLayout->addStretch(100);
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	auto buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	ChangePasswordButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Change Password"), this);
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	m_changePasswordButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Change Password"), this);
+	auto cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 
-	connect(ChangePasswordButton, SIGNAL(clicked(bool)), this, SLOT(changePassword()));
+	connect(m_changePasswordButton, SIGNAL(clicked(bool)), this, SLOT(changePassword()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	buttons->addButton(ChangePasswordButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(m_changePasswordButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 }
 
 void JabberChangePasswordWindow::dataChanged()
 {
-	bool disable =  CurrentPassword->text().isEmpty()
-			|| NewPassword->text().isEmpty()
-			|| ReNewPassword->text().isEmpty();
+	auto disable =
+			m_newPassword->text().isEmpty() ||
+			m_reNewPassword->text().isEmpty();
 
-	ChangePasswordButton->setEnabled(!disable);
+	m_changePasswordButton->setEnabled(!disable);
 }
 
 
 void JabberChangePasswordWindow::changePassword()
 {
-	if (NewPassword->text() != ReNewPassword->text())
+	if (!m_account.protocolHandler()->isConnected())
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Log in before changing password."), QMessageBox::Ok, this);
+		return;
+	}
+
+	if (m_newPassword->text() != m_reNewPassword->text())
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"Password\" and \"Retype password\") "
@@ -119,35 +121,28 @@ void JabberChangePasswordWindow::changePassword()
 		return;
 	}
 
-	JabberServerChangePassword *gscp = new JabberServerChangePassword(MyAccount, CurrentPassword->text(), NewPassword->text());
-	connect(gscp, SIGNAL(finished(JabberServerChangePassword *)),
-			this, SLOT(changingFinished(JabberServerChangePassword *)));
-
-	gscp->performAction();
+	auto changePassword = m_changePasswordService->changePassword(m_account.id(), m_newPassword->text());
+	connect(changePassword, SIGNAL(passwordChanged()), this, SLOT(passwordChanged()));
+	connect(changePassword, SIGNAL(error(QString)), this, SLOT(error(QString)));
 }
 
 
-void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gscp)
+void JabberChangePasswordWindow::passwordChanged()
 {
-	bool result = false;
-	if (gscp)
-	{
-		result = gscp->result();
-		gscp->deleteLater();
-	}
+	// using 'this' as parent is invalid, as close below will delete 'this' object
+	MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Changing password was successful."), QMessageBox::Ok);
 
-	if (result)
-	{
-		// using 'this' as parent is invalid, as close below will delete 'this' object
-		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"),tr("Changing password was successful."), QMessageBox::Ok);
+	m_account.setPassword(m_newPassword->text());
+	emit passwordChanged(m_newPassword->text());
 
-		MyAccount.setPassword(NewPassword->text());
-		emit passwordChanged(NewPassword->text());
+	close();
+}
 
-		close();
-	}
-	else
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("An error has occurred. Please try again later."), QMessageBox::Ok, this);
+void JabberChangePasswordWindow::error(const QString& errorMessage)
+{
+	MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Password change failed:\n%1").arg(errorMessage), QMessageBox::Ok, this);
+
+	close();
 }
 
 void JabberChangePasswordWindow::keyPressEvent(QKeyEvent *e)

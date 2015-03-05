@@ -47,6 +47,7 @@
 #include "protocols/services/avatar-service.h"
 
 #include "gui/windows/jabber-change-password-window.h"
+#include "jabber-protocol.h"
 
 #include "jabber-edit-account-widget.h"
 
@@ -510,7 +511,14 @@ void JabberEditAccountWidget::removeAccount()
 
 void JabberEditAccountWidget::changePasssword()
 {
-	JabberChangePasswordWindow *changePasswordWindow = new JabberChangePasswordWindow(account());
+	auto protocol = static_cast<JabberProtocol *>(account().protocolHandler());
+	if (!protocol->isConnected())
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Log in before changing password."), QMessageBox::Ok, this);
+		return;
+	}
+
+	JabberChangePasswordWindow *changePasswordWindow = new JabberChangePasswordWindow(protocol->changePasswordService(), account());
 	connect(changePasswordWindow, SIGNAL(passwordChanged(const QString &)), this, SLOT(passwordChanged(const QString &)));
 	changePasswordWindow->show();
 }

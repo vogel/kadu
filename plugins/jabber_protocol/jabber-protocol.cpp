@@ -47,6 +47,7 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
+#include "services/jabber-change-password-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-file-transfer-service.h"
@@ -81,17 +82,19 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	m_presenceService = new JabberPresenceService{this};
 
-	m_mucManager = make_unique<QXmppMucManager>();
-	m_transferManager = make_unique<QXmppTransferManager>();
-
 	m_client = new QXmppClient{this};
 	connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
+	m_mucManager = make_unique<QXmppMucManager>();
+	m_transferManager = make_unique<QXmppTransferManager>();
+
 	m_client->addExtension(m_mucManager.get());
 	m_client->addExtension(m_transferManager.get());
+
+	m_changePasswordService = new JabberChangePasswordService{m_client, this};
 
 	m_resourceService = new JabberResourceService{this};
 
@@ -384,6 +387,11 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 QString JabberProtocol::statusPixmapPath()
 {
 	return QLatin1String("xmpp");
+}
+
+JabberChangePasswordService * JabberProtocol::changePasswordService() const
+{
+	return m_changePasswordService;
 }
 
 JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const

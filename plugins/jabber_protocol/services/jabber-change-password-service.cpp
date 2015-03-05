@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,37 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_SERVER_CHANGE_PASSWORD_H
-#define JABBER_SERVER_CHANGE_PASSWORD_H
+#include "jabber-change-password-service.h"
 
-#include <QtCore/QObject>
+#include "services/jabber-change-password.h"
 
-#include "accounts/account.h"
-#include "protocols/protocol.h"
+#include <qxmpp/QXmppClient.h>
 
-class JabberServerChangePassword : public QObject
+JabberChangePasswordService::JabberChangePasswordService(QXmppClient *client, QObject *parent) :
+		QObject{parent},
+		m_client{client}
 {
-	Q_OBJECT
+}
 
-	bool Result;
+JabberChangePasswordService::~JabberChangePasswordService()
+{
+}
 
-	Account MyAccount;
-	QString Password;
-	QString NewPassword;
+JabberChangePassword * JabberChangePasswordService::changePassword(const QString &jid, const QString &newPassword)
+{
+	return new JabberChangePassword{jid, newPassword, m_client, this};
+}
 
-public:
-	JabberServerChangePassword(Account account, const QString &password, const QString &newPassword);
-
-	virtual void performAction();
-
-	bool result() { return Result; }
-
-private slots:
-	void actionFinished();
-
-signals:
-	void finished(JabberServerChangePassword *);
-
-};
-
-#endif // JABBER_SERVER_CHANGE_PASSWORD_H
+#include "moc_jabber-change-password-service.cpp"
