@@ -37,6 +37,7 @@
 
 class JabberChangePasswordService;
 class JabberContactDetails;
+class JabberErrorService;
 class JabberPresenceService;
 class JabberResourceService;
 class JabberRoomChatService;
@@ -53,6 +54,7 @@ class JabberProtocol : public Protocol
 	JabberAvatarService *CurrentAvatarService;
 	JabberChangePasswordService *m_changePasswordService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
+	JabberErrorService *m_errorService;
 	JabberFileTransferService *m_fileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
 	JabberSubscriptionService *m_subscriptionService;

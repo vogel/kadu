@@ -23,6 +23,7 @@
 #include <QtCore/QPointer>
 
 class JabberChangePassword;
+class JabberErrorService;
 
 class QXmppClient;
 
@@ -34,9 +35,12 @@ public:
 	explicit JabberChangePasswordService(QXmppClient *client, QObject *parent = nullptr);
 	virtual ~JabberChangePasswordService();
 
+	void setErrorService(JabberErrorService *errorService);
+
 	JabberChangePassword * changePassword(const QString &jid, const QString &newPassword);
 
 private:
 	QPointer<QXmppClient> m_client;
+	QPointer<JabberErrorService> m_errorService;
 
 };

@@ -79,6 +79,7 @@ set (SOURCES
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
 	services/jabber-contact-personal-info-service.cpp
+	services/jabber-error-service.cpp
 	services/jabber-file-transfer-service.cpp
 	services/jabber-personal-info-service.cpp
 	services/jabber-presence-service.cpp

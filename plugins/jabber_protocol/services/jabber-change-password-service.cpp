@@ -20,6 +20,7 @@
 #include "jabber-change-password-service.h"
 
 #include "services/jabber-change-password.h"
+#include "services/jabber-error-service.h"
 
 #include <qxmpp/QXmppClient.h>
 
@@ -33,9 +34,16 @@ JabberChangePasswordService::~JabberChangePasswordService()
 {
 }
 
+void JabberChangePasswordService::setErrorService(JabberErrorService *errorService)
+{
+	m_errorService = errorService;
+}
+
 JabberChangePassword * JabberChangePasswordService::changePassword(const QString &jid, const QString &newPassword)
 {
-	return new JabberChangePassword{jid, newPassword, m_client, this};
+	auto result = new JabberChangePassword{jid, newPassword, m_client, this};
+	result->setErrorService(m_errorService);
+	return result;
 }
 
 #include "moc_jabber-change-password-service.cpp"

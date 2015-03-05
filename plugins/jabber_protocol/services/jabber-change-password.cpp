@@ -19,6 +19,7 @@
 
 #include "jabber-change-password.h"
 
+#include "services/jabber-error-service.h"
 #include "jid.h"
 
 #include <qxmpp/QXmppClient.h>
@@ -41,28 +42,31 @@ JabberChangePassword::~JabberChangePassword()
 {
 }
 
+void JabberChangePassword::setErrorService(JabberErrorService *errorService)
+{
+	m_errorService = errorService;
+}
+
 void JabberChangePassword::iqReceived(const QXmppIq &iq)
 {
 	if (iq.id() != m_id)
 		return;
 
-	if (iq.type() == QXmppIq::Type::Error)
+	if (m_errorService->isErrorIq(iq))
 	{
+		auto conditionString = QString{};
 		switch (iq.error().condition())
 		{
 			case QXmppStanza::Error::NotAuthorized:
-				emit error(tr("Current connection is not safe for password change. Use encrypted connection or change password on provider's site."));
+				conditionString = tr("Current connection is not safe for password change. Use encrypted connection or change password on provider's site.");
 				break;
 			case QXmppStanza::Error::NotAllowed:
 			case QXmppStanza::Error::FeatureNotImplemented:
-				emit error(tr("Password change is not allowed."));
-				break;
-			case QXmppStanza::Error::BadRequest:
-			case QXmppStanza::Error::UnexpectedRequest:
+				conditionString = tr("Password change is not allowed.");
 			default:
-				emit error(tr("Unknown error: %1:%2 %3").arg(iq.error().condition()).arg(iq.error().code()).arg(iq.error().text()));
 				break;
 		}
+		emit error(m_errorService->errorMessage(iq, conditionString));
 	}
 	else if (iq.type() == QXmppIq::Type::Result)
 		emit passwordChanged();

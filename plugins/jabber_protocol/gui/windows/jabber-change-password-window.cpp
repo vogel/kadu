@@ -140,7 +140,7 @@ void JabberChangePasswordWindow::passwordChanged()
 
 void JabberChangePasswordWindow::error(const QString& errorMessage)
 {
-	MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Password change failed:\n%1").arg(errorMessage), QMessageBox::Ok, this);
+	MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Password change failed.\n\nError: %1").arg(errorMessage), QMessageBox::Ok, this);
 
 	close();
 }

@@ -20,33 +20,20 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <qxmpp/QXmppStanza.h>
 
-class JabberErrorService;
-
-class QXmppClient;
 class QXmppIq;
 
-class JabberChangePassword : public QObject
+class JabberErrorService : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit JabberChangePassword(const QString &jid, const QString &newPassword, QXmppClient *client, QObject *parent = nullptr);
-	virtual ~JabberChangePassword();
+	explicit JabberErrorService(QObject *parent = nullptr);
+	virtual ~JabberErrorService();
 
-	void setErrorService(JabberErrorService *errorService);
-
-signals:
-	void error(const QString &error);
-	void passwordChanged();
-
-private:
-	QPointer<JabberErrorService> m_errorService;
-
-	QString m_id;
-
-private slots:
-	void iqReceived(const QXmppIq &iq);
+	bool isErrorIq(const QXmppIq &iq) const;
+	QString errorMessage(const QXmppStanza &stanza, QString conditionString = QString{}) const;
+	QString conditionToString(QXmppStanza::Error::Condition condition) const;
 
 };

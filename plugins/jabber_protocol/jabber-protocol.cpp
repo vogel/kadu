@@ -50,6 +50,7 @@
 #include "services/jabber-change-password-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
+#include "services/jabber-error-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-presence-service.h"
 #include "services/jabber-resource-service.h"
@@ -81,6 +82,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		setContactsListReadOnly(true);
 
 	m_presenceService = new JabberPresenceService{this};
+	m_errorService = new JabberErrorService{this};
 
 	m_client = new QXmppClient{this};
 	connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
@@ -95,6 +97,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	m_client->addExtension(m_transferManager.get());
 
 	m_changePasswordService = new JabberChangePasswordService{m_client, this};
+	m_changePasswordService->setErrorService(m_errorService);
 
 	m_resourceService = new JabberResourceService{this};
 
@@ -307,7 +310,6 @@ void JabberProtocol::error(QXmppClient::Error error)
 			switch (m_client->xmppStreamError())
 			{
 				case QXmppStanza::Error::NotAuthorized:
-				case QXmppStanza::Error::BadAuth:
 					passwordRequired();
 					break;
 				default:
