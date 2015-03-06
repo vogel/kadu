@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "server/jabber-avatar-downloader.h"
-#include "server/jabber-avatar-uploader.h"
+#include "services/jabber-avatar-downloader.h"
+#include "services/jabber-avatar-uploader.h"
 #include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
 #include "jid.h"

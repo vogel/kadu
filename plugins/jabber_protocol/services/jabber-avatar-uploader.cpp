@@ -21,7 +21,7 @@
 
 #include "jabber-avatar-uploader.h"
 
-#include "server/jabber-avatar-uploader.h"
+#include "services/jabber-avatar-uploader.h"
 #include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
