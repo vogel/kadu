@@ -19,26 +19,21 @@
 
 #include "jabber-register-account.h"
 
+#include "qxmpp/jabber-register-extension.h"
 #include "services/jabber-error-service.h"
 #include "jid.h"
+
+#include "misc/memory.h"
 
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppRegisterIq.h>
 
-JabberRegisterAccount::JabberRegisterAccount(const QString &server, QObject *parent) :
+JabberRegisterAccount::JabberRegisterAccount(const Jid &jid, const QString &password, QObject *parent) :
 		QObject{parent},
-		m_server{server}
+		m_jid{std::move(jid)},
+		m_password{std::move(password)},
+		m_state{State::None}
 {
-/*
-	auto registerIq = QXmppRegisterIq{};
-	registerIq.setPassword(newPassword);
-	registerIq.setType(QXmppIq::Type::Set);
-	registerIq.setUsername(Jid::parse(jid).node());
-
-	m_id = registerIq.id();
-	client->sendPacket(registerIq);
-	connect(client, SIGNAL(iqReceived(QXmppIq)), this, SLOT(iqReceived(QXmppIq)));
-*/
 }
 
 JabberRegisterAccount::~JabberRegisterAccount()
@@ -50,19 +45,24 @@ void JabberRegisterAccount::setErrorService(JabberErrorService *errorService)
 	m_errorService = errorService;
 }
 
+Jid JabberRegisterAccount::jid() const
+{
+	return m_jid;
+}
+
 void JabberRegisterAccount::start()
 {
-	if (m_client)
+	if (m_client || m_state != State::None)
 	{
-		printf("already in progress\n");
+		return;
 	}
 
 	auto configuration = QXmppConfiguration{};
 	configuration.setAutoAcceptSubscriptions(false);
 	configuration.setAutoReconnectionEnabled(false);
 	configuration.setIgnoreSslErrors(true); // TODO: replace with setCaCertificated
-	configuration.setDomain(m_server);
-	configuration.setStreamSecurityMode(QXmppConfiguration::StreamSecurityMode::TLSRequired);
+	configuration.setDomain(m_jid.domain());
+	configuration.setStreamSecurityMode(QXmppConfiguration::StreamSecurityMode::TLSEnabled);
 /*
 	if (account().proxy())
 	{
@@ -85,47 +85,124 @@ void JabberRegisterAccount::start()
 		configuration.setPort(details->customPort());
 	}
 */
+
+	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_client = new QXmppClient{this};
+	m_client->addExtension(m_registerExtension.get());
+
 	m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	m_client->connectToServer(configuration);
 
 	connect(m_client, SIGNAL(connected()), this, SLOT(askForRegistration()));
+	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(clientError(QXmppClient::Error)));
+	connect(m_registerExtension.get(), SIGNAL(registerIqReceived(QXmppRegisterIq)), this, SLOT(registerIqReceived(QXmppRegisterIq)));
+
+	m_state = State::Connecting;
+}
+
+void JabberRegisterAccount::clientError(QXmppClient::Error error)
+{
+	handleError(m_errorService->errorMessage(m_client, error));
+}
+
+void JabberRegisterAccount::handleError(const QString &errorMessage)
+{
+	emit error(errorMessage);
+	deleteLater();
+}
+
+void JabberRegisterAccount::handleSuccess()
+{
+	emit success();
+	deleteLater();
 }
 
 void JabberRegisterAccount::askForRegistration()
 {
+	if (m_state != State::Connecting)
+	{
+		handleError(tr("Internal error: invalid state"));
+		return;
+	}
+
+	emit statusMessage(tr("Connection established."));
+	emit statusMessage(tr("Negotiating registration parameters."));
+
 	auto registerIq = QXmppRegisterIq{};
+	registerIq.setType(QXmppIq::Type::Get);
+
+	m_id = registerIq.id();
+	m_client->sendPacket(registerIq);
+
+	m_state = State::WaitForRegistrationForm;
+}
+
+void JabberRegisterAccount::registerIqReceived(const QXmppRegisterIq &registerIq)
+{
+	if (m_id != registerIq.id())
+		return;
+
+	if (registerIq.type() == QXmppIq::Type::Error)
+	{
+		handleError(m_errorService->errorMessage(registerIq));
+		return;
+	}
+
+	switch (m_state)
+	{
+		case State::WaitForRegistrationForm:
+			handleRegistrationForm(registerIq);
+			return;
+		case State::WaitForRegistrationConfirmation:
+			handleRegistrationConfirmation(registerIq);
+			return;
+		default:
+			handleError(tr("Internal error: invalid state"));
+			return;
+	}
+
+	emit statusMessage(tr("Registration parameters received."));
+}
+
+void JabberRegisterAccount::handleRegistrationForm(const QXmppRegisterIq &registerIq)
+{
+	if (!registerIq.form().isNull())
+	{
+		auto errorMessage = tr("Registration at this server requires XMPP Data Forms support. Kadu currently does not support XMPP Data Forms.");
+		if (!registerIq.instructions().isEmpty())
+			errorMessage = tr("%1\n\nServer message: %2").arg(errorMessage).arg(registerIq.instructions());
+		handleError(errorMessage);
+		return;
+	}
+
+	if (!registerIq.email().isNull())
+	{
+		auto errorMessage = tr("Registration at this server requires providing e-mail address. Kadu currently does not support this field.");
+		handleError(errorMessage);
+		return;
+	}
+
+	sendFilledRegistrationForm();
+	m_state = State::WaitForRegistrationConfirmation;
+}
+
+void JabberRegisterAccount::sendFilledRegistrationForm()
+{
+	auto registerIq = QXmppRegisterIq{};
+	registerIq.setPassword(m_password);
+	registerIq.setType(QXmppIq::Type::Set);
+	registerIq.setUsername(m_jid.node());
+
+	m_id = registerIq.id();
 	m_client->sendPacket(registerIq);
 }
 
-void JabberRegisterAccount::iqReceived(const QXmppIq &iq)
+void JabberRegisterAccount::handleRegistrationConfirmation(const QXmppRegisterIq &registerIq)
 {
-	Q_UNUSED(iq);
-/*
-	if (iq.id() != m_id)
-		return;
-
-	if (m_errorService->isErrorIq(iq))
-	{
-		auto conditionString = QString{};
-		switch (iq.error().condition())
-		{
-			case QXmppStanza::Error::NotAuthorized:
-				conditionString = tr("Current connection is not safe for password change. Use encrypted connection or change password on provider's site.");
-				break;
-			case QXmppStanza::Error::NotAllowed:
-			case QXmppStanza::Error::FeatureNotImplemented:
-				conditionString = tr("Password change is not allowed.");
-			default:
-				break;
-		}
-		emit error(m_errorService->errorMessage(iq, conditionString));
-	}
-	else if (iq.type() == QXmppIq::Type::Result)
-		emit passwordChanged();
-
-	deleteLater();
-*/
+	if (registerIq.type() == QXmppIq::Type::Result)
+		handleSuccess();
+	else
+		handleError(tr("Unknown error: received stanza type %1").arg(registerIq.type()));
 }
 
 #include "moc_jabber-register-account.cpp"

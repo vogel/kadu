@@ -18,53 +18,47 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QCloseEvent>
-#include <QtGui/QMovie>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QVBoxLayout>
+#include "jabber-wait-for-account-register-window.h"
+
+#include "services/jabber-register-account.h"
 
 #include "icons/icons-manager.h"
 
-#include "jabber-wait-for-account-register-window.h"
-
-JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(/*JabberServerRegisterAccount *jsra, */QWidget *parent) :
-		ProgressWindow(tr("Registering new XMPP account"), parent)
+JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberRegisterAccount *jabberRegisterAccount, QWidget *parent) :
+		ProgressWindow{tr("Registering new XMPP account"), parent},
+		m_jabberRegisterAccount{jabberRegisterAccount}
 {
-	//connect(jsra, SIGNAL(finished(JabberServerRegisterAccount *)),
-	//		this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));
+	connect(m_jabberRegisterAccount, SIGNAL(statusMessage(QString)), this, SLOT(statusMessage(QString)));
+	connect(m_jabberRegisterAccount, SIGNAL(success()), this, SLOT(success()));
+	connect(m_jabberRegisterAccount, SIGNAL(error(QString)), this, SLOT(error(QString)));
 
-	addProgressEntry("dialog-information", tr("Plase wait. New XMPP account is being registered."));
-	//jsra->performAction();
+	addProgressEntry("dialog-information", tr("Connecting with server."));
+	m_jabberRegisterAccount->start();
 }
 
 JabberWaitForAccountRegisterWindow::~JabberWaitForAccountRegisterWindow()
 {
 }
 
-void JabberWaitForAccountRegisterWindow::registerNewAccountFinished(/** jsra*/)
-{/*
-	if (jsra && jsra->result())
-	{
-		QString message(tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the password.\n"
-				   "Now please add your friends to the buddy list."));
-		progressFinished(true, "dialog-information", message.arg(jsra->jid()));
+void JabberWaitForAccountRegisterWindow::statusMessage(const QString &statusMessage)
+{
+	addProgressEntry("dialog-information", statusMessage);
+}
 
-		emit jidRegistered(jsra->jid(), jsra->client()->tlsOverrideDomain());
-	}
-	else
-	{
-		QString message(tr("An error has occurred during registration. Please try again later."));
-		progressFinished(false, "dialog-error", message);
+void JabberWaitForAccountRegisterWindow::success()
+{
+	auto message = tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the password.\n"
+		"Now please add your friends to the buddy list.");
 
-		emit jidRegistered(QString(), QString());
-	}
+	progressFinished(true, "dialog-information", message);
+	emit jidRegistered(m_jabberRegisterAccount->jid().full(), QString{});
+}
 
-	delete jsra;*/
+void JabberWaitForAccountRegisterWindow::error(const QString &errorMessage)
+{
+	progressFinished(false, "dialog-error", errorMessage);
+	emit jidRegistered(QString{}, QString{});
+	deleteLater();
 }
 
 #include "moc_jabber-wait-for-account-register-window.cpp"

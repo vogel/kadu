@@ -19,38 +19,66 @@
 
 #pragma once
 
+#include "jid.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <qxmpp/QXmppClient.h>
+#include <memory>
 
 class JabberErrorService;
+class JabberRegisterExtension;
 
-class QXmppClient;
-class QXmppIq;
+class QXmppRegisterIq;
 
 class JabberRegisterAccount : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit JabberRegisterAccount(const QString &server, QObject *parent = nullptr);
+	explicit JabberRegisterAccount(const Jid &jid, const QString &password, QObject *parent = nullptr);
 	virtual ~JabberRegisterAccount();
 
 	void setErrorService(JabberErrorService *errorService);
 
 	void start();
 
+	Jid jid() const;
+
 signals:
+	void statusMessage(const QString &statusMessage);
+	void success();
 	void error(const QString &error);
-	void passwordChanged();
 
 private:
+	enum class State
+	{
+		None,
+		Connecting,
+		WaitForRegistrationForm,
+		WaitForRegistrationConfirmation
+	};
+
 	QPointer<JabberErrorService> m_errorService;
 
 	QPointer<QXmppClient> m_client;
-	QString m_server;
+	std::unique_ptr<JabberRegisterExtension> m_registerExtension;
+
+	Jid m_jid;
+	QString m_password;
+
+	State m_state;
+	QString m_id;
+
+	void handleSuccess();
+	void handleError(const QString &errorMessage);
 
 private slots:
+	void clientError(QXmppClient::Error error);
 	void askForRegistration();
-	void iqReceived(const QXmppIq &iq);
+	void registerIqReceived(const QXmppRegisterIq &registerIq);
+	void handleRegistrationForm(const QXmppRegisterIq &registerIq);
+	void sendFilledRegistrationForm();
+	void handleRegistrationConfirmation(const QXmppRegisterIq &registerIq);
 
 };

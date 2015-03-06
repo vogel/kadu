@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppStanza.h>
 
 class QXmppIq;
@@ -33,6 +34,7 @@ public:
 	virtual ~JabberErrorService();
 
 	bool isErrorIq(const QXmppIq &iq) const;
+	QString errorMessage(QXmppClient *client, QXmppClient::Error error) const;
 	QString errorMessage(const QXmppStanza &stanza, QString conditionString = QString{}) const;
 	QString conditionToString(QXmppStanza::Error::Condition condition) const;
 

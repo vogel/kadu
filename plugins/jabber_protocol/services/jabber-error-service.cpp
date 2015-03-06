@@ -36,6 +36,21 @@ bool JabberErrorService::isErrorIq(const QXmppIq &iq) const
 	return iq.type() == QXmppIq::Type::Error;
 }
 
+QString JabberErrorService::errorMessage(QXmppClient *client, QXmppClient::Error error) const
+{
+	switch (error)
+	{
+		case QXmppClient::Error::SocketError:
+			return tr("Socket error: %1").arg(client->socketErrorString());
+		case QXmppClient::Error::KeepAliveError:
+			return tr("Server did not respond for PING message");
+		case QXmppClient::Error::XmppStreamError:
+			return conditionToString(client->xmppStreamError());
+		default:
+			return QString{};
+	}
+}
+
 QString JabberErrorService::errorMessage(const QXmppStanza &stanza, QString conditionString) const
 {
 	if (conditionString.isEmpty())

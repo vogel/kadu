@@ -299,32 +299,19 @@ void JabberProtocol::disconenctedFromServer()
 
 void JabberProtocol::error(QXmppClient::Error error)
 {
-	switch (error)
+	if (error == QXmppClient::Error::XmppStreamError)
 	{
-		case QXmppClient::Error::SocketError:
-			setStatus({}, SourceUser);
-			emit connectionError(account(), m_client->configuration().host(), m_client->socketErrorString());
-			connectionError();
-			break;
-		case QXmppClient::Error::KeepAliveError:
-			emit connectionError(account(), m_client->configuration().host(), tr("Connection timeout"));
-			connectionError();
-			break;
-		case QXmppClient::Error::XmppStreamError:
-			switch (m_client->xmppStreamError())
-			{
-				case QXmppStanza::Error::NotAuthorized:
-					passwordRequired();
-					break;
-				default:
-					emit connectionError(account(), m_client->configuration().host(), QString{}); // TODO: add message
-					connectionError();
-					break;
-			}
-			break;
-		default:
-			break;
+		if (m_client->xmppStreamError() == QXmppStanza::Error::NotAuthorized)
+			passwordRequired();
+		return;
 	}
+
+	if (error == QXmppClient::Error::SocketError)
+		setStatus({}, SourceUser);
+
+	auto errorMessage = m_errorService->errorMessage(m_client, error);
+	emit connectionError(account(), m_client->configuration().host(), errorMessage);
+	connectionError();
 }
 
 void JabberProtocol::updatePresence()

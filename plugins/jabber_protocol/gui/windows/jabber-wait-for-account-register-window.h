@@ -17,27 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
-#define JABBER_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
+#pragma once
 
 #include "gui/windows/progress-window.h"
 
-#include "protocols/protocol.h"
+#include <QtCore/QPointer>
+
+class JabberRegisterAccount;
 
 class JabberWaitForAccountRegisterWindow : public ProgressWindow
 {
 	Q_OBJECT
 
-private slots:
-	void registerNewAccountFinished(/*JabberServerRegisterAccount *jsra*/);
-
 public:
-	explicit JabberWaitForAccountRegisterWindow(/*JabberServerRegisterAccount *jsra, */QWidget *parent = 0);
+	explicit JabberWaitForAccountRegisterWindow(JabberRegisterAccount *jabberRegisterAccount, QWidget *parent = 0);
 	virtual ~JabberWaitForAccountRegisterWindow();
 
 signals:
 	void jidRegistered(const QString &jid, const QString &tlsDomain);
 
-};
+private:
+	QPointer<JabberRegisterAccount> m_jabberRegisterAccount;
 
-#endif // JABBER_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
+private slots:
+	void statusMessage(const QString &statusMessage);
+    void success();
+	void error(const QString &errorMessage);
+
+};

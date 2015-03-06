@@ -24,6 +24,7 @@
 
 class JabberRegisterAccount;
 class JabberErrorService;
+class Jid;
 
 class JabberRegisterAccountService : public QObject
 {
@@ -35,7 +36,7 @@ public:
 
 	void setErrorService(JabberErrorService *errorService);
 
-	JabberRegisterAccount * registerAccount(const QString &server);
+	JabberRegisterAccount * registerAccount(const Jid &jid, const QString &password);
 
 private:
 	QPointer<JabberErrorService> m_errorService;

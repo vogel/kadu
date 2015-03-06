@@ -285,7 +285,6 @@ void JabberCreateAccountWidget::dataChanged()
 
 void JabberCreateAccountWidget::apply()
 {
-/*
 	if (NewPassword->text() != ReNewPassword->text())
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
@@ -293,7 +292,7 @@ void JabberCreateAccountWidget::apply()
 			"must be the same!"), QMessageBox::Ok, this);
 		return;
 	}
-*/
+
 	ssl_ = EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt();
 	legacy_ssl_probe_ = LegacySSLProbe->isChecked();
 	opt_host_ = CustomHostPort->isChecked();
@@ -303,15 +302,13 @@ void JabberCreateAccountWidget::apply()
 	auto errorService = new JabberErrorService{this};
 	auto registerAccountService = new JabberRegisterAccountService{this};
 	registerAccountService->setErrorService(errorService);
-	auto registerAccount = registerAccountService->registerAccount(Domain->currentText());
-	registerAccount->start();
-/*
-	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Domain->currentText(), Username->text(), NewPassword->text(), legacy_ssl_probe_, ssl_ == 2, ssl_ == 0, opt_host_ ? host_ : QString(), port_);
 
-	JabberWaitForAccountRegisterWindow *window = new JabberWaitForAccountRegisterWindow(jsra);
+	auto jid = Jid{Username->text(), Domain->currentText(), QString{}};
+	auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text());
+
+	auto window = new JabberWaitForAccountRegisterWindow(registerAccount);
 	connect(window, SIGNAL(jidRegistered(QString,QString)), this, SLOT(jidRegistered(QString,QString)));
 	window->exec();
-*/
 }
 
 void JabberCreateAccountWidget::cancel()
