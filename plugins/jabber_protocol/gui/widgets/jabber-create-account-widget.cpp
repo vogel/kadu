@@ -48,14 +48,9 @@
 #include "jabber-create-account-widget.h"
 
 JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *parent) :
-		AccountCreateWidget(parent), ShowConnectionOptions(false)
+		AccountCreateWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-	// Initialize settings
-	ssl_ = 0;
-	legacy_ssl_probe_ = true;
-	port_ = 5222U;
 
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
 
@@ -124,82 +119,6 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	QLabel *moreOptionsLabel = new QLabel;
 	moreOptionsLabel->setText(tr("More options:"));
 
-	ExpandConnectionOptionsButton = new QPushButton(">");
-	ExpandConnectionOptionsButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	connect(ExpandConnectionOptionsButton, SIGNAL(clicked()), this, SLOT(connectionOptionsChanged()));
-
-	QWidget *moreOptions = new QWidget;
-	QHBoxLayout *moreOptionsLayout = new QHBoxLayout(moreOptions);
-	moreOptionsLayout->addWidget(moreOptionsLabel);
-	moreOptionsLayout->addWidget(ExpandConnectionOptionsButton);
-	moreOptionsLayout->setAlignment(ExpandConnectionOptionsButton, Qt::AlignLeft);
-	moreOptionsLayout->insertStretch(-1);
-	moreOptions->setLayout(moreOptionsLayout);
-
-	mainLayout->addWidget(moreOptions);
-
-	OptionsWidget = new QWidget(this);
-	QHBoxLayout *optionsLayout = new QHBoxLayout((OptionsWidget));
-	QGroupBox *connectionOptions = new QGroupBox(OptionsWidget);
-	optionsLayout->addWidget(connectionOptions);
-	connectionOptions->setTitle(tr("Connection settings"));
-
-	QVBoxLayout *vboxLayout2 = new QVBoxLayout(connectionOptions);
-	vboxLayout2->setSpacing(6);
-	vboxLayout2->setMargin(9);
-
-	CustomHostPort = new QCheckBox(connectionOptions);
-	CustomHostPort->setText(tr("Manually Specify Server Host/Port") + ':');
-	vboxLayout2->addWidget(CustomHostPort);
-	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
-
-	HostPortLayout = new QHBoxLayout();
-	HostPortLayout->setSpacing(6);
-	HostPortLayout->setMargin(0);
-
-	CustomHostLabel = new QLabel(connectionOptions);
-	CustomHostLabel->setText(tr("Host") + ':');
-	HostPortLayout->addWidget(CustomHostLabel);
-
-	CustomHost = new QLineEdit(connectionOptions);
-	HostPortLayout->addWidget(CustomHost);
-
-	CustomPortLabel = new QLabel(connectionOptions);
-	CustomPortLabel->setText(tr("Port") + ':');
-	HostPortLayout->addWidget(CustomPortLabel);
-
-	CustomPort = new QLineEdit(connectionOptions);
-	CustomPort->setMinimumSize(QSize(56, 0));
-	CustomPort->setMaximumSize(QSize(56, 32767));
-	CustomPort->setText(QString::number(port_));
-	HostPortLayout->addWidget(CustomPort);
-
-	vboxLayout2->addLayout(HostPortLayout);
-
-	QHBoxLayout *EncryptionLayout = new QHBoxLayout();
-	EncryptionLayout->setSpacing(6);
-	EncryptionLayout->setMargin(0);
-	EncryptionModeLabel = new QLabel(connectionOptions);
-	EncryptionModeLabel->setText(tr("Encrypt connection") + ':');
-	EncryptionLayout->addWidget(EncryptionModeLabel);
-
-	EncryptionMode = new QComboBox(connectionOptions);
-	EncryptionMode->addItem(tr("Always"), 0);
-	EncryptionMode->addItem(tr("When available"), 1);
-	EncryptionMode->addItem(tr("Legacy SSL"), 2);
-	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
-	EncryptionLayout->addWidget(EncryptionMode);
-
-	QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-	EncryptionLayout->addItem(spacerItem);
-	vboxLayout2->addLayout(EncryptionLayout);
-
-	LegacySSLProbe = new QCheckBox(connectionOptions);
-	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
-	vboxLayout2->addWidget(LegacySSLProbe);
-
-	mainLayout->addWidget(OptionsWidget);
-
 	mainLayout->addStretch(100);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
@@ -228,34 +147,6 @@ bool JabberCreateAccountWidget::checkSSL()
 	return true;
 }
 
-void JabberCreateAccountWidget::hostToggled(bool on)
-{
-	CustomHost->setEnabled(on);
-	CustomPort->setEnabled(on);
-	CustomHostLabel->setEnabled(on);
-	CustomPortLabel->setEnabled(on);
-	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(2))
-		EncryptionMode->setCurrentIndex(1);
-}
-
-void JabberCreateAccountWidget::sslActivated(int i)
-{
-	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL())
-		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
-	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked())
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Legacy secure connection (SSL) is only available in combination with manual host/port."), QMessageBox::Ok, this);
-		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
-	}
-}
-
-void JabberCreateAccountWidget::connectionOptionsChanged()
-{
-	ShowConnectionOptions = !ShowConnectionOptions;
-	ExpandConnectionOptionsButton->setText(ShowConnectionOptions ? "v" : ">");
-	OptionsWidget->setVisible(ShowConnectionOptions);
-}
-
 void JabberCreateAccountWidget::dataChanged()
 {
 	bool valid = !Domain->currentText().isEmpty()
@@ -272,12 +163,7 @@ void JabberCreateAccountWidget::dataChanged()
 			&& NewPassword->text().isEmpty()
 			&& ReNewPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
-			&& 0 == IdentityCombo->currentIndex()
-			&& !CustomHostPort->isChecked()
-			&& CustomHost->text().isEmpty()
-			&& CustomPort->text().toUInt() == port_
-			&& EncryptionMode->currentIndex() == 1
-			&& LegacySSLProbe->isChecked())
+			&& 0 == IdentityCombo->currentIndex())
 		simpleStateNotifier()->setState(StateNotChanged);
 	else
 		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
@@ -292,12 +178,6 @@ void JabberCreateAccountWidget::apply()
 			"must be the same!"), QMessageBox::Ok, this);
 		return;
 	}
-
-	ssl_ = EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt();
-	legacy_ssl_probe_ = LegacySSLProbe->isChecked();
-	opt_host_ = CustomHostPort->isChecked();
-	host_ = CustomHost->text();
-	port_ = CustomPort->text().toUInt();
 
 	auto errorService = new JabberErrorService{this};
 	auto registerAccountService = new JabberRegisterAccountService{this};
@@ -325,15 +205,6 @@ void JabberCreateAccountWidget::resetGui()
 	RememberPassword->setChecked(true);
 	IdentityManager::instance()->removeUnused();
 	IdentityCombo->setCurrentIndex(0);
-	ShowConnectionOptions = false;
-	ExpandConnectionOptionsButton->setText(">");
-	OptionsWidget->setVisible(false);
-	CustomHost->setEnabled(false);
-	CustomHostLabel->setEnabled(false);
-	CustomPort->setEnabled(false);
-	CustomPortLabel->setEnabled(false);
-	EncryptionMode->setCurrentIndex(1);
-	LegacySSLProbe->setChecked(true);
 	RegisterAccountButton->setEnabled(false);
 
 	simpleStateNotifier()->setState(StateNotChanged);

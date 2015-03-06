@@ -52,34 +52,12 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	IdentitiesComboBox *IdentityCombo;
 	QPushButton *RegisterAccountButton;
 
-	QPushButton *ExpandConnectionOptionsButton;
-	QWidget *OptionsWidget;
-	QCheckBox *CustomHostPort;
-	QHBoxLayout *HostPortLayout;
-	QLabel *CustomHostLabel;
-	QLineEdit *CustomHost;
-	QLabel *CustomPortLabel;
-	QLineEdit *CustomPort;
-	QLabel *EncryptionModeLabel;
-	QComboBox *EncryptionMode;
-	QCheckBox *LegacySSLProbe;
-
-	int ssl_;
-	bool opt_host_, legacy_ssl_probe_;
-	QString host_;
-	uint port_;
-	bool ShowConnectionOptions;
-
 	void createGui(bool showButtons);
 	bool checkSSL();
 	void resetGui();
 
 private slots:
 	void dataChanged();
-	void connectionOptionsChanged();
-	void hostToggled(bool on);
-	void sslActivated(int i);
-
 	void jidRegistered(const QString &jid, const QString &tlsDomain);
 
 public:
