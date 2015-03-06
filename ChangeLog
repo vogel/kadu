@@ -3,6 +3,7 @@
 * notify: #1352 fixed: reduce spacing between notifier configuration widgets (Vogel)
 * jabber: #2746 fixed: application was unresponsive when trying to register new jabber account on jabbim.net (Vogel)
 * jabber: #2955 fixed: fast sign in on Facebook on Windows restored (Vogel)
+* jabber: #2653 fixed: show nice message when another clients uses the same resource and server disconnects (Vogel)
 
 +++ version 3.0-alpha1
 * gadu: #2937 fixed: file transfers are now compatible with GG 12 and GG Drive (Vogel)

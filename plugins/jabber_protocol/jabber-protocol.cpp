@@ -299,17 +299,28 @@ void JabberProtocol::disconenctedFromServer()
 
 void JabberProtocol::error(QXmppClient::Error error)
 {
+	auto errorMessage = QString{};
 	if (error == QXmppClient::Error::XmppStreamError)
 	{
-		if (m_client->xmppStreamError() == QXmppStanza::Error::NotAuthorized)
-			passwordRequired();
-		return;
+		switch (m_client->xmppStreamError())
+		{
+			case QXmppStanza::Error::NotAuthorized:
+				passwordRequired();
+				return;
+			case QXmppStanza::Error::Conflict:
+				errorMessage = tr("Another client connected on the same resource.");
+				setStatus({}, SourceUser);
+				break;
+			default:
+				break;
+		}
 	}
 
 	if (error == QXmppClient::Error::SocketError)
 		setStatus({}, SourceUser);
 
-	auto errorMessage = m_errorService->errorMessage(m_client, error);
+	if (errorMessage.isEmpty())
+		errorMessage = m_errorService->errorMessage(m_client, error);
 	emit connectionError(account(), m_client->configuration().host(), errorMessage);
 	connectionError();
 }
