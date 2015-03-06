@@ -90,7 +90,6 @@ void JabberRegisterAccount::start()
 	m_client = new QXmppClient{this};
 	m_client->addExtension(m_registerExtension.get());
 
-	m_client->logger()->setLoggingType(QXmppLogger::StdoutLogging);
 	m_client->connectToServer(configuration);
 
 	connect(m_client, SIGNAL(connected()), this, SLOT(askForRegistration()));
