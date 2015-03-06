@@ -187,7 +187,7 @@ void JabberCreateAccountWidget::apply()
 	auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text());
 
 	auto window = new JabberWaitForAccountRegisterWindow(registerAccount);
-	connect(window, SIGNAL(jidRegistered(QString,QString)), this, SLOT(jidRegistered(QString,QString)));
+	connect(window, SIGNAL(jidRegistered(Jid)), this, SLOT(jidRegistered(Jid)));
 	window->exec();
 }
 
@@ -210,7 +210,7 @@ void JabberCreateAccountWidget::resetGui()
 	simpleStateNotifier()->setState(StateNotChanged);
 }
 
-void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString &tlsDomain)
+void JabberCreateAccountWidget::jidRegistered(const Jid &jid)
 {
 	if (jid.isEmpty())
 	{
@@ -219,7 +219,7 @@ void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString 
 	}
 
 	Account jabberAccount = Account::create("jabber");
-	jabberAccount.setId(jid);
+	jabberAccount.setId(jid.bare());
 	jabberAccount.setHasPassword(true);
 	jabberAccount.setPassword(NewPassword->text());
 	jabberAccount.setRememberPassword(RememberPassword->isChecked());
@@ -230,10 +230,7 @@ void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString 
 
 	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(jabberAccount.details());
 	if (details)
-	{
 		details->setState(StorableObject::StateNew);
-		details->setTlsOverrideDomain(tlsDomain);
-	}
 
 	resetGui();
 

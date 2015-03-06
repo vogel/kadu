@@ -51,13 +51,13 @@ void JabberWaitForAccountRegisterWindow::success()
 		"Now please add your friends to the buddy list.");
 
 	progressFinished(true, "dialog-information", message);
-	emit jidRegistered(m_jabberRegisterAccount->jid().full(), QString{});
+	emit jidRegistered(m_jabberRegisterAccount->jid());
 }
 
 void JabberWaitForAccountRegisterWindow::error(const QString &errorMessage)
 {
 	progressFinished(false, "dialog-error", errorMessage);
-	emit jidRegistered(QString{}, QString{});
+	emit jidRegistered(Jid());
 	deleteLater();
 }
 

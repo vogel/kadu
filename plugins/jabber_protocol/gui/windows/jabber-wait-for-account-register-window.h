@@ -24,6 +24,7 @@
 #include <QtCore/QPointer>
 
 class JabberRegisterAccount;
+class Jid;
 
 class JabberWaitForAccountRegisterWindow : public ProgressWindow
 {
@@ -34,7 +35,7 @@ public:
 	virtual ~JabberWaitForAccountRegisterWindow();
 
 signals:
-	void jidRegistered(const QString &jid, const QString &tlsDomain);
+	void jidRegistered(const Jid &jid);
 
 private:
 	QPointer<JabberRegisterAccount> m_jabberRegisterAccount;

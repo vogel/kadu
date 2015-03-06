@@ -39,6 +39,7 @@ class QLineEdit;
 class QPushButton;
 
 class ChooseIdentityWidget;
+class Jid;
 
 class JabberCreateAccountWidget : public AccountCreateWidget
 {
@@ -58,7 +59,7 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 
 private slots:
 	void dataChanged();
-	void jidRegistered(const QString &jid, const QString &tlsDomain);
+	void jidRegistered(const Jid &jid);
 
 public:
 	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = 0);
