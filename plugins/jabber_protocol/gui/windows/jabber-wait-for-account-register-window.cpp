@@ -28,6 +28,8 @@ JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberReg
 		ProgressWindow{tr("Registering new XMPP account"), parent},
 		m_jabberRegisterAccount{jabberRegisterAccount}
 {
+	setCancellable(true);
+
 	connect(m_jabberRegisterAccount, SIGNAL(statusMessage(QString)), this, SLOT(statusMessage(QString)));
 	connect(m_jabberRegisterAccount, SIGNAL(success()), this, SLOT(success()));
 	connect(m_jabberRegisterAccount, SIGNAL(error(QString)), this, SLOT(error(QString)));
@@ -38,6 +40,8 @@ JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberReg
 
 JabberWaitForAccountRegisterWindow::~JabberWaitForAccountRegisterWindow()
 {
+	if (m_jabberRegisterAccount)
+		m_jabberRegisterAccount->deleteLater();
 }
 
 void JabberWaitForAccountRegisterWindow::statusMessage(const QString &statusMessage)
