@@ -19,13 +19,13 @@
 
 #include "jabber-change-password.h"
 
+#include "qxmpp/jabber-register-extension.h"
 #include "services/jabber-error-service.h"
 #include "jid.h"
 
-#include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppRegisterIq.h>
 
-JabberChangePassword::JabberChangePassword(const QString &jid, const QString &newPassword, QXmppClient *client, QObject *parent) :
+JabberChangePassword::JabberChangePassword(const QString &jid, const QString &newPassword, JabberRegisterExtension *registerExtension, QObject *parent) :
 		QObject{parent}
 {
 	auto registerIq = QXmppRegisterIq{};
@@ -34,8 +34,8 @@ JabberChangePassword::JabberChangePassword(const QString &jid, const QString &ne
 	registerIq.setUsername(Jid::parse(jid).node());
 
 	m_id = registerIq.id();
-	client->sendPacket(registerIq);
-	connect(client, SIGNAL(iqReceived(QXmppIq)), this, SLOT(iqReceived(QXmppIq)));
+	registerExtension->sendRegisterIq(registerIq);
+	connect(registerExtension, SIGNAL(registerIqReceived(QXmppRegisterIq)), this, SLOT(registerIqReceived(QXmppRegisterIq)));
 }
 
 JabberChangePassword::~JabberChangePassword()
@@ -47,15 +47,15 @@ void JabberChangePassword::setErrorService(JabberErrorService *errorService)
 	m_errorService = errorService;
 }
 
-void JabberChangePassword::iqReceived(const QXmppIq &iq)
+void JabberChangePassword::registerIqReceived(const QXmppRegisterIq &registerIq)
 {
-	if (iq.id() != m_id)
+	if (registerIq.id() != m_id)
 		return;
 
-	if (m_errorService->isErrorIq(iq))
+	if (m_errorService->isErrorIq(registerIq))
 	{
 		auto conditionString = QString{};
-		switch (iq.error().condition())
+		switch (registerIq.error().condition())
 		{
 			case QXmppStanza::Error::NotAuthorized:
 				conditionString = tr("Current connection is not safe for password change. Use encrypted connection or change password on provider's site.");
@@ -66,9 +66,9 @@ void JabberChangePassword::iqReceived(const QXmppIq &iq)
 			default:
 				break;
 		}
-		emit error(m_errorService->errorMessage(iq, conditionString));
+		emit error(m_errorService->errorMessage(registerIq, conditionString));
 	}
-	else if (iq.type() == QXmppIq::Type::Result)
+	else if (registerIq.type() == QXmppIq::Type::Result)
 		emit passwordChanged();
 
 	deleteLater();

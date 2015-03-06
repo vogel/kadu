@@ -17,32 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-change-password-service.h"
+#include "jabber-register-account-service.h"
 
-#include "qxmpp/jabber-register-extension.h"
-#include "services/jabber-change-password.h"
 #include "services/jabber-error-service.h"
+#include "services/jabber-register-account.h"
 
-JabberChangePasswordService::JabberChangePasswordService(JabberRegisterExtension *registerExtension, QObject *parent) :
-		QObject{parent},
-		m_registerExtension{registerExtension}
+#include <qxmpp/QXmppClient.h>
+
+JabberRegisterAccountService::JabberRegisterAccountService(QObject *parent) :
+		QObject{parent}
 {
 }
 
-JabberChangePasswordService::~JabberChangePasswordService()
+JabberRegisterAccountService::~JabberRegisterAccountService()
 {
 }
 
-void JabberChangePasswordService::setErrorService(JabberErrorService *errorService)
+void JabberRegisterAccountService::setErrorService(JabberErrorService *errorService)
 {
 	m_errorService = errorService;
 }
 
-JabberChangePassword * JabberChangePasswordService::changePassword(const QString &jid, const QString &newPassword)
+JabberRegisterAccount * JabberRegisterAccountService::registerAccount(const QString &server)
 {
-	auto result = new JabberChangePassword{jid, newPassword, m_registerExtension, this};
+	auto result = new JabberRegisterAccount{server, this};
 	result->setErrorService(m_errorService);
 	return result;
 }
 
-#include "moc_jabber-change-password-service.cpp"
+#include "moc_jabber-register-account-service.cpp"

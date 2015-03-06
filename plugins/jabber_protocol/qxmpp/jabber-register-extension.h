@@ -19,27 +19,26 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <QtCore/QSet>
+#include <qxmpp/QXmppClientExtension.h>
 
-class JabberChangePassword;
-class JabberErrorService;
-class JabberRegisterExtension;
+class QXmppRegisterIq;
 
-class JabberChangePasswordService : public QObject
+class JabberRegisterExtension : public QXmppClientExtension
 {
 	Q_OBJECT
 
 public:
-	explicit JabberChangePasswordService(JabberRegisterExtension *registerExtension, QObject *parent = nullptr);
-	virtual ~JabberChangePasswordService();
+	explicit JabberRegisterExtension();
+	virtual ~JabberRegisterExtension();
 
-	void setErrorService(JabberErrorService *errorService);
+	void sendRegisterIq(const QXmppRegisterIq &registerIq);
+	virtual bool handleStanza(const QDomElement &stanza);
 
-	JabberChangePassword * changePassword(const QString &jid, const QString &newPassword);
+signals:
+	void registerIqReceived(const QXmppRegisterIq &registerIq);
 
 private:
-	QPointer<JabberRegisterExtension> m_registerExtension;
-	QPointer<JabberErrorService> m_errorService;
+	QSet<QString> m_pendingIds;
 
 };

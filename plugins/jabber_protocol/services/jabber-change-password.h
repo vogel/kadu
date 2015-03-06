@@ -23,16 +23,16 @@
 #include <QtCore/QPointer>
 
 class JabberErrorService;
+class JabberRegisterExtension;
 
-class QXmppClient;
-class QXmppIq;
+class QXmppRegisterIq;
 
 class JabberChangePassword : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit JabberChangePassword(const QString &jid, const QString &newPassword, QXmppClient *client, QObject *parent = nullptr);
+	explicit JabberChangePassword(const QString &jid, const QString &newPassword, JabberRegisterExtension *registerExtension, QObject *parent = nullptr);
 	virtual ~JabberChangePassword();
 
 	void setErrorService(JabberErrorService *errorService);
@@ -47,6 +47,6 @@ private:
 	QString m_id;
 
 private slots:
-	void iqReceived(const QXmppIq &iq);
+	void registerIqReceived(const QXmppRegisterIq &registerIq);
 
 };

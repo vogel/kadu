@@ -39,7 +39,6 @@ class QLineEdit;
 class QPushButton;
 
 class ChooseIdentityWidget;
-class JabberServerRegisterAccount;
 
 class JabberCreateAccountWidget : public AccountCreateWidget
 {

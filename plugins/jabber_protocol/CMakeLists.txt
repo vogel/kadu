@@ -69,9 +69,10 @@ set (SOURCES
 
 	open-chat-with/jabber-open-chat-with-runner.cpp
 
+	qxmpp/jabber-register-extension.cpp
+
 	server/jabber-avatar-downloader.cpp
 	server/jabber-avatar-uploader.cpp
-	server/jabber-server-register-account.cpp
 
 	services/jabber-avatar-service.cpp
 	services/jabber-change-password-service.cpp
@@ -83,6 +84,8 @@ set (SOURCES
 	services/jabber-file-transfer-service.cpp
 	services/jabber-personal-info-service.cpp
 	services/jabber-presence-service.cpp
+	services/jabber-register-account-service.cpp
+	services/jabber-register-account.cpp
 	services/jabber-resource.cpp
 	services/jabber-resource-service.cpp
 	services/jabber-room-chat-service.cpp
@@ -131,7 +134,6 @@ set (MOC_SOURCES
 
 	server/jabber-avatar-downloader.h
 	server/jabber-avatar-uploader.h
-	server/jabber-server-register-account.h
 
 	services/jabber-avatar-service.h
 	services/jabber-chat-service.h

@@ -24,17 +24,15 @@
 
 #include "protocols/protocol.h"
 
-class JabberServerRegisterAccount;
-
 class JabberWaitForAccountRegisterWindow : public ProgressWindow
 {
 	Q_OBJECT
 
 private slots:
-	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);
+	void registerNewAccountFinished(/*JabberServerRegisterAccount *jsra*/);
 
 public:
-	explicit JabberWaitForAccountRegisterWindow(JabberServerRegisterAccount *jsra, QWidget *parent = 0);
+	explicit JabberWaitForAccountRegisterWindow(/*JabberServerRegisterAccount *jsra, */QWidget *parent = 0);
 	virtual ~JabberWaitForAccountRegisterWindow();
 
 signals:

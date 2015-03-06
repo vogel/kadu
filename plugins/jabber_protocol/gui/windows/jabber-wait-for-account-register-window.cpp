@@ -30,26 +30,24 @@
 
 #include "icons/icons-manager.h"
 
-#include "server/jabber-server-register-account.h"
-
 #include "jabber-wait-for-account-register-window.h"
 
-JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberServerRegisterAccount *jsra, QWidget *parent) :
+JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(/*JabberServerRegisterAccount *jsra, */QWidget *parent) :
 		ProgressWindow(tr("Registering new XMPP account"), parent)
 {
-	connect(jsra, SIGNAL(finished(JabberServerRegisterAccount *)),
-			this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));
+	//connect(jsra, SIGNAL(finished(JabberServerRegisterAccount *)),
+	//		this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));
 
 	addProgressEntry("dialog-information", tr("Plase wait. New XMPP account is being registered."));
-	jsra->performAction();
+	//jsra->performAction();
 }
 
 JabberWaitForAccountRegisterWindow::~JabberWaitForAccountRegisterWindow()
 {
 }
 
-void JabberWaitForAccountRegisterWindow::registerNewAccountFinished(JabberServerRegisterAccount* jsra)
-{
+void JabberWaitForAccountRegisterWindow::registerNewAccountFinished(/** jsra*/)
+{/*
 	if (jsra && jsra->result())
 	{
 		QString message(tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the password.\n"
@@ -66,7 +64,7 @@ void JabberWaitForAccountRegisterWindow::registerNewAccountFinished(JabberServer
 		emit jidRegistered(QString(), QString());
 	}
 
-	delete jsra;
+	delete jsra;*/
 }
 
 #include "moc_jabber-wait-for-account-register-window.cpp"

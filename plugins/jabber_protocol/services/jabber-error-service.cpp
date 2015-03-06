@@ -101,3 +101,5 @@ QString JabberErrorService::conditionToString(QXmppStanza::Error::Condition cond
 			return QString{};
 	}
 }
+
+#include "moc_jabber-error-service.cpp"

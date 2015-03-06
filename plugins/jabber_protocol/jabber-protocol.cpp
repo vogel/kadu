@@ -47,12 +47,14 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
+#include "qxmpp/jabber-register-extension.h"
 #include "services/jabber-change-password-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-error-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-presence-service.h"
+#include "services/jabber-register-account-service.h"
 #include "services/jabber-resource-service.h"
 #include "services/jabber-room-chat-service.h"
 #include "services/jabber-roster-service.h"
@@ -90,13 +92,15 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
+	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_mucManager = make_unique<QXmppMucManager>();
 	m_transferManager = make_unique<QXmppTransferManager>();
 
+	m_client->addExtension(m_registerExtension.get());
 	m_client->addExtension(m_mucManager.get());
 	m_client->addExtension(m_transferManager.get());
 
-	m_changePasswordService = new JabberChangePasswordService{m_client, this};
+	m_changePasswordService = new JabberChangePasswordService{m_registerExtension.get(), this};
 	m_changePasswordService->setErrorService(m_errorService);
 
 	m_resourceService = new JabberResourceService{this};

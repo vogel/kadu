@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCrypto/QtCrypto>
 #include <QtGui/QIntValidator>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
@@ -38,7 +39,9 @@
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
-#include "server/jabber-server-register-account.h"
+#include "services/jabber-error-service.h"
+#include "services/jabber-register-account-service.h"
+#include "services/jabber-register-account.h"
 #include "jabber-account-details.h"
 #include "jabber-protocol-factory.h"
 
@@ -282,6 +285,7 @@ void JabberCreateAccountWidget::dataChanged()
 
 void JabberCreateAccountWidget::apply()
 {
+/*
 	if (NewPassword->text() != ReNewPassword->text())
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
@@ -289,18 +293,25 @@ void JabberCreateAccountWidget::apply()
 			"must be the same!"), QMessageBox::Ok, this);
 		return;
 	}
-
+*/
 	ssl_ = EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt();
 	legacy_ssl_probe_ = LegacySSLProbe->isChecked();
 	opt_host_ = CustomHostPort->isChecked();
 	host_ = CustomHost->text();
 	port_ = CustomPort->text().toUInt();
 
+	auto errorService = new JabberErrorService{this};
+	auto registerAccountService = new JabberRegisterAccountService{this};
+	registerAccountService->setErrorService(errorService);
+	auto registerAccount = registerAccountService->registerAccount(Domain->currentText());
+	registerAccount->start();
+/*
 	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Domain->currentText(), Username->text(), NewPassword->text(), legacy_ssl_probe_, ssl_ == 2, ssl_ == 0, opt_host_ ? host_ : QString(), port_);
 
 	JabberWaitForAccountRegisterWindow *window = new JabberWaitForAccountRegisterWindow(jsra);
 	connect(window, SIGNAL(jidRegistered(QString,QString)), this, SLOT(jidRegistered(QString,QString)));
 	window->exec();
+*/
 }
 
 void JabberCreateAccountWidget::cancel()

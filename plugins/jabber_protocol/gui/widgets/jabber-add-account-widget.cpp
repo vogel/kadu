@@ -38,7 +38,6 @@
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
-#include "server/jabber-server-register-account.h"
 
 #include "jabber-account-details.h"
 #include "jabber-protocol-factory.h"
