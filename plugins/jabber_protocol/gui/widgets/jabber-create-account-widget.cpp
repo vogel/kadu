@@ -116,9 +116,6 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	layout->addRow(0, infoLabel);
 
-	QLabel *moreOptionsLabel = new QLabel;
-	moreOptionsLabel->setText(tr("More options:"));
-
 	mainLayout->addStretch(100);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
