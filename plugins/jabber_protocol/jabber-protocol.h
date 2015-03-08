@@ -42,6 +42,7 @@ class JabberPresenceService;
 class JabberRegisterExtension;
 class JabberResourceService;
 class JabberRoomChatService;
+class JabberRosterExtension;
 class JabberStreamDebugService;
 
 class QXmppClient;
@@ -67,6 +68,7 @@ class JabberProtocol : public Protocol
 
 	QXmppClient *m_client;
 	std::unique_ptr<JabberRegisterExtension> m_registerExtension;
+	std::unique_ptr<JabberRosterExtension> m_rosterExtension;
 	std::unique_ptr<QXmppMucManager> m_mucManager;
 	std::unique_ptr<QXmppTransferManager> m_transferManager;
 

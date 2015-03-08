@@ -48,6 +48,7 @@
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
 #include "qxmpp/jabber-register-extension.h"
+#include "qxmpp/jabber-roster-extension.h"
 #include "services/jabber-change-password-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
@@ -93,10 +94,14 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
 	m_registerExtension = make_unique<JabberRegisterExtension>();
+	m_rosterExtension = make_unique<JabberRosterExtension>();
 	m_mucManager = make_unique<QXmppMucManager>();
 	m_transferManager = make_unique<QXmppTransferManager>();
 
+	m_rosterExtension->setJabberErrorService(m_errorService);
+
 	m_client->addExtension(m_registerExtension.get());
+	m_client->insertExtension(0, m_rosterExtension.get());
 	m_client->addExtension(m_mucManager.get());
 	m_client->addExtension(m_transferManager.get());
 
@@ -139,7 +144,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService->setVCardService(m_vcardService);
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
-	auto rosterService = new JabberRosterService{&m_client->rosterManager(), contacts, this};
+	auto rosterService = new JabberRosterService{&m_client->rosterManager(), m_rosterExtension.get(), contacts, this};
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 

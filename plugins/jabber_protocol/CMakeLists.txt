@@ -69,6 +69,7 @@ set (SOURCES
 	open-chat-with/jabber-open-chat-with-runner.cpp
 
 	qxmpp/jabber-register-extension.cpp
+	qxmpp/jabber-roster-extension.cpp
 
 	services/jabber-avatar-downloader.cpp
 	services/jabber-avatar-service.cpp

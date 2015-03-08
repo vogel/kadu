@@ -24,10 +24,12 @@
 #include "services/jabber-roster-state.h"
 #include "services/jabber-subscription-service.h"
 #include "jabber-protocol.h"
+#include "jid.h"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
+#include "qxmpp/jabber-roster-extension.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-service-tasks.h"
@@ -45,9 +47,10 @@ QSet<QString> JabberRosterService::buddyGroups(const Buddy &buddy)
 	return result;
 }
 
-JabberRosterService::JabberRosterService(QXmppRosterManager *roster, const QVector<Contact> &contacts, Protocol *protocol) :
+JabberRosterService::JabberRosterService(QXmppRosterManager *roster, JabberRosterExtension *rosterExtension, const QVector<Contact> &contacts, Protocol *protocol) :
 		RosterService{std::move(contacts), protocol},
 		m_roster{roster},
+		m_rosterExtension{rosterExtension},
 		m_tasks{new RosterServiceTasks{this}},
 		State{JabberRosterState::NonInitialized}
 {
@@ -57,6 +60,7 @@ JabberRosterService::JabberRosterService(QXmppRosterManager *roster, const QVect
 	connect(m_roster, SIGNAL(itemChanged(QString)), this, SLOT(remoteContactUpdated(QString)));
 	connect(m_roster, SIGNAL(itemRemoved(QString)), this, SLOT(remoteContactDeleted(QString)));
 	connect(m_roster, SIGNAL(rosterReceived()), this, SLOT(rosterRequestFinished()));
+	connect(m_rosterExtension, SIGNAL(rosterCancelationReceived(Jid)), this, SLOT(rosterCancelationReceived(Jid)));
 
 	connect(this, SIGNAL(contactAdded(Contact)), this, SLOT(contactAddedSlot(Contact)));
 	connect(this, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemovedSlot(Contact)));
@@ -170,6 +174,15 @@ void JabberRosterService::remoteContactDeleted(const QString &bareJid)
 
 		RosterService::removeContact(contact);
 	}
+}
+
+void JabberRosterService::rosterCancelationReceived(const Jid &jid)
+{
+	auto contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
+	if (!contact)
+		return;
+
+	contact.rosterEntry()->setDetached();
 }
 
 void JabberRosterService::markContactsForDeletion()

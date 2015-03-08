@@ -27,9 +27,12 @@
 
 enum class JabberRosterState;
 
+class JabberProtocol;
+class JabberRosterExtension;
+class Jid;
+
 class Buddy;
 class Contact;
-class JabberProtocol;
 
 class QXmppRosterEntry;
 class QXmppRosterManager;
@@ -39,6 +42,7 @@ class JabberRosterService : public RosterService
 	Q_OBJECT
 
 	QPointer<QXmppRosterManager> m_roster;
+	QPointer<JabberRosterExtension> m_rosterExtension;
 
 	QSet<Contact> m_markedForDelete;
 	owned_qptr<RosterServiceTasks> m_tasks;
@@ -102,6 +106,7 @@ private slots:
 
 	void remoteContactUpdated(const QString &bareJid);
 	void remoteContactDeleted(const QString &bareJid);
+	void rosterCancelationReceived(const Jid &jid);
 
 	void rosterRequestFinished();
 
@@ -131,7 +136,7 @@ protected:
 	void executeTask(const RosterTask &task);
 
 public:
-	explicit JabberRosterService(QXmppRosterManager *roster, const QVector<Contact> &contacts, Protocol *protocol);
+	explicit JabberRosterService(QXmppRosterManager *roster, JabberRosterExtension *rosterExtension, const QVector<Contact> &contacts, Protocol *protocol);
 	virtual ~JabberRosterService();
 
     virtual RosterServiceTasks * tasks() const override;
