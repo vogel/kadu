@@ -61,9 +61,11 @@ void JabberRegisterAccount::start()
 	auto configuration = QXmppConfiguration{};
 	configuration.setAutoAcceptSubscriptions(false);
 	configuration.setAutoReconnectionEnabled(false);
-	configuration.setIgnoreSslErrors(true); // TODO: replace with setCaCertificated
 	configuration.setDomain(m_jid.domain());
+	configuration.setIgnoreSslErrors(true); // TODO: replace with setCaCertificated
 	configuration.setStreamSecurityMode(QXmppConfiguration::StreamSecurityMode::TLSEnabled);
+	configuration.setUseNonSASLAuthentication(false);
+	configuration.setUseSASLAuthentication(false);
 /*
 	if (account().proxy())
 	{
