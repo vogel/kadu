@@ -38,9 +38,9 @@ void JabberRegisterAccountService::setErrorService(JabberErrorService *errorServ
 	m_errorService = errorService;
 }
 
-JabberRegisterAccount * JabberRegisterAccountService::registerAccount(const Jid &jid, const QString &password)
+JabberRegisterAccount * JabberRegisterAccountService::registerAccount(Jid jid, QString password, QString email)
 {
-	auto result = new JabberRegisterAccount{jid, password, this};
+	auto result = new JabberRegisterAccount{std::move(jid), std::move(password), std::move(email), this};
 	result->setErrorService(m_errorService);
 	return result;
 }

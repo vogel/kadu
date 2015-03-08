@@ -36,7 +36,7 @@ public:
 
 	void setErrorService(JabberErrorService *errorService);
 
-	JabberRegisterAccount * registerAccount(const Jid &jid, const QString &password);
+	JabberRegisterAccount * registerAccount(Jid jid, QString password, QString email);
 
 private:
 	QPointer<JabberErrorService> m_errorService;

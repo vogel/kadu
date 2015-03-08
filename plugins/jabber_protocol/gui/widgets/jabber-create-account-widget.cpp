@@ -106,11 +106,20 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	layout->addWidget(RememberPassword);
 
+	EMail = new QLineEdit{this};
+	layout->addRow(tr("E-mail:"), EMail);
+
+	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Some servers require your e-mail address during registration.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	layout->addRow(0, infoLabel);
+
 	IdentityCombo = new IdentitiesComboBox(this);
 	connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 
-	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
+	infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
 	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
@@ -132,6 +141,127 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 
 	if (!showButtons)
 		buttons->hide();
+
+	Domain->addItem("adastra.re");
+	Domain->addItem("alpha-labs.net");
+	Domain->addItem("apocalysto.ru");
+	Domain->addItem("bigowl.net");
+	Domain->addItem("blah.im");
+	Domain->addItem("cabbar.org");
+	Domain->addItem("chatme.biz");
+	Domain->addItem("chatme.community");
+	Domain->addItem("chatme.education");
+	Domain->addItem("chatme.im");
+	Domain->addItem("chatme.sexy");
+	Domain->addItem("chatme.singles");
+	Domain->addItem("chatme.social");
+	Domain->addItem("chatme.xyz");
+	Domain->addItem("coderollers.com");
+	Domain->addItem("creep.im");
+	Domain->addItem("crypt.am");
+	Domain->addItem("crypt.mn");
+	Domain->addItem("default.rs");
+	Domain->addItem("dotchat.me");
+	Domain->addItem("e-utp.net");
+	Domain->addItem("einfachjabber.de");
+	Domain->addItem("foxba.se");
+	Domain->addItem("freamware.net");
+	Domain->addItem("fysh.in");
+	Domain->addItem("gabbler.de");
+	Domain->addItem("gajim.org");
+	Domain->addItem("gnuhost.eu");
+	Domain->addItem("gojabber.org");
+	Domain->addItem("hot-chilli.eu");
+	Domain->addItem("hot-chilli.net");
+	Domain->addItem("igniterealtime.org");
+	Domain->addItem("im.hot-chilli.eu");
+	Domain->addItem("im.hot-chilli.net");
+	Domain->addItem("im.it-native.de");
+	Domain->addItem("inbox.im");
+	Domain->addItem("injabber.info");
+	Domain->addItem("is-a-furry.org");
+	Domain->addItem("jabb3r.net");
+	Domain->addItem("jabbeng.in");
+	Domain->addItem("jabber-br.org");
+	Domain->addItem("jabber-hosting.de");
+	Domain->addItem("jabber.at");
+	Domain->addItem("jabber.ccc.de");
+	Domain->addItem("jabber.co.cm");
+	Domain->addItem("jabber.cz");
+	Domain->addItem("jabber.de");
+	Domain->addItem("jabber.fourecks.de");
+	Domain->addItem("jabber.hot-chilli.eu");
+	Domain->addItem("jabber.hot-chilli.net");
+	Domain->addItem("jabber.i-pobox.net");
+	Domain->addItem("jabber.kernel-error.de");
+	Domain->addItem("jabber.minus273.org");
+	Domain->addItem("jabber.no-sense.net");
+	Domain->addItem("jabber.ru.com");
+	Domain->addItem("jabber.rueckgr.at");
+	Domain->addItem("jabber.se");
+	Domain->addItem("jabber.smash-net.org");
+	Domain->addItem("jabber.theforest.us");
+	Domain->addItem("jabber.web.id");
+	Domain->addItem("jabber.wien");
+	Domain->addItem("jabber.zone");
+	Domain->addItem("jabberafrica.org");
+	Domain->addItem("jabberforum.de");
+	Domain->addItem("jabberon.net");
+	Domain->addItem("jabberon.ru");
+	Domain->addItem("jabberwiki.de");
+	Domain->addItem("jabbim.com");
+	Domain->addItem("jabbim.cz");
+	Domain->addItem("jabbim.pl");
+	Domain->addItem("jabbim.sk");
+	Domain->addItem("jabjab.de");
+	Domain->addItem("jappix.com");
+	Domain->addItem("jid.su");
+	Domain->addItem("jix.im");
+	Domain->addItem("jodo.im");
+	Domain->addItem("jsmart.web.id");
+	Domain->addItem("kdex.de");
+	Domain->addItem("lethyro.net");
+	Domain->addItem("limun.org");
+	Domain->addItem("linuxlovers.at");
+	Domain->addItem("lsd-25.ru");
+	Domain->addItem("mijabber.es");
+	Domain->addItem("miscastonline.com");
+	Domain->addItem("neko.im");
+	Domain->addItem("njs.netlab.cz");
+	Domain->addItem("ohai.su");
+	Domain->addItem("p-h.im");
+	Domain->addItem("planetjabber.de");
+	Domain->addItem("pod.so");
+	Domain->addItem("radiodd.de");
+	Domain->addItem("richim.org");
+	Domain->addItem("rosolina.estate");
+	Domain->addItem("rows.io");
+	Domain->addItem("securejabber.me");
+	Domain->addItem("see.ph");
+	Domain->addItem("slang.cool");
+	Domain->addItem("sternenschweif.de");
+	Domain->addItem("suchat.org");
+	Domain->addItem("talk.planetjabber.de");
+	Domain->addItem("twattle.net");
+	Domain->addItem("uplink.io");
+	Domain->addItem("webchat.domains");
+	Domain->addItem("wtfismyip.com");
+	Domain->addItem("wusz.org");
+	Domain->addItem("xmpp-hosting.de");
+	Domain->addItem("xmpp.cm");
+	Domain->addItem("xmpp.guru");
+	Domain->addItem("xmpp.jp");
+	Domain->addItem("xmpp.kz");
+	Domain->addItem("xmpp.ninja");
+	Domain->addItem("xmpp.pro");
+	Domain->addItem("xmpp.ru.net");
+	Domain->addItem("xmpp.su");
+	Domain->addItem("xmpp.technology");
+	Domain->addItem("xmpp.tips");
+	Domain->addItem("xmpp.zone");
+	Domain->addItem("xmppcomm.com");
+	Domain->addItem("xmppcomm.net");
+	Domain->addItem("xmppnet.de");
 }
 
 bool JabberCreateAccountWidget::checkSSL()
@@ -181,7 +311,7 @@ void JabberCreateAccountWidget::apply()
 	registerAccountService->setErrorService(errorService);
 
 	auto jid = Jid{Username->text(), Domain->currentText(), QString{}};
-	auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text());
+	auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text(), EMail->text());
 
 	auto window = new JabberWaitForAccountRegisterWindow(registerAccount);
 	connect(window, SIGNAL(jidRegistered(Jid)), this, SLOT(jidRegistered(Jid)));

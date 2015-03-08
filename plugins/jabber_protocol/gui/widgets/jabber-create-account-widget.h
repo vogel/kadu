@@ -50,6 +50,7 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
 	QCheckBox *RememberPassword;
+	QLineEdit *EMail;
 	IdentitiesComboBox *IdentityCombo;
 	QPushButton *RegisterAccountButton;
 

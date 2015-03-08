@@ -28,10 +28,11 @@
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppRegisterIq.h>
 
-JabberRegisterAccount::JabberRegisterAccount(const Jid &jid, const QString &password, QObject *parent) :
+JabberRegisterAccount::JabberRegisterAccount(Jid jid, QString password, QString email, QObject *parent) :
 		QObject{parent},
 		m_jid{std::move(jid)},
 		m_password{std::move(password)},
+		m_email{std::move(email)},
 		m_state{State::None}
 {
 }
@@ -174,13 +175,6 @@ void JabberRegisterAccount::handleRegistrationForm(const QXmppRegisterIq &regist
 		return;
 	}
 
-	if (!registerIq.email().isNull())
-	{
-		auto errorMessage = tr("Registration at this server requires providing e-mail address. Kadu currently does not support this field.");
-		handleError(errorMessage);
-		return;
-	}
-
 	sendFilledRegistrationForm();
 	m_state = State::WaitForRegistrationConfirmation;
 }
@@ -188,6 +182,7 @@ void JabberRegisterAccount::handleRegistrationForm(const QXmppRegisterIq &regist
 void JabberRegisterAccount::sendFilledRegistrationForm()
 {
 	auto registerIq = QXmppRegisterIq{};
+	registerIq.setEmail(m_email);
 	registerIq.setPassword(m_password);
 	registerIq.setType(QXmppIq::Type::Set);
 	registerIq.setUsername(m_jid.node());

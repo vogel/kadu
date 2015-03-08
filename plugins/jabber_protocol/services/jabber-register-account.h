@@ -36,7 +36,7 @@ class JabberRegisterAccount : public QObject
 	Q_OBJECT
 
 public:
-	explicit JabberRegisterAccount(const Jid &jid, const QString &password, QObject *parent = nullptr);
+	explicit JabberRegisterAccount(Jid jid, QString password, QString email, QObject *parent = nullptr);
 	virtual ~JabberRegisterAccount();
 
 	void setErrorService(JabberErrorService *errorService);
@@ -66,6 +66,7 @@ private:
 
 	Jid m_jid;
 	QString m_password;
+	QString m_email;
 
 	State m_state;
 	QString m_id;
