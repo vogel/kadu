@@ -60,7 +60,7 @@ void JabberWaitForAccountRegisterWindow::success()
 
 void JabberWaitForAccountRegisterWindow::error(const QString &errorMessage)
 {
-	progressFinished(false, "dialog-error", errorMessage);
+	progressFinished(false, "dialog-error", tr("Registration failed.\n\nServer message: %1").arg(errorMessage));
 	emit jidRegistered(Jid());
 	deleteLater();
 }

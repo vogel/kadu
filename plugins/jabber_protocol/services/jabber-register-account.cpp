@@ -144,7 +144,7 @@ void JabberRegisterAccount::registerIqReceived(const QXmppRegisterIq &registerIq
 	if (m_id != registerIq.id())
 		return;
 
-	if (registerIq.type() == QXmppIq::Type::Error)
+	if (m_errorService->isErrorIq(registerIq))
 	{
 		handleError(m_errorService->errorMessage(registerIq));
 		return;
