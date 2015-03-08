@@ -89,6 +89,7 @@ set (SOURCES
 	services/jabber-room-chat-service.cpp
 	services/jabber-room-chat.cpp
 	services/jabber-roster-service.cpp
+	services/jabber-servers-service.cpp
 	services/jabber-stream-debug-service.cpp
 	services/jabber-subscription-service.cpp
 	services/jabber-vcard-downloader.cpp

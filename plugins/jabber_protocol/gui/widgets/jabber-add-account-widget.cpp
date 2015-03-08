@@ -39,6 +39,7 @@
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 
+#include "services/jabber-servers-service.h"
 #include "jabber-account-details.h"
 #include "jabber-protocol-factory.h"
 
@@ -142,6 +143,12 @@ void JabberAddAccountWidget::createGui(bool showButtons)
 
 	if (!showButtons)
 		buttons->hide();
+}
+
+void JabberAddAccountWidget::setJabberServersService(JabberServersService* serversService)
+{
+	for (auto &&server : serversService->knownServers())
+		Domain->addItem(server);
 }
 
 void JabberAddAccountWidget::dataChanged()

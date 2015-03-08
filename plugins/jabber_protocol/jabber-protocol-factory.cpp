@@ -29,6 +29,7 @@
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
+#include "services/jabber-servers-service.h"
 #include "jabber-account-details.h"
 #include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
@@ -85,14 +86,16 @@ ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *cont
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	JabberAddAccountWidget *result = new JabberAddAccountWidget(this, showButtons, parent);
+	auto result = new JabberAddAccountWidget(this, showButtons, parent);
+	result->setJabberServersService(new JabberServersService{result});
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	JabberCreateAccountWidget *result = new JabberCreateAccountWidget(showButtons, parent);
+	auto result = new JabberCreateAccountWidget(showButtons, parent);
+	result->setJabberServersService(new JabberServersService{result});
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }

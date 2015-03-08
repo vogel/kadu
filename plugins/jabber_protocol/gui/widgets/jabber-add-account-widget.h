@@ -37,6 +37,7 @@ class QPushButton;
 
 class ChooseIdentityWidget;
 class JabberProtocolFactory;
+class JabberServersService;
 
 class JabberAddAccountWidget : public AccountAddWidget
 {
@@ -61,6 +62,8 @@ private slots:
 public:
 	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = 0);
 	virtual ~JabberAddAccountWidget();
+
+	void setJabberServersService(JabberServersService *serversService);
 
 public slots:
 	virtual void apply();

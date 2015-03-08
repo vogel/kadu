@@ -39,6 +39,7 @@ class QLineEdit;
 class QPushButton;
 
 class ChooseIdentityWidget;
+class JabberServersService;
 class Jid;
 
 class JabberCreateAccountWidget : public AccountCreateWidget
@@ -65,6 +66,8 @@ private slots:
 public:
 	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = 0);
 	virtual ~JabberCreateAccountWidget();
+
+	void setJabberServersService(JabberServersService *serversService);
 
 public slots:
 	virtual void apply();
