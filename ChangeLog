@@ -1,6 +1,7 @@
-+++ version 3.0-alpha1
++++ version 3.0-alpha2
 * notify: #2963 fixed: do not mix up New chat and New message notifications (Vogel)
 * notify: #1352 fixed: reduce spacing between notifier configuration widgets (Vogel)
+* jabber: replaced libiris with QXmpp (Vogel)
 * jabber: #2746 fixed: application was unresponsive when trying to register new jabber account on jabbim.net (Vogel)
 * jabber: #2955 fixed: fast sign in on Facebook on Windows restored (Vogel)
 * jabber: #2653 fixed: show nice message when another clients uses the same resource and server disconnects (Vogel)
