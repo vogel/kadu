@@ -45,6 +45,7 @@ class JabberRoomChatService;
 class JabberRosterExtension;
 class JabberStreamDebugService;
 
+class QSslError;
 class QXmppClient;
 class QXmppMucManager;
 class QXmppTransferManager;
@@ -77,6 +78,9 @@ class JabberProtocol : public Protocol
 	// void notifyAboutPresenceChanged(const Jid &jid, const Resource &resource);
 
 private slots:
+	void xmppClientStateChanged(QXmppClient::State state);
+	void sslErrors(const QList<QSslError> &errors);
+
 	void connectedToServer();
 	void disconenctedFromServer();
 	void error(QXmppClient::Error error);

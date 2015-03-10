@@ -75,14 +75,10 @@ void TrustedCertificatesManager::addTrustedCertificate(const QString &certificat
 	if (StringList.contains(certificate))
 		removeTrustedCertificate(certificate);
 
-	emit certificateAboutToBeAdded(certificate);
-
 	if (persist)
 		StringList.prepend(certificate);
 	else
 		TemporaryList.prepend(certificate);
-
-	emit certificateAdded(certificate);
 }
 
 void TrustedCertificatesManager::removeTrustedCertificate(const QString& certificate)
@@ -90,10 +86,8 @@ void TrustedCertificatesManager::removeTrustedCertificate(const QString& certifi
 	if (!StringList.contains(certificate))
 		return;
 
-	emit certificateAboutToBeRemoved(certificate);
 	StringList.removeAll(certificate);
 	TemporaryList.removeAll(certificate);
-	emit certificateRemoved(certificate);
 }
 
 bool TrustedCertificatesManager::isTrusted(const QString &certificate)

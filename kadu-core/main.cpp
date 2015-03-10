@@ -71,6 +71,7 @@
 #include "plugin/plugin-module.h"
 #include "protocols/protocols-manager.h"
 #include "roster/roster-module.h"
+#include "ssl/ssl-module.h"
 #include "debug.h"
 #include "kadu-config.h"
 
@@ -217,6 +218,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<GuiModule>());
 	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());
+	modules.emplace_back(make_unique<SslModule>());
 
 	auto injector = injeqt::injector{std::move(modules)};
 

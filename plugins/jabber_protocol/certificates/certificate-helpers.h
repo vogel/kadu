@@ -30,6 +30,8 @@
 #include <QtCrypto/QtCrypto>
 
 class JabberAccountDetails;
+
+class QSslCertificate;
 class QString;
 
 namespace QCA
@@ -42,7 +44,8 @@ class CertificateHelpers
 	public:
 		static QCA::CertificateCollection allCertificates(const QStringList& dirs);
 		static QString resultToString(int result, QCA::Validity);
-		// static bool checkCertificate(QCA::TLS *tls, QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, bool blocking, QObject *receiver, const char *slot);
+		static bool checkCertificateChain(const QList<QSslCertificate> &certificateChain, const QString &domain);
+		//static bool checkCertificate(QCA::TLS *tls, QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, bool blocking, QObject *receiver, const char *slot);
 		static QStringList getCertificateStoreDirs();
 
 	protected:

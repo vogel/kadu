@@ -23,6 +23,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCrypto/QtCrypto>
 #include <QtNetwork/QNetworkProxy>
+#include <QtNetwork/QSslSocket>
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppMucManager.h>
 #include <qxmpp/QXmppRosterManager.h>
@@ -40,12 +41,14 @@
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
 #include "protocols/protocols-manager.h"
+#include "ssl/ssl-certificate-repository.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
+#include "certificates/certificate-helpers.h"
 #include "certificates/trusted-certificates-manager.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "qxmpp/jabber-roster-extension.h"
@@ -67,10 +70,12 @@
 #include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
+#include "jabber-public-sender-qobject.h"
 #include "jabber-url-handler.h"
 #include "jid.h"
 
 #include "jabber-protocol.h"
+#include "ssl/gui/ssl-certificate-window.h"
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
@@ -92,6 +97,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
+	connect(m_client, SIGNAL(stateChanged(QXmppClient::State)), this, SLOT(xmppClientStateChanged(QXmppClient::State)));
 
 	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_rosterExtension = make_unique<JabberRosterExtension>();
@@ -248,8 +254,8 @@ void JabberProtocol::login()
 
 	auto configuration = QXmppConfiguration{};
 	configuration.setAutoAcceptSubscriptions(false);
-	configuration.setAutoReconnectionEnabled(false); // we do it in protocol state machine
-	configuration.setIgnoreSslErrors(true); // TODO: replace with setCaCertificated
+	configuration.setAutoReconnectionEnabled(false);
+	configuration.setIgnoreSslErrors(false);
 	configuration.setJid(jid.full());
 	configuration.setPassword(account().password());
 	configuration.setStreamSecurityMode(streamSecurityMode);
@@ -280,6 +286,34 @@ void JabberProtocol::login()
 	m_client->connectToServer(configuration);
 
 	kdebugf2();
+}
+
+void JabberProtocol::xmppClientStateChanged(QXmppClient::State state)
+{
+	if (state != QXmppClient::State::ConnectingState)
+		return;
+
+	auto xmppClient = static_cast<JabberPublicSenderQObject *>(sender());
+	auto sslSocket = qobject_cast<QSslSocket *>(xmppClient->publicSender());
+
+	if (sslSocket)
+		connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)), Qt::UniqueConnection);
+}
+
+void JabberProtocol::sslErrors(const QList<QSslError> &errors)
+{
+	Q_UNUSED(errors);
+
+	auto sslSocket = qobject_cast<QSslSocket *>(sender());
+
+
+	auto sslWindow = new SslCertificateWindow{sslSocket->peerCertificate()};
+	sslWindow->showNormal();
+
+	if (Core::instance()->sslCertificateRepository()->containsCertificate(sslSocket->peerCertificate()))
+		sslSocket->ignoreSslErrors();
+	else
+		Core::instance()->sslCertificateRepository()->addPersistentCertificate(sslSocket->peerCertificate());
 }
 
 /*

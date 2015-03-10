@@ -46,12 +46,6 @@ public:
 	void removeTrustedCertificate(const QString &certificate);
 	bool isTrusted(const QString &certificate);
 
-signals:
-	void certificateAboutToBeAdded(const QString &certificate);
-	void certificateAdded(const QString &certificate);
-	void certificateAboutToBeRemoved(const QString &certificate);
-	void certificateRemoved(const QString &certificate);
-
 };
 
 #endif // TRUSTED_CERTIFICATES_MANAGER_H

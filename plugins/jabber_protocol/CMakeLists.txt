@@ -104,6 +104,7 @@ set (SOURCES
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	jabber-protocol-plugin.cpp
+	jabber-public-sender-qobject.cpp
 	jabber-status-adapter.cpp
 	jabber-url-dom-visitor-provider.cpp
 	jabber-url-handler.cpp

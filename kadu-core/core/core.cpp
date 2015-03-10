@@ -118,6 +118,8 @@
 #include "services/message-transformer-service.h"
 #include "services/notification-service.h"
 #include "services/raw-message-transformer-service.h"
+#include "ssl/ssl-certificate-manager.h"
+#include "ssl/ssl-certificate-repository.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
@@ -226,6 +228,7 @@ Core::~Core()
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
+	m_injector.get<SslCertificateManager>()->storePersistentSslCertificates();
 	m_injector.get<ChatWindowManager>()->storeOpenedChatWindows();
 
 	// some plugins crash on deactivation
@@ -704,6 +707,7 @@ void Core::runGuiServices()
 	CurrentChatWidgetMessageHandler->setNotificationService(CurrentNotificationService);
 
 	m_injector.get<ChatWindowManager>()->openStoredChatWindows();
+	m_injector.get<SslCertificateManager>()->loadPersistentSslCertificates();
 }
 
 void Core::stopServices()
@@ -898,6 +902,11 @@ WebkitMessagesViewHandlerFactory * Core::webkitMessagesViewHandlerFactory() cons
 RosterReplacer * Core::rosterReplacer() const
 {
 	return m_injector.get<RosterReplacer>();
+}
+
+SslCertificateRepository * Core::sslCertificateRepository() const
+{
+	return m_injector.get<SslCertificateRepository>();
 }
 
 FileTransferHandlerManager * Core::fileTransferHandlerManager() const

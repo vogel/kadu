@@ -32,6 +32,8 @@
 #include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
 #include <QtCrypto/QtCrypto>
+#include <qsslcertificate.h>
+#include <qsslerror.h>
 
 #include "core/application.h"
 #include "misc/paths-provider.h"
@@ -183,9 +185,25 @@ QString CertificateHelpers::resultToString(int result, QCA::Validity validity)
 	}
 	return s;
 }
+
+bool CertificateHelpers::checkCertificateChain(const QList<QSslCertificate> &certificateChain, const QString &domain)
+{
+	auto errors = QSslCertificate::verify(certificateChain, domain);
+	if (errors.isEmpty())
+		return true;
+
+	for (auto &&error : errors)
+	{
+		printf("error: %s\n", qPrintable(error.errorString()));
+	}
+
+	return false;
+}
+
 /*
 bool CertificateHelpers::checkCertificate(QCA::TLS* tls, QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, bool blocking, QObject *receiver, const char *slot)
 {
+	return false;
 	if (!tlsHandler || !tls || tls->peerCertificateChain().isEmpty())
 		return false;
 
@@ -223,7 +241,7 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, QCATLSHandler *tlsHandl
 		return QDialog::Accepted == errorDialog->exec();
 
 	errorDialog->show();
-	return false;
+	return false;/
 }
 */
 QStringList CertificateHelpers::getCertificateStoreDirs()

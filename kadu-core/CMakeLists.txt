@@ -122,6 +122,7 @@ set (kadu_SUBDIRS
 	qt
 	roster
 	services
+	ssl
 	status
 	storage
 	talkable
@@ -362,6 +363,8 @@ kadu_api_directories (kadu-core
 	roster
 	qt
 	services
+	ssl
+	ssl/gui
 	status
 	storage
 	talkable
