@@ -27,6 +27,7 @@
 JabberStreamDebugService::JabberStreamDebugService(QXmppClient *m_client, QObject *parent) :
 		QObject{parent}
 {
+	m_client->setLogger(new QXmppLogger{m_client});
 	m_client->logger()->setLoggingType(QXmppLogger::SignalLogging);
 	connect(m_client->logger(), SIGNAL(message(QXmppLogger::MessageType,QString)), this, SLOT(message(QXmppLogger::MessageType,QString)));
 }
