@@ -41,7 +41,10 @@ JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberReg
 JabberWaitForAccountRegisterWindow::~JabberWaitForAccountRegisterWindow()
 {
 	if (m_jabberRegisterAccount)
+	{
+		disconnect(m_jabberRegisterAccount, nullptr, this, nullptr);
 		m_jabberRegisterAccount->deleteLater();
+	}
 }
 
 void JabberWaitForAccountRegisterWindow::statusMessage(const QString &statusMessage)

@@ -40,6 +40,11 @@ JabberRegisterAccount::JabberRegisterAccount(Jid jid, QString password, QString 
 
 JabberRegisterAccount::~JabberRegisterAccount()
 {
+	if (m_client)
+	{
+		disconnect(m_client, nullptr, this, nullptr);
+		m_client->deleteLater();
+	}
 }
 
 void JabberRegisterAccount::setErrorService(JabberErrorService *errorService)
@@ -112,12 +117,14 @@ void JabberRegisterAccount::clientError(QXmppClient::Error error)
 
 void JabberRegisterAccount::handleError(const QString &errorMessage)
 {
+	disconnect(m_client, nullptr, this, nullptr);
 	emit error(errorMessage);
 	deleteLater();
 }
 
 void JabberRegisterAccount::handleSuccess()
 {
+	disconnect(m_client, nullptr, this, nullptr);
 	emit success();
 	deleteLater();
 }
