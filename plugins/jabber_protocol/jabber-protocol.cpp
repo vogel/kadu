@@ -48,7 +48,6 @@
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
-#include "certificates/certificate-helpers.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "qxmpp/jabber-roster-extension.h"
 #include "services/jabber-change-password-service.h"

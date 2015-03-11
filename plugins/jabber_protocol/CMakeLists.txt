@@ -28,15 +28,13 @@ endif ()
 
 kadu_api_directories (plugins/jabber_protocol
 	actions
-	client
 	file-transfer
 	gui/widgets
 	gui/windows
 	gui
 	open-chat-with
+	qxmpp
 	services
-	tasks
-	utils
 	.
 )
 
@@ -44,8 +42,6 @@ set (SOURCES
 	actions/jabber-actions.cpp
 	actions/jabber-protocol-menu-manager.cpp
 	actions/show-xml-console-action-description.cpp
-
-	client/mini-client.cpp
 
 	file-transfer/jabber-outgoing-file-transfer-handler.cpp
 	file-transfer/jabber-stream-incoming-file-transfer-handler.cpp
@@ -110,8 +106,6 @@ set (SOURCES
 set (MOC_SOURCES
 	actions/jabber-actions.h
 	actions/show-xml-console-action-description.h
-
-	client/mini-client.h
 
 	gui/widgets/jabber-contact-personal-info-widget.h
 	gui/widgets/jabber-add-account-widget.h
