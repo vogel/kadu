@@ -41,7 +41,6 @@
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
 #include "protocols/protocols-manager.h"
-#include "ssl/ssl-certificate-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
@@ -50,6 +49,7 @@
 #include "actions/jabber-protocol-menu-manager.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "qxmpp/jabber-roster-extension.h"
+#include "qxmpp/jabber-ssl-hack.h"
 #include "services/jabber-change-password-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
@@ -68,7 +68,6 @@
 #include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
-#include "jabber-public-sender-qobject.h"
 #include "jabber-url-handler.h"
 #include "jid.h"
 
@@ -94,7 +93,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
-	connect(m_client, SIGNAL(stateChanged(QXmppClient::State)), this, SLOT(xmppClientStateChanged(QXmppClient::State)));
+
+	new JabberSslHack{m_client};
 
 	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_rosterExtension = make_unique<JabberRosterExtension>();
@@ -283,27 +283,6 @@ void JabberProtocol::login()
 	m_client->connectToServer(configuration);
 
 	kdebugf2();
-}
-
-void JabberProtocol::xmppClientStateChanged(QXmppClient::State state)
-{
-	if (state != QXmppClient::State::ConnectingState)
-		return;
-
-	auto xmppClient = static_cast<JabberPublicSenderQObject *>(sender());
-	auto sslSocket = qobject_cast<QSslSocket *>(xmppClient->publicSender());
-
-	if (sslSocket)
-		connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)), Qt::UniqueConnection);
-}
-
-void JabberProtocol::sslErrors(const QList<QSslError> &errors)
-{
-	Q_UNUSED(errors);
-
-	auto sslSocket = qobject_cast<QSslSocket *>(sender());
-	if (Core::instance()->sslCertificateManager()->acceptCertificate(m_client->configuration().domain(), sslSocket->peerCertificate(), errors))
-		sslSocket->ignoreSslErrors();
 }
 
 /*

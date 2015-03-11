@@ -20,6 +20,7 @@
 #include "jabber-register-account.h"
 
 #include "qxmpp/jabber-register-extension.h"
+#include "qxmpp/jabber-ssl-hack.h"
 #include "services/jabber-error-service.h"
 #include "jid.h"
 
@@ -62,7 +63,7 @@ void JabberRegisterAccount::start()
 	configuration.setAutoAcceptSubscriptions(false);
 	configuration.setAutoReconnectionEnabled(false);
 	configuration.setDomain(m_jid.domain());
-	configuration.setIgnoreSslErrors(true); // TODO: replace with setCaCertificated
+	configuration.setIgnoreSslErrors(false);
 	configuration.setStreamSecurityMode(QXmppConfiguration::StreamSecurityMode::TLSEnabled);
 	configuration.setUseNonSASLAuthentication(false);
 	configuration.setUseSASLAuthentication(false);
@@ -92,6 +93,8 @@ void JabberRegisterAccount::start()
 	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_client = new QXmppClient{this};
 	m_client->addExtension(m_registerExtension.get());
+
+	new JabberSslHack{m_client};
 
 	m_client->connectToServer(configuration);
 

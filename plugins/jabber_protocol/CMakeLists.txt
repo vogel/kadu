@@ -60,6 +60,7 @@ set (SOURCES
 
 	qxmpp/jabber-register-extension.cpp
 	qxmpp/jabber-roster-extension.cpp
+	qxmpp/jabber-ssl-hack.cpp
 
 	services/jabber-avatar-downloader.cpp
 	services/jabber-avatar-service.cpp
