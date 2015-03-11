@@ -21,19 +21,31 @@
 
 #include "exports.h"
 
-#include <QtWidgets/QWidget>
+#include <QtCore/QPointer>
+#include <QtNetwork/QSslCertificate>
+#include <QtWidgets/QDialog>
 
-class QSslCertificate;
+class SslCertificateRepository;
 
-class KADUAPI SslCertificateWindow : public QWidget
+class KADUAPI SslCertificateErrorDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit SslCertificateWindow(QSslCertificate certificate, QWidget *parent = nullptr);
-	virtual ~SslCertificateWindow();
+	explicit SslCertificateErrorDialog(const QString &hostName, QSslCertificate certificate, const QList<QSslError> &errors, QWidget *parent = nullptr);
+	virtual ~SslCertificateErrorDialog();
+
+	void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
 
 private:
-	void createGui(QSslCertificate certificate);
+	QPointer<SslCertificateRepository> m_sslCertificateRepository;
+
+	QSslCertificate m_certificate;
+
+	void createGui(const QString &hostName, const QList<QSslError> &errors);
+
+private slots:
+	void increaseHeight();
+	void trustCertificate();
 
 };

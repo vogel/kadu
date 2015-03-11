@@ -24,7 +24,6 @@
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
-#include "certificates/trusted-certificates-manager.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "gui/windows/main-configuration-window.h"
@@ -93,7 +92,6 @@ void JabberProtocolPlugin::done()
 	JabberActions::unregisterActions();
 
 	JabberIdValidator::destroyInstance();
-	TrustedCertificatesManager::destroyInstance();
 }
 
 Q_EXPORT_PLUGIN2(jabber_protocol, JabberProtocolPlugin)

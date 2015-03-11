@@ -35,7 +35,6 @@
 
 #include "certificates/certificate-display-dialog.h"
 #include "certificates/certificate-helpers.h"
-#include "certificates/trusted-certificates-manager.h"
 #include "client/mini-client.h"
 
 #include "certificate-error-window.h"

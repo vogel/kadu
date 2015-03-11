@@ -41,7 +41,7 @@
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
 #include "protocols/protocols-manager.h"
-#include "ssl/ssl-certificate-repository.h"
+#include "ssl/ssl-certificate-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
@@ -49,7 +49,6 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/certificate-helpers.h"
-#include "certificates/trusted-certificates-manager.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "qxmpp/jabber-roster-extension.h"
 #include "services/jabber-change-password-service.h"
@@ -75,7 +74,6 @@
 #include "jid.h"
 
 #include "jabber-protocol.h"
-#include "ssl/gui/ssl-certificate-window.h"
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
@@ -305,15 +303,8 @@ void JabberProtocol::sslErrors(const QList<QSslError> &errors)
 	Q_UNUSED(errors);
 
 	auto sslSocket = qobject_cast<QSslSocket *>(sender());
-
-
-	auto sslWindow = new SslCertificateWindow{sslSocket->peerCertificate()};
-	sslWindow->showNormal();
-
-	if (Core::instance()->sslCertificateRepository()->containsCertificate(sslSocket->peerCertificate()))
+	if (Core::instance()->sslCertificateManager()->acceptCertificate(m_client->configuration().domain(), sslSocket->peerCertificate(), errors))
 		sslSocket->ignoreSslErrors();
-	else
-		Core::instance()->sslCertificateRepository()->addPersistentCertificate(sslSocket->peerCertificate());
 }
 
 /*

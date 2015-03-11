@@ -1,6 +1,6 @@
 set (ssl_SRCS
+	gui/ssl-certificate-error-dialog.cpp
 	gui/ssl-certificate-widget.cpp
-	gui/ssl-certificate-window.cpp
 
 	ssl-certificate-manager.cpp
 	ssl-certificate-repository.cpp

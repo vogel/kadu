@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -26,7 +28,10 @@
 class SslCertificateStorage;
 class SslCertificateRepository;
 
-class SslCertificateManager : public QObject
+class QSslCertificate;
+class QSslError;
+
+class KADUAPI SslCertificateManager : public QObject
 {
 	Q_OBJECT
 
@@ -36,6 +41,8 @@ public:
 
 	void loadPersistentSslCertificates();
 	void storePersistentSslCertificates();
+
+	bool acceptCertificate(const QString &hostName, const QSslCertificate &certificate, const QList<QSslError> &errors) const;
 
 private:
 	QPointer<SslCertificateRepository> m_sslCertificateRepository;

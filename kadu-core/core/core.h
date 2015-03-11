@@ -81,7 +81,7 @@ class PluginStateService;
 class RawMessageTransformerService;
 class RosterNotifier;
 class RosterReplacer;
-class SslCertificateRepository;
+class SslCertificateManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class WebkitMessagesViewDisplayFactory;
@@ -211,7 +211,7 @@ public:
 	WebkitMessagesViewFactory * webkitMessagesViewFactory() const;
 	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
 	RosterReplacer * rosterReplacer() const;
-	SslCertificateRepository * sslCertificateRepository() const;
+	SslCertificateManager * sslCertificateManager() const;
 
 	FileTransferHandlerManager * fileTransferHandlerManager() const;
 	FileTransferManager * fileTransferManager() const;

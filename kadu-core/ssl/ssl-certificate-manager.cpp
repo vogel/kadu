@@ -19,6 +19,7 @@
 
 #include "ssl-certificate-manager.h"
 
+#include "ssl/gui/ssl-certificate-error-dialog.h"
 #include "ssl/ssl-certificate-repository.h"
 #include "ssl/ssl-certificate-storage.h"
 
@@ -57,6 +58,16 @@ void SslCertificateManager::storePersistentSslCertificates()
 		return;
 
 	m_sslCertificateStorage->storeCertificates(m_sslCertificateRepository->persistentCertificates());
+}
+
+bool SslCertificateManager::acceptCertificate(const QString &hostName, const QSslCertificate &certificate, const QList<QSslError> &errors) const
+{
+	if (m_sslCertificateRepository->containsCertificate(certificate))
+		return true;
+
+	auto sslCertificateErrorDialog = new SslCertificateErrorDialog{hostName, certificate, errors};
+	sslCertificateErrorDialog->setSslCertificateRepository(m_sslCertificateRepository);
+	return QDialog::Accepted == sslCertificateErrorDialog->exec();
 }
 
 #include "moc_ssl-certificate-manager.cpp"

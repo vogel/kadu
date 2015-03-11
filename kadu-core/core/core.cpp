@@ -119,7 +119,6 @@
 #include "services/notification-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "ssl/ssl-certificate-manager.h"
-#include "ssl/ssl-certificate-repository.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
@@ -904,9 +903,9 @@ RosterReplacer * Core::rosterReplacer() const
 	return m_injector.get<RosterReplacer>();
 }
 
-SslCertificateRepository * Core::sslCertificateRepository() const
+SslCertificateManager * Core::sslCertificateManager() const
 {
-	return m_injector.get<SslCertificateRepository>();
+	return m_injector.get<SslCertificateManager>();
 }
 
 FileTransferHandlerManager * Core::fileTransferHandlerManager() const

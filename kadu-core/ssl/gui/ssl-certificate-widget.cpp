@@ -64,7 +64,7 @@ void SslCertificateWidget::fillGui(QSslCertificate certificate)
 	addItem(tr("Serial number"), certificate.serialNumber());
 
 	addItem(tr("Issuer organization"), certificate.issuerInfo(QSslCertificate::SubjectInfo::Organization));
-	addItem(tr("Issuer comon name"), certificate.issuerInfo(QSslCertificate::SubjectInfo::CommonName));
+	addItem(tr("Issuer common name"), certificate.issuerInfo(QSslCertificate::SubjectInfo::CommonName));
 	addItem(tr("Issuer locality name"), certificate.issuerInfo(QSslCertificate::SubjectInfo::LocalityName));
 	addItem(tr("Issuer organizational unit name"), certificate.issuerInfo(QSslCertificate::SubjectInfo::OrganizationalUnitName));
 	addItem(tr("Issuer country name"), certificate.issuerInfo(QSslCertificate::SubjectInfo::CountryName));
@@ -74,7 +74,9 @@ void SslCertificateWidget::fillGui(QSslCertificate certificate)
 	addItem(tr("Issuer email address"), certificate.issuerInfo(QSslCertificate::SubjectInfo::EmailAddress));
 
 	addItem(tr("Subject organization"), certificate.subjectInfo(QSslCertificate::SubjectInfo::Organization));
-	addItem(tr("Subject comon name"), certificate.subjectInfo(QSslCertificate::SubjectInfo::CommonName));
+	addItem(tr("Subject common name"), certificate.subjectInfo(QSslCertificate::SubjectInfo::CommonName));
+	for (auto &&subjectAlternativeName : certificate.subjectAlternativeNames())
+		addItem(tr("Subject alernative name"), subjectAlternativeName);
 	addItem(tr("Subject locality name"), certificate.subjectInfo(QSslCertificate::SubjectInfo::LocalityName));
 	addItem(tr("Subject organizational unit name"), certificate.subjectInfo(QSslCertificate::SubjectInfo::OrganizationalUnitName));
 	addItem(tr("Subject country name"), certificate.subjectInfo(QSslCertificate::SubjectInfo::CountryName));
