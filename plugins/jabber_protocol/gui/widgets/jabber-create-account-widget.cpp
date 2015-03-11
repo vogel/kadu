@@ -148,6 +148,8 @@ void JabberCreateAccountWidget::setJabberServersService(JabberServersService* se
 {
 	for (auto &&server : serversService->knownNoXDataServers())
 		Domain->addItem(server);
+
+	Domain->setCurrentText(QString{});
 }
 
 bool JabberCreateAccountWidget::checkSSL()
