@@ -51,7 +51,6 @@ public:
 	void setPresenceService(JabberPresenceService *presenceService);
 	void initialize();
 
-	bool shouldHandleReceivedMessage(const QXmppMessage &xmppMessage) const;
 	Message handleReceivedMessage(const QXmppMessage &xmppMessage) const;
 
 	void joinOpenedRoomChats();

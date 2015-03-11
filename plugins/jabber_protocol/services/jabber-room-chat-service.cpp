@@ -170,12 +170,6 @@ bool JabberRoomChatService::isRoomChat(const Chat &chat) const
 	return myRoomChatDetails(chat) != nullptr;
 }
 
-bool JabberRoomChatService::shouldHandleReceivedMessage(const QXmppMessage &xmppMessage) const
-{
-	auto jid = Jid::parse(xmppMessage.from());
-	return getRoomChat(jid.bare()) != nullptr;
-}
-
 Message JabberRoomChatService::handleReceivedMessage(const QXmppMessage &xmppMessage) const
 {
 	auto jid = Jid::parse(xmppMessage.from());
