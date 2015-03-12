@@ -18,9 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QRegExp>
-
 #include "jabber-id-validator.h"
+
+#include "jid.h"
+
+#include <QtCore/QRegExp>
 
 QValidator *JabberIdValidator::Instance = 0;
 
@@ -55,12 +57,15 @@ QValidator::State JabberIdValidator::validate(QString &input, int &pos) const
 	QString mid(input.mid(pos));
 	if (mid.isEmpty())
 		return QValidator::Intermediate;
-/*
-	Jid jid = Jid(mid);
-	if (jid.isValid())
-		return QValidator::Acceptable;
-	else*/
-		return QValidator::QValidator::Acceptable;
+
+	auto jid = Jid::parse(input);
+	if (jid.isEmpty())
+		return QValidator::Invalid;
+
+	if (jid.node().isEmpty() || jid.domain().isEmpty() || jid.domain().contains('@'))
+		return QValidator::Invalid;
+
+	return QValidator::Acceptable;
 }
 
 #include "moc_jabber-id-validator.cpp"
