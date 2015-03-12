@@ -90,7 +90,6 @@ set (SOURCES
 
 	jabber-account-details.cpp
 	jabber-contact-details.cpp
-	jabber-error-helper.cpp
 	jabber-id-validator.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
