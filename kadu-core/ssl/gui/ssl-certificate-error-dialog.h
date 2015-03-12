@@ -46,6 +46,7 @@ private:
 
 private slots:
 	void increaseHeight();
+	void connectAnyway();
 	void trustCertificate();
 
 };

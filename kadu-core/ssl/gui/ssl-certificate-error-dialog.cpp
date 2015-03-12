@@ -86,7 +86,7 @@ void SslCertificateErrorDialog::createGui(const QString &hostName, const QList<Q
 	dataWidget->hide();
 
 	auto connectAnywayButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Connect anyway"), this};
-	connect(connectAnywayButton, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(connectAnywayButton, SIGNAL(clicked()), this, SLOT(connectAnyway()));
 
 	auto trustCertificateButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Trust certificate"), this};
 	connect(trustCertificateButton, SIGNAL(clicked()), this, SLOT(trustCertificate()));
@@ -118,6 +118,12 @@ void SslCertificateErrorDialog::increaseHeight()
 {
 	if (height() < 400)
 		resize(width(), 400);
+}
+
+void SslCertificateErrorDialog::connectAnyway()
+{
+	m_sslCertificateRepository->addCertificate(m_certificate);
+	accept();
 }
 
 void SslCertificateErrorDialog::trustCertificate()
