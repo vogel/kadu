@@ -316,9 +316,6 @@ void JabberProtocol::error(QXmppClient::Error error)
 		}
 	}
 
-	if (error == QXmppClient::Error::SocketError)
-		setStatus({}, SourceUser);
-
 	if (errorMessage.isEmpty())
 		errorMessage = m_errorService->errorMessage(m_client, error);
 	emit connectionError(account(), m_client->configuration().host(), errorMessage);
