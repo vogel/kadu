@@ -22,6 +22,7 @@
 #include "ssl/gui/ssl-certificate-widget.h"
 #include "ssl/ssl-certificate-repository.h"
 
+#include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslError>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
@@ -30,7 +31,7 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-SslCertificateErrorDialog::SslCertificateErrorDialog(const QString &hostName, QSslCertificate certificate, const QList<QSslError> &errors, QWidget *parent) :
+SslCertificateErrorDialog::SslCertificateErrorDialog(SslCertificate certificate, const QList<QSslError> &errors, QWidget *parent) :
 		QDialog{parent},
 		m_certificate{std::move(certificate)}
 {
@@ -40,7 +41,7 @@ SslCertificateErrorDialog::SslCertificateErrorDialog(const QString &hostName, QS
 	setWindowRole("kadu-ssl-certificate-error");
 	setWindowTitle("SSL Certificate Error");
 
-	createGui(hostName, errors);
+	createGui(errors);
 }
 
 SslCertificateErrorDialog::~SslCertificateErrorDialog()
@@ -52,11 +53,11 @@ void SslCertificateErrorDialog::setSslCertificateRepository(SslCertificateReposi
 	m_sslCertificateRepository = sslCertificateRepository;
 }
 
-void SslCertificateErrorDialog::createGui(const QString &hostName, const QList<QSslError> &errors)
+void SslCertificateErrorDialog::createGui(const QList<QSslError> &errors)
 {
 	Q_UNUSED(errors);
 
-	auto errorMessage = tr("Certificate for <b>%1</b> failed authenticity validation:").arg(hostName);
+	auto errorMessage = tr("Certificate for <b>%1</b> failed authenticity validation:").arg(m_certificate.hostName());
 	auto errorStrings = QStringList{};
 	std::transform(std::begin(errors), std::end(errors), std::back_inserter(errorStrings), [](const QSslError &error){
 		return QString{"<br/>%1"}.arg(error.errorString());
@@ -82,7 +83,7 @@ void SslCertificateErrorDialog::createGui(const QString &hostName, const QList<Q
 	auto detailsLabel = new QLabel{tr("Certificate details:"), this};
 	detailsLabel->hide();
 
-	auto dataWidget = new SslCertificateWidget{m_certificate, this};
+	auto dataWidget = new SslCertificateWidget{QSslCertificate{QByteArray::fromHex(m_certificate.pemHexEncodedCertificate().toLatin1()), QSsl::Pem}, this};
 	dataWidget->hide();
 
 	auto connectAnywayButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Connect anyway"), this};

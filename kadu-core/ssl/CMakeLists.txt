@@ -5,6 +5,7 @@ set (ssl_SRCS
 	ssl-certificate-manager.cpp
 	ssl-certificate-repository.cpp
 	ssl-certificate-storage.cpp
+	ssl-certificate.cpp
 	ssl-module.cpp
 )
 

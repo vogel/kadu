@@ -19,36 +19,22 @@
 
 #pragma once
 
-#include "exports.h"
+#include <QtCore/QString>
 
-#include "ssl/ssl-certificate.h"
-
-#include <QtCore/QPointer>
-#include <QtNetwork/QSslError>
-#include <QtWidgets/QDialog>
-
-class SslCertificateRepository;
-
-class KADUAPI SslCertificateErrorDialog : public QDialog
+class SslCertificate
 {
-	Q_OBJECT
 
 public:
-	explicit SslCertificateErrorDialog(SslCertificate certificate, const QList<QSslError> &errors, QWidget *parent = nullptr);
-	virtual ~SslCertificateErrorDialog();
+	SslCertificate(QString hostName, QString pemHexEncodedCertificate);
 
-	void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
+	QString hostName() const;
+	QString pemHexEncodedCertificate() const;
 
 private:
-	QPointer<SslCertificateRepository> m_sslCertificateRepository;
-
-	SslCertificate m_certificate;
-
-	void createGui(const QList<QSslError> &errors);
-
-private slots:
-	void increaseHeight();
-	void connectAnyway();
-	void trustCertificate();
+	QString m_hostName;
+	QString m_pemHexEncodedCertificate;
 
 };
+
+bool operator == (const SslCertificate &x, const SslCertificate &y);
+uint qHash(const SslCertificate &key, uint seed = 0);

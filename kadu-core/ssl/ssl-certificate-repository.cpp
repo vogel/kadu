@@ -19,12 +19,7 @@
 
 #include "ssl-certificate-repository.h"
 
-#include <QtNetwork/QSslCertificate>
-
-QSslCertificate SslCertificateRepository::converter(SslCertificateRepository::WrappedIterator iterator)
-{
-	return QSslCertificate{*iterator, QSsl::EncodingFormat::Pem};
-}
+#include "ssl/ssl-certificate.h"
 
 SslCertificateRepository::SslCertificateRepository(QObject *parent) :
 		QObject{parent}
@@ -37,65 +32,50 @@ SslCertificateRepository::~SslCertificateRepository()
 
 SslCertificateRepository::Iterator SslCertificateRepository::begin()
 {
-	return Iterator{m_certificates.begin(), converter};
+	return m_certificates.begin();
 }
 
 SslCertificateRepository::Iterator SslCertificateRepository::end()
 {
-	return Iterator{m_certificates.end(), converter};
+	return m_certificates.end();
 }
 
-QVector<QSslCertificate> SslCertificateRepository::certificates() const
+QSet<SslCertificate> SslCertificateRepository::certificates() const
 {
-	auto result = QVector<QSslCertificate>{};
-	for (auto &&certificate : m_certificates)
-		result.append(QSslCertificate{certificate, QSsl::EncodingFormat::Pem});
-	return result;
+	return m_certificates;
 }
 
-void SslCertificateRepository::setPersistentCertificates(const QVector<QSslCertificate> &certificates)
+void SslCertificateRepository::setPersistentCertificates(const QSet<SslCertificate> &certificates)
 {
-	m_persistentCertificates.clear();
-	for (auto &&certificate : certificates)
-		if (!certificate.isNull())
-			m_persistentCertificates.insert(certificate.toPem());
-	m_certificates = m_persistentCertificates;
+	m_certificates = certificates;
+	m_persistentCertificates = certificates;
 }
 
-QVector<QSslCertificate> SslCertificateRepository::persistentCertificates() const
+QSet<SslCertificate> SslCertificateRepository::persistentCertificates() const
 {
-	auto result = QVector<QSslCertificate>{};
-	for (auto &&persistentCertificate : m_persistentCertificates)
-		result.append(QSslCertificate{persistentCertificate, QSsl::EncodingFormat::Pem});
-	return result;
+	return m_persistentCertificates;
 }
 
-bool SslCertificateRepository::containsCertificate(const QSslCertificate &certificate) const
+bool SslCertificateRepository::containsCertificate(const SslCertificate &certificate) const
 {
-	auto it = std::find(std::begin(m_certificates), std::end(m_certificates), certificate.toPem());
-	return it != std::end(m_certificates);
+	return m_certificates.contains(certificate);
 }
 
-void SslCertificateRepository::addCertificate(QSslCertificate certificate)
+void SslCertificateRepository::addCertificate(SslCertificate certificate)
 {
-	m_certificates.insert(certificate.toPem());
+	m_certificates.insert(certificate);
 }
 
-void SslCertificateRepository::addPersistentCertificate(QSslCertificate certificate)
+void SslCertificateRepository::addPersistentCertificate(SslCertificate certificate)
 {
-	m_certificates.insert(certificate.toPem());
-	m_persistentCertificates.insert(certificate.toPem());
+	m_certificates.insert(certificate);
+	m_persistentCertificates.insert(certificate);
 }
 
-void SslCertificateRepository::removeCertificate(QSslCertificate certificate)
+void SslCertificateRepository::removeCertificate(SslCertificate certificate)
 {
-	auto it = std::find(std::begin(m_certificates), std::end(m_certificates), certificate.toPem());
-	if (it != std::end(m_certificates))
-		m_certificates.erase(it);
-
-	auto persistentIt = std::find(std::begin(m_persistentCertificates), std::end(m_persistentCertificates), certificate.toPem());
-	if (persistentIt != std::end(m_persistentCertificates))
-		m_persistentCertificates.erase(persistentIt);
+	m_certificates.remove(certificate);
+	m_persistentCertificates.remove(certificate);
 }
 
 #include "moc_ssl-certificate-repository.cpp"

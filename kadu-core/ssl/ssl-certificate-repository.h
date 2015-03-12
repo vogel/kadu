@@ -24,21 +24,18 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSet>
-#include <QtCore/QVector>
 #include <injeqt/injeqt.h>
 
-class QByteArray;
-class QSslCertificate;
+class SslCertificate;
 
 class KADUAPI SslCertificateRepository : public QObject
 {
 	Q_OBJECT
 
-	using Storage = QSet<QByteArray>;
-	using WrappedIterator = Storage::iterator;
+	using Storage = QSet<SslCertificate>;
 
 public:
-	using Iterator = IteratorWrapper<WrappedIterator, QSslCertificate>;
+	using Iterator = Storage::iterator;
 
 	Q_INVOKABLE explicit SslCertificateRepository(QObject *parent = nullptr);
 	virtual ~SslCertificateRepository();
@@ -46,21 +43,19 @@ public:
 	Iterator begin();
 	Iterator end();
 
-	QVector<QSslCertificate> certificates() const;
+	QSet<SslCertificate> certificates() const;
 
-	void setPersistentCertificates(const QVector<QSslCertificate> &certificates);
-	QVector<QSslCertificate> persistentCertificates() const;
+	void setPersistentCertificates(const QSet<SslCertificate> &certificates);
+	QSet<SslCertificate> persistentCertificates() const;
 
-	bool containsCertificate(const QSslCertificate &certificate) const;
+	bool containsCertificate(const SslCertificate &certificate) const;
 
 public slots:
-	void addCertificate(QSslCertificate certificate);
-	void addPersistentCertificate(QSslCertificate certificate);
-	void removeCertificate(QSslCertificate certificate);
+	void addCertificate(SslCertificate certificate);
+	void addPersistentCertificate(SslCertificate certificate);
+	void removeCertificate(SslCertificate certificate);
 
 private:
-	static QSslCertificate converter(WrappedIterator iterator);
-
 	Storage m_certificates;
 	Storage m_persistentCertificates;
 

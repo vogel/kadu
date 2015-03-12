@@ -21,7 +21,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtCore/QVector>
+#include <QtCore/QSet>
 #include <injeqt/injeqt.h>
 #include <memory>
 
@@ -30,7 +30,7 @@ class ChatManager;
 class StoragePoint;
 class StoragePointFactory;
 
-class QSslCertificate;
+class SslCertificate;
 
 class SslCertificateStorage : public QObject
 {
@@ -40,15 +40,13 @@ public:
 	Q_INVOKABLE explicit SslCertificateStorage(QObject *parent = nullptr);
 	virtual ~SslCertificateStorage();
 
-	QVector<QSslCertificate> loadCertificates() const;
-	void storeCertificates(const QVector<QSslCertificate> &certificates) const;
+	QSet<SslCertificate> loadCertificates() const;
+	void storeCertificates(const QSet<SslCertificate> &certificates) const;
 
 private:
 	QPointer<StoragePointFactory> m_storagePointFactory;
 
 	std::unique_ptr<StoragePoint> storagePoint() const;
-	QStringList certificatesToStringList(const QVector<QSslCertificate> &certificates) const;
-	QVector<QSslCertificate> certificatesFromStringList(const QStringList &strings) const;
 
 private slots:
 	INJEQT_SETTER void setStoragePointFactory(StoragePointFactory *storagePointFactory);

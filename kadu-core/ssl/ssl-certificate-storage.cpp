@@ -20,9 +20,9 @@
 #include "ssl-certificate-storage.h"
 
 #include "chat/chat-manager.h"
+#include "ssl/ssl-certificate.h"
 #include "storage/chat-list-storage.h"
 #include "storage/storage-point-factory.h"
-#include "storage/string-list-storage.h"
 
 #include <QtNetwork/QSslCertificate>
 
@@ -47,45 +47,39 @@ std::unique_ptr<StoragePoint> SslCertificateStorage::storagePoint() const
 	return m_storagePointFactory.data()->createStoragePoint(QLatin1String("SslCertificates"));
 }
 
-QVector<QSslCertificate> SslCertificateStorage::loadCertificates() const
+QSet<SslCertificate> SslCertificateStorage::loadCertificates() const
 {
 	auto storage = storagePoint();
 	if (!storage)
 		return {};
 
-	auto stringListStorage = StringListStorage{storage.get(), QLatin1String{"Certificate"}};
-	return certificatesFromStringList(stringListStorage.load());
-}
-
-QVector<QSslCertificate> SslCertificateStorage::certificatesFromStringList(const QStringList& strings) const
-{
-	auto result = QVector<QSslCertificate>{};
-	for (auto &&string : strings)
+	auto result = QSet<SslCertificate>{};
+	auto elements = storage->storage()->getNodes(storage->point(), QLatin1String{"Certificate"});
+	for (const auto &element : elements)
 	{
-		auto certificate = QSslCertificate{QByteArray::fromHex(string.toLatin1()), QSsl::EncodingFormat::Pem};
-		if (!certificate.isNull())
-			result.append(certificate);
+		auto hostName = element.attribute("hostName");
+		auto pemHexEncodedCertificate = element.text();
+		if (!hostName.isEmpty() && !pemHexEncodedCertificate.isEmpty())
+			result.insert(SslCertificate{hostName, pemHexEncodedCertificate});
 	}
 	return result;
 }
 
-void SslCertificateStorage::storeCertificates(const QVector<QSslCertificate> &certificates) const
+void SslCertificateStorage::storeCertificates(const QSet<SslCertificate> &certificates) const
 {
 	auto storage = storagePoint();
 	if (!storage)
 		return;
 
-	auto stringListStorage = StringListStorage{storage.get(), QLatin1String{"Certificate"}};
-	stringListStorage.store(certificatesToStringList(certificates));
-}
+	storage->storage()->removeChildren(storage->point());
 
-QStringList SslCertificateStorage::certificatesToStringList(const QVector<QSslCertificate> &certificates) const
-{
-	auto result = QStringList{};
-	for (auto &&certificate : certificates)
-		if (!certificate.isNull())
-			result.append(QString::fromLatin1(certificate.toPem().toHex()));
-	return result;
+	for (const auto &certificate : certificates)
+	{
+		auto element = storage->storage()->createElement(storage->point(), QLatin1String{"Certificate"});
+		auto textNode = element.ownerDocument().createTextNode(certificate.pemHexEncodedCertificate());
+		element.setAttribute("hostName", certificate.hostName());
+		element.appendChild(textNode);
+	}
 }
 
 #include "moc_ssl-certificate-storage.cpp"
