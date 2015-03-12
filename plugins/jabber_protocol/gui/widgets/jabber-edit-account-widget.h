@@ -90,7 +90,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 
 	void loadAccountData();
 	void loadAccountDetailsData();
-	bool checkSSL();
 
 	void resetState();
 

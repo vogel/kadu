@@ -16,8 +16,6 @@ if (NOT ZLIB_FOUND)
 	find_package (ZLIB REQUIRED)
 endif ()
 
-find_package (QCA2 REQUIRED)
-
 if (APPLE)
 	if (QCA_FRAMEWORK_DIR)
 		set (QCA2_INCLUDE_DIR ${QCA_FRAMEWORK_DIR}/qca.framework/Headers/)

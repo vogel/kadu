@@ -56,7 +56,6 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	QPushButton *RegisterAccountButton;
 
 	void createGui(bool showButtons);
-	bool checkSSL();
 	void resetGui();
 
 private slots:

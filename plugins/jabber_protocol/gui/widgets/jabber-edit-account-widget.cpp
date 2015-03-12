@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCrypto/QtCrypto>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
@@ -327,19 +326,9 @@ void JabberEditAccountWidget::autoResourceToggled(bool on)
 	ResourceLabel->setEnabled(!on);
 }
 
-bool JabberEditAccountWidget::checkSSL()
-{
-	if (!QCA::isSupported("tls"))
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot enable secure connection. SSL/TLS plugin not found."));
-		return false;
-	}
-	return true;
-}
-
 void JabberEditAccountWidget::sslActivated(int i)
 {
-	if ((EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Auto || EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy) && !checkSSL())
+	if ((EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Auto || EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy))
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_No));
 	else if (EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy && !CustomHostPort->isChecked())
 	{

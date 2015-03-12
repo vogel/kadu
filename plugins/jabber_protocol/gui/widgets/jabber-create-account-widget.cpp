@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCrypto/QtCrypto>
 #include <QtGui/QIntValidator>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
@@ -150,16 +149,6 @@ void JabberCreateAccountWidget::setJabberServersService(JabberServersService* se
 		Domain->addItem(server);
 
 	Domain->setCurrentText(QString{});
-}
-
-bool JabberCreateAccountWidget::checkSSL()
-{
-	if (!QCA::isSupported("tls"))
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot enable secure connection. SSL/TLS plugin not found."), QMessageBox::Ok, this);
-		return false;
-	}
-	return true;
 }
 
 void JabberCreateAccountWidget::dataChanged()

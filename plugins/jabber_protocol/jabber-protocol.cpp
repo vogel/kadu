@@ -21,7 +21,6 @@
  */
 
 #include <QtCore/QCoreApplication>
-#include <QtCrypto/QtCrypto>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslSocket>
 #include <qxmpp/QXmppClient.h>
@@ -239,13 +238,6 @@ void JabberProtocol::login()
 			: details->plainAuthMode() == JabberAccountDetails::JabberAccountDetails::AllowPlainOverTLS
 			? QXmppConfiguration::StreamSecurityMode::TLSDisabled != streamSecurityMode
 			: false;
-
-	if (streamSecurityMode != QXmppConfiguration::StreamSecurityMode::TLSDisabled && !QCA::isSupported("tls"))
-	{
-		// emit some error
-		// emit connectionClosed(tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system."));
-		return;
-	}
 
 	auto jid = Jid::parse(account().id()).withResource(details->resource());
 
