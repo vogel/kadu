@@ -290,6 +290,7 @@ void JabberProtocol::logout()
 	auto logoutStatus = status();
 	logoutStatus.setType(StatusTypeOffline);
 	m_client->setClientPresence(m_presenceService->statusToPresence(logoutStatus));
+	m_client->disconnectFromServer();
 
 	loggedOut();
 }
@@ -322,6 +323,8 @@ void JabberProtocol::error(QXmppClient::Error error)
 		errorMessage = m_errorService->errorMessage(m_client, error);
 	emit connectionError(account(), m_client->configuration().host(), errorMessage);
 	connectionError();
+
+	m_client->disconnectFromServer();
 }
 
 void JabberProtocol::updatePresence()
