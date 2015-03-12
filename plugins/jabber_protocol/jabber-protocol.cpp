@@ -48,7 +48,7 @@
 #include "actions/jabber-protocol-menu-manager.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "qxmpp/jabber-roster-extension.h"
-#include "qxmpp/jabber-ssl-hack.h"
+#include "qxmpp/jabber-ssl-handler.h"
 #include "services/jabber-change-password-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
@@ -93,7 +93,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
-	new JabberSslHack{m_client};
+	new JabberSslHandler{m_client};
 
 	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_rosterExtension = make_unique<JabberRosterExtension>();

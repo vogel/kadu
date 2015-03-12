@@ -17,20 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-public-sender-qobject.h"
+#include "jabber-ssl-handler.h"
 
-JabberPublicSenderQObject::JabberPublicSenderQObject(QObject *parent) :
+#include "core/core.h"
+#include "ssl/ssl-certificate-manager.h"
+
+#include <QtNetwork/QSslError>
+#include <QtNetwork/QSslSocket>
+
+JabberSslHandler::JabberSslHandler(QXmppClient *parent) :
 		QObject{parent}
 {
+	parent->configuration().setIgnoreSslErrors(false);
+
+	connect(parent, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));
 }
 
-JabberPublicSenderQObject::~JabberPublicSenderQObject()
+JabberSslHandler::~JabberSslHandler()
 {
 }
 
-JabberPublicSenderQObject * JabberPublicSenderQObject::publicSender() const
+void JabberSslHandler::sslErrors(const QList<QSslError> &errors)
 {
-	return static_cast<JabberPublicSenderQObject *>(sender());
+	auto client = static_cast<QXmppClient *>(parent());
+	if (errors.size() == 0 || Core::instance()->sslCertificateManager()->acceptCertificate(client->configuration().domain(), errors.first().certificate(), errors))
+		client->configuration().setIgnoreSslErrors(true);
 }
-
-#include "moc_jabber-public-sender-qobject.cpp"

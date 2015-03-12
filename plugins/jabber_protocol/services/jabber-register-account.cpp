@@ -20,7 +20,7 @@
 #include "jabber-register-account.h"
 
 #include "qxmpp/jabber-register-extension.h"
-#include "qxmpp/jabber-ssl-hack.h"
+#include "qxmpp/jabber-ssl-handler.h"
 #include "services/jabber-error-service.h"
 #include "jid.h"
 
@@ -99,7 +99,7 @@ void JabberRegisterAccount::start()
 	m_client = new QXmppClient{this};
 	m_client->addExtension(m_registerExtension.get());
 
-	new JabberSslHack{m_client};
+	new JabberSslHandler{m_client};
 
 	m_client->connectToServer(configuration);
 

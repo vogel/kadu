@@ -24,16 +24,15 @@
 
 class QSslError;
 
-class JabberSslHack : public QObject
+class JabberSslHandler : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit JabberSslHack(QXmppClient *parent);
-	virtual ~JabberSslHack();
+	explicit JabberSslHandler(QXmppClient *parent);
+	virtual ~JabberSslHandler();
 
 private slots:
-	void stateChanged(QXmppClient::State state);
 	void sslErrors(const QList<QSslError> &errors);
 
 };

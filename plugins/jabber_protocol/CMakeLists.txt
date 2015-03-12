@@ -10,7 +10,7 @@ find_package (Kadu REQUIRED CONFIG)
 find_package (PkgConfig)
 pkg_search_module (IDN REQUIRED libidn)
 pkg_search_module (ZLIB REQUIRED zlib)
-pkg_search_module (QXMPP REQUIRED qxmpp)
+pkg_search_module (QXMPP REQUIRED qxmpp>=0.8.3)
 
 if (NOT ZLIB_FOUND)
 	find_package (ZLIB REQUIRED)
@@ -58,7 +58,7 @@ set (SOURCES
 
 	qxmpp/jabber-register-extension.cpp
 	qxmpp/jabber-roster-extension.cpp
-	qxmpp/jabber-ssl-hack.cpp
+	qxmpp/jabber-ssl-handler.cpp
 
 	services/jabber-avatar-downloader.cpp
 	services/jabber-avatar-service.cpp
@@ -92,7 +92,6 @@ set (SOURCES
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	jabber-protocol-plugin.cpp
-	jabber-public-sender-qobject.cpp
 	jabber-status-adapter.cpp
 	jabber-url-dom-visitor-provider.cpp
 	jabber-url-handler.cpp
