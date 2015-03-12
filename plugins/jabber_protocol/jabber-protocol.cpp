@@ -287,7 +287,9 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::logout()
 {
-	m_client->disconnectFromServer();
+	auto logoutStatus = status();
+	logoutStatus.setType(StatusTypeOffline);
+	m_client->setClientPresence(m_presenceService->statusToPresence(logoutStatus));
 
 	loggedOut();
 }
