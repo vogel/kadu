@@ -20,13 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_PROTOCOL_H
-#define JABBER_PROTOCOL_H
-
-#include <qxmpp/QXmppClient.h>
-
-#include "protocols/protocol.h"
-#include "protocols/services/chat-service.h"
+#pragma once
 
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-contact-personal-info-service.h"
@@ -34,6 +28,11 @@
 #include "services/jabber-personal-info-service.h"
 #include "services/jabber-subscription-service.h"
 #include "jabber-account-details.h"
+
+#include "protocols/protocol.h"
+#include "protocols/services/chat-service.h"
+
+#include <qxmpp/QXmppClient.h>
 
 class JabberChangePasswordService;
 class JabberContactDetails;
@@ -53,12 +52,44 @@ class JabberProtocol : public Protocol
 {
 	Q_OBJECT
 
-	JabberAvatarService *CurrentAvatarService;
+public:
+	explicit JabberProtocol(Account account, ProtocolFactory *factory);
+	virtual ~JabberProtocol();
+
+	void setContactsListReadOnly(bool contactsListReadOnly);
+	virtual bool contactsListReadOnly() { return m_contactsListReadOnly; }
+
+	virtual QString statusPixmapPath();
+
+	virtual AvatarService * avatarService() { return m_avatarService; }
+	virtual ContactPersonalInfoService * contactPersonalInfoService() { return m_contactPersonalInfoService; }
+	virtual FileTransferService * fileTransferService() { return m_fileTransferService; }
+	virtual PersonalInfoService * personalInfoService() { return m_personalInfoService; }
+	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
+	virtual JabberStreamDebugService * streamDebugService() { return m_streamDebugService; }
+	virtual JabberVCardService * vcardService() { return m_vcardService; }
+
+	JabberChangePasswordService * changePasswordService() const;
+
+	JabberContactDetails * jabberContactDetails(Contact contact) const;
+
+signals:
+	void userStatusChangeIgnored(Buddy);
+
+protected:
+	virtual void login() override;
+	virtual void logout() override;
+	virtual void sendStatusToServer() override;
+
+	virtual void changePrivateMode() override;
+
+private:
+	JabberAvatarService *m_avatarService;
 	JabberChangePasswordService *m_changePasswordService;
-	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
+	JabberContactPersonalInfoService *m_contactPersonalInfoService;
 	JabberErrorService *m_errorService;
 	JabberFileTransferService *m_fileTransferService;
-	JabberPersonalInfoService *CurrentPersonalInfoService;
+	JabberPersonalInfoService *m_personalInfoService;
 	JabberSubscriptionService *m_subscriptionService;
 	JabberPresenceService *m_presenceService;
 	JabberRoomChatService *m_roomChatService;
@@ -72,9 +103,7 @@ class JabberProtocol : public Protocol
 	std::unique_ptr<QXmppMucManager> m_mucManager;
 	std::unique_ptr<QXmppTransferManager> m_transferManager;
 
-	bool ContactsListReadOnly;
-
-	// void notifyAboutPresenceChanged(const Jid &jid, const Resource &resource);
+	bool m_contactsListReadOnly;
 
 private slots:
 	void connectedToServer();
@@ -86,40 +115,4 @@ private slots:
 	void updatePresence();
 	void presenceReceived(const QXmppPresence &presence);
 
-	// void clientAvailableResourceReceived(const Jid &j, const Resource &r);
-	// void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
-
-protected:
-	virtual void login() override;
-	virtual void logout() override;
-	virtual void sendStatusToServer() override;
-
-	virtual void changePrivateMode() override;
-
-public:
-	JabberProtocol(Account account, ProtocolFactory *factory);
-	virtual ~JabberProtocol();
-
-	void setContactsListReadOnly(bool contactsListReadOnly);
-	virtual bool contactsListReadOnly() { return ContactsListReadOnly; }
-
-	virtual QString statusPixmapPath();
-
-	virtual AvatarService * avatarService() { return CurrentAvatarService; }
-	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return m_fileTransferService; }
-	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
-	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
-	virtual JabberStreamDebugService * streamDebugService() { return m_streamDebugService; }
-	virtual JabberVCardService * vcardService() { return m_vcardService; }
-
-	JabberChangePasswordService * changePasswordService() const;
-
-	JabberContactDetails * jabberContactDetails(Contact contact) const;
-
-signals:
-	void userStatusChangeIgnored(Buddy);
-
 };
-
-#endif //JABBER_PROTOCOL_H

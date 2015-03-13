@@ -20,29 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtNetwork/QNetworkProxy>
-#include <QtNetwork/QSslSocket>
-#include <qxmpp/QXmppClient.h>
-#include <qxmpp/QXmppMucManager.h>
-#include <qxmpp/QXmppRosterManager.h>
-#include <qxmpp/QXmppTransferManager.h>
-#include <qxmpp/QXmppVersionManager.h>
-#include <qxmpp/QXmppVCardManager.h>
-
-#include "avatars/avatar-manager.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/group-manager.h"
-#include "chat/chat-manager.h"
-#include "contacts/contact-manager.h"
-#include "core/core.h"
-#include "gui/windows/message-dialog.h"
-#include "misc/memory.h"
-#include "os/generic/system-info.h"
-#include "protocols/protocols-manager.h"
-#include "status/status-type-manager.h"
-#include "url-handlers/url-handler-manager.h"
-#include "debug.h"
+#include "jabber-protocol.h"
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
@@ -70,14 +48,33 @@
 #include "jabber-url-handler.h"
 #include "jid.h"
 
-#include "jabber-protocol.h"
+#include "avatars/avatar-manager.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group-manager.h"
+#include "chat/chat-manager.h"
+#include "contacts/contact-manager.h"
+#include "core/core.h"
+#include "gui/windows/message-dialog.h"
+#include "misc/memory.h"
+#include "os/generic/system-info.h"
+#include "protocols/protocols-manager.h"
+#include "status/status-type-manager.h"
+#include "url-handlers/url-handler-manager.h"
+
+#include <QtCore/QCoreApplication>
+#include <QtNetwork/QNetworkProxy>
+#include <QtNetwork/QSslSocket>
+#include <qxmpp/QXmppClient.h>
+#include <qxmpp/QXmppMucManager.h>
+#include <qxmpp/QXmppRosterManager.h>
+#include <qxmpp/QXmppTransferManager.h>
+#include <qxmpp/QXmppVersionManager.h>
+#include <qxmpp/QXmppVCardManager.h>
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory),
-		ContactsListReadOnly(false)
+		Protocol{account, factory},
+		m_contactsListReadOnly(false)
 {
-	kdebugf();
-
 	auto details = dynamic_cast<JabberAccountDetails *>(account.details());
 	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
 
@@ -118,22 +115,22 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	m_roomChatService->setContactManager(ContactManager::instance());
 	m_roomChatService->initialize();
 
-	auto chatStateService = new JabberChatStateService(m_client, account, this);
+	auto chatStateService = new JabberChatStateService{m_client, account, this};
 	chatStateService->setResourceService(m_resourceService);
 
-	CurrentAvatarService = new JabberAvatarService{m_client, account, this};
-	CurrentAvatarService->setAvatarManager(AvatarManager::instance());
-	CurrentAvatarService->setContactManager(ContactManager::instance());
+	m_avatarService = new JabberAvatarService{m_client, account, this};
+	m_avatarService->setAvatarManager(AvatarManager::instance());
+	m_avatarService->setContactManager(ContactManager::instance());
 
-	JabberChatService *chatService = new JabberChatService(m_client, account, this);
+	auto chatService = new JabberChatService{m_client, account, this};
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	chatService->setChatStateService(chatStateService);
 	chatService->setResourceService(m_resourceService);
 	chatService->setRoomChatService(m_roomChatService);
 
-	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(account, this);
-	CurrentPersonalInfoService = new JabberPersonalInfoService(account, this);
+	m_contactPersonalInfoService = new JabberContactPersonalInfoService{account, this};
+	m_personalInfoService = new JabberPersonalInfoService{account, this};
 	m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
 	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account, this};
@@ -141,9 +138,9 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
 
-	CurrentAvatarService->setVCardService(m_vcardService);
-	CurrentContactPersonalInfoService->setVCardService(m_vcardService);
-	CurrentPersonalInfoService->setVCardService(m_vcardService);
+	m_avatarService->setVCardService(m_vcardService);
+	m_contactPersonalInfoService->setVCardService(m_vcardService);
+	m_personalInfoService->setVCardService(m_vcardService);
 
 	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
 	auto rosterService = new JabberRosterService{&m_client->rosterManager(), m_rosterExtension.get(), contacts, this};
@@ -156,8 +153,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	m_subscriptionService = new JabberSubscriptionService{&m_client->rosterManager(), this};
 	m_subscriptionService->setContactManager(ContactManager::instance());
-
-	kdebugf2();
 }
 
 JabberProtocol::~JabberProtocol()
@@ -167,7 +162,7 @@ JabberProtocol::~JabberProtocol()
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 {
-	ContactsListReadOnly = contactsListReadOnly;
+	m_contactsListReadOnly = contactsListReadOnly;
 }
 
 void JabberProtocol::rosterReady()
@@ -177,8 +172,6 @@ void JabberProtocol::rosterReady()
 	* information before we have updated our roster with actual
 	* contacts from the server! (Iris won't forward presence
 	* information in that case either). */
-	kdebug("Setting initial presence...\n");
-
 	sendStatusToServer();
 }
 
@@ -190,9 +183,7 @@ void JabberProtocol::rosterReady()
  */
 void JabberProtocol::login()
 {
-	kdebugf();
-
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	auto jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
 	{
 		connectionClosed();
@@ -273,13 +264,8 @@ void JabberProtocol::login()
 
 	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
 	m_client->connectToServer(configuration);
-
-	kdebugf2();
 }
 
-/*
- * We are now connected to server - login procedure has ended
- */
 void JabberProtocol::connectedToServer()
 {
 	loggedIn();
@@ -403,7 +389,7 @@ JabberChangePasswordService * JabberProtocol::changePasswordService() const
 JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const
 {
 	if (contact.isNull())
-		return 0;
+		return nullptr;
 
 	return dynamic_cast<JabberContactDetails *>(contact.details());
 }
