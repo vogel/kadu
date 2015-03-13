@@ -156,7 +156,17 @@ void JabberRegisterAccount::registerIqReceived(const QXmppRegisterIq &registerIq
 
 	if (m_errorService->isErrorIq(registerIq))
 	{
-		handleError(m_errorService->errorMessage(registerIq));
+		auto conditionString = QString{};
+		switch (registerIq.error().condition())
+		{
+			case QXmppStanza::Error::Conflict:
+				conditionString = tr("User with this username is already registered.");
+				break;
+			default:
+				break;
+		}
+
+		handleError(m_errorService->errorMessage(registerIq, conditionString));
 		return;
 	}
 
