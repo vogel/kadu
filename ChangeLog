@@ -22,6 +22,7 @@
 
 +++ version 2.1
 * gui: #2970 fixed: Esc closes chat windows (Vogel)
+* gui: #2995 fixed: fix licence window on Linux (Vogel)
 
 +++ version 2.0
 * unity: #2699 fixed: force indicator_docking on Unity (Vogel)
