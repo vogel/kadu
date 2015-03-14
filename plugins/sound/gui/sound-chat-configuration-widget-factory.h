@@ -17,27 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sound-module.h"
+#pragma once
 
-#include "gui/sound-actions.h"
-#include "gui/sound-buddy-configuration-widget-factory.h"
-#include "gui/sound-chat-configuration-widget-factory.h"
-#include "gui/sound-configuration-ui-handler.h"
-#include "notify/sound-notifier.h"
-#include "sound-manager.h"
-#include "sound-theme-manager.h"
+#include "gui/widgets/chat-configuration-widget-factory.h"
 
-SoundModule::SoundModule()
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class SoundManager;
+
+class SoundChatConfigurationWidgetFactory : public QObject, public ChatConfigurationWidgetFactory
 {
-	add_type<SoundActions>();
-	add_type<SoundBuddyConfigurationWidgetFactory>();
-	add_type<SoundChatConfigurationWidgetFactory>();
-	add_type<SoundConfigurationUiHandler>();
-	add_type<SoundManager>();
-	add_type<SoundNotifier>();
-	add_type<SoundThemeManager>();
-}
+	Q_OBJECT
 
-SoundModule::~SoundModule()
-{
-}
+public:
+	Q_INVOKABLE SoundChatConfigurationWidgetFactory(QObject *parent = nullptr);
+	virtual ~SoundChatConfigurationWidgetFactory();
+
+	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
+
+private slots:
+	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
+
+private:
+	QPointer<SoundManager> m_soundManager;
+
+};

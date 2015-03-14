@@ -17,27 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sound-module.h"
+#include "sound-chat-configuration-widget-factory.h"
 
-#include "gui/sound-actions.h"
-#include "gui/sound-buddy-configuration-widget-factory.h"
-#include "gui/sound-chat-configuration-widget-factory.h"
-#include "gui/sound-configuration-ui-handler.h"
-#include "notify/sound-notifier.h"
+#include "gui/sound-chat-configuration-widget.h"
 #include "sound-manager.h"
-#include "sound-theme-manager.h"
 
-SoundModule::SoundModule()
+SoundChatConfigurationWidgetFactory::SoundChatConfigurationWidgetFactory(QObject *parent) :
+		QObject{parent}
 {
-	add_type<SoundActions>();
-	add_type<SoundBuddyConfigurationWidgetFactory>();
-	add_type<SoundChatConfigurationWidgetFactory>();
-	add_type<SoundConfigurationUiHandler>();
-	add_type<SoundManager>();
-	add_type<SoundNotifier>();
-	add_type<SoundThemeManager>();
 }
 
-SoundModule::~SoundModule()
+SoundChatConfigurationWidgetFactory::~SoundChatConfigurationWidgetFactory()
 {
+}
+
+void SoundChatConfigurationWidgetFactory::setSoundManager(SoundManager *soundManager)
+{
+	m_soundManager = soundManager;
+}
+
+ChatConfigurationWidget * SoundChatConfigurationWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
+{
+	return new SoundChatConfigurationWidget{chat, m_soundManager, parent};
 }

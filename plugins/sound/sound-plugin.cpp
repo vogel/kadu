@@ -22,6 +22,7 @@
 
 #include "gui/sound-actions.h"
 #include "gui/sound-buddy-configuration-widget-factory.h"
+#include "gui/sound-chat-configuration-widget-factory.h"
 #include "gui/sound-configuration-ui-handler.h"
 #include "notify/sound-notifier.h"
 #include "sound-manager.h"
@@ -31,6 +32,7 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 
@@ -64,6 +66,7 @@ bool SoundPlugin::init(bool firstLoad)
 	m_staticSoundManager = m_injector->get<SoundManager>();
 
 	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(m_injector->get<SoundBuddyConfigurationWidgetFactory>());
+	Core::instance()->chatConfigurationWidgetFactoryRepository()->registerFactory(m_injector->get<SoundChatConfigurationWidgetFactory>());
 	NotificationManager::instance()->registerNotifier(m_injector->get<SoundNotifier>());
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
@@ -78,6 +81,7 @@ void SoundPlugin::done()
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
 
 	NotificationManager::instance()->unregisterNotifier(m_injector->get<SoundNotifier>());
+	Core::instance()->chatConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundChatConfigurationWidgetFactory>());
 	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundBuddyConfigurationWidgetFactory>());
 
 	m_injector.reset();
