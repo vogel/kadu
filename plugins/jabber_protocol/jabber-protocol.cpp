@@ -261,8 +261,12 @@ void JabberProtocol::login()
 		configuration.setPort(details->customPort());
 	}
 
+	auto presence = m_presenceService->statusToPresence(status());
+	if (details)
+		presence.setPriority(details->priority());
+
 	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
-	m_client->connectToServer(configuration);
+	m_client->connectToServer(configuration, presence);
 }
 
 void JabberProtocol::connectedToServer()
