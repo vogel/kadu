@@ -1,6 +1,7 @@
 +++ version 3.0-beta1
 * contacts: #2990 fixed: mising up contacts priorities sometimes (Vogel)
 * history: #2981 implemented: display new messages in history window as these appears (Vogel)
+* jabber: #2340 fixed: setting status message on disconnect works (Vogel)
 
 +++ version 3.0-alpha2
 * notify: #2963 fixed: do not mix up New chat and New message notifications (Vogel)
