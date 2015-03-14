@@ -26,7 +26,6 @@
 #include "contacts/contact.h"
 #include "debug.h"
 
-#include "gadu-contact-details.h"
 #include "gadu-id-validator.h"
 
 #include "gadu-open-chat-with-runner.h"

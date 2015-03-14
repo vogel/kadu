@@ -86,13 +86,6 @@ void JabberOutgoingFileTransferHandler::send(QIODevice *source)
 		return;
 	}
 
-	if (!jabberProtocol->jabberContactDetails(transfer().peer()))
-	{
-		transfer().setTransferStatus(FileTransferStatus::NotConnected);
-		deleteLater();
-		return;
-	}
-
 	auto jid = 	m_resourceService->bestContactJid(transfer().peer());
 	auto fileInfo = QXmppTransferFileInfo{};
 	fileInfo.setName(transfer().remoteFileName());

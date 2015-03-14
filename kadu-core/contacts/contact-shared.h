@@ -25,7 +25,6 @@
 #include <QtCore/QObject>
 #include <QtNetwork/QHostAddress>
 
-#include "contacts/contact-details.h"
 #include "status/status.h"
 #include "storage/shared.h"
 
@@ -40,7 +39,6 @@ class KADUAPI ContactShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
 
-	ContactDetails *Details;
 	RosterEntry *Entry;
 
 	Account *ContactAccount;
@@ -60,8 +58,6 @@ class KADUAPI ContactShared : public QObject, public Shared
 	QHostAddress Address;
 	unsigned int Port;
 	QString DnsName;
-
-	void deleteDetails();
 
 	void addToBuddy();
 	void removeFromBuddy();
@@ -92,8 +88,6 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void aboutToBeRemoved();
-
-	ContactDetails * details() const { return Details; }
 
 	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);

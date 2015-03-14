@@ -24,7 +24,6 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
-#include "gadu-contact-details.h"
 
 #include "gadu-search-service.h"
 

@@ -28,7 +28,6 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "identities/identity.h"

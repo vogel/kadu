@@ -62,7 +62,6 @@ public:
 	QString display(bool useBuddyData) const;
 	Avatar avatar(bool useBuddyData) const;
 
-	KaduSharedBase_PropertyRead(ContactDetails *, details, Details)
 	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
 	KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage)
 	KaduSharedBase_PropertyCRW(Account, contactAccount, ContactAccount)

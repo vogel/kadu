@@ -67,7 +67,6 @@
 #include "services/gadu-roster-service.h"
 #include "services/user-data/gadu-user-data-service.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-details.h"
 
 #include "gadu-protocol.h"
 

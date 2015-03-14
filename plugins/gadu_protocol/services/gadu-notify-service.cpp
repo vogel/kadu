@@ -22,7 +22,6 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
-#include "gadu-contact-details.h"
 
 #include <QtCore/QScopedArrayPointer>
 #include <libgadu.h>
@@ -80,9 +79,7 @@ void GaduNotifyService::sendInitialData(const QVector<Contact> &contacts)
 		uins[i] = GaduProtocolHelper::uin(contact);
 		types[i] = notifyTypeFromContact(contact);
 
-		auto details = GaduProtocolHelper::gaduContactDetails(contact);
-		if (details)
-			details->setGaduFlags(types[i]);
+		contact.addProperty("gadu:flags", types[i], CustomProperties::NonStorable);
 
 		++i;
 	}
@@ -123,12 +120,8 @@ void GaduNotifyService::sendNewFlags(const Contact &contact, int newFlags) const
 	if (!m_connection || !m_connection->hasSession())
 		return;
 
-	auto details = GaduProtocolHelper::gaduContactDetails(contact);
-	if (!details)
-		return;
-
-	auto uin = details->uin();
-	auto oldFlags = details->gaduFlags();
+	auto uin = contact.id().toUInt();
+	auto oldFlags = contact.property("gadu:flags", 0).toInt();
 
 	if (newFlags == oldFlags)
 		return;
@@ -139,7 +132,7 @@ void GaduNotifyService::sendNewFlags(const Contact &contact, int newFlags) const
 	auto f3 = updateFlag(writableSessionToken.rawSession(), uin, newFlags, oldFlags, 0x04);
 
 	if (f1 && f2 && f3)
-		details->setGaduFlags(newFlags);
+		contact.addProperty("gadu:flags", newFlags, CustomProperties::NonStorable);
 }
 
 #include "moc_gadu-notify-service.cpp"

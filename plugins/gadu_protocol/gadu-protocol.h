@@ -46,7 +46,6 @@
 
 #include "protocols/protocol.h"
 
-class GaduContactDetails;
 class GaduContactListHandler;
 class GaduDriveService;
 class GaduIMTokenService;

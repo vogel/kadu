@@ -29,7 +29,6 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
-#include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"

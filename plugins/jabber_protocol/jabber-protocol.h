@@ -35,7 +35,6 @@
 #include <qxmpp/QXmppClient.h>
 
 class JabberChangePasswordService;
-class JabberContactDetails;
 class JabberErrorService;
 class JabberPresenceService;
 class JabberRegisterExtension;
@@ -70,8 +69,6 @@ public:
 	virtual JabberVCardService * vcardService() { return m_vcardService; }
 
 	JabberChangePasswordService * changePasswordService() const;
-
-	JabberContactDetails * jabberContactDetails(Contact contact) const;
 
 signals:
 	void userStatusChangeIgnored(Buddy);

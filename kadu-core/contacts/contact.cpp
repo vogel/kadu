@@ -28,7 +28,6 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "storage/storage-point.h"
 
@@ -103,7 +102,6 @@ Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 	return c2.currentStatus() < c1.currentStatus() ? c2 : c1;
 }
 
-KaduSharedBase_PropertyReadDef(Contact, ContactDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid())
 KaduSharedBase_PropertyReadDef(Contact, std::shared_ptr<StoragePoint>, storage, Storage, std::shared_ptr<StoragePoint>())
 KaduSharedBase_PropertyDefCRW(Contact, Account, contactAccount, ContactAccount, Account::null)

@@ -28,7 +28,6 @@
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
-#include "jabber-contact-details.h"
 #include "jabber-protocol.h"
 
 #include "facebook-protocol-factory.h"

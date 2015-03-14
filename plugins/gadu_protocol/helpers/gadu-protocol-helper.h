@@ -38,7 +38,6 @@ namespace GaduProtocolHelper
 	GADUAPI Buddy searchResultToBuddy(Account account, gg_pubdir50_t res, int number);
 
 	GADUAPI UinType uin(Contact contact);
-	GADUAPI GaduContactDetails * gaduContactDetails(Contact contact);
 }
 
 #endif // GADU_PROTOCOL_HELPER_H

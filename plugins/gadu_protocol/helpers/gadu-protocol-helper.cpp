@@ -22,8 +22,6 @@
 
 #include "debug.h"
 
-#include "gadu-contact-details.h"
-
 #include "gadu-protocol-helper.h"
 
 #define GG_STATUS_INVISIBLE2 0x0009
@@ -171,15 +169,5 @@ Buddy GaduProtocolHelper::searchResultToBuddy(Account account, gg_pubdir50_t res
 
 unsigned int GaduProtocolHelper::uin(Contact contact)
 {
-	GaduContactDetails *data = GaduProtocolHelper::gaduContactDetails(contact);
-	return data
-			? data->uin()
-			: 0;
-}
-
-GaduContactDetails * GaduProtocolHelper::gaduContactDetails(Contact contact)
-{
-	if (contact.isNull())
-		return 0;
-	return dynamic_cast<GaduContactDetails *>(contact.details());
+	return contact.id().toUInt();
 }

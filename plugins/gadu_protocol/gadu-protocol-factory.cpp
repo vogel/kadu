@@ -29,7 +29,6 @@
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol.h"
 #include "gadu-status-adapter.h"
@@ -71,11 +70,6 @@ Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
 	return new GaduAccountDetails(accountShared);
-}
-
-ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contactShared)
-{
-	return new GaduContactDetails(contactShared);
 }
 
 AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

@@ -31,7 +31,6 @@
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "services/jabber-servers-service.h"
 #include "jabber-account-details.h"
-#include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "jabber-protocol.h"
@@ -77,11 +76,6 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
 	return new JabberAccountDetails(accountShared);
-}
-
-ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *contactShared)
-{
-	return new JabberContactDetails(contactShared);
 }
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

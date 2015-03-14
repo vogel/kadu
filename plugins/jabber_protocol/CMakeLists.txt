@@ -76,7 +76,6 @@ set (SOURCES
 	services/jabber-vcard-uploader.cpp
 
 	jabber-account-details.cpp
-	jabber-contact-details.cpp
 	jabber-id-validator.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp

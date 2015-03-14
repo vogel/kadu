@@ -42,7 +42,6 @@
 #include "services/jabber-vcard-service.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
-#include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "jabber-url-handler.h"
@@ -384,14 +383,6 @@ QString JabberProtocol::statusPixmapPath()
 JabberChangePasswordService * JabberProtocol::changePasswordService() const
 {
 	return m_changePasswordService;
-}
-
-JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const
-{
-	if (contact.isNull())
-		return nullptr;
-
-	return dynamic_cast<JabberContactDetails *>(contact.details());
 }
 
 #include "moc_jabber-protocol.cpp"

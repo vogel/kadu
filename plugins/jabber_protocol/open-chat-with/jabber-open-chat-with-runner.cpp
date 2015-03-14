@@ -24,7 +24,6 @@
 #include "contacts/contact-manager.h"
 #include "debug.h"
 
-#include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
 
 #include "jabber-open-chat-with-runner.h"

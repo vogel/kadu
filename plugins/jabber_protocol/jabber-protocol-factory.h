@@ -42,7 +42,6 @@ public:
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
-	virtual ContactDetails * createContactDetails(ContactShared *contactShared);
 	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);

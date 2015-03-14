@@ -41,7 +41,6 @@
 
 #include "helpers/gadu-imported-contact-xml-receiver.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-details.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-importer.h"

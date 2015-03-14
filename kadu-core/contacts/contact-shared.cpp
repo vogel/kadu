@@ -27,7 +27,6 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
 #include "core/core.h"
@@ -57,7 +56,7 @@ ContactShared * ContactShared::loadFromStorage(const std::shared_ptr<StoragePoin
 }
 
 ContactShared::ContactShared(const QUuid &uuid) :
-		Shared(uuid), Details(0),
+		Shared(uuid),
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
 		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
@@ -144,8 +143,6 @@ void ContactShared::aboutToBeRemoved()
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	doSetContactAvatar(Avatar::null);
 
-	deleteDetails();
-
 	changeNotifier().notify();
 }
 
@@ -196,7 +193,7 @@ bool ContactShared::shouldStore()
 void ContactShared::addToBuddy()
 {
 	// dont add to buddy if details are not available
-	if (Details && *OwnerBuddy)
+	if (*OwnerBuddy)
 		OwnerBuddy->addContact(this);
 }
 
@@ -254,16 +251,7 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 	if (!protocolFactory || !*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
-	if (Details)
-		return;
-
-	Details = protocolFactory->createContactDetails(this);
-	if (Details)
-		Details->ensureLoaded();
-
 	changeNotifier().notify();
-
-	ContactManager::instance()->registerItem(this);
 	addToBuddy();
 }
 
@@ -279,27 +267,7 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 	 * delete it. But we don't want this to happen.
 	 */
 	Contact guard(this);
-
-	deleteDetails();
-
 	changeNotifier().notify();
-}
-
-void ContactShared::deleteDetails()
-{
-	if (Details)
-	{
-		// do not store contacts that are not in contact manager
-		if (ContactManager::instance()->allItems().contains(uuid()))
-			Details->ensureStored();
-
-		removeFromBuddy();
-
-		delete Details;
-		Details = 0;
-	}
-
-	ContactManager::instance()->unregisterItem(this);
 }
 
 void ContactShared::setId(const QString &id)

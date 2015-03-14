@@ -32,12 +32,12 @@
 
 #include "contacts/contact.h"
 #include "message/message.h"
-#include "storage/manager.h"
+#include "storage/simple-manager.h"
 #include "exports.h"
 
 class Account;
 
-class KADUAPI ContactManager : public QObject, public Manager<Contact>
+class KADUAPI ContactManager : public QObject, public SimpleManager<Contact>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactManager)
@@ -62,10 +62,10 @@ private slots:
 protected:
 	virtual void loaded();
 
-	virtual void itemAboutToBeRegistered(Contact item);
-	virtual void itemRegistered(Contact item);
-	virtual void itemAboutToBeUnregisterd(Contact item);
-	virtual void itemUnregistered(Contact item);
+	virtual void itemAboutToBeAdded(Contact item) override;
+	virtual void itemAdded(Contact item) override;
+	virtual void itemAboutToBeRemoved(Contact item) override;
+	virtual void itemRemoved(Contact item) override;
 
 public:
 	enum AnonymousInclusion
