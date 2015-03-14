@@ -136,6 +136,9 @@ void EditTalkableAction::updateActionState(Action *action)
 {
 	action->setEnabled(false);
 
+	if (action->context()->buddies().isAnyTemporary())
+		return;
+
 	switch (actionRole(action->context()))
 	{
 		case ChatRole:

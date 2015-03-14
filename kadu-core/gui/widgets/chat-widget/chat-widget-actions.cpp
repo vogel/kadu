@@ -102,6 +102,12 @@ static void checkBlocking(Action *action)
 		return;
 	}
 
+	if (action->context()->buddies().isAnyTemporary())
+	{
+		action->setEnabled(false);
+		return;
+	}
+
 	action->setEnabled(!action->context()->roles().contains(ContactRole));
 
 	bool on = false;

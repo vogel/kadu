@@ -45,6 +45,15 @@ bool BuddySet::isAllAnonymous() const
 	return true;
 }
 
+bool BuddySet::isAnyTemporary() const
+{
+	for (auto &&buddy : *this)
+		if (buddy.isTemporary())
+			return true;
+
+	return false;
+}
+
 BuddyList BuddySet::toBuddyList() const
 {
 	return toList();

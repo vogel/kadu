@@ -64,6 +64,12 @@
 
 static void disableNewTab(Action *action)
 {
+	if (action->context()->buddies().isAnyTemporary())
+	{
+		action->setEnabled(false);
+		return;
+	}
+
 	action->setEnabled(action->context()->chat());
 
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))

@@ -45,6 +45,7 @@ public:
 	explicit BuddySet(Buddy buddy);
 
 	bool isAllAnonymous() const;
+	bool isAnyTemporary() const;
 	BuddyList toBuddyList() const;
 	Buddy toBuddy() const;
 

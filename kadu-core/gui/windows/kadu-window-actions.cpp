@@ -162,6 +162,12 @@ void disableIfContactSelected(Action *action)
 
 void disableMerge(Action *action)
 {
+	if (action->context()->buddies().isAnyTemporary())
+	{
+		action->setEnabled(false);
+		return;
+	}
+
 	if (action->context()->buddies().contains(Core::instance()->myself()))
 		action->setEnabled(false);
 	else

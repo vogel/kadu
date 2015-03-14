@@ -79,6 +79,9 @@ void SendFileAction::updateActionState(Action *action)
 	action->setEnabled(false);
 	action->setToolTip(text());
 
+	if (action->context()->buddies().isAnyTemporary())
+		return;
+
 	auto contacts = action->context()->contacts();
 
 	if (contacts.isEmpty())

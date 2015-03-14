@@ -112,7 +112,7 @@ void disableEmptyContacts(Action *action)
 
 void disableNoChat(Action *action)
 {
-	action->setEnabled(action->context()->chat());
+	action->setEnabled(action->context()->chat() && !action->context()->buddies().isAnyTemporary());
 }
 
 #include "moc_action.cpp"

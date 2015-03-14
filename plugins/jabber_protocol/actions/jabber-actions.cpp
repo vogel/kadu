@@ -37,6 +37,9 @@ static void disableNoRosterContact(Action *action)
 {
 	action->setEnabled(false);
 
+	if (action->context()->buddies().isAnyTemporary())
+		return;
+
 	const Contact &contact = action->context()->contacts().toContact();
 	if (!contact)
 		return;
