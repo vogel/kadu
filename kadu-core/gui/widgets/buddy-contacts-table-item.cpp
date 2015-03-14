@@ -142,7 +142,7 @@ bool BuddyContactsTableItem::isEditValid() const
 
 	Protocol *handler = ItemAccount.protocolHandler();
 	if (!handler)
-		return false;
+		return true; // make it user responsibility
 
 	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
 		return false;

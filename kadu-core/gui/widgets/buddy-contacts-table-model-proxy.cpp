@@ -45,8 +45,7 @@ bool BuddyContactsTableModelProxy::filterAcceptsRow(int sourceRow, const QModelI
 		return false;
 
 	BuddyContactsTableItem *item = model->item(sourceRow);
-	return (!item->itemAccount() || item->itemAccount().details()) &&
-			(item->action() == BuddyContactsTableItem::ItemAdd || item->action() == BuddyContactsTableItem::ItemEdit);
+	return item->action() == BuddyContactsTableItem::ItemAdd || item->action() == BuddyContactsTableItem::ItemEdit;
 }
 
 bool BuddyContactsTableModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
