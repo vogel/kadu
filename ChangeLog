@@ -1,3 +1,6 @@
++++ version 3.0-beta1
+* contacts: #2990 fixed: mising up contacts priorities sometimes (Vogel)
+
 +++ version 3.0-alpha2
 * notify: #2963 fixed: do not mix up New chat and New message notifications (Vogel)
 * notify: #1352 fixed: reduce spacing between notifier configuration widgets (Vogel)
