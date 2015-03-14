@@ -26,6 +26,7 @@
 +++ version 2.1
 * gui: #2970 fixed: Esc closes chat windows (Vogel)
 * gui: #2995 fixed: fix licence window on Linux (Vogel)
+* gadu: #2996 fixed: set status to offline after disconnected because of multilogin (Vogel)
 
 +++ version 2.0
 * unity: #2699 fixed: force indicator_docking on Unity (Vogel)

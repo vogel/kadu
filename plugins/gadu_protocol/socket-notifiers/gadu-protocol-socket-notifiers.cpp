@@ -208,6 +208,7 @@ void GaduProtocolSocketNotifiers::handleEventDisconnect(struct gg_event *e)
 	watchFor(nullptr);
 
 	m_protocol->disconnectedFromServer();
+	m_protocol->setStatus(Status{}, SourceUser);
 }
 
 void GaduProtocolSocketNotifiers::socketEvent()
