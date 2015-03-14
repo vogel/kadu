@@ -2,9 +2,6 @@ project (jabber_protocol)
 
 cmake_minimum_required (VERSION 2.8)
 
-# Needed for FindQCA2.cmake when building externally
-list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
-
 find_package (Kadu REQUIRED CONFIG)
 
 find_package (PkgConfig)
@@ -14,14 +11,6 @@ pkg_search_module (QXMPP REQUIRED qxmpp>=0.8.3)
 
 if (NOT ZLIB_FOUND)
 	find_package (ZLIB REQUIRED)
-endif ()
-
-if (APPLE)
-	if (QCA_FRAMEWORK_DIR)
-		set (QCA2_INCLUDE_DIR ${QCA_FRAMEWORK_DIR}/qca.framework/Headers/)
-		set (QCA2_LIBRARIES "-framework qca")
-		link_directories (${QCA_FRAMEWORK_DIR}/qca.framework/)
-	endif ()
 endif ()
 
 kadu_api_directories (plugins/jabber_protocol
@@ -136,9 +125,9 @@ set (MOC_SOURCES
 	jabber-url-handler.h
 )
 
-add_definitions (${QCA2_DEFINITIONS} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} ${QXMPP_DEFINITIONS} ${QXMPP_CFLAGS_OTHER})
+add_definitions (${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} ${QXMPP_DEFINITIONS} ${QXMPP_CFLAGS_OTHER})
 
-set (LIBRARIES ${LIBRARIES} ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QXMPP_LIBRARIES})
+set (LIBRARIES ${LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QXMPP_LIBRARIES})
 if (WIN32)
 	set (LIBRARIES ${LIBRARIES} advapi32 ws2_32)
 endif ()
