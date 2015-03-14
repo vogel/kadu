@@ -18,15 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDateTime>
+#include <QtCore/QMessageAuthenticationCode>
 #include <QtCore/QStringList>
 #include <QtCore/QUrl>
-#include <QtCrypto>
 
 #include "oauth-parameters.h"
 
 QString OAuthParameters::createUniqueNonce()
 {
-	return QCA::InitializationVector(16).toByteArray().toHex();
+	return QString::number(qrand());
 }
 
 QString OAuthParameters::createTimestamp()
@@ -166,10 +167,7 @@ void OAuthParameters::sign()
 	key += '&';
 	key += Token.tokenSecret();
 
-	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
-	QCA::SecureArray array(baseItems.join("&").toUtf8());
-
-	QByteArray digest = hmac.process(array).toByteArray().toBase64();
+	auto digest = QMessageAuthenticationCode::hash(baseItems.join("&").toUtf8(), key, QCryptographicHash::Sha1).toBase64();
 	setSignature(digest);
 }
 

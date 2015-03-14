@@ -23,8 +23,6 @@
 
 #include <QtCore/QObject>
 
-#include <QtCrypto>
-
 #include "plugin/plugin-root-component.h"
 
 class GaduUrlDomVisitorProvider;

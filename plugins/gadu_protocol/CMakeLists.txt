@@ -2,9 +2,6 @@ project (gadu_protocol)
 
 cmake_minimum_required (VERSION 2.8)
 
-# Needed for FindQCA2.cmake when building externally
-list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
-
 find_package (Kadu REQUIRED CONFIG)
 
 set (LIBGADU_MIN_VERSION "1.12.1")
@@ -153,18 +150,7 @@ set (SERVERS_FILE
 find_package (PkgConfig)
 pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
 
-find_package (QCA2 REQUIRED)
-
-if (APPLE)
-	if (QCA_FRAMEWORK_DIR)
-		set (QCA2_INCLUDE_DIR ${QCA_FRAMEWORK_DIR}/qca.framework/Headers/)
-		set (QCA2_LIBRARIES "-framework qca")
-		link_directories (${QCA_FRAMEWORK_DIR}/qca.framework/)
-	endif ()
-endif ()
-
-add_definitions (${QCA2_DEFINITIONS})
-include_directories (${LIBGADU_INCLUDE_DIRS} ${QCA2_INCLUDE_DIR})
+include_directories (${LIBGADU_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
 
 if (LIBGADU_FOUND)
@@ -173,7 +159,7 @@ else ()
 	message (FATAL_ERROR " * libgadu (version ${LIBGADU_MIN_VERSION}) was NOT FOUND")
 endif ()
 
-set (LIBRARIES ${LIBGADU_LIBRARIES} ${QCA2_LIBRARIES})
+set (LIBRARIES ${LIBGADU_LIBRARIES})
 if (WIN32)
 	list (APPEND LIBRARIES ws2_32)
 endif ()

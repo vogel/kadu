@@ -22,7 +22,6 @@
  */
 
 #include <QtCore/QCoreApplication>
-#include <QtCrypto>
 
 #include <libgadu.h>
 
