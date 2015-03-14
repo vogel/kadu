@@ -86,18 +86,6 @@ void GaduContactPersonalInfoWidget::createGui()
 	StateProvinceText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("State/Province") + ':', infoWidget), StateProvinceText);
 
-	IpText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("IP Address") + ':', infoWidget), IpText);
-
-	PortText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Port") + ':', infoWidget), PortText);
-
-	DnsNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("DNS Name") + ':', infoWidget), DnsNameText);
-
-	ProtocolVerText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Protocol Version") + ':', infoWidget), ProtocolVerText);
-
 	layout->addWidget(infoWidget);
 	layout->addStretch(100);
 }
@@ -111,10 +99,6 @@ void GaduContactPersonalInfoWidget::reset()
 	BirthdateText->clear();
 	CityText->clear();
 	StateProvinceText->clear();
-	IpText->clear();
-	PortText->clear();
-	DnsNameText->clear();
-	ProtocolVerText->clear();
 }
 
 void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
@@ -151,10 +135,6 @@ void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 
 	CityText->setText(buddy.city());
 	StateProvinceText->clear(); // do not have any info, do we need this control anyway?
-	IpText->setText(contact.address().toString());
-	PortText->setText(QString::number(contact.port()));
-	DnsNameText->setText(contact.dnsName());
-	ProtocolVerText->setText(contact.protocolVersion());
 }
 
 #include "moc_gadu-contact-personal-info-widget.cpp"

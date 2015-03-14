@@ -41,15 +41,11 @@ class GaduContactPersonalInfoWidget : public QWidget
 	QLabel *BirthdateText;
 	QLabel *CityText;
 	QLabel *StateProvinceText;
-	QLabel *IpText;
-	QLabel *PortText;
-	QLabel *DnsNameText;
-	QLabel *ProtocolVerText;
 
 	Contact MyContact;
 	void createGui();
 	void reset();
-	
+
 private slots:
 	void personalInfoAvailable(Buddy buddy);
 

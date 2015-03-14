@@ -301,24 +301,12 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			break;
 		case 'i':
 			++idx;
-
-			if (contact)
-				pe.setContent(contact.address().toString());
-
 			break;
 		case 'v':
 			++idx;
-
-			if (contact)
-				pe.setContent(contact.dnsName());
-
 			break;
 		case 'p':
 			++idx;
-
-			if (contact && contact.port())
-				pe.setContent(QString::number(contact.port()));
-
 			break;
 		case 'u':
 			++idx;
@@ -331,10 +319,6 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			break;
 		case 'h':
 			++idx;
-
-			if (contact && !contact.currentStatus().isDisconnected())
-				pe.setContent(contact.protocolVersion());
-
 			break;
 		case 'n':
 		{

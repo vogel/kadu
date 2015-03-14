@@ -53,12 +53,6 @@ class KADUAPI ContactShared : public QObject, public Shared
 	bool Blocking;
 	bool IgnoreNextStatusChange;
 
-	QString ProtocolVersion;
-
-	QHostAddress Address;
-	unsigned int Port;
-	QString DnsName;
-
 	void addToBuddy();
 	void removeFromBuddy();
 
@@ -112,10 +106,6 @@ public:
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
 	KaduShared_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
-	KaduShared_Property(const QString &, protocolVersion, ProtocolVersion)
-	KaduShared_Property(const QHostAddress &, address, Address)
-	KaduShared_Property(unsigned int, port, Port)
-	KaduShared_Property(const QString &, dnsName, DnsName)
 	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
 	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 

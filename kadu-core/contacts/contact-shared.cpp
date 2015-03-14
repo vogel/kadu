@@ -58,7 +58,7 @@ ContactShared * ContactShared::loadFromStorage(const std::shared_ptr<StoragePoin
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
-		Blocking(false), IgnoreNextStatusChange(false), Port(0)
+		Blocking(false), IgnoreNextStatusChange(false)
 {
 	Entry = new RosterEntry(this);
 	connect(&Entry->hasLocalChangesNotifier(), SIGNAL(changed()), this, SIGNAL(updatedLocally()));

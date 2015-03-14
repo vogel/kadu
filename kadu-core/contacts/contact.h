@@ -82,10 +82,6 @@ public:
 	 */
 	RosterEntry * rosterEntry() const;
 
-	KaduSharedBase_PropertyCRW(QString, protocolVersion, ProtocolVersion)
-	KaduSharedBase_PropertyCRW(QHostAddress, address, Address)
-	KaduSharedBase_Property(unsigned int, port, Port)
-	KaduSharedBase_PropertyCRW(QString, dnsName, DnsName)
 	KaduSharedBase_Property(short int, maximumImageSize, MaximumImageSize)
 	KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 	KaduSharedBase_PropertyBoolRead(Anonymous)

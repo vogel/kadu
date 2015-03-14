@@ -54,7 +54,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 
 	ListView = new QTreeWidget(this);
 	ListView->setAllColumnsShowFocus(true);
-	ListView->setColumnCount(9);
+	ListView->setColumnCount(7);
 	ListView->setContextMenuPolicy(Qt::CustomContextMenu);
 	ListView->setRootIsDecorated(false);
 	ListView->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -67,8 +67,6 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 			<< tr("Protocol")
 			<< tr("Username")
 			<< tr("Nick")
-			<< tr("IP")
-			<< tr("Domain name")
 			<< tr("Description")
 			<< tr("State")
 			<< tr("Last time seen on");
@@ -79,20 +77,16 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 		if (contact.isAnonymous())
 			continue;
 
-		QString desc, ip;
+		QString desc;
 		if (!contact.currentStatus().description().isEmpty())
 			desc = contact.currentStatus().description();
 		desc.replace('\n', ' ');
-		if (!contact.address().isNull())
-			ip = contact.address().toString();
 
 		QStringList labels;
 		labels << contact.display(true)
 				<< contact.contactAccount().protocolName()
 				<< contact.id()
 				<< contact.ownerBuddy().nickName()
-				<< ip
-				<< contact.dnsName()
 				<< desc
 				<< StatusTypeManager::instance()->statusTypeData(contact.currentStatus().type()).name()
 				<< lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())];

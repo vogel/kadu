@@ -121,10 +121,6 @@ RosterEntry * Contact::rosterEntry() const
 		return data()->rosterEntry();
 }
 
-KaduSharedBase_PropertyDefCRW(Contact, QString, protocolVersion, ProtocolVersion, QString())
-KaduSharedBase_PropertyDefCRW(Contact, QHostAddress, address, Address, QHostAddress())
-KaduSharedBase_PropertyDef(Contact, unsigned int, port, Port, 0)
-KaduSharedBase_PropertyDefCRW(Contact, QString, dnsName, DnsName, QString())
 KaduSharedBase_PropertyDef(Contact, short int, maximumImageSize, MaximumImageSize, 0)
 KaduSharedBase_PropertyDef(Contact, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
 KaduSharedBase_PropertyBoolReadDef(Contact, Anonymous, true)
