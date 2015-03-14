@@ -251,6 +251,7 @@ void TabsManager::removeChat(Chat chat)
 		if (chatWidget && chatWidget->chat() == chat)
 		{
 			TabDialog->removeTab(i);
+			chatWidget->deleteLater();
 			return;
 		}
 	}
