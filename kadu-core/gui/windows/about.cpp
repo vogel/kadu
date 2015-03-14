@@ -108,7 +108,7 @@ About::About(QWidget *parent) :
 	about_layout->addWidget(new QLabel(tr("Support:"), wb_about));
 	about_layout->addWidget(new KaduLink("http://www.kadu.im/forum/", wb_about));
 	about_layout->addSpacing(20);
-	about_layout->addWidget(new QLabel("(C) 2001-2014 Kadu Team", wb_about));
+	about_layout->addWidget(new QLabel("(C) 2001-2015 Kadu Team", wb_about));
 	about_layout->addWidget(new KaduLink("http://www.kadu.im/", wb_about));
 	about_layout->addStretch(100);
 
@@ -149,7 +149,7 @@ About::About(QWidget *parent) :
 #ifdef Q_OS_WIN
 	tb_license->setText(loadFile("COPYING.WIN32"));
 #else
-	tb_license->setText(loadFile("COPYING"));
+	tb_license->setText(loadFile("COPYING.GPL2"));
 #endif
 
 	// changelog
