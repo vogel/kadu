@@ -131,6 +131,7 @@ void ContactShared::load()
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 
 	protocolFactoryRegistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
+	addToBuddy();
 }
 
 void ContactShared::aboutToBeRemoved()
@@ -252,7 +253,6 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 		return;
 
 	changeNotifier().notify();
-	addToBuddy();
 }
 
 void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory)
