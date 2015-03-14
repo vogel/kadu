@@ -80,6 +80,8 @@ private slots:
 	void futureMessagesAvailable();
 	void futureMessagesCanceled();
 
+	void newMessage(const Message &message);
+
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski

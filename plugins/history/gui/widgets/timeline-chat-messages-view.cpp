@@ -32,6 +32,7 @@
 #include "gui/widgets/wait-overlay.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "message/message-manager.h"
 #include "message/sorted-messages.h"
 #include "model/roles.h"
 
@@ -40,6 +41,7 @@
 #include "history-query-result.h"
 
 #include "timeline-chat-messages-view.h"
+#include <contacts/contact-set.h>
 
 TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 		QWidget(parent),
@@ -55,6 +57,9 @@ TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 	layout()->setSpacing(0);
 
 	createGui();
+
+	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(newMessage(Message)));
+	connect(MessageManager::instance(), SIGNAL(messageSent(Message)), this, SLOT(newMessage(Message)));
 }
 
 TimelineChatMessagesView::~TimelineChatMessagesView()
@@ -173,6 +178,25 @@ void TimelineChatMessagesView::setMessages(const SortedMessages &messages)
 	MessagesView->add(messages);
 
 	emit messagesDisplayed();
+}
+
+void TimelineChatMessagesView::newMessage(const Message &message)
+{
+	auto sendDateMatch = message.sendDate().date() == currentDate();
+	auto receivedDateMatch = message.receiveDate().date() == currentDate();
+	if (!sendDateMatch && !receivedDateMatch)
+		return;
+
+	auto chatMatch = message.messageChat() == MessagesView->chat();
+	if (!chatMatch)
+	{
+		if (message.messageChat().type() != "Contact" || MessagesView->chat().type() != "Buddy")
+			return;
+		if (!MessagesView->chat().contacts().toBuddySet().contains(message.messageChat().contacts().toContact().ownerBuddy()))
+			return;
+	}
+
+	MessagesView->add(message);
 }
 
 void TimelineChatMessagesView::futureMessagesAvailable()
