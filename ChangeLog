@@ -20,6 +20,9 @@
 * unity: #2965 fixed: show progress on file transfers on Unity Launcher icon (Vogel)
 * windows: #2965 fixed: show progress on file transfers on Windows icon (Vogel)
 
++++ version 2.1
+* gui: #2970 fixed: Esc closes chat windows (Vogel)
+
 +++ version 2.0
 * unity: #2699 fixed: force indicator_docking on Unity (Vogel)
 * translations: complete French translation (darkpumpkins)
