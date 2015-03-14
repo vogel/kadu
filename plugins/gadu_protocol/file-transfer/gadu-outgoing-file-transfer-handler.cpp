@@ -33,8 +33,7 @@
 
 GaduOutgoingFileTransferHandler::GaduOutgoingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
 		OutgoingFileTransferHandler{fileTransfer},
-		m_protocol{protocol},
-		m_putStarted{false}
+		m_protocol{protocol}
 {
 }
 
@@ -49,12 +48,14 @@ void GaduOutgoingFileTransferHandler::clenaup()
 	{
 		m_source->close();
 		m_source->deleteLater();
+		m_source = nullptr;
 	}
 
 	if (m_putTransfer)
+	{
 		m_putTransfer->deleteLater();
-
-	m_putStarted = false;
+		m_putTransfer = nullptr;
+	}
 }
 
 void GaduOutgoingFileTransferHandler::send(QIODevice *source)
@@ -70,19 +71,30 @@ void GaduOutgoingFileTransferHandler::send(QIODevice *source)
 	auto contact = transfer().peer();
 	auto driveService = m_protocol->driveService();
 	auto sendTicketRequest = driveService->requestSendTicket(contact.id(), transfer().remoteFileName(), transfer().fileSize());
-	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(statusUpdateReceived(GaduDriveSendTicket)));
+	connect(sendTicketRequest, SIGNAL(sendTickedReceived(GaduDriveSendTicket)), this, SLOT(initialStatusUpdateReceived(GaduDriveSendTicket)));
 
 	transfer().setTransferStatus(FileTransferStatus::WaitingForConnection);
+}
+
+void GaduOutgoingFileTransferHandler::initialStatusUpdateReceived(GaduDriveSendTicket ticket)
+{
+	m_ticket = std::move(ticket);
+	updateStatus(true);
 }
 
 void GaduOutgoingFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
 {
 	m_ticket = std::move(ticket);
-	updateStatus();
+	updateStatus(false);
 }
 
-void GaduOutgoingFileTransferHandler::updateStatus()
+void GaduOutgoingFileTransferHandler::updateStatus(bool initial)
 {
+	printf("update status: %d\n", initial);
+
+	if (!initial && !m_putTransfer) // transfer was stopped since last time
+		return;
+
 	if (!m_ticket.isValid())
 	{
 		transfer().setError(tr("Valid GG Drive ticket not available"));
@@ -109,6 +121,7 @@ void GaduOutgoingFileTransferHandler::updateStatus()
 	}
 	else
 	{
+		printf("start if not started\n");
 		startOutgoingTransferIfNotStarted();
 		transfer().setTransferStatus(FileTransferStatus::Transfer);
 	}
@@ -118,16 +131,19 @@ void GaduOutgoingFileTransferHandler::updateStatus()
 
 void GaduOutgoingFileTransferHandler::startOutgoingTransferIfNotStarted()
 {
-	if (m_putStarted)
+	if (m_putTransfer)
 		return;
 
 	auto driveService = m_protocol->driveService();
-	m_putStarted = true;
 	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().remoteFileName(), m_source);
+	printf("omg started!\n");
 }
 
 void GaduOutgoingFileTransferHandler::requestSendStatusUpdate()
 {
+	if (!m_putTransfer) // transfer was cancelled
+		return;
+
 	auto driveService = m_protocol->driveService();
 	auto updateSendStatusRequest = driveService->requestSendStatusUpdate(m_ticket.ticketId());
 
@@ -137,11 +153,8 @@ void GaduOutgoingFileTransferHandler::requestSendStatusUpdate()
 
 void GaduOutgoingFileTransferHandler::stop()
 {
-	if (m_putTransfer)
-		m_putTransfer->deleteLater();
-
-	transfer().setTransferStatus(FileTransferStatus::NotConnected);
 	clenaup();
+	transfer().setTransferStatus(FileTransferStatus::NotConnected);
 }
 
 #include "moc_gadu-outgoing-file-transfer-handler.cpp"
