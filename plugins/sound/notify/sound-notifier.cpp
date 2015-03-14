@@ -59,6 +59,18 @@ void SoundNotifier::notify(Notification *notification)
 	if (chatNotification)
 	{
 		auto chat = chatNotification->chat();
+		if (chat && chat.property("sound:use_custom_sound", false).toBool())
+		{
+			// we need abstraction for that
+			auto customSound = chat.property("sound:custom_sound", QString{}).toString();
+			auto fileInfo = QFileInfo{customSound};
+			if (fileInfo.exists())
+			{
+				m_soundManager->playFile(customSound);
+				return;
+			}
+		}
+
 		if (!chat.contacts().isEmpty())
 		{
 			auto buddy = chat.contacts().begin()->ownerBuddy();
