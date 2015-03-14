@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,33 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_CONFIGURATION_WIDGET_TAB_ADAPTER_H
-#define CHAT_CONFIGURATION_WIDGET_TAB_ADAPTER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "exports.h"
 
-class QTab;
-class QTabWidget;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 class ChatConfigurationWidget;
 class ChatDataWindow;
 
-class KADUAPI ChatConfigurationWidgetTabAdapter : public QObject
+class KADUAPI ChatConfigurationWidgetGroupBoxesAdapter : public QObject
 {
 	Q_OBJECT
 
-	ChatDataWindow *MyChatDataWindow;
-	QTabWidget *MyTabWidget;
+public:
+	explicit ChatConfigurationWidgetGroupBoxesAdapter(ChatDataWindow *chatDataWindow, QWidget *widget);
+	virtual ~ChatConfigurationWidgetGroupBoxesAdapter();
+
+private:
+	QPointer<ChatDataWindow> m_chatDataWindow;
+	QPointer<QWidget> m_widget;
 
 private slots:
 	void widgetAdded(ChatConfigurationWidget *widget);
 
-public:
-	explicit ChatConfigurationWidgetTabAdapter(ChatDataWindow *chatDataWindow, QTabWidget *tabWidget, QObject *parent = 0);
-	virtual ~ChatConfigurationWidgetTabAdapter();
-
 };
-
-#endif // CHAT_CONFIGURATION_WIDGET_TAB_ADAPTER_H

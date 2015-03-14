@@ -33,7 +33,7 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory.h"
-#include "gui/widgets/chat-configuration-widget-tab-adapter.h"
+#include "gui/widgets/chat-configuration-widget-group-boxes-adapter.h"
 #include "gui/widgets/chat-configuration-widget.h"
 #include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
@@ -139,10 +139,10 @@ void ChatDataWindow::createGui()
 
 	TabWidget = new QTabWidget(this);
 
-	new ChatConfigurationWidgetTabAdapter(this, TabWidget, this);
-
 	GeneralTab = new QWidget(TabWidget);
 	QVBoxLayout *generalLayout = new QVBoxLayout(GeneralTab);
+
+	new ChatConfigurationWidgetGroupBoxesAdapter(this, GeneralTab);
 
 	QWidget *nameWidget = new QWidget(this);
 
@@ -165,6 +165,7 @@ void ChatDataWindow::createGui()
 	generalLayout->addWidget(nameWidget);
 	generalLayout->addWidget(groupsLabel);
 	generalLayout->addWidget(ChatGroupList);
+	generalLayout->addStretch(100);
 
 	TabWidget->addTab(GeneralTab, tr("General"));
 

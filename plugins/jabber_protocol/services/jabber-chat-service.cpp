@@ -156,8 +156,6 @@ bool JabberChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMe
 
 void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 {
-	printf("received messag\n");
-
 	if (!m_formattedStringFactory)
 		return;
 
@@ -195,7 +193,7 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 	if (resourceIndex >= 0)
 		id = id.mid(0, resourceIndex);
 	m_contactMessageTypes.insert(id, xmppMessage.type());
-printf("emit\n");
+
 	emit messageReceived(message);
 }
 
