@@ -108,9 +108,9 @@ void ChatWidgetTitle::setComposingStatePosition(ChatWidgetTitleComposingStatePos
 
 	m_composingStatePosition = composingStatePosition;
 	if (m_composingStatePosition == ChatWidgetTitleComposingStatePosition::None)
-		disconnect(chatWidget(), SIGNAL(chatStateChanged(ChatStateService::State)), this, SLOT(update()));
+		disconnect(chatWidget(), SIGNAL(chatStateChanged(ChatState)), this, SLOT(update()));
 	else
-		connect(chatWidget(), SIGNAL(chatStateChanged(ChatStateService::State)), this, SLOT(update()));
+		connect(chatWidget(), SIGNAL(chatStateChanged(ChatState)), this, SLOT(update()));
 
 	update();
 }
