@@ -1,5 +1,9 @@
 ; -*- coding: cp-1250 -*-
 
+; Modern UI
+!include "MUI2.nsh"
+!include "LogicLib.nsh"
+
 ; Comment out when testing this script. It makes installer generation very slow.
 SetCompressor /SOLID /FINAL lzma
 
@@ -23,16 +27,11 @@ SetCompressor /SOLID /FINAL lzma
 ; General Settings
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
-InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 InstallDirRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}" ""
 RequestExecutionLevel admin
 XPStyle on
 ; Requires unreleased NSIS version
 ; TargetMinimalOS 5.0
-
-; Modern UI
-!include "MUI2.nsh"
-!include "LogicLib.nsh"
 
 ; MUI Global Settings
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
@@ -130,6 +129,12 @@ LangString section_desktop_shortcut ${LANG_ENGLISH} "Desktop Shortcut"
 LangString section_desktop_shortcut ${LANG_POLISH} "Skrót na pulpicie"
 
 Function .onInit
+	${If} "@WINDOWS_ARCHITECTURE@" == "x86"
+		StrCpy $InstDir "$PROGRAMFILES32\${PRODUCT_NAME}"
+	${Else}
+		StrCpy $InstDir "$PROGRAMFILES64\${PRODUCT_NAME}"
+	${EndIf}
+
 	ReadRegStr $R0 ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_UNINSTALL}" "UninstallString"
 	StrCmp $R0 "" done
 
@@ -162,14 +167,22 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\libarchive-12.dll"
 	File "${BIN_DIR}\libcrypto-10.dll"
 	File "${BIN_DIR}\libffi-6.dll"
-	File "${BIN_DIR}\libgcc_s_*-1.dll"
+	${If} "@WINDOWS_ARCHITECTURE@" == "x86"
+		File /nonfatal "${BIN_DIR}\libgcc_s_sjlj-1.dll"
+	${Else}
+		File /nonfatal "${BIN_DIR}\libgcc_s_seh-1.dll"
+	${EndIf}
 	File "${BIN_DIR}\libgcrypt-20.dll"
 	File "${BIN_DIR}\libglib-2.0-0.dll"
 	File "${BIN_DIR}\libgmodule-2.0-0.dll"
 	File "${BIN_DIR}\libgmp-10.dll"
 	File "${BIN_DIR}\libgnutls-28.dll"
 	File "${BIN_DIR}\libgnutls-openssl-27.dll"
-	File "${BIN_DIR}\libgpg-error*-0.dll"
+	${If} "@WINDOWS_ARCHITECTURE@" == "x86"
+		File /nonfatal "${BIN_DIR}\libgpg-error-0.dll"
+	${Else}
+		File /nonfatal "${BIN_DIR}\libgpg-error6-0.dll"
+	${EndIf}
 	File "${BIN_DIR}\libhogweed-2-4.dll"
 	File "${BIN_DIR}\libidn-11.dll"
 	File "${BIN_DIR}\libintl-8.dll"

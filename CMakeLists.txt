@@ -7,6 +7,7 @@ cmake_minimum_required (VERSION 2.8.11)
 option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
 option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
 option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
+option (WINDOWS_ARCHITECTURE "Architecture for Windows binaries." "x86")
 
 # Global CMake variables
 
