@@ -213,7 +213,6 @@ if (WIN32)
 	qt5_use_modules (libkadu LINK_PRIVATE WinExtras)
 endif ()
 
-message (${ADDITIONAL_LIBKADU_LIBRARIES})
 target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBKADU_LIBRARIES})
 
 find_package (QCA2 REQUIRED)
