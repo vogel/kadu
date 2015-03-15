@@ -4,6 +4,8 @@ cmake_minimum_required (VERSION 2.8)
 
 find_package (Kadu REQUIRED CONFIG)
 find_package (PkgConfig)
+
+message (STATUS "If unity is not found and you are not compiling for one of Ubuntu flawors, disable unity_integration in Plugins.cmake")
 pkg_search_module (LIBUNITY REQUIRED unity)
 
 set (SOURCES

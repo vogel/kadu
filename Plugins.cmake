@@ -117,10 +117,12 @@ if (UNIX AND NOT APPLE)
 
 	# docking
 		# Indicator docking support
+		# Comment if you are not compilign under Ubuntu flavor
 		indicator_docking
 
 	# integration
 		# integration with Unity
+		# Comment if you are not compilign under Ubuntu flavor
 		unity_integration
 
 	# notifiers

@@ -4,6 +4,8 @@ cmake_minimum_required (VERSION 2.8)
 
 find_package (Kadu REQUIRED CONFIG)
 find_package (PkgConfig)
+
+message (STATUS "If messaging-menu is not found and you are not compiling for one of Ubuntu flawors, disable indicator_docking in Plugins.cmake")
 pkg_search_module (LIBMESSAGINGMENU REQUIRED messaging-menu)
 
 set (SOURCES
