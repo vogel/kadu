@@ -29,6 +29,7 @@
 #include "chat/chat.h"
 
 class HistoryQueryResult;
+class Talkable;
 
 /**
  * @addtogroup History
@@ -94,6 +95,11 @@ public:
 	 * @param results new vector of HistoryQueryResult items
 	 */
 	void setResults(const QVector<HistoryQueryResult> &results);
+
+	/**
+	 * Adds entry for given date. If item for date is not available, new one is created.
+	 */
+	void addEntry(const QDate &date, const Talkable &talkable, const QString &title);
 
 };
 

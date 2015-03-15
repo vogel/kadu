@@ -121,4 +121,29 @@ void HistoryQueryResultsModel::setResults(const QVector<HistoryQueryResult> &res
 	endResetModel();
 }
 
+void HistoryQueryResultsModel::addEntry(const QDate& date, const Talkable &talkable, const QString &title)
+{
+	auto i = 0;
+	auto firstNotEarlier = std::find_if(std::begin(Results), std::end(Results), [&date, &i](const HistoryQueryResult &hqr){
+		i++;
+		return hqr.date() >= date;
+	});
+	if (firstNotEarlier != std::end(Results) && firstNotEarlier->date() == date)
+	{
+		firstNotEarlier->setCount(firstNotEarlier->count() + 1);
+		emit dataChanged(index(i - 1), index(i - 1));
+		return;
+	}
+
+	auto newItem = HistoryQueryResult{};
+	newItem.setCount(1);
+	newItem.setDate(date);
+	newItem.setTalkable(talkable);
+	newItem.setTitle(title);
+
+	beginInsertRows(QModelIndex{}, i, i);
+	Results.insert(i, newItem);
+	endInsertRows();
+}
+
 #include "moc_history-query-results-model.cpp"

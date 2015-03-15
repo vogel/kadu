@@ -25,7 +25,10 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
+#include "formatted-string/formatted-string-plain-text-visitor.h"
+#include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/search-bar.h"
@@ -41,7 +44,8 @@
 #include "history-query-result.h"
 
 #include "timeline-chat-messages-view.h"
-#include <contacts/contact-set.h>
+
+#define DATE_TITLE_LENGTH 120
 
 TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 		QWidget(parent),
@@ -182,11 +186,6 @@ void TimelineChatMessagesView::setMessages(const SortedMessages &messages)
 
 void TimelineChatMessagesView::newMessage(const Message &message)
 {
-	auto sendDateMatch = message.sendDate().date() == currentDate();
-	auto receivedDateMatch = message.receiveDate().date() == currentDate();
-	if (!sendDateMatch && !receivedDateMatch)
-		return;
-
 	auto chatMatch = message.messageChat() == MessagesView->chat();
 	if (!chatMatch)
 	{
@@ -196,7 +195,21 @@ void TimelineChatMessagesView::newMessage(const Message &message)
 			return;
 	}
 
-	MessagesView->add(message);
+	FormattedStringPlainTextVisitor plainTextVisitor;
+	message.content()->accept(&plainTextVisitor);
+
+	auto title = plainTextVisitor.result().replace('\n', ' ').replace('\r', ' ');
+	if (title.length() > DATE_TITLE_LENGTH)
+	{
+		title.truncate(DATE_TITLE_LENGTH);
+		title += " ...";
+	}
+
+	auto messageDate = message.receiveDate().date();
+	ResultsModel->addEntry(messageDate, message.messageChat(), title);
+
+	if (messageDate == currentDate())
+		MessagesView->add(message);
 }
 
 void TimelineChatMessagesView::futureMessagesAvailable()
