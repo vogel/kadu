@@ -146,7 +146,8 @@ uninst:
 	!insertmacro MUI_LANGDLL_DISPLAY
 
 	ClearErrors
-	ExecWait '$R0 /S _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
+	ExecWait '$R0 /S _?=$PROGRAMFILES32\${PRODUCT_NAME}' ;Do not copy the uninstaller to a temp file
+	ExecWait '$R0 /S _?=$PROGRAMFILES64\${PRODUCT_NAME}' ;Do not copy the uninstaller to a temp file
 
 	IfErrors no_remove_uninstaller done
 		;You can either use Delete /REBOOTOK in the uninstaller or add some code
