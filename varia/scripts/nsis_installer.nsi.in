@@ -26,7 +26,7 @@ SetCompressor /SOLID /FINAL lzma
 
 ; General Settings
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
+OutFile "${PRODUCT_NAME}-${PRODUCT_VERSION}.@WINDOWS_ARCHITECTURE@.exe"
 InstallDirRegKey ${PRODUCT_REGISTRY_ROOT} "${PRODUCT_REGISTRY_KEY_DIRECTORY}" ""
 RequestExecutionLevel admin
 XPStyle on
