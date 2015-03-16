@@ -69,10 +69,6 @@ Hint::Hint(QWidget *parent, Notification *xnotification)
 		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons"))
 			showButtons = false;
 
-	auto callbackNotifiation = notification;
-	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
-		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
-
 	if (showButtons)
 	{
 		callbacksBox = new QHBoxLayout();
@@ -110,11 +106,15 @@ Hint::~Hint()
 
 void Hint::buttonClicked()
 {
+	auto callbackNotification = notification;
+	if (qobject_cast<AggregateNotification *>(callbackNotification))
+		callbackNotification = qobject_cast<AggregateNotification *>(callbackNotification)->notifications()[0];
+
 	auto callbackName = sender()->property("notify:callback").toString();
 	if (!callbackName.isEmpty())
 	{
 		auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
-		callback.call(notification);
+		callback.call(callbackNotification);
 	}
 
 	notification->close();

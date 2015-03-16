@@ -89,10 +89,6 @@ void WindowNotifierWindow::createGui()
 	layout->addWidget(buttons, 0, Qt::AlignCenter);
 
 	auto callbacks = m_notification->getCallbacks();
-	auto callbackNotifiation = m_notification;
-	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
-		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
-
 	if (!callbacks.isEmpty())
 		for (auto &&callbackName : callbacks)
 		{
@@ -111,6 +107,7 @@ void WindowNotifierWindow::addButton(QWidget *parent, const QString &title, cons
 {
 	auto button = new QPushButton{};
 	parent->layout()->addWidget(button);
+
 	button->setText(title);
 	button->setProperty("notify:callback", name);
 	connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
@@ -118,11 +115,15 @@ void WindowNotifierWindow::addButton(QWidget *parent, const QString &title, cons
 
 void WindowNotifierWindow::buttonClicked()
 {
+	auto callbackNotifiation = m_notification;
+	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
+		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
+
 	auto callbackName = sender()->property("notify:callback").toString();
 	if (!callbackName.isEmpty())
 	{
 		auto callback = m_notificationCallbackRepository->callback(callbackName);
-		callback.call(m_notification);
+		callback.call(callbackNotifiation);
 	}
 
 	m_notification->close();

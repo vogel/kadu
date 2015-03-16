@@ -321,8 +321,12 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString callbackName)
 	if (!notification)
 		return;
 
+	auto callbackNotifiation = notification;
+	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
+		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
+
 	auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
-	callback.call(notification);
+	callback.call(callbackNotifiation);
 	notification->close();
 
 	QList<QVariant> args;
