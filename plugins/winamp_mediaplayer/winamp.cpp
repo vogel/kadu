@@ -45,22 +45,22 @@ QString WinampMediaPlayer::readWinampMemory(quint32 command, quint32 arg, bool u
 {
 	HWND hWinamp=findWinamp();
 	if(hWinamp){
-		void* pResult=(void*)SendMessage(hWinamp, WM_WA_IPC, arg, command);
-		if((int)pResult == 1){
+		auto pResult=SendMessage(hWinamp, WM_WA_IPC, arg, command);
+		if(pResult == 1){
 			kdebugm(KDEBUG_WARNING, "command %d unsupported by player\n", command);
 			return QString();
 		}
 		DWORD processId;
 		GetWindowThreadProcessId(hWinamp, &processId);
 
-		HANDLE hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ, 0, processId);
-		if(!SUCCEEDED(hWinampProcess)){
+		auto hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ, 0, processId);
+		if(hWinampProcess == nullptr){
 			kdebugm(KDEBUG_WARNING, "unable to open winamp process\n");
 			return QString();
 		}
 
 		char lpBuffer[512];
-		if(!SUCCEEDED(ReadProcessMemory(hWinampProcess, pResult, lpBuffer, 512, NULL))){
+		if(!ReadProcessMemory(hWinampProcess, reinterpret_cast<LPCVOID>(pResult), lpBuffer, 512, NULL)){
 			kdebugm(KDEBUG_WARNING, "unable to read winamp memory\n");
 			CloseHandle(hWinampProcess);
 			return QString();
@@ -84,8 +84,8 @@ QString WinampMediaPlayer::getFileTagW(int position, QString tag)
 		DWORD processId;
 		GetWindowThreadProcessId(hWinamp, &processId);
 
-		HANDLE hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE, 0, processId);
-		if(!SUCCEEDED(hWinampProcess)){
+		auto hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE, 0, processId);
+		if(hWinampProcess == nullptr){
 			kdebugm(KDEBUG_WARNING, "unable to open winamp process\n");
 			return QString();
 		}
@@ -135,8 +135,8 @@ QString WinampMediaPlayer::getFileTagA(int position, QString tag)
 		DWORD processId;
 		GetWindowThreadProcessId(hWinamp, &processId);
 
-		HANDLE hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE, 0, processId);
-		if(!SUCCEEDED(hWinampProcess)){
+		auto hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE, 0, processId);
+		if(hWinampProcess == nullptr){
 			kdebugm(KDEBUG_WARNING, "unable to open winamp process\n");
 			return QString();
 		}
