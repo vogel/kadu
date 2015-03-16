@@ -77,6 +77,10 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
 			showButtons = false;
 
+	auto callbackNotifiation = notification;
+	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
+		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
+
 	if (showButtons)
 	{
 		callbacksBox = new QHBoxLayout();
@@ -86,8 +90,8 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		foreach (const Notification::Callback &i, callbacks)
 		{
 			QPushButton *button = new QPushButton(i.Caption, this);
-			connect(button, SIGNAL(clicked(bool)), notification, i.Slot);
-			connect(button, SIGNAL(clicked(bool)), notification, SLOT(clearDefaultCallback()));
+			connect(button, SIGNAL(clicked(bool)), callbackNotifiation, i.Slot);
+			connect(button, SIGNAL(clicked(bool)), callbackNotifiation, SLOT(clearDefaultCallback()));
 
 			callbacksBox->addWidget(button);
 			callbacksBox->addStretch(1);

@@ -325,7 +325,11 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 	if (!notification)
 		return;
 
-	const QMetaObject *metaObject = notification->metaObject();
+	auto callbackNotifiation = notification;
+	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
+		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
+
+	const QMetaObject *metaObject = callbackNotifiation->metaObject();
 	int slotIndex = -1;
 
 	while (metaObject)
@@ -340,8 +344,8 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 	if (-1 == slotIndex)
 		return;
 
-	QMetaMethod slot = notification->metaObject()->method(slotIndex);
-	slot.invoke(notification, Qt::DirectConnection);
+	QMetaMethod slot = callbackNotifiation->metaObject()->method(slotIndex);
+	slot.invoke(callbackNotifiation, Qt::DirectConnection);
 	notification->clearDefaultCallback();
 
 	QList<QVariant> args;
