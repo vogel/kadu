@@ -22,6 +22,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -36,6 +37,7 @@
 #include "gui/widgets/chat-configuration-widget-group-boxes-adapter.h"
 #include "gui/widgets/chat-configuration-widget.h"
 #include "gui/widgets/chat-edit-widget.h"
+#include "gui/widgets/chat-groups-configuration-widget.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
 #include "gui/widgets/group-list.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
@@ -142,8 +144,6 @@ void ChatDataWindow::createGui()
 	GeneralTab = new QWidget(TabWidget);
 	QVBoxLayout *generalLayout = new QVBoxLayout(GeneralTab);
 
-	new ChatConfigurationWidgetGroupBoxesAdapter(this, GeneralTab);
-
 	QWidget *nameWidget = new QWidget(this);
 
 	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
@@ -156,16 +156,7 @@ void ChatDataWindow::createGui()
 	nameLayout->addWidget(numberLabel);
 	nameLayout->addWidget(DisplayEdit);
 
-	QLabel *groupsLabel = new QLabel(tr("Add this chat to the groups below by checking the box next to the appropriate groups."), this);
-	groupsLabel->setWordWrap(true);
-
-	ChatGroupList = new GroupList(this);
-	ChatGroupList->setCheckedGroups(MyChat.groups());
-
 	generalLayout->addWidget(nameWidget);
-	generalLayout->addWidget(groupsLabel);
-	generalLayout->addWidget(ChatGroupList);
-	generalLayout->addStretch(100);
 
 	TabWidget->addTab(GeneralTab, tr("General"));
 
@@ -175,11 +166,30 @@ void ChatDataWindow::createGui()
 		EditWidget = chatType->createEditWidget(MyChat, TabWidget);
 		if (EditWidget)
 		{
-			TabWidget->addTab(EditWidget, tr("Chat"));
+			auto groupBox = new QGroupBox{GeneralTab};
+			groupBox->setFlat(true);
+			groupBox->setTitle(tr("Chat"));
+
+			auto groupBoxLayout = new QVBoxLayout{groupBox};
+			groupBoxLayout->setMargin(0);
+			groupBoxLayout->setSpacing(4);
+			groupBoxLayout->addWidget(EditWidget);
+
+			generalLayout->addWidget(groupBox);
 			if (EditWidget->stateNotifier())
 				ValueStateNotifier->addConfigurationValueStateNotifier(EditWidget->stateNotifier());
 		}
 	}
+
+	generalLayout->addStretch(100);
+
+	GroupsTab = new ChatGroupsConfigurationWidget(MyChat, this);
+	TabWidget->addTab(GroupsTab, tr("Groups"));
+
+	auto optionsTab = new QWidget{this};
+	(new QVBoxLayout{optionsTab})->addStretch(100);
+	new ChatConfigurationWidgetGroupBoxesAdapter(this, optionsTab);
+	TabWidget->addTab(optionsTab, tr("Options"));
 
 	layout->addWidget(TabWidget);
 
@@ -219,10 +229,11 @@ void ChatDataWindow::updateChat()
 	if (EditWidget)
 		EditWidget->apply();
 
+	GroupsTab->save();
+
 	applyChatConfigurationWidgets();
 
 	MyChat.setDisplay(DisplayEdit->text());
-	MyChat.setGroups(ChatGroupList->checkedGroups());
 
 	emit save();
 }

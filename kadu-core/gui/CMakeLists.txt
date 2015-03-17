@@ -80,6 +80,7 @@ set (gui_SRCS
 	widgets/chat-edit-box.cpp
 	widgets/chat-edit-box-size-manager.cpp
 	widgets/chat-edit-widget.cpp
+	widgets/chat-groups-configuration-widget.cpp
 	widgets/chat-room-edit-widget.cpp
 	widgets/chat-style-preview.cpp
 	widgets/chat-top-bar-container-widget.cpp

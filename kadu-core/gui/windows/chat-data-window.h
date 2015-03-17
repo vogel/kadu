@@ -38,6 +38,7 @@ class ChatConfigurationWidget;
 class ChatConfigurationWidgetFactory;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatEditWidget;
+class ChatGroupsConfigurationWidget;
 class CompositeConfigurationValueStateNotifier;
 class GroupList;
 class SimpleConfigurationValueStateNotifier;
@@ -58,9 +59,9 @@ class KADUAPI ChatDataWindow : public QWidget
 	QWidget *GeneralTab;
 
 	QLineEdit *DisplayEdit;
-	GroupList *ChatGroupList;
 
 	ChatEditWidget *EditWidget;
+	ChatGroupsConfigurationWidget *GroupsTab;
 
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
