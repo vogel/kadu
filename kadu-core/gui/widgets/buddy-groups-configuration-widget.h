@@ -19,14 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_GROUPS_CONFIGURATION_WIDGET_H
-#define BUDDY_GROUPS_CONFIGURATION_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "buddies/buddy.h"
-
 #include "exports.h"
+
+#include <QtWidgets/QWidget>
 
 class GroupList;
 
@@ -34,18 +32,16 @@ class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
-	Buddy MyBuddy;
-
-	GroupList *BuddyGroupList;
-
-	void createGui();
-
 public:
-	explicit BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
+	explicit BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
 	virtual ~BuddyGroupsConfigurationWidget();
 
 	void save();
 
-};
+private:
+	Buddy m_buddy;
+	GroupList *m_groupList;
 
-#endif // BUDDY_GROUPS_CONFIGURATION_WIDGET_H
+	void createGui();
+
+};

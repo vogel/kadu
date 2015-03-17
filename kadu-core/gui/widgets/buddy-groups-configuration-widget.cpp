@@ -19,20 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
+#include "buddy-groups-configuration-widget.h"
 
 #include "buddies/group.h"
 #include "contacts/contact.h"
 #include "gui/widgets/group-list.h"
 #include "misc/misc.h"
 
-#include "buddy-groups-configuration-widget.h"
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 
 BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent) :
-		QWidget(parent), MyBuddy(buddy)
+		QWidget{parent},
+		m_buddy{buddy}
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -45,21 +46,21 @@ BuddyGroupsConfigurationWidget::~BuddyGroupsConfigurationWidget()
 
 void BuddyGroupsConfigurationWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	auto layout = new QVBoxLayout{this};
 
-	QLabel *label = new QLabel(tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(MyBuddy.display()), this);
+	QLabel *label = new QLabel{tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(m_buddy.display()), this};
 	label->setWordWrap(true);
 
-	BuddyGroupList = new GroupList(this);
-	BuddyGroupList->setCheckedGroups(MyBuddy.groups());
+	m_groupList = new GroupList{this};
+	m_groupList->setCheckedGroups(m_buddy.groups());
 
 	layout->addWidget(label);
-	layout->addWidget(BuddyGroupList);
+	layout->addWidget(m_groupList);
 }
 
 void BuddyGroupsConfigurationWidget::save()
 {
-	MyBuddy.setGroups(BuddyGroupList->checkedGroups());
+	m_buddy.setGroups(m_groupList->checkedGroups());
 }
 
 #include "moc_buddy-groups-configuration-widget.cpp"
