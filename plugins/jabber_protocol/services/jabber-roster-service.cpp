@@ -229,11 +229,10 @@ void JabberRosterService::rosterRequestFinished()
 	if (JabberRosterState::Initializing != state())
 		return;
 
-	deleteMarkedContacts();
-
 	for (auto &&bareJid : m_roster->getRosterBareJids())
 		remoteContactUpdated(bareJid);
 
+	deleteMarkedContacts();
 	setState(JabberRosterState::Initialized);
 
 	emit rosterReady();
