@@ -153,7 +153,9 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 	if ("buddy-list" != Category)
 		return;
 
-	if (actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size())
+	auto isContact = actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size();
+	auto isOneContactbuddy = actionContext->roles().contains(BuddyRole) && 1 == actionContext->buddies().size() && 1 == actionContext->buddies().begin()->contacts().size();
+	if (isContact || isOneContactbuddy)
 	{
 		foreach (ProtocolMenuManager *manager, MenuInventory::instance()->protocolMenuManagers())
 		{
