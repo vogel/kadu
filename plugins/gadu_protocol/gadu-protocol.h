@@ -153,6 +153,8 @@ public:
 	virtual SearchService * searchService() { return CurrentSearchService; }
 	virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
 
+	GaduIMTokenService * gaduIMTokenService() const { return CurrentImTokenService; }
+
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }
 

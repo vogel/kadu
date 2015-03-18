@@ -25,6 +25,7 @@
 
 #include "plugin/plugin-root-component.h"
 
+class GaduProtocolMenuManager;
 class GaduUrlDomVisitorProvider;
 
 class GaduProtocolPlugin : public QObject, public PluginRootComponent
@@ -34,6 +35,7 @@ class GaduProtocolPlugin : public QObject, public PluginRootComponent
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	GaduUrlDomVisitorProvider *UrlDomVisitorProvider;
+	std::unique_ptr<GaduProtocolMenuManager> m_protocolMenuManager;
 
 public:
 	virtual ~GaduProtocolPlugin();
