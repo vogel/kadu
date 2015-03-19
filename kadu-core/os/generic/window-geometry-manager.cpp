@@ -125,15 +125,6 @@ void WindowGeometryManager::saveGeometry()
 	if (!parentWidget->isVisible())
 		return;
 
-#ifdef Q_OS_MAC
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	/* TODO: Check if this is still needed. If not, drop all 4 calls in this file. */
-	/* TODO: Check if we can benefit from the OS X workaround as used in QWidget::saveGeometry()
-	 *       implementation. If so, use it here. */
-	if (QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget))
-		mainWindow->setUnifiedTitleAndToolBarOnMac(false);
-#endif
-
 	bool isMaximized = parentWidget->windowState() & Qt::WindowMaximized;
 	QStringList configuration;
 	//if window is maximized normalGeometry() returns null rect. So in this case we use cached geometry
@@ -144,12 +135,6 @@ void WindowGeometryManager::saveGeometry()
 	configuration.insert(FullscreenIndex, QString::number(int(bool(parentWidget->windowState() & Qt::WindowFullScreen))));
 
 	MyVariantWrapper->set(configuration.join(":"));
-
-#ifdef Q_OS_MAC
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	if (QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget))
-		mainWindow->setUnifiedTitleAndToolBarOnMac(true);
-#endif
 }
 
 void WindowGeometryManager::restoreGeometry()
@@ -161,12 +146,6 @@ void WindowGeometryManager::restoreGeometry()
 	{
 		return;
 	}
-
-#ifdef Q_OS_MAC
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	if (QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget))
-		mainWindow->setUnifiedTitleAndToolBarOnMac(false);
-#endif
 
 	QString configurationString = MyVariantWrapper->get().toString();
 	QStringList configuration = configurationString.split(':');
@@ -208,12 +187,6 @@ void WindowGeometryManager::restoreGeometry()
 
 		parentWidget->restoreGeometry(array);
 	}
-
-#ifdef Q_OS_MAC
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	if (QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget))
-		mainWindow->setUnifiedTitleAndToolBarOnMac(true);
-#endif
 }
 
 #include "moc_window-geometry-manager.cpp"
