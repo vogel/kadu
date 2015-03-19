@@ -175,17 +175,19 @@ void WindowGeometryManager::restoreGeometry()
 		const quint16 minorVersion = 0;
 
 		NormalGeometry = stringToRect(configuration.at(NormalGeometryIndex));
+		auto storedGeometry = stringToRect(configuration.at(NormalGeometryIndex));
 
 		stream << magicNumber
 				<< majorVersion
 				<< minorVersion
 				<< stringToRect(configuration.at(FrameGeometryIndex))
-				<< NormalGeometry
+				<< storedGeometry
 				<< qint32(configuration.at(ScreenIndex).toInt())
 				<< quint8(bool(configuration.at(MaximizedIndex).toInt()))
 				<< quint8(bool(configuration.at(FullscreenIndex).toInt()));
 
 		parentWidget->restoreGeometry(array);
+		parentWidget->move(storedGeometry.topLeft());
 	}
 }
 
