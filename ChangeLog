@@ -4,6 +4,7 @@
 * jabber: #2340 fixed: setting status message on disconnect works (Vogel)
 * jabber: #2962 fixed: problems with refreshing roster (Vogel)
 * gadu: #2972 implemented: allow sending Gadu gifts (Vogel)
+* gui: #2989 fixed: sort buddies list after changing priorities (Vogel)
 
 +++ version 3.0-alpha2
 * notify: #2963 fixed: do not mix up New chat and New message notifications (Vogel)

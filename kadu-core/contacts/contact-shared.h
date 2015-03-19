@@ -102,7 +102,9 @@ public:
 
 	KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
 
-	KaduShared_Property(int, priority, Priority)
+	KaduShared_PropertyRead(int, priority, Priority)
+	void setPriority(int priority);
+
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
 	KaduShared_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
@@ -116,6 +118,7 @@ public:
 signals:
 	void updated();
 	void buddyUpdated();
+	void priorityUpdated();
 	void updatedLocally();
 
 };
