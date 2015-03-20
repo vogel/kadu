@@ -110,7 +110,7 @@ void Updates::buildQuery()
 				platform.append("MacOSX-Unknown");
 				break;
 		}
-#elif defined(Q_OS_WIN32)
+#elif defined(Q_OS_WIN)
 		switch (QSysInfo::WindowsVersion)
 		{
 			case QSysInfo::WV_95:

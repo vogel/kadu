@@ -312,7 +312,7 @@ void Core::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DescriptionHeight", 60);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "DisconnectWithCurrentDescription", true);
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "HideMainWindowFromTaskbar", false);
 #endif
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "Language",  QLocale::system().name().left(2));
@@ -350,7 +350,7 @@ void Core::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AvatarGreyOut", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ForceCustomChatFont", false);
 	QFont chatFont = qApp->font();
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	// On Windows default app font is often "MS Shell Dlg 2", and the default sans
 	// family (Arial, at least in Qt 4.8) is better. Though, on X11 the default
 	// sans family is the same while most users will have some nice default app

@@ -36,7 +36,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSlider>
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <windows.h>
 #endif
 
@@ -69,7 +69,7 @@ int sounds[96] = {
 	29,58,116,233,466,932,1865,3729,
 	31,62,123,245,494,988,1975,3951};
 
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN)
 void PCSpeaker::beep(int pitch, int duration)
 {
 	if (pitch == 0)

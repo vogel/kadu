@@ -36,13 +36,13 @@
 
 #include <errno.h>
 #include <time.h>
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <pwd.h>
 #include <unistd.h>
-#endif // !Q_OS_WIN32
+#endif // !Q_OS_WIN
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-factory.h"
@@ -77,7 +77,7 @@
 
 #include <injeqt/injector.h>
 
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
 #if HAVE_EXECINFO
 #include <execinfo.h>
 #endif
@@ -138,7 +138,7 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			break;
 	}
 }
-#endif // !Q_OS_WIN32
+#endif // !Q_OS_WIN
 
 #ifdef DEBUG_OUTPUT_ENABLED
 extern KADUAPI bool showTimesInDebug;
@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) try
 		throw;
 	}
 
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
 	// Qt version is better on win32
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
@@ -317,7 +317,7 @@ int main(int argc, char *argv[]) try
 
 	return ret;
 }
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN)
 catch (WSAException &)
 {
 	return 2;

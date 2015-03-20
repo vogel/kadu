@@ -418,7 +418,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		}
 
 		if (kadu->isMinimized() || !kadu->isVisible()
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
 				// NOTE: It won't work as expected on Windows since when you click on tray icon,
 				// the tray will become active and any other window will loose focus.
 				// See bug #1915.

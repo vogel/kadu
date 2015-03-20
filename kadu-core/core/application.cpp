@@ -49,7 +49,7 @@ Application::Application() :
 		m_configurationWriter{nullptr},
 		m_pathsProvider{nullptr}
 {
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	// Fix for #2491
 	qApp->setStyleSheet("QToolBar{border:0px}");
 #endif

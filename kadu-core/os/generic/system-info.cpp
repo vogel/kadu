@@ -32,7 +32,7 @@
 #include <time.h>
 #endif
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <windows.h>
 #endif
 
@@ -249,7 +249,7 @@ SystemInfo::SystemInfo()
 	OsName = "MacOS X";
 #endif
 
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN)
 	TIME_ZONE_INFORMATION i;
 	//GetTimeZoneInformation(&i);
 	//TimezoneOffset = (-i.Bias) / 60;

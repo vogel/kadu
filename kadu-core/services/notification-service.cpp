@@ -42,7 +42,7 @@
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include "notify/x11-screen-mode-checker.h"
-#elif defined(Q_OS_WIN32)
+#elif defined(Q_OS_WIN)
 #include "notify/windows-screen-mode-checker.h"
 #else
 #include "notify/screen-mode-checker.h"
@@ -222,7 +222,7 @@ void NotificationService::startScreenModeChecker()
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	FullscreenChecker = new X11ScreenModeChecker();
-#elif defined(Q_OS_WIN32)
+#elif defined(Q_OS_WIN)
 	FullscreenChecker = new WindowsScreenModeChecker();
 #else
 	FullscreenChecker = new ScreenModeChecker();

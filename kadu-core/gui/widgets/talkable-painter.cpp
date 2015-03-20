@@ -39,11 +39,11 @@
 
 #include "talkable-painter.h"
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <windows.h>
 #endif
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 bool TalkablePainter::useColorsWorkaround()
 {
 	static bool checked = false;
@@ -215,7 +215,7 @@ void TalkablePainter::computeCheckboxRect()
 	option.state = QStyle::State_Enabled;
 
 	QSize size = Style->sizeFromContents(QStyle::CT_CheckBox, &option, QSize());
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	size.setWidth(size.width() + Style->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, &option));
 #endif
 	CheckboxRect.setSize(size);

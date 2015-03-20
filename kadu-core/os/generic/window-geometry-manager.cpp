@@ -187,7 +187,9 @@ void WindowGeometryManager::restoreGeometry()
 				<< quint8(bool(configuration.at(FullscreenIndex).toInt()));
 
 		parentWidget->restoreGeometry(array);
+#ifndef Q_OS_WIN
 		parentWidget->move(storedGeometry.topLeft());
+#endif
 	}
 }
 

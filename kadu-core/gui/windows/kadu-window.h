@@ -86,7 +86,7 @@ private:
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	QWidget *HiddenParent;
 #endif
 	QWidget *WindowParent;
@@ -103,7 +103,7 @@ private:
 	void createToolsMenu();
 	void createHelpMenu();
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	void hideWindowFromTaskbar();
 #endif
 
@@ -113,7 +113,7 @@ private:
 	virtual void compositingDisabled();
 
 private slots:
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	void setHiddenParent();
 #endif
 

@@ -31,7 +31,7 @@
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QVBoxLayout>
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <windows.h>
 #endif
 
@@ -86,7 +86,7 @@ KaduWindow::KaduWindow() :
 	new TaskbarProgress{Core::instance()->fileTransferManager(), this};
 	setWindowRole("kadu-main");
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	HiddenParent = new QWidget();
 	setHiddenParent();
 #endif
@@ -314,7 +314,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 
 void KaduWindow::storeConfiguration()
 {
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
 	// see bug 1948 - this is a hack to get real values of info panel height
 	if (!isVisible())
 	{
@@ -379,7 +379,7 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 	MainWindow::keyPressEvent(e);
 }
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 /* On Windows the only way to not show a window in the taskbar without making it a toolwindow
  * is to turn off the WS_EX_APPWINDOW style and provide it with a parent (which will be hidden
  * in our case).
@@ -424,7 +424,7 @@ void KaduWindow::changeEvent(QEvent *event)
 		if (!_isActiveWindow(this))
 			Roster->clearFilter();
 	}
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	else if (event->type() == QEvent::WindowStateChange)
 	{
 		if (Docked && isMinimized() && Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
@@ -440,7 +440,7 @@ void KaduWindow::changeEvent(QEvent *event)
 			// On Windows we reparent WindowParent, so we want it to be parentless now.
 			// BTW, if WindowParent would be really needed in future, it's quite easy to support it.
 			Q_ASSERT(!WindowParent || 0 == WindowParent->parentWidget());
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 			// Without QueuedConnection I hit infinite loop here.
 			QMetaObject::invokeMethod(this, "setHiddenParent", Qt::QueuedConnection);
 #endif
@@ -466,7 +466,7 @@ TalkableProxyModel * KaduWindow::talkableProxyModel()
 
 void KaduWindow::configurationUpdated()
 {
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	hideWindowFromTaskbar();
 #endif
 

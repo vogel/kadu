@@ -26,7 +26,7 @@
 
 NetworkManagerQt::NetworkManagerQt()
 {
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 	// Kadu bug #2591
 	if (QSysInfo::WindowsVersion < QSysInfo::WV_VISTA)
 	{

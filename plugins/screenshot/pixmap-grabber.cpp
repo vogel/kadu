@@ -35,7 +35,7 @@
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
 #endif
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <QtCore/QLibrary>
 #include <QtWinExtras/QtWinExtras>
 #include <windows.h>
@@ -229,7 +229,7 @@ Window PixmapGrabber::findRealWindow( Window w, int depth )
 // End of code copied from KSnapShot
 //////////////////////////////////////////////////////////////////
 
-#elif defined Q_OS_WIN32
+#elif defined Q_OS_WIN
 
 QPixmap PixmapGrabber::grabCurrent()
 {

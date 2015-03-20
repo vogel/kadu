@@ -179,7 +179,7 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 	}
 	else
 	{
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 		if (!Core::instance()->application()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
 			qApp->alert(Core::instance()->kaduWindow());
 #else
