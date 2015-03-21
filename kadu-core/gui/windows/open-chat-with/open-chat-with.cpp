@@ -21,8 +21,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtDeclarative/QDeclarativeContext>
-#include <QtDeclarative/QDeclarativeView>
+#include <QtQml/QQmlContext>
+#include <QtQuick/QQuickItem>
+#include <QtQuickWidgets/QQuickWidget>
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
@@ -97,18 +98,18 @@ OpenChatWith::OpenChatWith() :
 
 	MainLayout->addWidget(idWidget);
 
-	BuddiesView = new QDeclarativeView();
+	BuddiesView = new QQuickWidget();
 
 	Chain = new ModelChain(this);
 	ListModel = new BuddyListModel(Chain);
 	Chain->setBaseModel(ListModel);
 	Chain->addProxyModel(new TalkableProxyModel(Chain));
 
-	QDeclarativeContext *declarativeContext = BuddiesView->rootContext();
+	QQmlContext *declarativeContext = BuddiesView->rootContext();
 	declarativeContext->setContextProperty("buddies", Chain->lastModel());
 
 	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	BuddiesView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+	BuddiesView->setResizeMode(QQuickWidget::SizeRootObjectToView);
 	BuddiesView->setSource(QUrl("file:///" + Application::instance()->pathsProvider()->dataPath() + "qml/openChatWith.qml"));
 
 	if (BuddiesView->rootObject())

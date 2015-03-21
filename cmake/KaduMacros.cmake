@@ -183,7 +183,7 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 		endforeach ()
 	endif ()
 
-	qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE Core Gui Widgets Network Xml WebKit WebKitWidgets Declarative)
+	qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE Core Gui Network Qml Quick QuickWidgets WebKit WebKitWidgets Widgets Xml)
 	if (UNIX AND NOT APPLE)
 		qt5_use_modules (${KADU_PLUGIN_NAME} LINK_PRIVATE DBus)
 	endif ()

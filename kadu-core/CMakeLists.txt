@@ -205,7 +205,7 @@ if (FAST_LINKING)
 	endif ()
 endif ()
 
-qt5_use_modules (libkadu LINK_PRIVATE Core Gui Widgets Xml Network WebKit WebKitWidgets Declarative)
+qt5_use_modules (libkadu LINK_PRIVATE Core Gui Network Qml Quick QuickWidgets WebKit WebKitWidgets Widgets Xml)
 if (UNIX AND NOT APPLE)
 	qt5_use_modules (libkadu LINK_PRIVATE DBus X11Extras)
 endif ()
