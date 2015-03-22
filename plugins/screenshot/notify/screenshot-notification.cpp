@@ -54,7 +54,7 @@ void ScreenshotNotification::notifySizeLimit(long size)
 }
 
 ScreenshotNotification::ScreenshotNotification() :
-		Notification("ssSizeLimit", KaduIcon("kadu_icons/blocking"))
+		Notification(Chat::null, "ssSizeLimit", KaduIcon("kadu_icons/blocking"))
 {
 }
 

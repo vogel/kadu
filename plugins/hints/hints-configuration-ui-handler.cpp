@@ -35,7 +35,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "notify/notification/chat-notification.h"
+#include "notify/notification/notification.h"
 #include "talkable/talkable.h"
 
 #include "hint-over-user-configuration-window.h"
@@ -159,7 +159,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	Notification *previewNotify = new Notification(QLatin1String("Preview"), KaduIcon("protocols/common/message"));
+	Notification *previewNotify = new Notification(Chat::null, QLatin1String("Preview"), KaduIcon("protocols/common/message"));
 	previewNotify->setText(QCoreApplication::translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);

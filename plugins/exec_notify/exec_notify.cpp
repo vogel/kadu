@@ -43,7 +43,6 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notification/account-notification.h"
-#include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 
 #include "core/application.h"
@@ -221,10 +220,9 @@ void ExecNotify::notify(Notification *notification)
 	QStringList s = mySplit(' ', syntax);
 	QStringList result;
 
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
-	if (chatNotification)
+	if (notification->chat())
 	{
-		ContactSet contacts = chatNotification->chat().contacts();
+		ContactSet contacts = notification->chat().contacts();
 
 		QStringList sendersList;
 		foreach (const Contact &contact, contacts)

@@ -63,9 +63,11 @@ void MessageNotification::unregisterEvents()
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :
-		ChatNotification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
-		KaduIcon("protocols/common/message"), true), CurrentMessage(message)
+		Notification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
+		KaduIcon("protocols/common/message")), CurrentMessage(message)
 {
+	addChatCallbacks();
+
 	connect(chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
 
 	QString syntax;

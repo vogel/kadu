@@ -21,11 +21,11 @@
 #ifndef CENZOR_NOTIFICATION_H
 #define CENZOR_NOTIFICATION_H
 
-#include "notify/notification/chat-notification.h"
+#include "notify/notification/notification.h"
 
 class NotifyEvent;
 
-class CenzorNotification : public ChatNotification
+class CenzorNotification : public Notification
 {
 	Q_OBJECT
 

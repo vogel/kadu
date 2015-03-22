@@ -21,12 +21,12 @@
 #ifndef FIREWALL_NOTIFICATION_H
 #define FIREWALL_NOTIFICATION_H
 
-#include "notify/notification/chat-notification.h"
+#include "notify/notification/notification.h"
 
 class Chat;
 class NotifyEvent;
 
-class FirewallNotification : public ChatNotification
+class FirewallNotification : public Notification
 {
 	Q_OBJECT
 

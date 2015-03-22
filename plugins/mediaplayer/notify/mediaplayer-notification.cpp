@@ -64,7 +64,7 @@ void MediaPlayerNotification::notifyTitleHint(const QString &title)
 }
 
 MediaPlayerNotification::MediaPlayerNotification() :
-		Notification("MediaPlayerOsd", KaduIcon("external_modules/mediaplayer-media-playback-play"))
+		Notification(Chat::null, "MediaPlayerOsd", KaduIcon("external_modules/mediaplayer-media-playback-play"))
 {
 }
 

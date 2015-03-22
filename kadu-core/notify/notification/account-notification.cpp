@@ -58,7 +58,7 @@ void AccountNotification::unregisterParserTags()
 }
 
 AccountNotification::AccountNotification(Account account, const QString &type, const KaduIcon &icon) :
-		Notification(type, icon), CurrentAccount(account)
+		Notification(Chat::null, type, icon), CurrentAccount(account)
 {
 }
 

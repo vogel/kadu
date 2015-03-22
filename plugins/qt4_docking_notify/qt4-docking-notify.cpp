@@ -23,7 +23,6 @@
 #include <QtWidgets/QSystemTrayIcon>
 
 #include "notify/notification-manager.h"
-#include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 
 #include "configuration/configuration.h"
@@ -82,14 +81,13 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 {
 	QString ret;
 
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
-	chat = chatNotification ? chatNotification->chat() : Chat();
+	chat = notification->chat();
 
 	if (!text.isEmpty())
 	{
-		if (chatNotification)
+		if (chat)
 		{
-			Contact contact = *chatNotification->chat().contacts().constBegin();
+			Contact contact = *chat.contacts().constBegin();
 			ret = Parser::parse(text, Talkable(contact), notification, ParserEscape::HtmlEscape);
 		}
 		else

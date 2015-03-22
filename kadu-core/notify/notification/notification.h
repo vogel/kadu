@@ -25,6 +25,7 @@
 #include <QtCore/QPair>
 
 #include "buddies/buddy-set.h"
+#include "chat/chat.h"
 #include "icons/kadu-icon.h"
 #include "notify/notification/notification-callback.h"
 #include "parser/parser-data.h"
@@ -45,6 +46,8 @@ class KADUAPI Notification : public QObject, public ParserData
 	QStringList Details;
 	KaduIcon Icon;
 
+	Chat m_chat;
+
 	QList<NotificationCallback> Callbacks;
 	QTimer *DefaultCallbackTimer;
 
@@ -56,8 +59,10 @@ public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
-	Notification(const QString &type, const KaduIcon &icon);
+	Notification(Chat chat, const QString &type, const KaduIcon &icon);
 	virtual ~Notification();
+
+	Chat chat() const;
 
 	virtual void acquire(Notifier *notifier);
 	virtual void release(Notifier *notifier);
@@ -65,6 +70,7 @@ public:
 
 	void clearCallbacks();
 	void addCallback(const QString &caption, const char *slot, const char *signature);
+	void addChatCallbacks();
 	void setDefaultCallback(int timeout, const char *slot);
 
 	virtual bool requireCallback() { return false; }
@@ -73,7 +79,7 @@ public:
 
 	virtual QString key() const;
 
-	virtual QString groupKey() const { return Title; }
+	virtual QString groupKey() const;
 
 	virtual QString identifier() { return Type + "_" + groupKey(); }
 

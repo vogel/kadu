@@ -33,7 +33,6 @@
 #include "core/application.h"
 #include "icons/icons-manager.h"
 #include "notify/notification/aggregate-notification.h"
-#include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -59,8 +58,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		notification = aggregateNotification->notifications().first();
 	}
 
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
-	CurrentChat = chatNotification ? chatNotification->chat() : Chat::null;
+	CurrentChat = notification->chat();
 
 	startSecs = secs = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 

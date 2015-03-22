@@ -23,12 +23,12 @@
 #pragma once
 
 #include "file-transfer/file-transfer.h"
-#include "notify/notification/chat-notification.h"
+#include "notify/notification/notification.h"
 
 class FileTransferManager;
 class NotifyEvent;
 
-class NewFileTransferNotification : public ChatNotification
+class NewFileTransferNotification : public Notification
 {
 	Q_OBJECT
 

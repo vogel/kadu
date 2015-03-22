@@ -55,8 +55,9 @@ void CenzorNotification::notifyCenzored(const Chat &chat)
 }
 
 CenzorNotification::CenzorNotification(const Chat &chat) :
-		ChatNotification(chat, "cenzorNotification", KaduIcon(), true)
+		Notification(chat, "cenzorNotification", KaduIcon())
 {
+	addChatCallbacks();
 }
 
 CenzorNotification::~CenzorNotification()

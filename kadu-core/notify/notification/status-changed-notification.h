@@ -22,12 +22,12 @@
 #define STATUS_CHANGED_NOTIFICATION_H
 
 #include "notify/notification-manager.h"
-#include "chat-notification.h"
+#include "notify/notification/notification.h"
 
 class ContactSet;
 class NotifyEvent;
 
-class StatusChangedNotification : public ChatNotification
+class StatusChangedNotification : public Notification
 {
 	Q_OBJECT
 

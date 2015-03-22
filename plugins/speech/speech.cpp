@@ -27,7 +27,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "notify/notification-manager.h"
-#include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -157,8 +156,7 @@ void Speech::notify(Notification *notification)
 	QString text;
 	QString sex = "Male";
 
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
-	Chat chat = chatNotification ? chatNotification->chat() : Chat::null;
+	Chat chat = notification->chat();
 
 	// TODO:
 	if (chat)

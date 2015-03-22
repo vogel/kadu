@@ -28,6 +28,8 @@
 #include "debug.h"
 
 #include "notification.h"
+#include <core/core.h>
+#include <gui/widgets/chat-widget/chat-widget-manager.h>
 
 static QString getNotificationTitle(const ParserData * const object)
 {
@@ -50,13 +52,22 @@ void Notification::unregisterParserTags()
 	Parser::unregisterObjectTag("event");
 }
 
-Notification::Notification(const QString &type, const KaduIcon &icon) :
-	Type(type), Icon(icon), DefaultCallbackTimer(0), Closing(false)
+Notification::Notification(Chat chat, const QString &type, const KaduIcon &icon) :
+		Type(type),
+		Icon(icon),
+		m_chat{chat},
+		DefaultCallbackTimer(0),
+		Closing(false)
 {
 }
 
 Notification::~Notification()
 {
+}
+
+Chat Notification::chat() const
+{
+	return m_chat;
 }
 
 void Notification::acquire(Notifier *notifier)
@@ -99,6 +110,12 @@ void Notification::addCallback(const QString &caption, const char *slot, const c
 	Callbacks.append(callback);
 }
 
+void Notification::addChatCallbacks()
+{
+	addCallback(tr("Chat"), SLOT(callbackAccept()), "callbackAccept()");
+	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
+}
+
 void Notification::setDefaultCallback(int timeout, const char *defaultSlot)
 {
 	DefaultCallbackTimer = new QTimer(this);
@@ -110,6 +127,9 @@ void Notification::setDefaultCallback(int timeout, const char *defaultSlot)
 void Notification::callbackAccept()
 {
 	close();
+
+	if (m_chat)
+		Core::instance()->chatWidgetManager()->openChat(m_chat, OpenChatActivation::Activate);
 }
 
 void Notification::callbackDiscard()
@@ -129,6 +149,14 @@ void Notification::clearDefaultCallback()
 QString Notification::key() const
 {
 	return NotificationManager::instance()->notifyConfigurationKey(Type);
+}
+
+QString Notification::groupKey() const
+{
+	if (m_chat)
+		return m_chat.uuid().toString();
+	else
+		return Title;
 }
 
 void Notification::setTitle(const QString &title)

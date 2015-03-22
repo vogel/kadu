@@ -40,7 +40,7 @@
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
-#include "notify/notification/chat-notification.h"
+#include "notify/notification/notification.h"
 #include "parser/parser.h"
 
 #include "icons/icons-manager.h"

@@ -25,7 +25,6 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "notify/notification/aggregate-notification.h"
-#include "notify/notification/chat-notification.h"
 
 #include "chat-notifier.h"
 
@@ -81,9 +80,8 @@ void ChatNotifier::notify(Notification *notification)
 	auto latestNotification = aggregateNotification->notifications().last();
 
 	auto buddies = BuddySet();
-	auto chatNotification = qobject_cast<ChatNotification *>(latestNotification);
-	if (chatNotification)
-		buddies = chatNotification->chat().contacts().toBuddySet();
+	if (latestNotification->chat())
+		buddies = latestNotification->chat().contacts().toBuddySet();
 
 	for (auto chatWidget : m_chatWidgetRepository.data())
 		// warning: do not exchange intersect caller and argument, it will modify buddies variable if you do

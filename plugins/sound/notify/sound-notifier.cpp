@@ -25,7 +25,6 @@
 #include "sound-manager.h"
 
 #include "notify/notification/aggregate-notification.h"
-#include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 
 #include <QtCore/QFileInfo>
@@ -55,34 +54,30 @@ void SoundNotifier::notify(Notification *notification)
 	if (aggregate)
 		notification = aggregate->notifications().front();
 
-	auto chatNotification = qobject_cast<ChatNotification *>(notification);
-	if (chatNotification)
+	auto chat = notification->chat();
+	if (chat && chat.property("sound:use_custom_sound", false).toBool())
 	{
-		auto chat = chatNotification->chat();
-		if (chat && chat.property("sound:use_custom_sound", false).toBool())
+		// we need abstraction for that
+		auto customSound = chat.property("sound:custom_sound", QString{}).toString();
+		auto fileInfo = QFileInfo{customSound};
+		if (fileInfo.exists())
 		{
-			// we need abstraction for that
-			auto customSound = chat.property("sound:custom_sound", QString{}).toString();
+			m_soundManager->playFile(customSound);
+			return;
+		}
+	}
+
+	if (!chat.contacts().isEmpty())
+	{
+		auto buddy = chat.contacts().begin()->ownerBuddy();
+		if (buddy && buddy.property("sound:use_custom_sound", false).toBool())
+		{
+			auto customSound = buddy.property("sound:custom_sound", QString{}).toString();
 			auto fileInfo = QFileInfo{customSound};
 			if (fileInfo.exists())
 			{
 				m_soundManager->playFile(customSound);
 				return;
-			}
-		}
-
-		if (!chat.contacts().isEmpty())
-		{
-			auto buddy = chat.contacts().begin()->ownerBuddy();
-			if (buddy && buddy.property("sound:use_custom_sound", false).toBool())
-			{
-				auto customSound = buddy.property("sound:custom_sound", QString{}).toString();
-				auto fileInfo = QFileInfo{customSound};
-				if (fileInfo.exists())
-				{
-					m_soundManager->playFile(customSound);
-					return;
-				}
 			}
 		}
 	}

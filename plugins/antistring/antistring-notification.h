@@ -21,11 +21,11 @@
 #ifndef ANTISTRING_NOTIFICATION_H
 #define ANTISTRING_NOTIFICATION_H
 
-#include "notify/notification/chat-notification.h"
+#include "notify/notification/notification.h"
 
 class NotifyEvent;
 
-class AntistringNotification : public ChatNotification
+class AntistringNotification : public Notification
 {
 	Q_OBJECT
 
