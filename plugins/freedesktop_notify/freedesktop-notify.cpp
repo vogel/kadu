@@ -237,10 +237,10 @@ void FreedesktopNotify::notify(Notification *notification)
 			firstNotification = aggregateNotification->notifications().first();
 		}
 
-		foreach (const Notification::Callback &callback, firstNotification->getCallbacks())
+		foreach (const NotificationCallback &callback, firstNotification->getCallbacks())
 		{
-			actions << callback.Signature;
-			actions << callback.Caption;
+			actions << callback.signature();
+			actions << callback.caption();
 		}
 	}
 	args.append(actions);

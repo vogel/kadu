@@ -84,15 +84,15 @@ void WindowNotifierWindow::createGui()
 
 	layout->addWidget(buttons, 0, Qt::AlignCenter);
 
-	const QList<Notification::Callback> callbacks = CurrentNotification->getCallbacks();
+	const QList<NotificationCallback> callbacks = CurrentNotification->getCallbacks();
 	auto callbackNotifiation = CurrentNotification;
 	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
 		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
 
 	if (!callbacks.isEmpty())
-		foreach(const Notification::Callback &i, callbacks)
+		foreach(const NotificationCallback &i, callbacks)
 		{
-			addButton(callbackNotifiation, buttons, i.Caption, i.Slot);
+			addButton(callbackNotifiation, buttons, i.caption(), i.slot().toAscii().data());
 		}
 	else
 		addButton(callbackNotifiation, buttons, tr("OK"), SLOT(callbackAccept()));

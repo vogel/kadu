@@ -26,6 +26,7 @@
 
 #include "buddies/buddy-set.h"
 #include "icons/kadu-icon.h"
+#include "notify/notification/notification-callback.h"
 #include "parser/parser-data.h"
 #include "exports.h"
 
@@ -37,34 +38,6 @@ class KADUAPI Notification : public QObject, public ParserData
 {
 	Q_OBJECT
 
-public:
-	struct Callback
-	{
-		QString Caption;
-		const char *Slot;
-		const char *Signature;
-
-		Callback() : Slot(0), Signature(0) {}
-
-		Callback(const Callback &copy)
-		{
-			Caption = copy.Caption;
-			Slot = copy.Slot;
-			Signature = copy.Signature;
-		}
-
-		Callback & operator = (const Callback &copy)
-		{
-			Caption = copy.Caption;
-			Slot = copy.Slot;
-			Signature = copy.Signature;
-
-			return *this;
-		}
-	};
-
-private:
-
 	QString Type;
 
 	QString Title;
@@ -72,7 +45,7 @@ private:
 	QStringList Details;
 	KaduIcon Icon;
 
-	QList<Callback> Callbacks;
+	QList<NotificationCallback> Callbacks;
 	QTimer *DefaultCallbackTimer;
 
 protected:
@@ -117,7 +90,7 @@ public:
 	virtual int period() { return 0; }
 	virtual void setIcon(const KaduIcon &icon);
 	virtual const KaduIcon & icon() const { return Icon; }
-	virtual const QList<Callback> & getCallbacks() { return Callbacks; }
+	virtual const QList<NotificationCallback> & getCallbacks() { return Callbacks; }
 
 public slots:
 	virtual void callbackAccept();

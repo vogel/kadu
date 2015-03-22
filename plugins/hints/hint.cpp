@@ -66,7 +66,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	createLabels(notification->icon().icon().pixmap(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
-	const QList<Notification::Callback> callbacks = notification->getCallbacks();
+	const QList<NotificationCallback> callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
 	if (showButtons)
 		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
@@ -82,10 +82,10 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		callbacksBox->addStretch(10);
 		vbox->addLayout(callbacksBox);
 
-		foreach (const Notification::Callback &i, callbacks)
+		foreach (const NotificationCallback &i, callbacks)
 		{
-			QPushButton *button = new QPushButton(i.Caption, this);
-			connect(button, SIGNAL(clicked(bool)), callbackNotifiation, i.Slot);
+			QPushButton *button = new QPushButton(i.caption(), this);
+			connect(button, SIGNAL(clicked(bool)), callbackNotifiation, i.slot().toAscii());
 			connect(button, SIGNAL(clicked(bool)), callbackNotifiation, SLOT(clearDefaultCallback()));
 
 			callbacksBox->addWidget(button);

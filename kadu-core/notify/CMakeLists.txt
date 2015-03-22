@@ -8,6 +8,7 @@ set (notify_SRCS
 	notification/aggregate-notification.cpp
 	notification/new-message-notification.cpp
 	notification/multilogon-notification.cpp
+	notification/notification-callback.cpp
 	notification/notification.cpp
 	notification-manager.cpp
 	notifier.cpp

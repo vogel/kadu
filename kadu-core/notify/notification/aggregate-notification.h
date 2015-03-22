@@ -51,7 +51,7 @@ public:
 
 	virtual void close();
 
-	const QList<Callback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
+	const QList<NotificationCallback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
 
 	void clearCallbacks();
 

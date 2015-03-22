@@ -95,11 +95,7 @@ void Notification::clearCallbacks()
 
 void Notification::addCallback(const QString &caption, const char *slot, const char *signature)
 {
-	Callback callback;
-	callback.Caption = caption;
-	callback.Slot = slot;
-	callback.Signature = signature;
-
+	auto callback = NotificationCallback{caption, slot, signature};
 	Callbacks.append(callback);
 }
 
