@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
 #include <QtQml/QQmlContext>
 #include <QtQuick/QQuickItem>
 #include <QtQuickWidgets/QQuickWidget>
@@ -225,7 +226,7 @@ void OpenChatWith::itemActivated(int index)
 		return;
 
 	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
-	deleteLater();
+	QTimer::singleShot(50, this, SLOT(close()));
 }
 
 void OpenChatWith::inputAccepted()
