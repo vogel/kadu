@@ -94,13 +94,16 @@ SpellChecker::SpellChecker(QObject *parent) :
 	aspell_config_replace(SpellConfig, "encoding", "utf-8");
 	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
 
-#if defined(Q_OS_WIN)
+#	if defined(Q_OS_WIN)
 	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
 	aspell_config_replace(SpellConfig, "data-dir", qPrintable(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
 	aspell_config_replace(SpellConfig, "prefix", qPrintable(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("dicts")));
-#endif
+#	endif
 #elif defined(HAVE_ENCHANT)
 	Broker = enchant_broker_init();
+#	if defined(Q_OS_WIN)
+	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("share/enchant/myspell/")));
+#	endif
 #endif
 }
 
