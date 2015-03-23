@@ -18,27 +18,10 @@ set (notify_SRCS
 	window-notifier.cpp
 )
 
-set (notify_MOC_SRCS
-	listener/account-event-listener.h
-	listener/chat-event-listener.h
-	listener/event-listener.h
-	listener/group-event-listener.h
-	notification/aggregate-notification.h
-	notification/new-message-notification.h
-	notification/multilogon-notification.h
-	notification/notification.h
-	notification-manager.h
-	notifier.h
-	notify-configuration-ui-handler.h
-	screen-mode-checker.h
-	notification/status-changed-notification.h
-	window-notifier.h
-)
-
 if (WIN32)
     list (APPEND notify_SRCS "windows-screen-mode-checker.cpp")
 elseif (UNIX AND NOT APPLE)
     list (APPEND notify_SRCS "x11-screen-mode-checker.cpp")
 endif ()
 
-kadu_subdirectory (notify "${notify_SRCS}" "${notify_MOC_SRCS}" "")
+kadu_subdirectory (notify "${notify_SRCS}" "" "")
