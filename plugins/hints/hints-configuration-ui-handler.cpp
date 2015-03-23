@@ -159,7 +159,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	Notification *previewNotify = new Notification(Chat::null, QLatin1String("Preview"), KaduIcon("protocols/common/message"));
+	auto previewNotify = new Notification(Account::null, Chat::null, QLatin1String("Preview"), KaduIcon("protocols/common/message"));
 	previewNotify->setText(QCoreApplication::translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);

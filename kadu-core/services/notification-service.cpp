@@ -29,7 +29,6 @@
 #include "notify/listener/account-event-listener.h"
 #include "notify/listener/chat-event-listener.h"
 #include "notify/listener/group-event-listener.h"
-#include "notify/notification/account-notification.h"
 #include "notify/notification/multilogon-notification.h"
 #include "notify/notification/new-message-notification.h"
 #include "notify/notification/notification.h"
@@ -54,7 +53,6 @@ NotificationService::NotificationService(QObject *parent) :
 		QObject(parent), SilentMode(false), AutoSilentMode(false), IsFullScreen(false), FullscreenChecker(0)
 {
 	Notification::registerParserTags();
-	AccountNotification::registerParserTags();
 
 	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(NotifyUiHandler);
@@ -76,8 +74,6 @@ NotificationService::NotificationService(QObject *parent) :
 
 NotificationService::~NotificationService()
 {
-
-	AccountNotification::unregisterParserTags();
 	Notification::unregisterParserTags();
 
 	MainConfigurationWindow::unregisterUiHandler(NotifyUiHandler);

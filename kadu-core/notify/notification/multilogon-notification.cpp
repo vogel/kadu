@@ -69,7 +69,7 @@ void MultilogonNotification::unregisterEvents()
 }
 
 MultilogonNotification::MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback) :
-		AccountNotification(session->account(), type, KaduIcon("kadu_icons/multilogon")), Session(session)
+		Notification(session->account(), Chat::null, type, KaduIcon("kadu_icons/multilogon")), Session(session)
 {
 	if (addKillCallback)
 	{

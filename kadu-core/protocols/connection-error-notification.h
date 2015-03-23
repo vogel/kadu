@@ -26,11 +26,11 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-#include "notify/notification/account-notification.h"
+#include "notify/notification/notification.h"
 
 class NotifyEvent;
 
-class ConnectionErrorNotification : public AccountNotification
+class ConnectionErrorNotification : public Notification
 {
 	Q_OBJECT
 

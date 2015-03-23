@@ -18,7 +18,7 @@
  */
 
 #include "notify/notification-manager.h"
-#include "notify/notification/account-notification.h"
+#include "notify/notification/notification.h"
 #include "notify/notify-event.h"
 
 #include "roster-notifier.h"
@@ -60,7 +60,7 @@ QList<NotifyEvent *> RosterNotifier::notifyEvents()
 
 void RosterNotifier::notify(const QString &topic, const Account &account, const QString &message)
 {
-	auto notification = new AccountNotification{account, topic, KaduIcon{}};
+	auto notification = new Notification{account, Chat::null, topic, KaduIcon{}};
 	notification->setTitle(tr("Roster"));
 	notification->setText(message);
 

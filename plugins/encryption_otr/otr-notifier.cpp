@@ -22,7 +22,7 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "notify/notification-manager.h"
-#include "notify/notification/account-notification.h"
+#include "notify/notification/notification.h"
 #include "notify/notify-event.h"
 
 #include "otr-notifier.h"
@@ -60,7 +60,7 @@ QList<NotifyEvent *> OtrNotifier::notifyEvents()
 
 void OtrNotifier::notify(const QString &topic, const Account &account, const QString &message)
 {
-	AccountNotification *notification = new AccountNotification(account, topic, KaduIcon());
+	auto notification = new Notification(account, Chat::null, topic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
 	notification->setText(message);
 

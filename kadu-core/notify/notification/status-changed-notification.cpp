@@ -106,7 +106,7 @@ void StatusChangedNotification::unregisterEvents()
 }
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description) :
-		Notification(ChatTypeContact::findChat(contact, ActionCreateAndAdd),
+		Notification(Account::null, ChatTypeContact::findChat(contact, ActionCreateAndAdd),
 		QString("StatusChanged") + toStatus, contact.contactAccount().protocolHandler()->statusIcon(contact.currentStatus().type()))
 {
 	addChatCallbacks();

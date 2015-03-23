@@ -42,7 +42,6 @@
 #include "misc/misc.h"
 
 #include "notify/notification-manager.h"
-#include "notify/notification/account-notification.h"
 #include "notify/notification/notification.h"
 
 #include "core/application.h"

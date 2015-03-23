@@ -24,6 +24,7 @@
 
 #include <QtCore/QPair>
 
+#include "accounts/account.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "icons/kadu-icon.h"
@@ -46,6 +47,7 @@ class KADUAPI Notification : public QObject, public ParserData
 	QStringList Details;
 	KaduIcon Icon;
 
+	Account m_account;
 	Chat m_chat;
 
 	QList<NotificationCallback> Callbacks;
@@ -59,9 +61,10 @@ public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
-	Notification(Chat chat, const QString &type, const KaduIcon &icon);
+	Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon);
 	virtual ~Notification();
 
+	Account account() const;
 	Chat chat() const;
 
 	virtual void acquire(Notifier *notifier);

@@ -1,6 +1,5 @@
 set (notify_SRCS
 	listener/account-event-listener.cpp
-	notification/account-notification.cpp
 	listener/chat-event-listener.cpp
 	listener/event-listener.cpp
 	listener/group-event-listener.cpp
@@ -21,7 +20,6 @@ set (notify_SRCS
 
 set (notify_MOC_SRCS
 	listener/account-event-listener.h
-	notification/account-notification.h
 	listener/chat-event-listener.h
 	listener/event-listener.h
 	listener/group-event-listener.h

@@ -117,7 +117,7 @@ void EncryptionNgNotification::notifyEncryptionError(const QString &error)
 }
 
 EncryptionNgNotification::EncryptionNgNotification(const QString &name) :
-		Notification(Chat::null, name, KaduIcon("security-high")), Name(name)
+		Notification(Account::null, Chat::null, name, KaduIcon("security-high")), Name(name)
 {
 }
 

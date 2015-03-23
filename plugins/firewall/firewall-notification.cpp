@@ -61,7 +61,7 @@ void FirewallNotification::notify(const Chat &chat, const Contact &sender, const
 }
 
 FirewallNotification::FirewallNotification(const Chat &chat) :
-		Notification(chat, "firewallNotification", KaduIcon("ManageKeysWindowIcon"))
+		Notification(Account::null, chat, "firewallNotification", KaduIcon("ManageKeysWindowIcon"))
 {
 	addChatCallbacks();
 }

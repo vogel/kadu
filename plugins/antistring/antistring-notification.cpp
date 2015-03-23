@@ -47,7 +47,7 @@ void AntistringNotification::notifyStringReceived(const Chat &chat)
 }
 
 AntistringNotification::AntistringNotification(const Chat &chat) :
-		Notification(chat, "Antistring", KaduIcon())
+		Notification(Account::null, chat, "Antistring", KaduIcon())
 {
 	addChatCallbacks();
 }

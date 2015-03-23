@@ -82,7 +82,7 @@ void ConnectionErrorNotification::notifyConnectionError(const Account &account, 
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
-		AccountNotification(account, "ConnectionError", KaduIcon("dialog-error")),
+		Notification(account, Chat::null, "ConnectionError", KaduIcon("dialog-error")),
 		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));

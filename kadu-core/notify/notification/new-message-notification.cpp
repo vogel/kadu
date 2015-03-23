@@ -63,7 +63,7 @@ void MessageNotification::unregisterEvents()
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :
-		Notification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
+		Notification(Account::null, message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
 		KaduIcon("protocols/common/message")), CurrentMessage(message)
 {
 	addChatCallbacks();

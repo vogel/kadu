@@ -22,12 +22,12 @@
 #define MULTILOGON_NOTIFICATION_H
 
 #include "notify/notification-manager.h"
-#include "notify/notification/account-notification.h"
+#include "notify/notification/notification.h"
 
 class MultilogonSession;
 class NotifyEvent;
 
-class MultilogonNotification : public AccountNotification
+class MultilogonNotification : public Notification
 {
 	Q_OBJECT
 

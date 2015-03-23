@@ -21,15 +21,37 @@
 
 #include <QtCore/QTimer>
 
+#include "core/core.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity.h"
 #include "notify/notification-manager.h"
 #include "notify/notifier.h"
 #include "parser/parser.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
 #include "debug.h"
 
 #include "notification.h"
-#include <core/core.h>
-#include <gui/widgets/chat-widget/chat-widget-manager.h>
+
+static QString getAccountName(const ParserData * const object)
+{
+	const Notification * const notification = dynamic_cast<const Notification * const>(object);
+	return notification && !notification->account().isNull()
+			? notification->account().accountIdentity().name()
+			: QString();
+}
+
+static QString getProtocolName(const ParserData * const object)
+{
+	const Notification * const notification = dynamic_cast<const Notification * const>(object);
+	return notification &&
+			!notification->account().isNull() &&
+			notification->account().protocolHandler() &&
+			notification->account().protocolHandler()->protocolFactory()
+		? notification->account().protocolHandler()->protocolFactory()->displayName()
+		: QString();
+}
 
 static QString getNotificationTitle(const ParserData * const object)
 {
@@ -44,17 +66,22 @@ static QString getNotificationTitle(const ParserData * const object)
 
 void Notification::registerParserTags()
 {
+	Parser::registerObjectTag("account", getAccountName);
 	Parser::registerObjectTag("event", getNotificationTitle);
+	Parser::registerObjectTag("protocol", getProtocolName);
 }
 
 void Notification::unregisterParserTags()
 {
+	Parser::unregisterObjectTag("account");
 	Parser::unregisterObjectTag("event");
+	Parser::unregisterObjectTag("protocol");
 }
 
-Notification::Notification(Chat chat, const QString &type, const KaduIcon &icon) :
+Notification::Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon) :
 		Type(type),
 		Icon(icon),
+		m_account{account},
 		m_chat{chat},
 		DefaultCallbackTimer(0),
 		Closing(false)
@@ -63,6 +90,11 @@ Notification::Notification(Chat chat, const QString &type, const KaduIcon &icon)
 
 Notification::~Notification()
 {
+}
+
+Account Notification::account() const
+{
+	return m_account;
 }
 
 Chat Notification::chat() const
