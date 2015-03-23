@@ -3,18 +3,22 @@ set (notify_SRCS
 	listener/chat-event-listener.cpp
 	listener/event-listener.cpp
 	listener/group-event-listener.cpp
+
 	notification/aggregate-notification.cpp
 	notification/new-message-notification.cpp
 	notification/multilogon-notification.cpp
+	notification/notification-callback-repository.cpp
 	notification/notification-callback.cpp
 	notification/notification.cpp
+	notification/status-changed-notification.cpp
+
 	notification-manager.cpp
 	notifier.cpp
 	notifier-configuration-data-manager.cpp
 	notify-configuration-ui-handler.cpp
 	notify-event.cpp
+	notify-module.cpp
 	screen-mode-checker.cpp
-	notification/status-changed-notification.cpp
 	window-notifier.cpp
 )
 

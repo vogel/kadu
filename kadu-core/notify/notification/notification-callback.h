@@ -39,3 +39,5 @@ private:
 	QString m_signature;
 
 };
+
+bool operator == (const NotificationCallback &x, const NotificationCallback &y);

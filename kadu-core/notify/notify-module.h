@@ -17,37 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notification-callback.h"
+#pragma once
 
-NotificationCallback::NotificationCallback(QString caption, QString slot, QString signature) :
-		m_caption{std::move(caption)},
-		m_slot{std::move(slot)},
-		m_signature{std::move(signature)}
-{
-}
+#include "exports.h"
 
-QString NotificationCallback::caption() const
-{
-	return m_caption;
-}
+#include <injeqt/module.h>
 
-QString NotificationCallback::slot() const
+class KADUAPI NotifyModule : public injeqt::module
 {
-	return m_slot;
-}
 
-QString NotificationCallback::signature() const
-{
-	return m_signature;
-}
+public:
+	explicit NotifyModule();
+	virtual ~NotifyModule();
 
-bool operator == (const NotificationCallback &x, const NotificationCallback &y)
-{
-	if (x.caption() != y.caption())
-		return false;
-	if (x.slot() != y.slot())
-		return false;
-	if (x.signature() != y.signature())
-		return false;
-	return true;
-}
+};

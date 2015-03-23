@@ -17,37 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notification-callback.h"
+#include "notify-module.h"
 
-NotificationCallback::NotificationCallback(QString caption, QString slot, QString signature) :
-		m_caption{std::move(caption)},
-		m_slot{std::move(slot)},
-		m_signature{std::move(signature)}
+#include "notify/notification/notification-callback-repository.h"
+
+NotifyModule::NotifyModule()
 {
+	add_type<NotificationCallbackRepository>();
 }
 
-QString NotificationCallback::caption() const
+NotifyModule::~NotifyModule()
 {
-	return m_caption;
-}
-
-QString NotificationCallback::slot() const
-{
-	return m_slot;
-}
-
-QString NotificationCallback::signature() const
-{
-	return m_signature;
-}
-
-bool operator == (const NotificationCallback &x, const NotificationCallback &y)
-{
-	if (x.caption() != y.caption())
-		return false;
-	if (x.slot() != y.slot())
-		return false;
-	if (x.signature() != y.signature())
-		return false;
-	return true;
 }

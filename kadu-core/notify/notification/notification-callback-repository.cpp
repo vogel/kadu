@@ -17,37 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notification-callback.h"
+#include "notification-callback-repository.h"
 
-NotificationCallback::NotificationCallback(QString caption, QString slot, QString signature) :
-		m_caption{std::move(caption)},
-		m_slot{std::move(slot)},
-		m_signature{std::move(signature)}
+#include "notify/notification/notification-callback.h"
+
+NotificationCallbackRepository::NotificationCallbackRepository(QObject *parent) :
+		QObject{parent}
 {
 }
 
-QString NotificationCallback::caption() const
+NotificationCallbackRepository::~NotificationCallbackRepository()
 {
-	return m_caption;
 }
 
-QString NotificationCallback::slot() const
+void NotificationCallbackRepository::addCallback(NotificationCallback callback)
 {
-	return m_slot;
+	auto it = std::find(std::begin(m_callbacks), std::end(m_callbacks), callback);
+	if (it == std::end(m_callbacks))
+		m_callbacks.push_back(callback);
 }
 
-QString NotificationCallback::signature() const
+void NotificationCallbackRepository::removeCallback(NotificationCallback callback)
 {
-	return m_signature;
+	auto it = std::find(std::begin(m_callbacks), std::end(m_callbacks), callback);
+	if (it != std::end(m_callbacks))
+		m_callbacks.erase(it);
 }
 
-bool operator == (const NotificationCallback &x, const NotificationCallback &y)
-{
-	if (x.caption() != y.caption())
-		return false;
-	if (x.slot() != y.slot())
-		return false;
-	if (x.signature() != y.signature())
-		return false;
-	return true;
-}
+#include "moc_notification-callback-repository.cpp"
