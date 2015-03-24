@@ -316,6 +316,7 @@ void BuddyShared::addContact(const Contact &contact)
 
 	emit contactAdded(contact);
 
+	connect(contact, SIGNAL(priorityUpdated()), &changeNotifier(), SLOT(notify()));
 	changeNotifier().notify();
 }
 
@@ -325,6 +326,8 @@ void BuddyShared::removeContact(const Contact &contact)
 
 	if (!contact || !Contacts.contains(contact))
 		return;
+
+	disconnect(contact, SIGNAL(priorityUpdated()), &changeNotifier(), SLOT(notify()));
 
 	emit contactAboutToBeRemoved(contact);
 	Contacts.removeAll(contact);

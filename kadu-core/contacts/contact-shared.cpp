@@ -382,6 +382,17 @@ void ContactShared::setContactAvatar(const Avatar &contactAvatar)
 	changeNotifier().notify();
 }
 
+void ContactShared::setPriority(int priority)
+{
+	ensureLoaded();
+	if (Priority != priority)
+	{
+		Priority = priority;
+		changeNotifier().notify();
+		emit priorityUpdated();
+	}
+}
+
 bool ContactShared::isAnonymous()
 {
 	ensureLoaded();
