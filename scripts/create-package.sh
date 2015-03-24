@@ -43,7 +43,7 @@ if [ -e $PACKAGE_FILE ]; then
 	rm -rf $PACKAGE_FILE
 fi
 
-git clone --recursive --depth 1 --branch $VERSION -- git://gitorious.org/kadu/kadu.git $PACKAGE_DIR
+git clone --recursive --depth 1 --branch $VERSION -- https://gitlab.com/kadu/kadu.git $PACKAGE_DIR
 find $PACKAGE_DIR -name ".git*" | xargs rm -rf
 
 tar cjf $PACKAGE_FILE $PACKAGE_DIR
