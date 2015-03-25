@@ -115,7 +115,6 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 					this, SLOT(contactActivityChanged(const Contact &, ChatState)));
 	}
 
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
 	connect(CurrentChat, SIGNAL(updated()), this, SLOT(chatUpdated()));
 
 	CurrentChat.setOpen(true);

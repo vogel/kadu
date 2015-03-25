@@ -24,6 +24,7 @@
 #include "contacts/model/contact-data-extractor.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-title-composing-state-position.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/services/chat-state.h"
 
@@ -42,6 +43,8 @@ ChatWidgetTitle::ChatWidgetTitle(ChatWidget *parent) :
 		if (contact.ownerBuddy())
 			connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(update()));
 	}
+
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(update()));
 }
 
 ChatWidgetTitle::~ChatWidgetTitle()
