@@ -174,7 +174,7 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 		return;
 
 	message.setType(MessageTypeReceived);
-	message.setSendDate(xmppMessage.stamp());
+	message.setSendDate(xmppMessage.stamp().toLocalTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
 	auto body = xmppMessage.body();
