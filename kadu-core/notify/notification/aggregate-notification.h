@@ -51,13 +51,11 @@ public:
 
 	virtual void close();
 
-	const QList<NotificationCallback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
+	const QList<QString> & getCallbacks() { return Notifications.first()->getCallbacks(); }
 
 	void clearCallbacks();
 
-	void addCallback(const QString &caption, const char *slot, const char *signature);
-
-	void setDefaultCallback(int timeout, const char *slot);
+	void addCallback(const QString &name);
 
 	virtual bool requireCallback();
 
@@ -70,7 +68,6 @@ protected slots:
 public slots:
 	virtual void callbackAccept();
 	virtual void callbackDiscard();
-	virtual void clearDefaultCallback();
 };
 
 #endif // AGGREGATE_NOTIFICATION_H

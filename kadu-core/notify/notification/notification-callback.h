@@ -22,21 +22,27 @@
 #include "exports.h"
 
 #include <QtCore/QString>
+#include <functional>
+
+class Notification;
 
 class KADUAPI NotificationCallback
 {
 
 public:
-	explicit NotificationCallback(QString caption, QString slot, QString signature);
+	NotificationCallback();
+	explicit NotificationCallback(QString name, QString title, std::function<void(Notification *)> callback);
 
-	QString caption() const;
-	QString slot() const;
-	QString signature() const;
+	QString name() const;
+	QString title() const;
+	std::function<void(Notification *)> callback() const;
+
+	void call(Notification *notification) const;
 
 private:
-	QString m_caption;
-	QString m_slot;
-	QString m_signature;
+	QString m_name;
+	QString m_title;
+	std::function<void(Notification *)> m_callback;
 
 };
 

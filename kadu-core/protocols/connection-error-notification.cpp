@@ -22,9 +22,12 @@
 
 #include <QtGui/QTextDocument>
 
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "identities/identity.h"
 #include "notify/notification-manager.h"
+#include "notify/notification/notification-callback-repository.h"
+#include "notify/notification/notification-callback.h"
 #include "notify/notify-event.h"
 #include "parser/parser.h"
 
@@ -60,6 +63,17 @@ void ConnectionErrorNotification::registerEvent()
 
 	Parser::registerObjectTag("error", getErrorMessage);
 	Parser::registerObjectTag("errorServer", getErrorServer);
+
+	auto connectionIgnoreErrorsDisconnect = NotificationCallback{
+		"connection-ignore-errors",
+		tr("Ignore"),
+		[](Notification *notification){
+			auto connectionErrorNotification = qobject_cast<ConnectionErrorNotification *>(notification);
+			if (connectionErrorNotification)
+				connectionErrorNotification->ignoreErrors();
+		}
+	};
+	Core::instance()->notificationCallbackRepository()->addCallback(connectionIgnoreErrorsDisconnect);
 }
 
 void ConnectionErrorNotification::unregisterEvent()
@@ -96,7 +110,7 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 			setDetails(Qt::escape(QString("%1 (%2)").arg(ErrorMessage).arg(ErrorServer)));
 	}
 
-	addCallback(tr("Ignore"), SLOT(ignoreErrors()), "ignoreErrors()");
+	addCallback("connection-ignore-errors");
 }
 
 void ConnectionErrorNotification::ignoreErrors()

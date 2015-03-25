@@ -72,6 +72,7 @@ class MessageFilterService;
 class MessageHtmlRendererService;
 class MessageRenderInfoFactory;
 class MessageTransformerService;
+class NotificationCallbackRepository;
 class NotificationService;
 class PluginActivationService;
 class PluginConflictResolver;
@@ -110,7 +111,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
 	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;
-	NotificationService *CurrentNotificationService;
 	RawMessageTransformerService *CurrentRawMessageTransformerService;
 	ClipboardHtmlTransformerService *CurrentClipboardHtmlTransformerService;
 	AccountConfigurationWidgetFactoryRepository *CurrentAccountConfigurationWidgetFactoryRepository;
@@ -182,6 +182,7 @@ public:
 	MessageHtmlRendererService * messageHtmlRendererService() const;
 	MessageRenderInfoFactory * messageRenderInfoFactory() const;
 	MessageTransformerService * messageTransformerService() const;
+	NotificationCallbackRepository * notificationCallbackRepository() const;
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;
 	RawMessageTransformerService * rawMessageTransformerService() const;

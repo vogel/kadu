@@ -92,6 +92,7 @@
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
+#include "notify/notification/notification-callback-repository.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
@@ -184,7 +185,6 @@ Core::Core(injeqt::injector &injector) :
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
-		CurrentNotificationService{nullptr},
 		CurrentRawMessageTransformerService{nullptr},
 		CurrentClipboardHtmlTransformerService{nullptr},
 		CurrentAccountConfigurationWidgetFactoryRepository{nullptr},
@@ -702,8 +702,7 @@ void Core::runServices()
 
 void Core::runGuiServices()
 {
-	CurrentNotificationService = new NotificationService(this);
-	CurrentChatWidgetMessageHandler->setNotificationService(CurrentNotificationService);
+	CurrentChatWidgetMessageHandler->setNotificationService(m_injector.get<NotificationService>());
 
 	m_injector.get<ChatWindowManager>()->openStoredChatWindows();
 	m_injector.get<SslCertificateManager>()->loadPersistentSslCertificates();
@@ -768,9 +767,14 @@ MessageTransformerService * Core::messageTransformerService() const
 	return CurrentMessageTransformerService;
 }
 
+NotificationCallbackRepository * Core::notificationCallbackRepository() const
+{
+	return m_injector.get<NotificationCallbackRepository>();
+}
+
 NotificationService * Core::notificationService() const
 {
-	return CurrentNotificationService;
+	return m_injector.get<NotificationService>();
 }
 
 FormattedStringFactory * Core::formattedStringFactory() const

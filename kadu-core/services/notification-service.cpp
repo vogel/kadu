@@ -22,16 +22,20 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "notify/listener/account-event-listener.h"
 #include "notify/listener/chat-event-listener.h"
 #include "notify/listener/group-event-listener.h"
 #include "notify/notification/multilogon-notification.h"
 #include "notify/notification/new-message-notification.h"
 #include "notify/notification/notification.h"
+#include "notify/notification/notification-callback.h"
+#include "notify/notification/notification-callback-repository.h"
 #include "notify/notification/status-changed-notification.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
@@ -69,7 +73,7 @@ NotificationService::NotificationService(QObject *parent) :
 	createDefaultConfiguration();
 	configurationUpdated();
 
-	new WindowNotifier(this);
+	CurrentWindowNotifier = new WindowNotifier(this);
 }
 
 NotificationService::~NotificationService()
@@ -81,6 +85,29 @@ NotificationService::~NotificationService()
 	StatusChangedNotification::unregisterEvents();
 	MessageNotification::unregisterEvents();
 	MultilogonNotification::unregisterEvents();
+}
+
+void NotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+{
+	m_notificationCallbackRepository = notificationCallbackRepository;
+	CurrentWindowNotifier->setNotificationCallbackRepository(m_notificationCallbackRepository);
+
+	auto ignoreCallback = NotificationCallback{
+		"ignore",
+		tr("Ignore"),
+		[](Notification *) {}
+	};
+	auto openChatCallback = NotificationCallback{
+		"chat-open",
+		tr("Chat"),
+		[](Notification *notification) {
+			if (notification->chat())
+				Core::instance()->chatWidgetManager()->openChat(notification->chat(), OpenChatActivation::Activate);
+		}
+	};
+
+	m_notificationCallbackRepository->addCallback(ignoreCallback);
+	m_notificationCallbackRepository->addCallback(openChatCallback);
 }
 
 void NotificationService::createActionDescriptions()

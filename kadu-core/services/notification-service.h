@@ -19,13 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFICATION_SERVICE_H
-#define NOTIFICATION_SERVICE_H
-
-#include <QtCore/QTimer>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtCore/QTimer>
+#include <injeqt/injeqt.h>
 
 class QAction;
 
@@ -35,13 +36,17 @@ class ActionDescription;
 class ChatEventListener;
 class GroupEventListener;
 class Notification;
+class NotificationCallbackRepository;
 class NotifyConfigurationUiHandler;
 class ScreenModeChecker;
 class StatusContainer;
+class WindowNotifier;
 
 class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
 	bool NewMessageOnlyIfInactive;
 	bool NotifyIgnoreOnConnection;
@@ -62,12 +67,12 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 	ChatEventListener *ChatListener;
 	AccountEventListener *AccountListener;
 	GroupEventListener *GroupListener;
+	WindowNotifier *CurrentWindowNotifier;
 
 	void createDefaultConfiguration();
 	bool ignoreNotifications();
 	void createActionDescriptions();
 	void createEventListeners();
-
 
 private slots:
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
@@ -82,7 +87,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit NotificationService(QObject *parent = 0);
+	Q_INVOKABLE explicit NotificationService(QObject *parent = nullptr);
 	virtual ~NotificationService();
 
 	bool notifyIgnoreOnConnection() { return NotifyIgnoreOnConnection; }
@@ -95,8 +100,10 @@ public:
 
 signals:
 	void silentModeToggled(bool);
+
+private slots:
+	INJEQT_SETTER void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+
 };
 
 void checkNotify(Action *);
-
-#endif // NOTIFICATION_SERVICE_H

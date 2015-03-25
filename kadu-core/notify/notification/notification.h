@@ -28,7 +28,6 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "icons/kadu-icon.h"
-#include "notify/notification/notification-callback.h"
 #include "parser/parser-data.h"
 #include "exports.h"
 
@@ -50,8 +49,7 @@ class KADUAPI Notification : public QObject, public ParserData
 	Account m_account;
 	Chat m_chat;
 
-	QList<NotificationCallback> Callbacks;
-	QTimer *DefaultCallbackTimer;
+	QList<QString> Callbacks;
 
 protected:
 	QSet<Notifier *> Notifiers;
@@ -72,9 +70,8 @@ public:
 	virtual void close();
 
 	void clearCallbacks();
-	void addCallback(const QString &caption, const char *slot, const char *signature);
+	void addCallback(const QString &name);
 	void addChatCallbacks();
-	void setDefaultCallback(int timeout, const char *slot);
 
 	virtual bool requireCallback() { return false; }
 
@@ -99,14 +96,11 @@ public:
 	virtual int period() { return 0; }
 	virtual void setIcon(const KaduIcon &icon);
 	virtual const KaduIcon & icon() const { return Icon; }
-	virtual const QList<NotificationCallback> & getCallbacks() { return Callbacks; }
+	virtual const QList<QString> & getCallbacks() { return Callbacks; }
 
 public slots:
 	virtual void callbackAccept();
 	virtual void callbackDiscard();
-
-	/// @todo API users can easily forget to call it. We should probably clear default callback automatically.
-	virtual void clearDefaultCallback();
 
 signals:
 	void updated(Notification *);

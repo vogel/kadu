@@ -37,6 +37,8 @@
 #include "misc/paths-provider.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/aggregate-notification.h"
+#include "notify/notification/notification-callback-repository.h"
+#include "notify/notification/notification-callback.h"
 #include "notify/notification/notification.h"
 #include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
@@ -237,10 +239,11 @@ void FreedesktopNotify::notify(Notification *notification)
 			firstNotification = aggregateNotification->notifications().first();
 		}
 
-		foreach (const NotificationCallback &callback, firstNotification->getCallbacks())
+		for (auto &&callbackName : firstNotification->getCallbacks())
 		{
-			actions << callback.signature();
-			actions << callback.caption();
+			auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
+			actions << callbackName;
+			actions << callback.title();
 		}
 	}
 	args.append(actions);
@@ -315,37 +318,18 @@ void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, cons
 	ServerCapabilitiesRequireChecking = true;
 }
 
-void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
+void FreedesktopNotify::actionInvoked(unsigned int id, QString callbackName)
 {
 	if (!NotificationMap.contains(id))
 		return;
 
-	Notification *notification = NotificationMap.value(id);
+	auto notification = NotificationMap.value(id);
 	if (!notification)
 		return;
 
-	auto callbackNotifiation = notification;
-	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
-		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
-
-	const QMetaObject *metaObject = callbackNotifiation->metaObject();
-	int slotIndex = -1;
-
-	while (metaObject)
-	{
-		slotIndex = metaObject->indexOfSlot(action.toAscii().constData());
-		if (slotIndex != -1)
-			break;
-
-		metaObject = metaObject->superClass();
-	}
-
-	if (-1 == slotIndex)
-		return;
-
-	QMetaMethod slot = callbackNotifiation->metaObject()->method(slotIndex);
-	slot.invoke(callbackNotifiation, Qt::DirectConnection);
-	notification->clearDefaultCallback();
+	auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
+	callback.call(notification);
+	notification->close();
 
 	QList<QVariant> args;
 	args.append(id);

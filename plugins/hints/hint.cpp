@@ -31,8 +31,11 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "notify/notification/aggregate-notification.h"
+#include "notify/notification/notification-callback-repository.h"
+#include "notify/notification/notification-callback.h"
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -43,8 +46,8 @@
  * @ingroup hints
  * @{
  */
-Hint::Hint(QWidget *parent, Notification *notification)
-	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
+Hint::Hint(QWidget *parent, Notification *xnotification)
+	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(xnotification),
 	  requireCallbacks(notification->requireCallback())
 {
 	kdebugf();
@@ -64,7 +67,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	createLabels(notification->icon().icon().pixmap(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
-	const QList<NotificationCallback> callbacks = notification->getCallbacks();
+	auto callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
 	if (showButtons)
 		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
@@ -80,11 +83,12 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		callbacksBox->addStretch(10);
 		vbox->addLayout(callbacksBox);
 
-		foreach (const NotificationCallback &i, callbacks)
+		for (auto &&callbackName : callbacks)
 		{
-			QPushButton *button = new QPushButton(i.caption(), this);
-			connect(button, SIGNAL(clicked(bool)), callbackNotifiation, i.slot().toAscii());
-			connect(button, SIGNAL(clicked(bool)), callbackNotifiation, SLOT(clearDefaultCallback()));
+			auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
+			auto button = new QPushButton(callback.title(), this);
+			button->setProperty("notify:callback", callbackName);
+			connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 
 			callbacksBox->addWidget(button);
 			callbacksBox->addStretch(1);
@@ -106,6 +110,19 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 Hint::~Hint()
 {
+}
+
+void Hint::buttonClicked()
+{
+	auto callbackName = sender()->property("notify:callback").toString();
+	if (!callbackName.isEmpty())
+	{
+		auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
+		callback.call(notification);
+	}
+
+	notification->close();
+	close();
 }
 
 void Hint::configurationUpdated()

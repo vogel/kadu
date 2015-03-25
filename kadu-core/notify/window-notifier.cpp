@@ -21,19 +21,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/windows/window-notifier-window.h"
-#include "notify/notification-manager.h"
-#include "notify/notification/notification.h"
+#include "window-notifier.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-
 #include "core/application.h"
+#include "gui/windows/window-notifier-window.h"
 #include "icons/icons-manager.h"
+#include "notify/notification-manager.h"
+#include "notify/notification/notification-callback-repository.h"
+#include "notify/notification/notification.h"
 #include "activate.h"
-#include "debug.h"
-
-#include "window-notifier.h"
 
 /**
  * @ingroup window_notify
@@ -41,35 +39,32 @@
  */
 
 WindowNotifier::WindowNotifier(QObject *parent) :
-		Notifier("Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), KaduIcon("dialog-information"), parent)
+		Notifier{"Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), KaduIcon("dialog-information"), parent}
 {
-	kdebugf();
-
 	createDefaultConfiguration();
 	NotificationManager::instance()->registerNotifier(this);
-
-	kdebugf2();
 }
 
 WindowNotifier::~WindowNotifier()
 {
-	kdebugf();
 	NotificationManager::instance()->unregisterNotifier(this);
-	kdebugf2();
+}
+
+void WindowNotifier::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+{
+	m_notificationCallbackRepository = notificationCallbackRepository;
 }
 
 void WindowNotifier::notify(Notification *notification)
 {
-	kdebugf();
-
 	notification->acquire(this);
 
-	WindowNotifierWindow *window = new WindowNotifierWindow(notification);
+	auto window = new WindowNotifierWindow{notification};
+	window->setNotificationCallbackRepository(m_notificationCallbackRepository);
+
 	connect(window, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 	window->show();
 	_activateWindow(window);
-
-	kdebugf2();
 }
 
 void WindowNotifier::notificationClosed(Notification *notification)
@@ -83,6 +78,5 @@ void WindowNotifier::createDefaultConfiguration()
 }
 
 /** @} */
-
 
 #include "moc_window-notifier.cpp"

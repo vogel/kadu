@@ -66,6 +66,7 @@ class Hint : public QFrame, ConfigurationAwareObject
 
 private slots:
 	void notificationClosed();
+	void buttonClicked();
 
 protected:
 	virtual void mouseReleaseEvent(QMouseEvent * event);

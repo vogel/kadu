@@ -21,7 +21,10 @@
 
 #include <QtGui/QTextDocument>
 
+#include "core/core.h"
 #include "multilogon/multilogon-session.h"
+#include "notify/notification/notification-callback-repository.h"
+#include "notify/notification/notification-callback.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
@@ -47,6 +50,17 @@ void MultilogonNotification::registerEvents()
 	NotificationManager::instance()->registerNotifyEvent(MultilogonSessionNotifyEvent);
 	NotificationManager::instance()->registerNotifyEvent(MultilogonSessionConnectedNotifyEvent);
 	NotificationManager::instance()->registerNotifyEvent(MultilogonSessionDisconnectedNotifyEvent);
+
+	auto multilogonDisconnect = NotificationCallback{
+		"multilogon-disconnect",
+		tr("Disconnect session"),
+		[](Notification *notification){
+			auto multilogonNotification = qobject_cast<MultilogonNotification *>(notification);
+			if (multilogonNotification)
+				multilogonNotification->killSession();
+		}
+	};
+	Core::instance()->notificationCallbackRepository()->addCallback(multilogonDisconnect);
 }
 
 void MultilogonNotification::unregisterEvents()
@@ -73,8 +87,8 @@ MultilogonNotification::MultilogonNotification(MultilogonSession *session, const
 {
 	if (addKillCallback)
 	{
-		addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
-		addCallback(tr("Disconnect session"), SLOT(killSession()), "killSession()");
+		addCallback("ignore");
+		addCallback("multilogon-disconnect");
 
 		connect(session, SIGNAL(destroyed()), this, SLOT(callbackDiscard()));
 	}

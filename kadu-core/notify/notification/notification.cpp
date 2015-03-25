@@ -83,7 +83,6 @@ Notification::Notification(Account account, Chat chat, const QString &type, cons
 		Icon(icon),
 		m_account{account},
 		m_chat{chat},
-		DefaultCallbackTimer(0),
 		Closing(false)
 {
 }
@@ -136,24 +135,15 @@ void Notification::clearCallbacks()
 	Callbacks.clear();
 }
 
-void Notification::addCallback(const QString &caption, const char *slot, const char *signature)
+void Notification::addCallback(const QString &name)
 {
-	auto callback = NotificationCallback{caption, slot, signature};
-	Callbacks.append(callback);
+	Callbacks.append(name);
 }
 
 void Notification::addChatCallbacks()
 {
-	addCallback(tr("Chat"), SLOT(callbackAccept()), "callbackAccept()");
-	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
-}
-
-void Notification::setDefaultCallback(int timeout, const char *defaultSlot)
-{
-	DefaultCallbackTimer = new QTimer(this);
-	DefaultCallbackTimer->setSingleShot(true);
-	connect(DefaultCallbackTimer, SIGNAL(timeout()), this, defaultSlot);
-	DefaultCallbackTimer->start(timeout);
+	addCallback("chat-open");
+	addCallback("ignore");
 }
 
 void Notification::callbackAccept()
@@ -167,15 +157,6 @@ void Notification::callbackAccept()
 void Notification::callbackDiscard()
 {
 	close();
-}
-
-void Notification::clearDefaultCallback()
-{
-	if (DefaultCallbackTimer)
-	{
-		delete DefaultCallbackTimer;
-		DefaultCallbackTimer = 0;
-	}
 }
 
 QString Notification::key() const

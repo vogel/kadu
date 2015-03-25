@@ -19,11 +19,13 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QObject>
 
 class NotificationCallback;
 
-class NotificationCallbackRepository : public QObject
+class KADUAPI NotificationCallbackRepository : public QObject
 {
 	Q_OBJECT
 
@@ -33,6 +35,8 @@ public:
 
 	void addCallback(NotificationCallback callback);
 	void removeCallback(NotificationCallback callback);
+
+	NotificationCallback callback(const QString &name);
 
 private:
 	std::vector<NotificationCallback> m_callbacks;

@@ -21,94 +21,112 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "window-notifier-window.h"
+
+#include "icons/icons-manager.h"
+#include "notify/notification/aggregate-notification.h"
+#include "notify/notification/notification-callback-repository.h"
+#include "notify/notification/notification-callback.h"
+#include "notify/notification/notification.h"
+
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-#include "icons/icons-manager.h"
-#include "notify/notification/aggregate-notification.h"
-#include "notify/notification/notification.h"
-#include "debug.h"
-
-#include "window-notifier-window.h"
-
 WindowNotifierWindow::WindowNotifierWindow(Notification *notification, QWidget *parent) :
-		QDialog(parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
-		DesktopAwareObject(this), CurrentNotification(notification)
+		QDialog{parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint},
+		DesktopAwareObject{this},
+		m_notification{notification}
 {
-	kdebugf();
-
 	setWindowRole("kadu-window-notifier");
 
-	setWindowTitle(CurrentNotification->title());
+	setWindowTitle(m_notification->title());
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	createGui();
 }
 
 WindowNotifierWindow::~WindowNotifierWindow()
 {
-	emit closed(CurrentNotification);
+	emit closed(m_notification);
+}
+
+void WindowNotifierWindow::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+{
+	m_notificationCallbackRepository = notificationCallbackRepository;
+	createGui();
 }
 
 void WindowNotifierWindow::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	auto layout = new QVBoxLayout{this};
 	layout->setContentsMargins(10, 10, 10, 10);
 	layout->setSpacing(10);
 
-	QWidget* labels = new QWidget();
-	QHBoxLayout* labelsLayout = new QHBoxLayout(labels);
+	auto labels = new QWidget{};
+	auto labelsLayout = new QHBoxLayout{labels};
 	labelsLayout->setSpacing(10);
 
-	if (!CurrentNotification->icon().icon().isNull())
+	if (!m_notification->icon().icon().isNull())
 	{
-		QLabel *iconLabel = new QLabel;
-		iconLabel->setPixmap(CurrentNotification->icon().icon().pixmap(64, 64));
+		auto iconLabel = new QLabel{};
+		iconLabel->setPixmap(m_notification->icon().icon().pixmap(64, 64));
 		labelsLayout->addWidget(iconLabel);
 	}
 
-	QLabel *textLabel = new QLabel;
-	QString text = CurrentNotification->text();
-	if (!CurrentNotification->details().isEmpty())
-		text += "<br/> <small>" + CurrentNotification->details().join("<br/>") + "</small>";
+	auto textLabel = new QLabel{};
+	auto text = m_notification->text();
+	if (!m_notification->details().isEmpty())
+		text += "<br/> <small>" + m_notification->details().join("<br/>") + "</small>";
 	textLabel->setText(text);
 
 	labelsLayout->addWidget(textLabel);
 
 	layout->addWidget(labels, 0, Qt::AlignCenter);
 
-	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
+	auto buttons = new QWidget{};
+	auto buttonsLayout = new QHBoxLayout{buttons};
 	buttonsLayout->setSpacing(20);
 
 	layout->addWidget(buttons, 0, Qt::AlignCenter);
 
-	const QList<NotificationCallback> callbacks = CurrentNotification->getCallbacks();
-	auto callbackNotifiation = CurrentNotification;
+	auto callbacks = m_notification->getCallbacks();
+	auto callbackNotifiation = m_notification;
 	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
 		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
 
 	if (!callbacks.isEmpty())
-		foreach(const NotificationCallback &i, callbacks)
+		for (auto &&callbackName : callbacks)
 		{
-			addButton(callbackNotifiation, buttons, i.caption(), i.slot().toAscii().data());
+			auto callback = m_notificationCallbackRepository->callback(callbackName);
+			addButton(buttons, callback.title(), callbackName);
 		}
 	else
-		addButton(callbackNotifiation, buttons, tr("OK"), SLOT(callbackAccept()));
+		addButton(buttons, tr("OK"), QString{});
 
-	connect(CurrentNotification, SIGNAL(closed(Notification *)), this, SLOT(close()));
+	connect(m_notification, SIGNAL(closed(Notification *)), this, SLOT(close()));
 
 	buttons->setMaximumSize(buttons->sizeHint());
 }
 
-void WindowNotifierWindow::addButton(Notification *notification, QWidget *parent, const QString &caption, const char *slot)
+void WindowNotifierWindow::addButton(QWidget *parent, const QString &title, const QString &name)
 {
-	QPushButton *button = new QPushButton();
+	auto button = new QPushButton{};
 	parent->layout()->addWidget(button);
-	button->setText(caption);
-	connect(button, SIGNAL(clicked()), notification, slot);
-	connect(button, SIGNAL(clicked()), notification, SLOT(clearDefaultCallback()));
+	button->setText(title);
+	button->setProperty("notify:callback", name);
+	connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+}
+
+void WindowNotifierWindow::buttonClicked()
+{
+	auto callbackName = sender()->property("notify:callback").toString();
+	if (!callbackName.isEmpty())
+	{
+		auto callback = m_notificationCallbackRepository->callback(callbackName);
+		callback.call(m_notification);
+	}
+
+	m_notification->close();
+	close();
 }
 
 #include "moc_window-notifier-window.cpp"

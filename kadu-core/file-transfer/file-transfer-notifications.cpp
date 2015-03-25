@@ -27,6 +27,8 @@
 #include "file-transfer/file-transfer-type.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
+#include "notify/notification/notification-callback-repository.h"
+#include "notify/notification/notification-callback.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 
@@ -47,6 +49,47 @@ void NewFileTransferNotification::registerEvents()
 
 	NotificationManager::instance()->registerNotifyEvent(m_fileTransferNotifyEvent);
 	NotificationManager::instance()->registerNotifyEvent(m_fileTransferIncomingFileNotifyEvent);
+
+	auto acceptTransferCallback = NotificationCallback{
+		"file-transfer-accept",
+		tr("Accept"),
+		[](Notification *notification){
+			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
+			if (fileTransferNotification)
+				fileTransferNotification->callbackAccept();
+		}
+	};
+	auto saveTransferCallback = NotificationCallback{
+		"file-transfer-save",
+		tr("Save"),
+		[](Notification *notification){
+			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
+			if (fileTransferNotification)
+				fileTransferNotification->callbackAccept();
+		}
+	};
+	auto rejectTransferCallback = NotificationCallback{
+		"file-transfer-reject",
+		tr("Reject"),
+		[](Notification *notification){
+			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
+			if (fileTransferNotification)
+				fileTransferNotification->callbackReject();
+		}
+	};
+	auto ignoreTransferCallback = NotificationCallback{
+		"file-transfer-ignore",
+		tr("Ignore"),
+		[](Notification *notification){
+			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
+			if (fileTransferNotification)
+				fileTransferNotification->callbackReject();
+		}
+	};
+	Core::instance()->notificationCallbackRepository()->addCallback(acceptTransferCallback);
+	Core::instance()->notificationCallbackRepository()->addCallback(saveTransferCallback);
+	Core::instance()->notificationCallbackRepository()->addCallback(rejectTransferCallback);
+	Core::instance()->notificationCallbackRepository()->addCallback(ignoreTransferCallback);
 }
 
 void NewFileTransferNotification::unregisterEvents()
@@ -117,16 +160,14 @@ NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QStrin
 {
 	if (m_transfer.transferType() == FileTransferType::Stream)
 	{
-		addCallback(tr("Accept"), SLOT(callbackAccept()), "callbackAccept()");
-		addCallback(tr("Reject"), SLOT(callbackReject()), "callbackReject()");
+		addCallback("file-transfer-accept");
+		addCallback("file-transfer-reject");
 	}
 	else
 	{
-		addCallback(tr("Save"), SLOT(callbackAccept()), "callbackAccept()");
-		addCallback(tr("Ignore"), SLOT(callbackReject()), "callbackReject()");
+		addCallback("file-transfer-save");
+		addCallback("file-transfer-ignore");
 	}
-
-	setDefaultCallback(30 * 60 * 1000, SLOT(callbackDiscard()));
 }
 
 void NewFileTransferNotification::callbackAccept()

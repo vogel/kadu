@@ -19,35 +19,45 @@
 
 #include "notification-callback.h"
 
-NotificationCallback::NotificationCallback(QString caption, QString slot, QString signature) :
-		m_caption{std::move(caption)},
-		m_slot{std::move(slot)},
-		m_signature{std::move(signature)}
+#include "notify/notification/notification.h"
+
+NotificationCallback::NotificationCallback()
 {
 }
 
-QString NotificationCallback::caption() const
+NotificationCallback::NotificationCallback(QString name, QString title, std::function<void(Notification *)> callback) :
+		m_name{std::move(name)},
+		m_title{std::move(title)},
+		m_callback{std::move(callback)}
 {
-	return m_caption;
 }
 
-QString NotificationCallback::slot() const
+QString NotificationCallback::name() const
 {
-	return m_slot;
+	return m_name;
 }
 
-QString NotificationCallback::signature() const
+QString NotificationCallback::title() const
 {
-	return m_signature;
+	return m_title;
+}
+
+std::function<void(Notification *)> NotificationCallback::callback() const
+{
+	return m_callback;
+}
+
+void NotificationCallback::call(Notification *notification) const
+{
+	if (m_callback)
+		m_callback(notification);
 }
 
 bool operator == (const NotificationCallback &x, const NotificationCallback &y)
 {
-	if (x.caption() != y.caption())
+	if (x.name() != y.name())
 		return false;
-	if (x.slot() != y.slot())
-		return false;
-	if (x.signature() != y.signature())
+	if (x.title() != y.title())
 		return false;
 	return true;
 }

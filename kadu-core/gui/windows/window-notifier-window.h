@@ -21,31 +21,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOW_NOTIFIER_WINDOW_H
-#define WINDOW_NOTIFIER_WINDOW_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QDialog>
 
 #include "os/generic/desktop-aware-object.h"
 
 class Notification;
+class NotificationCallbackRepository;
 
 class WindowNotifierWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	Notification *CurrentNotification;
-
-	void createGui();
-	void addButton(Notification *notification, QWidget *parent, const QString &caption, const char *slot);
-
 public:
-	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = 0);
+	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = nullptr);
 	virtual ~WindowNotifierWindow();
+
+	void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 
 signals:
 	void closed(Notification *notification);
 
-};
+private:
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
-#endif // WINDOW_NOTIFIER_WINDOW_H
+	Notification *m_notification;
+
+	void createGui();
+	void addButton(QWidget *parent, const QString &title, const QString &name);
+
+private slots:
+	void buttonClicked();
+
+};

@@ -91,16 +91,10 @@ void AggregateNotification::clearCallbacks()
 		Notifications.first()->clearCallbacks();
 }
 
-void AggregateNotification::addCallback ( const QString& caption, const char* slot, const char* signature )
+void AggregateNotification::addCallback(const QString &name)
 {
 	if (!Notifications.empty())
-		Notifications.first()->addCallback(caption, slot, signature);
-}
-
-void AggregateNotification::setDefaultCallback ( int timeout, const char* slot )
-{
-	if (!Notifications.empty())
-		Notifications.first()->setDefaultCallback(timeout, slot);
+		Notifications.first()->addCallback(name);
 }
 
 bool AggregateNotification::requireCallback()
@@ -121,12 +115,6 @@ void AggregateNotification::callbackDiscard()
 {
 	if (!Notifications.empty())
 		Notifications.first()->callbackDiscard();
-}
-
-void AggregateNotification::clearDefaultCallback()
-{
-	if (!Notifications.empty())
-		Notifications.first()->clearDefaultCallback();
 }
 
 void AggregateNotification::partialNotificationClosed(Notification *notification)

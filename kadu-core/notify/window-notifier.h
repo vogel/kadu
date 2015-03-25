@@ -19,36 +19,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOW_NOTIFIER_H
-#define WINDOW_NOTIFIER_H
+#pragma once
 
 #include "notify/notifier.h"
+
+#include <QtCore/QPointer>
 
 /**
  * @defgroup window_notify Window notify
  * @{
  */
 
+class NotificationCallbackRepository;
+
 class WindowNotifier : public Notifier
 {
 	Q_OBJECT
+
+public:
+	explicit WindowNotifier(QObject *parent = nullptr);
+	virtual ~WindowNotifier();
+
+	void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+
+	virtual void notify(Notification *notification);
+
+	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) { Q_UNUSED(parent) return nullptr; }
+
+private:
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
 	void createDefaultConfiguration();
 
 private slots:
 	void notificationClosed(Notification *notification);
 
-public:
-	explicit WindowNotifier(QObject *parent = 0);
-	virtual ~WindowNotifier();
-
-	virtual void notify(Notification *notification);
-
-	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent) return 0; }
-
 };
 
 /** @} */
-
-#endif // WINDOW_NOTIFIER_H
