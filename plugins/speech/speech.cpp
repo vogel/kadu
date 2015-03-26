@@ -156,7 +156,7 @@ void Speech::notify(Notification *notification)
 	QString text;
 	QString sex = "Male";
 
-	Chat chat = notification->chat();
+	auto chat = notification->data()["chat"].value<Chat>();
 
 	// TODO:
 	if (chat)

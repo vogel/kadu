@@ -115,7 +115,8 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 
 void ConnectionErrorNotification::ignoreErrors()
 {
-	NotificationManager::instance()->ignoreConnectionErrors(account());
+	auto account = data()["account"].value<Account>();
+	NotificationManager::instance()->ignoreConnectionErrors(account);
 	emit closed(this);
 }
 

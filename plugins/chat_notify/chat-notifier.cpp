@@ -80,8 +80,9 @@ void ChatNotifier::notify(Notification *notification)
 	auto latestNotification = aggregateNotification->notifications().last();
 
 	auto buddies = BuddySet();
-	if (latestNotification->chat())
-		buddies = latestNotification->chat().contacts().toBuddySet();
+	auto chat = latestNotification->data()["chat"].value<Chat>();
+	if (chat)
+		buddies = chat.contacts().toBuddySet();
 
 	for (auto chatWidget : m_chatWidgetRepository.data())
 		// warning: do not exchange intersect caller and argument, it will modify buddies variable if you do

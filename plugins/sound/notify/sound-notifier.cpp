@@ -54,7 +54,7 @@ void SoundNotifier::notify(Notification *notification)
 	if (aggregate)
 		notification = aggregate->notifications().front();
 
-	auto chat = notification->chat();
+	auto chat = notification->data()["chat"].value<Chat>();
 	if (chat && chat.property("sound:use_custom_sound", false).toBool())
 	{
 		// we need abstraction for that

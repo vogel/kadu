@@ -150,7 +150,7 @@ void NotificationManager::notify(Notification *rawNotification)
 	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(rawNotification);
 	if (connectionErrorNotification)
 	{
-		Account account = connectionErrorNotification->account();
+		auto account = connectionErrorNotification->data()["account"].value<Account>();
 
 		if (IgnoredAccounts.contains(account.id()))
 		{

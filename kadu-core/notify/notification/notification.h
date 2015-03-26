@@ -39,6 +39,8 @@ class KADUAPI Notification : public QObject, public ParserData
 {
 	Q_OBJECT
 
+	QVariantMap m_data;
+
 	QString Type;
 
 	QString Title;
@@ -59,11 +61,11 @@ public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
+	Notification(QVariantMap data, const QString &type, const KaduIcon &icon);
 	Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon);
 	virtual ~Notification();
 
-	Account account() const;
-	Chat chat() const;
+	const QVariantMap & data() const;
 
 	virtual void acquire(Notifier *notifier);
 	virtual void release(Notifier *notifier);

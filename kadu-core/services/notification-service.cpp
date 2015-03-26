@@ -101,8 +101,9 @@ void NotificationService::setNotificationCallbackRepository(NotificationCallback
 		"chat-open",
 		tr("Chat"),
 		[](Notification *notification) {
-			if (notification->chat())
-				Core::instance()->chatWidgetManager()->openChat(notification->chat(), OpenChatActivation::Activate);
+			auto chat = notification->data()["chat"].value<Chat>();
+			if (chat)
+				Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 		}
 	};
 

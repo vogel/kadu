@@ -61,7 +61,7 @@ Hint::Hint(QWidget *parent, Notification *xnotification)
 		notification = aggregateNotification->notifications().first();
 	}
 
-	CurrentChat = notification->chat();
+	CurrentChat = notification->data()["chat"].value<Chat>();
 
 	startSecs = secs = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 

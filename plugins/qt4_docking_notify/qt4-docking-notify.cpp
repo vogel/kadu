@@ -81,7 +81,7 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 {
 	QString ret;
 
-	chat = notification->chat();
+	chat = notification->data()["chat"].value<Chat>();
 
 	if (!text.isEmpty())
 	{

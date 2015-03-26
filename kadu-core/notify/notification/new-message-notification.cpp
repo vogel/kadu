@@ -89,7 +89,7 @@ MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetReposit
 
 void MessageNotification::chatWidgetAdded(ChatWidget *chatWidget)
 {
-	if (chatWidget->chat() == chat())
+	if (chatWidget->chat() == data()["chat"].value<Chat>())
 		close();
 }
 

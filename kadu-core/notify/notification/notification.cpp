@@ -36,21 +36,24 @@
 
 static QString getAccountName(const ParserData * const object)
 {
-	const Notification * const notification = dynamic_cast<const Notification * const>(object);
-	return notification && !notification->account().isNull()
-			? notification->account().accountIdentity().name()
-			: QString();
+	auto notification = dynamic_cast<const Notification * const>(object);
+	if (!notification)
+		return QString{};
+
+	auto account = notification->data()["account"].value<Account>();
+	return account.accountIdentity().name();
 }
 
 static QString getProtocolName(const ParserData * const object)
 {
-	const Notification * const notification = dynamic_cast<const Notification * const>(object);
-	return notification &&
-			!notification->account().isNull() &&
-			notification->account().protocolHandler() &&
-			notification->account().protocolHandler()->protocolFactory()
-		? notification->account().protocolHandler()->protocolFactory()->displayName()
-		: QString();
+	auto notification = dynamic_cast<const Notification * const>(object);
+	if (!notification)
+		return QString{};
+
+	auto account = notification->data()["account"].value<Account>();
+	return account.protocolHandler() && account.protocolHandler()->protocolFactory()
+		? account.protocolHandler()->protocolFactory()->displayName()
+		: QString{};
 }
 
 static QString getNotificationTitle(const ParserData * const object)
@@ -78,6 +81,13 @@ void Notification::unregisterParserTags()
 	Parser::unregisterObjectTag("protocol");
 }
 
+Notification::Notification(QVariantMap data, const QString &type, const KaduIcon &icon) :
+		m_data{std::move(data)},
+		Type(type),
+		Icon(icon)
+{
+}
+
 Notification::Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon) :
 		Type(type),
 		Icon(icon),
@@ -85,20 +95,17 @@ Notification::Notification(Account account, Chat chat, const QString &type, cons
 		m_chat{chat},
 		Closing(false)
 {
+	m_data.insert("account", account);
+	m_data.insert("chat", chat);
 }
 
 Notification::~Notification()
 {
 }
 
-Account Notification::account() const
+const QVariantMap & Notification::data() const
 {
-	return m_account;
-}
-
-Chat Notification::chat() const
-{
-	return m_chat;
+	return m_data;
 }
 
 void Notification::acquire(Notifier *notifier)

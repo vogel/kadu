@@ -219,9 +219,10 @@ void ExecNotify::notify(Notification *notification)
 	QStringList s = mySplit(' ', syntax);
 	QStringList result;
 
-	if (notification->chat())
+	auto chat = notification->data()["chat"].value<Chat>();
+	if (chat)
 	{
-		ContactSet contacts = notification->chat().contacts();
+		ContactSet contacts = chat.contacts();
 
 		QStringList sendersList;
 		foreach (const Contact &contact, contacts)

@@ -24,7 +24,7 @@
 #include "aggregate-notification.h"
 
 AggregateNotification::AggregateNotification(Notification *firstNotification) :
-		Notification(firstNotification->account(), firstNotification->chat(), firstNotification->type(), firstNotification->icon()),
+		Notification(firstNotification->data(), firstNotification->type(), firstNotification->icon()),
 		GroupKey(firstNotification->groupKey()),
 		Identifier{firstNotification->identifier()},
 		IsPeriodic{firstNotification->isPeriodic()},
