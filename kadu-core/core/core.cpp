@@ -414,7 +414,7 @@ void Core::createDefaultConfiguration()
 	/* Dorr: for MacOS X define the icon notification to animated which
 	 * will prevent from blinking the dock icon
 	 */
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 2);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 2);
 #endif
 
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "DefaultPort", 0);
@@ -425,11 +425,11 @@ void Core::createDefaultConfiguration()
 #ifdef Q_OS_MAC
 	/* Dorr: for MacOS X define the function keys with 'apple' button
 	 * as it is the default system configuration */
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "Ctrl+F9");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "Ctrl+F2");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "Ctrl+F4");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "Ctrl+F9");
-	KaduApplication::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "Ctrl+F9");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "Ctrl+F2");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "Ctrl+F4");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "Ctrl+F9");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
 #else
 	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "F9");
 	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "F2");

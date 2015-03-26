@@ -36,6 +36,7 @@
 #include "macspellchecker.h"
 #endif
 
+#include "core/application.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -95,14 +96,14 @@ SpellChecker::SpellChecker(QObject *parent) :
 	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
 
 #	if defined(Q_OS_WIN)
-	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
-	aspell_config_replace(SpellConfig, "data-dir", qPrintable(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
-	aspell_config_replace(SpellConfig, "prefix", qPrintable(KaduApplication::instance()->pathsProvider()->profilePath() + QLatin1String("dicts")));
+	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(Application::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
+	aspell_config_replace(SpellConfig, "data-dir", qPrintable(Application::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
+	aspell_config_replace(SpellConfig, "prefix", qPrintable(Application::instance()->pathsProvider()->profilePath() + QLatin1String("dicts")));
 #	endif
 #elif defined(HAVE_ENCHANT)
 	Broker = enchant_broker_init();
 #	if defined(Q_OS_WIN)
-	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(KaduApplication::instance()->pathsProvider()->dataPath() + QLatin1String("share/enchant/myspell/")));
+	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(Application::instance()->pathsProvider()->dataPath() + QLatin1String("share/enchant/myspell/")));
 #	endif
 #endif
 }

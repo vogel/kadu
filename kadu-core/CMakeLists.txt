@@ -1,3 +1,5 @@
+cmake_minimum_required (VERSION 2.8)
+
 if (ENABLE_DEVELOPER_BUILD AND NOT MSVC AND NOT APPLE)
 	set (FAST_LINKING_DEFAULT ON)
 else ()
