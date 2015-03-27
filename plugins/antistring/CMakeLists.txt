@@ -12,13 +12,6 @@ set (SOURCES
 	antistring-plugin.cpp
 )
 
-set (MOC_SOURCES
-	antistring.h
-	antistring-configuration-ui-handler.h
-	antistring-notification.h
-	antistring-plugin.h
-)
-
 set (CONFIGURATION_FILES
 	configuration/antistring.ui
 )
@@ -29,7 +22,6 @@ set (DATA_FILES
 
 kadu_plugin (antistring
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DATA_FILES ${DATA_FILES}
 )
