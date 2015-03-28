@@ -202,15 +202,15 @@ void NotificationService::setSilentMode(bool newSilentMode)
 	if (newSilentMode == SilentMode)
 		return;
 
-	bool wasSilent = silentMode();
+	bool wasSilent = SilentMode;
 	SilentMode = newSilentMode;
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(SilentMode);
 
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", "SilentMode", SilentMode);
 
-	if (silentMode() != wasSilent)
-		emit silentModeToggled(silentMode());
+	if (SilentMode != wasSilent)
+		emit silentModeToggled(SilentMode);
 }
 
 bool NotificationService::silentMode()
