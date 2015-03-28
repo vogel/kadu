@@ -29,9 +29,10 @@
 #include <QtWidgets/QVBoxLayout>
 
 SoundChatConfigurationWidget::SoundChatConfigurationWidget(const Chat &chat, SoundManager *soundManager, QWidget *parent) :
-		ChatConfigurationWidget{chat, parent},
-		m_soundManager{soundManager},
-		m_stateNotifier{new SimpleConfigurationValueStateNotifier{this}}
+		// using C++ initializers breaks Qt's lupdate
+		ChatConfigurationWidget(chat, parent),
+		m_soundManager(soundManager),
+		m_stateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 	setWindowTitle(tr("Sound"));
 

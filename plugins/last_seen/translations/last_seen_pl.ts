@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>Infos</name>
     <message>
@@ -23,14 +23,6 @@
     <message>
         <source>Nick</source>
         <translation>Pseudonim</translation>
-    </message>
-    <message>
-        <source>IP</source>
-        <translation>Adres IP</translation>
-    </message>
-    <message>
-        <source>Domain name</source>
-        <translation>Nazwa domeny</translation>
     </message>
     <message>
         <source>Description</source>

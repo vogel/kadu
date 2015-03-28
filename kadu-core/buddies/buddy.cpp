@@ -37,6 +37,7 @@
 #include "protocols/protocols-manager.h"
 
 #include "buddy.h"
+#include <QtWidgets/qapplication.h>
 
 KaduSharedBaseClassImpl(Buddy)
 
@@ -231,7 +232,7 @@ Buddy Buddy::dummy()
 	example.setHomePhone("+481234567890");
 
 	Identity identity = Identity::create();
-	identity.setName(identity.data()->tr("Example identity"));
+	identity.setName(QApplication::translate("Buddy", "Example identity"));
 
 	Account account = Account::create("");
 	account.setAccountIdentity(identity);
@@ -240,7 +241,7 @@ Buddy Buddy::dummy()
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(example);
 	contact.setId("999999");
-	contact.setCurrentStatus(Status(StatusTypeAway, example.data()->tr("Example description")));
+	contact.setCurrentStatus(Status(StatusTypeAway, QApplication::translate("Buddy", "Example description")));
 
 	// this is just an example contact, do not add avatar to list
 	Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);

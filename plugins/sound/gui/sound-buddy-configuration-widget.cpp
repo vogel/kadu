@@ -29,9 +29,10 @@
 #include <QtWidgets/QVBoxLayout>
 
 SoundBuddyConfigurationWidget::SoundBuddyConfigurationWidget(const Buddy &buddy, SoundManager *soundManager, QWidget *parent) :
-		BuddyConfigurationWidget{buddy, parent},
-		m_soundManager{soundManager},
-		m_stateNotifier{new SimpleConfigurationValueStateNotifier{this}}
+		// using C++ initializers breaks Qt's lupdate
+		BuddyConfigurationWidget(buddy, parent),
+		m_soundManager(soundManager),
+		m_stateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 	setWindowTitle(tr("Sound"));
 

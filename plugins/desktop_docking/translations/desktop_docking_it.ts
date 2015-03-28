@@ -1,13 +1,13 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Tray</source>
-        <translation>Barra</translation>
+        <translation>Tray</translation>
     </message>
     <message>
         <source>Desktop Docking</source>
-        <translation>Desktop MInimizzato</translation>
+        <translation>Agganciamento al Desktop</translation>
     </message>
     <message>
         <source>Horizontal position</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Enable Move entry in docklet&apos;s menu</source>
-        <translation>Abilita lo spostamento ingressi nel menu minimizzato</translation>
+        <translation>Abilita il comando Sposta nel menu agganciato</translation>
     </message>
     <message>
         <source>Move</source>
@@ -35,11 +35,11 @@
     </message>
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
-        <translation>Abilita spostamento icone sul desktop</translation>
+        <translation>Abilita spostamento icone sul desktop. Dopo aver premuto il cursore del mouse sull&apos;icona e poi spostala. Premi qualunque tasto del mouse quando l&apos;icona è al posto giusto.</translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation>Lista contatti</translation>
+        <translation>Elenco amici</translation>
     </message>
 </context>
 <context>

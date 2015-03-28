@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -140,10 +140,6 @@
         <translation>Attach Chat to Tabs</translation>
     </message>
     <message>
-        <source>NEW MESSAGE(S)</source>
-        <translation>NEW MESSAGE(S)</translation>
-    </message>
-    <message>
         <source>Detach</source>
         <translation>Detach</translation>
     </message>
@@ -158,10 +154,6 @@
     <message>
         <source>Close all</source>
         <translation>Close all</translation>
-    </message>
-    <message>
-        <source>Conference [%1]</source>
-        <translation>Conference [%1]</translation>
     </message>
     <message>
         <source>Close other tabs</source>

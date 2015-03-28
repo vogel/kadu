@@ -11,7 +11,7 @@ fi
 
 XSLT_PROCESSOR=$(which saxon-xslt) || XSLT_PROCESSOR=$(which saxon8) || XSLT_PROCESSOR=$(which xt) || XSLT_PROCESSOR=saxon-xslt
 
-LUPDATE=$(which lupdate-qt4) || LUPDATE=$(which lupdate) || LUPDATE=$QTDIR/bin/lupdate
+LUPDATE=$(which lupdate-qt5) || LUPDATE=$(which lupdate) || LUPDATE=$QTDIR/bin/lupdate
 
 if [ -z "$PROCESSONLY" ] || [ "$PROCESSONLY" = "kadu" ] || [ "$PROCESSONLY" = "kadu-core" ]; then
 	echo "Updating kadu-core translations"
@@ -86,12 +86,12 @@ for PLUGIN in *; do
 	SRC_FILES=`find . -type f -name "*.cpp"`
 
 	for TS in `ls translations/*.ts`; do
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS || \
-		( rm $TS && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS )
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS 2>> $LOG || \
+		( rm $TS && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS 2>> $LOG )
 	done
 	if [ ! -f translations/${PLUGIN}_en.ts ]; then
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts || \
-		( rm translations/${PLUGIN}_en.ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts )
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts 2>> $LOG || \
+		( rm translations/${PLUGIN}_en.ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts 2>> $LOG )
 	fi
 
 	popd >> $LOG 2>&1

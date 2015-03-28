@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sk" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sk" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -72,18 +72,6 @@
     <message>
         <source>Maximum time difference</source>
         <translation>Maximálny časový rozdiel</translation>
-    </message>
-    <message>
-        <source>Chat window title syntax</source>
-        <translation>Syntax názvu okna chatu</translation>
-    </message>
-    <message>
-        <source>Conference window title prefix</source>
-        <translation>Predpona názvu okna konferencie</translation>
-    </message>
-    <message>
-        <source>Conference window title syntax</source>
-        <translation>Syntax názvu okna konferencie</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -244,10 +232,6 @@
     <message>
         <source>Display group tabs</source>
         <translation>Zobraziť karty skupín</translation>
-    </message>
-    <message>
-        <source>Descriptions</source>
-        <translation>Popisky</translation>
     </message>
     <message>
         <source>Use background image</source>
@@ -466,10 +450,6 @@
         <translation>Serverový čas</translation>
     </message>
     <message>
-        <source>Window Title</source>
-        <translation>Titulok okna</translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation>Prezývka</translation>
     </message>
@@ -536,10 +516,6 @@
     <message>
         <source>Show connected buddies in bold</source>
         <translation>Zobraziť pripojených kamarátov tučným</translation>
-    </message>
-    <message>
-        <source>Buddy Photos</source>
-        <translation>Fotky kamarátov</translation>
     </message>
     <message>
         <source>Grey out offline buddies&apos; photos</source>
@@ -643,20 +619,12 @@ changes upon establishing connection to the server</source>
         <translation>Ukázať okno s notifikáciou</translation>
     </message>
     <message>
-        <source>Contact state change notification position</source>
-        <translation>Stav kontaktu zmení pozíciu notifikácie</translation>
-    </message>
-    <message>
         <source>Beginning of title</source>
         <translation>Začiatok nadpisu</translation>
     </message>
     <message>
         <source>End of title</source>
         <translation>Koniec nadpisu</translation>
-    </message>
-    <message>
-        <source>Custom composing notification syntax</source>
-        <translation>Vlastná syntax na kompozíciu notifikácii</translation>
     </message>
     <message>
         <source>Move the Window to the Active Desktop</source>
@@ -1121,6 +1089,14 @@ changes upon establishing connection to the server</source>
         <source>Open chat window on new message in minimized mode</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Always show identity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Notification position</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1217,6 +1193,18 @@ changes upon establishing connection to the server</source>
     <message>
         <source>Contact List Files (*.txt)</source>
         <translation>Súbory zoznamu kontaktov (*.txt)</translation>
+    </message>
+    <message>
+        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1415,17 +1403,6 @@ changes upon establishing connection to the server</source>
     <message>
         <source>Enter visible name to add this conference to roster</source>
         <translation>Zadajte viditeľné meno, aby sa pridala konferencia do zoznamu</translation>
-    </message>
-</context>
-<context>
-    <name>AddGroupDialogWidget</name>
-    <message>
-        <source>Add Group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Group Name</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1742,6 +1719,10 @@ changes upon establishing connection to the server</source>
         <source>Hide description</source>
         <translation>Skryť popisok</translation>
     </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>BuddyPersonalInfoConfigurationWidget</name>
@@ -1768,10 +1749,6 @@ changes upon establishing connection to the server</source>
         <translation>Viditeľné meno</translation>
     </message>
     <message>
-        <source>Add this chat to the groups below by checking the box next to the appropriate groups.</source>
-        <translation>Pridá tento chat do skupín nižšie, pri ktorých zaškrtnete políčko.</translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1790,6 +1767,14 @@ changes upon establishing connection to the server</source>
     <message>
         <source>Chat</source>
         <translation>Chat</translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1840,6 +1825,13 @@ changes upon establishing connection to the server</source>
     </message>
 </context>
 <context>
+    <name>ChatGroupsConfigurationWidget</name>
+    <message>
+        <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ChatImageRequestService</name>
     <message>
         <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
@@ -1865,17 +1857,6 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
-    <name>ChatNotification</name>
-    <message>
-        <source>Chat</source>
-        <translation>Chat</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Ignorovať</translation>
-    </message>
-</context>
-<context>
     <name>ChatRoomEditWidget</name>
     <message>
         <source>Account:</source>
@@ -1893,6 +1874,10 @@ Do you want to accept this image anyway?</source>
         <source>Password:</source>
         <translation>Heslo:</translation>
     </message>
+    <message>
+        <source>Stay in chat room after closing chat window</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ChatStylePreview</name>
@@ -1907,14 +1892,6 @@ Do you want to accept this image anyway?</source>
 </context>
 <context>
     <name>ChatWidget</name>
-    <message>
-        <source>Conference with </source>
-        <translation>Konferencia s</translation>
-    </message>
-    <message>
-        <source>Chat with </source>
-        <translation>Chat s</translation>
-    </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
         <translation>Okno chatu bude vyčistené. Pokračovať?</translation>
@@ -1934,14 +1911,6 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>%1 ended the conversation</source>
         <translation>%1 skončil konverzáciu</translation>
-    </message>
-    <message>
-        <source>(Composing...)</source>
-        <translation>(Píše...)</translation>
-    </message>
-    <message>
-        <source>(Inactive)</source>
-        <translation>(Neaktívny)</translation>
     </message>
     <message>
         <source>Clear chat window</source>
@@ -2004,6 +1973,21 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
+    <name>ChatWidgetTitle</name>
+    <message>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>(Composing...)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>(Inactive)</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ChatWindow</name>
     <message>
         <source>New message received, close window anyway?</source>
@@ -2027,6 +2011,13 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>Create new description...</source>
         <translation>Vytvoriť nový popisok...</translation>
+    </message>
+</context>
+<context>
+    <name>CollapseAction</name>
+    <message>
+        <source>Collapse</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2056,53 +2047,6 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>ContactListService</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
-        <translation>Nasledujúce kontakty z vášho zoznamu neboli nájdené v súbore:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Chcete ich odstrániť zo zoznamu kontaktov?</translation>
-    </message>
-    <message>
-        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Kadu od verzie 0.10.0 automaticky synchronizuje Gadu-Gadu zoznam kontaktov so serverom. Teraz bude vykonaná prvá synchronizácia.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Nasledujúce kontakty umiestnené na serveri neboli nájdene vo vašom lokálnom zozname kontaktov:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Ak nesúhlasíte s pridaním týchto kontaktov do vášho lokálneho zoznamu, budú odstránené zo servera.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Nasledujúce kontakty z vášho lokálneho zoznamu sa nachádzajú na serveri pod inými menami:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Navyše, nasledujúce kontakty z vášho lokálneho zoznamu sú prítomné na serveri pod inými menami:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
-        <translation>Chcete aplikovať zmeny urobené vyššie na váš lokálny zoznam kontaktov? Bez ohľadu na vašu voľbu, bude zaslaný na server po vykonaní možných zmien.</translation>
-    </message>
-    <message>
-        <source>Apply changes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Leave contact list unchanged</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2194,18 +2138,10 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
-    <name>FileTransferActions</name>
+    <name>ExpandAction</name>
     <message>
-        <source>Send File...</source>
-        <translation>Poslať súbor...</translation>
-    </message>
-    <message>
-        <source>View File Transfers</source>
-        <translation>Zobraziť prenosy súborov</translation>
-    </message>
-    <message>
-        <source>Select file location</source>
-        <translation>Zvoľte umiestnenie súboru</translation>
+        <source>Expand</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2227,10 +2163,6 @@ Do you want to accept this image anyway?</source>
         <translation>Prepísať</translation>
     </message>
     <message>
-        <source>Resume</source>
-        <translation>Pokračovať</translation>
-    </message>
-    <message>
         <source>Select another file</source>
         <translation>Vybrať iný súbor</translation>
     </message>
@@ -2242,6 +2174,10 @@ Do you want to accept this image anyway?</source>
         <source>Could not open file. Select another one.</source>
         <translation>Súbor sa nedal otvoriť. Vyberte iný.</translation>
     </message>
+    <message>
+        <source>Unable to open local file</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
@@ -2250,28 +2186,12 @@ Do you want to accept this image anyway?</source>
         <translation>Odstrániť</translation>
     </message>
     <message>
-        <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; to &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation>Súbor &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; pre &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;na účte &lt;b&gt;%3&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; from &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation>Súbor &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; pre &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;na účte &lt;b&gt;%3&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
     <message>
         <source>Are you sure you want to remove this transfer?</source>
         <translation>Ste si istý, že chcete odstrániť tento prenos?</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Not connected&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Nepripojené&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Error&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Chyba&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
@@ -2298,11 +2218,43 @@ Do you want to accept this image anyway?</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <source>Start</source>
-        <translation>Štart</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Cancel</source>
+        <source>Accept</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Send again</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>&lt;b&gt;Ready to download&lt;/b&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2326,6 +2278,65 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>Search</source>
         <translation>Hľadať</translation>
+    </message>
+</context>
+<context>
+    <name>GroupEditWindow</name>
+    <message>
+        <source>Show group name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Use custom icon</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Notify about status changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Offline for this group</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Supported for Gadu-Gadu network</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show in group &quot;All&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Add group</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Save group</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Choose an icon</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Edit group %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2365,72 +2376,25 @@ Do you want to accept this image anyway?</source>
         <source>Group of that name already exists!</source>
         <translation>Skupina s týmto meno už existuje!</translation>
     </message>
-</context>
-<context>
-    <name>GroupPropertiesWindow</name>
     <message>
-        <source>Properties of group %1</source>
-        <translation>Vlastnosti skupiny %1</translation>
+        <source>Group name must not be empty</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Behavior</source>
-        <translation>Správanie</translation>
+        <source>Group name must not contain &apos;%1&apos;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Notify about status changes</source>
-        <translation>Upozorniť na zmenu statusu</translation>
+        <source>Group name must not be a number</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Offline for this group</source>
-        <translation>Offline pre túto skupinu</translation>
+        <source>Group name must not be &apos;%1&apos;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Supported for Gadu-Gadu network</source>
-        <translation>Podporované pre sieť Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Work only when network supports it</source>
-        <translation>Funguje len keď je to podporuje aj sieť</translation>
-    </message>
-    <message>
-        <source>Show in group &quot;All&quot;</source>
-        <translation>Zobraziť v skupine &quot;Všetci&quot;</translation>
-    </message>
-    <message>
-        <source>Look</source>
-        <translation>Vzhľad</translation>
-    </message>
-    <message>
-        <source>Use custom icon</source>
-        <translation>Použiť vlastnú ikonu</translation>
-    </message>
-    <message>
-        <source> Set Icon</source>
-        <translation>Nastaviť ikonu</translation>
-    </message>
-    <message>
-        <source>Show group name</source>
-        <translation>Zobraziť meno skupiny</translation>
-    </message>
-    <message>
-        <source>Ok</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation>Použiť</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Zrušiť</translation>
-    </message>
-    <message>
-        <source>Choose an icon</source>
-        <translation>Vybrať ikonu</translation>
-    </message>
-    <message>
-        <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
-        <translation>Obrázky (*.png *.xpm *.jpg);;Všetky súbory (*)</translation>
+        <source>Group &apos;%1&apos; already exists</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2438,10 +2402,6 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>Add Buddy</source>
         <translation>Pridať kamaráta</translation>
-    </message>
-    <message>
-        <source>Rename Group</source>
-        <translation>Premenovať skupinu</translation>
     </message>
     <message>
         <source>Delete Group</source>
@@ -2472,14 +2432,6 @@ Do you want to accept this image anyway?</source>
         <translation>Pridať skupinu</translation>
     </message>
     <message>
-        <source>Please enter a new name for the &lt;i&gt;%0&lt;/i&gt; group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Edit Group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete group</source>
         <translation type="unfinished"/>
     </message>
@@ -2489,10 +2441,6 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Please enter the name for the new group</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2759,14 +2707,6 @@ Do you want to accept this image anyway?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Please enter the name for the new group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Add Group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Contact:</source>
         <translation type="unfinished"/>
     </message>
@@ -2913,10 +2853,6 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
 <context>
     <name>MultilogonNotification</name>
     <message>
-        <source>Ignore</source>
-        <translation>Ignorovať</translation>
-    </message>
-    <message>
         <source>Disconnect session</source>
         <translation>Odpojiť reláciu</translation>
     </message>
@@ -2955,24 +2891,28 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Continue</source>
-        <translation>Pokračovať</translation>
-    </message>
-    <message>
-        <source>Save file under new name</source>
-        <translation>Uložiť súbor pod novým menom</translation>
-    </message>
-    <message>
-        <source>Ignore transfer</source>
-        <translation>Ignorovať prenos</translation>
-    </message>
-    <message>
         <source>Accept</source>
         <translation>Prijať</translation>
     </message>
     <message>
         <source>Reject</source>
         <translation>Odmietnuť</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2994,6 +2934,14 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
     <message>
         <source>Silent Mode</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Chat</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3099,6 +3047,17 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
 </context>
 <context>
+    <name>PluginErrorDialog</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Try to load this plugin on next Kadu run</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PluginListWidget</name>
     <message>
         <source>Deactivate</source>
@@ -3145,6 +3104,14 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
 </context>
 <context>
+    <name>PluginLoader</name>
+    <message>
+        <source>Cannot load %1 plugin library:
+%2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PluginModel</name>
     <message>
         <source>Chat</source>
@@ -3184,6 +3151,18 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
     <message>
         <source>Misc</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>PluginRootComponentHandler</name>
+    <message>
+        <source>Cannot find required object in plugin %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Plugin initialization routine for %1 failed.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3316,21 +3295,6 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
 </context>
 <context>
-    <name>QCoreApplication</name>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>RecentChatsAction</name>
     <message>
         <source>Recent Chats</source>
@@ -3364,6 +3328,41 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
     <message>
         <source>%1: roster export failed</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>RosterReplacer</name>
+    <message>
+        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Apply changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Leave contact list unchanged</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3579,6 +3578,166 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
 </context>
 <context>
+    <name>SendFileAction</name>
+    <message>
+        <source>Select file location</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Send File...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowFileTransferWindowAction</name>
+    <message>
+        <source>View File Transfers</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>SslCertificateErrorDialog</name>
+    <message>
+        <source>Certificate for &lt;b&gt;%1&lt;/b&gt; failed authenticity validation:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show certificate details...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Certificate details:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Connect anyway</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trust certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>SslCertificateWidget</name>
+    <message>
+        <source>Valid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Blacklisted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Digest (Md5)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Digest (Sha1)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer organization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer common name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer locality name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer organizational unit name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer country name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer state or province name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer distinguished name qualifier</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer serial number</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer email address</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject organization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject common name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject alernative name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject locality name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject organizational unit name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject country name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject state or province name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject distinguished name qualifier</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject serial number</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject email address</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>StatusActions</name>
     <message>
         <source>Change Status Message...</source>
@@ -3674,6 +3833,13 @@ ignorované. Naozaj chcete odísť z konferencie?</translation>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>StringListDialog</name>
+    <message>
+        <source>Kadu</source>
         <translation type="unfinished"/>
     </message>
 </context>

@@ -28,8 +28,9 @@
 #include "xml-console.h"
 
 XmlConsole::XmlConsole(Account account) :
-		WatchedAccount{account},
-		Viewer{}
+		// using C++ initializers breaks Qt's lupdate
+		WatchedAccount(account),
+		Viewer()
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("XML Console - %1").arg(WatchedAccount.id()));

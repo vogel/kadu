@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -140,10 +140,6 @@
         <translation>Připojit rozhovor ke kartám</translation>
     </message>
     <message>
-        <source>NEW MESSAGE(S)</source>
-        <translation>-&gt;Nové zprávy&lt;-</translation>
-    </message>
-    <message>
         <source>Detach</source>
         <translation>Odpojit</translation>
     </message>
@@ -158,10 +154,6 @@
     <message>
         <source>Close all</source>
         <translation>Zavřít vše</translation>
-    </message>
-    <message>
-        <source>Conference [%1]</source>
-        <translation>Porada [%1]</translation>
     </message>
     <message>
         <source>Close other tabs</source>

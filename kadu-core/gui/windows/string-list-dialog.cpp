@@ -27,7 +27,8 @@
 #include <QtWidgets/QVBoxLayout>
 
 StringListDialog::StringListDialog(QString message, QString okButtonTitle, QStringList stringList, QWidget *parent) :
-		QDialog{parent}
+		// using C++ initializers breaks Qt's lupdate
+		QDialog(parent)
 {
 	setWindowRole("kadu-string-list-dialog");
 	setWindowTitle(tr("Kadu"));

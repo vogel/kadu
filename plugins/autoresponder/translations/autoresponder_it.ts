@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -7,19 +7,19 @@
     </message>
     <message>
         <source>Options</source>
-        <translation>Configurazione</translation>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <source>Only for the first time</source>
-        <translation>Rispondi solo una volta</translation>
+        <translation>Solo per la prima volta</translation>
     </message>
     <message>
         <source>Respond to conferences</source>
-        <translation>Rispondi nella conferenza</translation>
+        <translation>Rispondi alle conferenze</translation>
     </message>
     <message>
         <source>Status invisible</source>
-        <translation>Non presente</translation>
+        <translation>Stato Invisibile</translation>
     </message>
     <message>
         <source>Status busy</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Status available</source>
-        <translation>Accessibile</translation>
+        <translation>Stato Disponibile</translation>
     </message>
     <message>
         <source>Auto Responder</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Choose Status</source>
-        <translation>Scegli stato</translation>
+        <translation>Scegli lo stato</translation>
     </message>
 </context>
 <context>

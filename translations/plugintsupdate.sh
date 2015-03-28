@@ -10,7 +10,7 @@ PLUGIN=`basename "$(pwd)"`
 
 XSLT_PROCESSOR=$(which saxon-xslt) || XSLT_PROCESSOR=$(which saxon8) || XSLT_PROCESSOR=$(which xt) || XSLT_PROCESSOR=saxon-xslt
 
-LUPDATE=$(which lupdate-qt4) || LUPDATE=$(which lupdate) || LUPDATE=$QTDIR/bin/lupdate
+LUPDATE=$(which lupdate-qt5) || LUPDATE=$(which lupdate) || LUPDATE=$QTDIR/bin/lupdate
 
 if [ ! -f $PLUGIN.desc ]; then
 	echo "This is not a plugin directory."

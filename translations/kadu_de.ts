@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -72,18 +72,6 @@
     <message>
         <source>Maximum time difference</source>
         <translation>Maximale Zeitdifferenz</translation>
-    </message>
-    <message>
-        <source>Chat window title syntax</source>
-        <translation>Syntax für Fenstertitel des Chats</translation>
-    </message>
-    <message>
-        <source>Conference window title prefix</source>
-        <translation>Prefix für Konferenz-Fenstertitel</translation>
-    </message>
-    <message>
-        <source>Conference window title syntax</source>
-        <translation>Syntax für den Fenstertitel einer Konferenz</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -244,10 +232,6 @@
     <message>
         <source>Display group tabs</source>
         <translation>Zeige Gruppen-Reiter an</translation>
-    </message>
-    <message>
-        <source>Descriptions</source>
-        <translation>Beschreibungen</translation>
     </message>
     <message>
         <source>Use background image</source>
@@ -466,10 +450,6 @@
         <translation>Serverzeit</translation>
     </message>
     <message>
-        <source>Window Title</source>
-        <translation>Fenstertitel</translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation>Nick</translation>
     </message>
@@ -536,10 +516,6 @@
     <message>
         <source>Show connected buddies in bold</source>
         <translation>Zeige Kontakte, die online sind, in Fettschrift an</translation>
-    </message>
-    <message>
-        <source>Buddy Photos</source>
-        <translation>Kontakt-Fotos</translation>
     </message>
     <message>
         <source>Grey out offline buddies&apos; photos</source>
@@ -644,20 +620,12 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <translation>Zeige Fenster</translation>
     </message>
     <message>
-        <source>Contact state change notification position</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Beginning of title</source>
         <translation>Anfang des Titels</translation>
     </message>
     <message>
         <source>End of title</source>
         <translation>Ende des Titels</translation>
-    </message>
-    <message>
-        <source>Custom composing notification syntax</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <source>Move the Window to the Active Desktop</source>
@@ -1123,6 +1091,14 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Open chat window on new message in minimized mode</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Always show identity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Notification position</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1218,6 +1194,18 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Contact List Files (*.txt)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1416,17 +1404,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Enter visible name to add this conference to roster</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>AddGroupDialogWidget</name>
-    <message>
-        <source>Add Group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Group Name</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1744,6 +1721,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Hide description</source>
         <translation>Verstecke Beschreibung</translation>
     </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>BuddyPersonalInfoConfigurationWidget</name>
@@ -1770,10 +1751,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Add this chat to the groups below by checking the box next to the appropriate groups.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>OK</source>
         <translation type="unfinished"/>
     </message>
@@ -1791,6 +1768,14 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Chat</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Options</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1842,6 +1827,13 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
 </context>
 <context>
+    <name>ChatGroupsConfigurationWidget</name>
+    <message>
+        <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ChatImageRequestService</name>
     <message>
         <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
@@ -1867,17 +1859,6 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
-    <name>ChatNotification</name>
-    <message>
-        <source>Chat</source>
-        <translation>Chat</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Ignorieren</translation>
-    </message>
-</context>
-<context>
     <name>ChatRoomEditWidget</name>
     <message>
         <source>Account:</source>
@@ -1895,6 +1876,10 @@ Do you want to accept this image anyway?</source>
         <source>Password:</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>Stay in chat room after closing chat window</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ChatStylePreview</name>
@@ -1909,14 +1894,6 @@ Do you want to accept this image anyway?</source>
 </context>
 <context>
     <name>ChatWidget</name>
-    <message>
-        <source>Conference with </source>
-        <translation>Konferenz mit</translation>
-    </message>
-    <message>
-        <source>Chat with </source>
-        <translation>Chat mit</translation>
-    </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
         <translation>Chat-Fenster wird geleert. Fortfahren?</translation>
@@ -1936,14 +1913,6 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>%1 ended the conversation</source>
         <translation>%1 hat die Unterhaltug beendet</translation>
-    </message>
-    <message>
-        <source>(Composing...)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>(Inactive)</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <source>Clear chat window</source>
@@ -2006,6 +1975,21 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
+    <name>ChatWidgetTitle</name>
+    <message>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>(Composing...)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>(Inactive)</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ChatWindow</name>
     <message>
         <source>New message received, close window anyway?</source>
@@ -2029,6 +2013,13 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>Create new description...</source>
         <translation>Neue Beschreibung erstellen...</translation>
+    </message>
+</context>
+<context>
+    <name>CollapseAction</name>
+    <message>
+        <source>Collapse</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2058,53 +2049,6 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>ContactListService</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Apply changes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Leave contact list unchanged</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2196,18 +2140,10 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
-    <name>FileTransferActions</name>
+    <name>ExpandAction</name>
     <message>
-        <source>Send File...</source>
-        <translation>Datei Senden...</translation>
-    </message>
-    <message>
-        <source>View File Transfers</source>
-        <translation>Zeige Dateiübertragungen</translation>
-    </message>
-    <message>
-        <source>Select file location</source>
-        <translation>Dateipfad auswählen</translation>
+        <source>Expand</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2229,10 +2165,6 @@ Do you want to accept this image anyway?</source>
         <translation>Überschreiben</translation>
     </message>
     <message>
-        <source>Resume</source>
-        <translation>Fortfahren</translation>
-    </message>
-    <message>
         <source>Select another file</source>
         <translation>Andere Datei auswählen</translation>
     </message>
@@ -2244,6 +2176,10 @@ Do you want to accept this image anyway?</source>
         <source>Could not open file. Select another one.</source>
         <translation>Konnte die Datei nicht öffnen. Wählen Sie bitte eine andere aus.</translation>
     </message>
+    <message>
+        <source>Unable to open local file</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
@@ -2252,28 +2188,12 @@ Do you want to accept this image anyway?</source>
         <translation>Entfernen</translation>
     </message>
     <message>
-        <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; to &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation>Datei &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; an &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt; auf Konto &lt;b&gt;%3&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; from &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation>Datei &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; von &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt; auf Konto &lt;b&gt;%3&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
     <message>
         <source>Are you sure you want to remove this transfer?</source>
         <translation>Sind Sie sicher, dass Sie diese Datei entfernen möchten?</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Not connected&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Nicht verbunden&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Error&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Fehler&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
@@ -2300,11 +2220,43 @@ Do you want to accept this image anyway?</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <source>Start</source>
-        <translation>Start</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Cancel</source>
+        <source>Accept</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Send again</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>&lt;b&gt;Ready to download&lt;/b&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2328,6 +2280,65 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>Search</source>
         <translation>Suche</translation>
+    </message>
+</context>
+<context>
+    <name>GroupEditWindow</name>
+    <message>
+        <source>Show group name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Use custom icon</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Notify about status changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Offline for this group</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Supported for Gadu-Gadu network</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show in group &quot;All&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Add group</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Save group</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Choose an icon</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Edit group %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2367,71 +2378,24 @@ Do you want to accept this image anyway?</source>
         <source>Group of that name already exists!</source>
         <translation>Dieser Gruppennamen gibt es schon!</translation>
     </message>
-</context>
-<context>
-    <name>GroupPropertiesWindow</name>
     <message>
-        <source>Properties of group %1</source>
-        <translation>Eigenschaften der Gruppe %1</translation>
+        <source>Group name must not be empty</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Behavior</source>
-        <translation>Verhalten</translation>
+        <source>Group name must not contain &apos;%1&apos;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Notify about status changes</source>
-        <translation>Benachrichtigen über Zustandsänderungen</translation>
+        <source>Group name must not be a number</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Offline for this group</source>
-        <translation>Für diese Gruppe offline</translation>
+        <source>Group name must not be &apos;%1&apos;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Supported for Gadu-Gadu network</source>
-        <translation>Unterstützt das Netzwerk Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Work only when network supports it</source>
-        <translation>Funktioniert nur dann, wenn das Netzwerk es unterstützt</translation>
-    </message>
-    <message>
-        <source>Show in group &quot;All&quot;</source>
-        <translation>Zeige in Gruppe &quot;Alle&quot;</translation>
-    </message>
-    <message>
-        <source>Look</source>
-        <translation>Aussehen</translation>
-    </message>
-    <message>
-        <source>Use custom icon</source>
-        <translation>Benutze eigenes Symbol</translation>
-    </message>
-    <message>
-        <source> Set Icon</source>
-        <translation>Symbol setzen</translation>
-    </message>
-    <message>
-        <source>Show group name</source>
-        <translation>Zeige den Gruppennamen</translation>
-    </message>
-    <message>
-        <source>Ok</source>
-        <translation>Ok</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation>Anwenden</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <source>Choose an icon</source>
-        <translation>Symbol auswählen</translation>
-    </message>
-    <message>
-        <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
+        <source>Group &apos;%1&apos; already exists</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2440,10 +2404,6 @@ Do you want to accept this image anyway?</source>
     <message>
         <source>Add Buddy</source>
         <translation>Kontakt hinzufügen</translation>
-    </message>
-    <message>
-        <source>Rename Group</source>
-        <translation>Gruppe umbenennen</translation>
     </message>
     <message>
         <source>Delete Group</source>
@@ -2474,14 +2434,6 @@ Do you want to accept this image anyway?</source>
         <translation>Gruppe hinzufügen</translation>
     </message>
     <message>
-        <source>Please enter a new name for the &lt;i&gt;%0&lt;/i&gt; group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Edit Group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Delete group</source>
         <translation type="unfinished"/>
     </message>
@@ -2491,10 +2443,6 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Please enter the name for the new group</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2761,14 +2709,6 @@ Do you want to accept this image anyway?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Please enter the name for the new group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Add Group</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Contact:</source>
         <translation type="unfinished"/>
     </message>
@@ -2914,10 +2854,6 @@ from now on. Are you sure you want to leave this conference?</source>
 <context>
     <name>MultilogonNotification</name>
     <message>
-        <source>Ignore</source>
-        <translation>Ignorieren</translation>
-    </message>
-    <message>
         <source>Disconnect session</source>
         <translation>Sitzung trennen</translation>
     </message>
@@ -2956,24 +2892,28 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Continue</source>
-        <translation>Fortsetzen</translation>
-    </message>
-    <message>
-        <source>Save file under new name</source>
-        <translation>Datei unter einem neuen Namen speichern</translation>
-    </message>
-    <message>
-        <source>Ignore transfer</source>
-        <translation>Übertragung ignorieren</translation>
-    </message>
-    <message>
         <source>Accept</source>
         <translation>Akzeptieren</translation>
     </message>
     <message>
         <source>Reject</source>
         <translation>Ablehnen</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2995,6 +2935,14 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Silent Mode</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Chat</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3100,6 +3048,17 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
+    <name>PluginErrorDialog</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Try to load this plugin on next Kadu run</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PluginListWidget</name>
     <message>
         <source>Deactivate</source>
@@ -3146,6 +3105,14 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
+    <name>PluginLoader</name>
+    <message>
+        <source>Cannot load %1 plugin library:
+%2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PluginModel</name>
     <message>
         <source>Chat</source>
@@ -3185,6 +3152,18 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Misc</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>PluginRootComponentHandler</name>
+    <message>
+        <source>Cannot find required object in plugin %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Plugin initialization routine for %1 failed.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3317,21 +3296,6 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
-    <name>QCoreApplication</name>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>RecentChatsAction</name>
     <message>
         <source>Recent Chats</source>
@@ -3365,6 +3329,41 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>%1: roster export failed</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>RosterReplacer</name>
+    <message>
+        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Apply changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Leave contact list unchanged</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3580,6 +3579,166 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
+    <name>SendFileAction</name>
+    <message>
+        <source>Select file location</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Send File...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowFileTransferWindowAction</name>
+    <message>
+        <source>View File Transfers</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>SslCertificateErrorDialog</name>
+    <message>
+        <source>Certificate for &lt;b&gt;%1&lt;/b&gt; failed authenticity validation:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show certificate details...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Certificate details:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Connect anyway</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trust certificate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>SslCertificateWidget</name>
+    <message>
+        <source>Valid</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Blacklisted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Digest (Md5)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Digest (Sha1)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer organization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer common name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer locality name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer organizational unit name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer country name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer state or province name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer distinguished name qualifier</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer serial number</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Issuer email address</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject organization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject common name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject alernative name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject locality name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject organizational unit name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject country name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject state or province name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject distinguished name qualifier</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject serial number</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Subject email address</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>StatusActions</name>
     <message>
         <source>Change Status Message...</source>
@@ -3675,6 +3834,13 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>StringListDialog</name>
+    <message>
+        <source>Kadu</source>
         <translation type="unfinished"/>
     </message>
 </context>

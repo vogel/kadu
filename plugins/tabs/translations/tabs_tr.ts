@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -140,10 +140,6 @@
         <translation>Konuşmayı Sekmelere Bağla</translation>
     </message>
     <message>
-        <source>NEW MESSAGE(S)</source>
-        <translation>YENİ MESAJ(LAR)</translation>
-    </message>
-    <message>
         <source>Detach</source>
         <translation>Ayır</translation>
     </message>
@@ -158,10 +154,6 @@
     <message>
         <source>Close all</source>
         <translation>Tümünü kapat</translation>
-    </message>
-    <message>
-        <source>Conference [%1]</source>
-        <translation>Konferans [%1]</translation>
     </message>
     <message>
         <source>Close other tabs</source>

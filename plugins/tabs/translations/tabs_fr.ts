@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -140,10 +140,6 @@
         <translation>Attacher une conversation à des onglets</translation>
     </message>
     <message>
-        <source>NEW MESSAGE(S)</source>
-        <translation>NOUVEAU(X) MESSAGE(S)</translation>
-    </message>
-    <message>
         <source>Detach</source>
         <translation>Détacher</translation>
     </message>
@@ -158,10 +154,6 @@
     <message>
         <source>Close all</source>
         <translation>Fermer tous</translation>
-    </message>
-    <message>
-        <source>Conference [%1]</source>
-        <translation>Conférence [%1]</translation>
     </message>
     <message>
         <source>Close other tabs</source>

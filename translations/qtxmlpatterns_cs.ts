@@ -2,2509 +2,4100 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="cs_CZ">
 <context>
-    <name>QXmlPatternistCLI</name>
+    <name>@default</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/api/qcoloringmessagehandler.cpp" line="+79"/>
-        <source>Warning in %1, at line %2, column %3: %4</source>
-        <translation>Varování v %1, na řádku %2, sloupec %3: %4</translation>
+        <source>Yesterday at </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Warning in %1: %2</source>
-        <translation>Varování v %1: %2</translation>
+        <source>dddd at </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Unknown location</source>
-        <translation>Neznámé umístění</translation>
+        <source>week ago at </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Error %1 in %2, at line %3, column %4: %5</source>
-        <translation>Chyba %1 v %2, na řádku %3, sloupec %4: %5</translation>
+        <source>week and day ago at </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Error %1 in %2: %3</source>
-        <translation>Chyba %1 v %2: %3</translation>
+        <source>week and %2 days ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks and day ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks and %2 days ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>d MMMM yyyy at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User changed status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to free for chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to away</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to do not disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon session connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon session disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free for chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Away</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We&apos;re sorry, but Kadu cannot be loaded. Profile is inaccessible. Please check permissions in the &apos;%1&apos; directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Profile Inaccessible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose style of chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style variant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{protocol} - protocol that triggered event,
+#{event} - name of event,
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming file transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import from server succeeded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import from server failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to server succeeded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to server failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Headers and Separators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat header separators height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message separators height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove chat header repetitions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Interval between header removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Server Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide server time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum time difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a nickname for your account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose your language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Launch Kadu at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically open Kadu at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inform about new versions of Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for updates when Kadu is opened</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide main window icon from taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu main window will not be visible in window list on your taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web and E-Mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu will use default applications to open links from chat messages and buddy descriptions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use System Web Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write specific path to your browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use System E-Mail Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom e-mail client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write specific path to your email client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow using variables in status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select window activation method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the Window to the Active Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch Desktop Making the Window Visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Debugging mask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install new icons...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add border to buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grey out offline buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies who are offline will have their photos greyed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays descriptions in the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Split long descriptions into multiple lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dislpays multiline descriptions in the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn on blur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use background image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define background file for the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose buddy list background style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tiled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tiled and Centered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stretched</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom chat background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom text edit colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Descriptions font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore messages from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit visible messages in chat window to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum number of messages visible in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlimited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fold links in messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shorten ugly, long links to save space in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use descriptive date format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display dates like Today, Yesterday or Friday, 2:30PM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddy information panel below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show status changing button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays status changing buttons below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display group tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays group tabs on the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show offline buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies that are ignored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies which are blocking me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tooltip over buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose information panel style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy expanding button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show an icon at each buddy that allows viewing contacts attached to this buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show connected buddies in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddies that are online using a bold font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy icon position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose buddy icon alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the buddy&apos;s name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy list information style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose how buddy information is presented when cursor is hovering over buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in windows&apos; titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notification position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Beginning of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about new messages only when window is inactive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block window close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block chat window when a new message arrives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flash chat title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show number of new messages on chat title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when a fullscreen application is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when my status is set to &apos;Do not Disturb&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore status changes available - busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore changes right after connection to the server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This option will supersede tooltips with buddies&apos; status
+changes upon establishing connection to the server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window on new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window when a new message arrives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window only when I am online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window on new message only when online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window minimized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window on new message in minimized mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember chat windows positions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember opened chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save opened chat windows when exiting and restore them on next statup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable sending message by hitting &apos;Enter&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hitting &apos;Enter&apos; while typing in chat window sends message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before clearing messages in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask for confirmation before clearing chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear recent chats list on exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per account separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per identity separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For All Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On startup, set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose status which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free for Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set invisible if last status was &apos;Offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define description which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On shutdown, set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define description which will be set on shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Store descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every description you set will be saved for further use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of kept descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage modules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search this buddy in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide offline buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide buddies without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugins</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QtXmlPatterns</name>
+    <name>About</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/acceltree/qacceltreeresourceloader.cpp" line="+334"/>
-        <source>%1 is an unsupported encoding.</source>
-        <translation>Kódování %1 není podporováno.</translation>
+        <source>About</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>%1 contains octets which are disallowed in the requested encoding %2.</source>
-        <translation>%1 obsahuje oktety, které v kódování %2 nejsou přípustné.</translation>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>The codepoint %1, occurring in %2 using encoding %3, is an invalid XML character.</source>
-        <translation>Kódovací bod %1 z %2 s kódováním %3 není platným znakem XML.</translation>
+        <source>Qt %2 (compiled with Qt %3)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/api/qiodevicedelegate.cpp" line="+76"/>
-        <source>Network timeout.</source>
-        <translation>Časový limit síťové operace byl překročen.</translation>
+        <source>Instant Messenger</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/api/qxmlserializer.cpp" line="+313"/>
-        <source>Element %1 can&apos;t be serialized because it appears outside the document element.</source>
-        <translation>Prvek %1 nemůže být vydáván na pokračování, protože se objevuje mimo prvky dokumentu.</translation>
+        <source>Support:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+60"/>
-        <source>Attribute %1 can&apos;t be serialized because it appears at the top level.</source>
-        <translation>Vlastnost %1 nemůže být vydáván na pokračování, protože se objevuje na nejvyšší úrovni.</translation>
+        <source>&amp;About</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qabstractdatetime.cpp" line="+73"/>
-        <source>Year %1 is invalid because it begins with %2.</source>
-        <translation>%1 není platným údajem pro rok, protože začíná %2.</translation>
+        <source>A&amp;uthors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Day %1 is outside the range %2..%3.</source>
-        <translation>Údaj dne %1 je mimo rozsah %2..%3.</translation>
+        <source>&amp;Thanks</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Month %1 is outside the range %2..%3.</source>
-        <translation>Údaj o měsíci %1 je mimo rozsah %2..%3.</translation>
+        <source>&amp;License</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Overflow: Can&apos;t represent date %1.</source>
-        <translation>Nelze představit datum %1 (Přetečení).</translation>
+        <source>&amp;ChangeLog</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Day %1 is invalid for month %2.</source>
-        <translation>Ǔdaj o dni %1 je neplatným pro měsíc %2.</translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AccountAvatarWidget</name>
     <message>
-        <location line="+49"/>
-        <source>Time 24:%1:%2.%3 is invalid. Hour is 24, but minutes, seconds, and milliseconds are not all 0; </source>
-        <translation>Časový údaj 24:%1:%2.%3 je neplatný. U hodinového údaje je 24, tudíž minuty, sekundy a milisekundy musí být všechny 0; </translation>
+        <source>Remove Photo...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Time %1:%2:%3.%4 is invalid.</source>
-        <translation>Časový údaj %1:%2:%3.%4 je neplatný.</translation>
+        <source>Change Photo...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+115"/>
-        <source>Overflow: Date can&apos;t be represented.</source>
-        <translation>Nelze vyjádřit datum (přetečení hodnoty).</translation>
+        <source>Select avatar file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qabstractduration.cpp" line="+91"/>
-        <location line="+15"/>
-        <source>At least one component must be present.</source>
-        <translation>Alespoň jedna součást musí být přítomna.</translation>
+        <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AccountBuddyListWidget</name>
     <message>
-        <location line="-7"/>
-        <source>At least one time component must appear after the %1-delimiter.</source>
-        <translation>Po %1-oddělovači se musí objevit alespoň jedna složka času.</translation>
+        <source>Restore from file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qanyuri_p.h" line="+122"/>
-        <source>%1 is not a valid value of type %2.</source>
-        <translation>%1 není platnou hodnotou typu %2.</translation>
+        <source>Store to file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qatomiccasters_p.h" line="+213"/>
-        <source>When casting to %1 from %2, the source value cannot be %3.</source>
-        <translation>Při přetypování z %1 na %2 nesmí být zdrojová hodnota %3.</translation>
+        <source>Select file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qatomicmathematicians.cpp" line="+57"/>
-        <source>Integer division (%1) by zero (%2) is undefined.</source>
-        <translation>Celočíselné dělení (%1) nulou (%2) není stanoveno.</translation>
+        <source>Contact List Files (*.txt *.xml);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Division (%1) by zero (%2) is undefined.</source>
-        <translation>Dělení (%1) nulou (%2) není stanoveno.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Modulus division (%1) by zero (%2) is undefined.</source>
-        <translation>Dělení absolutní hodnoty (%1) nulou (%2) není stanoveno.</translation>
+        <source>Contacts list couldn&apos;t be imported. File %0 doesn&apos;t contain correct contacts list.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+122"/>
-        <location line="+32"/>
-        <source>Dividing a value of type %1 by %2 (not-a-number) is not allowed.</source>
-        <translation>Dělení hodnoty typu %1 prostřednictvím %2 (není číselnou hodnotou) není přípustné.</translation>
+        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-20"/>
-        <source>Dividing a value of type %1 by %2 or %3 (plus or minus zero) is not allowed.</source>
-        <translation>Dělení hodnoty typu %1 prostřednictvím %2 nebo %3 (kladná nebo záporná nula) není přípustné.</translation>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Multiplication of a value of type %1 by %2 or %3 (plus or minus infinity) is not allowed.</source>
-        <translation>Násobení hodnoty typu %1 s %2 nebo %3 (kladné nebo záporné nekonečno) není přípustné.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qatomicvalue.cpp" line="+71"/>
-        <source>A value of type %1 cannot have an Effective Boolean Value.</source>
-        <translation>Hodnota typu %1 nemůže mít žádnou účinnou booleánskou hodnotu.</translation>
+        <source>Contact List Files (*.txt)</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AccountEventListener</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qboolean.cpp" line="+70"/>
-        <source>Effective Boolean Value cannot be calculated for a sequence containing two or more atomic values.</source>
-        <translation>Skutečná booleanská hodnota nemůže být vypočítána pro posloupnost ze dvou nebo více atomických hodnot.</translation>
+        <source>Multilogon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qderivedinteger_p.h" line="+394"/>
-        <source>Value %1 of type %2 exceeds maximum (%3).</source>
-        <translation>Hodnota %1 typu %2 překračuje maximum (%3).</translation>
+        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Value %1 of type %2 is below minimum (%3).</source>
-        <translation>Hodnota %1 typu %2 zůstává pod minimem (%3).</translation>
+        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AccountManager</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qhexbinary.cpp" line="+83"/>
-        <source>A value of type %1 must contain an even number of digits. The value %2 does not.</source>
-        <translation>Počet míst hodnoty typu %1 musí být stejný. To není případ %2.</translation>
+        <source>Please provide password for %1 (%2) account</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AccountsComboBox</name>
     <message>
-        <location line="+19"/>
-        <source>%1 is not valid as a value of type %2.</source>
-        <translation>%1 není platný jako hodnota typu %2.</translation>
+        <source> - Select account - </source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AddBuddyWindow</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qapplytemplate.cpp" line="+111"/>
-        <source>Ambiguous rule match.</source>
-        <translation>Víceznačné pravidlo.</translation>
+        <source>Add buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qarithmeticexpression.cpp" line="+199"/>
-        <source>Operator %1 cannot be used on type %2.</source>
-        <translation>Operátor %1 nelze použít na typ %2.</translation>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Operator %1 cannot be used on atomic values of type %2 and %3.</source>
-        <translation>Operátor %1 se nemůže používat u atomických hodnot typů %2 a %3.</translation>
+        <source>Merge with existing buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qattributenamevalidator.cpp" line="+58"/>
-        <source>The namespace URI in the name for a computed attribute cannot be %1.</source>
-        <translation>URI jmenného prostoru v názvu vypočítané vlastnosti nesmí být %1.</translation>
+        <source>Visible name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>The name for a computed attribute cannot have the namespace URI %1 with the local name %2.</source>
-        <translation>Název vypočítané vlastnosti nesmí mít jmenný prostor-URI %1 s místním názvem %2.</translation>
+        <source>Enter a name for this buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qcastas.cpp" line="+80"/>
-        <source>Type error in cast, expected %1, received %2.</source>
-        <translation>Chyba typu při přetypování, bylo očekáváno %1, ale přijato %2.</translation>
+        <source>Add in group:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
-        <source>When casting to %1 or types derived from it, the source value must be of the same type, or it must be a string literal. Type %2 is not allowed.</source>
-        <translation>Při přetypování na typ %1 nebo do odvozených typů musí být zdrojovou hodnotou řetězec znaků tvořený písmeny nebo hodnota stejného typu. Typ %2 je neplatný.</translation>
+        <source> - Select buddy - </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qcommentconstructor.cpp" line="+59"/>
-        <source>A comment cannot contain %1</source>
-        <translation>Poznámka nesmí obsahovat %1</translation>
+        <source>Merge with:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>A comment cannot end with a %1.</source>
-        <translation>Poznámka nesmí končit na %1.</translation>
+        <source>Ask contact for authorization</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qcomputednamespaceconstructor.cpp" line="+61"/>
-        <source>In a namespace constructor, the value for a namespace cannot be an empty string.</source>
-        <translation>V konstruktoru jmenného prostoru nesmí mýt hodnota jmenného prostoru prázdným řetězcem.</translation>
+        <source>Allow buddy to see me when I&apos;m available</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>The prefix must be a valid %1, which %2 is not.</source>
-        <translation>Předpona musí být platný %1, což není případ %2.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>The prefix %1 cannot be bound.</source>
-        <translation>Předponu %1 nelze spojit.</translation>
+        <source>Mobile</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Only the prefix %1 can be bound to %2 and vice versa.</source>
-        <translation>S %2 může být spojena pouze předpona %1 (a obráceně).</translation>
+        <source>E-mail</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qdocumentcontentvalidator.cpp" line="+78"/>
-        <source>An attribute node cannot be a child of a document node. Therefore, the attribute %1 is out of place.</source>
-        <translation>Uzel vlastnosti se nesmí objevit jako potomek uzlu dokumentu. Objevil se uzel vlastnosti s názvem %1, který je proto nevhodný.</translation>
+        <source>User ID:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qexpressionfactory.cpp" line="+154"/>
-        <source>A library module cannot be evaluated directly. It must be imported from a main module.</source>
-        <translation>Knihovní modul nemůže být posouzen přímo, musí být zaveden z hlavního modulu.</translation>
+        <source>Mobile number:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
-        <source>No template by name %1 exists.</source>
-        <translation>Neexistuje žádná předloha s názvem %1.</translation>
+        <source>E-mail address:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qgenericpredicate.cpp" line="+98"/>
-        <source>A value of type %1 cannot be a predicate. A predicate must have either a numeric type or an Effective Boolean Value type.</source>
-        <translation>Hodnoty typu %1 nesmí být predikátem. Pro predikáty jsou přípustné pouze typ číselný nebo účinný booleánský.</translation>
+        <source>Account is not selected</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>A positional predicate must evaluate to a single numeric value.</source>
-        <translation>Poziční predikát se musí vyhodnotit jako jednoduchá, číselná hodnota.</translation>
+        <source>Entered user identification is invalid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qncnameconstructor_p.h" line="+103"/>
-        <source>The target name in a processing instruction cannot be %1 in any combination of upper and lower case. Therefore, %2 is invalid.</source>
-        <translation>Cílový název příkazu pro zpracování nemůže být %1 (nezávisle na psaní velkých/malých písmen). %2 je z toho důvodu neplatný.</translation>
+        <source>No user identification entered</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>%1 is not a valid target name in a processing instruction. It must be a %2 value, e.g. %3.</source>
-        <translation>%1 není platným cílovým názvem pokynu pro zpracování. Musí to být hodnota %2 jakou je například %3.</translation>
+        <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qpath.cpp" line="+101"/>
-        <source>The last step in a path must contain either nodes or atomic values. It cannot be a mixture between the two.</source>
-        <translation>Poslední krok cesty musí obsahovat buď jen uzly nebo jen atomické hodnoty. Nesmí se vyskytovat společně.</translation>
+        <source>Select buddy to merge with</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qprocessinginstructionconstructor.cpp" line="+76"/>
-        <source>The data of a processing instruction cannot contain the string %1</source>
-        <translation>Data pokynu pro zpracování nesmí obsahovat řetězec znaků %1</translation>
+        <source>Enter visible name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qqnameconstructor.cpp" line="+74"/>
-        <source>No namespace binding exists for the prefix %1</source>
-        <translation>Neexistuje žádná vazba jmenného prostoru pro předponu %1</translation>
+        <source>Visible name is already used for another buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qqnameconstructor_p.h" line="+146"/>
-        <source>No namespace binding exists for the prefix %1 in %2</source>
-        <translation>Neexistuje žádná vazba jmenného prostoru pro předponu %1 v %2</translation>
+        <source>Entered mobile number is invalid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qqnamefns.cpp" line="+61"/>
-        <source>%1 is an invalid %2</source>
-        <translation>%1 je neplatný %2</translation>
+        <source>No mobile number entered</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qtemplate.cpp" line="+66"/>
-        <source>The parameter %1 is passed, but no corresponding %2 exists.</source>
-        <translation>Neexistuje žádný odpovídající parameter %2 pro předaný %1.</translation>
+        <source>Entered e-mail is invalid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
-        <source>The parameter %1 is required, but no corresponding %2 is supplied.</source>
-        <translation>Pro vyžadovaný parametr %1 nebyl zadán odpovídající %2.</translation>
+        <source>No e-mail entered</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qabstractfunctionfactory.cpp" line="+69"/>
-        <source>%1 takes at most %n argument(s). %2 is therefore invalid.</source>
-        <translation>
-            <numerusform>%1 má jen %n argument; údaj %2 je z tohoto důvodu neplatný.</numerusform>
-            <numerusform>%1 má jen %n argumenty; údaj %2 je z tohoto důvodu neplatný.</numerusform>
-            <numerusform>%1 má jen %n argumenty; údaj %2 je z tohoto důvodu neplatný.</numerusform>
-        </translation>
+    <message>
+        <source>Merge with buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConferenceAction</name>
+    <message>
+        <source>Add Conference...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConferenceWindow</name>
+    <message>
+        <source>Add Conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a name for this conference if you want to have it on roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account is not selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select at least two buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible name is already used for another chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This conference is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter visible name to add this conference to roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddRoomChatAction</name>
+    <message>
+        <source>Join Room...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddRoomChatWindow</name>
+    <message>
+        <source>Join Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a name for this conference if you want to have it on roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Room:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Room Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Room Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account is not selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter room name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter nick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible name is already used for another chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This room chat is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter visible name to add this room chat to roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AdiumStyleRenderer</name>
+    <message>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AdiumTimeFormatter</name>
+    <message>
+        <source>1st quarter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2nd quarter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3rd quarter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4th quarter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Buddy</name>
+    <message>
+        <source>Example identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Example description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyAvatarWidget</name>
+    <message>
+        <source>Remove Custom Photo...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Photo...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select new photo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (*.png *.jpg *.bmp);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyContactsTable</name>
+    <message>
+        <source>Move up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detach contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New buddy display name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Give name for new buddy for this contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyContactsTableModel</name>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synchronize</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyDataWindow</name>
+    <message>
+        <source>Buddy Properties - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyDeleteWindow</name>
+    <message>
+        <source>The following buddies will be deleted:&lt;br/&gt;%1.&lt;br/&gt;Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select additional data that will be removed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyGeneralConfigurationWidget</name>
+    <message>
+        <source>Visible Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Protocol used by this buddy&apos;s contact does not allow changing buddy&apos;s name client-side</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prefer the most available contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Communication Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mobile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyGroupsConfigurationWidget</name>
+    <message>
+        <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyOptionsConfigurationWidget</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow buddy to see when I&apos;m available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify when buddy&apos;s status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuddyPersonalInfoConfigurationWidget</name>
+    <message>
+        <source>Buddy contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChangeStatusAction</name>
+    <message>
+        <source>Change Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatDataWindow</name>
+    <message>
+        <source>Chat Properties - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatEditBox</name>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This image has %1 KiB and may be too big for %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 appears to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This image has %1 KiB and may be too big for %2 of %3 contacts in this conference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to send this image?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatGroupsConfigurationWidget</name>
+    <message>
+        <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatImageRequestService</name>
+    <message>
+        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
+This exceeds your configured limits.
+Do you want to accept this image anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatRoomEditWidget</name>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Room:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay in chat room after closing chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatStylePreview</name>
+    <message>
+        <source>Your message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message from Your friend</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatWidget</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window will be cleared. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatWidgetActions</name>
+    <message>
+        <source>More...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Return Sends Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Messages in Chat Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatWidgetTitle</name>
+    <message>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Inactive)</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <location line="+11"/>
-        <source>%1 requires at least %n argument(s). %2 is therefore invalid.</source>
-        <translation>
-            <numerusform>%1 vyžaduje alespoň %n argument; údaj %2 je z toho důvodu neplatný.</numerusform>
-            <numerusform>%1 vyžaduje alespoň %n argumenty; údaj %2 je z toho důvodu neplatný.</numerusform>
-            <numerusform>%1 vyžaduje alespoň %n argumentů; údaj %2 je z toho důvodu neplatný.</numerusform>
-        </translation>
+</context>
+<context>
+    <name>ChatWindow</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message received, close window anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChooseIdentityWidget</name>
+    <message>
+        <source>Create new description...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CollapseAction</name>
+    <message>
+        <source>Collapse</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfigurationWindow</name>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConnectionErrorNotification</name>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection error on account: %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Core</name>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CustomInput</name>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste and send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select All</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DefaultProxyAction</name>
+    <message>
+        <source>Select Default Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - No proxy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy configuration...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DeleteTalkableAction</name>
+    <message>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; chat will be deleted.&lt;br/&gt;Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditTalkableAction</name>
+    <message>
+        <source>View Buddy Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExpandAction</name>
+    <message>
+        <source>Expand</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not open file. Select another one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open local file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select file location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File %1 already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overwrite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select another file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWidget</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qaggregatefns.cpp" line="+112"/>
-        <source>The first argument to %1 cannot be of type %2. It must be a numeric type, xs:yearMonthDuration or xs:dayTimeDuration.</source>
-        <translation>První argument k %1 nesmí být typu %2; musí to být číselný typ, xs:yearMonthDuration nebo xs:dayTimeDuration.</translation>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
-        <source>The first argument to %1 cannot be of type %2. It must be of type %3, %4, or %5.</source>
-        <translation>První argument %1 nemůže být typu %2. Musí to být typ %3, %4 nebo %5.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+91"/>
-        <source>The second argument to %1 cannot be of type %2. It must be of type %3, %4, or %5.</source>
-        <translation>Druhý argument %1 nemůže být typ %2. Musí to být typ %3, %4 nebo %5.</translation>
+        <source>Are you sure you want to remove this transfer?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qassemblestringfns.cpp" line="+80"/>
-        <source>%1 is not a valid XML 1.0 character.</source>
-        <translation>%1 není platný znak XML 1.0.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qcontextnodechecker.cpp" line="+46"/>
-        <source>The root node of the second argument to function %1 must be a document node. %2 is not a document node.</source>
-        <translation>Nadřízený uzel druhého agumentu funkce %1 musí být uzlem dokumentu, což není případ %2.</translation>
+        <source>Send again</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qdatetimefn.cpp" line="+78"/>
-        <source>If both values have zone offsets, they must have the same zone offset. %1 and %2 are not the same.</source>
-        <translation>Když jsou zadány obě hodnoty s časovými zónami, musí mít ten samý rozdíl v časové zóně. %1 a %2 nejsou to samé a jsou tím pádem nepřípustné.</translation>
+        <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qerrorfn.cpp" line="+53"/>
-        <source>%1 was called.</source>
-        <translation>%1 byl volán.</translation>
+        <source>&lt;b&gt;Wait for accept&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qpatternmatchingfns.cpp" line="+86"/>
-        <source>%1 must be followed by %2 or %3, not at the end of the replacement string.</source>
-        <translation>Po %1 musí následovat %2 nebo %3; nesmí se objevit na konci nahrazovacího řetězce.</translation>
+        <source>&lt;b&gt;Ready to download&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+39"/>
-        <source>In the replacement string, %1 must be followed by at least one digit when not escaped.</source>
-        <translation>V nahrazovacím řetězci musí po %1 následovat alespoň jedna číslice, když není uvozen.</translation>
+        <source>&lt;b&gt;Transfer&lt;/b&gt;: %1 kB/s</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>In the replacement string, %1 can only be used to escape itself or %2, not %3</source>
-        <translation>V nahrazení může být použit %1 pouze k uvození sebe samého anebo %2, ne však pro %3</translation>
+        <source>&lt;b&gt;Finished&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qpatternplatform.cpp" line="+84"/>
-        <source>%1 matches newline characters</source>
-        <translation>Výraz &apos;%1&apos; odpovídá znakům pro nový řádek</translation>
+        <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>FileTransferWindow</name>
     <message>
-        <location line="+4"/>
-        <source>%1 and %2 match the start and end of a line.</source>
-        <translation>Výrazy %1 a %2 vždy odpovídají začátku nebo konci libovolného řádku.</translation>
+        <source>Kadu - file transfers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Matches are case insensitive</source>
-        <translation>Na psaní velkých/malých písmen není brán zřetel</translation>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Whitespace characters are removed, except when they appear in character classes</source>
-        <translation>Prázdné znaky jsou odstraněny kromě případů, kdy se vyskytují ve znakových třídách</translation>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>FilterWidget</name>
     <message>
-        <location line="+100"/>
-        <source>%1 is an invalid regular expression pattern: %2</source>
-        <translation>%1 není platným regulárním výrazem: %2</translation>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>GroupEditWindow</name>
     <message>
-        <location line="+30"/>
-        <source>%1 is an invalid flag for regular expressions. Valid flags are:</source>
-        <translation>%1 není pro regulární výrazy platným příznakem. Platnými příznaky jsou:</translation>
+        <source>Show group name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qqnamefns.cpp" line="+17"/>
-        <source>If the first argument is the empty sequence or a zero-length string (no namespace), a prefix cannot be specified. Prefix %1 was specified.</source>
-        <translation>Nelze zadat žádnou předponu, jestliže je první argument prázdný nebo je prázdný řetězec znaků (žádný jmenný prostor). Byla zadána předpona %1.</translation>
+        <source>Use custom icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qsequencefns.cpp" line="+338"/>
-        <source>It will not be possible to retrieve %1.</source>
-        <translation>Nebude možné získat %1.</translation>
+        <source>Notify about status changes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qsequencegeneratingfns.cpp" line="+258"/>
-        <source>The default collection is undefined</source>
-        <translation>Výchozí sbírka XSLT není definována</translation>
+        <source>Offline for this group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>%1 cannot be retrieved</source>
-        <translation>%1 nelze získat</translation>
+        <source>Supported for Gadu-Gadu network</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qstringvaluefns.cpp" line="+244"/>
-        <source>The normalization form %1 is unsupported. The supported forms are %2, %3, %4, and %5, and none, i.e. the empty string (no normalization).</source>
-        <translation>Tato forma normalizování %1 není podporována. Podporovanými formami normalizování jsou %2, %3, %4 a %5, a &quot;žádný&quot; (prázdný znakový řetězec zastupuje &quot;žádné normalizování&quot;).</translation>
+        <source>Show in group &quot;All&quot;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qtimezonefns.cpp" line="+79"/>
-        <source>A zone offset must be in the range %1..%2 inclusive. %3 is out of range.</source>
-        <translation>Rozdíl v časové zóně musí ležet v oblasti %1..%2 (včetně). %3 leží mimo oblast.</translation>
+        <source>Name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>%1 is not a whole number of minutes.</source>
-        <translation>%1 není celočíselným údajem o minutách.</translation>
+        <source>Add group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qunparsedtextfn.cpp" line="+57"/>
-        <source>The URI cannot have a fragment</source>
-        <translation>URI nesmí obsahovat fragment</translation>
+        <source>Save group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/janitors/qcardinalityverifier.cpp" line="+50"/>
-        <source>Required cardinality is %1; got cardinality %2.</source>
-        <translation>Požadovaný počet prvků je %1; skutečný počet je %2.</translation>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/janitors/qitemverifier.cpp" line="+59"/>
-        <source>The item %1 did not match the required type %2.</source>
-        <translation>Prvek %1 neodpovídá požadovanému typu %2.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/parser/qparsercontext.cpp" line="+85"/>
-        <source>The variable %1 is unused</source>
-        <translation>Proměnná %1 se nepoužívá</translation>
+        <source>Choose an icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/parser/qquerytransformparser.cpp" line="+344"/>
-        <source>W3C XML Schema identity constraint selector</source>
-        <translation>Přepínač omezení totožnosti W3C XML schéma</translation>
+        <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>W3C XML Schema identity constraint field</source>
-        <translation>Pole omezení totožnosti W3C XML schéma</translation>
+        <source>Edit group %1</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>GroupFilterTabData</name>
     <message>
-        <location line="+4"/>
-        <source>A construct was encountered which is disallowed in the current language(%1).</source>
-        <translation>Narazilo se na výtvor, který v nynějším jazyce není povolen (%1).</translation>
+        <source>Everybody</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+50"/>
-        <location line="+7690"/>
-        <source>%1 is an unknown schema type.</source>
-        <translation>%1 je neznámým typem schematu.</translation>
+        <source>Ungrouped</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>GroupManager</name>
     <message>
-        <location line="-7621"/>
-        <source>A template with name %1 has already been declared.</source>
-        <translation>Předloha s názvem %1 již existuje.</translation>
+        <source>Group name must not be empty</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>%1 is not a valid numeric literal.</source>
-        <translation>%1 není platný číselný údaj.</translation>
+        <source>Group name must not contain &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+187"/>
-        <source>Only one %1 declaration can occur in the query prolog.</source>
-        <translation>Prolog k dotazu smí obsahovat pouze jednu %1 deklaraci.</translation>
+        <source>Group name must not be a number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+188"/>
-        <source>The initialization of variable %1 depends on itself</source>
-        <translation>Inicializace proměnné %1 je závislá na její vlastní hodnotě</translation>
+        <source>All</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+63"/>
-        <source>No variable with name %1 exists</source>
-        <translation>Neexistuje žádná proměnná s názvem %1</translation>
+        <source>Group name must not be &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2888"/>
-        <source>Version %1 is not supported. The supported XQuery version is 1.0.</source>
-        <translation>Verze %1 není podporována. Podporovanou verzí XQuery je 1.0.</translation>
+        <source>Group &apos;%1&apos; already exists</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>The encoding %1 is invalid. It must contain Latin characters only, must not contain whitespace, and must match the regular expression %2.</source>
-        <translation>Kódování %1 je neplatné; smí sestávat pouze z latinských písmen a musí odpovídat regulárnímu výrazu %2.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+56"/>
-        <source>No function with signature %1 is available</source>
-        <translation>Neexistuje žádná funkce s podpisem %1</translation>
+        <source>&apos;%1&apos; is prohibited</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
-        <location line="+11"/>
-        <source>A default namespace declaration must occur before function, variable, and option declarations.</source>
-        <translation>Deklarace výchozích jmenných prostorů musí stát před deklaracemi funkcí-, proměnných- nebo deklaracemi voleb.</translation>
+        <source>Numbers are prohibited</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Namespace declarations must occur before function, variable, and option declarations.</source>
-        <translation>Deklarace jmenných prostorů musí stát před prohlášeními funkcí, proměnných nebo prohlášeními voleb.</translation>
+        <source>Group name %1 is prohibited</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Module imports must occur before function, variable, and option declarations.</source>
-        <translation>Zavedení modulů musí nastat před deklaracemi funkcí, proměnných a voleb.</translation>
+        <source>Group of that name already exists!</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>GroupTabBar</name>
     <message>
-        <location line="+109"/>
-        <source>The keyword %1 cannot occur with any other mode name.</source>
-        <translation>Klíčové slovo %1 se nemůže používat dohromady s jiným názvem způsobu.</translation>
+        <source>Add Buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>The value of attribute %1 must be of type %2, which %3 isn&apos;t.</source>
-        <translation>Hodnota vlastnosti %1 musí být typu %2. %3 není platnou hodnotou.</translation>
+        <source>Add Group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+76"/>
-        <source>It is not possible to redeclare prefix %1.</source>
-        <translation>Předponu %1 nelze prohlásit.</translation>
+        <source>Delete Group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The prefix %1 cannot be bound. By default, it is already bound to the namespace %2.</source>
-        <translation type="vanished">Předpona %1 nemůže být přiřazena. Ve výchozím nastavení je již spojena se jmenným prostorem %2.</translation>
+        <source>Properties</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>The prefix %1 can not be bound. By default, it is already bound to the namespace %2.</source>
-        <translation>Předpona %1 nemůže být spojena. Ve výchozím nastavení je již spojena se jmenným prostorem %2.</translation>
+        <source>New Group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Prefix %1 is already declared in the prolog.</source>
-        <translation>Předpona %1 byla prohlášena již v předmluvě (prologu).</translation>
+        <source>Please enter the name for the new group:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+101"/>
-        <source>The name of an option must have a prefix. There is no default namespace for options.</source>
-        <translation>Název volby musí mít předponu. Volby nemají žádný výchozí jmenný prostor.</translation>
+        <source>Move to group %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+185"/>
-        <source>The Schema Import feature is not supported, and therefore %1 declarations cannot occur.</source>
-        <translation>Deklarace %1 je nepřípustná, protože není podporováno zavedení schémat.</translation>
+        <source>Add to group %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>The target namespace of a %1 cannot be empty.</source>
-        <translation>Cílový jmenný prostor %1 nesmí být prázdný.</translation>
+        <source>Delete group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>The module import feature is not supported</source>
-        <translation>Funkce zavedení modulu není podporována</translation>
+        <source>Group &lt;i&gt;%0&lt;/i&gt; will be deleted, but without buddies. Are you sure?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>A variable with name %1 has already been declared.</source>
-        <translation>Proměnná s názvem %1 již byla prohlášena.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>GroupsComboBox</name>
     <message>
-        <location line="+39"/>
-        <source>No value is available for the external variable with name %1.</source>
-        <translation>Pro vnější proměnnou s názvem %1 není dostupná žádná hodnota.</translation>
+        <source> - Do not add - </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+105"/>
-        <source>A stylesheet function must have a prefixed name.</source>
-        <translation>Název funkce stylového listu musí mít předponu.</translation>
+        <source>Create a new group...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>The namespace for a user defined function cannot be empty (try the predefined prefix %1 which exists for cases like this)</source>
-        <translation>Jmenný prostor uživatelem stanovené funkce nesmí být prázdný (pro tento účel je předstanovená předpona %1)</translation>
+        <source>New Group</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>The namespace %1 is reserved; therefore user defined functions may not use it. Try the predefined prefix %2, which exists for these cases.</source>
-        <translation>Jmenný prostor %1 je vyhrazen a z toho důvodu jej nemohou používat uživatelem stanovené funkce (pro tento účel je tu předstanovená předpona %2).</translation>
+        <source>Please enter the name for the new group:</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>IdentitiesComboBox</name>
     <message>
-        <location line="+12"/>
-        <source>The namespace of a user defined function in a library module must be equivalent to the module namespace. In other words, it should be %1 instead of %2</source>
-        <translation>Jmenný prostor uživatelem stanovené funkce v modulu knihovny musí odpovídat jmennému prostoru modulu (Jinými slovy by měl být %1 namísto %2) </translation>
+        <source>Create a new identity...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+34"/>
-        <source>A function already exists with the signature %1.</source>
-        <translation>Již existuje funkce s podpisem %1.</translation>
+        <source>New Identity</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>No external functions are supported. All supported functions can be used directly, without first declaring them as external</source>
-        <translation>Nejsou podporovány vnější funkce. Všechny podporované funkce se dají používat přímo, bez toho, že by byly nejprve prohlášeny za vnější</translation>
+        <source>Please enter the name for the new identity:</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>IdentityManager</name>
     <message>
-        <location line="+40"/>
-        <source>An argument with name %1 has already been declared. Every argument name must be unique.</source>
-        <translation>Již byl prohlášen jeden argument s názvem %1. Názvy argumentů musí být jednoznačné.</translation>
+        <source>Friends</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+189"/>
-        <source>When function %1 is used for matching inside a pattern, the argument must be a variable reference or a string literal.</source>
-        <translation>Při použití funkce %1 k vyhodnocování uvnitř vyhledávacího vzoru musí být argumentem odkaz na proměnnou nebo řetězcový literál.</translation>
+        <source>Work</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>In an XSL-T pattern, the first argument to function %1 must be a string literal, when used for matching.</source>
-        <translation>V XSL-T vyhledávacím vzoru musí být první argument k funkci %1 při použití k hledání řetězcový literál.</translation>
+        <source>School</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ImageDialog</name>
     <message>
-        <location line="+14"/>
-        <source>In an XSL-T pattern, the first argument to function %1 must be a literal or a variable reference, when used for matching.</source>
-        <translation>V XSL-T vyhledávacím vzoru musí být první argument k funkci %1 při použití k hledání odkaz tvořený písmeny nebo proměnný.</translation>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>KaduDialog</name>
     <message>
-        <location line="+9"/>
-        <source>In an XSL-T pattern, function %1 cannot have a third argument.</source>
-        <translation>V XSL-T vyhledávacím vzoru nesmí mít funkce %1 třetí argument.</translation>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>In an XSL-T pattern, only function %1 and %2, not %3, can be used for matching.</source>
-        <translation>V XSL-T vyhledávacím vzoru se smějí pro srovnávání používat jen funkce %1 a %2, ne však %3.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>KaduMenu</name>
     <message>
-        <location line="+66"/>
-        <source>In an XSL-T pattern, axis %1 cannot be used, only axis %2 or %3 can.</source>
-        <translation>V XSL-T vyhledávacím vzoru se smějí používat jen osy %2 nebo %3, ne však %1.</translation>
+        <source>More Actions...</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>KaduWebView</name>
     <message>
-        <location line="+138"/>
-        <source>%1 is an invalid template mode name.</source>
-        <translation>%1 není platným názvem pro řežim předlohy.</translation>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+47"/>
-        <source>The name of a variable bound in a for-expression must be different from the positional variable. Hence, the two variables named %1 collide.</source>
-        <translation>Název proměnné vázané ve výrazu s for se musí lišit od poziční proměnné. Dvě proměnné s názvem %1 se z tohoto důvodu střetávají.</translation>
+        <source>Copy Link Address</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+867"/>
-        <source>The Schema Validation Feature is not supported. Hence, %1-expressions may not be used.</source>
-        <translation>%1-výrazy se nemohou používat, protože funkce ověřování platnosti schématu není podporována.</translation>
+        <source>Copy Image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+44"/>
-        <source>None of the pragma expressions are supported. Therefore, a fallback expression must be present</source>
-        <translation>Musí být přítomen záložní výraz, neboť nejsou podporovány žádné výrazy pragma</translation>
+        <source>Save Image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+294"/>
-        <source>Each name of a template parameter must be unique; %1 is duplicated.</source>
-        <translation>Názvy parametrů předloh musí být jednoznačné, %1 již existuje.</translation>
+        <source>Run Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+140"/>
-        <source>The %1-axis is unsupported in XQuery</source>
-        <translation>Osa %1 není v XQuery podporována</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+368"/>
-        <source>No function with name %1 is available.</source>
-        <translation>Neexistuje žádná funkce s názvem %1.</translation>
+        <source>Cannot save this image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+107"/>
-        <source>The namespace URI cannot be the empty string when binding to a prefix, %1.</source>
-        <translation>Jmenný prostor-URI nesmí být prázdný, když je spojen s předponou %1.</translation>
+        <source>Save image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%1 is an invalid namespace URI.</source>
-        <translation>%1 není platným jmenným prostorem-URI.</translation>
+        <source>File already exists. Overwrite?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>It is not possible to bind to the prefix %1</source>
-        <translation>Předponu %1 nelze spojit</translation>
+        <source>Overwrite</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Namespace %1 can only be bound to %2 (and it is, in either case, pre-declared).</source>
-        <translation>Jmenný prostor %1 lze spojit pouze s %2. Toto je stanoveno již dopředu.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Prefix %1 can only be bound to %2 (and it is, in either case, pre-declared).</source>
-        <translation>Předponu %1 lze spojit pouze s %2. Toto je prohlášeno již dopředu..</translation>
+        <source>Cannot save image: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Two namespace declaration attributes have the same name: %1.</source>
-        <translation>Byly nalezeny dvě vlastnosti deklarace jmenného prostoru se stejným názvem (%1).</translation>
+        <source>Cannot save image</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>KaduWindow</name>
     <message>
-        <location line="+90"/>
-        <source>The namespace URI must be a constant and cannot use enclosed expressions.</source>
-        <translation>Jmenný prostor-URI musí být konstantou a nesmí používat vložené výrazy.</translation>
+        <source>General</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>An attribute with name %1 has already appeared on this element.</source>
-        <translation>Prvek má již vlastnost s názvem %1.</translation>
+        <source>&amp;Buddies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+63"/>
-        <source>A direct element constructor is not well-formed. %1 is ended with %2.</source>
-        <translation>Byl nalezen chybný stavitel přímého prvku. %1 končí %2.</translation>
+        <source>&amp;Tools</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+502"/>
-        <source>The name %1 does not refer to any schema type.</source>
-        <translation>Název %1 nemá žádnou spojitost s jakýmkoli typem schématu.</translation>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>KaduWindowActions</name>
     <message>
-        <location line="+10"/>
-        <source>%1 is an complex type. Casting to complex types is not possible. However, casting to atomic types such as %2 works.</source>
-        <translation>%1 je složeným typem. Přetypování u složených typů není možné. Může se ovšem provádět přetypování do atomických typů jako %2.</translation>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>%1 is not an atomic type. Casting is only possible to atomic types.</source>
-        <translation>%1 není atomickým typem. Přetypování se dá provádět pouze s atomickými typy.</translation>
+        <source>Your Accounts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+84"/>
-        <source>%1 is not a valid name for a processing-instruction.</source>
-        <translation>%1 není platným názvem pokynu pro zpracování.</translation>
+        <source>Multilogons</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+75"/>
-        <location line="+77"/>
-        <source>%1 is not in the in-scope attribute declarations. Note that the schema import feature is not supported.</source>
-        <translation>%1 se nenachází v oblasti pod prohlášením vlastností. Všimněte si, že funkce zavedení schématu není podporována.</translation>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
-        <source>The name of an extension expression must be in a namespace.</source>
-        <translation>Název výrazu rozšíření se musí nacházet ve jmenném prostoru.</translation>
+        <source>Add Buddy...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/parser/qxslttokenizer.cpp" line="+511"/>
-        <source>Element %1 is not allowed at this location.</source>
-        <translation>Prvek %1 nesmí stát na tomto místě.</translation>
+        <source>Add Group...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Text nodes are not allowed at this location.</source>
-        <translation>Na tomto místě nesmí stát žádné textové uzly.</translation>
+        <source>Search for Buddy...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Parse error: %1</source>
-        <translation>Chyba vyhodnocení: %1</translation>
+        <source>Forum</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+62"/>
-        <source>The value of the XSL-T version attribute must be a value of type %1, which %2 isn&apos;t.</source>
-        <translation>Hodnota XSL-T vlastnosti verze musí být hodnotou typu %1, což není případ %2.</translation>
+        <source>Report a Bug</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Running an XSL-T 1.0 stylesheet with a 2.0 processor.</source>
-        <translation>Je zpracováván jeden XSL-T 1.0 stylový list jedním procesorem verze 2.0.</translation>
+        <source>Get Involved</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+106"/>
-        <source>Unknown XSL-T attribute %1.</source>
-        <translation>Neznámá XSL-T vlastnost: %1.</translation>
+        <source>Translate Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Attribute %1 and %2 are mutually exclusive.</source>
-        <translation>Vlastnosti %1 a %2 se vzájemně vylučují.</translation>
+        <source>A&amp;bout Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+166"/>
-        <source>In a simplified stylesheet module, attribute %1 must be present.</source>
-        <translation>Ve zjednodušeném modulu stylového listu musí být přítomna vlastnost %1.</translation>
+        <source>Show Information Panel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+72"/>
-        <source>If element %1 has no attribute %2, it cannot have attribute %3 or %4.</source>
-        <translation>Prvek %1 nesmí mít vlastnost %3 nebo %4, pokud nemá vlastnost %2.</translation>
+        <source>Show Blocked Buddies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Element %1 must have at least one of the attributes %2 or %3.</source>
-        <translation>Prvek %1 musí mít alespoň jednu z vlastností %2 nebo %3.</translation>
+        <source>Show Myself Buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>At least one mode must be specified in the %1-attribute on element %2.</source>
-        <translation>Ve %1-vlastnosti prvku %2 musí být zadán alespoň jeden způsob.</translation>
+        <source>Copy Description</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+123"/>
-        <source>Element %1 must come last.</source>
-        <translation>Prvek %1 musí stát jako poslední.</translation>
+        <source>Copy Personal Info</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>At least one %1-element must occur before %2.</source>
-        <translation>Před %2 musí stát alespoň jeden %1-prvek.</translation>
+        <source>Open Description Link in Browser</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Only one %1-element can appear.</source>
-        <translation>Může být jen jeden jediný %1-prvek.</translation>
+        <source>Send E-Mail</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>At least one %1-element must occur inside %2.</source>
-        <translation>V %2 se musí vyskytovat alespoň jeden %1-prvek.</translation>
+        <source>Search in Directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+58"/>
-        <source>When attribute %1 is present on %2, a sequence constructor cannot be used.</source>
-        <translation>Nelze používat žádného konstruktoru posloupnosti, když %2 má vlastnost %1.</translation>
+        <source>Show Offline Buddies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Element %1 must have either a %2-attribute or a sequence constructor.</source>
-        <translation>Prvek %1 musí mít buď jednu %2-vlastnost nebo se musí používat konstruktor posloupnosti.</translation>
+        <source>Only Show Buddies with Description</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+125"/>
-        <source>When a parameter is required, a default value cannot be supplied through a %1-attribute or a sequence constructor.</source>
-        <translation>Výchozí hodnota požadovaného parametru nemůže být zadána ani prostřednictvím %1-vlastnosti ani přes konstruktor posloupnosti.</translation>
+        <source>Show Descriptions</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+270"/>
-        <source>Element %1 cannot have children.</source>
-        <translation>Prvek %1 nemůže mít podprvky.</translation>
+        <source>Only Show Online Buddies and Buddies with Description</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+434"/>
-        <source>Element %1 cannot have a sequence constructor.</source>
-        <translation>Prvek %1 nemůže mít konstruktor posloupnosti.</translation>
+        <source>Merge Buddies...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+86"/>
-        <location line="+9"/>
-        <source>The attribute %1 cannot appear on %2, when it is a child of %3.</source>
-        <translation>%2 nesmí mít vlastnost %1 v případě, že je potomkem %3.</translation>
+        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>A parameter in a function cannot be declared to be a tunnel.</source>
-        <translation>Parameter funkce nelze prohlásit za tunel.</translation>
+        <source>Merge</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+149"/>
-        <source>This processor is not Schema-aware and therefore %1 cannot be used.</source>
-        <translation>%1 se nemůže používat, protože tento procesor nepodporuje žádné schéma.</translation>
+        <source>Contact:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+57"/>
-        <source>Top level stylesheet elements must be in a non-null namespace, which %1 isn&apos;t.</source>
-        <translation>Prvky vyskytující se na nejvyšší úrovni stylového listu se nesmí nacházet v nulovém jmenném prostoru, což je případ %1.</translation>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
-        <source>The value for attribute %1 on element %2 must either be %3 or %4, not %5.</source>
-        <translation>Hodnota vlastnosti %1 prvku %2 může být jen %3 nebo %4, ne však %5.</translation>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Attribute %1 cannot have the value %2.</source>
-        <translation>Vlastnost %1 nesmí mít hodnotu %2.</translation>
+        <source>Mobile:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+58"/>
-        <source>The attribute %1 can only appear on the first %2 element.</source>
-        <translation>Pouze první %2-prvek smí mít vlastnost %1.</translation>
+        <source>View Chat Properties</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+99"/>
-        <source>At least one %1 element must appear as child of %2.</source>
-        <translation>Alespoň jeden %1-prvek musí být potomkem %2.</translation>
+        <source>View Buddy Properties</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/schema/qxsdparticlechecker.cpp" line="+157"/>
-        <source>Empty particle cannot be derived from non-empty particle.</source>
-        <translation>Prázdnou částici nelze odvodit z částice, která není prázdná.</translation>
+        <source>Delete Chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Derived particle is missing element %1.</source>
-        <translation>V odvozené částici chybí prvek %1.</translation>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>LeaveChatAction</name>
     <message>
-        <location line="+7"/>
-        <source>Derived element %1 is missing value constraint as defined in base particle.</source>
-        <translation>V odvozeném prvku %1 chybí omezení hodnoty, jak je to stanoveno v základní částici.</translation>
+        <source>Leave</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Derived element %1 has weaker value constraint than base particle.</source>
-        <translation>Odvozený prvek %1 má slabší omezení hodnoty než má základní částice.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Fixed value constraint of element %1 differs from value constraint in base particle.</source>
-        <translation>Pevné omezení hodnoty prvku %1 se liší od omezení hodnoty základní částici.</translation>
+        <source>All messages received in this conference will be ignored
+from now on. Are you sure you want to leave this conference?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Derived element %1 cannot be nillable as base element is not nillable.</source>
-        <translation>Odvozený prvek %1 nemůže mít žádnou vlastnost &apos;nillable&apos;, neboť základní prvek žádnou nestanovuje.</translation>
+        <source>Leave conference</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Block constraints of derived element %1 must not be more weaker than in the base element.</source>
-        <translation>Omezení bloku odvozeného prvku %1 nesmí být slabší než v základním prvku.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>LineEditWithClearButton</name>
     <message>
-        <location line="+11"/>
-        <source>Simple type of derived element %1 cannot be validly derived from base element.</source>
-        <translation>Jednoduchý typ odvozeného prvku %1 nemůže být platně odvozen ze základního prvku.</translation>
+        <source>Clear this field</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MainConfigurationWindow</name>
     <message>
-        <location line="+5"/>
-        <source>Complex type of derived element %1 cannot be validly derived from base element.</source>
-        <translation>Složitý typ odvozeného prvku %1 nemůže být platně odvozen ze základního prvku.</translation>
+        <source>Kadu configuration</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Element %1 is missing in derived particle.</source>
-        <translation>Prvek %1 chybí v odvozené částici.</translation>
+        <source>Open icon theme archive</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Element %1 does not match namespace constraint of wildcard in base particle.</source>
-        <translation>Prvek %1 neodpovídá omezení jmenného prostoru zástupného symbolu (vzor hledání) v základní částici.</translation>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Wildcard in derived particle is not a valid subset of wildcard in base particle.</source>
-        <translation>Zástupný symbol (vzor hledání) v odvozené částici není platnou dílčí množinou zástupného symbolu v základní částici.</translation>
+        <source>Installation failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>processContent of wildcard in derived particle is weaker than wildcard in base particle.</source>
-        <translation>Vlastnost processContent zástupného symbolu (vzor hledání) odvozené částice je slabší než zástupný symbol (vzor hledání) v základní částici.</translation>
+        <source>None</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+270"/>
-        <source>Derived particle allows content that is not allowed in the base particle.</source>
-        <translation>Odvozená částice dovoluje obsah, který není přípustný pro základní částici.</translation>
+        <source>Advanced chat&apos;s look configuration</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MainWindow</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/schema/qxsdschemachecker.cpp" line="+219"/>
-        <source>%1 has inheritance loop in its base type %2.</source>
-        <translation>%1 má ve svém základním typu %2 smyčku dědičnosti.</translation>
+        <source>Create new toolbar</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MergeBuddiesDialogWidget</name>
     <message>
-        <location line="+5"/>
-        <location line="+24"/>
-        <source>Circular inheritance of base type %1.</source>
-        <translation>Smyčka dědičnosti v základním typu %1.</translation>
+        <source>Merge Buddies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Circular inheritance of union %1.</source>
-        <translation>Smyčka dědičnosti u sjednocení %1.</translation>
+        <source>Buddy to merge</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>%1 is not allowed to derive from %2 by restriction as the latter defines it as final.</source>
-        <translation>%1 není dovoleno odvodit z %2 pomocí omezení, neboť posledně uvedený ji určuje jako konečnou.</translation>
+        <source> - Select buddy - </source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MessageNotification</name>
     <message>
-        <location line="+5"/>
-        <source>%1 is not allowed to derive from %2 by extension as the latter defines it as final.</source>
-        <translation>%1 není dovoleno odvodit z %2 pomocí rozšíření, neboť posledně uvedený ji určuje jako konečnou.</translation>
+        <source>New chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Base type of simple type %1 cannot be complex type %2.</source>
-        <translation>Složitý typ %2 nemůže být základním typem jednoduchého typu %1.</translation>
+        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Simple type %1 cannot have direct base type %2.</source>
-        <translation>Jednoduchý typ %1 nemůže mít přímý základní typ %2.</translation>
+        <source>New message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
-        <location line="+9"/>
-        <source>Simple type %1 is not allowed to have base type %2.</source>
-        <translation>Jednoduchý typ %1 nesmí mít základní typ %2.</translation>
+        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MultilogonModel</name>
     <message>
-        <location line="+12"/>
-        <source>Simple type %1 can only have simple atomic type as base type.</source>
-        <translation>Jednoduchý typ %1 může mít jen jednoduchý atomický základní typ.</translation>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Simple type %1 cannot derive from %2 as the latter defines restriction as final.</source>
-        <translation>Jednoduchý typ %1 nesmí být odvozen z %2 , kterýžto určuje omezení jako konečné.</translation>
+        <source>Ip</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <location line="+484"/>
-        <source>Variety of item type of %1 must be either atomic or union.</source>
-        <translation>Typ prvku %1 musí být druhu atomického anebo druhu sjednocení.</translation>
+        <source>Logon time</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MultilogonNotification</name>
     <message>
-        <location line="-474"/>
-        <location line="+483"/>
-        <source>Variety of member types of %1 must be atomic.</source>
-        <translation>Typy členů %1 musí být druhu atomického.</translation>
+        <source>Disconnect session</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MultilogonWindow</name>
     <message>
-        <location line="-470"/>
-        <location line="+451"/>
-        <source>%1 is not allowed to derive from %2 by list as the latter defines it as final.</source>
-        <translation>%1 není dovoleno odvodit z %2 pomocí seznamu, neboť posledně uvedený ji určuje jako konečnou.</translation>
+        <source>Multilogon window</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-431"/>
-        <source>Simple type %1 is only allowed to have %2 facet.</source>
-        <translation>Jednoduchý typ %1 může mít jen omezující vlastnosti %2.</translation>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Base type of simple type %1 must have variety of type list.</source>
-        <translation>Základní typ jednoduchého typu %1 musí být druhu seznamu typů.</translation>
+        <source>Disconnect session</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Base type of simple type %1 has defined derivation by restriction as final.</source>
-        <translation>Základní typ jednoduchého typu %1 určuje sjednocení pomocí omezení jako konečné.</translation>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>NewFileTransferNotification</name>
     <message>
-        <location line="+6"/>
-        <source>Item type of base type does not match item type of %1.</source>
-        <translation>Typ položky základního typu neodpovídá typu položky %1.</translation>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
-        <location line="+93"/>
-        <source>Simple type %1 contains not allowed facet type %2.</source>
-        <translation>Jednoduchý typ %1 obsahuje nedovolený typ omezující vlastnosti %2.</translation>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-72"/>
-        <location line="+413"/>
-        <source>%1 is not allowed to derive from %2 by union as the latter defines it as final.</source>
-        <translation>%1 není dovoleno odvodit z %2 pomocí sjednocení, neboť posledně uvedený ji určuje jako konečnou.</translation>
+        <source>Reject</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-404"/>
-        <source>%1 is not allowed to have any facets.</source>
-        <translation>%1 nesmí mít žádné omezující vlastnosti.</translation>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Base type %1 of simple type %2 must have variety of union.</source>
-        <translation>Základní typ %1 jednoduchého typu %2 musí být druhu sjednocení.</translation>
+        <source>Incoming transfer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Base type %1 of simple type %2 is not allowed to have restriction in %3 attribute.</source>
-        <translation>Základní typ %1 jednoduchého typu %2 nesmí mít žádné omezení vlastnosti %3.</translation>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Member type %1 cannot be derived from member type %2 of %3&apos;s base type %4.</source>
-        <translation>Členský typ %1 nemůže být odvozen z členského typu %2 ze základního typu %4 %3.</translation>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
-        <source>Derivation method of %1 must be extension because the base type %2 is a simple type.</source>
-        <translation>Rozšíření musí používat jako způsob dědičnosti (odvození) pro %1, neboť základní typ %2 je jednoduchým typem.</translation>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>Complex type %1 has duplicated element %2 in its content model.</source>
-        <translation>Složitý typ %1 má zdvojený prvek %2 ve svém modelu obsahu.</translation>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>NotificationManager</name>
     <message>
-        <location line="+8"/>
-        <source>Complex type %1 has non-deterministic content.</source>
-        <translation>Složitý typ %1 nemá deterministický obsah.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>Attributes of complex type %1 are not a valid extension of the attributes of base type %2: %3.</source>
-        <translation>Vlastnosti složitého typu %1 nejsou žádným platným rozšířením vlastností základního typu %2: %3.</translation>
+        <source>Unable to find notifier for %1 event</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>NotificationService</name>
     <message>
-        <location line="+37"/>
-        <source>Content model of complex type %1 is not a valid extension of content model of %2.</source>
-        <translation>Model obsahu složitého typu %1 není žádným platným rozšířením modelu obsahu %2.</translation>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Complex type %1 must have simple content.</source>
-        <translation>Složitý typ %1 musí mít jednoduchý obsah.</translation>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Complex type %1 must have the same simple type as its base class %2.</source>
-        <translation>Složitý typ %1 musí mít jednoduchý obsah.</translation>
+        <source>Notify About Buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+67"/>
-        <source>Complex type %1 cannot be derived from base type %2%3.</source>
-        <translation>Složitý typ %2 nemůže být odvozen ze základního typu %2%3.</translation>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>NotifyConfigurationUiHandler</name>
     <message>
-        <location line="+14"/>
-        <source>Attributes of complex type %1 are not a valid restriction from the attributes of base type %2: %3.</source>
-        <translation>Vlastnosti složitého typu %1  nejsou žádným platným omezením vlastností základního typu %2: %3.</translation>
+        <source>Use custom settings</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>NotifyTreeWidget</name>
     <message>
-        <location line="+14"/>
-        <source>Complex type %1 with simple content cannot be derived from complex base type %2.</source>
-        <translation>Složitý typ %1 s jednoduchým obsahem nemůže být odvozen ze složitého základního typu %2.</translation>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+35"/>
-        <source>Item type of simple type %1 cannot be a complex type.</source>
-        <translation>Typ položky jednoduchého typu %1 nemůže být složitým typem.</translation>
+        <source>Notification</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>OpenChatWith</name>
     <message>
-        <location line="+44"/>
-        <source>Member type of simple type %1 cannot be a complex type.</source>
-        <translation>Členský typ jednoduchého typu %1 nemůže být složitým typem.</translation>
+        <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>%1 is not allowed to have a member type with the same name as itself.</source>
-        <translation>%1 nesmí mít členský typ se stejným názvem, jaký má sám.</translation>
+        <source>User name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+83"/>
-        <location line="+29"/>
-        <location line="+34"/>
-        <source>%1 facet collides with %2 facet.</source>
-        <translation>Omezující vlastnost %1 se střetává s omezující vlastností %2.</translation>
+        <source>&amp;Ok</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-20"/>
-        <source>%1 facet must have the same value as %2 facet of base type.</source>
-        <translation>Omezující vlastnost %1 musí mít tutéž hodnotu, jakou má omezující vlastnost %2 základního typu.</translation>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PasswordDialogWidget</name>
     <message>
-        <location line="+37"/>
-        <source>%1 facet must be equal or greater than %2 facet of base type.</source>
-        <translation>Omezující vlastnost %1 musí být stejná nebo větší než omezující vlastnost %2 základního typu.</translation>
+        <source>Incorrect password</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
-        <location line="+125"/>
-        <location line="+55"/>
-        <location line="+12"/>
-        <location line="+91"/>
-        <location line="+58"/>
-        <location line="+34"/>
-        <location line="+35"/>
-        <source>%1 facet must be less than or equal to %2 facet of base type.</source>
-        <translation>Omezující vlastnost %1 musí být menší nebo stejná jako omezující vlastnost %2 základního typu.</translation>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-389"/>
-        <source>%1 facet contains invalid regular expression</source>
-        <translation>Omezující vlastnost %1 obsahuje neplatný pravidelný výraz</translation>
+        <source>Store this password</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PathListEdit</name>
     <message>
-        <location line="+15"/>
-        <source>Unknown notation %1 used in %2 facet.</source>
-        <translation>Omezující vlastnost %2 obsahuje neplatný zápis %1.</translation>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PathListEditWindow</name>
     <message>
-        <location line="+20"/>
-        <source>%1 facet contains invalid value %2: %3.</source>
-        <translation>Omezující vlastnost %1 obsahuje neplatnou hodnotu %2: %3.</translation>
+        <source>Select paths</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>%1 facet cannot be %2 or %3 if %4 facet of base type is %5.</source>
-        <translation>Omezující vlastnost %1 nesmí být %2 nebo %3, pokud je omezující vlastnost %4 základního typu %5.</translation>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>%1 facet cannot be %2 if %3 facet of base type is %4.</source>
-        <translation>Omezující vlastnost %1 nesmí být %2, pokud je omezující vlastnost %3 základního typu %4.</translation>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <location line="+55"/>
-        <location line="+230"/>
-        <source>%1 facet must be less than or equal to %2 facet.</source>
-        <translation>Omezující vlastnost %1 musí být menší nebo stejná jako omezující vlastnost %2.</translation>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-257"/>
-        <location line="+134"/>
-        <location line="+82"/>
-        <source>%1 facet must be less than %2 facet of base type.</source>
-        <translation>Omezující vlastnost %1 musí být menší než omezující vlastnost %2 základního typu.</translation>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-201"/>
-        <location line="+79"/>
-        <source>%1 facet and %2 facet cannot appear together.</source>
-        <translation>Omezující vlastnosti %1 a %2 se nemohou objevit spolu.</translation>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-27"/>
-        <location line="+12"/>
-        <location line="+113"/>
-        <source>%1 facet must be greater than %2 facet of base type.</source>
-        <translation>Omezující vlastnost %1 musí být větší než omezující vlastnost %2 základního typu.</translation>
+        <source>Choose a directory</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PluginActivationService</name>
     <message>
-        <location line="-86"/>
-        <location line="+58"/>
-        <source>%1 facet must be less than %2 facet.</source>
-        <translation>Omezující vlastnost %1 musí být menší než omezující vlastnost %2.</translation>
+        <source>Plugin %1 not found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-42"/>
-        <location line="+58"/>
-        <source>%1 facet must be greater than or equal to %2 facet of base type.</source>
-        <translation>Omezující vlastnost %1 musí být větší nebo stejná jako omezující vlastnost %2 základního typu.</translation>
+        <source>Plugin %1 conflicts with: %2</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PluginErrorDialog</name>
     <message>
-        <location line="+113"/>
-        <source>Simple type contains not allowed facet %1.</source>
-        <translation>Jednoduchý typ obsahuje nedovolenou omezující vlastnost %1.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>%1, %2, %3, %4, %5 and %6 facets are not allowed when derived by list.</source>
-        <translation>Omezující vlastnosti %1, %2, %3, %4, %5 a %6 nejsou při odvození (dědičnosti) pomocí seznamu dovoleny.</translation>
+        <source>Try to load this plugin on next Kadu run</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PluginListWidget</name>
     <message>
-        <location line="+16"/>
-        <source>Only %1 and %2 facets are allowed when derived by union.</source>
-        <translation>Při odvození (dědičnosti) pomocí sjednocení jsou dovoleny pouze omezující vlastnosti %1 a %2.</translation>
+        <source>Deactivate</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <location line="+16"/>
-        <source>%1 contains %2 facet with invalid data: %3.</source>
-        <translation>%1 obsahuje omezující vlastnost %2 s neplatnými daty: %3.</translation>
+        <source>Plugin activation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
-        <source>Attribute group %1 contains attribute %2 twice.</source>
-        <translation>Skupina vlastností %1 obsahuje vlastnost %2 dvakrát.</translation>
+        <source>Plugin deactivation</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PluginListWidgetItemDelegate</name>
     <message>
-        <location line="+9"/>
-        <source>Attribute group %1 contains two different attributes that both have types derived from %2.</source>
-        <translation>Skupina vlastností %1 obsahuje dvě rozdílné vlastnosti, obě s typy, které jsou odvozeny z %2.</translation>
+        <source>Plugin name: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Attribute group %1 contains attribute %2 that has value constraint but type that inherits from %3.</source>
-        <translation>Skupina vlastností %1 obsahuje vlastnost %2 s omezením hodnoty, typ je ale odvozen z %3.</translation>
+        <source>Author: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Complex type %1 contains attribute %2 twice.</source>
-        <translation>Složitý typ %1 obsahuje vlastnost %2 dvakrát.</translation>
+        <source>Version: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Complex type %1 contains two different attributes that both have types derived from %2.</source>
-        <translation>Složitý typ %1 obsahuje dvě rozdílné vlastnosti, obě s typy, které jsou odvozeny z %2.</translation>
+        <source>Description: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Complex type %1 contains attribute %2 that has value constraint but type that inherits from %3.</source>
-        <translation>Složitý typ %1 obsahuje vlastnost %2 s omezením hodnoty, typ je ale odvozen z %3.</translation>
+        <source>Dependencies: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+43"/>
-        <source>Element %1 is not allowed to have a value constraint if its base type is complex.</source>
-        <translation>Prvek %1 nesmí mít omezení hodnoty, když je základní typ složitý.</translation>
+        <source>Provides: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Element %1 is not allowed to have a value constraint if its type is derived from %2.</source>
-        <translation>Prvek %1 nesmí mít omezení hodnoty, když je jeho typ odvozen z %2.</translation>
+        <source>Plugin information</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PluginLoader</name>
     <message>
-        <location line="+10"/>
-        <location line="+11"/>
-        <source>Value constraint of element %1 is not of elements type: %2.</source>
-        <translation>Omezení hodnoty prvku %1 není z typu prvku: %2.</translation>
+        <source>Cannot load %1 plugin library:
+%2</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PluginModel</name>
     <message>
-        <location line="+13"/>
-        <source>Element %1 is not allowed to have substitution group affiliation as it is no global element.</source>
-        <translation>Prvek %1 nesmí patřit k skupině nahrazení, neboť není celkovým prvkem.</translation>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Type of element %1 cannot be derived from type of substitution group affiliation.</source>
-        <translation>Typ prvku %1 nemůže být odvozen z typu příslušné skupiny nahrazení.</translation>
+        <source>Chats history</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
-        <source>Value constraint of attribute %1 is not of attributes type: %2.</source>
-        <translation>Omezení hodnoty vlastnosti %1 není z typu vlastnosti: %2.</translation>
+        <source>Desktop</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Attribute %1 has value constraint but has type derived from %2.</source>
-        <translation>Vlastnost %1 má mezení hodnoty, ale její typ je odvozen z %2.</translation>
+        <source>Media players</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+56"/>
-        <source>%1 attribute in derived complex type must be %2 like in base type.</source>
-        <translation>Vlastnost %1 v odvozeném složitém typu musí být jako v základním typu %2.</translation>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Attribute %1 in derived complex type must have %2 value constraint like in base type.</source>
-        <translation>Vlastnost %1 v odvozeném složitém typu musí mít omezení hodnoty jako v základním typu %2.</translation>
+        <source>Privacy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Attribute %1 in derived complex type must have the same %2 value constraint like in base type.</source>
-        <translation>Vlastnost %1 v odvozeném složitém typu musí mít stejné omezení hodnoty %2 jako v základním typu.</translation>
+        <source>Protocols</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Attribute %1 in derived complex type must have %2 value constraint.</source>
-        <translation>Vlastnost %1 v odvozeném složitém typu musí omezení hodnoty %2.</translation>
+        <source>Sound</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>processContent of base wildcard must be weaker than derived wildcard.</source>
-        <translation>Vlastnost &apos;processContent&apos; základního zástupného symbolu (vzor hledání) musí být slabší než odvozený zástupný symbol (vzor hledání).</translation>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+39"/>
-        <location line="+15"/>
-        <source>Element %1 exists twice with different types.</source>
-        <translation>Prvek %1 existuje dvakrát s rozdílnými typy.</translation>
+        <source>Misc</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>PluginRootComponentHandler</name>
     <message>
-        <location line="+28"/>
-        <source>Particle contains non-deterministic wildcards.</source>
-        <translation>Částice má nedeterministické zástupné symboly (vzory hledání).</translation>
+        <source>Cannot find required object in plugin %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/schema/qxsdschemahelper.cpp" line="+683"/>
-        <location line="+63"/>
-        <source>Base attribute %1 is required but derived attribute is not.</source>
-        <translation>Základní vlastnost %1 je vyžadována, ale odvozená vlastnost není.</translation>
+        <source>Plugin initialization routine for %1 failed.</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ProgressWindow</name>
     <message>
-        <location line="-57"/>
-        <source>Type of derived attribute %1 cannot be validly derived from type of base attribute.</source>
-        <translation>Typ odvozené vlastnosti %1 nemůže být platně odvozen z typu základní vlastnosti.</translation>
+        <source>Progress:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
-        <source>Value constraint of derived attribute %1 does not match value constraint of base attribute.</source>
-        <translation>Omezení hodnoty odvozené vlastnosti %1 neodpovídá omezení hodnoty základní vlastnosti.</translation>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Derived attribute %1 does not exist in the base definition.</source>
-        <translation>Odvozená vlastnost %1 neexistuje v základní definici.</translation>
+        <source>Show details &gt;&gt;&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ProtocolsComboBox</name>
     <message>
-        <location line="+11"/>
-        <source>Derived attribute %1 does not match the wildcard in the base definition.</source>
-        <translation>Odvozená vlastnost %1 neodpovídá zástupnému symbolu (vzoru hledání) v základní definici.</translation>
+        <source> - Select network - </source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ProxyComboBox</name>
     <message>
-        <location line="+17"/>
-        <source>Base attribute %1 is required but missing in derived definition.</source>
-        <translation>Základní vlastnost %1 je vyžadována, ale chybí v odvozené definici.</translation>
+        <source> - No proxy - </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Derived definition contains an %1 element that does not exists in the base definition</source>
-        <translation>Odvozená definice obsahuje prvek %1, který v základní definici neexistuje</translation>
+        <source>Edit proxy configuration...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Derived wildcard is not a subset of the base wildcard.</source>
-        <translation>Odvozený zástupný symbol (vzor hledání) není žádnou dílčí množinou základního zástupného symbolu (vzoru hledání).</translation>
+        <source> - Use Default Proxy - </source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ProxyEditWindow</name>
     <message>
-        <location line="+5"/>
-        <source>%1 of derived wildcard is not a valid restriction of %2 of base wildcard</source>
-        <translation>Vlastnost %1 odvozeného zástupného symbolu (vzoru hledání) není platným omezením %2 základního zástupného symbolu (vzoru hledání)</translation>
+        <source>Proxy Configuration</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Attribute %1 from base type is missing in derived type.</source>
-        <translation>Vlastnost %1 základního typu chybí v odvozeném typu.</translation>
+        <source>Add new proxy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Type of derived attribute %1 differs from type of base attribute.</source>
-        <translation>Typ odvozené vlastnosti %1 se liší od typu základní vlastnosti.</translation>
+        <source>HTTP CONNECT method</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Base definition contains an %1 element that is missing in the derived definition</source>
-        <translation>Základní definice obsahuje prvek %1, který v odvozené definici chybí</translation>
+        <source>SOCKS Version 5</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/schema/qxsdschemaparser.cpp" line="+162"/>
-        <source>Can not process unknown element %1, expected elements are: %2.</source>
-        <translation>Nelze zpracovat neznámý prvek %1, očekávanými prvky jsou: %2.</translation>
+        <source>HTTP Polling</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Element %1 is not allowed in this scope, possible elements are: %2.</source>
-        <translation>Prvek %1 není v tomto oboru dovolen; možnými prvky jsou: %2.</translation>
+        <source>Type (for Jabber)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Child element is missing in that scope, possible child elements are: %1.</source>
-        <translation>Podprvek v oblasti chybí; možnými podprvky jsou: %1.</translation>
+        <source>Polling URL</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+143"/>
-        <source>Document is not a XML schema.</source>
-        <translation>Dokument není schématem XML.</translation>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>%1 attribute of %2 element contains invalid content: {%3} is not a value of type %4.</source>
-        <translation>Vlastnost %1 prvku %2 obsahuje neplatný obsah: {%3} není hodnotou typu %4.</translation>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>%1 attribute of %2 element contains invalid content: {%3}.</source>
-        <translation>Vlastnost %1 prvku %2 obsahuje neplatný obsah: {%3}.</translation>
+        <source>User</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>Target namespace %1 of included schema is different from the target namespace %2 as defined by the including schema.</source>
-        <translation>Cílový jmenný prostor %1 zahrnutého schématu se liší od jím vymezeného cílového jmenného prostoru %2.</translation>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location line="+11"/>
-        <source>Target namespace %1 of imported schema is different from the target namespace %2 as defined by the importing schema.</source>
-        <translation>Cílový jmenný prostor %1 zavedeného schématu se liší od jím vymezeného cílového jmenného prostoru %2.</translation>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+243"/>
-        <source>%1 element is not allowed to have the same %2 attribute value as the target namespace %3.</source>
-        <translation>Prvek %1 nemůže stanovit cílový jmenný prostor %3 jako hodnotu vlastnosti %2.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>%1 element without %2 attribute is not allowed inside schema without target namespace.</source>
-        <translation>Ve schématu bez jmenného prostoru musí mít prvek %1 vlastnost %2.</translation>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+851"/>
-        <location line="+158"/>
-        <source>%1 element is not allowed inside %2 element if %3 attribute is present.</source>
-        <translation>Když je přítomna vlastnost %3, nesmí se vyskytovat prvek %1 v prvku %2.</translation>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-97"/>
-        <location line="+119"/>
-        <location line="+89"/>
-        <source>%1 element has neither %2 attribute nor %3 child element.</source>
-        <translation>Prvek %1 nemá ani vlastnost %2 ani podprvek %3.</translation>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+835"/>
-        <location line="+1474"/>
-        <location line="+232"/>
-        <location line="+7"/>
-        <location line="+260"/>
-        <location line="+17"/>
-        <location line="+258"/>
-        <location line="+6"/>
-        <location line="+17"/>
-        <location line="+6"/>
-        <location line="+17"/>
-        <location line="+11"/>
-        <location line="+11"/>
-        <location line="+11"/>
-        <source>%1 element with %2 child element must not have a %3 attribute.</source>
-        <translation>Prvek %1 nesmí mít vlastnost %3, když existuje podprvek %2.</translation>
+        <source>Confirm proxy removal</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1325"/>
-        <source>%1 attribute of %2 element must be %3 or %4.</source>
-        <translation>Vlastnost %1 prvku %2 může být jen %3 nebo %4.</translation>
+        <source>Are you sure do you want to remove this proxy?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
-        <source>%1 attribute of %2 element must have a value of %3.</source>
-        <translation>Vlastnost %1 prvku %2 musí mít hodnotu %3.</translation>
+        <source>Remove proxy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+34"/>
-        <source>%1 attribute of %2 element must have a value of %3 or %4.</source>
-        <translation>Vlastnost %1 prvku %2 může mít jen jednu z hodnot %3 nebo %4.</translation>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+319"/>
-        <location line="+129"/>
-        <location line="+9"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+327"/>
-        <location line="+203"/>
-        <location line="+6"/>
-        <location line="+6"/>
-        <location line="+6"/>
-        <location line="+6"/>
-        <location line="+6"/>
-        <location line="+6"/>
-        <location line="+77"/>
-        <source>%1 element must not have %2 and %3 attribute together.</source>
-        <translation>Vlastnosti %2 a %3 se v prvku %1 nemohou objevit společně.</translation>
+        <source>You have unsaved changes in current proxy.&lt;br /&gt;Do you want to save them?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-768"/>
-        <location line="+222"/>
-        <source>Content of %1 attribute of %2 element must not be from namespace %3.</source>
-        <translation>Obsah vlastnosti %1 prvku %2 nemůže pocházet ze jmenného prostoru %3.</translation>
+        <source>You have unsaved changes in current proxy.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>RecentChatsAction</name>
     <message>
-        <location line="-215"/>
-        <location line="+222"/>
-        <source>%1 attribute of %2 element must not be %3.</source>
-        <translation>Vlastnost %1 prvku %2 nemůže být %3.</translation>
+        <source>Recent Chats</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>RecentChatsMenu</name>
     <message>
-        <location line="-64"/>
-        <source>%1 attribute of %2 element must have the value %3 because the %4 attribute is set.</source>
-        <translation>Vlastnost %1 prvku %2 musí mít hodnotu %3, protože je nastavena vlastnost %4.</translation>
+        <source>Recent chats</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>RosterNotifier</name>
     <message>
-        <location line="+187"/>
-        <source>Specifying use=&apos;prohibited&apos; inside an attribute group has no effect.</source>
-        <translation>Zadání use=&apos;prohibited&apos; ve skupině vlastností nemá naprosto žádný účinek.</translation>
+        <source>Roster</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+353"/>
-        <source>%1 element must have either %2 or %3 attribute.</source>
-        <translation>Prvek %1 musí mít buď vlastnost %2 nebo %3.</translation>
+        <source>%1: roster import succeded</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+554"/>
-        <source>%1 element must have either %2 attribute or %3 or %4 as child element.</source>
-        <translation>Prvek %1 musí mít buď vlastnost %2, nebo mít %3 nebo %4 jako podprvek.</translation>
+        <source>%1: roster import failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+55"/>
-        <source>%1 element requires either %2 or %3 attribute.</source>
-        <translation>Prvek %1 vyžaduje buď vlastnost %2 nebo %3.</translation>
+        <source>%1: roster export succeded</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>Text or entity references not allowed inside %1 element</source>
-        <translation>Text nebo odkazy na entitu nejsou v prvku %1 dovoleny</translation>
+        <source>%1: roster export failed</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>RosterReplacer</name>
     <message>
-        <location line="+41"/>
-        <location line="+112"/>
-        <source>%1 attribute of %2 element must contain %3, %4 or a list of URIs.</source>
-        <translation>Vlastnost %1 prvku %2 musí obsahovat %3, %4 nebo seznam adres (URL).</translation>
+        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+126"/>
-        <source>%1 element is not allowed in this context.</source>
-        <translation>Prvek %1 není v této souvislosti dovolen.</translation>
+        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
-        <source>%1 attribute of %2 element has larger value than %3 attribute.</source>
-        <translation>Hodnota vlastnosti %1 prvku %2 je větší než hodnota vlastnosti %3.</translation>
+        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Prefix of qualified name %1 is not defined.</source>
-        <translation>Předpona způsobilého názvu %1 není stanovena.</translation>
+        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+65"/>
-        <location line="+61"/>
-        <source>%1 attribute of %2 element must either contain %3 or the other values.</source>
-        <translation>Hodnota vlastnosti %1 prvku %2 musí obsahovat buď %3 nebo jiné hodnoty.</translation>
+        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+131"/>
-        <source>Component with ID %1 has been defined previously.</source>
-        <translation>Součást s ID %1 je již stanovena.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Element %1 already defined.</source>
-        <translation>Prvek %1 je již stanoven.</translation>
+        <source>Apply changes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Attribute %1 already defined.</source>
-        <translation>Vlastnost %1 je již stanovena.</translation>
+        <source>Leave contact list unchanged</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SearchBar</name>
     <message>
-        <location line="+15"/>
-        <source>Type %1 already defined.</source>
-        <translation>Typ %1 je již stanoven.</translation>
+        <source>Find:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Attribute group %1 already defined.</source>
-        <translation>Skupina vlastností %1 je již stanovena.</translation>
+        <source>Previous</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Element group %1 already defined.</source>
-        <translation>Skupina prvků %1 je již stanovena.</translation>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SearchWindow</name>
     <message>
-        <location line="+11"/>
-        <source>Notation %1 already defined.</source>
-        <translation>Zápis %1 je již stanoven.</translation>
+        <source>Search User in Directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Identity constraint %1 already defined.</source>
-        <translation>Omezení totožnosti %1 je již stanoveno.</translation>
+        <source>Search Criteria</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Duplicated facets in simple type %1.</source>
-        <translation>Zdvojené omezující vlastnosti v jednoduchém typu %1.</translation>
+        <source>&amp;Uin number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/schema/qxsdschemaresolver.cpp" line="+346"/>
-        <source>%1 references unknown %2 or %3 element %4.</source>
-        <translation>%1 odkazuje na neznámý prvek %4 (%2 nebo %3).</translation>
+        <source>Search for this uin exclusively</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>%1 references identity constraint %2 that is no %3 or %4 element.</source>
-        <translation>%1 odkazuje na omezení totožnosti %2, které není ani prvek &apos;%3&apos; ani &apos;%4&apos;.</translation>
+        <source>&amp;Personal data</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>%1 has a different number of fields from the identity constraint %2 that it references.</source>
-        <translation>U %1 se liší počet polí od omezení totožnosti %2, na kterou odkazuje.</translation>
+        <source>Search using the personal data typed above (name, nickname, etc.)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Base type %1 of %2 element cannot be resolved.</source>
-        <translation>Základní typ %1 prvku %2 nemůže být vyřešen.</translation>
+        <source>Uin Number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+84"/>
-        <source>Item type %1 of %2 element cannot be resolved.</source>
-        <translation>Složkový typ %1 prvku %2 nemůže být vyřešen.</translation>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Member type %1 of %2 element cannot be resolved.</source>
-        <translation>Členský typ %1 prvku %2 nemůže být vyřešen.</translation>
+        <source>Personal Data</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location line="+415"/>
-        <location line="+30"/>
-        <source>Type %1 of %2 element cannot be resolved.</source>
-        <translation>Typ %1 prvku %2 nemůže být vyřešen.</translation>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-423"/>
-        <source>Base type %1 of complex type cannot be resolved.</source>
-        <translation>Základní typ %1 složitého typu nemůže být vyřešen.</translation>
+        <source>Gender:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>%1 cannot have complex base type that has a %2.</source>
-        <translation>%1 nelze mít žádný složitý základní typ, který má %2.</translation>
+        <source>Male</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+286"/>
-        <source>Content model of complex type %1 contains %2 element so it cannot be derived by extension from a non-empty type.</source>
-        <translation>Model obsahu složitého typu %1 obsahuje prvek %2; nelze jej proto odvodit pomocí rozšíření z ne-prázdného typu.</translation>
+        <source>Female</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Complex type %1 cannot be derived by extension from %2 as the latter contains %3 element in its content model.</source>
-        <translation>Složitý typ %1 nemůže být odvozen pomocí rozšíření z %2, neboť poslední obsahuje prvek &apos;%3&apos; ve svém modelu obsahu.</translation>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+101"/>
-        <source>Type of %1 element must be a simple type, %2 is not.</source>
-        <translation>Typ prvku %1 musí být jednoduchým prvkem, což %2 není.</translation>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+62"/>
-        <source>Substitution group %1 of %2 element cannot be resolved.</source>
-        <translation>Skupina nahrazení %1 prvku %2 nemůže být vyřešena.</translation>
+        <source>Birth year from:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Substitution group %1 has circular definition.</source>
-        <translation>Skupina nahrazení %1 má má cyklickou definici.</translation>
+        <source>to:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+120"/>
-        <location line="+7"/>
-        <source>Duplicated element names %1 in %2 element.</source>
-        <translation>Název prvku %1 se vyskytuje v prvku %2 vícekrát.</translation>
+        <source>City:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
-        <location line="+52"/>
-        <location line="+71"/>
-        <location line="+28"/>
-        <source>Reference %1 of %2 element cannot be resolved.</source>
-        <translation>Odkaz %1 prvku %2 nemůže být vyřešen.</translation>
+        <source>Search only for active users</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-138"/>
-        <source>Circular group reference for %1.</source>
-        <translation>V kruzích prováděný skupinový odkaz pro %1.</translation>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>%1 element is not allowed in this scope</source>
-        <translation>Prvek %1 není v tomto oboru dovolen</translation>
+        <source>Uin</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>%1 element cannot have %2 attribute with value other than %3.</source>
-        <translation>Hodnota vlastnosti %2 prvku %1 může být pouze %3.</translation>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>%1 element cannot have %2 attribute with value other than %3 or %4.</source>
-        <translation>Hodnota vlastnosti %2 prvku %1 může být pouze %3 nebo %4.</translation>
+        <source>City</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+91"/>
-        <source>%1 or %2 attribute of reference %3 does not match with the attribute declaration %4.</source>
-        <translation>Vlastnost %1 nebo %2 odkazu %3 neodpovídá prohlášení vlastnosti %4.</translation>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Attribute group %1 has circular reference.</source>
-        <translation>Skupina vlastnosti %1 má cyklický odkaz.</translation>
+        <source>Birth Year</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+131"/>
-        <source>%1 attribute in %2 must have %3 use like in base type %4.</source>
-        <translation>Vlastnost %1 v %2 musí mít použití &apos;%3&apos; jako v základním typu %4.</translation>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+52"/>
-        <source>Attribute wildcard of %1 is not a valid restriction of attribute wildcard of base type %2.</source>
-        <translation>Zástupný symbol vlastnosti (vzor hledání) %1není platným omezením zástupného symbolu vlastnosti (vzoru hledání) základního typu %2.</translation>
+        <source>To be able to search you have to set up an account first.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%1 has attribute wildcard but its base type %2 has not.</source>
-        <translation>%1 má zástupný symbol vlastnosti (vzor hledání), ale jeho základní typ %2 nemá.</translation>
+        <source>We don&apos;t offer contacts search feature for your network yet.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>Union of attribute wildcard of type %1 and attribute wildcard of its base type %2 is not expressible.</source>
-        <translation>Sjednocení zástupného symbolu vlastnosti (vzoru hledání) typu %1 a zástupného symbolu vlastnosti (vzoru hledání) jeho základního typu %2 není vyjádřitelné.</translation>
+        <source>Cannot search contacts in offline mode.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
-        <source>Enumeration facet contains invalid content: {%1} is not a value of type %2.</source>
-        <translation>Výčtová omezující vlastnost obsahuje neplatný obsah: {%1} není hodnotou typu %2.</translation>
+        <source>Searching...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Namespace prefix of qualified name %1 is not defined.</source>
-        <translation>Předpona jmenného prostoru způsobilého názvu %1 není stanovena.</translation>
+        <source>Done searching</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+51"/>
-        <location line="+18"/>
-        <source>%1 element %2 is not a valid restriction of the %3 element it redefines: %4.</source>
-        <translation>Prvek %2 (%1) není platným omezením přepisovaného prvku (%3): %4.</translation>
+        <source>There were no results of your search.</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SearchWindowActions</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/schema/qxsdtypechecker.cpp" line="+226"/>
-        <location line="+7"/>
-        <location line="+21"/>
-        <source>%1 is not valid according to %2.</source>
-        <translation>%1 je podle %2 neplatné.</translation>
+        <source>&amp;Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+167"/>
-        <source>String content does not match the length facet.</source>
-        <translation>Obsah řetězce znaků neodpovídá omezující vlastnosti délky.</translation>
+        <source>&amp;Next results</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>String content does not match the minLength facet.</source>
-        <translation>Obsah řetězce znaků neodpovídá omezující vlastnosti délky (nejmenší; &apos;minLength&apos;).</translation>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>String content does not match the maxLength facet.</source>
-        <translation>Obsah řetězce znaků neodpovídá omezující vlastnosti délky (největší; &apos;maxLength&apos;).</translation>
+        <source>Clear results</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>String content does not match pattern facet.</source>
-        <translation>Obsah řetězce znaků neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Add selected user</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>String content is not listed in the enumeration facet.</source>
-        <translation>Obsah řetězce znaků není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SelectFile</name>
     <message>
-        <location line="+17"/>
-        <source>Signed integer content does not match the maxInclusive facet.</source>
-        <translation>Celočíselná hodnota označená znaménkem neodpovídá omezující vlastnosti &apos;maxInclusive&apos;.</translation>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Signed integer content does not match the maxExclusive facet.</source>
-        <translation>Celočíselná hodnota označená znaménkem neodpovídá omezující vlastnosti &apos;maxExclusive&apos;.</translation>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Signed integer content does not match the minInclusive facet.</source>
-        <translation>Celočíselná hodnota označená znaménkem neodpovídá omezující vlastnosti &apos;minInclusive&apos;.</translation>
+        <source>Select File</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Signed integer content does not match the minExclusive facet.</source>
-        <translation>Celočíselná hodnota označená znaménkem neodpovídá omezující vlastnosti &apos;minExclusive&apos;.</translation>
+        <source>All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Signed integer content is not listed in the enumeration facet.</source>
-        <translation>Celočíselná hodnota označená znaménkem není obsažena ve výčtové omezující vlastnosti.</translation>
+        <source>Select audio File</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Signed integer content does not match pattern facet.</source>
-        <translation>Celočíselná hodnota označená znaménkem neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Audio Files (*.wav *.au *.raw);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Signed integer content does not match in the totalDigits facet.</source>
-        <translation>Celočíselná hodnota označená znaménkem neodpovídá omezující vlastnosti &apos;totalDigits&apos;.</translation>
+        <source>Select folder</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SelectFont</name>
     <message>
-        <location line="+17"/>
-        <source>Unsigned integer content does not match the maxInclusive facet.</source>
-        <translation>Celočíselná hodnota jsoucí bez znaménka neodpovídá omezující vlastnosti &apos;maxInclusive&apos;.</translation>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SendFileAction</name>
     <message>
-        <location line="+8"/>
-        <source>Unsigned integer content does not match the maxExclusive facet.</source>
-        <translation>Celočíselná hodnota jsoucí bez znaménka neodpovídá omezující vlastnosti &apos;maxExclusive&apos;.</translation>
+        <source>Select file location</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Unsigned integer content does not match the minInclusive facet.</source>
-        <translation>Celočíselná hodnota jsoucí bez znaménka neodpovídá omezující vlastnosti &apos;minInclusive&apos;.</translation>
+        <source>Send File...</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ShowFileTransferWindowAction</name>
     <message>
-        <location line="+8"/>
-        <source>Unsigned integer content does not match the minExclusive facet.</source>
-        <translation>Celočíselná hodnota jsoucí bez znaménka neodpovídá omezující vlastnosti &apos;minExclusive&apos;.</translation>
+        <source>View File Transfers</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SslCertificateErrorDialog</name>
     <message>
-        <location line="+18"/>
-        <source>Unsigned integer content is not listed in the enumeration facet.</source>
-        <translation>Celočíselná hodnota jsoucí bez znaménka není obsažena ve výčtové omezující vlastnosti.</translation>
+        <source>Certificate for &lt;b&gt;%1&lt;/b&gt; failed authenticity validation:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Unsigned integer content does not match pattern facet.</source>
-        <translation>Celočíselná hodnota jsoucí bez znaménka neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Show certificate details...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Unsigned integer content does not match in the totalDigits facet.</source>
-        <translation>Celočíselná hodnota jsoucí bez znaménka neodpovídá omezující vlastnosti &apos;totalDigits&apos;.</translation>
+        <source>Certificate details:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Double content does not match the maxInclusive facet.</source>
-        <translation>Číslo s pohyblivou čárkou neodpovídá omezující vlastnosti &apos;maxInclusive&apos;.</translation>
+        <source>Connect anyway</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Double content does not match the maxExclusive facet.</source>
-        <translation>Číslo s pohyblivou čárkou neodpovídá omezující vlastnosti &apos;maxExclusive&apos;.</translation>
+        <source>Trust certificate</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Double content does not match the minInclusive facet.</source>
-        <translation>Číslo s pohyblivou čárkou neodpovídá omezující vlastnosti &apos;minInclusive&apos;.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SslCertificateWidget</name>
     <message>
-        <location line="+8"/>
-        <source>Double content does not match the minExclusive facet.</source>
-        <translation>Číslo s pohyblivou čárkou neodpovídá omezující vlastnosti &apos;minExclusive&apos;.</translation>
+        <source>Valid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Double content is not listed in the enumeration facet.</source>
-        <translation>Číslo s pohyblivou čárkou není obsaženo ve výčtové omezující vlastnosti.</translation>
+        <source>Blacklisted</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Double content does not match pattern facet.</source>
-        <translation>Číslo s pohyblivou čárkou neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Valid from</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Decimal content does not match in the fractionDigits facet.</source>
-        <translation>Desetinné číslo neodpovídá omezující vlastnosti &apos;fractionDigits&apos;.</translation>
+        <source>Valid to</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Decimal content does not match in the totalDigits facet.</source>
-        <translation>Desetinné číslo neodpovídá omezující vlastnosti &apos;totalDigits&apos;.</translation>
+        <source>Digest (Md5)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Date time content does not match the maxInclusive facet.</source>
-        <translation>Údaj o datu neodpovídá omezující vlastnosti &apos;maxInclusive&apos;.</translation>
+        <source>Digest (Sha1)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Date time content does not match the maxExclusive facet.</source>
-        <translation>Údaj o datu neodpovídá omezující vlastnosti &apos;maxExclusive&apos;.</translation>
+        <source>Serial number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Date time content does not match the minInclusive facet.</source>
-        <translation>Údaj o datu neodpovídá omezující vlastnosti &apos;minInclusive&apos;.</translation>
+        <source>Issuer organization</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Date time content does not match the minExclusive facet.</source>
-        <translation>Údaj o datu neodpovídá omezující vlastnosti &apos;minExclusive&apos;.</translation>
+        <source>Issuer common name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Date time content is not listed in the enumeration facet.</source>
-        <translation>Údaj o datu není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>Issuer locality name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Date time content does not match pattern facet.</source>
-        <translation>Údaj o datu neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Issuer organizational unit name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>Duration content does not match the maxInclusive facet.</source>
-        <translation>Údaj o době trvání neodpovídá omezující vlastnosti &apos;maxInclusive&apos;.</translation>
+        <source>Issuer country name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Duration content does not match the maxExclusive facet.</source>
-        <translation>Údaj o době trvání neodpovídá omezující vlastnosti &apos;maxExclusive&apos;.</translation>
+        <source>Issuer state or province name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Duration content does not match the minInclusive facet.</source>
-        <translation>Údaj o době trvání neodpovídá omezující vlastnosti &apos;minInclusive&apos;.</translation>
+        <source>Issuer distinguished name qualifier</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Duration content does not match the minExclusive facet.</source>
-        <translation>Údaj o době trvání neodpovídá omezující vlastnosti &apos;minExclusive&apos;.</translation>
+        <source>Issuer serial number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Duration content is not listed in the enumeration facet.</source>
-        <translation>Údaj o době trvání není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>Issuer email address</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Duration content does not match pattern facet.</source>
-        <translation>Údaj o době trvání neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Subject organization</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Boolean content does not match pattern facet.</source>
-        <translation>Booleánská hodnota neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Subject common name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Binary content does not match the length facet.</source>
-        <translation>Binární obsah neodpovídá omezující vlastnosti délky.</translation>
+        <source>Subject alernative name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Binary content does not match the minLength facet.</source>
-        <translation>Binární obsah neodpovídá omezující vlastnosti &apos;minLength&apos;.</translation>
+        <source>Subject locality name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Binary content does not match the maxLength facet.</source>
-        <translation>Binární obsah neodpovídá omezující vlastnosti &apos;maxLength&apos;.</translation>
+        <source>Subject organizational unit name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Binary content is not listed in the enumeration facet.</source>
-        <translation>Binární obsah není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>Subject country name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Invalid QName content: %1.</source>
-        <translation>Obsah způsobilého názvu (&apos;QName&apos;) je neplatný: %1.</translation>
+        <source>Subject state or province name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>QName content is not listed in the enumeration facet.</source>
-        <translation>Obsah způsobilého názvu (&apos;QName&apos;) není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>Subject distinguished name qualifier</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>QName content does not match pattern facet.</source>
-        <translation>Obsah způsobilého názvu (&apos;QName&apos;) neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Subject serial number</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
-        <source>Notation content is not listed in the enumeration facet.</source>
-        <translation>Obsah zápisu není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>Subject email address</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
-        <source>List content does not match length facet.</source>
-        <translation>Obsah seznamu neodpovídá omezující vlastnosti délky.</translation>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>List content does not match minLength facet.</source>
-        <translation>Obsah seznamu neodpovídá omezující vlastnosti &apos;minLength&apos;.</translation>
+        <source>No</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StatusActions</name>
     <message>
-        <location line="+7"/>
-        <source>List content does not match maxLength facet.</source>
-        <translation>Obsah seznamu neodpovídá omezující vlastnosti &apos;maxLength&apos;.</translation>
+        <source>Change Status Message...</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StatusButton</name>
     <message>
-        <location line="+90"/>
-        <source>List content is not listed in the enumeration facet.</source>
-        <translation>Obsah seznamu není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>Identity</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>List content does not match pattern facet.</source>
-        <translation>Obsah seznamu neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+39"/>
-        <source>Union content is not listed in the enumeration facet.</source>
-        <translation>Obsah sjednocení není obsažen ve výčtové omezující vlastnosti.</translation>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Union content does not match pattern facet.</source>
-        <translation>Obsah sjednocení neodpovídá omezující vlastnosti vzoru pro hledání.</translation>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StatusChangedNotification</name>
     <message>
-        <location line="+15"/>
-        <source>Data of type %1 are not allowed to be empty.</source>
-        <translation>Data typu %1 nemohou být prázdná.</translation>
+        <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/schema/qxsdvalidatinginstancereader.cpp" line="+152"/>
-        <source>Element %1 is missing child element.</source>
-        <translation>U prvku %1 chybí podprvek.</translation>
+        <source>Status changed</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StatusContainerManager</name>
     <message>
-        <location line="+16"/>
-        <source>There is one IDREF value with no corresponding ID: %1.</source>
-        <translation>Existuje hodnota IDREF, pro kterou neexistuje příslušné ID: %1.</translation>
+        <source>All</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StatusWindow</name>
     <message>
-        <location line="+27"/>
-        <source>Loaded schema file is invalid.</source>
-        <translation>Nahraný soubor se schématem je neplatný.</translation>
+        <source>Change status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>%1 contains invalid data.</source>
-        <translation>%1 obsahuje neplatná data.</translation>
+        <source>Change account status: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>xsi:schemaLocation namespace %1 has already appeared earlier in the instance document.</source>
-        <translation>Jmenný prostor xsi:schemaLocation %1 byl již dříve v případovém dokumentu stanoven.</translation>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>xsi:noNamespaceSchemaLocation cannot appear after the first no-namespace element or attribute.</source>
-        <translation>xsi:noNamespaceSchemaLocation se nemůže objevit po prvním prvku nebo vlastnosti bez jmenného prostoru.</translation>
+        <source>Select Previously Used Description</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>No schema defined for validation.</source>
-        <translation>Pro schválení není stanoveno žádné schéma.</translation>
+        <source>Clear Descriptions History</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>No definition for element %1 available.</source>
-        <translation>Pro prvek %1 není dostupná žádná definice.</translation>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <location line="+49"/>
-        <location line="+142"/>
-        <source>Specified type %1 is not known to the schema.</source>
-        <translation>Zadaný typ %1 není ve schématu stanoven.</translation>
+        <source>Erase Description</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-176"/>
-        <source>Element %1 is not defined in this scope.</source>
-        <translation>Prvek %1 není v této oblasti stanoven.</translation>
+        <source>&amp;Set status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+43"/>
-        <source>Declaration for element %1 does not exist.</source>
-        <translation>Pro prvek %1 není dostupná žádná deklarace.</translation>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Element %1 contains invalid content.</source>
-        <translation>Prvek %1 obsahuje neplatný obsah.</translation>
+        <source>do not change</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+73"/>
-        <source>Element %1 is declared as abstract.</source>
-        <translation>Prvek %1 je prohlášen jako abstraktní.</translation>
+        <source>Do you really want to clear the descriptions history?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Element %1 is not nillable.</source>
-        <translation>Prvek %1 nemá zadánu vlastnost &apos;nillable&apos;.</translation>
+        <source>Clear history</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Attribute %1 contains invalid data: %2</source>
-        <translation>Vlastnost %1 obsahuje neplatná data: %2</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StringListDialog</name>
     <message>
-        <location line="+8"/>
-        <source>Element contains content although it is nillable.</source>
-        <translation>Prvek má obsah, ačkoli je &apos;nillable&apos;.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SubscriptionWindow</name>
     <message>
-        <location line="+6"/>
-        <source>Fixed value constraint not allowed if element is nillable.</source>
-        <translation>Pevné omezení hodnoty není dovoleno, pokud je prvek &apos;nillable&apos;.</translation>
+        <source>Ask For Sharing Status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Specified type %1 is not validly substitutable with element type %2.</source>
-        <translation>Zadaný typ %1 není platně nahraditelný typem prvku %2.</translation>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to add you to his contact list.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>Complex type %1 is not allowed to be abstract.</source>
-        <translation>Složitý typ %1 nemůže být abstraktní.</translation>
+        <source>Do you want this person to see your status?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
-        <source>Element %1 contains not allowed attributes.</source>
-        <translation>Prvek %1 obsahuje nepřípustné vlastnosti.</translation>
+        <source>Allow and add buddy...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location line="+97"/>
-        <source>Element %1 contains not allowed child element.</source>
-        <translation>Prvek %1 obsahuje nepřípustný podprvek.</translation>
+        <source>Allow</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-76"/>
-        <location line="+93"/>
-        <source>Content of element %1 does not match its type definition: %2.</source>
-        <translation>Obsah prvku %1 neodpovídá definici svého typu: %2.</translation>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>TokenWindow</name>
     <message>
-        <location line="-85"/>
-        <location line="+92"/>
-        <location line="+41"/>
-        <source>Content of element %1 does not match defined value constraint.</source>
-        <translation>Obsah prvku %1 neodpovídá stanovenému omezení hodnoty.</translation>
+        <source>Enter Token Value</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-73"/>
-        <source>Element %1 contains not allowed child content.</source>
-        <translation>Prvek %1 obsahuje nepřípustný podobsah.</translation>
+        <source>Enter text from the picture:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
-        <source>Element %1 contains not allowed text content.</source>
-        <translation>Prvek %1 obsahuje nepřípustný textový obsah.</translation>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Element %1 cannot contain other elements, as it has a fixed content.</source>
-        <translation>Prvek %1 nesmí obsahovat žádné jiné prvky, protože má pevný obsah.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ToolBar</name>
     <message>
-        <location line="+43"/>
-        <source>Element %1 is missing required attribute %2.</source>
-        <translation>U prvku %1 chybí vyžadovaná vlastnost %2.</translation>
+        <source>Text position</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
-        <source>Attribute %1 does not match the attribute wildcard.</source>
-        <translation>Vlastnost %1 neodpovídá zástupnému symbolu (vzoru hledání) vlastnosti.</translation>
+        <source>Icon only</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Declaration for attribute %1 does not exist.</source>
-        <translation>Pro vlastnost %1 není dostupná žádná deklarace.</translation>
+        <source>Text only</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Element %1 contains two attributes of type %2.</source>
-        <translation>Prvek %1 obsahuje dvě vlastnosti typu %2.</translation>
+        <source>Text alongside icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Attribute %1 contains invalid content.</source>
-        <translation>Vlastnost %1 má neplatný obsah.</translation>
+        <source>Text under icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Element %1 contains unknown attribute %2.</source>
-        <translation>Prvek %1 obsahuje neznámou vlastnost %2.</translation>
+        <source>Remove this button</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
-        <location line="+46"/>
-        <source>Content of attribute %1 does not match its type definition: %2.</source>
-        <translation>Obsah vlastnosti %1 neodpovídá definici svého typu: %2.</translation>
+        <source>Remove this separator</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-38"/>
-        <location line="+46"/>
-        <source>Content of attribute %1 does not match defined value constraint.</source>
-        <translation>Obsah vlastnosti %1 neodpovídá stanovenému omezení hodnoty.</translation>
+        <source>Remove this expandable spacer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+88"/>
-        <source>Non-unique value found for constraint %1.</source>
-        <translation>Pro omezení %1 byla nalezena ne jednoznačně stanovená hodnota.</translation>
+        <source>Add new button</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Key constraint %1 contains absent fields.</source>
-        <translation>Omezení klíče %1 obsahuje nepřítomná pole.</translation>
+        <source>No items to add found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Key constraint %1 contains references nillable element %2.</source>
-        <translation>Omezení klíče %1 obsahuje odkazy na prvek %2, který je &apos;nillable&apos;.</translation>
+        <source>Add new separator</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
-        <source>No referenced value found for key reference %1.</source>
-        <translation>Odkazovanou hodnotu odkazu na klíč %1 se nepodařilo najít.</translation>
+        <source>Add new expandable spacer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+64"/>
-        <source>More than one value found for field %1.</source>
-        <translation>Pro pole %1 bylo nalezeno více hodnot.</translation>
+        <source>Create new toolbar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Field %1 has no simple type.</source>
-        <translation>Pole %1 nemá žádný jednoduchý typ.</translation>
+        <source>Remove this toolbar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+73"/>
-        <source>ID value &apos;%1&apos; is not unique.</source>
-        <translation>Hodnota ID %1 není jednoznačná.</translation>
+        <source>Block toolbars</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>&apos;%1&apos; attribute contains invalid QName content: %2.</source>
-        <translation>Vlastnost %1 obsahuje neplatný způsobilý název: %2.</translation>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/type/qcardinality.cpp" line="+47"/>
-        <source>empty</source>
-        <translation>prázdný</translation>
+        <source>Do you really want to remove this toolbar?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>zero or one</source>
-        <translation>žádný nebo jeden</translation>
+        <source>Remove toolbar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>exactly one</source>
-        <translation>přesně jeden</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>UpdatesDialog</name>
     <message>
-        <location line="+2"/>
-        <source>one or more</source>
-        <translation>jeden nebo více</translation>
+        <source>New version is available. Please update</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>zero or more</source>
-        <translation>žádný nebo více</translation>
+        <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/type/qtypechecker.cpp" line="+55"/>
-        <source>Required type is %1, but %2 was found.</source>
-        <translation>Požadovaný typ je %1, byl ale zadán %2.</translation>
+        <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+44"/>
-        <source>Promoting %1 to %2 may cause loss of precision.</source>
-        <translation>Postoupení od %1 k %2 může vést ke ztrátě přesnosti.</translation>
+        <source>Check for updates when Kadu is opened</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+49"/>
-        <source>The focus is undefined.</source>
-        <translation>Není stanoveno ohnisko.</translation>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>WebkitMessagesViewHandler</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/utils/qoutputvalidator.cpp" line="+78"/>
-        <source>It&apos;s not possible to add attributes after any other kind of node.</source>
-        <translation>Vlastnosti nesmí následovat za jinými druhy uzlů.</translation>
+        <source>%1 is active</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>An attribute by name %1 has already been created.</source>
-        <translation>Již byla vytvořena jedna vlastnost s názvem %1.</translation>
+        <source>%1 is composing...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/utils/qxpathhelper_p.h" line="+110"/>
-        <source>Only the Unicode Codepoint Collation is supported(%1). %2 is unsupported.</source>
-        <translation>Je podporován pouze Unicode Codepoint Collation (%1). %2 není podporován.</translation>
+        <source>%1 is gone</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/acceltree/qacceltreebuilder_tpl_p.h" line="+219"/>
-        <source>An %1-attribute with value %2 has already been declared.</source>
-        <translation>Vlastnost %1 s hodnotou %2 již existuje.</translation>
+        <source>%1 is inactive</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>An %1-attribute must have a valid %2 as value, which %3 isn&apos;t.</source>
-        <translation>Vlastnost %1 musí mít platnou %2 jako hodnotu, což není případ %3.</translation>
+        <source>%1 has paused composing</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>WindowNotifierWindow</name>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/data/qabstractfloatmathematician_tpl_p.h" line="+67"/>
-        <source>No operand in an integer division, %1, can be %2.</source>
-        <translation>Při celočíselném dělení, %1, nelze užít operand %2.</translation>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>YourAccounts</name>
     <message>
-        <location line="+7"/>
-        <source>The first operand in an integer division, %1, cannot be infinity (%2).</source>
-        <translation>První operand celočíselného dělení, %1, nemůže být nekonečno (%2).</translation>
+        <source>Your accounts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>The second operand in a division, %1, cannot be zero (%2).</source>
-        <translation>Druhý operand celočíselného dělení, %1, nemůže být nula (%2).</translation>
+        <source>Add existing account</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qcastingplatform_tpl_p.h" line="+139"/>
-        <source>No casting is possible with %1 as the target type.</source>
-        <translation>Přetypování na cílový typ %1 není možné.</translation>
+        <source>Create new account</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>It is not possible to cast from %1 to %2.</source>
-        <translation>Není možné přetypování z %1 na %2.</translation>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>Casting to %1 is not possible because it is an abstract type, and can therefore never be instantiated.</source>
-        <translation>Přetypování na %1 není možné, protože se jedná o abstraktní typ, a proto nelze vytvořit jeho instanci.</translation>
+        <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Create New Account&lt;/b&gt;&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>It&apos;s not possible to cast the value %1 of type %2 to %3</source>
-        <translation>Není možné přetypovat hodnotu %1 z typu %2 na %3</translation>
+        <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Failure when casting from %1 to %2: %3</source>
-        <translation>Neúspěch při přetypování z %1 na %2: %3</translation>
+        <source>IM Network</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qcomparisonplatform_tpl_p.h" line="+170"/>
-        <source>No comparisons can be done involving the type %1.</source>
-        <translation>Nelze provádět žádné srovnávací operace s typem %1.</translation>
+        <source>Unsaved changes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Operator %1 is not available between atomic values of type %2 and %3.</source>
-        <translation>Operátor %1 není dostupný pro atomické typy %2 a %3.</translation>
+        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to edit or discard changes?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/expr/qevaluationcache_tpl_p.h" line="+120"/>
-        <source>Circularity detected</source>
-        <translation>Zjištěna kruhovitost</translation>
+        <source>Return to edit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/functions/qcomparingaggregator_tpl_p.h" line="+200"/>
-        <source>The first argument to %1 cannot be of type %2.</source>
-        <translation>První argument pro %1 nemůže být typu %2.</translation>
+        <source>Discard changes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtxmlpatterns/src/xmlpatterns/parser/qmaintainingreader_tpl_p.h" line="+187"/>
-        <source>Attribute %1 cannot appear on the element %2. Only the standard attributes can appear.</source>
-        <translation>Vlastnost %1 se nemůže objevit u prvku %2. Jsou přípustné pouze standardní vlastnosti.</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Attribute %1 cannot appear on the element %2. Only %3 is allowed, and the standard attributes.</source>
-        <translation>Vlastnost %1 se nemůže objevit u prvku %2. Jsou přípustné pouze %3 a standardní vlastnosti.</translation>
+        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to save them?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Attribute %1 cannot appear on the element %2. Allowed is %3, %4, and the standard attributes.</source>
-        <translation>Vlastnost %1 se nemůže objevit u prvku %2. Jsou přípustné pouze %3, %4 a standardní vlastnosti.</translation>
+        <source>Save changes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Attribute %1 cannot appear on the element %2. Allowed is %3, and the standard attributes.</source>
-        <translation>Vlastnost %1 se nemůže objevit u prvku %2. Jsou přípustné pouze %3 a standardní vlastnosti.</translation>
+        <source>Discard</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>XSL-T attributes on XSL-T elements must be in the null namespace, not in the XSL-T namespace which %1 is.</source>
-        <translation>Vlastnosti XSL-T prvků XSL-T musí být v nulovém jmenném prostoru, a ne v XSL-T jmenném prostoru, což je případ %1.</translation>
+        <source>Invalid changes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>The attribute %1 must appear on element %2.</source>
-        <translation>U prvku %2 se musí objevit vlastnost %1.</translation>
+        <source>You have invalid changes in current account, which cannot be saved.&lt;br /&gt;Do you want to stay in edit or discard changes?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>The element with local name %1 does not exist in XSL-T.</source>
-        <translation>Prvek s místním názvem %1 v XSL-T neexistuje.</translation>
+        <source>Stay in edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -30,10 +30,6 @@
         <translation>Vpravo</translation>
     </message>
     <message>
-        <source>Show number of messages on tab</source>
-        <translation>Ukázat počet zpráv na kartě</translation>
-    </message>
-    <message>
         <source>Shortcuts</source>
         <translation>Zkratky</translation>
     </message>
@@ -56,13 +52,6 @@
     <message>
         <source>Behavior</source>
         <translation>Chování</translation>
-    </message>
-</context>
-<context>
-    <name>SingleWindow</name>
-    <message>
-        <source>Conference [%1]</source>
-        <translation>Porada [%1]</translation>
     </message>
 </context>
 </TS>

@@ -38,7 +38,8 @@
 #include <url-handlers/url-handler-manager.h>
 
 GaduSendGiftAction::GaduSendGiftAction(QObject *parent) :
-		ActionDescription{parent}
+		// using C++ initializers breaks Qt's lupdate
+		ActionDescription(parent)
 {
 	setName("gaduSendGiftAction");
 	setText(tr("Send Gift..."));

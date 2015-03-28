@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -150,22 +150,6 @@
         <translation>Stát/Země</translation>
     </message>
     <message>
-        <source>IP Address</source>
-        <translation>Adresa IP</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Přípojka</translation>
-    </message>
-    <message>
-        <source>DNS Name</source>
-        <translation>Název DNS</translation>
-    </message>
-    <message>
-        <source>Protocol Version</source>
-        <translation>Verze protokolu</translation>
-    </message>
-    <message>
         <source>Female</source>
         <translation>Žena</translation>
     </message>
@@ -241,10 +225,6 @@
         <translation>Odstranit účet</translation>
     </message>
     <message>
-        <source>External port</source>
-        <translation>Vnější přípojka</translation>
-    </message>
-    <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
         <translation>Musíte libgadu sestavit s podporou pro SSL, abyste mohl povolit zašifrované spojení</translation>
     </message>
@@ -305,16 +285,8 @@
         <translation>Vlastní serverové adresy IP</translation>
     </message>
     <message>
-        <source>Enable file transfers</source>
-        <translation>Povolit přenosy souborů</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Síť</translation>
-    </message>
-    <message>
-        <source>External IP</source>
-        <translation>Vnější IP</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
@@ -349,6 +321,28 @@ Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translatio
     <message>
         <source>Remind Password</source>
         <translation>Připomenout heslo</translation>
+    </message>
+</context>
+<context>
+    <name>GaduFileTransferService</name>
+    <message>
+        <source>Connect before sending files.</source>
+        <translation>Připojit před posláním souborů.</translation>
+    </message>
+    <message>
+        <source>Enable SSL in account configuration and reconnect before sending files.</source>
+        <translation>povolit SSL v nastavení účtu a připojit znovu před posláním souborů.</translation>
+    </message>
+    <message>
+        <source>Unable to login to GG Drive. Reconnect before sending files.</source>
+        <translation>Nelze se přihlásit k GG Drive. Připojit znovu před posláním souborů.</translation>
+    </message>
+</context>
+<context>
+    <name>GaduOutgoingFileTransferHandler</name>
+    <message>
+        <source>Valid GG Drive ticket not available</source>
+        <translation>Platný lístek GG Drive není dostupný</translation>
     </message>
 </context>
 <context>
@@ -421,6 +415,20 @@ Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translatio
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
         <translation>Nelze nahrát přídavný modul pro protokol Gadu-Gadu. Sestavte, prosím, libgadu s podporou pro zlib.</translation>
+    </message>
+</context>
+<context>
+    <name>GaduSendGiftAction</name>
+    <message>
+        <source>Send Gift...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>GaduUrlIncomingFileTransferHandler</name>
+    <message>
+        <source>Network error: %1</source>
+        <translation>Chyba sítě: %1</translation>
     </message>
 </context>
 </TS>

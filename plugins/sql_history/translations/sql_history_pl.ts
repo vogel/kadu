@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>HistorySqlStorage</name>
     <message>
@@ -14,6 +14,14 @@
 %1</source>
         <translation>Otwieranie bazy danych zakończone niepowodzeniem. Numer błędu:
 %1</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>It seems your Qt library does not provide support for selected database. Please install Qt with %1 plugin.</source>
+        <translation>Twoja biblioteka Qt nie wspiera wybranej bazy danych. Zainstaluj Qt z wtyczką %1.</translation>
     </message>
 </context>
 <context>

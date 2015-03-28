@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.1">
 <context>
     <name>Infos</name>
     <message>
@@ -22,14 +22,6 @@
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>IP</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Domain name</source>
         <translation type="unfinished"/>
     </message>
     <message>

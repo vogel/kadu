@@ -23,7 +23,9 @@
 #include "plugin/plugin-root-component.h"
 
 PluginRootComponentHandler::PluginRootComponentHandler(const QString &pluginName, bool firstLoad, PluginRootComponent *pluginRootComponent, QObject *parent) noexcept(false) :
-		QObject{parent}, m_pluginRootComponent{pluginRootComponent}
+		// using C++ initializers breaks Qt's lupdate
+		QObject(parent),
+		m_pluginRootComponent(pluginRootComponent)
 {
 	if (!m_pluginRootComponent)
 		throw PluginActivationErrorException{pluginName, tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(pluginName)};

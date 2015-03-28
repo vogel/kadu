@@ -38,11 +38,12 @@
 #include <QtWidgets/QVBoxLayout>
 
 GroupEditWindow::GroupEditWindow(GroupManager *groupManager, DeprecatedConfigurationApi *configuration, Group group, QWidget *parent) :
-		QDialog{parent},
-		m_groupManager{groupManager},
-		m_configuration{configuration},
-		m_group{group},
-		m_add{group.isNull()}
+		// using C++ initializers breaks Qt's lupdate
+		QDialog(parent),
+		m_groupManager(groupManager),
+		m_configuration(configuration),
+		m_group(group),
+		m_add(group.isNull())
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setMinimumWidth(400);

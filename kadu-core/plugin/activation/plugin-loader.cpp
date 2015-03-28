@@ -44,8 +44,9 @@
 #endif
 
 PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(false) :
-		QObject{parent},
-		m_pluginLoader{make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String{SO_PREFIX} + pluginName + QLatin1String{"." SO_EXT})}
+		// using C++ initializers breaks Qt's lupdate
+		QObject(parent),
+		m_pluginLoader(make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT)))
 {
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 

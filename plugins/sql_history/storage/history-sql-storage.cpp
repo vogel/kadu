@@ -75,9 +75,10 @@
 #define DATE_TITLE_LENGTH 120
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
-		HistoryStorage(parent), InitializerThread{}, ImportProgressWindow{},
-		AccountsMapping{}, ContactsMapping{}, ChatsMapping{}, DatabaseMutex{QMutex::NonRecursive},
-		ChatStorage{}, StatusStorage{}, SmsStorage{}
+		// using C++ initializers breaks Qt's lupdate
+		HistoryStorage(parent), InitializerThread(), ImportProgressWindow(),
+		AccountsMapping(), ContactsMapping(), ChatsMapping(), DatabaseMutex(QMutex::NonRecursive),
+		ChatStorage(), StatusStorage(), SmsStorage()
 {
 	kdebugf();
 

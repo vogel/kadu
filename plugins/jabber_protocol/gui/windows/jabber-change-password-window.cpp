@@ -40,9 +40,10 @@
 #include <QtWidgets/QVBoxLayout>
 
 JabberChangePasswordWindow::JabberChangePasswordWindow(JabberChangePasswordService *changePasswordService, Account account, QWidget *parent) :
-		QWidget{parent, Qt::Window},
-		m_changePasswordService{changePasswordService},
-		m_account{account}
+		// using C++ initializers breaks Qt's lupdate
+		QWidget(parent, Qt::Window),
+		m_changePasswordService(changePasswordService),
+		m_account(account)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Change Password"));

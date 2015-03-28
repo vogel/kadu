@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -35,10 +35,25 @@
     </message>
 </context>
 <context>
-    <name>SoundActions</name>
+    <name>SoundBuddyConfigurationWidget</name>
     <message>
-        <source>Play Sounds</source>
-        <translation>Play Sounds</translation>
+        <source>Use custom sound</source>
+        <translation>Use custom sound</translation>
+    </message>
+    <message>
+        <source>Sound</source>
+        <translation>Sound</translation>
+    </message>
+</context>
+<context>
+    <name>SoundChatConfigurationWidget</name>
+    <message>
+        <source>Sound</source>
+        <translation>Sound</translation>
+    </message>
+    <message>
+        <source>Use custom sound</source>
+        <translation>Use custom sound</translation>
     </message>
 </context>
 <context>
@@ -46,6 +61,13 @@
     <message>
         <source>Custom</source>
         <translation>Custom</translation>
+    </message>
+</context>
+<context>
+    <name>SoundMuteAction</name>
+    <message>
+        <source>Play Sounds</source>
+        <translation>Play Sounds</translation>
     </message>
 </context>
 </TS>

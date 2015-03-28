@@ -25,8 +25,9 @@
 #include "icons/icons-manager.h"
 
 JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberRegisterAccount *jabberRegisterAccount, QWidget *parent) :
-		ProgressWindow{tr("Registering new XMPP account"), parent},
-		m_jabberRegisterAccount{jabberRegisterAccount}
+		// using C++ initializers breaks Qt's lupdate
+		ProgressWindow(tr("Registering new XMPP account"), parent),
+		m_jabberRegisterAccount(jabberRegisterAccount)
 {
 	setCancellable(true);
 

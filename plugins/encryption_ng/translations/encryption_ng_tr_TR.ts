@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr_TR" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr_TR" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -15,6 +15,35 @@
     </message>
     <message>
         <source>Encryption error has occured</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>EncryptionDepreceatedMessage</name>
+    <message>
+        <source>This encryption plugin is depreceated and will be removed in future versions of Kadu. Use OTR Encryption plugin for compatibility with other instant messenger application.
+
+</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>OTR Encryption is already active and ready to use.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do you want to activate OTR Encryption now?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Enable OTR</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Do not enable OTR</source>
         <translation type="unfinished"/>
     </message>
 </context>

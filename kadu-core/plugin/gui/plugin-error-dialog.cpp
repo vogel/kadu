@@ -28,7 +28,11 @@
 #include "plugin-error-dialog.h"
 
 PluginErrorDialog::PluginErrorDialog(QString pluginName, const QString &text, bool offerLoadInFutureChoice, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this), m_pluginName{std::move(pluginName)}, LoadInFutureCheck(0)
+		// using C++ initializers breaks Qt's lupdate
+		QDialog(parent),
+		DesktopAwareObject(this),
+		m_pluginName(std::move(pluginName)),
+		LoadInFutureCheck(0)
 {
 	setWindowRole("kadu-plugin-error");
 	setWindowTitle(tr("Kadu"));

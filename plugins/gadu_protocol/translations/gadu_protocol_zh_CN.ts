@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -150,22 +150,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>IP Address</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>DNS Name</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Protocol Version</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Female</source>
         <translation type="unfinished"/>
     </message>
@@ -241,10 +225,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>External port</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
         <translation type="unfinished"/>
     </message>
@@ -305,15 +285,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enable file transfers</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Network</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>External IP</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -347,6 +319,28 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Remind Password</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>GaduFileTransferService</name>
+    <message>
+        <source>Connect before sending files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Enable SSL in account configuration and reconnect before sending files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Unable to login to GG Drive. Reconnect before sending files.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>GaduOutgoingFileTransferHandler</name>
+    <message>
+        <source>Valid GG Drive ticket not available</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -419,6 +413,20 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>GaduSendGiftAction</name>
+    <message>
+        <source>Send Gift...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>GaduUrlIncomingFileTransferHandler</name>
+    <message>
+        <source>Network error: %1</source>
         <translation type="unfinished"/>
     </message>
 </context>

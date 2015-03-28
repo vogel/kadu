@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.1">
 <context>
     <name>HistorySqlStorage</name>
     <message>
@@ -14,6 +14,14 @@
 %1</source>
         <translation>打开数据库失败. 错误消息
 %1</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>It seems your Qt library does not provide support for selected database. Please install Qt with %1 plugin.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

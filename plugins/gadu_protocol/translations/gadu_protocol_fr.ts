@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -150,22 +150,6 @@
         <translation>Pays/Département</translation>
     </message>
     <message>
-        <source>IP Address</source>
-        <translation>Adresse IP</translation>
-    </message>
-    <message>
-        <source>Port</source>
-        <translation>Port</translation>
-    </message>
-    <message>
-        <source>DNS Name</source>
-        <translation>Nom du DNS</translation>
-    </message>
-    <message>
-        <source>Protocol Version</source>
-        <translation>Version du protocol</translation>
-    </message>
-    <message>
         <source>Female</source>
         <translation>Féminin</translation>
     </message>
@@ -241,10 +225,6 @@
         <translation>Supprimer un compte</translation>
     </message>
     <message>
-        <source>External port</source>
-        <translation>Port externe</translation>
-    </message>
-    <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
         <translation>Vous devez compiler libgadu avec le support du SSL pour être en mesure de crypter la connexion</translation>
     </message>
@@ -305,16 +285,8 @@
         <translation>Adresses IP personnalisés serveur</translation>
     </message>
     <message>
-        <source>Enable file transfers</source>
-        <translation>Activer le transfert de fichiers</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Réseau IM</translation>
-    </message>
-    <message>
-        <source>External IP</source>
-        <translation>IP externe</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
@@ -349,6 +321,28 @@ Are you sure to allow them to know you are available?</source>
     <message>
         <source>Remind Password</source>
         <translation>Mémoriser le mot de passe</translation>
+    </message>
+</context>
+<context>
+    <name>GaduFileTransferService</name>
+    <message>
+        <source>Connect before sending files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Enable SSL in account configuration and reconnect before sending files.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Unable to login to GG Drive. Reconnect before sending files.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>GaduOutgoingFileTransferHandler</name>
+    <message>
+        <source>Valid GG Drive ticket not available</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -421,6 +415,20 @@ Are you sure to allow them to know you are available?</source>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
         <translation>Impossible de charger le module Gadu-Gadu. Veuillez Compiler libgadu avec le support de zlib.</translation>
+    </message>
+</context>
+<context>
+    <name>GaduSendGiftAction</name>
+    <message>
+        <source>Send Gift...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>GaduUrlIncomingFileTransferHandler</name>
+    <message>
+        <source>Network error: %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -140,10 +140,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>NEW MESSAGE(S)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Detach</source>
         <translation type="unfinished"/>
     </message>
@@ -157,10 +153,6 @@
     </message>
     <message>
         <source>Close all</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Conference [%1]</source>
         <translation type="unfinished"/>
     </message>
     <message>

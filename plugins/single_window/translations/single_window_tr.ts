@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -30,10 +30,6 @@
         <translation>Sağ</translation>
     </message>
     <message>
-        <source>Show number of messages on tab</source>
-        <translation>Sekmede mesajların sayısını göster</translation>
-    </message>
-    <message>
         <source>Shortcuts</source>
         <translation>Kısayollar</translation>
     </message>
@@ -56,13 +52,6 @@
     <message>
         <source>Behavior</source>
         <translation>Davranış</translation>
-    </message>
-</context>
-<context>
-    <name>SingleWindow</name>
-    <message>
-        <source>Conference [%1]</source>
-        <translation>Konferans [%1]</translation>
     </message>
 </context>
 </TS>

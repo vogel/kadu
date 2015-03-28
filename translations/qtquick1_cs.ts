@@ -2,1249 +2,4100 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="cs_CZ">
 <context>
-    <name>Debugger::JSAgentWatchData</name>
+    <name>@default</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/debugger/qjsdebuggeragent.cpp" line="+111"/>
-        <source>[Array of length %1]</source>
-        <translation>[Pole délky %1]</translation>
+        <source>Yesterday at </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>&lt;undefined&gt;</source>
-        <translation>&lt;nevymezeno&gt;</translation>
+        <source>dddd at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week and day ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week and %2 days ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks and day ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks and %2 days ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>d MMMM yyyy at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User changed status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to free for chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to away</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to do not disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon session connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon session disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free for chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Away</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We&apos;re sorry, but Kadu cannot be loaded. Profile is inaccessible. Please check permissions in the &apos;%1&apos; directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Profile Inaccessible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose style of chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style variant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{protocol} - protocol that triggered event,
+#{event} - name of event,
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming file transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import from server succeeded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import from server failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to server succeeded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to server failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Headers and Separators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat header separators height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message separators height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove chat header repetitions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Interval between header removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Server Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide server time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum time difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter a nickname for your account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose your language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Launch Kadu at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically open Kadu at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inform about new versions of Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for updates when Kadu is opened</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide main window icon from taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu main window will not be visible in window list on your taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web and E-Mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu will use default applications to open links from chat messages and buddy descriptions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use System Web Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write specific path to your browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use System E-Mail Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom e-mail client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write specific path to your email client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow using variables in status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select window activation method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the Window to the Active Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch Desktop Making the Window Visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Debugging mask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install new icons...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add border to buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grey out offline buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies who are offline will have their photos greyed out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays descriptions in the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Split long descriptions into multiple lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dislpays multiline descriptions in the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn on blur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use background image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define background file for the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose buddy list background style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tiled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tiled and Centered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stretched</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom chat background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom text edit colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Descriptions font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore messages from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit visible messages in chat window to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum number of messages visible in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlimited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fold links in messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shorten ugly, long links to save space in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use descriptive date format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display dates like Today, Yesterday or Friday, 2:30PM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddy information panel below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show status changing button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays status changing buttons below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display group tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays group tabs on the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show offline buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies that are ignored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies which are blocking me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tooltip over buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose information panel style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy expanding button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show an icon at each buddy that allows viewing contacts attached to this buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show connected buddies in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddies that are online using a bold font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy icon position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose buddy icon alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the buddy&apos;s name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy list information style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose how buddy information is presented when cursor is hovering over buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in windows&apos; titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notification position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Beginning of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about new messages only when window is inactive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block window close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block chat window when a new message arrives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flash chat title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show number of new messages on chat title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when a fullscreen application is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when my status is set to &apos;Do not Disturb&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore status changes available - busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore changes right after connection to the server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This option will supersede tooltips with buddies&apos; status
+changes upon establishing connection to the server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window on new message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window when a new message arrives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window only when I am online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window on new message only when online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window minimized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window on new message in minimized mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember chat windows positions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember opened chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save opened chat windows when exiting and restore them on next statup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable sending message by hitting &apos;Enter&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hitting &apos;Enter&apos; while typing in chat window sends message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before clearing messages in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask for confirmation before clearing chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear recent chats list on exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per account separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per identity separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For All Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On startup, set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose status which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free for Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set invisible if last status was &apos;Offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define description which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On shutdown, set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define description which will be set on shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Store descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every description you set will be saved for further use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of kept descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage modules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search this buddy in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide offline buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide buddies without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugins</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeAbstractAnimation</name>
+    <name>About</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeanimation.cpp" line="+161"/>
-        <source>Cannot animate non-existent property &quot;%1&quot;</source>
-        <translation>Vlastnost &apos;%1&quot; neexistuje a nelze ji proto animovat</translation>
+        <source>About</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Cannot animate read-only property &quot;%1&quot;</source>
-        <translation>Vlastnost &apos;%1&quot; je pouze pro čtení a nelze ji proto animovat</translation>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeutilmodule.cpp" line="+101"/>
-        <location line="+50"/>
-        <source>Animation is an abstract class</source>
-        <translation>Animation je abstraktní třída</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativeAnchorAnimation</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeanimation.cpp" line="+2704"/>
-        <source>Cannot set a duration of &lt; 0</source>
-        <translation>Nelze nastavit dobu trvání &lt; 0</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativeAnchors</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativeanchors.cpp" line="+190"/>
-        <source>Possible anchor loop detected on fill.</source>
-        <translation>Při operaci naplnění byla zjištěna případná nekonečná smyčka ukotvení.</translation>
+        <source>Qt %2 (compiled with Qt %3)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
-        <source>Possible anchor loop detected on centerIn.</source>
-        <translation>Při operaci &apos;centerIn&apos; byla zjištěna případná nekonečná smyčka ukotvení.</translation>
+        <source>Instant Messenger</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+208"/>
-        <location line="+34"/>
-        <location line="+646"/>
-        <location line="+37"/>
-        <source>Cannot anchor to an item that isn&apos;t a parent or sibling.</source>
-        <translation>Cílem ukotvení musí být rodičovský prvek nebo prvek na stejné úrovni.</translation>
+        <source>Support:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-570"/>
-        <source>Possible anchor loop detected on vertical anchor.</source>
-        <translation>Při svislém ukotvení byla zjištěna případná nekonečná smyčka ukotvení.</translation>
+        <source>&amp;About</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+95"/>
-        <source>Possible anchor loop detected on horizontal anchor.</source>
-        <translation>Při vodorovném ukotvení byla zjištěna případná nekonečná smyčka ukotvení.</translation>
+        <source>A&amp;uthors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+422"/>
-        <source>Cannot specify left, right, and hcenter anchors.</source>
-        <translation>Nelze zadat ukotvení vlevo, vpravo a vodorovně vystředěné. Nesmí se vyskytovat společně.</translation>
+        <source>&amp;Thanks</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location line="+37"/>
-        <source>Cannot anchor to a null item.</source>
-        <translation>Nelze dát ukotvení k nulovému prvku.</translation>
+        <source>&amp;License</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-34"/>
-        <source>Cannot anchor a horizontal edge to a vertical edge.</source>
-        <translation>Nelze ukotvit vodorovný okraj ke svislému.</translation>
+        <source>&amp;ChangeLog</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location line="+37"/>
-        <source>Cannot anchor item to self.</source>
-        <translation>Prvek nemůže mít ukotvení k sobě samému.</translation>
-    </message>
-    <message>
-        <location line="-25"/>
-        <source>Cannot specify top, bottom, and vcenter anchors.</source>
-        <translation>Nelze zadat ukotvení nahoře, dole a svisle vystředěné. Nesmí se vyskytovat společně.</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Baseline anchor cannot be used in conjunction with top, bottom, or vcenter anchors.</source>
-        <translation>Ukotvení na účaří se nesmí používat společně s dalšími ukotveními nahoře, dole a svisle vystředěnými.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Cannot anchor a vertical edge to a horizontal edge.</source>
-        <translation>Nelze ukotvit svislý okraj k vodorovnému.</translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeAnimatedImage</name>
+    <name>AccountAvatarWidget</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativeitemsmodule.cpp" line="+98"/>
-        <location line="+108"/>
-        <source>Qt was built without support for QMovie</source>
-        <translation>Qt bylo sestaveno bez podpory pro QMovie</translation>
+        <source>Remove Photo...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Photo...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select avatar file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeApplication</name>
+    <name>AccountBuddyListWidget</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeutilmodule.cpp" line="-78"/>
-        <source>Application is an abstract class</source>
-        <translation>Application je abstraktní třída</translation>
+        <source>Restore from file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Store to file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact List Files (*.txt *.xml);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts list couldn&apos;t be imported. File %0 doesn&apos;t contain correct contacts list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact List Files (*.txt)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeBehavior</name>
+    <name>AccountEventListener</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativebehavior.cpp" line="+120"/>
-        <source>Cannot change the animation assigned to a Behavior.</source>
-        <translation>Animaci patřící k prvku Behavior nelze změnit.</translation>
+        <source>Multilogon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeBinding</name>
+    <name>AccountManager</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativebinding.cpp" line="+448"/>
-        <source>Binding loop detected for property &quot;%1&quot;</source>
-        <translation>U vlastnosti &quot;%1&quot; byla zjištěna nekonečná vazebná smyčka</translation>
+        <source>Please provide password for %1 (%2) account</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeCompiledBindings</name>
+    <name>AccountsComboBox</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativecompiledbindings.cpp" line="+388"/>
-        <source>Binding loop detected for property &quot;%1&quot;</source>
-        <translation>U pro vlastnost &quot;%1&quot; zadané vazby byla zjištěna nekonečná smyčka</translation>
+        <source> - Select account - </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeCompiler</name>
+    <name>AddBuddyWindow</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativecompiler.cpp" line="+179"/>
-        <location line="+1674"/>
-        <location line="+205"/>
-        <location line="+81"/>
-        <location line="+81"/>
-        <location line="+594"/>
-        <source>Invalid property assignment: &quot;%1&quot; is a read-only property</source>
-        <translation>Neplatné přiřazení vlastnosti: &quot;%1&quot; je vlastnost pouze pro čtení</translation>
+        <source>Add buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-2626"/>
-        <source>Invalid property assignment: unknown enumeration</source>
-        <translation>Neplatné přiřazení vlastnosti: neplatná výčtová hodnota</translation>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Invalid property assignment: string expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván řetězec</translation>
+        <source>Merge with existing buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Invalid property assignment: url expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekávána adresa (URL)</translation>
+        <source>Visible name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Invalid property assignment: unsigned int expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekávána celočíselná hodnota bez znaménka</translation>
+        <source>Enter a name for this buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Invalid property assignment: int expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekávána celočíselná hodnota</translation>
+        <source>Add in group:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+3"/>
-        <source>Invalid property assignment: number expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáváno číslo</translation>
+        <source> - Select buddy - </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Invalid property assignment: color expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáváno vymezení barvy</translation>
+        <source>Merge with:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Invalid property assignment: date expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván údaj s datem</translation>
+        <source>Ask contact for authorization</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Invalid property assignment: time expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván časový údaj</translation>
+        <source>Allow buddy to see me when I&apos;m available</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Invalid property assignment: datetime expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván údaj s datem</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Invalid property assignment: point expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván souřadnicový údaj pro jeden bod</translation>
+        <source>Mobile</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Invalid property assignment: size expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván údaj s velikostí</translation>
+        <source>E-mail</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Invalid property assignment: rect expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván parametr pro pravoúhelník</translation>
+        <source>User ID:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Invalid property assignment: boolean expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekávána booleánská hodnota</translation>
+        <source>Mobile number:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Invalid property assignment: 3D vector expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván třírozměrný vektor</translation>
+        <source>E-mail address:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Invalid property assignment: unsupported type &quot;%1&quot;</source>
-        <translation>Neplatné přiřazení vlastnosti: Typ &quot;%1&quot; není podporován</translation>
+        <source>Account is not selected</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+288"/>
-        <source>Element is not creatable.</source>
-        <translation>Příkaz nelze vytvořit.</translation>
+        <source>Entered user identification is invalid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+650"/>
-        <source>Component elements may not contain properties other than id</source>
-        <translation>Prvky součástek nesmí kromě ID obsahovat další vlastnosti</translation>
+        <source>No user identification entered</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Invalid component id specification</source>
-        <translation>Neplatné vymezení součástky</translation>
+        <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location line="+515"/>
-        <source>id is not unique</source>
-        <translation>Hodnota ID není jednoznačná</translation>
+        <source>Select buddy to merge with</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-505"/>
-        <source>Invalid component body specification</source>
-        <translation>Neplatné vymezení obsahu součástky</translation>
+        <source>Enter visible name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Component objects cannot declare new properties.</source>
-        <translation>Objekty součástek nemohou prohlásit nové vlastnosti.</translation>
+        <source>Visible name is already used for another buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Component objects cannot declare new signals.</source>
-        <translation>Objekty součástek nemohou prohlásit nové signály.</translation>
+        <source>Entered mobile number is invalid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Component objects cannot declare new functions.</source>
-        <translation>Objekty součástek nemohou prohlásit nové funkce.</translation>
+        <source>No mobile number entered</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Cannot create empty component specification</source>
-        <translation>Nelze vytvořit prázdné vymezení součástky</translation>
+        <source>Entered e-mail is invalid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+88"/>
-        <location line="+121"/>
-        <source>&quot;%1.%2&quot; is not available in %3 %4.%5.</source>
-        <translation>&quot;%1.%2&quot; není dostupný v %3 %4.%5.</translation>
+        <source>No e-mail entered</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-119"/>
-        <location line="+121"/>
-        <source>&quot;%1.%2&quot; is not available due to component versioning.</source>
-        <translation>&quot;%1.%2&quot; není dostupný kvůli verzování součástky.</translation>
-    </message>
-    <message>
-        <location line="-110"/>
-        <source>Incorrectly specified signal assignment</source>
-        <translation>Nesprávně vymezené přiřazení signálu</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Cannot assign a value to a signal (expecting a script to be run)</source>
-        <translation>K signálu nelze přiřadit hodnotu (očekává se spuštění skriptu)</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Empty signal assignment</source>
-        <translation>Prázdné přiřazení signálu</translation>
-    </message>
-    <message>
-        <location line="+38"/>
-        <source>Empty property assignment</source>
-        <translation>Prázdné přiřazení vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Attached properties cannot be used here</source>
-        <translation>Na tomto místě nemohou být připojené vlastnosti (typu &apos;attached&apos;) používány</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <location line="+128"/>
-        <source>Non-existent attached object</source>
-        <translation>Pro vlastnost neexistuje žádný připojený objekt</translation>
-    </message>
-    <message>
-        <location line="-124"/>
-        <location line="+127"/>
-        <source>Invalid attached object assignment</source>
-        <translation>Neplatné přiřazení připojeného objektu</translation>
-    </message>
-    <message>
-        <location line="-48"/>
-        <source>Cannot assign to non-existent default property</source>
-        <translation>Nelze provést žádné přiřazení, neboť neexistuje výchozí vlastnost</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <location line="+356"/>
-        <location line="+3"/>
-        <source>Cannot assign to non-existent property &quot;%1&quot;</source>
-        <translation>Nelze provést žádné přiřazení, neboť neexistuje výchozí vlastnost pojmenovaná jako &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location line="-329"/>
-        <source>Invalid use of namespace</source>
-        <translation>Neplatné použití jmenného prostoru</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Not an attached property name</source>
-        <translation>Neplatný název pro připojenou vlastnost (typu &apos;attached&apos;)</translation>
-    </message>
-    <message>
-        <location line="+182"/>
-        <source>Invalid use of id property</source>
-        <translation>Neplatné použití vlastnosti typu &apos;id&apos;</translation>
-    </message>
-    <message>
-        <location line="+87"/>
-        <location line="+2"/>
-        <source>Property has already been assigned a value</source>
-        <translation>Vlastnosti již byla přiřazena hodnota</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <location line="+7"/>
-        <source>Invalid grouped property access</source>
-        <translation>Nesprávné seskupení při přístupu k vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Cannot assign a value directly to a grouped property</source>
-        <translation>U vlastnosti, která je částí seskupení, není žádné přímé přiřazení hodnoty přípustné</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Invalid property use</source>
-        <translation>Neplatné použití vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Property assignment expected</source>
-        <translation>Očekáváno přiřazení vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Single property assignment expected</source>
-        <translation>Očekáváno jednotlivé přiřazení vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Unexpected object assignment</source>
-        <translation>Nepřípustné přiřazení objektu</translation>
-    </message>
-    <message>
-        <location line="+65"/>
-        <source>Cannot assign object to list</source>
-        <translation>Přiřazení objektu k seznamům není přípustné</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Can only assign one binding to lists</source>
-        <translation>K seznamům lze přiřadit pouze jednu jedinou vazbu</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Cannot assign primitives to lists</source>
-        <translation>Přiřazení jednoduché hodnoty (primitivy) k seznamům není přípustné</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Cannot assign multiple values to a script property</source>
-        <translation>Přiřazení více hodnot k vlastnosti skriptu není přípustné</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Invalid property assignment: script expected</source>
-        <translation>Neplatné přiřazení vlastnosti: očekáván skript</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Cannot assign multiple values to a singular property</source>
-        <translation>Přiřazení více hodnot k jedné vlastnosti není přípustné</translation>
-    </message>
-    <message>
-        <location line="+93"/>
-        <source>Cannot assign object to property</source>
-        <translation>Přiřazení objektu k vlastnosti není přípustné</translation>
-    </message>
-    <message>
-        <location line="+50"/>
-        <source>&quot;%1&quot; cannot operate on &quot;%2&quot;</source>
-        <translation>&quot;%1&quot; nelze použít na &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <location line="+182"/>
-        <source>Duplicate default property</source>
-        <translation>Zdvojená výchozí vlastnost</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Duplicate property name</source>
-        <translation>Zdvojený název vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Property names cannot begin with an upper case letter</source>
-        <translation>Názvy vlastností nesmí začínat velkým písmenem</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Illegal property name</source>
-        <translation>Neplatný název vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Duplicate signal name</source>
-        <translation>Zdvojený název signálu</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Signal names cannot begin with an upper case letter</source>
-        <translation>Názvy signálů nesmí začínat velkým písmenem</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Illegal signal name</source>
-        <translation>Neplatný název signálu</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Duplicate method name</source>
-        <translation>Zdvojený název metody</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Method names cannot begin with an upper case letter</source>
-        <translation>Názvy metod nesmí začínat velkým písmenem</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Illegal method name</source>
-        <translation>Neplatný název metody</translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>Property value set multiple times</source>
-        <translation>Vícenásobné přiřazení hodnoty k vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Invalid property nesting</source>
-        <translation>Neplatné vkládání vlastností</translation>
-    </message>
-    <message>
-        <location line="+52"/>
-        <source>Cannot override FINAL property</source>
-        <translation>Nelze přepsat vlastnost prohlašovanou jako &apos;FINAL&apos;</translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>Invalid property type</source>
-        <translation>Neplatný typ vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+177"/>
-        <source>Invalid empty ID</source>
-        <translation>Neplatná, protože prázdná, hodnota ID</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>IDs cannot start with an uppercase letter</source>
-        <translation>Hodnoty ID nesmí začínat velkým písmenem</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>IDs must start with a letter or underscore</source>
-        <translation>Hodnoty ID musí začínat písmenem nebo znakem _podtržítka</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>IDs must contain only letters, numbers, and underscores</source>
-        <translation>Hodnoty ID musí obsahovat pouze písmena, číslice nebo znaky _podtržítka</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>ID illegally masks global JavaScript property</source>
-        <translation>Hodnota ID nedovoleně zakrývá celkovou vlastnost z JavaScriptu</translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <location line="+9"/>
-        <source>No property alias location</source>
-        <translation>Vlastnost alias bez umístění</translation>
-    </message>
-    <message>
-        <location line="-4"/>
-        <location line="+25"/>
-        <location line="+7"/>
-        <location line="+7"/>
-        <location line="+6"/>
-        <source>Invalid alias location</source>
-        <translation>Neplatné umístění alias</translation>
-    </message>
-    <message>
-        <location line="-36"/>
-        <source>Invalid alias reference. An alias reference must be specified as &lt;id&gt;, &lt;id&gt;.&lt;property&gt; or &lt;id&gt;.&lt;value property&gt;.&lt;property&gt;</source>
-        <translation>Neplatné odkazování na vlastnost alias. Odkazování na vlastnost alias musí být určeno jako &lt;id&gt;, &lt;id&gt;.&lt;vlastnost&gt; nebo &lt;id&gt;.&lt;vlastnost hodnoty&gt;.&lt;vlastnost&gt;</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Invalid alias reference. Unable to find id &quot;%1&quot;</source>
-        <translation>Neplatné odkazování na vlastnost alias. Nelze najít ID &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Alias property exceeds alias bounds</source>
-        <translation>Vlastnost alias překračuje vazby alias</translation>
+        <source>Merge with buddy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeComponent</name>
+    <name>AddConferenceAction</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativecomponent.cpp" line="+524"/>
-        <source>Invalid empty URL</source>
-        <translation>Neplátná prázdná adresa (URL)</translation>
-    </message>
-    <message>
-        <location line="+148"/>
-        <source>createObject: value is not an object</source>
-        <translation>createObject: Hodnota není objektem</translation>
+        <source>Add Conference...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeConnections</name>
+    <name>AddConferenceWindow</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeconnections.cpp" line="+201"/>
-        <location line="+64"/>
-        <source>Cannot assign to non-existent property &quot;%1&quot;</source>
-        <translation>Nelze provést žádné přiřazení, neboť neexistuje výchozí vlastnost pojmenovaná jako &quot;%1&quot;</translation>
+        <source>Add Conference</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-54"/>
-        <source>Connections: nested objects not allowed</source>
-        <translation>Connections: vkládané objekty nejsou povoleny</translation>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Connections: syntax error</source>
-        <translation>Connections: chyba ve skladbě</translation>
+        <source>Visible name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Connections: script expected</source>
-        <translation>Connections: očekáván skript</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativeEngine</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativesqldatabase.cpp" line="+203"/>
-        <source>executeSql called outside transaction()</source>
-        <translation>&apos;executeSql&apos; byl vyvolán mimo &apos;transaction()&apos;</translation>
+        <source>Enter a name for this conference if you want to have it on roster</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+58"/>
-        <source>Read-only Transaction</source>
-        <translation>Transakce pouze pro čtení</translation>
+        <source>Start Conference</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
-        <source>Version mismatch: expected %1, found %2</source>
-        <translation>Verzi %2 nelze používat; je třeba %1</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>SQL transaction failed</source>
-        <translation>Transakce SQL se nezdařila</translation>
+        <source>Account is not selected</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>transaction: missing callback</source>
-        <translation>Transakce: chybí callback (zavolat znovu)</translation>
+        <source>Select at least two buddies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+60"/>
-        <location line="+14"/>
-        <source>SQL: database version mismatch</source>
-        <translation>SQL: Verze databáze neodpovídá očekávané verzi</translation>
+        <source>Visible name is already used for another chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This conference is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter visible name to add this conference to roster</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeFlipable</name>
+    <name>AddRoomChatAction</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativeflipable.cpp" line="+131"/>
-        <source>front is a write-once property</source>
-        <translation>&apos;front&apos; lze přidělit pouze jednou</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>back is a write-once property</source>
-        <translation>&apos;back&apos; lze přidělit pouze jednou</translation>
+        <source>Join Room...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeGestureArea</name>
+    <name>AddRoomChatWindow</name>
     <message>
-        <location filename="../../qtquick1/src/imports/gestures/qdeclarativegesturearea.cpp" line="+176"/>
-        <source>Cannot assign to non-existent property &quot;%1&quot;</source>
-        <translation>Nelze provést žádné přiřazení, neboť neexistuje výchozí vlastnost pojmenovaná jako &quot;%1&quot;</translation>
+        <source>Join Room</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>GestureArea: nested objects not allowed</source>
-        <translation>GestureArea: vkládané objekty nejsou povoleny</translation>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>GestureArea: syntax error</source>
-        <translation>GestureArea: chyba ve skladbě</translation>
+        <source>Visible name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>GestureArea: script expected</source>
-        <translation>GestureArea: očekáván skript</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativeImportDatabase</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativeimport.cpp" line="+373"/>
-        <source>plugin cannot be loaded for module &quot;%1&quot;: %2</source>
-        <translation>Nelze nahrát přídavný modul pro modul &quot;%1&quot;: %2</translation>
+        <source>Enter a name for this conference if you want to have it on roster</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>module &quot;%1&quot; plugin &quot;%2&quot; not found</source>
-        <translation>Modul &quot;%1&quot; přídavný modul &quot;%2&quot; nenalezen</translation>
+        <source>Room:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+144"/>
-        <location line="+68"/>
-        <source>module &quot;%1&quot; version %2.%3 is not installed</source>
-        <translation>Modul &quot;%1&quot; verze %2.%3 není nainstalován</translation>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-66"/>
-        <source>module &quot;%1&quot; is not installed</source>
-        <translation>Modul &quot;%1&quot; není nainstalován</translation>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <location line="+20"/>
-        <source>&quot;%1&quot;: no such directory</source>
-        <translation>&quot;%1&quot;: žádný takový adresář není</translation>
+        <source>Add Room Chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-2"/>
-        <source>import &quot;%1&quot; has no qmldir and no namespace</source>
-        <translation>Zavedení &quot;%1&quot; nemá žádný qmldir a nemá žádný jmenný prostor</translation>
+        <source>Start Room Chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+68"/>
-        <source>- %1 is not a namespace</source>
-        <translation>- %1 jmenným prostorem</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>- nested namespaces not allowed</source>
-        <translation>- vkládané jmenné prostory nejsou povoleny</translation>
+        <source>Account is not selected</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+47"/>
-        <location line="+4"/>
-        <source>local directory</source>
-        <translation>Místní adresář</translation>
+        <source>Enter room name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>is ambiguous. Found in %1 and in %2</source>
-        <translation>je dvojznačný. Nalezen v %1 a v %2</translation>
+        <source>Enter nick</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>is ambiguous. Found in %1 in version %2.%3 and %4.%5</source>
-        <translation>je dvojznačný. Nalezen v %1 ve verzi %2.%3 a %4.%5</translation>
+        <source>Visible name is already used for another chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>is instantiated recursively</source>
-        <translation>je doložen příkladem rekurzivně</translation>
+        <source>This room chat is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>is not a type</source>
-        <translation>není typ</translation>
-    </message>
-    <message>
-        <location line="+297"/>
-        <source>File name case mismatch for &quot;%1&quot;</source>
-        <translation>Velikost písmen v názvu souboru neodpovídá pro &quot;%1&quot;</translation>
+        <source>Enter visible name to add this room chat to roster</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeKeyNavigationAttached</name>
+    <name>AdiumStyleRenderer</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativeitemsmodule.cpp" line="-36"/>
-        <location line="+88"/>
-        <source>KeyNavigation is only available via attached properties</source>
-        <translation>Klávesové navádění (KeyNavigation) je dostupné pouze pomocí připojených vlastností</translation>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeKeysAttached</name>
+    <name>AdiumTimeFormatter</name>
     <message>
-        <location line="-87"/>
-        <location line="+88"/>
-        <source>Keys is only available via attached properties</source>
-        <translation>Keys je dostupné pouze pomocí připojených vlastností</translation>
+        <source>1st quarter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2nd quarter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3rd quarter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4th quarter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeLayoutMirroringAttached</name>
+    <name>Buddy</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativeitem.cpp" line="+812"/>
-        <source>LayoutDirection attached property only works with Items</source>
-        <translation>Připojená vlastnost LayoutDirection pracuje jen s položkami</translation>
+        <source>Example identity</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativeitemsmodule.cpp" line="-63"/>
-        <source>LayoutMirroring is only available via attached properties</source>
-        <translation>LayoutMirroring je dostupné pouze prostřednictvím připojených vlastností</translation>
+        <source>Example description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeListModel</name>
+    <name>BuddyAvatarWidget</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativelistmodel.cpp" line="+385"/>
-        <source>remove: index %1 out of range</source>
-        <translation>odstranit (remove): Index %1 je mimo platnou oblast</translation>
+        <source>Remove Custom Photo...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>insert: value is not an object</source>
-        <translation>vložit (insert): Hodnota není objektem</translation>
+        <source>Change Photo...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>insert: index %1 out of range</source>
-        <translation>vložit (insert): Index %1 je mimo platnou oblast</translation>
+        <source>Select new photo</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>move: out of range</source>
-        <translation>přesunout (move): je mimo platnou oblast</translation>
-    </message>
-    <message>
-        <location line="+40"/>
-        <source>append: value is not an object</source>
-        <translation>připojit (append): Hodnota není objektem</translation>
-    </message>
-    <message>
-        <location line="+71"/>
-        <source>set: value is not an object</source>
-        <translation>nastavit (set): Hodnota není objektem</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <location line="+38"/>
-        <source>set: index %1 out of range</source>
-        <translation>nastavit (set): Index %1 je mimo platnou oblast</translation>
-    </message>
-    <message>
-        <location line="+37"/>
-        <location line="+17"/>
-        <source>ListElement: cannot contain nested elements</source>
-        <translation>ListElement: nesmí obsahovat vnořené prvky</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>ListElement: cannot use reserved &quot;id&quot; property</source>
-        <translation>ListElement: nelze používat vlastnost &quot;ID&quot;</translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>ListElement: cannot use script for property value</source>
-        <translation>ListElement: nelze používat skript pro hodnotu vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+32"/>
-        <source>ListModel: undefined property &apos;%1&apos;</source>
-        <translation>ListModel: Vlastnost &apos;%1&apos; není vymezena</translation>
+        <source>Images (*.png *.jpg *.bmp);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeLoader</name>
+    <name>BuddyContactsTable</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativeloader.cpp" line="+400"/>
-        <source>Loader does not support loading non-visual elements.</source>
-        <translation>Nahrávání neviditelných prvků není podporováno.</translation>
+        <source>Move up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detach contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New buddy display name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Give name for new buddy for this contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeParentAnimation</name>
+    <name>BuddyContactsTableModel</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeanimation.cpp" line="-169"/>
-        <source>Unable to preserve appearance under complex transform</source>
-        <translation>Při složité proměně nelze zachovat vzhled</translation>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location line="+7"/>
-        <source>Unable to preserve appearance under non-uniform scale</source>
-        <translation>Při nejednotné změně velikosti nelze zachovat vzhled</translation>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Unable to preserve appearance under scale of 0</source>
-        <translation>Při změně velikosti s 0 nelze zachovat vzhled</translation>
+        <source>Synchronize</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeParentChange</name>
+    <name>BuddyDataWindow</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativestateoperations.cpp" line="+95"/>
-        <source>Unable to preserve appearance under complex transform</source>
-        <translation>Při složité proměně nelze zachovat vzhled</translation>
+        <source>Buddy Properties - %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location line="+7"/>
-        <source>Unable to preserve appearance under non-uniform scale</source>
-        <translation>Při nejednotné změně velikosti nelze zachovat vzhled</translation>
+        <source>General</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Unable to preserve appearance under scale of 0</source>
-        <translation>Při změně velikosti s 0 nelze zachovat vzhled</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativeParser</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/qml/parser/qdeclarativejslexer.cpp" line="+537"/>
-        <location line="+123"/>
-        <location line="+54"/>
-        <source>Illegal unicode escape sequence</source>
-        <translation>Neplatná úniková posloupnost unicode</translation>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-140"/>
-        <source>Illegal character</source>
-        <translation>Neplatný znak</translation>
+        <source>Personal Information</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>Unclosed string at end of line</source>
-        <translation>Neuzavřený řetězec na konci řádku</translation>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
-        <source>Illegal escape sequence</source>
-        <translation>Neplatná úniková posloupnost</translation>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+72"/>
-        <source>Unclosed comment at end of file</source>
-        <translation>Neuzavřená poznámka na konci souboru</translation>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+102"/>
-        <source>Illegal syntax for exponential number</source>
-        <translation>Neplatná skladba exponenciálního čísla</translation>
-    </message>
-    <message>
-        <location line="+26"/>
-        <source>Identifier cannot start with numeric literal</source>
-        <translation>Identifikátor nemůže začínat s číselným překlepem</translation>
-    </message>
-    <message>
-        <location line="+338"/>
-        <source>Unterminated regular expression literal</source>
-        <translation>Neuzavřený regulární výraz</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Invalid regular expression flag &apos;%0&apos;</source>
-        <translation>Neplatný příznak &apos;%0&apos; u regulárního výrazu</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <location line="+22"/>
-        <source>Unterminated regular expression backslash sequence</source>
-        <translation>Neuzavřená posloupnost se zpětným lomítkem u regulárního výrazu</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Unterminated regular expression class</source>
-        <translation>Neuzavřená třída u neuzavřeného regulárního výrazu</translation>
-    </message>
-    <message>
-        <location filename="../../qtquick1/src/declarative/qml/parser/qdeclarativejsparser.cpp" line="+1830"/>
-        <location line="+67"/>
-        <source>Syntax error</source>
-        <translation>Chyba ve skladbě</translation>
-    </message>
-    <message>
-        <location line="-65"/>
-        <source>Unexpected token `%1&apos;</source>
-        <translation>Neočekávaný symbol `%1&apos;</translation>
-    </message>
-    <message>
-        <location line="+28"/>
-        <location line="+24"/>
-        <source>Expected token `%1&apos;</source>
-        <translation>Očekávaný symbol `%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativescriptparser.cpp" line="+246"/>
-        <location line="+429"/>
-        <location line="+59"/>
-        <source>Property value set multiple times</source>
-        <translation>Vícenásobné přiřazení hodnoty k vlastnosti</translation>
-    </message>
-    <message>
-        <location line="-477"/>
-        <source>Expected type name</source>
-        <translation>Očekávaný název typu</translation>
-    </message>
-    <message>
-        <location line="+134"/>
-        <source>Invalid import qualifier ID</source>
-        <translation>Neplatný údaj o ID při zavádění</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Reserved name &quot;Qt&quot; cannot be used as an qualifier</source>
-        <translation>Zamluvený název &quot;Qt&quot; nemůže být použit jako kvalifikant</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Script import qualifiers must be unique.</source>
-        <translation>Kvalifikanty zadané pro zavedení skriptu musí být jednoznačné.</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Script import requires a qualifier</source>
-        <translation>Zavedení skriptu vyžaduje údaj o kvalifikantu</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Library import requires a version</source>
-        <translation>Zavedení knihovny vyžaduje údaj o verzi</translation>
-    </message>
-    <message>
-        <location line="+59"/>
-        <source>Expected parameter type</source>
-        <translation>Očekáván typ parametru</translation>
-    </message>
-    <message>
-        <location line="+42"/>
-        <source>Invalid property type modifier</source>
-        <translation>Neplatný modifikátor pro typ vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Unexpected property type modifier</source>
-        <translation>Neočekávaný modifikátor pro typ vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Expected property type</source>
-        <translation>Očekáván typ vlastnosti</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Readonly not yet supported</source>
-        <translation>&quot;Pouze pro čtení&quot; není na tomto místě ještě podporováno</translation>
-    </message>
-    <message>
-        <location line="+218"/>
-        <source>JavaScript declaration outside Script element</source>
-        <translation>Deklarace JavaScriptu není mimo prvek skriptu přípustná</translation>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativePauseAnimation</name>
+    <name>BuddyDeleteWindow</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeanimation.cpp" line="-2125"/>
-        <source>Cannot set a duration of &lt; 0</source>
-        <translation>Nelze nastavit dobu trvání &lt; 0</translation>
+        <source>The following buddies will be deleted:&lt;br/&gt;%1.&lt;br/&gt;Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select additional data that will be removed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativePixmap</name>
+    <name>BuddyGeneralConfigurationWidget</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativepixmapcache.cpp" line="+303"/>
-        <source>Error decoding: %1: %2</source>
-        <translation>Chyba při dekódování: %1: %2</translation>
+        <source>Visible Name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+167"/>
-        <location line="+360"/>
-        <source>Failed to get image from provider: %1</source>
-        <translation>Obrazová data se od poskytovatele nepodařilo získat: %1</translation>
+        <source>Protocol used by this buddy&apos;s contact does not allow changing buddy&apos;s name client-side</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-342"/>
-        <location line="+360"/>
-        <source>Cannot open: %1</source>
-        <translation>Nelze otevřít: %1</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativePropertyAnimation</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeanimation.cpp" line="+1247"/>
-        <source>Cannot set a duration of &lt; 0</source>
-        <translation>Nelze nastavit dobu trvání &lt; 0</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativePropertyChanges</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativepropertychanges.cpp" line="+249"/>
-        <source>PropertyChanges does not support creating state-specific objects.</source>
-        <translation>PropertyChanges nepodporuje vytváření objektů, které jsou přiřazeny jednomu stavu.</translation>
+        <source>Buddy contacts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+168"/>
-        <source>Cannot assign to non-existent property &quot;%1&quot;</source>
-        <translation>Nelze provést žádné přiřazení, neboť neexistuje výchozí vlastnost pojmenovaná jako &quot;%1&quot;</translation>
+        <source>Prefer the most available contact</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Cannot assign to read-only property &quot;%1&quot;</source>
-        <translation>Vlastnost &apos;%1&quot; je pouze pro čtení a nelze ji proto přiřadit</translation>
+        <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Communication Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mobile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Website</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeTextInput</name>
+    <name>BuddyGroupsConfigurationWidget</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativetextinput.cpp" line="+962"/>
-        <location line="+8"/>
-        <source>Could not load cursor delegate</source>
-        <translation>Nepodařilo se nahrát zástupce kurzoru</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Could not instantiate cursor delegate</source>
-        <translation>Nepodařilo se vytvořit instanci zástupce kurzoru</translation>
+        <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeTypeLoader</name>
+    <name>BuddyOptionsConfigurationWidget</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativetypeloader.cpp" line="+929"/>
-        <source>Script %1 unavailable</source>
-        <translation>Skript %1 nedostupný</translation>
+        <source>General</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Type %1 unavailable</source>
-        <translation>Typ %1 nedostupný</translation>
+        <source>Allow buddy to see when I&apos;m available</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+189"/>
-        <source>Namespace %1 cannot be used as a type</source>
-        <translation>Jmenný prostor %1 nelze použít jako typ</translation>
+        <source>Block buddy</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>%1 %2</source>
-        <translation>%1 %2</translation>
-    </message>
-</context>
-<context>
-    <name>QDeclarativeVME</name>
-    <message>
-        <location filename="../../qtquick1/src/declarative/qml/qdeclarativevme.cpp" line="+223"/>
-        <source>Unable to create object of type %1</source>
-        <translation>Nepodařilo se vytvořit žádný objekt typu %1</translation>
+        <source>Notify when buddy&apos;s status changes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+443"/>
-        <source>Cannot assign value %1 to property %2</source>
-        <translation>Hodnotu &apos;%1&apos; nelze přiřadit vlastnosti %2</translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>Cannot assign object type %1 with no default method</source>
-        <translation>Typ objektu %1 nelze přiřadit, protože neexistuje žádná výchozí metoda</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Cannot connect mismatched signal/slot %1 %vs. %2</source>
-        <translation>Nelze vytvořit žádné spojení mezi signálem %1 a zdířkou %2, protože se k sobě nehodí</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Cannot assign an object to signal property %1</source>
-        <translation>Vlastnosti signálu %1 nelze přiřadit žádný objekt</translation>
-    </message>
-    <message>
-        <location line="+154"/>
-        <source>Cannot assign object to list</source>
-        <translation>Přiřazení objektu k seznamům není přípustné</translation>
-    </message>
-    <message>
-        <location line="+43"/>
-        <source>Cannot assign object to interface property</source>
-        <translation>Vlastnosti rozhraní nelze přiřadit žádný objekt</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Unable to create attached object</source>
-        <translation>Nepodařilo se vytvořit žádný připojený objekt (typu &apos;attached&apos;)</translation>
-    </message>
-    <message>
-        <location line="+32"/>
-        <source>Cannot set properties on %1 as it is null</source>
-        <translation>Vlastnosti nelze nastavit na %1, protože jsou &apos;null&apos;</translation>
+        <source>Hide description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeVisualDataModel</name>
+    <name>BuddyPersonalInfoConfigurationWidget</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/graphicsitems/qdeclarativevisualitemmodel.cpp" line="+1097"/>
-        <source>Delegate component must be Item type.</source>
-        <translation>Součástka zástupce musí být typu &apos;item&apos;.</translation>
+        <source>Buddy contact</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeXmlListModel</name>
+    <name>ChangeStatusAction</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativeutilmodule.cpp" line="+40"/>
-        <location line="+2"/>
-        <location line="+49"/>
-        <location line="+2"/>
-        <source>Qt was built without support for xmlpatterns</source>
-        <translation>Qt bylo sestaveno bez podpory pro xmlpatterns</translation>
+        <source>Change Status</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeXmlListModelRole</name>
+    <name>ChatDataWindow</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativexmllistmodel_p.h" line="+164"/>
-        <source>An XmlRole query must not start with &apos;/&apos;</source>
-        <translation>Vyhledávání XmlRole nesmí začínat s &apos;/&apos;</translation>
+        <source>Chat Properties - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QDeclarativeXmlRoleList</name>
+    <name>ChatEditBox</name>
     <message>
-        <location filename="../../qtquick1/src/declarative/util/qdeclarativexmllistmodel.cpp" line="+820"/>
-        <source>An XmlListModel query must start with &apos;/&apos; or &quot;//&quot;</source>
-        <translation>Vyhledávání XmlListModel nesmí začínat s &apos;/&apos; nebo &quot;//&quot;</translation>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This image has %1 KiB and may be too big for %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 appears to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This image has %1 KiB and may be too big for %2 of %3 contacts in this conference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to send this image?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>ChatGroupsConfigurationWidget</name>
     <message>
-        <location line="-246"/>
-        <source>&quot;%1&quot; duplicates a previous role name and will be disabled.</source>
-        <translation>&quot;%1&quot; je již zadán jako název předchozí úlohy, a je proto vypnut.</translation>
-    </message>
-    <message>
-        <location line="+525"/>
-        <location line="+4"/>
-        <source>invalid query: &quot;%1&quot;</source>
-        <translation>Neplatný dotaz: &quot;%1&quot;</translation>
+        <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QmlJSDebugger::QtQuick1::LiveSelectionTool</name>
+    <name>ChatImageRequestService</name>
     <message>
-        <location filename="../../qtquick1/src/plugins/qmltooling/qmldbg_inspector/editor/liveselectiontool.cpp" line="+139"/>
-        <source>Items</source>
-        <translation>Položky</translation>
+        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
+This exceeds your configured limits.
+Do you want to accept this image anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>QmlJSDebugger::QtQuick1::ZoomTool</name>
+    <name>ChatRoomEditWidget</name>
     <message>
-        <location filename="../../qtquick1/src/plugins/qmltooling/qmldbg_inspector/editor/zoomtool.cpp" line="+57"/>
-        <source>Zoom to &amp;100%</source>
-        <translation>Zvětšit na &amp;100%</translation>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Zoom In</source>
-        <translation>Přiblížit</translation>
+        <source>Room:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Zoom Out</source>
-        <translation>Oddálit</translation>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay in chat room after closing chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatStylePreview</name>
+    <message>
+        <source>Your message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message from Your friend</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatWidget</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window will be cleared. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatWidgetActions</name>
+    <message>
+        <source>More...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Return Sends Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Messages in Chat Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatWidgetTitle</name>
+    <message>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Inactive)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatWindow</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message received, close window anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChooseIdentityWidget</name>
+    <message>
+        <source>Create new description...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CollapseAction</name>
+    <message>
+        <source>Collapse</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfigurationWindow</name>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConnectionErrorNotification</name>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection error on account: %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Core</name>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CustomInput</name>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste and send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select All</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DefaultProxyAction</name>
+    <message>
+        <source>Select Default Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - No proxy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy configuration...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DeleteTalkableAction</name>
+    <message>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; chat will be deleted.&lt;br/&gt;Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditTalkableAction</name>
+    <message>
+        <source>View Buddy Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExpandAction</name>
+    <message>
+        <source>Expand</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not open file. Select another one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open local file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select file location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File %1 already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overwrite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select another file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWidget</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove this transfer?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Wait for accept&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Ready to download&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Transfer&lt;/b&gt;: %1 kB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Finished&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWindow</name>
+    <message>
+        <source>Kadu - file transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FilterWidget</name>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupEditWindow</name>
+    <message>
+        <source>Show group name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offline for this group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Supported for Gadu-Gadu network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show in group &quot;All&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose an icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupFilterTabData</name>
+    <message>
+        <source>Everybody</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungrouped</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupManager</name>
+    <message>
+        <source>Group name must not be empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group name must not contain &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group name must not be a number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group name must not be &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group &apos;%1&apos; already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;%1&apos; is prohibited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Numbers are prohibited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group name %1 is prohibited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group of that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupTabBar</name>
+    <message>
+        <source>Add Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the name for the new group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group &lt;i&gt;%0&lt;/i&gt; will be deleted, but without buddies. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupsComboBox</name>
+    <message>
+        <source> - Do not add - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new group...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the name for the new group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>IdentitiesComboBox</name>
+    <message>
+        <source>Create a new identity...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter the name for the new identity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>IdentityManager</name>
+    <message>
+        <source>Friends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Work</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>School</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImageDialog</name>
+    <message>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KaduDialog</name>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KaduMenu</name>
+    <message>
+        <source>More Actions...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KaduWebView</name>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Link Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save this image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File already exists. Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overwrite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save image: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save image</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KaduWindow</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KaduWindowActions</name>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Buddy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Group...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for Buddy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report a Bug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Get Involved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translate Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A&amp;bout Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Information Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Blocked Buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Myself Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Personal Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Description Link in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send E-Mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search in Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Offline Buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Buddies with Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Online Buddies and Buddies with Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Buddies...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mobile:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Chat Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Buddy Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LeaveChatAction</name>
+    <message>
+        <source>Leave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All messages received in this conference will be ignored
+from now on. Are you sure you want to leave this conference?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leave conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LineEditWithClearButton</name>
+    <message>
+        <source>Clear this field</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MainConfigurationWindow</name>
+    <message>
+        <source>Kadu configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open icon theme archive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced chat&apos;s look configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <source>Create new toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MergeBuddiesDialogWidget</name>
+    <message>
+        <source>Merge Buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy to merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - Select buddy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MessageNotification</name>
+    <message>
+        <source>New chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MultilogonModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logon time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MultilogonNotification</name>
+    <message>
+        <source>Disconnect session</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MultilogonWindow</name>
+    <message>
+        <source>Multilogon window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnect session</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewFileTransferNotification</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NotificationManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NotificationService</name>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify About Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NotifyConfigurationUiHandler</name>
+    <message>
+        <source>Use custom settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NotifyTreeWidget</name>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OpenChatWith</name>
+    <message>
+        <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PasswordDialogWidget</name>
+    <message>
+        <source>Incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Store this password</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathListEdit</name>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathListEditWindow</name>
+    <message>
+        <source>Select paths</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose a directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginActivationService</name>
+    <message>
+        <source>Plugin %1 not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugin %1 conflicts with: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginErrorDialog</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Try to load this plugin on next Kadu run</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginListWidget</name>
+    <message>
+        <source>Deactivate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugin activation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugin deactivation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginListWidgetItemDelegate</name>
+    <message>
+        <source>Plugin name: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dependencies: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Provides: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugin information</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginLoader</name>
+    <message>
+        <source>Cannot load %1 plugin library:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginModel</name>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chats history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media players</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Privacy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Protocols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginRootComponentHandler</name>
+    <message>
+        <source>Cannot find required object in plugin %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugin initialization routine for %1 failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProgressWindow</name>
+    <message>
+        <source>Progress:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show details &gt;&gt;&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProtocolsComboBox</name>
+    <message>
+        <source> - Select network - </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyComboBox</name>
+    <message>
+        <source> - No proxy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy configuration...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - Use Default Proxy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyEditWindow</name>
+    <message>
+        <source>Proxy Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP CONNECT method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SOCKS Version 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP Polling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type (for Jabber)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Polling URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm proxy removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to remove this proxy?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current proxy.&lt;br /&gt;Do you want to save them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current proxy.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecentChatsAction</name>
+    <message>
+        <source>Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecentChatsMenu</name>
+    <message>
+        <source>Recent chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RosterNotifier</name>
+    <message>
+        <source>Roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: roster import succeded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: roster import failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: roster export succeded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1: roster export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RosterReplacer</name>
+    <message>
+        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leave contact list unchanged</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchBar</name>
+    <message>
+        <source>Find:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchWindow</name>
+    <message>
+        <source>Search User in Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Criteria</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Uin number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for this uin exclusively</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Personal data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search using the personal data typed above (name, nickname, etc.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gender:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Male</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Female</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth year from:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>City:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search only for active users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>City</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To be able to search you have to set up an account first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We don&apos;t offer contacts search feature for your network yet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot search contacts in offline mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Searching...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Done searching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchWindowActions</name>
+    <message>
+        <source>&amp;Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Next results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add selected user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectFile</name>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Files (*.wav *.au *.raw);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectFont</name>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SendFileAction</name>
+    <message>
+        <source>Select file location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShowFileTransferWindowAction</name>
+    <message>
+        <source>View File Transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SslCertificateErrorDialog</name>
+    <message>
+        <source>Certificate for &lt;b&gt;%1&lt;/b&gt; failed authenticity validation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show certificate details...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Certificate details:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trust certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SslCertificateWidget</name>
+    <message>
+        <source>Valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blacklisted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Digest (Md5)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Digest (Sha1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Serial number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer organization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer common name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer locality name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer organizational unit name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer country name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer state or province name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer distinguished name qualifier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer serial number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Issuer email address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject organization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject common name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject alernative name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject locality name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject organizational unit name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject country name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject state or province name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject distinguished name qualifier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject serial number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject email address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatusActions</name>
+    <message>
+        <source>Change Status Message...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatusButton</name>
+    <message>
+        <source>Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatusChangedNotification</name>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatusContainerManager</name>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatusWindow</name>
+    <message>
+        <source>Change status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change account status: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Previously Used Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Descriptions History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Erase Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Set status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>do not change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to clear the descriptions history?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StringListDialog</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubscriptionWindow</name>
+    <message>
+        <source>Ask For Sharing Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to add you to his contact list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want this person to see your status?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow and add buddy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TokenWindow</name>
+    <message>
+        <source>Enter Token Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter text from the picture:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ToolBar</name>
+    <message>
+        <source>Text position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text alongside icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text under icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No items to add found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block toolbars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to remove this toolbar?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UpdatesDialog</name>
+    <message>
+        <source>New version is available. Please update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for updates when Kadu is opened</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WebkitMessagesViewHandler</name>
+    <message>
+        <source>%1 is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WindowNotifierWindow</name>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>YourAccounts</name>
+    <message>
+        <source>Your accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add existing account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Create New Account&lt;/b&gt;&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IM Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to edit or discard changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Return to edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to save them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have invalid changes in current account, which cannot be saved.&lt;br /&gt;Do you want to stay in edit or discard changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay in edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

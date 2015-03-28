@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -30,10 +30,6 @@
         <translation>Right</translation>
     </message>
     <message>
-        <source>Show number of messages on tab</source>
-        <translation>Show number of messages on tab</translation>
-    </message>
-    <message>
         <source>Shortcuts</source>
         <translation>Shortcuts</translation>
     </message>
@@ -56,13 +52,6 @@
     <message>
         <source>Behavior</source>
         <translation>Behavior</translation>
-    </message>
-</context>
-<context>
-    <name>SingleWindow</name>
-    <message>
-        <source>Conference [%1]</source>
-        <translation>Conference [%1]</translation>
     </message>
 </context>
 </TS>
