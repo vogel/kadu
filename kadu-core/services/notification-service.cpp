@@ -267,11 +267,7 @@ void NotificationService::stopScreenModeChecker()
 
 void NotificationService::fullscreenToggled(bool inFullscreen)
 {
-	bool wasSilent = silentMode();
 	IsFullScreen = inFullscreen;
-
-	if (silentMode() != wasSilent)
-		emit silentModeToggled(silentMode());
 }
 
 void NotificationService::createDefaultConfiguration()
