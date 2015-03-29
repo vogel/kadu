@@ -149,7 +149,7 @@ void JabberAddAccountWidget::setJabberServersService(JabberServersService* serve
 {
 	for (auto &&server : serversService->knownServers())
 		Domain->addItem(server);
-	Domain->setCurrentText(QString{});
+	Domain->setCurrentText(Factory->defaultServer());
 }
 
 void JabberAddAccountWidget::dataChanged()
