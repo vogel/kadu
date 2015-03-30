@@ -23,6 +23,7 @@
 #define NOTIFY_CONFIGURATION_UI_HANDLER
 
 #include "gui/windows/main-configuration-window.h"
+#include "notify/notify-event.h"
 
 #include "notification-manager.h"
 
@@ -45,7 +46,7 @@ struct NotifierConfigurationGuiItem
 
 struct NotifyEventConfigurationItem
 {
-	NotifyEvent *event;
+	NotifyEvent event;
 	bool useCustomSettings;
 };
 
@@ -74,8 +75,8 @@ private slots:
 	void notifierRegistered(Notifier *notifier);
 	void notifierUnregistered(Notifier *notifier);
 
-	void notifyEventRegistered(NotifyEvent *notifyEvent);
-	void notifyEventUnregistered(NotifyEvent *notifyEvent);
+	void notifyEventRegistered(NotifyEvent notifyEvent);
+	void notifyEventUnregistered(NotifyEvent notifyEvent);
 
 	void configurationWindowApplied();
 	void mainConfigurationWindowDestroyed();

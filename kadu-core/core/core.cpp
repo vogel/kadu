@@ -94,6 +94,7 @@
 #include "misc/paths-provider.h"
 #include "notify/notification/notification-callback-repository.h"
 #include "notify/notification-manager.h"
+#include "notify/notify-event.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"

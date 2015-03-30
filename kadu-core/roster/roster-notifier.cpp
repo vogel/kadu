@@ -32,30 +32,30 @@ QString RosterNotifier::sm_exportFailedNotifyTopic("Roster/ExportFailed");
 RosterNotifier::RosterNotifier(QObject *parent) :
 		QObject{parent}
 {
-	m_rosterNotifyEvent.reset(new NotifyEvent{sm_rosterNotifyTopic, NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "Roster")});
-	m_importSucceededNotifyEvent.reset(new NotifyEvent{sm_importSucceededNotifyTopic, NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "Import from server succeeded")});
-	m_importFailedNotifyEvent.reset(new NotifyEvent{sm_importFailedNotifyTopic, NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "Import from server failed")});
-	m_exportSucceededNotifyEvent.reset(new NotifyEvent{sm_exportSucceededNotifyTopic, NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "Export to server succeeded")});
-	m_exportFailedNotifyEvent.reset(new NotifyEvent{sm_exportFailedNotifyTopic, NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "Export to server failed")});
+	m_rosterNotifyEvent = NotifyEvent{sm_rosterNotifyTopic,
+			QT_TRANSLATE_NOOP("@default", "Roster"), NotifyEvent::CallbackNotRequired};
+	m_importSucceededNotifyEvent = NotifyEvent{sm_importSucceededNotifyTopic,
+			QT_TRANSLATE_NOOP("@default", "Import from server succeeded"), NotifyEvent::CallbackNotRequired};
+	m_importFailedNotifyEvent = NotifyEvent{sm_importFailedNotifyTopic,
+			QT_TRANSLATE_NOOP("@default", "Import from server failed"), NotifyEvent::CallbackNotRequired};
+	m_exportSucceededNotifyEvent = NotifyEvent{sm_exportSucceededNotifyTopic,
+			QT_TRANSLATE_NOOP("@default", "Export to server succeeded"), NotifyEvent::CallbackNotRequired};
+	m_exportFailedNotifyEvent = NotifyEvent{sm_exportFailedNotifyTopic,
+			QT_TRANSLATE_NOOP("@default", "Export to server failed"), NotifyEvent::CallbackNotRequired};
 }
 
 RosterNotifier::~RosterNotifier()
 {
 }
 
-QList<NotifyEvent *> RosterNotifier::notifyEvents()
+QList<NotifyEvent> RosterNotifier::notifyEvents()
 {
-	return QList<NotifyEvent *>{}
-			<< m_rosterNotifyEvent.data()
-			<< m_importSucceededNotifyEvent.data()
-			<< m_importFailedNotifyEvent.data()
-			<< m_exportSucceededNotifyEvent.data()
-			<< m_exportFailedNotifyEvent.data();
+	return QList<NotifyEvent>{}
+			<< m_rosterNotifyEvent
+			<< m_importSucceededNotifyEvent
+			<< m_importFailedNotifyEvent
+			<< m_exportSucceededNotifyEvent
+			<< m_exportFailedNotifyEvent;
 }
 
 void RosterNotifier::notify(const QString &topic, const Account &account, const QString &message)

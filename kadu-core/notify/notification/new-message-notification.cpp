@@ -30,18 +30,13 @@
 
 #include "new-message-notification.h"
 
-NotifyEvent *MessageNotification::NewChatNotifyEvent = 0;
-NotifyEvent *MessageNotification::NewMessageNotifyEvent = 0;
+NotifyEvent MessageNotification::NewChatNotifyEvent;
+NotifyEvent MessageNotification::NewMessageNotifyEvent;
 
 void MessageNotification::registerEvents()
 {
-	if (NewChatNotifyEvent)
-		return;
-
-	NewChatNotifyEvent = new NotifyEvent("NewChat", NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "New chat"));
-	NewMessageNotifyEvent = new NotifyEvent("NewMessage", NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "New message"));
+	NewChatNotifyEvent = NotifyEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat"), NotifyEvent::CallbackNotRequired);
+	NewMessageNotifyEvent = NotifyEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message"), NotifyEvent::CallbackNotRequired);
 
 	NotificationManager::instance()->registerNotifyEvent(NewChatNotifyEvent);
 	NotificationManager::instance()->registerNotifyEvent(NewMessageNotifyEvent);
@@ -49,17 +44,8 @@ void MessageNotification::registerEvents()
 
 void MessageNotification::unregisterEvents()
 {
-	if (!NewChatNotifyEvent)
-		return;
-
 	NotificationManager::instance()->unregisterNotifyEvent(NewChatNotifyEvent);
 	NotificationManager::instance()->unregisterNotifyEvent(NewMessageNotifyEvent);
-
-	delete NewChatNotifyEvent;
-	NewChatNotifyEvent = 0;
-
-	delete NewMessageNotifyEvent;
-	NewMessageNotifyEvent = 0;
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :

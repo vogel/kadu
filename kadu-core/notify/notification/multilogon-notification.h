@@ -31,9 +31,9 @@ class MultilogonNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *MultilogonSessionNotifyEvent;
-	static NotifyEvent *MultilogonSessionConnectedNotifyEvent;
-	static NotifyEvent *MultilogonSessionDisconnectedNotifyEvent;
+	static NotifyEvent MultilogonSessionNotifyEvent;
+	static NotifyEvent MultilogonSessionConnectedNotifyEvent;
+	static NotifyEvent MultilogonSessionDisconnectedNotifyEvent;
 
 	MultilogonSession *Session;
 

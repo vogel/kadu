@@ -32,10 +32,10 @@ class ENCRYPTIONAPI EncryptionNgNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *EncryptionNotification;
-	static NotifyEvent *PublicKeySentNotification;
-	static NotifyEvent *PublicKeySendErrorNotification;
-	static NotifyEvent *EncryptionErrorNotification;
+	static NotifyEvent EncryptionNotification;
+	static NotifyEvent PublicKeySentNotification;
+	static NotifyEvent PublicKeySendErrorNotification;
+	static NotifyEvent EncryptionErrorNotification;
 
 	QString Name;
 

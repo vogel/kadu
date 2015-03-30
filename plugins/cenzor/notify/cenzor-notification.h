@@ -29,7 +29,7 @@ class CenzorNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *CenzoredNotification;
+	static NotifyEvent CenzoredNotification;
 
 public:
 	static void registerNotifications();

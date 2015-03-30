@@ -30,7 +30,7 @@ class FirewallNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *FirewalledNotification;
+	static NotifyEvent FirewalledNotification;
 
 public:
 	static void registerNotifications();

@@ -29,7 +29,7 @@ class AntistringNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *StringReceivedNotification;
+	static NotifyEvent StringReceivedNotification;
 
 public:
 	static void registerNotifications();

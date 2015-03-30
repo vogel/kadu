@@ -32,6 +32,7 @@
 #include "gui/windows/message-dialog.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notifier.h"
+#include "notify/notify-event.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
@@ -68,7 +69,7 @@ NotificationManager::~NotificationManager()
 	}
 }
 
-void NotificationManager::registerNotifyEvent(NotifyEvent *notifyEvent)
+void NotificationManager::registerNotifyEvent(NotifyEvent notifyEvent)
 {
 	kdebugf();
 
@@ -78,7 +79,7 @@ void NotificationManager::registerNotifyEvent(NotifyEvent *notifyEvent)
 	kdebugf2();
 }
 
-void NotificationManager::unregisterNotifyEvent(NotifyEvent *notifyEvent)
+void NotificationManager::unregisterNotifyEvent(NotifyEvent notifyEvent)
 {
 	kdebugf();
 
@@ -127,7 +128,7 @@ const QList<Notifier *> & NotificationManager::notifiers() const
 	return Notifiers;
 }
 
-const QList<NotifyEvent *> & NotificationManager::notifyEvents() const
+const QList<NotifyEvent> & NotificationManager::notifyEvents() const
 {
 	return NotifyEvents;
 }

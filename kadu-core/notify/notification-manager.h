@@ -58,7 +58,7 @@ class KADUAPI NotificationManager : public QObject
 	static NotificationManager *Instance;
 
 	QList<Notifier *> Notifiers;
-	QList<NotifyEvent *> NotifyEvents;
+	QList<NotifyEvent> NotifyEvents;
 	QStringList IgnoredAccounts;
 
 	QHash<QString, AggregateNotification*> ActiveNotifications;
@@ -81,11 +81,11 @@ public:
 	void registerNotifier(Notifier *notifier);
 	void unregisterNotifier(Notifier *notifier);
 
-	void registerNotifyEvent(NotifyEvent *notifyEvent);
-	void unregisterNotifyEvent(NotifyEvent *notifyEvent);
+	void registerNotifyEvent(NotifyEvent notifyEvent);
+	void unregisterNotifyEvent(NotifyEvent notifyEvent);
 
 	const QList<Notifier *> & notifiers() const;
-	const QList<NotifyEvent *> & notifyEvents() const;
+	const QList<NotifyEvent> & notifyEvents() const;
 
 	QString notifyConfigurationKey(const QString &eventType);
 	void ignoreConnectionErrors(Account account);
@@ -97,8 +97,8 @@ signals:
 	void notiferRegistered(Notifier *notifier);
 	void notiferUnregistered(Notifier *notifier);
 
-	void notifyEventRegistered(NotifyEvent *notifyEvent);
-	void notifyEventUnregistered(NotifyEvent *notifyEvent);
+	void notifyEventRegistered(NotifyEvent notifyEvent);
+	void notifyEventUnregistered(NotifyEvent notifyEvent);
 
 };
 

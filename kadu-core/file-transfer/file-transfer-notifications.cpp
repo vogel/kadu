@@ -34,18 +34,13 @@
 
 #include <QtGui/QTextDocument>
 
-NotifyEvent * NewFileTransferNotification::m_fileTransferNotifyEvent = nullptr;
-NotifyEvent * NewFileTransferNotification::m_fileTransferIncomingFileNotifyEvent = nullptr;
+NotifyEvent NewFileTransferNotification::m_fileTransferNotifyEvent;
+NotifyEvent NewFileTransferNotification::m_fileTransferIncomingFileNotifyEvent;
 
 void NewFileTransferNotification::registerEvents()
 {
-	if (m_fileTransferNotifyEvent)
-		return;
-
-	m_fileTransferNotifyEvent = new NotifyEvent{"FileTransfer", NotifyEvent::CallbackRequired,
-			QT_TRANSLATE_NOOP("@default", "File transfer")};
-	m_fileTransferIncomingFileNotifyEvent = new NotifyEvent{"FileTransfer/IncomingFile", NotifyEvent::CallbackRequired,
-			QT_TRANSLATE_NOOP("@default", "Incoming file transfer")};
+	m_fileTransferNotifyEvent = NotifyEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer"), NotifyEvent::CallbackRequired};
+	m_fileTransferIncomingFileNotifyEvent = NotifyEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer"), NotifyEvent::CallbackRequired};
 
 	NotificationManager::instance()->registerNotifyEvent(m_fileTransferNotifyEvent);
 	NotificationManager::instance()->registerNotifyEvent(m_fileTransferIncomingFileNotifyEvent);
@@ -94,14 +89,8 @@ void NewFileTransferNotification::registerEvents()
 
 void NewFileTransferNotification::unregisterEvents()
 {
-	if (!m_fileTransferNotifyEvent)
-		return;
-
 	NotificationManager::instance()->unregisterNotifyEvent(m_fileTransferNotifyEvent);
 	NotificationManager::instance()->unregisterNotifyEvent(m_fileTransferIncomingFileNotifyEvent);
-
-	delete m_fileTransferNotifyEvent;
-	delete m_fileTransferIncomingFileNotifyEvent;
 }
 
 void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)

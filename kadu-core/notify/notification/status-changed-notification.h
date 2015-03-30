@@ -31,13 +31,13 @@ class StatusChangedNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *StatusChangedNotifyEvent;
-	static NotifyEvent *StatusChangedToFreeForChatNotifyEvent;
-	static NotifyEvent *StatusChangedToOnlineNotifyEvent;
-	static NotifyEvent *StatusChangedToAwayNotifyEvent;
-	static NotifyEvent *StatusChangedToNotAvailableNotifyEvent;
-	static NotifyEvent *StatusChangedToDoNotDisturbNotifyEvent;
-	static NotifyEvent *StatusChangedToOfflineNotifyEvent;
+	static NotifyEvent StatusChangedNotifyEvent;
+	static NotifyEvent StatusChangedToFreeForChatNotifyEvent;
+	static NotifyEvent StatusChangedToOnlineNotifyEvent;
+	static NotifyEvent StatusChangedToAwayNotifyEvent;
+	static NotifyEvent StatusChangedToNotAvailableNotifyEvent;
+	static NotifyEvent StatusChangedToDoNotDisturbNotifyEvent;
+	static NotifyEvent StatusChangedToOfflineNotifyEvent;
 
 	Contact CurrentContact;
 public:

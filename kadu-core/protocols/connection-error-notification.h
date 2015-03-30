@@ -34,7 +34,7 @@ class ConnectionErrorNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *ConnectionErrorNotifyEvent;
+	static NotifyEvent ConnectionErrorNotifyEvent;
 	QString ErrorServer;
 	QString ErrorMessage;
 

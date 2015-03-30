@@ -53,8 +53,8 @@ class NotifyTreeWidgetItem : public QTreeWidgetItem
 	bool useCustomSettings;
 
 public:
-	NotifyTreeWidgetItem(QTreeWidget *parent , const QString &eventName, const char *name, QStringList &notifiers);
-	NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent , const QString &eventName, const char *name, QStringList &notifiers);
+	NotifyTreeWidgetItem(QTreeWidget *parent , const QString &eventName, const QString &name, QStringList &notifiers);
+	NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent , const QString &eventName, const QString &name, QStringList &notifiers);
 
 	void notifierChecked(Notifier *notifier, bool checked);
 	void parentNotifierChecked();

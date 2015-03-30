@@ -27,67 +27,30 @@
 
 #include "encryption-ng-notification.h"
 
-NotifyEvent * EncryptionNgNotification::EncryptionNotification = 0;
-NotifyEvent * EncryptionNgNotification::PublicKeySentNotification = 0;
-NotifyEvent * EncryptionNgNotification::PublicKeySendErrorNotification = 0;
-NotifyEvent * EncryptionNgNotification::EncryptionErrorNotification = 0;
+NotifyEvent EncryptionNgNotification::EncryptionNotification;
+NotifyEvent EncryptionNgNotification::PublicKeySentNotification;
+NotifyEvent EncryptionNgNotification::PublicKeySendErrorNotification;
+NotifyEvent EncryptionNgNotification::EncryptionErrorNotification;
 
 void EncryptionNgNotification::registerNotifications()
 {
-	if (!EncryptionNotification)
-	{
-		EncryptionNotification = new NotifyEvent("encryption-ng", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Encryption"));
-		NotificationManager::instance()->registerNotifyEvent(EncryptionNotification);
-	}
+	EncryptionNotification = NotifyEvent("encryption-ng", QT_TRANSLATE_NOOP("@default", "Encryption"), NotifyEvent::CallbackNotRequired);
+	PublicKeySentNotification = NotifyEvent("encryption-ng/publicKeySent", QT_TRANSLATE_NOOP("@default", "Public key has been sent"), NotifyEvent::CallbackNotRequired);
+	PublicKeySendErrorNotification = NotifyEvent("encryption-ng/publicKeySendError", QT_TRANSLATE_NOOP("@default", "Error during sending public key"), NotifyEvent::CallbackNotRequired);
+	EncryptionErrorNotification = NotifyEvent("encryption-ng/encryptionError", QT_TRANSLATE_NOOP("@default", "Encryption error has occured"), NotifyEvent::CallbackNotRequired);
 
-	if (!PublicKeySentNotification)
-	{
-		PublicKeySentNotification = new NotifyEvent("encryption-ng/publicKeySent", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Public key has been sent"));
-		NotificationManager::instance()->registerNotifyEvent(PublicKeySentNotification);
-	}
-
-	if (!PublicKeySendErrorNotification)
-	{
-		PublicKeySendErrorNotification = new NotifyEvent("encryption-ng/publicKeySendError", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Error during sending public key"));
-		NotificationManager::instance()->registerNotifyEvent(PublicKeySendErrorNotification);
-	}
-
-	if (!EncryptionErrorNotification)
-	{
-		EncryptionErrorNotification = new NotifyEvent("encryption-ng/encryptionError", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Encryption error has occured"));
-		NotificationManager::instance()->registerNotifyEvent(EncryptionErrorNotification);
-	}
+	NotificationManager::instance()->registerNotifyEvent(EncryptionNotification);
+	NotificationManager::instance()->registerNotifyEvent(PublicKeySentNotification);
+	NotificationManager::instance()->registerNotifyEvent(PublicKeySendErrorNotification);
+	NotificationManager::instance()->registerNotifyEvent(EncryptionErrorNotification);
 }
 
 void EncryptionNgNotification::unregisterNotifications()
 {
-	if (EncryptionNotification)
-	{
-		NotificationManager::instance()->unregisterNotifyEvent(EncryptionNotification);
-		delete EncryptionNotification;
-		EncryptionNotification = 0;
-	}
-
-	if (PublicKeySentNotification)
-	{
-		NotificationManager::instance()->unregisterNotifyEvent(PublicKeySentNotification);
-		delete PublicKeySentNotification;
-		PublicKeySentNotification = 0;
-	}
-
-	if (PublicKeySendErrorNotification)
-	{
-		NotificationManager::instance()->unregisterNotifyEvent(PublicKeySendErrorNotification);
-		delete PublicKeySendErrorNotification;
-		PublicKeySendErrorNotification = 0;
-	}
-
-	if (EncryptionErrorNotification)
-	{
-		NotificationManager::instance()->unregisterNotifyEvent(EncryptionErrorNotification);
-		delete EncryptionErrorNotification;
-		EncryptionErrorNotification = 0;
-	}
+	NotificationManager::instance()->unregisterNotifyEvent(EncryptionNotification);
+	NotificationManager::instance()->unregisterNotifyEvent(PublicKeySentNotification);
+	NotificationManager::instance()->unregisterNotifyEvent(PublicKeySendErrorNotification);
+	NotificationManager::instance()->unregisterNotifyEvent(EncryptionErrorNotification);
 }
 
 void EncryptionNgNotification::notifyPublicKeySent(Contact contact)

@@ -352,8 +352,8 @@ void FreedesktopNotify::import_0_9_0_Configuration()
 	if (!Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "Timeout").isEmpty() || !Application::instance()->configuration()->deprecatedApi()->readEntry("FreedesktopNotify", "Timeout").isEmpty())
 		Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "CustomTimeout", true);
 
-	foreach (NotifyEvent *event, NotificationManager::instance()->notifyEvents())
-		Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", event->name() + "_FreedesktopNotify", Application::instance()->configuration()->deprecatedApi()->readEntry("Notify", event->name() + "_KNotify"));
+	foreach (NotifyEvent event, NotificationManager::instance()->notifyEvents())
+		Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", event.name() + "_FreedesktopNotify", Application::instance()->configuration()->deprecatedApi()->readEntry("Notify", event.name() + "_KNotify"));
 }
 
 void FreedesktopNotify::createDefaultConfiguration()

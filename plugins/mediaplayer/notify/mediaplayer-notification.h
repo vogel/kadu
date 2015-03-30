@@ -32,7 +32,7 @@ class MEDIAPLAYERAPI MediaPlayerNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *TitleHintNotification;
+	static NotifyEvent TitleHintNotification;
 
 public:
 	static void registerNotifications();

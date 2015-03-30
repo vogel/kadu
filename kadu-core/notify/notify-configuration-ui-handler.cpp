@@ -59,10 +59,10 @@ NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
 	connect(NotificationManager::instance(), SIGNAL(notiferUnregistered(Notifier *)),
 			this, SLOT(notifierUnregistered(Notifier *)));
 
-	connect(NotificationManager::instance(), SIGNAL(notifyEventRegistered(NotifyEvent *)),
-			this, SLOT(notifyEventRegistered(NotifyEvent *)));
-	connect(NotificationManager::instance(), SIGNAL(notifyEventUnregistered(NotifyEvent *)),
-			this, SLOT(notifyEventUnregistered(NotifyEvent *)));
+	connect(NotificationManager::instance(), SIGNAL(notifyEventRegistered(NotifyEvent)),
+			this, SLOT(notifyEventRegistered(NotifyEvent)));
+	connect(NotificationManager::instance(), SIGNAL(notifyEventUnregistered(NotifyEvent)),
+			this, SLOT(notifyEventUnregistered(NotifyEvent)));
 }
 
 NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
@@ -115,17 +115,17 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
-		foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+		foreach (NotifyEvent notifyEvent, NotificationManager::instance()->notifyEvents())
 		{
-			if (!NotifierGui[notifier].Events.contains(notifyEvent->name()))
-				NotifierGui[notifier].Events[notifyEvent->name()] = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyEvent->name() + '_' + notifier->name());
+			if (!NotifierGui[notifier].Events.contains(notifyEvent.name()))
+				NotifierGui[notifier].Events[notifyEvent.name()] = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyEvent.name() + '_' + notifier->name());
 		}
 	}
 
 	QString eventName;
-	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+	foreach (NotifyEvent notifyEvent, NotificationManager::instance()->notifyEvents())
 	{
-		eventName = notifyEvent->name();
+		eventName = notifyEvent.name();
 		if (NotifyEvents.contains(eventName))
 			continue;
 
@@ -181,14 +181,14 @@ void NotifyConfigurationUiHandler::notifierUnregistered(Notifier *notifier)
 		notifyTreeWidget->refresh();
 }
 
-void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent *notifyEvent)
+void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent notifyEvent)
 {
 	if (notificationsGroupBox)
 	{
-		QString eventName = notifyEvent->name();
+		QString eventName = notifyEvent.name();
 		NotifyEventConfigurationItem item;
 		item.event = notifyEvent;
-		if (!notifyEvent->category().isEmpty())
+		if (!notifyEvent.category().isEmpty())
 			item.useCustomSettings = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 		else
 			item.useCustomSettings = true;
@@ -199,10 +199,10 @@ void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent *notifyEven
 	}
 }
 
-void NotifyConfigurationUiHandler::notifyEventUnregistered(NotifyEvent *notifyEvent)
+void NotifyConfigurationUiHandler::notifyEventUnregistered(NotifyEvent notifyEvent)
 {
-	if (NotifyEvents.contains(notifyEvent->name()))
-		NotifyEvents.remove(notifyEvent->name());
+	if (NotifyEvents.contains(notifyEvent.name()))
+		NotifyEvents.remove(notifyEvent.name());
 
 	if (notificationsGroupBox)
 		notifyTreeWidget->refresh();
@@ -210,12 +210,12 @@ void NotifyConfigurationUiHandler::notifyEventUnregistered(NotifyEvent *notifyEv
 
 void NotifyConfigurationUiHandler::configurationWindowApplied()
 {
-	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+	foreach (NotifyEvent notifyEvent, NotificationManager::instance()->notifyEvents())
 	{
-		if (notifyEvent->category().isEmpty() || !NotifyEvents.contains(notifyEvent->name()))
+		if (notifyEvent.category().isEmpty() || !NotifyEvents.contains(notifyEvent.name()))
 			continue;
 
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent->name() + "_UseCustomSettings", NotifyEvents[notifyEvent->name()].useCustomSettings);
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent.name() + "_UseCustomSettings", NotifyEvents[notifyEvent.name()].useCustomSettings);
 	}
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
@@ -272,7 +272,7 @@ void NotifyConfigurationUiHandler::eventSwitched()
 
 	CurrentEvent = notifyTreeWidget->currentEvent();
 
-	useCustomSettingsCheckBox->setVisible(!NotifyEvents[CurrentEvent].event->category().isEmpty());
+	useCustomSettingsCheckBox->setVisible(!NotifyEvents[CurrentEvent].event.category().isEmpty());
 	useCustomSettingsCheckBox->setChecked(NotifyEvents[CurrentEvent].useCustomSettings);
 	customSettingsCheckBoxToggled(useCustomSettingsCheckBox->isHidden() || NotifyEvents[CurrentEvent].useCustomSettings);
 

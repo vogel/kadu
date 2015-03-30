@@ -35,25 +35,17 @@
 
 #include "mediaplayer-notification.h"
 
-NotifyEvent * MediaPlayerNotification::TitleHintNotification = 0;
+NotifyEvent MediaPlayerNotification::TitleHintNotification;
 
 void MediaPlayerNotification::registerNotifications()
 {
-	if (!TitleHintNotification)
-	{
-		TitleHintNotification = new NotifyEvent("MediaPlayerOsd", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"));
-		NotificationManager::instance()->registerNotifyEvent(TitleHintNotification);
-	}
+	TitleHintNotification = NotifyEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"), NotifyEvent::CallbackNotRequired);
+	NotificationManager::instance()->registerNotifyEvent(TitleHintNotification);
 }
 
 void MediaPlayerNotification::unregisterNotifications()
 {
-	if (TitleHintNotification)
-	{
-		NotificationManager::instance()->unregisterNotifyEvent(TitleHintNotification);
-		delete TitleHintNotification;
-		TitleHintNotification = 0;
-	}
+	NotificationManager::instance()->unregisterNotifyEvent(TitleHintNotification);
 }
 
 void MediaPlayerNotification::notifyTitleHint(const QString &title)

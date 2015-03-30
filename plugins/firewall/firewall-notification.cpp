@@ -29,25 +29,17 @@
 
 #include "firewall-notification.h"
 
-NotifyEvent * FirewallNotification::FirewalledNotification = 0;
+NotifyEvent FirewallNotification::FirewalledNotification;
 
 void FirewallNotification::registerNotifications()
 {
-	if (FirewalledNotification)
-		return;
-
-	FirewalledNotification = new NotifyEvent("firewallNotification", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Message was firewalled"));
+	FirewalledNotification = NotifyEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled"), NotifyEvent::CallbackNotRequired);
 	NotificationManager::instance()->registerNotifyEvent(FirewalledNotification);
 }
 
 void FirewallNotification::unregisterNotifications()
 {
-	if (!FirewalledNotification)
-		return;
-
 	NotificationManager::instance()->unregisterNotifyEvent(FirewalledNotification);
-	delete FirewalledNotification;
-	FirewalledNotification = 0;
 }
 
 void FirewallNotification::notify(const Chat &chat, const Contact &sender, const QString &message)

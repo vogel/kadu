@@ -30,7 +30,7 @@ class ScreenshotNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *SizeLimitNotification;
+	static NotifyEvent SizeLimitNotification;
 
 public:
 	static void registerNotifications();

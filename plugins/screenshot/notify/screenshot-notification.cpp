@@ -24,25 +24,17 @@
 
 #include "screenshot-notification.h"
 
-NotifyEvent * ScreenshotNotification::SizeLimitNotification = 0;
+NotifyEvent ScreenshotNotification::SizeLimitNotification;
 
 void ScreenshotNotification::registerNotifications()
 {
-	if (SizeLimitNotification)
-		return;
-
-	SizeLimitNotification = new NotifyEvent("ssSizeLimit", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"));
+	SizeLimitNotification = NotifyEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"), NotifyEvent::CallbackNotRequired};
 	NotificationManager::instance()->registerNotifyEvent(SizeLimitNotification);
 }
 
 void ScreenshotNotification::unregisterNotifiactions()
 {
-	if (!SizeLimitNotification)
-		return;
-
 	NotificationManager::instance()->unregisterNotifyEvent(SizeLimitNotification);
-	delete SizeLimitNotification;
-	SizeLimitNotification = 0;
 }
 
 void ScreenshotNotification::notifySizeLimit(long size)

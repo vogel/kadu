@@ -112,20 +112,20 @@ void NotifyTreeWidget::refresh()
 
 	QStringList notifiersNames;
 	QString eventName;
-	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+	foreach (NotifyEvent notifyEvent, NotificationManager::instance()->notifyEvents())
 	{
-		eventName = notifyEvent->name();
+		eventName = notifyEvent.name();
 		foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 			if (notifierGuiItems[notifier].Events[eventName])
 				notifiersNames << notifier->name();
 
-		if (notifyEvent->category().isEmpty())
+		if (notifyEvent.category().isEmpty())
 			TreeItems.insert(eventName, new NotifyTreeWidgetItem(this, eventName,
-						notifyEvent->description(), notifiersNames));
+						notifyEvent.description(), notifiersNames));
 		else
 		{
-			TreeItems[eventName] = new NotifyTreeWidgetItem(TreeItems[notifyEvent->category()], eventName,
-						notifyEvent->description(), notifiersNames);
+			TreeItems[eventName] = new NotifyTreeWidgetItem(TreeItems[notifyEvent.category()], eventName,
+						notifyEvent.description(), notifiersNames);
 			TreeItems[eventName]->useCustomSettingsChecked(notifyEventItem[eventName].useCustomSettings);
 		}
 		notifiersNames.clear();
@@ -172,24 +172,24 @@ void NotifyTreeWidget::resizeEvent(QResizeEvent *event)
 	header()->resizeSection(0, eventColumnWidth());
 }
 
-NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &eventName, const char *name, QStringList &notifiers)
+NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &eventName, const QString &name, QStringList &notifiers)
 	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
 {
 	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
 
 	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 	setData(0, Qt::UserRole, QVariant(eventName));
-	setText(0, QCoreApplication::translate("@default", name));
+	setText(0, QCoreApplication::translate("@default", name.toUtf8()));
 }
 
-NotifyTreeWidgetItem::NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent, const QString &eventName, const char *name, QStringList &notifiers)
+NotifyTreeWidgetItem::NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent, const QString &eventName, const QString &name, QStringList &notifiers)
 	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
 {
 	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
 
 	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 	setData(0, Qt::UserRole, QVariant(eventName));
-	setText(0, QCoreApplication::translate("@default", name));
+	setText(0, QCoreApplication::translate("@default", name.toUtf8()));
 }
 
 void NotifyTreeWidgetItem::notifierChecked(Notifier *notifier, bool checked)

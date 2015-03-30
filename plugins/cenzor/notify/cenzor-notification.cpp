@@ -24,25 +24,17 @@
 
 #include "cenzor-notification.h"
 
-NotifyEvent * CenzorNotification::CenzoredNotification = 0;
+NotifyEvent CenzorNotification::CenzoredNotification;
 
 void CenzorNotification::registerNotifications()
 {
-	if (CenzoredNotification)
-		return;
-
-	CenzoredNotification = new NotifyEvent("cenzorNotification", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Message was cenzored"));
+	CenzoredNotification = NotifyEvent("cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored"), NotifyEvent::CallbackNotRequired);
 	NotificationManager::instance()->registerNotifyEvent(CenzoredNotification);
 }
 
 void CenzorNotification::unregisterNotifiactions()
 {
-	if (!CenzoredNotification)
-		return;
-
 	NotificationManager::instance()->unregisterNotifyEvent(CenzoredNotification);
-	delete CenzoredNotification;
-	CenzoredNotification = 0;
 }
 
 void CenzorNotification::notifyCenzored(const Chat &chat)

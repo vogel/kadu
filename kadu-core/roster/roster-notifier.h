@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "notify/notify-event.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
@@ -52,7 +53,7 @@ public:
 	Q_INVOKABLE explicit RosterNotifier(QObject *parent = nullptr);
 	virtual ~RosterNotifier();
 
-	QList<NotifyEvent *> notifyEvents();
+	QList<NotifyEvent> notifyEvents();
 
 public slots:
 	void notifyImportSucceeded(const Account &account);
@@ -67,11 +68,11 @@ private:
 	static QString sm_exportSucceededNotifyTopic;
 	static QString sm_exportFailedNotifyTopic;
 
-	QScopedPointer<NotifyEvent> m_rosterNotifyEvent;
-	QScopedPointer<NotifyEvent> m_importSucceededNotifyEvent;
-	QScopedPointer<NotifyEvent> m_importFailedNotifyEvent;
-	QScopedPointer<NotifyEvent> m_exportSucceededNotifyEvent;
-	QScopedPointer<NotifyEvent> m_exportFailedNotifyEvent;
+	NotifyEvent m_rosterNotifyEvent;
+	NotifyEvent m_importSucceededNotifyEvent;
+	NotifyEvent m_importFailedNotifyEvent;
+	NotifyEvent m_exportSucceededNotifyEvent;
+	NotifyEvent m_exportFailedNotifyEvent;
 
 	void notify(const QString &topic, const Account &account, const QString &message);
 

@@ -20,13 +20,14 @@
 #ifndef OTR_NOTIFIER_H
 #define OTR_NOTIFIER_H
 
+#include "notify/notify-event.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
 class Account;
 class ChatWidgetRepository;
 class Contact;
-class NotifyEvent;
 
 class OtrNotifier : public QObject
 {
@@ -38,9 +39,9 @@ class OtrNotifier : public QObject
 
 	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
 
-	QScopedPointer<NotifyEvent> OtrNotifyEvent;
-	QScopedPointer<NotifyEvent> CreatePrivateKeyStartedNotifyEvent;
-	QScopedPointer<NotifyEvent> CreatePrivateKeyFinishedNotifyEvent;
+	NotifyEvent OtrNotifyEvent;
+	NotifyEvent CreatePrivateKeyStartedNotifyEvent;
+	NotifyEvent CreatePrivateKeyFinishedNotifyEvent;
 
 	void notify(const QString &topic, const Account &account, const QString &message);
 	void notify(const Contact &contact, const QString &message);
@@ -51,7 +52,7 @@ public:
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	QList<NotifyEvent *> notifyEvents();
+	QList<NotifyEvent> notifyEvents();
 
 public slots:
 	void notifyTryingToStartSession(const Contact &contact);

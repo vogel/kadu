@@ -34,8 +34,8 @@ class KADUAPI MessageNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent *NewChatNotifyEvent;
-	static NotifyEvent *NewMessageNotifyEvent;
+	static NotifyEvent NewChatNotifyEvent;
+	static NotifyEvent NewMessageNotifyEvent;
 
 	Message CurrentMessage;
 

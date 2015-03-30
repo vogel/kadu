@@ -20,40 +20,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFY_EVENT_H
-#define NOTIFY_EVENT_H
+#pragma once
+
+#include "exports.h"
 
 #include <QtCore/QString>
-#include "exports.h"
 
 class KADUAPI NotifyEvent
 {
 public:
-	/**
-		@enum CallbackRequirement
-		Okre�la, czy dane zdarzenie wymaga podj�cia od u�ytkownika akcji innej ni� domy�lne zaakceptowanie/odrzucenie.
-	 **/
-	enum CallbackRequirement {
+	enum CallbackRequirement
+	{
 		CallbackRequired,
 		CallbackNotRequired
 	};
 
+	NotifyEvent();
+	explicit NotifyEvent(QString name, QString description, CallbackRequirement isCallbackRequired);
+
+	QString name() const;
+	QString category() const;
+	QString description() const;
+	CallbackRequirement isCallbackRequired();
+
 private:
-	QString Name;
-	QString Category;
+	QString m_name;
+	QString m_category;
+	QString m_description;
 
-	CallbackRequirement IsCallbackRequired;
-	const char *Description;
-
-public:
-	NotifyEvent(const QString &name, CallbackRequirement isCallbackRequired, const char *description);
-	bool operator == (const NotifyEvent &compare);
-
-	const QString & name() const { return Name; }
-	const QString & category() const { return Category; }
-	CallbackRequirement isCallbackRequired() { return IsCallbackRequired; }
-	const char * description() { return Description; }
+	CallbackRequirement m_isCallbackRequired;
 
 };
 
-#endif // NOTIFY_EVENT_H
+bool operator == (const NotifyEvent &x, const NotifyEvent &y);
