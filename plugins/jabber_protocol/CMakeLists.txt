@@ -75,6 +75,7 @@ set (SOURCES
 	services/jabber-vcard-service.cpp
 	services/jabber-vcard-uploader.cpp
 
+	facebook-depreceated-message.cpp
 	jabber-account-details.cpp
 	jabber-id-validator.cpp
 	jabber-protocol.cpp

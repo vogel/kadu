@@ -30,6 +30,7 @@
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "services/jabber-servers-service.h"
+#include "facebook-depreceated-message.h"
 #include "jabber-account-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
@@ -70,6 +71,9 @@ KaduIcon JabberProtocolFactory::icon()
 
 Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 {
+	if (account.id().toLower().endsWith("@chat.facebook.com"))
+		FacebookDepreceatedMessage::instance()->showIfNotSeen();
+
 	return new JabberProtocol(account, this);
 }
 

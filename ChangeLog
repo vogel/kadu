@@ -1,3 +1,6 @@
++++ version 3.0-beta2
+* jabber: #3015 done: removed Facebook support (Vogel)
+
 +++ version 3.0-beta1
 * contacts: #2990 fixed: mising up contacts priorities sometimes (Vogel)
 * history: #2981 implemented: display new messages in history window as these appears (Vogel)

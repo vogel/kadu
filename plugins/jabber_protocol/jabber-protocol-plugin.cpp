@@ -28,6 +28,7 @@
 #include "dom/dom-processor-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "facebook-depreceated-message.h"
 #include "gtalk-protocol-factory.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
@@ -47,6 +48,8 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
 			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk"))
 		return true;
+
+	FacebookDepreceatedMessage::createInstance();
 
 	JabberIdValidator::createInstance();
 
@@ -86,6 +89,8 @@ void JabberProtocolPlugin::done()
 	JabberActions::unregisterActions();
 
 	JabberIdValidator::destroyInstance();
+
+	FacebookDepreceatedMessage::destroyInstance();
 }
 
 Q_EXPORT_PLUGIN2(jabber_protocol, JabberProtocolPlugin)
