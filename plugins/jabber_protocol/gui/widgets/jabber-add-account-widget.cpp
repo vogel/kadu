@@ -192,16 +192,6 @@ void JabberAddAccountWidget::apply()
 		details->setResource("Kadu");
 		details->setPriority(5);
 
-		bool isFacebookAccount = Factory->name() == "facebook";
-		if (isFacebookAccount)
-		{
-			details->setEncryptionMode(JabberAccountDetails::Encryption_Yes);
-			details->setPlainAuthMode(JabberAccountDetails::AllowPlainOverTLS);
-			details->setUseCustomHostPort(false);
-			details->setCustomHost("chat.facebook.com");
-			details->setCustomPort(5222);
-		}
-
 		bool isGoogleAppsAccount = Factory->name() == "gmail/google talk" && !Domain->currentText().contains("gmail");
 		// Google Apps account sometimes needs custom host/port settings to work
 		if (isGoogleAppsAccount)

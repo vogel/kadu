@@ -84,7 +84,6 @@ set (SOURCES
 	jabber-url-dom-visitor-provider.cpp
 	jabber-url-handler.cpp
 	jid.cpp
-	facebook-protocol-factory.cpp
 	gtalk-protocol-factory.cpp
 )
 
@@ -115,7 +114,6 @@ set (MOC_SOURCES
 	services/jabber-vcard-service.h
 	services/jabber-vcard-uploader.h
 
-	facebook-protocol-factory.h
 	gtalk-protocol-factory.h
 	jabber-id-validator.h
 	jabber-protocol.h

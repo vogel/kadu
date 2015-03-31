@@ -28,7 +28,6 @@
 #include "dom/dom-processor-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
@@ -46,8 +45,7 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
-			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk")
-			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
+			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk"))
 		return true;
 
 	JabberIdValidator::createInstance();
@@ -57,11 +55,9 @@ bool JabberProtocolPlugin::init(bool firstLoad)
 
 	JabberProtocolFactory::createInstance();
 	GTalkProtocolFactory::createInstance();
-	FacebookProtocolFactory::createInstance();
 
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
-	ProtocolsManager::instance()->registerProtocolFactory(FacebookProtocolFactory::instance());
 
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
@@ -82,11 +78,9 @@ void JabberProtocolPlugin::done()
 
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
-	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
 
 	JabberProtocolFactory::destroyInstance();
 	GTalkProtocolFactory::destroyInstance();
-	FacebookProtocolFactory::destroyInstance();
 
 	JabberProtocolMenuManager::destroyInstance();
 	JabberActions::unregisterActions();

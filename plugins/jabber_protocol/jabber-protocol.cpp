@@ -40,7 +40,6 @@
 #include "services/jabber-stream-debug-service.h"
 #include "services/jabber-subscription-service.h"
 #include "services/jabber-vcard-service.h"
-#include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
@@ -77,6 +76,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	auto details = dynamic_cast<JabberAccountDetails *>(account.details());
 	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
 
+	// TODO: remove after 01.05.2015
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 

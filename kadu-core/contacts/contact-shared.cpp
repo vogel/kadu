@@ -108,6 +108,7 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 	Priority = loadValue<int>("Priority", -1);
 
+	// TODO: remove after 01.05.2015
 	// It's an explicit hack for update path from 0.10.1-0.11.x to 0.12+. 0.10/0.11 didn't
 	// have Detached property. But they did have an explicit hack for totally ignoring
 	// what Facebook says about groups, thus allowing users to place their Facebook contacts
