@@ -84,7 +84,7 @@ void NotificationManager::unregisterNotifyEvent(NotifyEvent notifyEvent)
 	kdebugf();
 
 	NotifyEvents.removeAll(notifyEvent);
-	emit notifyEventUnregistered(notifyEvent);
+	emit notifyEventUnregistered(notifyEvent.name());
 
 	kdebugf2();
 }

@@ -98,7 +98,7 @@ signals:
 	void notiferUnregistered(Notifier *notifier);
 
 	void notifyEventRegistered(NotifyEvent notifyEvent);
-	void notifyEventUnregistered(NotifyEvent notifyEvent);
+	void notifyEventUnregistered(const QString &eventName);
 
 };
 

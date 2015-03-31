@@ -61,8 +61,8 @@ NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
 
 	connect(NotificationManager::instance(), SIGNAL(notifyEventRegistered(NotifyEvent)),
 			this, SLOT(notifyEventRegistered(NotifyEvent)));
-	connect(NotificationManager::instance(), SIGNAL(notifyEventUnregistered(NotifyEvent)),
-			this, SLOT(notifyEventUnregistered(NotifyEvent)));
+	connect(NotificationManager::instance(), SIGNAL(notifyEventUnregistered(QString)),
+			this, SLOT(notifyEventUnregistered(QString)));
 }
 
 NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
@@ -199,10 +199,10 @@ void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent notifyEvent
 	}
 }
 
-void NotifyConfigurationUiHandler::notifyEventUnregistered(NotifyEvent notifyEvent)
+void NotifyConfigurationUiHandler::notifyEventUnregistered(const QString &eventName)
 {
-	if (NotifyEvents.contains(notifyEvent.name()))
-		NotifyEvents.remove(notifyEvent.name());
+	if (NotifyEvents.contains(eventName))
+		NotifyEvents.remove(eventName);
 
 	if (notificationsGroupBox)
 		notifyTreeWidget->refresh();

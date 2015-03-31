@@ -76,7 +76,7 @@ private slots:
 	void notifierUnregistered(Notifier *notifier);
 
 	void notifyEventRegistered(NotifyEvent notifyEvent);
-	void notifyEventUnregistered(NotifyEvent notifyEvent);
+	void notifyEventUnregistered(const QString &eventName);
 
 	void configurationWindowApplied();
 	void mainConfigurationWindowDestroyed();
