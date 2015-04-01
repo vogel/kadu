@@ -123,7 +123,7 @@ QString OtrFingerprintService::extractAccountFingerprint(const Account &account)
 		return QString();
 
 	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
-	return QString(fingerprint);
+	return QString::fromLatin1(fingerprint);
 }
 
 QString OtrFingerprintService::extractContactFingerprint(const Contact &contact) const
@@ -139,5 +139,5 @@ QString OtrFingerprintService::extractContactFingerprint(const Contact &contact)
 	otrl_privkey_hash_to_human(fingerprint, context->active_fingerprint->fingerprint);
 
 	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
-	return QString(fingerprint);
+	return QString::fromLatin1(fingerprint);
 }
