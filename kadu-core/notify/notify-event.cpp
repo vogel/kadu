@@ -21,15 +21,13 @@
 
 #include "notify-event.h"
 
-NotifyEvent::NotifyEvent() :
-		m_isCallbackRequired{CallbackNotRequired}
+NotifyEvent::NotifyEvent()
 {
 }
 
-NotifyEvent::NotifyEvent(QString name, QString description, CallbackRequirement isCallbackRequired) :
+NotifyEvent::NotifyEvent(QString name, QString description) :
 		m_name{std::move(name)},
-		m_description{std::move(description)},
-		m_isCallbackRequired{isCallbackRequired}
+		m_description{std::move(description)}
 {
 	auto index = m_name.indexOf("/");
 	m_category = (index > 0) ? m_name.left(index) : QString();
@@ -48,11 +46,6 @@ QString NotifyEvent::category() const
 QString NotifyEvent::description() const
 {
 	return m_description;
-}
-
-NotifyEvent::CallbackRequirement NotifyEvent::isCallbackRequired()
-{
-	return m_isCallbackRequired;
 }
 
 bool operator == (const NotifyEvent &x, const NotifyEvent &y)

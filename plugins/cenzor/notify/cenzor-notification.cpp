@@ -26,7 +26,7 @@
 
 void CenzorNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored"), NotifyEvent::CallbackNotRequired));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")));
 }
 
 void CenzorNotification::unregisterNotifiactions()

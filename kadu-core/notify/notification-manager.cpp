@@ -186,7 +186,6 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	auto notifyType = rawNotification->key();
 	auto foundNotifier = false;
-	auto foundNotifierWithCallbackSupported = !rawNotification->requireCallback();
 
 	for (auto notifier : Notifiers)
 	{
@@ -194,28 +193,11 @@ void NotificationManager::notify(Notification *rawNotification)
 		{
 			notifier->notify(notification);
 			foundNotifier = true;
-			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported ||
-					(Notifier::CallbackSupported == notifier->callbackCapacity());
 		}
 	}
 
-	if (!foundNotifierWithCallbackSupported)
-		for (auto notifier : Notifiers)
-		{
-			if (Notifier::CallbackSupported == notifier->callbackCapacity())
-			{
-				notifier->notify(notification);
-				foundNotifier = true;
-				foundNotifierWithCallbackSupported = true;
-				break;
-			}
-		}
-
 	if (!foundNotifier)
 		notification->callbackDiscard();
-
-	if (!foundNotifierWithCallbackSupported)
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to find notifier for %1 event").arg(rawNotification->type()));
 
 	kdebugf2();
 }

@@ -53,7 +53,7 @@ static QString getErrorServer(const ParserData * const object)
 
 void ConnectionErrorNotification::registerEvent()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error"), NotifyEvent::CallbackNotRequired));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 
 	Parser::registerObjectTag("error", getErrorMessage);
 	Parser::registerObjectTag("errorServer", getErrorServer);

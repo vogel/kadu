@@ -39,8 +39,6 @@ public:
 
 	NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer);
 
-	virtual bool requireCallback() { return true; }
-
 public slots:
 	virtual void callbackAccept();
 	virtual void callbackReject();

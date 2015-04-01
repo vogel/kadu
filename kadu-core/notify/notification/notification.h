@@ -75,8 +75,6 @@ public:
 	void addCallback(const QString &name);
 	void addChatCallbacks();
 
-	virtual bool requireCallback() { return false; }
-
 	virtual const QString & type() const { return Type; }
 
 	virtual QString key() const;

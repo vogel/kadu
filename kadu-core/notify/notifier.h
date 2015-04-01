@@ -46,17 +46,6 @@ class KADUAPI Notifier : public QObject
 {
 	Q_OBJECT
 
-public:
-	/**
-		@enum CallbackCapacity
-		Okre�la, czy dany notifikator potrafi obs�u�y� zdarzenia wymagajace od u�ytkownika akcji innej ni� domy�lne zaakceptowanie/odrzucenie.
-	 **/
-	enum CallbackCapacity {
-		CallbackSupported,
-		CallbackNotSupported
-	};
-
-private:
 	QString Name;
 	QString Description;
 	KaduIcon Icon;
@@ -68,8 +57,6 @@ public:
 	const QString & name() const { return Name; }
 	const QString & description() const { return Description; }
 	const KaduIcon & icon() const { return Icon; }
-
-	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 
 	/**
 		Metoda informuj�ca notifikator o nowym zdarzeniu. Zdarzenie mo�e wywo�a�

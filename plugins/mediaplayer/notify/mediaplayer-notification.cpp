@@ -37,7 +37,7 @@
 
 void MediaPlayerNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"), NotifyEvent::CallbackNotRequired));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer")));
 }
 
 void MediaPlayerNotification::unregisterNotifications()

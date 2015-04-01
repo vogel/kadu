@@ -33,15 +33,15 @@ RosterNotifier::RosterNotifier(QObject *parent) :
 		QObject{parent}
 {
 	m_rosterNotifyEvent = NotifyEvent{sm_rosterNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Roster"), NotifyEvent::CallbackNotRequired};
+			QT_TRANSLATE_NOOP("@default", "Roster")};
 	m_importSucceededNotifyEvent = NotifyEvent{sm_importSucceededNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Import from server succeeded"), NotifyEvent::CallbackNotRequired};
+			QT_TRANSLATE_NOOP("@default", "Import from server succeeded")};
 	m_importFailedNotifyEvent = NotifyEvent{sm_importFailedNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Import from server failed"), NotifyEvent::CallbackNotRequired};
+			QT_TRANSLATE_NOOP("@default", "Import from server failed")};
 	m_exportSucceededNotifyEvent = NotifyEvent{sm_exportSucceededNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Export to server succeeded"), NotifyEvent::CallbackNotRequired};
+			QT_TRANSLATE_NOOP("@default", "Export to server succeeded")};
 	m_exportFailedNotifyEvent = NotifyEvent{sm_exportFailedNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Export to server failed"), NotifyEvent::CallbackNotRequired};
+			QT_TRANSLATE_NOOP("@default", "Export to server failed")};
 }
 
 RosterNotifier::~RosterNotifier()

@@ -31,7 +31,7 @@
 
 void FirewallNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled"), NotifyEvent::CallbackNotRequired));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
 }
 
 void FirewallNotification::unregisterNotifications()

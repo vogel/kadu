@@ -140,13 +140,6 @@ void FreedesktopNotify::checkServerCapabilities()
 	}
 }
 
-Notifier::CallbackCapacity FreedesktopNotify::callbackCapacity()
-{
-	checkServerCapabilities();
-
-	return ServerSupportsActions ? CallbackSupported : CallbackNotSupported;
-}
-
 void FreedesktopNotify::notify(Notification *notification)
 {
 	checkServerCapabilities();

@@ -25,7 +25,7 @@
 
 void AntistringNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications"), NotifyEvent::CallbackNotRequired));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")));
 }
 
 void AntistringNotification::unregisterNotifications()

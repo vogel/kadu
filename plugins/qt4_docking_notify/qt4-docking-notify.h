@@ -27,8 +27,6 @@ public:
 
 	virtual void notify(Notification *notification);
 
-	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
-
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
 public slots:

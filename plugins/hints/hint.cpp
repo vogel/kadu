@@ -47,13 +47,9 @@
  * @{
  */
 Hint::Hint(QWidget *parent, Notification *xnotification)
-	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(xnotification),
-	  requireCallbacks(notification->requireCallback())
+	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(xnotification)
 {
 	kdebugf();
-
-	if (notification->type() == "Preview")
-		requireCallbacks = true;
 
 	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
 	if (aggregateNotification)
@@ -70,7 +66,7 @@ Hint::Hint(QWidget *parent, Notification *xnotification)
 	auto callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
 	if (showButtons)
-		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons") && !notification->requireCallback())
+		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons"))
 			showButtons = false;
 
 	auto callbackNotifiation = notification;
@@ -246,35 +242,27 @@ void Hint::notificationClosed()
 	emit closing(this);
 }
 
-bool Hint::requireManualClosing()
-{
-	return requireCallbacks;
-}
-
 void Hint::nextSecond(void)
 {
-	if (!requireCallbacks)
+	if (startSecs == 0)
+		return;
+
+	if (secs == 0)
 	{
-		if (startSecs == 0)
-			return;
-
-		if (secs == 0)
-		{
-			kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
-		}
-		else if (secs > 2000000000)
-		{
-			kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
-		}
-
-		if (secs > 0)
-			--secs;
+		kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
 	}
+	else if (secs > 2000000000)
+	{
+		kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
+	}
+
+	if (secs > 0)
+		--secs;
 }
 
 bool Hint::isDeprecated()
 {
-	return (!requireCallbacks) && startSecs != 0 && secs == 0;
+	return startSecs != 0 && secs == 0;
 }
 
 void Hint::notificationUpdated()

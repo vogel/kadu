@@ -32,8 +32,8 @@
 
 void MessageNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat"), NotifyEvent::CallbackNotRequired));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message"), NotifyEvent::CallbackNotRequired));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
 }
 
 void MessageNotification::unregisterEvents()

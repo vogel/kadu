@@ -44,7 +44,6 @@ public:
 
 	virtual void notify(Notification *notification);
 
-	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) { Q_UNUSED(parent) return nullptr; }
 
 private:

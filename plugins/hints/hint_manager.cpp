@@ -379,7 +379,7 @@ void HintManager::chatUpdated(const Chat &chat)
 
 	foreach (Hint *h, hints)
 	{
-		if (h->chat() == chat && !h->requireManualClosing())
+		if (h->chat() == chat)
 			deleteHint(h);
 	}
 
@@ -393,11 +393,8 @@ void HintManager::deleteAllHints()
 
 	foreach (Hint *h, hints)
 	{
-		if (!h->requireManualClosing())
-		{
-			h->discardNotification();
-			deleteHint(h);
-		}
+		h->discardNotification();
+		deleteHint(h);
 	}
 
 	if (hints.isEmpty())

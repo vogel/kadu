@@ -36,8 +36,8 @@
 
 void NewFileTransferNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer"), NotifyEvent::CallbackRequired});
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer"), NotifyEvent::CallbackRequired});
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 
 	auto acceptTransferCallback = NotificationCallback{
 		"file-transfer-accept",

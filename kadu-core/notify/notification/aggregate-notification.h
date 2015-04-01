@@ -57,8 +57,6 @@ public:
 
 	void addCallback(const QString &name);
 
-	virtual bool requireCallback();
-
 	virtual bool isPeriodic() { return IsPeriodic; }
 	virtual int period() { return Period; }
 

@@ -29,26 +29,17 @@
 class KADUAPI NotifyEvent
 {
 public:
-	enum CallbackRequirement
-	{
-		CallbackRequired,
-		CallbackNotRequired
-	};
-
 	NotifyEvent();
-	explicit NotifyEvent(QString name, QString description, CallbackRequirement isCallbackRequired);
+	explicit NotifyEvent(QString name, QString description);
 
 	QString name() const;
 	QString category() const;
 	QString description() const;
-	CallbackRequirement isCallbackRequired();
 
 private:
 	QString m_name;
 	QString m_category;
 	QString m_description;
-
-	CallbackRequirement m_isCallbackRequired;
 
 };
 

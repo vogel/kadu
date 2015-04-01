@@ -55,8 +55,6 @@ class Hint : public QFrame, ConfigurationAwareObject
 	Notification *notification;
 	QStringList details;
 
-	bool requireCallbacks;
-
 	void createLabels(const QPixmap &pixmap);
 	void updateText();
 
@@ -84,7 +82,6 @@ public:
 	void notificationUpdated();
 
 	void getData(QString &text, QPixmap &pixmap, int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
-	bool requireManualClosing();
 	bool isDeprecated();
 
 	Chat  chat() { return CurrentChat; }

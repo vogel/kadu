@@ -28,17 +28,16 @@ public:
 	virtual void done();
 
 	virtual void notify(Notification *notification);
-	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 	void createDefaultConfiguration();
 
 	static GrowlNotify *instance() { return Instance; }
 
-private:	
+private:
 	GrowlNotifier* growlNotifier;
 	GrowlNotifyConfigurationWidget *configurationWidget;
-	
+
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);
 

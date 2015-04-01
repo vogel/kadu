@@ -97,14 +97,6 @@ void AggregateNotification::addCallback(const QString &name)
 		Notifications.first()->addCallback(name);
 }
 
-bool AggregateNotification::requireCallback()
-{
-	if (!Notifications.empty())
-		return Notifications.first()->requireCallback();
-	else
-		return false;
-}
-
 void AggregateNotification::callbackAccept()
 {
 	if (!Notifications.empty())

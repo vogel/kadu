@@ -137,7 +137,6 @@ public:
 	explicit HintManager(QObject *parent = 0);
 	virtual ~HintManager();
 
-	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
 
 	virtual void showToolTip(const QPoint &point, Talkable talkable);

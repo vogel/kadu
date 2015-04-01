@@ -33,9 +33,9 @@ QString OtrNotifier::CreatePrivateKeyFinishedNotifyTopic("OTR/CreatePrivateKeyFi
 
 OtrNotifier::OtrNotifier()
 {
-	OtrNotifyEvent = NotifyEvent{OtrNotifyTopic, QT_TRANSLATE_NOOP("@default", "OTR Encryption"), NotifyEvent::CallbackNotRequired};
-	CreatePrivateKeyStartedNotifyEvent = NotifyEvent{CreatePrivateKeyStartedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key started"), NotifyEvent::CallbackNotRequired};
-	CreatePrivateKeyFinishedNotifyEvent = NotifyEvent{CreatePrivateKeyFinishedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key finished"), NotifyEvent::CallbackNotRequired};
+	OtrNotifyEvent = NotifyEvent{OtrNotifyTopic, QT_TRANSLATE_NOOP("@default", "OTR Encryption")};
+	CreatePrivateKeyStartedNotifyEvent = NotifyEvent{CreatePrivateKeyStartedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key started")};
+	CreatePrivateKeyFinishedNotifyEvent = NotifyEvent{CreatePrivateKeyFinishedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key finished")};
 }
 
 OtrNotifier::~OtrNotifier()

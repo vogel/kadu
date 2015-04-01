@@ -29,10 +29,10 @@
 
 void EncryptionNgNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng", QT_TRANSLATE_NOOP("@default", "Encryption"), NotifyEvent::CallbackNotRequired));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng/publicKeySent", QT_TRANSLATE_NOOP("@default", "Public key has been sent"), NotifyEvent::CallbackNotRequired));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng/publicKeySendError", QT_TRANSLATE_NOOP("@default", "Error during sending public key"), NotifyEvent::CallbackNotRequired));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng/encryptionError", QT_TRANSLATE_NOOP("@default", "Encryption error has occured"), NotifyEvent::CallbackNotRequired));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng", QT_TRANSLATE_NOOP("@default", "Encryption")));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng/publicKeySent", QT_TRANSLATE_NOOP("@default", "Public key has been sent")));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng/publicKeySendError", QT_TRANSLATE_NOOP("@default", "Error during sending public key")));
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("encryption-ng/encryptionError", QT_TRANSLATE_NOOP("@default", "Encryption error has occured")));
 }
 
 void EncryptionNgNotification::unregisterNotifications()

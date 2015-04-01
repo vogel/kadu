@@ -26,7 +26,7 @@
 
 void ScreenshotNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"), NotifyEvent::CallbackNotRequired});
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 }
 
 void ScreenshotNotification::unregisterNotifiactions()
