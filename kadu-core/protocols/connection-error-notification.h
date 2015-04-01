@@ -28,13 +28,10 @@
 
 #include "notify/notification/notification.h"
 
-class NotifyEvent;
-
 class ConnectionErrorNotification : public Notification
 {
 	Q_OBJECT
 
-	static NotifyEvent ConnectionErrorNotifyEvent;
 	QString ErrorServer;
 	QString ErrorMessage;
 

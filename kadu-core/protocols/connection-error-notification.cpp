@@ -33,8 +33,6 @@
 
 #include "connection-error-notification.h"
 
-NotifyEvent ConnectionErrorNotification::ConnectionErrorNotifyEvent;
-
 static QString getErrorMessage(const ParserData * const object)
 {
 	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
@@ -55,8 +53,7 @@ static QString getErrorServer(const ParserData * const object)
 
 void ConnectionErrorNotification::registerEvent()
 {
-	ConnectionErrorNotifyEvent = NotifyEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error"), NotifyEvent::CallbackNotRequired);
-	NotificationManager::instance()->registerNotifyEvent(ConnectionErrorNotifyEvent);
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error"), NotifyEvent::CallbackNotRequired));
 
 	Parser::registerObjectTag("error", getErrorMessage);
 	Parser::registerObjectTag("errorServer", getErrorServer);
@@ -78,7 +75,7 @@ void ConnectionErrorNotification::unregisterEvent()
 	Parser::unregisterObjectTag("errorServer");
 	Parser::unregisterObjectTag("error");
 
-	NotificationManager::instance()->unregisterNotifyEvent(ConnectionErrorNotifyEvent);
+	NotificationManager::instance()->unregisterNotifyEvent("ConnectionError");
 }
 
 void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)

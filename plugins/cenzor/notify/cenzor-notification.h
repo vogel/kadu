@@ -23,13 +23,9 @@
 
 #include "notify/notification/notification.h"
 
-class NotifyEvent;
-
 class CenzorNotification : public Notification
 {
 	Q_OBJECT
-
-	static NotifyEvent CenzoredNotification;
 
 public:
 	static void registerNotifications();

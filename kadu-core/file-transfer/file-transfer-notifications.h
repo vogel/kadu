@@ -26,7 +26,6 @@
 #include "notify/notification/notification.h"
 
 class FileTransferManager;
-class NotifyEvent;
 
 class NewFileTransferNotification : public Notification
 {
@@ -47,9 +46,6 @@ public slots:
 	virtual void callbackReject();
 
 private:
-	static NotifyEvent m_fileTransferNotifyEvent;
-	static NotifyEvent m_fileTransferIncomingFileNotifyEvent;
-
 	FileTransfer m_transfer;
 	QString m_fileName;
 

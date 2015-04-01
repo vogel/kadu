@@ -25,15 +25,10 @@
 #include "notify/notification/notification.h"
 
 class MultilogonSession;
-class NotifyEvent;
 
 class MultilogonNotification : public Notification
 {
 	Q_OBJECT
-
-	static NotifyEvent MultilogonSessionNotifyEvent;
-	static NotifyEvent MultilogonSessionConnectedNotifyEvent;
-	static NotifyEvent MultilogonSessionDisconnectedNotifyEvent;
 
 	MultilogonSession *Session;
 

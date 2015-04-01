@@ -24,17 +24,14 @@
 
 #include "cenzor-notification.h"
 
-NotifyEvent CenzorNotification::CenzoredNotification;
-
 void CenzorNotification::registerNotifications()
 {
-	CenzoredNotification = NotifyEvent("cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored"), NotifyEvent::CallbackNotRequired);
-	NotificationManager::instance()->registerNotifyEvent(CenzoredNotification);
+	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored"), NotifyEvent::CallbackNotRequired));
 }
 
 void CenzorNotification::unregisterNotifiactions()
 {
-	NotificationManager::instance()->unregisterNotifyEvent(CenzoredNotification);
+	NotificationManager::instance()->unregisterNotifyEvent("cenzorNotification");
 }
 
 void CenzorNotification::notifyCenzored(const Chat &chat)

@@ -82,7 +82,7 @@ public:
 	void unregisterNotifier(Notifier *notifier);
 
 	void registerNotifyEvent(NotifyEvent notifyEvent);
-	void unregisterNotifyEvent(NotifyEvent notifyEvent);
+	void unregisterNotifyEvent(const QString &eventName);
 
 	const QList<Notifier *> & notifiers() const;
 	const QList<NotifyEvent> & notifyEvents() const;

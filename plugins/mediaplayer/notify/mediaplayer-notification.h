@@ -26,13 +26,9 @@
 
 #include "mediaplayer_exports.h"
 
-class NotifyEvent;
-
 class MEDIAPLAYERAPI MediaPlayerNotification : public Notification
 {
 	Q_OBJECT
-
-	static NotifyEvent TitleHintNotification;
 
 public:
 	static void registerNotifications();

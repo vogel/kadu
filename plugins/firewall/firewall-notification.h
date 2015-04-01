@@ -24,13 +24,10 @@
 #include "notify/notification/notification.h"
 
 class Chat;
-class NotifyEvent;
 
 class FirewallNotification : public Notification
 {
 	Q_OBJECT
-
-	static NotifyEvent FirewalledNotification;
 
 public:
 	static void registerNotifications();

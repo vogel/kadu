@@ -23,13 +23,9 @@
 
 #include "notify/notification/notification.h"
 
-class NotifyEvent;
-
 class AntistringNotification : public Notification
 {
 	Q_OBJECT
-
-	static NotifyEvent StringReceivedNotification;
 
 public:
 	static void registerNotifications();

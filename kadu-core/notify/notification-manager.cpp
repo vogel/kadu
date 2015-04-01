@@ -79,12 +79,15 @@ void NotificationManager::registerNotifyEvent(NotifyEvent notifyEvent)
 	kdebugf2();
 }
 
-void NotificationManager::unregisterNotifyEvent(NotifyEvent notifyEvent)
+void NotificationManager::unregisterNotifyEvent(const QString &eventName)
 {
 	kdebugf();
 
-	NotifyEvents.removeAll(notifyEvent);
-	emit notifyEventUnregistered(notifyEvent.name());
+	auto it = std::find_if(std::begin(NotifyEvents), std::end(NotifyEvents), [&eventName](const NotifyEvent &event){
+		return event.name() == eventName;
+	});
+	NotifyEvents.erase(it);
+	emit notifyEventUnregistered(eventName);
 
 	kdebugf2();
 }

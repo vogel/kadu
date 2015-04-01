@@ -24,13 +24,9 @@
 
 #include "notify/notification/notification.h"
 
-class NotifyEvent;
-
 class ScreenshotNotification : public Notification
 {
 	Q_OBJECT
-
-	static NotifyEvent SizeLimitNotification;
 
 public:
 	static void registerNotifications();
