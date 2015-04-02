@@ -23,11 +23,11 @@
 
 #include <injeqt/module.h>
 
-class KADUAPI NotifyModule : public injeqt::module
+class KADUAPI NotificationModule : public injeqt::module
 {
 
 public:
-	explicit NotifyModule();
-	virtual ~NotifyModule();
+	explicit NotificationModule();
+	virtual ~NotificationModule();
 
 };

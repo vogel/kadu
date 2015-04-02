@@ -65,7 +65,7 @@
 #include "icons/icons-manager.h"
 #include "misc/date-time.h"
 #include "misc/paths-provider.h"
-#include "notification/notify-module.h"
+#include "notification/notification-module.h"
 #include "os/single-application/single-application.h"
 #include "os/win/wsa-exception.h"
 #include "os/win/wsa-handler.h"
@@ -217,7 +217,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<ConfigurationModule>());
 	modules.emplace_back(make_unique<FileTransferModule>());
 	modules.emplace_back(make_unique<GuiModule>());
-	modules.emplace_back(make_unique<NotifyModule>());
+	modules.emplace_back(make_unique<NotificationModule>());
 	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());
 	modules.emplace_back(make_unique<SslModule>());

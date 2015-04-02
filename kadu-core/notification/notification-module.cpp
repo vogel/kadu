@@ -17,17 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify-module.h"
+#include "notification-module.h"
 
 #include "notification/notification/notification-callback-repository.h"
 #include "services/notification-service.h"
 
-NotifyModule::NotifyModule()
+NotificationModule::NotificationModule()
 {
 	add_type<NotificationCallbackRepository>();
 	add_type<NotificationService>();
 }
 
-NotifyModule::~NotifyModule()
+NotificationModule::~NotificationModule()
 {
 }

@@ -14,10 +14,10 @@ set (notification_SRCS
 
 	notification-event.cpp
 	notification-manager.cpp
+	notification-module.cpp
 	notifier.cpp
 	notifier-configuration-data-manager.cpp
 	notify-configuration-ui-handler.cpp
-	notify-module.cpp
 	screen-mode-checker.cpp
 	window-notifier.cpp
 )
