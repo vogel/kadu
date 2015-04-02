@@ -29,8 +29,6 @@ NotifyEvent::NotifyEvent(QString name, QString description) :
 		m_name{std::move(name)},
 		m_description{std::move(description)}
 {
-	auto index = m_name.indexOf("/");
-	m_category = (index > 0) ? m_name.left(index) : QString();
 }
 
 QString NotifyEvent::name() const
@@ -40,7 +38,8 @@ QString NotifyEvent::name() const
 
 QString NotifyEvent::category() const
 {
-	return m_category;
+	auto index = m_name.indexOf("/");
+	return (index > 0) ? m_name.left(index) : QString();
 }
 
 QString NotifyEvent::description() const
