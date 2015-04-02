@@ -28,7 +28,7 @@
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
-#include "plugins/encryption_ng/notify/encryption-ng-notification.h"
+#include "plugins/encryption_ng/notification/encryption-ng-notification.h"
 
 #include "encryption-ng-simlite-common.h"
 #include "pkcs1_certificate.h"

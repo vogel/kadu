@@ -3,7 +3,7 @@
 
 #include "chat/chat.h"
 #include "gui/windows/main-configuration-window.h"
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 
 #include "qt4-docking-notify-configuration-widget.h"
 

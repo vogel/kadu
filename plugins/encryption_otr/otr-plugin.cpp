@@ -23,7 +23,7 @@
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "message/message-manager.h"
-#include "notify/notification-manager.h"
+#include "notification/notification-manager.h"
 #include "services/raw-message-transformer-service.h"
 
 #include "gui/widgets/otr-account-configuration-widget-factory.h"

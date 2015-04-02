@@ -65,7 +65,7 @@
 #include "icons/icons-manager.h"
 #include "misc/date-time.h"
 #include "misc/paths-provider.h"
-#include "notify/notify-module.h"
+#include "notification/notify-module.h"
 #include "os/single-application/single-application.h"
 #include "os/win/wsa-exception.h"
 #include "os/win/wsa-handler.h"

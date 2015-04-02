@@ -20,7 +20,7 @@
 #ifndef OTR_NOTIFIER_H
 #define OTR_NOTIFIER_H
 
-#include "notify/notify-event.h"
+#include "notification/notify-event.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>

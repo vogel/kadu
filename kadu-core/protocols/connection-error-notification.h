@@ -26,7 +26,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-#include "notify/notification/notification.h"
+#include "notification/notification/notification.h"
 
 class ConnectionErrorNotification : public Notification
 {

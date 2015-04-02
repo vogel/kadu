@@ -35,7 +35,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "notify/notification/notification.h"
+#include "notification/notification/notification.h"
 #include "talkable/talkable.h"
 
 #include "hint-over-user-configuration-window.h"

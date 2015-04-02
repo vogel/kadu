@@ -24,8 +24,8 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "icons/icons-manager.h"
-#include "notify/notification-manager.h"
-#include "notify/notify-event.h"
+#include "notification/notification-manager.h"
+#include "notification/notify-event.h"
 
 #include "firewall-notification.h"
 

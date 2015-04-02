@@ -14,7 +14,7 @@ set (SOURCES
 	gui/widgets/crop-image-widget.cpp
 	gui/widgets/screenshot-tool-box.cpp
 	gui/widgets/screenshot-widget.cpp
-	notify/screenshot-notification.cpp
+	notification/screenshot-notification.cpp
 	pixmap-grabber.cpp
 	screenshot.cpp
 	screenshot-plugin.cpp
@@ -30,7 +30,7 @@ set (MOC_SOURCES
 	gui/widgets/crop-image-widget.h
 	gui/widgets/screenshot-tool-box.h
 	gui/widgets/screenshot-widget.h
-	notify/screenshot-notification.h
+	notification/screenshot-notification.h
 	screenshot.h
 	screenshot-plugin.h
 	screen-shot-saver.h

@@ -27,7 +27,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "notify/notification-manager.h"
+#include "notification/notification-manager.h"
 #include "protocols/protocol.h"
 
 #include "buddy-options-configuration-widget.h"

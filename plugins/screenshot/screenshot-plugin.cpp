@@ -25,7 +25,7 @@
 #include "configuration/gui/screenshot-configuration-ui-handler.h"
 #include "configuration/screen-shot-configuration.h"
 #include "gui/actions/screenshot-actions.h"
-#include "notify/screenshot-notification.h"
+#include "notification/screenshot-notification.h"
 
 #include "screenshot.h"
 

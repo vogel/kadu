@@ -27,10 +27,10 @@
 #include "file-transfer/file-transfer-type.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
-#include "notify/notification/notification-callback-repository.h"
-#include "notify/notification/notification-callback.h"
-#include "notify/notification-manager.h"
-#include "notify/notify-event.h"
+#include "notification/notification/notification-callback-repository.h"
+#include "notification/notification/notification-callback.h"
+#include "notification/notification-manager.h"
+#include "notification/notify-event.h"
 
 #include <QtGui/QTextDocument>
 

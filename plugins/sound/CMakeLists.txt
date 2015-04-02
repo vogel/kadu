@@ -6,7 +6,7 @@ find_package (Kadu REQUIRED CONFIG)
 
 kadu_api_directories (plugins/sound
 	gui
-	notify
+	notification
 	.
 )
 
@@ -20,7 +20,7 @@ set (SOURCES
 	gui/sound-configuration-widget.cpp
 	gui/sound-mute-action.cpp
 	gui/sound-select-file.cpp
-	notify/sound-notifier.cpp
+	notification/sound-notifier.cpp
 	sound-manager.cpp
 	sound-module.cpp
 	sound-player.cpp

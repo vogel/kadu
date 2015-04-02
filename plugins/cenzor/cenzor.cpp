@@ -22,7 +22,7 @@
 #include "message/message-manager.h"
 #include "services/message-filter-service.h"
 
-#include "notify/cenzor-notification.h"
+#include "notification/cenzor-notification.h"
 
 #include "cenzor.h"
 

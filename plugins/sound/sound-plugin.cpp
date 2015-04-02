@@ -24,7 +24,7 @@
 #include "gui/sound-buddy-configuration-widget-factory.h"
 #include "gui/sound-chat-configuration-widget-factory.h"
 #include "gui/sound-configuration-ui-handler.h"
-#include "notify/sound-notifier.h"
+#include "notification/sound-notifier.h"
 #include "sound-manager.h"
 #include "sound-module.h"
 #include "sound-theme-manager.h"
@@ -36,7 +36,7 @@
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 
-#include "notify/notification-manager.h"
+#include "notification/notification-manager.h"
 
 QPointer<SoundManager> SoundPlugin::m_staticSoundManager;
 

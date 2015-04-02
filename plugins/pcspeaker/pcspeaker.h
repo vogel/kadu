@@ -10,7 +10,7 @@
 #endif
 
 #include "gui/windows/main-configuration-window.h"
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 #include "plugin/plugin-root-component.h"
 
 class PCSpeakerConfigurationWidget;

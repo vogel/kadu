@@ -22,7 +22,7 @@
 
 #include <QtCore/QPointer>
 
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 
 class ChatWidget;
 class ChatWidgetRepository;

@@ -25,7 +25,7 @@
 
 #include <QtWidgets/QWidget>
 
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 
 class QCheckBox;
 

@@ -29,7 +29,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "notify/notifier-configuration-data-manager.h"
+#include "notification/notifier-configuration-data-manager.h"
 
 #include "hints-configuration-window.h"
 

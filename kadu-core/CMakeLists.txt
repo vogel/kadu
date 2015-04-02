@@ -116,7 +116,7 @@ set (kadu_SUBDIRS
 	model
 	multilogon
 	network
-	notify
+	notification
 	os
 	parser
 	plugin
@@ -343,9 +343,9 @@ kadu_api_directories (kadu-core
 	network
 	network/proxy
 	network/proxy/model
-	notify
-	notify/listener
-	notify/notification
+	notification
+	notification/listener
+	notification/notification
 	os
 	os/generic
 	os/qtsingleapplication

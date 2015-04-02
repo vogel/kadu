@@ -33,7 +33,7 @@
 
 #include "configuration/screen-shot-configuration.h"
 #include "gui/widgets/screenshot-widget.h"
-#include "notify/screenshot-notification.h"
+#include "notification/screenshot-notification.h"
 #include "pixmap-grabber.h"
 #include "screenshot-taker.h"
 

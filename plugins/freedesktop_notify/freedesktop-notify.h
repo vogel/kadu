@@ -27,7 +27,7 @@
 #include <QtCore/QRegExp>
 
 #include "configuration/configuration-aware-object.h"
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 
 class QDBusInterface;
 

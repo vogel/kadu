@@ -22,7 +22,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "core/core.h"
-#include "notify/notification-manager.h"
+#include "notification/notification-manager.h"
 
 #include "chat-notifier.h"
 

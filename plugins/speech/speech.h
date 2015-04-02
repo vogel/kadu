@@ -23,7 +23,7 @@
 
 #include <QtCore/QTime>
 
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 
 class Notification;
 

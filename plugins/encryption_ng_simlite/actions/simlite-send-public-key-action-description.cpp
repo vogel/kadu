@@ -32,7 +32,7 @@
 #include "plugins/encryption_ng/encryption-manager.h"
 #include "plugins/encryption_ng/key-generator.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
-#include "plugins/encryption_ng/notify/encryption-ng-notification.h"
+#include "plugins/encryption_ng/notification/encryption-ng-notification.h"
 
 #include "simlite-send-public-key-action-description.h"
 

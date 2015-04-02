@@ -23,7 +23,7 @@
 #pragma once
 
 #include "file-transfer/file-transfer.h"
-#include "notify/notification/notification.h"
+#include "notification/notification/notification.h"
 
 class FileTransferManager;
 

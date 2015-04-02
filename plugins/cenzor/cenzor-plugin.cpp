@@ -22,7 +22,7 @@
 #include "exports.h"
 
 #include "configuration/gui/cenzor-configuration-ui-handler.h"
-#include "notify/cenzor-notification.h"
+#include "notification/cenzor-notification.h"
 #include "cenzor.h"
 
 #include "cenzor-plugin.h"

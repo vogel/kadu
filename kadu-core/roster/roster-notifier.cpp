@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification-manager.h"
-#include "notify/notification/notification.h"
-#include "notify/notify-event.h"
+#include "notification/notification-manager.h"
+#include "notification/notification/notification.h"
+#include "notification/notify-event.h"
 
 #include "roster-notifier.h"
 

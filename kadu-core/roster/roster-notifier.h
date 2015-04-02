@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "notify/notify-event.h"
+#include "notification/notify-event.h"
 #include "exports.h"
 
 #include <QtCore/QObject>

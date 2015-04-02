@@ -24,10 +24,10 @@
 #include "window-notifier-window.h"
 
 #include "icons/icons-manager.h"
-#include "notify/notification/aggregate-notification.h"
-#include "notify/notification/notification-callback-repository.h"
-#include "notify/notification/notification-callback.h"
-#include "notify/notification/notification.h"
+#include "notification/notification/aggregate-notification.h"
+#include "notification/notification/notification-callback-repository.h"
+#include "notification/notification/notification-callback.h"
+#include "notification/notification/notification.h"
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>

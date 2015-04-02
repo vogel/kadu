@@ -22,8 +22,8 @@
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QSystemTrayIcon>
 
-#include "notify/notification-manager.h"
-#include "notify/notification/notification.h"
+#include "notification/notification-manager.h"
+#include "notification/notification/notification.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"

@@ -32,7 +32,7 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QTreeWidgetItem>
 
-#include "notify/notify-configuration-ui-handler.h"
+#include "notification/notify-configuration-ui-handler.h"
 
 class Notifier;
 

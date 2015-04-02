@@ -30,10 +30,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHeaderView>
 
-#include "notify/notification-manager.h"
-#include "notify/notifier.h"
-#include "notify/notify-configuration-ui-handler.h"
-#include "notify/notify-event.h"
+#include "notification/notification-manager.h"
+#include "notification/notifier.h"
+#include "notification/notify-configuration-ui-handler.h"
+#include "notification/notify-event.h"
 
 #include "notify-tree-widget.h"
 

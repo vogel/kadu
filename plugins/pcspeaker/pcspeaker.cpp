@@ -30,8 +30,8 @@
 #include "core/application.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/misc.h"
-#include "notify/notification-manager.h"
-#include "notify/notification/notification.h"
+#include "notification/notification-manager.h"
+#include "notification/notification/notification.h"
 
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSlider>

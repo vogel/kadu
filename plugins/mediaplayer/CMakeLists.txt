@@ -9,7 +9,7 @@ kadu_api_directories (plugins/mediaplayer
 )
 
 set (SOURCES
-	notify/mediaplayer-notification.cpp
+	notification/mediaplayer-notification.cpp
 
 	mediaplayer.cpp
 	mediaplayer-plugin.cpp
@@ -17,7 +17,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	notify/mediaplayer-notification.h
+	notification/mediaplayer-notification.h
 
 	mediaplayer.h
 	mediaplayer-plugin.h

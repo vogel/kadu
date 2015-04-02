@@ -26,7 +26,7 @@
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 
 
 class QLineEdit;

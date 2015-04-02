@@ -8,7 +8,7 @@ set (SOURCES
 	configuration/gui/cenzor-configuration-ui-handler.cpp
 	configuration/cenzor-configuration.cpp
 	gui/widgets/list-edit-widget.cpp
-	notify/cenzor-notification.cpp
+	notification/cenzor-notification.cpp
 
 	cenzor.cpp
 	cenzor-plugin.cpp
@@ -17,7 +17,7 @@ set (SOURCES
 set (MOC_SOURCES
 	configuration/gui/cenzor-configuration-ui-handler.h
 	gui/widgets/list-edit-widget.h
-	notify/cenzor-notification.h
+	notification/cenzor-notification.h
 
 	cenzor.h
 	cenzor-plugin.h

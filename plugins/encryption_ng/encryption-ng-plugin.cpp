@@ -30,7 +30,7 @@
 #include "exports.h"
 
 #include "keys/keys-manager.h"
-#include "notify/encryption-ng-notification.h"
+#include "notification/encryption-ng-notification.h"
 #include "encryption-actions.h"
 #include "encryption-depreceated-message.h"
 #include "encryption-manager.h"

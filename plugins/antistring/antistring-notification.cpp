@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification-manager.h"
-#include "notify/notify-event.h"
+#include "notification/notification-manager.h"
+#include "notification/notify-event.h"
 
 #include "antistring-notification.h"
 

@@ -21,7 +21,7 @@
 #ifndef ANTISTRING_NOTIFICATION_H
 #define ANTISTRING_NOTIFICATION_H
 
-#include "notify/notification/notification.h"
+#include "notification/notification/notification.h"
 
 class AntistringNotification : public Notification
 {

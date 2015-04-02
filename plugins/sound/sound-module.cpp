@@ -23,7 +23,7 @@
 #include "gui/sound-buddy-configuration-widget-factory.h"
 #include "gui/sound-chat-configuration-widget-factory.h"
 #include "gui/sound-configuration-ui-handler.h"
-#include "notify/sound-notifier.h"
+#include "notification/sound-notifier.h"
 #include "sound-manager.h"
 #include "sound-theme-manager.h"
 

@@ -25,7 +25,7 @@
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/widgets/abstract-tool-tip.h"
-#include "notify/notifier.h"
+#include "notification/notifier.h"
 #include "hint.h"
 
 #include <QtCore/QPointer>

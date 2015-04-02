@@ -40,7 +40,7 @@ extern "C" {
 #include <QtCore/QStringList>
 #include <QtGui/QPixmap>
 
-#include "notify/notification/notification.h"
+#include "notification/notification/notification.h"
 
 #include "growlnotifier.h"
 
