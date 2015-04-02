@@ -19,35 +19,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify-event.h"
+#include "notification-event.h"
 
-NotifyEvent::NotifyEvent()
+NotificationEvent::NotificationEvent()
 {
 }
 
-NotifyEvent::NotifyEvent(QString name, QString description) :
+NotificationEvent::NotificationEvent(QString name, QString description) :
 		m_name{std::move(name)},
 		m_description{std::move(description)}
 {
 }
 
-QString NotifyEvent::name() const
+QString NotificationEvent::name() const
 {
 	return m_name;
 }
 
-QString NotifyEvent::category() const
+QString NotificationEvent::category() const
 {
 	auto index = m_name.indexOf("/");
 	return (index > 0) ? m_name.left(index) : QString();
 }
 
-QString NotifyEvent::description() const
+QString NotificationEvent::description() const
 {
 	return m_description;
 }
 
-bool operator == (const NotifyEvent &x, const NotifyEvent &y)
+bool operator == (const NotificationEvent &x, const NotificationEvent &y)
 {
 	return x.name() == y.name();
 }

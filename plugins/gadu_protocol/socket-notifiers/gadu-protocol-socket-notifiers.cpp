@@ -246,7 +246,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			break;
 
 		case GG_EVENT_TYPING_NOTIFICATION:
-			emit typingNotifyEventReceived(e);
+			emit typingNotificationEventReceived(e);
 			break;
 
 		case GG_EVENT_NOTIFY:

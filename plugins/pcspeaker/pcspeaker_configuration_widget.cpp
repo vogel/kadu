@@ -55,8 +55,8 @@ PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()
 
 void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!CurrentNotifyEvent.isEmpty())
-		Sounds[CurrentNotifyEvent] = soundEdit->text();
+	if (!CurrentNotificationEvent.isEmpty())
+		Sounds[CurrentNotificationEvent] = soundEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = Sounds.constBegin(), end = Sounds.constEnd(); it != end; ++it)
 		Application::instance()->configuration()->deprecatedApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
@@ -64,10 +64,10 @@ void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 
 void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (!CurrentNotifyEvent.isEmpty())
-		Sounds[CurrentNotifyEvent] = soundEdit->text();
+	if (!CurrentNotificationEvent.isEmpty())
+		Sounds[CurrentNotificationEvent] = soundEdit->text();
 
-	CurrentNotifyEvent = event;
+	CurrentNotificationEvent = event;
 
 	if (Sounds.contains(event))
 		soundEdit->setText(Sounds[event]);

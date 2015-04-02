@@ -51,7 +51,7 @@ private:
 	QPointer<SoundManager> m_manager;
 
 	QMap<QString, QString> m_soundFiles;
-	QString m_currentNotifyEvent;
+	QString m_currentNotificationEvent;
 
 	SoundSelectFile *m_soundSelectFile;
 

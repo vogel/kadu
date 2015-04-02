@@ -18,7 +18,7 @@ class PCSpeakerConfigurationWidget : public NotifierConfigurationWidget
 	QLineEdit *soundEdit;
 	QPushButton *testButton;
 	QMap<QString, QString> Sounds;
-	QString CurrentNotifyEvent;
+	QString CurrentNotificationEvent;
 
 private slots:
 	void test();

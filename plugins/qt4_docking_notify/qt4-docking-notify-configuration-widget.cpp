@@ -55,13 +55,13 @@ void Qt4NotifyConfigurationWidget::switchToEvent(const QString &event)
 {
 	kdebugf();
 
-	currentNotifyEvent = event;
+	currentNotificationEvent = event;
 }
 
 void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 {
-	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(currentNotifyEvent);
-	ConfigurationWindow *configWindow = new ConfigurationWindow("Qt4DockingNotifyEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
+	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(currentNotificationEvent);
+	ConfigurationWindow *configWindow = new ConfigurationWindow("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
 
 	dataManager->configurationWindowCreated(configWindow);
 

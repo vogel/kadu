@@ -70,8 +70,8 @@ ExecConfigurationWidget::~ExecConfigurationWidget()
 
 void ExecConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!currentNotifyEvent.isEmpty())
-		Commands[currentNotifyEvent] = commandLineEdit->text();
+	if (!currentNotificationEvent.isEmpty())
+		Commands[currentNotificationEvent] = commandLineEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = Commands.constBegin(), end = Commands.constEnd(); it != end; ++it)
 		Application::instance()->configuration()->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
@@ -79,9 +79,9 @@ void ExecConfigurationWidget::saveNotifyConfigurations()
 
 void ExecConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (!currentNotifyEvent.isEmpty())
-		Commands[currentNotifyEvent] = commandLineEdit->text();
-	currentNotifyEvent = event;
+	if (!currentNotificationEvent.isEmpty())
+		Commands[currentNotificationEvent] = commandLineEdit->text();
+	currentNotificationEvent = event;
 
 	if (Commands.contains(event))
 		commandLineEdit->setText(Commands[event]);

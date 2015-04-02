@@ -35,7 +35,7 @@ class ExecConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
-	QString currentNotifyEvent;
+	QString currentNotificationEvent;
 	QMap<QString, QString> Commands;
 
 	QLineEdit *commandLineEdit;

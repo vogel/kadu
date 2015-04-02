@@ -26,11 +26,11 @@
 
 #include <QtCore/QString>
 
-class KADUAPI NotifyEvent
+class KADUAPI NotificationEvent
 {
 public:
-	NotifyEvent();
-	explicit NotifyEvent(QString name, QString description);
+	NotificationEvent();
+	explicit NotificationEvent(QString name, QString description);
 
 	QString name() const;
 	QString category() const;
@@ -42,4 +42,4 @@ private:
 
 };
 
-bool operator == (const NotifyEvent &x, const NotifyEvent &y);
+bool operator == (const NotificationEvent &x, const NotificationEvent &y);

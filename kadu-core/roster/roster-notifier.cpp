@@ -19,7 +19,7 @@
 
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include "roster-notifier.h"
 
@@ -32,15 +32,15 @@ QString RosterNotifier::sm_exportFailedNotifyTopic("Roster/ExportFailed");
 RosterNotifier::RosterNotifier(QObject *parent) :
 		QObject{parent}
 {
-	m_rosterNotifyEvent = NotifyEvent{sm_rosterNotifyTopic,
+	m_rosterNotificationEvent = NotificationEvent{sm_rosterNotifyTopic,
 			QT_TRANSLATE_NOOP("@default", "Roster")};
-	m_importSucceededNotifyEvent = NotifyEvent{sm_importSucceededNotifyTopic,
+	m_importSucceededNotificationEvent = NotificationEvent{sm_importSucceededNotifyTopic,
 			QT_TRANSLATE_NOOP("@default", "Import from server succeeded")};
-	m_importFailedNotifyEvent = NotifyEvent{sm_importFailedNotifyTopic,
+	m_importFailedNotificationEvent = NotificationEvent{sm_importFailedNotifyTopic,
 			QT_TRANSLATE_NOOP("@default", "Import from server failed")};
-	m_exportSucceededNotifyEvent = NotifyEvent{sm_exportSucceededNotifyTopic,
+	m_exportSucceededNotificationEvent = NotificationEvent{sm_exportSucceededNotifyTopic,
 			QT_TRANSLATE_NOOP("@default", "Export to server succeeded")};
-	m_exportFailedNotifyEvent = NotifyEvent{sm_exportFailedNotifyTopic,
+	m_exportFailedNotificationEvent = NotificationEvent{sm_exportFailedNotifyTopic,
 			QT_TRANSLATE_NOOP("@default", "Export to server failed")};
 }
 
@@ -48,14 +48,14 @@ RosterNotifier::~RosterNotifier()
 {
 }
 
-QList<NotifyEvent> RosterNotifier::notifyEvents()
+QList<NotificationEvent> RosterNotifier::notifyEvents()
 {
-	return QList<NotifyEvent>{}
-			<< m_rosterNotifyEvent
-			<< m_importSucceededNotifyEvent
-			<< m_importFailedNotifyEvent
-			<< m_exportSucceededNotifyEvent
-			<< m_exportFailedNotifyEvent;
+	return QList<NotificationEvent>{}
+			<< m_rosterNotificationEvent
+			<< m_importSucceededNotificationEvent
+			<< m_importFailedNotificationEvent
+			<< m_exportSucceededNotificationEvent
+			<< m_exportFailedNotificationEvent;
 }
 
 void RosterNotifier::notify(const QString &topic, const Account &account, const QString &message)

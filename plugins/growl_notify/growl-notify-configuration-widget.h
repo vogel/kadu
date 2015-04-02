@@ -45,7 +45,7 @@ class GrowlNotifyConfigurationWidget : public NotifierConfigurationWidget
 
 	QMap<QString, GrowlNotifyProperties> properties;
 	GrowlNotifyProperties currentProperties;
-	QString currentNotifyEvent;
+	QString currentNotificationEvent;
 
 	QLineEdit *syntax;
 	QLineEdit *title;

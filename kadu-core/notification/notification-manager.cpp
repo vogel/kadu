@@ -32,7 +32,7 @@
 #include "gui/windows/message-dialog.h"
 #include "notification/notification/aggregate-notification.h"
 #include "notification/notifier.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
@@ -69,24 +69,24 @@ NotificationManager::~NotificationManager()
 	}
 }
 
-void NotificationManager::registerNotifyEvent(NotifyEvent notifyEvent)
+void NotificationManager::registerNotificationEvent(NotificationEvent notifyEvent)
 {
 	kdebugf();
 
-	NotifyEvents.append(notifyEvent);
+	NotificationEvents.append(notifyEvent);
 	emit notifyEventRegistered(notifyEvent);
 
 	kdebugf2();
 }
 
-void NotificationManager::unregisterNotifyEvent(const QString &eventName)
+void NotificationManager::unregisterNotificationEvent(const QString &eventName)
 {
 	kdebugf();
 
-	auto it = std::find_if(std::begin(NotifyEvents), std::end(NotifyEvents), [&eventName](const NotifyEvent &event){
+	auto it = std::find_if(std::begin(NotificationEvents), std::end(NotificationEvents), [&eventName](const NotificationEvent &event){
 		return event.name() == eventName;
 	});
-	NotifyEvents.erase(it);
+	NotificationEvents.erase(it);
 	emit notifyEventUnregistered(eventName);
 
 	kdebugf2();
@@ -131,9 +131,9 @@ const QList<Notifier *> & NotificationManager::notifiers() const
 	return Notifiers;
 }
 
-const QList<NotifyEvent> & NotificationManager::notifyEvents() const
+const QList<NotificationEvent> & NotificationManager::notifyEvents() const
 {
-	return NotifyEvents;
+	return NotificationEvents;
 }
 
 void NotificationManager::ignoreConnectionErrors(Account account)

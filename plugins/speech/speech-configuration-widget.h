@@ -33,7 +33,7 @@ class SpeechConfigurationWidget : public NotifierConfigurationWidget
 
 	QMap<QString, QString> maleFormat;
 	QMap<QString, QString> femaleFormat;
-	QString currentNotifyEvent;
+	QString currentNotificationEvent;
 
 	QLineEdit *maleLineEdit;
 	QLineEdit *femaleLineEdit;

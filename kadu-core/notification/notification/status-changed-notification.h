@@ -25,7 +25,7 @@
 #include "notification/notification/notification.h"
 
 class ContactSet;
-class NotifyEvent;
+class NotificationEvent;
 
 class StatusChangedNotification : public Notification
 {

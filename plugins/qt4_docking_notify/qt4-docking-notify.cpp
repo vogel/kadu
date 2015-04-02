@@ -199,7 +199,7 @@ void Qt4Notify::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_icon", 2);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Qt4DockingNotifyEventConfiguration_Geometry", "50, 50, 615, 290");
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Qt4DockingNotificationEventConfiguration_Geometry", "50, 50, 615, 290");
 }
 
 /** @} */

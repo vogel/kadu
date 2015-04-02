@@ -25,18 +25,18 @@
 #include "core/application.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include "firewall-notification.h"
 
 void FirewallNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
 }
 
 void FirewallNotification::unregisterNotifications()
 {
-	NotificationManager::instance()->unregisterNotifyEvent("firewallNotification");
+	NotificationManager::instance()->unregisterNotificationEvent("firewallNotification");
 }
 
 void FirewallNotification::notify(const Chat &chat, const Contact &sender, const QString &message)

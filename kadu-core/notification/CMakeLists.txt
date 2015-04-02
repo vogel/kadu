@@ -12,11 +12,11 @@ set (notification_SRCS
 	notification/notification.cpp
 	notification/status-changed-notification.cpp
 
+	notification-event.cpp
 	notification-manager.cpp
 	notifier.cpp
 	notifier-configuration-data-manager.cpp
 	notify-configuration-ui-handler.cpp
-	notify-event.cpp
 	notify-module.cpp
 	screen-mode-checker.cpp
 	window-notifier.cpp

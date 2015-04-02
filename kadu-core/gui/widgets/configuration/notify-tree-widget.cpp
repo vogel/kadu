@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/* This classes are based on the KNotifyEventList* classes, which are the part
+/* This classes are based on the KNotificationEventList* classes, which are the part
  * of KDE libraries (see kde.org) and distributed under the terms
  * of the GNU Library General Public License version 2 as published
  * by the Free Software Foundation
@@ -33,7 +33,7 @@
 #include "notification/notification-manager.h"
 #include "notification/notifier.h"
 #include "notification/notify-configuration-ui-handler.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include "notify-tree-widget.h"
 
@@ -108,11 +108,11 @@ void NotifyTreeWidget::refresh()
 	header()->resizeSection(0, eventColumnWidth());
 
 	const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGuiItems = UiHandler->notifierGui();
-	const QMap<QString, NotifyEventConfigurationItem> &notifyEventItem = UiHandler->notifyEvents();
+	const QMap<QString, NotificationEventConfigurationItem> &notifyEventItem = UiHandler->notifyEvents();
 
 	QStringList notifiersNames;
 	QString eventName;
-	foreach (NotifyEvent notifyEvent, NotificationManager::instance()->notifyEvents())
+	foreach (NotificationEvent notifyEvent, NotificationManager::instance()->notifyEvents())
 	{
 		eventName = notifyEvent.name();
 		foreach (Notifier *notifier, NotificationManager::instance()->notifiers())

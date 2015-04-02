@@ -52,8 +52,8 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 
 void SoundConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!m_currentNotifyEvent.isEmpty())
-		m_soundFiles[m_currentNotifyEvent] = m_soundSelectFile->file();
+	if (!m_currentNotificationEvent.isEmpty())
+		m_soundFiles[m_currentNotificationEvent] = m_soundSelectFile->file();
 
 	for (auto it = m_soundFiles.constBegin(), end = m_soundFiles.constEnd(); it != end; ++it)
 		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", it.key() + "_sound", it.value());
@@ -63,9 +63,9 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 {
 	m_soundSelectFile->stopSound();
 
-	if (!m_currentNotifyEvent.isEmpty())
-		m_soundFiles[m_currentNotifyEvent] = m_soundSelectFile->file();
-	m_currentNotifyEvent = event;
+	if (!m_currentNotificationEvent.isEmpty())
+		m_soundFiles[m_currentNotificationEvent] = m_soundSelectFile->file();
+	m_currentNotificationEvent = event;
 
 	if (m_soundFiles.contains(event))
 		m_soundSelectFile->setFile(m_soundFiles[event]);
@@ -82,7 +82,7 @@ void SoundConfigurationWidget::themeChanged(int index)
 	for (auto it = m_soundFiles.begin(), end = m_soundFiles.end(); it != end; ++it)
 	{
 		it.value() = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", it.key() + "_sound");
-		if (it.key() == m_currentNotifyEvent)
+		if (it.key() == m_currentNotificationEvent)
 			m_soundSelectFile->setFile(it.value());
 	}
 }

@@ -94,7 +94,7 @@
 #include "misc/paths-provider.h"
 #include "notification/notification/notification-callback-repository.h"
 #include "notification/notification-manager.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"
@@ -631,7 +631,7 @@ void Core::runServices()
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
-		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
+		NotificationManager::instance()->registerNotificationEvent(notifyEvent);
 
 	CurrentChatWidgetActions = new ChatWidgetActions(this);
 

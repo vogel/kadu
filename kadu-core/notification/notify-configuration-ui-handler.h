@@ -23,7 +23,7 @@
 #define NOTIFY_CONFIGURATION_UI_HANDLER
 
 #include "gui/windows/main-configuration-window.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include "notification-manager.h"
 
@@ -44,9 +44,9 @@ struct NotifierConfigurationGuiItem
 	NotifierConfigurationGuiItem() : ConfigurationWidget(0), ConfigurationGroupBox(0) {}
 };
 
-struct NotifyEventConfigurationItem
+struct NotificationEventConfigurationItem
 {
-	NotifyEvent event;
+	NotificationEvent event;
 	bool useCustomSettings;
 };
 
@@ -55,7 +55,7 @@ class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 	Q_OBJECT
 
 	QMap<Notifier *, NotifierConfigurationGuiItem> NotifierGui;
-	QMap<QString, NotifyEventConfigurationItem> NotifyEvents;
+	QMap<QString, NotificationEventConfigurationItem> NotificationEvents;
 
 	QListWidget *allUsers;
 	QListWidget *notifiedUsers;
@@ -75,7 +75,7 @@ private slots:
 	void notifierRegistered(Notifier *notifier);
 	void notifierUnregistered(Notifier *notifier);
 
-	void notifyEventRegistered(NotifyEvent notifyEvent);
+	void notifyEventRegistered(NotificationEvent notifyEvent);
 	void notifyEventUnregistered(const QString &eventName);
 
 	void configurationWindowApplied();
@@ -97,7 +97,7 @@ public:
 	virtual ~NotifyConfigurationUiHandler();
 
 	const QMap<Notifier *, NotifierConfigurationGuiItem> & notifierGui() { return NotifierGui; }
-	const QMap<QString, NotifyEventConfigurationItem> & notifyEvents() { return NotifyEvents; }
+	const QMap<QString, NotificationEventConfigurationItem> & notifyEvents() { return NotificationEvents; }
 };
 
 #endif // NOTIFY_CONFIGURATION_UI_HANDLER

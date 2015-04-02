@@ -62,13 +62,13 @@ void HintsConfigurationWidget::switchToEvent(const QString &event)
 {
 	kdebugf();
 
-	currentNotifyEvent = event;
+	currentNotificationEvent = event;
 	updatePreview();
 }
 
 void HintsConfigurationWidget::showConfigurationWindow()
 {
-	HintsConfigurationWindow *configWindow = HintsConfigurationWindow::configWindowForEvent(currentNotifyEvent);
+	HintsConfigurationWindow *configWindow = HintsConfigurationWindow::configWindowForEvent(currentNotificationEvent);
 	connect(configWindow, SIGNAL(configurationSaved()), this, SLOT(updatePreview()));
 
 	configWindow->show();
@@ -79,10 +79,10 @@ void HintsConfigurationWidget::updatePreview()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	preview->setFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "Event_" + currentNotifyEvent + "_font", &font));
+	preview->setFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "Event_" + currentNotificationEvent + "_font", &font));
 
-	QColor bcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotifyEvent + "_bgcolor", &palette.window().color());
-	QColor fcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotifyEvent + "_fgcolor", &palette.windowText().color());
+	QColor bcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotificationEvent + "_bgcolor", &palette.window().color());
+	QColor fcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotificationEvent + "_fgcolor", &palette.windowText().color());
 	QString style = QString("* {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }

@@ -19,18 +19,18 @@
  */
 
 #include "notification/notification-manager.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include "antistring-notification.h"
 
 void AntistringNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")));
 }
 
 void AntistringNotification::unregisterNotifications()
 {
-	NotificationManager::instance()->unregisterNotifyEvent("Antistring");
+	NotificationManager::instance()->unregisterNotificationEvent("Antistring");
 }
 
 void AntistringNotification::notifyStringReceived(const Chat &chat)

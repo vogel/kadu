@@ -34,7 +34,7 @@
 #include "growl-notify-configuration-widget.h"
 
 GrowlNotifyConfigurationWidget::GrowlNotifyConfigurationWidget(QWidget *parent)
-	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
+	: NotifierConfigurationWidget(parent), currentNotificationEvent("")
 {
 	QString tooltip = tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
 
@@ -65,8 +65,8 @@ void GrowlNotifyConfigurationWidget::saveNotifyConfigurations()
 {
 	kdebugf();
 
-	if (!currentNotifyEvent.isEmpty())
-		properties[currentNotifyEvent] = currentProperties;
+	if (!currentNotificationEvent.isEmpty())
+		properties[currentNotificationEvent] = currentProperties;
 
 	foreach(const GrowlNotifyProperties &property, properties)
 	{
@@ -82,17 +82,17 @@ void GrowlNotifyConfigurationWidget::switchToEvent(const QString &event)
 {
 	kdebugf();
 
-	if (!currentNotifyEvent.isEmpty())
-		properties[currentNotifyEvent] = currentProperties;
+	if (!currentNotificationEvent.isEmpty())
+		properties[currentNotificationEvent] = currentProperties;
 
 	if (properties.contains(event))
 	{
 		currentProperties = properties[event];
-		currentNotifyEvent = event;
+		currentNotificationEvent = event;
 	}
 	else
 	{
-		currentNotifyEvent = event;
+		currentNotificationEvent = event;
 		currentProperties.eventName = event;
 
 		currentProperties.syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("GrowlNotify", QString("Event_") + event + "_syntax");

@@ -26,20 +26,20 @@
 #include "icons/icons-manager.h"
 #include "message/message.h"
 #include "notification/notification-manager.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include "new-message-notification.h"
 
 void MessageNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
 }
 
 void MessageNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterNotifyEvent("NewChat");
-	NotificationManager::instance()->unregisterNotifyEvent("NewMessage");
+	NotificationManager::instance()->unregisterNotificationEvent("NewChat");
+	NotificationManager::instance()->unregisterNotificationEvent("NewMessage");
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :

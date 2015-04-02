@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/* This classes are based on the KNotifyEventList* classes, which are the part
+/* This classes are based on the KNotificationEventList* classes, which are the part
  * of KDE libraries (see kde.org) and distributed under the terms
  * of the GNU Library General Public License version 2 as published
  * by the Free Software Foundation

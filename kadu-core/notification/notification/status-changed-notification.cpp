@@ -28,31 +28,31 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "icons/kadu-icon.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 #include "protocols/protocol.h"
 
 #include "status-changed-notification.h"
 
 void StatusChangedNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 }
 
 void StatusChangedNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterNotifyEvent("StatusChanged");
-	NotificationManager::instance()->unregisterNotifyEvent("StatusChanged/ToFreeForChat");
-	NotificationManager::instance()->unregisterNotifyEvent("StatusChanged/ToOnline");
-	NotificationManager::instance()->unregisterNotifyEvent("StatusChanged/ToAway");
-	NotificationManager::instance()->unregisterNotifyEvent("StatusChanged/ToNotAvailable");
-	NotificationManager::instance()->unregisterNotifyEvent("StatusChanged/ToDoNotDisturb");
-	NotificationManager::instance()->unregisterNotifyEvent("StatusChanged/ToOffline");
+	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged");
+	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToFreeForChat");
+	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToOnline");
+	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToAway");
+	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToNotAvailable");
+	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToDoNotDisturb");
+	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToOffline");
 }
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description) :

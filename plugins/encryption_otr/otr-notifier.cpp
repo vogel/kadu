@@ -23,7 +23,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include "otr-notifier.h"
 
@@ -33,9 +33,9 @@ QString OtrNotifier::CreatePrivateKeyFinishedNotifyTopic("OTR/CreatePrivateKeyFi
 
 OtrNotifier::OtrNotifier()
 {
-	OtrNotifyEvent = NotifyEvent{OtrNotifyTopic, QT_TRANSLATE_NOOP("@default", "OTR Encryption")};
-	CreatePrivateKeyStartedNotifyEvent = NotifyEvent{CreatePrivateKeyStartedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key started")};
-	CreatePrivateKeyFinishedNotifyEvent = NotifyEvent{CreatePrivateKeyFinishedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key finished")};
+	OtrNotificationEvent = NotificationEvent{OtrNotifyTopic, QT_TRANSLATE_NOOP("@default", "OTR Encryption")};
+	CreatePrivateKeyStartedNotificationEvent = NotificationEvent{CreatePrivateKeyStartedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key started")};
+	CreatePrivateKeyFinishedNotificationEvent = NotificationEvent{CreatePrivateKeyFinishedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Create private key finished")};
 }
 
 OtrNotifier::~OtrNotifier()
@@ -47,12 +47,12 @@ void OtrNotifier::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 	MyChatWidgetRepository = chatWidgetRepository;
 }
 
-QList<NotifyEvent > OtrNotifier::notifyEvents()
+QList<NotificationEvent > OtrNotifier::notifyEvents()
 {
-	return QList<NotifyEvent>()
-			<< OtrNotifyEvent
-			<< CreatePrivateKeyStartedNotifyEvent
-			<< CreatePrivateKeyFinishedNotifyEvent;
+	return QList<NotificationEvent>()
+			<< OtrNotificationEvent
+			<< CreatePrivateKeyStartedNotificationEvent
+			<< CreatePrivateKeyFinishedNotificationEvent;
 }
 
 void OtrNotifier::notify(const QString &topic, const Account &account, const QString &message)

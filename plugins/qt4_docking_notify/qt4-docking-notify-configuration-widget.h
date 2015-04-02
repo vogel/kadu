@@ -29,7 +29,7 @@ class Qt4NotifyConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
-	QString currentNotifyEvent;
+	QString currentNotificationEvent;
 
 private slots:
 

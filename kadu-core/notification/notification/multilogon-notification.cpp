@@ -25,7 +25,7 @@
 #include "multilogon/multilogon-session.h"
 #include "notification/notification/notification-callback-repository.h"
 #include "notification/notification/notification-callback.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
 
@@ -33,9 +33,9 @@
 
 void MultilogonNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
 
 	auto multilogonDisconnect = NotificationCallback{
 		"multilogon-disconnect",
@@ -51,9 +51,9 @@ void MultilogonNotification::registerEvents()
 
 void MultilogonNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterNotifyEvent("multilogon");
-	NotificationManager::instance()->unregisterNotifyEvent("multilogon/sessionConnected");
-	NotificationManager::instance()->unregisterNotifyEvent("multilogon/sessionDisconnected");
+	NotificationManager::instance()->unregisterNotificationEvent("multilogon");
+	NotificationManager::instance()->unregisterNotificationEvent("multilogon/sessionConnected");
+	NotificationManager::instance()->unregisterNotificationEvent("multilogon/sessionDisconnected");
 }
 
 MultilogonNotification::MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback) :

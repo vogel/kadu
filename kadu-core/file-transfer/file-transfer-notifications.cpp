@@ -30,14 +30,14 @@
 #include "notification/notification/notification-callback-repository.h"
 #include "notification/notification/notification-callback.h"
 #include "notification/notification-manager.h"
-#include "notification/notify-event.h"
+#include "notification/notification-event.h"
 
 #include <QtGui/QTextDocument>
 
 void NewFileTransferNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-	NotificationManager::instance()->registerNotifyEvent(NotifyEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+	NotificationManager::instance()->registerNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 
 	auto acceptTransferCallback = NotificationCallback{
 		"file-transfer-accept",
@@ -83,8 +83,8 @@ void NewFileTransferNotification::registerEvents()
 
 void NewFileTransferNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterNotifyEvent("FileTransfer");
-	NotificationManager::instance()->unregisterNotifyEvent("FileTransfer/IncomingFile");
+	NotificationManager::instance()->unregisterNotificationEvent("FileTransfer");
+	NotificationManager::instance()->unregisterNotificationEvent("FileTransfer/IncomingFile");
 }
 
 void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)

@@ -126,7 +126,7 @@ bool OtrPlugin::init(bool firstLoad)
 	Core::instance()->rawMessageTransformerService()->registerTransformer(m_injector->get<OtrRawMessageTransformer>());
 
 	for (auto notifyEvent : m_injector->get<OtrNotifier>()->notifyEvents())
-		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
+		NotificationManager::instance()->registerNotificationEvent(notifyEvent);
 
 	return true;
 }
@@ -137,7 +137,7 @@ void OtrPlugin::done()
 		return;
 
 	for (auto notifyEvent : m_injector->get<OtrNotifier>()->notifyEvents())
-		NotificationManager::instance()->unregisterNotifyEvent(notifyEvent.name());
+		NotificationManager::instance()->unregisterNotificationEvent(notifyEvent.name());
 
 	Core::instance()->rawMessageTransformerService()->unregisterTransformer(m_injector->get<OtrRawMessageTransformer>());
 	Core::instance()->chatTopBarWidgetFactoryRepository()->unregisterFactory(m_injector->get<OtrChatTopBarWidgetFactory>());

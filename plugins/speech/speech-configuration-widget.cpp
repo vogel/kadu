@@ -51,10 +51,10 @@ SpeechConfigurationWidget::~SpeechConfigurationWidget()
 
 void SpeechConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!currentNotifyEvent.isEmpty())
+	if (!currentNotificationEvent.isEmpty())
 	{
-		maleFormat[currentNotifyEvent] = maleLineEdit->text();
-		femaleFormat[currentNotifyEvent] = femaleLineEdit->text();
+		maleFormat[currentNotificationEvent] = maleLineEdit->text();
+		femaleFormat[currentNotificationEvent] = femaleLineEdit->text();
 	}
 
 	QMapIterator<QString, QString> i(maleFormat);
@@ -76,12 +76,12 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 
 void SpeechConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (!currentNotifyEvent.isEmpty())
+	if (!currentNotificationEvent.isEmpty())
 	{
-		maleFormat[currentNotifyEvent] = maleLineEdit->text();
-		femaleFormat[currentNotifyEvent] = femaleLineEdit->text();
+		maleFormat[currentNotificationEvent] = maleLineEdit->text();
+		femaleFormat[currentNotificationEvent] = femaleLineEdit->text();
 	}
-	currentNotifyEvent = event;
+	currentNotificationEvent = event;
 
 	if (maleFormat.contains(event))
 		maleLineEdit->setText(maleFormat[event]);
