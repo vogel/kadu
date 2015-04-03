@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-event.h"
@@ -64,7 +65,7 @@ void RosterNotifier::notify(const QString &topic, const Account &account, const 
 	notification->setTitle(tr("Roster"));
 	notification->setText(message);
 
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 void RosterNotifier::notifyImportSucceeded(const Account &account)

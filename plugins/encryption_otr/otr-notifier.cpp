@@ -19,6 +19,7 @@
 
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "notification/notification-manager.h"
@@ -61,7 +62,7 @@ void OtrNotifier::notify(const QString &topic, const Account &account, const QSt
 	notification->setTitle(tr("OTR Encryption"));
 	notification->setText(message);
 
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 void OtrNotifier::notify(const Contact &contact, const QString &message)

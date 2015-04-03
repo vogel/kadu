@@ -499,7 +499,7 @@ void Core::init()
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
-	NotificationManager::instance();
+	notificationManager();
 
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
@@ -631,7 +631,7 @@ void Core::runServices()
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
-		NotificationManager::instance()->registerNotificationEvent(notifyEvent);
+		Core::instance()->notificationManager()->registerNotificationEvent(notifyEvent);
 
 	CurrentChatWidgetActions = new ChatWidgetActions(this);
 
@@ -771,6 +771,11 @@ MessageTransformerService * Core::messageTransformerService() const
 NotificationCallbackRepository * Core::notificationCallbackRepository() const
 {
 	return m_injector.get<NotificationCallbackRepository>();
+}
+
+NotificationManager * Core::notificationManager() const
+{
+	return m_injector.get<NotificationManager>();
 }
 
 NotificationService * Core::notificationService() const

@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 
@@ -26,12 +27,12 @@
 
 void ScreenshotNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 }
 
 void ScreenshotNotification::unregisterNotifiactions()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("ssSizeLimit");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("ssSizeLimit");
 }
 
 void ScreenshotNotification::notifySizeLimit(long size)
@@ -39,7 +40,7 @@ void ScreenshotNotification::notifySizeLimit(long size)
 	ScreenshotNotification *notification = new ScreenshotNotification();
 	notification->setTitle(tr("ScreenShot size limit"));
 	notification->setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 ScreenshotNotification::ScreenshotNotification() :

@@ -41,14 +41,14 @@ bool ChatNotifyPlugin::init(bool firstLoad)
 	NotifierInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	NotifierInstance->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 
-	NotificationManager::instance()->registerNotifier(NotifierInstance);
+	Core::instance()->notificationManager()->registerNotifier(NotifierInstance);
 
 	return true;
 }
 
 void ChatNotifyPlugin::done()
 {
-	NotificationManager::instance()->unregisterNotifier(NotifierInstance);
+	Core::instance()->notificationManager()->unregisterNotifier(NotifierInstance);
 }
 
 void ChatNotifyPlugin::createDefaultConfiguration()

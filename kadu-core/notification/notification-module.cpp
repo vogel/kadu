@@ -20,11 +20,13 @@
 #include "notification-module.h"
 
 #include "notification/notification/notification-callback-repository.h"
+#include "notification/notification-manager.h"
 #include "services/notification-service.h"
 
 NotificationModule::NotificationModule()
 {
 	add_type<NotificationCallbackRepository>();
+	add_type<NotificationManager>();
 	add_type<NotificationService>();
 }
 

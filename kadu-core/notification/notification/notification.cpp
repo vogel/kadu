@@ -168,7 +168,7 @@ void Notification::callbackDiscard()
 
 QString Notification::key() const
 {
-	return NotificationManager::instance()->notifyConfigurationKey(Type);
+	return Core::instance()->notificationManager()->notifyConfigurationKey(Type);
 }
 
 QString Notification::groupKey() const

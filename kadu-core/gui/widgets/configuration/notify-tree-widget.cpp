@@ -30,6 +30,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHeaderView>
 
+#include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notifier.h"
 #include "notification/notify-configuration-ui-handler.h"
@@ -59,7 +60,7 @@ void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 	int iconWidth = option.decorationSize.width();
 	int iconHeight = option.decorationSize.height();
 
-	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
+	foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
 	{
 		if (notifiers.contains(notifier->name()))
 			notifier->icon().icon().paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
@@ -104,7 +105,7 @@ void NotifyTreeWidget::refresh()
 	clear();
 	TreeItems.clear();
 
-	ColumnWidth = (IconWidth + 4) * NotificationManager::instance()->notifiers().count();
+	ColumnWidth = (IconWidth + 4) * Core::instance()->notificationManager()->notifiers().count();
 	header()->resizeSection(0, eventColumnWidth());
 
 	const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGuiItems = UiHandler->notifierGui();
@@ -112,10 +113,10 @@ void NotifyTreeWidget::refresh()
 
 	QStringList notifiersNames;
 	QString eventName;
-	foreach (NotificationEvent notifyEvent, NotificationManager::instance()->notifyEvents())
+	foreach (NotificationEvent notifyEvent, Core::instance()->notificationManager()->notifyEvents())
 	{
 		eventName = notifyEvent.name();
-		foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
+		foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
 			if (notifierGuiItems[notifier].Events[eventName])
 				notifiersNames << notifier->name();
 

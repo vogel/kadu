@@ -40,24 +40,11 @@
 
 #include "notification/notification-manager.h"
 
-
-NotificationManager *NotificationManager::Instance = 0;
-
-NotificationManager * NotificationManager::instance()
+NotificationManager::NotificationManager(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-	{
-		Instance = new NotificationManager();
-
-		//HACK force creating StatusContainerManager instance so Kadu won't crash at startup
-		StatusContainerManager::instance();
-	}
-
-	return Instance;
-}
-
-NotificationManager::NotificationManager()
-{
+	//HACK force creating StatusContainerManager instance so Kadu won't crash at startup
+	StatusContainerManager::instance();
 }
 
 NotificationManager::~NotificationManager()

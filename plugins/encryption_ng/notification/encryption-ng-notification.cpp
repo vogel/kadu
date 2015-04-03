@@ -21,6 +21,7 @@
 
 #include <QtGui/QTextDocument>
 
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
@@ -29,18 +30,18 @@
 
 void EncryptionNgNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("encryption-ng", QT_TRANSLATE_NOOP("@default", "Encryption")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("encryption-ng/publicKeySent", QT_TRANSLATE_NOOP("@default", "Public key has been sent")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("encryption-ng/publicKeySendError", QT_TRANSLATE_NOOP("@default", "Error during sending public key")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("encryption-ng/encryptionError", QT_TRANSLATE_NOOP("@default", "Encryption error has occured")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("encryption-ng", QT_TRANSLATE_NOOP("@default", "Encryption")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("encryption-ng/publicKeySent", QT_TRANSLATE_NOOP("@default", "Public key has been sent")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("encryption-ng/publicKeySendError", QT_TRANSLATE_NOOP("@default", "Error during sending public key")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("encryption-ng/encryptionError", QT_TRANSLATE_NOOP("@default", "Encryption error has occured")));
 }
 
 void EncryptionNgNotification::unregisterNotifications()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("encryption-ng");
-	NotificationManager::instance()->unregisterNotificationEvent("encryption-ng/publicKeySent");
-	NotificationManager::instance()->unregisterNotificationEvent("encryption-ng/publicKeySendError");
-	NotificationManager::instance()->unregisterNotificationEvent("encryption-ng/encryptionError");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("encryption-ng");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("encryption-ng/publicKeySent");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("encryption-ng/publicKeySendError");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("encryption-ng/encryptionError");
 }
 
 void EncryptionNgNotification::notifyPublicKeySent(Contact contact)
@@ -48,7 +49,7 @@ void EncryptionNgNotification::notifyPublicKeySent(Contact contact)
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/publicKeySent");
 	notification->setTitle(tr("Encryption"));
 	notification->setText(Qt::escape(tr("Public key has been send to: %1 (%2)").arg(contact.display(true)).arg(contact.id())));
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 void EncryptionNgNotification::notifyPublicKeySendError(Contact contact, const QString &error)
@@ -57,7 +58,7 @@ void EncryptionNgNotification::notifyPublicKeySendError(Contact contact, const Q
 	notification->setTitle(tr("Encryption"));
 	notification->setText(Qt::escape(tr("Error sending public key to: %1 (%2)").arg(contact.display(true)).arg(contact.id())));
 	notification->setDetails(Qt::escape(error));
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 void EncryptionNgNotification::notifyEncryptionError(const QString &error)
@@ -66,7 +67,7 @@ void EncryptionNgNotification::notifyEncryptionError(const QString &error)
 	notification->setTitle(tr("Encryption"));
 	notification->setText(tr("Error occured during encryption"));
 	notification->setDetails(Qt::escape(error));
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 EncryptionNgNotification::EncryptionNgNotification(const QString &name) :

@@ -53,7 +53,7 @@ static QString getErrorServer(const ParserData * const object)
 
 void ConnectionErrorNotification::registerEvent()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 
 	Parser::registerObjectTag("error", getErrorMessage);
 	Parser::registerObjectTag("errorServer", getErrorServer);
@@ -75,13 +75,13 @@ void ConnectionErrorNotification::unregisterEvent()
 	Parser::unregisterObjectTag("errorServer");
 	Parser::unregisterObjectTag("error");
 
-	NotificationManager::instance()->unregisterNotificationEvent("ConnectionError");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("ConnectionError");
 }
 
 void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)
 {
 	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account, errorServer, errorMessage);
-	NotificationManager::instance()->notify(connectionErrorNotification);
+	Core::instance()->notificationManager()->notify(connectionErrorNotification);
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
@@ -105,7 +105,7 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 void ConnectionErrorNotification::ignoreErrors()
 {
 	auto account = data()["account"].value<Account>();
-	NotificationManager::instance()->ignoreConnectionErrors(account);
+	Core::instance()->notificationManager()->ignoreConnectionErrors(account);
 	emit closed(this);
 }
 

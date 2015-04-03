@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 
@@ -25,12 +26,12 @@
 
 void AntistringNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")));
 }
 
 void AntistringNotification::unregisterNotifications()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("Antistring");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("Antistring");
 }
 
 void AntistringNotification::notifyStringReceived(const Chat &chat)
@@ -38,7 +39,7 @@ void AntistringNotification::notifyStringReceived(const Chat &chat)
 	AntistringNotification *notification = new AntistringNotification(chat);
 	notification->setTitle(tr("Antistring"));
 	notification->setText(tr("Your interlocutor send you love letter"));
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 AntistringNotification::AntistringNotification(const Chat &chat) :

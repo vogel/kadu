@@ -26,6 +26,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 #include "parser/parser.h"
@@ -68,7 +69,7 @@ Speech::Speech() :
 {
 	kdebugf();
 
-	NotificationManager::instance()->registerNotifier(this);
+	Core::instance()->notificationManager()->registerNotifier(this);
 
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
 
@@ -78,7 +79,7 @@ Speech::Speech() :
 Speech::~Speech()
 {
 	kdebugf();
-	NotificationManager::instance()->unregisterNotifier(this);
+	Core::instance()->notificationManager()->unregisterNotifier(this);
 
 	kdebugf2();
 }

@@ -30,6 +30,7 @@
 
 #include <QtGui/QTextDocument>
 
+#include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 
@@ -37,19 +38,19 @@
 
 void MediaPlayerNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer")));
 }
 
 void MediaPlayerNotification::unregisterNotifications()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("MediaPlayerOsd");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("MediaPlayerOsd");
 }
 
 void MediaPlayerNotification::notifyTitleHint(const QString &title)
 {
 	Notification *notification = new MediaPlayerNotification();
 	notification->setText(Qt::escape(title));
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 MediaPlayerNotification::MediaPlayerNotification() :

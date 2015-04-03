@@ -76,7 +76,7 @@ bool GrowlNotify::init(bool firstLoad)
 		return false;
 	}
 
-	NotificationManager::instance()->registerNotifier(this);
+	Core::instance()->notificationManager()->registerNotifier(this);
 	createDefaultConfiguration();
 
 	return true;
@@ -84,7 +84,7 @@ bool GrowlNotify::init(bool firstLoad)
 
 void GrowlNotify::done()
 {
-	NotificationManager::instance()->unregisterNotifier(this);
+	Core::instance()->notificationManager()->unregisterNotifier(this);
 }
 
 

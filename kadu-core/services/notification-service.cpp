@@ -281,7 +281,7 @@ void NotificationService::createDefaultConfiguration()
 void NotificationService::notify(Notification* notification)
 {
 	if (!ignoreNotifications())
-		NotificationManager::instance()->notify(notification);
+		Core::instance()->notificationManager()->notify(notification);
 	else
 		notification->callbackDiscard();
 }

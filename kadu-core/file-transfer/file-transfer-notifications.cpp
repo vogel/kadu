@@ -36,8 +36,8 @@
 
 void NewFileTransferNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 
 	auto acceptTransferCallback = NotificationCallback{
 		"file-transfer-accept",
@@ -83,8 +83,8 @@ void NewFileTransferNotification::registerEvents()
 
 void NewFileTransferNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("FileTransfer");
-	NotificationManager::instance()->unregisterNotificationEvent("FileTransfer/IncomingFile");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("FileTransfer");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("FileTransfer/IncomingFile");
 }
 
 void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)
@@ -134,7 +134,7 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 
 	notification->setText(text);
 
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer) :

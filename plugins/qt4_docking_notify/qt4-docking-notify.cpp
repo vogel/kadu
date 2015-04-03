@@ -51,7 +51,7 @@ Qt4Notify::Qt4Notify(QObject *parent) :
 
 	createDefaultConfiguration();
 
-	NotificationManager::instance()->registerNotifier(this);
+	Core::instance()->notificationManager()->registerNotifier(this);
 
 	if (Qt4TrayIcon::instance())
 		connect(Qt4TrayIcon::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
@@ -62,7 +62,7 @@ Qt4Notify::Qt4Notify(QObject *parent) :
 Qt4Notify::~Qt4Notify()
 {
 	kdebugf();
-	NotificationManager::instance()->unregisterNotifier(this);
+	Core::instance()->notificationManager()->unregisterNotifier(this);
 
 	if (Qt4TrayIcon::instance())
 		disconnect(Qt4TrayIcon::instance(), 0, this, 0);

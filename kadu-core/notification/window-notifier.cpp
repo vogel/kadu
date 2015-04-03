@@ -26,6 +26,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/windows/window-notifier-window.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
@@ -42,12 +43,12 @@ WindowNotifier::WindowNotifier(QObject *parent) :
 		Notifier{"Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), KaduIcon("dialog-information"), parent}
 {
 	createDefaultConfiguration();
-	NotificationManager::instance()->registerNotifier(this);
+	Core::instance()->notificationManager()->registerNotifier(this);
 }
 
 WindowNotifier::~WindowNotifier()
 {
-	NotificationManager::instance()->unregisterNotifier(this);
+	Core::instance()->notificationManager()->unregisterNotifier(this);
 }
 
 void WindowNotifier::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)

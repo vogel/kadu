@@ -28,6 +28,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/misc.h"
 #include "notification/notification-manager.h"
@@ -127,7 +128,7 @@ bool PCSpeaker::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	NotificationManager::instance()->registerNotifier(this);
+	Core::instance()->notificationManager()->registerNotifier(this);
 	createDefaultConfiguration();
 
 	return true;
@@ -135,7 +136,7 @@ bool PCSpeaker::init(bool firstLoad)
 
 void PCSpeaker::done()
 {
-	NotificationManager::instance()->unregisterNotifier(this);
+	Core::instance()->notificationManager()->unregisterNotifier(this);
 }
 
 void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow * /*mainConfigurationWindow*/)

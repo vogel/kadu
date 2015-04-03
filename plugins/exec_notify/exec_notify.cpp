@@ -33,6 +33,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/core.h"
 
 #include "contacts/contact-set.h"
 
@@ -95,7 +96,7 @@ ExecNotify::ExecNotify(QObject *parent) :
 	kdebugf();
 
 	createDefaultConfiguration();
-	NotificationManager::instance()->registerNotifier(this);
+	Core::instance()->notificationManager()->registerNotifier(this);
 
 	kdebugf2();
 }
@@ -104,7 +105,7 @@ ExecNotify::~ExecNotify()
 {
 	kdebugf();
 
-	NotificationManager::instance()->unregisterNotifier(this);
+	Core::instance()->notificationManager()->unregisterNotifier(this);
 
 	kdebugf2();
 }

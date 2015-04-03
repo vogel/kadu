@@ -21,6 +21,7 @@
 
 #include <QtGui/QTextDocument>
 
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "icons/icons-manager.h"
@@ -32,14 +33,14 @@
 
 void MessageNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
 }
 
 void MessageNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("NewChat");
-	NotificationManager::instance()->unregisterNotificationEvent("NewMessage");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("NewChat");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("NewMessage");
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :

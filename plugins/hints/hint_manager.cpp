@@ -103,7 +103,7 @@ HintManager::HintManager(QObject *parent) :
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
-	NotificationManager::instance()->registerNotifier(this);
+	Core::instance()->notificationManager()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
 	configurationUpdated();
@@ -122,7 +122,7 @@ HintManager::~HintManager()
 		hint_timer->stop();
 
 	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
-	NotificationManager::instance()->unregisterNotifier(this);
+	Core::instance()->notificationManager()->unregisterNotifier(this);
 
 	disconnect();
 

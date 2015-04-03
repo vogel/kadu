@@ -27,6 +27,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "notification/notification-event.h"
 #include "protocols/protocol.h"
@@ -35,24 +36,24 @@
 
 void StatusChangedNotification::registerEvents()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 }
 
 void StatusChangedNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged");
-	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToFreeForChat");
-	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToOnline");
-	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToAway");
-	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToNotAvailable");
-	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToDoNotDisturb");
-	NotificationManager::instance()->unregisterNotificationEvent("StatusChanged/ToOffline");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToFreeForChat");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToOnline");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToAway");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToNotAvailable");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToDoNotDisturb");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToOffline");
 }
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description) :

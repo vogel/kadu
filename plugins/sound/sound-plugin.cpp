@@ -67,7 +67,7 @@ bool SoundPlugin::init(bool firstLoad)
 
 	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(m_injector->get<SoundBuddyConfigurationWidgetFactory>());
 	Core::instance()->chatConfigurationWidgetFactoryRepository()->registerFactory(m_injector->get<SoundChatConfigurationWidgetFactory>());
-	NotificationManager::instance()->registerNotifier(m_injector->get<SoundNotifier>());
+	Core::instance()->notificationManager()->registerNotifier(m_injector->get<SoundNotifier>());
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
 	MainConfigurationWindow::registerUiHandler(m_injector->get<SoundConfigurationUiHandler>());
@@ -80,7 +80,7 @@ void SoundPlugin::done()
 	MainConfigurationWindow::unregisterUiHandler(m_injector->get<SoundConfigurationUiHandler>());
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
 
-	NotificationManager::instance()->unregisterNotifier(m_injector->get<SoundNotifier>());
+	Core::instance()->notificationManager()->unregisterNotifier(m_injector->get<SoundNotifier>());
 	Core::instance()->chatConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundChatConfigurationWidgetFactory>());
 	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundBuddyConfigurationWidgetFactory>());
 

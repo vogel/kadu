@@ -23,6 +23,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
@@ -31,12 +32,12 @@
 
 void FirewallNotification::registerNotifications()
 {
-	NotificationManager::instance()->registerNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
+	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
 }
 
 void FirewallNotification::unregisterNotifications()
 {
-	NotificationManager::instance()->unregisterNotificationEvent("firewallNotification");
+	Core::instance()->notificationManager()->unregisterNotificationEvent("firewallNotification");
 }
 
 void FirewallNotification::notify(const Chat &chat, const Contact &sender, const QString &message)
@@ -46,7 +47,7 @@ void FirewallNotification::notify(const Chat &chat, const Contact &sender, const
 	notification->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));
 	notification->setDetails(Qt::escape(message));
-	NotificationManager::instance()->notify(notification);
+	Core::instance()->notificationManager()->notify(notification);
 }
 
 FirewallNotification::FirewallNotification(const Chat &chat) :

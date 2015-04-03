@@ -53,9 +53,6 @@ class NotificationEvent;
 class KADUAPI NotificationManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(NotificationManager)
-
-	static NotificationManager *Instance;
 
 	QList<Notifier *> Notifiers;
 	QList<NotificationEvent> NotificationEvents;
@@ -64,9 +61,6 @@ class KADUAPI NotificationManager : public QObject
 	QHash<QString, AggregateNotification*> ActiveNotifications;
 	QHash<QString, QTimer*> PeriodicNotifications;
 
-	NotificationManager();
-	virtual ~NotificationManager();
-
 	AggregateNotification * findGroup(Notification *notification);
 
 private slots:
@@ -74,7 +68,8 @@ private slots:
 	void removePeriodicEntries();
 
 public:
-	static NotificationManager * instance();
+	Q_INVOKABLE explicit NotificationManager(QObject *parent = nullptr);
+	virtual ~NotificationManager();
 
 	void notify(Notification *notification);
 
