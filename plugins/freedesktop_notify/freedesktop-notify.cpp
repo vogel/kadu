@@ -41,6 +41,7 @@
 #include "notification/notification-callback.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-event.h"
+#include "notification/notification-event-repository.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "freedesktop-notify.h"
@@ -345,7 +346,7 @@ void FreedesktopNotify::import_0_9_0_Configuration()
 	if (!Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "Timeout").isEmpty() || !Application::instance()->configuration()->deprecatedApi()->readEntry("FreedesktopNotify", "Timeout").isEmpty())
 		Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "CustomTimeout", true);
 
-	foreach (NotificationEvent event, Core::instance()->notificationManager()->notifyEvents())
+	for (auto &&event : Core::instance()->notificationEventRepository()->notificationEvents())
 		Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", event.name() + "_FreedesktopNotify", Application::instance()->configuration()->deprecatedApi()->readEntry("Notify", event.name() + "_KNotify"));
 }
 

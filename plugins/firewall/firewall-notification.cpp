@@ -25,6 +25,7 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "icons/icons-manager.h"
+#include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 
@@ -32,12 +33,12 @@
 
 void FirewallNotification::registerNotifications()
 {
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
 }
 
 void FirewallNotification::unregisterNotifications()
 {
-	Core::instance()->notificationManager()->unregisterNotificationEvent("firewallNotification");
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
 }
 
 void FirewallNotification::notify(const Chat &chat, const Contact &sender, const QString &message)

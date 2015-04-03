@@ -29,6 +29,7 @@
 #include "misc/misc.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
+#include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 
@@ -36,8 +37,8 @@
 
 void NewFileTransferNotification::registerEvents()
 {
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 
 	auto acceptTransferCallback = NotificationCallback{
 		"file-transfer-accept",
@@ -83,8 +84,8 @@ void NewFileTransferNotification::registerEvents()
 
 void NewFileTransferNotification::unregisterEvents()
 {
-	Core::instance()->notificationManager()->unregisterNotificationEvent("FileTransfer");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("FileTransfer/IncomingFile");
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 }
 
 void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)

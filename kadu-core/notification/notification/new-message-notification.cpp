@@ -28,19 +28,20 @@
 #include "message/message.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
+#include "notification/notification-event-repository.h"
 
 #include "new-message-notification.h"
 
 void MessageNotification::registerEvents()
 {
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
 }
 
 void MessageNotification::unregisterEvents()
 {
-	Core::instance()->notificationManager()->unregisterNotificationEvent("NewChat");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("NewMessage");
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :

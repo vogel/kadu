@@ -73,6 +73,7 @@ class MessageHtmlRendererService;
 class MessageRenderInfoFactory;
 class MessageTransformerService;
 class NotificationCallbackRepository;
+class NotificationEventRepository;
 class NotificationManager;
 class NotificationService;
 class PluginActivationService;
@@ -184,6 +185,7 @@ public:
 	MessageRenderInfoFactory * messageRenderInfoFactory() const;
 	MessageTransformerService * messageTransformerService() const;
 	NotificationCallbackRepository * notificationCallbackRepository() const;
+	NotificationEventRepository * notificationEventRepository() const;
 	NotificationManager * notificationManager() const;
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;

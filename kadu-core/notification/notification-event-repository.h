@@ -17,21 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notification-module.h"
+#pragma once
 
-#include "notification/notification-callback-repository.h"
-#include "notification/notification-event-repository.h"
-#include "notification/notification-manager.h"
-#include "notification/notification-service.h"
+#include "exports.h"
 
-NotificationModule::NotificationModule()
+#include <QtCore/QObject>
+
+class NotificationEvent;
+
+class KADUAPI NotificationEventRepository : public QObject
 {
-	add_type<NotificationCallbackRepository>();
-	add_type<NotificationEventRepository>();
-	add_type<NotificationManager>();
-	add_type<NotificationService>();
-}
+	Q_OBJECT
 
-NotificationModule::~NotificationModule()
-{
-}
+public:
+	Q_INVOKABLE explicit NotificationEventRepository(QObject *parent = nullptr);
+	virtual ~NotificationEventRepository();
+
+	void addNotificationEvent(NotificationEvent callback);
+	void removeNotificationEvent(NotificationEvent callback);
+
+	const std::vector<NotificationEvent> & notificationEvents() const;
+
+signals:
+	void notificationEventAdded(NotificationEvent notificationEvent);
+	void notificationEventRemoved(NotificationEvent notificationEvent);
+
+private:
+	std::vector<NotificationEvent> m_events;
+
+};

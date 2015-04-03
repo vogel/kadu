@@ -32,7 +32,6 @@
 #include "gui/windows/message-dialog.h"
 #include "notification/notification/aggregate-notification.h"
 #include "notification/notifier.h"
-#include "notification/notification-event.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
@@ -54,29 +53,6 @@ NotificationManager::~NotificationManager()
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
 		unregisterNotifier(Notifiers.at(0));
 	}
-}
-
-void NotificationManager::registerNotificationEvent(NotificationEvent notifyEvent)
-{
-	kdebugf();
-
-	NotificationEvents.append(notifyEvent);
-	emit notifyEventRegistered(notifyEvent);
-
-	kdebugf2();
-}
-
-void NotificationManager::unregisterNotificationEvent(const QString &eventName)
-{
-	kdebugf();
-
-	auto it = std::find_if(std::begin(NotificationEvents), std::end(NotificationEvents), [&eventName](const NotificationEvent &event){
-		return event.name() == eventName;
-	});
-	NotificationEvents.erase(it);
-	emit notifyEventUnregistered(eventName);
-
-	kdebugf2();
 }
 
 void NotificationManager::registerNotifier(Notifier *notifier)
@@ -116,11 +92,6 @@ void NotificationManager::unregisterNotifier(Notifier *notifier)
 const QList<Notifier *> & NotificationManager::notifiers() const
 {
 	return Notifiers;
-}
-
-const QList<NotificationEvent> & NotificationManager::notifyEvents() const
-{
-	return NotificationEvents;
 }
 
 void NotificationManager::ignoreConnectionErrors(Account account)

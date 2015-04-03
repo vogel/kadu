@@ -45,6 +45,7 @@
 #include "gui/windows/configuration-window.h"
 
 #include "notifier.h"
+#include "notification-event-repository.h"
 #include "notification-event.h"
 
 #include "notify-configuration-ui-handler.h"
@@ -116,7 +117,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
 	{
-		foreach (NotificationEvent notifyEvent, Core::instance()->notificationManager()->notifyEvents())
+		for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
 		{
 			if (!NotifierGui[notifier].Events.contains(notifyEvent.name()))
 				NotifierGui[notifier].Events[notifyEvent.name()] = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyEvent.name() + '_' + notifier->name());
@@ -124,7 +125,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	}
 
 	QString eventName;
-	foreach (NotificationEvent notifyEvent, Core::instance()->notificationManager()->notifyEvents())
+	for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
 	{
 		eventName = notifyEvent.name();
 		if (NotificationEvents.contains(eventName))
@@ -211,7 +212,7 @@ void NotifyConfigurationUiHandler::notifyEventUnregistered(const QString &eventN
 
 void NotifyConfigurationUiHandler::configurationWindowApplied()
 {
-	foreach (NotificationEvent notifyEvent, Core::instance()->notificationManager()->notifyEvents())
+	for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
 	{
 		if (notifyEvent.category().isEmpty() || !NotificationEvents.contains(notifyEvent.name()))
 			continue;

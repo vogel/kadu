@@ -93,8 +93,9 @@
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-callback-repository.h"
-#include "notification/notification-manager.h"
+#include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
+#include "notification/notification-manager.h"
 #include "notification/notification-service.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
@@ -631,7 +632,7 @@ void Core::runServices()
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
-		Core::instance()->notificationManager()->registerNotificationEvent(notifyEvent);
+		Core::instance()->notificationEventRepository()->addNotificationEvent(notifyEvent);
 
 	CurrentChatWidgetActions = new ChatWidgetActions(this);
 
@@ -771,6 +772,11 @@ MessageTransformerService * Core::messageTransformerService() const
 NotificationCallbackRepository * Core::notificationCallbackRepository() const
 {
 	return m_injector.get<NotificationCallbackRepository>();
+}
+
+NotificationEventRepository * Core::notificationEventRepository() const
+{
+	return m_injector.get<NotificationEventRepository>();
 }
 
 NotificationManager * Core::notificationManager() const

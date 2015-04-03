@@ -43,7 +43,6 @@ class Message;
 class MultilogonSession;
 class Notification;
 class Notifier;
-class NotificationEvent;
 
 /**
  * @defgroup notify Notify
@@ -55,7 +54,6 @@ class KADUAPI NotificationManager : public QObject
 	Q_OBJECT
 
 	QList<Notifier *> Notifiers;
-	QList<NotificationEvent> NotificationEvents;
 	QStringList IgnoredAccounts;
 
 	QHash<QString, AggregateNotification*> ActiveNotifications;
@@ -76,11 +74,7 @@ public:
 	void registerNotifier(Notifier *notifier);
 	void unregisterNotifier(Notifier *notifier);
 
-	void registerNotificationEvent(NotificationEvent notifyEvent);
-	void unregisterNotificationEvent(const QString &eventName);
-
 	const QList<Notifier *> & notifiers() const;
-	const QList<NotificationEvent> & notifyEvents() const;
 
 	QString notifyConfigurationKey(const QString &eventType);
 	void ignoreConnectionErrors(Account account);
@@ -91,9 +85,6 @@ public slots:
 signals:
 	void notiferRegistered(Notifier *notifier);
 	void notiferUnregistered(Notifier *notifier);
-
-	void notifyEventRegistered(NotificationEvent notifyEvent);
-	void notifyEventUnregistered(const QString &eventName);
 
 };
 

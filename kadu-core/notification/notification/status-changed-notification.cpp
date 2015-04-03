@@ -30,30 +30,31 @@
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "notification/notification-event.h"
+#include "notification/notification-event-repository.h"
 #include "protocols/protocol.h"
 
 #include "status-changed-notification.h"
 
 void StatusChangedNotification::registerEvents()
 {
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
-	Core::instance()->notificationManager()->registerNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
+	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 }
 
 void StatusChangedNotification::unregisterEvents()
 {
-	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToFreeForChat");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToOnline");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToAway");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToNotAvailable");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToDoNotDisturb");
-	Core::instance()->notificationManager()->unregisterNotificationEvent("StatusChanged/ToOffline");
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
+	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 }
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description) :

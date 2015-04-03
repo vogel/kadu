@@ -23,6 +23,7 @@
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "message/message-manager.h"
+#include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "services/raw-message-transformer-service.h"
 
@@ -126,7 +127,7 @@ bool OtrPlugin::init(bool firstLoad)
 	Core::instance()->rawMessageTransformerService()->registerTransformer(m_injector->get<OtrRawMessageTransformer>());
 
 	for (auto notifyEvent : m_injector->get<OtrNotifier>()->notifyEvents())
-		Core::instance()->notificationManager()->registerNotificationEvent(notifyEvent);
+		Core::instance()->notificationEventRepository()->addNotificationEvent(notifyEvent);
 
 	return true;
 }
@@ -137,7 +138,7 @@ void OtrPlugin::done()
 		return;
 
 	for (auto notifyEvent : m_injector->get<OtrNotifier>()->notifyEvents())
-		Core::instance()->notificationManager()->unregisterNotificationEvent(notifyEvent.name());
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(notifyEvent);
 
 	Core::instance()->rawMessageTransformerService()->unregisterTransformer(m_injector->get<OtrRawMessageTransformer>());
 	Core::instance()->chatTopBarWidgetFactoryRepository()->unregisterFactory(m_injector->get<OtrChatTopBarWidgetFactory>());

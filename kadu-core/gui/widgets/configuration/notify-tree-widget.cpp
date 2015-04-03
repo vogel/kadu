@@ -35,6 +35,7 @@
 #include "notification/notifier.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/notification-event.h"
+#include "notification/notification-event-repository.h"
 
 #include "notify-tree-widget.h"
 
@@ -113,7 +114,7 @@ void NotifyTreeWidget::refresh()
 
 	QStringList notifiersNames;
 	QString eventName;
-	foreach (NotificationEvent notifyEvent, Core::instance()->notificationManager()->notifyEvents())
+	for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
 	{
 		eventName = notifyEvent.name();
 		foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
