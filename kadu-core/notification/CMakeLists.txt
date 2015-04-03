@@ -7,14 +7,15 @@ set (notification_SRCS
 	notification/aggregate-notification.cpp
 	notification/new-message-notification.cpp
 	notification/multilogon-notification.cpp
-	notification/notification-callback-repository.cpp
-	notification/notification-callback.cpp
 	notification/notification.cpp
 	notification/status-changed-notification.cpp
 
+	notification-callback-repository.cpp
+	notification-callback.cpp
 	notification-event.cpp
 	notification-manager.cpp
 	notification-module.cpp
+	notification-service.cpp
 	notifier.cpp
 	notifier-configuration-data-manager.cpp
 	notify-configuration-ui-handler.cpp

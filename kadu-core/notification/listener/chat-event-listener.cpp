@@ -26,7 +26,7 @@
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "notification/notification/new-message-notification.h"
-#include "services/notification-service.h"
+#include "notification/notification-service.h"
 #include "activate.h"
 
 #include "chat-event-listener.h"

@@ -25,8 +25,8 @@
 
 #include "icons/icons-manager.h"
 #include "notification/notification/aggregate-notification.h"
-#include "notification/notification/notification-callback-repository.h"
-#include "notification/notification/notification-callback.h"
+#include "notification/notification-callback-repository.h"
+#include "notification/notification-callback.h"
 #include "notification/notification/notification.h"
 
 #include <QtWidgets/QLabel>

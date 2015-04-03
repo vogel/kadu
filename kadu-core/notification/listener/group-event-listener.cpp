@@ -24,7 +24,7 @@
 #include "buddies/group.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "services/notification-service.h"
+#include "notification/notification-service.h"
 
 #include "group-event-listener.h"
 

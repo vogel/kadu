@@ -27,8 +27,8 @@
 #include "file-transfer/file-transfer-type.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
-#include "notification/notification/notification-callback-repository.h"
-#include "notification/notification/notification-callback.h"
+#include "notification/notification-callback-repository.h"
+#include "notification/notification-callback.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 

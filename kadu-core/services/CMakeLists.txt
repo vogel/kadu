@@ -5,7 +5,6 @@ set (services_SRCS
 	image-storage-service.cpp
 	message-filter-service.cpp
 	message-transformer-service.cpp
-	notification-service.cpp
 	raw-message-transformer-service.cpp
 )
 
@@ -14,7 +13,6 @@ set (services_MOC_SRCS
 	image-storage-service.h
 	message-filter-service.h
 	message-transformer-service.h
-	notification-service.h
 	raw-message-transformer-service.h
 )
 

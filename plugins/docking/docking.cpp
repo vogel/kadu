@@ -44,7 +44,7 @@
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
-#include "services/notification-service.h"
+#include "notification/notification-service.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-data.h"
@@ -53,7 +53,7 @@
 #include "debug.h"
 
 #ifdef Q_OS_MAC
-#include "services/notification-service.h"
+#include "notification/notification-service.h"
 #include "mac_docking_helper.h"
 extern void qt_mac_set_dock_menu(QMenu *);
 #endif

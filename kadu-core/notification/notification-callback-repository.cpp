@@ -19,7 +19,7 @@
 
 #include "notification-callback-repository.h"
 
-#include "notification/notification/notification-callback.h"
+#include "notification/notification-callback.h"
 
 NotificationCallbackRepository::NotificationCallbackRepository(QObject *parent) :
 		QObject{parent}

@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "services/notification-service.h"
+#include "notification/notification-service.h"
 
 #include "event-listener.h"
 

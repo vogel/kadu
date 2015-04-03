@@ -33,8 +33,8 @@
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
 #include "message/unread-message-repository.h"
+#include "notification/notification-service.h"
 #include "protocols/protocol.h"
-#include "services/notification-service.h"
 
 #include <QtWidgets/QApplication>
 

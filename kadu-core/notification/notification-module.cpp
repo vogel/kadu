@@ -19,9 +19,9 @@
 
 #include "notification-module.h"
 
-#include "notification/notification/notification-callback-repository.h"
+#include "notification/notification-callback-repository.h"
 #include "notification/notification-manager.h"
-#include "services/notification-service.h"
+#include "notification/notification-service.h"
 
 NotificationModule::NotificationModule()
 {

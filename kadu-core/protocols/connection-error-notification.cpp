@@ -26,8 +26,8 @@
 #include "icons/icons-manager.h"
 #include "identities/identity.h"
 #include "notification/notification-manager.h"
-#include "notification/notification/notification-callback-repository.h"
-#include "notification/notification/notification-callback.h"
+#include "notification/notification-callback-repository.h"
+#include "notification/notification-callback.h"
 #include "notification/notification-event.h"
 #include "parser/parser.h"
 
