@@ -72,6 +72,8 @@ void AutoResponder::done()
 	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
+	delete UiHandler;
+	UiHandler = nullptr;
 
 	delete Configurator;
 	Configurator = 0;
