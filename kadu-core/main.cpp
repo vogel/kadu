@@ -116,6 +116,12 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			fprintf(stderr, "Debug: %s\n", msg);
 			fflush(stderr);
 			break;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+		case QtInfoMsg:
+			fprintf(stderr, "Info: %s\n", msg);
+			fflush(stderr);
+			break;
+#endif
 		case QtWarningMsg:
 			fprintf(stderr, "\033[34mWarning: %s\033[0m\n", msg);
 			fflush(stderr);
