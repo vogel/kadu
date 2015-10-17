@@ -44,7 +44,11 @@ KNOWN ISSUES:
 
 #ifdef QT_CORE_LIB
 	#include <QtGlobal>
-	#define X11TOOLSEXPORT Q_DECL_EXPORT
+	#if QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
+		#define X11TOOLSEXPORT Q_DECL_EXPORT
+	#else
+		#define X11TOOLSEXPORT extern "C"
+	#endif
 #else
 	#define X11TOOLSEXPORT extern "C"
 #endif
