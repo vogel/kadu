@@ -23,7 +23,16 @@ endif ()
 # libraries
 # TODO: support cmake parameters for this
 find_package (Qt5Core 5.2 REQUIRED)
+find_package (Qt5Gui REQUIRED)
 find_package (Qt5LinguistTools REQUIRED)
+find_package (Qt5Network REQUIRED)
+find_package (Qt5Qml REQUIRED)
+find_package (Qt5Quick REQUIRED)
+find_package (Qt5QuickWidgets REQUIRED)
+find_package (Qt5WebKit REQUIRED)
+find_package (Qt5WebKitWidgets REQUIRED)
+find_package (Qt5Widgets REQUIRED)
+find_package (Qt5Xml REQUIRED)
 
 if (UNIX AND NOT APPLE)
 	find_package (Qt5X11Extras REQUIRED)
