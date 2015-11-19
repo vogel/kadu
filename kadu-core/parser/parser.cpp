@@ -473,7 +473,7 @@ QString Parser::joinParserTokens(const ContainerClass &parseStack)
 
 QString Parser::parse(const QString &s, Talkable talkable, const ParserData * const parserData, ParserEscape escape = ParserEscape::HtmlEscape)
 {
-	kdebugmf(KDEBUG_DUMP, "%s htmlEscape=%i\n", qPrintable(s), escape);
+	kdebugmf(KDEBUG_DUMP, "%s htmlEscape=%i\n", qPrintable(s), static_cast<int>(escape));
 
 	prepareSearchChars();
 
