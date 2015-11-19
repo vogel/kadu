@@ -1,25 +1,27 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversación</translation>
     </message>
     <message>
         <source>Show YouTube movies in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar videos de YouTube en la ventana de conversación</translation>
     </message>
     <message>
         <source>Show images in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar imágenes en la ventana de conversación</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"/>
+        <translation>Mensajes</translation>
     </message>
 </context>
 </TS>

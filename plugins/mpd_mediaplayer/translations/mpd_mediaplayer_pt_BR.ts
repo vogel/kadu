@@ -1,48 +1,50 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation type="unfinished"/>
+        <translation>MediaPlayer</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Geral</translation>
     </message>
     <message>
         <source>Media Player Daemon Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações do Media Player Daemon</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Host</translation>
     </message>
     <message>
         <source>Media Player Daemon server address</source>
-        <translation type="unfinished"/>
+        <translation>Endereço do servidor Media Player Daemon</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Porta</translation>
     </message>
     <message>
         <source>Port number MPD is listening on</source>
-        <translation type="unfinished"/>
+        <translation>Número da porta que o MPD está escutando</translation>
     </message>
     <message>
         <source>Connection timeout (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Timeout de conexão (segundos)</translation>
     </message>
     <message>
         <source>Number of seconds before the connection is terminated</source>
-        <translation type="unfinished"/>
+        <translation>Número de segundos antes de a conexão ser encerrada</translation>
     </message>
 </context>
 <context>
     <name>MPDMediaPlayer</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Desconhecido</translation>
     </message>
 </context>
 </TS>

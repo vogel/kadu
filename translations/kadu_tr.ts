@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="tr">
 <context>
     <name>@default</name>
     <message>
@@ -570,7 +572,7 @@
         <translation>Durum Değiştir</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Bu seçenek araç ipuçları yerine arkadaş durumları geçecektir
 değişiklikler sunucuya bağlantı kurunca olacak</translation>
@@ -605,11 +607,15 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation><numerusform>%n dakika</numerusform><numerusform>%n dakika</numerusform></translation>
+        <translation>
+            <numerusform>%n dakika</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n saniye</numerusform><numerusform>%n saniye</numerusform></translation>
+        <translation>
+            <numerusform>%n saniye</numerusform>
+        </translation>
     </message>
     <message>
         <source>Send message</source>
@@ -1093,11 +1099,11 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>Always show identity</source>
-        <translation type="unfinished"/>
+        <translation>Her zaman kimlik göster</translation>
     </message>
     <message>
         <source>Notification position</source>
-        <translation type="unfinished"/>
+        <translation>Uyarı konumu</translation>
     </message>
 </context>
 <context>
@@ -1198,15 +1204,15 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
-        <translation type="unfinished"/>
+        <translation>Listenizdeki bu kişiler dosyada bulunamadı:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Kişi listesinde silmek istediğinize emin misiniz?</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -1723,7 +1729,7 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Genel</translation>
     </message>
 </context>
 <context>
@@ -1772,11 +1778,11 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"/>
+        <translation>Gruplar</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Ayarlar</translation>
     </message>
 </context>
 <context>
@@ -1830,7 +1836,7 @@ değişiklikler sunucuya bağlantı kurunca olacak</translation>
     <name>ChatGroupsConfigurationWidget</name>
     <message>
         <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; uygun gruplara eklemek için aşağıdaki grupları işaretleyiniz.</translation>
     </message>
 </context>
 <context>
@@ -1880,7 +1886,7 @@ Yine bu resmi kabul edecek misiniz?</translation>
     </message>
     <message>
         <source>Stay in chat room after closing chat window</source>
-        <translation type="unfinished"/>
+        <translation>Konuşma penceresini kapattıktan sonra konuşma odasında kal</translation>
     </message>
 </context>
 <context>
@@ -1980,15 +1986,15 @@ Yine bu resmi kabul edecek misiniz?</translation>
     <name>ChatWidgetTitle</name>
     <message>
         <source>Conference [%1]</source>
-        <translation type="unfinished"/>
+        <translation>Konferans [%1]</translation>
     </message>
     <message>
         <source>(Composing...)</source>
-        <translation type="unfinished"/>
+        <translation>(Yazıyor...)</translation>
     </message>
     <message>
         <source>(Inactive)</source>
-        <translation type="unfinished"/>
+        <translation>(aktif değil)</translation>
     </message>
 </context>
 <context>
@@ -2021,7 +2027,7 @@ Yine bu resmi kabul edecek misiniz?</translation>
     <name>CollapseAction</name>
     <message>
         <source>Collapse</source>
-        <translation type="unfinished"/>
+        <translation>Daralt</translation>
     </message>
 </context>
 <context>
@@ -2145,7 +2151,7 @@ Yine bu resmi kabul edecek misiniz?</translation>
     <name>ExpandAction</name>
     <message>
         <source>Expand</source>
-        <translation type="unfinished"/>
+        <translation>Genişlet</translation>
     </message>
 </context>
 <context>
@@ -2180,7 +2186,7 @@ Yine bu resmi kabul edecek misiniz?</translation>
     </message>
     <message>
         <source>Unable to open local file</source>
-        <translation type="unfinished"/>
+        <translation>Yerel dosya açılamıyor</translation>
     </message>
 </context>
 <context>
@@ -2227,39 +2233,39 @@ Yine bu resmi kabul edecek misiniz?</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Kabul Et</translation>
     </message>
     <message>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Reddet</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Kaydet</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Gönder</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>Aç</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished"/>
+        <translation>Dosya aç</translation>
     </message>
     <message>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Klasör aç</translation>
     </message>
     <message>
         <source>Send again</source>
-        <translation type="unfinished"/>
+        <translation>Tekrar gönder</translation>
     </message>
     <message>
         <source>&lt;b&gt;Ready to download&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;İndirmeye hazır&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2288,59 +2294,59 @@ Yine bu resmi kabul edecek misiniz?</translation>
     <name>GroupEditWindow</name>
     <message>
         <source>Show group name</source>
-        <translation type="unfinished"/>
+        <translation>Grup adı göster</translation>
     </message>
     <message>
         <source>Use custom icon</source>
-        <translation type="unfinished"/>
+        <translation>Özel simge kullan</translation>
     </message>
     <message>
         <source>Notify about status changes</source>
-        <translation type="unfinished"/>
+        <translation>Durum değişiklikleri hakkında uyar</translation>
     </message>
     <message>
         <source>Offline for this group</source>
-        <translation type="unfinished"/>
+        <translation>Bu grup için çevrimdışı</translation>
     </message>
     <message>
         <source>Supported for Gadu-Gadu network</source>
-        <translation type="unfinished"/>
+        <translation>Gadu-Gadu ağı tarafından destekleniyor</translation>
     </message>
     <message>
         <source>Show in group &quot;All&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Gruplarda &apos;Hepsi&apos; ni göster</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Adı:</translation>
     </message>
     <message>
         <source>Add group</source>
-        <translation type="unfinished"/>
+        <translation>Grup ekle</translation>
     </message>
     <message>
         <source>Save group</source>
-        <translation type="unfinished"/>
+        <translation>Grubu kaydet</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Uygula</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <source>Choose an icon</source>
-        <translation type="unfinished"/>
+        <translation>Bir simge seçin</translation>
     </message>
     <message>
         <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
-        <translation type="unfinished"/>
+        <translation>Resimler (*.png *.xpm *.jpg);;Tüm Dosyalar (*)</translation>
     </message>
     <message>
         <source>Edit group %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 grubunu düzenle</translation>
     </message>
 </context>
 <context>
@@ -2382,23 +2388,23 @@ Yine bu resmi kabul edecek misiniz?</translation>
     </message>
     <message>
         <source>Group name must not be empty</source>
-        <translation type="unfinished"/>
+        <translation>Grup adı boş olamaz</translation>
     </message>
     <message>
         <source>Group name must not contain &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Grup adı &apos;%1&apos; içeremez</translation>
     </message>
     <message>
         <source>Group name must not be a number</source>
-        <translation type="unfinished"/>
+        <translation>Grup adı bir rakam olamaz</translation>
     </message>
     <message>
         <source>Group name must not be &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Grup adı &apos;%1&apos; olamaz</translation>
     </message>
     <message>
         <source>Group &apos;%1&apos; already exists</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; grubu zaten var</translation>
     </message>
 </context>
 <context>
@@ -2904,30 +2910,19 @@ Konferanstan ayrılmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>Kaydet</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
+        <translation>Atla</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; kullanıcısı size bir dosya göndermek istiyor&lt;b&gt;%2&lt;/b&gt;&lt;br/&gt; &lt;b&gt;%3&lt;/b&gt; hesabını kullanıyor.&lt;br/&gt;Aktarımı kabul et?</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>NotificationManager</name>
-    <message>
-        <source>Unable to find notifier for %1 event</source>
-        <translation>%1 olayı için uyarı bulunamıyor</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; kullanıcısı size bir dosya göndermek istiyor &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt; &lt;b&gt;%3&lt;/b&gt; hesabını kullanıyor.&lt;br/&gt;Bu muhtemelen bir sonraki parçası &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;Ne yapmalıyım?</translation>
     </message>
 </context>
 <context>
@@ -2942,11 +2937,11 @@ Konferanstan ayrılmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
+        <translation>Atla</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Konuşma</translation>
     </message>
 </context>
 <context>
@@ -3054,11 +3049,11 @@ Konferanstan ayrılmak istediğinizden emin misiniz?</translation>
     <name>PluginErrorDialog</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Try to load this plugin on next Kadu run</source>
-        <translation type="unfinished"/>
+        <translation>Bir sonraki Kadu açılışında bu eklentiyi yüklemeyi dene</translation>
     </message>
 </context>
 <context>
@@ -3112,7 +3107,8 @@ Konferanstan ayrılmak istediğinizden emin misiniz?</translation>
     <message>
         <source>Cannot load %1 plugin library:
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 eklenti kütüphanesi yüklenemez:
+%2</translation>
     </message>
 </context>
 <context>
@@ -3163,11 +3159,12 @@ Konferanstan ayrılmak istediğinizden emin misiniz?</translation>
     <message>
         <source>Cannot find required object in plugin %1.
 Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation type="unfinished"/>
+        <translation>%1 Eklentisindeki gerekli olan nesne bulunamıyor.
+Belki Kadu uyumlu eklenti değildir.</translation>
     </message>
     <message>
         <source>Plugin initialization routine for %1 failed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 eklentisi başlatma rutini başarısız.</translation>
     </message>
 </context>
 <context>
@@ -3339,35 +3336,35 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <name>RosterReplacer</name>
     <message>
         <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Kadu 0.10.0 versiyonundan beri Gadu-Gadu kişi listesini sunucudan otomatik olarak eşitler. Şimdi ilk eşitleme yapılacak. &lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Aşağıdaki kişiler sunucu listesinde var sizin yerel kişi listesinizde yok:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Eğer yerel kişi listenize kabul etmiyorsanız, sunucu üzerinden silinecekler.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Yerel kişi listenizde bulunan aşağıdaki kişiler sunucu üzerinde farklı isime sahip:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Bundan başka, yerel kişi listenizde bulunan aşağıdaki kişiler sunucu üzerinde farklı isime sahip:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel kişi listesindeki değişliklikleri uygulamak istiyor musunuz? Seçtiğiniz ne olursa olsun, sunucuya gönderilecek sonrasında mümkün olan değişiklikler yapılacak.</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Apply changes</source>
-        <translation type="unfinished"/>
+        <translation>Değişiklikleri kaydet</translation>
     </message>
     <message>
         <source>Leave contact list unchanged</source>
-        <translation type="unfinished"/>
+        <translation>Kişi listesini değiştirmeden ayrıl</translation>
     </message>
 </context>
 <context>
@@ -3585,160 +3582,160 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <name>SendFileAction</name>
     <message>
         <source>Select file location</source>
-        <translation type="unfinished"/>
+        <translation>Dosya konumunu seç</translation>
     </message>
     <message>
         <source>Send File...</source>
-        <translation type="unfinished"/>
+        <translation>Dosya Gönder...</translation>
     </message>
 </context>
 <context>
     <name>ShowFileTransferWindowAction</name>
     <message>
         <source>View File Transfers</source>
-        <translation type="unfinished"/>
+        <translation>Dosya Aktarımlarını Göster</translation>
     </message>
 </context>
 <context>
     <name>SslCertificateErrorDialog</name>
     <message>
         <source>Certificate for &lt;b&gt;%1&lt;/b&gt; failed authenticity validation:</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; sertifikası için özgünlük doğrulaması başarısız:</translation>
     </message>
     <message>
         <source>Show certificate details...</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika detaylarını göster...</translation>
     </message>
     <message>
         <source>Certificate details:</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika detayları:</translation>
     </message>
     <message>
         <source>Connect anyway</source>
-        <translation type="unfinished"/>
+        <translation>Yinede bağlan</translation>
     </message>
     <message>
         <source>Trust certificate</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaya güven</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
     <name>SslCertificateWidget</name>
     <message>
         <source>Valid</source>
-        <translation type="unfinished"/>
+        <translation>Doğrula</translation>
     </message>
     <message>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>Kara listede</translation>
     </message>
     <message>
         <source>Valid from</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli gönderen</translation>
     </message>
     <message>
         <source>Valid to</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli</translation>
     </message>
     <message>
         <source>Digest (Md5)</source>
-        <translation type="unfinished"/>
+        <translation>Digest (Md5)</translation>
     </message>
     <message>
         <source>Digest (Sha1)</source>
-        <translation type="unfinished"/>
+        <translation>Digest (Sha1)</translation>
     </message>
     <message>
         <source>Serial number</source>
-        <translation type="unfinished"/>
+        <translation>Seri numarası</translation>
     </message>
     <message>
         <source>Issuer organization</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı kuruluş</translation>
     </message>
     <message>
         <source>Issuer common name</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı ortak ad</translation>
     </message>
     <message>
         <source>Issuer locality name</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı yerel adı</translation>
     </message>
     <message>
         <source>Issuer organizational unit name</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı kuruluş birimi</translation>
     </message>
     <message>
         <source>Issuer country name</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı ülke adı</translation>
     </message>
     <message>
         <source>Issuer state or province name</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı eyalet veya şehir adı</translation>
     </message>
     <message>
         <source>Issuer distinguished name qualifier</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı ayırt edici adı eleme</translation>
     </message>
     <message>
         <source>Issuer serial number</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı seri numarası</translation>
     </message>
     <message>
         <source>Issuer email address</source>
-        <translation type="unfinished"/>
+        <translation>İhraççı email adresi</translation>
     </message>
     <message>
         <source>Subject organization</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu kuruluş</translation>
     </message>
     <message>
         <source>Subject common name</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu ortak ad</translation>
     </message>
     <message>
         <source>Subject alernative name</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu alternatif ad</translation>
     </message>
     <message>
         <source>Subject locality name</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu yerel ad</translation>
     </message>
     <message>
         <source>Subject organizational unit name</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu kuruluş birim adı</translation>
     </message>
     <message>
         <source>Subject country name</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu ülke adı</translation>
     </message>
     <message>
         <source>Subject state or province name</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu eyalet veya şehir adı</translation>
     </message>
     <message>
         <source>Subject distinguished name qualifier</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu ayırt edici adı eleme</translation>
     </message>
     <message>
         <source>Subject serial number</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu seri numarası</translation>
     </message>
     <message>
         <source>Subject email address</source>
-        <translation type="unfinished"/>
+        <translation>Söz konusu email adresi</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"/>
+        <translation>Evet</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"/>
+        <translation>Hayır</translation>
     </message>
 </context>
 <context>
@@ -3844,7 +3841,7 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <name>StringListDialog</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>

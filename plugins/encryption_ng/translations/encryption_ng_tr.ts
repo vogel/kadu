@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="tr">
 <context>
     <name>@default</name>
     <message>
@@ -24,27 +26,29 @@
         <source>This encryption plugin is depreceated and will be removed in future versions of Kadu. Use OTR Encryption plugin for compatibility with other instant messenger application.
 
 </source>
-        <translation type="unfinished"/>
+        <translation>Bu şifreleme eklentisi önerilmiyor ve Kadu gelecekteki sürümlerinde kaldırılacaktır. Diğer anlık mesajlaşma uygulaması ile uyumluluk için OTR Şifreleme eklentisi kullanın.
+
+</translation>
     </message>
     <message>
         <source>OTR Encryption is already active and ready to use.</source>
-        <translation type="unfinished"/>
+        <translation>OTR Şifrelemesi zaten aktif ve kullanılıyor.</translation>
     </message>
     <message>
         <source>Do you want to activate OTR Encryption now?</source>
-        <translation type="unfinished"/>
+        <translation>OTR Şifrelemesini şimdi aktif etmek istiyor musunuz?</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <source>Enable OTR</source>
-        <translation type="unfinished"/>
+        <translation>OTR Aktif</translation>
     </message>
     <message>
         <source>Do not enable OTR</source>
-        <translation type="unfinished"/>
+        <translation>OTR Aktif değil</translation>
     </message>
 </context>
 <context>

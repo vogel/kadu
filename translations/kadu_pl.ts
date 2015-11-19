@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -570,7 +572,7 @@
         <translation>Zmiana statusu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 znajomych po połączeniu się z serwerem</translation>
@@ -605,11 +607,19 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation>
+            <numerusform>%n minuta</numerusform>
+            <numerusform>%n minuty</numerusform>
+            <numerusform>%n minut</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
     </message>
     <message>
         <source>Send message</source>
@@ -2919,17 +2929,6 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
         <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce przesłać ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;używając konta &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Jest to prawdopodobnie kolejna część  &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;Co powinienem zrobić?</translation>
-    </message>
-</context>
-<context>
-    <name>NotificationManager</name>
-    <message>
-        <source>Unable to find notifier for %1 event</source>
-        <translation>Nie znaleziono modułu powiadamiającego dla zdarzenia %1</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
     </message>
 </context>
 <context>

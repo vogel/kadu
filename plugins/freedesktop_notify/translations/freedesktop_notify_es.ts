@@ -1,41 +1,46 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>@default</name>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Notificaciones</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation>
+            <numerusform>%n segundos</numerusform>
+            <numerusform>%n segundos</numerusform>
+        </translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>System notifications</source>
-        <translation type="unfinished"/>
+        <translation>Notificaciones del Sistema</translation>
     </message>
     <message>
         <source>Use custom expiration timeout</source>
-        <translation type="unfinished"/>
+        <translation>Configurar tiempo de desconexión</translation>
     </message>
     <message>
         <source>Expiration timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo de espera agotado.</translation>
     </message>
     <message>
         <source>Show message content</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Nunca</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opciones</translation>
     </message>
 </context>
 </TS>

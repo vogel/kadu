@@ -1,70 +1,77 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>Notification</source>
-        <translation type="unfinished"/>
+        <translation>Notificación</translation>
     </message>
     <message>
         <source>Tray Icon Balloon</source>
-        <translation type="unfinished"/>
+        <translation>Globo de icono de bandeja</translation>
     </message>
     <message>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo de espera</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation>
+            <numerusform>%n segundo(s)</numerusform>
+            <numerusform>%n segundo(s)</numerusform>
+        </translation>
     </message>
     <message>
         <source>Notification icon</source>
-        <translation type="unfinished"/>
+        <translation>Icono de notificación</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Información</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Advertencia</translation>
     </message>
     <message>
         <source>Critical</source>
-        <translation type="unfinished"/>
+        <translation>Crítica</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"/>
+        <translation>Título</translation>
     </message>
     <message>
         <source>Syntax</source>
-        <translation type="unfinished"/>
+        <translation>Sintaxis</translation>
     </message>
     <message>
         <source>No Icon</source>
-        <translation type="unfinished"/>
+        <translation>Sin Icono</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Notificaciones</translation>
     </message>
 </context>
 <context>
     <name>Qt4NotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation type="unfinished"/>
+        <translation>Configurar</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuración de apariencia del globo de icono de bandeja</translation>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation type="unfinished"/>
+        <translation>
+%&amp;t - título (ejemplo. Nuevo mensaje) %&amp;m - texto de la notificación (ejemplo. Mensaje de Jim), %&amp;d - detalles (ejemplo. cita del mensaje),
+%&amp;i - icono de la notificación</translation>
     </message>
 </context>
 </TS>

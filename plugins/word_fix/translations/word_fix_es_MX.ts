@@ -1,52 +1,54 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversación</translation>
     </message>
     <message>
         <source>Words fix</source>
-        <translation type="unfinished"/>
+        <translation>Correción de palabras</translation>
     </message>
     <message>
         <source>Enable word fix</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar corrección de palabras</translation>
     </message>
     <message>
         <source>Spelling</source>
-        <translation type="unfinished"/>
+        <translation>Ortografía</translation>
     </message>
 </context>
 <context>
     <name>WordFix</name>
     <message>
         <source>A word to be replaced</source>
-        <translation type="unfinished"/>
+        <translation>Una palabra a sustituir</translation>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation type="unfinished"/>
+        <translation>Sustituir valor por</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Agregar</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Word</source>
-        <translation type="unfinished"/>
+        <translation>Palabra</translation>
     </message>
     <message>
         <source>Replace with</source>
-        <translation type="unfinished"/>
+        <translation>Sustituir por</translation>
     </message>
 </context>
 </TS>

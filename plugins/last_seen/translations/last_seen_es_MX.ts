@@ -1,48 +1,50 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>Infos</name>
     <message>
         <source>&amp;Show infos about buddies</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Mostrar información acerca de contactos</translation>
     </message>
 </context>
 <context>
     <name>InfosDialog</name>
     <message>
         <source>Buddies Information</source>
-        <translation type="unfinished"/>
+        <translation>Informactión de contactos</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Contacto</translation>
     </message>
     <message>
         <source>Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protocolo</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"/>
+        <translation>Apodo</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"/>
+        <translation>Estado</translation>
     </message>
     <message>
         <source>Last time seen on</source>
-        <translation type="unfinished"/>
+        <translation>Última vez visto en</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Cerrar</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario</translation>
     </message>
 </context>
 </TS>

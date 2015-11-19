@@ -1,55 +1,57 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation type="unfinished"/>
+        <translation>Reproductor multimedia</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>MPRIS Player</source>
-        <translation type="unfinished"/>
+        <translation>Reproductor MPRIS</translation>
     </message>
 </context>
 <context>
     <name>MPRISPlayerConfigurationUiHandler</name>
     <message>
         <source>Select Player:</source>
-        <translation type="unfinished"/>
+        <translation>Selecciona Reproductor:</translation>
     </message>
     <message>
         <source>Add Player</source>
-        <translation type="unfinished"/>
+        <translation>Añadir Reproductor</translation>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation type="unfinished"/>
+        <translation>Editar Reproductor</translation>
     </message>
     <message>
         <source>Delete Player</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar Reproductor</translation>
     </message>
 </context>
 <context>
     <name>MPRISPlayerDialog</name>
     <message>
         <source>Add Player</source>
-        <translation type="unfinished"/>
+        <translation>Añadir Reproductor</translation>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation type="unfinished"/>
+        <translation>Editar Reproductor</translation>
     </message>
     <message>
         <source>Player:</source>
-        <translation type="unfinished"/>
+        <translation>Reproductor:</translation>
     </message>
     <message>
         <source>Service:</source>
-        <translation type="unfinished"/>
+        <translation>Servicio:</translation>
     </message>
 </context>
 </TS>

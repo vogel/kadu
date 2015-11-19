@@ -1,6 +1,7 @@
 +++ version 3.0-rc1
 * jabber: #3015 done: removed Facebook support (Vogel)
 * autoresponder: #3016 fixed: crash on exit when autoresponder is used (Vogel)
+* translations: complete Spanish (Mexican) translations (timbamikNov)
 
 +++ version 3.0-beta1
 * contacts: #2990 fixed: mising up contacts priorities sometimes (Vogel)

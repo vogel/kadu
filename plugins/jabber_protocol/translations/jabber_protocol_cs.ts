@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -23,14 +25,14 @@
     </message>
 </context>
 <context>
-    <name>FacebookProtocolFactory</name>
+    <name>FacebookDepreceatedMessage</name>
     <message>
-        <source>Facebook ID:</source>
-        <translation>Facebook ID:</translation>
+        <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</source>
-        <translation>Vaše uživatelské jméno je dostupné na &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; v poli s uživatelským jménem. Pokud je toto pole prázdné, můžete si své uživatelské jméno vybrat, anebo jej tam zadat.</translation>
+        <source>Kadu - Facebook</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -94,11 +96,11 @@
     <name>JabberChangePassword</name>
     <message>
         <source>Current connection is not safe for password change. Use encrypted connection or change password on provider&apos;s site.</source>
-        <translation type="unfinished"/>
+        <translation>Nynější spojení není bezpečné pro změnu hesla. Použijte šifrované spojení nebo heslo změňte na straně poskytovatele.</translation>
     </message>
     <message>
         <source>Password change is not allowed.</source>
-        <translation type="unfinished"/>
+        <translation>Změna hesla není povolena.</translation>
     </message>
 </context>
 <context>
@@ -141,13 +143,15 @@ Heslo zadané do obou polí (heslo a nové zadání hesla) se musí shodovat!</t
     </message>
     <message>
         <source>Log in before changing password.</source>
-        <translation type="unfinished"/>
+        <translation>Přihlašte se před změnou hesla.</translation>
     </message>
     <message>
         <source>Password change failed.
 
 Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Změna hesla se nepodařila.
+
+Chyba: %1</translation>
     </message>
 </context>
 <context>
@@ -229,11 +233,11 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>E-mail:</source>
-        <translation type="unfinished"/>
+        <translation>E-mail:</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Some servers require your e-mail address during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -404,133 +408,133 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Require data transfer proxy:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Log in before changing password.</source>
-        <translation type="unfinished"/>
+        <translation>Přihlašte se před změnou hesla.</translation>
     </message>
 </context>
 <context>
     <name>JabberErrorService</name>
     <message>
         <source>Socket error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zásuvky (socket): %1</translation>
     </message>
     <message>
         <source>Server did not respond for PING message</source>
-        <translation type="unfinished"/>
+        <translation>Server neodpověděl na zaklepání (odeslání průzkumné zprávy - pinknutí: PING)</translation>
     </message>
     <message>
         <source>Unknown error: %1/%2</source>
-        <translation type="unfinished"/>
+        <translation>Neznámá chyba: %1/%2</translation>
     </message>
     <message>
         <source>Bad request</source>
-        <translation type="unfinished"/>
+        <translation>Špatný požadavek</translation>
     </message>
     <message>
         <source>Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Střet</translation>
     </message>
     <message>
         <source>Feature not implemented</source>
-        <translation type="unfinished"/>
+        <translation>Vlastnost neprovedena</translation>
     </message>
     <message>
         <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Zakázáno</translation>
     </message>
     <message>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>Hotovo</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"/>
+        <translation>Vnitřní chyba serveru</translation>
     </message>
     <message>
         <source>Item not found</source>
-        <translation type="unfinished"/>
+        <translation>Položka nenalezena</translation>
     </message>
     <message>
         <source>Jid malformed</source>
-        <translation type="unfinished"/>
+        <translation>JID poškozeno</translation>
     </message>
     <message>
         <source>Not acceptable</source>
-        <translation type="unfinished"/>
+        <translation>Nepřijatelné</translation>
     </message>
     <message>
         <source>Not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Nedovoleno</translation>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished"/>
+        <translation>Neoprávněno</translation>
     </message>
     <message>
         <source>Payment required</source>
-        <translation type="unfinished"/>
+        <translation>Požadována platba</translation>
     </message>
     <message>
         <source>Recipient unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Příjemce nedostupný</translation>
     </message>
     <message>
         <source>Redirect</source>
-        <translation type="unfinished"/>
+        <translation>Přesměrování</translation>
     </message>
     <message>
         <source>Registration required</source>
-        <translation type="unfinished"/>
+        <translation>Registrace požadována</translation>
     </message>
     <message>
         <source>Remote server not found</source>
-        <translation type="unfinished"/>
+        <translation>Vzdálený server nenalezen</translation>
     </message>
     <message>
         <source>Remove server timeout</source>
-        <translation type="unfinished"/>
+        <translation>Časové omezení vzdáleného serveru</translation>
     </message>
     <message>
         <source>Resource constraint</source>
-        <translation type="unfinished"/>
+        <translation>Omezení zdroje</translation>
     </message>
     <message>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Služba nedostupná</translation>
     </message>
     <message>
         <source>Subscription required</source>
-        <translation type="unfinished"/>
+        <translation>Přihlášení požadováno</translation>
     </message>
     <message>
         <source>Undefined condition</source>
-        <translation type="unfinished"/>
+        <translation>Nestanovená podmínka</translation>
     </message>
     <message>
         <source>Unexpected request</source>
-        <translation type="unfinished"/>
+        <translation>Neočekávaný požadavek</translation>
     </message>
 </context>
 <context>
     <name>JabberOutgoingFileTransferHandler</name>
     <message>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Zrušeno</translation>
     </message>
     <message>
         <source>File is corrupted</source>
-        <translation type="unfinished"/>
+        <translation>Soubor je poškozen</translation>
     </message>
     <message>
         <source>Protocol error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba protokolu</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Neznámá chyba</translation>
     </message>
 </context>
 <context>
@@ -568,7 +572,7 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     <name>JabberProtocol</name>
     <message>
         <source>Another client connected on the same resource.</source>
-        <translation type="unfinished"/>
+        <translation>Další klient připojený ke stejnému zdroji.</translation>
     </message>
 </context>
 <context>
@@ -582,56 +586,58 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     <name>JabberRegisterAccount</name>
     <message>
         <source>Internal error: invalid state</source>
-        <translation type="unfinished"/>
+        <translation>Vnitřní chyba: Neplatný stav</translation>
     </message>
     <message>
         <source>Connection established.</source>
-        <translation type="unfinished"/>
+        <translation>Spojení zřízeno.</translation>
     </message>
     <message>
         <source>Negotiating registration parameters.</source>
-        <translation type="unfinished"/>
+        <translation>Sjednávají se parametry registrace.</translation>
     </message>
     <message>
         <source>User with this username is already registered.</source>
-        <translation type="unfinished"/>
+        <translation>Uživatel s tímto jménem je již zaregistrován.</translation>
     </message>
     <message>
         <source>Registration parameters received.</source>
-        <translation type="unfinished"/>
+        <translation>Přijaty parametry registrace.</translation>
     </message>
     <message>
         <source>Registration at this server requires XMPP Data Forms support. Kadu currently does not support XMPP Data Forms.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1
 
 Server message: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+
+Zpráva od serveru: %2</translation>
     </message>
     <message>
         <source>Unknown error: received stanza type %1</source>
-        <translation type="unfinished"/>
+        <translation>Neznáma chyba: Přijat typ sloky %1</translation>
     </message>
 </context>
 <context>
     <name>JabberStreamIncomingFileTransferHandler</name>
     <message>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Zrušeno</translation>
     </message>
     <message>
         <source>File is corrupted</source>
-        <translation type="unfinished"/>
+        <translation>Soubor je poškozen</translation>
     </message>
     <message>
         <source>Protocol error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba protokolu</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Neznámá chyba</translation>
     </message>
 </context>
 <context>
@@ -652,11 +658,13 @@ Nyní, prosím, přidejte své přátele do seznamu kamarádů.</translation>
         <source>Registration failed.
 
 Server message: %1</source>
-        <translation type="unfinished"/>
+        <translation>Registrace se nezdařila.
+
+Zpráva od serveru: %1</translation>
     </message>
     <message>
         <source>Connecting with server.</source>
-        <translation type="unfinished"/>
+        <translation>Spojuje se se serverem.</translation>
     </message>
 </context>
 <context>
@@ -670,7 +678,7 @@ Server message: %1</source>
     <name>XmlConsole</name>
     <message>
         <source>XML Console - %1</source>
-        <translation type="unfinished"/>
+        <translation>Konzole XML - %1</translation>
     </message>
 </context>
 </TS>

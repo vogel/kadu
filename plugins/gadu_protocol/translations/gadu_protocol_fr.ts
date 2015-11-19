@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -327,22 +329,22 @@ Are you sure to allow them to know you are available?</source>
     <name>GaduFileTransferService</name>
     <message>
         <source>Connect before sending files.</source>
-        <translation type="unfinished"/>
+        <translation>Se connecter avant d&apos;envoyer des fichiers.</translation>
     </message>
     <message>
         <source>Enable SSL in account configuration and reconnect before sending files.</source>
-        <translation type="unfinished"/>
+        <translation>Activer SSL dans la configuration des comptes et se reconnecter avant d&apos;envoyer des fichiers.</translation>
     </message>
     <message>
         <source>Unable to login to GG Drive. Reconnect before sending files.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter au GG drive. Se reconnecter avant d&apos;envoyer des fichiers.</translation>
     </message>
 </context>
 <context>
     <name>GaduOutgoingFileTransferHandler</name>
     <message>
         <source>Valid GG Drive ticket not available</source>
-        <translation type="unfinished"/>
+        <translation>Le ticket de validation du GG drive n&apos;est pas disponible.</translation>
     </message>
 </context>
 <context>
@@ -421,14 +423,14 @@ Are you sure to allow them to know you are available?</source>
     <name>GaduSendGiftAction</name>
     <message>
         <source>Send Gift...</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer Surprise...</translation>
     </message>
 </context>
 <context>
     <name>GaduUrlIncomingFileTransferHandler</name>
     <message>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur réseau: %1</translation>
     </message>
 </context>
 </TS>

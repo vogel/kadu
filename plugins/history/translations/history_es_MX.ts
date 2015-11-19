@@ -1,295 +1,297 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversación</translation>
     </message>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historial</translation>
     </message>
     <message>
         <source>Chats History</source>
-        <translation type="unfinished"/>
+        <translation>Historial de Conversaciones</translation>
     </message>
     <message>
         <source>Save messages in history</source>
-        <translation type="unfinished"/>
+        <translation>Guardar mensajes en el historial</translation>
     </message>
     <message>
         <source>Save chats with anonymous users</source>
-        <translation type="unfinished"/>
+        <translation>Guardar conversaciones con usuarios anónimos</translation>
     </message>
     <message>
         <source>Status Changes</source>
-        <translation type="unfinished"/>
+        <translation>Cambios de estados</translation>
     </message>
     <message>
         <source>Save status changes</source>
-        <translation type="unfinished"/>
+        <translation>Guardar cambios de estados</translation>
     </message>
     <message>
         <source>Save status changes in history</source>
-        <translation type="unfinished"/>
+        <translation>Guardar los cambios de estados en el historial</translation>
     </message>
     <message>
         <source>Save status only with description</source>
-        <translation type="unfinished"/>
+        <translation>Guardar estado sólo con descripción</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Accesos rápidos</translation>
     </message>
     <message>
         <source>View history</source>
-        <translation type="unfinished"/>
+        <translation>Ver historial</translation>
     </message>
     <message>
         <source>Save chats in history</source>
-        <translation type="unfinished"/>
+        <translation>Guardar conversaciones en historial</translation>
     </message>
     <message>
         <source>History in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Historial en la ventana de conversación</translation>
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mensajes del historial desde</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Elegir el período de tiempo en el que los mensajes pueden ser citados en la ventana de conversación</translation>
     </message>
     <message>
         <source>yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Ayer</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation type="unfinished"/>
+        <translation>La semana pasada</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation type="unfinished"/>
+        <translation>El mes pasado</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"/>
+        <translation>Limitar el numero de mensajes del historial</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportamiento</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"/>
+        <translation>Ventana de conversación</translation>
     </message>
 </context>
 <context>
     <name>BuddyHistoryDeleteHandler</name>
     <message>
         <source>Chat history</source>
-        <translation type="unfinished"/>
+        <translation>Historial de conversación</translation>
     </message>
 </context>
 <context>
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Borrar Historial de Conversación</translation>
     </message>
 </context>
 <context>
     <name>History</name>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"/>
+        <translation>Borrar Historial</translation>
     </message>
 </context>
 <context>
     <name>HistoryBuddyConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historial</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Guardar historial</translation>
     </message>
 </context>
 <context>
     <name>HistoryChatConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historial</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Guardar historial</translation>
     </message>
 </context>
 <context>
     <name>HistoryMessagesTab</name>
     <message>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Eliminar entradas</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filtro</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation type="unfinished"/>
+        <translation>¿Quiere eliminar el historial?</translation>
     </message>
     <message>
         <source>Delete history</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar historial</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
     <name>HistoryQueryResultsModel</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversación</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Longitud</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Fecha</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"/>
+        <translation>Título</translation>
     </message>
 </context>
 <context>
     <name>HistoryWindow</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Historial</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Buscar</translation>
     </message>
     <message>
         <source>&amp;Clear Status History</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Borrar Historial de Estado</translation>
     </message>
     <message>
         <source>&amp;Clear SMS History</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Borrar Historial de Mensajes de Texto</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"/>
+        <translation>Conversaciones</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Estados</translation>
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"/>
+        <translation>SMS</translation>
     </message>
 </context>
 <context>
     <name>SearchTab</name>
     <message>
         <source>Search for:</source>
-        <translation type="unfinished"/>
+        <translation>Buscar:</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"/>
+        <translation>Conversaciones</translation>
     </message>
     <message>
         <source> - All chats - </source>
-        <translation type="unfinished"/>
+        <translation> - Todas las conversaciones - </translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Estados</translation>
     </message>
     <message>
         <source> - All buddies - </source>
-        <translation type="unfinished"/>
+        <translation> - Todos los compañeros - </translation>
     </message>
     <message>
         <source>Smses</source>
-        <translation type="unfinished"/>
+        <translation>Mensajes de Texto</translation>
     </message>
     <message>
         <source> - All recipients - </source>
-        <translation type="unfinished"/>
+        <translation> - Todos los destinatarios - </translation>
     </message>
     <message>
         <source>By date</source>
-        <translation type="unfinished"/>
+        <translation>Por fecha</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"/>
+        <translation>a</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Buscar</translation>
     </message>
     <message>
         <source>Found</source>
-        <translation type="unfinished"/>
+        <translation>Encontrado</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversación</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Contacto</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"/>
+        <translation>Destinatario</translation>
     </message>
 </context>
 <context>
     <name>ShowHistoryActionDescription</name>
     <message>
         <source>View Chat History</source>
-        <translation type="unfinished"/>
+        <translation>Ver el Historial de Conversación</translation>
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar los últimos %1 mensajes</translation>
     </message>
     <message>
         <source>Show messages since yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mensajes desde ayer</translation>
     </message>
     <message>
         <source>Show messages from last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mensajes de los últimos 7 días</translation>
     </message>
     <message>
         <source>Show messages from last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mensajes de los últimos 30 días</translation>
     </message>
     <message>
         <source>Show whole history</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar todo el historial</translation>
     </message>
 </context>
 </TS>

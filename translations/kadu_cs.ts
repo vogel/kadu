@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -570,7 +572,7 @@
         <translation>Změna stavu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Tato volba nahradí nástrojové rady změnami změnami ve stavu kamarádů
 ihned po zřízení spojení se serverem</translation>
@@ -605,11 +607,19 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation>
+            <numerusform>%n minuta</numerusform>
+            <numerusform>%n minuty</numerusform>
+            <numerusform>%n minut</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
     </message>
     <message>
         <source>Send message</source>
@@ -1159,7 +1169,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Select avatar file</source>
-        <translation>Vybrat soubor pro zosobnění</translation>
+        <translation>Vybrat soubor s obrazem zastupujícím uživatele</translation>
     </message>
     <message>
         <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
@@ -2021,7 +2031,7 @@ Chcete přesto tento obrázek přijmout?</translation>
     <name>CollapseAction</name>
     <message>
         <source>Collapse</source>
-        <translation type="unfinished"/>
+        <translation>Složit</translation>
     </message>
 </context>
 <context>
@@ -2145,7 +2155,7 @@ Chcete přesto tento obrázek přijmout?</translation>
     <name>ExpandAction</name>
     <message>
         <source>Expand</source>
-        <translation type="unfinished"/>
+        <translation>Rozbalit</translation>
     </message>
 </context>
 <context>
@@ -2340,7 +2350,7 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
     <message>
         <source>Edit group %1</source>
-        <translation type="unfinished"/>
+        <translation>Upravit skupinu %1</translation>
     </message>
 </context>
 <context>
@@ -2922,17 +2932,6 @@ poradu</translation>
     </message>
 </context>
 <context>
-    <name>NotificationManager</name>
-    <message>
-        <source>Unable to find notifier for %1 event</source>
-        <translation>Nelze najít oznamovatele pro %1 událost</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-</context>
-<context>
     <name>NotificationService</name>
     <message>
         <source>Notify About Buddy</source>
@@ -3056,11 +3055,11 @@ poradu</translation>
     <name>PluginErrorDialog</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Try to load this plugin on next Kadu run</source>
-        <translation type="unfinished"/>
+        <translation>Pokusit se o nahrání tohoto přídavného modulu při příštím spuštění Kadu</translation>
     </message>
 </context>
 <context>
@@ -3114,7 +3113,8 @@ poradu</translation>
     <message>
         <source>Cannot load %1 plugin library:
 %2</source>
-        <translation type="unfinished"/>
+        <translation>Nelze nahrát %1 knihovnu přídavného modulu:
+%2</translation>
     </message>
 </context>
 <context>
@@ -3165,11 +3165,12 @@ poradu</translation>
     <message>
         <source>Cannot find required object in plugin %1.
 Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation type="unfinished"/>
+        <translation>Nelze najít požadovaný předmět v přídavném modulu %1.
+Možná to není přídavný modul slučitelný s Kadu.</translation>
     </message>
     <message>
         <source>Plugin initialization routine for %1 failed.</source>
-        <translation type="unfinished"/>
+        <translation>Obslužná procedura pro inicializaci přídavného modulu %1 selhala.</translation>
     </message>
 </context>
 <context>
@@ -3591,14 +3592,14 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
     <message>
         <source>Send File...</source>
-        <translation type="unfinished"/>
+        <translation>Poslat soubor...</translation>
     </message>
 </context>
 <context>
     <name>ShowFileTransferWindowAction</name>
     <message>
         <source>View File Transfers</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazit přenosy souborů</translation>
     </message>
 </context>
 <context>
@@ -3846,7 +3847,7 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <name>StringListDialog</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>

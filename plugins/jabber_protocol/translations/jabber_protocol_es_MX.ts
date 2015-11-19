@@ -1,633 +1,643 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>External address</source>
-        <translation type="unfinished"/>
+        <translation>Dirección externa</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avanzado</translation>
     </message>
     <message>
         <source>XMPP/Jabber</source>
-        <translation type="unfinished"/>
+        <translation>XMPP/Jabber</translation>
     </message>
     <message>
         <source>Port for data transfers</source>
-        <translation type="unfinished"/>
+        <translation>Puerto para la transferencia de datos</translation>
     </message>
 </context>
 <context>
-    <name>FacebookProtocolFactory</name>
+    <name>FacebookDepreceatedMessage</name>
     <message>
-        <source>Facebook ID:</source>
-        <translation type="unfinished"/>
+        <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</source>
-        <translation type="unfinished"/>
+        <source>Kadu - Facebook</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>GTalkProtocolFactory</name>
     <message>
         <source>Gmail/Google Talk ID:</source>
-        <translation type="unfinished"/>
+        <translation>ID de Gmail/Google Talk:</translation>
     </message>
 </context>
 <context>
     <name>JabberActions</name>
     <message>
         <source>Resend Subscription</source>
-        <translation type="unfinished"/>
+        <translation>Reenviar Suscripción</translation>
     </message>
     <message>
         <source>Remove Subscription</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar Suscripción</translation>
     </message>
     <message>
         <source>Ask for Subscription</source>
-        <translation type="unfinished"/>
+        <translation>Solicitar Suscripción</translation>
     </message>
 </context>
 <context>
     <name>JabberAddAccountWidget</name>
     <message>
         <source>&lt;a href=&apos;#&apos;&gt;What is my username?&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&apos;#&apos;&gt;¿Cuál es mi nombre de usuario?&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <source>Remember Password</source>
-        <translation type="unfinished"/>
+        <translation>Recordar contraseña</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"/>
+        <translation>Identidad de Cuenta</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Seleccionar o introducir la identidad que se asociará con esta cuenta.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Agregar cuenta</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
     <name>JabberChangePassword</name>
     <message>
         <source>Current connection is not safe for password change. Use encrypted connection or change password on provider&apos;s site.</source>
-        <translation type="unfinished"/>
+        <translation>La actual conexión no es segura para cambiar la contraseña. Use conexión cifrada o cambie la contraseña en el sitio del proveedor.</translation>
     </message>
     <message>
         <source>Password change is not allowed.</source>
-        <translation type="unfinished"/>
+        <translation>El cambio de contraseña no está permitido.</translation>
     </message>
 </context>
 <context>
     <name>JabberChangePasswordWindow</name>
     <message>
         <source>Change Password</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar contraseña</translation>
     </message>
     <message>
         <source>New password</source>
-        <translation type="unfinished"/>
+        <translation>Nueva contraseña</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter new password for your XMPP/Jabber account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Ingrese la nueva contraseña para su cuenta XMPP/Jabber.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Retype new password</source>
-        <translation type="unfinished"/>
+        <translation>Volver a escribir la nueva contraseña</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Changing password was successful.</source>
-        <translation type="unfinished"/>
+        <translation>El cambio de contraseña tuvo éxito.</translation>
     </message>
     <message>
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"/>
+        <translation>Datos no válidos introducidos en los campos requeridos.
+
+¡La contraseña ingresada en ambos campos (&quot;Contraseña&quot; y &quot;Volver a escribir la contraseña&quot;) deben ser la misma!</translation>
     </message>
     <message>
         <source>Log in before changing password.</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar sesión antes de cambiar contraseña.</translation>
     </message>
     <message>
         <source>Password change failed.
 
 Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>El cambio de contraseña falló.
+
+Error: %1</translation>
     </message>
 </context>
 <context>
     <name>JabberContactPersonalInfoWidget</name>
     <message>
         <source>Full Name</source>
-        <translation type="unfinished"/>
+        <translation>Nombre Completo</translation>
     </message>
     <message>
         <source>Family Name</source>
-        <translation type="unfinished"/>
+        <translation>Apellido</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"/>
+        <translation>Apodo</translation>
     </message>
     <message>
         <source>Birthdate</source>
-        <translation type="unfinished"/>
+        <translation>Fecha de nacimiento</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Ciudad</translation>
     </message>
     <message>
         <source>E-Mail</source>
-        <translation type="unfinished"/>
+        <translation>Correo electrónico</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished"/>
+        <translation>Página web</translation>
     </message>
 </context>
 <context>
     <name>JabberCreateAccountWidget</name>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <source>Retype Password</source>
-        <translation type="unfinished"/>
+        <translation>Volver a escribir la contraseña</translation>
     </message>
     <message>
         <source>Remember password</source>
-        <translation type="unfinished"/>
+        <translation>Recordar contraseña</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"/>
+        <translation>Identidad de Cuenta</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Seleccionar o introducir la identidad que se asociará con esta cuenta.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Register Account</source>
-        <translation type="unfinished"/>
+        <translation>Registrar Cuenta</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"/>
+        <translation>Datos no válidos introducidos en los campos requeridos.
+
+¡La contraseña ingresada en ambos campos (&quot;Nueva contraseña&quot; y &quot;Volver a escribir la contraseña&quot;) deben ser la misma!</translation>
     </message>
     <message>
         <source>E-mail:</source>
-        <translation type="unfinished"/>
+        <translation>Correo electrónico:</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Some servers require your e-mail address during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Algunos servidores requieren su dirección de correo eletrónico durante el registro.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
     <name>JabberEditAccountWidget</name>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Delete account</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar cuenta</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <source>Remember password</source>
-        <translation type="unfinished"/>
+        <translation>Recordar contraseña</translation>
     </message>
     <message>
         <source>Change your password</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar su contraseña</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"/>
+        <translation>Identidad de Cuenta</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Seleccionar o introducir la identidad que se asociará con esta cuenta.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>Personal Information</source>
-        <translation type="unfinished"/>
+        <translation>Información Personal</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"/>
+        <translation>Conexión</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Puerto</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Nunca</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation type="unfinished"/>
+        <translation>Siempre</translation>
     </message>
     <message>
         <source>When available</source>
-        <translation type="unfinished"/>
+        <translation>Cuando esté disponible</translation>
     </message>
     <message>
         <source>Allow plaintext authentication</source>
-        <translation type="unfinished"/>
+        <translation>Permitir autenticación por texto simple</translation>
     </message>
     <message>
         <source>Over encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Sobre conexión cifrada</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opciones</translation>
     </message>
     <message>
         <source>Resource</source>
-        <translation type="unfinished"/>
+        <translation>Recurso</translation>
     </message>
     <message>
         <source>Priority</source>
-        <translation type="unfinished"/>
+        <translation>Prioridad</translation>
     </message>
     <message>
         <source>Data transfer proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy de transferencia de datos</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Legacy SSL is only available in combination with manual host/port.</source>
-        <translation type="unfinished"/>
+        <translation>SSL heredado está sólo disponible en combinación con un servidor/puerto manual.</translation>
     </message>
     <message>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar cuenta</translation>
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuración de proxy</translation>
     </message>
     <message>
         <source>Publish system information</source>
-        <translation type="unfinished"/>
+        <translation>Publicar información del sistema</translation>
     </message>
     <message>
         <source>XMPP Server</source>
-        <translation type="unfinished"/>
+        <translation>Servidor XMPP</translation>
     </message>
     <message>
         <source>Use custom server address/port</source>
-        <translation type="unfinished"/>
+        <translation>Usar dirección/puerto personalizado del servidor</translation>
     </message>
     <message>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Dirección de servidor</translation>
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Usar conexión cifrada</translation>
     </message>
     <message>
         <source>Only in older version</source>
-        <translation type="unfinished"/>
+        <translation>Sólo en versión anterior</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Red</translation>
     </message>
     <message>
         <source>Use computer name as a resource</source>
-        <translation type="unfinished"/>
+        <translation>Usar nombre de computadora como un recurso</translation>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar eventos de composición</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Su interlocutor será notificado cuando usted está escribiendo un mensaje, antes de ser enviado. Y viceversa.</translation>
     </message>
     <message>
         <source>Enable chat activity events</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar eventos de actividad de conversación</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you suspend or end conversation. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Su interlocutor será notificado cuando usted suspenda o termine la conversación. Y viceversa.</translation>
     </message>
     <message>
         <source>Others can see your system name/version</source>
-        <translation type="unfinished"/>
+        <translation>Otros pueden ver el nombre/versión de su sistema</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar Eliminación de la Cuenta</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"/>
+        <translation>¿Está seguro de que desea eliminar la cuenta %1 (%2)?</translation>
     </message>
     <message>
         <source>Require data transfer proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Requiere proxy de transferencia de datos:</translation>
     </message>
     <message>
         <source>Log in before changing password.</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar sesión antes de cambiar contraseña.</translation>
     </message>
 </context>
 <context>
     <name>JabberErrorService</name>
     <message>
         <source>Socket error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error de socket: %1</translation>
     </message>
     <message>
         <source>Server did not respond for PING message</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no respondió al mensaje PING</translation>
     </message>
     <message>
         <source>Unknown error: %1/%2</source>
-        <translation type="unfinished"/>
+        <translation>Error desconocido: %1/%2</translation>
     </message>
     <message>
         <source>Bad request</source>
-        <translation type="unfinished"/>
+        <translation>Solicitud incorrecta</translation>
     </message>
     <message>
         <source>Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Conflicto</translation>
     </message>
     <message>
         <source>Feature not implemented</source>
-        <translation type="unfinished"/>
+        <translation>Característica no implementada</translation>
     </message>
     <message>
         <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Prohibido</translation>
     </message>
     <message>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>No disponible</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"/>
+        <translation>Error interno del servidor</translation>
     </message>
     <message>
         <source>Item not found</source>
-        <translation type="unfinished"/>
+        <translation>Elemento no encontrado</translation>
     </message>
     <message>
         <source>Jid malformed</source>
-        <translation type="unfinished"/>
+        <translation>JID malformado</translation>
     </message>
     <message>
         <source>Not acceptable</source>
-        <translation type="unfinished"/>
+        <translation>No aceptable</translation>
     </message>
     <message>
         <source>Not allowed</source>
-        <translation type="unfinished"/>
+        <translation>No permitido</translation>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished"/>
+        <translation>No autorizado</translation>
     </message>
     <message>
         <source>Payment required</source>
-        <translation type="unfinished"/>
+        <translation>Pago requerido</translation>
     </message>
     <message>
         <source>Recipient unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Destinatario no disponible</translation>
     </message>
     <message>
         <source>Redirect</source>
-        <translation type="unfinished"/>
+        <translation>Redirigir</translation>
     </message>
     <message>
         <source>Registration required</source>
-        <translation type="unfinished"/>
+        <translation>Registro requerido</translation>
     </message>
     <message>
         <source>Remote server not found</source>
-        <translation type="unfinished"/>
+        <translation>No se encuentra el servidor remoto</translation>
     </message>
     <message>
         <source>Remove server timeout</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar tiempo de espera del servidor</translation>
     </message>
     <message>
         <source>Resource constraint</source>
-        <translation type="unfinished"/>
+        <translation>Restricción de recursos</translation>
     </message>
     <message>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Servicio no disponible</translation>
     </message>
     <message>
         <source>Subscription required</source>
-        <translation type="unfinished"/>
+        <translation>Suscripción requerida</translation>
     </message>
     <message>
         <source>Undefined condition</source>
-        <translation type="unfinished"/>
+        <translation>Condición indefinida</translation>
     </message>
     <message>
         <source>Unexpected request</source>
-        <translation type="unfinished"/>
+        <translation>Petición imprevista</translation>
     </message>
 </context>
 <context>
     <name>JabberOutgoingFileTransferHandler</name>
     <message>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Abortado</translation>
     </message>
     <message>
         <source>File is corrupted</source>
-        <translation type="unfinished"/>
+        <translation>El archivo está dañado</translation>
     </message>
     <message>
         <source>Protocol error</source>
-        <translation type="unfinished"/>
+        <translation>Error de Protocolo</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Error desconocido</translation>
     </message>
 </context>
 <context>
     <name>JabberPersonalInfoWidget</name>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"/>
+        <translation>Nombre completo</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"/>
+        <translation>Apodo</translation>
     </message>
     <message>
         <source>Family name</source>
-        <translation type="unfinished"/>
+        <translation>Apellido</translation>
     </message>
     <message>
         <source>Birth year</source>
-        <translation type="unfinished"/>
+        <translation>Año de nacimiento</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Ciudad</translation>
     </message>
     <message>
         <source>E-Mail</source>
-        <translation type="unfinished"/>
+        <translation>Correo electrónico</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished"/>
+        <translation>Página web</translation>
     </message>
 </context>
 <context>
     <name>JabberProtocol</name>
     <message>
         <source>Another client connected on the same resource.</source>
-        <translation type="unfinished"/>
+        <translation>Otro cliente conectado en el mismo recurso.</translation>
     </message>
 </context>
 <context>
     <name>JabberProtocolFactory</name>
     <message>
         <source>User JID:</source>
-        <translation type="unfinished"/>
+        <translation>JID de Usuario:</translation>
     </message>
 </context>
 <context>
     <name>JabberRegisterAccount</name>
     <message>
         <source>Internal error: invalid state</source>
-        <translation type="unfinished"/>
+        <translation>Error interno: estado no válido</translation>
     </message>
     <message>
         <source>Connection established.</source>
-        <translation type="unfinished"/>
+        <translation>Conexión establecida.</translation>
     </message>
     <message>
         <source>Negotiating registration parameters.</source>
-        <translation type="unfinished"/>
+        <translation>Negociación de parámetros de registro.</translation>
     </message>
     <message>
         <source>User with this username is already registered.</source>
-        <translation type="unfinished"/>
+        <translation>El usuario con este nombre de usuario ya está registrado.</translation>
     </message>
     <message>
         <source>Registration parameters received.</source>
-        <translation type="unfinished"/>
+        <translation>Parámetros de registro recibidos.</translation>
     </message>
     <message>
         <source>Registration at this server requires XMPP Data Forms support. Kadu currently does not support XMPP Data Forms.</source>
-        <translation type="unfinished"/>
+        <translation>El registro en este servidor requiere soporte de Formas de Datos XMPP. Kadu actualmente no soporta Formas de Datos XMPP.</translation>
     </message>
     <message>
         <source>%1
 
 Server message: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+
+Mensaje de servidor: %2</translation>
     </message>
     <message>
         <source>Unknown error: received stanza type %1</source>
-        <translation type="unfinished"/>
+        <translation>Error desconocido: tipo de stanza recibido %1</translation>
     </message>
 </context>
 <context>
     <name>JabberStreamIncomingFileTransferHandler</name>
     <message>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Abortado</translation>
     </message>
     <message>
         <source>File is corrupted</source>
-        <translation type="unfinished"/>
+        <translation>El archivo está dañado</translation>
     </message>
     <message>
         <source>Protocol error</source>
-        <translation type="unfinished"/>
+        <translation>Error de Protocolo</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Error desconocido</translation>
     </message>
 </context>
 <context>
@@ -636,35 +646,39 @@ Server message: %2</source>
         <source>Registration was successful. Your new XMPP username is %1.
 Store it in a safe place along with the password.
 Now please add your friends to the buddy list.</source>
-        <translation type="unfinished"/>
+        <translation>El registro fue exitoso. Su nuevo nombre de usuario XMPP es %1.
+Guárdelo en un lugar seguro junto con la contraseña.
+Ahora, por favor agregue sus amigos a la lista de compañeros.</translation>
     </message>
     <message>
         <source>Registering new XMPP account</source>
-        <translation type="unfinished"/>
+        <translation>Registro de nueva cuenta XMPP</translation>
     </message>
     <message>
         <source>Registration failed.
 
 Server message: %1</source>
-        <translation type="unfinished"/>
+        <translation>Registro fallido.
+
+Mensaje de servidor: %1</translation>
     </message>
     <message>
         <source>Connecting with server.</source>
-        <translation type="unfinished"/>
+        <translation>Conectando con el servidor.</translation>
     </message>
 </context>
 <context>
     <name>ShowXmlConsoleActionDescription</name>
     <message>
         <source>Show XML Console</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar la consola de XML</translation>
     </message>
 </context>
 <context>
     <name>XmlConsole</name>
     <message>
         <source>XML Console - %1</source>
-        <translation type="unfinished"/>
+        <translation>Consola de XML - %1</translation>
     </message>
 </context>
 </TS>

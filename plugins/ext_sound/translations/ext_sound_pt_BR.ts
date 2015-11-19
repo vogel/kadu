@@ -1,21 +1,23 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Notificações</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Som</translation>
     </message>
     <message>
         <source>Sound player</source>
-        <translation type="unfinished"/>
+        <translation>Reprodutor de audio</translation>
     </message>
     <message>
         <source>Player</source>
-        <translation type="unfinished"/>
+        <translation>Reprodutor</translation>
     </message>
 </context>
 </TS>

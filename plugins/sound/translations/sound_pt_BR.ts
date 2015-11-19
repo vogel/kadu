@@ -1,73 +1,75 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Som</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Notificações</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Geral</translation>
     </message>
     <message>
         <source>Sound theme</source>
-        <translation type="unfinished"/>
+        <translation>Tema de sons</translation>
     </message>
     <message>
         <source>Sound paths</source>
-        <translation type="unfinished"/>
+        <translation>Caminhos de sons</translation>
     </message>
     <message>
         <source>Test sound playing</source>
-        <translation type="unfinished"/>
+        <translation>Testar reprodução de sons</translation>
     </message>
     <message>
         <source>Play a sound</source>
-        <translation type="unfinished"/>
+        <translation>Reproduzir um som</translation>
     </message>
     <message>
         <source>Enable sound notifications</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar notificações sonoras</translation>
     </message>
 </context>
 <context>
     <name>SoundBuddyConfigurationWidget</name>
     <message>
         <source>Use custom sound</source>
-        <translation type="unfinished"/>
+        <translation>Usar sons padrão</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Som</translation>
     </message>
 </context>
 <context>
     <name>SoundChatConfigurationWidget</name>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Som</translation>
     </message>
     <message>
         <source>Use custom sound</source>
-        <translation type="unfinished"/>
+        <translation>Usar sons padrão</translation>
     </message>
 </context>
 <context>
     <name>SoundConfigurationUiHandler</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Padrão</translation>
     </message>
 </context>
 <context>
     <name>SoundMuteAction</name>
     <message>
         <source>Play Sounds</source>
-        <translation type="unfinished"/>
+        <translation>Reproduzir sons</translation>
     </message>
 </context>
 </TS>

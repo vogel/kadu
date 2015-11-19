@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="tr">
 <context>
     <name>HistorySqlStorage</name>
     <message>
@@ -17,11 +19,11 @@
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>It seems your Qt library does not provide support for selected database. Please install Qt with %1 plugin.</source>
-        <translation type="unfinished"/>
+        <translation>Qt kütüphanesi seçtiğiniz veritabanı tarafından desteklenmediği görünüyor. Lütfen Qt ile %1 eklentisini kurun.</translation>
     </message>
 </context>
 <context>

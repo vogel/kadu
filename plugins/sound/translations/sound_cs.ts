@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -38,22 +40,22 @@
     <name>SoundBuddyConfigurationWidget</name>
     <message>
         <source>Use custom sound</source>
-        <translation type="unfinished"/>
+        <translation>Použít vlastní zvuk</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Zvuk</translation>
     </message>
 </context>
 <context>
     <name>SoundChatConfigurationWidget</name>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Zvuk</translation>
     </message>
     <message>
         <source>Use custom sound</source>
-        <translation type="unfinished"/>
+        <translation>Použít vlastní zvuk</translation>
     </message>
 </context>
 <context>
@@ -67,7 +69,7 @@
     <name>SoundMuteAction</name>
     <message>
         <source>Play Sounds</source>
-        <translation type="unfinished"/>
+        <translation>Přehrát zvuky</translation>
     </message>
 </context>
 </TS>

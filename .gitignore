@@ -7,3 +7,5 @@ docs
 /.tx/
 /package
 /package-build
+*.qm
+*.log

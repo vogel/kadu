@@ -1,67 +1,69 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversa</translation>
     </message>
     <message>
         <source>Cenzor</source>
-        <translation type="unfinished"/>
+        <translation>Censura</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Geral</translation>
     </message>
     <message>
         <source>Enable cenzor</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar censura</translation>
     </message>
     <message>
         <source>Admonition</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Swearwords</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Exclusions</source>
-        <translation type="unfinished"/>
+        <translation>Exclusões</translation>
     </message>
     <message>
         <source>Message was cenzored</source>
-        <translation type="unfinished"/>
+        <translation>Mensagem foi censurada</translation>
     </message>
 </context>
 <context>
     <name>CenzorNotification</name>
     <message>
         <source>Message was cenzored</source>
-        <translation type="unfinished"/>
+        <translation>Mensagem foi censurada</translation>
     </message>
     <message>
         <source>Your interlocutor used obscene word and became admonished</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cenzor</source>
-        <translation type="unfinished"/>
+        <translation>Censura</translation>
     </message>
 </context>
 <context>
     <name>ListEditWidget</name>
     <message>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Mudar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Apagar</translation>
     </message>
 </context>
 </TS>

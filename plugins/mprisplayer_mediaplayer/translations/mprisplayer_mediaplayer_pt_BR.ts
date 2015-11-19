@@ -1,55 +1,57 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation type="unfinished"/>
+        <translation>MediaPlayer</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Geral</translation>
     </message>
     <message>
         <source>MPRIS Player</source>
-        <translation type="unfinished"/>
+        <translation>MPRIS Player</translation>
     </message>
 </context>
 <context>
     <name>MPRISPlayerConfigurationUiHandler</name>
     <message>
         <source>Select Player:</source>
-        <translation type="unfinished"/>
+        <translation>Selecione o player:</translation>
     </message>
     <message>
         <source>Add Player</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar player</translation>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation type="unfinished"/>
+        <translation>Editar player</translation>
     </message>
     <message>
         <source>Delete Player</source>
-        <translation type="unfinished"/>
+        <translation>Apagar player</translation>
     </message>
 </context>
 <context>
     <name>MPRISPlayerDialog</name>
     <message>
         <source>Add Player</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar player</translation>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation type="unfinished"/>
+        <translation>Editar player</translation>
     </message>
     <message>
         <source>Player:</source>
-        <translation type="unfinished"/>
+        <translation>Player: </translation>
     </message>
     <message>
         <source>Service:</source>
-        <translation type="unfinished"/>
+        <translation>Serviço:</translation>
     </message>
 </context>
 </TS>

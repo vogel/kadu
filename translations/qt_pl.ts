@@ -2918,17 +2918,6 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
-    <name>NotificationManager</name>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to find notifier for %1 event</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>NotificationService</name>
     <message>
         <source>Ignore</source>

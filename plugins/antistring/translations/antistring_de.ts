@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de">
 <context>
     <name>@default</name>
     <message>
@@ -39,7 +41,7 @@
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -47,7 +49,7 @@
     <message>
         <source>     DATA AND TIME      ::   ID   ::    MESSAGE
 </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -81,11 +83,11 @@
     <name>AntistringNotification</name>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">Anti-Schneeball-System</translation>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

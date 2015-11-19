@@ -1,76 +1,78 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"/>
+        <translation>Bandeja</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Geral</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Envelope piscando</translation>
     </message>
     <message>
         <source>Static Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Envelope estático</translation>
     </message>
     <message>
         <source>Animated Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Envelope animado</translation>
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"/>
+        <translation>Inicialização</translation>
     </message>
     <message>
         <source>Start minimized</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar minimizado</translation>
     </message>
     <message>
         <source>Show tooltip over tray icon</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar dicas no ícone da bandeja</translation>
     </message>
     <message>
         <source>Tray icon indicating new message</source>
-        <translation type="unfinished"/>
+        <translation>Ícone da bandeja indicando nova mensagem</translation>
     </message>
 </context>
 <context>
     <name>DockingManager</name>
     <message>
         <source>&amp;Restore</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Recuperar</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Minimizar</translation>
     </message>
     <message>
         <source>&amp;Exit Kadu</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sair do Kadu</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Descrição</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Descrições</translation>
     </message>
     <message>
         <source>Silent mode</source>
-        <translation type="unfinished"/>
+        <translation>Modo silencioso</translation>
     </message>
 </context>
 </TS>

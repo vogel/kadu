@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_VE">
+<context>
+    <name>@default</name>
+    <message>
+        <source>MediaPlayer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPRIS Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MPRISPlayerConfigurationUiHandler</name>
+    <message>
+        <source>Select Player:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MPRISPlayerDialog</name>
+    <message>
+        <source>Add Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Player:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+</TS>

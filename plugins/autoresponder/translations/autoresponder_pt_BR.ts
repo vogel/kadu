@@ -1,59 +1,61 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversa</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opções</translation>
     </message>
     <message>
         <source>Only for the first time</source>
-        <translation type="unfinished"/>
+        <translation>Apenas na primeira vez</translation>
     </message>
     <message>
         <source>Respond to conferences</source>
-        <translation type="unfinished"/>
+        <translation>Atender conferências</translation>
     </message>
     <message>
         <source>Status invisible</source>
-        <translation type="unfinished"/>
+        <translation>Status Invisível</translation>
     </message>
     <message>
         <source>Status busy</source>
-        <translation type="unfinished"/>
+        <translation>Status ocupado</translation>
     </message>
     <message>
         <source>Status available</source>
-        <translation type="unfinished"/>
+        <translation>Status disponível</translation>
     </message>
     <message>
         <source>Auto Responder</source>
-        <translation type="unfinished"/>
+        <translation>Resposta automática</translation>
     </message>
     <message>
         <source>Auto answer text</source>
-        <translation type="unfinished"/>
+        <translation>Texto da resposta automática</translation>
     </message>
     <message>
         <source>Choose Status</source>
-        <translation type="unfinished"/>
+        <translation>Escolher Status</translation>
     </message>
 </context>
 <context>
     <name>AutoResponder</name>
     <message>
         <source>KADU AUTORESPONDER:</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"/>
+        <translation>Eu estou ocupado.</translation>
     </message>
 </context>
 </TS>

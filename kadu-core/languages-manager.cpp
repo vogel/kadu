@@ -40,7 +40,9 @@ void LanguagesManager::loadLanguages()
 		QFile languageFile(languageFileInfo.filePath());
 		if (languageFile.open(QIODevice::ReadOnly))
 		{
-			Languages.insert(languageFileInfo.fileName().left(2), QString::fromUtf8(languageFile.readAll()).trimmed());
+			auto fileName = languageFileInfo.fileName();
+			auto languageCode = fileName.left(fileName.length() - QString{".language"}.length());
+			Languages.insert(languageCode, QString::fromUtf8(languageFile.readAll()).trimmed());
 			languageFile.close();
 		}
 	}

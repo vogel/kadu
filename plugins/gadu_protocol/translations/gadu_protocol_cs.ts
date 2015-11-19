@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -421,7 +423,7 @@ Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translatio
     <name>GaduSendGiftAction</name>
     <message>
         <source>Send Gift...</source>
-        <translation type="unfinished"/>
+        <translation>Poslat dárek...</translation>
     </message>
 </context>
 <context>

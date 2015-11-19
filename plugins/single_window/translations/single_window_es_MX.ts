@@ -1,57 +1,59 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Apariencia</translation>
     </message>
     <message>
         <source>SingleWindow</source>
-        <translation type="unfinished"/>
+        <translation>Ventana Única</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>Roster position</source>
-        <translation type="unfinished"/>
+        <translation>Posición de lista</translation>
     </message>
     <message>
         <source>Choose position of roster in Single Window mode</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar la posición de la lista en el modo de Ventana Única</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>Izquierda</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>Derecha</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Accesos rápidos</translation>
     </message>
     <message>
         <source>Switch to previous tab</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar a la pestaña anterior</translation>
     </message>
     <message>
         <source>Switch to next tab</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar a la siguiente pestaña</translation>
     </message>
     <message>
         <source>Show/hide roster</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar/Ocultar la lista</translation>
     </message>
     <message>
         <source>Switch focus between roster and tabs</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar el enfoque entre la lista y las pestañas</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportamiento</translation>
     </message>
 </context>
 </TS>

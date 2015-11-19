@@ -1,94 +1,96 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversar</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Cifrado</translation>
     </message>
     <message>
         <source>Enable encrytpion after receiving encrypted message</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar cifrado tras recibir mensaje cifrado</translation>
     </message>
 </context>
 <context>
     <name>EncryptioNgSimliteEncryptor</name>
     <message>
         <source>Cannot use public key: not a valid RSA key</source>
-        <translation type="unfinished"/>
+        <translation>No se puede usar la clave pública: no es una clave RSA válida</translation>
     </message>
     <message>
         <source>Cannot use public key: invalid BASE64 encoding</source>
-        <translation type="unfinished"/>
+        <translation>No se puede usar la clave pública: codificación BASE64 no válida</translation>
     </message>
     <message>
         <source>Cannot use public key: invalid PKCS1 certificate</source>
-        <translation type="unfinished"/>
+        <translation>No se puede usar la clave pública: certificado PKCS1 no válido</translation>
     </message>
     <message>
         <source>Cannot use public key: this key does not allow encrypttion</source>
-        <translation type="unfinished"/>
+        <translation>No se puede usar la clave pública: esta clave no permite cifrado</translation>
     </message>
     <message>
         <source>Cannot encrypt: valid public key not available</source>
-        <translation type="unfinished"/>
+        <translation>No se puede cifrar: clave pública válida no disponible</translation>
     </message>
     <message>
         <source>Cannot encrypt: valid blowfish key not available</source>
-        <translation type="unfinished"/>
+        <translation>No se puede cifrar: clave blowfish válida no disponible </translation>
     </message>
     <message>
         <source>Cannot encrypt: unknown error</source>
-        <translation type="unfinished"/>
+        <translation>No se puede cifrar: error desconocido</translation>
     </message>
 </context>
 <context>
     <name>EncryptioNgSimliteProvider</name>
     <message>
         <source>Simlite</source>
-        <translation type="unfinished"/>
+        <translation>Simlite</translation>
     </message>
 </context>
 <context>
     <name>SimliteSendPublicKeyActionDescription</name>
     <message>
         <source>Send My Public Key (Simlite)</source>
-        <translation type="unfinished"/>
+        <translation>Enviar Mi Clave Pública (Simlite)</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Cifrado</translation>
     </message>
     <message>
         <source>Cannot send keys. Check if encryption_ng_simlite plugin is loaded</source>
-        <translation type="unfinished"/>
+        <translation>No se pueden enviar las claves. Comprueba si el plugin encryption_ng_simlite está cargado</translation>
     </message>
     <message>
         <source>Public key dont exist. Do you want to create new one?</source>
-        <translation type="unfinished"/>
+        <translation>La clave pública no existe. ¿Quieres crear una nueva?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"/>
+        <translation>Sí</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"/>
+        <translation>No</translation>
     </message>
     <message>
         <source>Error generating key</source>
-        <translation type="unfinished"/>
+        <translation>Error al generar la clave</translation>
     </message>
     <message>
         <source>No public key available</source>
-        <translation type="unfinished"/>
+        <translation>Clave pública no disponible</translation>
     </message>
 </context>
 </TS>

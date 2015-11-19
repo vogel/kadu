@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="tr">
 <context>
     <name>@default</name>
     <message>
@@ -74,7 +76,7 @@
         <translation>Diğer Ayarlar</translation>
     </message>
     <message>
-        <source>With this option enabled you'll be able to control
+        <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Bu seçeneği aktif ettiğinizde konuşma penceresinde Medya 
@@ -82,7 +84,7 @@ Oynatıcınızı klavye kısayol tuşlarıyla kontrol edebilceksiniz:
 Control+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
-        <source>With this option enabled you'll be able to control
+        <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Bu seçeneği aktif ettiğinizde konuşma penceresinde Medya 

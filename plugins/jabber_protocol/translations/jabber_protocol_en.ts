@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en">
 <context>
     <name>@default</name>
     <message>
@@ -23,14 +25,14 @@
     </message>
 </context>
 <context>
-    <name>FacebookProtocolFactory</name>
+    <name>FacebookDepreceatedMessage</name>
     <message>
-        <source>Facebook ID:</source>
-        <translation>Facebook ID:</translation>
+        <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</source>
-        <translation>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</translation>
+        <source>Kadu - Facebook</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

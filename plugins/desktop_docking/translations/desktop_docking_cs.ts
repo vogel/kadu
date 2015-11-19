@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -27,7 +29,7 @@
     </message>
     <message>
         <source>Enable Move entry in docklet&apos;s menu</source>
-        <translation>Povolit v ukotvovací nabídce položku pro přesun</translation>
+        <translation>Povolit položku pro přesun nabídce ikony</translation>
     </message>
     <message>
         <source>Move</source>

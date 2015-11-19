@@ -1,57 +1,59 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Olhe</translation>
     </message>
     <message>
         <source>SingleWindow</source>
-        <translation type="unfinished"/>
+        <translation>Janela única</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Geral</translation>
     </message>
     <message>
         <source>Roster position</source>
-        <translation type="unfinished"/>
+        <translation>Posição do Roster</translation>
     </message>
     <message>
         <source>Choose position of roster in Single Window mode</source>
-        <translation type="unfinished"/>
+        <translation>Escolha a posição do Roster no modo de Janela Única</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>Esquerda</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>Direita</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Atalhos</translation>
     </message>
     <message>
         <source>Switch to previous tab</source>
-        <translation type="unfinished"/>
+        <translation>Mudar para aba anterior</translation>
     </message>
     <message>
         <source>Switch to next tab</source>
-        <translation type="unfinished"/>
+        <translation>Mudar para próxima aba</translation>
     </message>
     <message>
         <source>Show/hide roster</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar/esconder Roster</translation>
     </message>
     <message>
         <source>Switch focus between roster and tabs</source>
-        <translation type="unfinished"/>
+        <translation>Mudar o foco entre Roster e abas</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportamento</translation>
     </message>
 </context>
 </TS>

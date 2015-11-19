@@ -1,48 +1,50 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation type="unfinished"/>
+        <translation>Reproductor multimedia</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>Media Player Daemon Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuración de MPD</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Servidor</translation>
     </message>
     <message>
         <source>Media Player Daemon server address</source>
-        <translation type="unfinished"/>
+        <translation>Dirección del servidor MPD</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Puerto</translation>
     </message>
     <message>
         <source>Port number MPD is listening on</source>
-        <translation type="unfinished"/>
+        <translation>Número de puerto que MPD está escuchando</translation>
     </message>
     <message>
         <source>Connection timeout (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo de espera de conexión (segundos)</translation>
     </message>
     <message>
         <source>Number of seconds before the connection is terminated</source>
-        <translation type="unfinished"/>
+        <translation>Número de segundos antes que la conexión sea terminada</translation>
     </message>
 </context>
 <context>
     <name>MPDMediaPlayer</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Desconocido</translation>
     </message>
 </context>
 </TS>

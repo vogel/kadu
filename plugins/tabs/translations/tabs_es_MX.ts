@@ -1,167 +1,169 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es_MX">
 <context>
     <name>@default</name>
     <message>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Pestañas</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Apariencia</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Accesos rápidos</translation>
     </message>
     <message>
         <source>Move tab left</source>
-        <translation type="unfinished"/>
+        <translation>Mover pestaña a la izquierda</translation>
     </message>
     <message>
         <source>Move tab right</source>
-        <translation type="unfinished"/>
+        <translation>Mover pestaña a la derecha</translation>
     </message>
     <message>
         <source>Switch to previous tab</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar a la pestaña anterior</translation>
     </message>
     <message>
         <source>Switch to next tab</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar a la siguiente pestaña</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversación</translation>
     </message>
     <message>
         <source>Enable tabs in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar las pestañas en la ventana de conversación</translation>
     </message>
     <message>
         <source>With this option, each chat will be opened in a separate tab in single window</source>
-        <translation type="unfinished"/>
+        <translation>Con esta opción, cada conversación se abrirá en una pestaña separada en una sola ventana</translation>
     </message>
     <message>
         <source>Closing window closes current tab only</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar la ventana cierra sólo la actual pestaña</translation>
     </message>
     <message>
         <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
-        <translation type="unfinished"/>
+        <translation>Cuando esté habilitado, cerrar la ventana de conversación provocara solamente el cierre de la actual pestaña, en lugar de todas las pestañas y la propia ventana</translation>
     </message>
     <message>
         <source>Tab bar position</source>
-        <translation type="unfinished"/>
+        <translation>Posición de la barra de pestañas</translation>
     </message>
     <message>
         <source>Choose where you want the tab bar to be placed in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Elija donde quiere colocar la barra de pestañas en la ventana de conversación</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"/>
+        <translation>Arriba</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished"/>
+        <translation>Abajo</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportamiento</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Volver a abrir la pestaña cerrada</translation>
     </message>
     <message>
         <source>Show &apos;Open chat&apos; button</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar botón de &apos;Abrir conversación&apos;</translation>
     </message>
     <message>
         <source>Show common &apos;Close Tab&apos; button on tab bar</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar botón comun &apos;Cerrar Pestaña&apos; en la barrar de pestaña</translation>
     </message>
     <message>
         <source>Show &apos;Close&apos; button on each tab</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar botón  de &apos;Cerrar&apos; en cada pestaña</translation>
     </message>
 </context>
 <context>
     <name>TabWidget</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation type="unfinished"/>
+        <translation>Nuevo mensaje recibido, ¿cerrar ventana de todos modos?</translation>
     </message>
     <message>
         <source>Recent Chats</source>
-        <translation type="unfinished"/>
+        <translation>Conversaciones recientes</translation>
     </message>
     <message>
         <source>Open Chat with...</source>
-        <translation type="unfinished"/>
+        <translation>Abrir conversación con...</translation>
     </message>
     <message>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Pestañas</translation>
     </message>
     <message>
         <source>Close Tab</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar pestaña</translation>
     </message>
     <message>
         <source>Close window</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar ventana</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
     <name>TabsManager</name>
     <message>
         <source>Chat in New Window</source>
-        <translation type="unfinished"/>
+        <translation>Conversación en nueva ventana</translation>
     </message>
     <message>
         <source>Chat in New Tab</source>
-        <translation type="unfinished"/>
+        <translation>Conversación en nueva pestaña</translation>
     </message>
     <message>
         <source>Attach Chat to Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Fijar la conversación a las pestañas</translation>
     </message>
     <message>
         <source>Detach</source>
-        <translation type="unfinished"/>
+        <translation>Separar</translation>
     </message>
     <message>
         <source>Detach all</source>
-        <translation type="unfinished"/>
+        <translation>Separar todos</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <source>Close all</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar todos</translation>
     </message>
     <message>
         <source>Close other tabs</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar otras pestañas</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Volver a abrir la pestaña cerrada</translation>
     </message>
 </context>
 </TS>

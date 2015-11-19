@@ -1,36 +1,38 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Keep contact list size</source>
-        <translation type="unfinished"/>
+        <translation>Manter tamanho da lista de contatos</translation>
     </message>
     <message>
         <source>Hide scroll bar</source>
-        <translation type="unfinished"/>
+        <translation>Esconder barra de rolagem</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Extras</translation>
     </message>
     <message>
         <source>Simple View</source>
-        <translation type="unfinished"/>
+        <translation>Visualização simples</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opções</translation>
     </message>
     <message>
         <source>Hide window borders</source>
-        <translation type="unfinished"/>
+        <translation>Esconder bordas da janela</translation>
     </message>
 </context>
 <context>
     <name>SimpleView</name>
     <message>
         <source>Simple view</source>
-        <translation type="unfinished"/>
+        <translation>Visualização simples</translation>
     </message>
 </context>
 </TS>

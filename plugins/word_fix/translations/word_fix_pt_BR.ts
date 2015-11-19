@@ -1,52 +1,54 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Conversa</translation>
     </message>
     <message>
         <source>Words fix</source>
-        <translation type="unfinished"/>
+        <translation>Correção de palavras</translation>
     </message>
     <message>
         <source>Enable word fix</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar correção de palavras</translation>
     </message>
     <message>
         <source>Spelling</source>
-        <translation type="unfinished"/>
+        <translation>Ortografia</translation>
     </message>
 </context>
 <context>
     <name>WordFix</name>
     <message>
         <source>A word to be replaced</source>
-        <translation type="unfinished"/>
+        <translation>Uma palavra para ser substituída</translation>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation type="unfinished"/>
+        <translation>Substituir com</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Mudar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Apagar</translation>
     </message>
     <message>
         <source>Word</source>
-        <translation type="unfinished"/>
+        <translation>Palavra</translation>
     </message>
     <message>
         <source>Replace with</source>
-        <translation type="unfinished"/>
+        <translation>Substituir com</translation>
     </message>
 </context>
 </TS>

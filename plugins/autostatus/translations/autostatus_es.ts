@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="es">
 <context>
     <name>@default</name>
     <message>
@@ -7,7 +9,7 @@
     </message>
     <message>
         <source>Autostatus file</source>
-        <translation type="unfinished"/>
+        <translation>Archivo de estado automático</translation>
     </message>
     <message>
         <source>Time</source>
@@ -15,7 +17,10 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform></translation>
+        <translation>
+            <numerusform>%n segundo</numerusform>
+            <numerusform>%n segundos</numerusform>
+        </translation>
     </message>
     <message>
         <source>Online</source>
@@ -39,14 +44,14 @@
     </message>
     <message>
         <source>AutoStatus</source>
-        <translation type="unfinished"/>
+        <translation>Estado Automático</translation>
     </message>
 </context>
 <context>
     <name>AutostatusActions</name>
     <message>
         <source>&amp;Autostatus</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Estado Automático</translation>
     </message>
 </context>
 </TS>
