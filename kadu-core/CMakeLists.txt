@@ -218,6 +218,7 @@ endif ()
 target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBKADU_LIBRARIES})
 
 find_package (QCA2 REQUIRED)
+include_directories (${QCA2_INCLUDE_DIR})
 
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)

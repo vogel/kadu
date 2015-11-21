@@ -22,6 +22,8 @@
 #include "execution-arguments/execution-arguments-builder.h"
 #include "execution-arguments/execution-arguments.h"
 
+#include <cstdio>
+
 ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments) const
 {
 	auto queryVersion = false;
