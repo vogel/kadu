@@ -18,12 +18,6 @@ set (MOC_SOURCES
 	docking.h
 )
 
-if (APPLE)
-	list (APPEND SOURCES mac_docking_helper.cpp)
-	list (APPEND MOC_SOURCES mac_docking_helper.h)
-	set_source_files_properties (SOURCE mac_docking_helper.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -x objective-c++")
-endif ()
-
 set (CONFIGURATION_FILES
 	data/configuration/docking.ui
 )
