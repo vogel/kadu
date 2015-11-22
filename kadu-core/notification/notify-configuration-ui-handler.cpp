@@ -61,10 +61,10 @@ NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
 	connect(Core::instance()->notificationManager(), SIGNAL(notiferUnregistered(Notifier *)),
 			this, SLOT(notifierUnregistered(Notifier *)));
 
-	connect(Core::instance()->notificationManager(), SIGNAL(notifyEventRegistered(NotificationEvent)),
-			this, SLOT(notifyEventRegistered(NotificationEvent)));
-	connect(Core::instance()->notificationManager(), SIGNAL(notifyEventUnregistered(QString)),
-			this, SLOT(notifyEventUnregistered(QString)));
+	connect(Core::instance()->notificationEventRepository(), SIGNAL(notificationEventAdded(NotificationEvent)),
+			this, SLOT(notificationEventAdded(NotificationEvent)));
+	connect(Core::instance()->notificationEventRepository(), SIGNAL(notificationEventRemoved(NotificationEvent)),
+			this, SLOT(notificationEventRemoved(NotificationEvent)));
 }
 
 NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
@@ -183,7 +183,7 @@ void NotifyConfigurationUiHandler::notifierUnregistered(Notifier *notifier)
 		notifyTreeWidget->refresh();
 }
 
-void NotifyConfigurationUiHandler::notifyEventRegistered(NotificationEvent notifyEvent)
+void NotifyConfigurationUiHandler::notificationEventAdded(NotificationEvent notifyEvent)
 {
 	if (notificationsGroupBox)
 	{
@@ -201,8 +201,9 @@ void NotifyConfigurationUiHandler::notifyEventRegistered(NotificationEvent notif
 	}
 }
 
-void NotifyConfigurationUiHandler::notifyEventUnregistered(const QString &eventName)
+void NotifyConfigurationUiHandler::notificationEventRemoved(NotificationEvent notifyEvent)
 {
+	auto eventName = notifyEvent.name();
 	if (NotificationEvents.contains(eventName))
 		NotificationEvents.remove(eventName);
 
