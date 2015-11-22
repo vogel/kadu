@@ -154,7 +154,8 @@ DockingManager::~DockingManager()
 
 	icon_timer->stop();
 
-	delete DockMenu;
+	//qt4_docking KStatusNotifierItem will take care of this
+	//delete DockMenu;
 	DockMenu = 0;
 #ifdef Q_OS_MAC
 	delete MacDockMenu;
