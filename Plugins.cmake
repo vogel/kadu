@@ -37,10 +37,8 @@ set (DEFAULT_PLUGINS
 	encryption_otr
 
 # docking
-	# Tray icon support (common part of all docking modules)
+	# Tray icon support (common part of all docking plugins)
 	docking
-	# Always on top window docking plugin
-	desktop_docking
 	# Qt tray docking techniques module (works everywhere)
 	qt4_docking
 
