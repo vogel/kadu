@@ -23,18 +23,19 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
-#include <QtWidgets/QSystemTrayIcon>
 
 #include "plugins/docking/docker.h"
 
 #include "qt4_docking_exports.h"
 
 class QMovie;
+class KStatusNotifierItem;
 
-class QT4DOCKAPI Qt4TrayIcon : public QSystemTrayIcon, public Docker
+class QT4DOCKAPI Qt4TrayIcon : public QObject, public Docker
 {
 	Q_OBJECT
 
+	KStatusNotifierItem *m_statusNotifierItem;
 	QMovie *Movie;
 	QPoint lastPosition;
 
@@ -44,7 +45,7 @@ class QT4DOCKAPI Qt4TrayIcon : public QSystemTrayIcon, public Docker
 	virtual ~Qt4TrayIcon();
 
 private slots:
-	void trayActivated(QSystemTrayIcon::ActivationReason reason);
+	//void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 	void movieUpdate();
 

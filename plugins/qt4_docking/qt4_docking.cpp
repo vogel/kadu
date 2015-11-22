@@ -19,8 +19,10 @@
  */
 
 #include <QtCore/QEvent>
+#include <QtGui/QIcon>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
+#include <KStatusNotifierItem>
 
 #include "plugins/docking/docking.h"
 
@@ -32,6 +34,7 @@
 #include "exports.h"
 
 #include "qt4_docking.h"
+#include <provider/default-provider.h>
 
 /**
  * @ingroup qt4_docking
@@ -59,16 +62,25 @@ void Qt4TrayIcon::destroyInstance()
 }
 
 Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
-		QSystemTrayIcon(parent), Movie(0)
+		QObject(parent), Movie(0)
 {
 	kdebugf();
 
-	setIcon(DockingManager::instance()->defaultIcon().icon());
+	m_statusNotifierItem = new KStatusNotifierItem{this};
+	m_statusNotifierItem->setAssociatedWidget(Core::instance()->mainWindowProvider()->provide());
+	m_statusNotifierItem->setIconByPixmap(DockingManager::instance()->defaultIcon().icon());
+	m_statusNotifierItem->setCategory(KStatusNotifierItem::Communications);
+	m_statusNotifierItem->setContextMenu(DockingManager::instance()->dockMenu());
+	m_statusNotifierItem->setStandardActionsEnabled(false);
+	m_statusNotifierItem->setStatus(KStatusNotifierItem::Active);
+	m_statusNotifierItem->setTitle("Kadu");
 
-	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
+	//setIcon(QIcon::fromTheme(DockingManager::instance()->defaultIcon().fullPath()));
 
-	show();
-	setContextMenu(DockingManager::instance()->dockMenu());
+	//connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
+
+	//show();
+	//setContextMenu(DockingManager::instance()->dockMenu());
 
 	kdebugf2();
 }
@@ -84,7 +96,7 @@ Qt4TrayIcon::~Qt4TrayIcon()
 		Movie = 0;
 	}
 
-	disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
+	//disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
 	kdebugf2();
 }
@@ -97,7 +109,8 @@ void Qt4TrayIcon::changeTrayIcon(const KaduIcon &icon)
 		Movie->deleteLater();
 		Movie = 0;
 	}
-	setIcon(icon.icon());
+	m_statusNotifierItem->setIconByPixmap(icon.icon());
+	//setIcon(QIcon::fromTheme(icon.fullPath()));
 }
 
 void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
@@ -107,15 +120,15 @@ void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
 		Movie->stop();
 		Movie->deleteLater();
 	}
-	else
-		setIcon(QIcon(QString()));
+	//else
+	//	setIcon(QIcon(QString()));
 
 	Movie = new QMovie(moviePath);
 	Movie->start();
 	connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
 }
 
-void Qt4TrayIcon::changeTrayTooltip(const QString &tooltip)
+void Qt4TrayIcon::changeTrayTooltip(const QString &)
 {
 #ifdef Q_OS_WIN
 	// checked on XP and 7
@@ -125,29 +138,29 @@ void Qt4TrayIcon::changeTrayTooltip(const QString &tooltip)
 			: tooltip;
 	setToolTip(truncatedTooltip);
 #else
-	setToolTip(tooltip);
+	//setToolTip(tooltip);
 #endif
 }
 
 QPoint Qt4TrayIcon::trayPosition()
 {
-	QRect rect = geometry();
-	if (rect.isValid())
-		lastPosition = QPoint(rect.x(), rect.y());
+	//QRect rect = geometry();
+	//if (rect.isValid())
+	//	lastPosition = QPoint(rect.x(), rect.y());
 
-	return lastPosition;
+	return QPoint{};
 }
 
 void Qt4TrayIcon::movieUpdate()
 {
-	setIcon(Movie->currentPixmap());
+	//setIcon(Movie->currentPixmap());
 }
-
+/*
 void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	/* NOTE: We don't pass right button click 'cause QSystemTrayIcon
+	/ * NOTE: We don't pass right button click 'cause QSystemTrayIcon
 	 * takes care of it and displays context menu for us.
-	 */
+	 * /
 	if (reason == QSystemTrayIcon::Trigger)
 	{
 		QMouseEvent event(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
@@ -159,7 +172,7 @@ void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 		DockingManager::instance()->trayMousePressEvent(&event);
 	}
 }
-
+*/
 /** @} */
 
 #include "moc_qt4_docking.cpp"
