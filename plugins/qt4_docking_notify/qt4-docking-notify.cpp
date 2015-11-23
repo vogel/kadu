@@ -62,7 +62,11 @@ Qt4Notify::Qt4Notify(QObject *parent) :
 Qt4Notify::~Qt4Notify()
 {
 	kdebugf();
-	Core::instance()->notificationManager()->unregisterNotifier(this);
+
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationManager()->unregisterNotifier(this);
+	}
 
 	if (Qt4TrayIcon::instance())
 		disconnect(Qt4TrayIcon::instance(), 0, this, 0);

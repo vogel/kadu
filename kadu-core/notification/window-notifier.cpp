@@ -48,7 +48,10 @@ WindowNotifier::WindowNotifier(QObject *parent) :
 
 WindowNotifier::~WindowNotifier()
 {
-	Core::instance()->notificationManager()->unregisterNotifier(this);
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationManager()->unregisterNotifier(this);
+	}
 }
 
 void WindowNotifier::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)

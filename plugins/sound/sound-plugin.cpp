@@ -80,9 +80,12 @@ void SoundPlugin::done()
 	MainConfigurationWindow::unregisterUiHandler(m_injector->get<SoundConfigurationUiHandler>());
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
 
-	Core::instance()->notificationManager()->unregisterNotifier(m_injector->get<SoundNotifier>());
-	Core::instance()->chatConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundChatConfigurationWidgetFactory>());
-	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundBuddyConfigurationWidgetFactory>());
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationManager()->unregisterNotifier(m_injector->get<SoundNotifier>());
+		Core::instance()->chatConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundChatConfigurationWidgetFactory>());
+		Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(m_injector->get<SoundBuddyConfigurationWidgetFactory>());
+	}
 
 	m_injector.reset();
 }

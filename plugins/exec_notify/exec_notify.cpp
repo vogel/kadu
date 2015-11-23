@@ -105,7 +105,10 @@ ExecNotify::~ExecNotify()
 {
 	kdebugf();
 
-	Core::instance()->notificationManager()->unregisterNotifier(this);
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationManager()->unregisterNotifier(this);
+	}
 
 	kdebugf2();
 }

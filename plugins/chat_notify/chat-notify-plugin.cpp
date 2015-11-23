@@ -48,7 +48,10 @@ bool ChatNotifyPlugin::init(bool firstLoad)
 
 void ChatNotifyPlugin::done()
 {
-	Core::instance()->notificationManager()->unregisterNotifier(NotifierInstance);
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationManager()->unregisterNotifier(NotifierInstance);
+	}
 }
 
 void ChatNotifyPlugin::createDefaultConfiguration()

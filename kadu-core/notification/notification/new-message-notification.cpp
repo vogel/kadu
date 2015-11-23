@@ -40,8 +40,11 @@ void MessageNotification::registerEvents()
 
 void MessageNotification::unregisterEvents()
 {
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
+	}
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :

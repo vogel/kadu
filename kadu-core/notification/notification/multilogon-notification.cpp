@@ -52,9 +52,12 @@ void MultilogonNotification::registerEvents()
 
 void MultilogonNotification::unregisterEvents()
 {
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
+	}
 }
 
 MultilogonNotification::MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback) :

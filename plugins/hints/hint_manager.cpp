@@ -122,7 +122,11 @@ HintManager::~HintManager()
 		hint_timer->stop();
 
 	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
-	Core::instance()->notificationManager()->unregisterNotifier(this);
+
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationManager()->unregisterNotifier(this);
+	}
 
 	disconnect();
 

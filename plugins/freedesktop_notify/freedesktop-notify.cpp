@@ -101,7 +101,10 @@ FreedesktopNotify::FreedesktopNotify() :
 
 FreedesktopNotify::~FreedesktopNotify()
 {
-	Core::instance()->notificationManager()->unregisterNotifier(this);
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationManager()->unregisterNotifier(this);
+	}
 
 	delete NotificationsInterface;
 	NotificationsInterface = 0;
