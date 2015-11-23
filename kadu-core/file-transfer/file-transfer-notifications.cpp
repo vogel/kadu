@@ -84,8 +84,11 @@ void NewFileTransferNotification::registerEvents()
 
 void NewFileTransferNotification::unregisterEvents()
 {
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	if (Core::instance()) // TODO: hack
+	{
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	}
 }
 
 void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)
