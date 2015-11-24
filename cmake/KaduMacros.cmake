@@ -63,8 +63,11 @@ macro (kadu_set_flags _target)
 		message (FATAL_ERROR "kadu_use called with non-existning target as parameter")
 	endif ()
 
-	set_property (TARGET ${_target} APPEND PROPERTY COMPILE_DEFINITIONS ${KADU_DEFINITIONS})
-	set_property (TARGET ${_target} APPEND PROPERTY COMPILE_DEFINITIONS_DEBUG ${KADU_DEFINITIONS_DEBUG})
+	if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
+		target_compile_definitions (${_target} PRIVATE "${KADU_DEFINITIONS_DEBUG}")
+	else ()
+		target_compile_definitions (${_target} PRIVATE "${KADU_DEFINITIONS}")
+	endif ()
 
 	if (KADU_COMPILE_FLAGS)
 		set_property (TARGET ${_target} APPEND_STRING PROPERTY COMPILE_FLAGS " ${KADU_COMPILE_FLAGS}")

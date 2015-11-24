@@ -168,7 +168,7 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 		)
 		kadu_set_flags (${SUBDIR})
 		set_property (TARGET ${SUBDIR} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
-		set_property (TARGET ${SUBDIR} APPEND PROPERTY COMPILE_DEFINITIONS libkadu_EXPORTS)
+		target_compile_definitions (${SUBDIR} PRIVATE libkadu_EXPORTS)
 	else ()
 		set (tmp "")
 		foreach (SRC ${SRCS})
@@ -255,7 +255,7 @@ if (WIN32)
 	# Do not link against qtmain on Windows
 	cmake_policy(SET CMP0020 OLD)
 
-	set_property (TARGET kadu_c APPEND PROPERTY COMPILE_DEFINITIONS KADU_CONSOLE)
+	target_compile_definitions (kadu_c PRIVATE KADU_CONSOLE)
 
 	set_property (TARGET kadu_c PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
 	set_property (TARGET kadu PROPERTY Qt5_NO_LINK_QTMAIN TRUE)
