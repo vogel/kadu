@@ -71,9 +71,6 @@ private:
 	KaduWindowActions *Actions;
 
 	BuddyInfoPanel *InfoPanel;
-#ifdef Q_OS_MAC
-	QMenuBar *MenuBar;
-#endif
 	QMenu *KaduMenu;
 	QMenu *ContactsMenu;
 	QMenu *ToolsMenu;
@@ -141,10 +138,6 @@ public:
 	bool docked() { return Docked; }
 
 	BuddyInfoPanel * infoPanel() { return InfoPanel; }
-
-#ifdef Q_OS_MAC
-	QMenuBar* menuBar() const;
-#endif
 
 public slots:
 	void talkableActivatedSlot(const Talkable &talkable);

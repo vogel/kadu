@@ -51,7 +51,7 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 	QLabel *messageLabel = new QLabel(this);
 	messageLabel->setWordWrap(true);
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
 							 "Please <a href='download'>download</a> an installer and upgrade or use "
 							 "your package management system to update Kadu.")).arg(newestVersion));

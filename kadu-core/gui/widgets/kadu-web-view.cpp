@@ -217,7 +217,7 @@ void KaduWebView::mouseReleaseEvent(QMouseEvent *e)
 	QWebView::mouseReleaseEvent(e);
 	DraggingPossible = false;
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	if (!page()->selectedText().isEmpty())
 		convertClipboardHtml(QClipboard::Selection);
 #endif

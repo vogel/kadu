@@ -37,101 +37,14 @@
 
 #include "filter-widget.h"
 
-#ifdef Q_OS_MAC
-#include <QtCore/QVarLengthArray>
-
-static QString toQString(CFStringRef str)
-{
-	if(!str)
-		return QString();
-
-	CFIndex length = CFStringGetLength(str);
-	const UniChar *chars = CFStringGetCharactersPtr(str);
-	if (chars)
-		return QString(reinterpret_cast<const QChar *>(chars), length);
-
-	QVarLengthArray<UniChar> buffer(length);
-	CFStringGetCharacters(str, CFRangeMake(0, length), buffer.data());
-	return QString(reinterpret_cast<const QChar *>(buffer.constData()), length);
-}
-
-static OSStatus FilterFieldEventHandler(EventHandlerCallRef handlerCallRef,
-					EventRef event, void *userData)
-{
-	Q_UNUSED(handlerCallRef);
-	FilterWidget *filter = (FilterWidget *) userData;
-	OSType eventClass = GetEventClass(event);
-	UInt32 eventKind = GetEventKind(event);
-
-	if (eventClass == kEventClassSearchField && eventKind == kEventSearchFieldCancelClicked)
-		filter->clear();
-	else if (eventClass == kEventClassTextField && eventKind == kEventTextDidChange)
-		filter->emitTextChanged();
-	return (eventNotHandledErr);
-}
-
-void FilterWidget::emitTextChanged(void)
-{
-	filterTextChanged(text());
-}
-
-void FilterWidget::clear(void)
-{
-	setText(QString());
-}
-
-QString FilterWidget::text(void) const
-{
-	CFStringRef cfString = HIViewCopyText(searchField);
-	QString text = toQString(cfString);
-	CFRelease(cfString);
-	return(text);
-}
-
-void FilterWidget::setText(const QString &text)
-{
-	CFRelease(searchFieldText);
-	searchFieldText = CFStringCreateWithCString(0,
-			text.toUtf8().constData(), 0);
-	HIViewSetText(searchField, searchFieldText);
-	emit textChanged(text);
-}
-
-void FilterWidget::activate(void)
-{
-	SetKeyboardFocus(HIViewGetWindow(searchField), searchField, kControlFocusNoPart);
-	SetKeyboardFocus(HIViewGetWindow(searchField), searchField, kControlFocusNextPart);
-	setText(text());
-}
-
-QSize FilterWidget::sizeHint (void) const
-{
-	HIRect optimalBounds;
-	EventRef event;
-	CreateEvent(0, kEventClassControl, kEventControlGetOptimalBounds,
-		GetCurrentEventTime(), kEventAttributeUserEvent, &event);
-	SendEventToEventTargetWithOptions(event,
-		HIObjectGetEventTarget(HIObjectRef(winId())),
-		kEventTargetDontPropagate);
-	GetEventParameter(event, kEventParamControlOptimalBounds, typeHIRect,
-		0, sizeof(HIRect), 0, &optimalBounds);
-	ReleaseEvent(event);
-	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height - 4);
-}
-#endif
 
 QString FilterWidget::filterText() const
 {
-#ifdef Q_OS_MAC
-	return text();
-#else
 	return NameFilterEdit->text();
-#endif
 }
 
 void FilterWidget::updateVisibility()
 {
-#ifndef Q_OS_MAC
 	if (!AutoVisibility)
 	{
 		show();
@@ -142,7 +55,6 @@ void FilterWidget::updateVisibility()
 		hide();
 	else
 		show();
-#endif // Q_OS_MAC
 }
 
 void FilterWidget::filterTextChanged(const QString &s)
@@ -152,11 +64,7 @@ void FilterWidget::filterTextChanged(const QString &s)
 	if (!View)
 		return;
 
-#ifdef Q_OS_MAC
-	if (text().isEmpty())
-#else
 	if (NameFilterEdit->text().isEmpty())
-#endif
 	{
 		QModelIndexList selection = View->selectionModel()->selectedIndexes();
 		if (!selection.isEmpty())
@@ -180,24 +88,6 @@ void FilterWidget::filterTextChanged(const QString &s)
 FilterWidget::FilterWidget(QWidget *parent) :
 		QWidget(parent), View(0), AutoVisibility(true)
 {
-#ifdef Q_OS_MAC
-
-	searchFieldText = CFStringCreateWithCString(0,
-		tr("Search").toUtf8().constData(), 0);
-	HISearchFieldCreate(NULL, kHISearchFieldAttributesSearchIcon |
-		kHISearchFieldAttributesCancel,
-		NULL, searchFieldText, &searchField);
-	create(reinterpret_cast<WId>(searchField));
-	EventTypeSpec mySFieldEvents[] = {
-		{ kEventClassSearchField, kEventSearchFieldCancelClicked },
-		{ kEventClassTextField, kEventTextDidChange },
-		{ kEventClassTextField, kEventTextAccepted }
-	};
-	HIViewInstallEventHandler(searchField, FilterFieldEventHandler,
-		GetEventTypeCount(mySFieldEvents), mySFieldEvents,
-		(void *) this, NULL);
-
-#endif
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(3);
 
@@ -217,30 +107,16 @@ FilterWidget::FilterWidget(QWidget *parent) :
 
 FilterWidget::~FilterWidget()
 {
-#ifdef Q_OS_MAC
-	CFRelease(searchField);
-	CFRelease(searchFieldText);
-#endif
 }
 
 void FilterWidget::setLabel(const QString &label)
 {
-#if defined(Q_OS_MAC)
-	Q_UNUSED(label);
-#else
 	Label->setText(label);
-#endif
 }
 
 void FilterWidget::setFilter(const QString &filter)
 {
-#ifdef Q_OS_MAC
-	if (text().isEmpty())
-		setText(filter);
-	activate();
-#else
 	NameFilterEdit->setText(filter);
-#endif
 }
 
 void FilterWidget::setView(QAbstractItemView *view)
@@ -274,11 +150,7 @@ bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 void FilterWidget::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape &&
-#ifdef Q_OS_MAC
-			!text().isEmpty()
-#else
 			!NameFilterEdit->text().isEmpty()
-#endif
 			)
 	{
 		setFilter(QString());

@@ -75,10 +75,6 @@
 
 #include "kadu-window.h"
 
-#ifdef Q_OS_MAC
-extern void qt_mac_set_menubar_icons(bool enable);
-#endif
-
 KaduWindow::KaduWindow() :
 		MainWindow(new ProxyActionContext(), QString(), 0), Docked(false),
 		WindowParent(0), CompositingEnabled(false)
@@ -89,11 +85,6 @@ KaduWindow::KaduWindow() :
 #ifdef Q_OS_WIN
 	HiddenParent = new QWidget();
 	setHiddenParent();
-#endif
-
-#ifdef Q_OS_MAC
-	// Create global menu for OS X.
-	MenuBar = new QMenuBar(0);
 #endif
 
 	setWindowTitle(QLatin1String("Kadu"));
@@ -160,9 +151,6 @@ void KaduWindow::createGui()
 
 void KaduWindow::createMenu()
 {
-#ifdef Q_OS_MAC
-	qt_mac_set_menubar_icons(false);
-#endif
 	createKaduMenu();
 	createContactsMenu();
 	createToolsMenu();
@@ -180,11 +168,7 @@ void KaduWindow::createKaduMenu()
 		->addAction(Actions->ExitKadu, KaduMenu::SectionQuit)
 		->update();
 
-#ifdef Q_OS_MAC
-	KaduMenu->setTitle(tr("General"));
-#else
 	KaduMenu->setTitle("&Kadu");
-#endif
 
 	menuBar()->addMenu(KaduMenu);
 }
@@ -240,13 +224,6 @@ void KaduWindow::createHelpMenu()
 
 	menuBar()->addMenu(HelpMenu);
 }
-
-#ifdef Q_OS_MAC
-QMenuBar* KaduWindow::menuBar() const
-{
-	return MenuBar;
-}
-#endif
 
 void KaduWindow::compositingEnabled()
 {

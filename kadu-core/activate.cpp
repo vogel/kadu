@@ -4,7 +4,7 @@
 
 #include "core/application.h"
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 
 	#include <QtX11Extras/QX11Info>
 
@@ -112,7 +112,7 @@
 
 bool _isWindowActiveOrFullyVisible( QWidget *window )
 {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	if( _isActiveWindow( window ) )
 		return true;
 

@@ -156,11 +156,6 @@ void ChatWidget::createGui()
 
 	VerticalSplitter = new QSplitter(Qt::Vertical, this);
 
-#ifdef Q_OS_MAC
-	/* Dorr: workaround for mac tabs issue */
-	VerticalSplitter->setAutoFillBackground(true);
-#endif
-
 	mainLayout->addWidget(VerticalSplitter);
 
 	HorizontalSplitter = new QSplitter(Qt::Horizontal, this);

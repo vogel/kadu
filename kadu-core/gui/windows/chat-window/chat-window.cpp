@@ -59,9 +59,6 @@ ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget 
 	if (m_chatWidget && m_chatWidget->chat().details() && m_chatWidget->chat().details()->type())
 		setWindowRole(m_chatWidget->chat().details()->type()->windowRole());
 
-#ifdef Q_OS_MAC
-	setAttribute(Qt::WA_MacBrushedMetal);
-#endif
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	m_chatWidget->edit()->setFocus();

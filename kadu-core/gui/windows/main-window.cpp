@@ -43,7 +43,7 @@
 
 #include "main-window.h"
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include <QtX11Extras/QX11Info>
 
 #include "os/x11/x11tools.h" // this should be included as last one,
@@ -475,7 +475,7 @@ ActionContext * MainWindow::actionContext()
 
 void MainWindow::setBlur(bool enable)
 {
-#if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if !defined(Q_OS_UNIX)
 	Q_UNUSED(enable);
 #else
 	BlurEnabled = enable;

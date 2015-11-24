@@ -245,10 +245,6 @@ Core::~Core()
 	ConfigurationManager::instance()->flush();
 	Application::instance()->backupConfiguration();
 
-#ifdef Q_OS_MAC
-	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
-#endif // Q_OS_MAC
-
 	KaduWindowProvider->provideValue(0);
 	QWidget *hiddenParent = Window->parentWidget();
 	delete Window;
@@ -412,12 +408,6 @@ void Core::createDefaultConfiguration()
 	userboxfont.setPointSize(qApp->font().pointSize() + 1);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxFont", userboxfont);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UseUserboxBackground", false);
-#ifdef Q_OS_MAC
-	/* Dorr: for MacOS X define the icon notification to animated which
-	 * will prevent from blinking the dock icon
-	 */
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 2);
-#endif
 
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "DefaultPort", 0);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Network", "isDefServers", true);

@@ -28,10 +28,6 @@
 #include <QtWidgets/QWidget>
 #include "exports.h"
 
-#ifdef Q_OS_MAC
-#	include <Carbon/Carbon.h>
-#endif
-
 class QAbstractItemView;
 class QLabel;
 class QLineEdit;
@@ -40,13 +36,8 @@ class KADUAPI FilterWidget : public QWidget
 {
 	Q_OBJECT
 
-#ifdef Q_OS_MAC
-	CFStringRef searchFieldText;
-	HIViewRef searchField;
-#else
 	QLabel *Label;
 	QLineEdit *NameFilterEdit;
-#endif
 
 	QAbstractItemView *View;
 	bool AutoVisibility;
@@ -73,20 +64,6 @@ public:
 
 signals:
 	void textChanged(const QString &text);
-
-#ifdef Q_OS_MAC
-
-public:
-	void activate(void);
-	QSize sizeHint (void) const;
-	QString text(void) const;
-
-public slots:
-	void clear(void);
-	void setText(const QString &text);
-	void emitTextChanged(void);
-
-#endif
 
 };
 
