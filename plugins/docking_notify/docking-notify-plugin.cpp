@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2011, 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,27 +18,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QT4_DOCKING_NOTIFY_PLUGIN_H
-#define QT4_DOCKING_NOTIFY_PLUGIN_H
+#include <QtWidgets/QSystemTrayIcon>
 
-#include "plugin/plugin-root-component.h"
+#include "docking-notify.h"
 
-class Qt4Notify;
+#include "docking-notify-plugin.h"
 
-class Qt4DockingNotifyPlugin : public QObject, public PluginRootComponent
+DockingNotifyPlugin::~DockingNotifyPlugin()
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+}
 
-	Qt4Notify *NotifierInstance;
+bool DockingNotifyPlugin::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
 
-public:
-	virtual ~Qt4DockingNotifyPlugin();
+	if (!QSystemTrayIcon::supportsMessages())
+		return false;
 
-	virtual bool init(bool firstLoad);
-	virtual void done();
+	NotifierInstance = new DockingNotify(this);
 
-};
+	return true;
+}
 
-#endif // QT4_DOCKING_NOTIFY_PLUGIN_H
+void DockingNotifyPlugin::done()
+{
+	delete NotifierInstance;
+	NotifierInstance = 0;
+}
+
+Q_EXPORT_PLUGIN2(qt4_docking_notify, DockingNotifyPlugin)
+
+#include "moc_docking-notify-plugin.cpp"

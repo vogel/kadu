@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,31 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugins/docking/docking.h"
+#ifndef QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H
+#define QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H
 
-#include "qt4_docking.h"
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
 
-#include "qt4-docking-plugin.h"
+class ConfigurationWindow;
 
-Qt4DockingPlugin::~Qt4DockingPlugin()
+class DockingNotifyConfigurationWidget : public NotifierConfigurationWidget
 {
-}
+	Q_OBJECT
 
-bool Qt4DockingPlugin::init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
+	QString currentNotificationEvent;
 
-	DockingManager::instance()->setDocker(Qt4TrayIcon::createInstance());
-	return true;
-}
+private slots:
 
-void Qt4DockingPlugin::done()
-{
-	DockingManager::instance()->setDocker(0);
+	void showConfigurationWindow();
 
-	Qt4TrayIcon::destroyInstance();
-}
+public:
+	DockingNotifyConfigurationWidget(QWidget *parent = 0);
 
-Q_EXPORT_PLUGIN2(qt4_docking, Qt4DockingPlugin)
+	virtual void loadNotifyConfigurations() {}
+	virtual void saveNotifyConfigurations();
 
-#include "moc_qt4-docking-plugin.cpp"
+	virtual void switchToEvent(const QString &event);
+};
+
+#endif // QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H

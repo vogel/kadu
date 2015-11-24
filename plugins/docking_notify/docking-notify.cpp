@@ -34,16 +34,16 @@
 #include "parser/parser.h"
 #include "debug.h"
 
-#include "plugins/qt4_docking/qt4_docking.h"
+#include "plugins/docking/docking.h"
 
-#include "qt4-docking-notify.h"
+#include "docking-notify.h"
 
 /**
  * @ingroup qt4_notify
  * @{
  */
 
-Qt4Notify::Qt4Notify(QObject *parent) :
+DockingNotify::DockingNotify(QObject *parent) :
 		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify"), parent),
 		configurationWidget{}
 {
@@ -52,14 +52,12 @@ Qt4Notify::Qt4Notify(QObject *parent) :
 	createDefaultConfiguration();
 
 	Core::instance()->notificationManager()->registerNotifier(this);
-
-	if (Qt4TrayIcon::instance())
-		connect(Qt4TrayIcon::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+	connect(DockingManager::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 
 	kdebugf2();
 }
 
-Qt4Notify::~Qt4Notify()
+DockingNotify::~DockingNotify()
 {
 	kdebugf();
 
@@ -68,20 +66,17 @@ Qt4Notify::~Qt4Notify()
 		Core::instance()->notificationManager()->unregisterNotifier(this);
 	}
 
-	if (Qt4TrayIcon::instance())
-		disconnect(Qt4TrayIcon::instance(), 0, this, 0);
-
 	kdebugf2();
 }
 
-QString Qt4Notify::toPlainText(const QString &text)
+QString DockingNotify::toPlainText(const QString &text)
 {
 	QTextDocument doc;
 	doc.setHtml(text);
 	return doc.toPlainText();
 }
 
-QString Qt4Notify::parseText(const QString &text, Notification *notification, const QString &def)
+QString DockingNotify::parseText(const QString &text, Notification *notification, const QString &def)
 {
 	QString ret;
 
@@ -108,41 +103,38 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 	return toPlainText(ret);
 }
 
-void Qt4Notify::notify(Notification *notification)
+void DockingNotify::notify(Notification *notification)
 {
 	kdebugf();
 
-	if (Qt4TrayIcon::instance())
-	{
-		notification->acquire(this);
+	notification->acquire(this);
 
-		//unsigned int timeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
-		//unsigned int icon = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
-		//QString title = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
-		//QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
+	//unsigned int timeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
+	//unsigned int icon = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
+	//QString title = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
+	//QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
 
-		//Qt4TrayIcon::instance()->showMessage(parseText(title, notification, notification->text()),
-		//	parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
-		//	(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
+	//Qt4TrayIcon::instance()->showMessage(parseText(title, notification, notification->text()),
+	//	parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
+	//	(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 
-		notification->release(this);
-	}
+	notification->release(this);
 
 	kdebugf2();
 }
 
-void Qt4Notify::messageClicked()
+void DockingNotify::messageClicked()
 {
 	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 }
 
-NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget *DockingNotify::createConfigurationWidget(QWidget *parent)
 {
-	configurationWidget = new Qt4NotifyConfigurationWidget(parent);
+	configurationWidget = new DockingNotifyConfigurationWidget(parent);
 	return configurationWidget;
 }
 
-void Qt4Notify::createDefaultConfiguration()
+void DockingNotify::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_timeout", 10);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotify", "Event_ConnectionError_syntax", "%&m");
@@ -209,4 +201,4 @@ void Qt4Notify::createDefaultConfiguration()
 /** @} */
 
 
-#include "moc_qt4-docking-notify.cpp"
+#include "moc_docking-notify.cpp"

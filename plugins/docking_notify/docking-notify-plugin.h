@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,22 +18,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QT4_DOCKING_PLUGIN_H
-#define QT4_DOCKING_PLUGIN_H
+#ifndef QT4_DOCKING_NOTIFY_PLUGIN_H
+#define QT4_DOCKING_NOTIFY_PLUGIN_H
 
 #include "plugin/plugin-root-component.h"
 
-class Qt4DockingPlugin : public QObject, public PluginRootComponent
+class DockingNotify;
+
+class DockingNotifyPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
+	DockingNotify *NotifierInstance;
+
 public:
-	virtual ~Qt4DockingPlugin();
+	virtual ~DockingNotifyPlugin();
 
 	virtual bool init(bool firstLoad);
 	virtual void done();
+
 };
 
-#endif // QT4_DOCKING_PLUGIN_H
+#endif // QT4_DOCKING_NOTIFY_PLUGIN_H

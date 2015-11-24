@@ -18,31 +18,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QT4_DOCKING_H
-#define QT4_DOCKING_H
+#pragma once
+
+#include "docking_exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 
-#include "plugins/docking/docker.h"
-
-#include "qt4_docking_exports.h"
-
 class QMovie;
+class KaduIcon;
 class KStatusNotifierItem;
 
-class QT4DOCKAPI Qt4TrayIcon : public QObject, public Docker
+class DOCKINGAPI StatusNotifierItem final : public QObject
 {
 	Q_OBJECT
 
 	KStatusNotifierItem *m_statusNotifierItem;
-	QMovie *Movie;
-	QPoint lastPosition;
-
-	static Qt4TrayIcon *Instance;
-
-	explicit Qt4TrayIcon(QWidget *parent = 0);
-	virtual ~Qt4TrayIcon();
+	QMovie *m_movie;
+	QPoint m_lastPosition;
 
 private slots:
 	//void trayActivated(QSystemTrayIcon::ActivationReason reason);
@@ -50,16 +43,15 @@ private slots:
 	void movieUpdate();
 
 public:
-	static Qt4TrayIcon * instance();
+	explicit StatusNotifierItem(QObject *parent = nullptr);
+	virtual ~StatusNotifierItem();
 
-	static Qt4TrayIcon * createInstance();
-	static void destroyInstance();
+	void changeTrayIcon(const KaduIcon &icon);
+	void changeTrayMovie(const QString &moviePath);
+	void changeTrayTooltip(const QString &tooltip);
+	QPoint trayPosition();
 
-	virtual void changeTrayIcon(const KaduIcon &icon);
-	virtual void changeTrayMovie(const QString &moviePath);
-	virtual void changeTrayTooltip(const QString &tooltip);
-	virtual QPoint trayPosition();
+signals:
+	void messageClicked();
+
 };
-
-
-#endif // QT4_DOCKING_H

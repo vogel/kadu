@@ -58,17 +58,19 @@
 extern void qt_mac_set_dock_menu(QMenu *);
 #endif
 
-#include "docker.h"
-
 #include <gui/status-icon.h>
 #include "docking.h"
+#include "status-notifier-item.h"
 
 DockingManager * DockingManager::Instance = 0;
 
 void DockingManager::createInstance()
 {
 	if (!Instance)
+	{
 		Instance = new DockingManager();
+		Instance->init();
+	}
 #ifdef Q_OS_MAC
 	MacDockingHelper::instance();
 #endif
@@ -89,16 +91,16 @@ DockingManager * DockingManager::instance()
 }
 
 DockingManager::DockingManager() :
-		CurrentDocker(0), DockMenuNeedsUpdate(true), AllAccountsMenu(0),
+		DockMenuNeedsUpdate(true), AllAccountsMenu(0),
 		newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	KaduWindowLastTimeVisible = true;
 #endif
-
-	createDefaultConfiguration();
 
 	Icon = new StatusIcon(StatusContainerManager::instance(), this);
 	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(statusIconChanged(KaduIcon)));
@@ -145,12 +147,30 @@ DockingManager::DockingManager() :
 	doUpdateContextMenu();
 #endif
 
+	changeIcon();
+	defaultToolTip();
+
+	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"))
+		Core::instance()->setShowMainWindowOnStart(false);
+	Core::instance()->kaduWindow()->setDocked(true);
+
 	kdebugf2();
+}
+
+void DockingManager::init()
+{
+	m_statusNotifierItem = new StatusNotifierItem{this};
+	connect(m_statusNotifierItem, SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
+
 }
 
 DockingManager::~DockingManager()
 {
 	kdebugf();
+
+	if (!Core::instance()->isClosing())
+		Core::instance()->kaduWindow()->window()->show();
+	Core::instance()->kaduWindow()->setDocked(false);
 
 	icon_timer->stop();
 
@@ -172,26 +192,22 @@ void DockingManager::changeIcon()
 	switch (newMessageIcon)
 	{
 		case AnimatedEnvelope:
-			if (CurrentDocker)
-				CurrentDocker->changeTrayMovie(KaduIcon("protocols/common/message_anim", "16x16").fullPath());
+			m_statusNotifierItem->changeTrayMovie(KaduIcon("protocols/common/message_anim", "16x16").fullPath());
 			break;
 		case StaticEnvelope:
-			if (CurrentDocker)
-				CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message"));
+			m_statusNotifierItem->changeTrayIcon(KaduIcon("protocols/common/message"));
 			break;
 		case BlinkingEnvelope:
 			if (!blink)
 			{
-				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message"));
+				m_statusNotifierItem->changeTrayIcon(KaduIcon("protocols/common/message"));
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = true;
 			}
 			else
 			{
-				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon());
+				m_statusNotifierItem->changeTrayIcon(StatusContainerManager::instance()->statusIcon());
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -218,8 +234,7 @@ void DockingManager::unreadMessageRemoved()
 	MacDockingHelper::instance()->stopBounce();
 #endif
 	if (!Core::instance()->unreadMessageRepository()->hasUnreadMessages())
-		if (CurrentDocker)
-			CurrentDocker->changeTrayIcon(defaultIcon());
+		m_statusNotifierItem->changeTrayIcon(defaultIcon());
 }
 
 QList<StatusPair> DockingManager::getStatuses() const
@@ -285,9 +300,6 @@ QString DockingManager::prepareDescription(const QString &description) const
 
 void DockingManager::defaultToolTip()
 {
-	if (!CurrentDocker)
-		return;
-
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"))
 	{
 		QString tiptext("");
@@ -373,7 +385,7 @@ void DockingManager::defaultToolTip()
 		tiptext += "</table>";
 #endif
 
-		CurrentDocker->changeTrayTooltip(tiptext);
+		m_statusNotifierItem->changeTrayTooltip(tiptext);
 	}
 }
 
@@ -449,8 +461,7 @@ void DockingManager::statusIconChanged(const KaduIcon &icon)
 	if (Core::instance()->unreadMessageRepository()->hasUnreadMessages() || icon_timer->isActive())
 		return;
 
-	if (CurrentDocker)
-		CurrentDocker->changeTrayIcon(icon);
+	m_statusNotifierItem->changeTrayIcon(icon);
 
 	defaultToolTip();
 #ifdef Q_OS_MAC
@@ -460,35 +471,12 @@ void DockingManager::statusIconChanged(const KaduIcon &icon)
 
 void DockingManager::searchingForTrayPosition(QPoint &point)
 {
-	if (CurrentDocker)
-		point = CurrentDocker->trayPosition();
+	point = m_statusNotifierItem->trayPosition();
 }
 
 KaduIcon DockingManager::defaultIcon()
 {
 	return StatusContainerManager::instance()->statusIcon();
-}
-
-void DockingManager::setDocker(Docker *docker)
-{
-	CurrentDocker = docker;
-
-	if (CurrentDocker)
-	{
-		changeIcon();
-		defaultToolTip();
-#ifndef Q_OS_MAC
-		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"))
-			Core::instance()->setShowMainWindowOnStart(false);
-		Core::instance()->kaduWindow()->setDocked(true);
-	}
-	else
-	{
- 		if (!Core::instance()->isClosing())
-			Core::instance()->kaduWindow()->window()->show();
-		Core::instance()->kaduWindow()->setDocked(false);
-#endif
-	}
 }
 
 void DockingManager::contextMenuAboutToBeShown()
@@ -626,8 +614,7 @@ void DockingManager::configurationUpdated()
 		defaultToolTip();
 	else
 	{
-		if (CurrentDocker)
-			CurrentDocker->changeTrayTooltip(QString());
+		m_statusNotifierItem->changeTrayTooltip(QString());
 	}
 
 	IconType it = (IconType)Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NewMessageIcon");

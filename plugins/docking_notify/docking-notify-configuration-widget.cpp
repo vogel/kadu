@@ -33,9 +33,9 @@
 #include "activate.h"
 #include "debug.h"
 
-#include "qt4-docking-notify-configuration-widget.h"
+#include "docking-notify-configuration-widget.h"
 
-Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent)
+DockingNotifyConfigurationWidget::DockingNotifyConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)
 {
 	QPushButton *configureButton = new QPushButton(tr("Configure"));
@@ -47,25 +47,25 @@ Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent)
 	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
-void Qt4NotifyConfigurationWidget::saveNotifyConfigurations()
+void DockingNotifyConfigurationWidget::saveNotifyConfigurations()
 {
 }
 
-void Qt4NotifyConfigurationWidget::switchToEvent(const QString &event)
+void DockingNotifyConfigurationWidget::switchToEvent(const QString &event)
 {
 	kdebugf();
 
 	currentNotificationEvent = event;
 }
 
-void Qt4NotifyConfigurationWidget::showConfigurationWindow()
+void DockingNotifyConfigurationWidget::showConfigurationWindow()
 {
 	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(currentNotificationEvent);
 	ConfigurationWindow *configWindow = new ConfigurationWindow("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
 
 	dataManager->configurationWindowCreated(configWindow);
 
-	configWindow->widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/qt4-docking-notify.ui"));
+	configWindow->widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/docking-notify.ui"));
 
 	QString tooltip = QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
 	tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
@@ -77,4 +77,4 @@ void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 	_activateWindow(configWindow);
 }
 
-#include "moc_qt4-docking-notify-configuration-widget.cpp"
+#include "moc_docking-notify-configuration-widget.cpp"

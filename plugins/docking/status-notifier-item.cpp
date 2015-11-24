@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "status-notifier-item.h"
+
 #include <QtCore/QEvent>
 #include <QtGui/QIcon>
 #include <QtGui/QMouseEvent>
@@ -33,36 +35,16 @@
 #include "debug.h"
 #include "exports.h"
 
-#include "qt4_docking.h"
 #include <provider/default-provider.h>
 
 /**
- * @ingroup qt4_docking
+ * @ingroup qdocking
  * @{
  */
 
-Qt4TrayIcon * Qt4TrayIcon::Instance = 0;
-
-Qt4TrayIcon * Qt4TrayIcon::createInstance()
-{
-	Instance = new Qt4TrayIcon();
-
-	return Instance;
-}
-
-Qt4TrayIcon * Qt4TrayIcon::instance()
-{
-	return Instance;
-}
-
-void Qt4TrayIcon::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
-		QObject(parent), Movie(0)
+StatusNotifierItem::StatusNotifierItem(QObject *parent) :
+		QObject{parent},
+		m_movie{nullptr}
 {
 	kdebugf();
 
@@ -85,15 +67,15 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
 	kdebugf2();
 }
 
-Qt4TrayIcon::~Qt4TrayIcon()
+StatusNotifierItem::~StatusNotifierItem()
 {
 	kdebugf();
 
-	if (Movie)
+	if (m_movie)
 	{
-		Movie->stop();
-		Movie->deleteLater();
-		Movie = 0;
+		m_movie->stop();
+		m_movie->deleteLater();
+		m_movie = 0;
 	}
 
 	//disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
@@ -101,34 +83,34 @@ Qt4TrayIcon::~Qt4TrayIcon()
 	kdebugf2();
 }
 
-void Qt4TrayIcon::changeTrayIcon(const KaduIcon &icon)
+void StatusNotifierItem::changeTrayIcon(const KaduIcon &icon)
 {
-	if (Movie)
+	if (m_movie)
 	{
-		Movie->stop();
-		Movie->deleteLater();
-		Movie = 0;
+		m_movie->stop();
+		m_movie->deleteLater();
+		m_movie = 0;
 	}
 	m_statusNotifierItem->setIconByPixmap(icon.icon());
 	//setIcon(QIcon::fromTheme(icon.fullPath()));
 }
 
-void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
+void StatusNotifierItem::changeTrayMovie(const QString &moviePath)
 {
-	if (Movie)
+	if (m_movie)
 	{
-		Movie->stop();
-		Movie->deleteLater();
+		m_movie->stop();
+		m_movie->deleteLater();
 	}
 	//else
 	//	setIcon(QIcon(QString()));
 
-	Movie = new QMovie(moviePath);
-	Movie->start();
-	connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
+	m_movie = new QMovie(moviePath);
+	m_movie->start();
+	connect(m_movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
 }
 
-void Qt4TrayIcon::changeTrayTooltip(const QString &)
+void StatusNotifierItem::changeTrayTooltip(const QString &)
 {
 #ifdef Q_OS_WIN
 	// checked on XP and 7
@@ -142,7 +124,7 @@ void Qt4TrayIcon::changeTrayTooltip(const QString &)
 #endif
 }
 
-QPoint Qt4TrayIcon::trayPosition()
+QPoint StatusNotifierItem::trayPosition()
 {
 	//QRect rect = geometry();
 	//if (rect.isValid())
@@ -151,12 +133,12 @@ QPoint Qt4TrayIcon::trayPosition()
 	return QPoint{};
 }
 
-void Qt4TrayIcon::movieUpdate()
+void StatusNotifierItem::movieUpdate()
 {
-	//setIcon(Movie->currentPixmap());
+	//setIcon(m_movie->currentPixmap());
 }
 /*
-void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
+void StatusNotifierItem::trayActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	/ * NOTE: We don't pass right button click 'cause QSystemTrayIcon
 	 * takes care of it and displays context menu for us.
@@ -175,4 +157,4 @@ void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 */
 /** @} */
 
-#include "moc_qt4_docking.cpp"
+#include "moc_status-notifier-item.cpp"

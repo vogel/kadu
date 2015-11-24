@@ -9,12 +9,12 @@ set (DEFAULT_PLUGINS
 # notifiers
 	# Enables notifications about buddies presence and other in chat windows
 	chat_notify
+	# Notifications by docking plugin
+	docking_notify
 	# Notification by external commands module
 	exec_notify
 	# Hints near tray icon
 	hints
-	# Notifications by qt4_docking plugin
-	qt4_docking_notify
 	# Speech synthesis support
 	speech
 	# PC Speaker notification support
@@ -35,12 +35,6 @@ set (DEFAULT_PLUGINS
 	encryption_ng_simlite
 	# OTR encryption
 	encryption_otr
-
-# docking
-	# Tray icon support (common part of all docking plugins)
-	docking
-	# Qt tray docking techniques module (works everywhere)
-	qt4_docking
 
 # sound
 	# General sound plugin
@@ -69,6 +63,8 @@ set (DEFAULT_PLUGINS
 	cenzor
 	# Configuration wizard
 	config_wizard
+	# Tray icon support
+	docking
 	# Displays graphical emoticons in chat window
 	emoticons
 	# Loads presence status messages from file

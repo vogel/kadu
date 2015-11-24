@@ -45,6 +45,8 @@ class StatusMenu;
 typedef QPair<QString,QList<StatusType> > StatusPair;
 typedef QPair<QStringList,QString> DescriptionPair;
 
+class StatusNotifierItem;
+
 class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
 {
 	Q_OBJECT
@@ -52,7 +54,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	static DockingManager *Instance;
 
-	Docker *CurrentDocker;
+	StatusNotifierItem *m_statusNotifierItem;
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	bool KaduWindowLastTimeVisible;
@@ -91,6 +93,8 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	void createDefaultConfiguration();
 
 	DockingManager();
+	void init();
+
 	virtual ~DockingManager();
 
 	void doUpdateContextMenu();
@@ -127,8 +131,6 @@ public:
 	KaduIcon defaultIcon();
 	QMenu * dockMenu() { return DockMenu; }
 
-	void setDocker(Docker *docker);
-
 #ifdef Q_OS_MAC
 	void showMinimizedChats();
 	void dockIconClicked();
@@ -138,6 +140,7 @@ public:
 	void unregisterModuleAction(QAction *action);
 
 signals:
+	void messageClicked();
 	void mousePressMidButton();
 	void mousePressLeftButton();
 	void mousePressRightButton();

@@ -5,13 +5,13 @@
 #include "gui/windows/main-configuration-window.h"
 #include "notification/notifier.h"
 
-#include "qt4-docking-notify-configuration-widget.h"
+#include "docking-notify-configuration-widget.h"
 
 /**
  * @defgroup qt4_notify Qt4 Notify
  * @{
  */
-class Qt4Notify : public Notifier
+class DockingNotify : public Notifier
 {
 	Q_OBJECT
 
@@ -19,11 +19,11 @@ class Qt4Notify : public Notifier
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);
 	Chat chat;
-	Qt4NotifyConfigurationWidget *configurationWidget;
+	DockingNotifyConfigurationWidget *configurationWidget;
 
 public:
-	explicit Qt4Notify(QObject *parent = 0);
-	virtual ~Qt4Notify();
+	explicit DockingNotify(QObject *parent = 0);
+	virtual ~DockingNotify();
 
 	virtual void notify(Notification *notification);
 
