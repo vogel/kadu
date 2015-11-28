@@ -30,7 +30,7 @@
 
 #include <QtCore/QLibraryInfo>
 #include <QtCore/QTranslator>
-#include <QtCrypto/QtCrypto>
+#include <QtCrypto>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
