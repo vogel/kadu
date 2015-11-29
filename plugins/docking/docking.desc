@@ -6,3 +6,4 @@ Description[pl]=Pozwala zadokować Kadu jako ikonę w zasobniku systemowym
 Author=Kadu Team
 Version=core
 Category=Desktop
+LoadByDefault=true
