@@ -4,6 +4,7 @@
 * translations: complete Spanish (Mexican) translations (timbamik)
 * freebsd: #3028 fixed: compilation issued (Paweł Pękala)
 * desktop_docking: plugin removed (Vogel)
+* docking: #3020 fixed: icon is now visible in Plasma5 (wojtek k)
 
 +++ version 3.0-beta1
 * contacts: #2990 fixed: mising up contacts priorities sometimes (Vogel)

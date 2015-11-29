@@ -50,14 +50,16 @@ StatusNotifierItem::StatusNotifierItem(QObject *parent) :
 
 	m_statusNotifierItem = new KStatusNotifierItem{this};
 	m_statusNotifierItem->setAssociatedWidget(Core::instance()->mainWindowProvider()->provide());
-	m_statusNotifierItem->setIconByPixmap(DockingManager::instance()->defaultIcon().icon());
+	// see #3020: do not try to use m_statusNotifierItem->setIconByPixmap(DockingManager::instance()->defaultIcon())
+	// won't work for SVG icons
+	m_statusNotifierItem->setIconByPixmap(QIcon::fromTheme(DockingManager::instance()->defaultIcon().fullPath()));
 	m_statusNotifierItem->setCategory(KStatusNotifierItem::Communications);
 	m_statusNotifierItem->setContextMenu(DockingManager::instance()->dockMenu());
 	m_statusNotifierItem->setStandardActionsEnabled(false);
 	m_statusNotifierItem->setStatus(KStatusNotifierItem::Active);
 	m_statusNotifierItem->setTitle("Kadu");
 
-	//setIcon(QIcon::fromTheme(DockingManager::instance()->defaultIcon().fullPath()));
+	
 
 	//connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -91,8 +93,10 @@ void StatusNotifierItem::changeTrayIcon(const KaduIcon &icon)
 		m_movie->deleteLater();
 		m_movie = 0;
 	}
-	m_statusNotifierItem->setIconByPixmap(icon.icon());
-	//setIcon(QIcon::fromTheme(icon.fullPath()));
+
+	// see #3020: do not try to use m_statusNotifierItem->setIconByPixmap(DockingManager::instance()->defaultIcon())
+	// won't work for SVG icons
+	m_statusNotifierItem->setIconByPixmap(QIcon::fromTheme(icon.fullPath()));
 }
 
 void StatusNotifierItem::changeTrayMovie(const QString &moviePath)
