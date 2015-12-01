@@ -20,80 +20,58 @@
 
 #include "status-notifier-item.h"
 
-#include <QtCore/QEvent>
-#include <QtGui/QIcon>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QMovie>
-#include <KStatusNotifierItem>
-
-#include "plugins/docking/docking.h"
-
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
-#include "debug.h"
 #include "exports.h"
 
-#include <provider/default-provider.h>
+#include <QtCore/QEvent>
+#include <QtGui/QIcon>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QMovie>
+#include <QtWidgets/QMenu>
+#include <KStatusNotifierItem>
 
 /**
- * @ingroup qdocking
+ * @ingroup docking
  * @{
  */
 
 StatusNotifierItem::StatusNotifierItem(QObject *parent) :
-		QObject{parent},
-		m_movie{nullptr}
+		QObject{parent}
 {
-	kdebugf();
-
 	m_statusNotifierItem = new KStatusNotifierItem{this};
-	m_statusNotifierItem->setAssociatedWidget(Core::instance()->mainWindowProvider()->provide());
-	// see #3020: do not try to use m_statusNotifierItem->setIconByPixmap(DockingManager::instance()->defaultIcon())
-	// won't work for SVG icons
-	m_statusNotifierItem->setIconByPixmap(QIcon::fromTheme(DockingManager::instance()->defaultIcon().fullPath()));
 	m_statusNotifierItem->setCategory(KStatusNotifierItem::Communications);
-	m_statusNotifierItem->setContextMenu(DockingManager::instance()->dockMenu());
+	m_statusNotifierItem->setContextMenu(new QMenu{});
 	m_statusNotifierItem->setStandardActionsEnabled(false);
 	m_statusNotifierItem->setStatus(KStatusNotifierItem::Active);
 	m_statusNotifierItem->setTitle("Kadu");
 
-	
-
 	//connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
 	//show();
-	//setContextMenu(DockingManager::instance()->dockMenu());
-
-	kdebugf2();
+	//setContextMenu(Docking::instance()->dockMenu());
 }
 
 StatusNotifierItem::~StatusNotifierItem()
 {
-	kdebugf();
-
-	if (m_movie)
-	{
-		m_movie->stop();
-		m_movie->deleteLater();
-		m_movie = 0;
-	}
-
-	//disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
-
-	kdebugf2();
 }
 
-void StatusNotifierItem::changeTrayIcon(const KaduIcon &icon)
+void StatusNotifierItem::setAssociatedWidget(QWidget *widget)
 {
-	if (m_movie)
-	{
-		m_movie->stop();
-		m_movie->deleteLater();
-		m_movie = 0;
-	}
+	m_statusNotifierItem->setAssociatedWidget(widget);
+}
 
+void StatusNotifierItem::setNeedAttention(bool needAttention)
+{
+	m_statusNotifierItem->setStatus(needAttention
+			? KStatusNotifierItem::NeedsAttention
+			: KStatusNotifierItem::Active);
+}
+
+void StatusNotifierItem::setIcon(const KaduIcon &icon)
+{
 	// see #3020: do not try to use m_statusNotifierItem->setIconByPixmap(DockingManager::instance()->defaultIcon())
 	// won't work for SVG icons
 	m_statusNotifierItem->setIconByPixmap(QIcon::fromTheme(icon.fullPath()));
@@ -101,17 +79,19 @@ void StatusNotifierItem::changeTrayIcon(const KaduIcon &icon)
 
 void StatusNotifierItem::changeTrayMovie(const QString &moviePath)
 {
-	if (m_movie)
-	{
-		m_movie->stop();
-		m_movie->deleteLater();
-	}
+	m_statusNotifierItem->setAttentionMovieByName(moviePath);
+//	if (m_movie)
+//	{
+//		
+//		m_movie->stop();
+//		m_movie->deleteLater();
+//	}
 	//else
 	//	setIcon(QIcon(QString()));
 
-	m_movie = new QMovie(moviePath);
-	m_movie->start();
-	connect(m_movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
+//	m_movie = new QMovie(moviePath);
+//	m_movie->start();
+//	connect(m_movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
 }
 
 void StatusNotifierItem::changeTrayTooltip(const QString &)
@@ -137,10 +117,11 @@ QPoint StatusNotifierItem::trayPosition()
 	return QPoint{};
 }
 
-void StatusNotifierItem::movieUpdate()
+QMenu * StatusNotifierItem::contextMenu()
 {
-	//setIcon(m_movie->currentPixmap());
+	return m_statusNotifierItem->contextMenu();
 }
+
 /*
 void StatusNotifierItem::trayActivated(QSystemTrayIcon::ActivationReason reason)
 {

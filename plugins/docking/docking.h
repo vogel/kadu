@@ -21,17 +21,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOCKING_H
-#define DOCKING_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtWidgets/QLabel>
 
 #include "configuration/configuration-aware-object.h"
-#include "status/status-container-aware-object.h"
 #include "status/status-type.h"
 
-#include "docking_exports.h"
+#include "docking-exports.h"
 
 class QAction;
 class QMenu;
@@ -45,41 +43,21 @@ class StatusMenu;
 typedef QPair<QString,QList<StatusType> > StatusPair;
 typedef QPair<QStringList,QString> DescriptionPair;
 
+class DockingMenuActionRepository;
+class DockingMenuHandler;
 class StatusNotifierItem;
 
-class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
+class DOCKINGAPI Docking : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(DockingManager)
+	Q_DISABLE_COPY(Docking)
 
-	static DockingManager *Instance;
+	static Docking *Instance;
 
 	StatusNotifierItem *m_statusNotifierItem;
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	bool KaduWindowLastTimeVisible;
-#endif
-	bool DockMenuNeedsUpdate;
-	QMenu *DockMenu;
-#ifdef Q_OS_MAC
-	QMenu *MacDockMenu;
-#endif
-
-	StatusMenu *AllAccountsMenu;
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	QAction *ShowKaduAction;
-	QAction *HideKaduAction;
-#endif
-	QAction *SilentModeAction;
-	QAction *CloseKaduAction;
-	QAction *containersSeparator;
-
+	DockingMenuHandler *m_dockingMenuHandler;
+	DockingMenuActionRepository *m_dockingMenuActionRepository;
 	StatusIcon *Icon;
-
-	QList<QAction *> ModulesActions;
-
-	QMap<StatusContainer *, QAction *> StatusContainerMenus;
 
 	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
 	QTimer *icon_timer;
@@ -92,52 +70,35 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	void createDefaultConfiguration();
 
-	DockingManager();
+	Docking();
 	void init();
 
-	virtual ~DockingManager();
+	virtual ~Docking();
 
-	void doUpdateContextMenu();
+	void doUpdateContextMenu(QMenu *menu);
 	void openUnreadMessages();
+	
+	void showKaduWindow();
+	void hideKaduWindow();
 
 private slots:
 	void statusIconChanged(const KaduIcon &icon);
 	void changeIcon();
-	void unreadMessageAdded();
-	void unreadMessageRemoved();
+	void needAttentionChanged(bool needAttention);
 	void searchingForTrayPosition(QPoint &point);
-	void iconThemeChanged();
-
-	void showKaduWindow();
-	void hideKaduWindow();
-	void silentModeToggled(bool enabled);
-
-	void contextMenuAboutToBeShown();
-	void updateContextMenu();
-
-	void containerStatusChanged(StatusContainer *container);
 
 protected:
 	virtual void configurationUpdated();
-	virtual void statusContainerRegistered(StatusContainer *statusContainer);
-	virtual void statusContainerUnregistered(StatusContainer *statusContainer);
 
 public:
 	static void createInstance();
 	static void destroyInstance();
-	static DockingManager * instance();
+	static Docking * instance();
+	
+	DockingMenuActionRepository * dockingMenuActionRepository() const;
 
 	void trayMousePressEvent(QMouseEvent * e);
 	KaduIcon defaultIcon();
-	QMenu * dockMenu() { return DockMenu; }
-
-#ifdef Q_OS_MAC
-	void showMinimizedChats();
-	void dockIconClicked();
-#endif
-
-	void registerModuleAction(QAction *action);
-	void unregisterModuleAction(QAction *action);
 
 signals:
 	void messageClicked();
@@ -146,5 +107,3 @@ signals:
 	void mousePressRightButton();
 
 };
-
-#endif // DOCKING_H

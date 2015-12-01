@@ -18,13 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "docking.h"
+
+#include "docking-plugin.h"
+
 #include "core/application.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
-#include "docking.h"
-
-#include "docking-plugin.h"
+DockingPlugin::DockingPlugin(QObject *parent) :
+		QObject{parent}
+{
+}
 
 DockingPlugin::~DockingPlugin()
 {
@@ -34,7 +39,7 @@ bool DockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	DockingManager::createInstance();
+	Docking::createInstance();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
 
 	return true;
@@ -43,7 +48,7 @@ bool DockingPlugin::init(bool firstLoad)
 void DockingPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
-	DockingManager::destroyInstance();
+	Docking::destroyInstance();
 }
 
 Q_EXPORT_PLUGIN2(docking, DockingPlugin)

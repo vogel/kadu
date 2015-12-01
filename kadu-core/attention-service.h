@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,19 +19,29 @@
 
 #pragma once
 
-#include "plugin/plugin-root-component.h"
+#include <QtCore/QObject>
 
-class DockingPlugin : public QObject, public PluginRootComponent
+class UnreadMessageRepository;
+
+class AttentionService : public QObject
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
-	explicit DockingPlugin(QObject *parent = nullptr);
-	virtual ~DockingPlugin();
+	Q_INVOKABLE explicit AttentionService(QObject *parent = nullptr);
+	virtual ~AttentionService();
 
-	virtual bool init(bool firstLoad);
-	virtual void done();
+	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+
+	bool needAttention();
+
+signals:
+	void needAttentionChanged(bool needAttention);
+
+private:
+	UnreadMessageRepository *m_unreadMessageRepository;
+
+private slots:
+	void unreadMessageCountChanged();
 
 };

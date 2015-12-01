@@ -10,6 +10,8 @@ kadu_api_directories (plugins/docking
 )
 
 set (SOURCES
+	docking-menu-action-repository.cpp
+	docking-menu-handler.cpp
 	docking-plugin.cpp
 	docking.cpp
 	status-notifier-item.cpp

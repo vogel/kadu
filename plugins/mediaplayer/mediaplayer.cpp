@@ -49,6 +49,7 @@
 #include "debug.h"
 
 #include "plugins/docking/docking.h"
+#include "plugins/docking/docking-menu-action-repository.h"
 
 #include "notification/mediaplayer-notification.h"
 #include "media-player-status-changer.h"
@@ -229,7 +230,7 @@ MediaPlayer::~MediaPlayer()
 		->update();
 
 	if (DockedMediaplayerStatus)
-		DockingManager::instance()->dockMenu()->removeAction(DockedMediaplayerStatus);
+		Docking::instance()->dockingMenuActionRepository()->removeAction(DockedMediaplayerStatus);
 }
 
 void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -777,7 +778,7 @@ void MediaPlayer::configurationUpdated()
 			DockedMediaplayerStatus->setChecked(enabled);
 			connect(DockedMediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
 
-			DockingManager::instance()->registerModuleAction(DockedMediaplayerStatus);
+			Docking::instance()->dockingMenuActionRepository()->addAction(DockedMediaplayerStatus);
 		}
 	}
 	else
@@ -789,7 +790,7 @@ void MediaPlayer::configurationUpdated()
 
 		if (DockedMediaplayerStatus)
 		{
-			DockingManager::instance()->unregisterModuleAction(DockedMediaplayerStatus);
+			Docking::instance()->dockingMenuActionRepository()->removeAction(DockedMediaplayerStatus);
 			delete DockedMediaplayerStatus;
 			DockedMediaplayerStatus = 0;
 		}

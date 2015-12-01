@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -20,19 +20,10 @@
 
 #pragma once
 
-#include "plugin/plugin-root-component.h"
+#include <QtCore/QtGlobal>
 
-class DockingPlugin : public QObject, public PluginRootComponent
-{
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-public:
-	explicit DockingPlugin(QObject *parent = nullptr);
-	virtual ~DockingPlugin();
-
-	virtual bool init(bool firstLoad);
-	virtual void done();
-
-};
+#ifdef docking_EXPORTS
+#define DOCKINGAPI Q_DECL_EXPORT
+#else
+#define DOCKINGAPI Q_DECL_IMPORT
+#endif

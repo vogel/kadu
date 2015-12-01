@@ -20,38 +20,42 @@
 
 #pragma once
 
-#include "docking_exports.h"
+#include "docking-exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 
-class QMovie;
 class KaduIcon;
+
+class QMenu;
+class QMovie;
 class KStatusNotifierItem;
 
 class DOCKINGAPI StatusNotifierItem final : public QObject
 {
 	Q_OBJECT
 
-	KStatusNotifierItem *m_statusNotifierItem;
-	QMovie *m_movie;
-	QPoint m_lastPosition;
-
-private slots:
-	//void trayActivated(QSystemTrayIcon::ActivationReason reason);
-
-	void movieUpdate();
-
 public:
 	explicit StatusNotifierItem(QObject *parent = nullptr);
 	virtual ~StatusNotifierItem();
 
-	void changeTrayIcon(const KaduIcon &icon);
+	void setAssociatedWidget(QWidget *widget);
+	void setIcon(const KaduIcon &icon);
+	void setNeedAttention(bool needAttention);
+
 	void changeTrayMovie(const QString &moviePath);
 	void changeTrayTooltip(const QString &tooltip);
 	QPoint trayPosition();
 
+	QMenu * contextMenu();
+
 signals:
 	void messageClicked();
+
+private:
+	KStatusNotifierItem *m_statusNotifierItem;
+
+private slots:
+	//void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 };

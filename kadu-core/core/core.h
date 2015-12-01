@@ -44,6 +44,7 @@ template<class T>
 class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
+class AttentionService;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyDataWindowRepository;
 class ChatConfigurationWidgetFactoryRepository;
@@ -175,6 +176,7 @@ public:
 
 	void activatePlugins();
 
+	AttentionService * attentionService() const;
 	BuddyDataWindowRepository * buddyDataWindowRepository() const;
 	ChatDataWindowRepository * chatDataWindowRepository() const;
 	ChatImageRequestService * chatImageRequestService() const;

@@ -52,7 +52,7 @@ DockingNotify::DockingNotify(QObject *parent) :
 	createDefaultConfiguration();
 
 	Core::instance()->notificationManager()->registerNotifier(this);
-	connect(DockingManager::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+	connect(Docking::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 
 	kdebugf2();
 }

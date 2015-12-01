@@ -24,16 +24,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QTextDocument>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMenu>
+#include "docking.h"
+
+#include "docking-menu-action-repository.h"
+#include "docking-menu-handler.h"
+#include "status-notifier-item.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/kadu-window.h"
@@ -44,108 +45,66 @@
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
+#include "provider/default-provider.h"
 #include "notification/notification-service.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "activate.h"
+#include "attention-service.h"
 #include "debug.h"
 
-#ifdef Q_OS_MAC
-#include "notification/notification-service.h"
-#include "mac_docking_helper.h"
-extern void qt_mac_set_dock_menu(QMenu *);
-#endif
+#include <QtCore/QTimer>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QTextDocument>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMenu>
 
-#include <gui/status-icon.h>
-#include "docking.h"
-#include "status-notifier-item.h"
+Docking * Docking::Instance = 0;
 
-DockingManager * DockingManager::Instance = 0;
-
-void DockingManager::createInstance()
+void Docking::createInstance()
 {
 	if (!Instance)
 	{
-		Instance = new DockingManager();
+		Instance = new Docking();
 		Instance->init();
 	}
-#ifdef Q_OS_MAC
-	MacDockingHelper::instance();
-#endif
 }
 
-void DockingManager::destroyInstance()
+void Docking::destroyInstance()
 {
-#ifdef Q_OS_MAC
-	MacDockingHelper::destroyInstance();
-#endif
 	delete Instance;
 	Instance = 0;
 }
 
-DockingManager * DockingManager::instance()
+Docking * Docking::instance()
 {
 	return Instance;
 }
 
-DockingManager::DockingManager() :
-		DockMenuNeedsUpdate(true), AllAccountsMenu(0),
+Docking::Docking() :
 		newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
 
-	createDefaultConfiguration();
+	m_dockingMenuActionRepository = new DockingMenuActionRepository{this};
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	KaduWindowLastTimeVisible = true;
-#endif
+	createDefaultConfiguration();
 
 	Icon = new StatusIcon(StatusContainerManager::instance(), this);
 	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(statusIconChanged(KaduIcon)));
 
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)),
-	        this, SLOT(unreadMessageAdded()));
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)),
-	        this, SLOT(unreadMessageRemoved()));
+	connect(Core::instance()->attentionService(), SIGNAL(needAttentionChanged(bool)),
+	        this, SLOT(needAttentionChanged(bool)));
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 
-	DockMenu = new QMenu();
-	DockMenu->setSeparatorsCollapsible(true);
-	connect(DockMenu, SIGNAL(aboutToShow()), this, SLOT(contextMenuAboutToBeShown()));
-
-#ifdef Q_OS_MAC
-	MacDockMenu = new QMenu();
-	qt_mac_set_dock_menu(MacDockMenu);
-	MacDockMenu->setSeparatorsCollapsible(true);
-#endif
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	ShowKaduAction = new QAction(tr("&Restore"), this);
-	connect(ShowKaduAction, SIGNAL(triggered()), this, SLOT(showKaduWindow()));
-
-	HideKaduAction = new QAction(tr("&Minimize"), this);
-	connect(HideKaduAction, SIGNAL(triggered()), this, SLOT(hideKaduWindow()));
-#endif
-
-	CloseKaduAction = new QAction(KaduIcon("application-exit").icon(), tr("&Exit Kadu"), this);
-	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-
 	configurationUpdated();
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	/* Fill context menu for the first time. It seems that Ubuntu panels, when at bottom
-	 * of the screen, set maximum height for menus to what their height was when they
-	 * were clicked for the first time. And normally we fill the menu in response to
-	 * click. See Kadu bug #2627. */
-	doUpdateContextMenu();
-#endif
 
 	changeIcon();
 	defaultToolTip();
@@ -157,14 +116,21 @@ DockingManager::DockingManager() :
 	kdebugf2();
 }
 
-void DockingManager::init()
+void Docking::init()
 {
 	m_statusNotifierItem = new StatusNotifierItem{this};
 	connect(m_statusNotifierItem, SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
+	m_statusNotifierItem->setAssociatedWidget(Core::instance()->mainWindowProvider()->provide());
+	m_statusNotifierItem->setIcon(defaultIcon());
 
+	m_dockingMenuHandler = new DockingMenuHandler{m_statusNotifierItem->contextMenu(), this};
+	m_dockingMenuHandler->setDockingMenuActionRepository(m_dockingMenuActionRepository);
+	m_dockingMenuHandler->setIconsManager(IconsManager::instance());
+	m_dockingMenuHandler->setNotificationService(Core::instance()->notificationService());
+	m_dockingMenuHandler->setStatusContainerManager(StatusContainerManager::instance());
 }
 
-DockingManager::~DockingManager()
+Docking::~Docking()
 {
 	kdebugf();
 
@@ -174,16 +140,18 @@ DockingManager::~DockingManager()
 
 	icon_timer->stop();
 
-	//qt4_docking KStatusNotifierItem will take care of this
-	//delete DockMenu;
-	DockMenu = 0;
 #ifdef Q_OS_MAC
 	delete MacDockMenu;
 	MacDockMenu = 0;
 #endif
 }
 
-void DockingManager::changeIcon()
+DockingMenuActionRepository * Docking::dockingMenuActionRepository() const
+{
+	return m_dockingMenuActionRepository;
+}
+
+void Docking::changeIcon()
 {
 	kdebugf();
 	if (!Core::instance()->unreadMessageRepository()->hasUnreadMessages() && !icon_timer->isActive())
@@ -195,19 +163,19 @@ void DockingManager::changeIcon()
 			m_statusNotifierItem->changeTrayMovie(KaduIcon("protocols/common/message_anim", "16x16").fullPath());
 			break;
 		case StaticEnvelope:
-			m_statusNotifierItem->changeTrayIcon(KaduIcon("protocols/common/message"));
+			m_statusNotifierItem->setIcon(KaduIcon("protocols/common/message"));
 			break;
 		case BlinkingEnvelope:
 			if (!blink)
 			{
-				m_statusNotifierItem->changeTrayIcon(KaduIcon("protocols/common/message"));
+				m_statusNotifierItem->setIcon(KaduIcon("protocols/common/message"));
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = true;
 			}
 			else
 			{
-				m_statusNotifierItem->changeTrayIcon(StatusContainerManager::instance()->statusIcon());
+				m_statusNotifierItem->setIcon(StatusContainerManager::instance()->statusIcon());
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -217,27 +185,12 @@ void DockingManager::changeIcon()
 	}
 }
 
-void DockingManager::unreadMessageAdded()
+void Docking::needAttentionChanged(bool needAttention)
 {
-	changeIcon();
-#ifdef Q_OS_MAC
-	MacDockingHelper::instance()->overlay(MessageManager::instance()->unreadMessagesCount());
-	if (!Core::instance()->notificationService()->silentMode())
-		MacDockingHelper::instance()->startBounce();
-#endif
+	m_statusNotifierItem->setNeedAttention(needAttention);
 }
 
-void DockingManager::unreadMessageRemoved()
-{
-#ifdef Q_OS_MAC
-	MacDockingHelper::instance()->overlay(MessageManager::instance()->unreadMessagesCount());
-	MacDockingHelper::instance()->stopBounce();
-#endif
-	if (!Core::instance()->unreadMessageRepository()->hasUnreadMessages())
-		m_statusNotifierItem->changeTrayIcon(defaultIcon());
-}
-
-QList<StatusPair> DockingManager::getStatuses() const
+QList<StatusPair> Docking::getStatuses() const
 {
 	QList<StatusPair> statusesList;
 
@@ -265,7 +218,7 @@ QList<StatusPair> DockingManager::getStatuses() const
 	return statusesList;
 }
 
-QList<DescriptionPair> DockingManager::getDescriptions() const
+QList<DescriptionPair> Docking::getDescriptions() const
 {
 	QList<DescriptionPair> descriptionsList;
 
@@ -286,7 +239,7 @@ QList<DescriptionPair> DockingManager::getDescriptions() const
 	return descriptionsList;
 }
 
-QString DockingManager::prepareDescription(const QString &description) const
+QString Docking::prepareDescription(const QString &description) const
 {
 	QColor color = qApp->palette().windowText().color();
 	color.setAlpha(128);
@@ -298,7 +251,7 @@ QString DockingManager::prepareDescription(const QString &description) const
 	return html;
 }
 
-void DockingManager::defaultToolTip()
+void Docking::defaultToolTip()
 {
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"))
 	{
@@ -389,25 +342,13 @@ void DockingManager::defaultToolTip()
 	}
 }
 
-void DockingManager::showKaduWindow()
+void Docking::openUnreadMessages()
 {
-	_activateWindow(Core::instance()->kaduWindow());
-}
-
-void DockingManager::hideKaduWindow()
-{
-	KaduWindow *kaduWindow = Core::instance()->kaduWindow();
-	if (kaduWindow->docked())
-		kaduWindow->window()->hide();
-}
-
-void DockingManager::openUnreadMessages()
-{
-	const Message &message = Core::instance()->unreadMessageRepository()->unreadMessage();
+	auto message = Core::instance()->unreadMessageRepository()->unreadMessage();
 	Core::instance()->chatWidgetManager()->openChat(message.messageChat(), OpenChatActivation::Activate);
 }
 
-void DockingManager::trayMousePressEvent(QMouseEvent * e)
+void Docking::trayMousePressEvent(QMouseEvent * e)
 {
 	kdebugf();
 	if (e->button() == Qt::MidButton)
@@ -454,14 +395,14 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	kdebugf2();
 }
 
-void DockingManager::statusIconChanged(const KaduIcon &icon)
+void Docking::statusIconChanged(const KaduIcon &icon)
 {
 	kdebugf();
 
 	if (Core::instance()->unreadMessageRepository()->hasUnreadMessages() || icon_timer->isActive())
 		return;
 
-	m_statusNotifierItem->changeTrayIcon(icon);
+	m_statusNotifierItem->setIcon(icon);
 
 	defaultToolTip();
 #ifdef Q_OS_MAC
@@ -469,146 +410,17 @@ void DockingManager::statusIconChanged(const KaduIcon &icon)
 #endif
 }
 
-void DockingManager::searchingForTrayPosition(QPoint &point)
+void Docking::searchingForTrayPosition(QPoint &point)
 {
 	point = m_statusNotifierItem->trayPosition();
 }
 
-KaduIcon DockingManager::defaultIcon()
+KaduIcon Docking::defaultIcon()
 {
 	return StatusContainerManager::instance()->statusIcon();
 }
 
-void DockingManager::contextMenuAboutToBeShown()
-{
-	if (DockMenuNeedsUpdate
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-			|| Core::instance()->kaduWindow()->window()->isVisible() != KaduWindowLastTimeVisible
-#endif
-			)
-		doUpdateContextMenu();
-}
-
-void DockingManager::updateContextMenu()
-{
-	DockMenuNeedsUpdate = true;
-}
-
-void DockingManager::doUpdateContextMenu()
-{
-	if (AllAccountsMenu)
-	{
-		AllAccountsMenu->deleteLater();
-		AllAccountsMenu = 0;
-	}
-
-	DockMenu->clear();
-#ifdef Q_OS_MAC
-	MacDockMenu->clear();
-#endif
-
-	qDeleteAll(StatusContainerMenus.values());
-	StatusContainerMenus.clear();
-
-	int statusContainersCount = StatusContainerManager::instance()->statusContainers().count();
-
-	if (1 == statusContainersCount)
-	{
-		AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), false, DockMenu);
-#ifdef Q_OS_MAC
-		AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), false, MacDockMenu);
-#endif
-		connect(AllAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(updateContextMenu()));
-	}
-	else
-	{
-		foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
-		{
-			QMenu *menu = new QMenu(container->statusContainerName(), DockMenu);
-			menu->setIcon(container->statusIcon().icon());
-			new StatusMenu(container, false, menu);
-			StatusContainerMenus[container] = DockMenu->addMenu(menu);
-			connect(container, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(containerStatusChanged(StatusContainer *)));
-		}
-
-		if (statusContainersCount > 1)
-			containersSeparator = DockMenu->addSeparator();
-
-		if (statusContainersCount > 0)
-		{
-			AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), true, DockMenu);
-#ifdef Q_OS_MAC
-			AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), true, MacDockMenu);
-#endif
-			connect(AllAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(updateContextMenu()));
-		}
-	}
-
-	if (!ModulesActions.isEmpty())
-	{
-		DockMenu->addSeparator();
-
-		foreach (QAction *action, ModulesActions)
-			DockMenu->addAction(action);
-	}
-
-	DockMenu->addSeparator();
-
-	SilentModeAction = new QAction(KaduIcon("kadu_icons/enable-notifications").icon(), tr("Silent mode"), this);
-	SilentModeAction->setCheckable(true);
-	SilentModeAction->setChecked(Core::instance()->notificationService()->silentMode());
-	connect(SilentModeAction, SIGNAL(triggered(bool)), this, SLOT(silentModeToggled(bool)));
-	connect(Core::instance()->notificationService(), SIGNAL(silentModeToggled(bool)), SilentModeAction, SLOT(setChecked(bool)));
-	DockMenu->addAction(SilentModeAction);
-
-	DockMenu->addSeparator();
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	KaduWindowLastTimeVisible = Core::instance()->kaduWindow()->window()->isVisible();
-	DockMenu->addAction(KaduWindowLastTimeVisible ? HideKaduAction : ShowKaduAction);
-#endif
-	DockMenu->addAction(CloseKaduAction);
-
-	DockMenuNeedsUpdate = false;
-}
-
-void DockingManager::silentModeToggled(bool enabled)
-{
-	Core::instance()->notificationService()->setSilentMode(enabled);
-}
-
-void DockingManager::containerStatusChanged(StatusContainer *container)
-{
-	if (StatusContainerMenus[container])
-		StatusContainerMenus[container]->setIcon(container->statusIcon().icon());
-}
-
-void DockingManager::iconThemeChanged()
-{
-	QMapIterator<StatusContainer *, QAction *> i(StatusContainerMenus);
-	while (i.hasNext())
-	{
-		i.next();
-		if (i.value() && i.key())
-			i.value()->setIcon(i.key()->statusIcon().icon());
-	}
-}
-
-void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)
-{
-	Q_UNUSED(statusContainer)
-
-	updateContextMenu();
-}
-
-void DockingManager::statusContainerUnregistered(StatusContainer *statusContainer)
-{
-	Q_UNUSED(statusContainer)
-
-	updateContextMenu();
-}
-
-void DockingManager::configurationUpdated()
+void Docking::configurationUpdated()
 {
 	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"))
 		defaultToolTip();
@@ -625,39 +437,21 @@ void DockingManager::configurationUpdated()
 	}
 }
 
-void DockingManager::createDefaultConfiguration()
+void Docking::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "RunDocked", false);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowTooltipInTray", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 0);
 }
 
-void DockingManager::registerModuleAction(QAction *action)
-{
-	if (ModulesActions.contains(action))
-		return;
-
-	ModulesActions.append(action);
-	updateContextMenu();
-}
-
-void DockingManager::unregisterModuleAction(QAction *action)
-{
-	if (!ModulesActions.contains(action))
-		return;
-
-	ModulesActions.removeAll(action);
-	updateContextMenu();
-}
-
 #ifdef Q_OS_MAC
-void DockingManager::showMinimizedChats()
+void Docking::showMinimizedChats()
 {
 	foreach (ChatWidget *chat, Core::instance()->chatWidgetManager()->chats())
 		chat->activate();
 }
 
-void DockingManager::dockIconClicked()
+void Docking::dockIconClicked()
 {
 	QWidget *kadu = Core::instance()->kaduWindow()->window();
 
@@ -687,5 +481,15 @@ void DockingManager::dockIconClicked()
 	return;
 }
 #endif
+
+void Docking::showKaduWindow()
+{
+	_activateWindow(Core::instance()->kaduWindow());
+}
+
+void Docking::hideKaduWindow()
+{
+	Core::instance()->kaduWindow()->window()->hide();
+}
 
 #include "moc_docking.cpp"
