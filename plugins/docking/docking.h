@@ -23,72 +23,22 @@
 
 #pragma once
 
-#include <QtCore/QMap>
-#include <QtWidgets/QLabel>
-
-#include "configuration/configuration-aware-object.h"
-#include "status/status-type.h"
-
 #include "docking-exports.h"
 
-class QAction;
-class QMenu;
+#include "misc/memory.h"
 
-class Docker;
-class KaduIcon;
-class StatusContainer;
-class StatusIcon;
-class StatusMenu;
+#include <QtCore/QObject>
 
-typedef QPair<QString,QList<StatusType> > StatusPair;
-typedef QPair<QStringList,QString> DescriptionPair;
-
+class DockingConfigurationProvider;
 class DockingMenuActionRepository;
-class DockingMenuHandler;
 class StatusNotifierItem;
 
-class DOCKINGAPI Docking : public QObject, ConfigurationAwareObject
+class KaduIcon;
+
+class DOCKINGAPI Docking final : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Docking)
-
-	static Docking *Instance;
-
-	StatusNotifierItem *m_statusNotifierItem;
-	DockingMenuHandler *m_dockingMenuHandler;
-	DockingMenuActionRepository *m_dockingMenuActionRepository;
-	StatusIcon *Icon;
-
-	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
-	QTimer *icon_timer;
-	bool blink;
-
-	QList<StatusPair> getStatuses() const;
-	QList<DescriptionPair> getDescriptions() const;
-	QString prepareDescription(const QString &description) const;
-	void defaultToolTip();
-
-	void createDefaultConfiguration();
-
-	Docking();
-	void init();
-
-	virtual ~Docking();
-
-	void doUpdateContextMenu(QMenu *menu);
-	void openUnreadMessages();
-	
-	void showKaduWindow();
-	void hideKaduWindow();
-
-private slots:
-	void statusIconChanged(const KaduIcon &icon);
-	void changeIcon();
-	void needAttentionChanged(bool needAttention);
-	void searchingForTrayPosition(QPoint &point);
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	static void createInstance();
@@ -97,13 +47,26 @@ public:
 	
 	DockingMenuActionRepository * dockingMenuActionRepository() const;
 
-	void trayMousePressEvent(QMouseEvent * e);
-	KaduIcon defaultIcon();
-
 signals:
 	void messageClicked();
-	void mousePressMidButton();
-	void mousePressLeftButton();
-	void mousePressRightButton();
+
+private:
+	static Docking *m_instance;
+
+	owned_qptr<DockingConfigurationProvider> m_dockingConfigurationProvider;
+	owned_qptr<DockingMenuActionRepository> m_dockingMenuActionRepository;
+	owned_qptr<StatusNotifierItem> m_statusNotifierItem;
+
+	Docking();
+	virtual ~Docking();
+
+	void openUnreadMessages();
+
+private slots:
+	void configurationUpdated();
+	void statusIconChanged(const KaduIcon &icon);
+	void needAttentionChanged(bool needAttention);
+	void searchingForTrayPosition(QPoint &point);
+	void activateRequested();
 
 };

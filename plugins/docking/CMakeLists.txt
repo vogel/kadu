@@ -10,11 +10,14 @@ kadu_api_directories (plugins/docking
 )
 
 set (SOURCES
+	docking-configuration-provider.cpp
 	docking-menu-action-repository.cpp
 	docking-menu-handler.cpp
 	docking-plugin.cpp
+	docking-tooltip-handler.cpp
 	docking.cpp
 	status-notifier-item.cpp
+	status-notifier-item-attention-blinker.cpp
 )
 
 set (CONFIGURATION_FILES

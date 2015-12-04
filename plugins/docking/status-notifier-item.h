@@ -22,10 +22,14 @@
 
 #include "docking-exports.h"
 
+#include "misc/memory.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 
+enum class StatusNotifierItemAttentionMode;
 class KaduIcon;
+class StatusNotifierItemAttentionBlinker;
 
 class QMenu;
 class QMovie;
@@ -39,21 +43,36 @@ public:
 	explicit StatusNotifierItem(QObject *parent = nullptr);
 	virtual ~StatusNotifierItem();
 
-	void setAssociatedWidget(QWidget *widget);
-	void setIcon(const KaduIcon &icon);
+	void setAttentionMode(StatusNotifierItemAttentionMode attentionMode);
 	void setNeedAttention(bool needAttention);
 
-	void changeTrayMovie(const QString &moviePath);
-	void changeTrayTooltip(const QString &tooltip);
+	void setAttentionIcon(const QString &attentionIconPath);
+	void setAttentionMovie(const QString &attentionMoviePath);
+	void setIcon(const QString &iconPath);
+	void setTooltip(const QString &tooltip);
+
 	QPoint trayPosition();
 
 	QMenu * contextMenu();
 
 signals:
+	void activateRequested();
 	void messageClicked();
 
 private:
-	KStatusNotifierItem *m_statusNotifierItem;
+	StatusNotifierItemAttentionMode m_attentionMode;
+	bool m_needAttention;
+	QString m_attentionIconPath;
+	QString m_attentionMoviePath;
+	QString m_iconPath;
+
+	owned_qptr<KStatusNotifierItem> m_statusNotifierItem;
+	not_owned_qptr<StatusNotifierItemAttentionBlinker> m_blinker;
+
+	void updateAttention();
+	bool shouldBlink();
+	void startBlinking();
+	void stopBlinking();
 
 private slots:
 	//void trayActivated(QSystemTrayIcon::ActivationReason reason);
