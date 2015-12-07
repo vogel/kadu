@@ -28,24 +28,24 @@
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
+#include <QtWidgets/QSystemTrayIcon>
 
 class DockingConfigurationProvider;
 class DockingMenuActionRepository;
 class StatusNotifierItem;
 
-class KaduIcon;
-
 class DOCKINGAPI Docking final : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(Docking)
 
 public:
 	static void createInstance();
 	static void destroyInstance();
 	static Docking * instance();
-	
+
 	DockingMenuActionRepository * dockingMenuActionRepository() const;
+
+	void showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs);
 
 signals:
 	void messageClicked();
@@ -64,7 +64,6 @@ private:
 
 private slots:
 	void configurationUpdated();
-	void statusIconChanged(const KaduIcon &icon);
 	void needAttentionChanged(bool needAttention);
 	void searchingForTrayPosition(QPoint &point);
 	void activateRequested();

@@ -19,25 +19,25 @@
 
 #pragma once
 
+#include "status-notifier-item-attention.h"
+
 #include "misc/memory.h"
 
-#include <QtCore/QObject>
-
-class KStatusNotifierItem;
+class QSystemTrayIcon;
 class QTimer;
 
-class StatusNotifierItemAttentionBlinker : public QObject
+class StatusNotifierItemAttentionBlinker : public StatusNotifierItemAttention
 {
 	Q_OBJECT
 	
 public:
-	explicit StatusNotifierItemAttentionBlinker(QString normalIcon, QString blinkIcon, KStatusNotifierItem *statusNotifierItem, QObject *parent = nullptr);
+	explicit StatusNotifierItemAttentionBlinker(QString normalIcon, QString blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
 	virtual ~StatusNotifierItemAttentionBlinker();
 
 private:
 	QString m_normalIcon;
 	QString m_blinkIcon;
-	KStatusNotifierItem *m_statusNotifierItem;
+	QSystemTrayIcon *m_systemTrayIcon;
 
 	owned_qptr<QTimer> m_timer;
 	bool m_blink;

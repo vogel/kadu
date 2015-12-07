@@ -17,35 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "status-notifier-item-attention-animator.h"
 
-#include "status/status-type.h"
+#include <QtGui/QMovie>
+#include <QtWidgets/QSystemTrayIcon>
 
-#include <QtCore/QObject>
-
-class DockingConfigurationProvider;
-class StatusContainerManager;
-class StatusNotifierItem;
-
-class DockingTooltipHandler final : public QObject
+StatusNotifierItemAttentionAnimator::StatusNotifierItemAttentionAnimator(QString moviePath, QSystemTrayIcon *systemTrayIcon, QObject *parent) :
+		StatusNotifierItemAttention{parent},
+		m_systemTrayIcon{systemTrayIcon}
 {
-	Q_OBJECT
+	m_movie = make_owned<QMovie>(this);
+	m_movie->setFileName(moviePath);
+	connect(m_movie.get(), SIGNAL(updated(QRect)), this, SLOT(frameChanged()));
+	m_movie->start();
+}
 
-public:
-	explicit DockingTooltipHandler(StatusNotifierItem *statusNotifierItem, QObject *parent = nullptr);
-	virtual ~DockingTooltipHandler();
+StatusNotifierItemAttentionAnimator::~StatusNotifierItemAttentionAnimator()
+{
+}
 
-	void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
-	void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+void StatusNotifierItemAttentionAnimator::frameChanged()
+{
+	m_systemTrayIcon->setIcon(m_movie->currentPixmap());
+}
 
-public slots:
-	void updateTooltip();
-
-private:
-	DockingConfigurationProvider *m_dockingConfigurationProvider;
-	StatusContainerManager *m_statusContainerManager;
-	StatusNotifierItem *m_statusNotifierItem;
-
-	QString tooltip() const;
-
-};
+#include "moc_status-notifier-item-attention-animator.cpp"

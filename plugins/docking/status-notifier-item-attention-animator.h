@@ -19,33 +19,26 @@
 
 #pragma once
 
-#include "status/status-type.h"
+#include "status-notifier-item-attention.h"
 
-#include <QtCore/QObject>
+#include "misc/memory.h"
 
-class DockingConfigurationProvider;
-class StatusContainerManager;
-class StatusNotifierItem;
+class QMovie;
+class QSystemTrayIcon;
 
-class DockingTooltipHandler final : public QObject
+class StatusNotifierItemAttentionAnimator : public StatusNotifierItemAttention
 {
 	Q_OBJECT
-
+	
 public:
-	explicit DockingTooltipHandler(StatusNotifierItem *statusNotifierItem, QObject *parent = nullptr);
-	virtual ~DockingTooltipHandler();
-
-	void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
-	void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-
-public slots:
-	void updateTooltip();
+	explicit StatusNotifierItemAttentionAnimator(QString moviePath, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
+	virtual ~StatusNotifierItemAttentionAnimator();
 
 private:
-	DockingConfigurationProvider *m_dockingConfigurationProvider;
-	StatusContainerManager *m_statusContainerManager;
-	StatusNotifierItem *m_statusNotifierItem;
+	QSystemTrayIcon *m_systemTrayIcon;
+	owned_qptr<QMovie> m_movie;
 
-	QString tooltip() const;
+private slots:
+	void frameChanged();
 
 };

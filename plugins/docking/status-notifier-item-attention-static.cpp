@@ -17,35 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "status-notifier-item-attention-static.h"
 
-#include "status/status-type.h"
+#include <QtWidgets/QSystemTrayIcon>
 
-#include <QtCore/QObject>
-
-class DockingConfigurationProvider;
-class StatusContainerManager;
-class StatusNotifierItem;
-
-class DockingTooltipHandler final : public QObject
+StatusNotifierItemAttentionStatic::StatusNotifierItemAttentionStatic(QString iconPath, QSystemTrayIcon *systemTrayIcon, QObject *parent) :
+		StatusNotifierItemAttention{parent}
 {
-	Q_OBJECT
+	systemTrayIcon->setIcon(QIcon::fromTheme(iconPath));
+}
 
-public:
-	explicit DockingTooltipHandler(StatusNotifierItem *statusNotifierItem, QObject *parent = nullptr);
-	virtual ~DockingTooltipHandler();
+StatusNotifierItemAttentionStatic::~StatusNotifierItemAttentionStatic()
+{
+}
 
-	void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
-	void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-
-public slots:
-	void updateTooltip();
-
-private:
-	DockingConfigurationProvider *m_dockingConfigurationProvider;
-	StatusContainerManager *m_statusContainerManager;
-	StatusNotifierItem *m_statusNotifierItem;
-
-	QString tooltip() const;
-
-};
+#include "moc_status-notifier-item-attention-static.cpp"

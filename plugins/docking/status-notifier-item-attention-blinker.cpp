@@ -19,14 +19,14 @@
 
 #include "status-notifier-item-attention-blinker.h"
 
-#include <KStatusNotifierItem>
 #include <QtCore/QTimer>
+#include <QtWidgets/QSystemTrayIcon>
 
-StatusNotifierItemAttentionBlinker::StatusNotifierItemAttentionBlinker(QString normalIcon, QString blinkIcon, KStatusNotifierItem *statusNotifierItem, QObject *parent) :
-		QObject{parent},
+StatusNotifierItemAttentionBlinker::StatusNotifierItemAttentionBlinker(QString normalIcon, QString blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent) :
+		StatusNotifierItemAttention{parent},
 		m_normalIcon{std::move(normalIcon)},
 		m_blinkIcon{std::move(blinkIcon)},
-		m_statusNotifierItem{statusNotifierItem},
+		m_systemTrayIcon{systemTrayIcon},
 		m_timer{make_owned<QTimer>(this)},
 		m_blink{false}
 {
@@ -37,13 +37,13 @@ StatusNotifierItemAttentionBlinker::StatusNotifierItemAttentionBlinker(QString n
 StatusNotifierItemAttentionBlinker::~StatusNotifierItemAttentionBlinker()
 {
 	m_timer.get()->stop();
-	m_statusNotifierItem->setIconByName(m_normalIcon);
+	m_systemTrayIcon->setIcon(QIcon::fromTheme(m_normalIcon));
 }
 
 void StatusNotifierItemAttentionBlinker::timeout()
 {
 	m_blink = !m_blink;
-	m_statusNotifierItem->setIconByName(m_blink ? m_blinkIcon : m_normalIcon);
+	m_systemTrayIcon->setIcon(QIcon::fromTheme(m_blink ? m_blinkIcon : m_normalIcon));
 }
 
 #include "moc_status-notifier-item-attention-blinker.cpp"

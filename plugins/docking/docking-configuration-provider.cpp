@@ -29,6 +29,7 @@ DockingConfigurationProvider::DockingConfigurationProvider(QObject *parent) :
 		QObject{parent}
 {
 	createDefaultConfiguration();
+	configurationUpdated();
 }
 
 DockingConfigurationProvider::~DockingConfigurationProvider()

@@ -109,14 +109,14 @@ void DockingNotify::notify(Notification *notification)
 
 	notification->acquire(this);
 
-	//unsigned int timeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
-	//unsigned int icon = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
-	//QString title = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
-	//QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
+	unsigned int timeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
+	unsigned int icon = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
+	QString title = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
+	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
 
-	//Qt4TrayIcon::instance()->showMessage(parseText(title, notification, notification->text()),
-	//	parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
-	//	(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
+	Docking::instance()->showMessage(parseText(title, notification, notification->text()),
+		parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
+		(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 
 	notification->release(this);
 
@@ -125,6 +125,7 @@ void DockingNotify::notify(Notification *notification)
 
 void DockingNotify::messageClicked()
 {
+	printf("message clicked\n");
 	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 }
 

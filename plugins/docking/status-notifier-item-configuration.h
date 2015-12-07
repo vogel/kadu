@@ -19,33 +19,14 @@
 
 #pragma once
 
-#include "status/status-type.h"
+#include "status-notifier-item-attention-mode.h"
 
-#include <QtCore/QObject>
+#include <QtCore/QString>
 
-class DockingConfigurationProvider;
-class StatusContainerManager;
-class StatusNotifierItem;
-
-class DockingTooltipHandler final : public QObject
+struct StatusNotifierItemConfiguration
 {
-	Q_OBJECT
-
-public:
-	explicit DockingTooltipHandler(StatusNotifierItem *statusNotifierItem, QObject *parent = nullptr);
-	virtual ~DockingTooltipHandler();
-
-	void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
-	void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-
-public slots:
-	void updateTooltip();
-
-private:
-	DockingConfigurationProvider *m_dockingConfigurationProvider;
-	StatusContainerManager *m_statusContainerManager;
-	StatusNotifierItem *m_statusNotifierItem;
-
-	QString tooltip() const;
-
+	StatusNotifierItemAttentionMode AttentionMode = StatusNotifierItemAttentionMode::BlinkingIcon;
+	QString AttentionIcon;
+	QString AttentionMovie;
+	QString Icon;
 };

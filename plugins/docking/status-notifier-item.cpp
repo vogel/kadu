@@ -20,130 +20,67 @@
 
 #include "status-notifier-item.h"
 
+#include "status-notifier-item-attention-animator.h"
 #include "status-notifier-item-attention-blinker.h"
 #include "status-notifier-item-attention-mode.h"
+#include "status-notifier-item-attention-static.h"
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "icons/kadu-icon.h"
-#include "exports.h"
 
-#include <KStatusNotifierItem>
-#include <QtCore/QEvent>
 #include <QtGui/QIcon>
-#include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
 #include <QtWidgets/QMenu>
 
-/**
- * @ingroup docking
- * @{
- */
-
 StatusNotifierItem::StatusNotifierItem(QObject *parent) :
 		QObject{parent},
-		m_attentionMode{StatusNotifierItemAttentionMode::BlinkingIcon},
 		m_needAttention{false}
 {
-	m_statusNotifierItem = make_owned<KStatusNotifierItem>(this);
-	m_statusNotifierItem->setCategory(KStatusNotifierItem::Communications);
-	m_statusNotifierItem->setContextMenu(new QMenu{});
-	m_statusNotifierItem->setStandardActionsEnabled(false);
-	m_statusNotifierItem->setStatus(KStatusNotifierItem::Active);
-	m_statusNotifierItem->setTitle("Kadu");
+	m_systemTrayIcon = make_owned<QSystemTrayIcon>(this);
+	m_systemTrayIcon->setContextMenu(new QMenu{});
+	m_systemTrayIcon->show();
 
-	connect(m_statusNotifierItem.get(), SIGNAL(activateRequested(bool,QPoint)), this, SIGNAL(activateRequested()));
+	connect(m_systemTrayIcon.get(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SIGNAL(activateRequested()));
+	connect(m_systemTrayIcon.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 }
 
 StatusNotifierItem::~StatusNotifierItem()
 {
 }
 
-void StatusNotifierItem::setAttentionMode(StatusNotifierItemAttentionMode attentionMode)
+void StatusNotifierItem::setConfiguration(StatusNotifierItemConfiguration configuration)
 {
-	m_attentionMode = attentionMode;
+	m_configuration = std::move(configuration);
+	updateAttention();
 }
 
 void StatusNotifierItem::setNeedAttention(bool needAttention)
 {
 	m_needAttention = needAttention;
-
-	updateAttention();
-}
-
-void StatusNotifierItem::setAttentionIcon(const QString &attentionIconPath)
-{
-	m_attentionIconPath = attentionIconPath;
-
-	updateAttention();
-}
-
-void StatusNotifierItem::setAttentionMovie(const QString &attentionMoviePath)
-{
-	m_attentionMoviePath = attentionMoviePath;
-
-	updateAttention();
-}
-
-void StatusNotifierItem::setIcon(const QString &iconPath)
-{
-	m_iconPath = iconPath;
-	m_statusNotifierItem->setIconByName(iconPath);
-
 	updateAttention();
 }
 
 void StatusNotifierItem::updateAttention()
 {
-	m_statusNotifierItem->setAttentionMovieByName({});
-	m_statusNotifierItem->setAttentionIconByName({});
+	m_attention.reset();
 
-	auto blink = false;
-	switch (m_attentionMode)
+	if (!m_needAttention)
 	{
-		case StatusNotifierItemAttentionMode::StaticIcon:
-			m_statusNotifierItem->setAttentionIconByName(m_attentionIconPath);
-			break;
-		case StatusNotifierItemAttentionMode::Movie:
-			m_statusNotifierItem->setAttentionMovieByName(m_attentionMoviePath);
-			break;
-		default:
-			m_statusNotifierItem->setStatus(KStatusNotifierItem::Active);
-			blink = m_needAttention;
-			break;
+		m_systemTrayIcon->setIcon(QIcon::fromTheme(m_configuration.Icon));
+		return;
 	}
 
-	if (blink)
-		startBlinking();
-	else
-		stopBlinking();
-
-	m_statusNotifierItem->setStatus(!blink && m_needAttention
-			? KStatusNotifierItem::NeedsAttention
-			: KStatusNotifierItem::Active);
-}
-
-bool StatusNotifierItem::shouldBlink()
-{
-	if (m_statusNotifierItem->status() != KStatusNotifierItem::NeedsAttention)
-		return false;
-
-	if (m_attentionMode != StatusNotifierItemAttentionMode::BlinkingIcon)
-		return false;
-
-	return true;
-}
-
-void StatusNotifierItem::startBlinking()
-{
-	if (!m_blinker.get())
-		m_blinker = make_not_owned<StatusNotifierItemAttentionBlinker>(m_iconPath, m_attentionIconPath, m_statusNotifierItem.get());
-}
-
-void StatusNotifierItem::stopBlinking()
-{
-	m_blinker.reset();
+	switch (m_configuration.AttentionMode)
+	{
+		case StatusNotifierItemAttentionMode::StaticIcon:
+			m_attention = new StatusNotifierItemAttentionStatic{m_configuration.AttentionIcon, m_systemTrayIcon.get()};
+			break;
+		case StatusNotifierItemAttentionMode::Movie:
+			m_attention = new StatusNotifierItemAttentionAnimator{m_configuration.AttentionMovie, m_systemTrayIcon.get()};
+			break;
+		default:
+			m_attention = new StatusNotifierItemAttentionBlinker{m_configuration.Icon, m_configuration.AttentionIcon, m_systemTrayIcon.get()};
+			break;
+	}
 }
 
 void StatusNotifierItem::setTooltip(const QString &tooltip)
@@ -154,26 +91,29 @@ void StatusNotifierItem::setTooltip(const QString &tooltip)
 	auto truncatedTooltip = tooltip.length() > maxTooltipLength
 			? tooltip.left(maxTooltipLength - 3) + QLatin1String{"..."}
 			: tooltip;
-	m_statusNotifierItem->setToolTipSubTitle(truncatedTooltip);
+	m_systemTrayIcon->setToolTip(truncatedTooltip);
 #else
-	m_statusNotifierItem->setToolTipSubTitle(tooltip);
+	m_systemTrayIcon->setToolTip(tooltip);
 #endif
+}
+
+void StatusNotifierItem::showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs)
+{
+	m_systemTrayIcon->showMessage(std::move(title), std::move(message), icon, msecs);
 }
 
 QPoint StatusNotifierItem::trayPosition()
 {
-	//QRect rect = geometry();
-	//if (rect.isValid())
-	//	lastPosition = QPoint(rect.x(), rect.y());
+	auto rect = m_systemTrayIcon->geometry();
+	if (rect.isValid())
+		m_systemTrayLastPosition = rect.topLeft();
 
-	return QPoint{};
+	return m_systemTrayLastPosition;
 }
 
 QMenu * StatusNotifierItem::contextMenu()
 {
-	return m_statusNotifierItem->contextMenu();
+	return m_systemTrayIcon->contextMenu();
 }
-
-/** @} */
 
 #include "moc_status-notifier-item.cpp"

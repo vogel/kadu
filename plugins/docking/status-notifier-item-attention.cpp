@@ -17,35 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "status-notifier-item-attention.h"
 
-#include "status/status-type.h"
-
-#include <QtCore/QObject>
-
-class DockingConfigurationProvider;
-class StatusContainerManager;
-class StatusNotifierItem;
-
-class DockingTooltipHandler final : public QObject
+StatusNotifierItemAttention::StatusNotifierItemAttention(QObject *parent) :
+		QObject{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	explicit DockingTooltipHandler(StatusNotifierItem *statusNotifierItem, QObject *parent = nullptr);
-	virtual ~DockingTooltipHandler();
+StatusNotifierItemAttention::~StatusNotifierItemAttention()
+{
+}
 
-	void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
-	void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-
-public slots:
-	void updateTooltip();
-
-private:
-	DockingConfigurationProvider *m_dockingConfigurationProvider;
-	StatusContainerManager *m_statusContainerManager;
-	StatusNotifierItem *m_statusNotifierItem;
-
-	QString tooltip() const;
-
-};
+#include "moc_status-notifier-item-attention.cpp"

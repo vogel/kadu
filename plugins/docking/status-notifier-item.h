@@ -21,19 +21,17 @@
 #pragma once
 
 #include "docking-exports.h"
+#include "status-notifier-item-configuration.h"
 
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
+#include <QtWidgets/QSystemTrayIcon>
 
-enum class StatusNotifierItemAttentionMode;
-class KaduIcon;
-class StatusNotifierItemAttentionBlinker;
+class StatusNotifierItemAttention;
 
 class QMenu;
-class QMovie;
-class KStatusNotifierItem;
 
 class DOCKINGAPI StatusNotifierItem final : public QObject
 {
@@ -43,16 +41,13 @@ public:
 	explicit StatusNotifierItem(QObject *parent = nullptr);
 	virtual ~StatusNotifierItem();
 
-	void setAttentionMode(StatusNotifierItemAttentionMode attentionMode);
+	void setConfiguration(StatusNotifierItemConfiguration configuration);
 	void setNeedAttention(bool needAttention);
-
-	void setAttentionIcon(const QString &attentionIconPath);
-	void setAttentionMovie(const QString &attentionMoviePath);
-	void setIcon(const QString &iconPath);
 	void setTooltip(const QString &tooltip);
 
-	QPoint trayPosition();
+	void showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs);
 
+	QPoint trayPosition();
 	QMenu * contextMenu();
 
 signals:
@@ -60,21 +55,12 @@ signals:
 	void messageClicked();
 
 private:
-	StatusNotifierItemAttentionMode m_attentionMode;
+	StatusNotifierItemConfiguration m_configuration;
 	bool m_needAttention;
-	QString m_attentionIconPath;
-	QString m_attentionMoviePath;
-	QString m_iconPath;
-
-	owned_qptr<KStatusNotifierItem> m_statusNotifierItem;
-	not_owned_qptr<StatusNotifierItemAttentionBlinker> m_blinker;
+	QPoint m_systemTrayLastPosition;
+	owned_qptr<QSystemTrayIcon> m_systemTrayIcon;
+	not_owned_qptr<StatusNotifierItemAttention> m_attention;
 
 	void updateAttention();
-	bool shouldBlink();
-	void startBlinking();
-	void stopBlinking();
-
-private slots:
-	//void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 };
