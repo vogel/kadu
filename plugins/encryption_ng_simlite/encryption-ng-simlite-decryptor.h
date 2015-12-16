@@ -21,6 +21,7 @@
 #ifndef ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
 #define ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
 
+#include <QtCore/QDataStream>
 #include <QtCore/QObject>
 #include <QtCrypto>
 

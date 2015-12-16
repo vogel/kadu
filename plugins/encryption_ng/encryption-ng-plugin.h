@@ -21,6 +21,7 @@
 #ifndef ENCRYPTION_NG_PLUGIN_H
 #define ENCRYPTION_NG_PLUGIN_H
 
+#include <QtCore/QDataStream>
 #include <QtCore/QObject>
 
 #include <QtCrypto>

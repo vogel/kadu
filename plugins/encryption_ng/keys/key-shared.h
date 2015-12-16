@@ -21,6 +21,7 @@
 #ifndef KEY_SHARED_H
 #define KEY_SHARED_H
 
+#include <QtCore/QDataStream>
 #include <QtCrypto>
 
 #include "../encryption_exports.h"

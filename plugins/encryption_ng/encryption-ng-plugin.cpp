@@ -21,6 +21,7 @@
  */
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDataStream>
 #include <QtCore/QtGlobal>
 #include <QtWidgets/QApplication>
 #include <QtCrypto>

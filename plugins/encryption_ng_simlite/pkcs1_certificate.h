@@ -25,6 +25,7 @@
 #ifndef PKCS1_CERTIFICATE_H
 #define PKCS1_CERTIFICATE_H
 
+#include <QtCore/QDataStream>
 #include <QtCrypto>
 #include <stdint.h>
 

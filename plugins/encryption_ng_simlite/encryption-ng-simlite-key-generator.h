@@ -20,6 +20,7 @@
 #ifndef ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H
 #define ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H
 
+#include <QtCore/QDataStream>
 #include <QtCore/QtGlobal>
 #include <QtCrypto>
 
