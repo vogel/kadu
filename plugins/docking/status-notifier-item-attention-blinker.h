@@ -23,6 +23,8 @@
 
 #include "misc/memory.h"
 
+#include <QtGui/QIcon>
+
 class QSystemTrayIcon;
 class QTimer;
 
@@ -31,12 +33,12 @@ class StatusNotifierItemAttentionBlinker : public StatusNotifierItemAttention
 	Q_OBJECT
 	
 public:
-	explicit StatusNotifierItemAttentionBlinker(QString normalIcon, QString blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
+	explicit StatusNotifierItemAttentionBlinker(QIcon normalIcon, QIcon blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
 	virtual ~StatusNotifierItemAttentionBlinker();
 
 private:
-	QString m_normalIcon;
-	QString m_blinkIcon;
+	QIcon m_normalIcon;
+	QIcon m_blinkIcon;
 	QSystemTrayIcon *m_systemTrayIcon;
 
 	owned_qptr<QTimer> m_timer;

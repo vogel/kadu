@@ -203,23 +203,26 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\zlib1.dll"
 	File "${BIN_DIR}\libotr-5.dll"
 	File "${BIN_DIR}\libssp-0.dll"
-	File "${BIN_DIR}\icudata53.dll"
-	File "${BIN_DIR}\icui18n53.dll"
-	File "${BIN_DIR}\icuio53.dll"
-	File "${BIN_DIR}\icule53.dll"
-	File "${BIN_DIR}\iculx53.dll"
-	File "${BIN_DIR}\icutest53.dll"
-	File "${BIN_DIR}\icutu53.dll"
-	File "${BIN_DIR}\icuuc53.dll"
+	File "${BIN_DIR}\icudata56.dll"
+	File "${BIN_DIR}\icui18n56.dll"
+	File "${BIN_DIR}\icuio56.dll"
+	File "${BIN_DIR}\icule56.dll"
+	File "${BIN_DIR}\iculx56.dll"
+	File "${BIN_DIR}\icutest56.dll"
+	File "${BIN_DIR}\icutu56.dll"
+	File "${BIN_DIR}\icuuc56.dll"
 	File "${BIN_DIR}\libEGL.dll"
 	File "${BIN_DIR}\libGLESv2.dll"
 	File "${BIN_DIR}\libexslt-0.dll"
+	File "${BIN_DIR}\libfreetype-6.dll"
 	File "${BIN_DIR}\libpcre-1.dll"
 	File "${BIN_DIR}\libpcre16-0.dll"
-	File "${BIN_DIR}\libwebp-4.dll"
+	File "${BIN_DIR}\libwebp-5.dll"
 	File "${BIN_DIR}\libxml2-2.dll"
 	File "${BIN_DIR}\libxslt-1.dll"
 	File "${BIN_DIR}\qxmpp0.dll"
+	File "${BIN_DIR}\libharfbuzz-0.dll"
+	File "${BIN_DIR}\libharfbuzz-icu-0.dll"
 SectionEnd
 
 Section -section_qt
@@ -411,7 +414,6 @@ SectionGroup $(section_plugins) SectionPlugins
 	!insertmacro kadu_plugin cenzor cenzor
 	!insertmacro kadu_plugin chat_notify chat_notify
 	!insertmacro kadu_plugin config_wizard config_wizard
-	!insertmacro kadu_plugin desktop_docking desktop_docking
 	!insertmacro kadu_obligatory_plugin docking docking
 
 	Section emoticons
@@ -426,6 +428,16 @@ SectionGroup $(section_plugins) SectionPlugins
 		; remember to add new themes also to uninstall section
 		SetOutPath "$INSTDIR\themes\emoticons"
 		File /r "${DATA_DIR}\kadu\themes\emoticons\*"
+	SectionEnd
+
+	Section docking_notify
+		SetOverwrite on
+
+		!insertmacro kadu_plugin_desc_file docking_notify
+		!insertmacro kadu_plugin_ui_file docking-notify
+		!insertmacro kadu_plugin_translation_files docking_notify
+		!insertmacro kadu_plugin_data_files docking_notify
+		!insertmacro kadu_plugin_file libdocking_notify
 	SectionEnd
 
 	!insertmacro kadu_obligatory_plugin encryption_ng encryption_ng
@@ -477,17 +489,6 @@ SectionGroup $(section_plugins) SectionPlugins
 	!insertmacro kadu_plugin mediaplayer mediaplayer
 	!insertmacro kadu_plugin pcspeaker pcspeaker
 	!insertmacro kadu_plugin profiles_import profiles_import
-	!insertmacro kadu_plugin qt4_docking qt4_docking
-
-	Section qt4_docking_notify
-		SetOverwrite on
-
-		!insertmacro kadu_plugin_desc_file qt4_docking_notify
-		!insertmacro kadu_plugin_ui_file qt4-docking-notify
-		!insertmacro kadu_plugin_translation_files qt4_docking_notify
-		!insertmacro kadu_plugin_data_files qt4_docking_notify
-		!insertmacro kadu_plugin_file libqt4_docking_notify
-	SectionEnd
 
 	!insertmacro kadu_plugin screenshot screenshot
 	!insertmacro kadu_plugin simpleview simpleview

@@ -28,6 +28,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 #include <QtWidgets/QSystemTrayIcon>
+#include <functional>
 
 class StatusNotifierItemAttention;
 
@@ -42,6 +43,7 @@ public:
 	virtual ~StatusNotifierItem();
 
 	void setConfiguration(StatusNotifierItemConfiguration configuration);
+	void setIconLoader(std::function<QIcon(const QString &)> iconLoader);
 	void setNeedAttention(bool needAttention);
 	void setTooltip(const QString &tooltip);
 
@@ -56,11 +58,15 @@ signals:
 
 private:
 	StatusNotifierItemConfiguration m_configuration;
+	std::function<QIcon(const QString &)> m_iconLoader;
 	bool m_needAttention;
 	QPoint m_systemTrayLastPosition;
 	owned_qptr<QSystemTrayIcon> m_systemTrayIcon;
 	not_owned_qptr<StatusNotifierItemAttention> m_attention;
 
 	void updateAttention();
+
+private slots:
+	void activated(QSystemTrayIcon::ActivationReason reason);
 
 };

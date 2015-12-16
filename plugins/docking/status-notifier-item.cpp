@@ -39,7 +39,7 @@ StatusNotifierItem::StatusNotifierItem(QObject *parent) :
 	m_systemTrayIcon->setContextMenu(new QMenu{});
 	m_systemTrayIcon->show();
 
-	connect(m_systemTrayIcon.get(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SIGNAL(activateRequested()));
+	connect(m_systemTrayIcon.get(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(activated(QSystemTrayIcon::ActivationReason)));
 	connect(m_systemTrayIcon.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 }
 
@@ -51,6 +51,11 @@ void StatusNotifierItem::setConfiguration(StatusNotifierItemConfiguration config
 {
 	m_configuration = std::move(configuration);
 	updateAttention();
+}
+
+void StatusNotifierItem::setIconLoader(std::function<QIcon(const QString &)> iconLoader)
+{
+	m_iconLoader = std::move(iconLoader);
 }
 
 void StatusNotifierItem::setNeedAttention(bool needAttention)
@@ -65,20 +70,20 @@ void StatusNotifierItem::updateAttention()
 
 	if (!m_needAttention)
 	{
-		m_systemTrayIcon->setIcon(QIcon::fromTheme(m_configuration.Icon));
+		m_systemTrayIcon->setIcon(m_iconLoader(m_configuration.Icon));
 		return;
 	}
 
 	switch (m_configuration.AttentionMode)
 	{
 		case StatusNotifierItemAttentionMode::StaticIcon:
-			m_attention = new StatusNotifierItemAttentionStatic{m_configuration.AttentionIcon, m_systemTrayIcon.get()};
+			m_attention = new StatusNotifierItemAttentionStatic{m_iconLoader(m_configuration.AttentionIcon), m_systemTrayIcon.get()};
 			break;
 		case StatusNotifierItemAttentionMode::Movie:
 			m_attention = new StatusNotifierItemAttentionAnimator{m_configuration.AttentionMovie, m_systemTrayIcon.get()};
 			break;
 		default:
-			m_attention = new StatusNotifierItemAttentionBlinker{m_configuration.Icon, m_configuration.AttentionIcon, m_systemTrayIcon.get()};
+			m_attention = new StatusNotifierItemAttentionBlinker{m_iconLoader(m_configuration.Icon), m_iconLoader(m_configuration.AttentionIcon), m_systemTrayIcon.get()};
 			break;
 	}
 }
@@ -114,6 +119,12 @@ QPoint StatusNotifierItem::trayPosition()
 QMenu * StatusNotifierItem::contextMenu()
 {
 	return m_systemTrayIcon->contextMenu();
+}
+
+void StatusNotifierItem::activated(QSystemTrayIcon::ActivationReason reason)
+{
+	if (reason == QSystemTrayIcon::Trigger)
+		emit activateRequested();
 }
 
 #include "moc_status-notifier-item.cpp"

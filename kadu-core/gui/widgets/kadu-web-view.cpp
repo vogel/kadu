@@ -80,7 +80,15 @@ KaduWebView::KaduWebView(QWidget *parent) :
 	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing |
 	               QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
 
-	setPage(page());
+	page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+
+	page()->history()->setMaximumItemCount(0);
+
+	connect(page(), SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
+	connect(page(), SIGNAL(loadStarted()), this, SLOT(loadStarted()));
+	connect(page(), SIGNAL(loadFinished(bool)), this, SLOT(loadFinishedSlot(bool)));
+	connect(pageAction(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
+	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 
 	connect(RefreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
@@ -99,20 +107,6 @@ void KaduWebView::setImageStorageService(ImageStorageService *imageStorageServic
 ImageStorageService * KaduWebView::imageStorageService() const
 {
 	return CurrentImageStorageService.data();
-}
-
-void KaduWebView::setPage(QWebPage *page)
-{
-	QWebView::setPage(page);
-	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-
-	page->history()->setMaximumItemCount(0);
-
-	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
-	connect(page, SIGNAL(loadStarted()), this, SLOT(loadStarted()));
-	connect(page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinishedSlot(bool)));
-	connect(pageAction(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
-	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
 
 void KaduWebView::contextMenuEvent(QContextMenuEvent *e)

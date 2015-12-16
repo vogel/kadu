@@ -75,9 +75,6 @@ public:
 	void setImageStorageService(ImageStorageService *imageStorageService);
 	ImageStorageService * imageStorageService() const;
 
-	// hides QWebPage::setPage() (non-virtual)
-	void setPage(QWebPage *page);
-
 	void setUserFont(const QString &fontString, bool force);
 	QString userFontStyle(const QFont &font, bool force);
 

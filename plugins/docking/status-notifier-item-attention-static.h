@@ -28,7 +28,7 @@ class StatusNotifierItemAttentionStatic : public StatusNotifierItemAttention
 	Q_OBJECT
 	
 public:
-	explicit StatusNotifierItemAttentionStatic(QString iconPath, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
+	explicit StatusNotifierItemAttentionStatic(QIcon icon, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
 	virtual ~StatusNotifierItemAttentionStatic();
 
 };

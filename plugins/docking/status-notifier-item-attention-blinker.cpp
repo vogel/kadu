@@ -22,7 +22,7 @@
 #include <QtCore/QTimer>
 #include <QtWidgets/QSystemTrayIcon>
 
-StatusNotifierItemAttentionBlinker::StatusNotifierItemAttentionBlinker(QString normalIcon, QString blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent) :
+StatusNotifierItemAttentionBlinker::StatusNotifierItemAttentionBlinker(QIcon normalIcon, QIcon blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent) :
 		StatusNotifierItemAttention{parent},
 		m_normalIcon{std::move(normalIcon)},
 		m_blinkIcon{std::move(blinkIcon)},
@@ -37,13 +37,13 @@ StatusNotifierItemAttentionBlinker::StatusNotifierItemAttentionBlinker(QString n
 StatusNotifierItemAttentionBlinker::~StatusNotifierItemAttentionBlinker()
 {
 	m_timer.get()->stop();
-	m_systemTrayIcon->setIcon(QIcon::fromTheme(m_normalIcon));
+	m_systemTrayIcon->setIcon(m_normalIcon);
 }
 
 void StatusNotifierItemAttentionBlinker::timeout()
 {
 	m_blink = !m_blink;
-	m_systemTrayIcon->setIcon(QIcon::fromTheme(m_blink ? m_blinkIcon : m_normalIcon));
+	m_systemTrayIcon->setIcon(m_blink ? m_blinkIcon : m_normalIcon);
 }
 
 #include "moc_status-notifier-item-attention-blinker.cpp"

@@ -83,6 +83,12 @@ Docking::Docking()
 	connect(m_statusNotifierItem.get(), SIGNAL(activateRequested()), this, SLOT(activateRequested()));
 	connect(m_statusNotifierItem.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 
+#ifdef Q_OS_WIN
+	m_statusNotifierItem->setIconLoader([](const QString &x){ return QIcon{x}; });
+#else
+	m_statusNotifierItem->setIconLoader([](const QString &x){ return QIcon::fromTheme(x); });
+#endif
+
 	m_dockingConfigurationProvider = make_owned<DockingConfigurationProvider>(this);
 
 	auto dockingMenuHandler = make_owned<DockingMenuHandler>(m_statusNotifierItem->contextMenu(), this);
