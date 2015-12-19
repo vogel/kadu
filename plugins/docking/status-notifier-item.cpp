@@ -37,7 +37,6 @@ StatusNotifierItem::StatusNotifierItem(QObject *parent) :
 {
 	m_systemTrayIcon = make_owned<QSystemTrayIcon>(this);
 	m_systemTrayIcon->setContextMenu(new QMenu{});
-	m_systemTrayIcon->show();
 
 	connect(m_systemTrayIcon.get(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(activated(QSystemTrayIcon::ActivationReason)));
 	connect(m_systemTrayIcon.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
@@ -71,6 +70,7 @@ void StatusNotifierItem::updateAttention()
 	if (!m_needAttention)
 	{
 		m_systemTrayIcon->setIcon(m_iconLoader(m_configuration.Icon));
+		m_systemTrayIcon->show();
 		return;
 	}
 
@@ -86,6 +86,8 @@ void StatusNotifierItem::updateAttention()
 			m_attention = new StatusNotifierItemAttentionBlinker{m_iconLoader(m_configuration.Icon), m_iconLoader(m_configuration.AttentionIcon), m_systemTrayIcon.get()};
 			break;
 	}
+
+	m_systemTrayIcon->show();
 }
 
 void StatusNotifierItem::setTooltip(const QString &tooltip)
