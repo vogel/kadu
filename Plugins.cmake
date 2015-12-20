@@ -29,10 +29,6 @@ set (DEFAULT_PLUGINS
 	history_migration
 
 # encryption
-	# Encrypted chat support
-	encryption_ng
-	# OpenSSL encrypted chat support
-	encryption_ng_simlite
 	# OTR encryption
 	encryption_otr
 
