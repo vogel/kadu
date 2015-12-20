@@ -27,6 +27,7 @@ set (plugin_SRCS
 	plugin-dependency-handler.cpp
 	plugin-manager.cpp
 	plugin-module.cpp
+	plugin-repository.cpp
 )
 
 kadu_subdirectory (plugin "${plugin_SRCS}" "" "")

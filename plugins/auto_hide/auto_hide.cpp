@@ -27,7 +27,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/paths-provider.h"
-#include "plugin/activation/plugin-activation-service.h"
+#include "plugin/plugin-repository.h"
 
 #include "plugins/idle/idle-plugin.h"
 #include "plugins/idle/idle.h"
@@ -54,8 +54,7 @@ bool AutoHide::init(bool firstLoad)
 
 	configurationUpdated();
 
-	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
-	MyIdle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
+	MyIdle = Core::instance()->pluginRepository()->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);

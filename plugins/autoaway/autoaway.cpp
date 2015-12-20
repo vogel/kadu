@@ -34,7 +34,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
-#include "plugin/activation/plugin-activation-service.h"
+#include "plugin/plugin-repository.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
@@ -94,8 +94,7 @@ bool AutoAway::init(bool firstLoad)
 
 	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
 
-	auto idleRootComponent = Core::instance()->pluginActivationService()->pluginRootComponent("idle");
-	idle = dynamic_cast<IdlePlugin *>(idleRootComponent)->idle();
+	idle = Core::instance()->pluginRepository()->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(this);

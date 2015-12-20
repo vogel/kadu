@@ -135,11 +135,9 @@ QSet<QString> PluginActivationService::activePlugins() const
 	return result;
 }
 
-PluginRootComponent * PluginActivationService::pluginRootComponent(const QString &pluginName) const
+ActivePlugin * PluginActivationService::activePlugin(const QString& pluginName) const
 {
-	if (!isActive(pluginName))
-		return nullptr;
-
-	auto &activePlugin = m_activePlugins.at(pluginName);
-	return activePlugin->pluginRootComponent();
+	return isActive(pluginName)
+			? m_activePlugins.at(pluginName).get()
+			: nullptr;
 }

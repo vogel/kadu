@@ -27,6 +27,7 @@
 #include "plugin/plugin-conflict-resolver.h"
 #include "plugin/plugin-dependency-handler.h"
 #include "plugin/plugin-manager.h"
+#include "plugin/plugin-repository.h"
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
 
@@ -40,6 +41,7 @@ PluginModule::PluginModule()
 	add_type<PluginManager>();
 	add_type<PluginMetadataFinder>();
 	add_type<PluginMetadataReader>();
+	add_type<PluginRepository>();
 	add_type<PluginStateManager>();
 	add_type<PluginStateService>();
 }

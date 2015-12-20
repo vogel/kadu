@@ -91,9 +91,9 @@ public:
 
 	/**
 	 * @param pluginName name of plugin
-	 * @return root object from plugin with name pluginName
+	 * @return plugin object for given name
 	 */
-	PluginRootComponent * pluginRootComponent(const QString &pluginName) const;
+	ActivePlugin * activePlugin(const QString &pluginName) const;
 
 private:
 	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;

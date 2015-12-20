@@ -80,6 +80,7 @@ class NotificationService;
 class PluginActivationService;
 class PluginConflictResolver;
 class PluginDependencyHandler;
+class PluginRepository;
 class PluginStateManager;
 class PluginStateService;
 class RawMessageTransformerService;
@@ -209,6 +210,7 @@ public:
 	PluginActivationService * pluginActivationService() const;
 	PluginConflictResolver * pluginConflictResolver() const;
 	PluginDependencyHandler * pluginDependencyHandler() const;
+	PluginRepository * pluginRepository() const;
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
 
