@@ -27,8 +27,10 @@ HistoryMigrationPlugin::~HistoryMigrationPlugin()
 {
 }
 
-bool HistoryMigrationPlugin::init(bool firstLoad)
+bool HistoryMigrationPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
+
 	HistoryMigrationActions::registerActions();
 	HistoryImporterManager::createInstance();
 

@@ -29,8 +29,9 @@ IndicatorDockingPlugin::~IndicatorDockingPlugin()
 {
 }
 
-bool IndicatorDockingPlugin::init(bool firstLoad)
+bool IndicatorDockingPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	m_indicatorDocking.reset(new IndicatorDocking{});

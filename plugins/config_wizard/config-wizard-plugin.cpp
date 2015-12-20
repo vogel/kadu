@@ -27,8 +27,10 @@ ConfigWizardPlugin::~ConfigWizardPlugin()
 
 }
 
-bool ConfigWizardPlugin::init(bool firstLoad)
+bool ConfigWizardPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
+
 	ConfigWizardConfigurationUiHandler::registerActions(firstLoad);
 	if (firstLoad)
 		ConfigWizardConfigurationUiHandler::instance()->showConfigWizard();

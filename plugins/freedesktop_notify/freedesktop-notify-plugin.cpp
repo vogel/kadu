@@ -28,8 +28,9 @@ FreedesktopNotifyPlugin::~FreedesktopNotifyPlugin()
 {
 }
 
-bool FreedesktopNotifyPlugin::init(bool firstLoad)
+bool FreedesktopNotifyPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	FreedesktopNotify::createInstance();

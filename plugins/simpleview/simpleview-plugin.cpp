@@ -34,8 +34,9 @@ SimpleViewPlugin::~SimpleViewPlugin()
 {
 }
 
-bool SimpleViewPlugin::init(bool firstLoad)
+bool SimpleViewPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	SimpleView::createInstance();

@@ -34,8 +34,9 @@ ProfilesImportPlugin::~ProfilesImportPlugin()
 {
 }
 
-bool ProfilesImportPlugin::init(bool firstLoad)
+bool ProfilesImportPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	ProfilesImportActions::registerActions();

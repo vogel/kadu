@@ -35,8 +35,9 @@ DockingPlugin::~DockingPlugin()
 {
 }
 
-bool DockingPlugin::init(bool firstLoad)
+bool DockingPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	Docking::createInstance();

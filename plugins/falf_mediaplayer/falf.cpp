@@ -40,8 +40,9 @@ FalfMediaPlayer::~FalfMediaPlayer()
 	kdebugf();
 }
 
-bool FalfMediaPlayer::init(bool firstLoad)
+bool FalfMediaPlayer::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	return MediaPlayer::instance()->registerMediaPlayer(this, 0);

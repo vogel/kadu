@@ -33,8 +33,9 @@ SingleWindowPlugin::~SingleWindowPlugin()
 {
 }
 
-bool SingleWindowPlugin::init(bool firstLoad)
+bool SingleWindowPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	m_singleWindowChatWidgetContainerHandler.reset(new SingleWindowChatWidgetContainerHandler());

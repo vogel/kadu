@@ -28,7 +28,7 @@ WinampMediaplayerPlugin::~WinampMediaplayerPlugin()
 {
 }
 
-bool WinampMediaplayerPlugin::init(bool firstLoad)
+bool WinampMediaplayerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 	PlayerInstance = new WinampMediaPlayer();

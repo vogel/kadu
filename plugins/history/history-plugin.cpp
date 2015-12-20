@@ -42,8 +42,9 @@ HistoryPlugin::~HistoryPlugin()
 {
 }
 
-bool HistoryPlugin::init(bool firstLoad)
+bool HistoryPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	History::createInstance();

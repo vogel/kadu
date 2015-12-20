@@ -35,8 +35,9 @@ ScreenshotPlugin::~ScreenshotPlugin()
 {
 }
 
-bool ScreenshotPlugin::init(bool firstLoad)
+bool ScreenshotPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	kdebugf();

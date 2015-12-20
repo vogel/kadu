@@ -32,8 +32,9 @@ SqlHistoryPlugin::~SqlHistoryPlugin()
 {
 }
 
-bool SqlHistoryPlugin::init(bool firstLoad)
+bool SqlHistoryPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	Storage = new HistorySqlStorage();

@@ -32,8 +32,9 @@ MPRISPlayerPlugin::~MPRISPlayerPlugin()
 
 }
 
-bool MPRISPlayerPlugin::init(bool firstLoad)
+bool MPRISPlayerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	MPRISPlayerConfigurationUiHandler::registerConfigurationUi();

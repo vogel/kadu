@@ -33,7 +33,7 @@ class ProfilesImportPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ProfilesImportPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 };
 

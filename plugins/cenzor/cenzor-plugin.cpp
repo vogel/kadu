@@ -31,8 +31,9 @@ CenzorPlugin::~CenzorPlugin()
 {
 }
 
-bool CenzorPlugin::init(bool firstLoad)
+bool CenzorPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	Cenzor::createInstance();

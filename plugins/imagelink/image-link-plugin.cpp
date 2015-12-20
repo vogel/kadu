@@ -87,8 +87,9 @@ void ImageLinkPlugin::stopConfigurator()
 	Configurator.reset();
 }
 
-bool ImageLinkPlugin::init(bool firstLoad)
+bool ImageLinkPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	registerConfigurationUi();

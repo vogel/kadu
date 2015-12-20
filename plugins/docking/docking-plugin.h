@@ -32,7 +32,7 @@ public:
 	explicit DockingPlugin(QObject *parent = nullptr);
 	virtual ~DockingPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 };

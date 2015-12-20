@@ -124,8 +124,9 @@ PCSpeaker::~PCSpeaker()
 {
 }
 
-bool PCSpeaker::init(bool firstLoad)
+bool PCSpeaker::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	Core::instance()->notificationManager()->registerNotifier(this);

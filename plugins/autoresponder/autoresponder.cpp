@@ -49,8 +49,9 @@ AutoResponder::~AutoResponder()
 {
 }
 
-bool AutoResponder::init(bool firstLoad)
+bool AutoResponder::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),

@@ -25,6 +25,7 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/plugin-dependency-handler.h"
+#include "plugin/plugin-repository.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
 
@@ -45,6 +46,11 @@ void PluginActivationService::setPluginActivationErrorHandler(PluginActivationEr
 void PluginActivationService::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
+}
+
+void PluginActivationService::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
 }
 
 void PluginActivationService::setPluginStateService(PluginStateService *pluginStateService)
@@ -114,7 +120,7 @@ QVector<QString> PluginActivationService::deactivatePluginWithDependents(const Q
 void PluginActivationService::activatePlugin(const QString &pluginName, bool firstTime)
 {
 	if (!contains(m_activePlugins, pluginName))
-		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(pluginName, firstTime)));
+		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(pluginName, m_pluginRepository, firstTime)));
 }
 
 void PluginActivationService::deactivatePlugin(const QString &pluginName)

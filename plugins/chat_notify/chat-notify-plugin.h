@@ -37,7 +37,7 @@ class ChatNotifyPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ChatNotifyPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 };

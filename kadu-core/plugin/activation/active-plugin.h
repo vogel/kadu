@@ -64,7 +64,7 @@ public:
 	 * In case of any error PluginActivationErrorException is thrown. All allocated data is properly
 	 * destroyed and memory is freed in this case.
 	 */
-	explicit ActivePlugin(const QString &pluginName, bool firstLoad);
+	explicit ActivePlugin(const QString &pluginName, PluginRepository *pluginRepository, bool firstLoad);
 
 	/**
 	 * @return Root component of plugin.

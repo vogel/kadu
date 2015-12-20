@@ -30,8 +30,9 @@ SpeechPlugin::~SpeechPlugin()
 {
 }
 
-bool SpeechPlugin::init(bool firstLoad)
+bool SpeechPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	kdebugf();

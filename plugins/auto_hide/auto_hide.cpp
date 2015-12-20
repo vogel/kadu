@@ -46,7 +46,7 @@ AutoHide::~AutoHide()
 {
 }
 
-bool AutoHide::init(bool firstLoad)
+bool AutoHide::init(PluginRepository *pluginRepository, bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -54,7 +54,7 @@ bool AutoHide::init(bool firstLoad)
 
 	configurationUpdated();
 
-	MyIdle = Core::instance()->pluginRepository()->plugin<IdlePlugin>("idle")->idle();
+	MyIdle = pluginRepository->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(this);

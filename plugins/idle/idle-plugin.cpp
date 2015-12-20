@@ -26,8 +26,9 @@ IdlePlugin::~IdlePlugin()
 {
 }
 
-bool IdlePlugin::init(bool firstLoad)
+bool IdlePlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	m_idle = make_owned<Idle>(this);

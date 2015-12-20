@@ -36,7 +36,7 @@ public:
 	explicit ExtSoundPlugin(QObject *parent = nullptr);
 	virtual ~ExtSoundPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 private:

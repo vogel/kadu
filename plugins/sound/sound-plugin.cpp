@@ -54,8 +54,9 @@ SoundManager * SoundPlugin::soundManager()
 	return m_staticSoundManager;
 }
 
-bool SoundPlugin::init(bool firstLoad)
+bool SoundPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};

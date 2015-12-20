@@ -31,6 +31,7 @@
 class ActivePlugin;
 class PluginActivationErrorHandler;
 class PluginDependencyHandler;
+class PluginRepository;
 class PluginRootComponent;
 class PluginStateService;
 
@@ -100,6 +101,7 @@ private:
 
 	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+	QPointer<PluginRepository> m_pluginRepository;
 	QPointer<PluginStateService> m_pluginStateService;
 
 	map m_activePlugins;
@@ -136,6 +138,7 @@ private:
 private slots:
 	INJEQT_SETTER void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
 
 };

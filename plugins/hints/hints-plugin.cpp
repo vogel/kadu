@@ -39,8 +39,9 @@ HintsPlugin::~HintsPlugin()
 	Instance = 0;
 }
 
-bool HintsPlugin::init(bool firstLoad)
+bool HintsPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	HintManagerInstance = new HintManager(this);

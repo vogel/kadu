@@ -80,7 +80,7 @@ AutoAway::~AutoAway()
 {
 }
 
-bool AutoAway::init(bool firstLoad)
+bool AutoAway::init(PluginRepository *pluginRepository, bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -94,7 +94,7 @@ bool AutoAway::init(bool firstLoad)
 
 	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
 
-	idle = Core::instance()->pluginRepository()->plugin<IdlePlugin>("idle")->idle();
+	idle = pluginRepository->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(this);

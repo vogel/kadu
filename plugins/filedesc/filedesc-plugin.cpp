@@ -30,8 +30,9 @@ FiledescPlugin::~FiledescPlugin()
 {
 }
 
-bool FiledescPlugin::init(bool firstLoad)
+bool FiledescPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	FileDescriptionInstance = new FileDescription(this);

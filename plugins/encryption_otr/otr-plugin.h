@@ -39,7 +39,7 @@ public:
 	explicit OtrPlugin();
 	virtual ~OtrPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 };

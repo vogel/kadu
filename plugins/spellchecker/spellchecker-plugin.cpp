@@ -41,8 +41,9 @@ SpellCheckerPlugin::~SpellCheckerPlugin()
 	Instance = 0;
 }
 
-bool SpellCheckerPlugin::init(bool firstLoad)
+bool SpellCheckerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	SpellCheckerInstance = new SpellChecker(this);

@@ -34,7 +34,7 @@ class AntistringPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~AntistringPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 };

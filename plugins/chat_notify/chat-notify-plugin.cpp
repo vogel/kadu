@@ -32,8 +32,10 @@ ChatNotifyPlugin::~ChatNotifyPlugin()
 {
 }
 
-bool ChatNotifyPlugin::init(bool firstLoad)
+bool ChatNotifyPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
+
 	if (firstLoad)
 		createDefaultConfiguration();
 

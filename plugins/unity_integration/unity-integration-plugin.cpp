@@ -27,8 +27,9 @@ UnityIntegrationPlugin::~UnityIntegrationPlugin()
 {
 }
 
-bool UnityIntegrationPlugin::init(bool firstLoad)
+bool UnityIntegrationPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	m_unityIntegration.reset(new UnityIntegration{});

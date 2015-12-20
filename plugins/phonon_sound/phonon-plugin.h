@@ -34,7 +34,7 @@ public:
 	explicit PhononPlugin(QObject *parent = nullptr);
 	virtual ~PhononPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 private:

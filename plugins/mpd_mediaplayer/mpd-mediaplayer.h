@@ -42,7 +42,7 @@ public:
 	explicit MPDMediaPlayer(QObject *parent = 0);
 	virtual ~MPDMediaPlayer();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 	mpd_connection * mpdConnect();

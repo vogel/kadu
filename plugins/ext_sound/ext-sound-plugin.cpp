@@ -38,8 +38,9 @@ ExtSoundPlugin::~ExtSoundPlugin()
 {
 }
 
-bool ExtSoundPlugin::init(bool firstLoad)
+bool ExtSoundPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	m_externalPlayer = new ExternalPlayer{this};

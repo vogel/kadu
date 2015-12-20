@@ -84,8 +84,9 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	}
 }
 
-bool WordFix::init(bool firstLoad)
+bool WordFix::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 	kdebugf();
 

@@ -56,7 +56,7 @@ public:
 
 	virtual bool acceptMessage(const Message &message);
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 public slots:

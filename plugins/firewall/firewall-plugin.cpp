@@ -31,8 +31,9 @@ FirewallPlugin::~FirewallPlugin()
 {
 }
 
-bool FirewallPlugin::init(bool firstLoad)
+bool FirewallPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	Firewall::createInstance();

@@ -38,7 +38,7 @@ class JabberProtocolPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~JabberProtocolPlugin();
 
-	virtual bool init(bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
 	virtual void done();
 
 };

@@ -41,8 +41,9 @@ JabberProtocolPlugin::~JabberProtocolPlugin()
 {
 }
 
-bool JabberProtocolPlugin::init(bool firstLoad)
+bool JabberProtocolPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")

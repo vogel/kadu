@@ -29,8 +29,9 @@ ItunesMediaplayerPlugin::~ItunesMediaplayerPlugin()
 
 }
 
-bool ItunesMediaplayerPlugin::init(bool firstLoad)
+bool ItunesMediaplayerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	iTunes = new ITunesMediaPlayer();

@@ -34,8 +34,9 @@ PhononPlugin::~PhononPlugin()
 {
 }
 
-bool PhononPlugin::init(bool firstLoad)
+bool PhononPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 {
+	Q_UNUSED(pluginRepository)
 	Q_UNUSED(firstLoad)
 
 	m_phononPlayer = new PhononPlayer{this};
