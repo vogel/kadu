@@ -101,7 +101,7 @@ set (CONFIGURATION_FILES
 
 pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
 
-set (LIBRARIES ${QCA2_LIBRARIES} ${LIBOTR_LDFLAGS} gcrypt)
+set (LIBRARIES ${LIBOTR_LDFLAGS} gcrypt)
 
 if (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 	include_directories (${LIBOTR_INCLUDE_DIRS})

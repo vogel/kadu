@@ -28,10 +28,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDataStream>
 #include <QtCore/QLibraryInfo>
 #include <QtCore/QTranslator>
-#include <QtCrypto>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
@@ -174,8 +172,6 @@ static void printUsage()
 int main(int argc, char *argv[]) try
 {
 	WSAHandler wsaHandler;
-
-	QCA::Initializer qcaInitializer;
 
 	QApplication application{argc, argv};
 	application.setApplicationName("Kadu");

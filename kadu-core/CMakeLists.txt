@@ -218,13 +218,10 @@ endif ()
 
 target_link_libraries (libkadu LINK_PRIVATE ${ADDITIONAL_LIBKADU_LIBRARIES})
 
-find_package (QCA2 REQUIRED)
-include_directories (${QCA2_INCLUDE_DIR})
-
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
 qt5_use_modules (kadu LINK_PRIVATE Core Gui Widgets Network Xml)
-target_link_libraries (kadu LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES} ${QCA2_LIBRARIES})
+target_link_libraries (kadu LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES})
 
 if (NOT IS_ABSOLUTE "${KADU_INSTALL_LIB_DIR}")
 	set (install_full_lib_dir "${CMAKE_INSTALL_PREFIX}/${KADU_INSTALL_LIB_DIR}")
@@ -251,7 +248,7 @@ if (WIN32)
 	add_executable (kadu_c ${main_SRCS})
 	kadu_set_flags (kadu_c)
 	qt5_use_modules (kadu_c LINK_PRIVATE Core Gui Widgets Network Xml)
-	target_link_libraries (kadu_c LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES} ${QCA2_LIBRARIES})
+	target_link_libraries (kadu_c LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES})
 
 	# Do not link against qtmain on Windows
 	cmake_policy(SET CMP0020 OLD)
