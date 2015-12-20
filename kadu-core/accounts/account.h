@@ -71,6 +71,8 @@ public:
 
 };
 
+KADUAPI Protocol * protocol(Account account);
+
 Q_DECLARE_METATYPE(Account)
 
 #endif // ACCOUNT_H

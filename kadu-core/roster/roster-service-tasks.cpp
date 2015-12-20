@@ -22,6 +22,7 @@
 #include "contacts/contact.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
+#include "roster/roster-service.h"
 #include "roster/roster-task-type.h"
 
 QVector<RosterTask> RosterServiceTasks::updateTasksForContacts(const QVector<Contact> &contacts)
@@ -116,6 +117,13 @@ RosterTask RosterServiceTasks::dequeue()
 	auto result = m_tasks.dequeue();
 	m_idToTask.remove(result.id());
 	return result;
+}
+
+RosterServiceTasks * rosterServiceTasks(RosterService *rs)
+{
+	return rs
+			? rs->tasks()
+			: nullptr;
 }
 
 #include "moc_roster-service-tasks.cpp"

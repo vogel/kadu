@@ -138,4 +138,6 @@ signals:
 
 };
 
+KADUAPI Protocol * protocol(AccountShared *account);
+
 #endif // ACCOUNT_SHARED_H

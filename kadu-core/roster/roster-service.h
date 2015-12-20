@@ -177,6 +177,9 @@ private slots:
 
 };
 
+RosterService * rosterService(Account account);
+RosterService * rosterService(Protocol *protocol);
+
 /**
  * @}
  */

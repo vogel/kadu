@@ -78,7 +78,8 @@ public:
 			if (account.details() && account.data())
 			{
 				// TODO: hack
-				bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
+				auto p = protocol(account);
+				bool newConnected = p && p->isConnected();
 				bool oldConnected = false;
 				if (result)
 					oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();

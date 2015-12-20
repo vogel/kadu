@@ -28,6 +28,7 @@
 #include <QtCore/QVector>
 
 class Contact;
+class RosterService;
 
 /**
  * @addtogroup Roster
@@ -122,6 +123,14 @@ private:
 	bool shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType);
 
 };
+
+template<typename T> inline
+RosterServiceTasks * rosterServiceTasks(T x)
+{
+	return rosterServiceTasks(rosterService(x));
+}
+
+RosterServiceTasks * rosterServiceTasks(RosterService *x);
 
 /**
  * @}

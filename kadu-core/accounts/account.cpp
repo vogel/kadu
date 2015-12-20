@@ -104,3 +104,8 @@ KaduSharedBase_PropertyDefCRW(Account, QString, password, Password, QString())
 KaduSharedBase_PropertyDef(Account, bool, useDefaultProxy, UseDefaultProxy, true)
 KaduSharedBase_PropertyDefCRW(Account, NetworkProxy, proxy, Proxy, NetworkProxy::null)
 KaduSharedBase_PropertyDef(Account, bool, privateStatus, PrivateStatus, true)
+
+Protocol * protocol(Account account)
+{
+	return protocol(account.data());
+}

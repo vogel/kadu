@@ -102,9 +102,9 @@ void AccountManager::itemRegistered(Account item)
 	 * we try to log in after entering new password, a new connection can be estabilished instead
 	 * of giving up because of already existing connection).
 	 */
-	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
+	connect(protocol(item), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)), Qt::QueuedConnection);
-	connect(item.protocolHandler(), SIGNAL(invalidPassword(Account)),
+	connect(protocol(item), SIGNAL(invalidPassword(Account)),
 			this, SLOT(providePassword(Account)), Qt::QueuedConnection);
 
 	emit accountRegistered(item);
@@ -115,7 +115,7 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 	QMutexLocker locker(&mutex());
 
 	AccountsAwareObject::notifyAccountUnregistered(item);
-	disconnect(item.protocolHandler(), 0, this, 0);
+	disconnect(protocol(item), 0, this, 0);
 
 	emit accountAboutToBeUnregistered(item);
 }
@@ -210,9 +210,8 @@ void AccountManager::removeAccountAndBuddies(Account account)
 	if (statusContainer)
 		statusContainer->setStatus(Status(), SourceUser); // user removed account
 
-	Protocol *protocolHandler = account.protocolHandler();
-	if (protocolHandler)
-		delete protocolHandler->rosterService();
+	if (auto p = protocol(account))
+		delete p->rosterService();
 
 	removeItem(account);
 
@@ -237,8 +236,8 @@ void AccountManager::passwordProvided(const QVariant& data, const QString& passw
 
 	// inform protocol that we have password
 	// maybe this should be in other place, but for now it is enough
-	if (account.protocolHandler())
-		account.protocolHandler()->passwordProvided();
+	if (auto p = protocol(account))
+		p->passwordProvided();
 }
 
 void AccountManager::providePassword(Account account)

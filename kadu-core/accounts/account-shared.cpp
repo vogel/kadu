@@ -198,8 +198,8 @@ void AccountShared::load()
 			protocolRegistered(factory);
 	}
 
-	if (protocolHandler() && protocolHandler()->rosterService() && protocolHandler()->rosterService()->tasks())
-		protocolHandler()->rosterService()->tasks()->addTasks(loadRosterTasks());
+	if (auto t = rosterServiceTasks(this))
+		t->addTasks(loadRosterTasks());
 }
 
 void AccountShared::storeRosterTasks(const QVector<RosterTask> &tasks)
@@ -428,5 +428,12 @@ void AccountShared::setPrivateStatus(bool isPrivate)
 }
 
 KaduShared_PropertyPtrReadDef(AccountShared, Identity, accountIdentity, AccountIdentity)
+
+Protocol * protocol(AccountShared *account)
+{
+	return account
+			? account->protocolHandler()
+			: nullptr;
+}
 
 #include "moc_account-shared.cpp"

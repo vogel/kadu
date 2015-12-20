@@ -120,4 +120,16 @@ void RosterService::removeContact(const Contact &contact)
 	emit contactRemoved(contact);
 }
 
+RosterService * rosterService(Account account)
+{
+	return rosterService(protocol(account));
+}
+
+RosterService * rosterService(Protocol *protocol)
+{
+	return protocol
+		? protocol->rosterService()
+		: nullptr;
+}
+
 #include "moc_roster-service.cpp"

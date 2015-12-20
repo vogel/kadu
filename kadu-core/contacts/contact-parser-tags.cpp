@@ -50,8 +50,7 @@ static QString getStatusIconPath(Talkable talkable)
 
 	const Status &status = talkable.currentStatus();
 
-	Protocol *protocol = talkable.account().protocolHandler();
-	if (protocol)
+	if (auto protocol = talkable.account().protocolHandler())
 		return StatusTypeManager::instance()->statusIcon(protocol->statusPixmapPath(), status).webKitPath();
 	else
 		return StatusContainerManager::instance()->statusIcon(status.type()).webKitPath();
