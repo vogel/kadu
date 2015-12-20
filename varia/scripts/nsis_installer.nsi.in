@@ -440,18 +440,6 @@ SectionGroup $(section_plugins) SectionPlugins
 		!insertmacro kadu_plugin_file libdocking_notify
 	SectionEnd
 
-	!insertmacro kadu_obligatory_plugin encryption_ng encryption_ng
-
-	Section encryption_ng_simlite
-		SetOverwrite on
-
-		!insertmacro kadu_plugin_desc_file encryption_ng_simlite
-		!insertmacro kadu_plugin_ui_file encryption-ng-simlite
-		!insertmacro kadu_plugin_translation_files encryption_ng_simlite
-		!insertmacro kadu_plugin_data_files encryption_ng_simlite
-		!insertmacro kadu_plugin_file libencryption_ng_simlite
-	SectionEnd
-
 	!insertmacro kadu_plugin encryption_otr encryption_otr
 	!insertmacro kadu_plugin exec_notify exec_notify
 	!insertmacro kadu_plugin ext_sound ext_sound

@@ -55,8 +55,7 @@ QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> 
 	if (loadedPlugins.contains("encryption"))
 	{
 		loadedPlugins.remove("encryption");
-		loadedPlugins.insert("encryption_ng");
-		loadedPlugins.insert("encryption_ng_simlite");
+		loadedPlugins.remove("encryption_otr");
 	}
 	if (loadedPlugins.contains("osd_hints"))
 	{
