@@ -40,7 +40,7 @@ if (MSVC)
 else ()
 	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wunused -Wuninitialized -Wcast-align -Wpointer-arith -fno-common")
 	set (C_FLAGS "-Wwrite-strings")
-	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++0x")
+	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++0x ${CXX_FLAGS}")
 	set (CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 
 	if (NOT WIN32)
