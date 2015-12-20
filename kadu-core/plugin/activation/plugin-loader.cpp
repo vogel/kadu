@@ -85,9 +85,6 @@ PluginLoader::~PluginLoader() noexcept
 
 PluginRootComponent * PluginLoader::instance() const noexcept
 {
-	if (!m_pluginLoader)
-		return nullptr;
-
 	return qobject_cast<PluginRootComponent *>(m_pluginLoader->instance());
 }
 
