@@ -7,3 +7,4 @@ Author=Kadu Team
 Version=core
 Category=Desktop
 LoadByDefault=true
+Replaces=qt4_docking

@@ -124,12 +124,11 @@ void PluginManager::activateReplacementPlugins()
 		if (replacementPlugin.isEmpty())
 			continue;
 
-		if (PluginState::New == m_pluginStateService->pluginState(replacementPlugin))
-			if (m_pluginActivationService->activatePluginWithDependencies(replacementPlugin).contains(replacementPlugin))
-			{
-				m_pluginStateService->setPluginState(pluginToReplace, PluginState::Disabled);
-				m_pluginStateService->setPluginState(replacementPlugin, PluginState::Enabled);
-			}
+		if (m_pluginActivationService->activatePluginWithDependencies(replacementPlugin).contains(replacementPlugin))
+		{
+			m_pluginStateService->setPluginState(pluginToReplace, PluginState::Disabled);
+			m_pluginStateService->setPluginState(replacementPlugin, PluginState::Enabled);
+		}
 	}
 }
 
