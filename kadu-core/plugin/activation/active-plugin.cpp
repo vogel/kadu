@@ -23,12 +23,11 @@
 
 ActivePlugin::ActivePlugin(const QString &pluginName, bool firstLoad) :
 		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginName)},
-		m_pluginLoader{make_unique<PluginLoader>(pluginName)},
-		m_pluginRootComponentHandler{make_unique<PluginRootComponentHandler>(pluginName, firstLoad, m_pluginLoader->instance())}
+		m_pluginLoader{make_unique<PluginLoader>(pluginName, firstLoad)}
 {
 }
 
 PluginRootComponent * ActivePlugin::pluginRootComponent() const
 {
-	return m_pluginRootComponentHandler->pluginRootComponent();
+	return m_pluginLoader->instance();
 }

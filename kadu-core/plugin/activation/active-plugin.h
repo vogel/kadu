@@ -20,7 +20,6 @@
 #pragma once
 
 #include "plugin/activation/plugin-loader.h"
-#include "plugin/activation/plugin-root-component-handler.h"
 #include "plugin/activation/plugin-translations-loader.h"
 
 #include <QtCore/QScopedPointer>
@@ -76,7 +75,6 @@ private:
 	// translations must be loaded first and uloaded last, see #2177
 	std::unique_ptr<PluginTranslationsLoader> m_pluginTranslationsLoader;
 	std::unique_ptr<PluginLoader> m_pluginLoader;
-	std::unique_ptr<PluginRootComponentHandler> m_pluginRootComponentHandler;
 
 };
 

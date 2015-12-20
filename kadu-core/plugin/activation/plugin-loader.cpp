@@ -43,7 +43,7 @@
 	#define SO_EXT "so"
 #endif
 
-PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(false) :
+PluginLoader::PluginLoader(const QString &pluginName, bool firstLoad, QObject *parent) noexcept(false) :
 		// using C++ initializers breaks Qt's lupdate
 		QObject(parent),
 		m_pluginLoader(make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT)))
@@ -57,35 +57,41 @@ PluginLoader::PluginLoader(const QString &pluginName, QObject *parent) noexcept(
 
 		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, errorString));
 	}
+
+	m_pluginRootComponent = qobject_cast<PluginRootComponent *>(m_pluginLoader->instance());
+	if (!m_pluginRootComponent)
+		throw PluginActivationErrorException{pluginName, tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(pluginName)};
+
+	if (!m_pluginRootComponent->init(firstLoad))
+		throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
 }
 
 PluginLoader::~PluginLoader() noexcept
 {
-	if (m_pluginLoader)
-	{
-		// We need this because plugins can call deleteLater() just before being
-		// unloaded. In this case control would not return to the event loop before
-		// unloading the plugin and the event loop would try to delete objects
-		// belonging to already unloaded plugins, which can result in segfaults.
+	m_pluginRootComponent->done();
 
-		QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+	// We need this because plugins can call deleteLater() just before being
+	// unloaded. In this case control would not return to the event loop before
+	// unloading the plugin and the event loop would try to delete objects
+	// belonging to already unloaded plugins, which can result in segfaults.
 
-		// probably we don't really need to unload plugins
-		// root component gets its done() method called anyways, need to check
-		// multiple loads/unloads if any problems arise
-		// unloading plugins has some problems and disabling it is very easy way
-		// to fix them
-		// for example: if plugin after load adds some static data to glib,
-		// like messaging-menu used in indicator-docking does, then after unload
-		// and next load we are in trouble - application crashes
-		// anyway, I don't expect users to unload plugins very frequently
-		// m_pluginLoader->unload();
-	}
+	QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+
+	// probably we don't really need to unload plugins
+	// root component gets its done() method called anyways, need to check
+	// multiple loads/unloads if any problems arise
+	// unloading plugins has some problems and disabling it is very easy way
+	// to fix them
+	// for example: if plugin after load adds some static data to glib,
+	// like messaging-menu used in indicator-docking does, then after unload
+	// and next load we are in trouble - application crashes
+	// anyway, I don't expect users to unload plugins very frequently
+	// m_pluginLoader->unload();
 }
 
 PluginRootComponent * PluginLoader::instance() const noexcept
 {
-	return qobject_cast<PluginRootComponent *>(m_pluginLoader->instance());
+	return m_pluginRootComponent;
 }
 
 #include "moc_plugin-loader.cpp"

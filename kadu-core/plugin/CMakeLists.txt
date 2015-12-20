@@ -3,7 +3,6 @@ set (plugin_SRCS
 	activation/plugin-activation-error-handler.cpp
 	activation/plugin-activation-service.cpp
 	activation/plugin-loader.cpp
-	activation/plugin-root-component-handler.cpp
 	activation/plugin-translations-loader.cpp
 	dependency-graph/plugin-dependency-graph.cpp
 	dependency-graph/plugin-dependency-graph-builder.cpp
