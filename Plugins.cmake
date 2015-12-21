@@ -25,8 +25,6 @@ set (DEFAULT_PLUGINS
 	history
 	# Chat history storing, browsing and searching support using sqlite
 	sql_history
-	# Migration from x <= 0.6.5 format
-	history_migration
 
 # encryption
 	# OTR encryption
@@ -73,11 +71,9 @@ set (DEFAULT_PLUGINS
 	imagelink
 	# Last status infos
 	last_seen
-	# Imports profiles from old Kadu
-	profiles_import
 	# Easily take screenshots and send as images
 	screenshot
-	# Simple view - neww port for 0.11.0
+	# Simple view - new port for 0.11.0
 	simpleview
 	# Single window mode
 	single_window

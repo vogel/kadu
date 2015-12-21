@@ -1,3 +1,8 @@
++++ version 4.0-alpha1
+* encryption_ng: plugin removed (Vogel)
+* encryption_ng_simlite: plugin removed (Vogel)
+* history_migration: plugin removed (Vogel)
+
 +++ version 3.0-rc2
 * docking: #3037 fixed: loading docking plugin after import from 2.x (Vogel)
 

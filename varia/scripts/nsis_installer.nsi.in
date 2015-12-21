@@ -460,7 +460,6 @@ SectionGroup $(section_plugins) SectionPlugins
 	SectionEnd
 
 	!insertmacro kadu_obligatory_plugin history history
-	!insertmacro kadu_plugin history_migration history_migration
 	!insertmacro kadu_obligatory_plugin idle idle
 
 	Section imagelink
@@ -476,7 +475,6 @@ SectionGroup $(section_plugins) SectionPlugins
 	!insertmacro kadu_plugin last_seen last_seen
 	!insertmacro kadu_plugin mediaplayer mediaplayer
 	!insertmacro kadu_plugin pcspeaker pcspeaker
-	!insertmacro kadu_plugin profiles_import profiles_import
 
 	!insertmacro kadu_plugin screenshot screenshot
 	!insertmacro kadu_plugin simpleview simpleview

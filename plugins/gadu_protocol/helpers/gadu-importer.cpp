@@ -88,61 +88,6 @@ QVariant GaduImporter::readEntry(QXmlQuery &xmlQuery, const QString &groupName, 
 		return defaultValue;
 }
 
-Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
-{
-	Account result = Account::create("gadu");
-
-	result.setId(readEntry(xmlQuery, "General", "UIN").toString());
-	result.setPassword(pwHash(readEntry(xmlQuery, "General", "Password").toString()));
-	result.setRememberPassword(true);
-	result.setHasPassword(!result.password().isEmpty());
-	result.setPrivateStatus(readEntry(xmlQuery, "General", "PrivateStatus").toBool());
-
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(result.details());
-	if (accountDetails)
-	{
-		accountDetails->setState(StorableObject::StateNew);
-		accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
-	}
-
-	QString address = readEntry(xmlQuery, "Network", "ProxyHost").toString();
-	if (!address.isEmpty())
-	{
-		int port = readEntry(xmlQuery, "Network", "ProxyPort").toInt();
-		QString user = readEntry(xmlQuery, "Network", "ProxyUser").toString();
-		QString password = readEntry(xmlQuery, "Network", "ProxyPassword").toString();
-
-		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
-		            address, port, user, password, ActionCreateAndAdd);
-		if (readEntry(xmlQuery, "Network", "UseProxy").toBool())
-			result.setProxy(networkProxy);
-	}
-
-	return result;
-}
-
-QList<Buddy> GaduImporter::import065Buddies(Account account, QXmlQuery &xmlQuery)
-{
-	QList<Buddy> result;
-
-	GaduImportedContactXmlReceiver Receiver(xmlQuery.namePool());
-
-	xmlQuery.setQuery(ContactsQuery);
-	xmlQuery.evaluateTo(&Receiver);
-
-	result = Receiver.importedBuddies();
-
-	foreach (Buddy buddy, result)
-	{
-		buddy.importConfiguration();
-
-		if (!buddy.customData("uin").isEmpty())
-			importGaduContact(account, buddy);
-	}
-
-	return result;
-}
-
 void GaduImporter::importAccounts()
 {
 	quint32 importUin = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General", "UIN");
