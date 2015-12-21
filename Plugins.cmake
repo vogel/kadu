@@ -116,8 +116,6 @@ if (UNIX AND NOT APPLE)
 		freedesktop_notify
 
 	# mediaplayer
-		# Amarok 1.x mediaplayer support
-		amarok1_mediaplayer
 		# FALF mediaplayer support
 		falf_mediaplayer
 		# MPD mediaplayer support
