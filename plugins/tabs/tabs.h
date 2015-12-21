@@ -33,7 +33,7 @@
 #include "chat/chat-manager.h"
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 #include "misc/misc.h"
 #include "storage/storable-object.h"
 

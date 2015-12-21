@@ -33,6 +33,7 @@
 #include "core/application.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "debug.h"
 

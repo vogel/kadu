@@ -24,7 +24,7 @@
 
 #include "theme/emoticon-theme-manager.h"
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 class ConfigListWidget;
 class ConfigPathListEdit;

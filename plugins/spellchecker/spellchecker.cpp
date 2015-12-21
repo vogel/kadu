@@ -43,6 +43,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/custom-input.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
 

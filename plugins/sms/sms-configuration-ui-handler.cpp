@@ -39,6 +39,7 @@
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "debug.h"

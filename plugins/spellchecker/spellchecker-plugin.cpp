@@ -21,6 +21,7 @@
 
 #include "core/application.h"
 #include "core/core.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
 #include "configuration/spellchecker-configuration.h"

@@ -40,6 +40,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/custom-input.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "notification/notification-manager.h"

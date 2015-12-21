@@ -1,4 +1,7 @@
 set (configuration_SRCS
+	gui/configuration-ui-handler-repository.cpp
+	gui/configuration-ui-handler.cpp
+
 	config-file-data-manager.cpp
 	config-file-variant-wrapper.cpp
 	configuration.cpp

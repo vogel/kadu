@@ -19,28 +19,9 @@ class Preview;
 class SyntaxEditorWindow;
 
 class MainConfigurationWindow;
-/**
-	@class ConfigurationUiHandler
-	@author Vogel
-	@short Klasa bazowa dla klas obs�uguj�cych okno konfiguracyjne.
-
-	Klasa dziedzicz�ca z tej b�dzie informowana o stworzeniu nowego g��wnego okna
-	konfiguracyjnego co da jej mo�liwo�� podpi�cia si� pod sygna�y odpowiednich
-	kontrolek i odpowiedniej reakcji na nie.
- **/
-class KADUAPI ConfigurationUiHandler : public QObject
-{
-	Q_OBJECT
-
-public:
-	explicit ConfigurationUiHandler(QObject *parent = 0) : QObject(parent) {}
-	virtual ~ConfigurationUiHandler() {}
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
-
-};
 
 class ConfigFileDataManager;
+class ConfigurationUiHandler;
 
 /**
 	@class MainConfigurationWindow

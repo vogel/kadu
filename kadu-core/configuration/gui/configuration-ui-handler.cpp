@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration-module.h"
+#include "configuration-ui-handler.h"
 
-#include "configuration/gui/configuration-ui-handler-repository.h"
-#include "configuration/configuration-factory.h"
-#include "configuration/configuration-path-provider.h"
-#include "configuration/configuration-writer.h"
-#include "configuration/configuration.h"
-
-ConfigurationModule::ConfigurationModule()
-{
-	add_type<ConfigurationFactory>();
-	add_type<ConfigurationPathProvider>();
-	add_type<ConfigurationUiHandlerRepository>();
-	add_type<ConfigurationWriter>();
-
-	add_factory<Configuration, ConfigurationFactory>();
-}
+#include "moc_configuration-ui-handler.cpp"

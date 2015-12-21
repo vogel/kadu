@@ -59,6 +59,7 @@ class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
+class ConfigurationUiHandlerRepository;
 class ConfiguredChatStyleRendererFactoryProvider;
 class DomProcessorService;
 class FileTransferHandlerManager;
@@ -206,6 +207,7 @@ public:
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	StoragePointFactory * storagePointFactory() const;
+	ConfigurationUiHandlerRepository * configurationUiHandlerRepository() const;
 
 	PluginActivationService * pluginActivationService() const;
 	PluginConflictResolver * pluginConflictResolver() const;

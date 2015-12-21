@@ -19,11 +19,12 @@
 
 #pragma once
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ConfigComboBox;
 class NotifierConfigurationWidget;
 class PathListEdit;
 class SoundConfigurationWidget;

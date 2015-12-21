@@ -23,6 +23,7 @@
 
 #include "core/application.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
 #include "autoresponder-configuration-ui-handler.h"

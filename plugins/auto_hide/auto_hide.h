@@ -24,7 +24,7 @@
 #include <QtCore/QTimer>
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 #include "plugin/plugin-root-component.h"
 
 /*!

@@ -33,6 +33,7 @@
 #include "core/core.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 

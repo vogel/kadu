@@ -20,7 +20,7 @@
 #ifndef CENZOR_CONFIGURATION_UI_HANDLER
 #define CENZOR_CONFIGURATION_UI_HANDLER
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 class ListEditWidget;
 

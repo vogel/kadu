@@ -34,6 +34,7 @@
 #include <QtWidgets/QStyleFactory>
 
 #include "configuration/config-file-data-manager.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

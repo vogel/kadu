@@ -29,6 +29,7 @@
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "debug.h"
 #include "themes.h"

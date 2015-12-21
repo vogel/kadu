@@ -34,6 +34,7 @@
 #include "gui/widgets/roster-widget.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"

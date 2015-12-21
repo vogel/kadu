@@ -1,11 +1,17 @@
 #pragma once
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/configuration-aware-object.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 #include "mediaplayer_exports.h"
 
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
+
 class QAction;
+class QKeyEvent;
 class QMenu;
+class QPushButton;
 class QTimer;
 
 class ActionDescription;

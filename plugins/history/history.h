@@ -38,10 +38,10 @@
 #include <QtWidgets/QListWidget>
 
 #include "configuration/configuration-aware-object.h"
+#include "configuration/gui/configuration-ui-handler.h"
 #include "core/crash-aware-object.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
-#include "gui/windows/main-configuration-window.h"
 #include "message/message.h"
 #include "protocols/protocol.h"
 #include "storage/history-storage.h"

@@ -47,6 +47,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
 #include "dom/dom-processor-service.h"
@@ -860,6 +861,11 @@ ChatWidgetRepository * Core::chatWidgetRepository() const
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return m_injector.get<StoragePointFactory>();
+}
+
+ConfigurationUiHandlerRepository * Core::configurationUiHandlerRepository() const
+{
+	return m_injector.get<ConfigurationUiHandlerRepository>();
 }
 
 PluginActivationService * Core::pluginActivationService() const

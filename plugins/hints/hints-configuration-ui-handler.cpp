@@ -35,6 +35,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
 #include "notification/notification/notification.h"
 #include "talkable/talkable.h"
 

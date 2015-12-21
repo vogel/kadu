@@ -25,7 +25,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 class QListWidget;
 class QListWidgetItem;

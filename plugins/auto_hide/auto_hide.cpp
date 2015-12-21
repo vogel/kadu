@@ -26,6 +26,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-repository.h"
 

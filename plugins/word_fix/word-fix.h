@@ -1,7 +1,7 @@
 #ifndef WORD_FIX_H
 #define WORD_FIX_H
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 #include "plugin/plugin-root-component.h"
 
 class ChatWidget;

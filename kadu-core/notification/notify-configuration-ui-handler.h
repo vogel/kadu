@@ -22,6 +22,7 @@
 #ifndef NOTIFY_CONFIGURATION_UI_HANDLER
 #define NOTIFY_CONFIGURATION_UI_HANDLER
 
+#include "configuration/gui/configuration-ui-handler.h"
 #include "gui/windows/main-configuration-window.h"
 #include "notification/notification-event.h"
 

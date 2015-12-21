@@ -23,10 +23,12 @@
 
 #include <QtCore/QPointer>
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
+#include "gui/windows/configuration-window.h"
 
 #include "hint_manager.h"
 
+class QCheckBox;
 class QComboBox;
 class QSpinBox;
 

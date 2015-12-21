@@ -26,6 +26,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/windows/main-configuration-window.h"
 #include "message/message-manager.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"

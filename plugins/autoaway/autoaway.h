@@ -25,7 +25,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/configuration-aware-object.h"
+#include "configuration/gui/configuration-ui-handler.h"
 #include "plugin/plugin-root-component.h"
 #include "status/status-changer.h"
 

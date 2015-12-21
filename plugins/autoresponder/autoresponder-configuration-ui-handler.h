@@ -20,7 +20,7 @@
 #ifndef AUTORESPONDER_CONFIGURATION_UI_HOLDER_H
 #define AUTORESPONDER_CONFIGURATION_UI_HOLDER_H
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 class AutoresponderConfigurationUiHolder : public ConfigurationUiHandler
 {

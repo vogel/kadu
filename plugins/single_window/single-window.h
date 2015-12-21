@@ -5,8 +5,8 @@
 
 #include "chat/chat-manager.h"
 #include "configuration/configuration-aware-object.h"
+#include "configuration/gui/configuration-ui-handler.h"
 #include "gui/widgets/custom-input.h"
-#include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
 #include "provider/simple-provider.h"
 

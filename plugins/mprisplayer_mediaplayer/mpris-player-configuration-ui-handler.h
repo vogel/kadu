@@ -26,7 +26,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 class QComboBox;
 

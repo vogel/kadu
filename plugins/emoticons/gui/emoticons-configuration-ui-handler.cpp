@@ -30,6 +30,7 @@
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
 

@@ -21,7 +21,7 @@
 #ifndef SCREENSHOT_CONFIGURATION_UI_HANDLER_H
 #define SCREENSHOT_CONFIGURATION_UI_HANDLER_H
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/gui/configuration-ui-handler.h"
 
 class ScreenShotConfigurationUiHandler : public ConfigurationUiHandler
 {
