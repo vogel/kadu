@@ -35,7 +35,7 @@ class MediaplayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~MediaplayerPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();
 
 };

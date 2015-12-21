@@ -26,10 +26,9 @@ ExecNotifyPlugin::~ExecNotifyPlugin()
 {
 }
 
-bool ExecNotifyPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool ExecNotifyPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	ExecNotifyInstance = new ExecNotify(this);
 

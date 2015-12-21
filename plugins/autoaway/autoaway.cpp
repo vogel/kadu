@@ -80,10 +80,8 @@ AutoAway::~AutoAway()
 {
 }
 
-bool AutoAway::init(PluginRepository *pluginRepository, bool firstLoad)
+bool AutoAway::init(PluginRepository *pluginRepository)
 {
-	Q_UNUSED(firstLoad)
-
 	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
 	timer = new QTimer(this);

@@ -49,10 +49,9 @@ AutoResponder::~AutoResponder()
 {
 }
 
-bool AutoResponder::init(PluginRepository *pluginRepository, bool firstLoad)
+bool AutoResponder::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));

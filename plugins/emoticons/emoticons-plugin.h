@@ -72,7 +72,7 @@ public:
 	explicit EmoticonsPlugin(QObject *parent = 0);
 	virtual ~EmoticonsPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();
 
 };

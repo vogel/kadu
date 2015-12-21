@@ -31,10 +31,9 @@ MediaplayerPlugin::~MediaplayerPlugin()
 {
 }
 
-bool MediaplayerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool MediaplayerPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	MediaPlayer::createInstance();
 

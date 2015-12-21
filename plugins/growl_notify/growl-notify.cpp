@@ -66,10 +66,9 @@ GrowlNotify::~GrowlNotify()
 	kdebugf2();
 }
 
-bool GrowlNotify::init(PluginRepository *pluginRepository, bool firstLoad)
+bool GrowlNotify::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	if (!grow_is_installed())
 	{

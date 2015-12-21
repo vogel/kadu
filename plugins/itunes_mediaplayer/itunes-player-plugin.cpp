@@ -29,10 +29,9 @@ ItunesMediaplayerPlugin::~ItunesMediaplayerPlugin()
 
 }
 
-bool ItunesMediaplayerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool ItunesMediaplayerPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	iTunes = new ITunesMediaPlayer();
 	return MediaPlayer::instance()->registerMediaPlayer(iTunes, iTunes);

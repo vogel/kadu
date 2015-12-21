@@ -84,10 +84,10 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	}
 }
 
-bool WordFix::init(PluginRepository *pluginRepository, bool firstLoad)
+bool WordFix::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	ExtractBody.setPattern("<body[^>]*>.*</body>");

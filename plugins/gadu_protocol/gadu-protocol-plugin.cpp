@@ -48,10 +48,9 @@ GaduProtocolPlugin::~GaduProtocolPlugin()
 {
 }
 
-bool GaduProtocolPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool GaduProtocolPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return true;

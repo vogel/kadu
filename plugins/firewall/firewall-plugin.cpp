@@ -31,10 +31,9 @@ FirewallPlugin::~FirewallPlugin()
 {
 }
 
-bool FirewallPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool FirewallPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	Firewall::createInstance();
 	Firewall::instance()->setFormattedStringFactory(Core::instance()->formattedStringFactory());

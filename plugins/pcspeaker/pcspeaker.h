@@ -25,7 +25,7 @@ class PCSpeaker : public Notifier, public PluginRootComponent
 		PCSpeaker(QObject *parent = NULL);
 		~PCSpeaker();
 
-		virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+		virtual bool init(PluginRepository *pluginRepository);
 		virtual void done();
 
 		virtual void notify(Notification *notification);

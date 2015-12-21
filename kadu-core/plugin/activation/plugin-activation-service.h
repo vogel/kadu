@@ -109,14 +109,13 @@ private:
 	/**
 	 * @short Activates plugin.
 	 * @param pluginName name of plugin to activate
-	 * @param firstTime if this plugin is activated for first firstTime
 	 * @throws PluginActivationErrorException
 	 *
 	 * Creates new instance of ActivePlugin and adds it to set of active plugins.
 	 * Throws PluginActivationErrorException. For more information about activation
 	 * process see ActivePlugin.
 	 */
-	void activatePlugin(const QString &pluginName, bool firstTime);
+	void activatePlugin(const QString &pluginName);
 
 	/**
 	 * @short Deactivates plugin.

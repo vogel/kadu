@@ -54,11 +54,9 @@ public:
 	 *
 	 * This method is called every time a plugin is activated. Implementations should do all work
 	 * needed to properly run plugin, like registering protocols, notifications and do on, in this
-	 * method. Parameter firstLoad is set to true if it is first activation of plugin for given
-	 * Kadu instance. Plugin can then do additional work if reuired (like showing configuration
-	 * wizard window).
+	 * method.
 	 */
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad) = 0;
+	virtual bool init(PluginRepository *pluginRepository) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

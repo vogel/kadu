@@ -87,10 +87,9 @@ void ImageLinkPlugin::stopConfigurator()
 	Configurator.reset();
 }
 
-bool ImageLinkPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool ImageLinkPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	registerConfigurationUi();
 	registerImageExpander();

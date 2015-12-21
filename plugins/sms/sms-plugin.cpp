@@ -31,14 +31,14 @@ SMSPlugin::~SMSPlugin()
 {
 }
 
-bool SMSPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool SMSPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
 
 	m_smsDialogRepository.reset(new SmsDialogRepository(this));
 
 	SmsConfigurationUiHandler::registerConfigurationUi();
-	SmsActions::registerActions(firstLoad);
+	SmsActions::registerActions();
 
 	SmsActions::instance()->setSmsDialogRepository(m_smsDialogRepository.data());
 

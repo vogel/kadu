@@ -39,10 +39,9 @@ HintsPlugin::~HintsPlugin()
 	Instance = 0;
 }
 
-bool HintsPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool HintsPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	HintManagerInstance = new HintManager(this);
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));

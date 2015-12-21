@@ -50,13 +50,12 @@ public:
 	/**
 	 * @short Load plugin dynamic library file.
 	 * @param pluginName name of plugin to load
-	 * @param firstLoad true if this is first ever load of this plugin
 	 * @param parent Qt parent object
 	 * @throws PluginActivationErrorException
 	 *
 	 * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
 	 */
-	explicit PluginLoader(const QString &pluginName, PluginRepository *pluginRepository, bool firstLoad, QObject *parent = nullptr) noexcept(false);
+	explicit PluginLoader(const QString &pluginName, PluginRepository *pluginRepository, QObject *parent = nullptr) noexcept(false);
 
 	/**
 	 * @short Unload plugin dynamic library file.

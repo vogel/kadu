@@ -41,7 +41,7 @@ public:
 	explicit TabsPlugin(QObject *parent = nullptr);
 	virtual ~TabsPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();
 
 };

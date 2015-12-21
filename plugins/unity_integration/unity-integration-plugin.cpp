@@ -27,10 +27,9 @@ UnityIntegrationPlugin::~UnityIntegrationPlugin()
 {
 }
 
-bool UnityIntegrationPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool UnityIntegrationPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	m_unityIntegration.reset(new UnityIntegration{});
 	m_unityIntegration->setFileTransferManager(Core::instance()->fileTransferManager());

@@ -35,10 +35,9 @@ DockingPlugin::~DockingPlugin()
 {
 }
 
-bool DockingPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool DockingPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	Docking::createInstance();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/docking.ui"));

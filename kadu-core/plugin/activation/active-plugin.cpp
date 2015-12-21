@@ -21,9 +21,9 @@
 
 #include "misc/memory.h"
 
-ActivePlugin::ActivePlugin(const QString &pluginName, PluginRepository *pluginRepository, bool firstLoad) :
+ActivePlugin::ActivePlugin(const QString &pluginName, PluginRepository *pluginRepository) :
 		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginName)},
-		m_pluginLoader{make_unique<PluginLoader>(pluginName, pluginRepository, firstLoad)}
+		m_pluginLoader{make_unique<PluginLoader>(pluginName, pluginRepository)}
 {
 }
 

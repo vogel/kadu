@@ -34,7 +34,7 @@ class ConfigWizardPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ConfigWizardPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();
 
 };

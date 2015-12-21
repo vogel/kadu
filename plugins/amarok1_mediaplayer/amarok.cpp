@@ -45,10 +45,9 @@ AmarokMediaPlayer::~AmarokMediaPlayer()
 	kdebugf();
 }
 
-bool AmarokMediaPlayer::init(PluginRepository *pluginRepository, bool firstLoad)
+bool AmarokMediaPlayer::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	bool res = MediaPlayer::instance()->registerMediaPlayer(this, this);
 	if (!res)

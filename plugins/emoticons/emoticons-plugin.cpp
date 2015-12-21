@@ -106,10 +106,9 @@ void EmoticonsPlugin::stopConfigurator()
 	Configurator.reset();
 }
 
-bool EmoticonsPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool EmoticonsPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	registerConfigurationUi();
 	registerEmoticonExpander();

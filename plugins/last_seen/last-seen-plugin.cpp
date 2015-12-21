@@ -26,10 +26,9 @@ LastSeenPlugin::~LastSeenPlugin()
 {
 }
 
-bool LastSeenPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool LastSeenPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	InfosInstance = new Infos(this);
 

@@ -22,17 +22,22 @@
 
 #include "config-wizard-plugin.h"
 
+#include "core/core.h"
+#include "plugin/activation/plugin-activation-service.h"
+#include "plugin/state/plugin-state.h"
+#include "plugin/state/plugin-state-service.h"
+
 ConfigWizardPlugin::~ConfigWizardPlugin()
 {
 
 }
 
-bool ConfigWizardPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool ConfigWizardPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
 
-	ConfigWizardConfigurationUiHandler::registerActions(firstLoad);
-	if (firstLoad)
+	ConfigWizardConfigurationUiHandler::registerActions();
+	if (Core::instance()->pluginStateService()->pluginState("config_wizard") == PluginState::New)
 		ConfigWizardConfigurationUiHandler::instance()->showConfigWizard();
 
 	return true;

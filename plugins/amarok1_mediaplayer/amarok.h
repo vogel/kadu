@@ -24,7 +24,7 @@ public:
 	explicit AmarokMediaPlayer(QObject *parent = 0);
 	virtual ~AmarokMediaPlayer();
 
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();
 
 	// PlayerInfo implementation

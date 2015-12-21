@@ -36,10 +36,8 @@
 
 ConfigWizardConfigurationUiHandler *ConfigWizardConfigurationUiHandler::Instance = 0;
 
-void ConfigWizardConfigurationUiHandler::registerActions(bool firstLoad)
+void ConfigWizardConfigurationUiHandler::registerActions()
 {
-	Q_UNUSED(firstLoad)
-
 	if (Instance)
 		return;
 

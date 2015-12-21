@@ -58,13 +58,12 @@ public:
 	 * @throws PluginActivationErrorException
 	 *
 	 * Loads plugin transaltion for pluginName, then plugin library file. After that plugin root
-	 * object is created and initialized. Parameter firstLoad is passed to plugin root object
-	 * init method.
+	 * object is created and initialized.
 	 *
 	 * In case of any error PluginActivationErrorException is thrown. All allocated data is properly
 	 * destroyed and memory is freed in this case.
 	 */
-	explicit ActivePlugin(const QString &pluginName, PluginRepository *pluginRepository, bool firstLoad);
+	explicit ActivePlugin(const QString &pluginName, PluginRepository *pluginRepository);
 
 	/**
 	 * @return Root component of plugin.

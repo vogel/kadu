@@ -40,14 +40,12 @@
 
 SmsActions *SmsActions::Instance = 0;
 
-void SmsActions::registerActions(bool firstLoad)
+void SmsActions::registerActions()
 {
 	if (Instance)
 		return;
 
 	Instance = new SmsActions();
-
-	Q_UNUSED(firstLoad);
 }
 
 void SmsActions::unregisterActions()

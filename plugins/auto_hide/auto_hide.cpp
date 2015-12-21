@@ -46,10 +46,8 @@ AutoHide::~AutoHide()
 {
 }
 
-bool AutoHide::init(PluginRepository *pluginRepository, bool firstLoad)
+bool AutoHide::init(PluginRepository *pluginRepository)
 {
-	Q_UNUSED(firstLoad)
-
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
 
 	configurationUpdated();

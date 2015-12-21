@@ -32,10 +32,9 @@ MPRISPlayerPlugin::~MPRISPlayerPlugin()
 
 }
 
-bool MPRISPlayerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool MPRISPlayerPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	MPRISPlayerConfigurationUiHandler::registerConfigurationUi();
 	MPRISPlayer::createInstance();

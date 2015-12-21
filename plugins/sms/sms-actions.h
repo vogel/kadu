@@ -53,7 +53,7 @@ private slots:
 	void newSms(const QString &mobile);
 
 public:
-	static void registerActions(bool firstLoad);
+	static void registerActions();
 	static void unregisterActions();
 
 	static SmsActions * instance();
