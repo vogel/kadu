@@ -60,9 +60,6 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 
-	static Account import065Account(QXmlQuery &xmlQuery);
-	static QList<Buddy> import065Buddies(Account account, QXmlQuery &xmlQuery);
-
 	void importAccounts();
 	void importContacts();
 

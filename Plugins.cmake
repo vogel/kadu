@@ -25,8 +25,6 @@ set (DEFAULT_PLUGINS
 	history
 	# Chat history storing, browsing and searching support using sqlite
 	sql_history
-	# Migration from x <= 0.6.5 format
-	history_migration
 
 # encryption
 	# OTR encryption
@@ -73,8 +71,6 @@ set (DEFAULT_PLUGINS
 	imagelink
 	# Last status infos
 	last_seen
-	# Imports profiles from old Kadu
-	profiles_import
 	# Easily take screenshots and send as images
 	screenshot
 	# Simple view - neww port for 0.11.0
@@ -120,27 +116,12 @@ if (UNIX AND NOT APPLE)
 		freedesktop_notify
 
 	# mediaplayer
-		# Amarok 1.x mediaplayer support
-		amarok1_mediaplayer
 		# FALF mediaplayer support
 		falf_mediaplayer
 		# MPD mediaplayer support
 		mpd_mediaplayer
 	)
 endif (UNIX AND NOT APPLE)
-
-if (APPLE)
-	list (APPEND DEFAULT_PLUGINS
-
-	# notifiers
-		# Growl notification support
-		growl_notify
-
-	# mediaplayer
-		# Itunes Media Player support
-		itunes_mediaplayer
-	)
-endif (APPLE)
 
 if (WIN32)
 	list (APPEND DEFAULT_PLUGINS
