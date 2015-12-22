@@ -79,7 +79,7 @@ QVector<QString> PluginActivationService::activatePluginWithDependencies(const Q
 
 		for (auto plugin : withDependencies)
 		{
-			activatePlugin(plugin, PluginState::New == m_pluginStateService->pluginState(plugin));
+			activatePlugin(plugin);
 			result.append(plugin);
 		}
 	}
@@ -117,10 +117,10 @@ QVector<QString> PluginActivationService::deactivatePluginWithDependents(const Q
 	return result;
 }
 
-void PluginActivationService::activatePlugin(const QString &pluginName, bool firstTime)
+void PluginActivationService::activatePlugin(const QString &pluginName)
 {
 	if (!contains(m_activePlugins, pluginName))
-		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(pluginName, m_pluginRepository, firstTime)));
+		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(pluginName, m_pluginRepository)));
 }
 
 void PluginActivationService::deactivatePlugin(const QString &pluginName)

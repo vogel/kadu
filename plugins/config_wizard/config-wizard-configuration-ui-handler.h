@@ -48,7 +48,7 @@ public slots:
 	void showConfigWizardSlot();
 
 public:
-	static void registerActions(bool firstLoad);
+	static void registerActions();
 	static void unregisterActions();
 
 	static ConfigWizardConfigurationUiHandler * instance();

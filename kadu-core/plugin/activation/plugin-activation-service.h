@@ -116,7 +116,7 @@ private:
 	 * Throws PluginActivationErrorException. For more information about activation
 	 * process see ActivePlugin.
 	 */
-	void activatePlugin(const QString &pluginName, bool firstTime);
+	void activatePlugin(const QString &pluginName);
 
 	/**
 	 * @short Deactivates plugin.

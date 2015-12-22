@@ -105,7 +105,7 @@ public:
 	AutoAway();
 	virtual ~AutoAway();
 
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();
 
 	AutoAwayStatusChanger::ChangeStatusTo changeStatusTo();

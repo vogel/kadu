@@ -70,10 +70,9 @@ bool OtrPlugin::fragmentsFixAvailable() const
 	return (OTRL_VERSION_MAJOR > 4) || (OTRL_VERSION_MINOR > 0) || (OTRL_VERSION_SUB > 0);
 }
 
-bool OtrPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool OtrPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad);
 
 	if (!OtrAvailable)
 		return false;

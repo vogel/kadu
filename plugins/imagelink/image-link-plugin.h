@@ -55,7 +55,7 @@ public:
 	explicit ImageLinkPlugin(QObject *parent = 0);
 	virtual ~ImageLinkPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository, bool firstLoad);
+	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();
 
 };

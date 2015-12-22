@@ -30,10 +30,9 @@ SpeechPlugin::~SpeechPlugin()
 {
 }
 
-bool SpeechPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool SpeechPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	kdebugf();
 

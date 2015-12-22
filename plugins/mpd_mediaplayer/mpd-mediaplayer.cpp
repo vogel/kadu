@@ -31,10 +31,9 @@ MPDMediaPlayer::~MPDMediaPlayer()
 {
 }
 
-bool MPDMediaPlayer::init(PluginRepository *pluginRepository, bool firstLoad)
+bool MPDMediaPlayer::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	return MediaPlayer::instance()->registerMediaPlayer(this, this);
 }

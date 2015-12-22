@@ -29,10 +29,9 @@ IndicatorDockingPlugin::~IndicatorDockingPlugin()
 {
 }
 
-bool IndicatorDockingPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool IndicatorDockingPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	m_indicatorDocking.reset(new IndicatorDocking{});
 	m_indicatorDocking->setChatManager(ChatManager::instance());

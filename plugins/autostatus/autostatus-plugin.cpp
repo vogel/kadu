@@ -31,10 +31,9 @@ AutostatusPlugin::~AutostatusPlugin()
 {
 }
 
-bool AutostatusPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool AutostatusPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository);
-	Q_UNUSED(firstLoad)
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 	Autostatus::createInstance();

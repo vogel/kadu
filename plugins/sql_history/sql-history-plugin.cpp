@@ -32,10 +32,9 @@ SqlHistoryPlugin::~SqlHistoryPlugin()
 {
 }
 
-bool SqlHistoryPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool SqlHistoryPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	Storage = new HistorySqlStorage();
 	Storage->setFormattedStringFactory(Core::instance()->formattedStringFactory());

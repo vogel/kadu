@@ -56,7 +56,7 @@ public:
 	 *
 	 * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
 	 */
-	explicit PluginLoader(const QString &pluginName, PluginRepository *pluginRepository, bool firstLoad, QObject *parent = nullptr) noexcept(false);
+	explicit PluginLoader(const QString &pluginName, PluginRepository *pluginRepository, QObject *parent = nullptr) noexcept(false);
 
 	/**
 	 * @short Unload plugin dynamic library file.

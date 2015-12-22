@@ -41,10 +41,9 @@ TabsPlugin::~TabsPlugin()
 {
 }
 
-bool TabsPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool TabsPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	ChatWidgetContainerHandler.reset(new TabsChatWidgetContainerHandler());
 	TabsManagerInstance = new TabsManager(this);

@@ -28,10 +28,9 @@ AntistringPlugin::~AntistringPlugin()
 {
 }
 
-bool AntistringPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool AntistringPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
-	Q_UNUSED(firstLoad)
 
 	Antistring::createInstance();
 	AntistringConfigurationUiHandler::registerUiHandler();

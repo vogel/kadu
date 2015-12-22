@@ -81,11 +81,8 @@ AutoAway::~AutoAway()
 {
 }
 
-bool AutoAway::init(PluginRepository *pluginRepository, bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
+bool AutoAway::init(PluginRepository *pluginRepository)
+{	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));

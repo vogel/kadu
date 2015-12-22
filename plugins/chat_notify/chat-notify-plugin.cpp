@@ -32,12 +32,11 @@ ChatNotifyPlugin::~ChatNotifyPlugin()
 {
 }
 
-bool ChatNotifyPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
+bool ChatNotifyPlugin::init(PluginRepository *pluginRepository)
 {
 	Q_UNUSED(pluginRepository)
 
-	if (firstLoad)
-		createDefaultConfiguration();
+	createDefaultConfiguration();
 
 	NotifierInstance = new ChatNotifier(this);
 	NotifierInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
