@@ -19,7 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -39,14 +41,14 @@ bool MediaplayerPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 	MediaPlayer::createInstance();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
-	MainConfigurationWindow::registerUiHandler(MediaPlayer::instance());
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(MediaPlayer::instance());
 
 	return true;
 }
 
 void MediaplayerPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiHandler(MediaPlayer::instance());
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(MediaPlayer::instance());
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 
 	MediaPlayer::destroyInstance();

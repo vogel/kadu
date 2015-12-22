@@ -22,6 +22,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -58,7 +59,7 @@ bool AutoHide::init(PluginRepository *pluginRepository, bool firstLoad)
 	MyIdle = pluginRepository->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
-	MainConfigurationWindow::registerUiHandler(this);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(this);
 
 	return true;
 }
@@ -67,7 +68,7 @@ void AutoHide::done()
 {
 	Timer.stop();
 
-	MainConfigurationWindow::unregisterUiHandler(this);
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 }
 

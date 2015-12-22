@@ -26,7 +26,9 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/select-file.h"
@@ -46,7 +48,7 @@ void SpeechConfigurationUiHandler::registerUiHandler()
 	{
 		Instance = new SpeechConfigurationUiHandler();
 		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
-		MainConfigurationWindow::registerUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
 	}
 }
 
@@ -54,7 +56,7 @@ void SpeechConfigurationUiHandler::unregisterUiHandler()
 {
 	if (Instance)
 	{
-		MainConfigurationWindow::unregisterUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
 		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 		delete Instance;
 		Instance = 0;

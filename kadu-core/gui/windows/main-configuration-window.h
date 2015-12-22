@@ -36,7 +36,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	static ConfigFileDataManager *InstanceDataManager;
 
 	static QList<QString> UiFiles;
-	static QList<ConfigurationUiHandler *> ConfigurationUiHandlers;
 
 	static void instanceCreated();
 
@@ -67,6 +66,8 @@ private slots:
 	void showLookChatAdvanced();
 	void installIconTheme();
 	void setIconThemes();
+	void configurationUiHandlerAdded(ConfigurationUiHandler *configurationUiHandler);
+	void configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler);
 
 public:
 	static MainConfigurationWindow * instance();
@@ -88,17 +89,6 @@ public:
 		      wywołaniu metody \c unregisterUiHandler() (o ile takie istnieje).
 	 **/
 	static void unregisterUiFile(const QString &uiFile);
-
-	/**
-	 * @note Always remember to call this method after correspoding
-	 *       \c registerUiHandler() method call (if such exists).
-	 */
-	static void registerUiHandler(ConfigurationUiHandler *uiHandler);
-	/**
-	 * @note Always remember to call this method before correspoding
-	 *       \c unregisterUiFile() method call (if such exists).
-	 */
-	static void unregisterUiHandler(ConfigurationUiHandler *uiHandler);
 
 	static const char *SyntaxText;
 	static const char *SyntaxTextNotify;

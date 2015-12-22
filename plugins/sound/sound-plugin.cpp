@@ -31,6 +31,7 @@
 
 #include "core/application.h"
 #include "core/core.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/windows/main-configuration-window.h"
@@ -72,14 +73,14 @@ bool SoundPlugin::init(PluginRepository *pluginRepository, bool firstLoad)
 	Core::instance()->notificationManager()->registerNotifier(m_injector->get<SoundNotifier>());
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
-	MainConfigurationWindow::registerUiHandler(m_injector->get<SoundConfigurationUiHandler>());
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(m_injector->get<SoundConfigurationUiHandler>());
 
 	return true;
 }
 
 void SoundPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiHandler(m_injector->get<SoundConfigurationUiHandler>());
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(m_injector->get<SoundConfigurationUiHandler>());
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/sound.ui"});
 
 	if (Core::instance()) // TODO: hack

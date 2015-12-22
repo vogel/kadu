@@ -19,7 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
@@ -36,13 +38,13 @@ void FreedesktopNotifyConfigurationUiHandler::registerConfigurationUi()
 	Instance = new FreedesktopNotifyConfigurationUiHandler();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
-	MainConfigurationWindow::registerUiHandler(Instance);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
 }
 
 void FreedesktopNotifyConfigurationUiHandler::unregisterConfigurationUi()
 {
 	if (Instance)
-		MainConfigurationWindow::unregisterUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
 
 	delete Instance;
 	Instance = 0;

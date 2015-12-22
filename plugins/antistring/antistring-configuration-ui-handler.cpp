@@ -27,6 +27,8 @@
 #include <QtWidgets/QSpinBox>
 
 #include "core/application.h"
+#include "core/core.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
@@ -44,7 +46,7 @@ void AntistringConfigurationUiHandler::registerUiHandler()
 	{
 		Instance = new AntistringConfigurationUiHandler();
 		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
-		MainConfigurationWindow::registerUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(instance());
 	}
 }
 
@@ -52,7 +54,7 @@ void AntistringConfigurationUiHandler::unregisterUiHandler()
 {
 	if (Instance)
 	{
-		MainConfigurationWindow::unregisterUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(instance());
 		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 		delete Instance;
 		Instance = 0;

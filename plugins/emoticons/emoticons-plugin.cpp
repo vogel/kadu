@@ -25,7 +25,9 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
+#include "core/core.h"
 #include "configuration/emoticon-configurator.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
 #include "gui/emoticon-clipboard-html-transformer.h"
 #include "gui/emoticons-configuration-ui-handler.h"
@@ -48,12 +50,12 @@ void EmoticonsPlugin::registerConfigurationUi()
 	ConfigurationUiHandler.reset(new EmoticonsConfigurationUiHandler(this));
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
-	MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler.data());
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(ConfigurationUiHandler.data());
 }
 
 void EmoticonsPlugin::unregisterConfigurationUi()
 {
-	MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler.data());
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(ConfigurationUiHandler.data());
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 
 	ConfigurationUiHandler.reset();

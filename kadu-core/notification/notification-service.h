@@ -34,6 +34,7 @@ class AccountEventListener;
 class Action;
 class ActionDescription;
 class ChatEventListener;
+class ConfigurationUiHandlerRepository;
 class GroupEventListener;
 class Notification;
 class NotificationCallbackRepository;
@@ -46,6 +47,7 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
 	bool NewMessageOnlyIfInactive;
@@ -102,6 +104,7 @@ signals:
 	void silentModeToggled(bool);
 
 private slots:
+	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 
 };

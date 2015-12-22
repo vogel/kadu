@@ -44,6 +44,8 @@
 #include "compression/archive-extractor.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact.h"
 #include "core/application.h"
 #include "core/core.h"
@@ -84,7 +86,6 @@
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
 ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;
 QList<QString> MainConfigurationWindow::UiFiles;
-QList<ConfigurationUiHandler *> MainConfigurationWindow::ConfigurationUiHandlers;
 
 const char *MainConfigurationWindow::SyntaxText = QT_TRANSLATE_NOOP
 (
@@ -143,16 +144,14 @@ void MainConfigurationWindow::unregisterUiFile(const QString &uiFile)
 		Instance->widget()->removeUiFile(uiFile);
 }
 
-void MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler *uiHandler)
+void MainConfigurationWindow::configurationUiHandlerAdded(ConfigurationUiHandler *configurationUiHandler)
 {
-	ConfigurationUiHandlers.append(uiHandler);
-	if (Instance)
-		uiHandler->mainConfigurationWindowCreated(Instance);
+	configurationUiHandler->mainConfigurationWindowCreated(this);
 }
 
-void MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler *uiHandler)
+void MainConfigurationWindow::configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler)
 {
-	ConfigurationUiHandlers.removeAll(uiHandler);
+	Q_UNUSED(configurationUiHandler)
 }
 
 void MainConfigurationWindow::instanceCreated()
@@ -163,9 +162,8 @@ void MainConfigurationWindow::instanceCreated()
 	foreach (const QString &uiFile, UiFiles)
 		Instance->widget()->appendUiFile(uiFile);
 
-	foreach (ConfigurationUiHandler *uiHandler, ConfigurationUiHandlers)
-		if (uiHandler)
-			uiHandler->mainConfigurationWindowCreated(Instance);
+	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
+		Instance->configurationUiHandlerAdded(configurationUiHandler);
 }
 
 MainConfigurationWindow::MainConfigurationWindow() :
@@ -237,6 +235,11 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	PluginList->setPluginStateManager(Core::instance()->pluginStateManager());
 	PluginList->setPluginStateService(Core::instance()->pluginStateService());
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
+
+	connect(Core::instance()->configurationUiHandlerRepository(), SIGNAL(configurationUiHandlerAdded(ConfigurationUiHandler*)),
+	        this, SLOT(configurationUiHandlerAdded(ConfigurationUiHandler*)));
+	connect(Core::instance()->configurationUiHandlerRepository(), SIGNAL(configurationUiHandlerRemoved(ConfigurationUiHandler*)),
+	        this, SLOT(configurationUiHandlerRemoved(ConfigurationUiHandler*)));
 
 	triggerCompositingStateChanged();
 }

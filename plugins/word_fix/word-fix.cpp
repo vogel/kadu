@@ -36,6 +36,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-html-visitor.h"
@@ -135,7 +136,7 @@ bool WordFix::init(PluginRepository *pluginRepository, bool firstLoad)
 
 	kdebugf();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
-	MainConfigurationWindow::registerUiHandler(this);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(this);
 
 	setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 
@@ -146,7 +147,8 @@ bool WordFix::init(PluginRepository *pluginRepository, bool firstLoad)
 void WordFix::done()
 {
 	kdebugf();
-	MainConfigurationWindow::unregisterUiHandler(this);
+
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
 	kdebugf2();
 

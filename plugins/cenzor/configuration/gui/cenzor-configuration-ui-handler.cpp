@@ -18,7 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -38,7 +40,7 @@ void CenzorConfigurationUiHandler::registerConfigurationUi()
 	{
 		Instance = new CenzorConfigurationUiHandler();
 		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
-		MainConfigurationWindow::registerUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
 	}
 }
 
@@ -46,7 +48,7 @@ void CenzorConfigurationUiHandler::unregisterConfigurationUi()
 {
 	if (Instance)
 	{
-		MainConfigurationWindow::unregisterUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
 		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
 		delete Instance;
 		Instance = 0;

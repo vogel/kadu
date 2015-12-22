@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
@@ -53,7 +54,7 @@ bool SpellCheckerPlugin::init(PluginRepository *pluginRepository, bool firstLoad
 	SpellcheckerConfiguration::createInstance();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
-	MainConfigurationWindow::registerUiHandler(SpellCheckerInstance);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(SpellCheckerInstance);
 
 	return true;
 }
@@ -63,7 +64,7 @@ void SpellCheckerPlugin::done()
 	Suggester::destroyInstance();
 	SpellcheckerConfiguration::destroyInstance();
 
-	MainConfigurationWindow::unregisterUiHandler(SpellCheckerInstance);
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(SpellCheckerInstance);
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
 
 	delete SpellCheckerInstance;

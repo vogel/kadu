@@ -26,6 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -56,7 +57,7 @@ SimpleView::SimpleView() :
 	SimpleViewConfigUi::createInstance();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
-	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(SimpleViewConfigUi::instance());
 
 	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
 	DockAction->setCheckable(true);
@@ -85,7 +86,7 @@ SimpleView::~SimpleView()
 
 	Docking::instance()->dockingMenuActionRepository()->removeAction(DockAction);
 
-	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(SimpleViewConfigUi::instance());
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 	SimpleViewConfigUi::destroyInstance();
 }

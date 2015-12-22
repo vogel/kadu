@@ -21,7 +21,9 @@
 
 #include <QtGui/QImageWriter>
 
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "gui/widgets/configuration/config-combo-box.h"
@@ -40,13 +42,13 @@ void ScreenShotConfigurationUiHandler::registerConfigurationUi()
 	Instance = new ScreenShotConfigurationUiHandler();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
-	MainConfigurationWindow::registerUiHandler(Instance);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
 }
 
 void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
 {
 	if (Instance)
-		MainConfigurationWindow::unregisterUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
 
 	delete Instance;
 	Instance = 0;

@@ -21,6 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/actions/action-context.h"
@@ -59,7 +60,6 @@ NotificationService::NotificationService(QObject *parent) :
 	Notification::registerParserTags();
 
 	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
-	MainConfigurationWindow::registerUiHandler(NotifyUiHandler);
 
 	MessageNotification::registerEvents();
 	StatusChangedNotification::registerEvents();
@@ -80,11 +80,18 @@ NotificationService::~NotificationService()
 {
 	Notification::unregisterParserTags();
 
-	MainConfigurationWindow::unregisterUiHandler(NotifyUiHandler);
+	if (m_configurationUiHandlerRepository)
+		m_configurationUiHandlerRepository->removeConfigurationUiHandler(NotifyUiHandler);
 
 	StatusChangedNotification::unregisterEvents();
 	MessageNotification::unregisterEvents();
 	MultilogonNotification::unregisterEvents();
+}
+
+void NotificationService::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+{
+	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+	m_configurationUiHandlerRepository->addConfigurationUiHandler(NotifyUiHandler);
 }
 
 void NotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)

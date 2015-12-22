@@ -28,6 +28,7 @@
 #include "accounts/account.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -97,14 +98,14 @@ bool AutoAway::init(PluginRepository *pluginRepository, bool firstLoad)
 	idle = pluginRepository->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
-	MainConfigurationWindow::registerUiHandler(this);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(this);
 
 	return true;
 }
 
 void AutoAway::done()
 {
-	MainConfigurationWindow::unregisterUiHandler(this);
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 
 	StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);

@@ -21,6 +21,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -59,7 +60,7 @@ bool AutoResponder::init(PluginRepository *pluginRepository, bool firstLoad)
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
 	UiHandler = new AutoresponderConfigurationUiHolder(this);
-	MainConfigurationWindow::registerUiHandler(UiHandler);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(UiHandler);
 
 	Configurator = new AutoresponderConfigurator();
 	Configurator->setAutoresponder(this);
@@ -73,7 +74,7 @@ void AutoResponder::done()
 {
 	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
 
-	MainConfigurationWindow::unregisterUiHandler(UiHandler);
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(UiHandler);
 	delete UiHandler;
 	UiHandler = nullptr;
 

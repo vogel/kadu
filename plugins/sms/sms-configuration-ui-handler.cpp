@@ -31,6 +31,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -60,7 +61,7 @@ void SmsConfigurationUiHandler::registerConfigurationUi()
 	{
 		Instance = new SmsConfigurationUiHandler();
 		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
-		MainConfigurationWindow::registerUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
 	}
 }
 
@@ -68,7 +69,7 @@ void SmsConfigurationUiHandler::unregisterConfigurationUi()
 {
 	if (Instance)
 	{
-		MainConfigurationWindow::unregisterUiHandler(Instance);
+		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
 		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 		delete Instance;
 		Instance = 0;
