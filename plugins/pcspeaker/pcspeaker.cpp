@@ -142,10 +142,6 @@ void PCSpeaker::done()
 	}
 }
 
-void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow * /*mainConfigurationWindow*/)
-{
-}
-
 NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *parent)
 {
 	configWidget = new PCSpeakerConfigurationWidget(parent);

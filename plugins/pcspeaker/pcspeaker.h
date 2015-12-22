@@ -29,7 +29,6 @@ class PCSpeaker : public Notifier, public PluginRootComponent
 		virtual void done();
 
 		virtual void notify(Notification *notification);
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 		void createDefaultConfiguration();
 		void parseAndPlay(QString linia);
