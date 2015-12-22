@@ -43,7 +43,7 @@ typedef struct str_enchant_dict EnchantDict;
 class MacSpellChecker;
 #endif
 
-class SpellChecker : public ConfigurationUiHandler
+class SpellChecker : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -91,7 +91,8 @@ public:
 	QStringList buildSuggestList(const QString &word);
 
 public slots:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 	void chatWidgetAdded(ChatWidget *chatWidget);
 	void configForward();

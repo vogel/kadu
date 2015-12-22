@@ -112,6 +112,10 @@ void AntistringConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(applyConfiguration()));
 }
 
+void AntistringConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+}
+
 void AntistringConfigurationUiHandler::updateConditionList()
 {
 	ConditionListWidget->clear();

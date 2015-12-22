@@ -58,7 +58,7 @@ bool AutoResponder::init(PluginRepository *pluginRepository)
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
-	UiHandler = new AutoresponderConfigurationUiHolder(this);
+	UiHandler = new AutoresponderConfigurationUiHolder();
 	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(UiHandler);
 
 	Configurator = new AutoresponderConfigurator();

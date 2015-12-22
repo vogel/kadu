@@ -33,15 +33,13 @@
 
 class MainConfigurationWindow;
 
-class KADUAPI ConfigurationUiHandler : public QObject
+class KADUAPI ConfigurationUiHandler
 {
-	Q_OBJECT
 
 public:
-	explicit ConfigurationUiHandler(QObject *parent = 0)
-			: QObject{parent} {}
 	virtual ~ConfigurationUiHandler() {}
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
+	virtual void mainConfigurationWindowDestroyed() = 0;
 
 };

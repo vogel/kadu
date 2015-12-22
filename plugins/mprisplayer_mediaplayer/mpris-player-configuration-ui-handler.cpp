@@ -115,6 +115,10 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
+void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+}
+
 void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile()
 {
 	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);

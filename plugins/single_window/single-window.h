@@ -71,15 +71,13 @@ private slots:
 
 };
 
-class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationAwareObject
+class SingleWindowManager : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
 public:
 	explicit SingleWindowManager(QObject *parent = 0);
 	virtual ~SingleWindowManager();
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow * /*mainConfigurationWindow*/) {};
 
 	SingleWindow * window() const { return m_window; }
 

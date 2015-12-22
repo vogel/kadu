@@ -31,7 +31,7 @@ class SoundConfigurationWidget;
 class SoundManager;
 class SoundThemeManager;
 
-class SoundConfigurationUiHandler : public ConfigurationUiHandler
+class SoundConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -43,6 +43,7 @@ public:
 
 protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 private:
 	QPointer<SoundManager> m_soundManager;

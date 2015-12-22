@@ -48,7 +48,7 @@
 #include "hints-configuration-ui-handler.h"
 
 HintsConfigurationUiHandler::HintsConfigurationUiHandler(const QString &style, QObject *parent):
-		ConfigurationUiHandler(parent),
+		QObject(parent),
 		previewHintsFrame{},
 		previewHintsLayout{},
 		minimumWidth{},

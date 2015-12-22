@@ -24,7 +24,7 @@
 
 class ListEditWidget;
 
-class CenzorConfigurationUiHandler : public ConfigurationUiHandler
+class CenzorConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -37,8 +37,11 @@ class CenzorConfigurationUiHandler : public ConfigurationUiHandler
 	virtual ~CenzorConfigurationUiHandler();
 
 private slots:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual void configurationWindowApplied();
+
+protected:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 public:
 	static void registerConfigurationUi();

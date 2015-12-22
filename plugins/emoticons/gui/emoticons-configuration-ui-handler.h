@@ -38,7 +38,7 @@ class ConfigPathListEdit;
  * @class EmoticonsConfigurationUiHandler
  * @short Handler of configuration UI for emotcions plugin.
  */
-class EmoticonsConfigurationUiHandler : public ConfigurationUiHandler
+class EmoticonsConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -54,7 +54,8 @@ public:
 	explicit EmoticonsConfigurationUiHandler(QObject *parent = 0);
 	virtual ~EmoticonsConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 };
 

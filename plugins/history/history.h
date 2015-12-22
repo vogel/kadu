@@ -55,7 +55,7 @@ class HistorySaveThread;
 class HistoryWindow;
 class ShowHistoryActionDescription;
 
-class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, CrashAwareObject
+class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareObject
 {
 	Q_OBJECT
 
@@ -98,7 +98,6 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
-	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	friend class HistorySaveThread;
 	Message dequeueUnsavedMessage();

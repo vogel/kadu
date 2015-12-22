@@ -25,50 +25,9 @@
 
 #include "simpleview-config-ui.h"
 
-SimpleViewConfigUi *SimpleViewConfigUi::Instance = 0;
-
-SimpleViewConfigUi::SimpleViewConfigUi()
-{
-	createDefaultConfiguration();
-}
-
-SimpleViewConfigUi::~SimpleViewConfigUi()
-{
-}
-
-void SimpleViewConfigUi::createInstance()
-{
-	if (!Instance)
-		Instance = new SimpleViewConfigUi();
-}
-
-void SimpleViewConfigUi::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-void SimpleViewConfigUi::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	Q_UNUSED(mainConfigurationWindow)
-	/* Keep this code for further use:
-	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
-	*/
-}
-
-/* Keep this code for further use:
-void SimpleViewConfigUi::mainConfigurationWindowDestroyed()
-{
-}
-*/
-
 void SimpleViewConfigUi::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewKeepSize", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewBorderless", true);
 }
-
-
-
-#include "moc_simpleview-config-ui.cpp"

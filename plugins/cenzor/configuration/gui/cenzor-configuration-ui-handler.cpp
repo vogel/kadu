@@ -81,6 +81,10 @@ void CenzorConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	ExclusionsWidget->setList(CenzorConfiguration::toStringList(Cenzor::instance()->configuration().exclusionList()));
 }
 
+void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+}
+
 void CenzorConfigurationUiHandler::configurationWindowApplied()
 {
 	Cenzor::instance()->configuration().setSwearList(CenzorConfiguration::toRegExpList(SwearwordsWidget->list()));

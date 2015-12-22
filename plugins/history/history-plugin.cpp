@@ -50,7 +50,6 @@ bool HistoryPlugin::init(PluginRepository *pluginRepository)
 
 	History::createInstance();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
-	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(History::instance());
 
 	BuddyHistoryDeleteHandler::createInstance();
 	BuddyAdditionalDataDeleteHandlerManager::instance()->registerAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
@@ -67,7 +66,6 @@ void HistoryPlugin::done()
 	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
 	BuddyHistoryDeleteHandler::destroyInstance();
 
-	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(History::instance());
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 	History::destroyInstance();
 }

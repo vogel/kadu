@@ -31,7 +31,7 @@
  * This class provides autohiding Kadu's main window after preset time.
  * \brief This class provides autohiding Kadu's main window after preset time
  */
-class AutoHide : public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
+class AutoHide : public QObject, public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -47,7 +47,8 @@ private slots:
 
 protected:
 	virtual void configurationUpdated();
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 public:
 	explicit AutoHide(QObject *parent = 0);

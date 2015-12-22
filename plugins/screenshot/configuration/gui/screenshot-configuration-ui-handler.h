@@ -25,19 +25,17 @@
 
 class ScreenShotConfigurationUiHandler : public ConfigurationUiHandler
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(ScreenShotConfigurationUiHandler)
-
 	static ScreenShotConfigurationUiHandler *Instance;
 
-	explicit ScreenShotConfigurationUiHandler(QObject *parent = 0);
+	explicit ScreenShotConfigurationUiHandler();
 	virtual ~ScreenShotConfigurationUiHandler();
 
 public:
 	static void registerConfigurationUi();
 	static void unregisterConfigurationUi();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 };
 

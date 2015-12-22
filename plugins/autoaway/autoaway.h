@@ -42,7 +42,7 @@ class Idle;
  * @defgroup autoaway Autoaway
  * @{
  */
-class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
+class AutoAway : public QObject, public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -114,7 +114,8 @@ public:
 
 	QString changeDescription(const QString &oldDescription);
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 };
 

@@ -44,7 +44,7 @@ class QListWidget;
 class QProcess;
 class QTextEdit;
 
-class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler
+class SMSAPI SmsConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -73,7 +73,9 @@ public:
 	static void registerConfigurationUi();
 	static void unregisterConfigurationUi();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
+
 };
 
 #endif // SMS_CONFIGURATION_UI_HANDLER_H

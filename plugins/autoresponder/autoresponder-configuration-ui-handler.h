@@ -24,13 +24,13 @@
 
 class AutoresponderConfigurationUiHolder : public ConfigurationUiHandler
 {
-	Q_OBJECT
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 public:
-	explicit AutoresponderConfigurationUiHolder(QObject *parent = 0);
+	explicit AutoresponderConfigurationUiHolder();
 	virtual ~AutoresponderConfigurationUiHolder();
 
 };

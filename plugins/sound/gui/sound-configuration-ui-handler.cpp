@@ -35,7 +35,7 @@
 #include "themes.h"
 
 SoundConfigurationUiHandler::SoundConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler{parent}
+		QObject{parent}
 {
 }
 
@@ -94,6 +94,10 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	setSoundThemes();
 
 	connectWidgets();
+}
+
+void SoundConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
 }
 
 NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)

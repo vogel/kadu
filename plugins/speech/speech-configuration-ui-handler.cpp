@@ -92,6 +92,10 @@ void SpeechConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	connect(mainConfigurationWindow->widget()->widgetById("speech/test"), SIGNAL(clicked()), this, SLOT(testSpeech()));
 }
 
+void SpeechConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+}
+
 void SpeechConfigurationUiHandler::soundSystemChanged(int index)
 {
 	Q_UNUSED(index)

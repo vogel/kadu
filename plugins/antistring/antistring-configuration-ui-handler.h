@@ -27,7 +27,7 @@ class QListWidget;
 class QListWidgetItem;
 class QSpinBox;
 
-class AntistringConfigurationUiHandler : public ConfigurationUiHandler
+class AntistringConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AntistringConfigurationUiHandler)
@@ -58,8 +58,9 @@ public:
 
 	static AntistringConfigurationUiHandler * instance() { return Instance; }
 
-public slots:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+protected:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 };
 

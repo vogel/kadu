@@ -18,11 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/gui/freedesktop-notify-configuration-ui-handler.h"
-
 #include "freedesktop-notify.h"
 
 #include "freedesktop-notify-plugin.h"
+
+#include "core/application.h"
+#include "gui/windows/main-configuration-window.h"
+#include "kadu/kadu-core/misc/paths-provider.h"
 
 FreedesktopNotifyPlugin::~FreedesktopNotifyPlugin()
 {
@@ -33,14 +35,14 @@ bool FreedesktopNotifyPlugin::init(PluginRepository *pluginRepository)
 	Q_UNUSED(pluginRepository)
 
 	FreedesktopNotify::createInstance();
-	FreedesktopNotifyConfigurationUiHandler::registerConfigurationUi();
+	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
 
 	return true;
 }
 
 void FreedesktopNotifyPlugin::done()
 {
-	FreedesktopNotifyConfigurationUiHandler::unregisterConfigurationUi();
+	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
 	FreedesktopNotify::destroyInstance();
 }
 

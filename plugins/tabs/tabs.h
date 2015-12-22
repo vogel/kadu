@@ -50,7 +50,7 @@ class ChatWidgetSetTitle;
 
 enum class OpenChatActivation;
 
-class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, StorableObject
+class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
 {
 	Q_OBJECT
 
@@ -114,8 +114,6 @@ public:
 	void storeOpenedChatTabs();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	void detachChat(ChatWidget *chatWidget);
 

@@ -29,7 +29,7 @@ class QTextEdit;
 
 class MainConfigurationWindow;
 
-class FirewallConfigurationUiHandler : public ConfigurationUiHandler
+class FirewallConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -51,7 +51,8 @@ private slots:
 public:
 	explicit FirewallConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 	static void registerUiHandler();
 	static void unregisterUiHandler();

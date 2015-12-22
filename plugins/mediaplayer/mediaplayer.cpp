@@ -286,6 +286,10 @@ void MediaPlayer::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	mainConfigurationWindow->widget()->widgetById("mediaplayer/chatShortcuts")->setToolTip(QCoreApplication::translate("@default", MediaPlayerChatShortCutsText));
 }
 
+void MediaPlayer::mainConfigurationWindowDestroyed()
+{
+}
+
 void MediaPlayer::chatWidgetAdded(ChatWidget *chat)
 {
 	kdebugf();

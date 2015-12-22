@@ -81,7 +81,7 @@ static void disableNewTab(Action *action)
 }
 
 TabsManager::TabsManager(QObject *parent) :
-		ConfigurationUiHandler(parent), TargetTabs(-1)
+		QObject(parent), TargetTabs(-1)
 {
 	kdebugf();
 
@@ -589,11 +589,6 @@ void TabsManager::store()
 bool TabsManager::shouldStore()
 {
 	return StorableObject::shouldStore() && Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true);
-}
-
-void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	Q_UNUSED(mainConfigurationWindow)
 }
 
 void TabsManager::configurationUpdated()

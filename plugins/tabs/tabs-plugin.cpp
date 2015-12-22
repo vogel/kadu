@@ -49,7 +49,6 @@ bool TabsPlugin::init(PluginRepository *pluginRepository)
 	TabsManagerInstance = new TabsManager(this);
 	TabsManagerInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
-	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(TabsManagerInstance);
 
 	ChatWidgetContainerHandler.data()->setTabsManager(TabsManagerInstance);
 	ChatWidgetContainerHandler.data()->setTabWidget(TabsManagerInstance->tabWidget());
@@ -66,7 +65,6 @@ void TabsPlugin::done()
 
 	Core::instance()->chatWidgetContainerHandlerRepository()->unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler.data());
 
-	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(TabsManagerInstance);
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	delete TabsManagerInstance;
 	TabsManagerInstance = 0;

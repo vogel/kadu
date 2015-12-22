@@ -26,7 +26,7 @@ class UserGroup;
 
 class MediaPlayerStatusChanger;
 
-class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
+class MEDIAPLAYERAPI MediaPlayer : public QObject, public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -188,7 +188,8 @@ public:
 	*/
 	void unregisterMediaPlayer();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 	void titleChanged();
 	void statusChanged();

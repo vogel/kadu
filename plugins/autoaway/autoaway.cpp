@@ -82,7 +82,8 @@ AutoAway::~AutoAway()
 }
 
 bool AutoAway::init(PluginRepository *pluginRepository)
-{	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
+{
+	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
@@ -189,6 +190,15 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionChange"), SIGNAL(activated(int)), this, SLOT(descriptionChangeChanged(int)));
 
 	autoRefreshSpinBox->setSpecialValueText(tr("Don't refresh"));
+}
+
+void AutoAway::mainConfigurationWindowDestroyed()
+{
+}
+
+QString AutoAway::changeDescription(const QString& oldDescription)
+{
+	return oldDescription;
 }
 
 void AutoAway::configurationUpdated()

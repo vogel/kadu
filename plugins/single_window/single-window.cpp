@@ -40,7 +40,7 @@
 #include "single-window.h"
 
 SingleWindowManager::SingleWindowManager(QObject *parent) :
-		ConfigurationUiHandler(parent),
+		QObject(parent),
 		m_windowProvider(new SimpleProvider<QWidget *>(0))
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("SingleWindow", "RosterPosition", 0);

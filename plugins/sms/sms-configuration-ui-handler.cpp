@@ -153,6 +153,10 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	EraOmnixPassword->setEchoMode(QLineEdit::Password);
 }
 
+void SmsConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+}
+
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());

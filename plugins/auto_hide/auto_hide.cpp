@@ -37,7 +37,7 @@
 #include "auto_hide.h"
 
 AutoHide::AutoHide(QObject *parent) :
-		ConfigurationUiHandler{parent},
+		QObject{parent},
 		MyIdle{nullptr},
 		IdleTime{0},
 		Enabled{false}
@@ -99,6 +99,10 @@ void AutoHide::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	connect(mainConfigurationWindow->widget()->widgetById("auto_hide/use_auto_hide"), SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"), SLOT(setEnabled(bool)));
 
 	static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"))->setSpecialValueText(tr("Don't hide"));
+}
+
+void AutoHide::mainConfigurationWindowDestroyed()
+{
 }
 
 Q_EXPORT_PLUGIN2(auto_hide, AutoHide)

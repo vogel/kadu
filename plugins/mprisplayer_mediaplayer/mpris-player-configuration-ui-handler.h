@@ -30,7 +30,7 @@
 
 class QComboBox;
 
-class MPRISPlayerConfigurationUiHandler : public ConfigurationUiHandler
+class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -52,7 +52,8 @@ public:
 	static void registerConfigurationUi();
 	static void unregisterConfigurationUi();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 public slots:
 	void addPlayer();

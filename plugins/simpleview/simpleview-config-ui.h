@@ -17,37 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef SIMPLEVIEW_CONFIG_UI_H
 #define SIMPLEVIEW_CONFIG_UI_H
 
-#include <QtCore/QObject>
-
-#include "configuration/gui/configuration-ui-handler.h"
-
-class SimpleViewConfigUi :
-	public ConfigurationUiHandler
+class SimpleViewConfigUi
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(SimpleViewConfigUi)
-
-	static SimpleViewConfigUi *Instance;
-
-	SimpleViewConfigUi();
-	virtual ~SimpleViewConfigUi();
-
-	void createDefaultConfiguration();
-
-	/* Keep this code for further use:
-private slots:
-	void mainConfigurationWindowDestroyed();
-	 */
-
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static SimpleViewConfigUi *instance(){return Instance; }
+	static void createDefaultConfiguration();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 };
 
 #endif

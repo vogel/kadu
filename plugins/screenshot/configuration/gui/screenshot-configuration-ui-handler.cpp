@@ -56,10 +56,8 @@ void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
 }
 
-ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler()
+ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler()
 {
-	Q_UNUSED(parent)
 }
 
 ScreenShotConfigurationUiHandler::~ScreenShotConfigurationUiHandler()
@@ -68,8 +66,9 @@ ScreenShotConfigurationUiHandler::~ScreenShotConfigurationUiHandler()
 
 void ScreenShotConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widget()->widgetById("screenshot/enableSizeLimit"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("screenshot/sizeLimit"), SLOT(setEnabled(bool)));
+	QObject::connect(
+		mainConfigurationWindow->widget()->widgetById("screenshot/enableSizeLimit"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("screenshot/sizeLimit"), SLOT(setEnabled(bool)));
 
 	QStringList opts;
 	QList<QByteArray> byteArrayOpts = QImageWriter::supportedImageFormats();
@@ -80,6 +79,10 @@ void ScreenShotConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
 	ConfigComboBox *formats = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("screenshot/formats"));
 	if (formats)
 		formats->setItems(opts, opts);
+}
+
+void ScreenShotConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
 }
 
 #include "moc_screenshot-configuration-ui-handler.cpp"

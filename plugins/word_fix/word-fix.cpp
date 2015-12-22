@@ -56,7 +56,7 @@
 
 
 WordFix::WordFix(QObject *parent) :
-		ConfigurationUiHandler(parent),
+		QObject{parent},
 		changeButton{},
 		deleteButton{},
 		addButton{},
@@ -382,6 +382,10 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 
 	kdebugf2();
+}
+
+void WordFix::mainConfigurationWindowDestroyed()
+{
 }
 
 void WordFix::configurationApplied()

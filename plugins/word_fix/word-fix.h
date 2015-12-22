@@ -20,7 +20,7 @@ class QLineEdit;
  * \class WordFix
  * \brief Words fixing.
  */
-class WordFix : public ConfigurationUiHandler, PluginRootComponent
+class WordFix : public QObject, public ConfigurationUiHandler, PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -89,7 +89,8 @@ public:
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();

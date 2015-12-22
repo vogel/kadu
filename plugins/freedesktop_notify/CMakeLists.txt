@@ -5,13 +5,11 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	configuration/gui/freedesktop-notify-configuration-ui-handler.cpp
 	freedesktop-notify.cpp
 	freedesktop-notify-plugin.cpp
 )
 
 set (MOC_SOURCES
-	configuration/gui/freedesktop-notify-configuration-ui-handler.h
 	freedesktop-notify.h
 	freedesktop-notify-plugin.h
 )

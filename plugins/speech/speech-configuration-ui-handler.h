@@ -31,7 +31,7 @@ class ConfigComboBox;
 class MainConfigurationWindow;
 class SelectFile;
 
-class SpeechConfigurationUiHandler : public ConfigurationUiHandler
+class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -55,7 +55,8 @@ private slots:
 public:
 	explicit SpeechConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
 
 	static void registerUiHandler();
 	static void unregisterUiHandler();

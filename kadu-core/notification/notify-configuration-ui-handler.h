@@ -51,7 +51,7 @@ struct NotificationEventConfigurationItem
 	bool useCustomSettings;
 };
 
-class NotifyConfigurationUiHandler : public ConfigurationUiHandler
+class NotifyConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -91,7 +91,8 @@ private slots:
 	void customSettingsCheckBoxToggled(bool toggled);
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	
 
 public:
 	explicit NotifyConfigurationUiHandler(QObject *parent = 0);

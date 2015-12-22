@@ -86,7 +86,7 @@ static void enchantUsedDictDescribe(const char * const langTag, const char * con
 #endif
 
 SpellChecker::SpellChecker(QObject *parent) :
-		ConfigurationUiHandler{parent},
+		QObject{},
 		AvailableLanguagesList{},
 		CheckedLanguagesList{}
 {
@@ -382,6 +382,10 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	CheckedLanguagesList->setSelectionMode(QAbstractItemView::SingleSelection);
 	AvailableLanguagesList->addItems(notCheckedLanguages());
 	CheckedLanguagesList->addItems(checkedLanguages());
+}
+
+void SpellChecker::mainConfigurationWindowDestroyed()
+{
 }
 
 void SpellChecker::configurationWindowApplied()

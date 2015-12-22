@@ -53,7 +53,7 @@
 #include "debug.h"
 
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler{parent}, allUsers{}, notifiedUsers{}, notificationsGroupBox{},
+		QObject{parent}, allUsers{}, notifiedUsers{}, notificationsGroupBox{},
 		useCustomSettingsCheckBox{}, notifyTreeWidget{}
 {
 	connect(Core::instance()->notificationManager(), SIGNAL(notiferRegistered(Notifier *)),

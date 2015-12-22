@@ -32,7 +32,7 @@ class QCheckBox;
 class QComboBox;
 class QSpinBox;
 
-class HintsConfigurationUiHandler : public ConfigurationUiHandler
+class HintsConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -67,7 +67,7 @@ private slots:
 	
 	void toolTipClassesHighlighted(const QString &value);
 
-	void mainConfigurationWindowDestroyed();
+	virtual void mainConfigurationWindowDestroyed() override;
 	void showOverUserConfigurationWindow();
 	void updateOverUserPreview();
 	void addHintsPreview();
@@ -82,7 +82,7 @@ public:
 	explicit HintsConfigurationUiHandler(const QString &style, QObject *parent = 0);
 	virtual ~HintsConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 
 };
 

@@ -40,7 +40,7 @@
 #include "emoticons-configuration-ui-handler.h"
 
 EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler(parent), ThemeManager(new EmoticonThemeManager())
+		QObject(parent), ThemeManager(new EmoticonThemeManager())
 {
 }
 
@@ -98,6 +98,10 @@ void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigu
 	connect(Widget->widgetById("installEmoticonTheme"), SIGNAL(clicked()), this, SLOT(installEmoticonTheme()));
 
 	updateEmoticonThemes();
+}
+
+void EmoticonsConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
 }
 
 void EmoticonsConfigurationUiHandler::installEmoticonTheme()

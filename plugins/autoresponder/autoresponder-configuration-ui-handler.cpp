@@ -28,8 +28,7 @@
 
 #include "autoresponder-configuration-ui-handler.h"
 
-AutoresponderConfigurationUiHolder::AutoresponderConfigurationUiHolder(QObject *parent) :
-		ConfigurationUiHandler(parent)
+AutoresponderConfigurationUiHolder::AutoresponderConfigurationUiHolder()
 {
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
@@ -45,4 +44,6 @@ void AutoresponderConfigurationUiHolder::mainConfigurationWindowCreated(MainConf
 	autoRespondTextLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
-#include "moc_autoresponder-configuration-ui-handler.cpp"
+void AutoresponderConfigurationUiHolder::mainConfigurationWindowDestroyed()
+{
+}

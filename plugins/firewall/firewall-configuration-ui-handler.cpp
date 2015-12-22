@@ -164,6 +164,10 @@ End creating Gui
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
+void FirewallConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+}
+
 void FirewallConfigurationUiHandler::left(QListWidgetItem *item)
 {
 	kdebugf();

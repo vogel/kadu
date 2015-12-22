@@ -108,7 +108,7 @@ History * History::instance()
 }
 
 History::History() :
-		ConfigurationUiHandler(0), SyncEnabled(true), SaveThread(0), CurrentStorage(0)
+		SyncEnabled(true), SaveThread(0), CurrentStorage(0)
 {
 	kdebugf();
 	createActionDescriptions();
@@ -368,11 +368,6 @@ void History::stopSaveThread()
 			SaveThread->wait(2000);
 		}
 	}
-}
-
-void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	Q_UNUSED(mainConfigurationWindow)
 }
 
 void History::configurationUpdated()
