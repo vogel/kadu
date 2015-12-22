@@ -20,6 +20,7 @@
 #include "message-render-info-factory.h"
 
 #include "chat-style/chat-style-manager.h"
+#include "core/core.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "message/message-render-header-behavior.h"
 #include "message/message-render-info-builder.h"
@@ -51,8 +52,8 @@ MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(const Message &pre
 			.setFontColor(fontColor(message))
 			.setIncludeHeader(header)
 			.setSeparatorSize(header
-					? ChatStyleManager::instance()->cfgHeaderSeparatorHeight()
-					: ChatStyleManager::instance()->paragraphSeparator())
+					? Core::instance()->chatStyleManager()->cfgHeaderSeparatorHeight()
+					: Core::instance()->chatStyleManager()->paragraphSeparator())
 			.setShowServerTime(showServerTime(message))
 			.create();
 }

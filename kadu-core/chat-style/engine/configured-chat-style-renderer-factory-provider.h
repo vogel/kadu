@@ -40,7 +40,7 @@ class ConfiguredChatStyleRendererFactoryProvider : public ChatStyleRendererFacto
 	Q_OBJECT
 
 public:
-	explicit ConfiguredChatStyleRendererFactoryProvider(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ConfiguredChatStyleRendererFactoryProvider(QObject *parent = nullptr);
 	virtual ~ConfiguredChatStyleRendererFactoryProvider();
 
 	virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const override;

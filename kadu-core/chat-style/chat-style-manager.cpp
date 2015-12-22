@@ -25,7 +25,6 @@
 #include "chat-style/engine/kadu/kadu-style-engine.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -47,31 +46,18 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 
-ChatStyleManager * ChatStyleManager::Instance = 0;
-
-ChatStyleManager * ChatStyleManager::instance()
-{
-	if (0 == Instance)
-	{
-		Instance = new ChatStyleManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-ChatStyleManager::ChatStyleManager() :
+ChatStyleManager::ChatStyleManager(QObject *parent) :
+		QObject{parent},
 		CurrentEngine{},
 		CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{},
 		CfgNoHeaderInterval{}, ParagraphSeparator{}, Prune{}, NoServerTime{},
 		NoServerTimeDiff{}
 {
+	init();
 }
 
 ChatStyleManager::~ChatStyleManager()
 {
-	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(m_configurationUiHandler.get());
-
 	unregisterChatStyleEngine("Kadu");
 	unregisterChatStyleEngine("Adium");
 }
@@ -96,10 +82,6 @@ void ChatStyleManager::init()
 	registerChatStyleEngine("Adium", std::move(adiumStyleEngine));
 
 	loadStyles();
-
-	m_configurationUiHandler = make_unique<ChatStyleConfigurationUiHandler>();
-	m_configurationUiHandler->setChatStyleManager(this);
-	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(m_configurationUiHandler.get());
 }
 
 void ChatStyleManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
@@ -187,7 +169,8 @@ void ChatStyleManager::configurationUpdated()
 		auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
 		m_currentChatStyle = {newStyleName, newVariantName};
 
-		Core::instance()->configuredChatStyleRendererFactoryProvider()->setChatStyleRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
+		if (CurrentConfiguredChatStyleRendererFactoryProvider)
+			CurrentConfiguredChatStyleRendererFactoryProvider->setChatStyleRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
 	}
 
 	emit chatStyleConfigurationUpdated();

@@ -39,6 +39,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
@@ -660,31 +661,25 @@ void Core::runServices()
 
 	m_injector.get<FormattedStringFactory>()->setImageStorageService(CurrentImageStorageService);
 
-	ChatStyleManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
-
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
 	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
-	CurrentMessageRenderInfoFactory->setChatStyleManager(ChatStyleManager::instance());
+	CurrentMessageRenderInfoFactory->setChatStyleManager(chatStyleManager());
 
 	m_injector.get<PluginMetadataFinder>()->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginDependencyHandler>()->initialize();
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
-	CurrentChatStyleRendererFactoryProvider = make_owned<ConfiguredChatStyleRendererFactoryProvider>(this);
-
-	ChatStyleManager::instance()->setConfiguredChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
-
 	CurrentWebkitMessagesViewDisplayFactory = make_owned<WebkitMessagesViewDisplayFactory>(this);
-	CurrentWebkitMessagesViewDisplayFactory->setChatStyleManager(ChatStyleManager::instance());
+	CurrentWebkitMessagesViewDisplayFactory->setChatStyleManager(chatStyleManager());
 	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(CurrentMessageRenderInfoFactory);
 
 	CurrentWebkitMessagesViewHandlerFactory = make_owned<WebkitMessagesViewHandlerFactory>(this);
-	CurrentWebkitMessagesViewHandlerFactory->setChatStyleManager(ChatStyleManager::instance());
+	CurrentWebkitMessagesViewHandlerFactory->setChatStyleManager(chatStyleManager());
 	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(CurrentWebkitMessagesViewDisplayFactory.get());
 
 	CurrentWebkitMessagesViewFactory = make_owned<WebkitMessagesViewFactory>(this);
 	CurrentWebkitMessagesViewFactory->setChatImageRequestService(CurrentChatImageRequestService);
-	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(CurrentChatStyleRendererFactoryProvider.get());
+	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(m_injector.get<ChatStyleRendererFactoryProvider>());
 	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
 
@@ -694,6 +689,8 @@ void Core::runServices()
 
 	// moved here because of #2758
 	ContactManager::instance()->init();
+
+	configurationUiHandlerRepository()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
 }
 
 void Core::runGuiServices()
@@ -706,6 +703,8 @@ void Core::runGuiServices()
 
 void Core::stopServices()
 {
+	configurationUiHandlerRepository()->removeConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
+
 	auto chatWidgetRepository = m_injector.get<ChatWidgetRepository>();
 	while (begin(chatWidgetRepository) != end(chatWidgetRepository))
 		chatWidgetRepository->removeChatWidget(*begin(chatWidgetRepository));
@@ -858,6 +857,11 @@ ChatWidgetRepository * Core::chatWidgetRepository() const
 	return m_injector.get<ChatWidgetRepository>();
 }
 
+ChatStyleManager * Core::chatStyleManager() const
+{
+	return m_injector.get<ChatStyleManager>();
+}
+
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return m_injector.get<StoragePointFactory>();
@@ -896,16 +900,6 @@ PluginStateManager * Core::pluginStateManager() const
 PluginStateService * Core::pluginStateService() const
 {
 	return m_injector.get<PluginStateService>();
-}
-
-ChatStyleRendererFactoryProvider * Core::chatStyleRendererFactoryProvider() const
-{
-	return CurrentChatStyleRendererFactoryProvider.get();
-}
-
-ConfiguredChatStyleRendererFactoryProvider * Core::configuredChatStyleRendererFactoryProvider() const
-{
-	return CurrentChatStyleRendererFactoryProvider.get();
 }
 
 WebkitMessagesViewDisplayFactory * Core::webkitMessagesViewDisplayFactory() const

@@ -22,6 +22,7 @@
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "message/message-render-info.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
@@ -52,7 +53,7 @@ KaduStyleRenderer::KaduStyleRenderer(ChatStyleRendererConfiguration configuratio
 	};
 
 	this->configuration().webFrame().setHtml(html
-		.arg(Qt::escape(ChatStyleManager::instance()->mainStyle()))
+		.arg(Qt::escape(Core::instance()->chatStyleManager()->mainStyle()))
 		.arg(this->configuration().javaScript())
 		.arg(top)
 	);

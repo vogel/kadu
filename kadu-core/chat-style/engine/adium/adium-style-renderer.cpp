@@ -64,6 +64,9 @@ void AdiumStyleRenderer::setMessageHtmlRendererService(MessageHtmlRendererServic
 
 void AdiumStyleRenderer::pageLoaded()
 {
+	if (!Core::instance()) // TODO: find out why this is happening
+		return;
+
 	configuration().webFrame().evaluateJavaScript(configuration().javaScript());
 	configuration().webFrame().evaluateJavaScript("initStyle()");
 

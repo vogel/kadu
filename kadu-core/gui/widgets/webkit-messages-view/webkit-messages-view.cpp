@@ -80,7 +80,7 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 	);
 
 	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
-	connect(ChatStyleManager::instance(), SIGNAL(chatStyleConfigurationUpdated()),
+	connect(Core::instance()->chatStyleManager(), SIGNAL(chatStyleConfigurationUpdated()),
 			this, SLOT(chatStyleConfigurationUpdated()));
 
 	configurationUpdated();
@@ -189,7 +189,7 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 
 void WebkitMessagesView::chatStyleConfigurationUpdated()
 {
-	m_handler->setMessageLimit(ChatStyleManager::instance()->prune());
+	m_handler->setMessageLimit(Core::instance()->chatStyleManager()->prune());
 }
 
 void WebkitMessagesView::refreshView()

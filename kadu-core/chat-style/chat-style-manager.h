@@ -29,8 +29,8 @@
 #include <QtGui/QColor>
 #include <map>
 #include <memory>
+#include <injeqt/injeqt.h>
 
-class ChatStyleConfigurationUiHandler;
 class ChatStyleEngine;
 class ChatStylePreview;
 class ConfiguredChatStyleRendererFactoryProvider;
@@ -52,12 +52,8 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	static ChatStyleManager *Instance;
-
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QPointer<ConfiguredChatStyleRendererFactoryProvider> CurrentConfiguredChatStyleRendererFactoryProvider;
-
-	ChatStyleManager();
 
 	void init();
 
@@ -77,23 +73,21 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 	bool NoServerTime; /*!< Remove server time */
 	int NoServerTimeDiff; /*!< Maximal time difference between server time and local time, for which server time will be removed */
 
-	std::unique_ptr<ChatStyleConfigurationUiHandler> m_configurationUiHandler;
-
 	QString MainStyle;
 
 	QString fixedStyleName(QString styleName);
 	QString fixedVariantName(const QString &styleName, QString variantName);
 
+private slots:
+	INJEQT_SETTER void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
+	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+
 protected:
 	virtual void configurationUpdated();
 
 public:
-	static ChatStyleManager * instance();
-
+	Q_INVOKABLE explicit ChatStyleManager(QObject *parent = nullptr);
 	virtual ~ChatStyleManager();
-
-	void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine>);
 	void unregisterChatStyleEngine(const QString &name);

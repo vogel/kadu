@@ -22,6 +22,8 @@
 #include "configuration/gui/configuration-ui-handler.h"
 #include "os/generic/compositing-aware-object.h"
 
+#include <injeqt/injeqt.h>
+
 class ChatStyleManager;
 class ChatStylePreview;
 
@@ -33,13 +35,11 @@ class ChatStyleConfigurationUiHandler : public QObject, CompositingAwareObject, 
 	Q_OBJECT
 
 public:
-	explicit ChatStyleConfigurationUiHandler(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatStyleConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~ChatStyleConfigurationUiHandler();
 
-	void setChatStyleManager(ChatStyleManager *chatStyleManager);
-
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow * mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
@@ -57,6 +57,8 @@ private:
 	ChatStylePreview *m_enginePreview;
 
 private slots:
+	INJEQT_SETTER void setChatStyleManager(ChatStyleManager *chatStyleManager);
+
 	void styleChangedSlot(const QString &styleName);
 	void variantChangedSlot(const QString &variantName);
 

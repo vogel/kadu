@@ -51,6 +51,7 @@ class ChatConfigurationWidgetFactoryRepository;
 class ChatDataWindowRepository;
 class ChatImageRequestService;
 class ChatTopBarWidgetFactoryRepository;
+class ChatStyleManager;
 class ChatStyleRendererFactoryProvider;
 class ChatWidgetActions;
 class ChatWidgetContainerHandlerRepository;
@@ -60,7 +61,6 @@ class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
 class ConfigurationUiHandlerRepository;
-class ConfiguredChatStyleRendererFactoryProvider;
 class DomProcessorService;
 class FileTransferHandlerManager;
 class FileTransferManager;
@@ -126,7 +126,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWidgetActions *CurrentChatWidgetActions;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
 
-	owned_qptr<ConfiguredChatStyleRendererFactoryProvider> CurrentChatStyleRendererFactoryProvider;
 	owned_qptr<WebkitMessagesViewDisplayFactory> CurrentWebkitMessagesViewDisplayFactory;
 	owned_qptr<WebkitMessagesViewFactory> CurrentWebkitMessagesViewFactory;
 	owned_qptr<WebkitMessagesViewHandlerFactory> CurrentWebkitMessagesViewHandlerFactory;
@@ -206,6 +205,7 @@ public:
 	ChatWidgetFactory * chatWidgetFactory() const;
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
+	ChatStyleManager * chatStyleManager() const;
 	StoragePointFactory * storagePointFactory() const;
 	ConfigurationUiHandlerRepository * configurationUiHandlerRepository() const;
 
@@ -217,7 +217,6 @@ public:
 	PluginStateService * pluginStateService() const;
 
 	ChatStyleRendererFactoryProvider * chatStyleRendererFactoryProvider() const;
-	ConfiguredChatStyleRendererFactoryProvider * configuredChatStyleRendererFactoryProvider() const;
 	WebkitMessagesViewDisplayFactory * webkitMessagesViewDisplayFactory() const;
 	WebkitMessagesViewFactory * webkitMessagesViewFactory() const;
 	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
