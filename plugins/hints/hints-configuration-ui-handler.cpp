@@ -86,8 +86,6 @@ HintsConfigurationUiHandler::~HintsConfigurationUiHandler()
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
-
 	connect(mainConfigurationWindow->widget()->widgetById("hints/advanced"), SIGNAL(clicked()), this, SLOT(showAdvanced()));
 
 	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
@@ -124,6 +122,16 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	lay->addWidget(configureOverUserHint);
 
 	toolTipBox->addWidgets(new QLabel(tr("Hint over buddy list: ")), configureHint);
+}
+
+void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+	deleteAllHintsPreview();
+	overUserConfigurationPreview = 0;
+}
+
+void HintsConfigurationUiHandler::mainConfigurationWindowApplied()
+{
 }
 
 void HintsConfigurationUiHandler::showAdvanced()
@@ -336,12 +344,6 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 
 	if (!example.isNull())
 		HintsPlugin::instance()->hintsManger()->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
-}
-
-void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()
-{
-	deleteAllHintsPreview();
-	overUserConfigurationPreview = 0;
 }
 
 void HintsConfigurationUiHandler::minimumWidthChanged(int value)

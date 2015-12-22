@@ -72,8 +72,6 @@ private slots:
 	 */
 	void sendRequest(ChatWidget *chat);
 
-	void configurationApplied();
-
 public:
 	/*!
 	 * \fn WordFix()
@@ -91,6 +89,7 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
 
 	virtual bool init(PluginRepository *pluginRepository);
 	virtual void done();

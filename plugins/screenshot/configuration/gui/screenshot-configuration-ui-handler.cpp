@@ -85,4 +85,8 @@ void ScreenShotConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 }
 
+void ScreenShotConfigurationUiHandler::mainConfigurationWindowApplied()
+{
+}
+
 #include "moc_screenshot-configuration-ui-handler.cpp"

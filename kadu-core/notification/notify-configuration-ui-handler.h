@@ -79,9 +79,6 @@ private slots:
 	void notificationEventAdded(NotificationEvent notifyEvent);
 	void notificationEventRemoved(NotificationEvent notifyEvent);
 
-	void configurationWindowApplied();
-	void mainConfigurationWindowDestroyed();
-
 	void moveToNotifyList();
 	void moveToAllList();
 
@@ -92,7 +89,8 @@ private slots:
 
 protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	
+	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
 
 public:
 	explicit NotifyConfigurationUiHandler(QObject *parent = 0);

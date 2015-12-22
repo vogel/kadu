@@ -49,6 +49,7 @@ protected:
 	virtual void configurationUpdated();
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
 
 public:
 	explicit AutoHide(QObject *parent = 0);

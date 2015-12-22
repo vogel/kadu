@@ -36,12 +36,10 @@ class CenzorConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 	explicit CenzorConfigurationUiHandler();
 	virtual ~CenzorConfigurationUiHandler();
 
-private slots:
-	virtual void configurationWindowApplied();
-
 protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
 
 public:
 	static void registerConfigurationUi();

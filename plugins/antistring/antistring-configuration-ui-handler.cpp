@@ -116,6 +116,10 @@ void AntistringConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 }
 
+void AntistringConfigurationUiHandler::mainConfigurationWindowApplied()
+{
+}
+
 void AntistringConfigurationUiHandler::updateConditionList()
 {
 	ConditionListWidget->clear();

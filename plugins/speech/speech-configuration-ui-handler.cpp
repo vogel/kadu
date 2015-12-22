@@ -96,6 +96,10 @@ void SpeechConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 }
 
+void SpeechConfigurationUiHandler::mainConfigurationWindowApplied()
+{
+}
+
 void SpeechConfigurationUiHandler::soundSystemChanged(int index)
 {
 	Q_UNUSED(index)

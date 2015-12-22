@@ -66,6 +66,7 @@ private slots:
 	void showLookChatAdvanced();
 	void installIconTheme();
 	void setIconThemes();
+	void applied();
 	void configurationUiHandlerAdded(ConfigurationUiHandler *configurationUiHandler);
 	void configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler);
 

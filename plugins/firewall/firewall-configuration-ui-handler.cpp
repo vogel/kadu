@@ -168,6 +168,10 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 }
 
+void FirewallConfigurationUiHandler::mainConfigurationWindowApplied()
+{
+}
+
 void FirewallConfigurationUiHandler::left(QListWidgetItem *item)
 {
 	kdebugf();

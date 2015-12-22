@@ -47,3 +47,7 @@ void AutoresponderConfigurationUiHolder::mainConfigurationWindowCreated(MainConf
 void AutoresponderConfigurationUiHolder::mainConfigurationWindowDestroyed()
 {
 }
+
+void AutoresponderConfigurationUiHolder::mainConfigurationWindowApplied()
+{
+}

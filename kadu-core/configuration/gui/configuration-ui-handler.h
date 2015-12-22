@@ -41,5 +41,6 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
 	virtual void mainConfigurationWindowDestroyed() = 0;
+	virtual void mainConfigurationWindowApplied() = 0;
 
 };

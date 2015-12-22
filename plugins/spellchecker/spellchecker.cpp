@@ -226,7 +226,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 				+ (qstrlen(errorMsg) > 0 ? QString(" %1: %2").arg(tr("Details"), errorMsg) : QString()));
 
 		// remove this checker from configuration
-		configurationWindowApplied();
+		mainConfigurationWindowApplied();
 		return false;
 	}
 
@@ -343,9 +343,6 @@ void SpellChecker::configBackward2(QListWidgetItem *item)
 
 void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()),
-			this, SLOT(configurationWindowApplied()));
-
 #if !defined(HAVE_ASPELL)
 	mainConfigurationWindow->widget()->widgetById("spellchecker/ignoreCase")->hide();
 #endif
@@ -388,7 +385,7 @@ void SpellChecker::mainConfigurationWindowDestroyed()
 {
 }
 
-void SpellChecker::configurationWindowApplied()
+void SpellChecker::mainConfigurationWindowApplied()
 {
 	SpellcheckerConfiguration::instance()->setChecked(checkedLanguages());
 }

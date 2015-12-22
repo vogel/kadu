@@ -44,6 +44,7 @@ public:
 protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
 
 private:
 	QPointer<SoundManager> m_soundManager;
@@ -62,7 +63,5 @@ private slots:
 
 	void themeChanged(const QString &theme);
 	void soundFileEdited();
-
-	void configurationWindowApplied();
 
 };

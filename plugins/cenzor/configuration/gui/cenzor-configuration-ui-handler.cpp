@@ -67,8 +67,6 @@ CenzorConfigurationUiHandler::~CenzorConfigurationUiHandler()
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-
 	ConfigGroupBox *swearwordGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "Cenzor", "Swearwords");
 	SwearwordsWidget = new ListEditWidget(swearwordGroupBox->widget());
 	swearwordGroupBox->addWidgets(0, SwearwordsWidget);
@@ -85,7 +83,7 @@ void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 }
 
-void CenzorConfigurationUiHandler::configurationWindowApplied()
+void CenzorConfigurationUiHandler::mainConfigurationWindowApplied()
 {
 	Cenzor::instance()->configuration().setSwearList(CenzorConfiguration::toRegExpList(SwearwordsWidget->list()));
 	Cenzor::instance()->configuration().setExclusionList(CenzorConfiguration::toRegExpList(ExclusionsWidget->list()));

@@ -290,6 +290,10 @@ void MediaPlayer::mainConfigurationWindowDestroyed()
 {
 }
 
+void MediaPlayer::mainConfigurationWindowApplied()
+{
+}
+
 void MediaPlayer::chatWidgetAdded(ChatWidget *chat)
 {
 	kdebugf();

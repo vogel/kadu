@@ -157,6 +157,10 @@ void SmsConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 }
 
+void SmsConfigurationUiHandler::mainConfigurationWindowApplied()
+{
+}
+
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());

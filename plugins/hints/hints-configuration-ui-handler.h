@@ -67,7 +67,6 @@ private slots:
 	
 	void toolTipClassesHighlighted(const QString &value);
 
-	virtual void mainConfigurationWindowDestroyed() override;
 	void showOverUserConfigurationWindow();
 	void updateOverUserPreview();
 	void addHintsPreview();
@@ -83,6 +82,8 @@ public:
 	virtual ~HintsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
 
 };
 

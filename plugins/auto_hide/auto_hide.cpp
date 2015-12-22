@@ -105,6 +105,10 @@ void AutoHide::mainConfigurationWindowDestroyed()
 {
 }
 
+void AutoHide::mainConfigurationWindowApplied()
+{
+}
+
 Q_EXPORT_PLUGIN2(auto_hide, AutoHide)
 
 #include "moc_auto_hide.cpp"

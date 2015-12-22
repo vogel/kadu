@@ -163,7 +163,7 @@ void MainConfigurationWindow::instanceCreated()
 		Instance->widget()->appendUiFile(uiFile);
 
 	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
-		Instance->configurationUiHandlerAdded(configurationUiHandler);
+		configurationUiHandler->mainConfigurationWindowCreated(Instance);
 }
 
 MainConfigurationWindow::MainConfigurationWindow() :
@@ -236,6 +236,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	PluginList->setPluginStateService(Core::instance()->pluginStateService());
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 
+	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(applied()));
 	connect(Core::instance()->configurationUiHandlerRepository(), SIGNAL(configurationUiHandlerAdded(ConfigurationUiHandler*)),
 	        this, SLOT(configurationUiHandlerAdded(ConfigurationUiHandler*)));
 	connect(Core::instance()->configurationUiHandlerRepository(), SIGNAL(configurationUiHandlerRemoved(ConfigurationUiHandler*)),
@@ -246,7 +247,16 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 MainConfigurationWindow::~MainConfigurationWindow()
 {
+	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
+		configurationUiHandler->mainConfigurationWindowDestroyed();
+
 	Instance = 0;
+}
+
+void MainConfigurationWindow::applied()
+{
+	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
+		configurationUiHandler->mainConfigurationWindowApplied();
 }
 
 void MainConfigurationWindow::compositingEnabled()

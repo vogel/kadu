@@ -379,8 +379,6 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	}
 	list->insertTopLevelItems(0, items);
 
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
-
 	kdebugf2();
 }
 
@@ -388,10 +386,8 @@ void WordFix::mainConfigurationWindowDestroyed()
 {
 }
 
-void WordFix::configurationApplied()
+void WordFix::mainConfigurationWindowApplied()
 {
-	kdebugf();
-
 	wordsList.clear();
 	QTreeWidgetItem* item = list->itemAt(0, 0);
 

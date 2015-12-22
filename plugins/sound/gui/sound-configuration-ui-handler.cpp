@@ -84,7 +84,6 @@ void SoundConfigurationUiHandler::connectWidgets()
 
 void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), m_soundManager, SLOT(testSoundPlaying()));
 
 	m_themesComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
@@ -98,6 +97,14 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 void SoundConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
+}
+
+void SoundConfigurationUiHandler::mainConfigurationWindowApplied()
+{
+	if (m_themesComboBox->currentIndex() != 0)
+		m_soundThemeManager->applyTheme(m_themesComboBox->currentText());
+
+	m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
 }
 
 NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)
@@ -119,16 +126,6 @@ void SoundConfigurationUiHandler::soundFileEdited()
 {
 	if (m_themesComboBox->currentIndex() != 0)
 		m_themesComboBox->setCurrentIndex(0);
-}
-
-void SoundConfigurationUiHandler::configurationWindowApplied()
-{
-	kdebugf();
-
-	if (m_themesComboBox->currentIndex() != 0)
-		m_soundThemeManager->applyTheme(m_themesComboBox->currentText());
-
-	m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
 }
 
 #include "moc_sound-configuration-ui-handler.cpp"

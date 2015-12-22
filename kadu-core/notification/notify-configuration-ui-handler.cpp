@@ -111,10 +111,6 @@ void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)
 
 void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()),
-			this, SLOT(configurationWindowApplied()));
-	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
-
 	foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
 	{
 		for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
@@ -160,6 +156,36 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 		addConfigurationWidget(notifier);
 
 	eventSwitched();
+}
+
+void NotifyConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+	notificationsGroupBox = 0;
+	NotifierGui.clear();
+}
+
+void NotifyConfigurationUiHandler::mainConfigurationWindowApplied()
+{
+	for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
+	{
+		if (notifyEvent.category().isEmpty() || !NotificationEvents.contains(notifyEvent.name()))
+			continue;
+
+		Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent.name() + "_UseCustomSettings", NotificationEvents[notifyEvent.name()].useCustomSettings);
+	}
+
+	foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
+	{
+		if (!NotifierGui.contains(notifier))
+			continue;
+
+		NotifierConfigurationGuiItem &gui = NotifierGui[notifier];
+		if (gui.ConfigurationWidget)
+			gui.ConfigurationWidget->saveNotifyConfigurations();
+
+		for (QMap<QString, bool>::const_iterator it = gui.Events.constBegin(), end = gui.Events.constEnd(); it != end; ++it)
+			Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
+	}
 }
 
 void NotifyConfigurationUiHandler::notifierRegistered(Notifier *notifier)
@@ -209,36 +235,6 @@ void NotifyConfigurationUiHandler::notificationEventRemoved(NotificationEvent no
 
 	if (notificationsGroupBox)
 		notifyTreeWidget->refresh();
-}
-
-void NotifyConfigurationUiHandler::configurationWindowApplied()
-{
-	for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
-	{
-		if (notifyEvent.category().isEmpty() || !NotificationEvents.contains(notifyEvent.name()))
-			continue;
-
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent.name() + "_UseCustomSettings", NotificationEvents[notifyEvent.name()].useCustomSettings);
-	}
-
-	foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
-	{
-		if (!NotifierGui.contains(notifier))
-			continue;
-
-		NotifierConfigurationGuiItem &gui = NotifierGui[notifier];
-		if (gui.ConfigurationWidget)
-			gui.ConfigurationWidget->saveNotifyConfigurations();
-
-		for (QMap<QString, bool>::const_iterator it = gui.Events.constBegin(), end = gui.Events.constEnd(); it != end; ++it)
-			Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
-	}
-}
-
-void NotifyConfigurationUiHandler::mainConfigurationWindowDestroyed()
-{
-	notificationsGroupBox = 0;
-	NotifierGui.clear();
 }
 
 void NotifyConfigurationUiHandler::moveToNotifyList()

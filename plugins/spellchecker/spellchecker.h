@@ -72,9 +72,6 @@ private:
 	QListWidget *AvailableLanguagesList;
 	QListWidget *CheckedLanguagesList;
 
-private slots:
-	void configurationWindowApplied();
-
 public:
 	explicit SpellChecker(QObject *parent = 0);
 	virtual ~SpellChecker();
@@ -91,13 +88,15 @@ public:
 	QStringList buildSuggestList(const QString &word);
 
 public slots:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-
 	void chatWidgetAdded(ChatWidget *chatWidget);
 	void configForward();
 	void configBackward();
 	void configForward2(QListWidgetItem *item);
 	void configBackward2(QListWidgetItem *item);
+
+protected:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
 
 };

@@ -196,6 +196,10 @@ void AutoAway::mainConfigurationWindowDestroyed()
 {
 }
 
+void AutoAway::mainConfigurationWindowApplied()
+{
+}
+
 QString AutoAway::changeDescription(const QString& oldDescription)
 {
 	return oldDescription;
