@@ -39,8 +39,6 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy.h"
-#include "chat-style/chat-style-manager.h"
-#include "chat-style/engine/chat-style-engine.h"
 #include "compression/archive-extractor.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -156,9 +154,6 @@ void MainConfigurationWindow::configurationUiHandlerRemoved(ConfigurationUiHandl
 
 void MainConfigurationWindow::instanceCreated()
 {
-	// TODO: move this to separate class, like ChatStylesConfigurationUiHandler
-	// and just register it here
-	ChatStyleManager::instance()->mainConfigurationWindowCreated(Instance);
 	foreach (const QString &uiFile, UiFiles)
 		Instance->widget()->appendUiFile(uiFile);
 

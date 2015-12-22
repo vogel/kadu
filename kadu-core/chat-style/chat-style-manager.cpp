@@ -19,11 +19,13 @@
 
 #include "chat-style-manager.h"
 
+#include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat-style/engine/adium/adium-style-engine.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/kadu/kadu-style-engine.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -45,11 +47,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 
-static bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
-{
-	return s1.toLower() < s2.toLower();
-}
-
 ChatStyleManager * ChatStyleManager::Instance = 0;
 
 ChatStyleManager * ChatStyleManager::instance()
@@ -65,15 +62,16 @@ ChatStyleManager * ChatStyleManager::instance()
 
 ChatStyleManager::ChatStyleManager() :
 		CurrentEngine{},
-		CompositingEnabled{}, CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{},
+		CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{},
 		CfgNoHeaderInterval{}, ParagraphSeparator{}, Prune{}, NoServerTime{},
-		NoServerTimeDiff{}, SyntaxListCombo{},
-		VariantListCombo{}, TurnOnTransparency{}, EnginePreview{}
+		NoServerTimeDiff{}
 {
 }
 
 ChatStyleManager::~ChatStyleManager()
 {
+	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(m_configurationUiHandler.get());
+
 	unregisterChatStyleEngine("Kadu");
 	unregisterChatStyleEngine("Adium");
 }
@@ -98,6 +96,10 @@ void ChatStyleManager::init()
 	registerChatStyleEngine("Adium", std::move(adiumStyleEngine));
 
 	loadStyles();
+
+	m_configurationUiHandler = make_unique<ChatStyleConfigurationUiHandler>();
+	m_configurationUiHandler->setChatStyleManager(this);
+	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(m_configurationUiHandler.get());
 }
 
 void ChatStyleManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
@@ -188,7 +190,6 @@ void ChatStyleManager::configurationUpdated()
 		Core::instance()->configuredChatStyleRendererFactoryProvider()->setChatStyleRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
 	}
 
-	triggerCompositingStateChanged();
 	emit chatStyleConfigurationUpdated();
 }
 
@@ -214,20 +215,6 @@ QString ChatStyleManager::fixedVariantName(const QString &styleName, QString var
 		return CurrentEngine->defaultVariant(styleName);
 
 	return variantName;
-}
-
-void ChatStyleManager::compositingEnabled()
-{
-	CompositingEnabled = true;
-	if (TurnOnTransparency)
-		TurnOnTransparency->setEnabled(true);
-}
-
-void ChatStyleManager::compositingDisabled()
-{
-	CompositingEnabled = false;
-	if (TurnOnTransparency)
-		TurnOnTransparency->setEnabled(false);
 }
 
 //any better ideas?
@@ -287,120 +274,17 @@ void ChatStyleManager::loadStyles()
 	}
 }
 
-void ChatStyleManager::mainConfigurationWindowCreated(MainConfigurationWindow *window)
+bool ChatStyleManager::isChatStyleValid(const QString &name) const
 {
-	connect(window, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
-	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
-
-	loadStyles(); // reload styles to allow style testing without application restart
-
-	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Look", "Chat", "Style");
-//editor
-	QLabel *editorLabel = new QLabel(QCoreApplication::translate("@default", "Style") + ':');
-	editorLabel->setToolTip(QCoreApplication::translate("@default", "Choose style of chat window"));
-
-	QWidget  *editor = new QWidget(groupBox->widget());
-	editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	editor->setToolTip(QCoreApplication::translate("@default", "Choose style of chat window"));
-	QHBoxLayout *editorLayout = new QHBoxLayout(editor);
-
-	SyntaxListCombo = new QComboBox(editor);
-	QStringList styleNames = AvailableStyles.keys();
-	qSort(styleNames.begin(), styleNames.end(), caseInsensitiveLessThan);
-	SyntaxListCombo->addItems(styleNames);
-	SyntaxListCombo->setCurrentIndex(SyntaxListCombo->findText(m_currentChatStyle.name()));
-	connect(SyntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(styleChangedSlot(const QString &)));
-
-	editorLayout->addWidget(SyntaxListCombo, 100);
-//preview
-	EnginePreview = new ChatStylePreview();
-
-//variants
-	VariantListCombo = new QComboBox();
-	VariantListCombo->addItems(CurrentEngine->styleVariants(m_currentChatStyle.name()));
-	QString defaultVariant = CurrentEngine->defaultVariant(m_currentChatStyle.name());
-	if (!defaultVariant.isEmpty() && VariantListCombo->findText(defaultVariant) == -1)
-		VariantListCombo->insertItem(0, defaultVariant);
-
-	QString newVariant = m_currentChatStyle.variant().isEmpty()
-			? defaultVariant
-			: m_currentChatStyle.variant();
-	variantChangedSlot(newVariant);
-	VariantListCombo->setCurrentIndex(VariantListCombo->findText(newVariant));
-	VariantListCombo->setEnabled(CurrentEngine->supportVariants());
-	connect(VariantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
-//
-	groupBox->addWidgets(editorLabel, editor);
-	groupBox->addWidgets(new QLabel(QCoreApplication::translate("@default", "Style variant") + ':'), VariantListCombo);
-	groupBox->addWidgets(new QLabel(QCoreApplication::translate("@default", "Preview") + ':'), EnginePreview, Qt::AlignRight | Qt::AlignTop);
-
-	TurnOnTransparency = static_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
-	TurnOnTransparency->setVisible(CompositingEnabled);
+	return AvailableStyles.contains(name) && AvailableStyles.value(name).engine;
 }
 
-void ChatStyleManager::configurationApplied()
-{
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "Style", SyntaxListCombo->currentText());
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
-}
-
-void ChatStyleManager::styleChangedSlot(const QString &styleName)
-{
-	if (!AvailableStyles.contains(styleName))
-		return;
-
-	ChatStyleEngine *engine = AvailableStyles.value(styleName).engine;
-	VariantListCombo->clear();
-	VariantListCombo->addItems(engine->styleVariants(styleName));
-
-	QString currentVariant;
-	if (AvailableStyles.contains(SyntaxListCombo->currentText()))
-		if (AvailableStyles.value(SyntaxListCombo->currentText()).engine)
-			currentVariant = AvailableStyles.value(SyntaxListCombo->currentText()).engine->defaultVariant(styleName);
-	if (!currentVariant.isEmpty() && VariantListCombo->findText(currentVariant) == -1)
-		VariantListCombo->insertItem(0, currentVariant);
-
-	VariantListCombo->setCurrentIndex(VariantListCombo->findText(currentVariant));
-	VariantListCombo->setEnabled(engine->supportVariants());
-
-	EnginePreview->setRendererFactory(engine->createRendererFactory({styleName, VariantListCombo->currentText()}));
-	TurnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
-}
-
-void ChatStyleManager::variantChangedSlot(const QString &variantName)
-{
-	QString styleName = SyntaxListCombo->currentText();
-	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
-		return;
-
-	EnginePreview->setRendererFactory(AvailableStyles.value(styleName).engine->createRendererFactory({styleName, variantName}));
-}
-
-void ChatStyleManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)
-{
-	if (AvailableStyles.contains(syntaxName))
-		return;
-
-	AvailableStyles[syntaxName].engine = engine;
-	AvailableStyles[syntaxName].global = false;
-
-	if (SyntaxListCombo)
-		SyntaxListCombo->addItem(syntaxName);
-}
-
-StyleInfo ChatStyleManager::chatStyleInfo(const QString &name)
+StyleInfo ChatStyleManager::chatStyleInfo(const QString &name) const
 {
 	if (AvailableStyles.contains(name))
 		return AvailableStyles.value(name);
 	else
 		return StyleInfo();
-}
-
-void ChatStyleManager::configurationWindowDestroyed()
-{
-	SyntaxListCombo = 0;
-	VariantListCombo = 0;
-	TurnOnTransparency = 0;
 }
 
 #include "moc_chat-style-manager.cpp"

@@ -21,7 +21,6 @@
 
 #include "chat-style/chat-style.h"
 #include "configuration/configuration-aware-object.h"
-#include "os/generic/compositing-aware-object.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -31,11 +30,11 @@
 #include <map>
 #include <memory>
 
+class ChatStyleConfigurationUiHandler;
 class ChatStyleEngine;
 class ChatStylePreview;
 class ConfiguredChatStyleRendererFactoryProvider;
 class FormattedStringFactory;
-class MainConfigurationWindow;
 
 class QCheckBox;
 class QComboBox;
@@ -49,7 +48,7 @@ struct StyleInfo
 	StyleInfo() : global(false), engine(0) {}
 };
 
-class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
+class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -68,8 +67,6 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject, Compo
 
 	ChatStyleEngine *CurrentEngine;
 
-	bool CompositingEnabled;
-
 	bool CfgNoHeaderRepeat; /*!< Remove repeated message headers. */
 	int CfgHeaderSeparatorHeight; /*!< Header separator height. */
 	int CfgNoHeaderInterval; /*!< Time Interval, in which headers will not be repeated*/
@@ -80,26 +77,12 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject, Compo
 	bool NoServerTime; /*!< Remove server time */
 	int NoServerTimeDiff; /*!< Maximal time difference between server time and local time, for which server time will be removed */
 
+	std::unique_ptr<ChatStyleConfigurationUiHandler> m_configurationUiHandler;
+
 	QString MainStyle;
-
-	//configuration
-	QComboBox *SyntaxListCombo;
-	QComboBox *VariantListCombo;
-	QCheckBox *TurnOnTransparency;
-
-	ChatStylePreview *EnginePreview;
-
-	void compositingEnabled();
-	void compositingDisabled();
 
 	QString fixedStyleName(QString styleName);
 	QString fixedVariantName(const QString &styleName, QString variantName);
-
-private slots:
-	void styleChangedSlot(const QString &styleName);
-	void variantChangedSlot(const QString &variantName);
-	void configurationWindowDestroyed();
-	void configurationApplied();
 
 protected:
 	virtual void configurationUpdated();
@@ -115,8 +98,13 @@ public:
 	void registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine>);
 	void unregisterChatStyleEngine(const QString &name);
 
-	bool hasChatStyle(const QString &name) { return  AvailableStyles.contains(name); }
-	StyleInfo chatStyleInfo(const QString &name);
+	ChatStyle currentChatStyle() const { return m_currentChatStyle; }
+	ChatStyleEngine * currentEngine() const { return CurrentEngine; }
+
+	QMap<QString, StyleInfo> availableStyles() const { return AvailableStyles; }
+	bool hasChatStyle(const QString &name) const { return  AvailableStyles.contains(name); }
+	bool isChatStyleValid(const QString &name) const;
+	StyleInfo chatStyleInfo(const QString &name) const;
 
 	void loadStyles();
 
@@ -131,11 +119,6 @@ public:
 	int prune() { return Prune; }
 
 	const QString & mainStyle() { return MainStyle; }
-
-	void mainConfigurationWindowCreated(MainConfigurationWindow *window);
-	QComboBox * syntaxListCombo() { return SyntaxListCombo; }
-
-	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
 
 signals:
 	void chatStyleConfigurationUpdated();
