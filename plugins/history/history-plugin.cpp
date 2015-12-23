@@ -44,10 +44,8 @@ HistoryPlugin::~HistoryPlugin()
 {
 }
 
-bool HistoryPlugin::init(PluginRepository *pluginRepository)
+bool HistoryPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	History::createInstance();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 

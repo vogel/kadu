@@ -15,7 +15,7 @@
 
 class PCSpeakerConfigurationWidget;
 
-class PCSpeaker : public Notifier, public PluginRootComponent
+class PCSpeaker : public PluginRootComponent, public Notifier
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -25,7 +25,7 @@ class PCSpeaker : public Notifier, public PluginRootComponent
 		PCSpeaker(QObject *parent = NULL);
 		~PCSpeaker();
 
-		virtual bool init(PluginRepository *pluginRepository);
+		virtual bool init();
 		virtual void done();
 
 		virtual void notify(Notification *notification);

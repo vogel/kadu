@@ -27,10 +27,8 @@ UnityIntegrationPlugin::~UnityIntegrationPlugin()
 {
 }
 
-bool UnityIntegrationPlugin::init(PluginRepository *pluginRepository)
+bool UnityIntegrationPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	m_unityIntegration.reset(new UnityIntegration{});
 	m_unityIntegration->setFileTransferManager(Core::instance()->fileTransferManager());
 	m_unityIntegration->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());

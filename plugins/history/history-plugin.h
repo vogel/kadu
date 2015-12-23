@@ -28,7 +28,7 @@
 class HistoryBuddyConfigurationWidgetFactory;
 class HistoryChatConfigurationWidgetFactory;
 
-class HistoryPlugin : public QObject, public PluginRootComponent
+class HistoryPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -44,7 +44,7 @@ public:
 	HistoryPlugin();
 	virtual ~HistoryPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

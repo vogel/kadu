@@ -41,7 +41,7 @@ class IncomingMessageFirewallFilter;
 class Message;
 class OutgoingMessageFirewallFilter;
 
-class Firewall : public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
+class Firewall : public QObject, public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 

@@ -27,7 +27,7 @@
 
 class HintManager;
 
-class HintsPlugin : public QObject, public PluginRootComponent
+class HintsPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -43,7 +43,7 @@ public:
 	explicit HintsPlugin(QObject *parent = 0);
 	virtual ~HintsPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 	HintManager * hintsManger() { return HintManagerInstance; }

@@ -23,6 +23,7 @@
 #define FREEDESKTOP_NOTIFY_H
 
 #include <QtCore/QMap>
+#include <QtCore/QObject>
 #include <QtCore/QQueue>
 #include <QtCore/QRegExp>
 
@@ -33,7 +34,7 @@ class QDBusInterface;
 
 class Notification;
 
-class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
+class FreedesktopNotify : public QObject, public Notifier, public ConfigurationAwareObject
 {
 	Q_OBJECT
 

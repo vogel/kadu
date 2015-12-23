@@ -25,7 +25,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class FirewallPlugin : public QObject, public PluginRootComponent
+class FirewallPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -34,7 +34,7 @@ class FirewallPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~FirewallPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

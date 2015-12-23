@@ -41,7 +41,7 @@
 #include "autoresponder.h"
 
 AutoResponder::AutoResponder(QObject *parent) :
-		MessageFilter(parent),
+		PluginRootComponent(parent),
 		UiHandler(nullptr),
 		Configurator{nullptr}
 {
@@ -51,10 +51,8 @@ AutoResponder::~AutoResponder()
 {
 }
 
-bool AutoResponder::init(PluginRepository *pluginRepository)
+bool AutoResponder::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 

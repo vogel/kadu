@@ -23,7 +23,9 @@
 #define AUTOAWAY_H
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QTimer>
+#include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
 #include "configuration/gui/configuration-ui-handler.h"
@@ -42,11 +44,13 @@ class Idle;
  * @defgroup autoaway Autoaway
  * @{
  */
-class AutoAway : public QObject, public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
+class AutoAway : public PluginRootComponent, public ConfigurationUiHandler, ConfigurationAwareObject 
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+
+	QPointer<PluginRepository> m_pluginRepository;
 
 	AutoAwayStatusChanger *autoAwayStatusChanger;
 	QTimer *timer;
@@ -89,6 +93,8 @@ class AutoAway : public QObject, public ConfigurationUiHandler, ConfigurationAwa
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+
 	void checkIdleTime();
 
 	void autoAwaySpinBoxValueChanged(int value);
@@ -105,7 +111,7 @@ public:
 	AutoAway();
 	virtual ~AutoAway();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 	AutoAwayStatusChanger::ChangeStatusTo changeStatusTo();

@@ -30,10 +30,9 @@ class FormattedStringFactory;
 
 class ChatNotifier : public Notifier
 {
-	Q_OBJECT
 
 public:
-	explicit ChatNotifier(QObject *parent = 0);
+	explicit ChatNotifier();
 	virtual ~ChatNotifier();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);

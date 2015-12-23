@@ -23,7 +23,7 @@
 #include "mpd-mediaplayer.h"
 
 MPDMediaPlayer::MPDMediaPlayer(QObject *parent) :
-		PlayerCommands(parent)
+		PluginRootComponent(parent)
 {
 }
 
@@ -31,10 +31,8 @@ MPDMediaPlayer::~MPDMediaPlayer()
 {
 }
 
-bool MPDMediaPlayer::init(PluginRepository *pluginRepository)
+bool MPDMediaPlayer::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	return MediaPlayer::instance()->registerMediaPlayer(this, this);
 }
 

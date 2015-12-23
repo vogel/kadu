@@ -27,7 +27,7 @@
 class SoundConfigurationUiHandler;
 class SoundManager;
 
-class SoundNotifier : public Notifier
+class SoundNotifier : public QObject, public Notifier
 {
 	Q_OBJECT
 

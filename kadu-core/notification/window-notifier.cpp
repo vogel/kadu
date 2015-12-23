@@ -40,7 +40,8 @@
  */
 
 WindowNotifier::WindowNotifier(QObject *parent) :
-		Notifier{"Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), KaduIcon("dialog-information"), parent}
+		QObject{parent},
+		Notifier{"Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), KaduIcon("dialog-information")}
 {
 	createDefaultConfiguration();
 	Core::instance()->notificationManager()->registerNotifier(this);

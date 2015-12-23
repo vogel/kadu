@@ -26,17 +26,16 @@ ExecNotifyPlugin::~ExecNotifyPlugin()
 {
 }
 
-bool ExecNotifyPlugin::init(PluginRepository *pluginRepository)
+bool ExecNotifyPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
-	ExecNotifyInstance = new ExecNotify(this);
+	ExecNotifyInstance = new ExecNotify();
 
 	return true;
 }
 
 void ExecNotifyPlugin::done()
 {
+	delete ExecNotifyInstance;
 }
 
 Q_EXPORT_PLUGIN2(exec_notify, ExecNotifyPlugin)

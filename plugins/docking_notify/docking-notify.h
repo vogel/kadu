@@ -11,7 +11,7 @@
  * @defgroup qt4_notify Qt4 Notify
  * @{
  */
-class DockingNotify : public Notifier
+class DockingNotify : public QObject, public Notifier
 {
 	Q_OBJECT
 

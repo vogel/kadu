@@ -29,7 +29,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class ImageLinkPlugin : public QObject, public PluginRootComponent
+class ImageLinkPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -55,7 +55,7 @@ public:
 	explicit ImageLinkPlugin(QObject *parent = 0);
 	virtual ~ImageLinkPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

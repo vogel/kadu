@@ -90,8 +90,8 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 		commandLineEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
 }
 
-ExecNotify::ExecNotify(QObject *parent) :
-		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), KaduIcon("external_modules/execnotify"), parent)
+ExecNotify::ExecNotify() :
+		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), KaduIcon("external_modules/execnotify"))
 {
 	kdebugf();
 
@@ -246,13 +246,8 @@ void ExecNotify::notify(Notification *notification)
 
 void ExecNotify::run(const QStringList &args)
 {
-	foreach(const QString &arg, args)
-	{
-		kdebugm(KDEBUG_INFO, "arg: '%s'\n", qPrintable(arg));
-	}
-
-	QProcess *p = new QProcess(this);
-	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
+	QProcess *p = new QProcess();
+	QProcess::connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(args.at(0), args.mid(1));
 }
 

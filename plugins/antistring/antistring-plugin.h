@@ -25,7 +25,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class AntistringPlugin : public QObject, public PluginRootComponent
+class AntistringPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -34,7 +34,7 @@ class AntistringPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~AntistringPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

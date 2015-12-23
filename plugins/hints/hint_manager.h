@@ -39,7 +39,7 @@ class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
 class HintOverUserConfigurationWindow;
 
-class HintManager : public Notifier, public AbstractToolTip, public ConfigurationAwareObject
+class HintManager : public QObject, public Notifier, public AbstractToolTip, public ConfigurationAwareObject
 {
 	Q_OBJECT
 

@@ -32,7 +32,7 @@ ConfigWizardPlugin::~ConfigWizardPlugin()
 
 }
 
-bool ConfigWizardPlugin::init(PluginRepository *pluginRepository)
+bool ConfigWizardPlugin::init()
 {
 	ConfigWizardConfigurationUiHandler::registerActions();
 	if (Core::instance()->pluginStateService()->pluginState("config_wizard") == PluginState::New)

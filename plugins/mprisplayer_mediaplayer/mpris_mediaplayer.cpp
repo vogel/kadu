@@ -33,7 +33,7 @@
 #include "mpris_mediaplayer.h"
 
 MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) :
-		PlayerCommands(parent)
+		QObject(parent)
 {
 	controller = new MPRISController(service, this);
 

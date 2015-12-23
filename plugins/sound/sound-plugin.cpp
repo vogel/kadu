@@ -43,7 +43,7 @@
 QPointer<SoundManager> SoundPlugin::m_staticSoundManager;
 
 SoundPlugin::SoundPlugin(QObject *parent) :
-		QObject{parent}
+		PluginRootComponent{parent}
 {
 }
 
@@ -56,9 +56,8 @@ SoundManager * SoundPlugin::soundManager()
 	return m_staticSoundManager;
 }
 
-bool SoundPlugin::init(PluginRepository *pluginRepository)
+bool SoundPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
 
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
 	modules.emplace_back(make_unique<SoundModule>());

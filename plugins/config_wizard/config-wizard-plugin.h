@@ -25,7 +25,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class ConfigWizardPlugin : public QObject, public PluginRootComponent
+class ConfigWizardPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -34,7 +34,7 @@ class ConfigWizardPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ConfigWizardPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

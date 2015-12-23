@@ -44,7 +44,8 @@
  */
 
 DockingNotify::DockingNotify(QObject *parent) :
-		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify"), parent),
+		QObject{parent},
+		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify")),
 		configurationWidget{}
 {
 	kdebugf();

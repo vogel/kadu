@@ -26,7 +26,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class MediaplayerPlugin : public QObject, public PluginRootComponent
+class MediaplayerPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -35,7 +35,7 @@ class MediaplayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~MediaplayerPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

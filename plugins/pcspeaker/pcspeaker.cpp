@@ -110,7 +110,8 @@ void PCSpeaker::beep(int pitch, int duration)
 #endif
 
 PCSpeaker::PCSpeaker(QObject *parent) :
-		Notifier{"PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low"), parent},
+		PluginRootComponent{parent},
+		Notifier{"PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low")},
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 		xdisplay{},
 #endif
@@ -124,10 +125,8 @@ PCSpeaker::~PCSpeaker()
 {
 }
 
-bool PCSpeaker::init(PluginRepository *pluginRepository)
+bool PCSpeaker::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	Core::instance()->notificationManager()->registerNotifier(this);
 	createDefaultConfiguration();
 

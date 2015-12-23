@@ -26,7 +26,7 @@
 
 class ExternalPlayer;
 
-class ExtSoundPlugin : public QObject, public PluginRootComponent
+class ExtSoundPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -36,7 +36,7 @@ public:
 	explicit ExtSoundPlugin(QObject *parent = nullptr);
 	virtual ~ExtSoundPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 private:

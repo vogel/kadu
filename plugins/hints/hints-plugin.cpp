@@ -32,7 +32,7 @@
 HintsPlugin * HintsPlugin::Instance = 0;
 
 HintsPlugin::HintsPlugin(QObject *parent) :
-		QObject(parent), HintManagerInstance(0)
+		PluginRootComponent(parent), HintManagerInstance(0)
 {
 	Instance = this;
 }
@@ -42,10 +42,8 @@ HintsPlugin::~HintsPlugin()
 	Instance = 0;
 }
 
-bool HintsPlugin::init(PluginRepository *pluginRepository)
+bool HintsPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	HintManagerInstance = new HintManager(this);
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(HintManagerInstance->uiHandler());

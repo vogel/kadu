@@ -27,7 +27,7 @@
 
 class ExecNotify;
 
-class ExecNotifyPlugin : public QObject, public PluginRootComponent
+class ExecNotifyPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -38,7 +38,7 @@ class ExecNotifyPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ExecNotifyPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

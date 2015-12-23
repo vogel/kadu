@@ -27,7 +27,7 @@
 
 class SpellChecker;
 
-class SpellCheckerPlugin : public QObject, PluginRootComponent
+class SpellCheckerPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -43,7 +43,7 @@ public:
 	explicit SpellCheckerPlugin(QObject *parent = 0);
 	virtual ~SpellCheckerPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 	SpellChecker * spellChecker() const { return SpellCheckerInstance; }

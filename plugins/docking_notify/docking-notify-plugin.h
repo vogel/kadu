@@ -25,7 +25,7 @@
 
 class DockingNotify;
 
-class DockingNotifyPlugin : public QObject, public PluginRootComponent
+class DockingNotifyPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -36,7 +36,7 @@ class DockingNotifyPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~DockingNotifyPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

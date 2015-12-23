@@ -24,7 +24,7 @@
 
 class ChatNotifier;
 
-class ChatNotifyPlugin : public QObject, public PluginRootComponent
+class ChatNotifyPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -37,7 +37,7 @@ class ChatNotifyPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ChatNotifyPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

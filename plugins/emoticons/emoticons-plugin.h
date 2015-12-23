@@ -41,7 +41,7 @@ class InsertEmoticonAction;
  * @short Emoticons plugin initialization and finalization class.
  * @author Rafał 'Vogel' Malinowski'
  */
-class EmoticonsPlugin : public QObject, public PluginRootComponent
+class EmoticonsPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -72,7 +72,7 @@ public:
 	explicit EmoticonsPlugin(QObject *parent = 0);
 	virtual ~EmoticonsPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

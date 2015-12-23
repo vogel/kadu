@@ -30,10 +30,8 @@ SpeechPlugin::~SpeechPlugin()
 {
 }
 
-bool SpeechPlugin::init(PluginRepository *pluginRepository)
+bool SpeechPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	kdebugf();
 
 	Speech::createInstance();

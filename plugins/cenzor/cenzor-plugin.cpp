@@ -31,10 +31,8 @@ CenzorPlugin::~CenzorPlugin()
 {
 }
 
-bool CenzorPlugin::init(PluginRepository *pluginRepository)
+bool CenzorPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	Cenzor::createInstance();
 	CenzorNotification::registerNotifications();
 	CenzorConfigurationUiHandler::registerConfigurationUi();

@@ -24,7 +24,7 @@
 #include <QtCore/QObject>
 #include <injeqt/injector.h>
 
-class OtrPlugin : public QObject, public PluginRootComponent
+class OtrPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -39,7 +39,7 @@ public:
 	explicit OtrPlugin();
 	virtual ~OtrPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

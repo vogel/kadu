@@ -30,7 +30,7 @@
 #include "image-link-plugin.h"
 
 ImageLinkPlugin::ImageLinkPlugin(QObject *parent) :
-		QObject(parent)
+		PluginRootComponent(parent)
 {
 }
 
@@ -87,10 +87,8 @@ void ImageLinkPlugin::stopConfigurator()
 	Configurator.reset();
 }
 
-bool ImageLinkPlugin::init(PluginRepository *pluginRepository)
+bool ImageLinkPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	registerConfigurationUi();
 	registerImageExpander();
 	registerVideoExpander();

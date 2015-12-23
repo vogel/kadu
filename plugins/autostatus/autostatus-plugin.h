@@ -25,7 +25,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class AutostatusPlugin : public QObject, public PluginRootComponent
+class AutostatusPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -34,7 +34,7 @@ class AutostatusPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~AutostatusPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

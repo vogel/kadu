@@ -35,10 +35,8 @@ ScreenshotPlugin::~ScreenshotPlugin()
 {
 }
 
-bool ScreenshotPlugin::init(PluginRepository *pluginRepository)
+bool ScreenshotPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	kdebugf();
 
 	ScreenshotActions::registerActions();

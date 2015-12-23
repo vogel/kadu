@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QtPlugin>
 
 class PluginRepository;
@@ -42,15 +44,17 @@ class PluginRepository;
  * A new instance of given object is created when such plugin is loaded and then init() method is
  * called. Before plugin gets unloaded done() method is called.
  */
-class PluginRootComponent
+class KADUAPI PluginRootComponent : public QObject
 {
+	Q_OBJECT
+
 public:
-	virtual ~PluginRootComponent() {}
+	explicit PluginRootComponent(QObject *parent = nullptr);
+	virtual ~PluginRootComponent();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called after plugin activation.
-	 * @param firstLoad true, if this is first activation of current plugin
 	 *
 	 * This method is called every time a plugin is activated. Implementations should do all work
 	 * needed to properly run plugin, like registering protocols, notifications and do on, in this
@@ -58,7 +62,7 @@ public:
 	 * Kadu instance. Plugin can then do additional work if reuired (like showing configuration
 	 * wizard window).
 	 */
-	virtual bool init(PluginRepository *pluginRepository) = 0;
+	virtual bool init() = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

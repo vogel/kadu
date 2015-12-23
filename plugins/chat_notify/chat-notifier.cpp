@@ -28,8 +28,8 @@
 
 #include "chat-notifier.h"
 
-ChatNotifier::ChatNotifier(QObject *parent) :
-		Notifier("ChatNotifier", QT_TRANSLATE_NOOP("@default", "Chat window notifications"), KaduIcon("protocols/common/message"), parent)
+ChatNotifier::ChatNotifier() :
+		Notifier("ChatNotifier", QT_TRANSLATE_NOOP("@default", "Chat window notifications"), KaduIcon("protocols/common/message"))
 {
 }
 
@@ -86,5 +86,3 @@ void ChatNotifier::notify(Notification *notification)
 		if (buddies.isEmpty() || !chatWidget->chat().contacts().toBuddySet().intersect(buddies).isEmpty())
 			sendNotificationToChatWidget(latestNotification, chatWidget);
 }
-
-#include "moc_chat-notifier.cpp"

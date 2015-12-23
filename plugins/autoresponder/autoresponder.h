@@ -36,7 +36,7 @@ class AutoresponderConfigurationUiHolder;
 class AutoresponderConfigurator;
 class ChatWidget;
 
-class AutoResponder : public MessageFilter, public PluginRootComponent
+class AutoResponder : public PluginRootComponent, public MessageFilter
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -56,7 +56,7 @@ public:
 
 	virtual bool acceptMessage(const Message &message);
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 public slots:

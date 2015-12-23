@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,29 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "injector-provider.h"
 
-
-#include "plugin/plugin-root-component.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
-class UnityIntegration;
-
-class UnityIntegrationPlugin : public PluginRootComponent
+InjectorProvider::InjectorProvider(QObject *parent) :
+		QObject{parent},
+		m_injector{nullptr}
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+}
 
-public:
-	virtual ~UnityIntegrationPlugin();
+InjectorProvider::~InjectorProvider()
+{
+}
 
-	virtual bool init();
-	virtual void done();
+injeqt::injector & InjectorProvider::injector()
+{
+	return *m_injector;
+}
 
-private:
-	QScopedPointer<UnityIntegration> m_unityIntegration;
+void InjectorProvider::setInjector(injeqt::injector *injector)
+{
+	m_injector = injector;
+}
 
-};
+#include "moc_injector-provider.cpp"

@@ -25,7 +25,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class FreedesktopNotifyPlugin : public QObject, public PluginRootComponent
+class FreedesktopNotifyPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -34,7 +34,7 @@ class FreedesktopNotifyPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~FreedesktopNotifyPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 };
 

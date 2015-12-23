@@ -20,7 +20,7 @@ class QLineEdit;
  * \class WordFix
  * \brief Words fixing.
  */
-class WordFix : public QObject, public ConfigurationUiHandler, PluginRootComponent
+class WordFix : public PluginRootComponent, public ConfigurationUiHandler
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -91,7 +91,7 @@ public:
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 public slots:

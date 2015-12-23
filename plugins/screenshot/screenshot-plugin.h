@@ -24,7 +24,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class ScreenshotPlugin : public QObject, public PluginRootComponent
+class ScreenshotPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -33,7 +33,7 @@ class ScreenshotPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~ScreenshotPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 };
 

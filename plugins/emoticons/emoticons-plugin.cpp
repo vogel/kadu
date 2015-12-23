@@ -37,7 +37,7 @@
 #include "emoticons-plugin.h"
 
 EmoticonsPlugin::EmoticonsPlugin(QObject *parent) :
-		QObject(parent)
+		PluginRootComponent(parent)
 {
 }
 
@@ -108,10 +108,8 @@ void EmoticonsPlugin::stopConfigurator()
 	Configurator.reset();
 }
 
-bool EmoticonsPlugin::init(PluginRepository *pluginRepository)
+bool EmoticonsPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	registerConfigurationUi();
 	registerEmoticonExpander();
 	registerEmoticonClipboardHtmlTransformer();

@@ -51,14 +51,12 @@ public:
 
 class ExecNotify : public Notifier
 {
-	Q_OBJECT
-
 	void createDefaultConfiguration();
 
 	void run(const QStringList &args);
 
 public:
-	ExecNotify(QObject *parent = 0);
+	ExecNotify();
 	~ExecNotify();
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);

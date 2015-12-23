@@ -3,6 +3,7 @@ set (core_SRCS
 	core.cpp
 	core-module.cpp
 	crash-aware-object.cpp
+	injector-provider.cpp
 )
 
 set (core_MOC_SRCS

@@ -28,10 +28,8 @@ DockingNotifyPlugin::~DockingNotifyPlugin()
 {
 }
 
-bool DockingNotifyPlugin::init(PluginRepository *pluginRepository)
+bool DockingNotifyPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	if (!QSystemTrayIcon::supportsMessages())
 		return false;
 

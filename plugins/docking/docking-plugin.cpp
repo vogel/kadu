@@ -27,7 +27,7 @@
 #include "misc/paths-provider.h"
 
 DockingPlugin::DockingPlugin(QObject *parent) :
-		QObject{parent}
+		PluginRootComponent{parent}
 {
 }
 
@@ -35,10 +35,8 @@ DockingPlugin::~DockingPlugin()
 {
 }
 
-bool DockingPlugin::init(PluginRepository *pluginRepository)
+bool DockingPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	Docking::createInstance();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
 

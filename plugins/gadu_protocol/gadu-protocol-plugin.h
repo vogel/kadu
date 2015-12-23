@@ -28,7 +28,7 @@
 class GaduProtocolMenuManager;
 class GaduUrlDomVisitorProvider;
 
-class GaduProtocolPlugin : public QObject, public PluginRootComponent
+class GaduProtocolPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -40,7 +40,7 @@ class GaduProtocolPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~GaduProtocolPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

@@ -27,7 +27,7 @@
 
 class IndicatorDocking;
 
-class IndicatorDockingPlugin : public QObject, public PluginRootComponent
+class IndicatorDockingPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -36,7 +36,7 @@ class IndicatorDockingPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~IndicatorDockingPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 private:

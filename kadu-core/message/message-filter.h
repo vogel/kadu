@@ -21,8 +21,6 @@
 #ifndef MESSAGE_FILTER_H
 #define MESSAGE_FILTER_H
 
-#include <QtCore/QObject>
-
 #include "exports.h"
 
 class Message;
@@ -39,15 +37,12 @@ class Message;
  *
  * This interface allows filtering messages.
  */
-class KADUAPI MessageFilter : public QObject
+class KADUAPI MessageFilter
 {
-	Q_OBJECT
-
-protected:
-	explicit MessageFilter(QObject *parent = 0);
-	virtual ~MessageFilter();
 
 public:
+	virtual ~MessageFilter() {}
+
 	/**
 	 * @short Filter message.
 	 * @author Rafał 'Vogel' Malinowski

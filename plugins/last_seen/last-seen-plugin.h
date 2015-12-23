@@ -27,7 +27,7 @@
 
 class Infos;
 
-class LastSeenPlugin : public QObject, public PluginRootComponent
+class LastSeenPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -38,7 +38,7 @@ class LastSeenPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~LastSeenPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

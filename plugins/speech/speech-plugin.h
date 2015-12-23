@@ -24,7 +24,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class SpeechPlugin : public QObject, public PluginRootComponent
+class SpeechPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -33,7 +33,7 @@ class SpeechPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~SpeechPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 };
 

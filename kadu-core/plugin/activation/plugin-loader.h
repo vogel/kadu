@@ -20,11 +20,11 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <injeqt/injector.h>
 #include <memory>
 
 class QPluginLoader;
 
-class PluginRepository;
 class PluginRootComponent;
 
 /**
@@ -49,14 +49,14 @@ class PluginLoader : public QObject
 public:
 	/**
 	 * @short Load plugin dynamic library file.
+	 * @param injector injector for services
 	 * @param pluginName name of plugin to load
-	 * @param firstLoad true if this is first ever load of this plugin
 	 * @param parent Qt parent object
 	 * @throws PluginActivationErrorException
 	 *
 	 * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
 	 */
-	explicit PluginLoader(const QString &pluginName, PluginRepository *pluginRepository, QObject *parent = nullptr) noexcept(false);
+	explicit PluginLoader(injeqt::injector &injector, const QString &pluginName, QObject *parent = nullptr) noexcept(false);
 
 	/**
 	 * @short Unload plugin dynamic library file.

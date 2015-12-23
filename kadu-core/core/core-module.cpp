@@ -20,6 +20,7 @@
 #include "core-module.h"
 
 #include "core/application.h"
+#include "core/injector-provider.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "misc/paths-provider.h"
 #include "storage/storage-point-factory.h"
@@ -32,6 +33,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<Application>();
 	add_type<AttentionService>();
 	add_type<FormattedStringFactory>();
+	add_type<InjectorProvider>();
 	add_type<StoragePointFactory>();
 	add_ready_object<PathsProvider>(m_pathsProvider.get());
 }

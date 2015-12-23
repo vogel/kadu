@@ -8,7 +8,7 @@
 
 #include "plugins/mediaplayer/player_info.h"
 
-class FalfMediaPlayer : public QObject, PlayerInfo, PluginRootComponent
+class FalfMediaPlayer : public PluginRootComponent, PlayerInfo
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -30,7 +30,7 @@ public:
 	explicit FalfMediaPlayer(QObject *parent = 0);
 	virtual ~FalfMediaPlayer();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 	virtual QString getTitle();

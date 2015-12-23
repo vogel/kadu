@@ -1,6 +1,5 @@
 set (message_SRCS
 	message.cpp
-	message-filter.cpp
 	message-html-renderer-service.cpp
 	message-manager.cpp
 	message-render-info.cpp
@@ -13,7 +12,6 @@ set (message_SRCS
 )
 
 set (message_MOC_SRCS
-	message-filter.h
 	message-html-renderer-service.h
 	message-manager.h
 	message-shared.h

@@ -30,7 +30,7 @@
 #include "falf.h"
 
 FalfMediaPlayer::FalfMediaPlayer(QObject *parent) :
-		QObject(parent), InfoFile(QDir::homePath() + QLatin1String("/.FALF/track.info"))
+		PluginRootComponent(parent), InfoFile(QDir::homePath() + QLatin1String("/.FALF/track.info"))
 {
 	kdebugf();
 }
@@ -40,10 +40,8 @@ FalfMediaPlayer::~FalfMediaPlayer()
 	kdebugf();
 }
 
-bool FalfMediaPlayer::init(PluginRepository *pluginRepository)
+bool FalfMediaPlayer::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	return MediaPlayer::instance()->registerMediaPlayer(this, 0);
 }
 

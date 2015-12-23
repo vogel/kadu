@@ -27,6 +27,7 @@
 #define CORE_H
 
 #include <QtCore/QObject>
+#include <injeqt/injector.h>
 
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-list.h"
@@ -93,8 +94,6 @@ class UnreadMessageRepository;
 class WebkitMessagesViewDisplayFactory;
 class WebkitMessagesViewFactory;
 class WebkitMessagesViewHandlerFactory;
-
-namespace injeqt { namespace v1 { class injector; } }
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {

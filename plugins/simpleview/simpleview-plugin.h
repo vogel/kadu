@@ -24,7 +24,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class SimpleViewPlugin : public QObject, public PluginRootComponent
+class SimpleViewPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -33,7 +33,7 @@ class SimpleViewPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~SimpleViewPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 };
 

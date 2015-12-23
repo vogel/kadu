@@ -24,7 +24,7 @@
 
 class PhononPlayer;
 
-class PhononPlugin : public QObject, public PluginRootComponent
+class PhononPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -34,7 +34,7 @@ public:
 	explicit PhononPlugin(QObject *parent = nullptr);
 	virtual ~PhononPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 private:

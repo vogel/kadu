@@ -31,7 +31,7 @@
 #include "tabs-plugin.h"
 
 TabsPlugin::TabsPlugin(QObject *parent) :
-		QObject{parent},
+		PluginRootComponent{parent},
 		TabsManagerInstance{}
 {
 }
@@ -41,10 +41,8 @@ TabsPlugin::~TabsPlugin()
 {
 }
 
-bool TabsPlugin::init(PluginRepository *pluginRepository)
+bool TabsPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	ChatWidgetContainerHandler.reset(new TabsChatWidgetContainerHandler());
 	TabsManagerInstance = new TabsManager(this);
 	TabsManagerInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());

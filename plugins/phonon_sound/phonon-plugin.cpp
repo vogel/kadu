@@ -26,7 +26,7 @@
 #include "plugins/sound/sound-plugin.h"
 
 PhononPlugin::PhononPlugin(QObject *parent) :
-		QObject{parent}
+		PluginRootComponent{parent}
 {
 }
 
@@ -34,10 +34,8 @@ PhononPlugin::~PhononPlugin()
 {
 }
 
-bool PhononPlugin::init(PluginRepository *pluginRepository)
+bool PhononPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	m_phononPlayer = new PhononPlayer{this};
 	SoundPlugin::soundManager()->setPlayer(m_phononPlayer);
 

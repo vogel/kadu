@@ -34,8 +34,6 @@ class Notification;
 
 class Speech : public Notifier
 {
-	Q_OBJECT
-
 	static Speech *Instance;
 
 	QTime lastSpeech;

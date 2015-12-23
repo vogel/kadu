@@ -32,7 +32,7 @@
 
 class NotificationCallbackRepository;
 
-class WindowNotifier : public Notifier
+class WindowNotifier : public QObject, public Notifier
 {
 	Q_OBJECT
 

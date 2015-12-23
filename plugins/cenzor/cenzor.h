@@ -30,7 +30,7 @@
 class Chat;
 class Contact;
 
-class Cenzor : public MessageFilter
+class Cenzor : public QObject, public MessageFilter
 {
 	Q_OBJECT
 

@@ -30,7 +30,7 @@
 
 #include "mpd-config.h"
 
-class MPDMediaPlayer : public PlayerCommands, PlayerInfo, PluginRootComponent
+class MPDMediaPlayer : public PluginRootComponent, PlayerCommands, PlayerInfo
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -42,7 +42,7 @@ public:
 	explicit MPDMediaPlayer(QObject *parent = 0);
 	virtual ~MPDMediaPlayer();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 	mpd_connection * mpdConnect();

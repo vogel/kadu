@@ -28,7 +28,7 @@
 
 class WinampMediaPlayer;
 
-class WinampMediaplayerPlugin : public QObject, public PluginRootComponent
+class WinampMediaplayerPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -39,7 +39,7 @@ class WinampMediaplayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~WinampMediaplayerPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 };
 

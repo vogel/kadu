@@ -23,6 +23,7 @@
 #include "plugin/activation/plugin-translations-loader.h"
 
 #include <QtCore/QScopedPointer>
+#include <injeqt/injector.h>
 #include <memory>
 
 class PluginRootComponent;
@@ -63,7 +64,7 @@ public:
 	 * In case of any error PluginActivationErrorException is thrown. All allocated data is properly
 	 * destroyed and memory is freed in this case.
 	 */
-	explicit ActivePlugin(const QString &pluginName, PluginRepository *pluginRepository);
+	explicit ActivePlugin(injeqt::injector &injector, const QString &pluginName);
 
 	/**
 	 * @return Root component of plugin.

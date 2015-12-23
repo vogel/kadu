@@ -23,7 +23,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class CenzorPlugin : public QObject, public PluginRootComponent
+class CenzorPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -32,7 +32,7 @@ class CenzorPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~CenzorPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 };
 

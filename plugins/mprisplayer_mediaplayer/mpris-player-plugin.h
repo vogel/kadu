@@ -26,7 +26,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class MPRISPlayerPlugin : public QObject, public PluginRootComponent
+class MPRISPlayerPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -35,7 +35,7 @@ class MPRISPlayerPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~MPRISPlayerPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 };
 

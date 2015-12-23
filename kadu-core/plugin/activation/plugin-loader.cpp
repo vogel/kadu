@@ -43,7 +43,7 @@
 	#define SO_EXT "so"
 #endif
 
-PluginLoader::PluginLoader(const QString &pluginName, PluginRepository *pluginRepository, QObject *parent) noexcept(false) :
+PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName, QObject *parent) noexcept(false) :
 		// using C++ initializers breaks Qt's lupdate
 		QObject(parent),
 		m_pluginLoader(make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT)))
@@ -62,7 +62,9 @@ PluginLoader::PluginLoader(const QString &pluginName, PluginRepository *pluginRe
 	if (!m_pluginRootComponent)
 		throw PluginActivationErrorException{pluginName, tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(pluginName)};
 
-	if (!m_pluginRootComponent->init(pluginRepository))
+	injector.inject_into(m_pluginRootComponent);
+
+	if (!m_pluginRootComponent->init())
 		throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
 }
 

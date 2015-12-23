@@ -30,7 +30,7 @@
 #include "misc/paths-provider.h"
 
 ExtSoundPlugin::ExtSoundPlugin(QObject *parent) :
-		QObject{parent}
+		PluginRootComponent{parent}
 {
 }
 
@@ -38,10 +38,8 @@ ExtSoundPlugin::~ExtSoundPlugin()
 {
 }
 
-bool ExtSoundPlugin::init(PluginRepository *pluginRepository)
+bool ExtSoundPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	m_externalPlayer = new ExternalPlayer{this};
 	SoundPlugin::soundManager()->setPlayer(m_externalPlayer);
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});

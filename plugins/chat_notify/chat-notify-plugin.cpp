@@ -32,13 +32,11 @@ ChatNotifyPlugin::~ChatNotifyPlugin()
 {
 }
 
-bool ChatNotifyPlugin::init(PluginRepository *pluginRepository)
+bool ChatNotifyPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	createDefaultConfiguration();
 
-	NotifierInstance = new ChatNotifier(this);
+	NotifierInstance = new ChatNotifier();
 	NotifierInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	NotifierInstance->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 
@@ -53,6 +51,8 @@ void ChatNotifyPlugin::done()
 	{
 		Core::instance()->notificationManager()->unregisterNotifier(NotifierInstance);
 	}
+
+	delete NotifierInstance;
 }
 
 void ChatNotifyPlugin::createDefaultConfiguration()

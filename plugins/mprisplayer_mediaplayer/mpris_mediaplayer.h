@@ -31,7 +31,7 @@
 
 class MPRISController;
 
-class MPRISMediaPlayer : public PlayerCommands, public PlayerInfo
+class MPRISMediaPlayer : public QObject, public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
 

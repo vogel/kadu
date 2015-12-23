@@ -140,7 +140,7 @@ void Speech::say(const QString &s, const QString &path,
 	kdebugm(KDEBUG_INFO, "text: %s command: %s %s\n", qPrintable(s), qPrintable(t), qPrintable(list.join(" ")));
 
 	QProcess *p = new QProcess();
-	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
+	QProcess::connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(t, list);
 	p->write(s.toUtf8().constData());
 	p->closeWriteChannel();
@@ -203,7 +203,4 @@ NotifierConfigurationWidget * Speech::createConfigurationWidget(QWidget *parent)
 	return new SpeechConfigurationWidget(parent);
 }
 
-
 /** @} */
-
-#include "moc_speech.cpp"

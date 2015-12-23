@@ -60,7 +60,8 @@
 #define BORDER_RADIUS 0
 
 HintManager::HintManager(QObject *parent) :
-		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints"), parent), AbstractToolTip(),
+		QObject{parent},
+		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints")), AbstractToolTip(),
 		hint_timer(new QTimer(this)),
 		tipFrame(0), hints()
 {

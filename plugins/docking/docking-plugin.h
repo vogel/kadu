@@ -22,7 +22,7 @@
 
 #include "plugin/plugin-root-component.h"
 
-class DockingPlugin : public QObject, public PluginRootComponent
+class DockingPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -32,7 +32,7 @@ public:
 	explicit DockingPlugin(QObject *parent = nullptr);
 	virtual ~DockingPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

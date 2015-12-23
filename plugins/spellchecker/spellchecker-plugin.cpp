@@ -33,7 +33,7 @@
 SpellCheckerPlugin * SpellCheckerPlugin::Instance = 0;
 
 SpellCheckerPlugin::SpellCheckerPlugin(QObject *parent) :
-		QObject(parent), SpellCheckerInstance(0)
+		PluginRootComponent(parent), SpellCheckerInstance(0)
 {
 	Instance = this;
 }
@@ -43,10 +43,8 @@ SpellCheckerPlugin::~SpellCheckerPlugin()
 	Instance = 0;
 }
 
-bool SpellCheckerPlugin::init(PluginRepository *pluginRepository)
+bool SpellCheckerPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	SpellCheckerInstance = new SpellChecker(this);
 	SpellCheckerInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 

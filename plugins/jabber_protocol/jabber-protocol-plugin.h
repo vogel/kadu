@@ -27,7 +27,7 @@
 
 class JabberUrlDomVisitorProvider;
 
-class JabberProtocolPlugin : public QObject, public PluginRootComponent
+class JabberProtocolPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -38,7 +38,7 @@ class JabberProtocolPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~JabberProtocolPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

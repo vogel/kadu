@@ -81,7 +81,12 @@ AutoAway::~AutoAway()
 {
 }
 
-bool AutoAway::init(PluginRepository *pluginRepository)
+void AutoAway::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
+}
+
+bool AutoAway::init()
 {
 	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
@@ -93,7 +98,7 @@ bool AutoAway::init(PluginRepository *pluginRepository)
 
 	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
 
-	idle = pluginRepository->plugin<IdlePlugin>("idle")->idle();
+	idle = m_pluginRepository->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(this);

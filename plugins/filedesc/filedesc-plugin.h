@@ -27,7 +27,7 @@
 
 class FileDescription;
 
-class FiledescPlugin : public QObject, public PluginRootComponent
+class FiledescPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -38,7 +38,7 @@ class FiledescPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~FiledescPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

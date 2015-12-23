@@ -30,10 +30,8 @@ FiledescPlugin::~FiledescPlugin()
 {
 }
 
-bool FiledescPlugin::init(PluginRepository *pluginRepository)
+bool FiledescPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	FileDescriptionInstance = new FileDescription(this);
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
 

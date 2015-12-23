@@ -32,10 +32,8 @@ SqlHistoryPlugin::~SqlHistoryPlugin()
 {
 }
 
-bool SqlHistoryPlugin::init(PluginRepository *pluginRepository)
+bool SqlHistoryPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	Storage = new HistorySqlStorage();
 	Storage->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 

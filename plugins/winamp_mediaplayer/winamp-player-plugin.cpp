@@ -28,7 +28,7 @@ WinampMediaplayerPlugin::~WinampMediaplayerPlugin()
 {
 }
 
-bool WinampMediaplayerPlugin::init(PluginRepository *pluginRepository)
+bool WinampMediaplayerPlugin::init()
 {
 	PlayerInstance = new WinampMediaPlayer();
 	return MediaPlayer::instance()->registerMediaPlayer(PlayerInstance, PlayerInstance);

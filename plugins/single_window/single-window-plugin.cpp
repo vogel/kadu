@@ -33,10 +33,8 @@ SingleWindowPlugin::~SingleWindowPlugin()
 {
 }
 
-bool SingleWindowPlugin::init(PluginRepository *pluginRepository)
+bool SingleWindowPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	m_singleWindowChatWidgetContainerHandler.reset(new SingleWindowChatWidgetContainerHandler());
 	m_singleWindowManager.reset(new SingleWindowManager());
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));

@@ -23,13 +23,13 @@
 #ifndef NOTIFIER_H
 #define NOTIFIER_H
 
-#include <QtCore/QObject>
-
 #include "icons/kadu-icon.h"
 #include "exports.h"
 
 class Notification;
 class NotifierConfigurationWidget;
+
+class QWidget;
 
 /**
 	@class Notifier
@@ -42,16 +42,14 @@ class NotifierConfigurationWidget;
 	odebranie pliku, kontynuacje odbierania pliku i inne. Niekt�ry notifikatory nie b�d�
 	implementowa� akcji, dlatego te� niekt�re zdarzenia nie mog� by� przez nie obs�ugiwane.
  **/
-class KADUAPI Notifier : public QObject
+class KADUAPI Notifier
 {
-	Q_OBJECT
-
 	QString Name;
 	QString Description;
 	KaduIcon Icon;
 
 public:
-	Notifier(const QString &name, const QString &description, const KaduIcon &icon, QObject *parent = 0);
+	Notifier(const QString &name, const QString &description, const KaduIcon &icon);
 	virtual ~Notifier();
 
 	const QString & name() const { return Name; }

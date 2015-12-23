@@ -56,7 +56,7 @@
 
 
 WordFix::WordFix(QObject *parent) :
-		QObject{parent},
+		PluginRootComponent{parent},
 		changeButton{},
 		deleteButton{},
 		addButton{},
@@ -86,11 +86,8 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	}
 }
 
-bool WordFix::init(PluginRepository *pluginRepository)
+bool WordFix::init()
 {
-	Q_UNUSED(pluginRepository)
-	kdebugf();
-
 	ExtractBody.setPattern("<body[^>]*>.*</body>");
 
 	// Loading list

@@ -25,7 +25,7 @@
 class SingleWindowChatWidgetContainerHandler;
 class SingleWindowManager;
 
-class SingleWindowPlugin : public QObject, public PluginRootComponent
+class SingleWindowPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -34,7 +34,7 @@ class SingleWindowPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~SingleWindowPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 private:

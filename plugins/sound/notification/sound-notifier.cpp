@@ -30,7 +30,8 @@
 #include <QtCore/QFileInfo>
 
 SoundNotifier::SoundNotifier(QObject *parent) :
-		Notifier{"Sound", QT_TRANSLATE_NOOP("@default", "Play a sound"), KaduIcon{"audio-volume-high"}, parent}
+		QObject{parent},
+		Notifier{"Sound", QT_TRANSLATE_NOOP("@default", "Play a sound"), KaduIcon{"audio-volume-high"}}
 {
 }
 

@@ -30,7 +30,7 @@
 class Account;
 class Contact;
 
-class Antistring : public MessageFilter
+class Antistring : public QObject, public MessageFilter
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Antistring)

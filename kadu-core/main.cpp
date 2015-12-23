@@ -55,6 +55,7 @@
 #include "core/application.h"
 #include "core/core-module.h"
 #include "core/core.h"
+#include "core/injector-provider.h"
 #include "execution-arguments/execution-arguments-parser.h"
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-module.h"
@@ -222,6 +223,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<SslModule>());
 
 	auto injector = injeqt::injector{std::move(modules)};
+	injector.get<InjectorProvider>()->setInjector(&injector);
 
 	try
 	{

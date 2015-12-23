@@ -41,10 +41,8 @@ JabberProtocolPlugin::~JabberProtocolPlugin()
 {
 }
 
-bool JabberProtocolPlugin::init(PluginRepository *pluginRepository)
+bool JabberProtocolPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
 			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk"))
 		return true;

@@ -31,10 +31,8 @@ FirewallPlugin::~FirewallPlugin()
 {
 }
 
-bool FirewallPlugin::init(PluginRepository *pluginRepository)
+bool FirewallPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	Firewall::createInstance();
 	Firewall::instance()->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	FirewallNotification::registerNotifications();

@@ -21,7 +21,9 @@
 #ifndef AUTO_HIDE_H
 #define AUTO_HIDE_H
 
+#include <QtCore/QPointer>
 #include <QtCore/QTimer>
+#include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
 #include "configuration/gui/configuration-ui-handler.h"
@@ -31,11 +33,13 @@
  * This class provides autohiding Kadu's main window after preset time.
  * \brief This class provides autohiding Kadu's main window after preset time
  */
-class AutoHide : public QObject, public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
+class AutoHide : public PluginRootComponent, public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+
+	QPointer<PluginRepository> m_pluginRepository;
 
 	QTimer Timer;
 	Idle *MyIdle;
@@ -43,6 +47,8 @@ class AutoHide : public QObject, public ConfigurationUiHandler, ConfigurationAwa
 	bool Enabled;
 
 private slots:
+	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+
 	void timerTimeoutSlot();
 
 protected:
@@ -55,7 +61,7 @@ public:
 	explicit AutoHide(QObject *parent = 0);
 	virtual ~AutoHide();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

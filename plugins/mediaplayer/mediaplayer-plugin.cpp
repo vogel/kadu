@@ -33,10 +33,8 @@ MediaplayerPlugin::~MediaplayerPlugin()
 {
 }
 
-bool MediaplayerPlugin::init(PluginRepository *pluginRepository)
+bool MediaplayerPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	MediaPlayer::createInstance();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));

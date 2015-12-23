@@ -37,7 +37,7 @@
 #include "auto_hide.h"
 
 AutoHide::AutoHide(QObject *parent) :
-		QObject{parent},
+		PluginRootComponent{parent},
 		MyIdle{nullptr},
 		IdleTime{0},
 		Enabled{false}
@@ -48,13 +48,18 @@ AutoHide::~AutoHide()
 {
 }
 
-bool AutoHide::init(PluginRepository *pluginRepository)
+void AutoHide::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
+}
+
+bool AutoHide::init()
 {
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
 
 	configurationUpdated();
 
-	MyIdle = pluginRepository->plugin<IdlePlugin>("idle")->idle();
+	MyIdle = m_pluginRepository->plugin<IdlePlugin>("idle")->idle();
 
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(this);

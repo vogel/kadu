@@ -28,7 +28,7 @@
 
 class SoundManager;
 
-class SOUNDAPI SoundPlugin : public QObject, public PluginRootComponent
+class SOUNDAPI SoundPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -40,7 +40,7 @@ public:
 	explicit SoundPlugin(QObject *parent = nullptr);
 	virtual ~SoundPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 private:

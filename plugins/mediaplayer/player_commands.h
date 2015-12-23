@@ -5,15 +5,12 @@
 
 #include "mediaplayer_exports.h"
 
-class MEDIAPLAYERAPI PlayerCommands : public QObject
+class MEDIAPLAYERAPI PlayerCommands
 {
-	Q_OBJECT
 
 public:
-	explicit PlayerCommands(QObject *parent = 0) : QObject(parent) {}
 	virtual ~PlayerCommands() {}
 
-public slots:
 	/**
 		Orders media player to play the next one track.
 	*/
@@ -57,4 +54,3 @@ public slots:
 };
 
 #endif
-

@@ -25,7 +25,7 @@
 
 class SmsDialogRepository;
 
-class SMSPlugin : public QObject, public PluginRootComponent
+class SMSPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -36,7 +36,7 @@ class SMSPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~SMSPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };

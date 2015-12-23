@@ -30,10 +30,8 @@ FreedesktopNotifyPlugin::~FreedesktopNotifyPlugin()
 {
 }
 
-bool FreedesktopNotifyPlugin::init(PluginRepository *pluginRepository)
+bool FreedesktopNotifyPlugin::init()
 {
-	Q_UNUSED(pluginRepository)
-
 	FreedesktopNotify::createInstance();
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
 

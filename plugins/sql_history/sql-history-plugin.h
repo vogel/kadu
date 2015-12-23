@@ -27,7 +27,7 @@
 
 class HistorySqlStorage;
 
-class SqlHistoryPlugin : public QObject, public PluginRootComponent
+class SqlHistoryPlugin : public PluginRootComponent
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginRootComponent)
@@ -38,7 +38,7 @@ class SqlHistoryPlugin : public QObject, public PluginRootComponent
 public:
 	virtual ~SqlHistoryPlugin();
 
-	virtual bool init(PluginRepository *pluginRepository);
+	virtual bool init();
 	virtual void done();
 
 };
