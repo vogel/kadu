@@ -86,7 +86,7 @@ static void enchantUsedDictDescribe(const char * const langTag, const char * con
 #endif
 
 SpellChecker::SpellChecker(QObject *parent) :
-		QObject{},
+		QObject{parent},
 		AvailableLanguagesList{},
 		CheckedLanguagesList{}
 {
