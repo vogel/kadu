@@ -6,3 +6,4 @@ Description[pl]=Podstawowa obsługa dźwięku
 Author=Kadu Team
 Version=core
 Category=Sound
+Replaces=alsa_sound ao_sound dsp_sound dshow_sound win32_sound phonon_sound

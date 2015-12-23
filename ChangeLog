@@ -6,6 +6,7 @@
 * history_migration: plugin removed (Vogel)
 * itunes_mediaplayer: plugin removed (Vogel)
 * profiles_import: plugin removed (Vogel)
+* phonon_sound: plugin removed (Vogel)
 
 +++ version 3.0-rc2
 * docking: #3037 fixed: loading docking plugin after import from 2.x (Vogel)

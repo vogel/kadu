@@ -33,8 +33,6 @@ set (DEFAULT_PLUGINS
 # sound
 	# General sound plugin
 	sound
-	# Phonon sound support
-	phonon_sound
 	# External sound player support
 	ext_sound
 
