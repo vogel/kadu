@@ -275,6 +275,4 @@ void PCSpeaker::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
 }
 
-Q_EXPORT_PLUGIN2(pcspeaker, PCSpeaker)
-
 #include "moc_pcspeaker.cpp"

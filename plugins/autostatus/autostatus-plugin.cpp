@@ -49,6 +49,4 @@ void AutostatusPlugin::done()
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 }
 
-Q_EXPORT_PLUGIN2(autostatus, AutostatusPlugin)
-
 #include "moc_autostatus-plugin.cpp"

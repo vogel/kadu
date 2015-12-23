@@ -42,6 +42,4 @@ Idle * IdlePlugin::idle() const
 	return m_idle.get();
 }
 
-Q_EXPORT_PLUGIN2(idle, IdlePlugin)
-
 #include "moc_idle-plugin.cpp"

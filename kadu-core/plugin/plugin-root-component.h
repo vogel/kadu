@@ -81,8 +81,3 @@ Q_DECLARE_INTERFACE(PluginRootComponent, "im.kadu.PluginRootComponent")
 /**
  * @}
  */
-
-#ifdef Q_EXPORT_PLUGIN2
-#	undef Q_EXPORT_PLUGIN2
-#endif
-#define Q_EXPORT_PLUGIN2(function, plugin)

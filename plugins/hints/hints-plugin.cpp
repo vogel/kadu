@@ -57,6 +57,4 @@ void HintsPlugin::done()
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 }
 
-Q_EXPORT_PLUGIN2(hints, HintsPlugin)
-
 #include "moc_hints-plugin.cpp"

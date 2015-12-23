@@ -145,5 +145,3 @@ void OtrPlugin::done()
 
 	m_injector.reset();
 }
-
-Q_EXPORT_PLUGIN2(otr, OtrPlugin)

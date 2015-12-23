@@ -41,6 +41,4 @@ void UnityIntegrationPlugin::done()
 	m_unityIntegration.reset();
 }
 
-Q_EXPORT_PLUGIN2(indicator_docking, UnityIntegrationPlugin)
-
 #include "moc_unity-integration-plugin.cpp"

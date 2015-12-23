@@ -46,6 +46,4 @@ void ConfigWizardPlugin::done()
 	ConfigWizardConfigurationUiHandler::unregisterActions();
 }
 
-Q_EXPORT_PLUGIN2(config_wizard, ConfigWizardPlugin)
-
 #include "moc_config-wizard-plugin.cpp"

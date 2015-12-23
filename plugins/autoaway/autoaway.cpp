@@ -319,9 +319,6 @@ void AutoAway::createDefaultConfiguration()
 		Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "AutoAwayCheckTime", 10);
 }
 
-
-Q_EXPORT_PLUGIN2(autoaway, AutoAway)
-
 /** @} */
 
 #include "moc_autoaway.cpp"

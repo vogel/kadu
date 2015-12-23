@@ -44,6 +44,4 @@ void AntistringPlugin::done()
 	Antistring::destroyInstance();
 }
 
-Q_EXPORT_PLUGIN2(antistring, AntistringPlugin)
-
 #include "moc_antistring-plugin.cpp"

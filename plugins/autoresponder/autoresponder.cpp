@@ -123,8 +123,6 @@ void AutoResponder::setConfiguration(const AutoresponderConfiguration &configura
 	Configuration = configuration;
 }
 
-Q_EXPORT_PLUGIN2(autoresponder, AutoResponder)
-
 /** @} */
 
 #include "moc_autoresponder.cpp"

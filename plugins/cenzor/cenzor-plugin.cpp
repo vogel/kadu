@@ -47,6 +47,4 @@ void CenzorPlugin::done()
 	Cenzor::destroyInstance();
 }
 
-Q_EXPORT_PLUGIN2(cenzor, CenzorPlugin)
-
 #include "moc_cenzor-plugin.cpp"

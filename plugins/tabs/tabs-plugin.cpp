@@ -69,6 +69,4 @@ void TabsPlugin::done()
 	ChatWidgetContainerHandler.reset();
 }
 
-Q_EXPORT_PLUGIN2(tabs, TabsPlugin)
-
 #include "moc_tabs-plugin.cpp"

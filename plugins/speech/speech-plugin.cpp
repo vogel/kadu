@@ -51,6 +51,4 @@ void SpeechPlugin::done()
 	kdebugf2();
 }
 
-Q_EXPORT_PLUGIN2(speech, SpeechPlugin)
-
 #include "moc_speech-plugin.cpp"

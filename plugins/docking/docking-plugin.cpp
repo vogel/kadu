@@ -49,6 +49,4 @@ void DockingPlugin::done()
 	Docking::destroyInstance();
 }
 
-Q_EXPORT_PLUGIN2(docking, DockingPlugin)
-
 #include "moc_docking-plugin.cpp"

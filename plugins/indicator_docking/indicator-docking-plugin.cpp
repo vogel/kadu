@@ -45,6 +45,4 @@ void IndicatorDockingPlugin::done()
 	m_indicatorDocking.reset();
 }
 
-Q_EXPORT_PLUGIN2(indicator_docking, IndicatorDockingPlugin)
-
 #include "moc_indicator-docking-plugin.cpp"

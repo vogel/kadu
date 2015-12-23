@@ -46,6 +46,4 @@ void SimpleViewPlugin::done()
 	SimpleView::destroyInstance();
 }
 
-Q_EXPORT_PLUGIN2(simpleview, SimpleViewPlugin)
-
 #include "moc_simpleview-plugin.cpp"

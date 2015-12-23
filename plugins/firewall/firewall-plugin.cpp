@@ -48,6 +48,4 @@ void FirewallPlugin::done()
 	Firewall::destroyInstance();
 }
 
-Q_EXPORT_PLUGIN2(firewall, FirewallPlugin)
-
 #include "moc_firewall-plugin.cpp"

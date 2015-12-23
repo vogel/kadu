@@ -105,6 +105,4 @@ void ImageLinkPlugin::done()
 	unregisterImageExpander();
 }
 
-Q_EXPORT_PLUGIN2(imagelink, ImageLinkPlugin)
-
 #include "moc_image-link-plugin.cpp"

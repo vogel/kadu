@@ -43,6 +43,4 @@ void FiledescPlugin::done()
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
 }
 
-Q_EXPORT_PLUGIN2(filedesc, FiledescPlugin)
-
 #include "moc_filedesc-plugin.cpp"

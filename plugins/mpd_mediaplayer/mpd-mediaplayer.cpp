@@ -410,6 +410,4 @@ void MPDMediaPlayer::decrVolume()
 	mpd_connection_free(con);
 }
 
-Q_EXPORT_PLUGIN2(mpd_mediaplayer, MPDMediaPlayer)
-
 #include "moc_mpd-mediaplayer.cpp"

@@ -421,6 +421,4 @@ void WordFix::saveList()
 	kdebugf2();
 }
 
-Q_EXPORT_PLUGIN2(word_fix, WordFix)
-
 #include "moc_word-fix.cpp"

@@ -69,6 +69,4 @@ void ChatNotifyPlugin::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "OTR_ChatNotifier", true);
 }
 
-Q_EXPORT_PLUGIN2(chat_notify, ChatNotifyPlugin)
-
 #include "moc_chat-notify-plugin.cpp"

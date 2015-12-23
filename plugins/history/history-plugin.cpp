@@ -88,6 +88,4 @@ void HistoryPlugin::unregisterServices()
 	MyBuddyConfigurationWidgetFactory = 0;
 }
 
-Q_EXPORT_PLUGIN2(history, HistoryPlugin)
-
 #include "moc_history-plugin.cpp"

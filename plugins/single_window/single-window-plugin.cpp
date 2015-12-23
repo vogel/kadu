@@ -55,6 +55,4 @@ void SingleWindowPlugin::done()
 	m_singleWindowChatWidgetContainerHandler.reset();
 }
 
-Q_EXPORT_PLUGIN2(single_window, SingleWindowPlugin)
-
 #include "moc_single-window-plugin.cpp"

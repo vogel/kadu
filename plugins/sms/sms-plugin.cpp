@@ -54,6 +54,4 @@ void SMSPlugin::done()
 	m_smsDialogRepository.reset();
 }
 
-Q_EXPORT_PLUGIN2(sms, SMSPlugin)
-
 #include "moc_sms-plugin.cpp"

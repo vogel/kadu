@@ -51,6 +51,4 @@ void MediaplayerPlugin::done()
 	MediaPlayer::destroyInstance();
 }
 
-Q_EXPORT_PLUGIN2(mediaplayer, MediaplayerPlugin)
-
 #include "moc_mediaplayer-plugin.cpp"

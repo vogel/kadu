@@ -44,6 +44,4 @@ void FreedesktopNotifyPlugin::done()
 	FreedesktopNotify::destroyInstance();
 }
 
-Q_EXPORT_PLUGIN2(freedesktop_notify, FreedesktopNotifyPlugin)
-
 #include "moc_freedesktop-notify-plugin.cpp"
