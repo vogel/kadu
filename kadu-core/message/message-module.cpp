@@ -17,27 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "antistring-plugin-injector-factory.h"
+#include "message-module.h"
 
-#include "antistring-module.h"
+#include "message/message-filter-service.h"
 
-#include <injeqt/injector.h>
-
-AntistringPluginInjectortFactory::AntistringPluginInjectortFactory(QObject *parent) :
-		PluginInjectorFactory{parent}
+MessageModule::MessageModule()
 {
+	add_type<MessageFilterService>();
 }
-
-AntistringPluginInjectortFactory::~AntistringPluginInjectortFactory()
-{
-}
-
-injeqt::injector AntistringPluginInjectortFactory::createPluginInjector(injeqt::injector &injector) const
-{
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<AntistringModule>());
-
-	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
-}
-
-#include "moc_antistring-plugin-injector-factory.cpp"

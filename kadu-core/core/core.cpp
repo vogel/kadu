@@ -86,6 +86,7 @@
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "message/message-filter-service.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-manager.h"
 #include "message/message-render-info-factory.h"
@@ -121,7 +122,6 @@
 #include "services/chat-image-request-service-configurator.h"
 #include "services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
-#include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "ssl/ssl-certificate-manager.h"
@@ -187,7 +187,6 @@ Core::Core(injeqt::injector &injector) :
 		CurrentChatImageRequestService{nullptr},
 		CurrentDomProcessorService{nullptr},
 		CurrentImageStorageService{nullptr},
-		CurrentMessageFilterService{nullptr},
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
@@ -613,7 +612,6 @@ void Core::runServices()
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentDomProcessorService = new DomProcessorService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
-	CurrentMessageFilterService = new MessageFilterService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
@@ -655,7 +653,7 @@ void Core::runServices()
 	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
 	CurrentChatImageRequestService->setContactManager(ContactManager::instance());
 
-	MessageManager::instance()->setMessageFilterService(CurrentMessageFilterService);
+	MessageManager::instance()->setMessageFilterService(m_injector.get<MessageFilterService>());
 	MessageManager::instance()->setMessageTransformerService(CurrentMessageTransformerService);
 	MessageManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
 
@@ -749,7 +747,7 @@ ImageStorageService * Core::imageStorageService() const
 
 MessageFilterService * Core::messageFilterService() const
 {
-	return CurrentMessageFilterService;
+	return m_injector.get<MessageFilterService>();
 }
 
 MessageHtmlRendererService * Core::messageHtmlRendererService() const

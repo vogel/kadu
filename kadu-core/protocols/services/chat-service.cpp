@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "services/message-filter-service.h"
+#include "message/message-filter-service.h"
 #include "services/message-transformer-service.h"
 #include "services/raw-message-transformer-service.h"
 

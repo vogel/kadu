@@ -111,7 +111,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatImageRequestService *CurrentChatImageRequestService;
 	DomProcessorService *CurrentDomProcessorService;
 	ImageStorageService *CurrentImageStorageService;
-	MessageFilterService *CurrentMessageFilterService;
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
 	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;

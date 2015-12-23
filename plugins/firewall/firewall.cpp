@@ -57,11 +57,11 @@ Nowa funkcjonalnosc - Dorregaray
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
+#include "message/message-filter-service.h"
 #include "message/message-manager.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
-#include "services/message-filter-service.h"
 #include "status/status-container.h"
 #include "debug.h"
 

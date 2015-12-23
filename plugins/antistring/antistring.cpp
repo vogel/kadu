@@ -20,36 +20,27 @@
 
 #include <QtCore/QFile>
 
-#include "core/core.h"
+#include "message/message-filter-service.h"
 #include "message/message-manager.h"
-#include "services/message-filter-service.h"
 
 #include "antistring-notification.h"
 
 #include "antistring.h"
 
-Antistring * Antistring::Instance = 0;
-
-void Antistring::createInstance()
+Antistring::Antistring(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new Antistring();
-}
-
-void Antistring::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-Antistring::Antistring()
-{
-	Core::instance()->messageFilterService()->registerMessageFilter(this);
 }
 
 Antistring::~Antistring()
 {
-	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
+	m_messageFilterService->unregisterMessageFilter(this);
+}
+
+void Antistring::setMessageFilterService(MessageFilterService *messageFilterService)
+{
+	m_messageFilterService = messageFilterService;
+	m_messageFilterService->registerMessageFilter(this);
 }
 
 bool Antistring::acceptMessage(const Message &message)

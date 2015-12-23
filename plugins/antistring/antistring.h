@@ -27,17 +27,15 @@
 
 #include "antistring-configuration.h"
 
+#include <injeqt/injeqt.h>
+
 class Account;
 class Contact;
+class MessageFilterService;
 
 class Antistring : public QObject, public MessageFilter
 {
 	Q_OBJECT
-
-	AntistringConfiguration Configuration;
-
-	int points(const QString &message);
-	void writeLog(Contact sender, const QString &message);
 
 public:
 	Q_INVOKABLE explicit Antistring(QObject *parent = nullptr);
@@ -46,6 +44,18 @@ public:
 	AntistringConfiguration & configuration() { return Configuration; }
 
 	virtual bool acceptMessage(const Message &message);
+
+private:
+	QPointer<MessageFilterService> m_messageFilterService;
+
+	AntistringConfiguration Configuration;
+
+	int points(const QString &message);
+	void writeLog(Contact sender, const QString &message);
+
+
+private slots:
+	INJEQT_SETTER void setMessageFilterService(MessageFilterService *messageFilterService);
 
 };
 

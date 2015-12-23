@@ -1,7 +1,9 @@
 set (message_SRCS
 	message.cpp
+	message-filter-service.cpp
 	message-html-renderer-service.cpp
 	message-manager.cpp
+	message-module.cpp
 	message-render-info.cpp
 	message-render-info-builder.cpp
 	message-render-info-factory.cpp

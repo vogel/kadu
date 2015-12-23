@@ -28,10 +28,10 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/main-configuration-window.h"
+#include "message/message-filter-service.h"
 #include "message/message-manager.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "services/message-filter-service.h"
 #include "status/status-type-group.h"
 #include "debug.h"
 

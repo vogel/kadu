@@ -19,8 +19,8 @@
  */
 
 #include "core/core.h"
+#include "message/message-filter-service.h"
 #include "message/message-manager.h"
-#include "services/message-filter-service.h"
 
 #include "notification/cenzor-notification.h"
 

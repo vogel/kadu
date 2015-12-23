@@ -64,6 +64,7 @@
 #include "gui/windows/chat-window/chat-window-module.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
+#include "message/message-module.h"
 #include "misc/date-time.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-module.h"
@@ -217,6 +218,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<ConfigurationModule>());
 	modules.emplace_back(make_unique<FileTransferModule>());
 	modules.emplace_back(make_unique<GuiModule>());
+	modules.emplace_back(make_unique<MessageModule>());
 	modules.emplace_back(make_unique<NotificationModule>());
 	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());

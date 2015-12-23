@@ -21,9 +21,9 @@
 
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "message/message-filter-service.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
-#include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 
 #include "message-manager.h"
