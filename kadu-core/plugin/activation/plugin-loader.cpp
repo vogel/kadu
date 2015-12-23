@@ -24,6 +24,8 @@
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
+#include "plugin/plugin-injector-factory.h"
+#include "plugin/plugin-object.h"
 #include "plugin/plugin-root-component.h"
 #include "debug.h"
 
@@ -31,6 +33,7 @@
 #include <QtCore/QEvent>
 #include <QtCore/QLibrary>
 #include <QtCore/QPluginLoader>
+#include <injeqt/injector.h>
 
 #ifdef Q_OS_MAC
 	#define SO_PREFIX "lib"
@@ -46,23 +49,38 @@
 PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName, QObject *parent) noexcept(false) :
 		// using C++ initializers breaks Qt's lupdate
 		QObject(parent),
-		m_pluginLoader(make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT)))
+		m_pluginLoader{createPluginLoader(pluginName)},
+		m_pluginRootComponent{qobject_cast<PluginRootComponent *>(m_pluginLoader->instance())},
+		m_pluginInjector{createPluginInjector(injector)}
 {
-	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
-	m_pluginRootComponent = qobject_cast<PluginRootComponent *>(m_pluginLoader->instance());
+	try
+	{
+		m_pluginObject = m_pluginInjector.get<PluginObject>();
+	}
+	catch (...)
+	{
+		// old type plugin, ignore for now
+		if (!m_pluginRootComponent)
+			throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library").arg(pluginName));
+	}
 
-	if (!m_pluginRootComponent)
+	if (!m_pluginRootComponent && !m_pluginObject)
 		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
 
-	injector.inject_into(m_pluginRootComponent);
-
-	if (!m_pluginRootComponent->init())
-		throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
+	if (m_pluginRootComponent)
+	{
+		injector.inject_into(m_pluginRootComponent);
+		if (!m_pluginRootComponent->init())
+			throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
+	}
+	else
+		m_pluginObject->init();
 }
 
 PluginLoader::~PluginLoader() noexcept
 {
-	m_pluginRootComponent->done();
+	if (m_pluginRootComponent)
+		m_pluginRootComponent->done();
 
 	// We need this because plugins can call deleteLater() just before being
 	// unloaded. In this case control would not return to the event loop before
@@ -86,6 +104,22 @@ PluginLoader::~PluginLoader() noexcept
 PluginRootComponent * PluginLoader::instance() const noexcept
 {
 	return m_pluginRootComponent;
+}
+
+std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginName) const
+{
+	auto result = make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT));
+	result->setLoadHints(QLibrary::ExportExternalSymbolsHint);
+	return result;
+}
+
+injeqt::injector PluginLoader::createPluginInjector(injeqt::injector &injector)
+{
+	auto pluginInjectorFactory = qobject_cast<PluginInjectorFactory *>(m_pluginLoader->instance());
+	if (pluginInjectorFactory)
+		return pluginInjectorFactory->createPluginInjector(injector);
+	else
+		return injeqt::injector{};
 }
 
 #include "moc_plugin-loader.cpp"

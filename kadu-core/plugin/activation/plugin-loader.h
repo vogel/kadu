@@ -19,12 +19,15 @@
 
 #pragma once
 
+#include "misc/memory.h"
+
 #include <QtCore/QObject>
 #include <injeqt/injector.h>
 #include <memory>
 
 class QPluginLoader;
 
+class PluginObject;
 class PluginRootComponent;
 
 /**
@@ -71,6 +74,11 @@ public:
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
 	PluginRootComponent *m_pluginRootComponent;
+	injeqt::injector m_pluginInjector;
+	not_owned_qptr<PluginObject> m_pluginObject;
+
+	std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginName) const;
+	injeqt::injector createPluginInjector(injeqt::injector &injector);
 
 };
 
