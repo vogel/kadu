@@ -49,18 +49,10 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 		m_pluginLoader(make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT)))
 {
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
-
-	if (!m_pluginLoader->load())
-	{
-		QString errorString = m_pluginLoader->errorString();
-		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(pluginName), qPrintable(errorString));
-
-		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, errorString));
-	}
-
 	m_pluginRootComponent = qobject_cast<PluginRootComponent *>(m_pluginLoader->instance());
+
 	if (!m_pluginRootComponent)
-		throw PluginActivationErrorException{pluginName, tr("Cannot find required object in plugin %1.\nMaybe it's not Kadu-compatible plugin.").arg(pluginName)};
+		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
 
 	injector.inject_into(m_pluginRootComponent);
 
