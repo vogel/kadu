@@ -18,33 +18,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTO_HIDE_H
-#define AUTO_HIDE_H
+#pragma once
+
+#include "configuration/configuration-aware-object.h"
 
 #include <QtCore/QPointer>
 #include <QtCore/QTimer>
 #include <injeqt/injeqt.h>
 
-#include "configuration/configuration-aware-object.h"
-#include "configuration/gui/configuration-ui-handler.h"
-#include "plugin/plugin-root-component.h"
+class Idle;
+class PluginRepository;
 
-/*!
- * This class provides autohiding Kadu's main window after preset time.
- * \brief This class provides autohiding Kadu's main window after preset time
- */
-class AutoHide : public PluginRootComponent, public ConfigurationUiHandler, ConfigurationAwareObject
+class AutoHide : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
+public:
+	Q_INVOKABLE explicit AutoHide(QObject *parent = nullptr);
+	virtual ~AutoHide();
+
+private:
 	QPointer<PluginRepository> m_pluginRepository;
+	QPointer<Idle> m_idle;
 
-	QTimer Timer;
-	Idle *MyIdle;
-	int IdleTime;
-	bool Enabled;
+	QTimer m_timer;
+	int m_idleTime;
+	bool m_enabled;
 
 private slots:
 	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
@@ -53,17 +52,5 @@ private slots:
 
 protected:
 	virtual void configurationUpdated();
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
-public:
-	explicit AutoHide(QObject *parent = 0);
-	virtual ~AutoHide();
-
-	virtual bool init();
-	virtual void done();
 
 };
-
-#endif // AUTO_HIDE_H
