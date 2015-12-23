@@ -5,13 +5,12 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	autoaway.cpp
+	autoaway-configuration-ui-handler.cpp
+	autoaway-module.cpp
+	autoaway-plugin-injector-factory.cpp
+	autoaway-plugin-object.cpp
 	autoaway-status-changer.cpp
-)
-
-set (MOC_SOURCES
-	autoaway.h
-	autoaway-status-changer.h
+	autoaway.cpp
 )
 
 set (CONFIGURATION_FILES

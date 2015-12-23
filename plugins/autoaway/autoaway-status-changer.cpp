@@ -24,22 +24,27 @@
 
 #include "autoaway-status-changer.h"
 
-AutoAwayStatusChanger::AutoAwayStatusChanger(AutoAway *autoawayController, QObject *parent) :
-		StatusChanger(900, parent), AutoawayController(autoawayController)
+AutoawayStatusChanger::AutoawayStatusChanger(QObject *parent) :
+		StatusChanger{900, parent}
 {
 }
 
-AutoAwayStatusChanger::~AutoAwayStatusChanger()
+AutoawayStatusChanger::~AutoawayStatusChanger()
 {
 }
 
-void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &status)
+void AutoawayStatusChanger::setAutoaway(Autoaway *autoaway)
+{
+	m_autoaway = autoaway;
+}
+
+void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
 	Q_UNUSED(container)
 
-	ChangeStatusTo changeStatusTo = AutoawayController->changeStatusTo();
-	ChangeDescriptionTo changeDescriptionTo = AutoawayController->changeDescriptionTo();
-	QString descriptionAddon = AutoawayController->descriptionAddon();
+	auto changeStatusTo = m_autoaway->changeStatusTo();
+	auto changeDescriptionTo = m_autoaway->changeDescriptionTo();
+	auto descriptionAddon = m_autoaway->descriptionAddon();
 
 	if (changeStatusTo == NoChangeStatus)
 		return;
@@ -47,7 +52,7 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 	if (status.isDisconnected())
 		return;
 
-	QString description = status.description();
+	auto description = status.description();
 	switch (changeDescriptionTo)
 	{
 		case NoChangeDescription:
@@ -101,7 +106,7 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 	}
 }
 
-void AutoAwayStatusChanger::update()
+void AutoawayStatusChanger::update()
 {
 	emit statusChanged(0); // for all status containers
 }

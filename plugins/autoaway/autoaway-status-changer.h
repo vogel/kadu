@@ -18,18 +18,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTOAWAY_STATUS_CHANGER_H
-#define AUTOAWAY_STATUS_CHANGER_H
+#pragma once
 
 #include "status/status-changer.h"
 
-class AutoAway;
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-class AutoAwayStatusChanger : public StatusChanger
+class Autoaway;
+
+class AutoawayStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
-	friend class AutoAway;
+	friend class Autoaway;
 
 public:
 	enum ChangeStatusTo {
@@ -47,17 +49,17 @@ public:
 		ChangeDescriptionAppend
 	};
 
-private:
-	AutoAway *AutoawayController;
-
-public:
-	explicit AutoAwayStatusChanger(AutoAway *autoawayController, QObject *parent = 0);
-	virtual ~AutoAwayStatusChanger();
+	Q_INVOKABLE explicit AutoawayStatusChanger(QObject *parent = nullptr);
+	virtual ~AutoawayStatusChanger();
 
 	virtual void changeStatus(StatusContainer *container, Status &status);
 
 	void update();
 
-};
+private:
+	QPointer<Autoaway> m_autoaway;
 
-#endif // AUTOAWAY_STATUS_CHANGER_H
+private slots:
+	INJEQT_SETTER void setAutoaway(Autoaway *autoaway);
+
+};

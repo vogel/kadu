@@ -19,20 +19,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTOAWAY_H
-#define AUTOAWAY_H
+#pragma once
+
+#include "autoaway-status-changer.h"
+
+#include "configuration/configuration-aware-object.h"
+#include "misc/memory.h"
+#include "plugin/plugin-root-component.h"
+#include "status/status-changer.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QTimer>
 #include <injeqt/injeqt.h>
-
-#include "configuration/configuration-aware-object.h"
-#include "configuration/gui/configuration-ui-handler.h"
-#include "plugin/plugin-root-component.h"
-#include "status/status-changer.h"
-
-#include "autoaway-status-changer.h"
 
 class QLineEdit;
 class QSpinBox;
@@ -44,88 +43,65 @@ class Idle;
  * @defgroup autoaway Autoaway
  * @{
  */
-class AutoAway : public PluginRootComponent, public ConfigurationUiHandler, ConfigurationAwareObject 
+class Autoaway : public QObject, ConfigurationAwareObject 
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
+public:
+	Q_INVOKABLE explicit Autoaway(QObject *pointer = nullptr);
+	virtual ~Autoaway();
+
+	AutoawayStatusChanger::ChangeStatusTo changeStatusTo();
+	AutoawayStatusChanger::ChangeDescriptionTo changeDescriptionTo();
+	QString descriptionAddon() const;
+
+	QString changeDescription(const QString &oldDescription);
+
+
+private:
+	QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
+	QPointer<Idle> m_idle;
 	QPointer<PluginRepository> m_pluginRepository;
 
-	AutoAwayStatusChanger *autoAwayStatusChanger;
-	QTimer *timer;
+	owned_qptr<QTimer> m_timer;
 
-	unsigned int checkInterval;
+	unsigned int m_checkInterval;
 
-	unsigned int autoAwayTime;
-	unsigned int autoExtendedAwayTime;
-	unsigned int autoDisconnectTime;
-	unsigned int autoInvisibleTime;
+	unsigned int m_autoAwayTime;
+	unsigned int m_autoExtendedAwayTime;
+	unsigned int m_autoDisconnectTime;
+	unsigned int m_autoInvisibleTime;
 
-	bool autoAwayEnabled;
-	bool autoExtendedAwayEnabled;
-	bool autoInvisibleEnabled;
-	bool autoDisconnectEnabled;
-	bool parseAutoStatus;
+	bool m_autoAwayEnabled;
+	bool m_autoExtendedAwayEnabled;
+	bool m_autoInvisibleEnabled;
+	bool m_autoDisconnectEnabled;
+	bool m_parseAutoStatus;
 
-	bool StatusChanged;
+	bool m_statusChanged;
 
-	Idle *idle;
-	unsigned int idleTime;
-	unsigned int refreshStatusTime;
-	unsigned int refreshStatusInterval;
+	unsigned int m_idleTime;
+	unsigned int m_refreshStatusTime;
+	unsigned int m_refreshStatusInterval;
 
-	QSpinBox *autoAwaySpinBox;
-	QSpinBox *autoExtendedAwaySpinBox;
-	QSpinBox *autoInvisibleSpinBox;
-	QSpinBox *autoOfflineSpinBox;
-	QSpinBox *autoRefreshSpinBox;
+	QString m_autoStatusText;
+	QString m_descriptionAddon;
 
-	QLineEdit *descriptionTextLineEdit;
-
-	QString autoStatusText;
-	QString DescriptionAddon;
-
-	AutoAwayStatusChanger::ChangeDescriptionTo changeTo;
+	AutoawayStatusChanger::ChangeDescriptionTo m_changeTo;
 
 	QString parseDescription(const QString &parseDescription);
 
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SETTER void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
 	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 
 	void checkIdleTime();
 
-	void autoAwaySpinBoxValueChanged(int value);
-	void autoExtendedAwaySpinBoxValueChanged(int value);
-	void autoInvisibleSpinBoxValueChanged(int value);
-	void autoOfflineSpinBoxValueChanged(int value);
-
-	void descriptionChangeChanged(int index);
-
 protected:
 	virtual void configurationUpdated();
-
-public:
-	AutoAway();
-	virtual ~AutoAway();
-
-	virtual bool init();
-	virtual void done();
-
-	AutoAwayStatusChanger::ChangeStatusTo changeStatusTo();
-	AutoAwayStatusChanger::ChangeDescriptionTo changeDescriptionTo();
-	QString descriptionAddon() const;
-
-	QString changeDescription(const QString &oldDescription);
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
 
 };
 
 /** @} */
-
-#endif
