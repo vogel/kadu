@@ -33,23 +33,15 @@ class Contact;
 class Antistring : public QObject, public MessageFilter
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(Antistring)
-
-	static Antistring * Instance;
 
 	AntistringConfiguration Configuration;
-
-	Antistring();
-	virtual ~Antistring();
 
 	int points(const QString &message);
 	void writeLog(Contact sender, const QString &message);
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static Antistring * instance() { return Instance; }
+	Q_INVOKABLE explicit Antistring(QObject *parent = nullptr);
+	virtual ~Antistring();
 
 	AntistringConfiguration & configuration() { return Configuration; }
 

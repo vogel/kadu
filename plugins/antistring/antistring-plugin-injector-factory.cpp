@@ -17,21 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "antistring-plugin-injector-factory.h"
 
-#include "exports.h"
+#include "antistring-module.h"
 
-#include <QtCore/QObject>
+#include <injeqt/injector.h>
 
-class KADUAPI PluginObject : public QObject
+AntistringPluginInjectortFactory::AntistringPluginInjectortFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE explicit PluginObject(QObject *parent = nullptr);
-	virtual ~PluginObject();
+AntistringPluginInjectortFactory::~AntistringPluginInjectortFactory()
+{
+}
 
-	virtual void init();
-	virtual void done();
+injeqt::injector AntistringPluginInjectortFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	printf("creating injector\n");
 
-};
+	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	modules.emplace_back(make_unique<AntistringModule>());
+
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
+
+#include "moc_antistring-plugin-injector-factory.cpp"

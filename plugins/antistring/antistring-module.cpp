@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,20 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANTISTRING_NOTIFICATION_H
-#define ANTISTRING_NOTIFICATION_H
+#include "antistring-module.h"
 
-#include "notification/notification/notification.h"
+#include "antistring.h"
+#include "antistring-configuration-ui-handler.h"
+#include "antistring-plugin-object.h"
 
-class AntistringNotification : public Notification
+AntistringModule::AntistringModule()
 {
-	Q_OBJECT
-
-public:
-	static void notifyStringReceived(const Chat &chat);
-
-	explicit AntistringNotification(const Chat &chat);
-	virtual ~AntistringNotification();
-};
-
-#endif // ANTISTRING_NOTIFICATION_H
+	add_type<Antistring>();
+	add_type<AntistringConfigurationUiHandler>();
+	add_type<AntistringPluginObject>();
+}

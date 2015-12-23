@@ -19,11 +19,11 @@
 
 #pragma once
 
+#include "misc/memory.h"
 #include "exports.h"
 
 #include <QtCore/QtPlugin>
-
-namespace injeqt { namespace v1 { class injector; } }
+#include <injeqt/injector.h>
 
 /**
  * @addtogroup Plugin
@@ -37,11 +37,14 @@ namespace injeqt { namespace v1 { class injector; } }
  * Every Kadu plugin has to have a PluginInjectorFactory that creates injeqt::injector instances.
  * Use injector.get<PluginObject> to get a plugin object.
  */
-class KADUAPI PluginInjectorFactory
+class KADUAPI PluginInjectorFactory : public QObject
 {
+	Q_OBJECT
 
 public:
-	virtual ~PluginInjectorFactory() {}
+	explicit PluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~PluginInjectorFactory();
+
 	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const = 0;
 
 };

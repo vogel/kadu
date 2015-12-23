@@ -17,10 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANTISTRING_CONFIGURATION_UI_HANDLER_H
-#define ANTISTRING_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Antistring;
 
 class QLineEdit;
 class QListWidget;
@@ -30,20 +34,28 @@ class QSpinBox;
 class AntistringConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AntistringConfigurationUiHandler)
 
-	static AntistringConfigurationUiHandler *Instance;
+public:
+	Q_INVOKABLE AntistringConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~AntistringConfigurationUiHandler();
 
 	QListWidget *ConditionListWidget;
 	QLineEdit *ConditionWidget;
 	QSpinBox *FactorWidget;
 
-	AntistringConfigurationUiHandler();
-	virtual ~AntistringConfigurationUiHandler();
-
 	void updateConditionList();
 
+protected:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
+
+private:
+	QPointer<Antistring> m_antistring;
+
 private slots:
+	INJEQT_SETTER void setAntistring(Antistring *antistring);
+
 	void addCondition();
 	void changeCondition();
 	void deleteCondition();
@@ -52,17 +64,4 @@ private slots:
 
 	void wordSelected(QListWidgetItem *item);
 
-public:
-	static void registerUiHandler();
-	static void unregisterUiHandler();
-
-	static AntistringConfigurationUiHandler * instance() { return Instance; }
-
-protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
 };
-
-#endif // ANTISTRING_CONFIGURATION_UI_HANDLER_H

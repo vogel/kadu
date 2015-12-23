@@ -55,31 +55,30 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 {
 	try
 	{
-		m_pluginObject = m_pluginInjector.get<PluginObject>();
+		auto pluginObject = m_pluginInjector.get<PluginObject>();
+		pluginObject->init();
+		return;
 	}
 	catch (...)
 	{
 		// old type plugin, ignore for now
 		if (!m_pluginRootComponent)
-			throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library").arg(pluginName));
+			throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
 	}
 
-	if (!m_pluginRootComponent && !m_pluginObject)
-		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
-
-	if (m_pluginRootComponent)
-	{
-		injector.inject_into(m_pluginRootComponent);
-		if (!m_pluginRootComponent->init())
-			throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
-	}
-	else
-		m_pluginObject->init();
+	injector.inject_into(m_pluginRootComponent);
+	if (!m_pluginRootComponent->init())
+		throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
 }
 
 PluginLoader::~PluginLoader() noexcept
 {
-	if (m_pluginRootComponent)
+	if (!m_pluginRootComponent)
+	{
+		auto pluginObject = m_pluginInjector.get<PluginObject>();
+		pluginObject->done();
+	}
+	else
 		m_pluginRootComponent->done();
 
 	// We need this because plugins can call deleteLater() just before being
@@ -115,8 +114,7 @@ std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &p
 
 injeqt::injector PluginLoader::createPluginInjector(injeqt::injector &injector)
 {
-	auto pluginInjectorFactory = qobject_cast<PluginInjectorFactory *>(m_pluginLoader->instance());
-	if (pluginInjectorFactory)
+	if (auto pluginInjectorFactory = qobject_cast<PluginInjectorFactory *>(m_pluginLoader->instance()))
 		return pluginInjectorFactory->createPluginInjector(injector);
 	else
 		return injeqt::injector{};

@@ -25,16 +25,6 @@
 
 #include "antistring-notification.h"
 
-void AntistringNotification::registerNotifications()
-{
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")));
-}
-
-void AntistringNotification::unregisterNotifications()
-{
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")));
-}
-
 void AntistringNotification::notifyStringReceived(const Chat &chat)
 {
 	AntistringNotification *notification = new AntistringNotification(chat);

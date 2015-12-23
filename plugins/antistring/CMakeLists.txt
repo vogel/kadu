@@ -8,8 +8,10 @@ set (SOURCES
 	antistring.cpp
 	antistring-configuration.cpp
 	antistring-configuration-ui-handler.cpp
+	antistring-module.cpp
 	antistring-notification.cpp
-	antistring-plugin.cpp
+	antistring-plugin-injector-factory.cpp
+	antistring-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES
