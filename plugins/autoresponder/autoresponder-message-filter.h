@@ -18,50 +18,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTORESPONDER_H
-#define AUTORESPONDER_H
+#pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QSet>
+#include "autoresponder-configuration.h"
 
 #include "chat/chat.h"
 #include "message/message-filter.h"
 #include "plugin/plugin-root-component.h"
 
-#include "autoresponder-configuration.h"
+#include <QtCore/QObject>
+#include <QtCore/QSet>
 
-// TODOfind a better interface than MessageFilter for this class
-
-class AutoresponderConfigurationUiHolder;
 class AutoresponderConfigurator;
 class ChatWidget;
 
-class AutoResponder : public PluginRootComponent, public MessageFilter
+class AutoresponderMessageFilter : public QObject, public MessageFilter
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	AutoresponderConfigurationUiHolder *UiHandler;
-	AutoresponderConfigurator *Configurator;
-	AutoresponderConfiguration Configuration;
-
-	QSet<Chat> RepliedChats;
 
 public:
-	explicit AutoResponder(QObject *parent = 0);
-	virtual ~AutoResponder();
+	Q_INVOKABLE explicit AutoresponderMessageFilter(QObject *parent = nullptr);
+	virtual ~AutoresponderMessageFilter();
 
 	void setConfiguration(const AutoresponderConfiguration &configuration);
 
 	virtual bool acceptMessage(const Message &message);
 
-	virtual bool init();
-	virtual void done();
-
 public slots:
 	void chatWidgetClosed(ChatWidget *chat);
 
-};
+private:
+	AutoresponderConfigurator *Configurator;
+	AutoresponderConfiguration Configuration;
 
-#endif // AUTORESPONDER_H
+	QSet<Chat> RepliedChats;
+
+};

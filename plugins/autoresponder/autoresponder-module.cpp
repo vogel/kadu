@@ -17,27 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "autostatus-plugin-injector-factory.h"
+#include "autoresponder-module.h"
 
-#include "autostatus-module.h"
+#include "autoresponder-configuration-ui-handler.h"
+#include "autoresponder-message-filter.h"
+#include "autoresponder-plugin-object.h"
 
-#include <injeqt/injector.h>
-
-AutostatusPluginInjectortFactory::AutostatusPluginInjectortFactory(QObject *parent) :
-		PluginInjectorFactory{parent}
+AutoresponderModule::AutoresponderModule()
 {
+	add_type<AutoresponderConfigurationUiHandler>();
+	add_type<AutoresponderMessageFilter>();
+	add_type<AutoresponderPluginObject>();
 }
-
-AutostatusPluginInjectortFactory::~AutostatusPluginInjectortFactory()
-{
-}
-
-injeqt::injector AutostatusPluginInjectortFactory::createPluginInjector(injeqt::injector &injector) const
-{
-	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<AutostatusModule>());
-
-	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
-}
-
-#include "moc_autostatus-plugin-injector-factory.cpp"

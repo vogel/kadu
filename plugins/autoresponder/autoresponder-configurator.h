@@ -25,7 +25,7 @@
 
 #include "configuration/configuration-aware-object.h"
 
-class AutoResponder;
+class AutoresponderMessageFilter;
 
 /**
  * @addtogroup Autoresponder
@@ -34,15 +34,15 @@ class AutoResponder;
 
 /**
  * @class AutoresponderConfigurator
- * @short Standard configuration setter for AutoResponder.
+ * @short Standard configuration setter for AutoresponderMessageFilter.
  * @author Rafał 'Vogel' Malinowski
  *
  * This class listens to changed in global configuration. After change is detected it updated configuration of given
- * AutoResponder with newly created AutoresponderConfiguration instance.
+ * AutoresponderMessageFilter with newly created AutoresponderConfiguration instance.
  */
 class AutoresponderConfigurator : private ConfigurationAwareObject
 {
-	QPointer<AutoResponder> ConfigurableAutoresponder;
+	QPointer<AutoresponderMessageFilter> ConfigurableAutoresponder;
 
 	void createDefaultConfiguration();
 
@@ -55,7 +55,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param autoresponder autoresponder to configured
 	 */
-	void setAutoresponder(AutoResponder *autoresponder);
+	void setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter);
 
 };
 

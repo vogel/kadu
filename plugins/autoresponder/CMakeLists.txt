@@ -5,15 +5,13 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	autoresponder.cpp
-	autoresponder-configuration.cpp
 	autoresponder-configuration-ui-handler.cpp
+	autoresponder-configuration.cpp
 	autoresponder-configurator.cpp
-)
-
-set (MOC_SOURCES
-	autoresponder.h
-	autoresponder-configuration-ui-handler.h
+	autoresponder-message-filter.cpp
+	autoresponder-module.cpp
+	autoresponder-plugin-injector-factory.cpp
+	autoresponder-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES

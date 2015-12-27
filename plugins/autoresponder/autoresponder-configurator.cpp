@@ -25,13 +25,13 @@
 #include "core/application.h"
 
 #include "autoresponder-configuration.h"
-#include "autoresponder.h"
+#include "autoresponder-message-filter.h"
 
 #include "autoresponder-configurator.h"
 
-void AutoresponderConfigurator::setAutoresponder(AutoResponder *autoresponder)
+void AutoresponderConfigurator::setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter)
 {
-	ConfigurableAutoresponder = autoresponder;
+	ConfigurableAutoresponder = autoresponderMessageFilter;
 
 	createDefaultConfiguration();
 	configurationUpdated();

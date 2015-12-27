@@ -17,27 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "autostatus-plugin-injector-factory.h"
+#pragma once
 
-#include "autostatus-module.h"
+#include "plugin/plugin-injector-factory.h"
 
-#include <injeqt/injector.h>
-
-AutostatusPluginInjectortFactory::AutostatusPluginInjectortFactory(QObject *parent) :
-		PluginInjectorFactory{parent}
+class AutoresponderPluginInjectortFactory : public PluginInjectorFactory
 {
-}
+	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
-AutostatusPluginInjectortFactory::~AutostatusPluginInjectortFactory()
-{
-}
+public:
+	explicit AutoresponderPluginInjectortFactory(QObject *parent = nullptr);
+	virtual ~AutoresponderPluginInjectortFactory();
 
-injeqt::injector AutostatusPluginInjectortFactory::createPluginInjector(injeqt::injector &injector) const
-{
-	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<AutostatusModule>());
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
-	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
-}
-
-#include "moc_autostatus-plugin-injector-factory.cpp"
+};

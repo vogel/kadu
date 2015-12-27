@@ -18,8 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QLineEdit>
+#include "autoresponder-message-filter.h"
+
+#include "autoresponder-configuration-ui-handler.h"
+#include "autoresponder-configurator.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-set.h"
@@ -35,54 +37,28 @@
 #include "status/status-type-group.h"
 #include "debug.h"
 
-#include "autoresponder-configuration-ui-handler.h"
-#include "autoresponder-configurator.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLineEdit>
 
-#include "autoresponder.h"
-
-AutoResponder::AutoResponder(QObject *parent) :
-		PluginRootComponent(parent),
-		UiHandler(nullptr),
+AutoresponderMessageFilter::AutoresponderMessageFilter(QObject *parent) :
+		QObject(parent),
 		Configurator{nullptr}
-{
-}
-
-AutoResponder::~AutoResponder()
-{
-}
-
-bool AutoResponder::init()
 {
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
-	UiHandler = new AutoresponderConfigurationUiHolder();
-	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(UiHandler);
-
 	Configurator = new AutoresponderConfigurator();
-	Configurator->setAutoresponder(this);
-
-	Core::instance()->messageFilterService()->registerMessageFilter(this);
-
-	return true;
+	Configurator->setAutoresponderMessageFilter(this);
 }
 
-void AutoResponder::done()
+AutoresponderMessageFilter::~AutoresponderMessageFilter()
 {
-	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
-
-	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(UiHandler);
-	delete UiHandler;
-	UiHandler = nullptr;
-
-	delete Configurator;
-	Configurator = 0;
-
-	disconnect(Core::instance()->chatWidgetRepository(), 0, this, 0);
 }
 
-bool AutoResponder::acceptMessage(const Message &message)
+bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 {
+	printf("should I do accept?\n");
+
 	if (MessageTypeSent == message.type())
 		return true;
 
@@ -113,16 +89,16 @@ bool AutoResponder::acceptMessage(const Message &message)
 	return true;
 }
 
-void AutoResponder::chatWidgetClosed(ChatWidget *chatWidget)
+void AutoresponderMessageFilter::chatWidgetClosed(ChatWidget *chatWidget)
 {
 	RepliedChats.remove(chatWidget->chat());
 }
 
-void AutoResponder::setConfiguration(const AutoresponderConfiguration &configuration)
+void AutoresponderMessageFilter::setConfiguration(const AutoresponderConfiguration &configuration)
 {
 	Configuration = configuration;
 }
 
 /** @} */
 
-#include "moc_autoresponder.cpp"
+#include "moc_autoresponder-message-filter.cpp"

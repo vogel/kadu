@@ -17,23 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTORESPONDER_CONFIGURATION_UI_HOLDER_H
-#define AUTORESPONDER_CONFIGURATION_UI_HOLDER_H
+#pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
 
-class AutoresponderConfigurationUiHolder : public ConfigurationUiHandler
+#include <QtCore/QObject>
+
+class AutoresponderConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit AutoresponderConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~AutoresponderConfigurationUiHandler();
 
 protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
-public:
-	explicit AutoresponderConfigurationUiHolder();
-	virtual ~AutoresponderConfigurationUiHolder();
-
 };
-
-#endif // AUTORESPONDER_CONFIGURATION_UI_HOLDER_H

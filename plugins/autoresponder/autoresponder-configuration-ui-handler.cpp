@@ -18,36 +18,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "autoresponder-configuration-ui-handler.h"
+
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-#include "core/application.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
-
-#include "autoresponder-configuration-ui-handler.h"
-
-AutoresponderConfigurationUiHolder::AutoresponderConfigurationUiHolder()
+AutoresponderConfigurationUiHandler::AutoresponderConfigurationUiHandler(QObject *parent) :
+		QObject{parent}
 {
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
-AutoresponderConfigurationUiHolder::~AutoresponderConfigurationUiHolder()
+AutoresponderConfigurationUiHandler::~AutoresponderConfigurationUiHandler()
 {
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
-void AutoresponderConfigurationUiHolder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+void AutoresponderConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	QLineEdit *autoRespondTextLineEdit = qobject_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
+	auto autoRespondTextLineEdit = qobject_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
 	autoRespondTextLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
-void AutoresponderConfigurationUiHolder::mainConfigurationWindowDestroyed()
+void AutoresponderConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 }
 
-void AutoresponderConfigurationUiHolder::mainConfigurationWindowApplied()
+void AutoresponderConfigurationUiHandler::mainConfigurationWindowApplied()
 {
 }
+
+#include "moc_autoresponder-configuration-ui-handler.cpp"
