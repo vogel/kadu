@@ -70,7 +70,7 @@ void AutoawayPluginObject::init()
 
 void AutoawayPluginObject::done()
 {
-	StatusChangerManager::instance()->registerStatusChanger(m_autoawayStatusChanger);
+	StatusChangerManager::instance()->unregisterStatusChanger(m_autoawayStatusChanger);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoawayConfigurationUiHandler);
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 }

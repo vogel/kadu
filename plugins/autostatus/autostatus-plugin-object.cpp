@@ -64,7 +64,7 @@ void AutostatusPluginObject::init()
 
 void AutostatusPluginObject::done()
 {
-	StatusChangerManager::instance()->registerStatusChanger(m_autostatusStatusChanger);
+	StatusChangerManager::instance()->unregisterStatusChanger(m_autostatusStatusChanger);
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 }
 
