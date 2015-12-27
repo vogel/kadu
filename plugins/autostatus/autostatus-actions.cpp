@@ -24,31 +24,25 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/kadu-window.h"
 
-#include "autostatus.h"
+#include "autostatus-service.h"
 
 #include "autostatus-actions.h"
 
-AutostatusActions * AutostatusActions::Instance = 0;
-
-void AutostatusActions::createInstance()
-{
-	if (!Instance)
-		Instance = new AutostatusActions();
-}
-
-void AutostatusActions::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-AutostatusActions::AutostatusActions() :
+AutostatusActions::AutostatusActions(QObject *parent) :
+		QObject{parent},
 		AutostatusActionDescription{}
 {
+	registerActions();
 }
 
 AutostatusActions::~AutostatusActions()
 {
+	unregisterActions();
+}
+
+void AutostatusActions::setAutostatusService(AutostatusService *autostatusService)
+{
+	m_autostatusService = autostatusService;
 }
 
 void AutostatusActions::registerActions()
@@ -80,7 +74,7 @@ void AutostatusActions::autostatusActionActivated(QAction *action, bool toggled)
 {
 	Q_UNUSED(action)
 
-	Autostatus::instance()->toggle(toggled);
+	m_autostatusService->toggle(toggled);
 }
 
 #include "moc_autostatus-actions.cpp"

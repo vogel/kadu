@@ -7,17 +7,12 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	configuration/autostatus-configuration.cpp
 
-	autostatus.cpp
 	autostatus-actions.cpp
-	autostatus-plugin.cpp
+	autostatus-module.cpp
+	autostatus-plugin-injector-factory.cpp
+	autostatus-plugin-object.cpp
+	autostatus-service.cpp
 	autostatus-status-changer.cpp
-)
-
-set (MOC_SOURCES
-	autostatus.h
-	autostatus-actions.h
-	autostatus-plugin.h
-	autostatus-status-changer.h
 )
 
 set (CONFIGURATION_FILES
@@ -26,6 +21,5 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (autostatus
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

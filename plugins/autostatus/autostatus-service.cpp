@@ -28,62 +28,48 @@
 
 #include "autostatus-status-changer.h"
 
-#include "autostatus.h"
+#include "autostatus-service.h"
 
-Autostatus * Autostatus::Instance = 0;
-
-void Autostatus::createInstance()
+AutostatusService::AutostatusService(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new Autostatus();
-}
-
-void Autostatus::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-Autostatus::Autostatus()
-{
-	MyStatusChanger = new AutostatusStatusChanger(this);
-	StatusChangerManager::instance()->registerStatusChanger(MyStatusChanger);
-
 	Timer = new QTimer(this);
 	connect(Timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
 }
 
-
-Autostatus::~Autostatus()
+AutostatusService::~AutostatusService()
 {
-	StatusChangerManager::instance()->unregisterStatusChanger(MyStatusChanger);
-
 	Timer->stop();
 }
 
-void Autostatus::on()
+void AutostatusService::setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger)
 {
-	MyStatusChanger->setEnabled(true);
+	m_autostatusStatusChanger = autostatusStatusChanger;
+}
+
+void AutostatusService::on()
+{
+	m_autostatusStatusChanger->setEnabled(true);
 	Timer->start(Configuration.autoTime() * 1000);
 	changeStatus();
 }
 
-void Autostatus::off()
+void AutostatusService::off()
 {
 	Timer->stop();
-	MyStatusChanger->setEnabled(false);
+	m_autostatusStatusChanger->setEnabled(false);
 }
 
-void Autostatus::changeStatus()
+void AutostatusService::changeStatus()
 {
 	if (CurrentDescription == DescriptionList.constEnd())
 		CurrentDescription = DescriptionList.constBegin();
 
-	MyStatusChanger->setConfiguration(Configuration.autoStatus(), *CurrentDescription);
+	m_autostatusStatusChanger->setConfiguration(Configuration.autoStatus(), *CurrentDescription);
 	CurrentDescription++;
 }
 
-bool Autostatus::readDescriptionList()
+bool AutostatusService::readDescriptionList()
 {
 	if (!QFile::exists(Configuration.statusFilePath()))
 	{
@@ -113,7 +99,7 @@ bool Autostatus::readDescriptionList()
 	return !DescriptionList.isEmpty();
 }
 
-void Autostatus::toggle(bool toggled)
+void AutostatusService::toggle(bool toggled)
 {
 	if (!toggled)
 	{
@@ -131,4 +117,4 @@ void Autostatus::toggle(bool toggled)
 	}
 }
 
-#include "moc_autostatus.cpp"
+#include "moc_autostatus-service.cpp"

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,36 +19,39 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "plugin/plugin-object.h"
+
+#include "misc/memory.h"
+
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class AutostatusActions;
 class AutostatusService;
+class AutostatusStatusChanger;
+class PathsProvider;
 
-class ActionDescription;
-
-class QAction;
-
-class AutostatusActions : public QObject
+class AutostatusPluginObject : public PluginObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutostatusActions(QObject *parent = nullptr);
-	virtual ~AutostatusActions();
+	Q_INVOKABLE explicit AutostatusPluginObject(QObject *parent = nullptr);
+	virtual ~AutostatusPluginObject();
 
-	void registerActions();
-	void unregisterActions();
+	virtual void init();
+	virtual void done();
 
 private:
+	QPointer<AutostatusActions> m_autostatusActions;
 	QPointer<AutostatusService> m_autostatusService;
-
-	ActionDescription *AutostatusActionDescription;
+	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
+	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_SETTER void setAutostatusActions(AutostatusActions *autostatusActions);
 	INJEQT_SETTER void setAutostatusService(AutostatusService *autostatusService);
-
-	//! This slot is called when new Autostatus it starts
-	void autostatusActionActivated(QAction *, bool);
+	INJEQT_SETTER void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 
 };

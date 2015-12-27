@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,25 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTOSTATUS_PLUGIN_H
-#define AUTOSTATUS_PLUGIN_H
+#pragma once
 
-#include <QtCore/QObject>
+#include <injeqt/module.h>
 
-#include "plugin/plugin-root-component.h"
-
-class AutostatusPlugin : public PluginRootComponent
+class AutostatusModule : public injeqt::module
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
-	virtual ~AutostatusPlugin();
-
-	virtual bool init();
-	virtual void done();
+	AutostatusModule();
+	virtual ~AutostatusModule() {}
 
 };
-
-#endif // AUTOSTATUS_PLUGIN_H

@@ -19,35 +19,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTOSTATUS_H
-#define AUTOSTATUS_H
+#pragma once
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QStringList>
+#include <injeqt/injeqt.h>
 
 #include "configuration/autostatus-configuration.h"
 
-class QTimer;
-
 class AutostatusStatusChanger;
+
+class QTimer;
 
 /*!
  * This class provides functionality for automatic status change
  * after served time
  * \brief Automatic status change class
  */
-class Autostatus : public QObject
+class AutostatusService : public QObject
 {
 	Q_OBJECT
 
-	static Autostatus *Instance;
+public:
+	Q_INVOKABLE explicit AutostatusService(QObject *parent = nullptr);
+	virtual ~AutostatusService();
+
+	void toggle(bool toggled);
+
+private:
+	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
 
 	AutostatusConfiguration Configuration;
 
 	QTimer *Timer;
-	AutostatusStatusChanger *MyStatusChanger;
-
-	Autostatus();
-	virtual ~Autostatus();
 
 	void on();
 	void off();
@@ -58,17 +63,9 @@ class Autostatus : public QObject
 	QStringList DescriptionList;
 
 private slots:
+	INJEQT_SETTER void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+
 	//! This slot is called on timeout
 	void changeStatus();
 
-public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static Autostatus * instance() { return Instance; }
-
-	void toggle(bool toggled);
-
 };
-
-#endif // AUTOSTATUS_H

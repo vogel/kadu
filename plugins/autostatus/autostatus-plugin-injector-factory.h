@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,36 +19,18 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
+#include "plugin/plugin-injector-factory.h"
 
-class AutostatusService;
-
-class ActionDescription;
-
-class QAction;
-
-class AutostatusActions : public QObject
+class AutostatusPluginInjectortFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	Q_INVOKABLE explicit AutostatusActions(QObject *parent = nullptr);
-	virtual ~AutostatusActions();
+	explicit AutostatusPluginInjectortFactory(QObject *parent = nullptr);
+	virtual ~AutostatusPluginInjectortFactory();
 
-	void registerActions();
-	void unregisterActions();
-
-private:
-	QPointer<AutostatusService> m_autostatusService;
-
-	ActionDescription *AutostatusActionDescription;
-
-private slots:
-	INJEQT_SETTER void setAutostatusService(AutostatusService *autostatusService);
-
-	//! This slot is called when new Autostatus it starts
-	void autostatusActionActivated(QAction *, bool);
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };

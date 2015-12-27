@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,32 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTOSTATUS_STATUS_CHANGER_H
-#define AUTOSTATUS_STATUS_CHANGER_H
+#include "autostatus-module.h"
 
-#include "status/status-changer.h"
+#include "autostatus-actions.h"
+#include "autostatus-plugin-object.h"
+#include "autostatus-service.h"
+#include "autostatus-status-changer.h"
 
-class AutostatusStatusChanger : public StatusChanger
+AutostatusModule::AutostatusModule()
 {
-	Q_OBJECT
-
-	bool Enabled;
-
-	// 0 - online
-	// 1 - budy
-	// 2 - invisible
-	int StatusIndex;
-	QString Description;
-
-public:
-	Q_INVOKABLE explicit AutostatusStatusChanger(QObject *parent = nullptr);
-	virtual ~AutostatusStatusChanger();
-
-	void setEnabled(bool enabled);
-	void setConfiguration(int statusIndex, const QString &description);
-
-	virtual void changeStatus(StatusContainer *container, Status &status);
-
-};
-
-#endif // AUTOSTATUS_STATUS_CHANGER_H
+	add_type<AutostatusActions>();
+	add_type<AutostatusPluginObject>();
+	add_type<AutostatusService>();
+	add_type<AutostatusStatusChanger>();
+}
