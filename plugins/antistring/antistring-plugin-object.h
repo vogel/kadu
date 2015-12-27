@@ -27,7 +27,9 @@
 #include <injeqt/injeqt.h>
 
 class AntistringConfigurationUiHandler;
+class AntistringMessageFilter;
 class ConfigurationUiHandlerRepository;
+class MessageFilterService;
 class NotificationEventRepository;
 class PathsProvider;
 
@@ -44,13 +46,17 @@ public:
 
 private:
 	QPointer<AntistringConfigurationUiHandler> m_antistringConfigurationUiHandler;
+	QPointer<AntistringMessageFilter> m_antistringMessageFilter;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MessageFilterService> m_messageFilterService;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
 	INJEQT_SETTER void setAntistringConfigurationUiHandler(AntistringConfigurationUiHandler *antistringConfigurationUiHandler);
+	INJEQT_SETTER void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SETTER void setMessageFilterService(MessageFilterService *messageFilterService);
 	INJEQT_SETTER void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 

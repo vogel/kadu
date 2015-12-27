@@ -18,32 +18,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-
-#include "message/message-filter-service.h"
-#include "message/message-manager.h"
+#include "antistring-message-filter.h"
 
 #include "antistring-notification.h"
 
-#include "antistring.h"
+#include "message/message-manager.h"
 
-Antistring::Antistring(QObject *parent) :
+#include <QtCore/QFile>
+
+AntistringMessageFilter::AntistringMessageFilter(QObject *parent) :
 		QObject{parent}
 {
 }
 
-Antistring::~Antistring()
+AntistringMessageFilter::~AntistringMessageFilter()
 {
-	m_messageFilterService->unregisterMessageFilter(this);
 }
 
-void Antistring::setMessageFilterService(MessageFilterService *messageFilterService)
-{
-	m_messageFilterService = messageFilterService;
-	m_messageFilterService->registerMessageFilter(this);
-}
-
-bool Antistring::acceptMessage(const Message &message)
+bool AntistringMessageFilter::acceptMessage(const Message &message)
 {
 	if (!Configuration.enabled())
 		return true;
@@ -63,7 +55,7 @@ bool Antistring::acceptMessage(const Message &message)
 	return !Configuration.messageStop();
 }
 
-void Antistring::writeLog(Contact sender, const QString &message)
+void AntistringMessageFilter::writeLog(Contact sender, const QString &message)
 {
 	QFile logFile(Configuration.logFile());
 
@@ -88,7 +80,7 @@ void Antistring::writeLog(Contact sender, const QString &message)
 	logFile.close();
 }
 
-int Antistring::points(const QString &message)
+int AntistringMessageFilter::points(const QString &message)
 {
 	int result = 0;
 
@@ -102,4 +94,4 @@ int Antistring::points(const QString &message)
 	return result;
 }
 
-#include "moc_antistring.cpp"
+#include "moc_antistring-message-filter.cpp"

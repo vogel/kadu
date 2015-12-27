@@ -19,13 +19,13 @@
 
 #include "antistring-module.h"
 
-#include "antistring.h"
 #include "antistring-configuration-ui-handler.h"
+#include "antistring-message-filter.h"
 #include "antistring-plugin-object.h"
 
 AntistringModule::AntistringModule()
 {
-	add_type<Antistring>();
 	add_type<AntistringConfigurationUiHandler>();
+	add_type<AntistringMessageFilter>();
 	add_type<AntistringPluginObject>();
 }

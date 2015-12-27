@@ -20,10 +20,12 @@
 #include "antistring-plugin-object.h"
 
 #include "antistring-configuration-ui-handler.h"
+#include "antistring-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "gui/windows/main-configuration-window.h"
-#include "kadu/kadu-core/misc/paths-provider.h"
+#include "message/message-filter-service.h"
+#include "misc/paths-provider.h"
 #include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
 
@@ -42,9 +44,19 @@ void AntistringPluginObject::setAntistringConfigurationUiHandler(AntistringConfi
 	m_antistringConfigurationUiHandler = antistringConfigurationUiHandler;
 }
 
+void AntistringPluginObject::setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter)
+{
+	m_antistringMessageFilter = antistringMessageFilter;
+}
+
 void AntistringPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void AntistringPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
+{
+	m_messageFilterService = messageFilterService;
 }
 
 void AntistringPluginObject::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
@@ -61,12 +73,14 @@ void AntistringPluginObject::init()
 {
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_antistringConfigurationUiHandler);
+	m_messageFilterService->registerMessageFilter(m_antistringMessageFilter);
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")});
 }
 
 void AntistringPluginObject::done()
 {
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")});
+	m_messageFilterService->unregisterMessageFilter(m_antistringMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_antistringConfigurationUiHandler);
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 }

@@ -5,9 +5,9 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	antistring.cpp
 	antistring-configuration.cpp
 	antistring-configuration-ui-handler.cpp
+	antistring-message-filter.cpp
 	antistring-module.cpp
 	antistring-notification.cpp
 	antistring-plugin-injector-factory.cpp

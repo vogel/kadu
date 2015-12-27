@@ -34,7 +34,7 @@
 #include "misc/paths-provider.h"
 
 #include "antistring-configuration.h"
-#include "antistring.h"
+#include "antistring-message-filter.h"
 
 #include "antistring-configuration-ui-handler.h"
 
@@ -48,9 +48,9 @@ AntistringConfigurationUiHandler::~AntistringConfigurationUiHandler()
 {
 }
 
-void AntistringConfigurationUiHandler::setAntistring(Antistring *antistring)
+void AntistringConfigurationUiHandler::setAntistringMessageFilter(AntistringMessageFilter  *antistringMessageFilter)
 {
-	m_antistring = antistring;
+	m_antistringMessageFilter = antistringMessageFilter;
 }
 
 void AntistringConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -107,7 +107,7 @@ void AntistringConfigurationUiHandler::updateConditionList()
 {
 	ConditionListWidget->clear();
 
-	foreach (const ConditionPair &condition, m_antistring->configuration().conditions())
+	foreach (const ConditionPair &condition, m_antistringMessageFilter->configuration().conditions())
 		ConditionListWidget->addItem(QString("(%1) %2").arg(condition.second).arg(condition.first));
 }
 
@@ -120,7 +120,7 @@ void AntistringConfigurationUiHandler::addCondition()
 		return;
 
 	ConditionListWidget->addItem(QString("(%1) %2").arg(factor).arg(condition));
-	m_antistring->configuration().conditions().append(qMakePair(condition, factor));
+	m_antistringMessageFilter->configuration().conditions().append(qMakePair(condition, factor));
 
 	FactorWidget->setValue(0);
 	ConditionWidget->clear();
@@ -137,11 +137,11 @@ void AntistringConfigurationUiHandler::changeCondition()
 	if (condition.isEmpty())
 		return;
 
-	if (index < 0 || index >= m_antistring->configuration().conditions().count())
+	if (index < 0 || index >= m_antistringMessageFilter->configuration().conditions().count())
 		return;
 
 	item->setText(QString("(%1) %2").arg(factor).arg(condition));
-	m_antistring->configuration().conditions()[index] = qMakePair(condition, factor);
+	m_antistringMessageFilter->configuration().conditions()[index] = qMakePair(condition, factor);
 
 	FactorWidget->setValue(0);
 	ConditionWidget->clear();
@@ -151,17 +151,17 @@ void AntistringConfigurationUiHandler::deleteCondition()
 {
 	int index = ConditionListWidget->currentIndex().row();
 
-	if (index < 0 || index >= m_antistring->configuration().conditions().count())
+	if (index < 0 || index >= m_antistringMessageFilter->configuration().conditions().count())
 		return;
 
-	m_antistring->configuration().conditions().removeAt(index);
+	m_antistringMessageFilter->configuration().conditions().removeAt(index);
 
 	updateConditionList();
 }
 
 void AntistringConfigurationUiHandler::applyConfiguration()
 {
-	m_antistring->configuration().storeConditions();
+	m_antistringMessageFilter->configuration().storeConditions();
 }
 
 void AntistringConfigurationUiHandler::wordSelected(QListWidgetItem *item)
@@ -169,14 +169,14 @@ void AntistringConfigurationUiHandler::wordSelected(QListWidgetItem *item)
 	Q_UNUSED(item)
 
 	int index = ConditionListWidget->currentIndex().row();
-	if (index < 0 || index >= m_antistring->configuration().conditions().count())
+	if (index < 0 || index >= m_antistringMessageFilter->configuration().conditions().count())
 	{
 		FactorWidget->setValue(0);
 		ConditionWidget->clear();
 		return;
 	}
 
-	ConditionPair condition = m_antistring->configuration().conditions().at(index);
+	ConditionPair condition = m_antistringMessageFilter->configuration().conditions().at(index);
 
 	FactorWidget->setValue(condition.second);
 	ConditionWidget->setText(condition.first);
