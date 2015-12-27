@@ -17,23 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_CONFIGURATION_UI_HANDLER
-#define CENZOR_CONFIGURATION_UI_HANDLER
+#pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class CenzorMessageFilter;
 class ListEditWidget;
 
 class CenzorConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	static CenzorConfigurationUiHandler * Instance;
-
-	ListEditWidget *SwearwordsWidget;
-	ListEditWidget *ExclusionsWidget;
-
-	explicit CenzorConfigurationUiHandler();
+public:
+	Q_INVOKABLE explicit CenzorConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~CenzorConfigurationUiHandler();
 
 protected:
@@ -41,10 +40,13 @@ protected:
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
-public:
-	static void registerConfigurationUi();
-	static void unregisterConfigurationUi();
+private:
+	QPointer<CenzorMessageFilter> m_cenzorMessageFilter;
+
+	ListEditWidget *m_swearwordsWidget;
+	ListEditWidget *m_exclusionsWidget;
+
+private slots:
+	INJEQT_SETTER void setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter);
 
 };
-
-#endif // CENZOR_CONFIGURATION_UI_HANDLER

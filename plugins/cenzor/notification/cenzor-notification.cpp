@@ -22,19 +22,8 @@
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
-#include "notification/notification-event-repository.h"
 
 #include "cenzor-notification.h"
-
-void CenzorNotification::registerNotifications()
-{
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")));
-}
-
-void CenzorNotification::unregisterNotifiactions()
-{
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")));
-}
 
 void CenzorNotification::notifyCenzored(const Chat &chat)
 {
@@ -53,7 +42,6 @@ CenzorNotification::CenzorNotification(const Chat &chat) :
 
 CenzorNotification::~CenzorNotification()
 {
-
 }
 
 #include "moc_cenzor-notification.cpp"

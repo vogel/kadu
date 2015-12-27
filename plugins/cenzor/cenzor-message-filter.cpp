@@ -18,39 +18,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
-#include "message/message-filter-service.h"
-#include "message/message-manager.h"
+#include "cenzor-message-filter.h"
 
 #include "notification/cenzor-notification.h"
 
-#include "cenzor.h"
+#include "message/message-manager.h"
 
-Cenzor * Cenzor::Instance = 0;
-
-void Cenzor::createInstance()
+CenzorMessageFilter::CenzorMessageFilter(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new Cenzor();
 }
 
-void Cenzor::destroyInstance()
+CenzorMessageFilter::~CenzorMessageFilter()
 {
-	delete Instance;
-	Instance = 0;
 }
 
-Cenzor::Cenzor()
-{
-	Core::instance()->messageFilterService()->registerMessageFilter(this);
-}
-
-Cenzor::~Cenzor()
-{
-	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
-}
-
-bool Cenzor::acceptMessage(const Message &message)
+bool CenzorMessageFilter::acceptMessage(const Message &message)
 {
 	if (MessageTypeSent == message.type())
 		return true;
@@ -74,14 +57,14 @@ bool Cenzor::acceptMessage(const Message &message)
 	return false;
 }
 
-bool Cenzor::shouldIgnore(const QString &message)
+bool CenzorMessageFilter::shouldIgnore(const QString &message)
 {
 	QStringList words = message.split(' ', QString::SkipEmptyParts);
 
-	foreach (const QString &word, words)
+	for (const QString &word : words)
 	{
 		QString lowerWord = word.toLower();
-		foreach (const QRegExp &swear, Configuration.swearList())
+		for (const QRegExp &swear : Configuration.swearList())
 			if ((swear.indexIn(lowerWord) >= 0) && (!isExclusion(lowerWord)))
 				return true;
 	}
@@ -89,13 +72,13 @@ bool Cenzor::shouldIgnore(const QString &message)
 	return false;
 }
 
-bool Cenzor::isExclusion(const QString &word)
+bool CenzorMessageFilter::isExclusion(const QString &word)
 {
-	foreach (const QRegExp &exclusion, Configuration.exclusionList())
+	for (const QRegExp &exclusion : Configuration.exclusionList())
 		if (exclusion.indexIn(word) >= 0)
 			return true;
 
 	return false;
 }
 
-#include "moc_cenzor.cpp"
+#include "moc_cenzor-message-filter.cpp"

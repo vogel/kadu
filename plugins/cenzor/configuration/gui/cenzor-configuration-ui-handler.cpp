@@ -18,6 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "cenzor-configuration-ui-handler.h"
+
+#include "configuration/cenzor-configuration.h"
+#include "gui/widgets/list-edit-widget.h"
+#include "cenzor-message-filter.h"
+
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/application.h"
 #include "core/core.h"
@@ -26,38 +32,10 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
-#include "configuration/cenzor-configuration.h"
-#include "gui/widgets/list-edit-widget.h"
-#include "cenzor.h"
-
-#include "cenzor-configuration-ui-handler.h"
-
-CenzorConfigurationUiHandler * CenzorConfigurationUiHandler::Instance = 0;
-
-void CenzorConfigurationUiHandler::registerConfigurationUi()
-{
-	if (!Instance)
-	{
-		Instance = new CenzorConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
-		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
-	}
-}
-
-void CenzorConfigurationUiHandler::unregisterConfigurationUi()
-{
-	if (Instance)
-	{
-		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
-		delete Instance;
-		Instance = 0;
-	}
-}
-
-CenzorConfigurationUiHandler::CenzorConfigurationUiHandler() :
-		SwearwordsWidget{},
-		ExclusionsWidget{}
+CenzorConfigurationUiHandler::CenzorConfigurationUiHandler(QObject *parent) :
+		QObject{parent},
+		m_swearwordsWidget{},
+		m_exclusionsWidget{}
 {
 }
 
@@ -65,18 +43,23 @@ CenzorConfigurationUiHandler::~CenzorConfigurationUiHandler()
 {
 }
 
+void CenzorConfigurationUiHandler::setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter)
+{
+	m_cenzorMessageFilter = cenzorMessageFilter;
+}
+
 void CenzorConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	ConfigGroupBox *swearwordGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "Cenzor", "Swearwords");
-	SwearwordsWidget = new ListEditWidget(swearwordGroupBox->widget());
-	swearwordGroupBox->addWidgets(0, SwearwordsWidget);
+	m_swearwordsWidget = new ListEditWidget(swearwordGroupBox->widget());
+	swearwordGroupBox->addWidgets(0, m_swearwordsWidget);
 
 	ConfigGroupBox *exclusionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "Cenzor", "Exclusions");
-	ExclusionsWidget = new ListEditWidget(exclusionsGroupBox->widget());
-	exclusionsGroupBox->addWidgets(0, ExclusionsWidget);
+	m_exclusionsWidget = new ListEditWidget(exclusionsGroupBox->widget());
+	exclusionsGroupBox->addWidgets(0, m_exclusionsWidget);
 
-	SwearwordsWidget->setList(CenzorConfiguration::toStringList(Cenzor::instance()->configuration().swearList()));
-	ExclusionsWidget->setList(CenzorConfiguration::toStringList(Cenzor::instance()->configuration().exclusionList()));
+	m_swearwordsWidget->setList(CenzorConfiguration::toStringList(m_cenzorMessageFilter->configuration().swearList()));
+	m_exclusionsWidget->setList(CenzorConfiguration::toStringList(m_cenzorMessageFilter->configuration().exclusionList()));
 }
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -85,9 +68,9 @@ void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-	Cenzor::instance()->configuration().setSwearList(CenzorConfiguration::toRegExpList(SwearwordsWidget->list()));
-	Cenzor::instance()->configuration().setExclusionList(CenzorConfiguration::toRegExpList(ExclusionsWidget->list()));
-	Cenzor::instance()->configuration().saveConfiguration();
+	m_cenzorMessageFilter->configuration().setSwearList(CenzorConfiguration::toRegExpList(m_swearwordsWidget->list()));
+	m_cenzorMessageFilter->configuration().setExclusionList(CenzorConfiguration::toRegExpList(m_exclusionsWidget->list()));
+	m_cenzorMessageFilter->configuration().saveConfiguration();
 }
 
 #include "moc_cenzor-configuration-ui-handler.cpp"

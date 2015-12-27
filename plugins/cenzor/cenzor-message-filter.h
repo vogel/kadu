@@ -30,29 +30,24 @@
 class Chat;
 class Contact;
 
-class Cenzor : public QObject, public MessageFilter
+class CenzorMessageFilter : public QObject, public MessageFilter
 {
 	Q_OBJECT
 
-	static Cenzor * Instance;
-
-	CenzorConfiguration Configuration;
-
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
-
 public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static Cenzor * instance() { return Instance; }
+	Q_INVOKABLE explicit CenzorMessageFilter(QObject *parent = nullptr);
+	virtual ~CenzorMessageFilter();
 
 	CenzorConfiguration & configuration() { return Configuration; }
 
+protected:
 	virtual bool acceptMessage(const Message &message);
+
+private:
+	CenzorConfiguration Configuration;
+
+	bool shouldIgnore(const QString &message);
+	bool isExclusion(const QString &word);
 
 };
 

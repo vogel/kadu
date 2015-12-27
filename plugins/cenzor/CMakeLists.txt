@@ -10,17 +10,10 @@ set (SOURCES
 	gui/widgets/list-edit-widget.cpp
 	notification/cenzor-notification.cpp
 
-	cenzor.cpp
-	cenzor-plugin.cpp
-)
-
-set (MOC_SOURCES
-	configuration/gui/cenzor-configuration-ui-handler.h
-	gui/widgets/list-edit-widget.h
-	notification/cenzor-notification.h
-
-	cenzor.h
-	cenzor-plugin.h
+	cenzor-message-filter.cpp
+	cenzor-module.cpp
+	cenzor-plugin-injector-factory.cpp
+	cenzor-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -34,7 +27,6 @@ set (DATA_FILES
 
 kadu_plugin (cenzor
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DATA_FILES ${DATA_FILES}
 )
