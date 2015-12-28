@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,30 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QSystemTrayIcon>
+#pragma once
 
-#include "docking-notify.h"
+#include <injeqt/module.h>
 
-#include "docking-notify-plugin.h"
-
-DockingNotifyPlugin::~DockingNotifyPlugin()
+class DockingNotifyModule : public injeqt::module
 {
-}
 
-bool DockingNotifyPlugin::init()
-{
-	if (!QSystemTrayIcon::supportsMessages())
-		return false;
+public:
+	DockingNotifyModule();
+	virtual ~DockingNotifyModule() {}
 
-	NotifierInstance = new DockingNotify(this);
-
-	return true;
-}
-
-void DockingNotifyPlugin::done()
-{
-	delete NotifierInstance;
-	NotifierInstance = 0;
-}
-
-#include "moc_docking-notify-plugin.cpp"
+};

@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,27 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QT4_DOCKING_NOTIFY_PLUGIN_H
-#define QT4_DOCKING_NOTIFY_PLUGIN_H
+#pragma once
 
-#include "plugin/plugin-root-component.h"
+#include "plugin/plugin-object.h"
 
-class DockingNotify;
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-class DockingNotifyPlugin : public PluginRootComponent
+class DockingNotifier;
+class NotificationManager;
+
+class DockingNotifyPluginObject : public PluginObject
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	DockingNotify *NotifierInstance;
 
 public:
-	virtual ~DockingNotifyPlugin();
+	Q_INVOKABLE explicit DockingNotifyPluginObject(QObject *parent = nullptr);
+	virtual ~DockingNotifyPluginObject();
 
-	virtual bool init();
+	virtual void init();
 	virtual void done();
 
-};
+private:
+	QPointer<DockingNotifier> m_dockingNotifier;
+	QPointer<NotificationManager> m_notificationManager;
 
-#endif // QT4_DOCKING_NOTIFY_PLUGIN_H
+private slots:
+	INJEQT_SETTER void setDockingNotifier(DockingNotifier *dockingNotifier);
+	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
+
+};

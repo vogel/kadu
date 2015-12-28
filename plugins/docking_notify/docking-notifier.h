@@ -11,26 +11,28 @@
  * @defgroup qt4_notify Qt4 Notify
  * @{
  */
-class DockingNotify : public QObject, public Notifier
+class DockingNotifier : public QObject, public Notifier
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE explicit DockingNotifier(QObject *parent = nullptr);
+	virtual ~DockingNotifier();
+
+	virtual void notify(Notification *notification);
+
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
+
+private:
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);
 	Chat chat;
 	DockingNotifyConfigurationWidget *configurationWidget;
 
-public:
-	explicit DockingNotify(QObject *parent = 0);
-	virtual ~DockingNotify();
-
-	virtual void notify(Notification *notification);
-
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
-
 public slots:
 	void messageClicked();
+
 };
 
 /** @} */

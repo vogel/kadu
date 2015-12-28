@@ -5,15 +5,11 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	docking-notify.cpp
+	docking-notifier.cpp
 	docking-notify-configuration-widget.cpp
-	docking-notify-plugin.cpp
-)
-
-set (MOC_SOURCES
-	docking-notify.h
-	docking-notify-configuration-widget.h
-	docking-notify-plugin.h
+	docking-notify-module.cpp
+	docking-notify-plugin-injector-factory.cpp
+	docking-notify-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES
