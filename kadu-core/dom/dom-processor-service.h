@@ -63,7 +63,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param parent QObject parent of new instance
 	 */
-	explicit DomProcessorService(QObject *parent = 0);
+	Q_INVOKABLE explicit DomProcessorService(QObject *parent = nullptr);
 	virtual ~DomProcessorService();
 
 	/**

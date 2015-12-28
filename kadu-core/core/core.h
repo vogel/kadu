@@ -109,13 +109,11 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	BuddyDataWindowRepository *CurrentBuddyDataWindowRepository;
 	ChatDataWindowRepository *CurrentChatDataWindowRepository;
 	ChatImageRequestService *CurrentChatImageRequestService;
-	DomProcessorService *CurrentDomProcessorService;
 	ImageStorageService *CurrentImageStorageService;
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
 	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;
 	RawMessageTransformerService *CurrentRawMessageTransformerService;
-	ClipboardHtmlTransformerService *CurrentClipboardHtmlTransformerService;
 	AccountConfigurationWidgetFactoryRepository *CurrentAccountConfigurationWidgetFactoryRepository;
 	BuddyConfigurationWidgetFactoryRepository *CurrentBuddyConfigurationWidgetFactoryRepository;
 	ChatConfigurationWidgetFactoryRepository *CurrentChatConfigurationWidgetFactoryRepository;

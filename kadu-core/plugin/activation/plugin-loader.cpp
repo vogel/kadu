@@ -51,7 +51,7 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 		QObject(parent),
 		m_pluginLoader{createPluginLoader(pluginName)},
 		m_pluginRootComponent{qobject_cast<PluginRootComponent *>(m_pluginLoader->instance())},
-		m_pluginInjector{createPluginInjector(injector)}
+		m_pluginInjector{createPluginInjector(pluginName, injector)}
 {
 	try
 	{
@@ -117,12 +117,19 @@ std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &p
 	return result;
 }
 
-injeqt::injector PluginLoader::createPluginInjector(injeqt::injector &injector)
+injeqt::injector PluginLoader::createPluginInjector(const QString &pluginName, injeqt::injector &injector)
 {
-	if (auto pluginInjectorFactory = qobject_cast<PluginInjectorFactory *>(m_pluginLoader->instance()))
-		return pluginInjectorFactory->createPluginInjector(injector);
-	else
-		return injeqt::injector{};
+	try
+	{
+		if (auto pluginInjectorFactory = qobject_cast<PluginInjectorFactory *>(m_pluginLoader->instance()))
+			return pluginInjectorFactory->createPluginInjector(injector);
+		else
+			return injeqt::injector{};
+	}
+	catch  (injeqt::exception::exception &e)
+	{
+		throw PluginActivationErrorException{pluginName, tr("Creating plugin injector for %1 failed.\n%2: %3").arg(pluginName).arg(typeid(e).name()).arg(e.what())};
+	}
 }
 
 #include "moc_plugin-loader.cpp"

@@ -28,6 +28,7 @@
 
 class ConfigListWidget;
 class ConfigPathListEdit;
+class ConfigurationWidget;
 
 /**
  * @addtogroup Emoticons
@@ -51,7 +52,7 @@ private slots:
 	void installEmoticonTheme();
 
 public:
-	explicit EmoticonsConfigurationUiHandler(QObject *parent = 0);
+	Q_INVOKABLE explicit EmoticonsConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~EmoticonsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;

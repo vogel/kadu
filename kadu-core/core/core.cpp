@@ -185,13 +185,11 @@ Core::Core(injeqt::injector &injector) :
 		CurrentBuddyDataWindowRepository{nullptr},
 		CurrentChatDataWindowRepository{nullptr},
 		CurrentChatImageRequestService{nullptr},
-		CurrentDomProcessorService{nullptr},
 		CurrentImageStorageService{nullptr},
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
 		CurrentRawMessageTransformerService{nullptr},
-		CurrentClipboardHtmlTransformerService{nullptr},
 		CurrentAccountConfigurationWidgetFactoryRepository{nullptr},
 		CurrentBuddyConfigurationWidgetFactoryRepository{nullptr},
 		CurrentChatConfigurationWidgetFactoryRepository{nullptr},
@@ -610,12 +608,10 @@ void Core::runServices()
 	CurrentBuddyDataWindowRepository = new BuddyDataWindowRepository(this);
 	CurrentChatDataWindowRepository = new ChatDataWindowRepository(this);
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
-	CurrentDomProcessorService = new DomProcessorService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
-	CurrentClipboardHtmlTransformerService = new ClipboardHtmlTransformerService(this);
 	CurrentAccountConfigurationWidgetFactoryRepository = new AccountConfigurationWidgetFactoryRepository(this);
 	CurrentBuddyConfigurationWidgetFactoryRepository = new BuddyConfigurationWidgetFactoryRepository(this);
 	CurrentChatConfigurationWidgetFactoryRepository = new ChatConfigurationWidgetFactoryRepository(this);
@@ -659,7 +655,7 @@ void Core::runServices()
 
 	m_injector.get<FormattedStringFactory>()->setImageStorageService(CurrentImageStorageService);
 
-	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
+	CurrentMessageHtmlRendererService->setDomProcessorService(domProcessorService());
 	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
 	CurrentMessageRenderInfoFactory->setChatStyleManager(chatStyleManager());
 
@@ -737,7 +733,7 @@ ChatImageRequestService * Core::chatImageRequestService() const
 
 DomProcessorService * Core::domProcessorService() const
 {
-	return CurrentDomProcessorService;
+	return m_injector.get<DomProcessorService>();
 }
 
 ImageStorageService * Core::imageStorageService() const
@@ -797,7 +793,7 @@ RawMessageTransformerService * Core::rawMessageTransformerService() const
 
 ClipboardHtmlTransformerService * Core::clipboardHtmlTransformerService() const
 {
-	return CurrentClipboardHtmlTransformerService;
+	return m_injector.get<ClipboardHtmlTransformerService>();
 }
 
 AccountConfigurationWidgetFactoryRepository * Core::accountConfigurationWidgetFactoryRepository() const

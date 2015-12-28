@@ -31,10 +31,15 @@
 
 #include "emoticon-configurator.h"
 
-EmoticonConfigurator::EmoticonConfigurator() :
+EmoticonConfigurator::EmoticonConfigurator(QObject *parent) :
+		ConfigurationHolder{parent},
 		ThemeManager(new EmoticonThemeManager())
 {
 	createDefaultConfiguration();
+}
+
+EmoticonConfigurator::~EmoticonConfigurator()
+{
 }
 
 void EmoticonConfigurator::setInsertAction(InsertEmoticonAction *insertAction)

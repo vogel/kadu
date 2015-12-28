@@ -28,7 +28,8 @@
 
 #include "emoticon-expander-dom-visitor-provider.h"
 
-EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider()
+EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider(QObject *parent) :
+		QObject{parent}
 {
 }
 

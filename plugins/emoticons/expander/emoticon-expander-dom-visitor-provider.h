@@ -55,7 +55,7 @@ class EmoticonExpanderDomVisitorProvider : public QObject, public DomVisitorProv
 	void rebuildExpander();
 
 public:
-	EmoticonExpanderDomVisitorProvider();
+	Q_INVOKABLE EmoticonExpanderDomVisitorProvider(QObject *parent = nullptr);
 	virtual ~EmoticonExpanderDomVisitorProvider();
 
 	virtual DomVisitor * provide() const;

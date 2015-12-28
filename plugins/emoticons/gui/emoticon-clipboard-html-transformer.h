@@ -17,12 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_CLIPBOARD_HTML_TRANSFORMER_H
-#define EMOTICON_CLIPBOARD_HTML_TRANSFORMER_H
-
-#include <QtCore/QRegExp>
+#pragma once
 
 #include "gui/services/clipboard-html-transformer.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QRegExp>
 
 /**
  * @addtogroup Emoticons
@@ -34,12 +34,14 @@
  * @short Transformer for replacing emoticon images with emoticon text triggers in HTML code that is pasted into clipboard.
  * @author Rafał 'Vogel' Malinowski
  */
-class EmoticonClipboardHtmlTransformer : public ClipboardHtmlTransformer
+class EmoticonClipboardHtmlTransformer : public QObject, public ClipboardHtmlTransformer
 {
+	Q_OBJECT
+
 	QRegExp EmoticonRegularExpression;
 
 public:
-	EmoticonClipboardHtmlTransformer();
+	Q_INVOKABLE EmoticonClipboardHtmlTransformer(QObject *parent = nullptr);
 	virtual ~EmoticonClipboardHtmlTransformer();
 
 	virtual QString transform(const QString &clipboardHtml);
@@ -49,5 +51,3 @@ public:
 /**
  * @}
  */
-
-#endif // EMOTICON_CLIPBOARD_HTML_TRANSFORMER_H

@@ -34,7 +34,7 @@ class KADUAPI ConfigurationHolder : public QObject
 	static QList<ConfigurationHolder *> Instances;
 
 protected:
-	ConfigurationHolder();
+	explicit ConfigurationHolder(QObject *parent = nullptr);
 	virtual ~ConfigurationHolder();
 
 public:

@@ -39,23 +39,9 @@ set (SOURCES
 	walker/emoticon-walker.cpp
 
 	emoticon.cpp
-	emoticons-plugin.cpp
-)
-
-set (MOC_SOURCES
-	configuration/emoticon-configurator.h
-
-	expander/emoticon-expander-dom-visitor-provider.h
-
-	gui/emoticon-selector.h
-	gui/emoticon-selector-button.h
-	gui/emoticon-selector-button-popup.h
-	gui/emoticons-configuration-ui-handler.h
-	gui/insert-emoticon-action.h
-
-	theme/emoticon-theme-manager.h
-
-	emoticons-plugin.h
+	emoticons-module.cpp
+	emoticons-plugin-injector-factory.cpp
+	emoticons-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -64,7 +50,6 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (emoticons
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 

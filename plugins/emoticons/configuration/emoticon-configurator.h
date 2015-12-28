@@ -18,16 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_CONFIGURATOR
-#define EMOTICON_CONFIGURATOR
+#pragma once
+
+#include "configuration/emoticon-configuration.h"
+
+#include "configuration/configuration-holder.h"
+#include "theme/emoticon-theme-manager.h"
 
 #include <QtCore/QPointer>
 #include <QtCore/QScopedPointer>
-
-#include "configuration/emoticon-configuration.h"
-#include "theme/emoticon-theme-manager.h"
-
-#include "configuration/configuration-holder.h"
+#include <injeqt/injeqt.h>
 
 class EmoticonExpanderDomVisitorProvider;
 class InsertEmoticonAction;
@@ -63,21 +63,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	EmoticonConfigurator();
-
-	/**
-	 * @short Sets InsertEmoticonAction to configure.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param insertAction InsertEmoticonAction to configured
-	 */
-	void setInsertAction(InsertEmoticonAction *insertAction);
-
-	/**
-	 * @short Sets EmoticonExpanderDomVisitorProvider to configure.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param emoticonExpanderProvider EmoticonExpanderDomVisitorProvider to configured
-	 */
-	void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
+	Q_INVOKABLE explicit EmoticonConfigurator(QObject *parent = nullptr);
+	virtual ~EmoticonConfigurator();
 
 	/**
 	 * @short Update configurations of set objects.
@@ -88,11 +75,12 @@ public:
 	 */
 	void configure();
 
+private slots:
+	INJEQT_SETTER void setInsertAction(InsertEmoticonAction *insertAction);
+	INJEQT_SETTER void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
+
 };
 
 /**
  * @}
  */
-
-#endif // EMOTICON_CONFIGURATOR
-

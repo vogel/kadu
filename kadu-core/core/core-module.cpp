@@ -21,7 +21,9 @@
 
 #include "core/application.h"
 #include "core/injector-provider.h"
+#include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "gui/services/clipboard-html-transformer-service.h"
 #include "misc/paths-provider.h"
 #include "storage/storage-point-factory.h"
 #include "attention-service.h"
@@ -32,6 +34,8 @@ CoreModule::CoreModule(QString profileDirectory)
 
 	add_type<Application>();
 	add_type<AttentionService>();
+	add_type<ClipboardHtmlTransformerService>();
+	add_type<DomProcessorService>();
 	add_type<FormattedStringFactory>();
 	add_type<InjectorProvider>();
 	add_type<StoragePointFactory>();

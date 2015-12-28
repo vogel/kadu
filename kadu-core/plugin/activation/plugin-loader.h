@@ -84,7 +84,7 @@ private:
 	injeqt::injector m_pluginInjector;
 
 	std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginName) const;
-	injeqt::injector createPluginInjector(injeqt::injector &injector);
+	injeqt::injector createPluginInjector(const QString &pluginName, injeqt::injector &injector);
 
 };
 

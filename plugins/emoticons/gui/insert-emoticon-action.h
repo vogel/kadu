@@ -50,7 +50,7 @@ public:
 	 * @short Create new instance of InsertEmoticonAction.
 	 * @param parent QObject parent
 	 */
-	explicit InsertEmoticonAction(QObject *parent = 0);
+	Q_INVOKABLE explicit InsertEmoticonAction(QObject *parent = nullptr);
 	virtual ~InsertEmoticonAction();
 
 	virtual void actionTriggered(QAction *sender, bool toggled);
