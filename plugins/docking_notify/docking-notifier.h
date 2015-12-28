@@ -7,6 +7,8 @@
 
 #include "docking-notify-configuration-widget.h"
 
+class PluginRepository;
+
 /**
  * @defgroup qt4_notify Qt4 Notify
  * @{
@@ -23,15 +25,20 @@ public:
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
+public slots:
+	void messageClicked();
+
 private:
+	QPointer<PluginRepository> m_pluginRepository;
+
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);
 	Chat chat;
 	DockingNotifyConfigurationWidget *configurationWidget;
 
-public slots:
-	void messageClicked();
+private slots:
+	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 
 };
 

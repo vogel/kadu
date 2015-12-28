@@ -32,8 +32,10 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
+#include "plugin/plugin-repository.h"
 #include "debug.h"
 
+#include "plugins/docking/docking-plugin-object.h"
 #include "plugins/docking/docking.h"
 
 #include "docking-notifier.h"
@@ -49,12 +51,20 @@ DockingNotifier::DockingNotifier(QObject *parent) :
 		configurationWidget{}
 {
 	createDefaultConfiguration();
-
-	connect(Docking::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 }
 
 DockingNotifier::~DockingNotifier()
 {
+}
+
+void DockingNotifier::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
+
+	auto dockingPluginObject = pluginRepository->pluginObject<DockingPluginObject>("docking");
+	auto docking = dockingPluginObject->docking();
+
+	connect(docking, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 }
 
 QString DockingNotifier::toPlainText(const QString &text)
@@ -102,7 +112,7 @@ void DockingNotifier::notify(Notification *notification)
 	QString title = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_title");
 	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_syntax");
 
-	Docking::instance()->showMessage(parseText(title, notification, notification->text()),
+	m_pluginRepository->pluginObject<DockingPluginObject>("docking")->docking()->showMessage(parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
 		(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 

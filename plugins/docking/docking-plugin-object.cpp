@@ -17,37 +17,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin-repository.h"
+#include "docking-plugin-object.h"
 
-#include "plugin/activation/active-plugin.h"
-#include "plugin/activation/plugin-activation-service.h"
+#include "docking.h"
 
-PluginRepository::PluginRepository(QObject *parent) :
-		QObject{parent}
+#include "gui/windows/main-configuration-window.h"
+#include "misc/paths-provider.h"
+
+DockingPluginObject::DockingPluginObject(QObject *parent) :
+		PluginObject{parent}
 {
 }
 
-PluginRepository::~PluginRepository()
+DockingPluginObject::~DockingPluginObject()
 {
 }
 
-void PluginRepository::setPluginActivationService(PluginActivationService *pluginActivationService)
+void DockingPluginObject::setDocking(Docking *docking)
 {
-	m_pluginActivationService = pluginActivationService;
+	m_docking = docking;
 }
 
-PluginRootComponent * PluginRepository::pluginRootComponent(const QString& pluginName) const
+void DockingPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	if (auto a = m_pluginActivationService->activePlugin(pluginName))
-		return a->pluginRootComponent();
-	else
-		return nullptr;
+	m_pathsProvider = pathsProvider;
 }
 
-PluginObject * PluginRepository::pluginObject(const QString& pluginName) const
+void DockingPluginObject::init()
 {
-	if (auto a = m_pluginActivationService->activePlugin(pluginName))
-		return a->pluginObject();
-	else
-		return nullptr;
+	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
 }
+
+void DockingPluginObject::done()
+{
+	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
+}
+
+#include "moc_docking-plugin-object.cpp"

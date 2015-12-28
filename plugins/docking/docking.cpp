@@ -48,26 +48,8 @@
 #include "activate.h"
 #include "attention-service.h"
 
-Docking * Docking::m_instance = nullptr;
-
-void Docking::createInstance()
-{
-	if (!m_instance)
-		m_instance = new Docking();
-}
-
-void Docking::destroyInstance()
-{
-	delete m_instance;
-	m_instance = nullptr;
-}
-
-Docking * Docking::instance()
-{
-	return m_instance;
-}
-
-Docking::Docking()
+Docking::Docking(QObject *parent) :
+		QObject{parent}
 {
 	m_dockingMenuActionRepository = make_owned<DockingMenuActionRepository>(this);
 

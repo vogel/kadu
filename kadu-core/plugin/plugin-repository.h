@@ -26,6 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class PluginActivationService;
+class PluginObject;
 class PluginRootComponent;
 
 /**
@@ -50,15 +51,26 @@ public:
 	 * @return root object from plugin with name pluginName
 	 */
 	template<class T>
-	T * plugin(const QString &pluginName) const
+	T * pluginRootComponent(const QString &pluginName) const
 	{
-		return dynamic_cast<T*>(plugin(pluginName));
+		return dynamic_cast<T*>(pluginRootComponent(pluginName));
+	}
+
+	/**
+	 * @param pluginName name of plugin
+	 * @return root object from plugin with name pluginName
+	 */
+	template<class T>
+	T * pluginObject(const QString &pluginName) const
+	{
+		return dynamic_cast<T*>(pluginObject(pluginName));
 	}
 
 private:
 	QPointer<PluginActivationService> m_pluginActivationService;
 	
-	PluginRootComponent * plugin(const QString &pluginName) const;
+	PluginRootComponent * pluginRootComponent(const QString &pluginName) const;
+	PluginObject * pluginObject(const QString &pluginName) const;
 
 private slots:
 	INJEQT_SETTER void setPluginActivationService(PluginActivationService *pluginActivationService);

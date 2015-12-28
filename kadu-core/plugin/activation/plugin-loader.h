@@ -22,11 +22,13 @@
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injector.h>
 #include <memory>
 
 class QPluginLoader;
 
+class PluginObject;
 class PluginRootComponent;
 
 /**
@@ -66,13 +68,19 @@ public:
 	virtual ~PluginLoader() noexcept;
 
 	/**
+	 * @return depreceated root object of plugin.
+	 */
+	PluginRootComponent * pluginRootComponent() const noexcept;
+
+	/**
 	 * @return root object of plugin.
 	 */
-	PluginRootComponent * instance() const noexcept;
+	PluginObject * pluginObject() const noexcept;
 
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
-	PluginRootComponent *m_pluginRootComponent;
+	QPointer<PluginRootComponent> m_pluginRootComponent;
+	QPointer<PluginObject> m_pluginObject;
 	injeqt::injector m_pluginInjector;
 
 	std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginName) const;

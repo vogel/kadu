@@ -55,8 +55,8 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 {
 	try
 	{
-		auto pluginObject = m_pluginInjector.get<PluginObject>();
-		pluginObject->init();
+		m_pluginObject = m_pluginInjector.get<PluginObject>();
+		m_pluginObject->init();
 		return;
 	}
 	catch (...)
@@ -100,9 +100,14 @@ PluginLoader::~PluginLoader() noexcept
 	// m_pluginLoader->unload();
 }
 
-PluginRootComponent * PluginLoader::instance() const noexcept
+PluginRootComponent * PluginLoader::pluginRootComponent() const noexcept
 {
 	return m_pluginRootComponent;
+}
+
+PluginObject * PluginLoader::pluginObject() const noexcept
+{
+	return m_pluginObject;
 }
 
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginName) const

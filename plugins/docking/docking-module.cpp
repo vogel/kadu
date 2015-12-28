@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "active-plugin.h"
+#include "docking-module.h"
 
-#include "misc/memory.h"
+#include "docking.h"
+#include "docking-plugin-object.h"
 
-ActivePlugin::ActivePlugin(injeqt::injector &injector, const QString &pluginName) :
-		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginName)},
-		m_pluginLoader{make_unique<PluginLoader>(injector, pluginName)}
+DockingModule::DockingModule()
 {
-}
-
-PluginRootComponent * ActivePlugin::pluginRootComponent() const
-{
-	return m_pluginLoader->pluginRootComponent();
-}
-
-PluginObject * ActivePlugin::pluginObject() const
-{
-	return m_pluginLoader->pluginObject();
+	add_type<Docking>();
+	add_type<DockingPluginObject>();
 }

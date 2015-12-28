@@ -87,7 +87,7 @@ void Autoaway::setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusCha
 void Autoaway::setPluginRepository(PluginRepository *pluginRepository)
 {
 	m_pluginRepository = pluginRepository;
-	m_idle = m_pluginRepository->plugin<IdlePlugin>("idle")->idle();
+	m_idle = m_pluginRepository->pluginRootComponent<IdlePlugin>("idle")->idle();
 }
 
 AutoawayStatusChanger::ChangeStatusTo Autoaway::changeStatusTo()

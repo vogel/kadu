@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "active-plugin.h"
+#pragma once
 
-#include "misc/memory.h"
+#include "plugin/plugin-injector-factory.h"
 
-ActivePlugin::ActivePlugin(injeqt::injector &injector, const QString &pluginName) :
-		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginName)},
-		m_pluginLoader{make_unique<PluginLoader>(injector, pluginName)}
+class DockingPluginInjectorFactory : public PluginInjectorFactory
 {
-}
+	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
-PluginRootComponent * ActivePlugin::pluginRootComponent() const
-{
-	return m_pluginLoader->pluginRootComponent();
-}
+public:
+	explicit DockingPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~DockingPluginInjectorFactory();
 
-PluginObject * ActivePlugin::pluginObject() const
-{
-	return m_pluginLoader->pluginObject();
-}
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
+
+};

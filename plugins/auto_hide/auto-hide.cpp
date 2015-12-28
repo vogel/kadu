@@ -47,7 +47,7 @@ AutoHide::~AutoHide()
 void AutoHide::setPluginRepository(PluginRepository *pluginRepository)
 {
 	m_pluginRepository = pluginRepository;
-	m_idle = m_pluginRepository->plugin<IdlePlugin>("idle")->idle();
+	m_idle = m_pluginRepository->pluginRootComponent<IdlePlugin>("idle")->idle();
 }
 
 void AutoHide::timerTimeoutSlot()

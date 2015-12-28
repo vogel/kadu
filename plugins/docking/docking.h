@@ -39,9 +39,8 @@ class DOCKINGAPI Docking final : public QObject
 	Q_OBJECT
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static Docking * instance();
+	Q_INVOKABLE Docking(QObject *parent = nullptr);
+	virtual ~Docking();
 
 	DockingMenuActionRepository * dockingMenuActionRepository() const;
 
@@ -56,9 +55,6 @@ private:
 	owned_qptr<DockingConfigurationProvider> m_dockingConfigurationProvider;
 	owned_qptr<DockingMenuActionRepository> m_dockingMenuActionRepository;
 	owned_qptr<StatusNotifierItem> m_statusNotifierItem;
-
-	Docking();
-	virtual ~Docking();
 
 	void openUnreadMessages();
 

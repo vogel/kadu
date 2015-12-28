@@ -40,12 +40,14 @@
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
+#include <plugin/plugin-repository.h>
 
 #include "plugins/docking/docking.h"
 #include "plugins/docking/docking-menu-action-repository.h"
 
 #include "simpleview-config-ui.h"
 #include "simpleview.h"
+#include <docking-plugin-object.h>
 
 SimpleView *SimpleView::Instance = 0;
 
@@ -61,7 +63,7 @@ SimpleView::SimpleView() :
 	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
 	DockAction->setCheckable(true);
 	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
-	Docking::instance()->dockingMenuActionRepository()->addAction(DockAction);
+	Core::instance()->pluginRepository()->pluginObject<DockingPluginObject>("docking")->docking()->dockingMenuActionRepository()->addAction(DockAction);
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
@@ -83,7 +85,7 @@ SimpleView::~SimpleView()
 
 	simpleViewToggle(false);
 
-	Docking::instance()->dockingMenuActionRepository()->removeAction(DockAction);
+	Core::instance()->pluginRepository()->pluginObject<DockingPluginObject>("docking")->docking()->dockingMenuActionRepository()->removeAction(DockAction);
 
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 }

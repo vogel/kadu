@@ -12,7 +12,9 @@ set (SOURCES
 	docking-configuration-provider.cpp
 	docking-menu-action-repository.cpp
 	docking-menu-handler.cpp
-	docking-plugin.cpp
+	docking-module.cpp
+	docking-plugin-injector-factory.cpp
+	docking-plugin-object.cpp
 	docking-tooltip-handler.cpp
 	docking.cpp
 	status-notifier-item.cpp

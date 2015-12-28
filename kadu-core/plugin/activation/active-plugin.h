@@ -67,9 +67,14 @@ public:
 	explicit ActivePlugin(injeqt::injector &injector, const QString &pluginName);
 
 	/**
-	 * @return Root component of plugin.
+	 * @return Depreceated root component of plugin.
 	 */
 	PluginRootComponent * pluginRootComponent() const;
+
+	/**
+	 * @return Root component of plugin.
+	 */
+	PluginObject * pluginObject() const;
 
 private:
 	// translations must be loaded first and uloaded last, see #2177
