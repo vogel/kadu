@@ -20,23 +20,22 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
-
 #include "notification/notifier.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ChatWidget;
 class ChatWidgetRepository;
 class FormattedStringFactory;
 
-class ChatNotifier : public Notifier
+class ChatNotifier : public QObject, public Notifier
 {
+	Q_OBJECT
 
 public:
-	explicit ChatNotifier();
+	Q_INVOKABLE explicit ChatNotifier(QObject *parent = nullptr);
 	virtual ~ChatNotifier();
-
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 
@@ -47,5 +46,9 @@ private:
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 	void sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget);
+
+private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 };

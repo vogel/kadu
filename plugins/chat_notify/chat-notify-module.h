@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,24 +19,13 @@
 
 #pragma once
 
-#include "plugin/plugin-root-component.h"
+#include <injeqt/module.h>
 
-class ChatNotifier;
-
-class ChatNotifyPlugin : public PluginRootComponent
+class ChatNotifyModule : public injeqt::module
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	ChatNotifier *NotifierInstance;
-
-	void createDefaultConfiguration();
 
 public:
-	virtual ~ChatNotifyPlugin();
-
-	virtual bool init();
-	virtual void done();
+	ChatNotifyModule();
+	virtual ~ChatNotifyModule() {}
 
 };

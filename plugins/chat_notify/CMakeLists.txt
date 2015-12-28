@@ -6,12 +6,9 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	chat-notifier.cpp
-	chat-notify-plugin.cpp
-)
-
-set (MOC_SOURCES
-	chat-notifier.h
-	chat-notify-plugin.h
+	chat-notify-module.cpp
+	chat-notify-plugin-injector-factory.cpp
+	chat-notify-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -19,6 +16,5 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (chat_notify
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

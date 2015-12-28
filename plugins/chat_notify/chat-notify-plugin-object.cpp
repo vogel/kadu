@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,44 +17,46 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
-#include "core/core.h"
-#include "notification/notification-manager.h"
+#include "chat-notify-plugin-object.h"
 
 #include "chat-notifier.h"
 
-#include "chat-notify-plugin.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "core/application.h"
+#include "notification/notification-manager.h"
 
-ChatNotifyPlugin::~ChatNotifyPlugin()
+ChatNotifyPluginObject::ChatNotifyPluginObject(QObject *parent) :
+		PluginObject{parent}
 {
 }
 
-bool ChatNotifyPlugin::init()
+ChatNotifyPluginObject::~ChatNotifyPluginObject()
+{
+}
+
+void ChatNotifyPluginObject::setChatNotifier(ChatNotifier *chatNotifier)
+{
+	m_chatNotifier = chatNotifier;
+}
+
+void ChatNotifyPluginObject::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
+void ChatNotifyPluginObject::init()
 {
 	createDefaultConfiguration();
-
-	NotifierInstance = new ChatNotifier();
-	NotifierInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
-	NotifierInstance->setFormattedStringFactory(Core::instance()->formattedStringFactory());
-
-	Core::instance()->notificationManager()->registerNotifier(NotifierInstance);
-
-	return true;
+	
+	m_notificationManager->registerNotifier(m_chatNotifier);
 }
 
-void ChatNotifyPlugin::done()
+void ChatNotifyPluginObject::done()
 {
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationManager()->unregisterNotifier(NotifierInstance);
-	}
-
-	delete NotifierInstance;
+	m_notificationManager->unregisterNotifier(m_chatNotifier);
 }
 
-void ChatNotifyPlugin::createDefaultConfiguration()
+void ChatNotifyPluginObject::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_ChatNotifier", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
@@ -69,4 +70,4 @@ void ChatNotifyPlugin::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "OTR_ChatNotifier", true);
 }
 
-#include "moc_chat-notify-plugin.cpp"
+#include "moc_chat-notify-plugin-object.cpp"
