@@ -19,7 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QAction>
+#include "config-wizard-actions.h"
+
+#include "gui/windows/config-wizard-window.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -30,70 +32,54 @@
 #include "activate.h"
 #include "debug.h"
 
-#include "gui/windows/config-wizard-window.h"
+#include <QtWidgets/QAction>
 
-#include "config-wizard-configuration-ui-handler.h"
-
-ConfigWizardConfigurationUiHandler *ConfigWizardConfigurationUiHandler::Instance = 0;
-
-void ConfigWizardConfigurationUiHandler::registerActions()
+ConfigWizardActions::ConfigWizardActions(QObject *parent) :
+		QObject{parent}
 {
-	if (Instance)
-		return;
-
-	Instance = new ConfigWizardConfigurationUiHandler();
-}
-
-void ConfigWizardConfigurationUiHandler::unregisterActions()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-ConfigWizardConfigurationUiHandler * ConfigWizardConfigurationUiHandler::instance()
-{
-	return Instance;
-}
-
-ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler()
-{
-	ShowConfigWizardActionDescription = new ActionDescription(this, ActionDescription::TypeMainMenu,
+	m_showConfigWizardActionDescription = new ActionDescription(this, ActionDescription::TypeMainMenu,
 			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
 			tr("Start Configuration Wizard"));
-
-	MenuInventory::instance()
-		->menu("tools")
-		->addAction(ShowConfigWizardActionDescription, KaduMenu::SectionTools)
-		->update();
 }
 
-ConfigWizardConfigurationUiHandler::~ConfigWizardConfigurationUiHandler()
+ConfigWizardActions::~ConfigWizardActions()
+{
+	delete m_wizard.data();
+}
+
+void ConfigWizardActions::registerActions()
 {
 	MenuInventory::instance()
 		->menu("tools")
-		->removeAction(ShowConfigWizardActionDescription)
+		->addAction(m_showConfigWizardActionDescription, KaduMenu::SectionTools)
 		->update();
-
-	delete Wizard.data();
 }
 
-void ConfigWizardConfigurationUiHandler::showConfigWizard()
+void ConfigWizardActions::unregisterActions()
+{
+	MenuInventory::instance()
+		->menu("tools")
+		->removeAction(m_showConfigWizardActionDescription)
+		->update();
+}
+
+void ConfigWizardActions::showConfigWizard()
 {
 	kdebugf();
 
-	if (Wizard)
-		_activateWindow(Wizard.data());
+	if (m_wizard)
+		_activateWindow(m_wizard.data());
 	else
 	{
-		Wizard = new ConfigWizardWindow();
+		m_wizard = new ConfigWizardWindow();
 		// we have to delay it a bit to show after main window to have focus on startup
-		QMetaObject::invokeMethod(Wizard.data(), "show", Qt::QueuedConnection);
+		QMetaObject::invokeMethod(m_wizard.data(), "show", Qt::QueuedConnection);
 	}
 }
 
-void ConfigWizardConfigurationUiHandler::showConfigWizardSlot()
+void ConfigWizardActions::showConfigWizardSlot()
 {
 	showConfigWizard();
 }
 
-#include "moc_config-wizard-configuration-ui-handler.cpp"
+#include "moc_config-wizard-actions.cpp"

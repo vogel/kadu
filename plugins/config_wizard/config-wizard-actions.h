@@ -18,43 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
-#define CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-class QAction;
+class ConfigWizardWindow;
 
 class ActionDescription;
 
-class ConfigWizardWindow;
+class QAction;
 
-class ConfigWizardConfigurationUiHandler : public QObject
+class ConfigWizardActions : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ConfigWizardConfigurationUiHandler)
-
-	static ConfigWizardConfigurationUiHandler *Instance;
-
-	QPointer<ConfigWizardWindow> Wizard;
-
-	ActionDescription *ShowConfigWizardActionDescription;
-
-	ConfigWizardConfigurationUiHandler();
-	virtual ~ConfigWizardConfigurationUiHandler();
-	
-public slots:
-	void showConfigWizardSlot();
 
 public:
-	static void registerActions();
-	static void unregisterActions();
+	Q_INVOKABLE explicit ConfigWizardActions(QObject *parent = nullptr);
+	virtual ~ConfigWizardActions();
 
-	static ConfigWizardConfigurationUiHandler * instance();
+	void registerActions();
+	void unregisterActions();
 
 	void showConfigWizard();
 
-};
+private:
+	QPointer<ConfigWizardWindow> m_wizard;
 
-#endif // CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
+	ActionDescription *m_showConfigWizardActionDescription;
+
+public slots:
+	void showConfigWizardSlot();
+
+};
