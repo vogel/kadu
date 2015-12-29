@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,24 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "exec_notify.h"
+#pragma once
 
-#include "exec-notify-plugin.h"
+#include "notification/notifier.h"
 
-ExecNotifyPlugin::~ExecNotifyPlugin()
+#include <QtCore/QObject>
+
+class ExecNotifier : public QObject, public Notifier
 {
-}
+	Q_OBJECT
 
-bool ExecNotifyPlugin::init()
-{
-	ExecNotifyInstance = new ExecNotify();
+public:
+	Q_INVOKABLE explicit ExecNotifier(QObject *parent = nullptr);
+	virtual ~ExecNotifier();
 
-	return true;
-}
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
+	virtual void notify(Notification *notification);
 
-void ExecNotifyPlugin::done()
-{
-	delete ExecNotifyInstance;
-}
+private:
+	void createDefaultConfiguration();
 
-#include "moc_exec-notify-plugin.cpp"
+	void run(const QStringList &args);
+
+};

@@ -1,6 +1,9 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2011, 2012, 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,17 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EXEC_NOTIFY_H
-#define EXEC_NOTIFY_H
-
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QStringList>
+#pragma once
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
-#include "notification/notifier.h"
-
+#include <QtCore/QMap>
 
 class QLineEdit;
 
@@ -35,33 +32,18 @@ class ExecConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
-	QString currentNotificationEvent;
-	QMap<QString, QString> Commands;
-
-	QLineEdit *commandLineEdit;
-
 public:
-	ExecConfigurationWidget(QWidget *parent = 0);
+	explicit ExecConfigurationWidget(QWidget *parent = nullptr);
 	virtual ~ExecConfigurationWidget();
 
 	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();
 	virtual void switchToEvent(const QString &event);
-};
 
-class ExecNotify : public Notifier
-{
-	void createDefaultConfiguration();
+private:
+	QString m_currentNotificationEvent;
+	QMap<QString, QString> m_commands;
 
-	void run(const QStringList &args);
-
-public:
-	ExecNotify();
-	~ExecNotify();
-
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
-	virtual void notify(Notification *notification);
+	QLineEdit *m_commandLineEdit;
 
 };
-
-#endif // EXEC_NOTIFY_H

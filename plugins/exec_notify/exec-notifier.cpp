@@ -20,100 +20,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QProcess>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
+#include "exec-notifier.h"
 
-#include "buddies/buddy-list.h"
-#include "buddies/buddy.h"
-
-#include "chat/chat.h"
+#include "exec-configuration-widget.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-
-#include "contacts/contact-set.h"
-
-#include "gui/widgets/configuration/notify-group-box.h"
-#include "gui/windows/main-configuration-window.h"
-
-#include "misc/misc.h"
-
-#include "notification/notification-manager.h"
-#include "notification/notification/notification.h"
-
 #include "core/application.h"
-#include "icons/icons-manager.h"
+#include <notification/notification/notification.h>
 #include "parser/parser.h"
-#include "debug.h"
 
-#include "exec_notify.h"
+#include <QtCore/QProcess>
 
-ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent)
-	: NotifierConfigurationWidget(parent)
-{
-	commandLineEdit = new QLineEdit(this);
-	commandLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify));
-
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(0);
-	layout->addWidget(commandLineEdit);
-
-	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
-}
-
-ExecConfigurationWidget::~ExecConfigurationWidget()
-{
-}
-
-void ExecConfigurationWidget::saveNotifyConfigurations()
-{
-	if (!currentNotificationEvent.isEmpty())
-		Commands[currentNotificationEvent] = commandLineEdit->text();
-
-	for (QMap<QString, QString>::const_iterator it = Commands.constBegin(), end = Commands.constEnd(); it != end; ++it)
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
-}
-
-void ExecConfigurationWidget::switchToEvent(const QString &event)
-{
-	if (!currentNotificationEvent.isEmpty())
-		Commands[currentNotificationEvent] = commandLineEdit->text();
-	currentNotificationEvent = event;
-
-	if (Commands.contains(event))
-		commandLineEdit->setText(Commands[event]);
-	else
-		commandLineEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
-}
-
-ExecNotify::ExecNotify() :
+ExecNotifier::ExecNotifier(QObject *parent) :
+		QObject{parent},
 		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), KaduIcon("external_modules/execnotify"))
 {
-	kdebugf();
-
 	createDefaultConfiguration();
-	Core::instance()->notificationManager()->registerNotifier(this);
-
-	kdebugf2();
 }
 
-ExecNotify::~ExecNotify()
+ExecNotifier::~ExecNotifier()
 {
-	kdebugf();
-
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationManager()->unregisterNotifier(this);
-	}
-
-	kdebugf2();
 }
 
-void ExecNotify::createDefaultConfiguration()
+void ExecNotifier::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
@@ -130,13 +60,12 @@ void ExecNotify::createDefaultConfiguration()
 // TODO: merge with HistoryManager version
 QStringList mySplit(const QChar &sep, const QString &str)
 {
-	kdebugf();
-	QStringList strlist;
-	QString token;
-	int idx = 0, strlength = str.length();
-	bool inString = false;
+	auto strlist = QStringList{};
+	auto token = QString{};
+	auto idx = 0;
+	auto strlength = str.length();
+	auto inString = false;
 
-	int pos1, pos2;
 	while (idx < strlength)
 	{
 		const QChar &letter = str[idx];
@@ -168,10 +97,10 @@ QStringList mySplit(const QChar &sep, const QString &str)
 			}
 			else
 			{
-				pos1 = str.indexOf('\\', idx);
+				auto pos1 = str.indexOf('\\', idx);
 				if (pos1 == -1)
 					pos1 = strlength;
-				pos2 = str.indexOf('"', idx);
+				auto pos2 = str.indexOf('"', idx);
 				if (pos2 == -1)
 					pos2 = strlength;
 				if (pos1 < pos2)
@@ -199,7 +128,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 				inString = true;
 			else
 			{
-				pos1 = str.indexOf(sep, idx);
+				auto pos1 = str.indexOf(sep, idx);
 				if (pos1 == -1)
 					pos1 = strlength;
 				token.append(str.mid(idx, pos1 - idx));
@@ -211,25 +140,24 @@ QStringList mySplit(const QChar &sep, const QString &str)
 		}
 	}
 
-	kdebugf2();
 	return strlist;
 }
 
-void ExecNotify::notify(Notification *notification)
+void ExecNotifier::notify(Notification *notification)
 {
-	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
+	auto syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
 	if (syntax.isEmpty())
 		return;
-	QStringList s = mySplit(' ', syntax);
-	QStringList result;
+	auto s = mySplit(' ', syntax);
+	auto result = QStringList{};
 
 	auto chat = notification->data()["chat"].value<Chat>();
 	if (chat)
 	{
-		ContactSet contacts = chat.contacts();
+		auto contacts = chat.contacts();
 
-		QStringList sendersList;
-		foreach (const Contact &contact, contacts)
+		auto sendersList = QStringList{};
+		for (auto contact : contacts)
 			sendersList.append(Parser::escape(contact.id()));
 		QString sendersString = sendersList.join(",");
 
@@ -244,16 +172,16 @@ void ExecNotify::notify(Notification *notification)
 	run(result);
 }
 
-void ExecNotify::run(const QStringList &args)
+void ExecNotifier::run(const QStringList &args)
 {
-	QProcess *p = new QProcess();
+	auto p = new QProcess{};
 	QProcess::connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(args.at(0), args.mid(1));
 }
 
-NotifierConfigurationWidget *ExecNotify::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget * ExecNotifier::createConfigurationWidget(QWidget *parent)
 {
-	return new ExecConfigurationWidget(parent);
+	return new ExecConfigurationWidget{parent};
 }
 
-#include "moc_exec_notify.cpp"
+#include "moc_exec-notifier.cpp"

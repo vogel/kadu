@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,29 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EXEC_NOTIFY_PLUGIN_H
-#define EXEC_NOTIFY_PLUGIN_H
+#include "exec-notify-module.h"
 
-#include <QtCore/QObject>
+#include "exec-notifier.h"
+#include "exec-notify-plugin-object.h"
 
-#include "plugin/plugin-root-component.h"
-
-class ExecNotify;
-
-class ExecNotifyPlugin : public PluginRootComponent
+ExecNotifyModule::ExecNotifyModule()
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+	add_type<ExecNotifier>();
+	add_type<ExecNotifyPluginObject>();
+}
 
-	ExecNotify *ExecNotifyInstance;
-
-public:
-	virtual ~ExecNotifyPlugin();
-
-	virtual bool init();
-	virtual void done();
-
-};
-
-#endif // EXEC_NOTIFY_PLUGIN_H
+ExecNotifyModule::~ExecNotifyModule()
+{
+}
