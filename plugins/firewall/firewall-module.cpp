@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,25 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FIREWALL_NOTIFICATION_H
-#define FIREWALL_NOTIFICATION_H
+#include "firewall-module.h"
 
-#include "notification/notification/notification.h"
+#include "firewall-configuration-ui-handler.h"
+#include "firewall-message-filter.h"
+#include "firewall-plugin-object.h"
 
-class Chat;
-
-class FirewallNotification : public Notification
+FirewallModule::FirewallModule()
 {
-	Q_OBJECT
+	add_type<FirewallConfigurationUiHandler>();
+	add_type<FirewallMessageFilter>();
+	add_type<FirewallPluginObject>();
+}
 
-public:
-	static void notify(const Chat &chat, const Contact &sender, const QString &message);
-
-	explicit FirewallNotification(const Chat &chat);
-	virtual ~FirewallNotification();
-
-	virtual QString groupKey() const { return "firewall"; }
-
-};
-
-#endif // FIREWALL_NOTIFICATION_H
+FirewallModule::~FirewallModule()
+{
+}

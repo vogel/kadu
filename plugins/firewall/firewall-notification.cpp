@@ -27,23 +27,12 @@
 #include "icons/icons-manager.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
-#include "notification/notification-event.h"
 
 #include "firewall-notification.h"
 
-void FirewallNotification::registerNotifications()
-{
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
-}
-
-void FirewallNotification::unregisterNotifications()
-{
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")));
-}
-
 void FirewallNotification::notify(const Chat &chat, const Contact &sender, const QString &message)
 {
-	FirewallNotification *notification = new FirewallNotification(chat);
+	auto notification = new FirewallNotification(chat);
 	notification->setTitle(tr("Message was blocked"));
 	notification->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));

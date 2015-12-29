@@ -18,13 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_FIREWALL_H
-#define KADU_FIREWALL_H
+#pragma once
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QRegExp>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
@@ -35,22 +35,29 @@
 
 class Account;
 class ChatWidget;
+class ChatWidgetRepository;
 class Contact;
 class FormattedStringFactory;
 class IncomingMessageFirewallFilter;
 class Message;
 class OutgoingMessageFirewallFilter;
 
-class Firewall : public QObject, public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
+class FirewallMessageFilter : public QObject, public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 
-	static Firewall * Instance;
+public:
+	Q_INVOKABLE explicit FirewallMessageFilter(QObject *parent = nullptr);
+	virtual ~FirewallMessageFilter();
 
-	explicit Firewall();
-	virtual ~Firewall();
+	virtual bool acceptMessage(const Message& message);
 
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	bool acceptIncomingMessage(const Message &message);
+	bool acceptOutgoingMessage(const Message &message);
+
+private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;
@@ -89,6 +96,9 @@ class Firewall : public QObject, public MessageFilter, ConfigurationAwareObject,
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+
 	void accountConnected();
 
 	void chatDestroyed(ChatWidget *);
@@ -98,19 +108,4 @@ protected:
 	virtual void accountUnregistered(Account account);
 	virtual void configurationUpdated();
 
-public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static Firewall * instance() { return Instance; }
-
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-
-	virtual bool acceptMessage(const Message& message);
-
-	bool acceptIncomingMessage(const Message &message);
-	bool acceptOutgoingMessage(const Message &message);
-
 };
-
-#endif // KADU_FIREWALL_H

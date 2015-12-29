@@ -67,23 +67,10 @@ Nowa funkcjonalnosc - Dorregaray
 
 #include "firewall-notification.h"
 
-#include "firewall.h"
+#include "firewall-message-filter.h"
 
-Firewall * Firewall::Instance = 0;
-
-void Firewall::createInstance()
-{
-	if (!Instance)
-		Instance = new Firewall();
-}
-
-void Firewall::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-Firewall::Firewall() :
+FirewallMessageFilter::FirewallMessageFilter(QObject *parent) :
+		QObject{parent},
 		FloodMessages(0)
 {
 	kdebugf();
@@ -97,43 +84,44 @@ Firewall::Firewall() :
 	LastMsg.start();
 	LastNotify.start();
 
-	Core::instance()->messageFilterService()->registerMessageFilter(this);
-
 	triggerAllAccountsRegistered();
-
-	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
-			this, SLOT(chatDestroyed(ChatWidget *)));
 
 	kdebugf2();
 }
 
-Firewall::~Firewall()
+FirewallMessageFilter::~FirewallMessageFilter()
 {
 	kdebugf();
 
 	triggerAllAccountsUnregistered();
 
-	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
-
 	kdebugf2();
 }
 
-void Firewall::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+void FirewallMessageFilter::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)),
+			this, SLOT(chatDestroyed(ChatWidget *)));
 }
 
-void Firewall::accountRegistered(Account account)
+void FirewallMessageFilter::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	m_formattedStringFactory = formattedStringFactory;
+}
+
+void FirewallMessageFilter::accountRegistered(Account account)
 {
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
-void Firewall::accountUnregistered(Account account)
+void FirewallMessageFilter::accountUnregistered(Account account)
 {
 	disconnect(account, 0, this, 0);
 }
 
-bool Firewall::acceptMessage(const Message &message)
+bool FirewallMessageFilter::acceptMessage(const Message &message)
 {
 	switch (message.type())
 	{
@@ -151,7 +139,7 @@ bool Firewall::acceptMessage(const Message &message)
  * @todo extract storing to log files to method method
  * @todo extract notification to separate method
  */
-bool Firewall::acceptIncomingMessage(const Message &message)
+bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 {
 	bool ignore = false;
 
@@ -210,12 +198,12 @@ bool Firewall::acceptIncomingMessage(const Message &message)
 
 		writeLog(message.messageSender(), message.plainTextContent());
 
-		if (WriteInHistory && CurrentFormattedStringFactory)
+		if (WriteInHistory)
 		{
 			if (History::instance()->currentStorage())
 			{
 				Message msg = Message::create();
-				msg.setContent(CurrentFormattedStringFactory.data()->fromHtml(message.htmlContent()));
+				msg.setContent(m_formattedStringFactory->fromHtml(message.htmlContent()));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());
@@ -227,7 +215,7 @@ bool Firewall::acceptIncomingMessage(const Message &message)
 	return !ignore;
 }
 
-bool Firewall::checkConference(const Chat &chat)
+bool FirewallMessageFilter::checkConference(const Chat &chat)
 {
 	kdebugf();
 
@@ -250,7 +238,7 @@ bool Firewall::checkConference(const Chat &chat)
 	return true;
 }
 
-bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString &message, bool &ignore)
+bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, const QString &message, bool &ignore)
 {
 	kdebugf();
 
@@ -357,7 +345,7 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 	}
 }
 
-bool Firewall::checkFlood()
+bool FirewallMessageFilter::checkFlood()
 {
 	kdebugf();
 
@@ -384,7 +372,7 @@ bool Firewall::checkFlood()
 	return true;
 }
 
-bool Firewall::checkEmoticons(const QString &message)
+bool FirewallMessageFilter::checkEmoticons(const QString &message)
 {
 	kdebugf();
 
@@ -399,7 +387,7 @@ bool Firewall::checkEmoticons(const QString &message)
 	return (occ > MaxEmoticons);
 }
 
-void Firewall::accountConnected()
+void FirewallMessageFilter::accountConnected()
 {
 	kdebugf();
 
@@ -412,7 +400,7 @@ void Firewall::accountConnected()
 	kdebugf2();
 }
 
-void Firewall::chatDestroyed(ChatWidget *chatWidget)
+void FirewallMessageFilter::chatDestroyed(ChatWidget *chatWidget)
 {
 	kdebugf();
 
@@ -425,7 +413,7 @@ void Firewall::chatDestroyed(ChatWidget *chatWidget)
 	kdebugf2();
 }
 
-bool Firewall::acceptOutgoingMessage(const Message &message)
+bool FirewallMessageFilter::acceptOutgoingMessage(const Message &message)
 {
 	foreach (const Contact &contact, message.messageChat().contacts())
 	{
@@ -433,7 +421,7 @@ bool Firewall::acceptOutgoingMessage(const Message &message)
 		if (!chat)
 			continue;
 
-		if (contact.isAnonymous() && Core::instance()->chatWidgetRepository()->widgetForChat(chat))
+		if (contact.isAnonymous() && m_chatWidgetRepository->widgetForChat(chat))
 			Passed.insert(contact);
 	}
 
@@ -451,7 +439,7 @@ bool Firewall::acceptOutgoingMessage(const Message &message)
 
 			if (!SecuredTemporaryAllowed.contains(buddy))
 			{
-				switch (QMessageBox::warning(Core::instance()->chatWidgetRepository()->widgetForChat(message.messageChat()), "Kadu",
+				switch (QMessageBox::warning(m_chatWidgetRepository->widgetForChat(message.messageChat()), "Kadu",
 						tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
 				{
 						default:
@@ -469,7 +457,7 @@ bool Firewall::acceptOutgoingMessage(const Message &message)
 	return true;
 }
 
-void Firewall::writeLog(const Contact &contact, const QString &message)
+void FirewallMessageFilter::writeLog(const Contact &contact, const QString &message)
 {
 	kdebugf();
 
@@ -495,7 +483,7 @@ void Firewall::writeLog(const Contact &contact, const QString &message)
 	kdebugf2();
 }
 
-void Firewall::configurationUpdated()
+void FirewallMessageFilter::configurationUpdated()
 {
 	CheckFloodingEmoticons = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "dos_emoticons", true);
 	EmoticonsAllowKnown = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "emoticons_allow_known", false);
@@ -518,7 +506,7 @@ void Firewall::configurationUpdated()
 	pattern.setPattern(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer", tr("I want something")));
 }
 
-void Firewall::createDefaultConfiguration()
+void FirewallMessageFilter::createDefaultConfiguration()
 {
 	//domy�lne powiadamianie dymkiem
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Firewall_Hints", Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "show_hint", "true"));
@@ -544,4 +532,4 @@ void Firewall::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "logFile", Application::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
 }
 
-#include "moc_firewall.cpp"
+#include "moc_firewall-message-filter.cpp"

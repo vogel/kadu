@@ -6,16 +6,11 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	firewall-configuration-ui-handler.cpp
+	firewall-message-filter.cpp
+	firewall-module.cpp
 	firewall-notification.cpp
-	firewall-plugin.cpp
-	firewall.cpp
-)
-
-set (MOC_SOURCES
-	firewall-configuration-ui-handler.h
-	firewall-notification.h
-	firewall-plugin.h
-	firewall.h
+	firewall-plugin-injector-factory.cpp
+	firewall-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -24,7 +19,6 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (firewall
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES history
 )

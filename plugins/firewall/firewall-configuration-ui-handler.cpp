@@ -39,38 +39,20 @@
 #include "misc/paths-provider.h"
 #include "debug.h"
 
-#include "firewall.h"
+#include "firewall-message-filter.h"
 
 #include "firewall-configuration-ui-handler.h"
 
-FirewallConfigurationUiHandler * FirewallConfigurationUiHandler::Instance = 0;
-
-void FirewallConfigurationUiHandler::registerUiHandler()
-{
-	if (!Instance)
-	{
-		Instance = new FirewallConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
-		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
-	}
-}
-
-void FirewallConfigurationUiHandler::unregisterUiHandler()
-{
-	if (Instance)
-	{
-		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
-		delete Instance;
-		Instance = 0;
-	}
-}
-
-FirewallConfigurationUiHandler::FirewallConfigurationUiHandler() :
+FirewallConfigurationUiHandler::FirewallConfigurationUiHandler(QObject *parent) :
+		QObject{parent},
 		AllList{},
 		SecureList{},
 		QuestionEdit{},
 		AnswerEdit{}
+{
+}
+
+FirewallConfigurationUiHandler::~FirewallConfigurationUiHandler()
 {
 }
 

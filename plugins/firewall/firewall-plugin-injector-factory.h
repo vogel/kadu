@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,25 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FIREWALL_PLUGIN_H
-#define FIREWALL_PLUGIN_H
+#pragma once
 
-#include <QtCore/QObject>
+#include "plugin/plugin-injector-factory.h"
 
-#include "plugin/plugin-root-component.h"
-
-class FirewallPlugin : public PluginRootComponent
+class FirewallPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	virtual ~FirewallPlugin();
+	explicit FirewallPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~FirewallPluginInjectorFactory();
 
-	virtual bool init();
-	virtual void done();
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };
-
-#endif // FIREWALL_PLUGIN_H

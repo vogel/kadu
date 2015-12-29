@@ -33,8 +33,6 @@ class FirewallConfigurationUiHandler : public QObject, public ConfigurationUiHan
 {
 	Q_OBJECT
 
-	static FirewallConfigurationUiHandler *Instance;
-
 	QListWidget *AllList;
 	QListWidget *SecureList;
 	QTextEdit *QuestionEdit;
@@ -49,14 +47,13 @@ private slots:
 	void configurationApplied();
 
 public:
-	explicit FirewallConfigurationUiHandler();
+	Q_INVOKABLE explicit FirewallConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~FirewallConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
-	static void registerUiHandler();
-	static void unregisterUiHandler();
 };
 
 #endif // FIREWALL_CONFIGURATION_UI_HANDLER_H
