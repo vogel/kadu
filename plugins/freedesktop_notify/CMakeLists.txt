@@ -5,13 +5,10 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	freedesktop-notify.cpp
-	freedesktop-notify-plugin.cpp
-)
-
-set (MOC_SOURCES
-	freedesktop-notify.h
-	freedesktop-notify-plugin.h
+	freedesktop-notifier.cpp
+	freedesktop-notify-module.cpp
+	freedesktop-notify-plugin-injector-factory.cpp
+	freedesktop-notify-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -20,6 +17,5 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (freedesktop_notify
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

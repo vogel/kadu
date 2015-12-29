@@ -35,7 +35,6 @@
 #include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
-#include "notification/notification-manager.h"
 #include "notification/notification/aggregate-notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
@@ -44,28 +43,11 @@
 #include "notification/notification-event-repository.h"
 #include "url-handlers/url-handler-manager.h"
 
-#include "freedesktop-notify.h"
+#include "freedesktop-notifier.h"
 
-FreedesktopNotify * FreedesktopNotify::Instance = 0;
-
-void FreedesktopNotify::createInstance()
-{
-	Instance = new FreedesktopNotify();
-}
-
-FreedesktopNotify * FreedesktopNotify::instance()
-{
-	return Instance;
-}
-
-void FreedesktopNotify::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-FreedesktopNotify::FreedesktopNotify() :
-		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
+FreedesktopNotifier::FreedesktopNotifier(QObject *parent) :
+		QObject{parent},
+		Notifier("FreedesktopNotifier", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
 		KdePlasmaNotifications(true), IsXCanonicalAppendSupported(false), ServerSupportsActions(true), ServerSupportsBody(true),
 		ServerSupportsHyperlinks(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(true)
 {
@@ -95,22 +77,15 @@ FreedesktopNotify::FreedesktopNotify() :
 	createDefaultConfiguration();
 
 	configurationUpdated();
-
-	Core::instance()->notificationManager()->registerNotifier(this);
 }
 
-FreedesktopNotify::~FreedesktopNotify()
+FreedesktopNotifier::~FreedesktopNotifier()
 {
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationManager()->unregisterNotifier(this);
-	}
-
 	delete NotificationsInterface;
 	NotificationsInterface = 0;
 }
 
-void FreedesktopNotify::checkServerCapabilities()
+void FreedesktopNotifier::checkServerCapabilities()
 {
 	if (!ServerCapabilitiesRequireChecking)
 		return;
@@ -144,7 +119,7 @@ void FreedesktopNotify::checkServerCapabilities()
 	}
 }
 
-void FreedesktopNotify::notify(Notification *notification)
+void FreedesktopNotifier::notify(Notification *notification)
 {
 	checkServerCapabilities();
 
@@ -266,7 +241,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	}
 }
 
-void FreedesktopNotify::notificationClosed(Notification *notification)
+void FreedesktopNotifier::notificationClosed(Notification *notification)
 {
 	QMap<unsigned int, Notification *>::iterator i = NotificationMap.begin();
 	while (i != NotificationMap.end())
@@ -286,7 +261,7 @@ void FreedesktopNotify::notificationClosed(Notification *notification)
 	}
 }
 
-void FreedesktopNotify::notificationClosed(unsigned int id, unsigned int reason)
+void FreedesktopNotifier::notificationClosed(unsigned int id, unsigned int reason)
 {
 	Q_UNUSED(reason);
 
@@ -298,7 +273,7 @@ void FreedesktopNotify::notificationClosed(unsigned int id, unsigned int reason)
 	notification->release(this);
 }
 
-void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
+void FreedesktopNotifier::slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
 {
 	Q_UNUSED(serviceName)
 	Q_UNUSED(oldOwner)
@@ -315,7 +290,7 @@ void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, cons
 	ServerCapabilitiesRequireChecking = true;
 }
 
-void FreedesktopNotify::actionInvoked(unsigned int id, QString callbackName)
+void FreedesktopNotifier::actionInvoked(unsigned int id, QString callbackName)
 {
 	if (!NotificationMap.contains(id))
 		return;
@@ -337,53 +312,53 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString callbackName)
 	NotificationsInterface->callWithArgumentList(QDBus::Block, "CloseNotification", args);
 }
 
-void FreedesktopNotify::configurationUpdated()
+void FreedesktopNotifier::configurationUpdated()
 {
-	CustomTimeout = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FreedesktopNotify", "CustomTimeout");
-	Timeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("FreedesktopNotify", "Timeout");
-	ShowContentMessage = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FreedesktopNotify", "ShowContentMessage");
-	CiteSign = Application::instance()->configuration()->deprecatedApi()->readNumEntry("FreedesktopNotify", "CiteSign");
+	CustomTimeout = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FreedesktopNotifier", "CustomTimeout");
+	Timeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("FreedesktopNotifier", "Timeout");
+	ShowContentMessage = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FreedesktopNotifier", "ShowContentMessage");
+	CiteSign = Application::instance()->configuration()->deprecatedApi()->readNumEntry("FreedesktopNotifier", "CiteSign");
 }
 
-void FreedesktopNotify::import_0_9_0_Configuration()
+void FreedesktopNotifier::import_0_9_0_Configuration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "Timeout", Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "Timeout"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "ShowContentMessage", Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "ShowContentMessage"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "CiteSign", Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "CiteSign"));
-	if (!Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "Timeout").isEmpty() || !Application::instance()->configuration()->deprecatedApi()->readEntry("FreedesktopNotify", "Timeout").isEmpty())
-		Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "CustomTimeout", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "Timeout", Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "Timeout"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "ShowContentMessage", Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "ShowContentMessage"));
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "CiteSign", Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "CiteSign"));
+	if (!Application::instance()->configuration()->deprecatedApi()->readEntry("KDENotify", "Timeout").isEmpty() || !Application::instance()->configuration()->deprecatedApi()->readEntry("FreedesktopNotifier", "Timeout").isEmpty())
+		Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "CustomTimeout", true);
 
 	for (auto &&event : Core::instance()->notificationEventRepository()->notificationEvents())
-		Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", event.name() + "_FreedesktopNotify", Application::instance()->configuration()->deprecatedApi()->readEntry("Notify", event.name() + "_KNotify"));
+		Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", event.name() + "_FreedesktopNotifier", Application::instance()->configuration()->deprecatedApi()->readEntry("Notify", event.name() + "_KNotify"));
 }
 
-void FreedesktopNotify::createDefaultConfiguration()
+void FreedesktopNotifier::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotifier", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotifier", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_FreedesktopNotify", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_FreedesktopNotifier", true);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_FreedesktopNotify", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_FreedesktopNotifier", true);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "CustomTimeout", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "Timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "ShowContentMessage", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotify", "CiteSign", 100);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "CustomTimeout", false);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "Timeout", 10);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "ShowContentMessage", true);
+	Application::instance()->configuration()->deprecatedApi()->addVariable("FreedesktopNotifier", "CiteSign", 100);
 }
 
-#include "moc_freedesktop-notify.cpp"
+#include "moc_freedesktop-notifier.cpp"

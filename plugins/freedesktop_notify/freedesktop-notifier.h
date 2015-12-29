@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FREEDESKTOP_NOTIFY_H
-#define FREEDESKTOP_NOTIFY_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -34,15 +33,21 @@ class QDBusInterface;
 
 class Notification;
 
-class FreedesktopNotify : public QObject, public Notifier, public ConfigurationAwareObject
+class FreedesktopNotifier : public QObject, public Notifier, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	static FreedesktopNotify *Instance;
+public:
+	Q_INVOKABLE explicit FreedesktopNotifier(QObject *parent = nullptr);
+	virtual ~FreedesktopNotifier();
 
-	explicit FreedesktopNotify();
-	virtual ~FreedesktopNotify();
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) { Q_UNUSED(parent); return 0; }
+	virtual void notify(Notification *notification);
 
+protected:
+	void configurationUpdated();
+
+private:
 	QDBusInterface *NotificationsInterface;
 	QRegExp StripBr;
 	QRegExp StripHtml;
@@ -77,17 +82,4 @@ private slots:
 
 	void slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner);
 
-protected:
-	void configurationUpdated();
-
-public:
-	static void createInstance();
-	static void destroyInstance();
-	static FreedesktopNotify * instance();
-
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
-	virtual void notify(Notification *notification);
-
 };
-
-#endif // FREEDESKTOP_NOTIFY_H
