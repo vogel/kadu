@@ -5,13 +5,11 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	filedesc-plugin.cpp
+	filedesc-module.cpp
+	filedesc-plugin-injector-factory.cpp
+	filedesc-plugin-object.cpp
+	filedesc-status-changer.cpp
 	filedesc.cpp
-)
-
-set (MOC_SOURCES
-	filedesc-plugin.h
-	filedesc.h
 )
 
 set (CONFIGURATION_FILES
@@ -20,6 +18,5 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (filedesc
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

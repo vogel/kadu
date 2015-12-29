@@ -56,15 +56,20 @@ void AutostatusPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
+void AutostatusPluginObject::setStatusChangerManager(StatusChangerManager *statusChangerManager)
+{
+	m_statusChangerManager = statusChangerManager;
+}
+
 void AutostatusPluginObject::init()
 {
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
-	StatusChangerManager::instance()->registerStatusChanger(m_autostatusStatusChanger);
+	m_statusChangerManager->registerStatusChanger(m_autostatusStatusChanger);
 }
 
 void AutostatusPluginObject::done()
 {
-	StatusChangerManager::instance()->unregisterStatusChanger(m_autostatusStatusChanger);
+	m_statusChangerManager->unregisterStatusChanger(m_autostatusStatusChanger);
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 }
 

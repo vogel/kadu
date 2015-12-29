@@ -30,6 +30,7 @@ class AutostatusActions;
 class AutostatusService;
 class AutostatusStatusChanger;
 class PathsProvider;
+class StatusChangerManager;
 
 class AutostatusPluginObject : public PluginObject
 {
@@ -47,11 +48,13 @@ private:
 	QPointer<AutostatusService> m_autostatusService;
 	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
 	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<StatusChangerManager> m_statusChangerManager;
 
 private slots:
 	INJEQT_SETTER void setAutostatusActions(AutostatusActions *autostatusActions);
 	INJEQT_SETTER void setAutostatusService(AutostatusService *autostatusService);
 	INJEQT_SETTER void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 
 };

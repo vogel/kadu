@@ -189,8 +189,8 @@ MediaPlayer::MediaPlayer()
 	winKeyPressed = false;
 
 	Changer = new MediaPlayerStatusChanger(this);
-	StatusChangerManager::instance()->registerStatusChanger(Changer);
-	connect(StatusChangerManager::instance(), SIGNAL(manualStatusAboutToBeChanged(StatusContainer*,Status)),
+	Core::instance()->statusChangerManager()->registerStatusChanger(Changer);
+	connect(Core::instance()->statusChangerManager(), SIGNAL(manualStatusAboutToBeChanged(StatusContainer*,Status)),
 			this, SLOT(statusAboutToBeChanged()));
 
 	createDefaultConfiguration();
@@ -211,7 +211,7 @@ MediaPlayer::~MediaPlayer()
 
 	MediaPlayerNotification::unregisterNotifications();
 
-	StatusChangerManager::instance()->unregisterStatusChanger(Changer);
+	Core::instance()->statusChangerManager()->unregisterStatusChanger(Changer);
 
 	timer->stop();
 

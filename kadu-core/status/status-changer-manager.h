@@ -62,13 +62,8 @@ class KADUAPI StatusChangerManager : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(StatusChangerManager)
 
-	static StatusChangerManager *Instance;
-
 	QMap<StatusContainer *, Status> Statuses;
 	QList<StatusChanger *> StatusChangers;
-
-	StatusChangerManager();
-	virtual ~StatusChangerManager();
 
 private slots:
 	/**
@@ -89,14 +84,8 @@ private slots:
 	void statusChanged(StatusContainer *container = 0, StatusChangeSource source = SourceStatusChanger);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns StatusChangerManager singleton instance.
-	 * @return StatusChangerManager singleton instance
-	 *
-	 * Returns StatusChangerManager singleton instance.
-	 */
-	static StatusChangerManager * instance();
+	Q_INVOKABLE explicit StatusChangerManager(QObject *parent = nullptr);
+	virtual ~StatusChangerManager();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

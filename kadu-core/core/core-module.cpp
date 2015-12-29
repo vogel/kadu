@@ -29,6 +29,7 @@
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "misc/paths-provider.h"
 #include "services/raw-message-transformer-service.h"
+#include "status/status-changer-manager.h"
 #include "storage/storage-point-factory.h"
 #include "attention-service.h"
 
@@ -46,6 +47,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<FormattedStringFactory>();
 	add_type<RawMessageTransformerService>();
 	add_type<InjectorProvider>();
+	add_type<StatusChangerManager>();
 	add_type<StoragePointFactory>();
 	add_ready_object<PathsProvider>(m_pathsProvider.get());
 }

@@ -125,6 +125,7 @@
 #include "services/message-transformer-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "ssl/ssl-certificate-manager.h"
+#include "status/status-changer-manager.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
@@ -921,6 +922,11 @@ FileTransferHandlerManager * Core::fileTransferHandlerManager() const
 FileTransferManager * Core::fileTransferManager() const
 {
 	return m_injector.get<FileTransferManager>();
+}
+
+StatusChangerManager * Core::statusChangerManager() const
+{
+	return m_injector.get<StatusChangerManager>();
 }
 
 void Core::showMainWindow()

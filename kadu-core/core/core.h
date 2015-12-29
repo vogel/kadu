@@ -89,6 +89,7 @@ class RawMessageTransformerService;
 class RosterNotifier;
 class RosterReplacer;
 class SslCertificateManager;
+class StatusChangerManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class WebkitMessagesViewDisplayFactory;
@@ -217,6 +218,8 @@ public:
 
 	FileTransferHandlerManager * fileTransferHandlerManager() const;
 	FileTransferManager * fileTransferManager() const;
+
+	StatusChangerManager * statusChangerManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

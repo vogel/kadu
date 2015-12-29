@@ -61,16 +61,21 @@ void AutoawayPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
+void AutoawayPluginObject::setStatusChangerManager(StatusChangerManager *statusChangerManager)
+{
+	m_statusChangerManager = statusChangerManager;
+}
+
 void AutoawayPluginObject::init()
 {
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoawayConfigurationUiHandler);
-	StatusChangerManager::instance()->registerStatusChanger(m_autoawayStatusChanger);
+	m_statusChangerManager->registerStatusChanger(m_autoawayStatusChanger);
 }
 
 void AutoawayPluginObject::done()
 {
-	StatusChangerManager::instance()->unregisterStatusChanger(m_autoawayStatusChanger);
+	m_statusChangerManager->unregisterStatusChanger(m_autoawayStatusChanger);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoawayConfigurationUiHandler);
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 }

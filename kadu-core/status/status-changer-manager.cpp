@@ -25,17 +25,8 @@
 
 #include "status-changer-manager.h"
 
-StatusChangerManager * StatusChangerManager::Instance = 0;
-
-StatusChangerManager * StatusChangerManager::instance()
-{
-	if (0 == Instance)
-		Instance = new StatusChangerManager();
-
-	return Instance;
-}
-
-StatusChangerManager::StatusChangerManager()
+StatusChangerManager::StatusChangerManager(QObject *parent) :
+		QObject{parent}
 {
 }
 

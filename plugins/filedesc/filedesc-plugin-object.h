@@ -21,42 +21,31 @@
 
 #include "plugin/plugin-object.h"
 
-#include "misc/memory.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class Autoaway;
-class AutoawayConfigurationUiHandler;
-class AutoawayStatusChanger;
-class ConfigurationUiHandlerRepository;
+class FileDescStatusChanger;
 class PathsProvider;
 class StatusChangerManager;
 
-class AutoawayPluginObject : public PluginObject
+class FiledescPluginObject : public PluginObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutoawayPluginObject(QObject *parent = nullptr);
-	virtual ~AutoawayPluginObject();
+	Q_INVOKABLE explicit FiledescPluginObject(QObject *parent = nullptr);
+	virtual ~FiledescPluginObject();
 
 	virtual void init();
 	virtual void done();
 
 private:
-	QPointer<Autoaway> m_autoaway;
-	QPointer<AutoawayConfigurationUiHandler> m_autoawayConfigurationUiHandler;
-	QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<StatusChangerManager> m_statusChangerManager;
 
 private slots:
-	INJEQT_SETTER void setAutoaway(Autoaway *autoaway);
-	INJEQT_SETTER void setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler);
-	INJEQT_SETTER void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SETTER void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 

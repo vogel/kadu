@@ -20,6 +20,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
@@ -96,10 +97,10 @@ void StatusSetter::statusContainerUnregistered(StatusContainer *statusContainer)
 
 void StatusSetter::setStatusManually(StatusContainer *statusContainer, Status status)
 {
-	StatusChangerManager::instance()->setStatusManually(statusContainer, status);
+	Core::instance()->statusChangerManager()->setStatusManually(statusContainer, status);
 }
 
 Status StatusSetter::manuallySetStatus(StatusContainer *statusContainer)
 {
-	return StatusChangerManager::instance()->manuallySetStatus(statusContainer);
+	return Core::instance()->statusChangerManager()->manuallySetStatus(statusContainer);
 }

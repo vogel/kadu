@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,29 +18,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/application.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
+#pragma once
 
-#include "filedesc.h"
+#include "status/status-changer.h"
 
-#include "filedesc-plugin.h"
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-FiledescPlugin::~FiledescPlugin()
+class FileDescription;
+
+class FileDescStatusChanger : public StatusChanger
 {
-}
+	Q_OBJECT
 
-bool FiledescPlugin::init()
-{
-	FileDescriptionInstance = new FileDescription(this);
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
+public:
+	Q_INVOKABLE explicit FileDescStatusChanger(QObject *parent = nullptr);
+	virtual ~FileDescStatusChanger();
 
-	return true;
-}
+	virtual void changeStatus(StatusContainer *container, Status &status);
 
-void FiledescPlugin::done()
-{
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
-}
+	void setTitle(const QString &title);
 
-#include "moc_filedesc-plugin.cpp"
+private:
+	QPointer<FileDescription> m_fileDescription;
+	QString m_title;
+
+private slots:
+	INJEQT_SETTER void setFileDescription(FileDescription *fileDescription);
+
+};

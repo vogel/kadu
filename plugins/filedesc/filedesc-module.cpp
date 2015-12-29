@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,29 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILEDESC_PLUGIN_H
-#define FILEDESC_PLUGIN_H
+#include "filedesc-module.h"
 
-#include <QtCore/QObject>
+#include "filedesc.h"
+#include "filedesc-plugin-object.h"
+#include "filedesc-status-changer.h"
 
-#include "plugin/plugin-root-component.h"
-
-class FileDescription;
-
-class FiledescPlugin : public PluginRootComponent
+FiledescModule::FiledescModule()
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+	add_type<FiledescPluginObject>();
+	add_type<FileDescription>();
+	add_type<FileDescStatusChanger>();
+}
 
-	FileDescription *FileDescriptionInstance;
-
-public:
-	virtual ~FiledescPlugin();
-
-	virtual bool init();
-	virtual void done();
-
-};
-
-#endif // FILEDESC_PLUGIN_H
+FiledescModule::~FiledescModule()
+{
+}

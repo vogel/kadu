@@ -18,97 +18,63 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtCore/QTimer>
+#include "filedesc.h"
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
+#include "filedesc-status-changer.h"
+
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "misc/paths-provider.h"
-#include "status/status-changer-manager.h"
-#include "debug.h"
 
-#include "filedesc.h"
-
-#define MODULE_FILEDESC_VERSION 1.14
-
-// Implementation of FileDescStatusChanger class
-
-FileDescStatusChanger::FileDescStatusChanger(FileDescription *parent, QObject *parentObj) :
-		StatusChanger(900, parentObj), Parent(parent)
-{
-}
-
-FileDescStatusChanger::~FileDescStatusChanger()
-{
-}
-
-void FileDescStatusChanger::changeStatus(StatusContainer *container, Status &status)
-{
-	Q_UNUSED(container)
-
-	if (status.isDisconnected())
-		return;
-
-	if (status.description().isEmpty() && !Parent->forceDesc())
-		return;
-
-	if (!status.description().isEmpty() && Parent->allowOther())
-		return;
-
-	status.setDescription(Title);
-}
-
-void FileDescStatusChanger::setTitle(const QString &title)
-{
-	Title = title;
-	emit statusChanged(0);
-}
-
-// Implementation of FileDescription class
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QTimer>
 
 FileDescription::FileDescription(QObject *parent) :
 		QObject(parent)
 {
-	kdebugf();
-
 	createDefaultConfiguration();
 
-	Timer = new QTimer(this);
-	Timer->setSingleShot(false);
-	Timer->setInterval(500);
-	connect(Timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-	Timer->start();
-
-	StatusChanger = new FileDescStatusChanger(this, this);
-	configurationUpdated();
-
-	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
+	m_timer = new QTimer{this};
+	m_timer->setSingleShot(false);
+	m_timer->setInterval(500);
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
+	m_timer->start();
 }
 
 FileDescription::~FileDescription()
 {
-	kdebugf();
-	Timer->stop();
+	m_timer->stop();
+}
 
-	StatusChangerManager::instance()->unregisterStatusChanger(StatusChanger);
+void FileDescription::setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger)
+{
+	m_fileDescStatusChanger = fileDescStatusChanger;
+	configurationUpdated();
+}
+
+void FileDescription::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+	configurationUpdated();
 }
 
 void FileDescription::configurationUpdated()
 {
-	File = Application::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", Application::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
-	ForceDesc = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
-	AllowOther = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
+	if (!m_fileDescStatusChanger || !m_pathsProvider)
+		return;
+
+	m_file = Application::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
+	m_forceDesc = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
+	m_allowOther = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
 
 void FileDescription::checkTitle()
 {
-	QFile file(File);
+	QFile file{m_file};
 
 	if (!file.exists())
 		return;
@@ -122,7 +88,7 @@ void FileDescription::checkTitle()
 		description = stream.readLine();
 	file.close();
 
-	StatusChanger->setTitle(description);
+	m_fileDescStatusChanger->setTitle(description);
 }
 
 void FileDescription::createDefaultConfiguration()
