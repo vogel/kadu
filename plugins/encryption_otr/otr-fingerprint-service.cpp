@@ -141,3 +141,5 @@ QString OtrFingerprintService::extractContactFingerprint(const Contact &contact)
 	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
 	return QString::fromLatin1(fingerprint);
 }
+
+#include "moc_otr-fingerprint-service.cpp"

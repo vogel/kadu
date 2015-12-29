@@ -64,3 +64,5 @@ OtrIsLoggedInService::IsLoggedInStatus OtrIsLoggedInService::isLoggedIn(const Ac
 	else
 		return LoggedIn;
 }
+
+#include "moc_otr-is-logged-in-service.cpp"

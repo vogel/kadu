@@ -111,3 +111,5 @@ bool OtrPeerIdentityVerificationProgressPage::validatePage()
 
 	return State.isFinished();
 }
+
+#include "moc_otr-peer-identity-verification-progress-page.cpp"

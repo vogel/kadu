@@ -107,3 +107,5 @@ void OtrCreatePrivateKeyJob::workerFinished(bool ok)
 
 	emit finished(MyAccount, 0 == err);
 }
+
+#include "moc_otr-create-private-key-job.cpp"

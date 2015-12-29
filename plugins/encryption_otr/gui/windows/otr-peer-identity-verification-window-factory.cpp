@@ -96,3 +96,5 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::wi
 
 	return result;
 }
+
+#include "moc_otr-peer-identity-verification-window-factory.cpp"

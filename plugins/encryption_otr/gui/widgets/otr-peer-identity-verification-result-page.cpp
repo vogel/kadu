@@ -80,3 +80,5 @@ QString OtrPeerIdentityVerificationResultPage::stateToString(const OtrPeerIdenti
 		return tr("Verification of %1 succeeded.").arg(MyContact.display(true));
 	return tr("Unknown.");
 }
+
+#include "moc_otr-peer-identity-verification-result-page.cpp"

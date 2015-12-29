@@ -32,7 +32,7 @@ class KADUAPI AccountConfigurationWidgetFactoryRepository : public QObject
 	QList<AccountConfigurationWidgetFactory *> Factories;
 
 public:
-	explicit AccountConfigurationWidgetFactoryRepository(QObject *parent = 0);
+	Q_INVOKABLE explicit AccountConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
 	virtual ~AccountConfigurationWidgetFactoryRepository();
 
 	void registerFactory(AccountConfigurationWidgetFactory *factory);

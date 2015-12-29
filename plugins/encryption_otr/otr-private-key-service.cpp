@@ -97,3 +97,5 @@ void OtrPrivateKeyService::readPrivateKeys()
 	OtrlUserState userState = UserStateService->userState();
 	otrl_privkey_read(userState, PathService->privateKeysStoreFilePath().toUtf8().data());
 }
+
+#include "moc_otr-private-key-service.cpp"

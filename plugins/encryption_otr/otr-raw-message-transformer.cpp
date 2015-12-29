@@ -161,3 +161,5 @@ RawMessage OtrRawMessageTransformer::transformSent(const RawMessage &rawMessage,
 
 	return rawMessage;
 }
+
+#include "moc_otr-raw-message-transformer.cpp"

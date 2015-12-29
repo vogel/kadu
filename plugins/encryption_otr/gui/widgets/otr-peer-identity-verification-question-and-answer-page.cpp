@@ -90,3 +90,5 @@ bool OtrPeerIdentityVerificationQuestionAndAnswerPage::validatePage()
 
 	return true;
 }
+
+#include "moc_otr-peer-identity-verification-question-and-answer-page.cpp"

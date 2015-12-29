@@ -72,3 +72,5 @@ ConnContext * OtrContextConverter::contactToContextConverter(const Contact &cont
 							 qPrintable(contact.contactAccount().protocolName()), OTRL_INSTAG_BEST, notFoundAction == ActionCreateAndAdd,
 							 0, 0, 0);
 }
+
+#include "moc_otr-context-converter.cpp"

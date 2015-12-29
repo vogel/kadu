@@ -162,3 +162,5 @@ void OtrPeerIdentityVerificationService::handleSmpEvent(const Contact &contact, 
 
 	updateContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
 }
+
+#include "moc_otr-peer-identity-verification-service.cpp"

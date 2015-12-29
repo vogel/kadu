@@ -69,3 +69,5 @@ const OtrlMessageAppOps * OtrAppOpsService::appOps() const
 {
 	return &AppOps;
 }
+
+#include "moc_otr-app-ops-service.cpp"

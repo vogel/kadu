@@ -32,7 +32,7 @@ class KADUAPI ChatTopBarWidgetFactoryRepository : public QObject
 	QList<ChatTopBarWidgetFactory *> Factories;
 
 public:
-	explicit ChatTopBarWidgetFactoryRepository(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatTopBarWidgetFactoryRepository(QObject *parent = 0);
 	virtual ~ChatTopBarWidgetFactoryRepository();
 
 	void registerFactory(ChatTopBarWidgetFactory *factory);

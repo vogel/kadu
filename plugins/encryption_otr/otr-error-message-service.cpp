@@ -63,3 +63,5 @@ QString OtrErrorMessageService::errorMessage(const QString &peerDisplay, OtrlErr
 			return QString();
 	}
 }
+
+#include "moc_otr-error-message-service.cpp"

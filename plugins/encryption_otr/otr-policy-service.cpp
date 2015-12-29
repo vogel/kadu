@@ -76,3 +76,5 @@ OtrPolicy OtrPolicyService::contactPolicy(const Contact &contact) const
 	else
 		return fromBuddy;
 }
+
+#include "moc_otr-policy-service.cpp"

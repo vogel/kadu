@@ -106,3 +106,5 @@ QString OtrMessageService::resentMessagePrefix() const
 {
 	return tr("[resent]");
 }
+
+#include "moc_otr-message-service.cpp"

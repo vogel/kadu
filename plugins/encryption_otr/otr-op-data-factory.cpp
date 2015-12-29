@@ -128,3 +128,5 @@ OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 
 	return result;
 }
+
+#include "moc_otr-op-data-factory.cpp"

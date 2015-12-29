@@ -98,3 +98,5 @@ void OtrTimerService::timerControl(unsigned int intervalInSeconds)
 	else
 		Timer->stop();
 }
+
+#include "moc_otr-timer-service.cpp"

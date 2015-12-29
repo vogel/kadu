@@ -38,3 +38,5 @@ BuddyConfigurationWidget * OtrBuddyConfigurationWidgetFactory::createWidget(cons
 
 	return result;
 }
+
+#include "moc_otr-buddy-configuration-widget-factory.cpp"

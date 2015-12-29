@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2012, 2013 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,23 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAW_MESSAGE_TRANSFORMER_SERVICE_H
-#define RAW_MESSAGE_TRANSFORMER_SERVICE_H
+#include "otr-plugin-injector-factory.h"
 
-#include <QtCore/QObject>
+#include "otr-module.h"
 
-#include "protocols/services/raw-message-transformer.h"
-#include "services/configurable-transformer-service.h"
-#include "exports.h"
+#include <injeqt/injector.h>
 
-class KADUAPI RawMessageTransformerService : public QObject, public ConfigurableTransformerService<RawMessageTransformer>
+OtrPluginInjectorFactory::OtrPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE explicit RawMessageTransformerService(QObject *parent = 0);
-	virtual ~RawMessageTransformerService();
+OtrPluginInjectorFactory::~OtrPluginInjectorFactory()
+{
+}
 
-};
+injeqt::injector OtrPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<OtrModule>());
 
-#endif // RAW_MESSAGE_TRANSFORMER_SERVICE_H
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
+
+#include "moc_otr-plugin-injector-factory.cpp"

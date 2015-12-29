@@ -38,3 +38,5 @@ AccountConfigurationWidget * OtrAccountConfigurationWidgetFactory::createWidget(
 
 	return result;
 }
+
+#include "moc_otr-account-configuration-widget-factory.cpp"

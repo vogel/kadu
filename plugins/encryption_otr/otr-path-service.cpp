@@ -52,3 +52,5 @@ QString OtrPathService::privateKeysStoreFilePath() const
 {
 	return m_dir + QString{"otr_private"};
 }
+
+#include "moc_otr-path-service.cpp"

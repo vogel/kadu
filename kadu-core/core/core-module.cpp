@@ -24,7 +24,11 @@
 #include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
+#include "gui/widgets/account-configuration-widget-factory-repository.h"
+#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "misc/paths-provider.h"
+#include "services/raw-message-transformer-service.h"
 #include "storage/storage-point-factory.h"
 #include "attention-service.h"
 
@@ -32,11 +36,15 @@ CoreModule::CoreModule(QString profileDirectory)
 {
 	m_pathsProvider = make_not_owned<PathsProvider>(std::move(profileDirectory));
 
+	add_type<AccountConfigurationWidgetFactoryRepository>();
 	add_type<Application>();
 	add_type<AttentionService>();
+	add_type<BuddyConfigurationWidgetFactoryRepository>();
+	add_type<ChatTopBarWidgetFactoryRepository>();
 	add_type<ClipboardHtmlTransformerService>();
 	add_type<DomProcessorService>();
 	add_type<FormattedStringFactory>();
+	add_type<RawMessageTransformerService>();
 	add_type<InjectorProvider>();
 	add_type<StoragePointFactory>();
 	add_ready_object<PathsProvider>(m_pathsProvider.get());

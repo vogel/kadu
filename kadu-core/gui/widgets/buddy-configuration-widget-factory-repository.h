@@ -33,7 +33,7 @@ class KADUAPI BuddyConfigurationWidgetFactoryRepository : public QObject
 	QList<BuddyConfigurationWidgetFactory *> Factories;
 
 public:
-	explicit BuddyConfigurationWidgetFactoryRepository(QObject *parent = 0);
+	Q_INVOKABLE explicit BuddyConfigurationWidgetFactoryRepository(QObject *parent = 0);
 	virtual ~BuddyConfigurationWidgetFactoryRepository();
 
 	void registerFactory(BuddyConfigurationWidgetFactory *factory);

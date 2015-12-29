@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,18 @@
 
 #pragma once
 
-#include "plugin/plugin-root-component.h"
+#include "plugin/plugin-injector-factory.h"
 
-#include <QtCore/QObject>
-#include <injeqt/injector.h>
-
-class OtrPlugin : public PluginRootComponent
+class OtrPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	bool OtrAvailable;
-	std::unique_ptr<injeqt::injector> m_injector;
-
-	bool fragmentsFixAvailable() const;
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	explicit OtrPlugin();
-	virtual ~OtrPlugin();
+	explicit OtrPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~OtrPluginInjectorFactory();
 
-	virtual bool init();
-	virtual void done();
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };

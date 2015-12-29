@@ -37,3 +37,5 @@ void OtrCreatePrivateKeyWorker::start()
 	gcry_error_t err = otrl_privkey_generate_calculate(KeyPointer);
 	emit finished(0 == err);
 }
+
+#include "moc_otr-create-private-key-worker.cpp"

@@ -84,3 +84,5 @@ bool OtrPeerIdentityVerificationSharedSecretPage::validatePage()
 
 	return true;
 }
+
+#include "moc_otr-peer-identity-verification-shared-secret-page.cpp"

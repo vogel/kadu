@@ -83,3 +83,5 @@ void OtrInstanceTagService::createInstanceTag(const Account &account)
 						 account.id().toUtf8().data(), account.protocolName().toUtf8().data());
 	writeInstanceTags();
 }
+
+#include "moc_otr-instance-tag-service.cpp"

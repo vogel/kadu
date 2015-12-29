@@ -42,7 +42,8 @@ set (SOURCES
 	otr-op-data-factory.cpp
 	otr-peer-identity-verification-service.cpp
 	otr-peer-identity-verification-state.cpp
-	otr-plugin.cpp
+	otr-plugin-injector-factory.cpp
+	otr-plugin-object.cpp
 	otr-policy.cpp
 	otr-policy-service.cpp
 	otr-private-key-service.cpp
@@ -86,7 +87,6 @@ set (MOC_SOURCES
 	otr-op-data-factory.h
 	otr-path-service.h
 	otr-peer-identity-verification-service.h
-	otr-plugin.h
 	otr-policy-service.h
 	otr-private-key-service.h
 	otr-raw-message-transformer.h
@@ -109,7 +109,6 @@ endif ()
 
 kadu_plugin (encryption_otr
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )

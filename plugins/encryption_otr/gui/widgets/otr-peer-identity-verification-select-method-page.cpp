@@ -80,3 +80,5 @@ int OtrPeerIdentityVerificationSelectMethodPage::nextId() const
 
 	return -1;
 }
+
+#include "moc_otr-peer-identity-verification-select-method-page.cpp"

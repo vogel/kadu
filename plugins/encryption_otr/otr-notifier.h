@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Account;
 class ChatWidgetRepository;
@@ -50,11 +51,11 @@ public:
 	Q_INVOKABLE OtrNotifier();
 	virtual ~OtrNotifier();
 
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-
 	QList<NotificationEvent> notifyEvents();
 
 public slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	void notifyTryingToStartSession(const Contact &contact);
 	void notifyTryingToRefreshSession(const Contact &contact);
 	void notifyPeerEndedSession(const Contact &contact);

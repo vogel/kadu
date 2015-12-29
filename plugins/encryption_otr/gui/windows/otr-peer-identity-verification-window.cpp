@@ -52,3 +52,5 @@ void OtrPeerIdentityVerificationWindow::reject()
 
 	QWizard::reject();
 }
+
+#include "moc_otr-peer-identity-verification-window.cpp"

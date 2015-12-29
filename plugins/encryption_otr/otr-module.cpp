@@ -36,6 +36,7 @@
 #include "otr-op-data-factory.h"
 #include "otr-path-service.h"
 #include "otr-peer-identity-verification-service.h"
+#include "otr-plugin-object.h"
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-raw-message-transformer.h"
@@ -63,6 +64,7 @@ OtrModule::OtrModule()
 	add_type<OtrPeerIdentityVerificationService>();
 	add_type<OtrPeerIdentityVerificationWindowFactory>();
 	add_type<OtrPeerIdentityVerificationWindowRepository>();
+	add_type<OtrPluginObject>();
 	add_type<OtrPolicyService>();
 	add_type<OtrPrivateKeyService>();
 	add_type<OtrRawMessageTransformer>();

@@ -99,3 +99,5 @@ void OtrTrustLevelService::updateTrustLevels()
 
 	emit trustLevelsUpdated();
 }
+
+#include "moc_otr-trust-level-service.cpp"

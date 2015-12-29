@@ -173,3 +173,5 @@ void OtrBuddyConfigurationWidget::cancel()
 {
 	loadValues();
 }
+
+#include "moc_otr-buddy-configuration-widget.cpp"

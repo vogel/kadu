@@ -112,3 +112,5 @@ bool OtrPeerIdentityVerificationFingerprintExchangePage::validatePage()
 
 	return true;
 }
+
+#include "moc_otr-peer-identity-verification-fingerprint-exchange-page.cpp"

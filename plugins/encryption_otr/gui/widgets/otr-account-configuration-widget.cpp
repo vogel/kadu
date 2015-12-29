@@ -151,3 +151,5 @@ void OtrAccountConfigurationWidget::cancel()
 {
 	loadValues();
 }
+
+#include "moc_otr-account-configuration-widget.cpp"

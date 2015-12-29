@@ -53,17 +53,18 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 		m_pluginRootComponent{qobject_cast<PluginRootComponent *>(m_pluginLoader->instance())},
 		m_pluginInjector{createPluginInjector(pluginName, injector)}
 {
-	try
+	if (!m_pluginRootComponent)
 	{
-		m_pluginObject = m_pluginInjector.get<PluginObject>();
-		m_pluginObject->init();
-		return;
-	}
-	catch (...)
-	{
-		// old type plugin, ignore for now
-		if (!m_pluginRootComponent)
+		try
+		{
+			m_pluginObject = m_pluginInjector.get<PluginObject>();
+			m_pluginObject->init();
+			return;
+		}
+		catch (injeqt::exception::exception &e)
+		{
 			throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
+		}
 	}
 
 	injector.inject_into(m_pluginRootComponent);

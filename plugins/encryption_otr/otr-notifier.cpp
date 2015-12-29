@@ -123,3 +123,5 @@ void OtrNotifier::notifyCreatePrivateKeyFinished(const Account &account, bool ok
 			? tr("%1: private key created, you can start a private conversation now").arg(account.id())
 			: tr("%1: private key creation failed").arg(account.id()));
 }
+
+#include "moc_otr-notifier.cpp"

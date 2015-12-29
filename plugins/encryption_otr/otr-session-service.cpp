@@ -136,3 +136,5 @@ void OtrSessionService::endSession(const Contact &contact)
 
 	emit goneInsecure(contact);
 }
+
+#include "moc_otr-session-service.cpp"

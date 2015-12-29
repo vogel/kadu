@@ -33,3 +33,5 @@ OtrlUserState OtrUserStateService::userState() const
 {
 	return UserState;
 }
+
+#include "moc_otr-user-state-service.cpp"

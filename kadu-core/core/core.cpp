@@ -189,11 +189,7 @@ Core::Core(injeqt::injector &injector) :
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
-		CurrentRawMessageTransformerService{nullptr},
-		CurrentAccountConfigurationWidgetFactoryRepository{nullptr},
-		CurrentBuddyConfigurationWidgetFactoryRepository{nullptr},
 		CurrentChatConfigurationWidgetFactoryRepository{nullptr},
-		CurrentChatTopBarWidgetFactoryRepository{nullptr},
 		CurrentUnreadMessageRepository{nullptr},
 		CurrentChatWidgetActions{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
@@ -611,11 +607,7 @@ void Core::runServices()
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
-	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
-	CurrentAccountConfigurationWidgetFactoryRepository = new AccountConfigurationWidgetFactoryRepository(this);
-	CurrentBuddyConfigurationWidgetFactoryRepository = new BuddyConfigurationWidgetFactoryRepository(this);
 	CurrentChatConfigurationWidgetFactoryRepository = new ChatConfigurationWidgetFactoryRepository(this);
-	CurrentChatTopBarWidgetFactoryRepository = new ChatTopBarWidgetFactoryRepository(this);
 	CurrentUnreadMessageRepository = new UnreadMessageRepository(this);
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
@@ -788,7 +780,7 @@ FormattedStringFactory * Core::formattedStringFactory() const
 
 RawMessageTransformerService * Core::rawMessageTransformerService() const
 {
-	return CurrentRawMessageTransformerService;
+	return m_injector.get<RawMessageTransformerService>();
 }
 
 ClipboardHtmlTransformerService * Core::clipboardHtmlTransformerService() const
@@ -798,12 +790,12 @@ ClipboardHtmlTransformerService * Core::clipboardHtmlTransformerService() const
 
 AccountConfigurationWidgetFactoryRepository * Core::accountConfigurationWidgetFactoryRepository() const
 {
-	return CurrentAccountConfigurationWidgetFactoryRepository;
+	return m_injector.get<AccountConfigurationWidgetFactoryRepository>();
 }
 
 BuddyConfigurationWidgetFactoryRepository * Core::buddyConfigurationWidgetFactoryRepository() const
 {
-	return CurrentBuddyConfigurationWidgetFactoryRepository;
+	return m_injector.get<BuddyConfigurationWidgetFactoryRepository>();
 }
 
 ChatConfigurationWidgetFactoryRepository * Core::chatConfigurationWidgetFactoryRepository() const
@@ -813,7 +805,7 @@ ChatConfigurationWidgetFactoryRepository * Core::chatConfigurationWidgetFactoryR
 
 ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() const
 {
-	return CurrentChatTopBarWidgetFactoryRepository;
+	return m_injector.get<ChatTopBarWidgetFactoryRepository>();
 }
 
 UnreadMessageRepository * Core::unreadMessageRepository() const
