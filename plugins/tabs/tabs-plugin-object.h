@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2013, 2014, 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,35 +19,37 @@
 
 #pragma once
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler.h"
+#include "plugin/plugin-object.h"
 
-#include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ChatWidgetContainerHandlerRepository;
+class PathsProvider;
+class TabsChatWidgetContainerHandler;
 class TabsManager;
-enum class OpenChatActivation;
 
-class TabsChatWidgetContainerHandler : public ChatWidgetContainerHandler
+class TabsPluginObject : public PluginObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit TabsChatWidgetContainerHandler(QObject *parent = nullptr);
-	virtual ~TabsChatWidgetContainerHandler();
+	Q_INVOKABLE explicit TabsPluginObject(QObject *parent = nullptr);
+	virtual ~TabsPluginObject();
 
-	virtual bool acceptChat(Chat chat) const override;
-	virtual ChatWidget * addChat(Chat chat, OpenChatActivation activation) override;
-	virtual void removeChat(Chat chat) override;
-
-	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
-	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
-	virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
+	virtual void init();
+	virtual void done();
 
 private:
+	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<TabsChatWidgetContainerHandler> m_tabsChatWidgetContainerHandler;
 	QPointer<TabsManager> m_tabsManager;
 
 private slots:
+	INJEQT_SETTER void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setTabsChatWidgetContainerHandler(TabsChatWidgetContainerHandler *tabsChatWidgetContainerHandler);
 	INJEQT_SETTER void setTabsManager(TabsManager *tabsManager);
 
 };

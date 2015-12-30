@@ -39,12 +39,8 @@ void TabsChatWidgetContainerHandler::setTabsManager(TabsManager *tabsManager)
 			this, SIGNAL(chatAcceptanceChanged(Chat)));
 	connect(m_tabsManager.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
 			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
-}
 
-void TabsChatWidgetContainerHandler::setTabWidget(TabWidget *tabWidget)
-{
-	m_tabWidget = tabWidget;
-	connect(m_tabWidget.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
+	connect(m_tabsManager->tabWidget(), SIGNAL(chatWidgetActivated(ChatWidget*)),
 			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
 }
 
@@ -74,17 +70,17 @@ void TabsChatWidgetContainerHandler::removeChat(Chat chat)
 
 bool TabsChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)
 {
-	return m_tabWidget ? m_tabWidget.data()->isChatWidgetActive(chatWidget) : false;
+	return m_tabsManager->tabWidget() ? m_tabsManager->tabWidget()->isChatWidgetActive(chatWidget) : false;
 }
 
 void TabsChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidget)
 {
-	if (m_tabWidget)
-		m_tabWidget.data()->tryActivateChatWidget(chatWidget);
+	if (m_tabsManager->tabWidget())
+		m_tabsManager->tabWidget()->tryActivateChatWidget(chatWidget);
 }
 
 void TabsChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget *chatWidget)
 {
-	if (m_tabWidget)
-		m_tabWidget.data()->tryMinimizeChatWidget(chatWidget);
+	if (m_tabsManager->tabWidget())
+		m_tabsManager->tabWidget()->tryMinimizeChatWidget(chatWidget);
 }

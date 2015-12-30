@@ -5,18 +5,13 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	tabs.cpp
-	tabs-chat-widget-container-handler.cpp
-	tabs-plugin.cpp
 	gui/widgets/tab-bar.cpp
 	gui/widgets/tab-widget.cpp
-)
-
-set (MOC_SOURCES
-	tabs.h
-	tabs-plugin.h
-	gui/widgets/tab-bar.h
-	gui/widgets/tab-widget.h
+	tabs-chat-widget-container-handler.cpp
+	tabs-module.cpp
+	tabs-plugin-injector-factory.cpp
+	tabs-plugin-object.cpp
+	tabs.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -29,6 +24,5 @@ endif ()
 
 kadu_plugin (tabs
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

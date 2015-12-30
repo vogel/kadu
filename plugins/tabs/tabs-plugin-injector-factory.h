@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,32 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABS_PLUGIN_H
-#define TABS_PLUGIN_H
+#pragma once
 
-#include <QtCore/QObject>
+#include "plugin/plugin-injector-factory.h"
 
-#include "plugin/plugin-root-component.h"
-
-class TabsChatWidgetContainerHandler;
-class TabsManager;
-
-class TabsPlugin : public PluginRootComponent
+class TabsPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	TabsManager *TabsManagerInstance;
-	QScopedPointer<TabsChatWidgetContainerHandler> ChatWidgetContainerHandler;
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	explicit TabsPlugin(QObject *parent = nullptr);
-	virtual ~TabsPlugin();
+	explicit TabsPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~TabsPluginInjectorFactory();
 
-	virtual bool init();
-	virtual void done();
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };
-
-#endif // TABS_PLUGIN_H

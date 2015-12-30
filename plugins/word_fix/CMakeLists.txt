@@ -5,12 +5,12 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	word-fix.cpp
+	word-fix-configuration-ui-handler.cpp
 	word-fix-formatted-string-visitor.cpp
-)
-
-set (MOC_SOURCES
-	word-fix.h
+	word-fix-module.cpp
+	word-fix-plugin-injector-factory.cpp
+	word-fix-plugin-object.cpp
+	word-fix.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -23,7 +23,6 @@ set (DATA_FILES
 
 kadu_plugin (word_fix
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DATA_FILES ${DATA_FILES}
 )

@@ -1,17 +1,35 @@
-#ifndef WORD_FIX_H
-#define WORD_FIX_H
+/*
+ * %kadu copyright begin%
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2011, 2012, 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#include "configuration/gui/configuration-ui-handler.h"
-#include "plugin/plugin-root-component.h"
+#pragma once
+
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QRegExp>
+#include <injeqt/injeqt.h>
 
 class ChatWidget;
 class ChatWidgetRepository;
 class UserGroup;
-class QTreeWidgetItem;
-class QTreeWidget;
-class QListBox;
-class QPushButton;
-class QLineEdit;
 
 /*!
  * This class is responsible for fixing small mistakes (and not only)
@@ -20,11 +38,9 @@ class QLineEdit;
  * \class WordFix
  * \brief Words fixing.
  */
-class WordFix : public PluginRootComponent, public ConfigurationUiHandler
+class WordFix : public QObject
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	QPointer<ChatWidgetRepository> chatWidgetRepository;
 
@@ -33,20 +49,13 @@ class WordFix : public PluginRootComponent, public ConfigurationUiHandler
 	 * Contains whole list of words for replacing in form:
 	 * wordList["to_replace"] = "correct_word";
 	 */
-	QMap<QString,QString> wordsList;
+	QMap<QString,QString> m_wordsList;
 
 	QRegExp ExtractBody;
 
-	QPushButton *changeButton;
-	QPushButton *deleteButton;
-	QPushButton *addButton;
-	QLineEdit *wordEdit;
-	QLineEdit *valueEdit;
-	QTreeWidget* list;
-
-	void saveList();
-
 private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	/*!
 	 * \fn void chatCreated(ChatWidget *chat)
 	 * This slot calls connectToClass"("Chat* chat")" to connect
@@ -77,7 +86,7 @@ public:
 	 * \fn WordFix()
 	 * Default constructor. Reads words list or (if it's not defined yet) loads default list.
 	 */
-	explicit WordFix(QObject *parent = 0);
+	Q_INVOKABLE explicit WordFix(QObject *parent = nullptr);
 
 	/*!
 	 * \fn ~WordFix()
@@ -85,53 +94,6 @@ public:
 	 */
 	virtual ~WordFix();
 
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
-	virtual bool init();
-	virtual void done();
-
-public slots:
-	/*!
-	 * \fn void wordSelected(QTreeWidgetItem* item)
-	 * Called when a word was selected in configuration dialog
-	 * from the words to fix list.
-	 * \param item Selected row on the list.
-	 */
-	void wordSelected();
-
-	/*!
-	 * \fn void changeSelected()
-	 * Called when "Change selected" button in configuration dialog
-	 * was clicked. Changes current replace value for selected word.
-	 */
-	void changeSelected();
-
-	/*!
-	 * \fn void deleteSelected()
-	 * Called when "Delete selected" button in configuration dialog
-	 * was clicked. Deletes selected word from configuration list
-	 * and also from internal words fix list.
-	 */
-	void deleteSelected();
-
-	/*!
-	 * \fn void addNew()
-	 * Called when "Add new" button in configuration dialog
-	 * was clicked. Adds new word and its fix value from filled fields.
-	 */
-	void addNew();
-
-	/*!
-	 * \fn void moveToNewValue()
-	 * Called when return key is pressed in "new word" field
-	 * in configuration dialog. Moves input focus to word fix value.
-	 */
-	void moveToNewValue();
+	QMap<QString,QString> & wordsList() { return m_wordsList; }
 
 };
-
-#endif

@@ -29,6 +29,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat-manager.h"
 
@@ -90,6 +91,8 @@ class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	void onContextMenu(QWidget *w, const QPoint &pos);
 	void onMenuActionDetach();
 	void onMenuActionDetachAll();
@@ -105,15 +108,13 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	explicit TabsManager(QObject *parent = 0);
+	Q_INVOKABLE explicit TabsManager(QObject *parent = nullptr);
 	virtual ~TabsManager();
 
 	TabWidget * tabWidget() { return TabDialog; }
 
 	void openStoredChatTabs();
 	void storeOpenedChatTabs();
-
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	void detachChat(ChatWidget *chatWidget);
 

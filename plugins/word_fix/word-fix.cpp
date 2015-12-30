@@ -56,14 +56,47 @@
 
 
 WordFix::WordFix(QObject *parent) :
-		PluginRootComponent{parent},
-		changeButton{},
-		deleteButton{},
-		addButton{},
-		wordEdit{},
-		valueEdit{},
-		list{}
+		QObject{parent}
 {
+	ExtractBody.setPattern("<body[^>]*>.*</body>");
+
+	// Loading list
+	QString data = Application::instance()->configuration()->deprecatedApi()->readEntry("word_fix", "WordFix_list");
+	if (data.isEmpty())
+	{
+		QFile defList(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
+		if (defList.open(QIODevice::ReadOnly))
+		{
+			QTextStream s(&defList);
+			QStringList pair;
+			while (!s.atEnd())
+			{
+				pair = s.readLine().split('|');
+				if (pair.isEmpty())
+					continue;
+
+				// TODO why we are not checking if there are actually at least 2 items?
+				m_wordsList[pair.at(0)] = pair.at(1);
+			}
+			defList.close();
+		}
+		else
+		{
+			kdebug("Can't open file: %s\n", qPrintable((defList.fileName())));
+		}
+	}
+	else
+	{
+		QStringList list = data.split("\t\t");
+		for (int i = 0; i < list.count(); i++)
+		{
+			if (!list.at(i).isEmpty())
+			{
+				QStringList sp = list.at(i).split('\t');
+				m_wordsList[sp.at(0)] = sp.at(1);
+			}
+		}
+	}
 }
 
 WordFix::~WordFix()
@@ -86,81 +119,6 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	}
 }
 
-bool WordFix::init()
-{
-	ExtractBody.setPattern("<body[^>]*>.*</body>");
-
-	// Loading list
-	QString data = Application::instance()->configuration()->deprecatedApi()->readEntry("word_fix", "WordFix_list");
-	if (data.isEmpty())
-	{
-		QFile defList(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
-		if (defList.open(QIODevice::ReadOnly))
-		{
-			QTextStream s(&defList);
-			QStringList pair;
-			while (!s.atEnd())
-			{
-				pair = s.readLine().split('|');
-				if (pair.isEmpty())
-					continue;
-
-				// TODO why we are not checking if there are actually at least 2 items?
-				wordsList[pair.at(0)] = pair.at(1);
-			}
-			defList.close();
-		}
-		else
-		{
-			kdebug("Can't open file: %s\n", qPrintable((defList.fileName())));
-		}
-	}
-	else
-	{
-		QStringList list = data.split("\t\t");
-		for (int i = 0; i < list.count(); i++)
-		{
-			if (!list.at(i).isEmpty())
-			{
-				QStringList sp = list.at(i).split('\t');
-				wordsList[sp.at(0)] = sp.at(1);
-			}
-		}
-	}
-
-	kdebugf2();
-
-	kdebugf();
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
-	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(this);
-
-	setChatWidgetRepository(Core::instance()->chatWidgetRepository());
-
-	kdebugf2();
-	return true;
-}
-
-void WordFix::done()
-{
-	kdebugf();
-
-	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
-	kdebugf2();
-
-	kdebugf();
-
-	if (chatWidgetRepository)
-	{
-		disconnect(chatWidgetRepository.data(), 0, this, 0);
-
-		for (auto chatWidget : chatWidgetRepository.data())
-			chatWidgetRemoved(chatWidget);
-	}
-
-	kdebugf2();
-}
-
 void WordFix::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	connect(chatWidget, SIGNAL(messageSendRequested(ChatWidget*)), this, SLOT(sendRequest(ChatWidget*)));
@@ -177,7 +135,7 @@ void WordFix::sendRequest(ChatWidget* chat)
 		return;
 
 	auto formattedString = chat->edit()->formattedString();
-	WordFixFormattedStringVisitor fixVisitor(wordsList);
+	WordFixFormattedStringVisitor fixVisitor(m_wordsList);
 	formattedString->accept(&fixVisitor);
 
 	auto fixedString = fixVisitor.result();
@@ -185,240 +143,6 @@ void WordFix::sendRequest(ChatWidget* chat)
 	fixedString->accept(&htmlVisitor);
 
 	chat->edit()->setHtml(htmlVisitor.result());
-}
-
-void WordFix::wordSelected()
-{
-	kdebugf();
-
-	QList<QTreeWidgetItem *> items = list->selectedItems();
-	QTreeWidgetItem* item = NULL;
-
-	if (items.isEmpty())
-	{
-		changeButton->setEnabled(false);
-		deleteButton->setEnabled(false);
-		return;
-	}
-	else
-	{
-		changeButton->setEnabled(true);
-		deleteButton->setEnabled(true);
-	}
-
-	item = items.at(0);
-	wordEdit->setText(item->text(0));
-	valueEdit->setText(item->text(1));
-
-	kdebugf2();
-}
-
-void WordFix::changeSelected()
-{
-	kdebugf();
-
-	QTreeWidgetItem* item = list->currentItem();
-	if (!item)
-		return;
-
-	QString wordStr = wordEdit->text(),
-			valueStr = valueEdit->text();
-
-	item->setText(0, wordStr);
-	item->setText(1, valueStr);
-
-	wordEdit->clear();
-	valueEdit->clear();
-
-	changeButton->setEnabled(false);
-	deleteButton->setEnabled(false);
-	kdebugf2();
-}
-
-void WordFix::deleteSelected()
-{
-	kdebugf();
-
-	QTreeWidgetItem* item = list->currentItem();
-	if (!item)
-		return;
-
-	QString wordStr = item->text(0);
-	delete item;
-
-	wordEdit->clear();
-	valueEdit->clear();
-
-	changeButton->setEnabled(false);
-	deleteButton->setEnabled(false);
-	list->setCurrentItem(0);
-
-	kdebugf2();
-}
-
-void WordFix::addNew()
-{
-	kdebugf();
-
-	QString wordStr = wordEdit->text(),
-			valueStr = valueEdit->text();
-
-	if (wordStr.isEmpty())
-		return;
-
-	if (list->findItems(wordStr, 0, Qt::MatchExactly).isEmpty())
-	{
-		QTreeWidgetItem* item = new QTreeWidgetItem(list);
-		item->setText(0, wordStr);
-		item->setText(1, valueStr);
-		list->sortItems(0, Qt::AscendingOrder);
-		list->setCurrentItem(item);
-	}
-
-	wordEdit->clear();
-	valueEdit->clear();
-
-	changeButton->setEnabled(false);
-	deleteButton->setEnabled(false);
-
-	kdebugf2();
-}
-
-void WordFix::moveToNewValue()
-{
-	kdebugf();
-
-	// sprawdz czy podane slowo znajduje sie na liscie i jesli tak to umozliw edycje
-	QList<QTreeWidgetItem *> items = list->findItems(wordEdit->text(), 0, Qt::MatchExactly);
-	if (!items.isEmpty()) {
-		QTreeWidgetItem *item = items.at(0);
-		list->setCurrentItem(item);
-		valueEdit->setText(item->text(1));
-		changeButton->setEnabled(true);
-		deleteButton->setEnabled(true);
-		addButton->setEnabled(false);
-	} else {
-		changeButton->setEnabled(false);
-		deleteButton->setEnabled(false);
-		addButton->setEnabled(true);
-	}
-
-	valueEdit->setFocus();
-	kdebugf2();
-}
-
-void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	kdebugf();
-
-	ConfigGroupBox *groupBox = mainConfigurationWindow->widget()->
-		configGroupBox("Chat", "Spelling", "Words fix");
-
-	QWidget *widget = new QWidget(groupBox->widget());
-
-	QGridLayout *layout = new QGridLayout(widget);
-	layout->setSpacing(5);
-	layout->setMargin(5);
-
-	list = new QTreeWidget(widget);
-	layout->addWidget(list, 0, 0, 1, 3);
-
-	wordEdit = new QLineEdit(widget);
-	layout->addWidget(new QLabel(tr("A word to be replaced")), 1, 0);
-	layout->addWidget(wordEdit, 1, 1);
-
-	valueEdit = new QLineEdit(widget);
-	layout->addWidget(new QLabel(tr("Value to replace with")), 2, 0);
-	layout->addWidget(valueEdit, 2, 1);
-
-	QWidget *hbox = new QWidget(widget);
-	addButton = new QPushButton(tr("Add"), hbox);
-	changeButton = new QPushButton(tr("Change"), hbox);
-	deleteButton = new QPushButton(tr("Delete"), hbox);
-	QHBoxLayout *hlayout = new QHBoxLayout;
-	hlayout->addWidget(addButton);
-	hlayout->addWidget(changeButton);
-	hlayout->addWidget(deleteButton);
-	hbox->setLayout(hlayout);
-	layout->addWidget(hbox, 3, 1);
-
-	widget->setLayout(layout);
-	groupBox->addWidgets(new QLabel(tr(""), groupBox->widget()), widget);
-
-	connect(list, SIGNAL(itemSelectionChanged()), this, SLOT(wordSelected()));
-	connect(changeButton, SIGNAL(clicked()), this, SLOT(changeSelected()));
-	connect(deleteButton, SIGNAL(clicked()), this, SLOT(deleteSelected()));
-	connect(addButton, SIGNAL(clicked()), this, SLOT(addNew()));
-	connect(wordEdit, SIGNAL(returnPressed()), this, SLOT(moveToNewValue()));
-	connect(valueEdit, SIGNAL(returnPressed()), this, SLOT(addNew()));
-
-	changeButton->setEnabled(false);
-	deleteButton->setEnabled(false);
-
-	list->setAllColumnsShowFocus(true);
-	list->setColumnCount(2);
-
-	QStringList headers;
-	headers << tr("Word") << tr("Replace with");
-	list->setHeaderLabels(headers);
-
-	list->setColumnWidth(0, 250);
-	list->setColumnWidth(1, 246 - list->verticalScrollBar()->width());
-
-	QList<QTreeWidgetItem *> items;
-
-	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
-	{
-		QTreeWidgetItem *item = new QTreeWidgetItem(list);
-		item->setText(0, i.key());
-		item->setText(1, i.value());
-		items.append(item);
-	}
-	list->insertTopLevelItems(0, items);
-
-	kdebugf2();
-}
-
-void WordFix::mainConfigurationWindowDestroyed()
-{
-}
-
-void WordFix::mainConfigurationWindowApplied()
-{
-	wordsList.clear();
-	QTreeWidgetItem* item = list->itemAt(0, 0);
-
-	if (item)
-	{
-		QString wordStr = item->text(0),
-				valueStr = item->text(1);
-
-		wordsList[wordStr] = valueStr;
-
-		while ((item = list->itemBelow(item)))
-		{
-			wordStr = item->text(0);
-			valueStr = item->text(1);
-			wordsList[wordStr] = valueStr;
-		}
-	}
-
-	saveList();
-
-	kdebugf2();
-}
-
-void WordFix::saveList()
-{
-	kdebugf();
-
-	QStringList list;
-	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
-		list.append(i.key() + '\t' + i.value());
-
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
-
-	kdebugf2();
 }
 
 #include "moc_word-fix.cpp"
