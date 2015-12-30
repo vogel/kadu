@@ -34,7 +34,7 @@
 
 #include "hints-configuration-window.h"
 
-#include "hints_configuration_widget.h"
+#include "hints-configuration-widget.h"
 
 HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)
@@ -87,4 +87,4 @@ void HintsConfigurationWidget::updatePreview()
 	preview->setStyleSheet(style);
 }
 
-#include "moc_hints_configuration_widget.cpp"
+#include "moc_hints-configuration-widget.cpp"

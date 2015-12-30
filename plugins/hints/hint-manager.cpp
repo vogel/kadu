@@ -46,10 +46,9 @@
 #include "icons/icons-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "hints-configuration-ui-handler.h"
-#include "hints_configuration_widget.h"
+#include "hints-configuration-widget.h"
 
-#include "hint_manager.h"
+#include "hint-manager.h"
 
 
 /**
@@ -110,7 +109,6 @@ HintManager::HintManager(QObject *parent) :
 	configurationUpdated();
 
 	// remember to call it after setting `Style' member
-	UiHandler = new HintsConfigurationUiHandler(Style, this);
 
 	kdebugf2();
 }
@@ -659,4 +657,4 @@ void HintManager::createDefaultConfiguration()
 
 HintManager *hint_manager = NULL;
 
-#include "moc_hint_manager.cpp"
+#include "moc_hint-manager.cpp"

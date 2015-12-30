@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HINT_MANAGER_H
-#define HINT_MANAGER_H
+#pragma once
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
@@ -52,8 +51,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 
 	QStringList DisplayedNotifications;
 	QList<Hint *> hints;
-
-	HintsConfigurationUiHandler *UiHandler;
 
 	HintsConfigurationWidget *configurationWidget;
 
@@ -134,7 +131,7 @@ signals:
 	void searchingForTrayPosition(QPoint& pos);
 
 public:
-	explicit HintManager(QObject *parent = 0);
+	Q_INVOKABLE explicit HintManager(QObject *parent = nullptr);
 	virtual ~HintManager();
 
 	virtual void notify(Notification *notification);
@@ -148,8 +145,5 @@ public:
 
 	const QString & style() const { return Style; }
 	double opacity() { return Opacity; }
-	HintsConfigurationUiHandler *uiHandler() { return UiHandler; }
 
 };
-
-#endif // HINT_MANAGER_H

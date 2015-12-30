@@ -18,15 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HINTS_CONFIGURATION_UI_HANDLER_H
-#define HINTS_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "configuration/gui/configuration-ui-handler.h"
 #include "gui/windows/configuration-window.h"
 
-#include "hint_manager.h"
+#include "hint-manager.h"
+
+class HintsManager;
 
 class QCheckBox;
 class QComboBox;
@@ -38,6 +40,7 @@ class HintsConfigurationUiHandler : public QObject, public ConfigurationUiHandle
 
 private:
 	QPointer<ConfigurationWindow> AdvancedWindow;
+	QPointer<HintManager> m_hintManager;
 
 	QFrame *previewHintsFrame;
 	QVBoxLayout *previewHintsLayout;
@@ -60,6 +63,8 @@ private:
 	void setPreviewLayoutDirection();
 
 private slots:
+	INJEQT_SETTER void setHintManager(HintManager *hintManager);
+
 	void showAdvanced();
 
 	void minimumWidthChanged(int value);
@@ -78,7 +83,7 @@ signals:
 	void searchingForTrayPosition(QPoint &pos);
 
 public:
-	explicit HintsConfigurationUiHandler(const QString &style, QObject *parent = 0);
+	Q_INVOKABLE explicit HintsConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~HintsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
@@ -86,5 +91,3 @@ public:
 	virtual void mainConfigurationWindowApplied() override;
 
 };
-
-#endif // HINTS_CONFIGURATION_UI_HANDLER_H

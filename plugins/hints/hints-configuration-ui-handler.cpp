@@ -31,6 +31,7 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/config-file-data-manager.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -39,15 +40,18 @@
 #include "notification/notification/notification.h"
 #include "talkable/talkable.h"
 
+#include "hint-manager.h"
 #include "hint-over-user-configuration-window.h"
-#include "hints-plugin.h"
 
 #include "misc/paths-provider.h"
 #include "activate.h"
 
 #include "hints-configuration-ui-handler.h"
 
-HintsConfigurationUiHandler::HintsConfigurationUiHandler(const QString &style, QObject *parent):
+#define FRAME_WIDTH 1
+#define BORDER_RADIUS 0
+
+HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
 		QObject(parent),
 		previewHintsFrame{},
 		previewHintsLayout{},
@@ -73,6 +77,11 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(const QString &style, Q
 	previewHintsLayout->setSpacing(0);
 	previewHintsLayout->setMargin(0);
 	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
+
+	auto style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+			.arg(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
+			.arg(Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
+			.arg(BORDER_RADIUS);
 	previewHintsFrame->setStyleSheet(style);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
@@ -82,6 +91,11 @@ HintsConfigurationUiHandler::~HintsConfigurationUiHandler()
 {
 	delete previewHintsFrame;
 	previewHintsFrame = 0;
+}
+
+void HintsConfigurationUiHandler::setHintManager(HintManager *hintManager)
+{
+	m_hintManager = hintManager;
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -115,7 +129,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		HintsPlugin::instance()->hintsManger()->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
+		m_hintManager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
 
 	lay = new QHBoxLayout(configureHint);
 	lay->addWidget(overUserConfigurationPreview);
@@ -284,7 +298,7 @@ void HintsConfigurationUiHandler::updateHintsPreview()
 
 	previewHintsFrame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
-	previewHintsFrame->setWindowOpacity(HintsPlugin::instance()->hintsManger()->opacity());
+	previewHintsFrame->setWindowOpacity(m_hintManager->opacity());
 }
 
 void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
@@ -329,7 +343,7 @@ void HintsConfigurationUiHandler::showOverUserConfigurationWindow()
 		_activateWindow(overUserConfigurationWindow.data());
 	else
 	{
-		overUserConfigurationWindow = new HintOverUserConfigurationWindow(Buddy::dummy());
+		overUserConfigurationWindow = new HintOverUserConfigurationWindow(m_hintManager, Buddy::dummy());
 		connect(overUserConfigurationWindow.data(), SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
 		overUserConfigurationWindow->show();
 	}
@@ -343,7 +357,7 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		HintsPlugin::instance()->hintsManger()->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
+		m_hintManager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
 }
 
 void HintsConfigurationUiHandler::minimumWidthChanged(int value)

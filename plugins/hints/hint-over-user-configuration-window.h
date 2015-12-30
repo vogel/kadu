@@ -23,6 +23,8 @@
 #include "buddies/buddy.h"
 #include "gui/windows/configuration-window.h"
 
+class HintManager;
+
 class QFrame;
 class QLabel;
 class QTextEdit;
@@ -54,7 +56,8 @@ private slots:
 	void syntaxChanged();
 
 public:
-	HintOverUserConfigurationWindow(Buddy exampleContact);
+	HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleContact);
+
 };
 
 #endif // HINT_OVER_USER_CONFIGURATION_WINDOW_H

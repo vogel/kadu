@@ -41,12 +41,11 @@
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
 
-#include "hint_manager.h"
-#include "hints-plugin.h"
+#include "hint-manager.h"
 
 #include "hint-over-user-configuration-window.h"
 
-HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBuddy) :
+HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleBuddy) :
 	ConfigurationWindow("HintOverUser", tr("Hint Over Buddy Configuration"), "Hints", MainConfigurationWindow::instanceDataManager()),
 	ExampleBuddy(exampleBuddy)
 {
@@ -93,7 +92,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	HintsPlugin::instance()->hintsManger()->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
+	hintManager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
 
 	bgcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
 	fgcolor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
