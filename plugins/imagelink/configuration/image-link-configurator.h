@@ -18,12 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGE_LINK_CONFIGURATOR_H
-#define IMAGE_LINK_CONFIGURATOR_H
-
-#include <QtCore/QPointer>
+#pragma once
 
 #include "configuration/configuration-holder.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ImageExpanderDomVisitorProvider;
 class VideoExpanderDomVisitorProvider;
@@ -32,24 +32,24 @@ class ImageLinkConfigurator : public ConfigurationHolder
 {
 	Q_OBJECT
 
-	QPointer<ImageExpanderDomVisitorProvider> ImageExpander;
-	QPointer<VideoExpanderDomVisitorProvider> VideoExpander;
+public:
+	Q_INVOKABLE explicit ImageLinkConfigurator(QObject *parent = nullptr);
+	virtual ~ImageLinkConfigurator();
 
-	void createDefaultConfiguration();
+	void configure();
 
 protected:
 	virtual void configurationUpdated();
 
-public:
-	explicit ImageLinkConfigurator(QObject *parent = 0);
-	virtual ~ImageLinkConfigurator();
+private:
+	QPointer<ImageExpanderDomVisitorProvider> m_imageExpander;
+	QPointer<VideoExpanderDomVisitorProvider> m_videoExpander;
 
-	void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
-	void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
+	void createDefaultConfiguration();
 
-	void configure();
+private slots:
+	INJEQT_SETTER void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
+	INJEQT_SETTER void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
 
 };
 
-
-#endif // IMAGE_LINK_CONFIGURATOR_H

@@ -10,17 +10,11 @@ set (SOURCES
 
 	image-expander.cpp
 	image-expander-dom-visitor-provider.cpp
-	image-link-plugin.cpp
+	image-link-module.cpp
+	image-link-plugin-injector-factory.cpp
+	image-link-plugin-object.cpp
 	video-expander.cpp
 	video-expander-dom-visitor-provider.cpp
-)
-
-set (MOC_SOURCES
-	configuration/image-link-configurator.h
-
-	image-expander-dom-visitor-provider.h
-	image-link-plugin.h
-	video-expander-dom-visitor-provider.h
 )
 
 set (CONFIGURATION_FILES
@@ -29,6 +23,5 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (imagelink
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

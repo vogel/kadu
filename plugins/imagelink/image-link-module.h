@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
+#include <injeqt/module.h>
 
-#include "dom/ignore-links-dom-visitor.h"
-
-#include "configuration/image-link-configuration.h"
-
-#include "dom/dom-visitor-provider.h"
-
-class VideoExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
+class ImageLinkModule : public injeqt::module
 {
-	Q_OBJECT
-
-	ImageLinkConfiguration Configuration;
-	QScopedPointer<IgnoreLinksDomVisitor> Visitor;
 
 public:
-	Q_INVOKABLE VideoExpanderDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~VideoExpanderDomVisitorProvider();
-
-	virtual DomVisitor * provide() const;
-
-	void setConfiguration(const ImageLinkConfiguration &configuration);
+	explicit ImageLinkModule();
+	virtual ~ImageLinkModule();
 
 };

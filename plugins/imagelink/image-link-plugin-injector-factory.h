@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,18 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
+#include "plugin/plugin-injector-factory.h"
 
-#include "dom/ignore-links-dom-visitor.h"
-
-#include "configuration/image-link-configuration.h"
-
-#include "dom/dom-visitor-provider.h"
-
-class VideoExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
+class ImageLinkPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-
-	ImageLinkConfiguration Configuration;
-	QScopedPointer<IgnoreLinksDomVisitor> Visitor;
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	Q_INVOKABLE VideoExpanderDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~VideoExpanderDomVisitorProvider();
+	explicit ImageLinkPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~ImageLinkPluginInjectorFactory();
 
-	virtual DomVisitor * provide() const;
-
-	void setConfiguration(const ImageLinkConfiguration &configuration);
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };

@@ -41,12 +41,12 @@ ImageLinkConfigurator::~ImageLinkConfigurator()
 
 void ImageLinkConfigurator::setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander)
 {
-	ImageExpander = imageExpander;
+	m_imageExpander = imageExpander;
 }
 
 void ImageLinkConfigurator::setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander)
 {
-	VideoExpander = videoExpander;
+	m_videoExpander = videoExpander;
 }
 
 void ImageLinkConfigurator::configure()
@@ -66,10 +66,10 @@ void ImageLinkConfigurator::configurationUpdated()
 	configuration.setShowImages(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
 	configuration.setShowVideos(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
 
-	if (ImageExpander)
-		ImageExpander->setConfiguration(configuration);
-	if (VideoExpander)
-		VideoExpander->setConfiguration(configuration);
+	if (m_imageExpander)
+		m_imageExpander->setConfiguration(configuration);
+	if (m_videoExpander)
+		m_videoExpander->setConfiguration(configuration);
 }
 
 #include "moc_image-link-configurator.cpp"

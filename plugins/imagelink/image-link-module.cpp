@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,28 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "image-expander.h"
+#include "image-link-module.h"
 
+#include "configuration/image-link-configurator.h"
 #include "image-expander-dom-visitor-provider.h"
+#include "image-link-plugin-object.h"
+#include "video-expander-dom-visitor-provider.h"
 
-ImageExpanderDomVisitorProvider::ImageExpanderDomVisitorProvider(QObject *parent) :
-		QObject{parent}
+ImageLinkModule::ImageLinkModule()
 {
-	Visitor.reset(new IgnoreLinksDomVisitor(new ImageExpander()));
+	add_type<ImageExpanderDomVisitorProvider>();
+	add_type<ImageLinkConfigurator>();
+	add_type<ImageLinkPluginObject>();
+	add_type<VideoExpanderDomVisitorProvider>();
 }
 
-ImageExpanderDomVisitorProvider::~ImageExpanderDomVisitorProvider()
+ImageLinkModule::~ImageLinkModule()
 {
 }
-
-DomVisitor * ImageExpanderDomVisitorProvider::provide() const
-{
-	return Configuration.showImages() ? Visitor.data() : 0;
-}
-
-void ImageExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfiguration &configuration)
-{
-	Configuration = configuration;
-}
-
-#include "moc_image-expander-dom-visitor-provider.cpp"

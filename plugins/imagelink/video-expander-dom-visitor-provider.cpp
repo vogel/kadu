@@ -22,7 +22,8 @@
 
 #include "video-expander-dom-visitor-provider.h"
 
-VideoExpanderDomVisitorProvider::VideoExpanderDomVisitorProvider()
+VideoExpanderDomVisitorProvider::VideoExpanderDomVisitorProvider(QObject *parent) :
+		QObject{parent}
 {
 	Visitor.reset(new IgnoreLinksDomVisitor(new VideoExpander()));
 }

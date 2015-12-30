@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGE_EXPANDER_DOM_VISITOR_PROVIDER_H
-#define IMAGE_EXPANDER_DOM_VISITOR_PROVIDER_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
@@ -37,7 +36,7 @@ class ImageExpanderDomVisitorProvider : public QObject, public DomVisitorProvide
 	QScopedPointer<IgnoreLinksDomVisitor> Visitor;
 
 public:
-	ImageExpanderDomVisitorProvider();
+	Q_INVOKABLE explicit ImageExpanderDomVisitorProvider(QObject *parent = nullptr);
 	virtual ~ImageExpanderDomVisitorProvider();
 
 	virtual DomVisitor * provide() const;
@@ -45,5 +44,3 @@ public:
 	void setConfiguration(const ImageLinkConfiguration &configuration);
 
 };
-
-#endif // IMAGE_EXPANDER_DOM_VISITOR_PROVIDER_H
