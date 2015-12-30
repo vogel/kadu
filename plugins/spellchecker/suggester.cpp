@@ -29,28 +29,12 @@
 #include "icons/kadu-icon.h"
 
 #include "configuration/spellchecker-configuration.h"
-#include "spellchecker-plugin.h"
 #include "spellchecker.h"
 
 #include "suggester.h"
 
-Suggester * Suggester::Instance = 0;
-
-Suggester *Suggester::instance()
-{
-	if (!Instance)
-		Instance = new Suggester();
-
-	return Instance;
-}
-
-void Suggester::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-Suggester::Suggester()
+Suggester::Suggester(QObject *parent) :
+		QObject{parent}
 {
 }
 
@@ -59,9 +43,19 @@ Suggester::~Suggester()
 	clearWordMenu();
 }
 
+void Suggester::setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration)
+{
+	m_spellcheckerConfiguration = spellcheckerConfiguration;
+}
+
+void Suggester::setSpellChecker(SpellChecker *spellChecker)
+{
+	m_spellChecker = spellChecker;
+}
+
 void Suggester::buildSuggestList(const QString &word)
 {
-	SuggestionWordList = SpellCheckerPlugin::instance()->spellChecker()->buildSuggestList(word);
+	SuggestionWordList = m_spellChecker->buildSuggestList(word);
 }
 
 void Suggester::addWordListToMenu(const QTextCursor &textCursor)
@@ -102,8 +96,8 @@ bool Suggester::eventFilter(QObject *object, QEvent *event)
 			textCursor.select(QTextCursor::WordUnderCursor);
 
 			if ((!textCursor.selectedText().isEmpty()) &&
-					(!SpellCheckerPlugin::instance()->spellChecker()->checkWord(textCursor.selectedText())) &&
-					 (SpellcheckerConfiguration::instance()->suggester()))
+					(!m_spellChecker->checkWord(textCursor.selectedText())) &&
+					 (m_spellcheckerConfiguration->suggester()))
 			{
 				buildSuggestList(textCursor.selectedText());
 				clearWordMenu();

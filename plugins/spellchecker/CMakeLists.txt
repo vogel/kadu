@@ -7,16 +7,12 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	configuration/spellchecker-configuration.cpp
 	highlighter.cpp
+	spellchecker-configuration-ui-handler.cpp
+	spellchecker-module.cpp
+	spellchecker-plugin-injector-factory.cpp
+	spellchecker-plugin-object.cpp
 	spellchecker.cpp
-	spellchecker-plugin.cpp
 	suggester.cpp
-)
-
-set (MOC_SOURCES
-	highlighter.h
-	spellchecker.h
-	spellchecker-plugin.h
-	suggester.h
 )
 
 set (CONFIGURATION_FILES
@@ -84,7 +80,6 @@ endif ()
 
 kadu_plugin (spellchecker
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )

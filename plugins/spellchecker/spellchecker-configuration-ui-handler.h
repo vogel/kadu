@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,46 +19,47 @@
 
 #pragma once
 
-#include <QtCore/QList>
+#include "configuration/gui/configuration-ui-handler.h"
+
+#include "misc/memory.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtCore/QStringList>
-#include <QtGui/QTextCursor>
-#include <QtWidgets/QAction>
 #include <injeqt/injeqt.h>
 
-class ActionDescription;
 class SpellcheckerConfiguration;
 class SpellChecker;
 
-class Suggester : public QObject
+class QListWidget;
+class QListWidgetItem;
+
+class SpellcheckerConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE explicit SpellcheckerConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~SpellcheckerConfigurationUiHandler();
+
+protected:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+	virtual void mainConfigurationWindowDestroyed() override;
+	virtual void mainConfigurationWindowApplied() override;
+
+private:
 	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
 	QPointer<SpellChecker> m_spellChecker;
 
-	QStringList SuggestionWordList;
-	QTextCursor CurrentTextSelection;
-	QList<ActionDescription *> SuggestActions;
-
-	void buildSuggestList(const QString &word);
-	void addWordListToMenu(const QTextCursor &textCursor);
+	owned_qptr<QListWidget> m_availableLanguagesList;
+	owned_qptr<QListWidget> m_checkedLanguagesList;
 
 private slots:
 	INJEQT_SETTER void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
 	INJEQT_SETTER void setSpellChecker(SpellChecker *spellChecker);
 
-protected:
-	virtual bool eventFilter(QObject *object, QEvent *event);
-
-public:
-	Q_INVOKABLE explicit Suggester(QObject *parent = nullptr);
-	virtual ~Suggester();
-
-	void clearWordMenu();
-
-public slots:
-	void replaceWithSuggest(QAction *sender);
+	void configForward();
+	void configBackward();
+	void configForward2(QListWidgetItem *item);
+	void configBackward2(QListWidgetItem *item);
 
 };

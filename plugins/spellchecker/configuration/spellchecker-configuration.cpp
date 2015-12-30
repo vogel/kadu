@@ -20,40 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "spellchecker-configuration.h"
+
+#include "spellchecker.h"
+
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 
-#include "spellchecker-plugin.h"
-#include "spellchecker.h"
-
-#include "spellchecker-configuration.h"
-
-SpellcheckerConfiguration *SpellcheckerConfiguration::Instance = 0;
-
-SpellcheckerConfiguration *SpellcheckerConfiguration::instance()
-{
-	return Instance;
-}
-
-void SpellcheckerConfiguration::createInstance()
-{
-	if (Instance)
-		return;
-
-	Instance = new SpellcheckerConfiguration();
-	Instance->configurationUpdated();
-	Instance->FullyLoaded = true;
-}
-
-void SpellcheckerConfiguration::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-SpellcheckerConfiguration::SpellcheckerConfiguration() :
-		FullyLoaded{},
+SpellcheckerConfiguration::SpellcheckerConfiguration(QObject *parent) :
+		QObject{parent},
 		Bold{},
 		Italic{},
 		Underline{},
@@ -63,11 +39,16 @@ SpellcheckerConfiguration::SpellcheckerConfiguration() :
 		SuggesterWordCount{}
 {
 	createDefaultConfiguration();
+	configurationUpdated();
 }
 
 SpellcheckerConfiguration::~SpellcheckerConfiguration()
 {
+}
 
+void SpellcheckerConfiguration::setSpellChecker(SpellChecker *spellChecker)
+{
+	m_spellChecker = spellChecker;
 }
 
 void SpellcheckerConfiguration::createDefaultConfiguration()
@@ -98,7 +79,7 @@ void SpellcheckerConfiguration::configurationUpdated()
 	auto checked = checkedEntry == "empty" ? QStringList{} : checkedEntry.split(',', QString::SkipEmptyParts);
 	int suggesterWordCount = Application::instance()->configuration()->deprecatedApi()->readNumEntry("ASpell", "SuggesterWordCount");
 
-	if (FullyLoaded && bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
+	if (bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
 			caseSensivity == Case && suggester == Suggester && color == Color &&
 			checked == Checked && suggesterWordCount == SuggesterWordCount)
 		return;
@@ -113,8 +94,11 @@ void SpellcheckerConfiguration::configurationUpdated()
 	Checked = checked;
 	SuggesterWordCount = suggesterWordCount;
 
-	SpellCheckerPlugin::instance()->spellChecker()->buildMarkTag();
-	SpellCheckerPlugin::instance()->spellChecker()->buildCheckers();
+	if (m_spellChecker)
+	{
+		m_spellChecker->buildMarkTag();
+		m_spellChecker->buildCheckers();
+	}
 }
 
 void SpellcheckerConfiguration::setChecked(const QStringList &checked)
@@ -124,3 +108,5 @@ void SpellcheckerConfiguration::setChecked(const QStringList &checked)
 	else
 		Application::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", checked.join(","));
 }
+
+#include "moc_spellchecker-configuration.cpp"

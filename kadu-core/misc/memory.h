@@ -56,6 +56,8 @@ public:
 	{
 		assert(qobject->parent() == nullptr);
 	}
+
+	operator T*() const { return this->get(); }
 };
 
 template<typename T, typename ...Args>
@@ -93,6 +95,8 @@ public:
 	{
 		assert(qobject->parent() != nullptr);
 	}
+
+	operator T*() const { return this->get(); }
 };
 
 template<typename T, typename ...Args>

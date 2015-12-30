@@ -22,16 +22,20 @@
 
 #pragma once
 
-#include <QtCore/QMap>
-#include <QtCore/QString>
-
 #include "configuration/gui/configuration-ui-handler.h"
+
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <QtCore/QString>
+#include <injeqt/injeqt.h>
 
 class QListWidget;
 class QListWidgetItem;
 
 class ChatWidget;
 class ChatWidgetRepository;
+class SpellcheckerConfiguration;
+class Suggester;
 
 #if defined(HAVE_ASPELL)
 struct AspellSpeller;
@@ -39,11 +43,9 @@ struct AspellConfig;
 #elif defined(HAVE_ENCHANT)
 typedef struct str_enchant_broker EnchantBroker;
 typedef struct str_enchant_dict EnchantDict;
-#elif defined(Q_OS_MAC)
-class MacSpellChecker;
 #endif
 
-class SpellChecker : public QObject, public ConfigurationUiHandler
+class SpellChecker : public QObject
 {
 	Q_OBJECT
 
@@ -52,51 +54,40 @@ public:
 	typedef QMap<QString, AspellSpeller *> Checkers;
 #elif defined(HAVE_ENCHANT)
 	typedef QMap<QString, EnchantDict *> Checkers;
-#elif defined(Q_OS_MAC)
-	typedef QMap<QString, MacSpellChecker *> Checkers;
-#endif // Q_OS_MAC
-
-private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-
-#if defined(HAVE_ASPELL)
-	AspellConfig *SpellConfig;
-#elif defined(HAVE_ENCHANT)
-	EnchantBroker *Broker;
-#elif defined(Q_OS_MAC)
-	MacSpellChecker *MacSpellCheck;
 #endif
 
-	Checkers MyCheckers;
-
-	QListWidget *AvailableLanguagesList;
-	QListWidget *CheckedLanguagesList;
-
-public:
-	explicit SpellChecker(QObject *parent = 0);
+	Q_INVOKABLE explicit SpellChecker(QObject *parent = nullptr);
 	virtual ~SpellChecker();
 
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-
-	QStringList notCheckedLanguages();
-	QStringList checkedLanguages();
-	bool addCheckedLang(const QString &name);
-	void removeCheckedLang(const QString &name);
 	void buildMarkTag();
 	void buildCheckers();
 	bool checkWord(const QString &word);
 	QStringList buildSuggestList(const QString &word);
 
+	QStringList notCheckedLanguages() const;
+	QStringList checkedLanguages() const;
+	bool addCheckedLang(const QString &name);
+	void removeCheckedLang(const QString &name);
+
 public slots:
 	void chatWidgetAdded(ChatWidget *chatWidget);
-	void configForward();
-	void configBackward();
-	void configForward2(QListWidgetItem *item);
-	void configBackward2(QListWidgetItem *item);
 
-protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
+	QPointer<Suggester> m_suggester;
+
+#if defined(HAVE_ASPELL)
+	AspellConfig *SpellConfig;
+#elif defined(HAVE_ENCHANT)
+	EnchantBroker *Broker;
+#endif
+
+	Checkers MyCheckers;
+
+private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SETTER void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
+	INJEQT_SETTER void setSuggester(Suggester *suggester);
 
 };

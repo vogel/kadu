@@ -19,44 +19,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPELLCHECKER_CONFIGURATION_H
-#define SPELLCHECKER_CONFIGURATION_H
-
-#include <QtCore/QStringList>
-#include <QtGui/QColor>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
-class SpellcheckerConfiguration : private ConfigurationAwareObject
+#include <QtCore/QPointer>
+#include <QtCore/QStringList>
+#include <QtGui/QColor>
+#include <injeqt/injeqt.h>
+
+class SpellChecker;
+
+class SpellcheckerConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(SpellcheckerConfiguration)
-
-	static SpellcheckerConfiguration *Instance;
-
-	bool FullyLoaded;
-	bool Bold;
-	bool Italic;
-	bool Underline;
-	bool Accents;
-	bool Case;
-	bool Suggester;
-	QColor Color;
-	QStringList Checked;
-	int SuggesterWordCount;
-
-	explicit SpellcheckerConfiguration();
-	virtual ~SpellcheckerConfiguration();
-
-	void createDefaultConfiguration();
-
-protected:
-	virtual void configurationUpdated();
+	Q_OBJECT
 
 public:
-	static SpellcheckerConfiguration *instance();
-
-	static void createInstance();
-	static void destroyInstance();
+	Q_INVOKABLE explicit SpellcheckerConfiguration(QObject *parent = nullptr);
+	virtual ~SpellcheckerConfiguration();
 
 	bool bold() const { return Bold; }
 	bool italic() const { return Italic; }
@@ -70,6 +50,25 @@ public:
 
 	void setChecked(const QStringList &checked);
 
-};
+protected:
+	virtual void configurationUpdated();
 
-#endif /* SPELLCHECKER_CONFIGURATION_H */
+private:
+	QPointer<SpellChecker> m_spellChecker;
+
+	bool Bold;
+	bool Italic;
+	bool Underline;
+	bool Accents;
+	bool Case;
+	bool Suggester;
+	QColor Color;
+	QStringList Checked;
+	int SuggesterWordCount;
+
+	void createDefaultConfiguration();
+
+private slots:
+	INJEQT_SETTER void setSpellChecker(SpellChecker *spellChecker);
+
+};
