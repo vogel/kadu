@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,33 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDLE_PLUGIN_H
-#define IDLE_PLUGIN_H
+#pragma once
 
-#include "misc/memory.h"
-#include "plugin/plugin-root-component.h"
+#include "plugin/plugin-injector-factory.h"
 
-#include "idle_exports.h"
-
-class Idle;
-
-class IDLEAPI IdlePlugin : public PluginRootComponent
+class IdlePluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	virtual ~IdlePlugin();
+	explicit IdlePluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~IdlePluginInjectorFactory();
 
-	virtual bool init();
-	virtual void done();
-
-	Idle * idle() const;
-
-private:
-	owned_qptr<Idle> m_idle;
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };
-
-#endif // IDLE_PLUGIN_H

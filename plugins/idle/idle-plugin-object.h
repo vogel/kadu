@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,28 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "idle.h"
+#pragma once
 
-#include "idle-plugin.h"
+#include "idle-exports.h"
 
-IdlePlugin::~IdlePlugin()
+#include "plugin/plugin-object.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Idle;
+
+class IDLEAPI IdlePluginObject : public PluginObject
 {
-}
+	Q_OBJECT
 
-bool IdlePlugin::init()
-{
-	m_idle = make_owned<Idle>(this);
-	return true;
-}
+public:
+	Q_INVOKABLE explicit IdlePluginObject(QObject *parent = nullptr);
+	virtual ~IdlePluginObject();
 
-void IdlePlugin::done()
-{
-	m_idle.reset();
-}
+	virtual void init();
+	virtual void done();
 
-Idle * IdlePlugin::idle() const
-{
-	return m_idle.get();
-}
+	Idle * idle() const;
 
-#include "moc_idle-plugin.cpp"
+private:
+	QPointer<Idle> m_idle;
+
+private slots:
+	INJEQT_SETTER void setIdle(Idle *idle);
+
+};

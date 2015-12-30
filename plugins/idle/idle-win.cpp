@@ -98,3 +98,5 @@ long Idle::secondsIdle()
 
 	return (GetTickCount() - i) / 1000;
 }
+
+#include "moc_idle.cpp"

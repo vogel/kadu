@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,21 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "idle-module.h"
 
-#include "idle-exports.h"
+#include "idle-plugin-object.h"
+#include "idle.h"
 
-#include <QtCore/QObject>
-
-class IDLEAPI Idle : public QObject
+IdleModule::IdleModule()
 {
-	Q_OBJECT
-
-public:
-	Q_INVOKABLE explicit Idle(QObject *parent = nullptr);
-	virtual ~Idle();
-
-	long secondsIdle();
-
-};
-
+	add_type<Idle>();
+	add_type<IdlePluginObject>();
+}

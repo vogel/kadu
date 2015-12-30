@@ -39,7 +39,7 @@
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
-#include "plugins/idle/idle-plugin.h"
+#include "plugins/idle/idle-plugin-object.h"
 #include "plugins/idle/idle.h"
 
 #include "autoaway.h"
@@ -87,7 +87,7 @@ void Autoaway::setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusCha
 void Autoaway::setPluginRepository(PluginRepository *pluginRepository)
 {
 	m_pluginRepository = pluginRepository;
-	m_idle = m_pluginRepository->pluginRootComponent<IdlePlugin>("idle")->idle();
+	m_idle = m_pluginRepository->pluginObject<IdlePluginObject>("idle")->idle();
 }
 
 AutoawayStatusChanger::ChangeStatusTo Autoaway::changeStatusTo()

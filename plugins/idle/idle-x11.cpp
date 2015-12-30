@@ -65,3 +65,5 @@ long Idle::secondsIdle()
 
 	return ss_info->idle / 1000;
 }
+
+#include "moc_idle.cpp"
