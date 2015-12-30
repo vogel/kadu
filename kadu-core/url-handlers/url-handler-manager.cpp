@@ -44,10 +44,10 @@ UrlHandlerManager::UrlHandlerManager(QObject *parent) :
 
 	// NOTE: StandardUrlHandler has to be the first one to fix bug #1894
 	standardUrlHandler = new StandardUrlHandler();
-	registerUrlHandler("Standard", standardUrlHandler);
+	registerUrlHandler(standardUrlHandler);
 
 	mailUrlHandler = new MailUrlHandler();
-	registerUrlHandler("Mail", mailUrlHandler);
+	registerUrlHandler(mailUrlHandler);
 	registerUrlClipboardTransformer();
 }
 
@@ -62,30 +62,16 @@ UrlHandlerManager::~UrlHandlerManager()
 	Core::instance()->domProcessorService()->unregisterVisitorProvider(MailUrlVisitorProvider);
 	delete MailUrlVisitorProvider;
 	MailUrlVisitorProvider = 0;
-
-	qDeleteAll(RegisteredHandlersByPriority);
-	RegisteredHandlersByPriority.clear();
-	RegisteredHandlers.clear();
 }
 
-void UrlHandlerManager::registerUrlHandler(const QString &name, UrlHandler *handler)
+void UrlHandlerManager::registerUrlHandler(UrlHandler *handler)
 {
-	if (0 != handler && !RegisteredHandlers.contains(name))
-	{
-		RegisteredHandlers[name] = handler;
-		// TODO: some day it might be useful to add priority to UrlHandler class like in StatusChanger
-		RegisteredHandlersByPriority.append(handler);
-	}
+	RegisteredHandlers.append(handler);
 }
 
-void UrlHandlerManager::unregisterUrlHandler(const QString &name)
+void UrlHandlerManager::unregisterUrlHandler(UrlHandler *handler)
 {
-	if (RegisteredHandlers.contains(name))
-	{
-		UrlHandler *handler = RegisteredHandlers.take(name);
-		RegisteredHandlersByPriority.removeAll(handler);
-		delete handler;
-	}
+	RegisteredHandlers.removeAll(handler);
 }
 
 void UrlHandlerManager::registerUrlClipboardTransformer()
@@ -102,7 +88,7 @@ void UrlHandlerManager::unregisterUrlClipboardTransformer()
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {
-	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
+	foreach (UrlHandler *handler, RegisteredHandlers)
 	{
 		if (handler->isUrlValid(url))
 		{

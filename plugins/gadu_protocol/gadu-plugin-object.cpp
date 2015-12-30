@@ -97,7 +97,7 @@ void GaduPluginObject::init()
 	gg_proxy_password = 0;
 
 	m_protocolsManager->registerProtocolFactory(m_gaduProtocolFactory);
-	m_urlHandlerManager->registerUrlHandler("Gadu", m_gaduUrlHandler);
+	m_urlHandlerManager->registerUrlHandler(m_gaduUrlHandler);
 	m_domProcessorService->registerVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
 
 	auto importer = make_not_owned<GaduImporter>();
@@ -112,7 +112,7 @@ void GaduPluginObject::done()
 {
 	MenuInventory::instance()->unregisterProtocolMenuManager(m_gaduProtocolMenuManager);
 	m_domProcessorService->unregisterVisitorProvider(m_gaduUrlDomVisitorProvider);
-	m_urlHandlerManager->unregisterUrlHandler("Gadu");
+	m_urlHandlerManager->unregisterUrlHandler(m_gaduUrlHandler);
 	m_protocolsManager->unregisterProtocolFactory(m_gaduProtocolFactory);
 }
 

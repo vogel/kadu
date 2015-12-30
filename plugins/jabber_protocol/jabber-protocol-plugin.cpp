@@ -60,7 +60,8 @@ bool JabberProtocolPlugin::init()
 	Core::instance()->protocolsManager()->registerProtocolFactory(JabberProtocolFactory::instance());
 	Core::instance()->protocolsManager()->registerProtocolFactory(GTalkProtocolFactory::instance());
 
-	Core::instance()->urlHandlerManager()->registerUrlHandler("Jabber", new JabberUrlHandler());
+	m_urlHandler = new JabberUrlHandler();
+	Core::instance()->urlHandlerManager()->registerUrlHandler(m_urlHandler);
 
 	// install before mail handler
 	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
@@ -71,7 +72,7 @@ bool JabberProtocolPlugin::init()
 
 void JabberProtocolPlugin::done()
 {
-	Core::instance()->urlHandlerManager()->unregisterUrlHandler("Jabber");
+	Core::instance()->urlHandlerManager()->unregisterUrlHandler(m_urlHandler);
 
 	Core::instance()->domProcessorService()->unregisterVisitorProvider(UrlDomVisitorProvider);
 	delete UrlDomVisitorProvider;

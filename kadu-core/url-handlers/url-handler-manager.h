@@ -23,7 +23,6 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
@@ -46,8 +45,8 @@ public:
 	Q_INVOKABLE explicit UrlHandlerManager(QObject *parent = nullptr);
 	virtual ~UrlHandlerManager();
 
-	void registerUrlHandler(const QString &name, UrlHandler *handler);
-	void unregisterUrlHandler(const QString &name);
+	void registerUrlHandler(UrlHandler *handler);
+	void unregisterUrlHandler(UrlHandler *handler);
 
 	void openUrl(const QByteArray &url, bool disableMenu = false);
 
@@ -59,8 +58,7 @@ public:
 	const QRegExp & urlRegExp();
 
 private:
-	QMap<QString, UrlHandler *> RegisteredHandlers;
-	QList<UrlHandler *> RegisteredHandlersByPriority;
+	QList<UrlHandler *> RegisteredHandlers;
 
 	StandardUrlDomVisitorProvider *StandardUrlVisitorProvider;
 	MailUrlDomVisitorProvider *MailUrlVisitorProvider;

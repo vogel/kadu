@@ -26,6 +26,7 @@
 #include "plugin/plugin-root-component.h"
 
 class JabberUrlDomVisitorProvider;
+class JabberUrlHandler;
 
 class JabberProtocolPlugin : public PluginRootComponent
 {
@@ -34,6 +35,7 @@ class JabberProtocolPlugin : public PluginRootComponent
 	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 	JabberUrlDomVisitorProvider *UrlDomVisitorProvider;
+	JabberUrlHandler *m_urlHandler;
 
 public:
 	virtual ~JabberProtocolPlugin();
