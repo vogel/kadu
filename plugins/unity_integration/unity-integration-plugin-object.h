@@ -17,13 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message-module.h"
+#pragma once
 
-#include "message/message-filter-service.h"
-#include "message/unread-message-repository.h"
+#include "plugin/plugin-object.h"
 
-MessageModule::MessageModule()
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class UnityIntegration;
+
+class UnityIntegrationPluginObject : public PluginObject
 {
-	add_type<MessageFilterService>();
-	add_type<UnreadMessageRepository>();
-}
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit UnityIntegrationPluginObject(QObject *parent = nullptr);
+	virtual ~UnityIntegrationPluginObject();
+
+	virtual void init();
+	virtual void done();
+
+private:
+	QPointer<UnityIntegration> m_unityIntegration;
+
+private slots:
+	INJEQT_SETTER void setUnityIntegration(UnityIntegration *unityIntegration);
+
+};

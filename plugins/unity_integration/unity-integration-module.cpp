@@ -17,13 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message-module.h"
+#include "unity-integration-module.h"
 
-#include "message/message-filter-service.h"
-#include "message/unread-message-repository.h"
+#include "unity-integration-plugin-object.h"
+#include "unity-integration.h"
 
-MessageModule::MessageModule()
+UnityIntegrationModule::UnityIntegrationModule()
 {
-	add_type<MessageFilterService>();
-	add_type<UnreadMessageRepository>();
+	add_type<UnityIntegrationPluginObject>();
+	add_type<UnityIntegration>();
 }

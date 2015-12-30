@@ -11,8 +11,10 @@ pkg_search_module (LIBUNITY REQUIRED unity)
 set (SOURCES
 	libqunity/qunity.cpp
 
+	unity-integration-module.cpp
+	unity-integration-plugin-injector-factory.cpp
+	unity-integration-plugin-object.cpp
 	unity-integration.cpp
-	unity-integration-plugin.cpp
 )
 
 link_directories (${LIBUNITY_LIBRARY_DIRS})

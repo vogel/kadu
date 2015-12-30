@@ -17,13 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message-module.h"
+#include "unity-integration-plugin-injector-factory.h"
 
-#include "message/message-filter-service.h"
-#include "message/unread-message-repository.h"
+#include "unity-integration-module.h"
 
-MessageModule::MessageModule()
+#include <injeqt/injector.h>
+
+UnityIntegrationPluginInjectortFactory::UnityIntegrationPluginInjectortFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
-	add_type<MessageFilterService>();
-	add_type<UnreadMessageRepository>();
 }
+
+UnityIntegrationPluginInjectortFactory::~UnityIntegrationPluginInjectortFactory()
+{
+}
+
+injeqt::injector UnityIntegrationPluginInjectortFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	modules.emplace_back(make_unique<UnityIntegrationModule>());
+
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
+
+#include "moc_unity-integration-plugin-injector-factory.cpp"

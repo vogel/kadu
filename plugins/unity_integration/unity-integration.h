@@ -21,6 +21,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QUnity;
 class FileTransferManager;
@@ -31,11 +32,8 @@ class UnityIntegration : public QObject
 	Q_OBJECT
 
 public:
-	explicit UnityIntegration(QObject *parent = nullptr);
+	Q_INVOKABLE explicit UnityIntegration(QObject *parent = nullptr);
 	virtual ~UnityIntegration();
-
-	void setFileTransferManager(FileTransferManager *fileTransferManager);
-	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 private:
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
@@ -43,6 +41,9 @@ private:
 	QUnity *m_unity;
 
 private slots:
+	INJEQT_SETTER void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SETTER void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+
 	void fileTransferProgressChanged(int progress);
 	void unreadMessagesChanged();
 

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,28 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "unity-integration-plugin.h"
+#pragma once
 
-#include "unity-integration.h"
+#include "plugin/plugin-injector-factory.h"
 
-#include "core/core.h"
-
-UnityIntegrationPlugin::~UnityIntegrationPlugin()
+class UnityIntegrationPluginInjectortFactory : public PluginInjectorFactory
 {
-}
+	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
-bool UnityIntegrationPlugin::init()
-{
-	m_unityIntegration.reset(new UnityIntegration{});
-	m_unityIntegration->setFileTransferManager(Core::instance()->fileTransferManager());
-	m_unityIntegration->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());
+public:
+	explicit UnityIntegrationPluginInjectortFactory(QObject *parent = nullptr);
+	virtual ~UnityIntegrationPluginInjectortFactory();
 
-	return true;
-}
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
-void UnityIntegrationPlugin::done()
-{
-	m_unityIntegration.reset();
-}
-
-#include "moc_unity-integration-plugin.cpp"
+};

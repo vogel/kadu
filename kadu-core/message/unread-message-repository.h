@@ -47,10 +47,9 @@ class SortedMessages;
 class KADUAPI UnreadMessageRepository : public QObject, public StorableObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(UnreadMessageRepository)
 
 public:
-	explicit UnreadMessageRepository(QObject *parent = nullptr);
+	Q_INVOKABLE explicit UnreadMessageRepository(QObject *parent = nullptr);
 	virtual ~UnreadMessageRepository();
 
 	virtual StorableObject * storageParent() { return {}; }

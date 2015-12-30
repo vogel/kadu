@@ -192,7 +192,6 @@ Core::Core(injeqt::injector &injector) :
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
 		CurrentChatConfigurationWidgetFactoryRepository{nullptr},
-		CurrentUnreadMessageRepository{nullptr},
 		CurrentChatWidgetActions{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
@@ -497,7 +496,7 @@ void Core::init()
 	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
 	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
-	CurrentUnreadMessageRepository->ensureLoaded();
+	unreadMessageRepository()->ensureLoaded();
 	AvatarManager::instance(); // initialize that
 
 #if WITH_LIBINDICATE_QT
@@ -610,7 +609,6 @@ void Core::runServices()
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 	CurrentChatConfigurationWidgetFactoryRepository = new ChatConfigurationWidgetFactoryRepository(this);
-	CurrentUnreadMessageRepository = new UnreadMessageRepository(this);
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
@@ -626,7 +624,7 @@ void Core::runServices()
 	CurrentChatWidgetMessageHandler->setChatWidgetManager(m_injector.get<ChatWidgetManager>());
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
 	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
-	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
+	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(m_injector.get<UnreadMessageRepository>());
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
 
@@ -814,7 +812,7 @@ ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() co
 
 UnreadMessageRepository * Core::unreadMessageRepository() const
 {
-	return CurrentUnreadMessageRepository;
+	return m_injector.get<UnreadMessageRepository>();
 }
 
 RosterNotifier * Core::rosterNotifier() const

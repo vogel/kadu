@@ -17,13 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message-module.h"
+#pragma once
 
-#include "message/message-filter-service.h"
-#include "message/unread-message-repository.h"
+#include <injeqt/module.h>
 
-MessageModule::MessageModule()
+class UnityIntegrationModule : public injeqt::module
 {
-	add_type<MessageFilterService>();
-	add_type<UnreadMessageRepository>();
-}
+
+public:
+	UnityIntegrationModule();
+	virtual ~UnityIntegrationModule() {}
+
+};

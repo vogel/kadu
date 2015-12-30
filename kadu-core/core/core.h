@@ -117,7 +117,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;
 	ChatConfigurationWidgetFactoryRepository *CurrentChatConfigurationWidgetFactoryRepository;
-	UnreadMessageRepository *CurrentUnreadMessageRepository;
 	ChatWidgetActions *CurrentChatWidgetActions;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
 

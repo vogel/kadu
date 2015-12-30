@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,29 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "unity-integration-plugin-object.h"
 
+#include "unity-integration.h"
 
-#include "plugin/plugin-root-component.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
-class UnityIntegration;
-
-class UnityIntegrationPlugin : public PluginRootComponent
+UnityIntegrationPluginObject::UnityIntegrationPluginObject(QObject *parent) :
+		PluginObject{parent}
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+}
 
-public:
-	virtual ~UnityIntegrationPlugin();
+UnityIntegrationPluginObject::~UnityIntegrationPluginObject()
+{
+}
 
-	virtual bool init();
-	virtual void done();
+void UnityIntegrationPluginObject::setUnityIntegration(UnityIntegration *unityIntegration)
+{
+	m_unityIntegration = unityIntegration;
+}
 
-private:
-	QScopedPointer<UnityIntegration> m_unityIntegration;
+void UnityIntegrationPluginObject::init()
+{
+}
 
-};
+void UnityIntegrationPluginObject::done()
+{
+}
+
+#include "moc_unity-integration-plugin-object.cpp"
