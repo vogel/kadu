@@ -76,7 +76,8 @@ void ConnectionErrorNotification::unregisterEvent()
 	Parser::unregisterObjectTag("errorServer");
 	Parser::unregisterObjectTag("error");
 
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
+	if (Core::instance())
+		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 }
 
 void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)

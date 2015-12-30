@@ -55,11 +55,13 @@ UrlHandlerManager::~UrlHandlerManager()
 {
 	unregisterUrlClipboardTransformer();
 
-	Core::instance()->domProcessorService()->unregisterVisitorProvider(StandardUrlVisitorProvider);
+	if (Core::instance())
+		Core::instance()->domProcessorService()->unregisterVisitorProvider(StandardUrlVisitorProvider);
 	delete StandardUrlVisitorProvider;
 	StandardUrlVisitorProvider = 0;
 
-	Core::instance()->domProcessorService()->unregisterVisitorProvider(MailUrlVisitorProvider);
+	if (Core::instance())
+		Core::instance()->domProcessorService()->unregisterVisitorProvider(MailUrlVisitorProvider);
 	delete MailUrlVisitorProvider;
 	MailUrlVisitorProvider = 0;
 }
@@ -82,7 +84,8 @@ void UrlHandlerManager::registerUrlClipboardTransformer()
 
 void UrlHandlerManager::unregisterUrlClipboardTransformer()
 {
-	Core::instance()->clipboardHtmlTransformerService()->unregisterTransformer(ClipboardTransformer.data());
+	if (Core::instance())
+		Core::instance()->clipboardHtmlTransformerService()->unregisterTransformer(ClipboardTransformer.data());
 	ClipboardTransformer.reset();
 }
 
