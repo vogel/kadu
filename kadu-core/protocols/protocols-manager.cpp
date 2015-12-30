@@ -30,20 +30,8 @@
 
 #include "protocols-manager.h"
 
-ProtocolsManager * ProtocolsManager::Instance = 0;
-
-ProtocolsManager * ProtocolsManager::instance()
-{
-	if (0 == Instance)
-	{
-		Instance = new ProtocolsManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-ProtocolsManager::ProtocolsManager()
+ProtocolsManager::ProtocolsManager(QObject *parent) :
+		QObject{parent}
 {
 }
 

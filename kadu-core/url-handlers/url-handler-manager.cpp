@@ -33,17 +33,8 @@
 
 #include "url-handler-manager.h"
 
-UrlHandlerManager * UrlHandlerManager::Instance = 0;
-
-UrlHandlerManager * UrlHandlerManager::instance()
-{
-	if (0 == Instance)
-		Instance = new UrlHandlerManager();
-
-	return Instance;
-}
-
-UrlHandlerManager::UrlHandlerManager()
+UrlHandlerManager::UrlHandlerManager(QObject *parent) :
+		QObject{parent}
 {
 	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(StandardUrlVisitorProvider, 0);

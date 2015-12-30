@@ -80,6 +80,8 @@ public:
 	typedef unsigned int UinType;
 
 private:
+	QPointer<GaduServersManager> m_gaduServersManager;
+
 	ProtocolGaduConnection *Connection;
 
 	GaduAvatarService *CurrentAvatarService;
@@ -141,7 +143,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	GaduProtocol(Account account, ProtocolFactory *factory);
+	explicit GaduProtocol(GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }

@@ -115,6 +115,7 @@
 #include "plugin/state/plugin-state-storage.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/protocols-manager.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "roster/roster-notifier.h"
@@ -678,6 +679,8 @@ void Core::runServices()
 	ContactManager::instance()->init();
 
 	configurationUiHandlerRepository()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
+
+	protocolsManager()->init();
 }
 
 void Core::runGuiServices()
@@ -929,6 +932,16 @@ StatusChangerManager * Core::statusChangerManager() const
 	return m_injector.get<StatusChangerManager>();
 }
 
+ProtocolsManager * Core::protocolsManager() const
+{
+	return m_injector.get<ProtocolsManager>();
+}
+
+UrlHandlerManager * Core::urlHandlerManager() const
+{
+	return m_injector.get<UrlHandlerManager>();
+}
+
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)
@@ -958,7 +971,7 @@ void Core::executeRemoteCommand(const QString &remoteCommand)
 	if ("activate" == remoteCommand)
 		_activateWindow(MainWindowProvider->provide());
 	else
-		UrlHandlerManager::instance()->openUrl(remoteCommand.toUtf8(), true);
+		urlHandlerManager()->openUrl(remoteCommand.toUtf8(), true);
 }
 
 void Core::quit()

@@ -20,32 +20,12 @@
 
 #include "gadu-id-validator.h"
 
-QValidator *GaduIdValidator::Instance = 0;
-
-void GaduIdValidator::createInstance()
+owned_qptr<LongValidator> createOwnedGaduIdValidator(QObject* parent)
 {
-	if (!Instance)
-		Instance = new GaduIdValidator();
+	return make_owned<LongValidator>(1LL, 3999999999LL, parent);
 }
 
-void GaduIdValidator::destroyInstance()
+not_owned_qptr<LongValidator> createNotOwnedGaduIdValidator()
 {
-	delete Instance;
-	Instance = 0;
+	return make_not_owned<LongValidator>(1LL, 3999999999LL);
 }
-
-QValidator * GaduIdValidator::instance()
-{
-	return Instance;
-}
-
-GaduIdValidator::GaduIdValidator(QObject *parent) :
-		LongValidator(1LL, 3999999999LL, parent)
-{
-}
-
-GaduIdValidator::~GaduIdValidator()
-{
-}
-
-#include "moc_gadu-id-validator.cpp"

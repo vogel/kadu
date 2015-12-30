@@ -45,9 +45,6 @@ class GaduConnection : public QObject
 	friend class GaduWritableSessionToken;
 
 protected:
-	explicit GaduConnection(QObject *parent = 0) : QObject(parent) {}
-	virtual ~GaduConnection() {}
-
 	/**
 	 * @short Return current libgadu session.
 	 * @author Rafał 'Vogel' Malinowski
@@ -70,6 +67,9 @@ protected:
 	virtual bool endWrite() = 0;
 
 public:
+	explicit GaduConnection(QObject *parent = nullptr);
+	virtual ~GaduConnection();
+
 	/**
 	 * @short Return true if connection is valid and has session.
 	 * @author Rafał 'Vogel' Malinowski

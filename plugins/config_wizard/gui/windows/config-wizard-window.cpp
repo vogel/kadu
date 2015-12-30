@@ -20,6 +20,7 @@
 
 #include <QtCore/QVariant>
 
+#include "core/core.h"
 #include "debug.h"
 
 #include "gui/widgets/config-wizard-choose-network-page.h"
@@ -87,7 +88,7 @@ void ConfigWizardWindow::setPage(int id, ConfigWizardPage *page)
 
 bool ConfigWizardWindow::goToChooseNetwork() const
 {
-	return ProtocolsManager::instance()->count() > 0;
+	return Core::instance()->protocolsManager()->count() > 0;
 }
 
 bool ConfigWizardWindow::goToAccountSetUp() const

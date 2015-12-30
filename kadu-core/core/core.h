@@ -85,6 +85,7 @@ class PluginDependencyHandler;
 class PluginRepository;
 class PluginStateManager;
 class PluginStateService;
+class ProtocolsManager;
 class RawMessageTransformerService;
 class RosterNotifier;
 class RosterReplacer;
@@ -92,6 +93,7 @@ class SslCertificateManager;
 class StatusChangerManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
+class UrlHandlerManager;
 class WebkitMessagesViewDisplayFactory;
 class WebkitMessagesViewFactory;
 class WebkitMessagesViewHandlerFactory;
@@ -220,6 +222,8 @@ public:
 	FileTransferManager * fileTransferManager() const;
 
 	StatusChangerManager * statusChangerManager() const;
+	ProtocolsManager * protocolsManager() const;
+	UrlHandlerManager * urlHandlerManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

@@ -17,25 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_URL_DOM_VISITOR_PROVIDER_H
-#define GADU_URL_DOM_VISITOR_PROVIDER_H
+#pragma once
 
+#include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
 #include "dom/dom-visitor-provider.h"
 
 class IgnoreLinksDomVisitor;
 
-class GaduUrlDomVisitorProvider : public DomVisitorProvider
+class GaduUrlDomVisitorProvider : public QObject, public DomVisitorProvider
 {
+	Q_OBJECT
+
 	QScopedPointer<IgnoreLinksDomVisitor> IgnoreLinks;
 
 public:
-	GaduUrlDomVisitorProvider();
+	Q_INVOKABLE explicit GaduUrlDomVisitorProvider(QObject *parent = nullptr);
 	virtual ~GaduUrlDomVisitorProvider();
 
 	virtual DomVisitor * provide() const;
 
 };
-
-#endif // GADU_URL_DOM_VISITOR_PROVIDER_H

@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_SERVERS_MANAGER_H
-#define GADU_SERVERS_MANAGER_H
+#pragma once
 
 #include <QtCore/QList>
 #include <QtNetwork/QHostAddress>
@@ -28,12 +27,25 @@
 
 #include "configuration/configuration-aware-object.h"
 
-class GADUAPI GaduServersManager : public ConfigurationAwareObject
+class GADUAPI GaduServersManager : public QObject, public ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(GaduServersManager)
+	Q_OBJECT
 
 public:
 	typedef QPair<QHostAddress, int> GaduServer;
+
+	Q_INVOKABLE explicit GaduServersManager(QObject *parent = nullptr);
+	virtual ~GaduServersManager();
+
+	const QList<GaduServer> & getServersList();
+	QPair<QHostAddress, int> getServer(bool onlyTls);
+	void markServerAsGood(GaduServer server);
+	void markServerAsBad(GaduServer server);
+
+	void buildServerList();
+
+protected:
+	virtual void configurationUpdated();
 
 private:
 	static GaduServersManager * Instance;
@@ -43,29 +55,9 @@ private:
 	QList<GaduServer> GoodServers;
 	QList<GaduServer> BadServers;
 
-	GaduServersManager();
-
 	QList<GaduServer> gaduServersFromString(const QString &serverAddress);
 
 	void loadServerListFromFile(const QString &fileName);
 	void loadServerListFromString(const QString &data);
 
-protected:
-	virtual void configurationUpdated();
-
-public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static GaduServersManager * instance() { return Instance; }
-
-	const QList<GaduServer> & getServersList();
-	QPair<QHostAddress, int> getServer(bool onlyTls);
-	void markServerAsGood(GaduServer server);
-	void markServerAsBad(GaduServer server);
-
-	void buildServerList();
-
 };
-
-#endif // #ifndef GADU_SERVERS_MANAGER_H

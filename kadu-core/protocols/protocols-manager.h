@@ -1,5 +1,23 @@
-#ifndef KADU_PROTOCOLS_MANAGER_H
-#define KADU_PROTOCOLS_MANAGER_H
+/*
+ * %kadu copyright begin%
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -13,17 +31,11 @@ class KADUAPI ProtocolsManager : public QObject
 {
 	Q_OBJECT
 
-	static ProtocolsManager * Instance;
-
-	ProtocolsManager();
+public:
+	Q_INVOKABLE explicit ProtocolsManager(QObject *parent = nullptr);
 	virtual ~ProtocolsManager();
 
 	void init();
-
-	QList<ProtocolFactory *> Factories;
-
-public:
-	static ProtocolsManager * instance();
 
 	void registerProtocolFactory(ProtocolFactory *Factory);
 	void unregisterProtocolFactory(ProtocolFactory *Factory);
@@ -38,6 +50,9 @@ public:
 
 	int indexOf(ProtocolFactory *protocolFactory) { return Factories.indexOf(protocolFactory); }
 
+private:
+	QList<ProtocolFactory *> Factories;
+
 signals:
 	void protocolFactoryAboutToBeRegistered(ProtocolFactory *factory);
 	void protocolFactoryRegistered(ProtocolFactory *factory);
@@ -45,5 +60,3 @@ signals:
 	void protocolFactoryUnregistered(ProtocolFactory *factory);
 
 };
-
-#endif // KADU_PROTOCOLS_MANAGER_H

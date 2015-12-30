@@ -70,8 +70,9 @@
 
 #include "gadu-protocol.h"
 
-GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
+GaduProtocol::GaduProtocol(GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
+		m_gaduServersManager{gaduServersManager},
 		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0),
 		SecureConnection{false}
 {
@@ -317,7 +318,7 @@ void GaduProtocol::connectedToServer()
 {
 	kdebugf();
 
-	GaduServersManager::instance()->markServerAsGood(ActiveServer);
+	m_gaduServersManager->markServerAsGood(ActiveServer);
 
 	PingTimer = new QTimer(0);
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
@@ -409,7 +410,7 @@ void GaduProtocol::setupLoginParams()
 	SecureConnection = gaduAccountDetails->tlsEncryption();
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? GG_SSL_ENABLED : GG_SSL_DISABLED;
 
-	ActiveServer = GaduServersManager::instance()->getServer(1 == GaduLoginParams.tls);
+	ActiveServer = m_gaduServersManager->getServer(1 == GaduLoginParams.tls);
 
 	bool haveServer = !ActiveServer.first.isNull();
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
@@ -517,7 +518,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 	if (!GaduProtocolHelper::isConnectionErrorFatal(error))
 	{
-		GaduServersManager::instance()->markServerAsBad(ActiveServer);
+		m_gaduServersManager->markServerAsBad(ActiveServer);
 		logout();
 		connectionError();
 	}

@@ -42,7 +42,7 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 	BuddyList matchedContacts;
 	QString queryCopy(query);
 	int pos = 0;
-	if (GaduIdValidator::instance()->validate(queryCopy, pos) != QValidator::Acceptable)
+	if (createNotOwnedGaduIdValidator()->validate(queryCopy, pos) != QValidator::Acceptable)
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);

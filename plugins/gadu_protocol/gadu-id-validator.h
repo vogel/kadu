@@ -17,26 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_ID_VALIDATOR_H
-#define GADU_ID_VALIDATOR_H
+#pragma once
 
 #include "qt/long-validator.h"
 
-class GaduIdValidator : public LongValidator
-{
-	Q_OBJECT
+#include "misc/memory.h"
 
-	static QValidator *Instance;
-
-	explicit GaduIdValidator(QObject *parent = 0);
-	virtual ~GaduIdValidator();
-
-public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static QValidator * instance();
-
-};
-
-#endif // GADU_ID_VALIDATOR_H
+owned_qptr<LongValidator> createOwnedGaduIdValidator(QObject *parent);
+not_owned_qptr<LongValidator> createNotOwnedGaduIdValidator();

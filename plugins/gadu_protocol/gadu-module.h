@@ -17,31 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-protocol-menu-manager.h"
+#pragma once
 
-#include "actions/gadu-send-gift-action.h"
+#include <injeqt/module.h>
 
-#include "misc/memory.h"
-
-GaduProtocolMenuManager::GaduProtocolMenuManager(QObject *parent) :
-		QObject{parent}
+class GaduModule : public injeqt::module
 {
-	m_sendGiftAction = make_unique<GaduSendGiftAction>();
-	m_actions << m_sendGiftAction.get();
-}
 
-GaduProtocolMenuManager::~GaduProtocolMenuManager()
-{
-}
+public:
+	GaduModule();
+	virtual ~GaduModule() {}
 
-const QString GaduProtocolMenuManager::protocolName() const
-{
-	return QString{"gadu"};
-}
-
-const QList<ActionDescription *> & GaduProtocolMenuManager::protocolActions() const
-{
-	return m_actions;
-}
-
-#include "moc_gadu-protocol-menu-manager.cpp"
+};

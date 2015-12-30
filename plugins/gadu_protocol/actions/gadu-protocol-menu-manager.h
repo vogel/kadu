@@ -22,13 +22,15 @@
 #include "protocols/protocol-menu-manager.h"
 
 #include <QtCore/QList>
+#include <QtCore/QObject>
 #include <memory>
 
-class GaduProtocolMenuManager : public ProtocolMenuManager
+class GaduProtocolMenuManager : public QObject, public ProtocolMenuManager
 {
+	Q_OBJECT
 
 public:
-	explicit GaduProtocolMenuManager();
+	Q_INVOKABLE explicit GaduProtocolMenuManager(QObject *parent = nullptr);
 	virtual ~GaduProtocolMenuManager();
 
 	virtual const QList<ActionDescription *> & protocolActions() const override;

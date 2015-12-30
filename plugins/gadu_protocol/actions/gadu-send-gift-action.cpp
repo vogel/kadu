@@ -35,7 +35,7 @@
 #include "gui/actions/action.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
-#include <url-handlers/url-handler-manager.h>
+#include "url-handlers/url-handler-manager.h"
 
 GaduSendGiftAction::GaduSendGiftAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
@@ -84,7 +84,7 @@ void GaduSendGiftAction::triggered(QWidget* widget, ActionContext* context, bool
 	auto contact = context->contacts().toContact();
 	auto mainRedirect = QString{"http%3A%2F%2Fwww.gg.pl%2F%23shop%2F"};
 	auto url = QString{"https://login.gg.pl/rd_login?IMToken=%1&redirect_url=%2%3"}.arg(imTokenService->imToken(), mainRedirect, contact.id());
-	UrlHandlerManager::instance()->openUrl(url.toUtf8(), true);
+	Core::instance()->urlHandlerManager()->openUrl(url.toUtf8(), true);
 }
 
 void GaduSendGiftAction::updateActionState(Action *action)

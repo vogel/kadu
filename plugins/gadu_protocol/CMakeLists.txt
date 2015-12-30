@@ -53,6 +53,7 @@ set (SOURCES
 
 	server/gadu-avatar-downloader.cpp
 	server/gadu-avatar-uploader.cpp
+	server/gadu-connection.cpp
 	server/gadu-servers-manager.cpp
 	server/gadu-writable-session-token.cpp
 	server/protocol-gadu-connection.cpp
@@ -92,54 +93,14 @@ set (SOURCES
 
 	gadu-account-details.cpp
 	gadu-id-validator.cpp
+	gadu-module.cpp
+	gadu-plugin-injector-factory.cpp
+	gadu-plugin-object.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
-	gadu-protocol-plugin.cpp
 	gadu-status-adapter.cpp
 	gadu-url-dom-visitor-provider.cpp
 	gadu-url-handler.cpp
-)
-
-set (MOC_SOURCES
-	gui/widgets/gadu-add-account-widget.h
-	gui/widgets/gadu-contact-personal-info-widget.h
-	gui/widgets/gadu-edit-account-widget.h
-	gui/widgets/gadu-personal-info-widget.h
-
-	helpers/formatted-string-image-key-received-visitor.h
-	helpers/gadu-importer.h
-
-	oauth/oauth-authorization.h
-	oauth/oauth-authorization-chain.h
-	oauth/oauth-manager.h
-	oauth/oauth-token-fetcher.h
-
-	server/gadu-avatar-downloader.h
-	server/gadu-avatar-uploader.h
-	server/gadu-connection.h
-	server/protocol-gadu-connection.h
-
-	services/gadu-avatar-service.h
-	services/gadu-chat-image-service.h
-	services/gadu-chat-service.h
-	services/gadu-chat-state-service.h
-	services/gadu-contact-personal-info-service.h
-	services/gadu-file-transfer-service.h
-	services/gadu-multilogon-service.h
-	services/gadu-personal-info-service.h
-	services/gadu-roster-service.h
-	services/gadu-search-service.h
-
-	services/multilogon/gadu-multilogon-session.h
-
-	socket-notifiers/gadu-protocol-socket-notifiers.h
-	socket-notifiers/gadu-pubdir-socket-notifiers.h
-	socket-notifiers/gadu-socket-notifiers.h
-
-	gadu-id-validator.h
-	gadu-protocol-factory.h
-	gadu-protocol-plugin.h
-	gadu-url-handler.h
 )
 
 set (CONFIGURATION_FILES
@@ -168,7 +129,6 @@ endif ()
 
 kadu_plugin (gadu_protocol
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 	PLUGIN_DATA_FILES ${SERVERS_FILE}

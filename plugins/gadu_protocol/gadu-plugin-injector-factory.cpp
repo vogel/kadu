@@ -17,31 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-protocol-menu-manager.h"
+#include "gadu-plugin-injector-factory.h"
 
-#include "actions/gadu-send-gift-action.h"
+#include "gadu-module.h"
 
-#include "misc/memory.h"
+#include <injeqt/injector.h>
 
-GaduProtocolMenuManager::GaduProtocolMenuManager(QObject *parent) :
-		QObject{parent}
-{
-	m_sendGiftAction = make_unique<GaduSendGiftAction>();
-	m_actions << m_sendGiftAction.get();
-}
-
-GaduProtocolMenuManager::~GaduProtocolMenuManager()
+GaduPluginInjectorFactory::GaduPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
 }
 
-const QString GaduProtocolMenuManager::protocolName() const
+GaduPluginInjectorFactory::~GaduPluginInjectorFactory()
 {
-	return QString{"gadu"};
 }
 
-const QList<ActionDescription *> & GaduProtocolMenuManager::protocolActions() const
+injeqt::injector GaduPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
 {
-	return m_actions;
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<GaduModule>());
+
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
 }
 
-#include "moc_gadu-protocol-menu-manager.cpp"
+#include "moc_gadu-plugin-injector-factory.cpp"

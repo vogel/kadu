@@ -219,7 +219,7 @@ void KaduWebView::mouseReleaseEvent(QMouseEvent *e)
 
 void KaduWebView::hyperlinkClicked(const QUrl &anchor) const
 {
-	UrlHandlerManager::instance()->openUrl(anchor.toEncoded());
+	Core::instance()->urlHandlerManager()->openUrl(anchor.toEncoded());
 }
 
 void KaduWebView::loadStarted()

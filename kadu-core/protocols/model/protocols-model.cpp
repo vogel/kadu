@@ -22,6 +22,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
@@ -33,13 +34,13 @@
 ProtocolsModel::ProtocolsModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryAboutToBeRegistered(ProtocolFactory *)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryAboutToBeRegistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryAboutToBeRegistered(ProtocolFactory *)));
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)));
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
 }
 
@@ -49,7 +50,7 @@ ProtocolsModel::~ProtocolsModel()
 
 int ProtocolsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : ProtocolsManager::instance()->protocolFactories().count();
+	return parent.isValid() ? 0 : Core::instance()->protocolsManager()->protocolFactories().count();
 }
 
 QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
@@ -79,12 +80,12 @@ ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) cons
 	if (index.row() >= rowCount())
 		return 0;
 
-	return ProtocolsManager::instance()->byIndex(index.row());
+	return Core::instance()->protocolsManager()->byIndex(index.row());
 }
 
 int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory) const
 {
-	return ProtocolsManager::instance()->indexOf(protocolFactory);
+	return Core::instance()->protocolsManager()->indexOf(protocolFactory);
 }
 
 QModelIndexList ProtocolsModel::indexListForValue(const QVariant &value) const

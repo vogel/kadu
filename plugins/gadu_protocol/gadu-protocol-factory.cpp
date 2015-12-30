@@ -35,22 +35,11 @@
 
 #include "gadu-protocol-factory.h"
 
-GaduProtocolFactory *GaduProtocolFactory::Instance = 0;
-
-void GaduProtocolFactory::createInstance()
+GaduProtocolFactory::GaduProtocolFactory(QObject *parent) :
+		ProtocolFactory{}
 {
-	if (!Instance)
-		Instance = new GaduProtocolFactory();
-}
+	Q_UNUSED(parent);
 
-void GaduProtocolFactory::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-GaduProtocolFactory::GaduProtocolFactory()
-{
 	MyStatusAdapter = make_unique<GaduStatusAdapter>();
 
 	// already sorted
@@ -62,9 +51,18 @@ GaduProtocolFactory::GaduProtocolFactory()
 	SupportedStatusTypes.append(StatusTypeOffline);
 }
 
+GaduProtocolFactory::~GaduProtocolFactory()
+{
+}
+
+void GaduProtocolFactory::setGaduServersManager(GaduServersManager *gaduServersManager)
+{
+	m_gaduServersManager = gaduServersManager;
+}
+
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 {
-	return new GaduProtocol(account, this);
+	return new GaduProtocol(m_gaduServersManager, account, this);
 }
 
 AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)
@@ -86,7 +84,7 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget 
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	GaduEditAccountWidget *result = new GaduEditAccountWidget(Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
+	GaduEditAccountWidget *result = new GaduEditAccountWidget(m_gaduServersManager, Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
@@ -104,7 +102,7 @@ QString GaduProtocolFactory::idLabel()
 QValidator::State GaduProtocolFactory::validateId(QString id)
 {
 	int pos = 0;
-	return GaduIdValidator::instance()->validate(id, pos);
+	return createNotOwnedGaduIdValidator()->validate(id, pos);
 }
 
 bool GaduProtocolFactory::canRegister()

@@ -59,8 +59,9 @@
 
 #include "gadu-edit-account-widget.h"
 
-GaduEditAccountWidget::GaduEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
-		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent)
+GaduEditAccountWidget::GaduEditAccountWidget(GaduServersManager *gaduServersManager, AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
+		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent),
+		m_gaduServersManager{gaduServersManager}
 {
 	Details = dynamic_cast<GaduAccountDetails *>(account.details());
 
@@ -119,7 +120,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QFormLayout *formLayout = new QFormLayout(form);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(GaduIdValidator::instance());
+	AccountId->setValidator(createOwnedGaduIdValidator(AccountId).get());
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Gadu-Gadu number") + ':', AccountId);
 
@@ -330,7 +331,7 @@ void GaduEditAccountWidget::apply()
 
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
-	GaduServersManager::instance()->buildServerList();
+	m_gaduServersManager->buildServerList();
 
 	if (gpiw->isModified())
 		gpiw->apply();

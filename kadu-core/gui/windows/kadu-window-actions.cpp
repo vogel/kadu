@@ -136,13 +136,13 @@ void disableNoDescription(Action *action)
 
 void disableNoDescriptionUrl(Action *action)
 {
-	action->setEnabled(action->context()->contacts().toContact().currentStatus().description().indexOf(UrlHandlerManager::instance()->urlRegExp()) >= 0);
+	action->setEnabled(action->context()->contacts().toContact().currentStatus().description().indexOf(Core::instance()->urlHandlerManager()->urlRegExp()) >= 0);
 }
 
 void disableNoEMail(Action *action)
 {
 	const Buddy &buddy = action->context()->buddies().toBuddy();
-	bool hasMail = !buddy.email().isEmpty() && buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0;
+	bool hasMail = !buddy.email().isEmpty() && buddy.email().indexOf(Core::instance()->urlHandlerManager()->mailRegExp()) == 0;
 
 	action->setEnabled(hasMail);
 }
@@ -778,7 +778,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (description.isEmpty())
 		return;
 
-	QRegExp url = UrlHandlerManager::instance()->urlRegExp();
+	QRegExp url = Core::instance()->urlHandlerManager()->urlRegExp();
 	int idx_start = url.indexIn(description);
 	if (idx_start >= 0)
 		UrlOpener::openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());

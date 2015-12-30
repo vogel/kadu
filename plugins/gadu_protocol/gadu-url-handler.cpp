@@ -37,7 +37,8 @@
 
 #include "gadu-url-handler.h"
 
-GaduUrlHandler::GaduUrlHandler()
+GaduUrlHandler::GaduUrlHandler(QObject *parent) :
+		QObject{parent}
 {
 	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
 }

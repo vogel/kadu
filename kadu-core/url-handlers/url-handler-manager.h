@@ -20,11 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef URL_HANDLER_MANAGER_H
-#define URL_HANDLER_MANAGER_H
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
 #include "exports.h"
@@ -38,13 +38,27 @@ class StandardUrlHandler;
 class UrlClipboardHtmlTransformer;
 class UrlHandler;
 
-class KADUAPI UrlHandlerManager
+class KADUAPI UrlHandlerManager : public QObject
 {
-	Q_DISABLE_COPY(UrlHandlerManager)
+	Q_OBJECT
 
-	static UrlHandlerManager *Instance;
-	UrlHandlerManager();
+public:
+	Q_INVOKABLE explicit UrlHandlerManager(QObject *parent = nullptr);
+	virtual ~UrlHandlerManager();
 
+	void registerUrlHandler(const QString &name, UrlHandler *handler);
+	void unregisterUrlHandler(const QString &name);
+
+	void openUrl(const QByteArray &url, bool disableMenu = false);
+
+	// TODO:
+	//for mail validation:
+	const QRegExp & mailRegExp();
+
+	//for link validation
+	const QRegExp & urlRegExp();
+
+private:
 	QMap<QString, UrlHandler *> RegisteredHandlers;
 	QList<UrlHandler *> RegisteredHandlersByPriority;
 
@@ -59,21 +73,4 @@ class KADUAPI UrlHandlerManager
 	void registerUrlClipboardTransformer();
 	void unregisterUrlClipboardTransformer();
 
-public:
-	static UrlHandlerManager * instance();
-	~UrlHandlerManager();
-
-	void registerUrlHandler(const QString &name, UrlHandler *handler);
-	void unregisterUrlHandler(const QString &name);
-
-	void openUrl(const QByteArray &url, bool disableMenu = false);
-
-	// TODO:
-	//for mail validation:
-	const QRegExp & mailRegExp();
-
-	//for link validation
-	const QRegExp & urlRegExp();
 };
-
-#endif // URL_HANDLER_MANAGER_H

@@ -62,3 +62,5 @@ void GaduDrivePutTransfer::requestFinished()
 	emit finished();
 	deleteLater();
 }
+
+#include "moc_gadu-drive-put-transfer.cpp"

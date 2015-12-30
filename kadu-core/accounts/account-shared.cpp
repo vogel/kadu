@@ -28,6 +28,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
 #include "identities/identity.h"
@@ -67,16 +68,16 @@ AccountShared::AccountShared(const QString &protocolName) :
 	AccountIdentity = new Identity();
 	AccountContact = new Contact();
 
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
 	        this, SLOT(protocolRegistered(ProtocolFactory*)));
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
 
 	// ProtocolName is not empty here only if a new Account has just been created
 	// it that case load() method will not be called so we need to call triggerAllProtocolsRegistered here
 	if (!ProtocolName.isEmpty())
 	{
-		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		ProtocolFactory *factory = Core::instance()->protocolsManager()->byName(ProtocolName);
 		if (factory)
 			protocolRegistered(factory);
 	}
@@ -90,7 +91,7 @@ AccountShared::~AccountShared()
 
 	if (!ProtocolName.isEmpty())
 	{
-		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		ProtocolFactory *factory = Core::instance()->protocolsManager()->byName(ProtocolName);
 		if (factory)
 			protocolUnregistered(factory);
 	}
@@ -193,7 +194,7 @@ void AccountShared::load()
 
 	if (!ProtocolName.isEmpty())
 	{
-		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		ProtocolFactory *factory = Core::instance()->protocolsManager()->byName(ProtocolName);
 		if (factory)
 			protocolRegistered(factory);
 	}

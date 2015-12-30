@@ -283,7 +283,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 	}
 
 	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
-		if (buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0)
+		if (buddy.email().indexOf(Core::instance()->urlHandlerManager()->mailRegExp()) == 0)
 			UrlOpener::openEmail(buddy.email().toUtf8());
 
 	emit talkableActivated(talkable);

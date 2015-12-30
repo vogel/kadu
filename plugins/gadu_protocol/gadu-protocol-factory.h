@@ -19,29 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_PROTOCOL_FACTORY_H
-#define GADU_PROTOCOL_FACTORY_H
+#pragma once
 
 #include "protocols/protocol-factory.h"
 #include "status/status-adapter.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class GaduServersManager;
+
 class GaduProtocolFactory : public ProtocolFactory
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(GaduProtocolFactory)
-
-	static GaduProtocolFactory *Instance;
-	QList<StatusType> SupportedStatusTypes;
-
-	std::unique_ptr<StatusAdapter> MyStatusAdapter;
-
-	GaduProtocolFactory();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static GaduProtocolFactory * instance() { return Instance; }
+	Q_INVOKABLE explicit GaduProtocolFactory(QObject *parent = nullptr);
+	virtual ~GaduProtocolFactory();
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
@@ -60,6 +54,14 @@ public:
 	virtual QString displayName() { return "Gadu-Gadu"; }
 	virtual KaduIcon icon();
 
-};
+private:
+	QPointer<GaduServersManager> m_gaduServersManager;
 
-#endif // GADU_PROTOCOL_FACTORY_H
+	QList<StatusType> SupportedStatusTypes;
+
+	std::unique_ptr<StatusAdapter> MyStatusAdapter;
+
+private slots:
+	INJEQT_SETTER void setGaduServersManager(GaduServersManager *gaduServersManager);
+
+};

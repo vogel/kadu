@@ -67,9 +67,9 @@ ContactShared::ContactShared(const QUuid &uuid) :
 	ContactAvatar = new Avatar();
 	OwnerBuddy = new Buddy();
 
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
 
 	connect(&changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
@@ -79,9 +79,9 @@ ContactShared::~ContactShared()
 {
 	ref.ref();
 
-	disconnect(ProtocolsManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->protocolsManager(), 0, this, 0);
 
-	protocolFactoryUnregistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
+	protocolFactoryUnregistered(Core::instance()->protocolsManager()->byName(ContactAccount->protocolName()));
 
 	delete OwnerBuddy;
 	delete ContactAvatar;
@@ -131,7 +131,7 @@ void ContactShared::load()
 	doSetOwnerBuddy(BuddyManager::instance()->byUuid(loadValue<QString>("Buddy")));
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 
-	protocolFactoryRegistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
+	protocolFactoryRegistered(Core::instance()->protocolsManager()->byName(ContactAccount->protocolName()));
 	addToBuddy();
 }
 

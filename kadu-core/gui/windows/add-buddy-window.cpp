@@ -417,7 +417,7 @@ void AddBuddyWindow::validateEmailData()
 {
 	Q_ASSERT(!MergeBuddy->isChecked());
 
-	if (!UrlHandlerManager::instance()->mailRegExp().exactMatch(UserNameEdit->text()))
+	if (!Core::instance()->urlHandlerManager()->mailRegExp().exactMatch(UserNameEdit->text()))
 	{
 		if (!UserNameEdit->text().isEmpty())
 			displayErrorMessage(tr("Entered e-mail is invalid"));

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,32 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
+#pragma once
 
-#include "gadu-account-data-manager.h"
+#include "plugin/plugin-injector-factory.h"
 
-GaduAccountDataManager::GaduAccountDataManager(Account data) :
-		AccountDataManager(data)
+class GaduPluginInjectorFactory : public PluginInjectorFactory
 {
-}
+	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
-void GaduAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
-{
-	if (section != "Gadu-Gadu")
-	{
-		AccountDataManager::writeEntry(section, name, value);
-		return;
-	}
+public:
+	explicit GaduPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~GaduPluginInjectorFactory();
 
-	// other data
-}
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
-QVariant GaduAccountDataManager::readEntry(const QString &section, const QString &name)
-{
-	if (section != "Gadu-Gadu")
-		return AccountDataManager::readEntry(section, name);
-
-	// other data
-
-	return QVariant(QString());
-}
+};

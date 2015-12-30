@@ -44,22 +44,18 @@
 
 #include "gadu-importer.h"
 
-GaduImporter * GaduImporter::Instance;
-
 const QString GaduImporter::EntryQuery("/Kadu/Deprecated/ConfigFile[ends-with(@name,'kadu.conf')]/Group[@name='%1']/Entry[@name='%2']/@value/string()");
 const QString GaduImporter::ContactsQuery("/Kadu/Contacts/Contact");
 
-void GaduImporter::createInstance()
+GaduImporter::GaduImporter(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new GaduImporter();
 }
 
-void GaduImporter::destroyInstance()
+GaduImporter::~GaduImporter()
 {
-	delete Instance;
-	Instance = 0;
 }
+
 
 bool GaduImporter::alreadyImported()
 {

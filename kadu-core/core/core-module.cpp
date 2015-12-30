@@ -28,9 +28,11 @@
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "misc/paths-provider.h"
+#include "protocols/protocols-manager.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-changer-manager.h"
 #include "storage/storage-point-factory.h"
+#include "url-handlers/url-handler-manager.h"
 #include "attention-service.h"
 
 CoreModule::CoreModule(QString profileDirectory)
@@ -45,11 +47,13 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<ClipboardHtmlTransformerService>();
 	add_type<DomProcessorService>();
 	add_type<FormattedStringFactory>();
-	add_type<RawMessageTransformerService>();
 	add_type<InjectorProvider>();
+	add_ready_object<PathsProvider>(m_pathsProvider.get());
+	add_type<ProtocolsManager>();
+	add_type<RawMessageTransformerService>();
 	add_type<StatusChangerManager>();
 	add_type<StoragePointFactory>();
-	add_ready_object<PathsProvider>(m_pathsProvider.get());
+	add_type<UrlHandlerManager>();
 }
 
 CoreModule::~CoreModule()

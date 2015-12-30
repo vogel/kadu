@@ -17,31 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-protocol-menu-manager.h"
+#include "gadu-module.h"
 
-#include "actions/gadu-send-gift-action.h"
+#include "actions/gadu-protocol-menu-manager.h"
+#include "server/gadu-servers-manager.h"
+#include "gadu-plugin-object.h"
+#include "gadu-protocol-factory.h"
+#include "gadu-url-dom-visitor-provider.h"
+#include "gadu-url-handler.h"
 
-#include "misc/memory.h"
-
-GaduProtocolMenuManager::GaduProtocolMenuManager(QObject *parent) :
-		QObject{parent}
+GaduModule::GaduModule()
 {
-	m_sendGiftAction = make_unique<GaduSendGiftAction>();
-	m_actions << m_sendGiftAction.get();
+	add_type<GaduPluginObject>();
+	add_type<GaduProtocolFactory>();
+	add_type<GaduProtocolMenuManager>();
+	add_type<GaduServersManager>();
+	add_type<GaduUrlDomVisitorProvider>();
+	add_type<GaduUrlHandler>();
 }
-
-GaduProtocolMenuManager::~GaduProtocolMenuManager()
-{
-}
-
-const QString GaduProtocolMenuManager::protocolName() const
-{
-	return QString{"gadu"};
-}
-
-const QList<ActionDescription *> & GaduProtocolMenuManager::protocolActions() const
-{
-	return m_actions;
-}
-
-#include "moc_gadu-protocol-menu-manager.cpp"

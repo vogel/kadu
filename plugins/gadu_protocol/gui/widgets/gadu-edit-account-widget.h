@@ -18,10 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_EDIT_ACCOUNT_WIDGET_H
-#define GADU_EDIT_ACCOUNT_WIDGET_H
+#pragma once
 
 #include "gui/widgets/account-edit-widget.h"
+
+#include <QtCore/QPointer>
 
 class QCheckBox;
 class QComboBox;
@@ -32,12 +33,15 @@ class QVBoxLayout;
 
 class GaduAccountDetails;
 class GaduPersonalInfoWidget;
+class GaduServersManager;
 class IdentitiesComboBox;
 class ProxyComboBox;
 
 class GaduEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
+
+	QPointer<GaduServersManager> m_gaduServersManager;
 
 	GaduAccountDetails *Details;
 
@@ -86,7 +90,7 @@ private slots:
 	void stateChangedSlot(ConfigurationValueState state);
 
 public:
-	explicit GaduEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
+	explicit GaduEditAccountWidget(GaduServersManager *gaduServersManager, AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
 	virtual ~GaduEditAccountWidget();
 
 public slots:
@@ -94,5 +98,3 @@ public slots:
 	virtual void cancel();
 
 };
-
-#endif // GADU_EDIT_ACCOUNT_WIDGET_H

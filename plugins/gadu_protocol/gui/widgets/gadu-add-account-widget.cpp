@@ -69,7 +69,7 @@ void GaduAddAccountWidget::createGui(bool showButtons)
 	QFormLayout *layout = new QFormLayout(formWidget);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(GaduIdValidator::instance());
+	AccountId->setValidator(createOwnedGaduIdValidator(AccountId).get());
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Gadu-Gadu number") + ':', AccountId);
 

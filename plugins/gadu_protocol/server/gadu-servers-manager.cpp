@@ -30,23 +30,14 @@
 
 #include "gadu-servers-manager.h"
 
-GaduServersManager * GaduServersManager::Instance = 0;
-
-void GaduServersManager::createInstance()
-{
-	if (!Instance)
-		Instance = new GaduServersManager();
-}
-
-void GaduServersManager::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-GaduServersManager::GaduServersManager()
+GaduServersManager::GaduServersManager(QObject *parent) :
+		QObject{parent}
 {
 	buildServerList();
+}
+
+GaduServersManager::~GaduServersManager()
+{
 }
 
 QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(const QString &serverAddress)

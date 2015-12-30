@@ -43,8 +43,8 @@ JabberProtocolPlugin::~JabberProtocolPlugin()
 
 bool JabberProtocolPlugin::init()
 {
-	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
-			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk"))
+	if (Core::instance()->protocolsManager()->hasProtocolFactory("jabber")
+			|| Core::instance()->protocolsManager()->hasProtocolFactory("gtalk"))
 		return true;
 
 	FacebookDepreceatedMessage::createInstance();
@@ -57,10 +57,10 @@ bool JabberProtocolPlugin::init()
 	JabberProtocolFactory::createInstance();
 	GTalkProtocolFactory::createInstance();
 
-	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
-	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
+	Core::instance()->protocolsManager()->registerProtocolFactory(JabberProtocolFactory::instance());
+	Core::instance()->protocolsManager()->registerProtocolFactory(GTalkProtocolFactory::instance());
 
-	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
+	Core::instance()->urlHandlerManager()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
 	// install before mail handler
 	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
@@ -71,14 +71,14 @@ bool JabberProtocolPlugin::init()
 
 void JabberProtocolPlugin::done()
 {
-	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
+	Core::instance()->urlHandlerManager()->unregisterUrlHandler("Jabber");
 
 	Core::instance()->domProcessorService()->unregisterVisitorProvider(UrlDomVisitorProvider);
 	delete UrlDomVisitorProvider;
 	UrlDomVisitorProvider = 0;
 
-	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
-	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
+	Core::instance()->protocolsManager()->unregisterProtocolFactory(JabberProtocolFactory::instance());
+	Core::instance()->protocolsManager()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
 
 	JabberProtocolFactory::destroyInstance();
 	GTalkProtocolFactory::destroyInstance();

@@ -38,7 +38,7 @@ private slots:
 	void accountSelected(QAction *action);
 
 public:
-	GaduUrlHandler();
+	Q_INVOKABLE explicit GaduUrlHandler(QObject *parent = nullptr);
 	virtual ~GaduUrlHandler();
 
 	virtual bool isUrlValid(const QByteArray &url);

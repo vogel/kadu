@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_IMPORTER
-#define GADU_IMPORTER
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
@@ -37,12 +36,19 @@ class GADUAPI GaduImporter : public QObject
 {
 	Q_OBJECT
 
-	static GaduImporter *Instance;
+public:
+	explicit GaduImporter(QObject *parent = nullptr);
+	virtual ~GaduImporter();
 
+	void importAccounts();
+	void importContacts();
+
+private slots:
+	void buddyAdded(const Buddy &buddy);
+
+private:
 	static const QString EntryQuery;
 	static const QString ContactsQuery;
-
-	GaduImporter() {}
 
 	bool alreadyImported();
 	void markImported();
@@ -52,17 +58,4 @@ class GADUAPI GaduImporter : public QObject
 
 	static QVariant readEntry(QXmlQuery &xmlQuery, const QString &groupName, const QString &entryName, const QVariant &defaultValue = QVariant());
 
-private slots:
-	void buddyAdded(const Buddy &buddy);
-
-public:
-	static GaduImporter * instance() { return Instance; }
-	static void createInstance();
-	static void destroyInstance();
-
-	void importAccounts();
-	void importContacts();
-
 };
-
-#endif // GADU_IMPORTER

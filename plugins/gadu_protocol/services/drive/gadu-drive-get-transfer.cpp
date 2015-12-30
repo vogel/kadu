@@ -89,3 +89,5 @@ void GaduDriveGetTransfer::requestFinished()
 
 	deleteLater();
 }
+
+#include "moc_gadu-drive-get-transfer.cpp"
