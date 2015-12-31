@@ -66,6 +66,7 @@ void ImageLinkPluginObject::init()
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 	m_domProcessorService->registerVisitorProvider(m_imageExpanderDomVisitorProvider, -100);
 	m_domProcessorService->registerVisitorProvider(m_videoExpanderDomVisitorProvider, -50);
+	m_imageLinkConfigurator->configure();
 }
 
 void ImageLinkPluginObject::done()
