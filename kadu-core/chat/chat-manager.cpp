@@ -37,10 +37,13 @@ ChatManager::ChatManager(QObject *parent) :
 
 ChatManager::~ChatManager()
 {
-	disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
+	if (Core::instance())
+	{
+		disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
 
-	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
-		unreadMessageRemoved(message);
+		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
+			unreadMessageRemoved(message);
+	}
 }
 
 void ChatManager::init()

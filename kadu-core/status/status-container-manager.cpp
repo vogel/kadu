@@ -54,15 +54,19 @@ StatusContainerManager::StatusContainerManager(QObject *parent) :
 
 StatusContainerManager::~StatusContainerManager()
 {
-	disconnect(AccountManager::instance(), 0, this, 0);
-	disconnect(StatusConfigurationHolder::instance(), 0, this, 0);
+	if (StatusConfigurationHolder::instance())
+	{
+		disconnect(StatusConfigurationHolder::instance(), 0, this, 0);
 
-	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
-		triggerAllIdentitiesRemoved();
-	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
-		triggerAllAccountsUnregistered();
-	else
-		unregisterStatusContainer(AllAccountsContainer);
+		if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
+			triggerAllIdentitiesRemoved();
+		else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
+			triggerAllAccountsUnregistered();
+		else
+			unregisterStatusContainer(AllAccountsContainer);
+	}
+
+	disconnect(AccountManager::instance(), 0, this, 0);
 }
 
 void StatusContainerManager::updateIdentities()

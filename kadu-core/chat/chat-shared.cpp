@@ -316,7 +316,8 @@ void ChatShared::chatTypeUnregistered(ChatType *chatType)
 		Details = 0;
 	}
 
-	Core::instance()->chatManager()->unregisterItem(this);
+	if (Core::instance())
+		Core::instance()->chatManager()->unregisterItem(this);
 }
 
 /**
