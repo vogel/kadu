@@ -40,30 +40,8 @@
 
 #include "speech-configuration-ui-handler.h"
 
-SpeechConfigurationUiHandler * SpeechConfigurationUiHandler::Instance = 0;
-
-void SpeechConfigurationUiHandler::registerUiHandler()
-{
-	if (!Instance)
-	{
-		Instance = new SpeechConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
-		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
-	}
-}
-
-void SpeechConfigurationUiHandler::unregisterUiHandler()
-{
-	if (Instance)
-	{
-		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
-		delete Instance;
-		Instance = 0;
-	}
-}
-
-SpeechConfigurationUiHandler::SpeechConfigurationUiHandler() :
+SpeechConfigurationUiHandler::SpeechConfigurationUiHandler(QObject *parent) :
+	QObject{parent},
 	frequencySlider{},
 	tempoSlider{},
 	baseFrequencySlider{},
@@ -73,6 +51,15 @@ SpeechConfigurationUiHandler::SpeechConfigurationUiHandler() :
 	programSelectFile{},
 	soundSystemComboBox{}
 {
+}
+
+SpeechConfigurationUiHandler::~SpeechConfigurationUiHandler()
+{
+}
+
+void SpeechConfigurationUiHandler::setSpeech(Speech *speech)
+{
+	m_speech = speech;
 }
 
 void SpeechConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -136,7 +123,7 @@ void SpeechConfigurationUiHandler::testSpeech()
 	QString text;
 	text = Parser::parse(formatF, Talkable(Buddy::dummy()), ParserEscape::HtmlEscape);
 
-	Speech::instance()->say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
+	m_speech->say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
 
 	kdebugf2();
 }

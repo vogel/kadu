@@ -18,12 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPEECH_H
-#define SPEECH_H
-
-#include <QtCore/QTime>
+#pragma once
 
 #include "notification/notifier.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QTime>
 
 class Notification;
 
@@ -32,14 +32,14 @@ class Notification;
  * @{
  */
 
-class Speech : public Notifier
+class Speech : public QObject, public Notifier
 {
-	static Speech *Instance;
+	Q_OBJECT
 
 	QTime lastSpeech;
 
 public:
-	Speech();
+	Q_INVOKABLE explicit Speech(QObject *parent = nullptr);
 	virtual ~Speech();
 
 	virtual void notify(Notification *notification);
@@ -51,11 +51,6 @@ public:
 		const QString &sound_system = QString(), const QString &device = QString(),
 		int freq = 0, int tempo = 0, int basefreq = 0);
 
-	static Speech * instance();
-	static void createInstance();
-	static void destroyInstance();
 };
 
 /** @} */
-
-#endif // SPEECH_H

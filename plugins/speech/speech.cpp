@@ -40,36 +40,16 @@
  * @{
  */
 
-Speech * Speech::Instance = 0;
-
-void Speech::createInstance()
-{
-	if (!Instance)
-		Instance = new Speech();
-}
-
-void Speech::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-Speech * Speech::instance()
-{
-	return Instance;
-}
-
 bool isFemale(const QString &s)
 {
 	return s.endsWith('a', Qt::CaseInsensitive);
 }
 
-Speech::Speech() :
+Speech::Speech(QObject *parent) :
+		QObject{parent},
 		Notifier("Speech", QT_TRANSLATE_NOOP("@default", "Read a text"), KaduIcon()), lastSpeech()
 {
 	kdebugf();
-
-	Core::instance()->notificationManager()->registerNotifier(this);
 
 	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
 
@@ -78,14 +58,6 @@ Speech::Speech() :
 
 Speech::~Speech()
 {
-	kdebugf();
-
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationManager()->unregisterNotifier(this);
-	}
-
-	kdebugf2();
 }
 
 void Speech::say(const QString &s, const QString &path,
@@ -204,3 +176,5 @@ NotifierConfigurationWidget * Speech::createConfigurationWidget(QWidget *parent)
 }
 
 /** @} */
+
+#include "moc_speech.cpp"

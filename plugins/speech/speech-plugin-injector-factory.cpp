@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,36 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
-#include "exports.h"
-#include "speech-configuration-ui-handler.h"
-#include "speech.h"
+#include "speech-plugin-injector-factory.h"
 
-#include "speech-plugin.h"
+#include "speech-module.h"
 
-SpeechPlugin::~SpeechPlugin()
+#include <injeqt/injector.h>
+
+SpeechPluginInjectorFactory::SpeechPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
 }
 
-bool SpeechPlugin::init()
+SpeechPluginInjectorFactory::~SpeechPluginInjectorFactory()
 {
-	kdebugf();
-
-	Speech::createInstance();
-	SpeechConfigurationUiHandler::registerUiHandler();
-
-	kdebugf2();
-	return true;
 }
 
-void SpeechPlugin::done()
+injeqt::injector SpeechPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
 {
-	kdebugf();
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<SpeechModule>());
 
-	SpeechConfigurationUiHandler::unregisterUiHandler();
-	Speech::destroyInstance();
-
-	kdebugf2();
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
 }
 
-#include "moc_speech-plugin.cpp"
+#include "moc_speech-plugin-injector-factory.cpp"

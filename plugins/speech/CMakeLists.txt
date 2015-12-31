@@ -7,15 +7,10 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	speech-configuration-ui-handler.cpp
 	speech-configuration-widget.cpp
-	speech-plugin.cpp
+	speech-module.cpp
+	speech-plugin-injector-factory.cpp
+	speech-plugin-object.cpp
 	speech.cpp
-)
-
-set (MOC_SOURCES
-	speech-configuration-ui-handler.h
-	speech-configuration-widget.h
-	speech-plugin.h
-	speech.h
 )
 
 set (CONFIGURATION_FILES

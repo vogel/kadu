@@ -18,10 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPEECH_CONFIGURATION_UI_HANDLER_H
-#define SPEECH_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QCheckBox;
 class QLineEdit;
@@ -30,12 +32,13 @@ class QSlider;
 class ConfigComboBox;
 class MainConfigurationWindow;
 class SelectFile;
+class Speech;
 
 class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
-
-	static SpeechConfigurationUiHandler *Instance;
+	
+	QPointer<Speech> m_speech;
 
 	QSlider *frequencySlider;
 	QSlider *tempoSlider;
@@ -49,18 +52,17 @@ class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 	ConfigComboBox *soundSystemComboBox;
 
 private slots:
+	INJEQT_SETTER void setSpeech(Speech *speech);
+
 	void testSpeech();
 	void soundSystemChanged(int index);
 
 public:
-	explicit SpeechConfigurationUiHandler();
+	Q_INVOKABLE explicit SpeechConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~SpeechConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
-	static void registerUiHandler();
-	static void unregisterUiHandler();
 };
-
-#endif // SPEECH_CONFIGURATION_UI_HANDLER_H
