@@ -26,6 +26,7 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
@@ -163,8 +164,8 @@ void StatusActions::statusUpdated(StatusContainer *container)
 		if (!MyStatusContainer->isStatusSettingInProgress())
 		{
 			// For 'All xxx' status menu items - check only if all accounts have the same status
-			if (StatusContainerManager::instance() == MyStatusContainer)
-				action->setChecked(StatusContainerManager::instance()->allStatusOfType(statusType));
+			if (Core::instance()->statusContainerManager() == MyStatusContainer)
+				action->setChecked(Core::instance()->statusContainerManager()->allStatusOfType(statusType));
 			else
 				action->setChecked(currentStatusType == statusType);
 		}

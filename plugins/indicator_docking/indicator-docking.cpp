@@ -25,7 +25,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
-#include "status/status-container.h"
+#include "status/status-container-manager.h"
 
 #include <libqmessagingmenu/qmessaging-menu-app.h>
 #include <libqmessagingmenu/qmessaging-menu-source.h>
@@ -62,12 +62,12 @@ void IndicatorDocking::setChatWidgetManager(ChatWidgetManager *chatWidgetManager
 	m_chatWidgetManager = chatWidgetManager;
 }
 
-void IndicatorDocking::setStatusContainer(StatusContainer *statusContainer)
+void IndicatorDocking::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainer = statusContainer;
+	m_statusContainerManager = statusContainerManager;
 
-	statusContainerUpdated(m_statusContainer);
-	connect(m_statusContainer, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(statusContainerUpdated(StatusContainer*)));
+	statusContainerUpdated(m_statusContainerManager);
+	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(statusContainerUpdated(StatusContainer*)));
 }
 
 void IndicatorDocking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -117,7 +117,7 @@ void IndicatorDocking::sourceActivated(const QString &id)
 
 void IndicatorDocking::statusChanged(QMessagingMenuStatus status)
 {
-	auto currentStatus = m_statusContainer->status();
+	auto currentStatus = m_statusContainerManager->status();
 	switch (status)
 	{
 		case QMessagingMenuStatus::Available:
@@ -137,7 +137,7 @@ void IndicatorDocking::statusChanged(QMessagingMenuStatus status)
 			break;
 	}
 
-	m_statusContainer->setStatus(currentStatus, SourceUser);
+	m_statusContainerManager->setStatus(currentStatus, SourceUser);
 }
 
 void IndicatorDocking::statusContainerUpdated(StatusContainer *statusContainer)

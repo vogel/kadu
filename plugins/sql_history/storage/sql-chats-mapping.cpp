@@ -28,6 +28,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-room.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-contacts-mapping.h"
@@ -42,7 +43,7 @@ SqlChatsMapping::SqlChatsMapping(const QSqlDatabase &database, SqlAccountsMappin
 
 	loadMappingsFromDatabase();
 
-	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
+	connect(Core::instance()->chatManager(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 }
 
 SqlChatsMapping::~SqlChatsMapping()

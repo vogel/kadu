@@ -19,6 +19,7 @@
 
 #include "core-module.h"
 
+#include "chat/chat-manager.h"
 #include "core/application.h"
 #include "core/injector-provider.h"
 #include "dom/dom-processor-service.h"
@@ -31,6 +32,7 @@
 #include "protocols/protocols-manager.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-changer-manager.h"
+#include "status/status-container-manager.h"
 #include "storage/storage-point-factory.h"
 #include "url-handlers/url-handler-manager.h"
 #include "attention-service.h"
@@ -43,6 +45,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<Application>();
 	add_type<AttentionService>();
 	add_type<BuddyConfigurationWidgetFactoryRepository>();
+	add_type<ChatManager>();
 	add_type<ChatTopBarWidgetFactoryRepository>();
 	add_type<ClipboardHtmlTransformerService>();
 	add_type<DomProcessorService>();
@@ -52,6 +55,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<ProtocolsManager>();
 	add_type<RawMessageTransformerService>();
 	add_type<StatusChangerManager>();
+	add_type<StatusContainerManager>();
 	add_type<StoragePointFactory>();
 	add_type<UrlHandlerManager>();
 }

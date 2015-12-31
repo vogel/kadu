@@ -110,7 +110,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	m_roomChatService = new JabberRoomChatService{m_client, m_mucManager.get(), account, this};
 	m_roomChatService->setBuddyManager(BuddyManager::instance());
-	m_roomChatService->setChatManager(ChatManager::instance());
+	m_roomChatService->setChatManager(Core::instance()->chatManager());
 	m_roomChatService->setContactManager(ContactManager::instance());
 	m_roomChatService->initialize();
 

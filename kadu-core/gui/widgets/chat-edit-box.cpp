@@ -185,7 +185,7 @@ void ChatEditBox::updateContext()
 	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		Context->setStatusContainer(CurrentChat.chatAccount().statusContainer());
 	else
-		Context->setStatusContainer(StatusContainerManager::instance());
+		Context->setStatusContainer(Core::instance()->statusContainerManager());
 }
 
 ChatWidget * ChatEditBox::chatWidget()

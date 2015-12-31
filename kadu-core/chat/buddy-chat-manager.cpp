@@ -27,6 +27,7 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 
 #include "buddy-chat-manager.h"
 
@@ -50,9 +51,9 @@ BuddyChatManager::BuddyChatManager()
 BuddyChatManager::~BuddyChatManager()
 {
 	disconnect(BuddyManager::instance(), 0, this, 0);
-	disconnect(ChatManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->chatManager(), 0, this, 0);
 
-	foreach (const Chat &chat, ChatManager::instance()->items())
+	foreach (const Chat &chat, Core::instance()->chatManager()->items())
 		chatRemoved(chat);
 }
 
@@ -63,10 +64,10 @@ void BuddyChatManager::init()
 	connect(BuddyManager::instance(), SIGNAL(buddyContactRemoved(Buddy,Contact)),
 	        this, SLOT(buddyContactRemoved(Buddy,Contact)));
 
-	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
-	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
+	connect(Core::instance()->chatManager(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
+	connect(Core::instance()->chatManager(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
-	foreach (const Chat &chat, ChatManager::instance()->items())
+	foreach (const Chat &chat, Core::instance()->chatManager()->items())
 		chatAdded(chat);
 }
 

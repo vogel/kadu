@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
@@ -89,7 +90,7 @@ void StatusChangerManager::statusChanged(StatusContainer *container, StatusChang
 {
 	if (!container)
 	{
-		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+		foreach (StatusContainer *statusContainer, Core::instance()->statusContainerManager()->statusContainers())
 			if (statusContainer)
 				statusChanged(statusContainer, source);
 

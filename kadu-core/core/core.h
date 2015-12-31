@@ -51,6 +51,7 @@ class BuddyDataWindowRepository;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatDataWindowRepository;
 class ChatImageRequestService;
+class ChatManager;
 class ChatTopBarWidgetFactoryRepository;
 class ChatStyleManager;
 class ChatStyleRendererFactoryProvider;
@@ -91,6 +92,7 @@ class RosterNotifier;
 class RosterReplacer;
 class SslCertificateManager;
 class StatusChangerManager;
+class StatusContainerManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class UrlHandlerManager;
@@ -223,6 +225,8 @@ public:
 	StatusChangerManager * statusChangerManager() const;
 	ProtocolsManager * protocolsManager() const;
 	UrlHandlerManager * urlHandlerManager() const;
+	ChatManager * chatManager() const;
+	StatusContainerManager * statusContainerManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

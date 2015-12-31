@@ -537,7 +537,7 @@ void TabsManager::load()
 		if (chatId.isNull())
 			continue;
 
-		Chat chat = ChatManager::instance()->byUuid(chatId);
+		Chat chat = Core::instance()->chatManager()->byUuid(chatId);
 		if (!chat)
 			continue;
 

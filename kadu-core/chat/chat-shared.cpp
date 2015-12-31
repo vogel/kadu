@@ -35,6 +35,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "misc/change-notifier.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -108,7 +109,7 @@ ChatShared::~ChatShared()
  */
 StorableObject * ChatShared::storageParent()
 {
-	return ChatManager::instance();
+	return Core::instance()->chatManager();
 }
 
 /**
@@ -293,7 +294,7 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 		Details->ensureLoaded();
 	}
 
-	ChatManager::instance()->registerItem(this);
+	Core::instance()->chatManager()->registerItem(this);
 }
 
 /**
@@ -315,7 +316,7 @@ void ChatShared::chatTypeUnregistered(ChatType *chatType)
 		Details = 0;
 	}
 
-	ChatManager::instance()->unregisterItem(this);
+	Core::instance()->chatManager()->unregisterItem(this);
 }
 
 /**
@@ -361,7 +362,7 @@ void ChatShared::setType(const QString &type)
 		delete Details;
 		Details = 0;
 
-		ChatManager::instance()->unregisterItem(this);
+		Core::instance()->chatManager()->unregisterItem(this);
 	}
 
 	Type = type;

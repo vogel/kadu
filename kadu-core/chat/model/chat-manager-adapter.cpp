@@ -20,15 +20,16 @@
 
 #include "chat/chat-manager.h"
 #include "chat/model/chat-list-model.h"
+#include "core/core.h"
 
 #include "chat-manager-adapter.h"
 
 ChatManagerAdapter::ChatManagerAdapter(ChatListModel *model) :
 		QObject(model), Model(model)
 {
-	Model->setChats(ChatManager::instance()->allItems().values().toVector());
+	Model->setChats(Core::instance()->chatManager()->allItems().values().toVector());
 
-	ChatManager *manager = ChatManager::instance();
+	ChatManager *manager = Core::instance()->chatManager();
 	connect(manager, SIGNAL(chatAdded(Chat)),
 			this, SLOT(chatAdded(Chat)), Qt::DirectConnection);
 	connect(manager, SIGNAL(chatRemoved(Chat)),
@@ -37,7 +38,7 @@ ChatManagerAdapter::ChatManagerAdapter(ChatListModel *model) :
 
 ChatManagerAdapter::~ChatManagerAdapter()
 {
-	ChatManager *manager = ChatManager::instance();
+	ChatManager *manager = Core::instance()->chatManager();
 	disconnect(manager, 0, this, 0);
 }
 

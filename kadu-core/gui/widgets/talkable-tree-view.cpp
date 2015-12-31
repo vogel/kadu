@@ -243,7 +243,7 @@ StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) con
 	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		return chat.chatAccount().statusContainer();
 	else
-		return StatusContainerManager::instance();
+		return Core::instance()->statusContainerManager();
 }
 
 void TalkableTreeView::setCurrentTalkable(const Talkable &talkable)

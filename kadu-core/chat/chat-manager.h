@@ -89,13 +89,6 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatManager)
 
-	static ChatManager * Instance;
-
-	ChatManager();
-	virtual ~ChatManager();
-
-	void init();
-
 private slots:
 	void chatDataUpdated();
 	void chatOpened();
@@ -111,7 +104,10 @@ protected:
 	virtual void itemUnregistered(Chat item);
 
 public:
-	static ChatManager * instance();
+	Q_INVOKABLE explicit ChatManager(QObject *parent = nullptr);
+	virtual ~ChatManager();
+
+	void init();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

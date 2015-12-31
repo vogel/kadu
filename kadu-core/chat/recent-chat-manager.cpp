@@ -26,6 +26,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "message/message-manager.h"
 #include "message/message.h"
 
@@ -97,7 +98,7 @@ void RecentChatManager::load()
 	int count = chatElements.size();
 
 	// load all chats, because byUuid does not do that
-	ChatManager::instance()->ensureLoaded();
+	Core::instance()->chatManager()->ensureLoaded();
 
 	// itereting backwards, because addRecentChats adds chats
 	// at beginning of list, not at the end
@@ -109,7 +110,7 @@ void RecentChatManager::load()
 
 		QString uuid = element.attribute("uuid");
 		uint time = element.attribute("time").toUInt();
-		Chat chat = ChatManager::instance()->byUuid(uuid);
+		Chat chat = Core::instance()->chatManager()->byUuid(uuid);
 		if (chat)
 			addRecentChat(chat, QDateTime::fromTime_t(time));
 	}

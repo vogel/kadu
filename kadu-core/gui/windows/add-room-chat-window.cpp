@@ -170,7 +170,7 @@ void AddRoomChatWindow::validateData()
 	StartButton->setEnabled(true);
 
 	const QString &display = DisplayNameEdit->text();
-	if (!display.isEmpty() && ChatManager::instance()->byDisplay(display))
+	if (!display.isEmpty() && Core::instance()->chatManager()->byDisplay(display))
 	{
 		displayErrorMessage(tr("Visible name is already used for another chat"));
 		return;

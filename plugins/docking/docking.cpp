@@ -53,7 +53,7 @@ Docking::Docking(QObject *parent) :
 {
 	m_dockingMenuActionRepository = make_owned<DockingMenuActionRepository>(this);
 
-	auto statusIcon = make_owned<StatusIcon>(StatusContainerManager::instance(), this);
+	auto statusIcon = make_owned<StatusIcon>(Core::instance()->statusContainerManager(), this);
 	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
 	connect(Core::instance()->attentionService(), SIGNAL(needAttentionChanged(bool)),
@@ -77,11 +77,11 @@ Docking::Docking(QObject *parent) :
 	dockingMenuHandler->setDockingMenuActionRepository(m_dockingMenuActionRepository.get());
 	dockingMenuHandler->setIconsManager(IconsManager::instance());
 	dockingMenuHandler->setNotificationService(Core::instance()->notificationService());
-	dockingMenuHandler->setStatusContainerManager(StatusContainerManager::instance());
+	dockingMenuHandler->setStatusContainerManager(Core::instance()->statusContainerManager());
 
 	auto dockingTooltipHandler = make_owned<DockingTooltipHandler>(m_statusNotifierItem.get(), this);
 	dockingTooltipHandler->setDockingConfigurationProvider(m_dockingConfigurationProvider.get());
-	dockingTooltipHandler->setStatusContainerManager(StatusContainerManager::instance());
+	dockingTooltipHandler->setStatusContainerManager(Core::instance()->statusContainerManager());
 
 	connect(m_dockingConfigurationProvider.get(), SIGNAL(updated()), this, SLOT(configurationUpdated()));
 	configurationUpdated();
@@ -152,7 +152,7 @@ void Docking::configurationUpdated()
 	configuration.AttentionMode = m_dockingConfigurationProvider->configuration().NewMessageIcon;
 	configuration.AttentionIcon = KaduIcon{"protocols/common/message", "128x128"}.fullPath();
 	configuration.AttentionMovie = KaduIcon{"protocols/common/message_anim", "16x16"}.fullPath();
-	configuration.Icon = StatusContainerManager::instance()->statusIcon().fullPath();
+	configuration.Icon = Core::instance()->statusContainerManager()->statusIcon().fullPath();
 	m_statusNotifierItem->setConfiguration(configuration);
 }
 

@@ -29,6 +29,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "notification/notification/aggregate-notification.h"
 #include "notification/notifier.h"
@@ -43,7 +44,7 @@ NotificationManager::NotificationManager(QObject *parent) :
 		QObject{parent}
 {
 	//HACK force creating StatusContainerManager instance so Kadu won't crash at startup
-	StatusContainerManager::instance();
+	Core::instance()->statusContainerManager();
 }
 
 NotificationManager::~NotificationManager()

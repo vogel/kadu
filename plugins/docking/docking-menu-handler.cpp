@@ -159,7 +159,7 @@ void DockingMenuHandler::addStatusContainerMenus()
 	
 	if (showAllAccountsMenu)
 	{
-		auto allAccountsMenu = new StatusMenu{StatusContainerManager::instance(), multipleMenus, m_menu};
+		auto allAccountsMenu = new StatusMenu{Core::instance()->statusContainerManager(), multipleMenus, m_menu};
 		connect(allAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(update()));
 	}
 }

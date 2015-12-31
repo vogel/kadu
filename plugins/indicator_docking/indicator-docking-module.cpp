@@ -17,32 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "indicator-docking-plugin.h"
+#include "indicator-docking-module.h"
 
+#include "indicator-docking-plugin-object.h"
 #include "indicator-docking.h"
 
-#include "chat/chat-manager.h"
-#include "core/core.h"
-#include "status/status-container-manager.h"
-
-IndicatorDockingPlugin::~IndicatorDockingPlugin()
+IndicatorDockingModule::IndicatorDockingModule()
 {
+	add_type<IndicatorDocking>();
+	add_type<IndicatorDockingPluginObject>();
 }
 
-bool IndicatorDockingPlugin::init()
+IndicatorDockingModule::~IndicatorDockingModule()
 {
-	m_indicatorDocking.reset(new IndicatorDocking{});
-	m_indicatorDocking->setChatManager(ChatManager::instance());
-	m_indicatorDocking->setChatWidgetManager(Core::instance()->chatWidgetManager());
-	m_indicatorDocking->setStatusContainer(StatusContainerManager::instance());
-	m_indicatorDocking->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());
-
-	return true;
 }
-
-void IndicatorDockingPlugin::done()
-{
-	m_indicatorDocking.reset();
-}
-
-#include "moc_indicator-docking-plugin.cpp"

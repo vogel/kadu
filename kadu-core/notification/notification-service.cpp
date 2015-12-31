@@ -65,7 +65,7 @@ NotificationService::NotificationService(QObject *parent) :
 	StatusChangedNotification::registerEvents();
 	MultilogonNotification::registerEvents();
 
-	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
+	connect(Core::instance()->statusContainerManager(), SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
 	createEventListeners();
 	createActionDescriptions();

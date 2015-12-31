@@ -21,11 +21,13 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ChatManager;
 class ChatWidgetManager;
 class Message;
 class QMessagingMenuApp;
+class StatusContainerManager;
 class StatusContainer;
 class UnreadMessageRepository;
 enum class QMessagingMenuStatus;
@@ -35,23 +37,23 @@ class IndicatorDocking : public QObject
 	Q_OBJECT
 
 public:
-	explicit IndicatorDocking(QObject *parent = nullptr);
+	Q_INVOKABLE explicit IndicatorDocking(QObject *parent = nullptr);
 	virtual ~IndicatorDocking();
-
-	void setChatManager(ChatManager *chatManager);
-	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	void setStatusContainer(StatusContainer *statusContainer);
-	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<StatusContainer> m_statusContainer;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	QMessagingMenuApp *m_messagingMenuApp;
 
 private slots:
+	INJEQT_SETTER void setChatManager(ChatManager *chatManager);
+	INJEQT_SETTER void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SETTER void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SETTER void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+
 	void unreadMessageAdded(const Message &message);
 	void unreadMessageRemoved(const Message &message);
 

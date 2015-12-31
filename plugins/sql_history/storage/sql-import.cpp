@@ -33,6 +33,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/application.h"
+#include "core/core.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-chats-mapping.h"
@@ -389,7 +390,7 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 		int id = query.value(0).toInt();
 		QString uuid = query.value(1).toString();
 
-		Chat chat = ChatManager::instance()->byUuid(uuid);
+		Chat chat = Core::instance()->chatManager()->byUuid(uuid);
 		if (chat && chat.chatAccount() && !chat.contacts().isEmpty())
 			chats.insert(id, chat);
 	}

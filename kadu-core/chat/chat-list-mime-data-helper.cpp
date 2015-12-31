@@ -22,6 +22,7 @@
 
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "core/core.h"
 
 #include "chat-list-mime-data-helper.h"
 
@@ -60,7 +61,7 @@ QList<Chat> ChatListMimeDataHelper::fromMimeData(const QMimeData *mimeData)
 	QStringList chatListStrings = chatListString.split(':');
 	foreach (const QString &chatListString, chatListStrings)
 	{
-		Chat chat = ChatManager::instance()->byUuid(chatListString);
+		Chat chat = Core::instance()->chatManager()->byUuid(chatListString);
 		if (chat.isNull())
 			continue;
 

@@ -37,6 +37,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -266,7 +267,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 				if (container)
 					pe.setContent(container->statusIcon(contact.currentStatus().type()).path());
 				else
-					pe.setContent(StatusContainerManager::instance()->statusIcon(contact.currentStatus().type()).path());
+					pe.setContent(Core::instance()->statusContainerManager()->statusIcon(contact.currentStatus().type()).path());
 			}
 			else if (chat)
 			{
@@ -274,7 +275,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 				if (container)
 					pe.setContent(container->statusIcon().path());
 				else
-					pe.setContent(StatusContainerManager::instance()->statusIcon(Status()).path());
+					pe.setContent(Core::instance()->statusContainerManager()->statusIcon(Status()).path());
 			}
 
 			break;

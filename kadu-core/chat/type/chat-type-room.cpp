@@ -21,6 +21,7 @@
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "core/core.h"
 #include "gui/widgets/chat-room-edit-widget.h"
 #include "icons/kadu-icon.h"
 
@@ -31,7 +32,7 @@ Chat ChatTypeRoom::findChat(const Account &account, const QString &room, NotFoun
 	if (!account)
 		return Chat::null;
 
-	foreach (const Chat &chat, ChatManager::instance()->allItems())
+	foreach (const Chat &chat, Core::instance()->chatManager()->allItems())
 	{
 		if (chat.type() != "Room")
 			continue;
@@ -59,7 +60,7 @@ Chat ChatTypeRoom::findChat(const Account &account, const QString &room, NotFoun
 	details->setRoom(room);
 
 	if (ActionCreateAndAdd == notFoundAction)
-		ChatManager::instance()->addItem(chat);
+		Core::instance()->chatManager()->addItem(chat);
 
 	return chat;
 }

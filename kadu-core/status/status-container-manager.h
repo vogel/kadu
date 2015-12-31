@@ -59,16 +59,10 @@ class AllAccountsStatusContainer;
 class KADUAPI StatusContainerManager : public StatusContainer, private AccountsAwareObject, private IdentitiesAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(StatusContainerManager)
-
-	static StatusContainerManager *Instance;
 
 	QList<StatusContainer *> StatusContainers;
 	StatusContainer *DefaultStatusContainer;
 	AllAccountsStatusContainer *AllAccountsContainer;
-
-	StatusContainerManager();
-	virtual ~StatusContainerManager();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -197,14 +191,8 @@ protected:
 	virtual void identityRemoved(Identity identity);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns singleton instance of StatusContainerManager.
-	 * @return singleton instance of StatusContainerManager
-	 *
-	 * Returns singleton instance of StatusContainerManager.
-	 */
-	static StatusContainerManager * instance();
+	Q_INVOKABLE explicit StatusContainerManager(QObject *parent = nullptr);
+	virtual ~StatusContainerManager();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

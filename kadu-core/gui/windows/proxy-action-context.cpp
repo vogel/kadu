@@ -21,6 +21,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "status/status-container-manager.h"
 
 #include "proxy-action-context.h"
@@ -77,7 +78,7 @@ Chat ProxyActionContext::chat()
 
 StatusContainer * ProxyActionContext::statusContainer()
 {
-	return StatusContainerManager::instance();
+	return Core::instance()->statusContainerManager();
 }
 
 RoleSet ProxyActionContext::roles()

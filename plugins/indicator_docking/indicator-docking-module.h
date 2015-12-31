@@ -19,27 +19,13 @@
 
 #pragma once
 
+#include <injeqt/module.h>
 
-#include "plugin/plugin-root-component.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
-class IndicatorDocking;
-
-class IndicatorDockingPlugin : public PluginRootComponent
+class IndicatorDockingModule : public injeqt::module
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
-	virtual ~IndicatorDockingPlugin();
-
-	virtual bool init();
-	virtual void done();
-
-private:
-	QScopedPointer<IndicatorDocking> m_indicatorDocking;
+	explicit IndicatorDockingModule();
+	virtual ~IndicatorDockingModule();
 
 };

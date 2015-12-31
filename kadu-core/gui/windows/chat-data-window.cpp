@@ -32,6 +32,7 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/core.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory.h"
 #include "gui/widgets/chat-configuration-widget-group-boxes-adapter.h"
@@ -63,7 +64,7 @@ ChatDataWindow::ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatCon
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500), this);
 
-	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)),
+	connect(Core::instance()->chatManager(), SIGNAL(chatRemoved(Chat)),
 			this, SLOT(chatRemoved(Chat)));
 
 	SimpleStateNotifier->setState(StateNotChanged);
@@ -269,7 +270,7 @@ void ChatDataWindow::displayEditChanged()
 		return;
 	}
 
-	const Chat &chat = ChatManager::instance()->byDisplay(DisplayEdit->text());
+	const Chat &chat = Core::instance()->chatManager()->byDisplay(DisplayEdit->text());
 	if (chat)
 		SimpleStateNotifier->setState(StateChangedDataInvalid);
 	else

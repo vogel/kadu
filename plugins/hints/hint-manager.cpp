@@ -80,7 +80,7 @@ HintManager::HintManager(QObject *parent) :
 	layout->setMargin(0);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
+	connect(Core::instance()->chatManager(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"

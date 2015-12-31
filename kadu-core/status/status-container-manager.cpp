@@ -36,17 +36,8 @@
 
 #include "status-container-manager.h"
 
-StatusContainerManager * StatusContainerManager::Instance = 0;
-
-StatusContainerManager * StatusContainerManager::instance()
-{
-	if (!Instance)
-		Instance = new StatusContainerManager();
-	return Instance;
-}
-
-StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0), DefaultStatusContainer(0)
+StatusContainerManager::StatusContainerManager(QObject *parent) :
+		StatusContainer(parent), DefaultStatusContainer(0)
 {
 	AllAccountsContainer = new AllAccountsStatusContainer(this);
 

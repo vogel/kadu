@@ -226,7 +226,7 @@ Core::~Core()
 	// CurrentPluginStateManager->storePluginStates();
 
 	// unloading modules does that
-	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
+	/*Core::instance()->statusContainerManager()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
 	m_injector.get<SslCertificateManager>()->storePersistentSslCertificates();
 	m_injector.get<ChatWindowManager>()->storeOpenedChatWindows();
 
@@ -628,7 +628,7 @@ void Core::runServices()
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
 
-	m_injector.get<ChatWindowStorage>()->setChatManager(ChatManager::instance());
+	m_injector.get<ChatWindowStorage>()->setChatManager(Core::instance()->chatManager());
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());
 
@@ -679,6 +679,7 @@ void Core::runServices()
 	configurationUiHandlerRepository()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
 
 	protocolsManager()->init();
+	chatManager()->init();
 }
 
 void Core::runGuiServices()
@@ -938,6 +939,16 @@ ProtocolsManager * Core::protocolsManager() const
 UrlHandlerManager * Core::urlHandlerManager() const
 {
 	return m_injector.get<UrlHandlerManager>();
+}
+
+ChatManager * Core::chatManager() const
+{
+	return m_injector.get<ChatManager>();
+}
+
+StatusContainerManager * Core::statusContainerManager() const
+{
+	return m_injector.get<StatusContainerManager>();
 }
 
 void Core::showMainWindow()

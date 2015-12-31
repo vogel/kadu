@@ -30,25 +30,8 @@
 
 #include "chat-manager.h"
 
-ChatManager * ChatManager::Instance = 0;
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Returns singleton instance of ChatManager.
- * @return singleton instance of ChatManager
- */
-ChatManager *  ChatManager::instance()
-{
-	if (0 == Instance)
-	{
-		Instance = new ChatManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-ChatManager::ChatManager()
+ChatManager::ChatManager(QObject *parent) :
+		QObject{parent}
 {
 }
 

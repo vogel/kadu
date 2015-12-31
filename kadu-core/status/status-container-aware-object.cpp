@@ -19,6 +19,7 @@
 
 #include "status-container-manager.h"
 
+#include "core/core.h"
 #include "status-container-aware-object.h"
 
 KADU_AWARE_CLASS(StatusContainerAwareObject)
@@ -37,12 +38,12 @@ void StatusContainerAwareObject::notifyStatusContainerUnregistered(StatusContain
 
 void StatusContainerAwareObject::triggerAllStatusContainerRegistered()
 {
-	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+	foreach (StatusContainer *statusContainer, Core::instance()->statusContainerManager()->statusContainers())
 		statusContainerRegistered(statusContainer);
 }
 
 void StatusContainerAwareObject::triggerAllStatusContainerUnregistered()
 {
-	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+	foreach (StatusContainer *statusContainer, Core::instance()->statusContainerManager()->statusContainers())
 		statusContainerUnregistered(statusContainer);
 }

@@ -12,8 +12,10 @@ set (SOURCES
 	libqmessagingmenu/qmessaging-menu-app.cpp
 	libqmessagingmenu/qmessaging-menu-source.cpp
 
+	indicator-docking-module.cpp
+	indicator-docking-plugin-injector-factory.cpp
+	indicator-docking-plugin-object.cpp
 	indicator-docking.cpp
-	indicator-docking-plugin.cpp
 )
 
 link_directories (${LIBMESSAGINGMENU_LIBRARY_DIRS})

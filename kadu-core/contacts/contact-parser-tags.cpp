@@ -22,6 +22,7 @@
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
@@ -53,7 +54,7 @@ static QString getStatusIconPath(Talkable talkable)
 	if (auto protocol = talkable.account().protocolHandler())
 		return StatusTypeManager::instance()->statusIcon(protocol->statusPixmapPath(), status).webKitPath();
 	else
-		return StatusContainerManager::instance()->statusIcon(status.type()).webKitPath();
+		return Core::instance()->statusContainerManager()->statusIcon(status.type()).webKitPath();
 }
 
 void ContactParserTags::registerParserTags()
