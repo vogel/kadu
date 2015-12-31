@@ -18,20 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_INTERNAL_SENDER_H
-#define SMS_INTERNAL_SENDER_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtScript/QScriptValue>
 
 #include "sms-gateway.h"
 
 #include "sms-sender.h"
 
+class SmsGatewayManager;
+class SmsScriptsManager;
 class SmsTokenReadJob;
 
 class SmsInternalSender : public SmsSender
 {
 	Q_OBJECT
+
+	QPointer<SmsGatewayManager> m_smsGatewayManager;
+	QPointer<SmsScriptsManager> m_smsScriptsManager;
 
 	SmsGateway Gateway;
 	SmsTokenReadJob *TokenJob;
@@ -45,7 +50,7 @@ private slots:
 	void jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
 
 public:
-	explicit SmsInternalSender(const QString &number, const SmsGateway &gateway, QObject *parent = 0);
+	explicit SmsInternalSender(SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, const QString &number, const SmsGateway &gateway, QObject *parent = 0);
 	virtual ~SmsInternalSender();
 
 	virtual void sendMessage(const QString &message);
@@ -64,5 +69,3 @@ public slots:
 	void failure(const QString &errorMessage);
 
 };
-
-#endif // SMS_INTERNAL_SENDER_H

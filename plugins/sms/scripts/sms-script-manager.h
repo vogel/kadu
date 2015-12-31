@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_SCRIPTS_MANAGER_H
-#define SMS_SCRIPTS_MANAGER_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -32,29 +31,22 @@ class NetworkAccessManagerWrapper;
 class SmsScriptsManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SmsScriptsManager)
-
-	static SmsScriptsManager *Instance;
 
 	QScriptEngine *Engine;
 	NetworkAccessManagerWrapper *Network;
 
 	QList<QString> LoadedFiles;
 
-	SmsScriptsManager();
-	virtual ~SmsScriptsManager();
-
 	void loadScripts(const QDir &dir);
-	void init();
 
 public:
-	static SmsScriptsManager * instance();
-	static void destroyInstance();
+	Q_INVOKABLE explicit SmsScriptsManager(QObject *parent = nullptr);
+	virtual ~SmsScriptsManager();
+
+	void init();
 
 	void loadScript(const QFileInfo &fileInfo);
 
 	QScriptEngine * engine() { return Engine; }
 
 };
-
-#endif // SMS_SCRIPTS_MANAGER_H

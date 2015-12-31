@@ -25,26 +25,8 @@
 
 #include "sms-gateway-manager.h"
 
-SmsGatewayManager *SmsGatewayManager::Instance = 0;
-
-SmsGatewayManager * SmsGatewayManager::instance()
-{
-	if (!Instance)
-	{
-		Instance = new SmsGatewayManager();
-		Instance->load();
-	}
-
-	return Instance;
-}
-
-void SmsGatewayManager::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-SmsGatewayManager::SmsGatewayManager()
+SmsGatewayManager::SmsGatewayManager(QObject *parent) :
+		QObject{parent}
 {
 }
 
@@ -52,9 +34,14 @@ SmsGatewayManager::~SmsGatewayManager()
 {
 }
 
+void SmsGatewayManager::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
+{
+	m_smsScriptsManager = smsScriptsManager;
+}
+
 void SmsGatewayManager::load()
 {
-	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
+	QScriptEngine *engine = m_smsScriptsManager->engine();
 	qint32 length = engine->evaluate("gatewayManager.items.length").toInt32();
 
 	for (qint32 i = 0; i < length; ++i)
@@ -70,15 +57,17 @@ void SmsGatewayManager::load()
 		gateway.setMaxLength(gatewayMaxLength.toUInt16());
 		gateway.setSignatureRequired(gatewaySignatureRequired.toBool());
 
-		Items.append(gateway);
+		m_items.append(gateway);
 	}
 }
 
 SmsGateway SmsGatewayManager::byId(const QString &id) const
 {
-	foreach (const SmsGateway &gateway, Items)
+	for (auto gateway : m_items)
 		if (gateway.id() == id)
 			return gateway;
 
 	return SmsGateway();
 }
+
+#include "moc_sms-gateway-manager.cpp"

@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_CONFIGURATION_UI_HANDLER_H
-#define SMS_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include <QtCore/QBuffer>
 #include <QtCore/QMap>
@@ -48,8 +47,6 @@ class SMSAPI SmsConfigurationUiHandler : public QObject, public ConfigurationUiH
 {
 	Q_OBJECT
 
-	static SmsConfigurationUiHandler *Instance;
-
 	QCheckBox *useBuiltIn;
 	QLineEdit *customApp;
 	QCheckBox *useCustomString;
@@ -62,21 +59,16 @@ class SMSAPI SmsConfigurationUiHandler : public QObject, public ConfigurationUiH
 
 	void createDefaultConfiguration();
 
-	SmsConfigurationUiHandler();
-	virtual ~SmsConfigurationUiHandler();
-
 private slots:
 	void onSmsBuildInCheckToggle(bool);
 	void onEraGatewayChanged(int);
 
 public:
-	static void registerConfigurationUi();
-	static void unregisterConfigurationUi();
+	Q_INVOKABLE explicit SmsConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~SmsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
 };
-
-#endif // SMS_CONFIGURATION_UI_HANDLER_H

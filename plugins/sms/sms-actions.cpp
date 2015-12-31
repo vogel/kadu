@@ -35,31 +35,14 @@
 
 #include "gui/windows/sms-dialog-repository.h"
 #include "gui/windows/sms-dialog.h"
+#include "mobile-number-manager.h"
+#include "scripts/sms-script-manager.h"
+#include "sms-gateway-manager.h"
 
 #include "sms-actions.h"
 
-SmsActions *SmsActions::Instance = 0;
-
-void SmsActions::registerActions()
-{
-	if (Instance)
-		return;
-
-	Instance = new SmsActions();
-}
-
-void SmsActions::unregisterActions()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-SmsActions * SmsActions::instance()
-{
-	return Instance;
-}
-
-SmsActions::SmsActions()
+SmsActions::SmsActions(QObject *parent) :
+		QObject{parent}
 {
 	connect(Core::instance()->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
 			this, SLOT(talkableActivated(Talkable)));
@@ -95,14 +78,29 @@ SmsActions::~SmsActions()
 		->update();
 }
 
+void SmsActions::setMobileNumberManager(MobileNumberManager *mobileNumberManager)
+{
+	m_mobileNumberManager = mobileNumberManager;
+}
+
 void SmsActions::setSmsDialogRepository(SmsDialogRepository *smsDialogRepository)
 {
 	m_smsDialogRepository = smsDialogRepository;
 }
 
+void SmsActions::setSmsGatewayManager(SmsGatewayManager *smsGatewayManager)
+{
+	m_smsGatewayManager = smsGatewayManager;
+}
+
+void SmsActions::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
+{
+	m_smsScriptsManager = smsScriptsManager;
+}
+
 void SmsActions::newSms(const QString &mobile)
 {
-	SmsDialog *smsDialog = new SmsDialog();
+	SmsDialog *smsDialog = new SmsDialog(m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
 	if (m_smsDialogRepository)
 		m_smsDialogRepository->addDialog(smsDialog);
 

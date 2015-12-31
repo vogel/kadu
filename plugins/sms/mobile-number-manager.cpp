@@ -30,23 +30,8 @@
 
 #include "mobile-number-manager.h"
 
-MobileNumberManager * MobileNumberManager::Instance = 0;
-
-void MobileNumberManager::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-MobileNumberManager * MobileNumberManager::instance()
-{
-	if (!Instance)
-		Instance = new MobileNumberManager();
-
-	return Instance;
-}
-
-MobileNumberManager::MobileNumberManager()
+MobileNumberManager::MobileNumberManager(QObject *parent) :
+		QObject{parent}
 {
 	setState(StateNotLoaded);
 
@@ -69,7 +54,7 @@ void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 			return;
 		}
 
-	Numbers.append(new MobileNumber(number, gatewayId));
+	Numbers.append(new MobileNumber(this, number, gatewayId));
 }
 
 void MobileNumberManager::unregisterNumber(QString number)
@@ -112,7 +97,7 @@ void MobileNumberManager::load()
 			continue;
 
 		auto numberStoragePoint = std::make_shared<StoragePoint>(configurationStorage, mobileNumberElement);
-		MobileNumber *number = new MobileNumber();
+		MobileNumber *number = new MobileNumber(this);
 		number->setStorage(numberStoragePoint);
 		number->setState(StateNotLoaded);
 		number->ensureLoaded();
@@ -142,3 +127,5 @@ QString MobileNumberManager::gatewayId(const QString &mobileNumber)
 
 	return QString();
 }
+
+#include "moc_mobile-number-manager.cpp"

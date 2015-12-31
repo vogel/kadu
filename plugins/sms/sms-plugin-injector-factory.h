@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,34 +19,18 @@
 
 #pragma once
 
-#include <QtCore/QPair>
-#include <QtCore/QPointer>
-#include <QtCore/QStringList>
-#include <injeqt/injeqt.h>
+#include "plugin/plugin-injector-factory.h"
 
-class SmsGateway;
-class SmsScriptsManager;
-
-class SmsGatewayManager : public QObject
+class SmsPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	Q_INVOKABLE explicit SmsGatewayManager(QObject *parent = nullptr);
-	virtual ~SmsGatewayManager();
+	explicit SmsPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~SmsPluginInjectorFactory();
 
-	void load();
-
-	const QList<SmsGateway> & items() const { return m_items; }
-
-	SmsGateway byId(const QString &id) const;
-
-private:
-	QPointer<SmsScriptsManager> m_smsScriptsManager;
-
-	QList<SmsGateway> m_items;
-
-private slots:
-	INJEQT_SETTER void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };

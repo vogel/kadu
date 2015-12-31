@@ -38,26 +38,8 @@
 
 #include "sms-script-manager.h"
 
-SmsScriptsManager * SmsScriptsManager::Instance = 0;
-
-SmsScriptsManager * SmsScriptsManager::instance()
-{
-	if (!Instance)
-	{
-		Instance = new SmsScriptsManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-void SmsScriptsManager::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-SmsScriptsManager::SmsScriptsManager()
+SmsScriptsManager::SmsScriptsManager(QObject *parent) :
+		QObject{parent}
 {
 	Engine = new QScriptEngine(this);
 	Network = new NetworkAccessManagerWrapper(Engine, this);

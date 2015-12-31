@@ -12,35 +12,20 @@ set (SOURCES
 	scripts/sms-script-manager.cpp
 	scripts/sms-translator.cpp
 
-	mobile-number.cpp
 	mobile-number-manager.cpp
+	mobile-number.cpp
 	sms-actions.cpp
 	sms-configuration-ui-handler.cpp
-	sms-gateway.cpp
+	sms-external-sender.cpp
 	sms-gateway-manager.cpp
 	sms-gateway-query.cpp
-	sms-external-sender.cpp
+	sms-gateway.cpp
 	sms-internal-sender.cpp
-	sms-plugin.cpp
+	sms-module.cpp
+	sms-plugin-injector-factory.cpp
+	sms-plugin-object.cpp
 	sms-sender.cpp
 	sms-token-read-job.cpp
-)
-
-set (MOC_SOURCES
-	gui/windows/sms-dialog.h
-	scripts/network-access-manager-wrapper.h
-	scripts/network-reply-wrapper.h
-	scripts/sms-script-manager.h
-	scripts/sms-translator.h
-
-	sms-actions.h
-	sms-configuration-ui-handler.h
-	sms-gateway-query.h
-	sms-external-sender.h
-	sms-internal-sender.h
-	sms-plugin.h
-	sms-sender.h
-	sms-token-read-job.h
 )
 
 set (DATA_DIRECTORY
@@ -53,7 +38,6 @@ set (CONFIGURATION_FILES
 
 kadu_plugin (sms
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_DATA_DIRECTORIES ${DATA_DIRECTORY}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES history

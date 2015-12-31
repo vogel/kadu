@@ -49,6 +49,7 @@
 
 #include "plugins/history/history.h"
 
+#include "scripts/sms-script-manager.h"
 #include "mobile-number-manager.h"
 #include "sms-external-sender.h"
 #include "sms-gateway-manager.h"
@@ -57,8 +58,12 @@
 
 #include "sms-dialog.h"
 
-SmsDialog::SmsDialog(QWidget* parent) :
-		QWidget(parent, Qt::Window), MaxLength(0)
+SmsDialog::SmsDialog(MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget* parent) :
+		QWidget{parent, Qt::Window},
+		m_mobileNumberManager{mobileNumberManager},
+		m_smsGatewayManager{smsGatewayManager},
+		m_smsScriptsManager{smsScriptsManager},
+		MaxLength{0}
 {
 	kdebugf();
 
@@ -120,7 +125,7 @@ void SmsDialog::createGui()
 	ProviderComboBox = new QComboBox(this);
 	ProviderComboBox->addItem(tr("Select automatically"), QString());
 
-	foreach (const SmsGateway &gateway, SmsGatewayManager::instance()->items())
+	for (auto gateway : m_smsGatewayManager->items())
 		ProviderComboBox->addItem(gateway.name(), gateway.id());
 
 	connect(ProviderComboBox, SIGNAL(activated(int)), this, SLOT(gatewayActivated(int)));
@@ -212,7 +217,7 @@ void SmsDialog::recipientBuddyChanged()
 
 void SmsDialog::recipientNumberChanged(const QString &number)
 {
-	QString gatewayId = MobileNumberManager::instance()->gatewayId(RecipientEdit->text());
+	QString gatewayId = m_mobileNumberManager->gatewayId(RecipientEdit->text());
 	ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gatewayId));
 
 	if (-1 == ProviderComboBox->currentIndex())
@@ -247,7 +252,7 @@ void SmsDialog::editReturnPressed()
 void SmsDialog::gatewayActivated(int index)
 {
 	QString id = ProviderComboBox->itemData(index).toString();
-	const SmsGateway &gateway = SmsGatewayManager::instance()->byId(id);
+	const SmsGateway &gateway = m_smsGatewayManager->byId(id);
 
 	MaxLength = gateway.maxLength();
 
@@ -261,7 +266,7 @@ void SmsDialog::gatewayActivated(int index)
 
 void SmsDialog::gatewayAssigned(const QString &number, const QString &gatewayId)
 {
-	MobileNumberManager::instance()->registerNumber(number, gatewayId);
+	m_mobileNumberManager->registerNumber(number, gatewayId);
 }
 
 void SmsDialog::sendSms()
@@ -274,7 +279,7 @@ void SmsDialog::sendSms()
 	{
 		int gatewayIndex = ProviderComboBox->currentIndex();
 		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
-		sender = new SmsInternalSender(RecipientEdit->text(), SmsGatewayManager::instance()->byId(gatewayId), this);
+		sender = new SmsInternalSender(m_smsGatewayManager, m_smsScriptsManager, RecipientEdit->text(), m_smsGatewayManager->byId(gatewayId), this);
 	}
 	else
 	{

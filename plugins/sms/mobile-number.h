@@ -18,34 +18,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MOBILE_NUMBER_H
-#define MOBILE_NUMBER_H
+#pragma once
 
 #include "storage/uuid-storable-object.h"
 
+#include <QtCore/QPointer>
+
+class MobileNumberManager;
+
 class MobileNumber : public UuidStorableObject
 {
-	QString Number;
-	QString GatewayId;
+	QPointer<MobileNumberManager> m_mobileNumberManager;
+
+	QString m_number;
+	QString m_gatewayId;
 
 protected:
 	virtual void load();
 	virtual void store();
 
 public:
-	MobileNumber();
-	MobileNumber(QString number, QString gatewayId);
+	MobileNumber(MobileNumberManager *mobileNumberManager);
+	MobileNumber(MobileNumberManager *mobileNumberManager, QString number, QString gatewayId);
 	virtual ~MobileNumber();
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName() { return QLatin1String("MobileNumber"); }
 
-	const QString & number() const { return Number; };
-	void setNumber(const QString &number) { Number = number; };
+	const QString & number() const { return m_number; };
+	void setNumber(const QString &number) { m_number = number; };
 
-	const QString & gatewayId() const { return GatewayId; };
-	void setGatewayId(const QString &gatewayId) { GatewayId = gatewayId; };
+	const QString & gatewayId() const { return m_gatewayId; };
+	void setGatewayId(const QString &gatewayId) { m_gatewayId = gatewayId; };
 
 };
-
-#endif // MOBILE_NUMBER_H

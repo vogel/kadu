@@ -36,8 +36,12 @@
 
 #include "sms-internal-sender.h"
 
-SmsInternalSender::SmsInternalSender(const QString &number, const SmsGateway &gateway, QObject *parent) :
-		SmsSender(number, parent), Gateway(gateway), TokenJob(0)
+SmsInternalSender::SmsInternalSender(SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, const QString &number, const SmsGateway &gateway, QObject *parent) :
+		SmsSender{number, parent},
+		m_smsGatewayManager{smsGatewayManager},
+		m_smsScriptsManager{smsScriptsManager},
+		Gateway{gateway},
+		TokenJob{0}
 {
 }
 
@@ -107,7 +111,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 		return;
 	}
 
-	Gateway = SmsGatewayManager::instance()->byId(gatewayId);
+	Gateway = m_smsGatewayManager->byId(gatewayId);
 
 	emit progress("dialog-information", tr("Detected gateway: %1.").arg(Gateway.name()));
 
@@ -125,7 +129,7 @@ void SmsInternalSender::sendSms()
 
 	emit progress("dialog-information", tr("Sending SMS..."));
 
-	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
+	QScriptEngine *engine = m_smsScriptsManager->engine();
 
 	QScriptValue jsGatewayManagerObject = engine->evaluate("gatewayManager");
 	QScriptValue jsSendSms = jsGatewayManagerObject.property("sendSms");

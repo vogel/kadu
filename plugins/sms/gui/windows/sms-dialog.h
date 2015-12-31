@@ -18,9 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_DIALOG_H
-#define SMS_DIALOG_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
 #include "buddies/buddy.h"
@@ -33,11 +33,18 @@ class QLineEdit;
 class QPushButton;
 class QTextEdit;
 
+class MobileNumberManager;
 class SelectTalkableComboBox;
+class SmsGatewayManager;
+class SmsScriptsManager;
 
 class SmsDialog : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<MobileNumberManager> m_mobileNumberManager;
+	QPointer<SmsGatewayManager> m_smsGatewayManager;
+	QPointer<SmsScriptsManager> m_smsScriptsManager;
 
 	QLineEdit *RecipientEdit;
 	SelectTalkableComboBox *RecipientComboBox;
@@ -75,11 +82,9 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit SmsDialog(QWidget *parent = 0);
+	explicit SmsDialog(MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget *parent = 0);
 	virtual ~SmsDialog();
 
 	void setRecipient(const QString &phone);
 
 };
-
-#endif // SMS_DIALOG_H

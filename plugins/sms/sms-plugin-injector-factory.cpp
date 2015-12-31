@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,28 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "sms-plugin-injector-factory.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
+#include "sms-module.h"
 
-class SmsDialog;
+#include <injeqt/injector.h>
 
-class SmsDialogRepository : public QObject
+SmsPluginInjectorFactory::SmsPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE explicit SmsDialogRepository(QObject *parent = nullptr);
-	virtual ~SmsDialogRepository();
+SmsPluginInjectorFactory::~SmsPluginInjectorFactory()
+{
+}
 
-	void addDialog(SmsDialog *dialog);
-	void removeDialog(SmsDialog *dialog);
+injeqt::injector SmsPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<SmsModule>());
 
-private:
-	QVector<SmsDialog *> m_dialogs;
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
 
-private slots:
-	void dialogDestroyed(QObject *object);
-
-};
+#include "moc_sms-plugin-injector-factory.cpp"

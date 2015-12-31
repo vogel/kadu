@@ -21,13 +21,16 @@
 
 #include "mobile-number.h"
 
-MobileNumber::MobileNumber()
+MobileNumber::MobileNumber(MobileNumberManager *mobileNumberManager) :
+		m_mobileNumberManager{mobileNumberManager}
 {
 	setUuid(QUuid::createUuid());
 }
 
-MobileNumber::MobileNumber(QString number, QString gatewayId) :
-		Number(number), GatewayId(gatewayId)
+MobileNumber::MobileNumber(MobileNumberManager *mobileNumberManager, QString number, QString gatewayId) :
+		m_mobileNumberManager{mobileNumberManager},
+		m_number{number},
+		m_gatewayId{gatewayId}
 {
 	setUuid(QUuid::createUuid());
 }
@@ -44,8 +47,8 @@ void MobileNumber::load()
 	UuidStorableObject::load();
 
 	setUuid(loadAttribute<QString>("uuid"));
-	Number = loadValue<QString>("Number");
-	GatewayId = loadValue<QString>("Gateway");
+	m_number = loadValue<QString>("Number");
+	m_gatewayId = loadValue<QString>("Gateway");
 }
 
 void MobileNumber::store()
@@ -58,11 +61,11 @@ void MobileNumber::store()
 	UuidStorableObject::store();
 
 	storeAttribute("uuid", uuid().toString());
-	storeValue("Number", Number);
-	storeValue("Gateway", GatewayId);
+	storeValue("Number", m_number);
+	storeValue("Gateway", m_gatewayId);
 }
 
 StorableObject * MobileNumber::storageParent()
 {
-	return MobileNumberManager::instance();
+	return m_mobileNumberManager;
 }

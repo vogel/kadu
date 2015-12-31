@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,45 +19,43 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "plugin/plugin-object.h"
+
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-#include "chat/chat.h"
-#include "talkable/talkable.h"
-
-class QAction;
-
-class ActionDescription;
-class ChatWidget;
-class MobileNumberManager;
-class SmsDialogRepository;
+class ConfigurationUiHandlerRepository;
+class PathsProvider;
+class SmsActions;
+class SmsConfigurationUiHandler;
 class SmsGatewayManager;
 class SmsScriptsManager;
 
-class SmsActions : public QObject
+class SmsPluginObject : public PluginObject
 {
 	Q_OBJECT
 
-	QPointer<MobileNumberManager> m_mobileNumberManager;
-	QPointer<SmsDialogRepository> m_smsDialogRepository;
+public:
+	Q_INVOKABLE explicit SmsPluginObject(QObject *parent = nullptr);
+	virtual ~SmsPluginObject();
+
+	virtual void init();
+	virtual void done();
+
+private:
+	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<SmsActions> m_smsActions;
+	QPointer<SmsConfigurationUiHandler> m_smsConfigurationUiHandler;
 	QPointer<SmsGatewayManager> m_smsGatewayManager;
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
 
-	ActionDescription *sendSmsActionDescription;
-
 private slots:
-	INJEQT_SETTER void setMobileNumberManager(MobileNumberManager *mobileNumberManager);
-	INJEQT_SETTER void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);
+	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setSmsActions(SmsActions *smsActions);
+	INJEQT_SETTER void setSmsConfigurationUiHandler(SmsConfigurationUiHandler *smsConfigurationUiHandler);
 	INJEQT_SETTER void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
 	INJEQT_SETTER void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
-
-	void talkableActivated(const Talkable &talkable);
-	void sendSmsActionActivated(QAction *sender);
-	void newSms(const QString &mobile);
-
-public:
-	Q_INVOKABLE explicit SmsActions(QObject *parent = nullptr);
-	virtual ~SmsActions();
 
 };

@@ -18,23 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MOBILE_NUMBER_MANAGER_H
-#define MOBILE_NUMBER_MANAGER_H
+#pragma once
 
 #include "storage/storable-object.h"
 
 class MobileNumber;
 
-class MobileNumberManager : public StorableObject
+class MobileNumberManager : public QObject, public StorableObject
 {
-	Q_DISABLE_COPY(MobileNumberManager)
-
-	static MobileNumberManager *Instance;
+	Q_OBJECT
 
 	QList<MobileNumber *> Numbers;
-
-	MobileNumberManager();
-	virtual ~MobileNumberManager();
 
 protected:
 	virtual std::shared_ptr<StoragePoint> createStoragePoint();
@@ -43,8 +37,8 @@ protected:
 	virtual void store();
 
 public:
-	static MobileNumberManager * instance();
-	static void destroyInstance();
+	Q_INVOKABLE explicit MobileNumberManager(QObject *parent = nullptr);
+	virtual ~MobileNumberManager();
 
 	void registerNumber(QString number, QString gatewayId);
 	void unregisterNumber(QString number);
@@ -56,5 +50,3 @@ public:
 	QString gatewayId(const QString &mobileNumber);
 
 };
-
-#endif // MOBILE_NUMBER_MANAGER_H

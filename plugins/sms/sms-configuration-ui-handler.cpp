@@ -53,30 +53,8 @@
 
 #include "sms-configuration-ui-handler.h"
 
-SmsConfigurationUiHandler *SmsConfigurationUiHandler::Instance = 0;
-
-void SmsConfigurationUiHandler::registerConfigurationUi()
-{
-	if (!Instance)
-	{
-		Instance = new SmsConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
-		Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
-	}
-}
-
-void SmsConfigurationUiHandler::unregisterConfigurationUi()
-{
-	if (Instance)
-	{
-		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
-		delete Instance;
-		Instance = 0;
-	}
-}
-
-SmsConfigurationUiHandler::SmsConfigurationUiHandler() :
+SmsConfigurationUiHandler::SmsConfigurationUiHandler(QObject *parent) :
+	QObject{parent},
 	useBuiltIn{},
 	customApp{},
 	useCustomString{},
