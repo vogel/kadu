@@ -19,33 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "screen-shot-configuration.h"
+
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "misc/paths-provider.h"
 
-#include "screen-shot-configuration.h"
-
-ScreenShotConfiguration * ScreenShotConfiguration::Instance = 0;
-
-ScreenShotConfiguration * ScreenShotConfiguration::instance()
-{
-	return Instance;
-}
-
-void ScreenShotConfiguration::createInstance()
-{
-	if (!Instance)
-		Instance = new ScreenShotConfiguration();
-}
-
-void ScreenShotConfiguration::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-ScreenShotConfiguration::ScreenShotConfiguration()
+ScreenShotConfiguration::ScreenShotConfiguration(QObject *parent) :
+		QObject{parent}
 {
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -88,3 +70,5 @@ QString ScreenShotConfiguration::screenshotFileNameExtension()
 
 	return extension;
 }
+
+#include "moc_screen-shot-configuration.cpp"

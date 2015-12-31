@@ -16,25 +16,12 @@ set (SOURCES
 	gui/widgets/screenshot-widget.cpp
 	notification/screenshot-notification.cpp
 	pixmap-grabber.cpp
-	screenshot.cpp
-	screenshot-plugin.cpp
 	screen-shot-saver.cpp
+	screenshot-module.cpp
+	screenshot-plugin-injector-factory.cpp
+	screenshot-plugin-object.cpp
 	screenshot-taker.cpp
-)
-
-set (MOC_SOURCES
-	configuration/gui/screenshot-configuration-ui-handler.h
-	gui/actions/screenshot-action.h
-	gui/actions/screenshot-actions.h
-	gui/graphics-items/handler-rect-item.h
-	gui/widgets/crop-image-widget.h
-	gui/widgets/screenshot-tool-box.h
-	gui/widgets/screenshot-widget.h
-	notification/screenshot-notification.h
-	screenshot.h
-	screenshot-plugin.h
-	screen-shot-saver.h
-	screenshot-taker.h
+	screenshot.cpp
 )
 
 set (CONFIGURATION_FILES
@@ -60,7 +47,6 @@ endif ()
 
 kadu_plugin (screenshot
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 	PLUGIN_ADDITIONAL_QT_MODULES ${PLUGIN_ADDITIONAL_QT_MODULES}

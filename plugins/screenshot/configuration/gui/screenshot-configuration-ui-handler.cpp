@@ -32,31 +32,8 @@
 
 #include "screenshot-configuration-ui-handler.h"
 
-ScreenShotConfigurationUiHandler *ScreenShotConfigurationUiHandler::Instance = 0;
-
-void ScreenShotConfigurationUiHandler::registerConfigurationUi()
-{
-	if (Instance)
-		return;
-
-	Instance = new ScreenShotConfigurationUiHandler();
-
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
-	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
-}
-
-void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
-{
-	if (Instance)
-		Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
-
-	delete Instance;
-	Instance = 0;
-
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
-}
-
-ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler()
+ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) :
+		QObject{parent}
 {
 }
 

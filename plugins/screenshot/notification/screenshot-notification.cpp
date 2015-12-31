@@ -26,16 +26,6 @@
 
 #include "screenshot-notification.h"
 
-void ScreenshotNotification::registerNotifications()
-{
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
-}
-
-void ScreenshotNotification::unregisterNotifiactions()
-{
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
-}
-
 void ScreenshotNotification::notifySizeLimit(long size)
 {
 	ScreenshotNotification *notification = new ScreenshotNotification();
@@ -44,9 +34,10 @@ void ScreenshotNotification::notifySizeLimit(long size)
 	Core::instance()->notificationManager()->notify(notification);
 }
 
-ScreenshotNotification::ScreenshotNotification() :
+ScreenshotNotification::ScreenshotNotification(QObject *parent) :
 		Notification(Account::null, Chat::null, "ssSizeLimit", KaduIcon("kadu_icons/blocking"))
 {
+	Q_UNUSED(parent);
 }
 
 ScreenshotNotification::~ScreenshotNotification()

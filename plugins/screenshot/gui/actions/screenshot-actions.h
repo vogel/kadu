@@ -17,31 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_ACTIONS_H
-#define SCREENSHOT_ACTIONS_H
+#pragma once
+
+#include "misc/memory.h"
 
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 class ScreenshotAction;
+class ScreenShotConfiguration;
 
 class ScreenshotActions : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ScreenshotActions)
-
-	static ScreenshotActions *Instance;
-
-	ScreenshotAction *ScreenShotActionDescription;
-
-	ScreenshotActions();
-	virtual ~ScreenshotActions();
 
 public:
-	static void registerActions();
-	static void unregisterActions();
+	Q_INVOKABLE explicit ScreenshotActions(QObject *parent = nullptr);
+	virtual ~ScreenshotActions();
 
-	static ScreenshotActions * instance();
+private:
+	owned_qptr<ScreenshotAction> m_screenShotActionDescription;
+
+private slots:
+	INJEQT_SETTER void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
 
 };
-
-#endif // SCREENSHOT_ACTIONS_H

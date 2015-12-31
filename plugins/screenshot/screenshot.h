@@ -24,6 +24,7 @@
 #include <vector>
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QRect>
 #include <QtGui/QPixmap>
 
@@ -37,6 +38,7 @@ class ActionDescription;
 class ChatWidget;
 class ConfigurationUiHandler;
 class CropImageWidget;
+class ScreenShotConfiguration;
 class ScreenshotTaker;
 class ScreenshotToolBox;
 class ScreenshotWidget;
@@ -44,6 +46,8 @@ class ScreenshotWidget;
 class ScreenShot : public QObject
 {
 	Q_OBJECT
+
+	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 	ScreenShotMode Mode;
 	ScreenshotTaker *MyScreenshotTaker;
@@ -63,7 +67,7 @@ private slots:
 	void screenshotReady(QPixmap pixmap);
 
 public:
-	explicit ScreenShot(ChatWidget *chatWidget);
+	explicit ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget);
 	virtual ~ScreenShot();
 
 	void takeStandardShot();

@@ -27,8 +27,9 @@
 
 #include "screen-shot-saver.h"
 
-ScreenShotSaver::ScreenShotSaver(QObject *parent) :
+ScreenShotSaver::ScreenShotSaver(ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
 		QObject{parent},
+		m_screenShotConfiguration{screenShotConfiguration},
 		Size{}
 {
 }
@@ -39,7 +40,7 @@ ScreenShotSaver::~ScreenShotSaver()
 
 QString ScreenShotSaver::createScreenshotPath()
 {
-	QString dirPath = ScreenShotConfiguration::instance()->imagePath();
+	QString dirPath = m_screenShotConfiguration->imagePath();
 
 	QDir dir(dirPath);
 	if (!dir.exists() && !dir.mkpath(dirPath))
@@ -50,9 +51,9 @@ QString ScreenShotSaver::createScreenshotPath()
 
 	return QDir::cleanPath(QString("%1/%2%3.%4")
 			.arg(dir.absolutePath())
-			.arg(ScreenShotConfiguration::instance()->fileNamePrefix())
+			.arg(m_screenShotConfiguration->fileNamePrefix())
 			.arg(QString::number(QDateTime::currentDateTime().toTime_t()))
-			.arg(ScreenShotConfiguration::instance()->screenshotFileNameExtension().toLower()));
+			.arg(m_screenShotConfiguration->screenshotFileNameExtension().toLower()));
 }
 
 QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
@@ -61,10 +62,10 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 	if (path.isEmpty())
 		return QString();
 
-	int quality = ScreenShotConfiguration::instance()->quality();
+	int quality = m_screenShotConfiguration->quality();
 
 	// do not extract qPrintable... to variable
-	if (!pixmap.save(path, qPrintable(ScreenShotConfiguration::instance()->fileFormat()), quality))
+	if (!pixmap.save(path, qPrintable(m_screenShotConfiguration->fileFormat()), quality))
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
 		return QString();

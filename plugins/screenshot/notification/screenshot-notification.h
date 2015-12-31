@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_NOTIFICATION_H
-#define SCREENSHOT_NOTIFICATION_H
+#pragma once
 
 #include "notification/notification/notification.h"
 
@@ -29,14 +28,9 @@ class ScreenshotNotification : public Notification
 	Q_OBJECT
 
 public:
-	static void registerNotifications();
-	static void unregisterNotifiactions();
-
 	static void notifySizeLimit(long size);
 
-	explicit ScreenshotNotification();
+	explicit ScreenshotNotification(QObject *parent = nullptr);
 	virtual ~ScreenshotNotification();
 
 };
-
-#endif // SCREENSHOT_NOTIFICATION_H

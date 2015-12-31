@@ -18,23 +18,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREEN_SHOT_SAVER_H
-#define SCREEN_SHOT_SAVER_H
+#pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 class QPixmap;
+
+class ScreenShotConfiguration;
 
 class ScreenShotSaver : public QObject
 {
 	Q_OBJECT
+
+	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 	long int Size;
 
 	QString createScreenshotPath();
 
 public:
-	explicit ScreenShotSaver(QObject *parent = 0);
+	explicit ScreenShotSaver(ScreenShotConfiguration *screenShotConfiguration, QObject *parent = 0);
 	virtual ~ScreenShotSaver();
 
 	QString saveScreenShot(QPixmap pixmap);
@@ -42,5 +46,3 @@ public:
 	long int size() { return Size; }
 
 };
-
-#endif // SCREEN_SHOT_SAVER_H

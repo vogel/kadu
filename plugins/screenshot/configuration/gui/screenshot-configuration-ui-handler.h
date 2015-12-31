@@ -18,26 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_CONFIGURATION_UI_HANDLER_H
-#define SCREENSHOT_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
 
-class ScreenShotConfigurationUiHandler : public ConfigurationUiHandler
-{
-	static ScreenShotConfigurationUiHandler *Instance;
+#include <QtCore/QObject>
 
-	explicit ScreenShotConfigurationUiHandler();
-	virtual ~ScreenShotConfigurationUiHandler();
+class ScreenShotConfigurationUiHandler : public QObject, public ConfigurationUiHandler
+{
+	Q_OBJECT
 
 public:
-	static void registerConfigurationUi();
-	static void unregisterConfigurationUi();
+	Q_INVOKABLE explicit ScreenShotConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~ScreenShotConfigurationUiHandler();
 
+private:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
 };
-
-#endif // SCREENSHOT_CONFIGURATION_UI_HANDLER_H

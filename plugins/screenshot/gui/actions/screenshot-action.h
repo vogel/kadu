@@ -18,18 +18,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_ACTION_H
-#define SCREENSHOT_ACTION_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QAction>
 
 #include "gui/actions/action-description.h"
 
 class ChatWidget;
+class ScreenShotConfiguration;
 
 class ScreenshotAction : public ActionDescription
 {
 	Q_OBJECT
+
+	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 	ChatWidget * findChatWidget(QObject *obejct);
 
@@ -44,9 +47,7 @@ protected:
 	virtual void updateActionState(Action *action);
 
 public:
-	explicit ScreenshotAction(QObject *parent);
+	explicit ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent);
 	virtual ~ScreenshotAction();
 
 };
-
-#endif // SCREENSHOT_ACTION_H

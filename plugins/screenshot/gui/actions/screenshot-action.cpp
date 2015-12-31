@@ -28,12 +28,14 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "protocols/protocol.h"
 
+#include "configuration/screen-shot-configuration.h"
 #include "screenshot.h"
 
 #include "screenshot-action.h"
 
-ScreenshotAction::ScreenshotAction(QObject *parent) :
-		ActionDescription(parent)
+ScreenshotAction::ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
+		ActionDescription(parent),
+		m_screenShotConfiguration{screenShotConfiguration}
 {
 	setType(ActionDescription::TypeChat);
 	setName("ScreenShotAction");
@@ -111,21 +113,21 @@ void ScreenshotAction::takeStandardShotSlot(ChatWidget *chatWidget)
 	if (!chatWidget)
 		chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(chatWidget))->takeStandardShot();
+		(new ScreenShot(m_screenShotConfiguration, chatWidget))->takeStandardShot();
 }
 
 void ScreenshotAction::takeShotWithChatWindowHiddenSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(chatWidget))->takeShotWithChatWindowHidden();
+		(new ScreenShot(m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
 }
 
 void ScreenshotAction::takeWindowShotSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(chatWidget))->takeWindowShot();
+		(new ScreenShot(m_screenShotConfiguration, chatWidget))->takeWindowShot();
 }
 
 #include "moc_screenshot-action.cpp"

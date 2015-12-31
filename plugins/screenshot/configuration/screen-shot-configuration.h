@@ -18,41 +18,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREEN_SHOT_CONFIGURATION_H
-#define SCREEN_SHOT_CONFIGURATION_H
-
-#include <QtCore/QString>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
-class ScreenShotConfiguration : private ConfigurationAwareObject
+#include <QtCore/QObject>
+
+class ScreenShotConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(ScreenShotConfiguration)
-
-	static ScreenShotConfiguration * Instance;
-
-	QString FileFormat;
-	bool UseShortJpgExtension;
-	int Quality;
-	QString ImagePath;
-	QString FileNamePrefix;
-	bool PasteImageClauseIntoChatWidget;
-	bool WarnAboutDirectorySize;
-	long DirectorySizeLimit;
-
-	ScreenShotConfiguration();
-	virtual ~ScreenShotConfiguration();
-
-	void createDefaultConfiguration();
-
-protected:
-	virtual void configurationUpdated();
+	Q_OBJECT
 
 public:
-	static ScreenShotConfiguration * instance();
-
-	static void createInstance();
-	static void destroyInstance();
+	Q_INVOKABLE explicit ScreenShotConfiguration(QObject *parent = nullptr);
+	virtual ~ScreenShotConfiguration();
 
 	const QString & fileFormat() const { return FileFormat; }
 	bool useShortJpgExtension() { return UseShortJpgExtension; }
@@ -65,6 +43,19 @@ public:
 
 	QString screenshotFileNameExtension();
 
-};
+protected:
+	virtual void configurationUpdated();
 
-#endif // SCREEN_SHOT_CONFIGURATION_H
+private:
+	QString FileFormat;
+	bool UseShortJpgExtension;
+	int Quality;
+	QString ImagePath;
+	QString FileNamePrefix;
+	bool PasteImageClauseIntoChatWidget;
+	bool WarnAboutDirectorySize;
+	long DirectorySizeLimit;
+
+	void createDefaultConfiguration();
+
+};

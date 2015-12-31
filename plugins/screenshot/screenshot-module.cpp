@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,22 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_PLUGIN_H
-#define SCREENSHOT_PLUGIN_H
+#include "screenshot-module.h"
 
-#include "plugin/plugin-root-component.h"
+#include "configuration/gui/screenshot-configuration-ui-handler.h"
+#include "configuration/screen-shot-configuration.h"
+#include "gui/actions/screenshot-actions.h"
+#include "screenshot-plugin-object.h"
 
-class ScreenshotPlugin : public PluginRootComponent
+ScreenshotModule::ScreenshotModule()
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+	add_type<ScreenshotActions>();
+	add_type<ScreenShotConfigurationUiHandler>();
+	add_type<ScreenShotConfiguration>();
+	add_type<ScreenshotPluginObject>();
+}
 
-public:
-	virtual ~ScreenshotPlugin();
-
-	virtual bool init();
-	virtual void done();
-};
-
-#endif // SCREENSHOT_PLUGIN_H
+ScreenshotModule::~ScreenshotModule()
+{
+}

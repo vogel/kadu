@@ -40,7 +40,8 @@
 #include "screen-shot-saver.h"
 #include "screenshot.h"
 
-ScreenShot::ScreenShot(ChatWidget *chatWidget) :
+ScreenShot::ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget) :
+		m_screenShotConfiguration{screenShotConfiguration},
 		Mode{},
 		MyScreenshotTaker{},
 		MyChatWidget{chatWidget}
@@ -106,10 +107,10 @@ void ScreenShot::screenshotNotTaken()
 
 void ScreenShot::screenshotReady(QPixmap p)
 {
-	ScreenShotSaver *saver = new ScreenShotSaver(this);
-	QString screenShotPath = saver->saveScreenShot(p);
+	auto saver = new ScreenShotSaver(m_screenShotConfiguration, this);
+	auto screenShotPath = saver->saveScreenShot(p);
 
-	if (ScreenShotConfiguration::instance()->pasteImageClauseIntoChatWidget())
+	if (m_screenShotConfiguration->pasteImageClauseIntoChatWidget())
 	{
 		pasteImageClause(screenShotPath);
 		if (!checkImageSize(saver->size()))
@@ -139,15 +140,15 @@ bool ScreenShot::checkImageSize(long int size)
 void ScreenShot::checkShotsSize()
 {
 	kdebugf();
-	if (!ScreenShotConfiguration::instance()->warnAboutDirectorySize())
+	if (!m_screenShotConfiguration->warnAboutDirectorySize())
 		return;
 
 	long size = 0;
 
-	long limit = ScreenShotConfiguration::instance()->directorySizeLimit();
-	QDir dir(ScreenShotConfiguration::instance()->imagePath());
+	long limit = m_screenShotConfiguration->directorySizeLimit();
+	QDir dir(m_screenShotConfiguration->imagePath());
 
-	QString prefix = ScreenShotConfiguration::instance()->fileNamePrefix();
+	QString prefix = m_screenShotConfiguration->fileNamePrefix();
 	QStringList filters;
 	filters << prefix + '*';
 	QFileInfoList list = dir.entryInfoList(filters, QDir::Files);

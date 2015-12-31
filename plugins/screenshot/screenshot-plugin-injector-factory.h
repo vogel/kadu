@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,22 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "screenshot-actions.h"
+#pragma once
 
-#include "gui/actions/screenshot-action.h"
+#include "plugin/plugin-injector-factory.h"
 
-ScreenshotActions::ScreenshotActions(QObject *parent) :
-		QObject{parent}
+class ScreenshotPluginInjectorFactory : public PluginInjectorFactory
 {
-}
+	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
-ScreenshotActions::~ScreenshotActions()
-{
-}
+public:
+	explicit ScreenshotPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~ScreenshotPluginInjectorFactory();
 
-void ScreenshotActions::setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration)
-{
-	m_screenShotActionDescription = make_owned<ScreenshotAction>(screenShotConfiguration, this);
-}
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
-#include "moc_screenshot-actions.cpp"
+};

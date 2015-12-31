@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,22 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "screenshot-actions.h"
+#pragma once
 
-#include "gui/actions/screenshot-action.h"
+#include <injeqt/module.h>
 
-ScreenshotActions::ScreenshotActions(QObject *parent) :
-		QObject{parent}
+class ScreenshotModule : public injeqt::module
 {
-}
 
-ScreenshotActions::~ScreenshotActions()
-{
-}
+public:
+	explicit ScreenshotModule();
+	virtual ~ScreenshotModule();
 
-void ScreenshotActions::setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration)
-{
-	m_screenShotActionDescription = make_owned<ScreenshotAction>(screenShotConfiguration, this);
-}
-
-#include "moc_screenshot-actions.cpp"
+};
