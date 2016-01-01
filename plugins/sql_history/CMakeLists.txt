@@ -16,15 +16,13 @@ set (SOURCES
 	storage/sql-messages-status-storage.cpp
 	storage/sql-restore.cpp
 
-	sql-history-plugin.cpp
-)
-
-set (CONFIGURATION_FILES
+	sql-history-module.cpp
+	sql-history-plugin-injector-factory.cpp
+	sql-history-plugin-object.cpp
 )
 
 kadu_plugin (sql_history
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES history
 	PLUGIN_ADDITIONAL_QT_MODULES Concurrent Sql
 )

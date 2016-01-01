@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,29 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SQL_HISTORY_PLUGIN
-#define SQL_HISTORY_PLUGIN
+#pragma once
 
-#include <QtCore/QPointer>
+#include "plugin/plugin-injector-factory.h"
 
-#include "plugin/plugin-root-component.h"
-
-class HistorySqlStorage;
-
-class SqlHistoryPlugin : public PluginRootComponent
+class SqlHistoryPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	QPointer<HistorySqlStorage> Storage;
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	virtual ~SqlHistoryPlugin();
+	explicit SqlHistoryPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~SqlHistoryPluginInjectorFactory();
 
-	virtual bool init();
-	virtual void done();
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };
-
-#endif // SQL_HISTORY_PLUGIN

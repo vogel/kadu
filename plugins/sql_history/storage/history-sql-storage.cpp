@@ -110,8 +110,6 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 	ChatStorage = new SqlMessagesChatStorage(this);
 	StatusStorage = new SqlMessagesStatusStorage(this);
 	SmsStorage = new SqlMessagesSmsStorage(this);
-
-	History::instance()->registerStorage(this);
 }
 
 HistorySqlStorage::~HistorySqlStorage()

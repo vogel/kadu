@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2013, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,34 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtSql/QSqlDatabase>
-
-#include "core/core.h"
-
-#include "plugins/history/history.h"
+#include "sql-history-module.h"
 
 #include "storage/history-sql-storage.h"
+#include "sql-history-plugin-object.h"
 
-#include "sql-history-plugin.h"
-
-SqlHistoryPlugin::~SqlHistoryPlugin()
+SqlHistoryModule::SqlHistoryModule()
 {
+	add_type<HistorySqlStorage>();
+	add_type<SqlHistoryPluginObject>();
 }
 
-bool SqlHistoryPlugin::init()
+SqlHistoryModule::~SqlHistoryModule()
 {
-	Storage = new HistorySqlStorage();
-	Storage->setFormattedStringFactory(Core::instance()->formattedStringFactory());
-
-	return true;
 }
-
-void SqlHistoryPlugin::done()
-{
-	if (Storage && History::instance())
-		History::instance()->unregisterStorage(Storage.data());
-
-	QSqlDatabase::removeDatabase("kadu-history");
-}
-
-#include "moc_sql-history-plugin.cpp"

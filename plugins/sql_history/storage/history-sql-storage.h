@@ -20,15 +20,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_SQL_STORAGE_H
-#define HISTORY_SQL_STORAGE_H
+#pragma once
+
+#include "plugins/history/storage/history-storage.h"
 
 #include <QtCore/QMutex>
 #include <QtCore/QPointer>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
-
-#include "plugins/history/storage/history-storage.h"
+#include <injeqt/injeqt.h>
 
 class QSqlError;
 
@@ -105,6 +105,8 @@ class HistorySqlStorage : public HistoryStorage
 	SortedMessages syncSmses(const HistoryQuery &historyQuery);
 
 private slots:
+	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
 
@@ -114,10 +116,8 @@ private slots:
 	void databaseReady(bool ok);
 
 public:
-	explicit HistorySqlStorage(QObject *parent = 0);
+	Q_INVOKABLE explicit HistorySqlStorage(QObject *parent = nullptr);
 	virtual ~HistorySqlStorage();
-
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual QFuture<QVector<Talkable>> chats();
 	virtual QFuture<QVector<Talkable>> statusBuddies();
@@ -148,5 +148,3 @@ public:
 	void chatWhere (Chat toChat);
 
 };
-
-#endif // HISTORY_SQL_STORAGE_H

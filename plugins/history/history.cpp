@@ -416,7 +416,6 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 	stopSaveThread();
 
-	delete CurrentStorage;
 	CurrentStorage = 0;
 
 	emit storageChanged(CurrentStorage);
