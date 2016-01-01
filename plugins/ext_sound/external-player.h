@@ -38,7 +38,7 @@ class ExternalPlayer : public SoundPlayer
 	Q_OBJECT
 
 public:
-	explicit ExternalPlayer(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ExternalPlayer(QObject *parent = nullptr);
 	virtual ~ExternalPlayer();
 
 	virtual QObject * playSound(const QString &path);

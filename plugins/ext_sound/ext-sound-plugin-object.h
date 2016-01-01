@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014, 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,26 +19,34 @@
 
 #pragma once
 
-#include "plugin/plugin-root-component.h"
+#include "plugin/plugin-object.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ExternalPlayer;
+class PathsProvider;
+class PluginRepository;
 
-class ExtSoundPlugin : public PluginRootComponent
+class ExtSoundPluginObject : public PluginObject
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
 
 public:
-	explicit ExtSoundPlugin(QObject *parent = nullptr);
-	virtual ~ExtSoundPlugin();
+	Q_INVOKABLE explicit ExtSoundPluginObject(QObject *parent = nullptr);
+	virtual ~ExtSoundPluginObject();
 
-	virtual bool init();
+	virtual void init();
 	virtual void done();
 
 private:
 	QPointer<ExternalPlayer> m_externalPlayer;
+	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<PluginRepository> m_pluginRepository;
+
+private slots:
+	INJEQT_SETTER void setExternalPlayer(ExternalPlayer *externalPlayer);
+	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 
 };

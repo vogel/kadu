@@ -5,8 +5,10 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
+	ext-sound-module.cpp
+	ext-sound-plugin-injector-factory.cpp
+	ext-sound-plugin-object.cpp
 	external-player.cpp
-	ext-sound-plugin.cpp
 )
 
 set (CONFIGURATION_FILES
