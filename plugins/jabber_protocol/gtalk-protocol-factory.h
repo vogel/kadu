@@ -18,38 +18,58 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GTALK_PROTOCOL_FACTORY_H
-#define GTALK_PROTOCOL_FACTORY_H
+#pragma once
 
-#include "jabber-protocol-factory.h"
+#include "protocols/protocol-factory.h"
+#include "status/status-adapter.h"
 
-class GTalkProtocolFactory : public JabberProtocolFactory
+#include <QtCore/QPointer>
+#include <memory>
+#include <injeqt/injeqt.h>
+
+class FacebookDepreceatedMessage;
+class JabberProtocolMenuManager;
+
+class GTalkProtocolFactory : public ProtocolFactory
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(GTalkProtocolFactory)
 
-	static GTalkProtocolFactory *Instance;
-
-	GTalkProtocolFactory();
-
 public:
-	static void createInstance();
-	static void destroyInstance();
+	Q_INVOKABLE explicit GTalkProtocolFactory(QObject *parent = nullptr);
+	virtual ~GTalkProtocolFactory();
 
-	static GTalkProtocolFactory * instance() { return Instance; }
-
+	virtual Protocol * createProtocolHandler(Account account);
+	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
+	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
+	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
+	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
+	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
+    virtual ProtocolMenuManager * protocolMenuManager();
+	virtual QList<StatusType> supportedStatusTypes();
+	virtual StatusAdapter * statusAdapter() { return m_statusAdapter.get(); }
 	virtual QString idLabel();
-    virtual QString defaultServer();
+	virtual QValidator::State validateId(QString id);
+	virtual bool canRegister();
+	virtual bool allowChangeServer();
+	virtual QString defaultServer();
+	virtual QString whatIsMyUsername() { return QString(); }
 
 	virtual QString name() { return "gmail/google talk"; }
 	virtual QString displayName() { return "Gmail/Google Talk"; }
 
-	virtual bool canRegister() { return false; }
-
 	virtual KaduIcon icon();
 
-	virtual AccountCreateWidget * newCreateAccountWidget(bool /*showButtons*/, QWidget * /*parent*/) { return 0; }
+private:
+	QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
+	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
+
+	QList<StatusType> m_supportedStatusTypes;
+
+	std::unique_ptr<StatusAdapter> m_statusAdapter;
+
+private slots:
+	INJEQT_SETTER void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
+	INJEQT_SETTER void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
 
 };
-
-#endif // GTALK_PROTOCOL_FACTORY_H

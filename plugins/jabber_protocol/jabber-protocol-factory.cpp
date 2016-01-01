@@ -37,31 +37,34 @@
 #include "jabber-protocol.h"
 #include "jabber-status-adapter.h"
 
-JabberProtocolFactory * JabberProtocolFactory::Instance = 0;
-
-void JabberProtocolFactory::createInstance()
+JabberProtocolFactory::JabberProtocolFactory(QObject *parent) :
+		ProtocolFactory{}
 {
-	if (!Instance)
-		Instance = new JabberProtocolFactory();
-}
+	Q_UNUSED(parent);
 
-void JabberProtocolFactory::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-JabberProtocolFactory::JabberProtocolFactory()
-{
-	MyStatusAdapter = make_unique<JabberStatusAdapter>();
+	m_statusAdapter = make_unique<JabberStatusAdapter>();
 
 	// already sorted
-	SupportedStatusTypes.append(StatusTypeFreeForChat);
-	SupportedStatusTypes.append(StatusTypeOnline);
-	SupportedStatusTypes.append(StatusTypeAway);
-	SupportedStatusTypes.append(StatusTypeNotAvailable);
-	SupportedStatusTypes.append(StatusTypeDoNotDisturb);
-	SupportedStatusTypes.append(StatusTypeOffline);
+	m_supportedStatusTypes.append(StatusTypeFreeForChat);
+	m_supportedStatusTypes.append(StatusTypeOnline);
+	m_supportedStatusTypes.append(StatusTypeAway);
+	m_supportedStatusTypes.append(StatusTypeNotAvailable);
+	m_supportedStatusTypes.append(StatusTypeDoNotDisturb);
+	m_supportedStatusTypes.append(StatusTypeOffline);
+}
+
+JabberProtocolFactory::~JabberProtocolFactory()
+{
+}
+
+void JabberProtocolFactory::setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage)
+{
+	m_facebookDepreceatedMessage = facebookDepreceatedMessage;
+}
+
+void JabberProtocolFactory::setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager)
+{
+	m_jabberProtocolMenuManager = jabberProtocolMenuManager;
 }
 
 KaduIcon JabberProtocolFactory::icon()
@@ -72,7 +75,7 @@ KaduIcon JabberProtocolFactory::icon()
 Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 {
 	if (account.id().toLower().endsWith("@chat.facebook.com"))
-		FacebookDepreceatedMessage::instance()->showIfNotSeen();
+		m_facebookDepreceatedMessage->showIfNotSeen();
 
 	return new JabberProtocol(account, this);
 }
@@ -107,7 +110,7 @@ AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account,
 
 QList<StatusType> JabberProtocolFactory::supportedStatusTypes()
 {
-	return SupportedStatusTypes;
+	return m_supportedStatusTypes;
 }
 
 QString JabberProtocolFactory::idLabel()
@@ -118,7 +121,8 @@ QString JabberProtocolFactory::idLabel()
 QValidator::State JabberProtocolFactory::validateId(QString id)
 {
 	int pos = 0;
-	return JabberIdValidator::instance()->validate(id, pos);
+	JabberIdValidator validator;
+	return validator.validate(id, pos);
 }
 
 bool JabberProtocolFactory::canRegister()
@@ -143,7 +147,7 @@ QWidget * JabberProtocolFactory::newContactPersonalInfoWidget(Contact contact, Q
 
 ProtocolMenuManager * JabberProtocolFactory::protocolMenuManager()
 {
-	return JabberProtocolMenuManager::instance();
+	return m_jabberProtocolMenuManager;
 }
 
 #include "moc_jabber-protocol-factory.cpp"

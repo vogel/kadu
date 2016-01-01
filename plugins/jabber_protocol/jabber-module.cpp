@@ -17,18 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "jabber-module.h"
 
-#include <QtCore/QObject>
+#include "actions/jabber-actions.h"
+#include "actions/jabber-protocol-menu-manager.h"
+#include "facebook-depreceated-message.h"
+#include "gtalk-protocol-factory.h"
+#include "jabber-plugin-object.h"
+#include "jabber-protocol-factory.h"
+#include "jabber-url-dom-visitor-provider.h"
+#include "jabber-url-handler.h"
 
-class FacebookDepreceatedMessage : public QObject
+JabberModule::JabberModule()
 {
-	Q_OBJECT
-
-public:
-	Q_INVOKABLE explicit FacebookDepreceatedMessage(QObject *parent = nullptr);
-	virtual ~FacebookDepreceatedMessage();
-
-	void showIfNotSeen();
-
-};
+	add_type<FacebookDepreceatedMessage>();
+	add_type<GTalkProtocolFactory>();
+	add_type<JabberActions>();
+	add_type<JabberPluginObject>();
+	add_type<JabberProtocolFactory>();
+	add_type<JabberProtocolMenuManager>();
+	add_type<JabberUrlDomVisitorProvider>();
+	add_type<JabberUrlHandler>();
+}

@@ -40,7 +40,8 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 	BuddyList matchedContacts;
 	QString queryCopy(query);
 	int pos = 0;
-	if (JabberIdValidator::instance()->validate(queryCopy, pos) != QValidator::Acceptable)
+	JabberIdValidator validator;
+	if (validator.validate(queryCopy, pos) != QValidator::Acceptable)
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);

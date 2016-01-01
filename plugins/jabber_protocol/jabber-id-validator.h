@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_ID_VALIDATOR_H
-#define JABBER_ID_VALIDATOR_H
+#pragma once
 
 #include <QtGui/QValidator>
 
@@ -26,19 +25,10 @@ class JabberIdValidator : public QValidator
 {
 	Q_OBJECT
 
-	static QValidator *Instance;
-
-	explicit JabberIdValidator(QObject *parent = 0);
-	virtual ~JabberIdValidator();
-
 public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static QValidator * instance();
+	explicit JabberIdValidator(QObject *parent = nullptr);
+	virtual ~JabberIdValidator();
 
 	virtual QValidator::State validate(QString &input, int &pos) const;
 
 };
-
-#endif // JABBER_ID_VALIDATOR_H

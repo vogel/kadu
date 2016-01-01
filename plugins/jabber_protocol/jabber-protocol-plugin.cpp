@@ -43,30 +43,6 @@ JabberProtocolPlugin::~JabberProtocolPlugin()
 
 bool JabberProtocolPlugin::init()
 {
-	if (Core::instance()->protocolsManager()->hasProtocolFactory("jabber")
-			|| Core::instance()->protocolsManager()->hasProtocolFactory("gtalk"))
-		return true;
-
-	FacebookDepreceatedMessage::createInstance();
-
-	JabberIdValidator::createInstance();
-
-	JabberActions::registerActions();
-	JabberProtocolMenuManager::createInstance();
-
-	JabberProtocolFactory::createInstance();
-	GTalkProtocolFactory::createInstance();
-
-	Core::instance()->protocolsManager()->registerProtocolFactory(JabberProtocolFactory::instance());
-	Core::instance()->protocolsManager()->registerProtocolFactory(GTalkProtocolFactory::instance());
-
-	m_urlHandler = new JabberUrlHandler();
-	Core::instance()->urlHandlerManager()->registerUrlHandler(m_urlHandler);
-
-	// install before mail handler
-	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
-	Core::instance()->domProcessorService()->registerVisitorProvider(UrlDomVisitorProvider, 200);
-
 	return true;
 }
 
@@ -85,11 +61,6 @@ void JabberProtocolPlugin::done()
 	GTalkProtocolFactory::destroyInstance();
 
 	JabberProtocolMenuManager::destroyInstance();
-	JabberActions::unregisterActions();
-
-	JabberIdValidator::destroyInstance();
-
-	FacebookDepreceatedMessage::destroyInstance();
 }
 
 #include "moc_jabber-protocol-plugin.cpp"

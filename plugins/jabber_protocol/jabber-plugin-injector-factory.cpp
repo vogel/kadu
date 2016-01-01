@@ -17,18 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "jabber-plugin-injector-factory.h"
 
-#include <QtCore/QObject>
+#include "jabber-module.h"
 
-class FacebookDepreceatedMessage : public QObject
+#include <injeqt/injector.h>
+
+JabberPluginInjectorFactory::JabberPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE explicit FacebookDepreceatedMessage(QObject *parent = nullptr);
-	virtual ~FacebookDepreceatedMessage();
+JabberPluginInjectorFactory::~JabberPluginInjectorFactory()
+{
+}
 
-	void showIfNotSeen();
+injeqt::injector JabberPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<JabberModule>());
 
-};
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
+
+#include "moc_jabber-plugin-injector-factory.cpp"

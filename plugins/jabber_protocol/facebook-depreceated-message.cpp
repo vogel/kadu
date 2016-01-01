@@ -25,24 +25,6 @@
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 
-FacebookDepreceatedMessage * FacebookDepreceatedMessage::m_instance = nullptr;
-
-void FacebookDepreceatedMessage::createInstance()
-{
-	m_instance = new FacebookDepreceatedMessage{};
-}
-
-void FacebookDepreceatedMessage::destroyInstance()
-{
-	delete m_instance;
-	m_instance = nullptr;
-}
-
-FacebookDepreceatedMessage * FacebookDepreceatedMessage::instance()
-{
-	return m_instance;
-}
-
 FacebookDepreceatedMessage::FacebookDepreceatedMessage(QObject *parent) :
 		QObject{parent}
 {

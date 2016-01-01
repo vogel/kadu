@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_ACTIONS_H
-#define JABBER_ACTIONS_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -32,12 +31,19 @@ class Contact;
 class SubscriptionService;
 
 // TODO: this class can be moved to core and just check for SubscriptionService
-class JabberActions : QObject
+class JabberActions : public QObject
 {
 	Q_OBJECT
 
-	static JabberActions *Instance;
+public:
+	Q_INVOKABLE explicit JabberActions(QObject *parent = nullptr);
+	virtual ~JabberActions();
 
+	ActionDescription * resendSubscription() { return ResendSubscription; }
+	ActionDescription * removeSubscription() { return RemoveSubscription; }
+	ActionDescription * askForSubscription() { return AskForSubscription; }
+
+private:
 	ActionDescription *ResendSubscription;
 	ActionDescription *RemoveSubscription;
 	ActionDescription *AskForSubscription;
@@ -45,24 +51,9 @@ class JabberActions : QObject
 	Contact contactFromAction(QAction *action);
 	SubscriptionService * subscriptionServiceFromContact(const Contact &contact);
 
-	explicit JabberActions();
-	virtual ~JabberActions();
-
 private slots:
 	void resendSubscriptionActionActivated(QAction *sender);
 	void removeSubscriptionActionActivated(QAction *sender);
 	void askForSubscriptionActionActivated(QAction *sender);
 
-public:
-	static void registerActions();
-	static void unregisterActions();
-
-	static JabberActions * instance() { return Instance; }
-
-	ActionDescription * resendSubscription() { return ResendSubscription; }
-	ActionDescription * removeSubscription() { return RemoveSubscription; }
-	ActionDescription * askForSubscription() { return AskForSubscription; }
-
 };
-
-#endif // JABBER_ACTIONS_H

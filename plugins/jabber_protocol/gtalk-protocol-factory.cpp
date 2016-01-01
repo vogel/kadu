@@ -18,36 +18,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "status/status-type-manager.h"
 #include "status/status-type.h"
 
+#include "actions/jabber-protocol-menu-manager.h"
 #include "gui/widgets/jabber-add-account-widget.h"
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
+#include "services/jabber-servers-service.h"
+#include "facebook-depreceated-message.h"
 #include "jabber-account-details.h"
-#include "jabber-protocol.h"
-
+#include "jabber-id-validator.h"
 #include "gtalk-protocol-factory.h"
+#include "jabber-protocol.h"
+#include "jabber-status-adapter.h"
 
-GTalkProtocolFactory * GTalkProtocolFactory::Instance = 0;
-
-void GTalkProtocolFactory::createInstance()
+GTalkProtocolFactory::GTalkProtocolFactory(QObject *parent) :
+		ProtocolFactory{}
 {
-	if (!Instance)
-		Instance = new GTalkProtocolFactory();
+	Q_UNUSED(parent);
+
+	m_statusAdapter = make_unique<JabberStatusAdapter>();
+
+	// already sorted
+	m_supportedStatusTypes.append(StatusTypeFreeForChat);
+	m_supportedStatusTypes.append(StatusTypeOnline);
+	m_supportedStatusTypes.append(StatusTypeAway);
+	m_supportedStatusTypes.append(StatusTypeNotAvailable);
+	m_supportedStatusTypes.append(StatusTypeDoNotDisturb);
+	m_supportedStatusTypes.append(StatusTypeOffline);
 }
 
-void GTalkProtocolFactory::destroyInstance()
+GTalkProtocolFactory::~GTalkProtocolFactory()
 {
-	delete Instance;
-	Instance = 0;
 }
 
-GTalkProtocolFactory::GTalkProtocolFactory()
+void GTalkProtocolFactory::setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage)
 {
+	m_facebookDepreceatedMessage = facebookDepreceatedMessage;
+}
+
+void GTalkProtocolFactory::setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager)
+{
+	m_jabberProtocolMenuManager = jabberProtocolMenuManager;
 }
 
 KaduIcon GTalkProtocolFactory::icon()
@@ -55,14 +71,82 @@ KaduIcon GTalkProtocolFactory::icon()
 	return KaduIcon("protocols/xmpp/brand_name/GmailGoogleTalk", "16x16");
 }
 
+Protocol * GTalkProtocolFactory::createProtocolHandler(Account account)
+{
+	if (account.id().toLower().endsWith("@chat.facebook.com"))
+		m_facebookDepreceatedMessage->showIfNotSeen();
+
+	return new JabberProtocol(account, this);
+}
+
+AccountDetails * GTalkProtocolFactory::createAccountDetails(AccountShared *accountShared)
+{
+	return new JabberAccountDetails(accountShared);
+}
+
+AccountAddWidget * GTalkProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
+{
+	Q_UNUSED(showButtons);
+	Q_UNUSED(parent);
+
+	return nullptr;
+}
+
+AccountCreateWidget * GTalkProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
+{
+	auto result = new JabberCreateAccountWidget(showButtons, parent);
+	result->setJabberServersService(new JabberServersService{result});
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
+}
+
+AccountEditWidget * GTalkProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
+{
+	JabberEditAccountWidget *result = new JabberEditAccountWidget(Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
+}
+
+QList<StatusType> GTalkProtocolFactory::supportedStatusTypes()
+{
+	return m_supportedStatusTypes;
+}
+
 QString GTalkProtocolFactory::idLabel()
 {
 	return tr("Gmail/Google Talk ID:");
 }
 
+QValidator::State GTalkProtocolFactory::validateId(QString id)
+{
+	int pos = 0;
+	JabberIdValidator validator;
+	return validator.validate(id, pos);
+}
+
+bool GTalkProtocolFactory::canRegister()
+{
+	return false;
+}
+
+bool GTalkProtocolFactory::allowChangeServer()
+{
+	return true;
+}
+
 QString GTalkProtocolFactory::defaultServer()
 {
     return QLatin1String("gmail.com");
+}
+
+QWidget * GTalkProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
+{
+	return new JabberContactPersonalInfoWidget(contact, parent);
+}
+
+ProtocolMenuManager * GTalkProtocolFactory::protocolMenuManager()
+{
+	return m_jabberProtocolMenuManager;
 }
 
 #include "moc_gtalk-protocol-factory.cpp"

@@ -18,27 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_PROTOCOL_FACTORY_H
-#define JABBER_PROTOCOL_FACTORY_H
+#pragma once
 
 #include "protocols/protocol-factory.h"
 #include "status/status-adapter.h"
 
+#include <QtCore/QPointer>
+#include <memory>
+#include <injeqt/injeqt.h>
+
+class FacebookDepreceatedMessage;
+class JabberProtocolMenuManager;
+
 class JabberProtocolFactory : public ProtocolFactory
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(JabberProtocolFactory)
-
-	static JabberProtocolFactory *Instance;
-	QList<StatusType> SupportedStatusTypes;
-
-	std::unique_ptr<StatusAdapter> MyStatusAdapter;
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static JabberProtocolFactory * instance() { return Instance; }
+	Q_INVOKABLE explicit JabberProtocolFactory(QObject *parent = nullptr);
+	virtual ~JabberProtocolFactory();
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
@@ -48,7 +46,7 @@ public:
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
     virtual ProtocolMenuManager * protocolMenuManager();
 	virtual QList<StatusType> supportedStatusTypes();
-	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter.get(); }
+	virtual StatusAdapter * statusAdapter() { return m_statusAdapter.get(); }
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
 	virtual bool canRegister();
@@ -61,9 +59,16 @@ public:
 
 	virtual KaduIcon icon();
 
-protected:
-	JabberProtocolFactory();
+private:
+	QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
+	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
+
+	QList<StatusType> m_supportedStatusTypes;
+
+	std::unique_ptr<StatusAdapter> m_statusAdapter;
+
+private slots:
+	INJEQT_SETTER void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
+	INJEQT_SETTER void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
 
 };
-
-#endif // JABBER_PROTOCOL_FACTORY_H

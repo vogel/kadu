@@ -18,42 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "actions/jabber-actions.h"
-#include "gui/menu/menu-inventory.h"
-
 #include "jabber-protocol-menu-manager.h"
 
-JabberProtocolMenuManager * JabberProtocolMenuManager::Instance = 0;
+#include "actions/jabber-actions.h"
 
-void JabberProtocolMenuManager::createInstance()
+JabberProtocolMenuManager::JabberProtocolMenuManager(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new JabberProtocolMenuManager();
-}
-
-void JabberProtocolMenuManager::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-JabberProtocolMenuManager::JabberProtocolMenuManager()
-{
-	RosterActions.append(JabberActions::instance()->resendSubscription());
-	RosterActions.append(JabberActions::instance()->removeSubscription());
-	RosterActions.append(JabberActions::instance()->askForSubscription());
-
-	MenuInventory::instance()->registerProtocolMenuManager(this);
 }
 
 JabberProtocolMenuManager::~JabberProtocolMenuManager()
 {
-	RosterActions.clear();
+	m_rosterActions.clear();
+}
 
-	MenuInventory::instance()->unregisterProtocolMenuManager(this);
+void JabberProtocolMenuManager::setJabberActions(JabberActions *jabberActions)
+{
+	m_rosterActions.append(jabberActions->resendSubscription());
+	m_rosterActions.append(jabberActions->removeSubscription());
+	m_rosterActions.append(jabberActions->askForSubscription());
 }
 
 const QList<ActionDescription *> & JabberProtocolMenuManager::protocolActions() const
 {
-	return RosterActions;
+	return m_rosterActions;
 }
+
+#include "moc_jabber-protocol-menu-manager.cpp"

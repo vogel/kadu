@@ -17,14 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-url-dom-visitor-provider.h"
+
 #include "dom/ignore-links-dom-visitor.h"
 #include "url-handlers/simple-url-expander.h"
 
-#include "jabber-url-dom-visitor-provider.h"
-
-JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider()
+JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider(QObject *parent) :
+		QObject{parent}
 {
-	SimpleUrlExpander *expander = new SimpleUrlExpander(
+	auto expander = new SimpleUrlExpander(
 		QRegExp("\\b"
 	            "xmpp:"
 	            "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
@@ -34,7 +35,7 @@ JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider()
 	            "(?:#(\\S*))?"                                 // fragment
 	            "\\b")
 	);
-	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
+	m_ignoreLinks.reset(new IgnoreLinksDomVisitor(expander));
 }
 
 JabberUrlDomVisitorProvider::~JabberUrlDomVisitorProvider()
@@ -43,5 +44,7 @@ JabberUrlDomVisitorProvider::~JabberUrlDomVisitorProvider()
 
 DomVisitor * JabberUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks.data();
+	return m_ignoreLinks.data();
 }
+
+#include "moc_jabber-url-dom-visitor-provider.cpp"

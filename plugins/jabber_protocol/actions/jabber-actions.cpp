@@ -57,21 +57,8 @@ static void disableNoRosterContact(Action *action)
 	action->setEnabled(true);
 }
 
-JabberActions * JabberActions::Instance = 0;
-
-void JabberActions::registerActions()
-{
-	if (!Instance)
-		Instance = new JabberActions();
-}
-
-void JabberActions::unregisterActions()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-JabberActions::JabberActions()
+JabberActions::JabberActions(QObject *parent) :
+		QObject{parent}
 {
 	new ShowXmlConsoleActionDescription(this);
 

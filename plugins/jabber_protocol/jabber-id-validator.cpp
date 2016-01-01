@@ -24,25 +24,6 @@
 
 #include <QtCore/QRegExp>
 
-QValidator *JabberIdValidator::Instance = 0;
-
-void JabberIdValidator::createInstance()
-{
-	if (!Instance)
-		Instance = new JabberIdValidator();
-}
-
-void JabberIdValidator::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-QValidator * JabberIdValidator::instance()
-{
-	return Instance;
-}
-
 JabberIdValidator::JabberIdValidator(QObject *parent) :
 		QValidator(parent)
 {

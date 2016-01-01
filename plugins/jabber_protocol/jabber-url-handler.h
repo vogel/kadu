@@ -38,7 +38,7 @@ private slots:
 	void accountSelected(QAction *action);
 
 public:
-	JabberUrlHandler();
+	Q_INVOKABLE explicit JabberUrlHandler(QObject *parent = nullptr);
 	virtual ~JabberUrlHandler();
 
 	virtual bool isUrlValid(const QByteArray &url);

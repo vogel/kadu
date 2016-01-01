@@ -41,7 +41,8 @@
 
 #include "jabber-url-handler.h"
 
-JabberUrlHandler::JabberUrlHandler()
+JabberUrlHandler::JabberUrlHandler(QObject *parent) :
+		QObject{parent}
 {
 	// Based on: http://mail.jabber.org/pipermail/xmppwg/2005-February/002261.html
 	// (RFC5122 - 3.3, XEP-0147)

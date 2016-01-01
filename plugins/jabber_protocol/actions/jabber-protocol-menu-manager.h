@@ -18,30 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_PROTOCOL_MENU_MANAGER_H
-#define JABBER_PROTOCOL_MENU_MANAGER_H
+#pragma once
 
 #include "protocols/protocol-menu-manager.h"
 
-class JabberProtocolMenuManager : public ProtocolMenuManager
+#include <QtCore/QObject>
+#include <injeqt/injeqt.h>
+
+class JabberActions;
+
+class JabberProtocolMenuManager : public QObject, public ProtocolMenuManager
 {
-	static JabberProtocolMenuManager *Instance;
-
-	QList<ActionDescription *> RosterActions;
-
-	explicit JabberProtocolMenuManager();
-	virtual ~JabberProtocolMenuManager();
+	Q_OBJECT
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static JabberProtocolMenuManager * instance() { return Instance; }
+	Q_INVOKABLE explicit JabberProtocolMenuManager(QObject *parent = nullptr);
+	virtual ~JabberProtocolMenuManager();
 
 	virtual const QList<ActionDescription *> & protocolActions() const;
-
 	virtual const QString protocolName() const { return "jabber"; }
 
-};
+private:
+	QList<ActionDescription *> m_rosterActions;
 
-#endif // JABBER_PROTOCOL_MENU_MANAGER_H
+private slots:
+	INJEQT_SETTER void setJabberActions(JabberActions *jabberActions);
+
+};

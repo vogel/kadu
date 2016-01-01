@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,24 +19,18 @@
 
 #pragma once
 
-#include "dom/dom-visitor-provider.h"
+#include "plugin/plugin-injector-factory.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
-class IgnoreLinksDomVisitor;
-
-class JabberUrlDomVisitorProvider : public QObject, public DomVisitorProvider
+class JabberPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	Q_INVOKABLE explicit JabberUrlDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~JabberUrlDomVisitorProvider();
+	explicit JabberPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~JabberPluginInjectorFactory();
 
-	virtual DomVisitor * provide() const;
-
-private:
-	QScopedPointer<IgnoreLinksDomVisitor> m_ignoreLinks;
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };

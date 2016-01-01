@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,24 +19,13 @@
 
 #pragma once
 
-#include "dom/dom-visitor-provider.h"
+#include <injeqt/module.h>
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
-class IgnoreLinksDomVisitor;
-
-class JabberUrlDomVisitorProvider : public QObject, public DomVisitorProvider
+class JabberModule : public injeqt::module
 {
-	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit JabberUrlDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~JabberUrlDomVisitorProvider();
-
-	virtual DomVisitor * provide() const;
-
-private:
-	QScopedPointer<IgnoreLinksDomVisitor> m_ignoreLinks;
+	JabberModule();
+	virtual ~JabberModule() {}
 
 };
