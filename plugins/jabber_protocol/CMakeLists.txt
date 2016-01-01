@@ -88,41 +88,6 @@ set (SOURCES
 	gtalk-protocol-factory.cpp
 )
 
-set (MOC_SOURCES
-	actions/jabber-actions.h
-	actions/show-xml-console-action-description.h
-
-	gui/widgets/jabber-contact-personal-info-widget.h
-	gui/widgets/jabber-add-account-widget.h
-	gui/widgets/jabber-create-account-widget.h
-	gui/widgets/jabber-edit-account-widget.h
-	gui/widgets/jabber-personal-info-widget.h
-
-	gui/windows/jabber-change-password-window.h
-	gui/windows/jabber-wait-for-account-register-window.h
-	gui/windows/xml-console.h
-
-	services/jabber-avatar-service.h
-	services/jabber-chat-service.h
-	services/jabber-chat-state-service.h
-	services/jabber-contact-personal-info-service.h
-	services/jabber-file-transfer-service.h
-	services/jabber-personal-info-service.h
-	services/jabber-roster-service.h
-	services/jabber-stream-debug-service.h
-	services/jabber-subscription-service.h
-	services/jabber-vcard-downloader.h
-	services/jabber-vcard-service.h
-	services/jabber-vcard-uploader.h
-
-	gtalk-protocol-factory.h
-	jabber-id-validator.h
-	jabber-protocol.h
-	jabber-protocol-factory.h
-	jabber-protocol-plugin.h
-	jabber-url-handler.h
-)
-
 add_definitions (${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} ${QXMPP_DEFINITIONS} ${QXMPP_CFLAGS_OTHER})
 
 set (LIBRARIES ${LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QXMPP_LIBRARIES})
@@ -135,6 +100,5 @@ link_directories (${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${QXMPP_LIBRARY_DIRS}
 
 kadu_plugin (jabber_protocol
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )

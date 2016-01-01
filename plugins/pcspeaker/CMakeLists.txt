@@ -9,15 +9,6 @@ set (SOURCES
 	pcspeaker_configuration_widget.cpp
 )
 
-set (MOC_SOURCES
-	pcspeaker.h
-	pcspeaker_configuration_widget.h
-)
-
-#set (CONFIGURATION_FILES
-#	configuration/pcspeaker.ui
-#)
-
 set (LIBRARIES "")
 
 if (UNIX AND NOT APPLE)
@@ -32,7 +23,5 @@ endif ()
 
 kadu_plugin (pcspeaker
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )

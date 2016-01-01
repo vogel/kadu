@@ -10,11 +10,6 @@ set (SOURCES
 	single-window-plugin.cpp
 )
 
-set (MOC_SOURCES
-	single-window.h
-	single-window-plugin.h
-)
-
 set (CONFIGURATION_FILES
 	configuration/single_window.ui
 )
@@ -25,6 +20,5 @@ endif ()
 
 kadu_plugin (single_window
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

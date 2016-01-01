@@ -13,14 +13,6 @@ set (SOURCES
 	track-info.cpp
 )
 
-set (MOC_SOURCES
-	gui/windows/mpris-player-dialog.h
-
-	mpris-player-configuration-ui-handler.h
-	mpris-player.h
-	mpris-player-plugin.h
-)
-
 if (UNIX AND NOT APPLE)
 	set (SOURCES ${SOURCES}
 		mpris_controller.cpp
@@ -43,7 +35,6 @@ set (DATA_FILES
 
 kadu_plugin (mprisplayer_mediaplayer
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DATA_FILES ${DATA_FILES}
 	PLUGIN_DEPENDENCIES mediaplayer

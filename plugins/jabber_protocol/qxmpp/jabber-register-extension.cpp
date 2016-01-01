@@ -58,3 +58,5 @@ bool JabberRegisterExtension::handleStanza(const QDomElement &stanza)
 	emit registerIqReceived(registerIq);
 	return true;
 }
+
+#include "moc_jabber-register-extension.cpp"

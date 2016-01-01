@@ -50,8 +50,8 @@ private slots:
 	virtual void messageSent(const Message &message) = 0;
 
 public:
-	explicit HistoryStorage(QObject *parent) : QObject(parent) {}
-	virtual ~HistoryStorage() {}
+	explicit HistoryStorage(QObject *parent);
+	virtual ~HistoryStorage();
 
 	virtual QFuture<QVector<Talkable>> chats() = 0;
 	virtual QFuture<QVector<Talkable>> statusBuddies() = 0;

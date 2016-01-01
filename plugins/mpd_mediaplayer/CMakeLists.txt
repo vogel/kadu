@@ -9,10 +9,6 @@ set (SOURCES
 	mpd-config.cpp
 )
 
-set (MOC_SOURCES
-	mpd-mediaplayer.h
-)
-
 set (CONFIGURATION_FILES
 	configuration/mpd_config.ui
 )
@@ -24,7 +20,6 @@ link_directories (${LIBMPDCLIENT_LIBRARY_DIRS})
 
 kadu_plugin (mpd_mediaplayer
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBMPDCLIENT_LIBRARIES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES mediaplayer

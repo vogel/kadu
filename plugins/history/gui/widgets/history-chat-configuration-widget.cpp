@@ -94,3 +94,5 @@ void HistoryChatConfigurationWidget::cancel()
 {
 	loadValues();
 }
+
+#include "moc_history-chat-configuration-widget.cpp"

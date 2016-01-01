@@ -19,27 +19,11 @@ set (SOURCES
 	sql-history-plugin.cpp
 )
 
-set (MOC_SOURCES
-	storage/history-sql-storage.h
-	storage/sql-accounts-mapping.h
-	storage/sql-chats-mapping.h
-	storage/sql-contacts-mapping.h
-	storage/sql-import.h
-	storage/sql-initializer.h
-	storage/sql-messages-chat-storage.h
-	storage/sql-messages-sms-storage.h
-	storage/sql-messages-status-storage.h
-	storage/sql-restore.h
-
-	sql-history-plugin.h
-)
-
 set (CONFIGURATION_FILES
 )
 
 kadu_plugin (sql_history
 	PLUGIN_SOURCES ${SOURCES}
-	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES history
 	PLUGIN_ADDITIONAL_QT_MODULES Concurrent Sql

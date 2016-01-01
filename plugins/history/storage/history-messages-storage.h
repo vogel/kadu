@@ -64,8 +64,8 @@ public:
 	 * @short Create new HistoryMessagesStorage instance.
 	 * @param parent QObject parent of new HistoryMessagesStorage instance
 	 */
-	explicit HistoryMessagesStorage(QObject *parent) : QObject(parent) {}
-	virtual ~HistoryMessagesStorage() {}
+	explicit HistoryMessagesStorage(QObject *parent);
+	virtual ~HistoryMessagesStorage();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

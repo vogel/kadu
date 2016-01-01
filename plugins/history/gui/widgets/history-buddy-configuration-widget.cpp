@@ -94,3 +94,5 @@ void HistoryBuddyConfigurationWidget::cancel()
 {
 	loadValues();
 }
+
+#include "moc_history-buddy-configuration-widget.cpp"

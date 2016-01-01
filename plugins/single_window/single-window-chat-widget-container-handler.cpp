@@ -75,3 +75,5 @@ void SingleWindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *c
 void SingleWindowChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget *)
 {
 }
+
+#include "moc_single-window-chat-widget-container-handler.cpp"

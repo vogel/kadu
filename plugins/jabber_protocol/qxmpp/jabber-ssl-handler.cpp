@@ -43,3 +43,5 @@ void JabberSslHandler::sslErrors(const QList<QSslError> &errors)
 	if (errors.size() == 0 || Core::instance()->sslCertificateManager()->acceptCertificate(client->configuration().domain(), errors.first().certificate(), errors))
 		client->configuration().setIgnoreSslErrors(true);
 }
+
+#include "moc_jabber-ssl-handler.cpp"
