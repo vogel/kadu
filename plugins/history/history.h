@@ -36,6 +36,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
+#include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
 #include "configuration/gui/configuration-ui-handler.h"
@@ -46,7 +47,7 @@
 #include "protocols/protocol.h"
 #include "storage/history-storage.h"
 
-#include "history_exports.h"
+#include "history-exports.h"
 
 class Account;
 class ChatWidget;
@@ -58,8 +59,6 @@ class ShowHistoryActionDescription;
 class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareObject
 {
 	Q_OBJECT
-
-	static History *Instance;
 
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
@@ -87,9 +86,6 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	QListWidget *allChatsUsers;
 	QListWidget *selectedChatsUsers;
 
-	History();
-	virtual ~History();
-
 	void startSaveThread();
 	void stopSaveThread();
 
@@ -108,6 +104,8 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	bool shouldEnqueueMessage(const Message &message);
 
 private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	void accountRegistered(Account);
 	void accountUnregistered(Account);
 
@@ -122,11 +120,8 @@ protected:
 	virtual void crash();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static History * instance();
-
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	Q_INVOKABLE explicit History(QObject *parent = nullptr);
+	virtual ~History();
 
 	HistoryStorage * currentStorage() { return CurrentStorage; }
 	void registerStorage(HistoryStorage *storage);

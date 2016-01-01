@@ -40,8 +40,9 @@
 
 #include "show-history-action-description.h"
 
-ShowHistoryActionDescription::ShowHistoryActionDescription(QObject *parent) :
-		ActionDescription(parent)
+ShowHistoryActionDescription::ShowHistoryActionDescription(History *history, QObject *parent) :
+		ActionDescription(parent),
+		m_history{history}
 {
 	setType(ActionDescription::TypeUser);
 	setName("showHistoryAction");
@@ -136,14 +137,14 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	ChatWidget *chatWidget = action->data().value<ChatWidget *>();
 	if (!chatWidget)
 	{
-		HistoryWindow::show(actionChat);
+		HistoryWindow::show(m_history, actionChat);
 		return;
 	}
 
 	WebkitMessagesView *chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
 	{
-		HistoryWindow::show(actionChat);
+		HistoryWindow::show(m_history, actionChat);
 		return;
 	}
 
@@ -151,13 +152,13 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 
 	if (-1 == days)
 	{
-		HistoryWindow::show(chatWidget->chat());
+		HistoryWindow::show(m_history, chatWidget->chat());
 		return;
 	}
 
 	const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chatWidget->chat());
 	const Chat &messagesChat = buddyChat ? buddyChat : chatWidget->chat();
-	HistoryStorage *historyStorage = History::instance()->currentStorage();
+	HistoryStorage *historyStorage = m_history->currentStorage();
 
 	if (!historyStorage)
 		return;

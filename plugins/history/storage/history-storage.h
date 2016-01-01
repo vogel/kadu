@@ -30,7 +30,7 @@
 #include "buddies/buddy.h"
 #include "chat/chat.h"
 
-#include "../history_exports.h"
+#include "../history-exports.h"
 
 class HistoryQuery;
 class HistoryQueryResult;

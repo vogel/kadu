@@ -19,6 +19,7 @@
 
 #include "core-module.h"
 
+#include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "chat/chat-manager.h"
 #include "core/application.h"
 #include "core/injector-provider.h"
@@ -45,6 +46,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<AccountConfigurationWidgetFactoryRepository>();
 	add_type<Application>();
 	add_type<AttentionService>();
+	add_type<BuddyAdditionalDataDeleteHandlerManager>();
 	add_type<BuddyConfigurationWidgetFactoryRepository>();
 	add_type<ChatConfigurationWidgetFactoryRepository>();
 	add_type<ChatManager>();

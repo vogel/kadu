@@ -22,6 +22,7 @@
 #ifndef HISTORY_WINDOW_H
 #define HISTORY_WINDOW_H
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
 class QTabWidget;
@@ -30,6 +31,7 @@ class Chat;
 class ChatHistoryTab;
 class HistoryMessagesTab;
 class HistoryStorage;
+class History;
 class SearchTab;
 
 /*!
@@ -43,6 +45,8 @@ class HistoryWindow : public QWidget
 	friend class History;
 
 	static HistoryWindow *Instance;
+	
+	QPointer<History> m_history;
 
 	QTabWidget *TabWidget;
 	int CurrentTab;
@@ -52,7 +56,7 @@ class HistoryWindow : public QWidget
 	HistoryMessagesTab *SmsTab;
 	SearchTab *MySearchTab;
 
-	explicit HistoryWindow(QWidget *parent = 0);
+	explicit HistoryWindow(History *history, QWidget *parent = 0);
 
 	void createGui();
 
@@ -68,7 +72,7 @@ protected:
 
 public:
 	static HistoryWindow * instance();
-	static void show(const Chat &chat);
+	static void show(History *history, const Chat &chat);
 
 	virtual ~HistoryWindow();
 

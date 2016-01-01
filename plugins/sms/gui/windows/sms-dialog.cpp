@@ -44,9 +44,11 @@
 #include "gui/windows/progress-window.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
+#include "plugin/plugin-repository.h"
 #include "talkable/filter/mobile-talkable-filter.h"
 #include "debug.h"
 
+#include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
 
 #include "scripts/sms-script-manager.h"
@@ -323,8 +325,8 @@ void SmsDialog::updateCounter()
 
 void SmsDialog::saveSmsInHistory(const QString &number, const QString &message)
 {
-	if (History::instance()->currentStorage())
-		History::instance()->currentStorage()->appendSms(number, message);
+	if (Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage())
+		Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage()->appendSms(number, message);
 }
 
 void SmsDialog::clear()

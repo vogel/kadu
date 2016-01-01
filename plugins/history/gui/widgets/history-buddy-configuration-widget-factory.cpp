@@ -17,9 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "history-buddy-configuration-widget-factory.h"
+
 #include "gui/widgets/history-buddy-configuration-widget.h"
 
-#include "history-buddy-configuration-widget-factory.h"
+HistoryBuddyConfigurationWidgetFactory::HistoryBuddyConfigurationWidgetFactory(QObject *parent) :
+		QObject{parent}
+{
+}
 
 HistoryBuddyConfigurationWidgetFactory::~HistoryBuddyConfigurationWidgetFactory()
 {
@@ -29,3 +34,5 @@ BuddyConfigurationWidget * HistoryBuddyConfigurationWidgetFactory::createWidget(
 {
 	return new HistoryBuddyConfigurationWidget(buddy, parent);
 }
+
+#include "moc_history-buddy-configuration-widget-factory.cpp"

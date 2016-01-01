@@ -29,7 +29,7 @@
 #include "talkable/talkable.h"
 
 #include "../history-query-result.h"
-#include "../history_exports.h"
+#include "../history-exports.h"
 
 class HistoryQuery;
 class SortedMessages;

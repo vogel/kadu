@@ -21,7 +21,10 @@
 
 #include "storage/history-sql-storage.h"
 
+#include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
+
+#include "plugin/plugin-repository.h"
 
 #include <QtSql/QSqlDatabase>
 
@@ -39,14 +42,19 @@ void SqlHistoryPluginObject::setHistorySqlStorage(HistorySqlStorage *historySqlS
 	m_historySqlStorage = historySqlStorage;
 }
 
+void SqlHistoryPluginObject::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
+}
+
 void SqlHistoryPluginObject::init()
 {
-	History::instance()->registerStorage(m_historySqlStorage);
+	m_pluginRepository->pluginObject<HistoryPluginObject>("history")->history()->registerStorage(m_historySqlStorage);
 }
 
 void SqlHistoryPluginObject::done()
 {
-	History::instance()->unregisterStorage(m_historySqlStorage);
+	m_pluginRepository->pluginObject<HistoryPluginObject>("history")->history()->unregisterStorage(m_historySqlStorage);
 	QSqlDatabase::removeDatabase("kadu-history");
 }
 

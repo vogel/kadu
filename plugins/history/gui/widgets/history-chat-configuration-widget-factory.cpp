@@ -17,9 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "history-chat-configuration-widget-factory.h"
+
 #include "gui/widgets/history-chat-configuration-widget.h"
 
-#include "history-chat-configuration-widget-factory.h"
+HistoryChatConfigurationWidgetFactory::HistoryChatConfigurationWidgetFactory(QObject *parent) :
+		QObject{parent}
+{
+}
 
 HistoryChatConfigurationWidgetFactory::~HistoryChatConfigurationWidgetFactory()
 {
@@ -29,3 +34,5 @@ ChatConfigurationWidget * HistoryChatConfigurationWidgetFactory::createWidget(co
 {
 	return new HistoryChatConfigurationWidget(chat, parent);
 }
+
+#include "moc_history-chat-configuration-widget-factory.cpp"

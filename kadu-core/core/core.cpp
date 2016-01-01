@@ -37,6 +37,7 @@
 
 #include "accounts/account-manager.h"
 #include "avatars/avatar-manager.h"
+#include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
@@ -947,6 +948,11 @@ ChatManager * Core::chatManager() const
 StatusContainerManager * Core::statusContainerManager() const
 {
 	return m_injector.get<StatusContainerManager>();
+}
+
+BuddyAdditionalDataDeleteHandlerManager * Core::buddyAdditionalDataDeleteHandlerManager() const
+{
+	return m_injector.get<BuddyAdditionalDataDeleteHandlerManager>();
 }
 
 void Core::showMainWindow()

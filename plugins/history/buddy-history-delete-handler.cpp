@@ -26,31 +26,18 @@
 
 #include "buddy-history-delete-handler.h"
 
-BuddyHistoryDeleteHandler * BuddyHistoryDeleteHandler::Instance = 0;
-
-void BuddyHistoryDeleteHandler::createInstance()
-{
-	if (!Instance)
-		Instance = new BuddyHistoryDeleteHandler();
-}
-
-void BuddyHistoryDeleteHandler::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-BuddyHistoryDeleteHandler * BuddyHistoryDeleteHandler::instance()
-{
-	return Instance;
-}
-
-BuddyHistoryDeleteHandler::BuddyHistoryDeleteHandler()
+BuddyHistoryDeleteHandler::BuddyHistoryDeleteHandler(QObject *parent) :
+		QObject{parent}
 {
 }
 
 BuddyHistoryDeleteHandler::~BuddyHistoryDeleteHandler()
 {
+}
+
+void BuddyHistoryDeleteHandler::setHistory(History *history)
+{
+	m_history = history;
 }
 
 QString BuddyHistoryDeleteHandler::name()
@@ -65,6 +52,8 @@ QString BuddyHistoryDeleteHandler::displayName()
 
 void BuddyHistoryDeleteHandler::deleteBuddyAdditionalData(Buddy buddy)
 {
-	if (History::instance()->currentStorage())
-		History::instance()->currentStorage()->deleteHistory(buddy);
+	if (m_history->currentStorage())
+		m_history->currentStorage()->deleteHistory(buddy);
 }
+
+#include "moc_buddy-history-delete-handler.cpp"

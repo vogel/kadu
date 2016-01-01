@@ -168,7 +168,7 @@ void HistorySqlStorage::databaseReady(bool ok)
 	{
 		initializerProgressFinished(false, "dialog-error",
 				tr("Opening database failed. Error message:\n%1").arg(Database.lastError().text()));
-		History::instance()->unregisterStorage(this);
+		// History::instance()->unregisterStorage(this); TODO: may be needed
 
 		if (InitializerThread)
 			InitializerThread->quit();

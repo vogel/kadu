@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,23 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "history-module.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include "gui/widgets/history-buddy-configuration-widget-factory.h"
+#include "gui/widgets/history-chat-configuration-widget-factory.h"
+#include "buddy-history-delete-handler.h"
+#include "history-plugin-object.h"
+#include "history.h"
 
-#include "gui/widgets/buddy-configuration-widget-factory.h"
-
-class OtrPolicyService;
-
-class HistoryBuddyConfigurationWidgetFactory : public QObject, public BuddyConfigurationWidgetFactory
+HistoryModule::HistoryModule()
 {
-	Q_OBJECT
+	add_type<BuddyHistoryDeleteHandler>();
+	add_type<HistoryBuddyConfigurationWidgetFactory>();
+	add_type<HistoryChatConfigurationWidgetFactory>();
+	add_type<HistoryPluginObject>();
+	add_type<History>();
+}
 
-public:
-	Q_INVOKABLE explicit HistoryBuddyConfigurationWidgetFactory(QObject *parent = nullptr);
-	virtual ~HistoryBuddyConfigurationWidgetFactory();
-
-	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
-
-};
+HistoryModule::~HistoryModule()
+{
+}

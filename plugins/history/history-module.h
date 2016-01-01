@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,21 +19,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <injeqt/module.h>
 
-#include "gui/widgets/buddy-configuration-widget-factory.h"
-
-class OtrPolicyService;
-
-class HistoryBuddyConfigurationWidgetFactory : public QObject, public BuddyConfigurationWidgetFactory
+class HistoryModule : public injeqt::module
 {
-	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit HistoryBuddyConfigurationWidgetFactory(QObject *parent = nullptr);
-	virtual ~HistoryBuddyConfigurationWidgetFactory();
-
-	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
+	explicit HistoryModule();
+	virtual ~HistoryModule();
 
 };

@@ -39,6 +39,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include <QtCore/QTimer>
 #include <QtWidgets/QMessageBox>
 
+#include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
 
 #include "accounts/account-manager.h"
@@ -62,6 +63,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "misc/paths-provider.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
+#include "plugin/plugin-repository.h"
 #include "status/status-container.h"
 #include "debug.h"
 
@@ -200,14 +202,14 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 
 		if (WriteInHistory)
 		{
-			if (History::instance()->currentStorage())
+			if (Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage())
 			{
 				Message msg = Message::create();
 				msg.setContent(m_formattedStringFactory->fromHtml(message.htmlContent()));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());
-				History::instance()->currentStorage()->appendMessage(msg);
+				Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage()->appendMessage(msg);
 			}
 		}
 	}

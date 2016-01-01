@@ -21,15 +21,20 @@
 #ifndef SHOW_HISTORY_ACTION_DESCRIPTION_H
 #define SHOW_HISTORY_ACTION_DESCRIPTION_H
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QAction>
 
-#include "history_exports.h"
+#include "history-exports.h"
 
 #include "gui/actions/action-description.h"
+
+class History;
 
 class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 {
 	Q_OBJECT
+
+	QPointer<History> m_history;
 
 	int ChatHistoryQuotationTime;
 
@@ -49,7 +54,7 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
-	explicit ShowHistoryActionDescription(QObject *parent);
+	explicit ShowHistoryActionDescription(History *history, QObject *parent);
 	virtual ~ShowHistoryActionDescription();
 
 };

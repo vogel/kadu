@@ -45,14 +45,14 @@ HistoryWindow * HistoryWindow::instance()
 	return Instance;
 }
 
-void HistoryWindow::show(const Chat &chat)
+void HistoryWindow::show(History *history, const Chat &chat)
 {
 	Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
 	if (!buddyChat)
 		buddyChat = chat;
 
 	if (!Instance)
-		Instance = new HistoryWindow();
+		Instance = new HistoryWindow(history);
 
 	Instance->updateData();
 	Instance->selectChat(buddyChat);
@@ -61,8 +61,10 @@ void HistoryWindow::show(const Chat &chat)
 	_activateWindow(Instance);
 }
 
-HistoryWindow::HistoryWindow(QWidget *parent) :
-		QWidget(parent), CurrentTab(-1)
+HistoryWindow::HistoryWindow(History *history, QWidget *parent) :
+		QWidget(parent),
+		m_history{history},
+		CurrentTab(-1)
 {
 	setWindowRole("kadu-history");
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -74,13 +76,11 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("History", "HistoryWindowGeometry"), QRect(200, 200, 750, 500), this);
 
-	connect(History::instance(), SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
+	connect(m_history, SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
 }
 
 HistoryWindow::~HistoryWindow()
 {
-	disconnect(History::instance(), 0, this, 0);
-
 	Instance = 0;
 }
 
@@ -164,7 +164,7 @@ void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 
 void HistoryWindow::updateData()
 {
-	storageChanged(History::instance()->currentStorage());
+	storageChanged(m_history->currentStorage());
 }
 
 void HistoryWindow::selectChat(const Chat &chat)

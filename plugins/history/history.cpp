@@ -85,29 +85,8 @@ void disableNonHistoryContacts(Action *action)
 	kdebugf2();
 }
 
-History * History::Instance = 0;
-
-void History::createInstance()
-{
-	if (!Instance)
-	{
-		Instance = new History();
-		Instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
-	}
-}
-
-void History::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-History * History::instance()
-{
-	return Instance;
-}
-
-History::History() :
+History::History(QObject *parent) :
+		QObject{parent},
 		SyncEnabled(true), SaveThread(0), CurrentStorage(0)
 {
 	kdebugf();
@@ -150,7 +129,7 @@ void History::createActionDescriptions()
 {
 	Actions::instance()->blockSignals();
 
-	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this);
+	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this, this);
 
 	MenuInventory::instance()
 		->menu("buddy-list")

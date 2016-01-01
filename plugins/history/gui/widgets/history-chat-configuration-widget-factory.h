@@ -18,23 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_CHAT_CONFIGURATION_WIDGET_FACTORY_H
-#define HISTORY_CHAT_CONFIGURATION_WIDGET_FACTORY_H
+#pragma once
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 
 #include "gui/widgets/chat-configuration-widget-factory.h"
 
 class OtrPolicyService;
 
-class HistoryChatConfigurationWidgetFactory : public ChatConfigurationWidgetFactory
+class HistoryChatConfigurationWidgetFactory : public QObject, public ChatConfigurationWidgetFactory
 {
-
+	Q_OBJECT
+	
 public:
+	Q_INVOKABLE explicit HistoryChatConfigurationWidgetFactory(QObject *parent = nullptr);
 	virtual ~HistoryChatConfigurationWidgetFactory();
 
 	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
 
 };
-
-#endif // HISTORY_CHAT_CONFIGURATION_WIDGET_FACTORY_H

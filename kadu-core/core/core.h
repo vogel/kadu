@@ -46,6 +46,7 @@ class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
 class AttentionService;
+class BuddyAdditionalDataDeleteHandlerManager;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyDataWindowRepository;
 class ChatConfigurationWidgetFactoryRepository;
@@ -226,6 +227,7 @@ public:
 	UrlHandlerManager * urlHandlerManager() const;
 	ChatManager * chatManager() const;
 	StatusContainerManager * statusContainerManager() const;
+	BuddyAdditionalDataDeleteHandlerManager * buddyAdditionalDataDeleteHandlerManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

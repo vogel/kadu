@@ -17,29 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_HISTORY_DELETE_HANDLER_H
-#define BUDDY_HISTORY_DELETE_HANDLER_H
+#pragma once
 
 #include "buddies/buddy-additional-data-delete-handler.h"
 
-class BuddyHistoryDeleteHandler : public BuddyAdditionalDataDeleteHandler
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class History;
+
+class BuddyHistoryDeleteHandler : public QObject, public BuddyAdditionalDataDeleteHandler
 {
-	Q_DISABLE_COPY(BuddyHistoryDeleteHandler)
-
-	static BuddyHistoryDeleteHandler *Instance;
-
-	BuddyHistoryDeleteHandler();
-	virtual ~BuddyHistoryDeleteHandler();
+	Q_OBJECT
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static BuddyHistoryDeleteHandler *instance();
+	Q_INVOKABLE explicit BuddyHistoryDeleteHandler(QObject *parent = nullptr);
+	virtual ~BuddyHistoryDeleteHandler();
 
 	virtual QString name();
 	virtual QString displayName();
 	virtual void deleteBuddyAdditionalData(Buddy buddy);
 
-};
+private:
+	QPointer<History> m_history;
 
-#endif // BUDDY_HISTORY_DELETE_HANDLER_H
+private slots:
+	INJEQT_SETTER void setHistory(History *history);
+
+};

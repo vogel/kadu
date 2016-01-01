@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_MANAGER_H
-#define BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_MANAGER_H
+#pragma once
 
 #include <QtCore/QObject>
 #include "exports.h"
@@ -31,19 +30,12 @@ class BuddyAdditionalDataDeleteHandler;
 class KADUAPI BuddyAdditionalDataDeleteHandlerManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(BuddyAdditionalDataDeleteHandlerManager)
-
-	static BuddyAdditionalDataDeleteHandlerManager * Instance;
-
-	QList<BuddyAdditionalDataDeleteHandler *> Items;
-
-	explicit BuddyAdditionalDataDeleteHandlerManager(QObject *parent = 0);
-	virtual ~BuddyAdditionalDataDeleteHandlerManager();
 
 public:
-	static BuddyAdditionalDataDeleteHandlerManager * instance();
+	Q_INVOKABLE explicit BuddyAdditionalDataDeleteHandlerManager(QObject *parent = nullptr);
+	virtual ~BuddyAdditionalDataDeleteHandlerManager();
 
-	const QList<BuddyAdditionalDataDeleteHandler *> & items() const { return Items; }
+	const QList<BuddyAdditionalDataDeleteHandler *> & items() const { return m_items; }
 	BuddyAdditionalDataDeleteHandler *byName(const QString &name);
 
 	void registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
@@ -53,6 +45,7 @@ signals:
 	void additionalDataDeleteHandlerRegistered(BuddyAdditionalDataDeleteHandler *handler);
 	void additionalDataDeleteHandlerUnregistered(BuddyAdditionalDataDeleteHandler *handler);
 
-};
+private:
+	QList<BuddyAdditionalDataDeleteHandler *> m_items;
 
-#endif // BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_MANAGER_H
+};

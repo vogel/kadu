@@ -31,6 +31,7 @@
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-manager.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "roster/roster.h"
 
@@ -102,7 +103,7 @@ void BuddyDeleteWindow::createGui()
 
 void BuddyDeleteWindow::fillAdditionalDataListView()
 {
-	foreach (BuddyAdditionalDataDeleteHandler *handler, BuddyAdditionalDataDeleteHandlerManager::instance()->items())
+	for (auto handler : Core::instance()->buddyAdditionalDataDeleteHandlerManager()->items())
 	{
 		QListWidgetItem *item = new QListWidgetItem(AdditionalDataListView);
 		item->setText(handler->displayName());
@@ -130,7 +131,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 		if (Qt::Checked == item->checkState())
 		{
 			QString deleteHandlerName = item->data(Qt::UserRole).toString();
-			BuddyAdditionalDataDeleteHandler *handler = BuddyAdditionalDataDeleteHandlerManager::instance()->byName(deleteHandlerName);
+			BuddyAdditionalDataDeleteHandler *handler = Core::instance()->buddyAdditionalDataDeleteHandlerManager()->byName(deleteHandlerName);
 			if (handler)
 				handler->deleteBuddyAdditionalData(buddy);
 		}

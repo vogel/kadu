@@ -17,33 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "history-plugin-injector-factory.h"
 
-#include "plugin/plugin-object.h"
+#include "history-module.h"
 
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
+#include <injeqt/injector.h>
 
-class HistorySqlStorage;
-class PluginRepository;
-
-class SqlHistoryPluginObject : public PluginObject
+HistoryPluginInjectorFactory::HistoryPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE explicit SqlHistoryPluginObject(QObject *parent = nullptr);
-	virtual ~SqlHistoryPluginObject();
+HistoryPluginInjectorFactory::~HistoryPluginInjectorFactory()
+{
+}
 
-	virtual void init();
-	virtual void done();
+injeqt::injector HistoryPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<HistoryModule>());
 
-private:
-	QPointer<HistorySqlStorage> m_historySqlStorage;
-	QPointer<PluginRepository> m_pluginRepository;
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
 
-private slots:
-	INJEQT_SETTER void setHistorySqlStorage(HistorySqlStorage *historySqlStorage);
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
-
-};
+#include "moc_history-plugin-injector-factory.cpp"

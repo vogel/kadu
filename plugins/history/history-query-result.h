@@ -25,7 +25,7 @@
 
 #include "talkable/talkable.h"
 
-#include "history_exports.h"
+#include "history-exports.h"
 
 /**
  * @addtogroup History

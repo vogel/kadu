@@ -7,15 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef HISTORY_EXPORTS_H
-#define HISTORY_EXPORTS_H
+#pragma once
 
 #include <QtCore/QtGlobal>
 
-#ifdef history_EXPORTS
+#ifdef HISTORY_EXPORTS
 #define HISTORYAPI Q_DECL_EXPORT
 #else
 #define HISTORYAPI Q_DECL_IMPORT
 #endif
-
-#endif // HISTORY_EXPORTS_H
