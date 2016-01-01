@@ -27,6 +27,7 @@
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "misc/paths-provider.h"
 #include "protocols/protocols-manager.h"
@@ -45,6 +46,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<Application>();
 	add_type<AttentionService>();
 	add_type<BuddyConfigurationWidgetFactoryRepository>();
+	add_type<ChatConfigurationWidgetFactoryRepository>();
 	add_type<ChatManager>();
 	add_type<ChatTopBarWidgetFactoryRepository>();
 	add_type<ClipboardHtmlTransformerService>();

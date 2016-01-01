@@ -33,7 +33,7 @@ class KADUAPI ChatConfigurationWidgetFactoryRepository : public QObject
 	QList<ChatConfigurationWidgetFactory *> Factories;
 
 public:
-	explicit ChatConfigurationWidgetFactoryRepository(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
 	virtual ~ChatConfigurationWidgetFactoryRepository();
 
 	void registerFactory(ChatConfigurationWidgetFactory *factory);

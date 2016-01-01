@@ -23,11 +23,13 @@
 #include "external-player.h"
 
 #include "plugins/sound/sound-manager.h"
-#include "plugins/sound/sound-plugin.h"
+#include "plugins/sound/sound-plugin-object.h"
 
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-repository.h"
 
 ExtSoundPlugin::ExtSoundPlugin(QObject *parent) :
 		PluginRootComponent{parent}
@@ -41,7 +43,7 @@ ExtSoundPlugin::~ExtSoundPlugin()
 bool ExtSoundPlugin::init()
 {
 	m_externalPlayer = new ExternalPlayer{this};
-	SoundPlugin::soundManager()->setPlayer(m_externalPlayer);
+	Core::instance()->pluginRepository()->pluginObject<SoundPluginObject>("sound")->soundManager()->setPlayer(m_externalPlayer);
 	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
 
 	return true;
@@ -50,7 +52,7 @@ bool ExtSoundPlugin::init()
 void ExtSoundPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
-	SoundPlugin::soundManager()->setPlayer(nullptr);
+	Core::instance()->pluginRepository()->pluginObject<SoundPluginObject>("sound")->soundManager()->setPlayer(nullptr);
 
 	if (m_externalPlayer)
 		m_externalPlayer->deleteLater();

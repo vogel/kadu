@@ -17,29 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sound-module.h"
+#pragma once
 
-#include "gui/sound-actions.h"
-#include "gui/sound-buddy-configuration-widget-factory.h"
-#include "gui/sound-chat-configuration-widget-factory.h"
-#include "gui/sound-configuration-ui-handler.h"
-#include "notification/sound-notifier.h"
-#include "sound-manager.h"
-#include "sound-plugin-object.h"
-#include "sound-theme-manager.h"
+#include "plugin/plugin-injector-factory.h"
 
-SoundModule::SoundModule()
+class SoundPluginInjectorFactory : public PluginInjectorFactory
 {
-	add_type<SoundActions>();
-	add_type<SoundBuddyConfigurationWidgetFactory>();
-	add_type<SoundChatConfigurationWidgetFactory>();
-	add_type<SoundConfigurationUiHandler>();
-	add_type<SoundManager>();
-	add_type<SoundNotifier>();
-	add_type<SoundPluginObject>();
-	add_type<SoundThemeManager>();
-}
+	Q_OBJECT
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
-SoundModule::~SoundModule()
-{
-}
+public:
+	explicit SoundPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~SoundPluginInjectorFactory();
+
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
+
+};

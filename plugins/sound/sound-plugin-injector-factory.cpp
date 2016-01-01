@@ -17,29 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "sound-plugin-injector-factory.h"
+
 #include "sound-module.h"
 
-#include "gui/sound-actions.h"
-#include "gui/sound-buddy-configuration-widget-factory.h"
-#include "gui/sound-chat-configuration-widget-factory.h"
-#include "gui/sound-configuration-ui-handler.h"
-#include "notification/sound-notifier.h"
-#include "sound-manager.h"
-#include "sound-plugin-object.h"
-#include "sound-theme-manager.h"
+#include <injeqt/injector.h>
 
-SoundModule::SoundModule()
-{
-	add_type<SoundActions>();
-	add_type<SoundBuddyConfigurationWidgetFactory>();
-	add_type<SoundChatConfigurationWidgetFactory>();
-	add_type<SoundConfigurationUiHandler>();
-	add_type<SoundManager>();
-	add_type<SoundNotifier>();
-	add_type<SoundPluginObject>();
-	add_type<SoundThemeManager>();
-}
-
-SoundModule::~SoundModule()
+SoundPluginInjectorFactory::SoundPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
 }
+
+SoundPluginInjectorFactory::~SoundPluginInjectorFactory()
+{
+}
+
+injeqt::injector SoundPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<SoundModule>());
+
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
+
+#include "moc_sound-plugin-injector-factory.cpp"

@@ -191,7 +191,6 @@ Core::Core(injeqt::injector &injector) :
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
-		CurrentChatConfigurationWidgetFactoryRepository{nullptr},
 		CurrentChatWidgetActions{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
@@ -608,7 +607,6 @@ void Core::runServices()
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
-	CurrentChatConfigurationWidgetFactoryRepository = new ChatConfigurationWidgetFactoryRepository(this);
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
@@ -803,7 +801,7 @@ BuddyConfigurationWidgetFactoryRepository * Core::buddyConfigurationWidgetFactor
 
 ChatConfigurationWidgetFactoryRepository * Core::chatConfigurationWidgetFactoryRepository() const
 {
-	return CurrentChatConfigurationWidgetFactoryRepository;
+	return m_injector.get<ChatConfigurationWidgetFactoryRepository>();
 }
 
 ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() const
