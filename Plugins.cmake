@@ -114,8 +114,6 @@ if (UNIX AND NOT APPLE)
 		freedesktop_notify
 
 	# mediaplayer
-		# FALF mediaplayer support
-		falf_mediaplayer
 		# MPD mediaplayer support
 		mpd_mediaplayer
 	)
