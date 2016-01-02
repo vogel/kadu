@@ -27,7 +27,6 @@
 
 class PluginActivationService;
 class PluginObject;
-class PluginRootComponent;
 
 /**
  * @addtogroup Plugin
@@ -51,16 +50,6 @@ public:
 	 * @return root object from plugin with name pluginName
 	 */
 	template<class T>
-	T * pluginRootComponent(const QString &pluginName) const
-	{
-		return dynamic_cast<T*>(pluginRootComponent(pluginName));
-	}
-
-	/**
-	 * @param pluginName name of plugin
-	 * @return root object from plugin with name pluginName
-	 */
-	template<class T>
 	T * pluginObject(const QString &pluginName) const
 	{
 		return dynamic_cast<T*>(pluginObject(pluginName));
@@ -68,8 +57,7 @@ public:
 
 private:
 	QPointer<PluginActivationService> m_pluginActivationService;
-	
-	PluginRootComponent * pluginRootComponent(const QString &pluginName) const;
+
 	PluginObject * pluginObject(const QString &pluginName) const;
 
 private slots:

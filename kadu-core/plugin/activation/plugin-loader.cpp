@@ -26,7 +26,6 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-injector-factory.h"
 #include "plugin/plugin-object.h"
-#include "plugin/plugin-root-component.h"
 #include "debug.h"
 
 #include <QtCore/QCoreApplication>
@@ -50,37 +49,23 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 		// using C++ initializers breaks Qt's lupdate
 		QObject(parent),
 		m_pluginLoader{createPluginLoader(pluginName)},
-		m_pluginRootComponent{qobject_cast<PluginRootComponent *>(m_pluginLoader->instance())},
 		m_pluginInjector{createPluginInjector(pluginName, injector)}
 {
-	if (!m_pluginRootComponent)
+	try
 	{
-		try
-		{
-			m_pluginObject = m_pluginInjector.get<PluginObject>();
-			m_pluginObject->init();
-			return;
-		}
-		catch (injeqt::exception::exception &e)
-		{
-			throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
-		}
+		m_pluginObject = m_pluginInjector.get<PluginObject>();
+		m_pluginObject->init();
+		return;
 	}
-
-	injector.inject_into(m_pluginRootComponent);
-	if (!m_pluginRootComponent->init())
-		throw PluginActivationErrorException{pluginName, tr("Plugin initialization routine for %1 failed.").arg(pluginName)};
+	catch (injeqt::exception::exception &e)
+	{
+		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
+	}
 }
 
 PluginLoader::~PluginLoader() noexcept
 {
-	if (!m_pluginRootComponent)
-	{
-		auto pluginObject = m_pluginInjector.get<PluginObject>();
-		pluginObject->done();
-	}
-	else
-		m_pluginRootComponent->done();
+	m_pluginInjector.get<PluginObject>()->done();
 
 	// We need this because plugins can call deleteLater() just before being
 	// unloaded. In this case control would not return to the event loop before
@@ -99,11 +84,6 @@ PluginLoader::~PluginLoader() noexcept
 	// and next load we are in trouble - application crashes
 	// anyway, I don't expect users to unload plugins very frequently
 	// m_pluginLoader->unload();
-}
-
-PluginRootComponent * PluginLoader::pluginRootComponent() const noexcept
-{
-	return m_pluginRootComponent;
 }
 
 PluginObject * PluginLoader::pluginObject() const noexcept

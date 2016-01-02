@@ -29,7 +29,6 @@
 class QPluginLoader;
 
 class PluginObject;
-class PluginRootComponent;
 
 /**
  * @addtogroup Plugin
@@ -68,18 +67,12 @@ public:
 	virtual ~PluginLoader() noexcept;
 
 	/**
-	 * @return depreceated root object of plugin.
-	 */
-	PluginRootComponent * pluginRootComponent() const noexcept;
-
-	/**
 	 * @return root object of plugin.
 	 */
 	PluginObject * pluginObject() const noexcept;
 
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
-	QPointer<PluginRootComponent> m_pluginRootComponent;
 	QPointer<PluginObject> m_pluginObject;
 	injeqt::injector m_pluginInjector;
 

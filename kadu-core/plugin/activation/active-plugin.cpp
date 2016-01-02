@@ -27,11 +27,6 @@ ActivePlugin::ActivePlugin(injeqt::injector &injector, const QString &pluginName
 {
 }
 
-PluginRootComponent * ActivePlugin::pluginRootComponent() const
-{
-	return m_pluginLoader->pluginRootComponent();
-}
-
 PluginObject * ActivePlugin::pluginObject() const
 {
 	return m_pluginLoader->pluginObject();

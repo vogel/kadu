@@ -36,14 +36,6 @@ void PluginRepository::setPluginActivationService(PluginActivationService *plugi
 	m_pluginActivationService = pluginActivationService;
 }
 
-PluginRootComponent * PluginRepository::pluginRootComponent(const QString& pluginName) const
-{
-	if (auto a = m_pluginActivationService->activePlugin(pluginName))
-		return a->pluginRootComponent();
-	else
-		return nullptr;
-}
-
 PluginObject * PluginRepository::pluginObject(const QString& pluginName) const
 {
 	if (auto a = m_pluginActivationService->activePlugin(pluginName))

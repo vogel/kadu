@@ -24,7 +24,6 @@
 
 #include "chat/chat.h"
 #include "message/message-filter.h"
-#include "plugin/plugin-root-component.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QSet>

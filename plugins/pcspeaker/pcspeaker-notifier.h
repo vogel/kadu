@@ -19,7 +19,6 @@
 #pragma once
 
 #include "gui/windows/main-configuration-window.h"
-#include "plugin/plugin-root-component.h"
 
 #include "notification/notifier.h"
 

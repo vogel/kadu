@@ -26,8 +26,6 @@
 #include <injeqt/injector.h>
 #include <memory>
 
-class PluginRootComponent;
-
 /**
  * @addtogroup Plugin
  * @{
@@ -37,8 +35,8 @@ class PluginRootComponent;
  * @class ActivePlugin
  * @short Plugin that is loaded into memory and active.
  *
- * ActivePlugin loads plugin with translation in construtor and handles its root object (derived
- * from PluginRootComponent). Paths of translation file and plugin dynamic library are
+ * ActivePlugin loads plugin with translation in construtor and handles its plugin object (derived
+ * from PluginObject). Paths of translation file and plugin dynamic library are
  * currently hardcoded.
  *
  * All plugin data is loaded in constructor and plugin's root object is initialized (by calling its
@@ -65,11 +63,6 @@ public:
 	 * destroyed and memory is freed in this case.
 	 */
 	explicit ActivePlugin(injeqt::injector &injector, const QString &pluginName);
-
-	/**
-	 * @return Depreceated root component of plugin.
-	 */
-	PluginRootComponent * pluginRootComponent() const;
 
 	/**
 	 * @return Root component of plugin.

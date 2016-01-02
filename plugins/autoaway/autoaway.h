@@ -25,7 +25,6 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "misc/memory.h"
-#include "plugin/plugin-root-component.h"
 #include "status/status-changer.h"
 
 #include <QtCore/QObject>
@@ -38,6 +37,7 @@ class QSpinBox;
 class QCheckBox;
 
 class Idle;
+class PluginRepository;
 
 /**
  * @defgroup autoaway Autoaway

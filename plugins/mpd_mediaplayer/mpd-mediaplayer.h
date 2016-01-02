@@ -22,8 +22,6 @@
 
 #include <mpd/client.h>
 
-#include "plugin/plugin-root-component.h"
-
 #include "plugins/mediaplayer/player-commands.h"
 #include "plugins/mediaplayer/player-info.h"
 

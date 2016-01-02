@@ -30,7 +30,6 @@ set (plugin_SRCS
 	plugin-module.cpp
 	plugin-object.cpp
 	plugin-repository.cpp
-	plugin-root-component.cpp
 )
 
 kadu_subdirectory (plugin "${plugin_SRCS}" "" "")

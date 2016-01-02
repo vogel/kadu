@@ -32,7 +32,6 @@ class ActivePlugin;
 class InjectorProvider;
 class PluginActivationErrorHandler;
 class PluginDependencyHandler;
-class PluginRootComponent;
 class PluginStateService;
 
 /**
