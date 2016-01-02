@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INFOS_H
-#define INFOS_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -76,14 +75,13 @@ public:
 	 * \param parent - the parent object,
 	 * \param name - the object's name
 	 */
-	explicit Infos(QObject *parent = 0);
+	Q_INVOKABLE explicit Infos(QObject *parent = nullptr);
 
 	//! Default destructor
-	~Infos();
+	virtual ~Infos();
 
 public slots:
 	//! This slot open InfosDialog dialog.
 	void onShowInfos();
-};
 
-#endif // INFOS_H
+};

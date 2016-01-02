@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,29 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LAST_SEEN_PLUGIN_H
-#define LAST_SEEN_PLUGIN_H
+#pragma once
 
-#include <QtCore/QObject>
+#include <injeqt/module.h>
 
-#include "plugin/plugin-root-component.h"
-
-class Infos;
-
-class LastSeenPlugin : public PluginRootComponent
+class LastSeenModule : public injeqt::module
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	Infos *InfosInstance;
 
 public:
-	virtual ~LastSeenPlugin();
-
-	virtual bool init();
-	virtual void done();
+	explicit LastSeenModule();
+	virtual ~LastSeenModule();
 
 };
-
-#endif // LAST_SEEN_PLUGIN_H

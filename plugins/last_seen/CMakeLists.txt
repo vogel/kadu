@@ -5,9 +5,11 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	last-seen-plugin.cpp
 	infos.cpp
 	infos_dialog.cpp
+	last-seen-module.cpp
+	last-seen-plugin-injector-factory.cpp
+	last-seen-plugin-object.cpp
 )
 
 kadu_plugin (last_seen

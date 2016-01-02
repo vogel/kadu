@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,25 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "infos.h"
+#pragma once
 
-#include "last-seen-plugin.h"
+#include "plugin/plugin-object.h"
 
-LastSeenPlugin::~LastSeenPlugin()
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Infos;
+
+class LastSeenPluginObject : public PluginObject
 {
-}
+	Q_OBJECT
 
-bool LastSeenPlugin::init()
-{
-	InfosInstance = new Infos(this);
+public:
+	Q_INVOKABLE explicit LastSeenPluginObject(QObject *parent = nullptr);
+	virtual ~LastSeenPluginObject();
 
-	return true;
-}
+	virtual void init();
+	virtual void done();
 
-void LastSeenPlugin::done()
-{
-	delete InfosInstance;
-	InfosInstance = 0;
-}
+private:
+	QPointer<Infos> m_infos;
 
-#include "moc_last-seen-plugin.cpp"
+private slots:
+	INJEQT_SETTER void setInfos(Infos *infos);
+
+};
