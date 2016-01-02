@@ -18,39 +18,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MPRIS_PLAYER_CONFIGURATION_UI_HANDLER_H
-#define MPRIS_PLAYER_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler.h"
 
+class MPRISPlayer;
+
 class QComboBox;
 
 class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
-
-	static MPRISPlayerConfigurationUiHandler *Instance;
+	
+	QPointer<MPRISPlayer> m_mprisPlayer;
 
 	QMap<QString, QString> PlayersMap;
 	QComboBox *PlayersBox;
-
-	MPRISPlayerConfigurationUiHandler();
-	virtual ~MPRISPlayerConfigurationUiHandler();
 
 	void loadPlayersListFromFile();
 	void fillPlayersBox();
 
 private slots:
+	INJEQT_SETTER void setMPRISPlayer(MPRISPlayer *mprisPlayer);
+
 	void configurationApplied();
 
 public:
-	static void registerConfigurationUi();
-	static void unregisterConfigurationUi();
+	Q_INVOKABLE explicit MPRISPlayerConfigurationUiHandler(QObject *parent = nullptr);
+	virtual ~MPRISPlayerConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
 	virtual void mainConfigurationWindowDestroyed() override;
@@ -62,5 +64,3 @@ public slots:
 	void delPlayer();
 
 };
-
-#endif /* MPRIS_PLAYER_CONFIGURATION_UI_HANDLER_H */

@@ -8,8 +8,10 @@ set (SOURCES
 	gui/windows/mpris-player-dialog.cpp
 
 	mpris-player-configuration-ui-handler.cpp
+	mpris-player-module.cpp
+	mpris-player-plugin-injector-factory.cpp
+	mpris-player-plugin-object.cpp
 	mpris-player.cpp
-	mpris-player-plugin.cpp
 	track-info.cpp
 )
 

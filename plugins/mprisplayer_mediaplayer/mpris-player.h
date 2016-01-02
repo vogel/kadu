@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MPRIS_PLAYER_H
-#define MPRIS_PLAYER_H
+#pragma once
 
 #include <QtCore/QMap>
 
@@ -36,29 +35,21 @@ class QString;
 class MPRISPlayer : public MPRISMediaPlayer
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(MPRISPlayer)
 
-	static MPRISPlayer *Instance;
 	static const QString UserPlayersListFile;
 	static const QString GlobalPlayersListFile;
-
-	explicit MPRISPlayer(QObject *parent = 0);
-	virtual ~MPRISPlayer();
 
 	void prepareUserPlayersFile();
 	void replacePlugin();
 	void choosePlayer(const QString &key, const QString &value);
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static MPRISPlayer *instance() { return Instance; }
-
 	static QString userPlayersListFileName() { return Application::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }
 	static QString globalPlayersListFileName() { return Application::instance()->pathsProvider()->dataPath() + GlobalPlayersListFile; }
+
+	Q_INVOKABLE explicit MPRISPlayer(QObject *parent = nullptr);
+	virtual ~MPRISPlayer();
 
 	void configurationApplied();
 
 };
-
-#endif /* MPRIS_PLAYER_H */

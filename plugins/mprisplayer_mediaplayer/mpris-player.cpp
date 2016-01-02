@@ -32,33 +32,17 @@
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
 
-#include "plugins/mediaplayer/mediaplayer.h"
-
 #include "mpris-player.h"
 
 const QString MPRISPlayer::UserPlayersListFile = "mprisplayer-players.data";
 const QString MPRISPlayer::GlobalPlayersListFile = "plugins/data/mprisplayer_mediaplayer/" + MPRISPlayer::UserPlayersListFile;
-MPRISPlayer *MPRISPlayer::Instance = 0;
-
-void MPRISPlayer::createInstance()
-{
-	if (!Instance)
-		Instance = new MPRISPlayer();
-
-	Instance->configurationApplied();
-}
-
-void MPRISPlayer::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
 
 MPRISPlayer::MPRISPlayer(QObject *parent) :
 		MPRISMediaPlayer(parent)
 {
 	prepareUserPlayersFile();
 	replacePlugin();
+	configurationApplied();
 }
 
 MPRISPlayer::~MPRISPlayer()
@@ -131,12 +115,6 @@ void MPRISPlayer::configurationApplied()
 {
 	setName(Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player"));
 	setService(Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Service"));
-
-	if (!MediaPlayer::instance()->registerMediaPlayer(MPRISPlayer::instance(), MPRISPlayer::instance()))
-	{
-		MediaPlayer::instance()->unregisterMediaPlayer();
-		MediaPlayer::instance()->registerMediaPlayer(MPRISPlayer::instance(), MPRISPlayer::instance());
-	}
 }
 
 #include "moc_mpris-player.cpp"

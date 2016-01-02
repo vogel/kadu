@@ -43,39 +43,19 @@
 #include "mpris-player-configuration-ui-handler.h"
 #include "mpris-player.h"
 
-MPRISPlayerConfigurationUiHandler *MPRISPlayerConfigurationUiHandler::Instance = 0;
-
-void MPRISPlayerConfigurationUiHandler::registerConfigurationUi()
+MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler(QObject *parent) :
+		QObject{parent},
+		PlayersBox{}
 {
-	if (Instance)
-		return;
-
-	Instance = new MPRISPlayerConfigurationUiHandler();
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
-	Core::instance()->configurationUiHandlerRepository()->addConfigurationUiHandler(Instance);
-}
-
-void MPRISPlayerConfigurationUiHandler::unregisterConfigurationUi()
-{
-	if (!Instance)
-		return;
-
-	Core::instance()->configurationUiHandlerRepository()->removeConfigurationUiHandler(Instance);
-	delete Instance;
-	Instance = 0;
-
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
-}
-
-MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler() :
-	PlayersBox(0)
-{
-
 }
 
 MPRISPlayerConfigurationUiHandler::~MPRISPlayerConfigurationUiHandler()
 {
+}
 
+void MPRISPlayerConfigurationUiHandler::setMPRISPlayer(MPRISPlayer *mprisPlayer)
+{
+	m_mprisPlayer = mprisPlayer;
 }
 
 void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -286,7 +266,7 @@ void MPRISPlayerConfigurationUiHandler::configurationApplied()
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
 	Application::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
 
-	MPRISPlayer::instance()->configurationApplied();
+	m_mprisPlayer->configurationApplied();
 }
 
 #include "moc_mpris-player-configuration-ui-handler.cpp"
