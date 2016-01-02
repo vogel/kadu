@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -106,7 +104,7 @@
         <translation>Ekran görüntülerini saklamak için %1 dizini oluşturulamıyor!</translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
         <translation>%1 dosyasına yazılamıyor.
 Erişim engellendi veya başka bir problem!</translation>

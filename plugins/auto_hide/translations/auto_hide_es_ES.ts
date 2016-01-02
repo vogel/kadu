@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_ES" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -9,26 +7,23 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n segundo</numerusform>
-            <numerusform>%n segundos</numerusform>
-        </translation>
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform></translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Buddies window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Hide buddy list window when unused</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

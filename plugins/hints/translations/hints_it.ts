@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -169,73 +167,70 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform>%n secondi</numerusform>
-        </translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
     <message>
         <source>Margin size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Hint&apos;s corner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>On Top</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>On Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Top Left</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Top Right</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Bottom Left</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Bottom Right</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Open Chat</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete Hint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete All Hints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show buttons only if notification requires user&apos;s action</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Hints size and position...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>HintManager</name>
     <message>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot; src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -265,7 +260,7 @@
     </message>
     <message>
         <source>Advanced hints&apos; configuration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -276,7 +271,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -291,7 +286,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

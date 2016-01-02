@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -17,7 +15,7 @@
     </message>
     <message>
         <source>Maximum number of spoken letters</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Message too long (male)</source>
@@ -29,7 +27,7 @@
     </message>
     <message>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Frequency</source>
@@ -37,11 +35,11 @@
     </message>
     <message>
         <source>Base frequency</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tempo</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Melody</source>
@@ -57,15 +55,15 @@
     </message>
     <message>
         <source>aRts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Esd</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Dsp</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Dsp device</source>
@@ -73,11 +71,11 @@
     </message>
     <message>
         <source>Klatt synthesizer (requires dsp)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Speech program</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Test</source>
@@ -92,11 +90,11 @@
     <name>SpeechConfigurationWidget</name>
     <message>
         <source>Male format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Female format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

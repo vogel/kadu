@@ -1,18 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Autohide idle time</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n segundos</numerusform>
-            <numerusform>%n segundo</numerusform>
-        </translation>
+        <translation><numerusform>%n segundos</numerusform><numerusform>%n segundo</numerusform></translation>
     </message>
     <message>
         <source>Buddies list</source>

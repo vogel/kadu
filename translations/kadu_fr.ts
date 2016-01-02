@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -572,7 +570,7 @@
         <translation>Modifier l&apos;état</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>Cette option va remplacer les infobulles par l&apos;état du contact
 les changements interviendront à la connexion du serveur</translation>
@@ -607,17 +605,11 @@ les changements interviendront à la connexion du serveur</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minute</numerusform>
-            <numerusform>%n minutes</numerusform>
-        </translation>
+        <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n seconde</numerusform>
-            <numerusform>%n secondes</numerusform>
-        </translation>
+        <translation><numerusform>%n seconde</numerusform><numerusform>%n secondes</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>
@@ -3645,11 +3637,11 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Digest (Md5)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Digest (Sha1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Serial number</source>
@@ -3657,79 +3649,79 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Issuer organization</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer common name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer locality name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer organizational unit name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer country name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer state or province name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer distinguished name qualifier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer serial number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Issuer email address</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject organization</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject common name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject alernative name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject locality name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject organizational unit name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject country name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject state or province name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject distinguished name qualifier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject serial number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Subject email address</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Yes</source>

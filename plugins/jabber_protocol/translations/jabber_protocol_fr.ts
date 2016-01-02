@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -28,11 +26,11 @@
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Kadu - Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -96,7 +94,7 @@
     <name>JabberChangePassword</name>
     <message>
         <source>Current connection is not safe for password change. Use encrypted connection or change password on provider&apos;s site.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Password change is not allowed.</source>
@@ -236,7 +234,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Some servers require your e-mail address during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -407,18 +405,18 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Require data transfer proxy:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Log in before changing password.</source>
-        <translation type="unfinished">S&apos;authentifier avant de changer le mot de passe.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>JabberErrorService</name>
     <message>
         <source>Socket error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Server did not respond for PING message</source>
@@ -585,7 +583,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     <name>JabberRegisterAccount</name>
     <message>
         <source>Internal error: invalid state</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connection established.</source>
@@ -593,19 +591,19 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Negotiating registration parameters.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>User with this username is already registered.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Registration parameters received.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Registration at this server requires XMPP Data Forms support. Kadu currently does not support XMPP Data Forms.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1
@@ -617,7 +615,7 @@ Message serveur: %2</translation>
     </message>
     <message>
         <source>Unknown error: received stanza type %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -657,7 +655,7 @@ Maintenant veuillez ajouter vos amis à la liste d&apos;amis.</translation>
         <source>Registration failed.
 
 Server message: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connecting with server.</source>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -28,11 +26,11 @@
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Kadu - Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -46,15 +44,15 @@
     <name>JabberActions</name>
     <message>
         <source>Resend Subscription</source>
-        <translation>Poslat přihlášení znovu</translation>
+        <translation>Poslat odběr znovu</translation>
     </message>
     <message>
         <source>Remove Subscription</source>
-        <translation>Odstranit přihlášení</translation>
+        <translation>Odstranit odběr</translation>
     </message>
     <message>
         <source>Ask for Subscription</source>
-        <translation>Požádat o přihlášení</translation>
+        <translation>Požádat o odběr</translation>
     </message>
 </context>
 <context>
@@ -237,7 +235,7 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Some servers require your e-mail address during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Některé servery vyžadují adresu elektronické pošty použitou během vytvoření  účtu (registrace).&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -408,7 +406,7 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Require data transfer proxy:</source>
-        <translation type="unfinished"></translation>
+        <translation>Požadovat zástupce pro přenos dat:</translation>
     </message>
     <message>
         <source>Log in before changing password.</source>
@@ -507,7 +505,7 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Subscription required</source>
-        <translation>Přihlášení požadováno</translation>
+        <translation>Zájem o odběr požadován</translation>
     </message>
     <message>
         <source>Undefined condition</source>
@@ -606,7 +604,7 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Registration at this server requires XMPP Data Forms support. Kadu currently does not support XMPP Data Forms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytvoření účtu (registrace) u tohoto serveru vyžaduje podopru pro datové formuláře XMPP. Kadu nyní nepodporuje datové formuláře XMPP.</translation>
     </message>
     <message>
         <source>%1
@@ -646,7 +644,7 @@ Zpráva od serveru: %2</translation>
         <source>Registration was successful. Your new XMPP username is %1.
 Store it in a safe place along with the password.
 Now please add your friends to the buddy list.</source>
-        <translation>Přihlášení účtu bylo úspěšné. Vaše nové uživatelské jméno pro XMPP je %1.
+        <translation>Vytvoření účtu (registrace) bylo úspěšné. Vaše nové uživatelské jméno pro XMPP je %1.
 Uložte je na bezpečném místě společně s heslem.
 Nyní, prosím, přidejte své přátele do seznamu kamarádů.</translation>
     </message>

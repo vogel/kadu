@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -32,7 +30,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Please choose the network for the account that you would like to set up.&lt;/p&gt;&lt;p&gt;You can also create a new account in the wizard if you don&apos;t already have one&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -47,7 +45,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Confirm your wizard setting to start using Kadu.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -84,7 +82,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Please enter your account data.&lt;/p&gt;&lt;p&gt;Go back if you want to select a different Account Setup option.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>ImportProfileWindow</name>
     <message>
@@ -46,7 +44,7 @@
     <message>
         <source>This directory is not a Kadu profile directory.
 File kadu.conf.xml not found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Profile successfully imported!</source>
@@ -89,33 +87,33 @@ File kadu.conf.xml not found</source>
     </message>
     <message>
         <source>Unable to import profile: %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>ProfileImporter</name>
     <message>
         <source>Unable to open profile file [%1].</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Account already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Imported account has no ID</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>ProfilesImportActions</name>
     <message>
         <source>Import profiles...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Import external profile...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

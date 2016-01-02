@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ach">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ach" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Run command</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

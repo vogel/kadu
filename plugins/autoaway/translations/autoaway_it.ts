@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -37,10 +35,7 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n secondo</numerusform>
-            <numerusform>%n secondi</numerusform>
-        </translation>
+        <translation><numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
     <message>
         <source>Do Not Change</source>
@@ -48,7 +43,7 @@
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Inactivity</source>
@@ -60,42 +55,39 @@
     </message>
     <message>
         <source>Switch to &apos;away&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minuto</numerusform>
-            <numerusform>%n minuti</numerusform>
-        </translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minuti</numerusform></translation>
     </message>
     <message>
         <source>Switch to &apos;auto extended away&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Switch to &apos;invisible&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Switch to &apos;offline&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Set status to offline after</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Status description when inactive</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Prepend</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Append</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

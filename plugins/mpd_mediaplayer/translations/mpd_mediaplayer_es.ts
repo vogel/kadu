@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -13,7 +11,7 @@
     </message>
     <message>
         <source>Media Player Daemon Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Host</source>
@@ -21,7 +19,7 @@
     </message>
     <message>
         <source>Media Player Daemon server address</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Port</source>
@@ -29,7 +27,7 @@
     </message>
     <message>
         <source>Port number MPD is listening on</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connection timeout (seconds)</source>

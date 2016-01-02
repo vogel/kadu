@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_MX">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -572,7 +570,7 @@
         <translation>Cambio de Estado</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>Esta opción sustituirá las indicaciones con los estados de los compañeros
 cambios al establecer conexión con el servidor</translation>
@@ -607,17 +605,11 @@ cambios al establecer conexión con el servidor</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minuto</numerusform>
-            <numerusform>%n minutos</numerusform>
-        </translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n segundo</numerusform>
-            <numerusform>%n segundos</numerusform>
-        </translation>
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -78,7 +76,7 @@
     </message>
     <message>
         <source>The QCA OSSL plugin for libqca2 is not present!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -106,7 +104,7 @@ Do you want to save it?</source>
     <name>EncryptionSetUpActionDescription</name>
     <message>
         <source>Encrypt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -132,11 +130,11 @@ Do you want to save it?</source>
     </message>
     <message>
         <source>Keys have been generated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</source>
@@ -144,15 +142,15 @@ Do you want to save it?</source>
     </message>
     <message>
         <source>Keys already exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Overwrite keys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

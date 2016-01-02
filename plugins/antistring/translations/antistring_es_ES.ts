@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_ES" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -41,7 +39,7 @@
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

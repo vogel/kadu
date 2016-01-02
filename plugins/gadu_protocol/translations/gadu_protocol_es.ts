@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -21,7 +19,7 @@
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
@@ -33,7 +31,7 @@
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Too many connection attempts with bad password!</source>
@@ -72,11 +70,11 @@
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished">Identidad de la Cuenta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Add Account</source>
@@ -192,7 +190,7 @@
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
@@ -228,7 +226,7 @@
     </message>
     <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Other</source>
@@ -264,11 +262,11 @@
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Block links from anonymous buddies</source>
@@ -305,7 +303,7 @@
     <message>
         <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
 Are you sure to allow them to know you are available?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Make my status visible anyway</source>
@@ -336,14 +334,14 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Unable to login to GG Drive. Reconnect before sending files.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>GaduOutgoingFileTransferHandler</name>
     <message>
         <source>Valid GG Drive ticket not available</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -378,7 +376,7 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Family name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Birth year</source>
@@ -390,7 +388,7 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Family city</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -415,7 +413,7 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

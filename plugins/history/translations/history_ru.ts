@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -41,7 +39,7 @@
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>View history</source>
@@ -61,7 +59,7 @@
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>yesterday</source>
@@ -77,11 +75,11 @@
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Chat window</source>
@@ -99,7 +97,7 @@
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -135,7 +133,7 @@
     <name>HistoryMessagesTab</name>
     <message>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Filter</source>
@@ -189,11 +187,11 @@
     </message>
     <message>
         <source>&amp;Clear Status History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>&amp;Clear SMS History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Chats</source>
@@ -244,7 +242,7 @@
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Search</source>
@@ -279,19 +277,19 @@
     </message>
     <message>
         <source>Show messages since yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages from last 7 days</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages from last 30 days</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show whole history</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

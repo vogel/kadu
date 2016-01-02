@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_MX">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -106,7 +104,7 @@
         <translation>¡No se puede crear el directorio %1 para almacenar las capturas de pantalla!</translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
         <translation>No se puede escribir el archivo %1.
 ¡Acceso denegado u otro problema!</translation>

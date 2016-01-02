@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -572,7 +570,7 @@
         <translation>Změna stavu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>Tato volba nahradí nástrojové rady změnami změnami ve stavu kamarádů
 ihned po zřízení spojení se serverem</translation>
@@ -607,19 +605,11 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minuta</numerusform>
-            <numerusform>%n minuty</numerusform>
-            <numerusform>%n minut</numerusform>
-        </translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>

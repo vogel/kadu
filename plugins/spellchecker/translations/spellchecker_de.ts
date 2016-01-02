@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -9,7 +7,7 @@
     </message>
     <message>
         <source>Misspelled Words Marking Options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Color</source>
@@ -29,7 +27,7 @@
     </message>
     <message>
         <source>Spell Checker Options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ignore case</source>
@@ -37,30 +35,30 @@
     </message>
     <message>
         <source>Spelling Suggestions Options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show suggestions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Maximum number of suggested words</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Spelling</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>SpellChecker</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Could not find dictionary for %1 language.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Move to &apos;Checked&apos;</source>
@@ -80,7 +78,7 @@
     </message>
     <message>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

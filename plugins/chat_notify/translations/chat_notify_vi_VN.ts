@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="vi_VN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi_VN" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Chat window notifications</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

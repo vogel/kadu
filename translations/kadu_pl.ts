@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -572,7 +570,7 @@
         <translation>Zmiana statusu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 znajomych po połączeniu się z serwerem</translation>
@@ -607,19 +605,11 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minuta</numerusform>
-            <numerusform>%n minuty</numerusform>
-            <numerusform>%n minut</numerusform>
-        </translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>

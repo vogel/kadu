@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_MX">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -169,10 +167,7 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n segundo</numerusform>
-            <numerusform>%n segundos</numerusform>
-        </translation>
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform></translation>
     </message>
     <message>
         <source>Margin size</source>
