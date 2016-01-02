@@ -5,9 +5,12 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	simpleview.cpp
+	
 	simpleview-config-ui.cpp
-	simpleview-plugin.cpp
+	simpleview-module.cpp
+	simpleview-plugin-injector-factory.cpp
+	simpleview-plugin-object.cpp
+	simpleview.cpp
 )
 
 set (CONFIGURATION_FILES

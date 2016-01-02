@@ -18,8 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SIMPLEVIEW_H
-#define SIMPLEVIEW_H
+
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QRect>
@@ -37,14 +37,18 @@ class MainWindow;
 class StatusButtons;
 class TalkableTreeView;
 
-class SimpleView :
-	public QObject, private ConfigurationAwareObject, CompositingAwareObject
+class SimpleView : public QObject, private ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SimpleView)
 
-	static SimpleView *Instance;
+public:
+	Q_INVOKABLE explicit SimpleView(QObject *parent = nullptr);
+	virtual ~SimpleView();
 
+public slots:
+	void simpleViewToggle(bool activate);
+
+private:
 	bool KeepSize;
 	bool NoScrollBar;
 	bool SimpleViewActive;
@@ -60,20 +64,8 @@ class SimpleView :
 	StatusButtons *StatusButtonsHandle;
 	TalkableTreeView *TalkableTreeViewHandle;
 
-	SimpleView();
-	virtual ~SimpleView();
-
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 	virtual void configurationUpdated();
 
-public:
-	static void createInstance();
-	static void destroyInstance();
-	static SimpleView *instance(){return Instance; }
-
-public slots:
-	void simpleViewToggle(bool activate);
 };
-
-#endif

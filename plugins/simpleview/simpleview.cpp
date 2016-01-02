@@ -49,16 +49,13 @@
 #include "simpleview.h"
 #include <docking-plugin-object.h>
 
-SimpleView *SimpleView::Instance = 0;
-
-SimpleView::SimpleView() :
+SimpleView::SimpleView(QObject *parent) :
+	QObject{parent},
 	SimpleViewActive(false)
 {
 	RosterWidget *roster;
 
 	SimpleViewConfigUi::createDefaultConfiguration();
-
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 
 	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
 	DockAction->setCheckable(true);
@@ -86,20 +83,6 @@ SimpleView::~SimpleView()
 	simpleViewToggle(false);
 
 	Core::instance()->pluginRepository()->pluginObject<DockingPluginObject>("docking")->docking()->dockingMenuActionRepository()->removeAction(DockAction);
-
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
-}
-
-void SimpleView::createInstance()
-{
-	if (!Instance)
-		Instance = new SimpleView();
-}
-
-void SimpleView::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
 }
 
 void SimpleView::simpleViewToggle(bool activate)
