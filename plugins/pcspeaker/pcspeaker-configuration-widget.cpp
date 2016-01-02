@@ -29,11 +29,13 @@
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
 
-#include "pcspeaker.h"
-#include "pcspeaker_configuration_widget.h"
+#include "pcspeaker-notifier.h"
 
-PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent)
-	: NotifierConfigurationWidget(parent)
+#include "pcspeaker-configuration-widget.h"
+
+PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent) :
+		NotifierConfigurationWidget{parent},
+		m_notifier{notifier}
 {
 	soundEdit = new QLineEdit(this);
 	soundEdit->setToolTip(tr("Put the played sounds separate by space, _ for pause, eg. D2 C1# G0"));
@@ -77,7 +79,7 @@ void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 
 void PCSpeakerConfigurationWidget::test()
 {
-	PCSpeaker::instance()->parseAndPlay(soundEdit->text());
+	m_notifier->parseAndPlay(soundEdit->text());
 }
 
-#include "moc_pcspeaker_configuration_widget.cpp"
+#include "moc_pcspeaker-configuration-widget.cpp"

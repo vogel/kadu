@@ -5,8 +5,11 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	pcspeaker.cpp
-	pcspeaker_configuration_widget.cpp
+	pcspeaker-configuration-widget.cpp
+	pcspeaker-module.cpp
+	pcspeaker-notifier.cpp
+	pcspeaker-plugin-injector-factory.cpp
+	pcspeaker-plugin-object.cpp
 )
 
 set (LIBRARIES "")

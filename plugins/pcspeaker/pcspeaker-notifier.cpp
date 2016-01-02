@@ -20,22 +20,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
-#include "exports.h"
-#include "pcspeaker.h"
-#include "pcspeaker_configuration_widget.h"
+#include "pcspeaker-notifier.h"
+
+#include "pcspeaker-configuration-widget.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
-#include "core/core.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/misc.h"
-#include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
-
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QSlider>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -46,12 +38,6 @@
 #include <X11/keysym.h>
 #include <unistd.h>
 #endif
-
-#ifdef Q_OS_MACX
-#include <Carbon/Carbon.h>
-#endif
-
-PCSpeaker *PCSpeaker::Instance = 0;
 
 //Sound Frequencies
 //Rows - sounds: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
@@ -71,7 +57,7 @@ int sounds[96] = {
 	31,62,123,245,494,988,1975,3951};
 
 #if defined(Q_OS_WIN)
-void PCSpeaker::beep(int pitch, int duration)
+void PCSpeakerNotifier::beep(int pitch, int duration)
 {
 	if (pitch == 0)
 		Sleep(duration / 5); /* instead of (duration * 200) / 1000 */
@@ -79,7 +65,7 @@ void PCSpeaker::beep(int pitch, int duration)
 		Beep(pitch, duration);
 }
 #elif defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-void PCSpeaker::beep(int pitch, int duration)
+void PCSpeakerNotifier::beep(int pitch, int duration)
 {
 	if (pitch == 0)
 		usleep(static_cast<__useconds_t>(duration * 200));
@@ -102,54 +88,34 @@ void PCSpeaker::beep(int pitch, int duration)
 	}
 }
 #else
-void PCSpeaker::beep(int pitch, int duration)
+void PCSpeakerNotifier::beep(int pitch, int duration)
 {
 	Q_UNUSED(pitch);
 	Q_UNUSED(duration);
 }
 #endif
 
-PCSpeaker::PCSpeaker(QObject *parent) :
-		PluginRootComponent{parent},
+PCSpeakerNotifier::PCSpeakerNotifier(QObject *parent) :
+		QObject{parent},
 		Notifier{"PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low")},
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 		xdisplay{},
 #endif
-		configWidget{},
 		volume{}
 {
-	Instance = this;
 }
 
-PCSpeaker::~PCSpeaker()
+PCSpeakerNotifier::~PCSpeakerNotifier()
 {
 }
 
-bool PCSpeaker::init()
+NotifierConfigurationWidget * PCSpeakerNotifier::createConfigurationWidget(QWidget *parent)
 {
-	Core::instance()->notificationManager()->registerNotifier(this);
-	createDefaultConfiguration();
-
-	return true;
+	return new PCSpeakerConfigurationWidget{this, parent};
 }
 
-void PCSpeaker::done()
+void PCSpeakerNotifier::notify(Notification *notification)
 {
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationManager()->unregisterNotifier(this);
-	}
-}
-
-NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *parent)
-{
-	configWidget = new PCSpeakerConfigurationWidget(parent);
-	return configWidget;
-}
-
-void PCSpeaker::notify(Notification *notification)
-{
-	kdebugf();
 	notification->acquire(this);
 #ifdef Q_OS_MACX
 	SysBeep(1);
@@ -157,10 +123,9 @@ void PCSpeaker::notify(Notification *notification)
 	parseAndPlay(Application::instance()->configuration()->deprecatedApi()->readEntry("PC Speaker", notification->type() + "_Sound"));
 #endif
 	notification->release(this);
-	kdebugf2();
 }
 
-void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
+void PCSpeakerNotifier::parseStringToSound(QString line, int tab[21], int tab2[21])
 {
 	int length = line.length();
 	line = line.toUpper();
@@ -242,7 +207,7 @@ void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 	tab[k]=-1;								//set sound end condition (-1)
 }
 
-void PCSpeaker::play(int sound[21], int soundlength[20])
+void PCSpeakerNotifier::play(int sound[21], int soundlength[20])
 {
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	xdisplay = XOpenDisplay(NULL);
@@ -257,15 +222,15 @@ void PCSpeaker::play(int sound[21], int soundlength[20])
 #endif
 }
 
-void PCSpeaker::parseAndPlay(QString line)
+void PCSpeakerNotifier::parseAndPlay(QString line)
 {
 	volume = Application::instance()->configuration()->deprecatedApi()->readNumEntry("PC Speaker", "SpeakerVolume");
 	int sound[21], soundLength[20];
-	ParseStringToSound(line, sound, soundLength);
+	parseStringToSound(line, sound, soundLength);
 	play(sound, soundLength);
 }
 
-void PCSpeaker::createDefaultConfiguration()
+void PCSpeakerNotifier::createDefaultConfiguration()
 {
 	Application::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "SpeakerVolume", 100);
 	Application::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "NewChat_Sound", "C4/2");
@@ -275,4 +240,4 @@ void PCSpeaker::createDefaultConfiguration()
 	Application::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
 }
 
-#include "moc_pcspeaker.cpp"
+#include "moc_pcspeaker-notifier.cpp"
