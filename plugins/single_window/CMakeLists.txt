@@ -5,9 +5,11 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	single-window.cpp
 	single-window-chat-widget-container-handler.cpp
-	single-window-plugin.cpp
+	single-window-module.cpp
+	single-window-plugin-injector-factory.cpp
+	single-window-plugin-object.cpp
+	single-window.cpp
 )
 
 set (CONFIGURATION_FILES

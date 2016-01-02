@@ -76,7 +76,7 @@ class SingleWindowManager : public QObject, public ConfigurationAwareObject
 	Q_OBJECT
 
 public:
-	explicit SingleWindowManager(QObject *parent = 0);
+	Q_INVOKABLE explicit SingleWindowManager(QObject *parent = nullptr);
 	virtual ~SingleWindowManager();
 
 	SingleWindow * window() const { return m_window; }

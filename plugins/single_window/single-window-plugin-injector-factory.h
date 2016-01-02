@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,25 +19,18 @@
 
 #pragma once
 
-#include "plugin/plugin-root-component.h"
+#include "plugin/plugin-injector-factory.h"
 
-class SingleWindowChatWidgetContainerHandler;
-class SingleWindowManager;
-
-class SingleWindowPlugin : public PluginRootComponent
+class SingleWindowPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	virtual ~SingleWindowPlugin();
+	explicit SingleWindowPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~SingleWindowPluginInjectorFactory();
 
-	virtual bool init();
-	virtual void done();
-
-private:
-	QScopedPointer<SingleWindowChatWidgetContainerHandler> m_singleWindowChatWidgetContainerHandler;
-	QScopedPointer<SingleWindowManager> m_singleWindowManager;
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
 
 };

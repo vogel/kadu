@@ -33,7 +33,7 @@ class SingleWindowChatWidgetContainerHandler : public ChatWidgetContainerHandler
 	Q_OBJECT
 
 public:
-	explicit SingleWindowChatWidgetContainerHandler(QObject *parent = 0);
+	Q_INVOKABLE explicit SingleWindowChatWidgetContainerHandler(QObject *parent = nullptr);
 	virtual ~SingleWindowChatWidgetContainerHandler();
 
 	void setSingleWindow(SingleWindow *singleWindow);
