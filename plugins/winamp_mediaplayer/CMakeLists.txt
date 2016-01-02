@@ -5,8 +5,10 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
+	winamp-module.cpp
+	winamp-plugin-injector-factory.cpp
+	winamp-plugin-object.cpp
 	winamp.cpp
-	winamp-player-plugin.cpp
 )
 
 if (MINGW)

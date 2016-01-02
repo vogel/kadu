@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Tomasz Rostanski (rozteck@interia.pl)
- * Copyright 2011, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,26 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugins/mediaplayer/mediaplayer.h"
+#include "winamp-module.h"
 
-#include "winamp-player-plugin.h"
+#include "winamp-plugin-object.h"
 #include "winamp.h"
 
-WinampMediaplayerPlugin::~WinampMediaplayerPlugin()
+WinampModule::WinampModule()
 {
+	add_type<WinampMediaPlayer>();
+	add_type<WinampPluginObject>();
 }
 
-bool WinampMediaplayerPlugin::init()
+WinampModule::~WinampModule()
 {
-	PlayerInstance = new WinampMediaPlayer();
-	return MediaPlayer::instance()->registerMediaPlayer(PlayerInstance, PlayerInstance);
 }
-
-void WinampMediaplayerPlugin::done()
-{
-	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete PlayerInstance;
-	PlayerInstance = 0;
-}
-
-#include "moc_winamp-player-plugin.cpp"

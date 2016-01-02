@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Tomasz Rostanski (rozteck@interia.pl)
- * Copyright 2011, 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINAMP_MEDIAPLAYER_PLUGIN_H
-#define WINAMP_MEDIAPLAYER_PLUGIN_H
+#pragma once
 
-#include <QtCore/QObject>
+#include "plugin/plugin-injector-factory.h"
 
-#include "plugin/plugin-root-component.h"
-
-class WinampMediaPlayer;
-
-class WinampMediaplayerPlugin : public PluginRootComponent
+class WinampPluginInjectorFactory : public PluginInjectorFactory
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
-	WinampMediaPlayer *PlayerInstance;
+	Q_INTERFACES(PluginInjectorFactory)
+	Q_PLUGIN_METADATA(IID "im.kadu.PluginInjectorFactory")
 
 public:
-	virtual ~WinampMediaplayerPlugin();
+	explicit WinampPluginInjectorFactory(QObject *parent = nullptr);
+	virtual ~WinampPluginInjectorFactory();
 
-	virtual bool init();
-	virtual void done();
+	virtual injeqt::injector createPluginInjector(injeqt::injector &injector) const override;
+
 };
-
-#endif /* WINAMP_MEDIAPLAYER_PLUGIN_H */

@@ -25,7 +25,8 @@
 #define WINAMP_CMD_RAISE_VOLUME 40058
 #define WINAMP_CMD_LOWER_VOLUME 40059
 
-WinampMediaPlayer::WinampMediaPlayer()
+WinampMediaPlayer::WinampMediaPlayer(QObject *parent) :
+		QObject{parent}
 {
 	kdebugf();
 }
