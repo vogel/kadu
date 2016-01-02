@@ -19,34 +19,13 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
+#include <injeqt/module.h>
 
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
-
-class MPDMediaPlayer;
-class PathsProvider;
-class PluginRepository;
-
-class MpdPlayerPluginObject : public PluginObject
+class MediaplayerModule : public injeqt::module
 {
-	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MpdPlayerPluginObject(QObject *parent = nullptr);
-	virtual ~MpdPlayerPluginObject();
-
-	virtual void init();
-	virtual void done();
-
-private:
-	QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<PluginRepository> m_pluginRepository;
-
-private slots:
-	INJEQT_SETTER void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+	explicit MediaplayerModule();
+	virtual ~MediaplayerModule();
 
 };

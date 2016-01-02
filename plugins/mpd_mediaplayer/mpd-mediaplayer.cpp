@@ -23,22 +23,12 @@
 #include "mpd-mediaplayer.h"
 
 MPDMediaPlayer::MPDMediaPlayer(QObject *parent) :
-		PluginRootComponent(parent)
+		QObject(parent)
 {
 }
 
 MPDMediaPlayer::~MPDMediaPlayer()
 {
-}
-
-bool MPDMediaPlayer::init()
-{
-	return MediaPlayer::instance()->registerMediaPlayer(this, this);
-}
-
-void MPDMediaPlayer::done()
-{
-	MediaPlayer::instance()->unregisterMediaPlayer();
 }
 
 mpd_connection * MPDMediaPlayer::mpdConnect()

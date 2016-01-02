@@ -24,7 +24,7 @@
 
 #include "notification/notification/notification.h"
 
-#include "mediaplayer_exports.h"
+#include "mediaplayer-exports.h"
 
 class MEDIAPLAYERAPI MediaPlayerNotification : public Notification
 {

@@ -21,9 +21,11 @@
 
 #include "mpd-mediaplayer.h"
 
+#include "plugins/mediaplayer/mediaplayer-plugin-object.h"
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "misc/paths-provider.h"
+#include "plugin/plugin-repository.h"
 
 MpdPlayerPluginObject::MpdPlayerPluginObject(QObject *parent) :
 		PluginObject{parent}
@@ -44,15 +46,20 @@ void MpdPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
+void MpdPlayerPluginObject::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
+}
+
 void MpdPlayerPluginObject::init()
 {
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
-	MediaPlayer::instance()->registerMediaPlayer(m_mpdMediaPlayer, m_mpdMediaPlayer);
+	m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->registerMediaPlayer(m_mpdMediaPlayer, m_mpdMediaPlayer);
 }
 
 void MpdPlayerPluginObject::done()
 {
-	MediaPlayer::instance()->unregisterMediaPlayer();
+	m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->unregisterMediaPlayer();
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 }
 

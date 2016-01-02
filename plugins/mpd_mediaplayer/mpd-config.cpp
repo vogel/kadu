@@ -28,7 +28,6 @@
 
 MPDConfig::MPDConfig()
 {
-	MainConfigurationWindow::registerUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
 	Host = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
 	Port = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
@@ -37,7 +36,6 @@ MPDConfig::MPDConfig()
 
 MPDConfig::~MPDConfig()
 {
-	MainConfigurationWindow::unregisterUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 }
 
 void MPDConfig::createDefaultConfiguration()

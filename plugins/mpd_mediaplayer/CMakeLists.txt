@@ -5,8 +5,11 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	mpd-mediaplayer.cpp
 	mpd-config.cpp
+	mpd-mediaplayer.cpp
+	mpd-player-module.cpp
+	mpd-player-plugin-injector-factory.cpp
+	mpd-player-plugin-object.cpp
 )
 
 set (CONFIGURATION_FILES

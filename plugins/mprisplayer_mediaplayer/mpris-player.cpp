@@ -29,8 +29,12 @@
 #include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
 #include "plugin/metadata/plugin-metadata.h"
+#include "plugin/plugin-repository.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
+
+#include "plugins/mediaplayer/mediaplayer-plugin-object.h"
+#include "plugins/mediaplayer/mediaplayer.h"
 
 #include "mpris-player.h"
 
@@ -42,12 +46,16 @@ MPRISPlayer::MPRISPlayer(QObject *parent) :
 {
 	prepareUserPlayersFile();
 	replacePlugin();
-	configurationApplied();
 }
 
 MPRISPlayer::~MPRISPlayer()
 {
+}
 
+void MPRISPlayer::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
+	setMediaPlayer(m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer());
 }
 
 void MPRISPlayer::prepareUserPlayersFile()
@@ -113,8 +121,14 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 
 void MPRISPlayer::configurationApplied()
 {
-	setName(Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player"));
+	auto name = Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player");
+	setName(name);
 	setService(Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Service"));
+
+	if (name == "Audacious")
+		m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->setInterval(5);
+	else
+		m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->setInterval(0);
 }
 
 #include "moc_mpris-player.cpp"

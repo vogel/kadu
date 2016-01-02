@@ -7,3 +7,4 @@ Author=badboy
 Dependencies=mediaplayer
 Version=core
 Category=Media players
+Provides=media_player

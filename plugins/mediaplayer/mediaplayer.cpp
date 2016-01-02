@@ -46,17 +46,17 @@
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-event.h"
+#include "plugin/plugin-repository.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
-#include <plugin/plugin-repository.h>
 
 #include "plugins/docking/docking.h"
 #include "plugins/docking/docking-menu-action-repository.h"
 
 #include "notification/mediaplayer-notification.h"
 #include "media-player-status-changer.h"
-#include "player_commands.h"
-#include "player_info.h"
+#include "player-commands.h"
+#include "player-info.h"
 
 #include "mediaplayer.h"
 #include <docking-plugin-object.h>
@@ -66,55 +66,13 @@
 
 #define SHORTCUT_KEY Qt::Key_Meta
 
-const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
-(
-	"@default",
-	"Syntax: %t - song title,\n%a - album, %r - artist, %f - file name,\n"
-	"%l - song length (MM:SS), %c - current song position (MM:SS),\n"
-	"%p - percents of played song, %n - player name, %v - player version\n"
-);
-
-#ifdef Q_OS_MAC
-const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
-(
-	"@default",
-	"With this option enabled you'll be able to control\n"
-	"your MediaPlayer in chat window by keyboard shortcuts:\n"
-	"Control+ Enter/Backspace/Left/Right/Up/Down."
-);
-#else
-const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
-(
-	"@default",
-	"With this option enabled you'll be able to control\n"
-	"your MediaPlayer in chat window by keyboard shortcuts:\n"
-	"Win+ Enter/Backspace/Left/Right/Up/Down."
-);
-#endif
-
 // For ID3 tags signatures cutter
 const char DEFAULT_SIGNATURES[] = "! WWW.POLSKIE-MP3.TK ! \n! www.polskie-mp3.tk ! ";
 
 // Implementation of MediaPlayer class
 
-MediaPlayer * MediaPlayer::Instance = 0;
-
-void MediaPlayer::createInstance()
-{
-	if (!Instance)
-	{
-		Instance = new MediaPlayer();
-		Instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
-	}
-}
-
-void MediaPlayer::destroyInstance()
-{
-	delete Instance;
-	Instance = 0;
-}
-
-MediaPlayer::MediaPlayer()
+MediaPlayer::MediaPlayer(QObject *parent) :
+		QObject{parent}
 {
 	kdebugf();
 
@@ -278,22 +236,6 @@ void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
 		QWidget *widget = widgets[widgets.size() - 1];
 		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
 	}
-}
-
-void MediaPlayer::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	connect(mainConfigurationWindow->widget()->widgetById("mediaplayer/signature"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("mediaplayer/signatures"), SLOT(setEnabled(bool)));
-	mainConfigurationWindow->widget()->widgetById("mediaplayer/syntax")->setToolTip(QCoreApplication::translate("@default", MediaPlayerSyntaxText));
-	mainConfigurationWindow->widget()->widgetById("mediaplayer/chatShortcuts")->setToolTip(QCoreApplication::translate("@default", MediaPlayerChatShortCutsText));
-}
-
-void MediaPlayer::mainConfigurationWindowDestroyed()
-{
-}
-
-void MediaPlayer::mainConfigurationWindowApplied()
-{
 }
 
 void MediaPlayer::chatWidgetAdded(ChatWidget *chat)

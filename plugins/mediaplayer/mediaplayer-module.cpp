@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,25 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AMAROK2_MEDIAPLAYER_PLUGIN_H
-#define AMAROK2_MEDIAPLAYER_PLUGIN_H
+#include "mediaplayer-module.h"
 
-#include <QtCore/QObject>
+#include "mediaplayer-configuration-ui-handler.h"
+#include "mediaplayer-plugin-object.h"
+#include "mediaplayer.h"
 
-#include "plugin/plugin-root-component.h"
-
-class MediaplayerPlugin : public PluginRootComponent
+MediaplayerModule::MediaplayerModule()
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
+	add_type<MediaplayerConfigurationUiHandler>();
+	add_type<MediaplayerPluginObject>();
+	add_type<MediaPlayer>();
+}
 
-public:
-	virtual ~MediaplayerPlugin();
-
-	virtual bool init();
-	virtual void done();
-
-};
-
-#endif // AMAROK2_MEDIAPLAYER_PLUGIN_H
+MediaplayerModule::~MediaplayerModule()
+{
+}

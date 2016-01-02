@@ -28,12 +28,15 @@
 #define MPRISCONTROLLER_H
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QVariantMap>
 #include <QtDBus/QDBusMessage>
 
 #include "track-info.h"
 
 // TODO: separate class to support DBus properies must be extracted
+
+class MediaPlayer;
 
 class MPRISController : public QObject
 {
@@ -48,6 +51,8 @@ public:
 	};
 
 private:
+	QPointer<MediaPlayer> m_mediaPlayer;
+
 	PlayerStatus CurrentStatus;
 	TrackInfo CurrentTrack;
 
@@ -68,7 +73,7 @@ private slots:
 	void propertiesChanged(const QDBusMessage &message);
 
 public:
-	explicit MPRISController(const QString &service, QObject *parent = 0);
+	explicit MPRISController(MediaPlayer *mediaPlayer, const QString &service, QObject *parent = 0);
 	virtual ~MPRISController();
 
 	void call(const QString &methodName);

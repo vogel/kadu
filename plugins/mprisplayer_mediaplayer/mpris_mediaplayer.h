@@ -23,25 +23,30 @@
  * See http://mpris.org/ for more details about the standard
  */
 
-#ifndef MPRIS_MEDIAPLAYER_H
-#define MPRIS_MEDIAPLAYER_H
+#pragma once
 
-#include "plugins/mediaplayer/player_commands.h"
-#include "plugins/mediaplayer/player_info.h"
+#include "plugins/mediaplayer/player-commands.h"
+#include "plugins/mediaplayer/player-info.h"
 
+#include <QtCore/QPointer>
+
+class MediaPlayer;
 class MPRISController;
 
 class MPRISMediaPlayer : public QObject, public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
 
-	MPRISController *controller;
+	QPointer<MediaPlayer> m_mediaPlayer;
+	QPointer<MPRISController> m_controller;
 	QString service;
 	QString name;
 
 public:
 	explicit MPRISMediaPlayer(QObject *parent = 0);
 	virtual ~MPRISMediaPlayer();
+
+	void setMediaPlayer(MediaPlayer *mediaPlayer);
 
 	QString getTitle();
 	QString getAlbum();
@@ -68,5 +73,3 @@ public:
 	void decrVolume();
 
 };
-
-#endif // MPRIS_MEDIAPLAYER_H

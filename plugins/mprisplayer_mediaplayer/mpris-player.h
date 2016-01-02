@@ -23,12 +23,16 @@
 #pragma once
 
 #include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
 #include "core/application.h"
 #include "misc/paths-provider.h"
 
 #include "mpris_mediaplayer.h"
+
+class PluginRepository;
 
 class QString;
 
@@ -39,9 +43,14 @@ class MPRISPlayer : public MPRISMediaPlayer
 	static const QString UserPlayersListFile;
 	static const QString GlobalPlayersListFile;
 
+	QPointer<PluginRepository> m_pluginRepository;
+
 	void prepareUserPlayersFile();
 	void replacePlugin();
 	void choosePlayer(const QString &key, const QString &value);
+
+private slots:
+	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 
 public:
 	static QString userPlayersListFileName() { return Application::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }

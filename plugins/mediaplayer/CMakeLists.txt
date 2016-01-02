@@ -11,9 +11,12 @@ kadu_api_directories (plugins/mediaplayer
 set (SOURCES
 	notification/mediaplayer-notification.cpp
 
-	mediaplayer.cpp
-	mediaplayer-plugin.cpp
 	media-player-status-changer.cpp
+	mediaplayer-configuration-ui-handler.cpp
+	mediaplayer-module.cpp
+	mediaplayer-plugin-injector-factory.cpp
+	mediaplayer-plugin-object.cpp
+	mediaplayer.cpp
 )
 
 set (CONFIGURATION_FILES

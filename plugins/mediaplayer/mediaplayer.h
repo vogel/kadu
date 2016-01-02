@@ -3,10 +3,11 @@
 #include "configuration/configuration-aware-object.h"
 #include "configuration/gui/configuration-ui-handler.h"
 
-#include "mediaplayer_exports.h"
+#include "mediaplayer-exports.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QAction;
 class QKeyEvent;
@@ -26,11 +27,9 @@ class UserGroup;
 
 class MediaPlayerStatusChanger;
 
-class MEDIAPLAYERAPI MediaPlayer : public QObject, public ConfigurationUiHandler, ConfigurationAwareObject
+class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
-
-	static MediaPlayer *Instance;
 
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
@@ -53,9 +52,6 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, public ConfigurationUiHandler
 	QMap<ChatWidget *, QPushButton *> chatButtons;
 
 	bool isPaused;
-
-	MediaPlayer();
-	virtual ~MediaPlayer();
 
 	int pos();
 
@@ -81,6 +77,8 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, public ConfigurationUiHandler
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	// Proxy methods for 3rd party modules
 	void nextTrack();
 	void prevTrack();
@@ -139,12 +137,8 @@ protected:
 	void configurationUpdated();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static MediaPlayer * instance() { return Instance; }
-
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	Q_INVOKABLE explicit MediaPlayer(QObject *parent = nullptr);
+	virtual ~MediaPlayer();
 
 	/*
 		Looks for special tags in string 'str' and replaces it by
@@ -187,10 +181,6 @@ public:
 		from MediaPlayer module so other module can be registered.
 	*/
 	void unregisterMediaPlayer();
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
 
 	void titleChanged();
 	void statusChanged();

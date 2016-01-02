@@ -17,36 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "mediaplayer-plugin-injector-factory.h"
 
-#include "plugin/plugin-object.h"
+#include "mediaplayer-module.h"
 
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
+#include <injeqt/injector.h>
 
-class MPDMediaPlayer;
-class PathsProvider;
-class PluginRepository;
-
-class MpdPlayerPluginObject : public PluginObject
+MediaplayerPluginInjectorFactory::MediaplayerPluginInjectorFactory(QObject *parent) :
+		PluginInjectorFactory{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE explicit MpdPlayerPluginObject(QObject *parent = nullptr);
-	virtual ~MpdPlayerPluginObject();
+MediaplayerPluginInjectorFactory::~MediaplayerPluginInjectorFactory()
+{
+}
 
-	virtual void init();
-	virtual void done();
+injeqt::injector MediaplayerPluginInjectorFactory::createPluginInjector(injeqt::injector &injector) const
+{
+	 auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	 modules.emplace_back(make_unique<MediaplayerModule>());
 
-private:
-	QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<PluginRepository> m_pluginRepository;
+	return injeqt::injector{std::vector<injeqt::injector *>{&injector}, std::move(modules)};
+}
 
-private slots:
-	INJEQT_SETTER void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
-
-};
+#include "moc_mediaplayer-plugin-injector-factory.cpp"

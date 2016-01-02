@@ -19,34 +19,41 @@
 
 #pragma once
 
+#include "mediaplayer-exports.h"
+
 #include "plugin/plugin-object.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class MPDMediaPlayer;
+class ConfigurationUiHandlerRepository;
+class MediaplayerConfigurationUiHandler;
+class MediaPlayer;
 class PathsProvider;
-class PluginRepository;
 
-class MpdPlayerPluginObject : public PluginObject
+class MEDIAPLAYERAPI MediaplayerPluginObject : public PluginObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MpdPlayerPluginObject(QObject *parent = nullptr);
-	virtual ~MpdPlayerPluginObject();
+	Q_INVOKABLE explicit MediaplayerPluginObject(QObject *parent = nullptr);
+	virtual ~MediaplayerPluginObject();
 
 	virtual void init();
 	virtual void done();
 
+	MediaPlayer * mediaPlayer() const;
+
 private:
-	QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
+	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MediaplayerConfigurationUiHandler> m_mediaplayerConfigurationUiHandler;
+	QPointer<MediaPlayer> m_mediaPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<PluginRepository> m_pluginRepository;
 
 private slots:
-	INJEQT_SETTER void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
+	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SETTER void setMediaplayerConfigurationUiHandler(MediaplayerConfigurationUiHandler *mediaplayerConfigurationUiHandler);
+	INJEQT_SETTER void setMediaPlayer(MediaPlayer *mediaPlayer);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 
 };

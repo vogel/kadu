@@ -22,11 +22,13 @@
 #include "mpris-player-configuration-ui-handler.h"
 #include "mpris-player.h"
 
+#include "plugins/mediaplayer/mediaplayer-plugin-object.h"
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-repository.h"
 
 MprisPlayerPluginObject::MprisPlayerPluginObject(QObject *parent) :
 		PluginObject{parent}
@@ -52,9 +54,14 @@ void MprisPlayerPluginObject::setMPRISPlayer(MPRISPlayer *mprisPlayer)
 	m_mprisPlayer = mprisPlayer;
 }
 
-void MprisPlayerPluginObject::setInfos(PathsProvider *pathsProvider)
+void MprisPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
+}
+
+void MprisPlayerPluginObject::setPluginRepository(PluginRepository *pluginRepository)
+{
+	m_pluginRepository = pluginRepository;
 }
 
 void MprisPlayerPluginObject::init()
@@ -62,16 +69,21 @@ void MprisPlayerPluginObject::init()
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
 
-	if (!MediaPlayer::instance()->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer))
+	auto mediaPlayer = m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer();
+
+	if (!mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer))
 	{
-		MediaPlayer::instance()->unregisterMediaPlayer();
-		MediaPlayer::instance()->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer);
+		mediaPlayer->unregisterMediaPlayer();
+		mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer);
 	}
+
+	m_mprisPlayer->configurationApplied();
 }
 
 void MprisPlayerPluginObject::done()
 {
-	MediaPlayer::instance()->unregisterMediaPlayer();
+	auto mediaPlayer = m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer();
+	mediaPlayer->unregisterMediaPlayer();
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 }

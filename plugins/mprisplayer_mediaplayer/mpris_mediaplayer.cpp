@@ -35,36 +35,30 @@
 MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) :
 		QObject(parent)
 {
-	controller = new MPRISController(service, this);
-
-	if (name == "Audacious")
-		MediaPlayer::instance()->setInterval(5);
-	else
-		MediaPlayer::instance()->setInterval(0);
 }
 
 MPRISMediaPlayer::~MPRISMediaPlayer()
 {
 }
 
+void MPRISMediaPlayer::setMediaPlayer(MediaPlayer *mediaPlayer)
+{
+	m_mediaPlayer = mediaPlayer;
+}
+
 void MPRISMediaPlayer::setService(const QString &service)
 {
 	this->service = service;
 
-	if (controller)
-		delete controller;
+	if (m_controller)
+		delete m_controller;
 
-	controller = new MPRISController(this->service, this);
+	m_controller = new MPRISController(m_mediaPlayer, this->service, this);
 }
 
 void MPRISMediaPlayer::setName(const QString &name)
 {
 	this->name = name;
-
-	if (name == "Audacious")
-		MediaPlayer::instance()->setInterval(5);
-	else
-		MediaPlayer::instance()->setInterval(0);
 }
 
 // PlayerInfo
@@ -76,8 +70,8 @@ QString MPRISMediaPlayer::getPlayerName()
 
 QString MPRISMediaPlayer::getPlayerVersion()
 {
-	if (controller)
-		return controller->identity();
+	if (m_controller)
+		return m_controller->identity();
 	else
 		return QString();
 }
@@ -90,7 +84,7 @@ QStringList MPRISMediaPlayer::getPlayListTitles()
 	if (!isPlaying())
 		return result;
 
-	QList<TrackInfo> tracks = controller->getTrackList();
+	QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
 
 	foreach (const TrackInfo &track, tracks)
 		result << track.title();
@@ -104,7 +98,7 @@ QStringList MPRISMediaPlayer::getPlayListFiles()
 	if (!isPlaying())
 		return result;
 
-	QList<TrackInfo> tracks = controller->getTrackList();
+	QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
 
 	foreach (const TrackInfo &track, tracks)
 		result << track.file();
@@ -117,7 +111,7 @@ QString MPRISMediaPlayer::getTitle()
 	if (!isPlaying())
 		return QString();
 
-	return controller->track().title();
+	return m_controller->track().title();
 }
 
 QString MPRISMediaPlayer::getAlbum()
@@ -125,7 +119,7 @@ QString MPRISMediaPlayer::getAlbum()
 	if (!isPlaying())
 		return QString();
 
-	return controller->track().album();
+	return m_controller->track().album();
 }
 
 QString MPRISMediaPlayer::getArtist()
@@ -133,7 +127,7 @@ QString MPRISMediaPlayer::getArtist()
 	if (!isPlaying())
 		return QString();
 
-	return controller->track().artist();
+	return m_controller->track().artist();
 }
 
 QString MPRISMediaPlayer::getFile()
@@ -141,7 +135,7 @@ QString MPRISMediaPlayer::getFile()
 	if (!isPlaying())
 		return QString();
 
-	return controller->track().file();
+	return m_controller->track().file();
 }
 
 int MPRISMediaPlayer::getLength()
@@ -149,7 +143,7 @@ int MPRISMediaPlayer::getLength()
 	if (!isPlaying())
 		return 0;
 
-	return controller->track().length();
+	return m_controller->track().length();
 }
 
 // Player
@@ -159,89 +153,89 @@ int MPRISMediaPlayer::getCurrentPos()
 	if (!isPlaying())
 		return 0;
 
-	return controller->getCurrentPosition();
+	return m_controller->getCurrentPosition();
 }
 
 void MPRISMediaPlayer::nextTrack()
 {
-	if (controller)
-		controller->call("Next");
+	if (m_controller)
+		m_controller->call("Next");
 }
 
 void MPRISMediaPlayer::prevTrack()
 {
-	if (controller)
-		controller->call("Previous");
+	if (m_controller)
+		m_controller->call("Previous");
 }
 
 void MPRISMediaPlayer::play()
 {
-	if (controller)
-		controller->call("Play");
+	if (m_controller)
+		m_controller->call("Play");
 }
 
 void MPRISMediaPlayer::stop()
 {
-	if (controller)
-		controller->call("Stop");
+	if (m_controller)
+		m_controller->call("Stop");
 }
 
 void MPRISMediaPlayer::pause()
 {
-	if (controller)
-		controller->call("Pause");
+	if (m_controller)
+		m_controller->call("Pause");
 }
 
 void MPRISMediaPlayer::setVolume(int vol)
 {
-	if (controller)
-		controller->setVolume(vol);
+	if (m_controller)
+		m_controller->setVolume(vol);
 }
 
 void MPRISMediaPlayer::incrVolume()
 {
-	if (!controller)
+	if (!m_controller)
 		return;
 
-	int vol = controller->getVolume();
+	int vol = m_controller->getVolume();
 	if (vol < 100)
 		vol += 2;
 
 	if (vol > 100)
 		vol = 100;
 
-	controller->setVolume(vol);
+	m_controller->setVolume(vol);
 }
 
 void MPRISMediaPlayer::decrVolume()
 {
-	if (!controller)
+	if (!m_controller)
 		return;
 
-	int vol = controller->getVolume();
+	int vol = m_controller->getVolume();
 	if (vol > 0)
 		vol -= 2;
 
 	if (vol < 0)
 		vol = 0;
 
-	controller->setVolume(vol);
+	m_controller->setVolume(vol);
 }
 
 bool MPRISMediaPlayer::isPlaying()
 {
-	if (!controller)
+	if (!m_controller)
 		return false;
 
-	return MPRISController::StatusPlaying == controller->status();
+	return MPRISController::StatusPlaying == m_controller->status();
 }
 
 bool MPRISMediaPlayer::isActive()
 {
-	if (!controller)
+	if (!m_controller)
 		return false;
 
-	return controller->active();
+	return m_controller->active();
 }
 
 #include "moc_mpris_mediaplayer.cpp"

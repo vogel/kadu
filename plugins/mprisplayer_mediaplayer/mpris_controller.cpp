@@ -34,8 +34,12 @@
 
 #include "mpris_controller.h"
 
-MPRISController::MPRISController(const QString &service, QObject *parent) :
-		QObject(parent), CurrentStatus(StatusStopped), Active(false), Service(service)
+MPRISController::MPRISController(MediaPlayer *mediaPlayer, const QString &service, QObject *parent) :
+		QObject(parent),
+		m_mediaPlayer(mediaPlayer),
+		CurrentStatus(StatusStopped),
+		Active(false),
+		Service(service)
 {
 	QDBusConnection bus = QDBusConnection::sessionBus();
 
@@ -105,7 +109,8 @@ void MPRISController::activate()
 	fetchStatus();
 	fetchMetadata();
 
-	MediaPlayer::instance()->statusChanged();
+	if (m_mediaPlayer)
+		m_mediaPlayer->statusChanged();
 }
 
 void MPRISController::deactivate()
@@ -117,7 +122,8 @@ void MPRISController::deactivate()
 
 	updateStatus(StatusStopped);
 
-	MediaPlayer::instance()->statusChanged();
+	if (m_mediaPlayer)
+		m_mediaPlayer->statusChanged();
 }
 
 void MPRISController::updateStatus(const PlayerStatus newStatus)
@@ -126,7 +132,9 @@ void MPRISController::updateStatus(const PlayerStatus newStatus)
 		return;
 
 	CurrentStatus = newStatus;
-	MediaPlayer::instance()->statusChanged();
+
+	if (m_mediaPlayer)
+		m_mediaPlayer->statusChanged();
 }
 
 void MPRISController::updateStatus(const QString &newStatus)
@@ -156,7 +164,9 @@ TrackInfo MPRISController::toTrackInfo(const QVariantMap &metadata) const
 void MPRISController::updateMetadata(const QVariantMap &metadata)
 {
 	CurrentTrack = toTrackInfo(metadata);
-	MediaPlayer::instance()->titleChanged();
+
+	if (m_mediaPlayer)
+		m_mediaPlayer->titleChanged();
 }
 
 void MPRISController::nameOwnerChanged(const QString &service, const QString &previousOwner, const QString &currentOwner)

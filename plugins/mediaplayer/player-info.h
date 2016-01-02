@@ -3,7 +3,7 @@
 
 #include <QtCore/QStringList>
 
-#include "mediaplayer_exports.h"
+#include "mediaplayer-exports.h"
 
 class MEDIAPLAYERAPI PlayerInfo
 {

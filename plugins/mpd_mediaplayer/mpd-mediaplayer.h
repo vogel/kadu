@@ -18,32 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MPD_MEDIAPLAYER
-#define MPD_MEDIAPLAYER
+#pragma once
 
 #include <mpd/client.h>
 
 #include "plugin/plugin-root-component.h"
 
-#include "plugins/mediaplayer/player_commands.h"
-#include "plugins/mediaplayer/player_info.h"
+#include "plugins/mediaplayer/player-commands.h"
+#include "plugins/mediaplayer/player-info.h"
 
 #include "mpd-config.h"
 
-class MPDMediaPlayer : public PluginRootComponent, PlayerCommands, PlayerInfo
+class MPDMediaPlayer : public QObject, public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
-	Q_INTERFACES(PluginRootComponent)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginRootComponent")
-
 	MPDConfig Config;
 
 public:
-	explicit MPDMediaPlayer(QObject *parent = 0);
+	Q_INVOKABLE explicit MPDMediaPlayer(QObject *parent = nullptr);
 	virtual ~MPDMediaPlayer();
-
-	virtual bool init();
-	virtual void done();
 
 	mpd_connection * mpdConnect();
 
@@ -72,5 +65,3 @@ public:
 	virtual void decrVolume();
 
 };
-
-#endif // MPD_MEDIAPLAYER

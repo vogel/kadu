@@ -28,6 +28,7 @@ class ConfigurationUiHandlerRepository;
 class MPRISPlayerConfigurationUiHandler;
 class MPRISPlayer;
 class PathsProvider;
+class PluginRepository;
 
 class MprisPlayerPluginObject : public PluginObject
 {
@@ -45,11 +46,13 @@ private:
 	QPointer<MPRISPlayerConfigurationUiHandler> m_mprisPlayerConfigurationUiHandler;
 	QPointer<MPRISPlayer> m_mprisPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<PluginRepository> m_pluginRepository;
 
 private slots:
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setMPRISPlayerConfigurationUiHandler(MPRISPlayerConfigurationUiHandler *mprisPlayerConfigurationUiHandler);
 	INJEQT_SETTER void setMPRISPlayer(MPRISPlayer *mprisPlayer);
-	INJEQT_SETTER void setInfos(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 
 };
