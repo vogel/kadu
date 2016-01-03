@@ -22,12 +22,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_MANAGER_H
-#define CHAT_MANAGER_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 #include <QtCore/QVector>
+#include <injeqt/injeqt.h>
 
 #include "message/message.h"
 #include "storage/manager.h"
@@ -90,6 +90,8 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	Q_DISABLE_COPY(ChatManager)
 
 private slots:
+	INJEQT_INIT void init();
+
 	void chatDataUpdated();
 	void chatOpened();
 	void chatClosed();
@@ -106,8 +108,6 @@ protected:
 public:
 	Q_INVOKABLE explicit ChatManager(QObject *parent = nullptr);
 	virtual ~ChatManager();
-
-	void init();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -209,5 +209,3 @@ signals:
 /**
  * @}
  */
-
-#endif // CHAT_MANAGER_H

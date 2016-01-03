@@ -676,9 +676,6 @@ void Core::runServices()
 	ContactManager::instance()->init();
 
 	configurationUiHandlerRepository()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
-
-	protocolsManager()->init();
-	chatManager()->init();
 }
 
 void Core::runGuiServices()

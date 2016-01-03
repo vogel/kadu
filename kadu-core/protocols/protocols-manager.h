@@ -19,10 +19,11 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QMap>
 #include <QtCore/QObject>
-
-#include "exports.h"
+#include <injeqt/injeqt.h>
 
 class Protocol;
 class ProtocolFactory;
@@ -34,8 +35,6 @@ class KADUAPI ProtocolsManager : public QObject
 public:
 	Q_INVOKABLE explicit ProtocolsManager(QObject *parent = nullptr);
 	virtual ~ProtocolsManager();
-
-	void init();
 
 	void registerProtocolFactory(ProtocolFactory *Factory);
 	void unregisterProtocolFactory(ProtocolFactory *Factory);
@@ -50,13 +49,16 @@ public:
 
 	int indexOf(ProtocolFactory *protocolFactory) { return Factories.indexOf(protocolFactory); }
 
-private:
-	QList<ProtocolFactory *> Factories;
-
 signals:
 	void protocolFactoryAboutToBeRegistered(ProtocolFactory *factory);
 	void protocolFactoryRegistered(ProtocolFactory *factory);
 	void protocolFactoryAboutToBeUnregistered(ProtocolFactory *factory);
 	void protocolFactoryUnregistered(ProtocolFactory *factory);
+
+private:
+	QList<ProtocolFactory *> Factories;
+
+private slots:
+	INJEQT_INIT void init();
 
 };
