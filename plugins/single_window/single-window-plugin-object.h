@@ -37,8 +37,7 @@ public:
 	Q_INVOKABLE explicit SingleWindowPluginObject(QObject *parent = nullptr);
 	virtual ~SingleWindowPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
@@ -47,6 +46,7 @@ private:
 	QPointer<SingleWindowManager> m_singleWindowManager;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setSingleWindowChatWidgetContainerHandler(SingleWindowChatWidgetContainerHandler *singleWindowChatWidgetContainerHandler);

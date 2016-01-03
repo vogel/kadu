@@ -36,8 +36,7 @@ public:
 	Q_INVOKABLE explicit MpdPlayerPluginObject(QObject *parent = nullptr);
 	virtual ~MpdPlayerPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
@@ -45,6 +44,7 @@ private:
 	QPointer<PluginRepository> m_pluginRepository;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);

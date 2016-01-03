@@ -35,14 +35,14 @@ public:
 	Q_INVOKABLE explicit DockingNotifyPluginObject(QObject *parent = nullptr);
 	virtual ~DockingNotifyPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<DockingNotifier> m_dockingNotifier;
 	QPointer<NotificationManager> m_notificationManager;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setDockingNotifier(DockingNotifier *dockingNotifier);
 	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
 

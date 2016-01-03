@@ -37,8 +37,7 @@ public:
 	Q_INVOKABLE explicit TabsPluginObject(QObject *parent = nullptr);
 	virtual ~TabsPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
@@ -47,6 +46,7 @@ private:
 	QPointer<TabsManager> m_tabsManager;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setTabsChatWidgetContainerHandler(TabsChatWidgetContainerHandler *tabsChatWidgetContainerHandler);

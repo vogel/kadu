@@ -35,14 +35,14 @@ public:
 	Q_INVOKABLE explicit ConfigWizardPluginObject(QObject *parent = nullptr);
 	virtual ~ConfigWizardPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ConfigWizardActions> m_configWizardActions;
 	QPointer<PluginStateService> m_pluginStateService;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setConfigWizardActions(ConfigWizardActions *configWizardActions);
 	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
 

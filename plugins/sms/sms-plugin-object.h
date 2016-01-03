@@ -39,8 +39,7 @@ public:
 	Q_INVOKABLE explicit SmsPluginObject(QObject *parent = nullptr);
 	virtual ~SmsPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
@@ -51,6 +50,7 @@ private:
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setSmsActions(SmsActions *smsActions);

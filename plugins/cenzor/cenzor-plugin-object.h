@@ -41,8 +41,7 @@ public:
 	Q_INVOKABLE explicit CenzorPluginObject(QObject *parent = nullptr);
 	virtual ~CenzorPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<CenzorConfigurationUiHandler> m_cenzorConfigurationUiHandler;
@@ -53,6 +52,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setCenzorConfigurationUiHandler(CenzorConfigurationUiHandler *cenzorConfigurationUiHandler);
 	INJEQT_SETTER void setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter);
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);

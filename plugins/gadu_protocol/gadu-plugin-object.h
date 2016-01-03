@@ -40,8 +40,7 @@ public:
 	Q_INVOKABLE explicit GaduPluginObject(QObject *parent = nullptr);
 	virtual ~GaduPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<DomProcessorService> m_domProcessorService;
@@ -53,6 +52,7 @@ private:
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_SETTER void setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory);
 	INJEQT_SETTER void setGaduProtocolMenuManager(GaduProtocolMenuManager *gaduProtocolMenuManager);

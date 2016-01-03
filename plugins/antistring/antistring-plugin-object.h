@@ -41,8 +41,7 @@ public:
 	Q_INVOKABLE explicit AntistringPluginObject(QObject *parent = nullptr);
 	virtual ~AntistringPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<AntistringConfigurationUiHandler> m_antistringConfigurationUiHandler;
@@ -53,6 +52,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setAntistringConfigurationUiHandler(AntistringConfigurationUiHandler *antistringConfigurationUiHandler);
 	INJEQT_SETTER void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);

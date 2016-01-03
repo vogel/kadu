@@ -34,13 +34,13 @@ public:
 	Q_INVOKABLE explicit LastSeenPluginObject(QObject *parent = nullptr);
 	virtual ~LastSeenPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<Infos> m_infos;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setInfos(Infos *infos);
 
 };

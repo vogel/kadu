@@ -39,8 +39,7 @@ public:
 	Q_INVOKABLE explicit FirewallPluginObject(QObject *parent = nullptr);
 	virtual ~FirewallPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
@@ -51,6 +50,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setFirewallConfigurationUiHandler(FirewallConfigurationUiHandler *firewallConfigurationUiHandler);
 	INJEQT_SETTER void setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter);

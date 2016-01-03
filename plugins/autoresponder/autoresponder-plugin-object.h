@@ -40,8 +40,7 @@ public:
 	Q_INVOKABLE explicit AutoresponderPluginObject(QObject *parent = nullptr);
 	virtual ~AutoresponderPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<AutoresponderConfigurationUiHandler> m_autoresponderConfigurationUiHandler;
@@ -51,6 +50,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setAutoresponderConfigurationUiHandler(AutoresponderConfigurationUiHandler *autoresponderConfigurationUiHandler);
 	INJEQT_SETTER void setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter);
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);

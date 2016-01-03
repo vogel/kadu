@@ -38,8 +38,7 @@ public:
 	Q_INVOKABLE explicit SpeechPluginObject(QObject *parent = nullptr);
 	virtual ~SpeechPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
@@ -49,6 +48,7 @@ private:
 	QPointer<Speech> m_speech;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);

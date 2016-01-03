@@ -52,8 +52,7 @@ public:
 	Q_INVOKABLE explicit OtrPluginObject(QObject *parent = nullptr);
 	virtual ~OtrPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<AccountConfigurationWidgetFactoryRepository> m_accountConfigurationWidgetFactoryRepository;
@@ -81,6 +80,7 @@ private:
 	bool fragmentsFixAvailable() const;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setAccountConfigurationWidgetFactoryRepository(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository);
 	INJEQT_SETTER void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
 	INJEQT_SETTER void setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository);

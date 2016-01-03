@@ -36,8 +36,7 @@ public:
 	Q_INVOKABLE explicit IdlePluginObject(QObject *parent = nullptr);
 	virtual ~IdlePluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 	Idle * idle() const;
 
@@ -45,6 +44,7 @@ private:
 	QPointer<Idle> m_idle;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setIdle(Idle *idle);
 
 };

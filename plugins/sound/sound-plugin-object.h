@@ -46,8 +46,7 @@ public:
 	Q_INVOKABLE explicit SoundPluginObject(QObject *parent = nullptr);
 	virtual ~SoundPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 	SoundManager * soundManager() const;
 
@@ -65,6 +64,7 @@ private:
 	QPointer<SoundNotifier> m_soundNotifier;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
 	INJEQT_SETTER void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);

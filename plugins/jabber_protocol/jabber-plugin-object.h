@@ -42,8 +42,7 @@ public:
 	Q_INVOKABLE explicit JabberPluginObject(QObject *parent = nullptr);
 	virtual ~JabberPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<DomProcessorService> m_domProcessorService;
@@ -57,6 +56,7 @@ private:
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_SETTER void setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory);
 	INJEQT_SETTER void setJabberActions(JabberActions *jabberActions);

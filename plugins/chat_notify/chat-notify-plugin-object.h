@@ -35,8 +35,7 @@ public:
 	Q_INVOKABLE explicit ChatNotifyPluginObject(QObject *parent = nullptr);
 	virtual ~ChatNotifyPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ChatNotifier> m_chatNotifier;
@@ -45,6 +44,7 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setChatNotifier(ChatNotifier *chatNotifier);
 	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
 

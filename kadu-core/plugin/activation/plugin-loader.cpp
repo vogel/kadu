@@ -54,8 +54,6 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 	try
 	{
 		m_pluginObject = m_pluginInjector.get<PluginObject>();
-		m_pluginObject->init();
-		return;
 	}
 	catch (injeqt::exception::exception &e)
 	{

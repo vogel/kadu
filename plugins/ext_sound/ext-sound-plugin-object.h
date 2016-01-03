@@ -36,8 +36,7 @@ public:
 	Q_INVOKABLE explicit ExtSoundPluginObject(QObject *parent = nullptr);
 	virtual ~ExtSoundPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<ExternalPlayer> m_externalPlayer;
@@ -45,6 +44,7 @@ private:
 	QPointer<PluginRepository> m_pluginRepository;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setExternalPlayer(ExternalPlayer *externalPlayer);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);

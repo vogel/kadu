@@ -28,10 +28,6 @@ PluginObject::~PluginObject()
 {
 }
 
-void PluginObject::init()
-{
-}
-
 void PluginObject::done()
 {
 }

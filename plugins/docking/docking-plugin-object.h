@@ -37,8 +37,7 @@ public:
 	Q_INVOKABLE explicit DockingPluginObject(QObject *parent = nullptr);
 	virtual ~DockingPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 	Docking * docking() const { return m_docking; }
 
@@ -47,6 +46,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setDocking(Docking *docking);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 

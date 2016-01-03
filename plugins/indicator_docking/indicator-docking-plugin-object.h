@@ -34,13 +34,13 @@ public:
 	Q_INVOKABLE explicit IndicatorDockingPluginObject(QObject *parent = nullptr);
 	virtual ~IndicatorDockingPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 private:
 	QPointer<IndicatorDocking> m_indicatorDocking;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setIndicatorDocking(IndicatorDocking *indicatorDocking);
 
 };

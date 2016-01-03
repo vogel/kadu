@@ -43,8 +43,7 @@ public:
 	Q_INVOKABLE explicit HistoryPluginObject(QObject *parent = nullptr);
 	virtual ~HistoryPluginObject();
 
-	virtual void init();
-	virtual void done();
+	virtual void done() override;
 
 	History * history() const;
 
@@ -59,6 +58,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_INIT void init();
 	INJEQT_SETTER void setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
 	INJEQT_SETTER void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
 	INJEQT_SETTER void setBuddyHistoryDeleteHandler(BuddyHistoryDeleteHandler *buddyHistoryDeleteHandler);
