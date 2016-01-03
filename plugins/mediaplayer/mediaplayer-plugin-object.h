@@ -39,8 +39,6 @@ public:
 	Q_INVOKABLE explicit MediaplayerPluginObject(QObject *parent = nullptr);
 	virtual ~MediaplayerPluginObject();
 
-	virtual void done() override;
-
 	MediaPlayer * mediaPlayer() const;
 
 private:
@@ -51,6 +49,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setMediaplayerConfigurationUiHandler(MediaplayerConfigurationUiHandler *mediaplayerConfigurationUiHandler);
 	INJEQT_SETTER void setMediaPlayer(MediaPlayer *mediaPlayer);

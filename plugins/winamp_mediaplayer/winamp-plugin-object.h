@@ -35,14 +35,13 @@ public:
 	Q_INVOKABLE explicit WinampPluginObject(QObject *parent = nullptr);
 	virtual ~WinampPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<PluginRepository> m_pluginRepository;
 	QPointer<WinampMediaPlayer> m_winampMediaPlayer;
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 	INJEQT_SETTER void setWinampMediaPlayer(WinampMediaPlayer *winampMediaPlayer);
 

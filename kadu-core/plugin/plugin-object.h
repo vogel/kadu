@@ -31,6 +31,4 @@ public:
 	Q_INVOKABLE explicit PluginObject(QObject *parent = nullptr);
 	virtual ~PluginObject();
 
-	virtual void done();
-
 };

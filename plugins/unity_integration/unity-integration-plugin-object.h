@@ -34,13 +34,12 @@ public:
 	Q_INVOKABLE explicit UnityIntegrationPluginObject(QObject *parent = nullptr);
 	virtual ~UnityIntegrationPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<UnityIntegration> m_unityIntegration;
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setUnityIntegration(UnityIntegration *unityIntegration);
 
 };

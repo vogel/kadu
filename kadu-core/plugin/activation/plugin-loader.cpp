@@ -63,21 +63,8 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 
 PluginLoader::~PluginLoader() noexcept
 {
-	m_pluginInjector.get<PluginObject>()->done();
-
-	// We need this because plugins can call deleteLater() just before being
-	// unloaded. In this case control would not return to the event loop before
-	// unloading the plugin and the event loop would try to delete objects
-	// belonging to already unloaded plugins, which can result in segfaults.
-
-	QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
-
-	// probably we don't really need to unload plugins
-	// root component gets its done() method called anyways, need to check
-	// multiple loads/unloads if any problems arise
-	// unloading plugins has some problems and disabling it is very easy way
-	// to fix them
-	// for example: if plugin after load adds some static data to glib,
+	// do not unload plugin here
+	// if plugin after load adds some static data to glib,
 	// like messaging-menu used in indicator-docking does, then after unload
 	// and next load we are in trouble - application crashes
 	// anyway, I don't expect users to unload plugins very frequently

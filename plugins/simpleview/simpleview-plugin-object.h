@@ -35,14 +35,13 @@ public:
 	Q_INVOKABLE explicit SimpleviewPluginObject(QObject *parent = nullptr);
 	virtual ~SimpleviewPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SimpleView> m_simpleView;
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setSimpleView(SimpleView *simpleView);
 

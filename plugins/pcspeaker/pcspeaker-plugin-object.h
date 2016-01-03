@@ -35,14 +35,13 @@ public:
 	Q_INVOKABLE explicit PCSpeakerPluginObject(QObject *parent = nullptr);
 	virtual ~PCSpeakerPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<PCSpeakerNotifier> m_pcSpeakerNotifier;
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SETTER void setPCSpeakerNotifier(PCSpeakerNotifier *pcSpeakerNotifier);
 

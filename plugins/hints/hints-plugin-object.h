@@ -37,8 +37,6 @@ public:
 	Q_INVOKABLE explicit HintsPluginObject(QObject *parent = nullptr);
 	virtual ~HintsPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<HintsConfigurationUiHandler> m_hintsConfigurationUiHandler;
@@ -47,6 +45,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setHintsConfigurationUiHandler(HintsConfigurationUiHandler *hintsConfigurationUiHandler);
 	INJEQT_SETTER void setHintManager(HintManager *hintManager);

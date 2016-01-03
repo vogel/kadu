@@ -36,8 +36,6 @@ public:
 	Q_INVOKABLE explicit FreedesktopNotifyPluginObject(QObject *parent = nullptr);
 	virtual ~FreedesktopNotifyPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<FreedesktopNotifier> m_freedesktopNotifier;
 	QPointer<NotificationManager> m_notificationManager;
@@ -45,6 +43,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setFreedesktopNotifier(FreedesktopNotifier *freedesktopNotifier);
 	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);

@@ -36,8 +36,6 @@ public:
 	Q_INVOKABLE explicit IdlePluginObject(QObject *parent = nullptr);
 	virtual ~IdlePluginObject();
 
-	virtual void done() override;
-
 	Idle * idle() const;
 
 private:
@@ -45,6 +43,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setIdle(Idle *idle);
 
 };

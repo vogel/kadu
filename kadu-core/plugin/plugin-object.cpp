@@ -28,8 +28,4 @@ PluginObject::~PluginObject()
 {
 }
 
-void PluginObject::done()
-{
-}
-
 #include "moc_plugin-object.cpp"

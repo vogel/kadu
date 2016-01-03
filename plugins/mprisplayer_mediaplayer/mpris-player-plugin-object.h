@@ -38,8 +38,6 @@ public:
 	Q_INVOKABLE explicit MprisPlayerPluginObject(QObject *parent = nullptr);
 	virtual ~MprisPlayerPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<MPRISPlayerConfigurationUiHandler> m_mprisPlayerConfigurationUiHandler;
@@ -49,6 +47,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setMPRISPlayerConfigurationUiHandler(MPRISPlayerConfigurationUiHandler *mprisPlayerConfigurationUiHandler);
 	INJEQT_SETTER void setMPRISPlayer(MPRISPlayer *mprisPlayer);

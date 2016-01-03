@@ -38,8 +38,6 @@ public:
 	Q_INVOKABLE explicit ImageLinkPluginObject(QObject *parent = nullptr);
 	virtual ~ImageLinkPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<DomProcessorService> m_domProcessorService;
 	QPointer<ImageExpanderDomVisitorProvider> m_imageExpanderDomVisitorProvider;
@@ -49,6 +47,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_SETTER void setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider);
 	INJEQT_SETTER void setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator);

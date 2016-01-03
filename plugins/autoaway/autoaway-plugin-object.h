@@ -41,8 +41,6 @@ public:
 	Q_INVOKABLE explicit AutoawayPluginObject(QObject *parent = nullptr);
 	virtual ~AutoawayPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<Autoaway> m_autoaway;
 	QPointer<AutoawayConfigurationUiHandler> m_autoawayConfigurationUiHandler;
@@ -53,6 +51,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setAutoaway(Autoaway *autoaway);
 	INJEQT_SETTER void setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler);
 	INJEQT_SETTER void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);

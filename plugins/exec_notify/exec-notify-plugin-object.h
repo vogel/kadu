@@ -35,14 +35,13 @@ public:
 	Q_INVOKABLE explicit ExecNotifyPluginObject(QObject *parent = nullptr);
 	virtual ~ExecNotifyPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<ExecNotifier> m_execNotifier;
 	QPointer<NotificationManager> m_notificationManager;
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setExecNotifier(ExecNotifier *execNotifier);
 	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
 

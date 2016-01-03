@@ -42,8 +42,6 @@ public:
 	Q_INVOKABLE explicit EmoticonsPluginObject(QObject *parent = nullptr);
 	virtual ~EmoticonsPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
@@ -57,6 +55,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);

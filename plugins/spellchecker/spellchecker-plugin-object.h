@@ -37,8 +37,6 @@ public:
 	Q_INVOKABLE explicit SpellcheckerPluginObject(QObject *parent = nullptr);
 	virtual ~SpellcheckerPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<PathsProvider> m_pathsProvider;
@@ -47,6 +45,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setSpellcheckerConfigurationUiHandler(SpellcheckerConfigurationUiHandler *spellcheckerConfigurationUiHandler);

@@ -39,8 +39,6 @@ public:
 	Q_INVOKABLE explicit ScreenshotPluginObject(QObject *parent = nullptr);
 	virtual ~ScreenshotPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
@@ -51,6 +49,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SETTER void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);

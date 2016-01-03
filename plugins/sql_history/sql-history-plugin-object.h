@@ -35,14 +35,13 @@ public:
 	Q_INVOKABLE explicit SqlHistoryPluginObject(QObject *parent = nullptr);
 	virtual ~SqlHistoryPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<HistorySqlStorage> m_historySqlStorage;
 	QPointer<PluginRepository> m_pluginRepository;
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setHistorySqlStorage(HistorySqlStorage *historySqlStorage);
 	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 

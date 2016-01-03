@@ -39,8 +39,6 @@ public:
 	Q_INVOKABLE explicit AutoHidePluginObject(QObject *parent = nullptr);
 	virtual ~AutoHidePluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<AutoHide> m_autoHide;
 	QPointer<AutoHideConfigurationUiHandler> m_autoHideConfigurationUiHandler;
@@ -49,6 +47,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setAutoHide(AutoHide *autoHide);
 	INJEQT_SETTER void setAutoHideConfigurationUiHandler(AutoHideConfigurationUiHandler *autoHideConfigurationUiHandler);
 	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);

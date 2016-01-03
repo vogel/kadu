@@ -40,8 +40,6 @@ public:
 	Q_INVOKABLE explicit AutostatusPluginObject(QObject *parent = nullptr);
 	virtual ~AutostatusPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<AutostatusActions> m_autostatusActions;
 	QPointer<AutostatusService> m_autostatusService;
@@ -51,6 +49,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setAutostatusActions(AutostatusActions *autostatusActions);
 	INJEQT_SETTER void setAutostatusService(AutostatusService *autostatusService);
 	INJEQT_SETTER void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);

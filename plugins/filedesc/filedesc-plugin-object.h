@@ -36,8 +36,6 @@ public:
 	Q_INVOKABLE explicit FiledescPluginObject(QObject *parent = nullptr);
 	virtual ~FiledescPluginObject();
 
-	virtual void done() override;
-
 private:
 	QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
 	QPointer<PathsProvider> m_pathsProvider;
@@ -45,6 +43,7 @@ private:
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 	INJEQT_SETTER void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
 	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SETTER void setStatusChangerManager(StatusChangerManager *statusChangerManager);
