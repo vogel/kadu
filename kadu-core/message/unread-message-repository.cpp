@@ -23,7 +23,6 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-buddy.h"
 #include "chat/chat.h"
-#include "core/application.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
 
@@ -39,13 +38,18 @@ UnreadMessageRepository::~UnreadMessageRepository()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
+void UnreadMessageRepository::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 bool UnreadMessageRepository::importFromPendingMessages()
 {
-	auto pendingMessagesNode = Application::instance()->configuration()->api()->getNode("PendingMessages", ConfigurationApi::ModeFind);
+	auto pendingMessagesNode = m_configuration->api()->getNode("PendingMessages", ConfigurationApi::ModeFind);
 	if (pendingMessagesNode.isNull())
 		return false;
 
-	auto messageElements = Application::instance()->configuration()->api()->getNodes(pendingMessagesNode, "Message");
+	auto messageElements = m_configuration->api()->getNodes(pendingMessagesNode, "Message");
 	for (const auto &messageElement : messageElements)
 	{
 		auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), messageElement);

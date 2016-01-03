@@ -62,15 +62,21 @@ ChatStyleManager::~ChatStyleManager()
 	unregisterChatStyleEngine("Adium");
 }
 
+void ChatStyleManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+	configurationUpdated();
+}
+
 void ChatStyleManager::setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider)
 {
-	CurrentConfiguredChatStyleRendererFactoryProvider = configuredChatStyleRendererFactoryProvider;
+	m_configuredChatStyleRendererFactoryProvider = configuredChatStyleRendererFactoryProvider;
 	configurationUpdated();
 }
 
 void ChatStyleManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 void ChatStyleManager::init()
@@ -97,18 +103,21 @@ void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 
 void ChatStyleManager::configurationUpdated()
 {
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatPrune", true))
-		Prune = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ChatPruneLen");
+	if (!m_configuration)
+		return;
+
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "ChatPrune", true))
+		Prune = m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatPruneLen");
 	else
 	{
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "ChatPrune", true);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "ChatPruneLen", 0);
+		m_configuration->deprecatedApi()->writeEntry("Chat", "ChatPrune", true);
+		m_configuration->deprecatedApi()->writeEntry("Chat", "ChatPruneLen", 0);
 		Prune = 0;
 	}
 
-	ParagraphSeparator = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "ParagraphSeparator");
+	ParagraphSeparator = m_configuration->deprecatedApi()->readNumEntry("Look", "ParagraphSeparator");
 
-	QFont font = Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look","ChatFont");
+	QFont font = m_configuration->deprecatedApi()->readFontEntry("Look","ChatFont");
 
 	QString fontFamily = font.family();
 	QString fontSize;
@@ -142,13 +151,13 @@ void ChatStyleManager::configurationUpdated()
 		"	padding: 3px;"
 		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, QString::number(ParagraphSeparator), backgroundColor);
 
-	CfgNoHeaderRepeat = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "NoHeaderRepeat", true);
+	CfgNoHeaderRepeat = m_configuration->deprecatedApi()->readBoolEntry("Look", "NoHeaderRepeat", true);
 
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
 	{
-		CfgHeaderSeparatorHeight = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "HeaderSeparatorHeight");
-		CfgNoHeaderInterval = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NoHeaderInterval");
+		CfgHeaderSeparatorHeight = m_configuration->deprecatedApi()->readNumEntry("Look", "HeaderSeparatorHeight");
+		CfgNoHeaderInterval = m_configuration->deprecatedApi()->readNumEntry("Look", "NoHeaderInterval");
 	}
 	else
 	{
@@ -156,10 +165,10 @@ void ChatStyleManager::configurationUpdated()
 		CfgNoHeaderInterval = 0;
 	}
 
-	NoServerTime = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "NoServerTime");
-	NoServerTimeDiff = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NoServerTimeDiff");
+	NoServerTime = m_configuration->deprecatedApi()->readBoolEntry("Look", "NoServerTime");
+	NoServerTimeDiff = m_configuration->deprecatedApi()->readNumEntry("Look", "NoServerTimeDiff");
 
-	auto newChatStyle = ChatStyle{Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "Style"), Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatStyleVariant")};
+	auto newChatStyle = ChatStyle{m_configuration->deprecatedApi()->readEntry("Look", "Style"), m_configuration->deprecatedApi()->readEntry("Look", "ChatStyleVariant")};
 
 	// if Style was changed, load new Style
 	if (!CurrentEngine || newChatStyle != m_currentChatStyle)
@@ -169,8 +178,8 @@ void ChatStyleManager::configurationUpdated()
 		auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
 		m_currentChatStyle = {newStyleName, newVariantName};
 
-		if (CurrentConfiguredChatStyleRendererFactoryProvider)
-			CurrentConfiguredChatStyleRendererFactoryProvider->setChatStyleRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
+		if (m_configuredChatStyleRendererFactoryProvider)
+			m_configuredChatStyleRendererFactoryProvider->setChatStyleRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
 	}
 
 	emit chatStyleConfigurationUpdated();

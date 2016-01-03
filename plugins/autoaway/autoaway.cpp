@@ -70,8 +70,6 @@ Autoaway::Autoaway(QObject *parent) :
 	m_timer = make_owned<QTimer>(this);
 	m_timer->setSingleShot(true);
 	connect(m_timer.get(), SIGNAL(timeout()), this, SLOT(checkIdleTime()));
-
-	createDefaultConfiguration();
 }
 
 Autoaway::~Autoaway()
@@ -82,6 +80,13 @@ void Autoaway::setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusCha
 {
 	m_autoawayStatusChanger = autoawayStatusChanger;
 	configurationUpdated();
+}
+
+void Autoaway::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+
+	createDefaultConfiguration();
 }
 
 void Autoaway::setPluginRepository(PluginRepository *pluginRepository)
@@ -157,25 +162,28 @@ QString Autoaway::changeDescription(const QString& oldDescription)
 
 void Autoaway::configurationUpdated()
 {
-	m_checkInterval = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoAwayCheckTime");
-	m_refreshStatusTime = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoRefreshStatusTime");
-	m_autoAwayTime = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoAwayTimeMinutes")*60;
-	m_autoExtendedAwayTime = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoExtendedAwayTimeMinutes")*60;
-	m_autoDisconnectTime = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoDisconnectTimeMinutes")*60;
-	m_autoInvisibleTime = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General","AutoInvisibleTimeMinutes")*60;
+	if (!m_configuration)
+		return;
 
-	m_autoAwayEnabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoAway");
-	m_autoExtendedAwayEnabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoExtendedAway");
-	m_autoInvisibleEnabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoInvisible");
-	m_autoDisconnectEnabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General","AutoDisconnect");
-	m_parseAutoStatus = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus");
+	m_checkInterval = m_configuration->deprecatedApi()->readUnsignedNumEntry("General","AutoAwayCheckTime");
+	m_refreshStatusTime = m_configuration->deprecatedApi()->readUnsignedNumEntry("General","AutoRefreshStatusTime");
+	m_autoAwayTime = m_configuration->deprecatedApi()->readUnsignedNumEntry("General","AutoAwayTimeMinutes")*60;
+	m_autoExtendedAwayTime = m_configuration->deprecatedApi()->readUnsignedNumEntry("General","AutoExtendedAwayTimeMinutes")*60;
+	m_autoDisconnectTime = m_configuration->deprecatedApi()->readUnsignedNumEntry("General","AutoDisconnectTimeMinutes")*60;
+	m_autoInvisibleTime = m_configuration->deprecatedApi()->readUnsignedNumEntry("General","AutoInvisibleTimeMinutes")*60;
+
+	m_autoAwayEnabled = m_configuration->deprecatedApi()->readBoolEntry("General","AutoAway");
+	m_autoExtendedAwayEnabled = m_configuration->deprecatedApi()->readBoolEntry("General","AutoExtendedAway");
+	m_autoInvisibleEnabled = m_configuration->deprecatedApi()->readBoolEntry("General","AutoInvisible");
+	m_autoDisconnectEnabled = m_configuration->deprecatedApi()->readBoolEntry("General","AutoDisconnect");
+	m_parseAutoStatus = m_configuration->deprecatedApi()->readBoolEntry("General", "ParseStatus");
 
 	m_refreshStatusInterval = m_refreshStatusTime;
 
-	m_autoStatusText = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "AutoStatusText");
+	m_autoStatusText = m_configuration->deprecatedApi()->readEntry("General", "AutoStatusText");
 	m_descriptionAddon = parseDescription(m_autoStatusText);
 
-	m_changeTo = (AutoawayStatusChanger::ChangeDescriptionTo)Application::instance()->configuration()->deprecatedApi()->readNumEntry("General", "AutoChangeDescription");
+	m_changeTo = (AutoawayStatusChanger::ChangeDescriptionTo)m_configuration->deprecatedApi()->readNumEntry("General", "AutoChangeDescription");
 
 	m_autoawayStatusChanger->update();
 
@@ -197,33 +205,33 @@ QString Autoaway::parseDescription(const QString &parseDescription)
 		return parseDescription;
 }
 
-static int denominatedInverval(const QString &name, unsigned int def)
+static int denominatedInverval(Configuration *configuration, const QString &name, unsigned int def)
 {
-	int ret = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General", name, def * 60);
+	int ret = configuration->deprecatedApi()->readUnsignedNumEntry("General", name, def * 60);
 	// This AutoawayTimesDenominated thing was living shortly in 1.0-git.
-	return Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AutoawayTimesDenominated", false)
+	return configuration->deprecatedApi()->readBoolEntry("General", "AutoawayTimesDenominated", false)
 			? ret
 			: (ret + 59) / 60;
 }
 
 void Autoaway::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "Autoaway", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoawayCheckTime", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoawayTimeMinutes", denominatedInverval("AutoawayTime", 5));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoExtendedAway", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoExtendedAwayTimeMinutes", denominatedInverval("AutoExtendedAwayTime", 15));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoChangeDescription", 0);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoDisconnect", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoDisconnectTimeMinutes", denominatedInverval("AutoDisconnectTime", 60));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoInvisible", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoInvisibleTimeMinutes", denominatedInverval("AutoInvisibleTime", 30));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoRefreshStatusTime", 0);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "AutoStatusText", QString());
+	m_configuration->deprecatedApi()->addVariable("General", "Autoaway", true);
+	m_configuration->deprecatedApi()->addVariable("General", "AutoawayCheckTime", 10);
+	m_configuration->deprecatedApi()->addVariable("General", "AutoawayTimeMinutes", denominatedInverval(m_configuration, "AutoawayTime", 5));
+	m_configuration->deprecatedApi()->addVariable("General", "AutoExtendedAway", true);
+	m_configuration->deprecatedApi()->addVariable("General", "AutoExtendedAwayTimeMinutes", denominatedInverval(m_configuration, "AutoExtendedAwayTime", 15));
+	m_configuration->deprecatedApi()->addVariable("General", "AutoChangeDescription", 0);
+	m_configuration->deprecatedApi()->addVariable("General", "AutoDisconnect", false);
+	m_configuration->deprecatedApi()->addVariable("General", "AutoDisconnectTimeMinutes", denominatedInverval(m_configuration, "AutoDisconnectTime", 60));
+	m_configuration->deprecatedApi()->addVariable("General", "AutoInvisible", false);
+	m_configuration->deprecatedApi()->addVariable("General", "AutoInvisibleTimeMinutes", denominatedInverval(m_configuration, "AutoInvisibleTime", 30));
+	m_configuration->deprecatedApi()->addVariable("General", "AutoRefreshStatusTime", 0);
+	m_configuration->deprecatedApi()->addVariable("General", "AutoStatusText", QString());
 
 	// AutoawayCheckTime has been mistakenly denominated in 1.0-git.
-	if (0 == Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("General", "AutoawayCheckTime"))
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "AutoawayCheckTime", 10);
+	if (0 == m_configuration->deprecatedApi()->readUnsignedNumEntry("General", "AutoawayCheckTime"))
+		m_configuration->deprecatedApi()->writeEntry("General", "AutoawayCheckTime", 10);
 }
 
 /** @} */

@@ -24,9 +24,12 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Buddy;
 class Chat;
+class Configuration;
 class Contact;
 class Message;
 class SortedMessages;
@@ -176,6 +179,8 @@ protected:
 	virtual void store();
 
 private:
+	QPointer<Configuration> m_configuration;
+
 	QList<Message> m_unreadMessages;
 
 	/**
@@ -187,6 +192,9 @@ private:
 	 * list false is returned.
 	 */
 	bool importFromPendingMessages();
+
+private slots:
+	INJEQT_SETTER void setConfiguration(Configuration *configuration);
 
 };
 

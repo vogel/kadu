@@ -23,7 +23,6 @@
 #include "chat-style/engine/chat-style-engine.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
 #include "misc/memory.h"
 #include "gui/widgets/chat-style-preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -55,6 +54,11 @@ ChatStyleConfigurationUiHandler::~ChatStyleConfigurationUiHandler()
 void ChatStyleConfigurationUiHandler::setChatStyleManager(ChatStyleManager *chatStyleManager)
 {
 	m_chatStyleManager = chatStyleManager;
+}
+
+void ChatStyleConfigurationUiHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void ChatStyleConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -115,8 +119,8 @@ void ChatStyleConfigurationUiHandler::mainConfigurationWindowDestroyed()
 
 void ChatStyleConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "Style", m_syntaxListCombo->currentText());
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "ChatStyleVariant", m_variantListCombo->currentText());
+	m_configuration->deprecatedApi()->writeEntry("Look", "Style", m_syntaxListCombo->currentText());
+	m_configuration->deprecatedApi()->writeEntry("Look", "ChatStyleVariant", m_variantListCombo->currentText());
 }
 
 void ChatStyleConfigurationUiHandler::compositingEnabled()

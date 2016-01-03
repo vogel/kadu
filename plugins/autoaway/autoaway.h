@@ -36,6 +36,7 @@ class QLineEdit;
 class QSpinBox;
 class QCheckBox;
 
+class Configuration;
 class Idle;
 class PluginRepository;
 
@@ -57,9 +58,9 @@ public:
 
 	QString changeDescription(const QString &oldDescription);
 
-
 private:
 	QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
+	QPointer<Configuration> m_configuration;
 	QPointer<Idle> m_idle;
 	QPointer<PluginRepository> m_pluginRepository;
 
@@ -95,6 +96,7 @@ private:
 
 private slots:
 	INJEQT_SETTER void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
+	INJEQT_SETTER void setConfiguration(Configuration *configuration);
 	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
 
 	void checkIdleTime();

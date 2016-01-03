@@ -22,10 +22,12 @@
 #include "configuration/gui/configuration-ui-handler.h"
 #include "os/generic/compositing-aware-object.h"
 
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class ChatStyleManager;
 class ChatStylePreview;
+class Configuration;
 
 class QCheckBox;
 class QComboBox;
@@ -47,6 +49,8 @@ protected:
 	virtual void compositingDisabled();
 
 private:
+	QPointer<Configuration> m_configuration;
+
 	bool m_compositingEnabled;
 
 	ChatStyleManager *m_chatStyleManager;
@@ -58,6 +62,7 @@ private:
 
 private slots:
 	INJEQT_SETTER void setChatStyleManager(ChatStyleManager *chatStyleManager);
+	INJEQT_SETTER void setConfiguration(Configuration *configuration);
 
 	void styleChangedSlot(const QString &styleName);
 	void variantChangedSlot(const QString &variantName);

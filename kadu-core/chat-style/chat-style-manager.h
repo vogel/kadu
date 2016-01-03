@@ -33,6 +33,7 @@
 
 class ChatStyleEngine;
 class ChatStylePreview;
+class Configuration;
 class ConfiguredChatStyleRendererFactoryProvider;
 class FormattedStringFactory;
 
@@ -52,8 +53,9 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-	QPointer<ConfiguredChatStyleRendererFactoryProvider> CurrentConfiguredChatStyleRendererFactoryProvider;
+	QPointer<Configuration> m_configuration;
+	QPointer<ConfiguredChatStyleRendererFactoryProvider> m_configuredChatStyleRendererFactoryProvider;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 	void init();
 
@@ -79,6 +81,7 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 	QString fixedVariantName(const QString &styleName, QString variantName);
 
 private slots:
+	INJEQT_SETTER void setConfiguration(Configuration *configuration);
 	INJEQT_SETTER void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
 	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 

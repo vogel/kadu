@@ -26,8 +26,10 @@
 #define NOTIFICATION_MANAGER_H
 
 #include <QtCore/QHash>
+#include <QtCore/QPointer>
 #include <QtCore/QTimer>
 #include <QtWidgets/QGroupBox>
+#include <injeqt/injeqt.h>
 
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-set.h"
@@ -38,6 +40,7 @@
 
 class Action;
 class AggregateNotification;
+class Configuration;
 class Group;
 class Message;
 class MultilogonSession;
@@ -53,6 +56,8 @@ class KADUAPI NotificationManager : public QObject
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
+
 	QList<Notifier *> Notifiers;
 	QStringList IgnoredAccounts;
 
@@ -62,6 +67,8 @@ class KADUAPI NotificationManager : public QObject
 	AggregateNotification * findGroup(Notification *notification);
 
 private slots:
+	INJEQT_SETTER void setConfiguration(Configuration *configuration);
+
 	void removeGrouped(Notification *notification);
 	void removePeriodicEntries();
 

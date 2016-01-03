@@ -56,6 +56,11 @@ NotificationManager::~NotificationManager()
 	}
 }
 
+void NotificationManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void NotificationManager::registerNotifier(Notifier *notifier)
 {
 	kdebugf();
@@ -148,7 +153,7 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	for (auto notifier : Notifiers)
 	{
-		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
+		if (m_configuration->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{
 			notifier->notify(notification);
 			foundNotifier = true;
@@ -200,7 +205,7 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 		if (-1 == slashPosition)
 			return event;
 
-		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
+		if (m_configuration->deprecatedApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
 			return event;
 
 		event = event.left(slashPosition);

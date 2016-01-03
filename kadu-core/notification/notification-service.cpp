@@ -70,9 +70,6 @@ NotificationService::NotificationService(QObject *parent) :
 	createEventListeners();
 	createActionDescriptions();
 
-	createDefaultConfiguration();
-	configurationUpdated();
-
 	CurrentWindowNotifier = new WindowNotifier(this);
 }
 
@@ -92,6 +89,14 @@ void NotificationService::setConfigurationUiHandlerRepository(ConfigurationUiHan
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(NotifyUiHandler);
+}
+
+void NotificationService::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+
+	createDefaultConfiguration();
+	configurationUpdated();
 }
 
 void NotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
@@ -215,7 +220,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(SilentMode);
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", "SilentMode", SilentMode);
+	m_configuration->deprecatedApi()->writeEntry("Notify", "SilentMode", SilentMode);
 
 	if (SilentMode != wasSilent)
 		emit silentModeToggled(SilentMode);
@@ -223,7 +228,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 
 bool NotificationService::silentMode()
 {
-	return SilentMode || (IsFullScreen && Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false));
+	return SilentMode || (IsFullScreen && m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false));
 }
 
 bool NotificationService::ignoreNotifications()
@@ -233,12 +238,12 @@ bool NotificationService::ignoreNotifications()
 
 void NotificationService::configurationUpdated()
 {
-	NewMessageOnlyIfInactive = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
-	NotifyIgnoreOnConnection = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
-	IgnoreOnlineToOnline = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
-	SilentModeWhenDnD = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
-	SilentModeWhenFullscreen = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
-	setSilentMode(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false));
+	NewMessageOnlyIfInactive = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+	NotifyIgnoreOnConnection = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
+	IgnoreOnlineToOnline = m_configuration->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
+	SilentModeWhenDnD = m_configuration->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
+	SilentModeWhenFullscreen = m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
+	setSilentMode(m_configuration->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false));
 
 	if (SilentModeWhenFullscreen)
 		startScreenModeChecker();
@@ -280,9 +285,9 @@ void NotificationService::fullscreenToggled(bool inFullscreen)
 
 void NotificationService::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "IgnoreOnlineToOnline", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessageOnlyIfInactive", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NotifyIgnoreOnConnection", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "IgnoreOnlineToOnline", false);
+	m_configuration->deprecatedApi()->addVariable("Notify", "NewMessageOnlyIfInactive", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
 void NotificationService::notify(Notification* notification)
