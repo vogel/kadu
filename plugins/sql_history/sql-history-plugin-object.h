@@ -30,6 +30,7 @@ class PluginRepository;
 class SqlHistoryPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit SqlHistoryPluginObject(QObject *parent = nullptr);

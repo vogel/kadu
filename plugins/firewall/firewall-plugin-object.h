@@ -34,6 +34,7 @@ class PathsProvider;
 class FirewallPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit FirewallPluginObject(QObject *parent = nullptr);

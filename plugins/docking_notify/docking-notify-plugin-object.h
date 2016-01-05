@@ -30,6 +30,7 @@ class NotificationManager;
 class DockingNotifyPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit DockingNotifyPluginObject(QObject *parent = nullptr);

@@ -32,6 +32,7 @@ class PathsProvider;
 class HintsPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit HintsPluginObject(QObject *parent = nullptr);

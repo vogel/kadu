@@ -51,14 +51,6 @@ PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName
 		m_pluginLoader{createPluginLoader(pluginName)},
 		m_pluginInjector{createPluginInjector(pluginName, injector)}
 {
-	try
-	{
-		m_pluginObject = m_pluginInjector.get<PluginObject>();
-	}
-	catch (injeqt::exception::exception &e)
-	{
-		throw PluginActivationErrorException(pluginName, tr("Cannot load %1 plugin library:\n%2").arg(pluginName, m_pluginLoader->errorString()));
-	}
 }
 
 PluginLoader::~PluginLoader() noexcept
@@ -73,7 +65,7 @@ PluginLoader::~PluginLoader() noexcept
 
 PluginObject * PluginLoader::pluginObject() const noexcept
 {
-	return m_pluginObject;
+	return m_pluginInjector.get<PluginObject>();
 }
 
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginName) const

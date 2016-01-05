@@ -34,6 +34,7 @@ class PathsProvider;
 class AutoHidePluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit AutoHidePluginObject(QObject *parent = nullptr);

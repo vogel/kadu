@@ -33,6 +33,7 @@ class VideoExpanderDomVisitorProvider;
 class ImageLinkPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit ImageLinkPluginObject(QObject *parent = nullptr);

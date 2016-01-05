@@ -34,6 +34,7 @@ class PathsProvider;
 class MEDIAPLAYERAPI MediaplayerPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit MediaplayerPluginObject(QObject *parent = nullptr);

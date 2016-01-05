@@ -29,6 +29,7 @@ class Infos;
 class LastSeenPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit LastSeenPluginObject(QObject *parent = nullptr);

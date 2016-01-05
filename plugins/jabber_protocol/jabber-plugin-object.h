@@ -37,6 +37,7 @@ class UrlHandlerManager;
 class JabberPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit JabberPluginObject(QObject *parent = nullptr);

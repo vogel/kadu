@@ -47,6 +47,7 @@ class RawMessageTransformerService;
 class OtrPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit OtrPluginObject(QObject *parent = nullptr);

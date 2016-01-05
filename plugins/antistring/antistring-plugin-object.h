@@ -36,6 +36,7 @@ class PathsProvider;
 class AntistringPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit AntistringPluginObject(QObject *parent = nullptr);

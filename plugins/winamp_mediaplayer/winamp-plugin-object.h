@@ -30,6 +30,7 @@ class WinampMediaPlayer;
 class WinampPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit WinampPluginObject(QObject *parent = nullptr);

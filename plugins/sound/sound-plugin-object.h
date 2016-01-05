@@ -41,6 +41,7 @@ class SoundNotifier;
 class SOUNDAPI SoundPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit SoundPluginObject(QObject *parent = nullptr);

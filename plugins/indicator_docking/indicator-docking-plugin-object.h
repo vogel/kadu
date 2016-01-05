@@ -29,6 +29,7 @@ class IndicatorDocking;
 class IndicatorDockingPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit IndicatorDockingPluginObject(QObject *parent = nullptr);

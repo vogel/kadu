@@ -37,6 +37,7 @@ class PathsProvider;
 class EmoticonsPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit EmoticonsPluginObject(QObject *parent = nullptr);

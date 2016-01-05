@@ -35,6 +35,7 @@ class UrlHandlerManager;
 class GaduPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit GaduPluginObject(QObject *parent = nullptr);

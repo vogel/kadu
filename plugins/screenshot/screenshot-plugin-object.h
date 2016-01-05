@@ -34,6 +34,7 @@ class ScreenShotConfiguration;
 class ScreenshotPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit ScreenshotPluginObject(QObject *parent = nullptr);

@@ -73,8 +73,7 @@ public:
 
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
-	QPointer<PluginObject> m_pluginObject;
-	injeqt::injector m_pluginInjector;
+	mutable injeqt::injector m_pluginInjector;
 
 	std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginName) const;
 	injeqt::injector createPluginInjector(const QString &pluginName, injeqt::injector &injector);

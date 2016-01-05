@@ -36,6 +36,7 @@ class PathsProvider;
 class CenzorPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit CenzorPluginObject(QObject *parent = nullptr);

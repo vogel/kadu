@@ -33,6 +33,7 @@ class PluginRepository;
 class MprisPlayerPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit MprisPlayerPluginObject(QObject *parent = nullptr);

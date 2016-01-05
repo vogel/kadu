@@ -35,6 +35,7 @@ class StatusChangerManager;
 class AutostatusPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit AutostatusPluginObject(QObject *parent = nullptr);

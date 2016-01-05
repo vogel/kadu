@@ -32,6 +32,7 @@ class WordFix;
 class WordFixPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit WordFixPluginObject(QObject *parent = nullptr);

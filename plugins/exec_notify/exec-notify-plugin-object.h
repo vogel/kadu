@@ -30,6 +30,7 @@ class NotificationManager;
 class ExecNotifyPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit ExecNotifyPluginObject(QObject *parent = nullptr);

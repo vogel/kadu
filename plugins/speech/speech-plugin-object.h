@@ -33,6 +33,7 @@ class Speech;
 class SpeechPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit SpeechPluginObject(QObject *parent = nullptr);

@@ -38,6 +38,7 @@ class PathsProvider;
 class HISTORYAPI HistoryPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit HistoryPluginObject(QObject *parent = nullptr);

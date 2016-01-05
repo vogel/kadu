@@ -32,6 +32,7 @@ class SingleWindowManager;
 class SingleWindowPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit SingleWindowPluginObject(QObject *parent = nullptr);

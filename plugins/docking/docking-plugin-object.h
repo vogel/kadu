@@ -32,6 +32,7 @@ class PathsProvider;
 class DOCKINGAPI DockingPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit DockingPluginObject(QObject *parent = nullptr);

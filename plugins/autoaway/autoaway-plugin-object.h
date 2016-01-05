@@ -36,6 +36,7 @@ class StatusChangerManager;
 class AutoawayPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit AutoawayPluginObject(QObject *parent = nullptr);

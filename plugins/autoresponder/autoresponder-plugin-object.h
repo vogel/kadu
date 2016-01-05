@@ -35,6 +35,7 @@ class PathsProvider;
 class AutoresponderPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit AutoresponderPluginObject(QObject *parent = nullptr);

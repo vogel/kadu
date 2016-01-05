@@ -31,6 +31,7 @@ class PluginRepository;
 class MpdPlayerPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit MpdPlayerPluginObject(QObject *parent = nullptr);

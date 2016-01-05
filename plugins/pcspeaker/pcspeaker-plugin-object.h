@@ -30,6 +30,7 @@ class PCSpeakerNotifier;
 class PCSpeakerPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit PCSpeakerPluginObject(QObject *parent = nullptr);

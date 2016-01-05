@@ -32,6 +32,7 @@ class TabsManager;
 class TabsPluginObject : public PluginObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
 	Q_INVOKABLE explicit TabsPluginObject(QObject *parent = nullptr);
