@@ -71,7 +71,6 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
@@ -665,9 +664,6 @@ void Core::runServices()
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(m_injector.get<ChatStyleRendererFactoryProvider>());
 	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
-
-	// instantiate = run in case of services
-	m_injector.get<ChatWidgetStatePersistenceService>();
 
 	// moved here because of #2758
 	ContactManager::instance()->init();

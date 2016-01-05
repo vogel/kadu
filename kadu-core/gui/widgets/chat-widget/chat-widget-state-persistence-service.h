@@ -30,6 +30,7 @@ class FormattedStringFactory;
 class ChatWidgetStatePersistenceService : public QObject
 {
 	Q_OBJECT
+	INJEQT_CLASS_IMMEDIATE
 
 public:
 	Q_INVOKABLE ChatWidgetStatePersistenceService();
