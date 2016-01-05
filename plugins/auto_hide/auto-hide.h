@@ -46,7 +46,7 @@ private:
 	bool m_enabled;
 
 private slots:
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 	void timerTimeoutSlot();
 

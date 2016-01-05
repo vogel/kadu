@@ -58,9 +58,9 @@ signals:
 	void fingerprintsUpdated() const;
 
 private slots:
-	INJEQT_SETTER void setContextConverter(OtrContextConverter *contextConverter);
-	INJEQT_SETTER void setPathService(OtrPathService *pathService);
-	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+	INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
+	INJEQT_SET void setPathService(OtrPathService *pathService);
+	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
 	QPointer<OtrContextConverter> ContextConverter;

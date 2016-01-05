@@ -61,8 +61,8 @@ private:
 	ChatStylePreview *m_enginePreview;
 
 private slots:
-	INJEQT_SETTER void setChatStyleManager(ChatStyleManager *chatStyleManager);
-	INJEQT_SETTER void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 	void styleChangedSlot(const QString &styleName);
 	void variantChangedSlot(const QString &variantName);

@@ -51,8 +51,8 @@ private:
 	QPointer<ChatWindowRepository> m_chatWindowRepository;
 
 private slots:
-	INJEQT_SETTER void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
-	INJEQT_SETTER void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+	INJEQT_SET void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
+	INJEQT_SET void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
 
 	void chatWindowActivated(ChatWindow *chatWindow);
 

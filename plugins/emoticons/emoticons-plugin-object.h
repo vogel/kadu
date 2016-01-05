@@ -56,14 +56,14 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);
-	INJEQT_SETTER void setEmoticonClipboardHtmlTransformer(EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer);
-	INJEQT_SETTER void setEmoticonConfigurator(EmoticonConfigurator *emoticonConfigurator);
-	INJEQT_SETTER void setEmoticonExpanderDomVisitorProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider);
-	INJEQT_SETTER void setEmoticonsConfigurationUiHandler(EmoticonsConfigurationUiHandler *emoticonsConfigurationUiHandler);
-	INJEQT_SETTER void setInsertEmoticonAction(InsertEmoticonAction *insertEmoticonAction);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setEmoticonClipboardHtmlTransformer(EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer);
+	INJEQT_SET void setEmoticonConfigurator(EmoticonConfigurator *emoticonConfigurator);
+	INJEQT_SET void setEmoticonExpanderDomVisitorProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider);
+	INJEQT_SET void setEmoticonsConfigurationUiHandler(EmoticonsConfigurationUiHandler *emoticonsConfigurationUiHandler);
+	INJEQT_SET void setInsertEmoticonAction(InsertEmoticonAction *insertEmoticonAction);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

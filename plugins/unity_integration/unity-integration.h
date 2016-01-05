@@ -41,8 +41,8 @@ private:
 	QUnity *m_unity;
 
 private slots:
-	INJEQT_SETTER void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SETTER void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 	void fileTransferProgressChanged(int progress);
 	void unreadMessagesChanged();

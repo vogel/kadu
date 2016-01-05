@@ -58,8 +58,8 @@ private:
 	void setSoundThemes();
 
 private slots:
-	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
-	INJEQT_SETTER void setSoundThemeManager(SoundThemeManager *soundThemeManager);
+	INJEQT_SET void setSoundManager(SoundManager *soundManager);
+	INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 
 	void themeChanged(const QString &theme);
 	void soundFileEdited();

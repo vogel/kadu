@@ -45,8 +45,8 @@ private:
 	QPointer<ChatWindowStorage> m_chatWindowStorage;
 
 private slots:
-	INJEQT_SETTER void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SETTER void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
-	INJEQT_SETTER void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+	INJEQT_SET void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
 
 };

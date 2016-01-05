@@ -40,6 +40,6 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setUnityIntegration(UnityIntegration *unityIntegration);
+	INJEQT_SET void setUnityIntegration(UnityIntegration *unityIntegration);
 
 };

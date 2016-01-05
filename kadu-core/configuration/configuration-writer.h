@@ -45,7 +45,7 @@ private:
 	void write(const QString &fileName) const;
 
 private slots:
-	INJEQT_SETTER void setConfiguration(Configuration *configuration);
-	INJEQT_SETTER void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
 
 };

@@ -44,6 +44,6 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setIdle(Idle *idle);
+	INJEQT_SET void setIdle(Idle *idle);
 
 };

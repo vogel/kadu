@@ -54,7 +54,7 @@ public:
 	QList<NotificationEvent> notifyEvents();
 
 public slots:
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	void notifyTryingToStartSession(const Contact &contact);
 	void notifyTryingToRefreshSession(const Contact &contact);

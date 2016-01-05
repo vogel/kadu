@@ -77,8 +77,8 @@ private:
 	QPointer<PluginStateService> m_pluginStateService;
 
 private slots:
-	INJEQT_SETTER void setPluginActivationService(PluginActivationService *pluginActivationService);
-	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
+	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 
 	/**
 	 * @author Bartosz 'beevvy' Brachaczek

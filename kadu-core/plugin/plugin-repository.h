@@ -61,7 +61,7 @@ private:
 	PluginObject * pluginObject(const QString &pluginName) const;
 
 private slots:
-	INJEQT_SETTER void setPluginActivationService(PluginActivationService *pluginActivationService);
+	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
 
 };
 

@@ -39,7 +39,7 @@ public:
 	bool ensureHandler(FileTransfer transfer);
 
 private slots:
-	INJEQT_SETTER void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 
 	void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
 	void fileTransferRemoved(FileTransfer fileTransfer);

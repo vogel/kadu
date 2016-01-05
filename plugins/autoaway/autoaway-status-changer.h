@@ -60,6 +60,6 @@ private:
 	QPointer<Autoaway> m_autoaway;
 
 private slots:
-	INJEQT_SETTER void setAutoaway(Autoaway *autoaway);
+	INJEQT_SET void setAutoaway(Autoaway *autoaway);
 
 };

@@ -49,7 +49,7 @@ public:
 	ConnContext * contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction = ActionReturnNull) const;
 
 private slots:
-	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
 	QPointer<OtrUserStateService> UserStateService;

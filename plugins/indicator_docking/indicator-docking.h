@@ -49,10 +49,10 @@ private:
 	QMessagingMenuApp *m_messagingMenuApp;
 
 private slots:
-	INJEQT_SETTER void setChatManager(ChatManager *chatManager);
-	INJEQT_SETTER void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SETTER void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SETTER void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 	void unreadMessageAdded(const Message &message);
 	void unreadMessageRemoved(const Message &message);

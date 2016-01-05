@@ -68,7 +68,7 @@ private:
 	std::unique_ptr<StatusAdapter> m_statusAdapter;
 
 private slots:
-	INJEQT_SETTER void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
-	INJEQT_SETTER void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
+	INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
+	INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
 
 };

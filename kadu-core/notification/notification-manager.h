@@ -67,7 +67,7 @@ class KADUAPI NotificationManager : public QObject
 	AggregateNotification * findGroup(Notification *notification);
 
 private slots:
-	INJEQT_SETTER void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 	void removeGrouped(Notification *notification);
 	void removePeriodicEntries();

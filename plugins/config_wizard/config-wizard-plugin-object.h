@@ -42,7 +42,7 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setConfigWizardActions(ConfigWizardActions *configWizardActions);
-	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
+	INJEQT_SET void setConfigWizardActions(ConfigWizardActions *configWizardActions);
+	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 
 };

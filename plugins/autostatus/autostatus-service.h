@@ -63,7 +63,7 @@ private:
 	QStringList DescriptionList;
 
 private slots:
-	INJEQT_SETTER void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+	INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
 
 	//! This slot is called on timeout
 	void changeStatus();

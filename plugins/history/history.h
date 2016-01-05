@@ -104,7 +104,7 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	bool shouldEnqueueMessage(const Message &message);
 
 private slots:
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	void accountRegistered(Account);
 	void accountUnregistered(Account);

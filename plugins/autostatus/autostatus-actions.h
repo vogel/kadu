@@ -46,7 +46,7 @@ private:
 	ActionDescription *AutostatusActionDescription;
 
 private slots:
-	INJEQT_SETTER void setAutostatusService(AutostatusService *autostatusService);
+	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
 
 	//! This slot is called when new Autostatus it starts
 	void autostatusActionActivated(QAction *, bool);

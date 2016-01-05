@@ -95,9 +95,9 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SETTER void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
-	INJEQT_SETTER void setConfiguration(Configuration *configuration);
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 	void checkIdleTime();
 

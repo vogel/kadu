@@ -49,7 +49,7 @@ private:
 	QPointer<SslCertificateStorage> m_sslCertificateStorage;
 
 private slots:
-	INJEQT_SETTER void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
-	INJEQT_SETTER void setSslCertificateStorage(SslCertificateStorage *sslCertificateStorage);
+	INJEQT_SET void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
+	INJEQT_SET void setSslCertificateStorage(SslCertificateStorage *sslCertificateStorage);
 
 };

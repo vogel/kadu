@@ -69,6 +69,6 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SETTER void setSpellChecker(SpellChecker *spellChecker);
+	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 
 };

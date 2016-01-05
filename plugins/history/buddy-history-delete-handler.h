@@ -43,6 +43,6 @@ private:
 	QPointer<History> m_history;
 
 private slots:
-	INJEQT_SETTER void setHistory(History *history);
+	INJEQT_SET void setHistory(History *history);
 
 };

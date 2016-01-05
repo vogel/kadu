@@ -52,11 +52,11 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setAutoaway(Autoaway *autoaway);
-	INJEQT_SETTER void setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler);
-	INJEQT_SETTER void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+	INJEQT_SET void setAutoaway(Autoaway *autoaway);
+	INJEQT_SET void setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler);
+	INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 
 };

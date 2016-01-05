@@ -62,6 +62,6 @@ private:
 	std::unique_ptr<StatusAdapter> MyStatusAdapter;
 
 private slots:
-	INJEQT_SETTER void setGaduServersManager(GaduServersManager *gaduServersManager);
+	INJEQT_SET void setGaduServersManager(GaduServersManager *gaduServersManager);
 
 };

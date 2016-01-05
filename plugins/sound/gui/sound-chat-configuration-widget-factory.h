@@ -37,7 +37,7 @@ public:
 	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
 
 private slots:
-	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
+	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 
 private:
 	QPointer<SoundManager> m_soundManager;

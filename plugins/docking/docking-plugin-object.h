@@ -46,7 +46,7 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setDocking(Docking *docking);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setDocking(Docking *docking);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

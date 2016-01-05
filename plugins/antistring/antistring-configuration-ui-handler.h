@@ -54,7 +54,7 @@ private:
 	QPointer<AntistringMessageFilter> m_antistringMessageFilter;
 
 private slots:
-	INJEQT_SETTER void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
+	INJEQT_SET void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
 
 	void addCondition();
 	void changeCondition();

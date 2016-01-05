@@ -42,6 +42,6 @@ private:
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 
 public slots: // TODO: make private, public only because of tests, should be done by injector
-	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 
 };

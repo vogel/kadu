@@ -37,7 +37,7 @@ public:
 	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
 
 private slots:
-	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
+	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 
 private:
 	QPointer<SoundManager> m_soundManager;

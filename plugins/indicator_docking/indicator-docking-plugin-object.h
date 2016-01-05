@@ -40,6 +40,6 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setIndicatorDocking(IndicatorDocking *indicatorDocking);
+	INJEQT_SET void setIndicatorDocking(IndicatorDocking *indicatorDocking);
 
 };

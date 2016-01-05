@@ -47,6 +47,6 @@ private:
 	bool isConfigurationPathUsable() const;
 
 private slots:
-	INJEQT_SETTER void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
+	INJEQT_SET void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
 
 };

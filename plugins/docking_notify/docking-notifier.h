@@ -38,7 +38,7 @@ private:
 	DockingNotifyConfigurationWidget *configurationWidget;
 
 private slots:
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 };
 

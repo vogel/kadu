@@ -47,8 +47,8 @@ public:
 	void createInstanceTag(const Account &account);
 
 private slots:
-	INJEQT_SETTER void setPathService(OtrPathService *pathService);
-	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+	INJEQT_SET void setPathService(OtrPathService *pathService);
+	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
 	QPointer<OtrPathService> PathService;

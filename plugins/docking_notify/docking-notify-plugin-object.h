@@ -42,7 +42,7 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setDockingNotifier(DockingNotifier *dockingNotifier);
-	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setDockingNotifier(DockingNotifier *dockingNotifier);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };

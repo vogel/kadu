@@ -43,7 +43,7 @@ public:
 	virtual void notify(Notification *notification) override;
 
 private slots:
-	INJEQT_SETTER void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
-	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
+	INJEQT_SET void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
+	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 
 };

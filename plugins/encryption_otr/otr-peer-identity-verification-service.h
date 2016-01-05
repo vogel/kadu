@@ -60,10 +60,10 @@ signals:
 	void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 
 private slots:
-	INJEQT_SETTER void setAppOpsService(OtrAppOpsService *appOpsService);
-	INJEQT_SETTER void setContextConverter(OtrContextConverter *contextConverter);
-	INJEQT_SETTER void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
+	INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
+	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
 	QPointer<OtrAppOpsService> AppOpsService;

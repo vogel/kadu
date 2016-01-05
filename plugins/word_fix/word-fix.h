@@ -54,7 +54,7 @@ class WordFix : public QObject
 	QRegExp ExtractBody;
 
 private slots:
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	/*!
 	 * \fn void chatCreated(ChatWidget *chat)

@@ -50,11 +50,11 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setFirewallConfigurationUiHandler(FirewallConfigurationUiHandler *firewallConfigurationUiHandler);
-	INJEQT_SETTER void setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter);
-	INJEQT_SETTER void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SETTER void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setFirewallConfigurationUiHandler(FirewallConfigurationUiHandler *firewallConfigurationUiHandler);
+	INJEQT_SET void setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter);
+	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

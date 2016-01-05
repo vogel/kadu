@@ -135,10 +135,10 @@ private:
 	QString findActiveProviding(const QString &feature) const;
 
 private slots:
-	INJEQT_SETTER void setInjectorProvider(InjectorProvider *injectorProvider);
-	INJEQT_SETTER void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
-	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
+	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
+	INJEQT_SET void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
+	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 
 };
 

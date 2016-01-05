@@ -46,6 +46,6 @@ private:
 	SoundMuteAction *m_soundMuteAction;
 
 private slots:
-	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
+	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 
 };

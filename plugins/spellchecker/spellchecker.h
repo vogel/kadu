@@ -86,8 +86,8 @@ private:
 	Checkers MyCheckers;
 
 private slots:
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SETTER void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
-	INJEQT_SETTER void setSuggester(Suggester *suggester);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
+	INJEQT_SET void setSuggester(Suggester *suggester);
 
 };

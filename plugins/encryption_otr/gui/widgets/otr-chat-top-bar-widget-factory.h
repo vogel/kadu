@@ -41,9 +41,9 @@ public:
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
 
 private slots:
-	INJEQT_SETTER void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
-	INJEQT_SETTER void setSessionService(OtrSessionService *sessionService);
-	INJEQT_SETTER void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+	INJEQT_SET void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
+	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
+	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	void widgetDestroyed(QObject *widget);
 

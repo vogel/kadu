@@ -50,7 +50,7 @@ class MPRISPlayer : public MPRISMediaPlayer
 	void choosePlayer(const QString &key, const QString &value);
 
 private slots:
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 public:
 	static QString userPlayersListFileName() { return Application::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }

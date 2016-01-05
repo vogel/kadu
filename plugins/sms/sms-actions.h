@@ -48,10 +48,10 @@ class SmsActions : public QObject
 	ActionDescription *sendSmsActionDescription;
 
 private slots:
-	INJEQT_SETTER void setMobileNumberManager(MobileNumberManager *mobileNumberManager);
-	INJEQT_SETTER void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);
-	INJEQT_SETTER void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
-	INJEQT_SETTER void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
+	INJEQT_SET void setMobileNumberManager(MobileNumberManager *mobileNumberManager);
+	INJEQT_SET void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);
+	INJEQT_SET void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
+	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
 
 	void talkableActivated(const Talkable &talkable);
 	void sendSmsActionActivated(QAction *sender);

@@ -91,7 +91,7 @@ class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	void onContextMenu(QWidget *w, const QPoint &pos);
 	void onMenuActionDetach();

@@ -46,7 +46,7 @@ class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUi
 	void fillPlayersBox();
 
 private slots:
-	INJEQT_SETTER void setMPRISPlayer(MPRISPlayer *mprisPlayer);
+	INJEQT_SET void setMPRISPlayer(MPRISPlayer *mprisPlayer);
 
 	void configurationApplied();
 

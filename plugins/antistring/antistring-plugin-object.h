@@ -52,11 +52,11 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setAntistringConfigurationUiHandler(AntistringConfigurationUiHandler *antistringConfigurationUiHandler);
-	INJEQT_SETTER void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SETTER void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setAntistringConfigurationUiHandler(AntistringConfigurationUiHandler *antistringConfigurationUiHandler);
+	INJEQT_SET void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

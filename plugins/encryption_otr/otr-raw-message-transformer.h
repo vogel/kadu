@@ -52,10 +52,10 @@ signals:
 	void peerEndedSession(const Contact &contact) const;
 
 private slots:
-	INJEQT_SETTER void setAppOpsService(OtrAppOpsService *appOpsService);
-	INJEQT_SETTER void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	INJEQT_SETTER void setSessionService(OtrSessionService *sessionService);
-	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
+	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
+	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
 	QPointer<OtrAppOpsService> AppOpsService;

@@ -125,9 +125,9 @@ private:
 	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
 private slots:
-	INJEQT_SETTER void setPluginActivationService(PluginActivationService *pluginActivationService);
-	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
+	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 
 };
 

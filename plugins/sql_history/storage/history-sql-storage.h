@@ -105,7 +105,7 @@ class HistorySqlStorage : public HistoryStorage
 	SortedMessages syncSmses(const HistoryQuery &historyQuery);
 
 private slots:
-	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);

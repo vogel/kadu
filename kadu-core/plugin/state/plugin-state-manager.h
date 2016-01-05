@@ -79,9 +79,9 @@ private:
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 
 private slots:
-	INJEQT_SETTER void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	INJEQT_SETTER void setPluginStateService(PluginStateService *pluginStateService);
-	INJEQT_SETTER void setStoragePointFactory(StoragePointFactory *storagePointFactory);
+	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
+	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 	void storePluginStatesAndFlush();
 

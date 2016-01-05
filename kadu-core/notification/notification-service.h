@@ -106,9 +106,9 @@ signals:
 	void silentModeToggled(bool);
 
 private slots:
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setConfiguration(Configuration *configuration);
-	INJEQT_SETTER void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 
 };
 

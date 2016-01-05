@@ -46,9 +46,9 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setTabsChatWidgetContainerHandler(TabsChatWidgetContainerHandler *tabsChatWidgetContainerHandler);
-	INJEQT_SETTER void setTabsManager(TabsManager *tabsManager);
+	INJEQT_SET void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setTabsChatWidgetContainerHandler(TabsChatWidgetContainerHandler *tabsChatWidgetContainerHandler);
+	INJEQT_SET void setTabsManager(TabsManager *tabsManager);
 
 };

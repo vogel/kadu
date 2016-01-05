@@ -39,6 +39,6 @@ private:
 	owned_qptr<ScreenshotAction> m_screenShotActionDescription;
 
 private slots:
-	INJEQT_SETTER void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
+	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
 
 };

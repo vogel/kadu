@@ -44,8 +44,8 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setFreedesktopNotifier(FreedesktopNotifier *freedesktopNotifier);
-	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setFreedesktopNotifier(FreedesktopNotifier *freedesktopNotifier);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

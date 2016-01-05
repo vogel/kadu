@@ -66,6 +66,6 @@ private:
 	void saveList();
 
 private slots:
-	INJEQT_SETTER void setWordFix(WordFix *wordFix);
+	INJEQT_SET void setWordFix(WordFix *wordFix);
 
 };

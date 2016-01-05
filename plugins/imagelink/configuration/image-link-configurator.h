@@ -48,8 +48,8 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SETTER void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
-	INJEQT_SETTER void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
+	INJEQT_SET void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
+	INJEQT_SET void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
 
 };
 

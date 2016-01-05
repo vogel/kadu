@@ -56,14 +56,14 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);
-	INJEQT_SETTER void setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory);
-	INJEQT_SETTER void setJabberActions(JabberActions *jabberActions);
-	INJEQT_SETTER void setJabberProtocolFactory(JabberProtocolFactory *jabberProtocolFactory);
-	INJEQT_SETTER void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
-	INJEQT_SETTER void setJabberUrlDomVisitorProvider(JabberUrlDomVisitorProvider *jabberUrlDomVisitorProvider);
-	INJEQT_SETTER void setJabberUrlHandler(JabberUrlHandler *jabberUrlHandler);
-	INJEQT_SETTER void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_SETTER void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory);
+	INJEQT_SET void setJabberActions(JabberActions *jabberActions);
+	INJEQT_SET void setJabberProtocolFactory(JabberProtocolFactory *jabberProtocolFactory);
+	INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
+	INJEQT_SET void setJabberUrlDomVisitorProvider(JabberUrlDomVisitorProvider *jabberUrlDomVisitorProvider);
+	INJEQT_SET void setJabberUrlHandler(JabberUrlHandler *jabberUrlHandler);
+	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 
 };

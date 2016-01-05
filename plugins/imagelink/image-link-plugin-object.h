@@ -48,10 +48,10 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);
-	INJEQT_SETTER void setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider);
-	INJEQT_SETTER void setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setVideoExpanderDomVisitorProvider(VideoExpanderDomVisitorProvider *videoExpanderDomVisitorProvider);
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider);
+	INJEQT_SET void setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setVideoExpanderDomVisitorProvider(VideoExpanderDomVisitorProvider *videoExpanderDomVisitorProvider);
 
 };

@@ -42,6 +42,6 @@ private:
 	QList<ActionDescription *> m_rosterActions;
 
 private slots:
-	INJEQT_SETTER void setJabberActions(JabberActions *jabberActions);
+	INJEQT_SET void setJabberActions(JabberActions *jabberActions);
 
 };

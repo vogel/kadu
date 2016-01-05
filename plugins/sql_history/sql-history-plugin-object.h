@@ -42,7 +42,7 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setHistorySqlStorage(HistorySqlStorage *historySqlStorage);
-	INJEQT_SETTER void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setHistorySqlStorage(HistorySqlStorage *historySqlStorage);
+	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 };

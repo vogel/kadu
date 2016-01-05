@@ -64,16 +64,16 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
-	INJEQT_SETTER void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setNotificationManager(NotificationManager *notificationManager);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setSoundActions(SoundActions *soundActions);
-	INJEQT_SETTER void setSoundBuddyConfigurationWidgetFactory(SoundBuddyConfigurationWidgetFactory *soundBuddyConfigurationWidgetFactory);
-	INJEQT_SETTER void setSoundChatConfigurationWidgetFactory(SoundChatConfigurationWidgetFactory *soundChatConfigurationWidgetFactory);
-	INJEQT_SETTER void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
-	INJEQT_SETTER void setSoundManager(SoundManager *soundManager);
-	INJEQT_SETTER void setSoundNotifier(SoundNotifier *soundNotifier);
+	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
+	INJEQT_SET void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setSoundActions(SoundActions *soundActions);
+	INJEQT_SET void setSoundBuddyConfigurationWidgetFactory(SoundBuddyConfigurationWidgetFactory *soundBuddyConfigurationWidgetFactory);
+	INJEQT_SET void setSoundChatConfigurationWidgetFactory(SoundChatConfigurationWidgetFactory *soundChatConfigurationWidgetFactory);
+	INJEQT_SET void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
+	INJEQT_SET void setSoundManager(SoundManager *soundManager);
+	INJEQT_SET void setSoundNotifier(SoundNotifier *soundNotifier);
 
 };

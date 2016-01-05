@@ -37,7 +37,7 @@ public:
 	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
 
 private slots:
-	INJEQT_SETTER void setPolicyService(OtrPolicyService *policyService);
+	INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
 
 private:
 	QPointer<OtrPolicyService> PolicyService;

@@ -48,8 +48,8 @@ signals:
 	void createPrivateKeyFinished(const Account &account, bool ok);
 
 private slots:
-	INJEQT_SETTER void setPathService(OtrPathService *pathService);
-	INJEQT_SETTER void setUserStateService(OtrUserStateService *userStateService);
+	INJEQT_SET void setPathService(OtrPathService *pathService);
+	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 	void jobFinished(const Account &account, bool ok);
 

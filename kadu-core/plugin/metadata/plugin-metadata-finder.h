@@ -72,7 +72,7 @@ private slots:
 	 *
 	 * PluginMetadataReader is used to read metadata from .desc files.
 	 */
-	INJEQT_SETTER void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
+	INJEQT_SET void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 
 };
 

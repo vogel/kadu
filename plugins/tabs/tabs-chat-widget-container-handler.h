@@ -49,6 +49,6 @@ private:
 	QPointer<TabsManager> m_tabsManager;
 
 private slots:
-	INJEQT_SETTER void setTabsManager(TabsManager *tabsManager);
+	INJEQT_SET void setTabsManager(TabsManager *tabsManager);
 
 };

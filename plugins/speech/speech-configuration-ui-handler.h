@@ -52,7 +52,7 @@ class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 	ConfigComboBox *soundSystemComboBox;
 
 private slots:
-	INJEQT_SETTER void setSpeech(Speech *speech);
+	INJEQT_SET void setSpeech(Speech *speech);
 
 	void testSpeech();
 	void soundSystemChanged(int index);

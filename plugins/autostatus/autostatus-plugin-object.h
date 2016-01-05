@@ -50,10 +50,10 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setAutostatusActions(AutostatusActions *autostatusActions);
-	INJEQT_SETTER void setAutostatusService(AutostatusService *autostatusService);
-	INJEQT_SETTER void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+	INJEQT_SET void setAutostatusActions(AutostatusActions *autostatusActions);
+	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
+	INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 
 };

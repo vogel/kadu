@@ -50,7 +50,7 @@ public:
 	std::unique_ptr<ChatWindow> createChatWindow(Chat chat);
 
 private slots:
-	INJEQT_SETTER void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
+	INJEQT_SET void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 private:
 	QPointer<ChatWidgetFactory> m_chatWidgetFactory;

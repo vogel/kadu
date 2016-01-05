@@ -78,10 +78,10 @@ private:
 	QPointer<ChatWidgetFactory> m_chatWidgetFactory;
 
 private slots:
-	INJEQT_SETTER void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
-	INJEQT_SETTER void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SETTER void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
+	INJEQT_SET void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
+	INJEQT_SET void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 };
 

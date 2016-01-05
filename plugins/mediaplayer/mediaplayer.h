@@ -77,7 +77,7 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	// Proxy methods for 3rd party modules
 	void nextTrack();

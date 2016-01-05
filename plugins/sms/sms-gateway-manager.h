@@ -47,6 +47,6 @@ private:
 	QList<SmsGateway> m_items;
 
 private slots:
-	INJEQT_SETTER void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
+	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
 
 };

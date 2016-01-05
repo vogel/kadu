@@ -158,14 +158,14 @@ public slots: // TODO: make private, public only because of tests, should be don
 	 * PluginDependencyGraphBuilder is used to create dependency graph from metadata loaded by
 	 * PluginMetadataProvider.
 	 */
-	INJEQT_SETTER void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
+	INJEQT_SET void setPluginDependencyGraphBuilder(PluginDependencyGraphBuilder *pluginDependencyGraphBuilder);
 
 	/**
 	 * @short Set PluginMetadataProvider service.
 	 *
 	 * PluginMetadataProvider is used to get list of all plugins available for application.
 	 */
-	INJEQT_SETTER void setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider);
+	INJEQT_SET void setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider);
 
 };
 

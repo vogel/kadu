@@ -81,9 +81,9 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 	QString fixedVariantName(const QString &styleName, QString variantName);
 
 private slots:
-	INJEQT_SETTER void setConfiguration(Configuration *configuration);
-	INJEQT_SETTER void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
-	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 protected:
 	virtual void configurationUpdated();

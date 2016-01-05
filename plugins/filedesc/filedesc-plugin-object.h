@@ -44,8 +44,8 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+	INJEQT_SET void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 
 };

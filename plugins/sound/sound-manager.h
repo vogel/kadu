@@ -61,6 +61,6 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SETTER void setSoundThemeManager(SoundThemeManager *soundThemeManager);
+	INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 
 };

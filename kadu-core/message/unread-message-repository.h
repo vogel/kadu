@@ -194,7 +194,7 @@ private:
 	bool importFromPendingMessages();
 
 private slots:
-	INJEQT_SETTER void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 };
 

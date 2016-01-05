@@ -47,6 +47,6 @@ private:
 	ListEditWidget *m_exclusionsWidget;
 
 private slots:
-	INJEQT_SETTER void setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter);
+	INJEQT_SET void setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter);
 
 };

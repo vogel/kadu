@@ -46,9 +46,9 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setWordFixConfigurationUiHandler(WordFixConfigurationUiHandler *wordFixConfigurationUiHandler);
-	INJEQT_SETTER void setWordFix(WordFix *wordFix);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setWordFixConfigurationUiHandler(WordFixConfigurationUiHandler *wordFixConfigurationUiHandler);
+	INJEQT_SET void setWordFix(WordFix *wordFix);
 
 };

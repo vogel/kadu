@@ -44,6 +44,6 @@ private:
 	QString m_title;
 
 private slots:
-	INJEQT_SETTER void setFileDescription(FileDescription *fileDescription);
+	INJEQT_SET void setFileDescription(FileDescription *fileDescription);
 
 };

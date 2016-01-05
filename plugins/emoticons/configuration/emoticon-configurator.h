@@ -76,8 +76,8 @@ public:
 	void configure();
 
 private slots:
-	INJEQT_SETTER void setInsertAction(InsertEmoticonAction *insertAction);
-	INJEQT_SETTER void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
+	INJEQT_SET void setInsertAction(InsertEmoticonAction *insertAction);
+	INJEQT_SET void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
 
 };
 

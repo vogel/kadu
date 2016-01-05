@@ -44,6 +44,6 @@ private:
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
 
 private slots:
-	INJEQT_SETTER void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
+	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
 
 };

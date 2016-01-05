@@ -51,7 +51,7 @@ public:
 	std::unique_ptr<ChatWidget> createChatWidget(Chat chat, QWidget *parent = nullptr);
 
 private slots:
-	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 private:
 	QPointer<FormattedStringFactory> m_formattedStringFactory;

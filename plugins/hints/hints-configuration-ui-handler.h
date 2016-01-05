@@ -63,7 +63,7 @@ private:
 	void setPreviewLayoutDirection();
 
 private slots:
-	INJEQT_SETTER void setHintManager(HintManager *hintManager);
+	INJEQT_SET void setHintManager(HintManager *hintManager);
 
 	void showAdvanced();
 

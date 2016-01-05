@@ -75,7 +75,7 @@ private:
 	std::unique_ptr<StoragePoint> storagePoint() const;
 
 private slots:
-	INJEQT_SETTER void setStoragePointFactory(StoragePointFactory *storagePointFactory);
+	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 };
 

@@ -49,6 +49,6 @@ public slots:
 	void showVerificationWindow(const Contact &contact);
 
 private slots:
-	INJEQT_SETTER void setPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory);
+	INJEQT_SET void setPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory);
 
 };

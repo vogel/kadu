@@ -41,9 +41,9 @@ public:
 	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 
 private slots:
-	INJEQT_SETTER void setFingerprintService(OtrFingerprintService *fingerprintService);
-	INJEQT_SETTER void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	INJEQT_SETTER void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+	INJEQT_SET void setFingerprintService(OtrFingerprintService *fingerprintService);
+	INJEQT_SET void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 private:
 	QPointer<OtrFingerprintService> FingerprintService;

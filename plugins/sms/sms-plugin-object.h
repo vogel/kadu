@@ -50,11 +50,11 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SETTER void setSmsActions(SmsActions *smsActions);
-	INJEQT_SETTER void setSmsConfigurationUiHandler(SmsConfigurationUiHandler *smsConfigurationUiHandler);
-	INJEQT_SETTER void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
-	INJEQT_SETTER void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setSmsActions(SmsActions *smsActions);
+	INJEQT_SET void setSmsConfigurationUiHandler(SmsConfigurationUiHandler *smsConfigurationUiHandler);
+	INJEQT_SET void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
+	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
 
 };

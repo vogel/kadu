@@ -96,8 +96,8 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SETTER void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SETTER void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void accountConnected();
 

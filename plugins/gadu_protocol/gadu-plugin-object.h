@@ -52,12 +52,12 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SETTER void setDomProcessorService(DomProcessorService *domProcessorService);
-	INJEQT_SETTER void setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory);
-	INJEQT_SETTER void setGaduProtocolMenuManager(GaduProtocolMenuManager *gaduProtocolMenuManager);
-	INJEQT_SETTER void setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider);
-	INJEQT_SETTER void setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler);
-	INJEQT_SETTER void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_SETTER void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory);
+	INJEQT_SET void setGaduProtocolMenuManager(GaduProtocolMenuManager *gaduProtocolMenuManager);
+	INJEQT_SET void setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider);
+	INJEQT_SET void setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler);
+	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 
 };

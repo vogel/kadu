@@ -51,18 +51,18 @@ public:
 	OtrOpData opDataForContact(const Contact &contact);
 
 private slots:
-	INJEQT_SETTER void setErrorMessageService(OtrErrorMessageService *errorMessageService);
-	INJEQT_SETTER void setFingerprintService(OtrFingerprintService *fingerprintService);
-	INJEQT_SETTER void setInstanceTagService(OtrInstanceTagService *instanceTagService);
-	INJEQT_SETTER void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
-	INJEQT_SETTER void setMessageEventService(OtrMessageEventService *messageEventService);
-	INJEQT_SETTER void setMessageService(OtrMessageService *messageService);
-	INJEQT_SETTER void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	INJEQT_SETTER void setPolicyService(OtrPolicyService *policyService);
-	INJEQT_SETTER void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
-	INJEQT_SETTER void setSessionService(OtrSessionService *sessionService);
-	INJEQT_SETTER void setTimerService(OtrTimerService *timerService);
-	INJEQT_SETTER void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+	INJEQT_SET void setErrorMessageService(OtrErrorMessageService *errorMessageService);
+	INJEQT_SET void setFingerprintService(OtrFingerprintService *fingerprintService);
+	INJEQT_SET void setInstanceTagService(OtrInstanceTagService *instanceTagService);
+	INJEQT_SET void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
+	INJEQT_SET void setMessageEventService(OtrMessageEventService *messageEventService);
+	INJEQT_SET void setMessageService(OtrMessageService *messageService);
+	INJEQT_SET void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+	INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
+	INJEQT_SET void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
+	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
+	INJEQT_SET void setTimerService(OtrTimerService *timerService);
+	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 private:
 	QPointer<OtrErrorMessageService> ErrorMessageService;

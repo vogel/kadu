@@ -47,8 +47,8 @@ class Suggester : public QObject
 	void addWordListToMenu(const QTextCursor &textCursor);
 
 private slots:
-	INJEQT_SETTER void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
-	INJEQT_SETTER void setSpellChecker(SpellChecker *spellChecker);
+	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
+	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 
 protected:
 	virtual bool eventFilter(QObject *object, QEvent *event);

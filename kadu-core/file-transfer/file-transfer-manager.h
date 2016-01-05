@@ -84,7 +84,7 @@ private:
 	void setTotalProgress(int totalProgress);
 
 private slots:
-	INJEQT_SETTER void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
 
 	void incomingFileTransfer(FileTransfer fileTransfer);
 	void updateProgress();

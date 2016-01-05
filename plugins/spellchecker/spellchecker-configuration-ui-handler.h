@@ -54,8 +54,8 @@ private:
 	owned_qptr<QListWidget> m_checkedLanguagesList;
 
 private slots:
-	INJEQT_SETTER void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
-	INJEQT_SETTER void setSpellChecker(SpellChecker *spellChecker);
+	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
+	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 
 	void configForward();
 	void configBackward();

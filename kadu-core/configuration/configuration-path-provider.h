@@ -44,6 +44,6 @@ private:
 	PathsProvider *m_pathsProvider;
 
 public slots:
-	INJEQT_SETTER void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };
