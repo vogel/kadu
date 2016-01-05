@@ -20,6 +20,8 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class UnreadMessageRepository;
 
@@ -31,17 +33,17 @@ public:
 	Q_INVOKABLE explicit AttentionService(QObject *parent = nullptr);
 	virtual ~AttentionService();
 
-	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-
 	bool needAttention();
 
 signals:
 	void needAttentionChanged(bool needAttention);
 
 private:
-	UnreadMessageRepository *m_unreadMessageRepository;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+
 	void unreadMessageCountChanged();
 
 };

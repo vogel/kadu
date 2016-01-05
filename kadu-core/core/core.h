@@ -45,7 +45,6 @@ template<class T>
 class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
-class AttentionService;
 class BuddyAdditionalDataDeleteHandlerManager;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyDataWindowRepository;
@@ -173,7 +172,6 @@ public:
 
 	void activatePlugins();
 
-	AttentionService * attentionService() const;
 	BuddyDataWindowRepository * buddyDataWindowRepository() const;
 	ChatDataWindowRepository * chatDataWindowRepository() const;
 	ChatImageRequestService * chatImageRequestService() const;

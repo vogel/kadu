@@ -56,9 +56,6 @@ Docking::Docking(QObject *parent) :
 	auto statusIcon = make_owned<StatusIcon>(Core::instance()->statusContainerManager(), this);
 	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
-	connect(Core::instance()->attentionService(), SIGNAL(needAttentionChanged(bool)),
-	        this, SLOT(needAttentionChanged(bool)));
-
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
 
 	m_statusNotifierItem = make_owned<StatusNotifierItem>(this);
@@ -96,6 +93,11 @@ Docking::~Docking()
 	if (!Core::instance()->isClosing())
 		Core::instance()->kaduWindow()->window()->show();
 	Core::instance()->kaduWindow()->setDocked(false);
+}
+
+void Docking::setAttentionService(AttentionService *attentionService)
+{
+	connect(attentionService, SIGNAL(needAttentionChanged(bool)), this, SLOT(needAttentionChanged(bool)));
 }
 
 DockingMenuActionRepository * Docking::dockingMenuActionRepository() const

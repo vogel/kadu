@@ -29,7 +29,9 @@
 
 #include <QtCore/QObject>
 #include <QtWidgets/QSystemTrayIcon>
+#include <injeqt/injeqt.h>
 
+class AttentionService;
 class DockingConfigurationProvider;
 class DockingMenuActionRepository;
 class StatusNotifierItem;
@@ -59,6 +61,8 @@ private:
 	void openUnreadMessages();
 
 private slots:
+	INJEQT_SET void setAttentionService(AttentionService *attentionService);
+
 	void configurationUpdated();
 	void needAttentionChanged(bool needAttention);
 	void searchingForTrayPosition(QPoint &point);

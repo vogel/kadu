@@ -137,7 +137,6 @@
 #include "themes/icon-theme-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
-#include "attention-service.h"
 #include "debug.h"
 #include "kadu-config.h"
 #include "updates.h"
@@ -670,7 +669,6 @@ void Core::runServices()
 
 	// instantiate = run in case of services
 	m_injector.get<ChatWidgetStatePersistenceService>();
-	m_injector.get<AttentionService>()->setUnreadMessageRepository(unreadMessageRepository());
 
 	// moved here because of #2758
 	ContactManager::instance()->init();
@@ -700,11 +698,6 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
-}
-
-AttentionService * Core::attentionService() const
-{
-	return m_injector.get<AttentionService>();
 }
 
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
