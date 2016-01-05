@@ -24,12 +24,16 @@
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QScopedPointer>
+#include <injeqt/injeqt.h>
 
 #include "exports.h"
 
 class QDomDocument;
 
+class ClipboardHtmlTransformerService;
+class DomProcessorService;
 class MailUrlDomVisitorProvider;
 class MailUrlHandler;
 class StandardUrlDomVisitorProvider;
@@ -58,6 +62,9 @@ public:
 	const QRegExp & urlRegExp();
 
 private:
+	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
+	QPointer<DomProcessorService> m_domProcessorService;
+
 	QList<UrlHandler *> RegisteredHandlers;
 
 	StandardUrlDomVisitorProvider *StandardUrlVisitorProvider;
@@ -68,7 +75,10 @@ private:
 
 	QScopedPointer<UrlClipboardHtmlTransformer> ClipboardTransformer;
 
-	void registerUrlClipboardTransformer();
-	void unregisterUrlClipboardTransformer();
+private slots:
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 
 };

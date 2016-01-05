@@ -21,8 +21,6 @@
 
 #include <QtXml/QDomDocument>
 
-#include "core/core.h"
-
 #include "dom/dom-processor-service.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "url-handlers/mail-url-dom-visitor-provider.h"
@@ -36,34 +34,47 @@
 UrlHandlerManager::UrlHandlerManager(QObject *parent) :
 		QObject{parent}
 {
-	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider();
-	Core::instance()->domProcessorService()->registerVisitorProvider(StandardUrlVisitorProvider, 0);
-
-	MailUrlVisitorProvider = new MailUrlDomVisitorProvider();
-	Core::instance()->domProcessorService()->registerVisitorProvider(MailUrlVisitorProvider, 500);
-
 	// NOTE: StandardUrlHandler has to be the first one to fix bug #1894
 	standardUrlHandler = new StandardUrlHandler();
 	registerUrlHandler(standardUrlHandler);
 
 	mailUrlHandler = new MailUrlHandler();
 	registerUrlHandler(mailUrlHandler);
-	registerUrlClipboardTransformer();
 }
 
 UrlHandlerManager::~UrlHandlerManager()
 {
-	unregisterUrlClipboardTransformer();
+}
 
-	if (Core::instance())
-		Core::instance()->domProcessorService()->unregisterVisitorProvider(StandardUrlVisitorProvider);
-	delete StandardUrlVisitorProvider;
-	StandardUrlVisitorProvider = 0;
+void UrlHandlerManager::setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
+{
+	m_clipboardHtmlTransformerService = clipboardHtmlTransformerService;
+}
 
-	if (Core::instance())
-		Core::instance()->domProcessorService()->unregisterVisitorProvider(MailUrlVisitorProvider);
-	delete MailUrlVisitorProvider;
-	MailUrlVisitorProvider = 0;
+void UrlHandlerManager::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	m_domProcessorService = domProcessorService;
+}
+
+void UrlHandlerManager::init()
+{
+	ClipboardTransformer.reset(new UrlClipboardHtmlTransformer());
+	m_clipboardHtmlTransformerService->registerTransformer(ClipboardTransformer.data());
+
+	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider();
+	m_domProcessorService->registerVisitorProvider(StandardUrlVisitorProvider, 0);
+
+	MailUrlVisitorProvider = new MailUrlDomVisitorProvider();
+	m_domProcessorService->registerVisitorProvider(MailUrlVisitorProvider, 500);
+}
+
+void UrlHandlerManager::done()
+{
+	m_clipboardHtmlTransformerService->unregisterTransformer(ClipboardTransformer.data());
+	ClipboardTransformer.reset();
+
+	m_domProcessorService->unregisterVisitorProvider(StandardUrlVisitorProvider);
+	m_domProcessorService->unregisterVisitorProvider(MailUrlVisitorProvider);
 }
 
 void UrlHandlerManager::registerUrlHandler(UrlHandler *handler)
@@ -74,19 +85,6 @@ void UrlHandlerManager::registerUrlHandler(UrlHandler *handler)
 void UrlHandlerManager::unregisterUrlHandler(UrlHandler *handler)
 {
 	RegisteredHandlers.removeAll(handler);
-}
-
-void UrlHandlerManager::registerUrlClipboardTransformer()
-{
-	ClipboardTransformer.reset(new UrlClipboardHtmlTransformer());
-	Core::instance()->clipboardHtmlTransformerService()->registerTransformer(ClipboardTransformer.data());
-}
-
-void UrlHandlerManager::unregisterUrlClipboardTransformer()
-{
-	if (Core::instance())
-		Core::instance()->clipboardHtmlTransformerService()->unregisterTransformer(ClipboardTransformer.data());
-	ClipboardTransformer.reset();
 }
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
