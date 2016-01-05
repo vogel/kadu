@@ -650,7 +650,6 @@ void Core::runServices()
 	CurrentMessageRenderInfoFactory->setChatStyleManager(chatStyleManager());
 
 	m_injector.get<PluginMetadataFinder>()->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
-	m_injector.get<PluginDependencyHandler>()->initialize();
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
 	CurrentWebkitMessagesViewDisplayFactory = make_owned<WebkitMessagesViewDisplayFactory>(this);

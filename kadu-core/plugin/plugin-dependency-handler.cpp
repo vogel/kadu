@@ -58,11 +58,8 @@ PluginDependencyHandler::Iterator PluginDependencyHandler::end()
 	return {m_allPluginMetadata.end(), converter};
 }
 
-void PluginDependencyHandler::initialize()
+void PluginDependencyHandler::init()
 {
-	if (!m_pluginDependencyGraphBuilder || !m_pluginMetadataProvider)
-		return;
-
 	auto metadata = m_pluginMetadataProvider->provide();
 	m_pluginDependencyDAG = m_pluginDependencyGraphBuilder->buildValidGraph(metadata);
 	auto pluginsInDAG = m_pluginDependencyDAG.plugins(); // expensive method

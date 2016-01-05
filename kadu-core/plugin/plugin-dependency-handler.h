@@ -77,14 +77,6 @@ public:
 	Iterator end();
 
 	/**
-	 * @short Initialize service data.
-	 *
-	 * This method must be called after all services were set.
-	 * List of plugin metadata is read and dependency graph is created.
-	 */
-	void initialize();
-
-	/**
 	 * @return Set of names of plugins that are not in dependency cycle.
 	 */
 	std::set<QString> pluginNames() const;
@@ -152,6 +144,7 @@ private:
 	PluginDependencyGraph m_pluginDependencyDAG;
 
 public slots: // TODO: make private, public only because of tests, should be done by injector
+
 	/**
 	 * @short Set PluginDependencyGraphBuilder service.
 	 *
@@ -166,6 +159,15 @@ public slots: // TODO: make private, public only because of tests, should be don
 	 * PluginMetadataProvider is used to get list of all plugins available for application.
 	 */
 	INJEQT_SET void setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider);
+
+private slots:
+	/**
+	 * @short Initialize service data.
+	 *
+	 * This method must be called after all services were set.
+	 * List of plugin metadata is read and dependency graph is created.
+	 */
+	INJEQT_INIT void init();
 
 };
 
