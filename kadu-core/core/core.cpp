@@ -183,7 +183,6 @@ Core::Core(injeqt::injector &injector) :
 		m_injector(injector),
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
-		CurrentChatDataWindowRepository{nullptr},
 		CurrentChatImageRequestService{nullptr},
 		CurrentImageStorageService{nullptr},
 		CurrentMessageHtmlRendererService{nullptr},
@@ -598,7 +597,6 @@ void Core::createGui()
 
 void Core::runServices()
 {
-	CurrentChatDataWindowRepository = new ChatDataWindowRepository(this);
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
@@ -688,11 +686,6 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
-}
-
-ChatDataWindowRepository * Core::chatDataWindowRepository() const
-{
-	return CurrentChatDataWindowRepository;
 }
 
 ChatImageRequestService * Core::chatImageRequestService() const

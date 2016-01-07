@@ -56,6 +56,11 @@ void EditTalkableAction::setBuddyDataWindowRepository(BuddyDataWindowRepository 
 	m_buddyDataWindowRepository = buddyDataWindowRepository;
 }
 
+void EditTalkableAction::setChatDataWindowRepository(ChatDataWindowRepository *chatDataWindowRepository)
+{
+	m_chatDataWindowRepository = chatDataWindowRepository;
+}
+
 int EditTalkableAction::actionRole(ActionContext *context) const
 {
 	if (context->roles().contains(ChatRole))
@@ -161,7 +166,7 @@ void EditTalkableAction::chatActionTriggered(ActionContext *context)
 	if (!chat)
 		return;
 
-	Core::instance()->chatDataWindowRepository()->showChatWindow(chat);
+	m_chatDataWindowRepository->showChatWindow(chat);
 }
 
 void EditTalkableAction::buddyActionTriggered(ActionContext *context)

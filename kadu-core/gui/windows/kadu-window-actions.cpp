@@ -180,6 +180,19 @@ void disableMerge(Action *action)
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 {
+}
+
+KaduWindowActions::~KaduWindowActions()
+{
+}
+
+void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void KaduWindowActions::init()
+{
 	Actions::instance()->blockSignals();
 
 	Configuration = new ActionDescription(this,
@@ -379,7 +392,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(onlineAndDescUsersActionCreated(Action *)));
 
-	EditTalkable = new EditTalkableAction(this);
+	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
 
 	MenuInventory::instance()
 		->menu("buddy-list")
@@ -413,15 +426,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	ChangeStatus = new ChangeStatusAction(this);
 	DefaultProxy = new DefaultProxyAction(this);
-}
-
-KaduWindowActions::~KaduWindowActions()
-{
-}
-
-void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
 }
 
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)

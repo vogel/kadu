@@ -17,12 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DATA_WINDOW_REPOSITORY_H
-#define CHAT_DATA_WINDOW_REPOSITORY_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "chat/chat.h"
+
+#include <QtCore/QObject>
 
 class ChatDataWindow;
 
@@ -30,13 +29,8 @@ class ChatDataWindowRepository : public QObject
 {
 	Q_OBJECT
 
-	QMap<Chat, ChatDataWindow *> Windows;
-
-private slots:
-	void windowDestroyed(const Chat &chat);
-
 public:
-	explicit ChatDataWindowRepository(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatDataWindowRepository(QObject *parent = nullptr);
 	virtual ~ChatDataWindowRepository();
 
 	ChatDataWindow * windowForChat(const Chat &chat);
@@ -45,6 +39,10 @@ public:
 public slots:
 	void showChatWindow(const Chat &chat);
 
-};
+private:
+	QMap<Chat, ChatDataWindow *> Windows;
 
-#endif // CHAT_DATA_WINDOW_REPOSITORY_H
+private slots:
+	void windowDestroyed(const Chat &chat);
+
+};

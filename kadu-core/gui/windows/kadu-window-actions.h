@@ -92,6 +92,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
 
 	void showMultilogonsActionCreated(Action *action);
 	void openSearchActionCreated(Action *action);
