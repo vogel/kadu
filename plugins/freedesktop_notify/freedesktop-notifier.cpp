@@ -85,6 +85,11 @@ FreedesktopNotifier::~FreedesktopNotifier()
 	NotificationsInterface = 0;
 }
 
+void FreedesktopNotifier::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	m_domProcessorService = domProcessorService;
+}
+
 void FreedesktopNotifier::checkServerCapabilities()
 {
 	if (!ServerCapabilitiesRequireChecking)
@@ -195,7 +200,7 @@ void FreedesktopNotifier::notify(Notification *notification)
 		}
 
 		if (ServerSupportsHyperlinks && !body.isEmpty())
-			body = Core::instance()->domProcessorService()->process(body);
+			body = m_domProcessorService->process(body);
 	}
 
 	args.append(body);

@@ -23,6 +23,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QQueue>
 #include <QtCore/QRegExp>
 
@@ -31,6 +32,7 @@
 
 class QDBusInterface;
 
+class DomProcessorService;
 class Notification;
 
 class FreedesktopNotifier : public QObject, public Notifier, public ConfigurationAwareObject
@@ -48,6 +50,8 @@ protected:
 	void configurationUpdated();
 
 private:
+	QPointer<DomProcessorService> m_domProcessorService;
+
 	QDBusInterface *NotificationsInterface;
 	QRegExp StripBr;
 	QRegExp StripHtml;
@@ -75,6 +79,8 @@ private:
 	void checkServerCapabilities();
 
 private slots:
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+
 	void actionInvoked(unsigned int id, QString action);
 
 	void notificationClosed(Notification *notification);
