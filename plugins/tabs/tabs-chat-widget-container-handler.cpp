@@ -34,7 +34,10 @@ TabsChatWidgetContainerHandler::~TabsChatWidgetContainerHandler()
 void TabsChatWidgetContainerHandler::setTabsManager(TabsManager *tabsManager)
 {
 	m_tabsManager = tabsManager;
+}
 
+void TabsChatWidgetContainerHandler::init()
+{
 	connect(m_tabsManager.data(), SIGNAL(chatAcceptanceChanged(Chat)),
 			this, SIGNAL(chatAcceptanceChanged(Chat)));
 	connect(m_tabsManager.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),

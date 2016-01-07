@@ -26,6 +26,7 @@
 #include "contacts/contact-set.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
@@ -48,9 +49,38 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 		m_supportTransparency{supportTransparency},
 		m_atBottom{true}
 {
+}
+
+WebkitMessagesView::~WebkitMessagesView()
+{
+	disconnectChat();
+}
+
+void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
+{
+	if (m_chatImageRequestService)
+		disconnect(m_chatImageRequestService.data(), nullptr, this, nullptr);
+
+	m_chatImageRequestService = chatImageRequestService;
+
+	if (m_chatImageRequestService)
+		connect(m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
+}
+
+void WebkitMessagesView::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void WebkitMessagesView::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
+{
+	m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
+}
+
+void WebkitMessagesView::init()
+{
 	auto oldManager = page()->networkAccessManager();
-	auto newManager = make_owned<ChatViewNetworkAccessManager>(oldManager, this);
-	newManager->setImageStorageService(Core::instance()->imageStorageService());
+	auto newManager = m_injectedFactory->makeOwned<ChatViewNetworkAccessManager>(oldManager, this);
 	page()->setNetworkAccessManager(newManager.get());
 
 	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
@@ -85,27 +115,7 @@ WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparenc
 
 	configurationUpdated();
 	connectChat();
-}
-
-WebkitMessagesView::~WebkitMessagesView()
-{
-	disconnectChat();
-}
-
-void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
-{
-	if (m_chatImageRequestService)
-		disconnect(m_chatImageRequestService.data(), nullptr, this, nullptr);
-
-	m_chatImageRequestService = chatImageRequestService;
-
-	if (m_chatImageRequestService)
-		connect(m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
-}
-
-void WebkitMessagesView::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
-{
-	m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
+	refreshView();
 }
 
 void WebkitMessagesView::mouseReleaseEvent(QMouseEvent *e)

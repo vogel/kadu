@@ -33,8 +33,8 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/application.h"
+#include "core/injected-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -46,14 +46,29 @@
 #include "activate.h"
 #include "debug.h"
 
-ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget *parent) :
-		QWidget(parent), DesktopAwareObject(this)
+ChatWindow::ChatWindow(Chat chat, QWidget *parent) :
+		QWidget(parent), DesktopAwareObject(this),
+		m_chat{chat}
+{
+}
+
+ChatWindow::~ChatWindow()
+{
+	emit windowDestroyed(this);
+}
+
+void ChatWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ChatWindow::init()
 {
 	kdebugf();
 
 	setWindowRole("kadu-chat");
 
-	m_chatWidget = chatWidgetFactory->createChatWidget(chat, this).release();
+	m_chatWidget = m_injectedFactory->makeInjected<ChatWidget>(m_chat, this);
 	connect(m_chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(close()));
 
 	if (m_chatWidget && m_chatWidget->chat().details() && m_chatWidget->chat().details()->type())
@@ -79,11 +94,6 @@ ChatWindow::ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget 
 	new WindowGeometryManager(variantWrapper, defaultGeometry(), this);
 
 	connect(m_chatWidget->title(), SIGNAL(titleChanged(ChatWidget*)), this, SLOT(updateTitle()));
-}
-
-ChatWindow::~ChatWindow()
-{
-	emit windowDestroyed(this);
 }
 
 void ChatWindow::configurationUpdated()

@@ -67,7 +67,6 @@
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
@@ -77,7 +76,6 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
-#include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window-storage-configurator.h"
@@ -183,7 +181,6 @@ Core::Core(injeqt::injector &injector) :
 		m_injector(injector),
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
-		CurrentImageStorageService{nullptr},
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
@@ -596,7 +593,6 @@ void Core::createGui()
 
 void Core::runServices()
 {
-	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 
@@ -625,15 +621,12 @@ void Core::runServices()
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
-	m_injector.get<ChatImageRequestService>()->setImageStorageService(CurrentImageStorageService);
 	m_injector.get<ChatImageRequestService>()->setAccountManager(AccountManager::instance());
 	m_injector.get<ChatImageRequestService>()->setContactManager(ContactManager::instance());
 
 	MessageManager::instance()->setMessageFilterService(m_injector.get<MessageFilterService>());
 	MessageManager::instance()->setMessageTransformerService(CurrentMessageTransformerService);
 	MessageManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
-
-	m_injector.get<FormattedStringFactory>()->setImageStorageService(CurrentImageStorageService);
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
 	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
@@ -651,9 +644,8 @@ void Core::runServices()
 	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(CurrentWebkitMessagesViewDisplayFactory.get());
 
 	CurrentWebkitMessagesViewFactory = make_owned<WebkitMessagesViewFactory>(this);
-	CurrentWebkitMessagesViewFactory->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(m_injector.get<ChatStyleRendererFactoryProvider>());
-	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
+	CurrentWebkitMessagesViewFactory->setInjectedFactory(m_injector.get<InjectedFactory>());
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
 
 	// moved here because of #2758
@@ -684,11 +676,6 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
-}
-
-ImageStorageService * Core::imageStorageService() const
-{
-	return CurrentImageStorageService;
 }
 
 MessageFilterService * Core::messageFilterService() const
@@ -789,11 +776,6 @@ ChatWidgetActions * Core::chatWidgetActions() const
 ChatWidgetManager * Core::chatWidgetManager() const
 {
 	return m_injector.get<ChatWidgetManager>();
-}
-
-ChatWidgetFactory * Core::chatWidgetFactory() const
-{
-	return m_injector.get<ChatWidgetFactory>();
 }
 
 ChatWidgetRepository * Core::chatWidgetRepository() const

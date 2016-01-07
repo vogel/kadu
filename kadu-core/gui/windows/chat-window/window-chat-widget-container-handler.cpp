@@ -19,9 +19,9 @@
 
 #include "window-chat-widget-container-handler.h"
 
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window.h"
 #include "activate.h"
@@ -37,30 +37,30 @@ WindowChatWidgetContainerHandler::~WindowChatWidgetContainerHandler()
 {
 }
 
-void WindowChatWidgetContainerHandler::setChatWindowFactory(ChatWindowFactory *chatWindowFactory)
-{
-	m_chatWindowFactory = chatWindowFactory;
-}
-
 void WindowChatWidgetContainerHandler::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
 {
 	m_chatWindowRepository = chatWindowRepository;
 }
 
+void WindowChatWidgetContainerHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 bool WindowChatWidgetContainerHandler::acceptChat(Chat chat) const
 {
-	return chat && m_chatWindowFactory && m_chatWindowRepository;
+	return chat;
 }
 
 ChatWidget * WindowChatWidgetContainerHandler::addChat(Chat chat, OpenChatActivation activation)
 {
-	if (!chat || !m_chatWindowFactory || !m_chatWindowRepository)
+	if (!acceptChat(chat))
 		return nullptr;
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chat);
 	if (!chatWindow)
 	{
-		chatWindow = m_chatWindowFactory.data()->createChatWindow(chat).release();
+		chatWindow = m_injectedFactory->makeInjected<ChatWindow>(chat);
 		if (!chatWindow)
 			return nullptr;
 

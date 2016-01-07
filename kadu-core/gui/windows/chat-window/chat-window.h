@@ -20,23 +20,26 @@
 
 #pragma once
 
-#include <QtWidgets/QWidget>
-
+#include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
 class Chat;
 class ChatWidget;
-class ChatWidgetFactory;
+class InjectedFactory;
 
 class KADUAPI ChatWindow : public QWidget, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
 {
 	Q_OBJECT
 
 public:
-	explicit ChatWindow(ChatWidgetFactory *chatWidgetFactory, Chat chat, QWidget *parent = 0);
+	explicit ChatWindow(Chat chat, QWidget *parent = 0);
 	virtual ~ChatWindow();
 
 	Chat chat() const;
@@ -60,11 +63,17 @@ protected:
 	virtual void compositingDisabled() override;
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+	Chat m_chat;
 	ChatWidget *m_chatWidget;
 
 	QRect defaultGeometry() const;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void updateTitle();
 
 };

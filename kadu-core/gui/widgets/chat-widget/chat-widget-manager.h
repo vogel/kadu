@@ -30,7 +30,6 @@ class Chat;
 class ChatWidget;
 class ChatWidgetActivationService;
 class ChatWidgetContainerHandlerMapper;
-class ChatWidgetFactory;
 class ChatWidgetRepository;
 
 enum class OpenChatActivation
@@ -75,13 +74,11 @@ private:
 	QPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
 	QPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<ChatWidgetFactory> m_chatWidgetFactory;
 
 private slots:
 	INJEQT_SET void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
 	INJEQT_SET void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 };
 

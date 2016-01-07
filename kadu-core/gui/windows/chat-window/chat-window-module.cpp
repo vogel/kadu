@@ -19,7 +19,6 @@
 
 #include "chat-window-module.h"
 
-#include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
@@ -27,7 +26,6 @@
 
 ChatWindowModule::ChatWindowModule()
 {
-	add_type<ChatWindowFactory>();
 	add_type<ChatWindowManager>();
 	add_type<ChatWindowRepository>();
 	add_type<ChatWindowStorage>();

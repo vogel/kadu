@@ -52,6 +52,7 @@ class GaduIMTokenService;
 class GaduNotifyService;
 class GaduProtocolSocketNotifiers;
 class GaduUserDataService;
+class InjectedFactory;
 class ProtocolGaduConnection;
 
 class GADUAPI GaduProtocol : public Protocol, public ConfigurationAwareObject
@@ -81,6 +82,7 @@ public:
 
 private:
 	QPointer<GaduServersManager> m_gaduServersManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	ProtocolGaduConnection *Connection;
 
@@ -127,6 +129,9 @@ private:
 	void configureServices();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void accountUpdated();
 
 	void connectionTimeoutTimerSlot();

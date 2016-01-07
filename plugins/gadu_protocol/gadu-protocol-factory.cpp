@@ -25,6 +25,7 @@
 #include "icons/kadu-icon.h"
 #include "status/status-type.h"
 
+#include "core/injected-factory.h"
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
@@ -60,9 +61,14 @@ void GaduProtocolFactory::setGaduServersManager(GaduServersManager *gaduServersM
 	m_gaduServersManager = gaduServersManager;
 }
 
+void GaduProtocolFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 {
-	return new GaduProtocol(m_gaduServersManager, account, this);
+	return m_injectedFactory->makeInjected<GaduProtocol>(m_gaduServersManager, account, this);
 }
 
 AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)

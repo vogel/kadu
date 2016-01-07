@@ -31,7 +31,6 @@ set (gui_SRCS
 	widgets/chat-widget/chat-widget-container-handler.cpp
 	widgets/chat-widget/chat-widget-container-handler-mapper.cpp
 	widgets/chat-widget/chat-widget-container-handler-repository.cpp
-	widgets/chat-widget/chat-widget-factory.cpp
 	widgets/chat-widget/chat-widget-manager.cpp
 	widgets/chat-widget/chat-widget-message-handler.cpp
 	widgets/chat-widget/chat-widget-message-handler-configuration.cpp
@@ -177,7 +176,6 @@ set (gui_SRCS
 	widgets/dialog/title-widget.cpp
 
 	windows/chat-window/chat-window.cpp
-	windows/chat-window/chat-window-factory.cpp
 	windows/chat-window/chat-window-manager.cpp
 	windows/chat-window/chat-window-module.cpp
 	windows/chat-window/chat-window-repository.cpp

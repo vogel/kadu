@@ -18,23 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_FACTORY_H
-#define FORMATTED_STRING_FACTORY_H
+#pragma once
+
+#include "formatted-string/formatted-string.h"
+#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <memory>
 #include <vector>
+#include <injeqt/injeqt.h>
 
-#include "formatted-string/formatted-string.h"
-#include "exports.h"
+class ImageStorageService;
 
 class QTextBlock;
 class QTextCharFormat;
 class QTextDocument;
 class QTextFragment;
 class QTextImageFormat;
-
-class ImageStorageService;
 
 /**
  * @addtogroup FormattedString
@@ -60,16 +60,6 @@ class KADUAPI FormattedStringFactory : public QObject
 public:
 	Q_INVOKABLE FormattedStringFactory();
 	virtual ~FormattedStringFactory();
-
-	/**
-	 * @short Set ImageStorageService to use by this factory.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageStorageService ImageStorageService to use by this factory
-	 *
-	 * ImageStorageService will be used to store images and change path to them to make FormattedString working even when Kadu instance
-	 * is moved to new location.
-	 */
-	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	/**
 	 * @short Create FormattedString instance from plain text.
@@ -125,10 +115,19 @@ public:
 	 */
 	bool isHtml(const QString &text) const;
 
+private slots:
+	/**
+	 * @short Set ImageStorageService to use by this factory.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageStorageService ImageStorageService to use by this factory
+	 *
+	 * ImageStorageService will be used to store images and change path to them to make FormattedString working even when Kadu instance
+	 * is moved to new location.
+	 */
+	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+
 };
 
 /**
  * @}
  */
-
-#endif // FORMATTED_STRING_FACTORY_H

@@ -18,10 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_IMAGE_REQUEST_SERVICE_H
-#define CHAT_IMAGE_REQUEST_SERVICE_H
+#pragma once
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "accounts/account.h"
 #include "protocols/services/chat-image.h"
@@ -64,6 +64,8 @@ class ChatImageRequestService : public QObject
 	bool acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const;
 
 private slots:
+	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+
 	void accountRegistered(Account account);
 	void accountUnregistered(Account account);
 
@@ -80,15 +82,6 @@ public:
 	 */
 	Q_INVOKABLE explicit ChatImageRequestService(QObject *parent = nullptr);
 	virtual ~ChatImageRequestService();
-
-	/**
-	 * @short Sets image storage to use by this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageStorageService image storage to use by this service
-	 *
-	 * This service is used to storing images received from peers.
-	 */
-	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	/**
 	 * @short Sets account manager to use by this service.
@@ -132,5 +125,3 @@ signals:
 /**
  * @}
  */
-
-#endif // CHAT_IMAGE_REQUEST_SERVICE_H

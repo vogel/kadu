@@ -19,10 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_CHAT_SERVICE_H
-#define GADU_CHAT_SERVICE_H
+#pragma once
 
 #include <libgadu.h>
+#include <injeqt/injeqt.h>
 
 #include "message/message-common.h"
 #include "protocols/protocol.h"
@@ -79,6 +79,15 @@ class GaduChatService : public ChatService
 	QTimer *RemoveTimer;
 
 private slots:
+	/**
+	 * @short Set image storage service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageStorageService image storage service for this service
+	 *
+	 * This service is used to get full file paths of chat images.
+	 */
+	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+
 	void removeTimeoutUndeliveredMessages();
 
 public:
@@ -93,15 +102,6 @@ public:
 	void setGaduChatImageService(GaduChatImageService *gaduChatImageService);
 
 	void setGaduFileTransferService(GaduFileTransferService *gaduFileTransferService);
-
-	/**
-	 * @short Set image storage service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageStorageService image storage service for this service
-	 *
-	 * This service is used to get full file paths of chat images.
-	 */
-	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	/**
 	 * @short Set formatted string factory for this service.
@@ -142,5 +142,3 @@ signals:
 /**
  * @}
  */
-
-#endif // GADU_CHAT_SERVICE_H

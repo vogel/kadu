@@ -20,11 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_CUSTOM_INPUT_H
-#define KADU_CUSTOM_INPUT_H
+#pragma once
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QTextEdit>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
 
@@ -46,6 +46,9 @@ class KADUAPI CustomInput : public QTextEdit
 	bool CopyPossible;
 
 private slots:
+	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+
 	void cursorPositionChangedSlot();
 	void setCopyPossible(bool available);
 
@@ -61,9 +64,6 @@ protected:
 
 public:
 	explicit CustomInput(Chat chat, QWidget *parent = 0);
-
-	void setImageStorageService(ImageStorageService *imageStorageService);
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void setFormattedString(const FormattedString &formattedString);
 	std::unique_ptr<FormattedString> formattedString() const;
@@ -81,5 +81,3 @@ signals:
 	void fontChanged(QFont font);
 
 };
-
-#endif

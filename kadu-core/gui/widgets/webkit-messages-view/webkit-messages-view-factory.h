@@ -26,9 +26,8 @@
 #include <QtCore/QPointer>
 
 class Chat;
-class ChatImageRequestService;
 class ChatStyleRendererFactoryProvider;
-class ImageStorageService;
+class InjectedFactory;
 class WebkitMessagesView;
 class WebkitMessagesViewHandlerFactory;
 
@@ -40,17 +39,15 @@ public:
 	explicit WebkitMessagesViewFactory(QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewFactory();
 
-	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
 	void setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider);
-	void setImageStorageService(ImageStorageService *imageStorageService);
+	void setInjectedFactory(InjectedFactory *injectedFactory);
 	void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 
 	owned_qptr<WebkitMessagesView> createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent);
 
 private:
-	QPointer<ChatImageRequestService> m_chatImageRequestService;
 	QPointer<ChatStyleRendererFactoryProvider> m_chatStyleRendererFactoryProvider;
-	QPointer<ImageStorageService> m_imageStorageService;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
 
 };

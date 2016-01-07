@@ -18,12 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGE_STORAGE_SERVICE_H
-#define IMAGE_STORAGE_SERVICE_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "exports.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class PathsProvider;
 
 class QUrl;
 
@@ -45,10 +48,8 @@ class KADUAPI ImageStorageService : public QObject
 {
 	Q_OBJECT
 
-	QString StoragePath;
-
 public:
-	explicit ImageStorageService(QObject *parent = 0);
+	Q_INVOKABLE explicit ImageStorageService(QObject *parent = nullptr);
 	virtual ~ImageStorageService();
 
 	/**
@@ -106,10 +107,16 @@ public:
 	 */
 	QUrl toFileUrl(const QUrl &url);
 
+private:
+	QPointer<PathsProvider> m_pathsProvider;
+	QString m_storagePath;
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
 };
 
 /**
  * @}
  */
-
-#endif // IMAGE_STORAGE_SERVICE_H

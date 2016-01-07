@@ -40,6 +40,7 @@
 #include "contacts/contact.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -67,6 +68,23 @@ QList<ChatEditBox *> chatEditBoxes;
 ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 		MainWindow(new BaseActionContext(this), "chat", parent), CurrentChat(chat)
 {
+}
+
+ChatEditBox::~ChatEditBox()
+{
+// 	disconnect(Core::instance()->chatWidgetActions()->colorSelector(), 0, this, 0);
+	disconnect(InputBox, 0, this, 0);
+
+	chatEditBoxes.removeAll(this);
+}
+
+void ChatEditBox::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ChatEditBox::init()
+{
 	chatEditBoxes.append(this);
 
 	Context = static_cast<BaseActionContext *>(actionContext());
@@ -87,10 +105,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
-	InputBox = new CustomInput(CurrentChat, this);
-	InputBox->setImageStorageService(Core::instance()->imageStorageService());
-	InputBox->setFormattedStringFactory(Core::instance()->formattedStringFactory());
-
+	InputBox = m_injectedFactory->makeInjected<CustomInput>(CurrentChat, this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
 
 	setCentralWidget(InputBox);
@@ -116,14 +131,6 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	connect(ChatConfigurationHolder::instance(), SIGNAL(chatConfigurationUpdated()), this, SLOT(configurationUpdated()));
 
 	configurationUpdated();
-}
-
-ChatEditBox::~ChatEditBox()
-{
-// 	disconnect(Core::instance()->chatWidgetActions()->colorSelector(), 0, this, 0);
-	disconnect(InputBox, 0, this, 0);
-
-	chatEditBoxes.removeAll(this);
 }
 
 void ChatEditBox::fontChanged(QFont font)

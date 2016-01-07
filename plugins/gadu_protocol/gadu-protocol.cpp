@@ -40,6 +40,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "network/proxy/network-proxy-manager.h"
@@ -69,6 +70,7 @@
 #include "gadu-account-details.h"
 
 #include "gadu-protocol.h"
+#include <core/injected-factory.h>
 
 GaduProtocol::GaduProtocol(GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
@@ -76,14 +78,32 @@ GaduProtocol::GaduProtocol(GaduServersManager *gaduServersManager, Account accou
 		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0),
 		SecureConnection{false}
 {
+}
+
+GaduProtocol::~GaduProtocol()
+{
+	kdebugf();
+
+	disconnect(account(), 0, this, 0);
+
+	kdebugf2();
+}
+
+void GaduProtocol::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void GaduProtocol::init()
+{
 	Connection = new ProtocolGaduConnection(this);
 	Connection->setConnectionProtocol(this);
 
-	CurrentAvatarService = new GaduAvatarService(account, this);
+	CurrentAvatarService = new GaduAvatarService(account(), this);
 
-	CurrentBuddyListSerializationService = new GaduBuddyListSerializationService{account, this};
+	CurrentBuddyListSerializationService = new GaduBuddyListSerializationService{account(), this};
 
-	CurrentChatImageService = new GaduChatImageService(account, this);
+	CurrentChatImageService = new GaduChatImageService(account(), this);
 	CurrentChatImageService->setConnection(Connection);
 
 	CurrentImTokenService = new GaduIMTokenService{this};
@@ -91,41 +111,40 @@ GaduProtocol::GaduProtocol(GaduServersManager *gaduServersManager, Account accou
 	CurrentFileTransferService = new GaduFileTransferService{this};
 	CurrentFileTransferService->setGaduIMTokenService(CurrentImTokenService);
 
-	CurrentChatService = new GaduChatService(account, this);
+	CurrentChatService = m_injectedFactory->makeInjected<GaduChatService>(account(), this);
 	CurrentChatService->setConnection(Connection);
 	CurrentChatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	CurrentChatService->setGaduChatImageService(CurrentChatImageService);
 	CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
-	CurrentChatService->setImageStorageService(Core::instance()->imageStorageService());
 	CurrentChatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
-	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(account, this);
+	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(account(), this);
 	CurrentContactPersonalInfoService->setConnection(Connection);
 
-	CurrentPersonalInfoService = new GaduPersonalInfoService(account, this);
+	CurrentPersonalInfoService = new GaduPersonalInfoService(account(), this);
 	CurrentPersonalInfoService->setConnection(Connection);
 
-	CurrentSearchService = new GaduSearchService(account, this);
+	CurrentSearchService = new GaduSearchService(account(), this);
 	CurrentSearchService->setConnection(Connection);
 
-	CurrentMultilogonService = new GaduMultilogonService(account, this);
+	CurrentMultilogonService = new GaduMultilogonService(account(), this);
 	CurrentMultilogonService->setConnection(Connection);
 
-	CurrentChatStateService = new GaduChatStateService(account, this);
+	CurrentChatStateService = new GaduChatStateService(account(), this);
 	CurrentChatStateService->setConnection(Connection);
 
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
-	CurrentDriveService = new GaduDriveService{account, this};
+	CurrentDriveService = new GaduDriveService{account(), this};
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
-	CurrentUserDataService = new GaduUserDataService{account, this};
+	CurrentUserDataService = new GaduUserDataService{account(), this};
 	CurrentUserDataService->setAvatarManager(AvatarManager::instance());
 	CurrentUserDataService->setContactManager(ContactManager::instance());
 
-	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
+	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
 	auto rosterService = new GaduRosterService{contacts, this};
 	rosterService->setConnection(Connection);
 	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
@@ -142,16 +161,7 @@ GaduProtocol::GaduProtocol(GaduServersManager *gaduServersManager, Account accou
 
 	configureServices();
 
-	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
-
-	kdebugf2();
-}
-
-GaduProtocol::~GaduProtocol()
-{
-	kdebugf();
-
-	disconnect(account(), 0, this, 0);
+	connect(account(), SIGNAL(updated()), this, SLOT(accountUpdated()));
 
 	kdebugf2();
 }

@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_TEXT_BROWSER_H
-#define KADU_TEXT_BROWSER_H
+#pragma once
 
 #include <QtCore/QPointer>
 #include <QtGui/QClipboard>
 #include <QtWebKitWidgets/QWebView>
+#include <injeqt/injeqt.h>
 
 #include "exports.h"
 
@@ -51,6 +51,8 @@ class KADUAPI KaduWebView : public QWebView
 	static void convertClipboardHtml(QClipboard::Mode mode);
 
 private slots:
+	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+
 	void hyperlinkClicked(const QUrl &anchor) const;
 	void loadStarted();
 	void loadFinishedSlot(bool success);
@@ -72,12 +74,9 @@ public:
 	explicit KaduWebView(QWidget *parent = 0);
 	virtual ~KaduWebView();
 
-	void setImageStorageService(ImageStorageService *imageStorageService);
 	ImageStorageService * imageStorageService() const;
 
 	void setUserFont(const QString &fontString, bool force);
 	QString userFontStyle(const QFont &font, bool force);
 
 };
-
-#endif

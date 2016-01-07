@@ -20,10 +20,9 @@
 #include "webkit-messages-view-factory.h"
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
-#include "services/chat-image-request-service.h"
-#include "services/image-storage-service.h"
 
 WebkitMessagesViewFactory::WebkitMessagesViewFactory(QObject *parent) :
 		QObject{parent}
@@ -34,19 +33,14 @@ WebkitMessagesViewFactory::~WebkitMessagesViewFactory()
 {
 }
 
-void WebkitMessagesViewFactory::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
-{
-	m_chatImageRequestService = chatImageRequestService;
-}
-
 void WebkitMessagesViewFactory::setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider)
 {
 	m_chatStyleRendererFactoryProvider = chatStyleRendererFactoryProvider;
 }
 
-void WebkitMessagesViewFactory::setImageStorageService(ImageStorageService *imageStorageService)
+void WebkitMessagesViewFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_imageStorageService = imageStorageService;
+	m_injectedFactory = injectedFactory;
 }
 
 void WebkitMessagesViewFactory::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
@@ -56,10 +50,8 @@ void WebkitMessagesViewFactory::setWebkitMessagesViewHandlerFactory(WebkitMessag
 
 owned_qptr<WebkitMessagesView> WebkitMessagesViewFactory::createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent)
 {
-	auto result = make_owned<WebkitMessagesView>(chat, supportTransparency, parent);
-	result->setChatImageRequestService(m_chatImageRequestService);
+	auto result = m_injectedFactory->makeOwned<WebkitMessagesView>(chat, supportTransparency, parent);
 	result->setChatStyleRendererFactory(m_chatStyleRendererFactoryProvider->chatStyleRendererFactory());
-	result->setImageStorageService(m_imageStorageService);
 	result->setWebkitMessagesViewHandlerFactory(m_webkitMessagesViewHandlerFactory);
 	result->refreshView();
 

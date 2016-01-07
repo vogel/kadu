@@ -55,7 +55,6 @@ class ChatStyleManager;
 class ChatStyleRendererFactoryProvider;
 class ChatWidgetActions;
 class ChatWidgetContainerHandlerRepository;
-class ChatWidgetFactory;
 class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
@@ -64,7 +63,6 @@ class ConfigurationUiHandlerRepository;
 class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
-class ImageStorageService;
 class Application;
 class KaduIcon;
 class KaduWindow;
@@ -108,7 +106,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
-	ImageStorageService *CurrentImageStorageService;
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
 	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;
@@ -166,7 +163,6 @@ public:
 
 	void activatePlugins();
 
-	ImageStorageService * imageStorageService() const;
 	MessageFilterService * messageFilterService() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
 	MessageRenderInfoFactory * messageRenderInfoFactory() const;
@@ -186,7 +182,6 @@ public:
 	RosterNotifier * rosterNotifier() const;
 	ChatWidgetActions * chatWidgetActions() const;
 	ChatWidgetContainerHandlerRepository * chatWidgetContainerHandlerRepository() const;
-	ChatWidgetFactory * chatWidgetFactory() const;
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	ChatStyleManager * chatStyleManager() const;

@@ -18,30 +18,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "image-storage-service.h"
+
+#include "icons/kadu-icon.h"
+#include "misc/paths-provider.h"
+
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QUrl>
 #include <QtCore/QUuid>
 
-#include "core/application.h"
-#include "icons/kadu-icon.h"
-#include "misc/paths-provider.h"
-
-#include "image-storage-service.h"
-
 ImageStorageService::ImageStorageService(QObject *parent) :
-		QObject(parent)
+		QObject{parent}
 {
-	StoragePath = Application::instance()->pathsProvider()->profilePath() + QLatin1String("images/");
 }
 
 ImageStorageService::~ImageStorageService()
 {
 }
 
+void ImageStorageService::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void ImageStorageService::init()
+{
+	m_storagePath = m_pathsProvider->profilePath() + QLatin1String("images/");
+}
+
 QString ImageStorageService::storagePath() const
 {
-	return StoragePath;
+	return m_storagePath;
 }
 
 QString ImageStorageService::fullPath(const QString &imageFilePath)

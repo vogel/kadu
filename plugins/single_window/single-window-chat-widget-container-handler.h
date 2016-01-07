@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class SingleWindow;
 enum class OpenChatActivation;
@@ -36,8 +37,6 @@ public:
 	Q_INVOKABLE explicit SingleWindowChatWidgetContainerHandler(QObject *parent = nullptr);
 	virtual ~SingleWindowChatWidgetContainerHandler();
 
-	void setSingleWindow(SingleWindow *singleWindow);
-
 	virtual bool acceptChat(Chat chat) const override;
 	virtual ChatWidget * addChat(Chat chat, OpenChatActivation activation) override;
 	virtual void removeChat(Chat chat) override;
@@ -48,5 +47,8 @@ public:
 
 private:
 	QPointer<SingleWindow> m_singleWindow;
+
+private slots:
+	INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
 
 };

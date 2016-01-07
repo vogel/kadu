@@ -28,10 +28,13 @@
 #include "protocols/services/chat-state-service.h"
 #include "exports.h"
 
+#include <injeqt/injeqt.h>
+
 class ChatImage;
 class ChatImageRequestService;
 class ChatStyleRendererConfiguration;
 class ChatStyleRendererFactory;
+class InjectedFactory;
 class Message;
 class WebkitMessagesViewHandler;
 class WebkitMessagesViewHandlerFactory;
@@ -45,9 +48,6 @@ public:
 	explicit WebkitMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = nullptr);
 	virtual ~WebkitMessagesView();
 
-	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
-	void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
-
 	void add(const Message &message);
 	void add(const SortedMessages &messages);
 	SortedMessages messages() const;
@@ -60,6 +60,8 @@ public:
 	void setChat(const Chat &chat);
 
 	bool supportTransparency() { return m_supportTransparency; }
+
+	void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 
 public slots:
 	void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
@@ -89,6 +91,7 @@ protected:
 
 private:
 	QPointer<ChatImageRequestService> m_chatImageRequestService;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
 
 	Chat m_chat;
@@ -106,6 +109,10 @@ private:
 	void setWebkitMessagesViewHandler(owned_qptr<WebkitMessagesViewHandler> handler);
 
 private slots:
+	INJEQT_SET void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
 	void sentMessageStatusChanged(const Message &message);
 	void chatStyleConfigurationUpdated();

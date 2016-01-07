@@ -19,10 +19,10 @@
 #include "contacts/contact-set.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
 #include "gui/taskbar-progress.h"
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-set-title.h"
@@ -43,31 +43,48 @@ SingleWindowManager::SingleWindowManager(QObject *parent) :
 		QObject(parent),
 		m_windowProvider(new SimpleProvider<QWidget *>(0))
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("SingleWindow", "RosterPosition", 0);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("SingleWindow", "KaduWindowWidth", 205);
-
-	m_window = new SingleWindow();
-	m_windowProvider->provideValue(m_window);
-
-	Core::instance()->mainWindowProvider()->installCustomProvider(m_windowProvider);
 }
 
 SingleWindowManager::~SingleWindowManager()
 {
+}
+
+void SingleWindowManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SingleWindowManager::setSingleWindow(SingleWindow *singleWindow)
+{
+	m_singleWindow = singleWindow;
+}
+
+void SingleWindowManager::init()
+{
+	m_configuration->deprecatedApi()->addVariable("SingleWindow", "RosterPosition", 0);
+	m_configuration->deprecatedApi()->addVariable("SingleWindow", "KaduWindowWidth", 205);
+
+	m_windowProvider->provideValue(m_singleWindow);
+
+	Core::instance()->mainWindowProvider()->installCustomProvider(m_windowProvider);
+}
+
+void SingleWindowManager::done()
+{
 	Core::instance()->mainWindowProvider()->removeCustomProvider(m_windowProvider);
 
 	m_windowProvider->provideValue(0);
-	delete m_window;
 }
 
 void SingleWindowManager::configurationUpdated()
 {
 	int newRosterPos = Application::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
-	if (m_window->rosterPosition() != newRosterPos)
-		m_window->changeRosterPos(newRosterPos);
+	if (m_singleWindow->rosterPosition() != newRosterPos)
+		m_singleWindow->changeRosterPos(newRosterPos);
 }
 
-SingleWindow::SingleWindow()
+SingleWindow::SingleWindow(QWidget *parent) :
+		QWidget{parent}
 {
 	new TaskbarProgress{Core::instance()->fileTransferManager(), this};
 	setWindowRole("kadu-single-window");
@@ -159,6 +176,11 @@ SingleWindow::~SingleWindow()
 		kadu->setVisible(visible);
 }
 
+void SingleWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void SingleWindow::titleChanged()
 {
 	setWindowTitle(m_title->fullTitle());
@@ -189,7 +211,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 	if (!chat)
 		return nullptr;
 
-	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, m_tabs).release();
+	auto chatWidget = m_injectedFactory->makeInjected<ChatWidget>(chat, m_tabs);
 	m_title->addChatWidget(chatWidget);
 	setConfiguration(chatWidget);
 

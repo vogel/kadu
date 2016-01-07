@@ -21,7 +21,6 @@
 
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
@@ -49,14 +48,9 @@ void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 	m_chatWidgetRepository = chatWidgetRepository;
 }
 
-void ChatWidgetManager::setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory)
-{
-	m_chatWidgetFactory = chatWidgetFactory;
-}
-
 ChatWidget * ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation)
 {
-	if (!chat || !m_chatWidgetFactory || !m_chatWidgetRepository)
+	if (!chat)
 		return nullptr;
 
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);

@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_EDIT_BOX_H
-#define CHAT_EDIT_BOX_H
+#pragma once
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
@@ -29,14 +28,20 @@
 
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class Action;
 class BaseActionContext;
 class ChatWidget;
 class CustomInput;
+class InjectedFactory;
 
 class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	Chat CurrentChat;
 	CustomInput *InputBox;
@@ -47,6 +52,9 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 	void setColorFromCurrentText(bool force);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void configurationUpdated();
 
 	void updateContext();
@@ -82,5 +90,3 @@ signals:
 	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
 
 };
-
-#endif // CHAT_EDIT_BOX_H

@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "misc/memory.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
@@ -39,6 +40,14 @@ public:
 	T * makeInjected(Args&& ...args)
 	{
 		auto result = new T(std::forward<Args>(args)...);
+		injectInto(result);
+		return result;
+	}
+
+	template<typename T, typename ...Args>
+	owned_qptr<T> makeOwned(Args&& ...args)
+	{
+		auto result = make_owned<T>(std::forward<Args>(args)...);
 		injectInto(result);
 		return result;
 	}

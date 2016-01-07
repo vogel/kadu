@@ -27,8 +27,8 @@
 #include <injeqt/injeqt.h>
 
 class ChatWindow;
-class ChatWindowFactory;
 class ChatWindowRepository;
+class InjectedFactory;
 
 class WindowChatWidgetContainerHandler : public ChatWidgetContainerHandler
 {
@@ -47,12 +47,12 @@ public:
     virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
 
 private:
-	QPointer<ChatWindowFactory> m_chatWindowFactory;
 	QPointer<ChatWindowRepository> m_chatWindowRepository;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
 	INJEQT_SET void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 	void chatWindowActivated(ChatWindow *chatWindow);
 

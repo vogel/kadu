@@ -46,6 +46,7 @@
 #include "contacts/model/contact-list-model.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -93,6 +94,38 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		CurrentContactActivity{ChatState::None},
 		SplittersInitialized{false}
 {
+}
+
+ChatWidget::~ChatWidget()
+{
+	kdebugf();
+	ComposingTimer.stop();
+
+	kaduStoreGeometry();
+
+	emit widgetDestroyed(CurrentChat);
+	emit widgetDestroyed(this);
+
+	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
+		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Gone);
+
+	CurrentChat.setOpen(false);
+
+	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
+}
+
+void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
+void ChatWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ChatWidget::init()
+{
 	kdebugf();
 
 	Title = new ChatWidgetTitle{this};
@@ -120,29 +153,6 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	CurrentChat.setOpen(true);
 
 	kdebugf2();
-}
-
-ChatWidget::~ChatWidget()
-{
-	kdebugf();
-	ComposingTimer.stop();
-
-	kaduStoreGeometry();
-
-	emit widgetDestroyed(CurrentChat);
-	emit widgetDestroyed(this);
-
-	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
-		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Gone);
-
-	CurrentChat.setOpen(false);
-
-	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
-}
-
-void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 void ChatWidget::createGui()
@@ -196,7 +206,7 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView.get(), SLOT(pageDown()));
 	HorizontalSplitter->addWidget(frame);
 
-	InputBox = new ChatEditBox(CurrentChat, this);
+	InputBox = m_injectedFactory->makeInjected<ChatEditBox>(CurrentChat, this);
 	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 	InputBox->setMinimumHeight(10);
 

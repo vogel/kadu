@@ -23,6 +23,7 @@
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
+#include <injeqt/injeqt.h>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -36,12 +37,12 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-set-title.h"
@@ -82,6 +83,59 @@ static void disableNewTab(Action *action)
 
 TabsManager::TabsManager(QObject *parent) :
 		QObject(parent), TargetTabs(-1)
+{
+}
+
+TabsManager::~TabsManager()
+{
+	kdebugf();
+
+	MenuInventory::instance()
+		->menu("buddy-list")
+		->removeAction(OpenInNewTabActionDescription)
+		->update();
+
+	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
+
+	if (m_chatWidgetRepository)
+		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
+
+	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
+	if (!Core::instance()->isClosing())
+		for (int i = TabDialog->count() - 1; i >= 0; i--)
+			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
+
+	delete TabDialog;
+	TabDialog = 0;
+
+	delete Menu;
+	Menu = 0;
+
+	kdebugf2();
+}
+
+void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (m_chatWidgetRepository)
+	{
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
+				this, SLOT(onDestroyingChat(ChatWidget *)));
+	}
+}
+
+void TabsManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void TabsManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void TabsManager::init()
 {
 	kdebugf();
 
@@ -126,54 +180,15 @@ TabsManager::TabsManager(QObject *parent) :
 	kdebugf2();
 }
 
-TabsManager::~TabsManager()
-{
-	kdebugf();
-
-	MenuInventory::instance()
-		->menu("buddy-list")
-		->removeAction(OpenInNewTabActionDescription)
-		->update();
-
-	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
-
-	if (m_chatWidgetRepository)
-		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
-
-	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
-	if (!Core::instance()->isClosing())
-		for (int i = TabDialog->count() - 1; i >= 0; i--)
-			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
-
-	delete TabDialog;
-	TabDialog = 0;
-
-	delete Menu;
-	Menu = 0;
-
-	kdebugf2();
-}
-
-void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
-{
-	m_chatWidgetRepository = chatWidgetRepository;
-
-	if (m_chatWidgetRepository)
-	{
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
-				this, SLOT(onDestroyingChat(ChatWidget *)));
-	}
-}
-
 void TabsManager::openStoredChatTabs()
 {
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		ensureLoaded();
 }
 
 void TabsManager::storeOpenedChatTabs()
 {
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		ensureStored();
 }
 
@@ -198,10 +213,10 @@ ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 {
 	kdebugf();
 
-	auto chatWidget = Core::instance()->chatWidgetFactory()->createChatWidget(chat, nullptr).release();
+	auto chatWidget = m_injectedFactory->makeInjected<ChatWidget>(chat, nullptr);
 	setConfiguration(chatWidget);
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
 
 	auto tmpAttached = chat.property("tabs:tmp-attached", false).toBool();
@@ -342,7 +357,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 	if (!chatWidget)
 	{
-		if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
+		if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
 		{
 			chat.addProperty("tabs:tmp-detached", true, CustomProperties::NonStorable);
 		}
@@ -452,7 +467,7 @@ void TabsManager::makePopupMenu()
 	ReopenClosedTabMenuAction = Menu->addAction(tr("Reopen closed tab"), this, SLOT(reopenClosedChat()));
 	ReopenClosedTabMenuAction->setEnabled(false);
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing"))
 		Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();
@@ -588,15 +603,15 @@ void TabsManager::store()
 
 bool TabsManager::shouldStore()
 {
-	return StorableObject::shouldStore() && Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true);
+	return StorableObject::shouldStore() && m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true);
 }
 
 void TabsManager::configurationUpdated()
 {
 	kdebugf();
 
-	ConfigTabsBelowChats = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "TabsBelowChats");
-	ConfigDefaultTabs = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs");
+	ConfigTabsBelowChats = m_configuration->deprecatedApi()->readBoolEntry("Chat", "TabsBelowChats");
+	ConfigDefaultTabs = m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs");
 
 	TabDialog->setTabPosition(ConfigTabsBelowChats ? QTabWidget::South : QTabWidget::North);
 
@@ -614,11 +629,11 @@ void TabsManager::configurationUpdated()
 
 void TabsManager::setConfiguration(ChatWidget* chatWidget)
 {
-	auto blinkChatTitle = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
+	auto blinkChatTitle = m_configuration->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
 	chatWidget->title()->setBlinkIconWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setBlinkTitleWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setComposingStatePosition(ChatConfigurationHolder::instance()->composingStatePosition());
-	chatWidget->title()->setShowUnreadMessagesCount(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
+	chatWidget->title()->setShowUnreadMessagesCount(m_configuration->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
 
 // TODO: share with single_window
@@ -656,17 +671,17 @@ void TabsManager::reopenClosedChat()
 
 void TabsManager::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "MoveTabLeft", "Ctrl+Alt+Left");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "MoveTabRight", "Ctrl+Alt+Right");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "SwitchTabLeft", "Alt+Left");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "SwitchTabRight", "Alt+Right");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "ReopenClosedTab", "Ctrl+Shift+T");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "TabsBelowChats", "false");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "DefaultTabs", "true");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Tabs", "CloseButton", "true");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Tabs", "OpenChatButton", "true");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Tabs", "OldStyleClosing", "false");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Tabs", "CloseButtonOnTab", "false");
+	m_configuration->deprecatedApi()->addVariable("ShortCuts", "MoveTabLeft", "Ctrl+Alt+Left");
+	m_configuration->deprecatedApi()->addVariable("ShortCuts", "MoveTabRight", "Ctrl+Alt+Right");
+	m_configuration->deprecatedApi()->addVariable("ShortCuts", "SwitchTabLeft", "Alt+Left");
+	m_configuration->deprecatedApi()->addVariable("ShortCuts", "SwitchTabRight", "Alt+Right");
+	m_configuration->deprecatedApi()->addVariable("ShortCuts", "ReopenClosedTab", "Ctrl+Shift+T");
+	m_configuration->deprecatedApi()->addVariable("Chat", "TabsBelowChats", "false");
+	m_configuration->deprecatedApi()->addVariable("Chat", "DefaultTabs", "true");
+	m_configuration->deprecatedApi()->addVariable("Tabs", "CloseButton", "true");
+	m_configuration->deprecatedApi()->addVariable("Tabs", "OpenChatButton", "true");
+	m_configuration->deprecatedApi()->addVariable("Tabs", "OldStyleClosing", "false");
+	m_configuration->deprecatedApi()->addVariable("Tabs", "CloseButtonOnTab", "false");
 }
 
 #include "moc_tabs.cpp"

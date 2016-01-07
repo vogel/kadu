@@ -2,6 +2,7 @@
 
 #include <QtCore/QList>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat-manager.h"
 #include "configuration/configuration-aware-object.h"
@@ -15,6 +16,7 @@ class QTabWidget;
 
 class ChatWidget;
 class ChatWidgetSetTitle;
+class InjectedFactory;
 
 enum class OpenChatActivation;
 
@@ -23,8 +25,8 @@ class SingleWindow : public QWidget, ConfigurationAwareObject
 	Q_OBJECT
 
 public:
-	SingleWindow();
-	~SingleWindow();
+	Q_INVOKABLE SingleWindow(QWidget *parent = nullptr);
+	virtual ~SingleWindow();
 
 	ChatWidget * addChat(Chat chat, OpenChatActivation activation);
 	void removeChat(Chat chat);
@@ -57,6 +59,8 @@ protected:
 	void resizeEvent(QResizeEvent *event);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	QSplitter *m_split;
 	QTabWidget *m_tabs;
 	QList<int> m_splitSizes;
@@ -67,6 +71,8 @@ private:
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void titleChanged();
 
 };
@@ -79,13 +85,19 @@ public:
 	Q_INVOKABLE explicit SingleWindowManager(QObject *parent = nullptr);
 	virtual ~SingleWindowManager();
 
-	SingleWindow * window() const { return m_window; }
-
 protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<SingleWindow> m_singleWindow;
+
 	std::shared_ptr<SimpleProvider<QWidget *>> m_windowProvider;
-	SingleWindow *m_window;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

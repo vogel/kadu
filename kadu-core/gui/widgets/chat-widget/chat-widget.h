@@ -18,14 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_WIDGET_H
-#define CHAT_WIDGET_H
+#pragma once
 
 #include <QtCore/QDateTime>
 #include <QtCore/QList>
+#include <QtCore/QPointer>
 #include <QtCore/QTimer>
 #include <QtGui/QIcon>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
@@ -42,6 +43,7 @@ class ChatWidgetTitle;
 class CustomInput;
 class FilteredTreeView;
 class FormattedStringFactory;
+class InjectedFactory;
 class Protocol;
 class SortedMessages;
 class TalkableProxyModel;
@@ -54,6 +56,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	friend class ChatWidgetManager;
 
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	Chat CurrentChat;
 	ChatTopBarContainerWidget *TopBarContainer;
@@ -85,6 +88,10 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	void composingStopped();
 
 private slots:
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void configurationUpdated();
 	void chatUpdated();
 
@@ -107,8 +114,6 @@ protected:
 public:
 	explicit ChatWidget(Chat chat, QWidget *parent = 0);
 	virtual ~ChatWidget();
-
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	Chat chat() const { return CurrentChat; }
 
@@ -165,5 +170,3 @@ signals:
 };
 
 Q_DECLARE_METATYPE(ChatWidget *);
-
-#endif // CHAT_WIDGET_H

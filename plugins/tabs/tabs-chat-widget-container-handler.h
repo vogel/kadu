@@ -50,5 +50,6 @@ private:
 
 private slots:
 	INJEQT_SET void setTabsManager(TabsManager *tabsManager);
+	INJEQT_INIT void init();
 
 };

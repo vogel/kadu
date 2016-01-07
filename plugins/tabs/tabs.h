@@ -48,6 +48,7 @@ class ActionDescription;
 class ChatWidget;
 class ChatWidgetRepository;
 class ChatWidgetSetTitle;
+class InjectedFactory;
 
 enum class OpenChatActivation;
 
@@ -60,6 +61,8 @@ class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
 	friend class TabWidget;
 
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	void createDefaultConfiguration();
 
@@ -92,6 +95,9 @@ class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
 
 	void onContextMenu(QWidget *w, const QPoint &pos);
 	void onMenuActionDetach();

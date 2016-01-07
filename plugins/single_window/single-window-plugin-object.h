@@ -26,6 +26,7 @@ class ChatWidgetContainerHandlerRepository;
 class PathsProvider;
 class SingleWindowChatWidgetContainerHandler;
 class SingleWindowManager;
+class SingleWindow;
 
 class SingleWindowPluginObject : public QObject
 {
@@ -41,6 +42,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SingleWindowChatWidgetContainerHandler> m_singleWindowChatWidgetContainerHandler;
 	QPointer<SingleWindowManager> m_singleWindowManager;
+	QPointer<SingleWindow> m_singleWindow;
 
 private slots:
 	INJEQT_INIT void init();
@@ -49,5 +51,6 @@ private slots:
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSingleWindowChatWidgetContainerHandler(SingleWindowChatWidgetContainerHandler *singleWindowChatWidgetContainerHandler);
 	INJEQT_SET void setSingleWindowManager(SingleWindowManager *singleWindowManager);
+	INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
 
 };
