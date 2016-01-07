@@ -26,7 +26,6 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "kadu/kadu-core/misc/paths-provider.h"
-#include "plugin/plugin-repository.h"
 
 ExtSoundPluginObject::ExtSoundPluginObject(QObject *parent) :
 		PluginObject{parent}
@@ -45,11 +44,6 @@ void ExtSoundPluginObject::setExternalPlayer(ExternalPlayer *externalPlayer)
 void ExtSoundPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
-}
-
-void ExtSoundPluginObject::setPluginRepository(PluginRepository *pluginRepository)
-{
-	m_pluginRepository = pluginRepository;
 }
 
 void ExtSoundPluginObject::setSoundManager(SoundManager *soundManager)

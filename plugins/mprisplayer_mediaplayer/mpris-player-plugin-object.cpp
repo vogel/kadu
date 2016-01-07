@@ -28,7 +28,6 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "plugin/plugin-repository.h"
 
 MprisPlayerPluginObject::MprisPlayerPluginObject(QObject *parent) :
 		PluginObject{parent}

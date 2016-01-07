@@ -24,8 +24,6 @@
 #include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
 
-#include "plugin/plugin-repository.h"
-
 #include <QtSql/QSqlDatabase>
 
 SqlHistoryPluginObject::SqlHistoryPluginObject(QObject *parent) :

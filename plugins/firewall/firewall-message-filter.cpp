@@ -63,7 +63,6 @@ Nowa funkcjonalnosc - Dorregaray
 #include "misc/paths-provider.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
-#include "plugin/plugin-repository.h"
 #include "status/status-container.h"
 #include "debug.h"
 

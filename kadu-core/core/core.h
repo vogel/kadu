@@ -206,7 +206,6 @@ public:
 	PluginActivationService * pluginActivationService() const;
 	PluginConflictResolver * pluginConflictResolver() const;
 	PluginDependencyHandler * pluginDependencyHandler() const;
-	PluginRepository * pluginRepository() const;
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
 

@@ -25,7 +25,6 @@
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "misc/paths-provider.h"
-#include "plugin/plugin-repository.h"
 
 MpdPlayerPluginObject::MpdPlayerPluginObject(QObject *parent) :
 		PluginObject{parent}

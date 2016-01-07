@@ -32,7 +32,6 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
-#include "plugin/plugin-repository.h"
 #include "debug.h"
 
 #include "plugins/docking/docking-plugin-object.h"

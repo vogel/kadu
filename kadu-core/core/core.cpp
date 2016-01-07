@@ -109,7 +109,6 @@
 #include "plugin/plugin-conflict-resolver.h"
 #include "plugin/plugin-dependency-handler.h"
 #include "plugin/plugin-manager.h"
-#include "plugin/plugin-repository.h"
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state-storage.h"
@@ -858,11 +857,6 @@ PluginConflictResolver * Core::pluginConflictResolver() const
 PluginDependencyHandler * Core::pluginDependencyHandler() const
 {
 	return m_injector.get<PluginDependencyHandler>();
-}
-
-PluginRepository * Core::pluginRepository() const
-{
-	return m_injector.get<PluginRepository>();
 }
 
 PluginStateManager * Core::pluginStateManager() const

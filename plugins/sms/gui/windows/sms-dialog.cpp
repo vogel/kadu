@@ -44,7 +44,6 @@
 #include "gui/windows/progress-window.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
-#include "plugin/plugin-repository.h"
 #include "talkable/filter/mobile-talkable-filter.h"
 #include "debug.h"
 

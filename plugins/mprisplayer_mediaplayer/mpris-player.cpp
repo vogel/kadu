@@ -29,7 +29,6 @@
 #include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
 #include "plugin/metadata/plugin-metadata.h"
-#include "plugin/plugin-repository.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
 

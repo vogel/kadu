@@ -26,7 +26,6 @@
 
 class ExternalPlayer;
 class PathsProvider;
-class PluginRepository;
 class SoundManager;
 
 class ExtSoundPluginObject : public PluginObject
@@ -41,7 +40,6 @@ public:
 private:
 	QPointer<ExternalPlayer> m_externalPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<PluginRepository> m_pluginRepository;
 	QPointer<SoundManager> m_soundManager;
 
 private slots:
@@ -49,7 +47,6 @@ private slots:
 	INJEQT_DONE void done();
 	INJEQT_SET void setExternalPlayer(ExternalPlayer *externalPlayer);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 
 };

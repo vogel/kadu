@@ -46,7 +46,6 @@
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-event.h"
-#include "plugin/plugin-repository.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
