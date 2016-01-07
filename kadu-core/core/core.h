@@ -47,7 +47,6 @@ class DefaultProvider;
 class AccountConfigurationWidgetFactoryRepository;
 class BuddyAdditionalDataDeleteHandlerManager;
 class BuddyConfigurationWidgetFactoryRepository;
-class BuddyDataWindowRepository;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatDataWindowRepository;
 class ChatImageRequestService;
@@ -110,7 +109,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
-	BuddyDataWindowRepository *CurrentBuddyDataWindowRepository;
 	ChatDataWindowRepository *CurrentChatDataWindowRepository;
 	ChatImageRequestService *CurrentChatImageRequestService;
 	ImageStorageService *CurrentImageStorageService;
@@ -171,7 +169,6 @@ public:
 
 	void activatePlugins();
 
-	BuddyDataWindowRepository * buddyDataWindowRepository() const;
 	ChatDataWindowRepository * chatDataWindowRepository() const;
 	ChatImageRequestService * chatImageRequestService() const;
 	ImageStorageService * imageStorageService() const;

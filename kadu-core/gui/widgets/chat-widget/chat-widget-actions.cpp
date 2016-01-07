@@ -29,6 +29,7 @@
 #include "contacts/contact.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/chat/leave-chat-action.h"
@@ -141,6 +142,19 @@ static void disableNoGadu(Action *action)
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {
+}
+
+ChatWidgetActions::~ChatWidgetActions()
+{
+}
+
+void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ChatWidgetActions::init()
+{
 	Actions::instance()->blockSignals();
 
 	MoreActions = new ActionDescription(0,
@@ -234,12 +248,8 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/change-color"), tr("Change Color")
 	);*/
 
-	EditTalkable = new EditTalkableAction(this);
+	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
 	LeaveChat = new LeaveChatAction(this);
-}
-
-ChatWidgetActions::~ChatWidgetActions()
-{
 }
 
 void ChatWidgetActions::configurationUpdated()

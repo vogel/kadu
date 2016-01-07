@@ -17,12 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_DATA_WINDOW_REPOSITORY_H
-#define BUDDY_DATA_WINDOW_REPOSITORY_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "buddies/buddy.h"
+
+#include <QtCore/QObject>
 
 class BuddyDataWindow;
 
@@ -30,13 +29,8 @@ class BuddyDataWindowRepository : public QObject
 {
 	Q_OBJECT
 
-	QMap<Buddy, BuddyDataWindow *> Windows;
-
-private slots:
-	void windowDestroyed(const Buddy &buddy);
-
 public:
-	explicit BuddyDataWindowRepository(QObject *parent = 0);
+	Q_INVOKABLE explicit BuddyDataWindowRepository(QObject *parent = nullptr);
 	virtual ~BuddyDataWindowRepository();
 
 	BuddyDataWindow * windowForBuddy(const Buddy &buddy);
@@ -45,6 +39,10 @@ public:
 public slots:
 	void showBuddyWindow(const Buddy &buddy);
 
-};
+private:
+	QMap<Buddy, BuddyDataWindow *> Windows;
 
-#endif // BUDDY_DATA_WINDOW_REPOSITORY_H
+private slots:
+	void windowDestroyed(const Buddy &buddy);
+
+};

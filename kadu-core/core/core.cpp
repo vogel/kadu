@@ -183,14 +183,12 @@ Core::Core(injeqt::injector &injector) :
 		m_injector(injector),
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
-		CurrentBuddyDataWindowRepository{nullptr},
 		CurrentChatDataWindowRepository{nullptr},
 		CurrentChatImageRequestService{nullptr},
 		CurrentImageStorageService{nullptr},
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
-		CurrentChatWidgetActions{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
@@ -600,7 +598,6 @@ void Core::createGui()
 
 void Core::runServices()
 {
-	CurrentBuddyDataWindowRepository = new BuddyDataWindowRepository(this);
 	CurrentChatDataWindowRepository = new ChatDataWindowRepository(this);
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
@@ -610,8 +607,6 @@ void Core::runServices()
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
 		Core::instance()->notificationEventRepository()->addNotificationEvent(notifyEvent);
-
-	CurrentChatWidgetActions = new ChatWidgetActions(this);
 
 	auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
 	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_injector.get<WindowChatWidgetContainerHandler>());
@@ -693,11 +688,6 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
-}
-
-BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
-{
-	return CurrentBuddyDataWindowRepository;
 }
 
 ChatDataWindowRepository * Core::chatDataWindowRepository() const
@@ -807,7 +797,7 @@ ChatWidgetContainerHandlerRepository * Core::chatWidgetContainerHandlerRepositor
 
 ChatWidgetActions * Core::chatWidgetActions() const
 {
-	return CurrentChatWidgetActions;
+	return m_injector.get<ChatWidgetActions>();
 }
 
 ChatWidgetManager * Core::chatWidgetManager() const

@@ -51,6 +51,11 @@ EditTalkableAction::~EditTalkableAction()
 {
 }
 
+void EditTalkableAction::setBuddyDataWindowRepository(BuddyDataWindowRepository *buddyDataWindowRepository)
+{
+	m_buddyDataWindowRepository = buddyDataWindowRepository;
+}
+
 int EditTalkableAction::actionRole(ActionContext *context) const
 {
 	if (context->roles().contains(ChatRole))
@@ -167,7 +172,7 @@ void EditTalkableAction::buddyActionTriggered(ActionContext *context)
 	if (buddy.isAnonymous())
 		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy, true))->show();
 	else
-		Core::instance()->buddyDataWindowRepository()->showBuddyWindow(buddy);
+		m_buddyDataWindowRepository->showBuddyWindow(buddy);
 }
 
 void EditTalkableAction::triggered(QWidget *widget, ActionContext *context, bool toggled)

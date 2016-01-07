@@ -18,21 +18,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EDIT_TALKABLE_ACTION_H
-#define EDIT_TALKABLE_ACTION_H
-
-#include <QtWidgets/QAction>
-
-#include "model/roles.h"
+#pragma once
 
 #include "gui/actions/action-description.h"
+#include "model/roles.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QAction>
+#include <injeqt/injeqt.h>
+
+class BuddyDataWindowRepository;
 class Buddy;
 class Chat;
 
 class EditTalkableAction : public ActionDescription
 {
 	Q_OBJECT
+
+	QPointer<BuddyDataWindowRepository> m_buddyDataWindowRepository;
 
 	int actionRole(ActionContext *context) const;
 	Chat actionChat(ActionContext *context) const;
@@ -47,6 +50,9 @@ class EditTalkableAction : public ActionDescription
 	void chatActionTriggered(ActionContext *context);
 	void buddyActionTriggered(ActionContext *context);
 
+private slots:
+	INJEQT_SET void setBuddyDataWindowRepository(BuddyDataWindowRepository *buddyDataWindowRepository);
+
 protected:
 	virtual void actionInstanceCreated(Action *action);
 	virtual void updateActionState(Action *action);
@@ -59,5 +65,3 @@ public:
 	void trigger(ActionContext *context);
 
 };
-
-#endif // EDIT_TALKABLE_ACTION_H

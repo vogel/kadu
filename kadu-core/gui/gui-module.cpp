@@ -19,8 +19,13 @@
 
 #include "gui-module.h"
 
+#include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/windows/buddy-data-window-repository.h"
+
 GuiModule::GuiModule()
 {
+	add_type<BuddyDataWindowRepository>();
+	add_type<ChatWidgetActions>();
 }
 
 GuiModule::~GuiModule()

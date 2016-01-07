@@ -17,12 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_WIDGET_ACTIONS
-#define CHAT_WIDGET_ACTIONS
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QAction;
 
@@ -30,11 +31,14 @@ class Action;
 class ActionDescription;
 class Buddy;
 class EditTalkableAction;
+class InjectedFactory;
 class LeaveChatAction;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	ActionDescription *MoreActions;
 	ActionDescription *AutoSend;
@@ -56,6 +60,9 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	void updateBlockingActions(Buddy buddy);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void autoSendActionCreated(Action *action);
 	void clearChatActionCreated(Action *action);
 	void sendActionCreated(Action *action);
@@ -77,7 +84,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit ChatWidgetActions(QObject *parent);
+	Q_INVOKABLE explicit ChatWidgetActions(QObject *parent = nullptr);
 	virtual ~ChatWidgetActions();
 
 	ActionDescription * bold() const { return Bold; }
@@ -89,5 +96,3 @@ public:
 // 	ActionDescription * colorSelector() { return ColorSelector; }
 
 };
-
-#endif // CHAT_WIDGET_ACTIONS
