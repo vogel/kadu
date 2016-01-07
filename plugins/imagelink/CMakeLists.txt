@@ -11,7 +11,7 @@ set (SOURCES
 	image-expander.cpp
 	image-expander-dom-visitor-provider.cpp
 	image-link-module.cpp
-	image-link-plugin-injector-factory.cpp
+	image-link-plugin-modules-factory.cpp
 	image-link-plugin-object.cpp
 	video-expander.cpp
 	video-expander-dom-visitor-provider.cpp

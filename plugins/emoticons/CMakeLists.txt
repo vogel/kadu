@@ -40,7 +40,7 @@ set (SOURCES
 
 	emoticon.cpp
 	emoticons-module.cpp
-	emoticons-plugin-injector-factory.cpp
+	emoticons-plugin-modules-factory.cpp
 	emoticons-plugin-object.cpp
 )
 

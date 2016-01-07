@@ -10,7 +10,7 @@ set (SOURCES
 	antistring-message-filter.cpp
 	antistring-module.cpp
 	antistring-notification.cpp
-	antistring-plugin-injector-factory.cpp
+	antistring-plugin-modules-factory.cpp
 	antistring-plugin-object.cpp
 )
 

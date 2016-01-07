@@ -22,7 +22,7 @@ set (SOURCES
 	sms-gateway.cpp
 	sms-internal-sender.cpp
 	sms-module.cpp
-	sms-plugin-injector-factory.cpp
+	sms-plugin-modules-factory.cpp
 	sms-plugin-object.cpp
 	sms-sender.cpp
 	sms-token-read-job.cpp

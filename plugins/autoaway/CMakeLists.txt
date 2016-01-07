@@ -7,7 +7,7 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	autoaway-configuration-ui-handler.cpp
 	autoaway-module.cpp
-	autoaway-plugin-injector-factory.cpp
+	autoaway-plugin-modules-factory.cpp
 	autoaway-plugin-object.cpp
 	autoaway-status-changer.cpp
 	autoaway.cpp

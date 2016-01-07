@@ -8,7 +8,7 @@ set (SOURCES
 	infos.cpp
 	infos_dialog.cpp
 	last-seen-module.cpp
-	last-seen-plugin-injector-factory.cpp
+	last-seen-plugin-modules-factory.cpp
 	last-seen-plugin-object.cpp
 )
 

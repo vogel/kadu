@@ -10,7 +10,7 @@ set (SOURCES
 	autoresponder-configurator.cpp
 	autoresponder-message-filter.cpp
 	autoresponder-module.cpp
-	autoresponder-plugin-injector-factory.cpp
+	autoresponder-plugin-modules-factory.cpp
 	autoresponder-plugin-object.cpp
 )
 

@@ -79,7 +79,7 @@ set (SOURCES
 	jabber-account-details.cpp
 	jabber-id-validator.cpp
 	jabber-module.cpp
-	jabber-plugin-injector-factory.cpp
+	jabber-plugin-modules-factory.cpp
 	jabber-plugin-object.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp

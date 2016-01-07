@@ -14,7 +14,7 @@ set (SOURCES
 	media-player-status-changer.cpp
 	mediaplayer-configuration-ui-handler.cpp
 	mediaplayer-module.cpp
-	mediaplayer-plugin-injector-factory.cpp
+	mediaplayer-plugin-modules-factory.cpp
 	mediaplayer-plugin-object.cpp
 	mediaplayer.cpp
 )

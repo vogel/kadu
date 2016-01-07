@@ -18,7 +18,7 @@ set (SOURCES
 	pixmap-grabber.cpp
 	screen-shot-saver.cpp
 	screenshot-module.cpp
-	screenshot-plugin-injector-factory.cpp
+	screenshot-plugin-modules-factory.cpp
 	screenshot-plugin-object.cpp
 	screenshot-taker.cpp
 	screenshot.cpp

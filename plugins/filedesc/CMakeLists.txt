@@ -6,7 +6,7 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	filedesc-module.cpp
-	filedesc-plugin-injector-factory.cpp
+	filedesc-plugin-modules-factory.cpp
 	filedesc-plugin-object.cpp
 	filedesc-status-changer.cpp
 	filedesc.cpp

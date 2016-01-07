@@ -8,7 +8,7 @@ set (SOURCES
 	
 	simpleview-config-ui.cpp
 	simpleview-module.cpp
-	simpleview-plugin-injector-factory.cpp
+	simpleview-plugin-modules-factory.cpp
 	simpleview-plugin-object.cpp
 	simpleview.cpp
 )

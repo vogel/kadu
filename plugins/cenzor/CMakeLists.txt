@@ -12,7 +12,7 @@ set (SOURCES
 
 	cenzor-message-filter.cpp
 	cenzor-module.cpp
-	cenzor-plugin-injector-factory.cpp
+	cenzor-plugin-modules-factory.cpp
 	cenzor-plugin-object.cpp
 )
 

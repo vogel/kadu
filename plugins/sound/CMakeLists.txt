@@ -24,7 +24,7 @@ set (SOURCES
 	sound-manager.cpp
 	sound-module.cpp
 	sound-player.cpp
-	sound-plugin-injector-factory.cpp
+	sound-plugin-modules-factory.cpp
 	sound-plugin-object.cpp
 	sound-theme-manager.cpp
 )

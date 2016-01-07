@@ -8,7 +8,7 @@ set (SOURCES
 	mpd-config.cpp
 	mpd-mediaplayer.cpp
 	mpd-player-module.cpp
-	mpd-player-plugin-injector-factory.cpp
+	mpd-player-plugin-modules-factory.cpp
 	mpd-player-plugin-object.cpp
 )
 

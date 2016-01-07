@@ -7,7 +7,7 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	chat-notifier.cpp
 	chat-notify-module.cpp
-	chat-notify-plugin-injector-factory.cpp
+	chat-notify-plugin-modules-factory.cpp
 	chat-notify-plugin-object.cpp
 )
 

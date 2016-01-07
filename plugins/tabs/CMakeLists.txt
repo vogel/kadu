@@ -9,7 +9,7 @@ set (SOURCES
 	gui/widgets/tab-widget.cpp
 	tabs-chat-widget-container-handler.cpp
 	tabs-module.cpp
-	tabs-plugin-injector-factory.cpp
+	tabs-plugin-modules-factory.cpp
 	tabs-plugin-object.cpp
 	tabs.cpp
 )

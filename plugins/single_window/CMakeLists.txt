@@ -7,7 +7,7 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	single-window-chat-widget-container-handler.cpp
 	single-window-module.cpp
-	single-window-plugin-injector-factory.cpp
+	single-window-plugin-modules-factory.cpp
 	single-window-plugin-object.cpp
 	single-window.cpp
 )

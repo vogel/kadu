@@ -9,7 +9,7 @@ set (SOURCES
 
 	autostatus-actions.cpp
 	autostatus-module.cpp
-	autostatus-plugin-injector-factory.cpp
+	autostatus-plugin-modules-factory.cpp
 	autostatus-plugin-object.cpp
 	autostatus-service.cpp
 	autostatus-status-changer.cpp

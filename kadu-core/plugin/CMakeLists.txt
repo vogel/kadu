@@ -25,7 +25,7 @@ set (plugin_SRCS
 	state/plugin-state-storage-09.cpp
 	plugin-conflict-resolver.cpp
 	plugin-dependency-handler.cpp
-	plugin-injector-factory.cpp
+	plugin-modules-factory.cpp
 	plugin-manager.cpp
 	plugin-module.cpp
 	plugin-object.cpp

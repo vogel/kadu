@@ -43,7 +43,7 @@ set (SOURCES
 	history.cpp
 	history-messages-prepender.cpp
 	history-module.cpp
-	history-plugin-injector-factory.cpp
+	history-plugin-modules-factory.cpp
 	history-plugin-object.cpp
 	history-query.cpp
 	history-query-result.cpp

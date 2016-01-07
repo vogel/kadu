@@ -8,7 +8,7 @@ set (SOURCES
 	docking-notifier.cpp
 	docking-notify-configuration-widget.cpp
 	docking-notify-module.cpp
-	docking-notify-plugin-injector-factory.cpp
+	docking-notify-plugin-modules-factory.cpp
 	docking-notify-plugin-object.cpp
 )
 

@@ -11,7 +11,7 @@ set (SOURCES
 	hints-configuration-ui-handler.cpp
 	hints-configuration-window.cpp
 	hints-module.cpp
-	hints-plugin-injector-factory.cpp
+	hints-plugin-modules-factory.cpp
 	hints-plugin-object.cpp
 	hints-configuration-widget.cpp
 )

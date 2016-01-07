@@ -8,7 +8,7 @@ set (SOURCES
 	exec-configuration-widget.cpp
 	exec-notifier.cpp
 	exec-notify-module.cpp
-	exec-notify-plugin-injector-factory.cpp
+	exec-notify-plugin-modules-factory.cpp
 	exec-notify-plugin-object.cpp
 )
 

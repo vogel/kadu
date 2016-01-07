@@ -8,7 +8,7 @@ set (SOURCES
 	word-fix-configuration-ui-handler.cpp
 	word-fix-formatted-string-visitor.cpp
 	word-fix-module.cpp
-	word-fix-plugin-injector-factory.cpp
+	word-fix-plugin-modules-factory.cpp
 	word-fix-plugin-object.cpp
 	word-fix.cpp
 )

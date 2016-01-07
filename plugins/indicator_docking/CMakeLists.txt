@@ -13,7 +13,7 @@ set (SOURCES
 	libqmessagingmenu/qmessaging-menu-source.cpp
 
 	indicator-docking-module.cpp
-	indicator-docking-plugin-injector-factory.cpp
+	indicator-docking-plugin-modules-factory.cpp
 	indicator-docking-plugin-object.cpp
 	indicator-docking.cpp
 )

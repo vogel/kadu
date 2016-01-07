@@ -42,7 +42,7 @@ set (SOURCES
 	otr-op-data-factory.cpp
 	otr-peer-identity-verification-service.cpp
 	otr-peer-identity-verification-state.cpp
-	otr-plugin-injector-factory.cpp
+	otr-plugin-modules-factory.cpp
 	otr-plugin-object.cpp
 	otr-policy.cpp
 	otr-policy-service.cpp

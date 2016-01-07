@@ -7,7 +7,7 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	auto-hide-configuration-ui-handler.cpp
 	auto-hide-module.cpp
-	auto-hide-plugin-injector-factory.cpp
+	auto-hide-plugin-modules-factory.cpp
 	auto-hide-plugin-object.cpp
 	auto-hide.cpp
 )

@@ -10,7 +10,7 @@ kadu_api_directories (plugins/idle
 
 set (SOURCES
 	idle-module.cpp
-	idle-plugin-injector-factory.cpp
+	idle-plugin-modules-factory.cpp
 	idle-plugin-object.cpp
 )
 

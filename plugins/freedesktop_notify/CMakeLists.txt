@@ -7,7 +7,7 @@ find_package (Kadu REQUIRED CONFIG)
 set (SOURCES
 	freedesktop-notifier.cpp
 	freedesktop-notify-module.cpp
-	freedesktop-notify-plugin-injector-factory.cpp
+	freedesktop-notify-plugin-modules-factory.cpp
 	freedesktop-notify-plugin-object.cpp
 )
 

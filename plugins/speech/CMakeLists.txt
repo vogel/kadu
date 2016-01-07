@@ -8,7 +8,7 @@ set (SOURCES
 	speech-configuration-ui-handler.cpp
 	speech-configuration-widget.cpp
 	speech-module.cpp
-	speech-plugin-injector-factory.cpp
+	speech-plugin-modules-factory.cpp
 	speech-plugin-object.cpp
 	speech.cpp
 )

@@ -9,7 +9,7 @@ set (SOURCES
 	firewall-message-filter.cpp
 	firewall-module.cpp
 	firewall-notification.cpp
-	firewall-plugin-injector-factory.cpp
+	firewall-plugin-modules-factory.cpp
 	firewall-plugin-object.cpp
 )
 

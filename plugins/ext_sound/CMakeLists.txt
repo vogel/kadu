@@ -6,7 +6,7 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	ext-sound-module.cpp
-	ext-sound-plugin-injector-factory.cpp
+	ext-sound-plugin-modules-factory.cpp
 	ext-sound-plugin-object.cpp
 	external-player.cpp
 )

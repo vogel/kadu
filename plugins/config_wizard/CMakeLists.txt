@@ -14,7 +14,7 @@ set (SOURCES
 
 	config-wizard-actions.cpp
 	config-wizard-module.cpp
-	config-wizard-plugin-injector-factory.cpp
+	config-wizard-plugin-modules-factory.cpp
 	config-wizard-plugin-object.cpp
 )
 

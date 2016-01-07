@@ -24,7 +24,7 @@
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
-#include "plugin/plugin-injector-factory.h"
+#include "plugin/plugin-modules-factory.h"
 #include "plugin/plugin-object.h"
 #include "debug.h"
 
@@ -79,8 +79,8 @@ injeqt::injector PluginLoader::createPluginInjector(const QString &pluginName, i
 {
 	try
 	{
-		if (auto pluginInjectorFactory = qobject_cast<PluginInjectorFactory *>(m_pluginLoader->instance()))
-			return pluginInjectorFactory->createPluginInjector(injector);
+		if (auto pluginModulesFactory = qobject_cast<PluginModulesFactory *>(m_pluginLoader->instance()))
+			return injeqt::injector{std::vector<injeqt::injector *>{&injector}, pluginModulesFactory->createPluginModules()};
 		else
 			return injeqt::injector{};
 	}

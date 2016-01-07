@@ -12,7 +12,7 @@ set (SOURCES
 	libqunity/qunity.cpp
 
 	unity-integration-module.cpp
-	unity-integration-plugin-injector-factory.cpp
+	unity-integration-plugin-modules-factory.cpp
 	unity-integration-plugin-object.cpp
 	unity-integration.cpp
 )

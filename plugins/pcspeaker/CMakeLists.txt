@@ -8,7 +8,7 @@ set (SOURCES
 	pcspeaker-configuration-widget.cpp
 	pcspeaker-module.cpp
 	pcspeaker-notifier.cpp
-	pcspeaker-plugin-injector-factory.cpp
+	pcspeaker-plugin-modules-factory.cpp
 	pcspeaker-plugin-object.cpp
 )
 

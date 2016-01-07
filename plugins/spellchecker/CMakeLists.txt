@@ -9,7 +9,7 @@ set (SOURCES
 	highlighter.cpp
 	spellchecker-configuration-ui-handler.cpp
 	spellchecker-module.cpp
-	spellchecker-plugin-injector-factory.cpp
+	spellchecker-plugin-modules-factory.cpp
 	spellchecker-plugin-object.cpp
 	spellchecker.cpp
 	suggester.cpp

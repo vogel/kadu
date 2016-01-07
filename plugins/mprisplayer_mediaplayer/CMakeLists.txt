@@ -9,7 +9,7 @@ set (SOURCES
 
 	mpris-player-configuration-ui-handler.cpp
 	mpris-player-module.cpp
-	mpris-player-plugin-injector-factory.cpp
+	mpris-player-plugin-modules-factory.cpp
 	mpris-player-plugin-object.cpp
 	mpris-player.cpp
 	track-info.cpp

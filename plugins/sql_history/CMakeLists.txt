@@ -17,7 +17,7 @@ set (SOURCES
 	storage/sql-restore.cpp
 
 	sql-history-module.cpp
-	sql-history-plugin-injector-factory.cpp
+	sql-history-plugin-modules-factory.cpp
 	sql-history-plugin-object.cpp
 )
 

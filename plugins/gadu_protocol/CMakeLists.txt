@@ -94,7 +94,7 @@ set (SOURCES
 	gadu-account-details.cpp
 	gadu-id-validator.cpp
 	gadu-module.cpp
-	gadu-plugin-injector-factory.cpp
+	gadu-plugin-modules-factory.cpp
 	gadu-plugin-object.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp

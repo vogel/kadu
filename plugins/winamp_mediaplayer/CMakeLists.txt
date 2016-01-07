@@ -6,7 +6,7 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	winamp-module.cpp
-	winamp-plugin-injector-factory.cpp
+	winamp-plugin-modules-factory.cpp
 	winamp-plugin-object.cpp
 	winamp.cpp
 )
