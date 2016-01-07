@@ -183,7 +183,6 @@ Core::Core(injeqt::injector &injector) :
 		m_injector(injector),
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
-		CurrentChatImageRequestService{nullptr},
 		CurrentImageStorageService{nullptr},
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentMessageRenderInfoFactory{nullptr},
@@ -597,7 +596,6 @@ void Core::createGui()
 
 void Core::runServices()
 {
-	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
@@ -625,11 +623,11 @@ void Core::runServices()
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
-	configurator->setChatImageRequestService(CurrentChatImageRequestService);
+	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
-	CurrentChatImageRequestService->setImageStorageService(CurrentImageStorageService);
-	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
-	CurrentChatImageRequestService->setContactManager(ContactManager::instance());
+	m_injector.get<ChatImageRequestService>()->setImageStorageService(CurrentImageStorageService);
+	m_injector.get<ChatImageRequestService>()->setAccountManager(AccountManager::instance());
+	m_injector.get<ChatImageRequestService>()->setContactManager(ContactManager::instance());
 
 	MessageManager::instance()->setMessageFilterService(m_injector.get<MessageFilterService>());
 	MessageManager::instance()->setMessageTransformerService(CurrentMessageTransformerService);
@@ -653,7 +651,7 @@ void Core::runServices()
 	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(CurrentWebkitMessagesViewDisplayFactory.get());
 
 	CurrentWebkitMessagesViewFactory = make_owned<WebkitMessagesViewFactory>(this);
-	CurrentWebkitMessagesViewFactory->setChatImageRequestService(CurrentChatImageRequestService);
+	CurrentWebkitMessagesViewFactory->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(m_injector.get<ChatStyleRendererFactoryProvider>());
 	CurrentWebkitMessagesViewFactory->setImageStorageService(CurrentImageStorageService);
 	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
@@ -686,11 +684,6 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
-}
-
-ChatImageRequestService * Core::chatImageRequestService() const
-{
-	return CurrentChatImageRequestService;
 }
 
 ImageStorageService * Core::imageStorageService() const

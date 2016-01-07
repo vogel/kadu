@@ -108,7 +108,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
-	ChatImageRequestService *CurrentChatImageRequestService;
 	ImageStorageService *CurrentImageStorageService;
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
 	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
@@ -167,7 +166,6 @@ public:
 
 	void activatePlugins();
 
-	ChatImageRequestService * chatImageRequestService() const;
 	ImageStorageService * imageStorageService() const;
 	MessageFilterService * messageFilterService() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;

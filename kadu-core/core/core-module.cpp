@@ -33,6 +33,7 @@
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "misc/paths-provider.h"
 #include "protocols/protocols-manager.h"
+#include "services/chat-image-request-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
@@ -50,6 +51,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<BuddyAdditionalDataDeleteHandlerManager>();
 	add_type<BuddyConfigurationWidgetFactoryRepository>();
 	add_type<ChatConfigurationWidgetFactoryRepository>();
+	add_type<ChatImageRequestService>();
 	add_type<ChatManager>();
 	add_type<ChatTopBarWidgetFactoryRepository>();
 	add_type<ClipboardHtmlTransformerService>();

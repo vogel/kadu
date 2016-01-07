@@ -78,7 +78,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param parent QObject parent
 	 */
-	explicit ChatImageRequestService(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatImageRequestService(QObject *parent = nullptr);
 	virtual ~ChatImageRequestService();
 
 	/**
