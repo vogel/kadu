@@ -36,7 +36,7 @@ endif ()
 
 # injeqt
 find_package (PkgConfig)
-pkg_check_modules (INJEQT REQUIRED injeqt>=1.0.0)
+pkg_check_modules (INJEQT REQUIRED injeqt>=1.0.99)
 set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
 include_directories (${INJEQT_INCLUDEDIR})
 link_directories (${INJEQT_LIBRARY_DIRS})
