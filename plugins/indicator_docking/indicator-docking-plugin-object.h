@@ -19,14 +19,12 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class IndicatorDocking;
 
-class IndicatorDockingPluginObject : public PluginObject
+class IndicatorDockingPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

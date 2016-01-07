@@ -29,7 +29,6 @@ set (plugin_SRCS
 	plugin-modules-factory.cpp
 	plugin-manager.cpp
 	plugin-module.cpp
-	plugin-object.cpp
 	plugin-repository.cpp
 )
 

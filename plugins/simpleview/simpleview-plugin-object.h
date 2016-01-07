@@ -19,15 +19,13 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class PathsProvider;
 class SimpleView;
 
-class SimpleviewPluginObject : public PluginObject
+class SimpleviewPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

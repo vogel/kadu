@@ -19,15 +19,13 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class NotificationManager;
 class PCSpeakerNotifier;
 
-class PCSpeakerPluginObject : public PluginObject
+class PCSpeakerPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

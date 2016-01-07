@@ -22,7 +22,7 @@
 #include "infos.h"
 
 LastSeenPluginObject::LastSeenPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

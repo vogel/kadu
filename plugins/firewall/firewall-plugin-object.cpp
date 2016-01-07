@@ -31,7 +31,7 @@
 #include "status/status-changer-manager.h"
 
 FirewallPluginObject::FirewallPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

@@ -21,14 +21,12 @@
 
 #include "idle-exports.h"
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class Idle;
 
-class IDLEAPI IdlePluginObject : public PluginObject
+class IDLEAPI IdlePluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

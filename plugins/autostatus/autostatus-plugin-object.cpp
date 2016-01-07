@@ -28,7 +28,7 @@
 #include "status/status-changer-manager.h"
 
 AutostatusPluginObject::AutostatusPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

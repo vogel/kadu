@@ -27,7 +27,7 @@
 #include "misc/paths-provider.h"
 
 WordFixPluginObject::WordFixPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

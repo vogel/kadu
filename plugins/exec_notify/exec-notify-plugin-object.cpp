@@ -24,7 +24,7 @@
 #include "notification/notification-manager.h"
 
 ExecNotifyPluginObject::ExecNotifyPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

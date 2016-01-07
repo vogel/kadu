@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include "misc/memory.h"
 
 #include <QtCore/QPointer>
@@ -32,7 +30,7 @@ class ConfigurationUiHandlerRepository;
 class MessageFilterService;
 class PathsProvider;
 
-class AutoresponderPluginObject : public PluginObject
+class AutoresponderPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

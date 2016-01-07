@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -31,7 +29,7 @@ class MessageFilterService;
 class NotificationEventRepository;
 class PathsProvider;
 
-class FirewallPluginObject : public PluginObject
+class FirewallPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

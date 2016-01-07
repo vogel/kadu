@@ -21,8 +21,6 @@
 
 #include "sound-exports.h"
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -38,7 +36,7 @@ class SoundConfigurationUiHandler;
 class SoundManager;
 class SoundNotifier;
 
-class SOUNDAPI SoundPluginObject : public PluginObject
+class SOUNDAPI SoundPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

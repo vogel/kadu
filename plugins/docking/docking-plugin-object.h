@@ -21,15 +21,13 @@
 
 #include "docking-exports.h"
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class Docking;
 class PathsProvider;
 
-class DOCKINGAPI DockingPluginObject : public PluginObject
+class DOCKINGAPI DockingPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

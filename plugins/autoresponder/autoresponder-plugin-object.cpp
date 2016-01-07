@@ -28,7 +28,7 @@
 #include "message/message-filter-service.h"
 
 AutoresponderPluginObject::AutoresponderPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

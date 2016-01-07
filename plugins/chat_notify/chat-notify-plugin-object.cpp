@@ -26,7 +26,7 @@
 #include "notification/notification-manager.h"
 
 ChatNotifyPluginObject::ChatNotifyPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

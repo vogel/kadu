@@ -21,8 +21,6 @@
 
 #include "mediaplayer-exports.h"
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -31,7 +29,7 @@ class MediaplayerConfigurationUiHandler;
 class MediaPlayer;
 class PathsProvider;
 
-class MEDIAPLAYERAPI MediaplayerPluginObject : public PluginObject
+class MEDIAPLAYERAPI MediaplayerPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

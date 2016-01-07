@@ -22,7 +22,7 @@
 #include "idle.h"
 
 IdlePluginObject::IdlePluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

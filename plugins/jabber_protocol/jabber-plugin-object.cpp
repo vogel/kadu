@@ -32,7 +32,7 @@
 #include "url-handlers/url-handler-manager.h"
 
 JabberPluginObject::JabberPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

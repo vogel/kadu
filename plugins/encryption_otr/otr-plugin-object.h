@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -44,7 +42,7 @@ class OtrSessionService;
 class OtrTrustLevelService;
 class RawMessageTransformerService;
 
-class OtrPluginObject : public PluginObject
+class OtrPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

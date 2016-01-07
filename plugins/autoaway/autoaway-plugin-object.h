@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include "misc/memory.h"
 
 #include <QtCore/QPointer>
@@ -33,7 +31,7 @@ class ConfigurationUiHandlerRepository;
 class PathsProvider;
 class StatusChangerManager;
 
-class AutoawayPluginObject : public PluginObject
+class AutoawayPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

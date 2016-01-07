@@ -29,7 +29,6 @@
 class QPluginLoader;
 
 class PluginInjectorProvider;
-class PluginObject;
 
 /**
  * @addtogroup Plugin
@@ -66,11 +65,6 @@ public:
 	 * @short Unload plugin dynamic library file.
 	 */
 	virtual ~PluginLoader() noexcept;
-
-	/**
-	 * @return root object of plugin.
-	 */
-	PluginObject * pluginObject() const noexcept;
 
 	/**
 	 * @return Injector of plugin.

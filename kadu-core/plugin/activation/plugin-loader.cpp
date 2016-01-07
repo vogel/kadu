@@ -26,7 +26,6 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-injector-provider.h"
 #include "plugin/plugin-modules-factory.h"
-#include "plugin/plugin-object.h"
 #include "debug.h"
 
 #include <QtCore/QCoreApplication>
@@ -61,11 +60,6 @@ PluginLoader::~PluginLoader() noexcept
 	// and next load we are in trouble - application crashes
 	// anyway, I don't expect users to unload plugins very frequently
 	// m_pluginLoader->unload();
-}
-
-PluginObject * PluginLoader::pluginObject() const noexcept
-{
-	return m_pluginInjector.get<PluginObject>();
 }
 
 injeqt::injector & PluginLoader::injector() const noexcept

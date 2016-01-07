@@ -46,7 +46,7 @@
 #include <libotr/proto.h>
 
 OtrPluginObject::OtrPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 	m_otrAvailable = otrl_init(OTRL_VERSION_MAJOR, OTRL_VERSION_MINOR, OTRL_VERSION_SUB) == 0;
 }

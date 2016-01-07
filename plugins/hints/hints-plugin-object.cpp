@@ -26,7 +26,7 @@
 #include "misc/paths-provider.h"
 
 HintsPluginObject::HintsPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

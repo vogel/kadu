@@ -28,7 +28,7 @@
 #include "kadu/kadu-core/misc/paths-provider.h"
 
 ExtSoundPluginObject::ExtSoundPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

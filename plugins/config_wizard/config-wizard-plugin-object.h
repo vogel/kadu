@@ -19,15 +19,13 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class ConfigWizardActions;
 class PluginStateService;
 
-class ConfigWizardPluginObject : public PluginObject
+class ConfigWizardPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

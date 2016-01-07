@@ -25,7 +25,7 @@
 #include "misc/paths-provider.h"
 
 SimpleviewPluginObject::SimpleviewPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

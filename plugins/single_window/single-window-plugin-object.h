@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -29,7 +27,7 @@ class PathsProvider;
 class SingleWindowChatWidgetContainerHandler;
 class SingleWindowManager;
 
-class SingleWindowPluginObject : public PluginObject
+class SingleWindowPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

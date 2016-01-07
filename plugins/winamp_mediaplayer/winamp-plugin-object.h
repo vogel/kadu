@@ -19,15 +19,13 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class PluginRepository;
 class WinampMediaPlayer;
 
-class WinampPluginObject : public PluginObject
+class WinampPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

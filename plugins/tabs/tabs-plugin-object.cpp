@@ -27,7 +27,7 @@
 #include "misc/paths-provider.h"
 
 TabsPluginObject::TabsPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

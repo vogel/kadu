@@ -25,7 +25,7 @@
 #include "plugin/state/plugin-state.h"
 
 ConfigWizardPluginObject::ConfigWizardPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

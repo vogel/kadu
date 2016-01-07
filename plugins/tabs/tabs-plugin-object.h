@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -29,7 +27,7 @@ class PathsProvider;
 class TabsChatWidgetContainerHandler;
 class TabsManager;
 
-class TabsPluginObject : public PluginObject
+class TabsPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

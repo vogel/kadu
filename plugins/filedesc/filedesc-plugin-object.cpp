@@ -26,7 +26,7 @@
 #include "status/status-changer-manager.h"
 
 FiledescPluginObject::FiledescPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

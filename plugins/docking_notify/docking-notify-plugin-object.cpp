@@ -24,7 +24,7 @@
 #include "notification/notification-manager.h"
 
 DockingNotifyPluginObject::DockingNotifyPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

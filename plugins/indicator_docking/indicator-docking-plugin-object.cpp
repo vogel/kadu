@@ -22,7 +22,7 @@
 #include "indicator-docking.h"
 
 IndicatorDockingPluginObject::IndicatorDockingPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

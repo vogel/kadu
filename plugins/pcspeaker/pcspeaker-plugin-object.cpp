@@ -24,7 +24,7 @@
 #include "notification/notification-manager.h"
 
 PCSpeakerPluginObject::PCSpeakerPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

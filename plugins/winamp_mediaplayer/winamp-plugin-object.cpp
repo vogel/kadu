@@ -25,7 +25,7 @@
 #include "plugins/mediaplayer/mediaplayer.h"
 
 WinampPluginObject::WinampPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

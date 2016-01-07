@@ -22,7 +22,7 @@
 #include "unity-integration.h"
 
 UnityIntegrationPluginObject::UnityIntegrationPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

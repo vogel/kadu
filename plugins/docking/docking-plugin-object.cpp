@@ -25,7 +25,7 @@
 #include "misc/paths-provider.h"
 
 DockingPluginObject::DockingPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

@@ -28,7 +28,7 @@
 #include "misc/paths-provider.h"
 
 ImageLinkPluginObject::ImageLinkPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

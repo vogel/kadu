@@ -27,7 +27,7 @@
 #include "misc/paths-provider.h"
 
 SingleWindowPluginObject::SingleWindowPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

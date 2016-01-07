@@ -27,7 +27,7 @@
 #include "misc/paths-provider.h"
 
 MediaplayerPluginObject::MediaplayerPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

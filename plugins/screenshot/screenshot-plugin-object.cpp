@@ -30,7 +30,7 @@
 #include "notification/notification-event.h"
 
 ScreenshotPluginObject::ScreenshotPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

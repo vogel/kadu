@@ -27,7 +27,7 @@
 #include "kadu/kadu-core/misc/paths-provider.h"
 
 AutoHidePluginObject::AutoHidePluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

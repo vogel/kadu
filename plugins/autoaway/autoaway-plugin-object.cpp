@@ -28,7 +28,7 @@
 #include "status/status-changer-manager.h"
 
 AutoawayPluginObject::AutoawayPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

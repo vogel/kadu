@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -30,7 +28,7 @@ class MPRISPlayerConfigurationUiHandler;
 class MPRISPlayer;
 class PathsProvider;
 
-class MprisPlayerPluginObject : public PluginObject
+class MprisPlayerPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include "misc/memory.h"
 
 #include <QtCore/QPointer>
@@ -31,7 +29,7 @@ class AutoHideConfigurationUiHandler;
 class ConfigurationUiHandlerRepository;
 class PathsProvider;
 
-class AutoHidePluginObject : public PluginObject
+class AutoHidePluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

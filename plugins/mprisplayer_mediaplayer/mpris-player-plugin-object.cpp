@@ -30,7 +30,7 @@
 #include "misc/paths-provider.h"
 
 MprisPlayerPluginObject::MprisPlayerPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

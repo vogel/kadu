@@ -29,7 +29,7 @@
 #include "misc/paths-provider.h"
 
 SmsPluginObject::SmsPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

@@ -30,7 +30,7 @@
 #include "notification/notification-event-repository.h"
 
 AntistringPluginObject::AntistringPluginObject(QObject *parent) :
-		PluginObject{parent},
+		QObject{parent},
 		m_antistringConfigurationUiHandler{}
 {
 }

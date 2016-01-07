@@ -27,7 +27,7 @@
 #include "misc/paths-provider.h"
 
 SpellcheckerPluginObject::SpellcheckerPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

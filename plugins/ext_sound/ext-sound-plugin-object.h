@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -28,7 +26,7 @@ class ExternalPlayer;
 class PathsProvider;
 class SoundManager;
 
-class ExtSoundPluginObject : public PluginObject
+class ExtSoundPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

@@ -26,7 +26,7 @@
 #include "notification/notification-manager.h"
 
 FreedesktopNotifyPluginObject::FreedesktopNotifyPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

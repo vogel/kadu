@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -34,7 +32,7 @@ class EmoticonsConfigurationUiHandler;
 class InsertEmoticonAction;
 class PathsProvider;
 
-class EmoticonsPluginObject : public PluginObject
+class EmoticonsPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE

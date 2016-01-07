@@ -27,7 +27,7 @@
 #include <QtSql/QSqlDatabase>
 
 SqlHistoryPluginObject::SqlHistoryPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

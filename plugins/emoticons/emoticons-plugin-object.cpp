@@ -32,7 +32,7 @@
 #include "misc/paths-provider.h"
 
 EmoticonsPluginObject::EmoticonsPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

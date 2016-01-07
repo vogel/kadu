@@ -31,7 +31,7 @@
 #include "status/status-changer-manager.h"
 
 CenzorPluginObject::CenzorPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

@@ -28,7 +28,7 @@
 #include "notification/notification-manager.h"
 
 SpeechPluginObject::SpeechPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

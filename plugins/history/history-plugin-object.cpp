@@ -31,7 +31,7 @@
 #include "misc/paths-provider.h"
 
 HistoryPluginObject::HistoryPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

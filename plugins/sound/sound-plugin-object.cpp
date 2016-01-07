@@ -34,7 +34,7 @@
 #include "notification/notification-manager.h"
 
 SoundPluginObject::SoundPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

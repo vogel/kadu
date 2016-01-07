@@ -37,7 +37,7 @@
 #include <libgadu.h>
 
 GaduPluginObject::GaduPluginObject(QObject *parent) :
-		PluginObject{parent}
+		QObject{parent}
 {
 }
 

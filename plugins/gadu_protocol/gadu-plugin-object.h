@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include "plugin/plugin-object.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -32,7 +30,7 @@ class GaduUrlHandler;
 class ProtocolsManager;
 class UrlHandlerManager;
 
-class GaduPluginObject : public PluginObject
+class GaduPluginObject : public QObject
 {
 	Q_OBJECT
 	INJEQT_INSTANCE_IMMEDIATE
