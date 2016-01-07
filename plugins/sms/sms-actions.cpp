@@ -33,6 +33,8 @@
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
 
+#include "plugins/history/history.h"
+
 #include "gui/windows/sms-dialog-repository.h"
 #include "gui/windows/sms-dialog.h"
 #include "mobile-number-manager.h"
@@ -78,6 +80,11 @@ SmsActions::~SmsActions()
 		->update();
 }
 
+void SmsActions::setHistory(History *history)
+{
+	m_history = history;
+}
+
 void SmsActions::setMobileNumberManager(MobileNumberManager *mobileNumberManager)
 {
 	m_mobileNumberManager = mobileNumberManager;
@@ -100,7 +107,7 @@ void SmsActions::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 
 void SmsActions::newSms(const QString &mobile)
 {
-	SmsDialog *smsDialog = new SmsDialog(m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
+	SmsDialog *smsDialog = new SmsDialog(m_history, m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
 	if (m_smsDialogRepository)
 		m_smsDialogRepository->addDialog(smsDialog);
 

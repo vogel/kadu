@@ -31,6 +31,7 @@ class QAction;
 
 class ActionDescription;
 class ChatWidget;
+class History;
 class MobileNumberManager;
 class SmsDialogRepository;
 class SmsGatewayManager;
@@ -40,6 +41,7 @@ class SmsActions : public QObject
 {
 	Q_OBJECT
 
+	QPointer<History> m_history;
 	QPointer<MobileNumberManager> m_mobileNumberManager;
 	QPointer<SmsDialogRepository> m_smsDialogRepository;
 	QPointer<SmsGatewayManager> m_smsGatewayManager;
@@ -48,6 +50,7 @@ class SmsActions : public QObject
 	ActionDescription *sendSmsActionDescription;
 
 private slots:
+	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setMobileNumberManager(MobileNumberManager *mobileNumberManager);
 	INJEQT_SET void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);
 	INJEQT_SET void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);

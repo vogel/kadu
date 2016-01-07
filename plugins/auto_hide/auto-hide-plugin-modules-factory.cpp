@@ -40,4 +40,9 @@ std::vector<std::unique_ptr<injeqt::module>> AutoHidePluginModulesFactory::creat
 	return modules;
 }
 
+QString AutoHidePluginModulesFactory::parentInjectorName() const
+{
+	return "idle";
+}
+
 #include "moc_auto-hide-plugin-modules-factory.cpp"

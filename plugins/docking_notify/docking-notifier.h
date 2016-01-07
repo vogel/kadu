@@ -1,5 +1,4 @@
-#ifndef QT4_DOCKING_NOTIFY_H
-#define QT4_DOCKING_NOTIFY_H
+#pragma once
 
 #include "chat/chat.h"
 #include "gui/windows/main-configuration-window.h"
@@ -7,7 +6,9 @@
 
 #include "docking-notify-configuration-widget.h"
 
-class PluginRepository;
+#include <injeqt/injeqt.h>
+
+class Docking;
 
 /**
  * @defgroup qt4_notify Qt4 Notify
@@ -29,7 +30,7 @@ public slots:
 	void messageClicked();
 
 private:
-	QPointer<PluginRepository> m_pluginRepository;
+	QPointer<Docking> m_docking;
 
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
@@ -38,10 +39,8 @@ private:
 	DockingNotifyConfigurationWidget *configurationWidget;
 
 private slots:
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setDocking(Docking *docking);
 
 };
 
 /** @} */
-
-#endif

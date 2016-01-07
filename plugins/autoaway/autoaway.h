@@ -38,7 +38,6 @@ class QCheckBox;
 
 class Configuration;
 class Idle;
-class PluginRepository;
 
 /**
  * @defgroup autoaway Autoaway
@@ -62,7 +61,6 @@ private:
 	QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
 	QPointer<Configuration> m_configuration;
 	QPointer<Idle> m_idle;
-	QPointer<PluginRepository> m_pluginRepository;
 
 	owned_qptr<QTimer> m_timer;
 
@@ -97,7 +95,7 @@ private:
 private slots:
 	INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setIdle(Idle *idle);
 
 	void checkIdleTime();
 

@@ -46,6 +46,7 @@ public:
 	virtual ~PluginModulesFactory();
 
 	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const = 0;
+	virtual QString parentInjectorName() const;
 
 };
 

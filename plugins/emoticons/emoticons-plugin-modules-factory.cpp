@@ -35,7 +35,7 @@ EmoticonsPluginModulesFactory::~EmoticonsPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> EmoticonsPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<EmoticonsModule>());
+	modules.emplace_back(make_unique<EmoticonsModule>());
 
 	return modules;
 }

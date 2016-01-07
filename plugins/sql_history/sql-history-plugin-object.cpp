@@ -42,19 +42,19 @@ void SqlHistoryPluginObject::setHistorySqlStorage(HistorySqlStorage *historySqlS
 	m_historySqlStorage = historySqlStorage;
 }
 
-void SqlHistoryPluginObject::setPluginRepository(PluginRepository *pluginRepository)
+void SqlHistoryPluginObject::setHistory(History *history)
 {
-	m_pluginRepository = pluginRepository;
+	m_history = history;
 }
 
 void SqlHistoryPluginObject::init()
 {
-	m_pluginRepository->pluginObject<HistoryPluginObject>("history")->history()->registerStorage(m_historySqlStorage);
+	m_history->registerStorage(m_historySqlStorage);
 }
 
 void SqlHistoryPluginObject::done()
 {
-	m_pluginRepository->pluginObject<HistoryPluginObject>("history")->history()->unregisterStorage(m_historySqlStorage);
+	m_history->unregisterStorage(m_historySqlStorage);
 	QSqlDatabase::removeDatabase("kadu-history");
 }
 

@@ -36,6 +36,11 @@ MpdPlayerPluginObject::~MpdPlayerPluginObject()
 {
 }
 
+void MpdPlayerPluginObject::setMediaPlayer(MediaPlayer *mediaPlayer)
+{
+	m_mediaPlayer = mediaPlayer;
+}
+
 void MpdPlayerPluginObject::setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer)
 {
 	m_mpdMediaPlayer = mpdMediaPlayer;
@@ -46,20 +51,15 @@ void MpdPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
-void MpdPlayerPluginObject::setPluginRepository(PluginRepository *pluginRepository)
-{
-	m_pluginRepository = pluginRepository;
-}
-
 void MpdPlayerPluginObject::init()
 {
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
-	m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->registerMediaPlayer(m_mpdMediaPlayer, m_mpdMediaPlayer);
+	m_mediaPlayer->registerMediaPlayer(m_mpdMediaPlayer, m_mpdMediaPlayer);
 }
 
 void MpdPlayerPluginObject::done()
 {
-	m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->unregisterMediaPlayer();
+	m_mediaPlayer->unregisterMediaPlayer();
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 }
 

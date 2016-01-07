@@ -62,12 +62,12 @@ public:
 	 * In case of any error PluginActivationErrorException is thrown. All allocated data is properly
 	 * destroyed and memory is freed in this case.
 	 */
-	explicit ActivePlugin(injeqt::injector &injector, const QString &pluginName);
+	explicit ActivePlugin(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
 
 	/**
-	 * @return Root component of plugin.
+	 * @return Injector of plugin.
 	 */
-	PluginObject * pluginObject() const;
+	injeqt::injector & injector() const;
 
 private:
 	// translations must be loaded first and uloaded last, see #2177

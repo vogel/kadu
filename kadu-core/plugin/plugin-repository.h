@@ -23,10 +23,9 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
+#include <injeqt/injector.h>
 
 class PluginActivationService;
-class PluginObject;
 
 /**
  * @addtogroup Plugin
@@ -45,20 +44,10 @@ public:
 	Q_INVOKABLE explicit PluginRepository(QObject *parent = nullptr);
 	virtual ~PluginRepository();
 
-	/**
-	 * @param pluginName name of plugin
-	 * @return root object from plugin with name pluginName
-	 */
-	template<class T>
-	T * pluginObject(const QString &pluginName) const
-	{
-		return dynamic_cast<T*>(pluginObject(pluginName));
-	}
+	injeqt::injector * pluginInjector(const QString &pluginName);
 
 private:
 	QPointer<PluginActivationService> m_pluginActivationService;
-
-	PluginObject * pluginObject(const QString &pluginName) const;
 
 private slots:
 	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);

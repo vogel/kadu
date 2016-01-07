@@ -35,7 +35,7 @@ FiledescPluginModulesFactory::~FiledescPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> FiledescPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<FiledescModule>());
+	modules.emplace_back(make_unique<FiledescModule>());
 
 	return modules;
 }

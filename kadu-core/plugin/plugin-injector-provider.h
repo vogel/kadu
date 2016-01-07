@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,27 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "hints-plugin-modules-factory.h"
+#pragma once
 
-#include "hints-module.h"
-
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injector.h>
 
-HintsPluginModulesFactory::HintsPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+class InjectorProvider;
+class PluginRepository;
+
+class PluginInjectorProvider : public QObject
 {
-}
+	Q_OBJECT
 
-HintsPluginModulesFactory::~HintsPluginModulesFactory()
-{
-}
+public:
+	Q_INVOKABLE explicit PluginInjectorProvider(QObject *instance = nullptr);
+	virtual ~PluginInjectorProvider();
 
-std::vector<std::unique_ptr<injeqt::module>> HintsPluginModulesFactory::createPluginModules() const
-{
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<HintsModule>());
+	injeqt::injector & injector(const QString &pluginName);
 
-	return modules;
-}
+private:
+	QPointer<InjectorProvider> m_injectorProvider;
+	QPointer<PluginRepository> m_pluginRepository;
 
-#include "moc_hints-plugin-modules-factory.cpp"
+private slots:
+	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
+	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
+
+};

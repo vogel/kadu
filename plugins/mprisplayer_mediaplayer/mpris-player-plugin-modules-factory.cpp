@@ -35,9 +35,14 @@ MprisPlayerPluginModulesFactory::~MprisPlayerPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> MprisPlayerPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<MprisPlayerModule>());
+	modules.emplace_back(make_unique<MprisPlayerModule>());
 
 	return modules;
+}
+
+QString MprisPlayerPluginModulesFactory::parentInjectorName() const
+{
+	return "mediaplayer";
 }
 
 #include "moc_mpris-player-plugin-modules-factory.cpp"

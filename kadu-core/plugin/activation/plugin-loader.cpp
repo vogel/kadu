@@ -24,6 +24,7 @@
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
+#include "plugin/plugin-injector-provider.h"
 #include "plugin/plugin-modules-factory.h"
 #include "plugin/plugin-object.h"
 #include "debug.h"
@@ -32,7 +33,6 @@
 #include <QtCore/QEvent>
 #include <QtCore/QLibrary>
 #include <QtCore/QPluginLoader>
-#include <injeqt/injector.h>
 
 #ifdef Q_OS_MAC
 	#define SO_PREFIX "lib"
@@ -45,11 +45,11 @@
 	#define SO_EXT "so"
 #endif
 
-PluginLoader::PluginLoader(injeqt::injector &injector, const QString &pluginName, QObject *parent) noexcept(false) :
+PluginLoader::PluginLoader(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider, QObject *parent) noexcept(false) :
 		// using C++ initializers breaks Qt's lupdate
 		QObject(parent),
 		m_pluginLoader{createPluginLoader(pluginName)},
-		m_pluginInjector{createPluginInjector(pluginName, injector)}
+		m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)}
 {
 }
 
@@ -68,6 +68,11 @@ PluginObject * PluginLoader::pluginObject() const noexcept
 	return m_pluginInjector.get<PluginObject>();
 }
 
+injeqt::injector & PluginLoader::injector() const noexcept
+{
+	return m_pluginInjector;
+}
+
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginName) const
 {
 	auto result = make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT));
@@ -75,12 +80,16 @@ std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &p
 	return result;
 }
 
-injeqt::injector PluginLoader::createPluginInjector(const QString &pluginName, injeqt::injector &injector)
+injeqt::injector PluginLoader::createPluginInjector(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider)
 {
 	try
 	{
 		if (auto pluginModulesFactory = qobject_cast<PluginModulesFactory *>(m_pluginLoader->instance()))
-			return injeqt::injector{std::vector<injeqt::injector *>{&injector}, pluginModulesFactory->createPluginModules()};
+		{
+			auto parentInjectorName = pluginModulesFactory->parentInjectorName();
+			auto parentInjector = &pluginInjectorProvider->injector(parentInjectorName);
+			return injeqt::injector{std::vector<injeqt::injector *>{parentInjector}, pluginModulesFactory->createPluginModules()};
+		}
 		else
 			return injeqt::injector{};
 	}

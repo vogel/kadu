@@ -29,6 +29,7 @@
 #include "plugins/mediaplayer/player-info.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class MediaPlayer;
 class MPRISController;
@@ -37,7 +38,6 @@ class MPRISMediaPlayer : public QObject, public PlayerCommands, public PlayerInf
 {
 	Q_OBJECT
 
-	QPointer<MediaPlayer> m_mediaPlayer;
 	QPointer<MPRISController> m_controller;
 	QString service;
 	QString name;
@@ -45,8 +45,6 @@ class MPRISMediaPlayer : public QObject, public PlayerCommands, public PlayerInf
 public:
 	explicit MPRISMediaPlayer(QObject *parent = 0);
 	virtual ~MPRISMediaPlayer();
-
-	void setMediaPlayer(MediaPlayer *mediaPlayer);
 
 	QString getTitle();
 	QString getAlbum();
@@ -71,5 +69,11 @@ public:
 	void setVolume(int vol);
 	void incrVolume();
 	void decrVolume();
+
+protected:
+	QPointer<MediaPlayer> m_mediaPlayer;
+
+private slots:
+	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 
 };

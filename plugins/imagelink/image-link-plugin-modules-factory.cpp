@@ -35,7 +35,7 @@ ImageLinkPluginModulesFactory::~ImageLinkPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> ImageLinkPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<ImageLinkModule>());
+	modules.emplace_back(make_unique<ImageLinkModule>());
 
 	return modules;
 }

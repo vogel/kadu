@@ -25,10 +25,10 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationUiHandlerRepository;
+class MediaPlayer;
 class MPRISPlayerConfigurationUiHandler;
 class MPRISPlayer;
 class PathsProvider;
-class PluginRepository;
 
 class MprisPlayerPluginObject : public PluginObject
 {
@@ -41,18 +41,18 @@ public:
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MediaPlayer> m_mediaPlayer;
 	QPointer<MPRISPlayerConfigurationUiHandler> m_mprisPlayerConfigurationUiHandler;
 	QPointer<MPRISPlayer> m_mprisPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<PluginRepository> m_pluginRepository;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 	INJEQT_SET void setMPRISPlayerConfigurationUiHandler(MPRISPlayerConfigurationUiHandler *mprisPlayerConfigurationUiHandler);
 	INJEQT_SET void setMPRISPlayer(MPRISPlayer *mprisPlayer);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 };

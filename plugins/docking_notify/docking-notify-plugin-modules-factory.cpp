@@ -35,9 +35,14 @@ DockingNotifyPluginModulesFactory::~DockingNotifyPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> DockingNotifyPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<DockingNotifyModule>());
+	modules.emplace_back(make_unique<DockingNotifyModule>());
 
 	return modules;
+}
+
+QString DockingNotifyPluginModulesFactory::parentInjectorName() const
+{
+	return "docking";
 }
 
 #include "moc_docking-notify-plugin-modules-factory.cpp"

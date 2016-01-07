@@ -113,6 +113,11 @@ void FirewallMessageFilter::setFormattedStringFactory(FormattedStringFactory *fo
 	m_formattedStringFactory = formattedStringFactory;
 }
 
+void FirewallMessageFilter::setHistory(History *history)
+{
+	m_history = history;
+}
+
 void FirewallMessageFilter::accountRegistered(Account account)
 {
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
@@ -202,14 +207,14 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 
 		if (WriteInHistory)
 		{
-			if (Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage())
+			if (m_history->currentStorage())
 			{
 				Message msg = Message::create();
 				msg.setContent(m_formattedStringFactory->fromHtml(message.htmlContent()));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());
-				Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage()->appendMessage(msg);
+				m_history->currentStorage()->appendMessage(msg);
 			}
 		}
 	}

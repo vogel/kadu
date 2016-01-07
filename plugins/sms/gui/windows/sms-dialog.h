@@ -33,6 +33,7 @@ class QLineEdit;
 class QPushButton;
 class QTextEdit;
 
+class History;
 class MobileNumberManager;
 class SelectTalkableComboBox;
 class SmsGatewayManager;
@@ -42,6 +43,7 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<History> m_history;
 	QPointer<MobileNumberManager> m_mobileNumberManager;
 	QPointer<SmsGatewayManager> m_smsGatewayManager;
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
@@ -82,7 +84,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit SmsDialog(MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget *parent = 0);
+	explicit SmsDialog(History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget *parent = 0);
 	virtual ~SmsDialog();
 
 	void setRecipient(const QString &phone);

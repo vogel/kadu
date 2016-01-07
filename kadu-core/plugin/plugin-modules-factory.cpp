@@ -28,4 +28,9 @@ PluginModulesFactory::~PluginModulesFactory()
 {
 }
 
+QString PluginModulesFactory::parentInjectorName() const
+{
+	return {};
+}
+
 #include "moc_plugin-modules-factory.cpp"

@@ -22,7 +22,9 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QRect>
+#include <injeqt/injector.h>
 
 #include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"
@@ -31,6 +33,8 @@ class QAction;
 class QString;
 class QWidget;
 
+class Configuration;
+class Docking;
 class GroupTabBar;
 class KaduWindow;
 class MainWindow;
@@ -49,6 +53,9 @@ public slots:
 	void simpleViewToggle(bool activate);
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<Docking> m_docking;
+
 	bool KeepSize;
 	bool NoScrollBar;
 	bool SimpleViewActive;
@@ -67,5 +74,11 @@ private:
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 	virtual void configurationUpdated();
+
+private slots:
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setDocking(Docking *docking);
 
 };

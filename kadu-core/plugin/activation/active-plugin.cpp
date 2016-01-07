@@ -21,13 +21,13 @@
 
 #include "misc/memory.h"
 
-ActivePlugin::ActivePlugin(injeqt::injector &injector, const QString &pluginName) :
+ActivePlugin::ActivePlugin(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider) :
 		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginName)},
-		m_pluginLoader{make_unique<PluginLoader>(injector, pluginName)}
+		m_pluginLoader{make_unique<PluginLoader>(pluginName, pluginInjectorProvider)}
 {
 }
 
-PluginObject * ActivePlugin::pluginObject() const
+injeqt::injector & ActivePlugin::injector() const
 {
-	return m_pluginLoader->pluginObject();
+	return m_pluginLoader->injector();
 }

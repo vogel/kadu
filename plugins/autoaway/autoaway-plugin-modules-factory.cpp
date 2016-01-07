@@ -40,4 +40,9 @@ std::vector<std::unique_ptr<injeqt::module>> AutoawayPluginModulesFactory::creat
 	return modules;
 }
 
+QString AutoawayPluginModulesFactory::parentInjectorName() const
+{
+	return "idle";
+}
+
 #include "moc_autoaway-plugin-modules-factory.cpp"

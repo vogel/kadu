@@ -35,7 +35,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
-#include "plugin/plugin-repository.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
@@ -89,10 +88,9 @@ void Autoaway::setConfiguration(Configuration *configuration)
 	createDefaultConfiguration();
 }
 
-void Autoaway::setPluginRepository(PluginRepository *pluginRepository)
+void Autoaway::setIdle(Idle *idle)
 {
-	m_pluginRepository = pluginRepository;
-	m_idle = m_pluginRepository->pluginObject<IdlePluginObject>("idle")->idle();
+	m_idle = idle;
 }
 
 AutoawayStatusChanger::ChangeStatusTo Autoaway::changeStatusTo()

@@ -35,7 +35,7 @@ CenzorPluginModulesFactory::~CenzorPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> CenzorPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<CenzorModule>());
+	modules.emplace_back(make_unique<CenzorModule>());
 
 	return modules;
 }

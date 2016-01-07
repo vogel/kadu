@@ -60,7 +60,6 @@ SimpleView::SimpleView(QObject *parent) :
 	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
 	DockAction->setCheckable(true);
 	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
-	Core::instance()->pluginRepository()->pluginObject<DockingPluginObject>("docking")->docking()->dockingMenuActionRepository()->addAction(DockAction);
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
@@ -68,21 +67,37 @@ SimpleView::SimpleView(QObject *parent) :
 	GroupTabBarHandle = roster->findChild<GroupTabBar *>();
 	TalkableTreeViewHandle = roster->talkableTreeView();
 	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
-
-	configurationUpdated();
-
-	DiffRect = Application::instance()->configuration()->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
-	if (DiffRect != QRect(0,0,0,0))
-		simpleViewToggle(true);
 }
 
 SimpleView::~SimpleView()
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
-
 	simpleViewToggle(false);
+}
 
-	Core::instance()->pluginRepository()->pluginObject<DockingPluginObject>("docking")->docking()->dockingMenuActionRepository()->removeAction(DockAction);
+void SimpleView::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SimpleView::setDocking(Docking *docking)
+{
+	m_docking = docking;
+}
+
+void SimpleView::init()
+{
+	m_docking->dockingMenuActionRepository()->addAction(DockAction);
+
+	DiffRect = m_configuration->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
+	if (DiffRect != QRect(0,0,0,0))
+		simpleViewToggle(true);
+	configurationUpdated();
+}
+
+void SimpleView::done()
+{
+	m_configuration->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
+	m_docking->dockingMenuActionRepository()->removeAction(DockAction);
 }
 
 void SimpleView::simpleViewToggle(bool activate)

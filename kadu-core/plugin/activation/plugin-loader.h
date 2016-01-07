@@ -28,6 +28,7 @@
 
 class QPluginLoader;
 
+class PluginInjectorProvider;
 class PluginObject;
 
 /**
@@ -52,14 +53,14 @@ class PluginLoader : public QObject
 public:
 	/**
 	 * @short Load plugin dynamic library file.
-	 * @param injector injector for services
 	 * @param pluginName name of plugin to load
+	 * @param pluginInjectorProvider provider for already loaded injectors
 	 * @param parent Qt parent object
 	 * @throws PluginActivationErrorException
 	 *
 	 * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
 	 */
-	explicit PluginLoader(injeqt::injector &injector, const QString &pluginName, QObject *parent = nullptr) noexcept(false);
+	explicit PluginLoader(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider, QObject *parent = nullptr) noexcept(false);
 
 	/**
 	 * @short Unload plugin dynamic library file.
@@ -71,12 +72,17 @@ public:
 	 */
 	PluginObject * pluginObject() const noexcept;
 
+	/**
+	 * @return Injector of plugin.
+	 */
+	injeqt::injector & injector() const noexcept;
+
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
 	mutable injeqt::injector m_pluginInjector;
 
 	std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginName) const;
-	injeqt::injector createPluginInjector(const QString &pluginName, injeqt::injector &injector);
+	injeqt::injector createPluginInjector(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
 
 };
 

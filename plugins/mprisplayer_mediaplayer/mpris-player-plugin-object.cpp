@@ -44,6 +44,11 @@ void MprisPlayerPluginObject::setConfigurationUiHandlerRepository(ConfigurationU
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
+void MprisPlayerPluginObject::setMediaPlayer(MediaPlayer *mediaPlayer)
+{
+	m_mediaPlayer = mediaPlayer;
+}
+
 void MprisPlayerPluginObject::setMPRISPlayerConfigurationUiHandler(MPRISPlayerConfigurationUiHandler *mprisPlayerConfigurationUiHandler)
 {
 	m_mprisPlayerConfigurationUiHandler = mprisPlayerConfigurationUiHandler;
@@ -59,22 +64,15 @@ void MprisPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
-void MprisPlayerPluginObject::setPluginRepository(PluginRepository *pluginRepository)
-{
-	m_pluginRepository = pluginRepository;
-}
-
 void MprisPlayerPluginObject::init()
 {
 	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
 
-	auto mediaPlayer = m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer();
-
-	if (!mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer))
+	if (!m_mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer))
 	{
-		mediaPlayer->unregisterMediaPlayer();
-		mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer);
+		m_mediaPlayer->unregisterMediaPlayer();
+		m_mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer);
 	}
 
 	m_mprisPlayer->configurationApplied();
@@ -82,8 +80,7 @@ void MprisPlayerPluginObject::init()
 
 void MprisPlayerPluginObject::done()
 {
-	auto mediaPlayer = m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer();
-	mediaPlayer->unregisterMediaPlayer();
+	m_mediaPlayer->unregisterMediaPlayer();
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
 	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 }

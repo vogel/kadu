@@ -32,7 +32,7 @@
 
 #include "mpris_mediaplayer.h"
 
-class PluginRepository;
+class MediaPlayer;
 
 class QString;
 
@@ -43,14 +43,9 @@ class MPRISPlayer : public MPRISMediaPlayer
 	static const QString UserPlayersListFile;
 	static const QString GlobalPlayersListFile;
 
-	QPointer<PluginRepository> m_pluginRepository;
-
 	void prepareUserPlayersFile();
 	void replacePlugin();
 	void choosePlayer(const QString &key, const QString &value);
-
-private slots:
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 public:
 	static QString userPlayersListFileName() { return Application::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }

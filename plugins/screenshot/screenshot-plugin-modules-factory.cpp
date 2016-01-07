@@ -35,7 +35,7 @@ ScreenshotPluginModulesFactory::~ScreenshotPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> ScreenshotPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<ScreenshotModule>());
+	modules.emplace_back(make_unique<ScreenshotModule>());
 
 	return modules;
 }

@@ -35,9 +35,14 @@ SimpleviewPluginModulesFactory::~SimpleviewPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> SimpleviewPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<SimpleviewModule>());
+	modules.emplace_back(make_unique<SimpleviewModule>());
 
 	return modules;
+}
+
+QString SimpleviewPluginModulesFactory::parentInjectorName() const
+{
+	return "docking";
 }
 
 #include "moc_simpleview-plugin-modules-factory.cpp"

@@ -35,9 +35,14 @@ MediaplayerPluginModulesFactory::~MediaplayerPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> MediaplayerPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<MediaplayerModule>());
+	modules.emplace_back(make_unique<MediaplayerModule>());
 
 	return modules;
+}
+
+QString MediaplayerPluginModulesFactory::parentInjectorName() const
+{
+	return "docking";
 }
 
 #include "moc_mediaplayer-plugin-modules-factory.cpp"

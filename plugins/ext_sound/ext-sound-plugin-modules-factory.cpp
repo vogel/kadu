@@ -35,9 +35,14 @@ ExtSoundPluginModulesFactory::~ExtSoundPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> ExtSoundPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<ExtSoundModule>());
+	modules.emplace_back(make_unique<ExtSoundModule>());
 
 	return modules;
+}
+
+QString ExtSoundPluginModulesFactory::parentInjectorName() const
+{
+	return "sound";
 }
 
 #include "moc_ext-sound-plugin-modules-factory.cpp"

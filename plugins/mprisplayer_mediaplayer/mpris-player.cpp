@@ -52,12 +52,6 @@ MPRISPlayer::~MPRISPlayer()
 {
 }
 
-void MPRISPlayer::setPluginRepository(PluginRepository *pluginRepository)
-{
-	m_pluginRepository = pluginRepository;
-	setMediaPlayer(m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer());
-}
-
 void MPRISPlayer::prepareUserPlayersFile()
 {
 	if (QFile::exists(MPRISPlayer::userPlayersListFileName()))
@@ -126,9 +120,9 @@ void MPRISPlayer::configurationApplied()
 	setService(Application::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Service"));
 
 	if (name == "Audacious")
-		m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->setInterval(5);
+		m_mediaPlayer->setInterval(5);
 	else
-		m_pluginRepository->pluginObject<MediaplayerPluginObject>("mediaplayer")->mediaPlayer()->setInterval(0);
+		m_mediaPlayer->setInterval(0);
 }
 
 #include "moc_mpris-player.cpp"

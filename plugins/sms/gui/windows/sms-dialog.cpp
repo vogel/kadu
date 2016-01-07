@@ -60,8 +60,9 @@
 
 #include "sms-dialog.h"
 
-SmsDialog::SmsDialog(MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget* parent) :
+SmsDialog::SmsDialog(History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget* parent) :
 		QWidget{parent, Qt::Window},
+		m_history{history},
 		m_mobileNumberManager{mobileNumberManager},
 		m_smsGatewayManager{smsGatewayManager},
 		m_smsScriptsManager{smsScriptsManager},
@@ -325,8 +326,8 @@ void SmsDialog::updateCounter()
 
 void SmsDialog::saveSmsInHistory(const QString &number, const QString &message)
 {
-	if (Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage())
-		Core::instance()->pluginRepository()->pluginObject<HistoryPluginObject>("history")->history()->currentStorage()->appendSms(number, message);
+	if (m_history->currentStorage())
+		m_history->currentStorage()->appendSms(number, message);
 }
 
 void SmsDialog::clear()

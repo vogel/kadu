@@ -57,13 +57,8 @@ DockingNotifier::~DockingNotifier()
 {
 }
 
-void DockingNotifier::setPluginRepository(PluginRepository *pluginRepository)
+void DockingNotifier::setDocking(Docking *docking)
 {
-	m_pluginRepository = pluginRepository;
-
-	auto dockingPluginObject = pluginRepository->pluginObject<DockingPluginObject>("docking");
-	auto docking = dockingPluginObject->docking();
-
 	connect(docking, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 }
 
@@ -112,7 +107,7 @@ void DockingNotifier::notify(Notification *notification)
 	QString title = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_title");
 	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_syntax");
 
-	m_pluginRepository->pluginObject<DockingPluginObject>("docking")->docking()->showMessage(parseText(title, notification, notification->text()),
+	m_docking->showMessage(parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
 		(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 

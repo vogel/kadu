@@ -29,9 +29,9 @@
 #include <memory>
 
 class ActivePlugin;
-class InjectorProvider;
 class PluginActivationErrorHandler;
 class PluginDependencyHandler;
+class PluginInjectorProvider;
 class PluginStateService;
 
 /**
@@ -98,9 +98,9 @@ public:
 private:
 	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
 
-	QPointer<InjectorProvider> m_injectorProvider;
 	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+	QPointer<PluginInjectorProvider> m_pluginInjectorProvider;
 	QPointer<PluginStateService> m_pluginStateService;
 
 	map m_activePlugins;
@@ -135,9 +135,9 @@ private:
 	QString findActiveProviding(const QString &feature) const;
 
 private slots:
-	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
 	INJEQT_SET void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SET void setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider);
 	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 
 };

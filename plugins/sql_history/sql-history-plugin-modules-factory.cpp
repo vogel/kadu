@@ -35,9 +35,14 @@ SqlHistoryPluginModulesFactory::~SqlHistoryPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> SqlHistoryPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<SqlHistoryModule>());
+	modules.emplace_back(make_unique<SqlHistoryModule>());
 
 	return modules;
+}
+
+QString SqlHistoryPluginModulesFactory::parentInjectorName() const
+{
+	return "history";
 }
 
 #include "moc_sql-history-plugin-modules-factory.cpp"

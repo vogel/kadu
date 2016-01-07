@@ -24,9 +24,9 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class MediaPlayer;
 class MPDMediaPlayer;
 class PathsProvider;
-class PluginRepository;
 
 class MpdPlayerPluginObject : public PluginObject
 {
@@ -38,15 +38,15 @@ public:
 	virtual ~MpdPlayerPluginObject();
 
 private:
+	QPointer<MediaPlayer> m_mediaPlayer;
 	QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<PluginRepository> m_pluginRepository;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
+	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 	INJEQT_SET void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 };

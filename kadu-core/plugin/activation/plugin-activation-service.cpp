@@ -19,13 +19,13 @@
 
 #include "plugin-activation-service.h"
 
-#include "core/injector-provider.h"
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugin/activation/active-plugin.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/plugin-dependency-handler.h"
+#include "plugin/plugin-injector-provider.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
 
@@ -38,11 +38,6 @@ PluginActivationService::~PluginActivationService()
 {
 }
 
-void PluginActivationService::setInjectorProvider(InjectorProvider *injectorProvider)
-{
-	m_injectorProvider = injectorProvider;
-}
-
 void PluginActivationService::setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler)
 {
 	m_pluginActivationErrorHandler = pluginActivationErrorHandler;
@@ -51,6 +46,11 @@ void PluginActivationService::setPluginActivationErrorHandler(PluginActivationEr
 void PluginActivationService::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
+}
+
+void PluginActivationService::setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider)
+{
+	m_pluginInjectorProvider = pluginInjectorProvider;
 }
 
 void PluginActivationService::setPluginStateService(PluginStateService *pluginStateService)
@@ -120,7 +120,7 @@ QVector<QString> PluginActivationService::deactivatePluginWithDependents(const Q
 void PluginActivationService::activatePlugin(const QString &pluginName)
 {
 	if (!contains(m_activePlugins, pluginName))
-		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(m_injectorProvider->injector(), pluginName)));
+		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(pluginName, m_pluginInjectorProvider)));
 }
 
 void PluginActivationService::deactivatePlugin(const QString &pluginName)

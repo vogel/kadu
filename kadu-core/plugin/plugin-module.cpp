@@ -22,6 +22,7 @@
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
+#include "plugin/plugin-injector-provider.h"
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/metadata/plugin-metadata-reader.h"
 #include "plugin/plugin-conflict-resolver.h"
@@ -38,6 +39,7 @@ PluginModule::PluginModule()
 	add_type<PluginConflictResolver>();
 	add_type<PluginDependencyHandler>();
 	add_type<PluginDependencyGraphBuilder>();
+	add_type<PluginInjectorProvider>();
 	add_type<PluginManager>();
 	add_type<PluginMetadataFinder>();
 	add_type<PluginMetadataReader>();

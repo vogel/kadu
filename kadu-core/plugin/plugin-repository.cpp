@@ -36,10 +36,10 @@ void PluginRepository::setPluginActivationService(PluginActivationService *plugi
 	m_pluginActivationService = pluginActivationService;
 }
 
-PluginObject * PluginRepository::pluginObject(const QString& pluginName) const
+injeqt::injector * PluginRepository::pluginInjector(const QString& pluginName)
 {
 	if (auto a = m_pluginActivationService->activePlugin(pluginName))
-		return a->pluginObject();
+		return &a->injector();
 	else
 		return nullptr;
 }

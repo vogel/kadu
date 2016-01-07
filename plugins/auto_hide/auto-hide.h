@@ -27,7 +27,6 @@
 #include <injeqt/injeqt.h>
 
 class Idle;
-class PluginRepository;
 
 class AutoHide : public QObject, ConfigurationAwareObject
 {
@@ -38,7 +37,6 @@ public:
 	virtual ~AutoHide();
 
 private:
-	QPointer<PluginRepository> m_pluginRepository;
 	QPointer<Idle> m_idle;
 
 	QTimer m_timer;
@@ -46,7 +44,7 @@ private:
 	bool m_enabled;
 
 private slots:
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setIdle(Idle *idle);
 
 	void timerTimeoutSlot();
 

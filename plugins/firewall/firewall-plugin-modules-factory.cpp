@@ -35,9 +35,14 @@ FirewallPluginModulesFactory::~FirewallPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> FirewallPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<FirewallModule>());
+	modules.emplace_back(make_unique<FirewallModule>());
 
 	return modules;
+}
+
+QString FirewallPluginModulesFactory::parentInjectorName() const
+{
+	return "history";
 }
 
 #include "moc_firewall-plugin-modules-factory.cpp"

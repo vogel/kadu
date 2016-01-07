@@ -25,7 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class HistorySqlStorage;
-class PluginRepository;
+class History;
 
 class SqlHistoryPluginObject : public PluginObject
 {
@@ -38,12 +38,12 @@ public:
 
 private:
 	QPointer<HistorySqlStorage> m_historySqlStorage;
-	QPointer<PluginRepository> m_pluginRepository;
+	QPointer<History> m_history;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 	INJEQT_SET void setHistorySqlStorage(HistorySqlStorage *historySqlStorage);
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setHistory(History *history);
 
 };

@@ -28,7 +28,6 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "plugin/plugin-repository.h"
 
 AutoHide::AutoHide(QObject *parent) :
 		QObject{parent},
@@ -44,10 +43,9 @@ AutoHide::~AutoHide()
 	m_timer.stop();
 }
 
-void AutoHide::setPluginRepository(PluginRepository *pluginRepository)
+void AutoHide::setIdle(Idle *idle)
 {
-	m_pluginRepository = pluginRepository;
-	m_idle = m_pluginRepository->pluginObject<IdlePluginObject>("idle")->idle();
+	m_idle = idle;
 }
 
 void AutoHide::timerTimeoutSlot()

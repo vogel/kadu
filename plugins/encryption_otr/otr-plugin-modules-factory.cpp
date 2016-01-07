@@ -35,7 +35,7 @@ OtrPluginModulesFactory::~OtrPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> OtrPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	 modules.emplace_back(make_unique<OtrModule>());
+	modules.emplace_back(make_unique<OtrModule>());
 
 	return modules;
 }
