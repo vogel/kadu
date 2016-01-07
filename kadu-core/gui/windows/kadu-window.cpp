@@ -47,6 +47,7 @@
 #include "contacts/contact.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
@@ -88,7 +89,20 @@ KaduWindow::KaduWindow() :
 #endif
 
 	setWindowTitle(QLatin1String("Kadu"));
+}
 
+KaduWindow::~KaduWindow()
+{
+	storeConfiguration();
+}
+
+void KaduWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void KaduWindow::init()
+{
 	// we need to create gui first, then actions, then menus
 	// TODO: fix it in 0.10 or whenever
 	createGui();
@@ -96,18 +110,13 @@ KaduWindow::KaduWindow() :
 	Context = static_cast<ProxyActionContext *>(actionContext());
 	Context->setForwardActionContext(Roster->actionContext());
 
-	Actions = new KaduWindowActions(this);
+	Actions = m_injectedFactory->makeInjected<KaduWindowActions>(this);
 	loadToolBarsFromConfig();
 	createMenu();
 
 	configurationUpdated();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "Geometry"), QRect(0, 50, 350, 650), this);
-}
-
-KaduWindow::~KaduWindow()
-{
-	storeConfiguration();
 }
 
 void KaduWindow::createGui()
@@ -120,7 +129,7 @@ void KaduWindow::createGui()
 	Split = new QSplitter(Qt::Vertical, MainWidget);
 
 	Roster = new RosterWidget(Split);
-	InfoPanel = new BuddyInfoPanel(Split);
+	InfoPanel = m_injectedFactory->makeInjected<BuddyInfoPanel>(Split);
 	InfoPanel->setImageStorageService(Core::instance()->imageStorageService());
 
 	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));

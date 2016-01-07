@@ -19,18 +19,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_INFO_PANEL_H
-#define BUDDY_INFO_PANEL_H
+#pragma once
+
+#include "kadu-web-view.h"
 
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "talkable/talkable.h"
 
-#include "kadu-web-view.h"
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class DomProcessorService;
 
 class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
+	QPointer<DomProcessorService> m_domProcessorService;
 
 	Talkable Item;
 	QString Template;
@@ -41,6 +48,10 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	void disconnectItem();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_INIT void init();
+
 	void buddyUpdated(const Buddy &buddy);
 
 protected:
@@ -58,5 +69,3 @@ public slots:
 	void styleFixup(QString &syntax);
 
 };
-
-#endif // BUDDY_INFO_PANEL_H

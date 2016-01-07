@@ -30,6 +30,8 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPair>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "buddies/buddy-list.h"
 #include "chat/chat.h"
@@ -45,6 +47,7 @@ class QVBoxLayout;
 
 class ActionDescription;
 class BuddyInfoPanel;
+class InjectedFactory;
 class ProxyActionContext;
 class KaduWindowActions;
 class RosterWidget;
@@ -65,6 +68,8 @@ public:
 	};
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	bool Docked; // TODO: 0.11.0 it is a hack
 	QSplitter *Split;
 
@@ -110,6 +115,9 @@ private:
 	virtual void compositingDisabled();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 #ifdef Q_OS_WIN
 	void setHiddenParent();
 #endif

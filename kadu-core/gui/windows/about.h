@@ -20,18 +20,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABOUT_H
-#define ABOUT_H
-
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "os/generic/desktop-aware-object.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class DomProcessorService;
 
 class QUrl;
 class QKeyEvent;
 class QMouseEvent;
 class QString;
+class QTextEdit;
 
 /**
 	\class About
@@ -41,9 +45,15 @@ class About : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 
+	QPointer<DomProcessorService> m_domProcessorService;
+	QTextEdit *tb_authors;
+
 	QString loadFile(const QString &name);
 
 private slots:
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_INIT void init();
+
 	void openUrl(const QUrl &url);
 
 protected:
@@ -81,5 +91,3 @@ public:
 	virtual ~KaduLink();
 
 };
-
-#endif

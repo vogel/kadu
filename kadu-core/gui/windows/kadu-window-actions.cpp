@@ -40,6 +40,7 @@
 #include "contacts/contact.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
@@ -418,6 +419,11 @@ KaduWindowActions::~KaduWindowActions()
 {
 }
 
+void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)
 {
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
@@ -668,7 +674,7 @@ void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	(new ::About(Core::instance()->kaduWindow()))->show();
+	m_injectedFactory->makeInjected<::About>(Core::instance()->kaduWindow())->show();
 }
 
 void KaduWindowActions::translateActionActivated(QAction *sender, bool toggled)

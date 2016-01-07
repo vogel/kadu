@@ -105,18 +105,11 @@ About::About(QWidget *parent) :
 
 	// create our info widgets
 	// authors
-	QTextEdit *tb_authors = new QTextEdit(tw_about);
+	tb_authors = new QTextEdit(tw_about);
 	tb_authors->setReadOnly(true);
 	tb_authors->setFrameStyle(QFrame::NoFrame);
 	tb_authors->viewport()->setAutoFillBackground(false);
 	tb_authors->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	QString authors = loadFile("AUTHORS.html");
-	authors.remove(QRegExp("[\\[\\]]"));
-	// convert the email addresses
-	authors.replace(" (at) ", "@");
-	authors.replace(" (dot) ", ".");
-	authors = Core::instance()->domProcessorService()->process(authors);
-	tb_authors->setHtml(authors);
 
 	// people to thank
 	QTextEdit *tb_thanks = new QTextEdit(tw_about);
@@ -207,6 +200,22 @@ About::~About()
 	kdebugf();
 
 	kdebugf2();
+}
+
+void About::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	m_domProcessorService = domProcessorService;
+}
+
+void About::init()
+{
+	QString authors = loadFile("AUTHORS.html");
+	authors.remove(QRegExp("[\\[\\]]"));
+	// convert the email addresses
+	authors.replace(" (at) ", "@");
+	authors.replace(" (dot) ", ".");
+	authors = m_domProcessorService->process(authors);
+	tb_authors->setHtml(authors);
 }
 
 void About::openUrl(const QUrl &url)

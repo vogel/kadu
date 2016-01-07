@@ -24,6 +24,8 @@
 #define KADU_WINDOW_ACTIONS_H
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -40,13 +42,16 @@ class ChangeStatusAction;
 class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
+class InjectedFactory;
 class MainWindow;
 class RecentChatsAction;
 class StatusContainer;
 
-class KaduWindowActions : QObject, ConfigurationAwareObject
+class KaduWindowActions : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	friend class KaduWindow;
 	ActionDescription *Configuration;
@@ -86,6 +91,8 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	DefaultProxyAction *DefaultProxy;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void showMultilogonsActionCreated(Action *action);
 	void openSearchActionCreated(Action *action);
 	void inactiveUsersActionCreated(Action *action);

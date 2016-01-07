@@ -32,7 +32,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
@@ -43,8 +42,6 @@
 
 BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 {
-	configurationUpdated();
-
 	QPalette p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);
 	page()->setPalette(p);
@@ -63,9 +60,24 @@ BuddyInfoPanel::~BuddyInfoPanel()
 	disconnect(BuddyPreferredManager::instance(), 0, this, 0);
 }
 
+void BuddyInfoPanel::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void BuddyInfoPanel::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	m_domProcessorService = domProcessorService;
+}
+
+void BuddyInfoPanel::init()
+{
+	configurationUpdated();
+}
+
 void BuddyInfoPanel::configurationUpdated()
 {
-	setUserFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont").toString(), true);
+	setUserFont(m_configuration->deprecatedApi()->readFontEntry("Look", "PanelFont").toString(), true);
 
 	update();
 }
@@ -78,10 +90,10 @@ void BuddyInfoPanel::buddyUpdated(const Buddy &buddy)
 
 void BuddyInfoPanel::update()
 {
-	if (Core::instance() && Core::instance()->isClosing())
+	if (!m_configuration)
 		return;
 
-	QFont font = Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont");
+	QFont font = m_configuration->deprecatedApi()->readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
 	QString fontSize;
 	if (font.pointSize() > 0)
@@ -92,10 +104,10 @@ void BuddyInfoPanel::update()
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
-	QString fontColor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelFgColor").name();
-	bool backgroundFilled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "InfoPanelBgFilled");
+	QString fontColor = m_configuration->deprecatedApi()->readColorEntry("Look", "InfoPanelFgColor").name();
+	bool backgroundFilled = m_configuration->deprecatedApi()->readBoolEntry("Look", "InfoPanelBgFilled");
 	if (backgroundFilled)
-		BackgroundColor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelBgColor").name();
+		BackgroundColor = m_configuration->deprecatedApi()->readColorEntry("Look", "InfoPanelBgColor").name();
 	else
 		BackgroundColor = "transparent";
 
@@ -132,11 +144,11 @@ void BuddyInfoPanel::update()
 		"</html>"
 		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
-	QString syntaxFile = Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
+	QString syntaxFile = m_configuration->deprecatedApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
 	if (syntaxFile == "default")
 	{
 		syntaxFile = "Old Default";
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
+		m_configuration->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
 	}
 
 	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
@@ -145,7 +157,7 @@ void BuddyInfoPanel::update()
 	Syntax = Syntax.remove("file:///");
 	displayItem(Item);
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
 	else
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
@@ -209,7 +221,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	QDomDocument domDocument;
 	domDocument.setContent(Template.arg(Parser::parse(Syntax, item, ParserEscape::HtmlEscape)));
 
-	Core::instance()->domProcessorService()->process(domDocument);
+	m_domProcessorService->process(domDocument);
 
 	setHtml(domDocument.toString(0));
 }

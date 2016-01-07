@@ -63,7 +63,6 @@ class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
 class ConfigurationUiHandlerRepository;
-class DomProcessorService;
 class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
@@ -175,7 +174,6 @@ public:
 	BuddyDataWindowRepository * buddyDataWindowRepository() const;
 	ChatDataWindowRepository * chatDataWindowRepository() const;
 	ChatImageRequestService * chatImageRequestService() const;
-	DomProcessorService * domProcessorService() const;
 	ImageStorageService * imageStorageService() const;
 	MessageFilterService * messageFilterService() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;

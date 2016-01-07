@@ -52,6 +52,7 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
+#include "core/injected-factory.h"
 #include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -588,7 +589,7 @@ void Core::configurationUpdated()
 
 void Core::createGui()
 {
-	Window = new KaduWindow();
+	Window = m_injector.get<InjectedFactory>()->makeInjected<KaduWindow>();
 	connect(Window, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
 	KaduWindowProvider->provideValue(Window);
 
@@ -643,7 +644,7 @@ void Core::runServices()
 
 	m_injector.get<FormattedStringFactory>()->setImageStorageService(CurrentImageStorageService);
 
-	CurrentMessageHtmlRendererService->setDomProcessorService(domProcessorService());
+	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
 	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
 	CurrentMessageRenderInfoFactory->setChatStyleManager(chatStyleManager());
 
@@ -707,11 +708,6 @@ ChatDataWindowRepository * Core::chatDataWindowRepository() const
 ChatImageRequestService * Core::chatImageRequestService() const
 {
 	return CurrentChatImageRequestService;
-}
-
-DomProcessorService * Core::domProcessorService() const
-{
-	return m_injector.get<DomProcessorService>();
 }
 
 ImageStorageService * Core::imageStorageService() const
