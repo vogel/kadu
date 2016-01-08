@@ -105,7 +105,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
-	MessageTransformerService *CurrentMessageTransformerService;
 	ChatWidgetActions *CurrentChatWidgetActions;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
 

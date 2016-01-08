@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_TRANSFORMER_SERVICE_H
-#define MESSAGE_TRANSFORMER_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -54,7 +53,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param parent QObject parent
 	 */
-	explicit MessageTransformerService(QObject *parent = 0);
+	Q_INVOKABLE explicit MessageTransformerService(QObject *parent = nullptr);
 	virtual ~MessageTransformerService();
 
 };
@@ -62,5 +61,3 @@ public:
 /**
  * @}
  */
-
-#endif // MESSAGE_TRANSFORMER_SERVICE_H

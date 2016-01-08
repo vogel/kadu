@@ -182,7 +182,6 @@ Core::Core(injeqt::injector &injector) :
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
 		CurrentMessageHtmlRendererService{nullptr},
-		CurrentMessageTransformerService{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
@@ -593,7 +592,6 @@ void Core::createGui()
 void Core::runServices()
 {
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
-	CurrentMessageTransformerService = new MessageTransformerService(this);
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
@@ -624,7 +622,7 @@ void Core::runServices()
 	m_injector.get<ChatImageRequestService>()->setContactManager(ContactManager::instance());
 
 	MessageManager::instance()->setMessageFilterService(m_injector.get<MessageFilterService>());
-	MessageManager::instance()->setMessageTransformerService(CurrentMessageTransformerService);
+	MessageManager::instance()->setMessageTransformerService(m_injector.get<MessageTransformerService>());
 	MessageManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
@@ -678,11 +676,6 @@ void Core::activatePlugins()
 MessageHtmlRendererService * Core::messageHtmlRendererService() const
 {
 	return CurrentMessageHtmlRendererService;
-}
-
-MessageTransformerService * Core::messageTransformerService() const
-{
-	return CurrentMessageTransformerService;
 }
 
 NotificationCallbackRepository * Core::notificationCallbackRepository() const

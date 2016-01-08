@@ -20,12 +20,14 @@
 #include "message-module.h"
 
 #include "message/message-filter-service.h"
-#include "message/unread-message-repository.h"
 #include "message/message-render-info-factory.h"
+#include "message/unread-message-repository.h"
+#include "services/message-transformer-service.h"
 
 MessageModule::MessageModule()
 {
 	add_type<MessageFilterService>();
 	add_type<MessageRenderInfoFactory>();
+	add_type<MessageTransformerService>();
 	add_type<UnreadMessageRepository>();
 }
