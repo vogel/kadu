@@ -53,7 +53,6 @@ class ChatImageRequestService;
 class ChatManager;
 class ChatTopBarWidgetFactoryRepository;
 class ChatStyleManager;
-class ChatStyleRendererFactoryProvider;
 class ChatWidgetActions;
 class ChatWidgetContainerHandlerRepository;
 class ChatWidgetManager;
@@ -192,7 +191,6 @@ public:
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
 
-	ChatStyleRendererFactoryProvider * chatStyleRendererFactoryProvider() const;
 	WebkitMessagesViewDisplayFactory * webkitMessagesViewDisplayFactory() const;
 	WebkitMessagesViewFactory * webkitMessagesViewFactory() const;
 	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
