@@ -28,6 +28,7 @@
 class ChatStyleManager;
 class ChatStylePreview;
 class Configuration;
+class InjectedFactory;
 
 class QCheckBox;
 class QComboBox;
@@ -50,6 +51,7 @@ protected:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	bool m_compositingEnabled;
 
@@ -63,6 +65,7 @@ private:
 private slots:
 	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 	void styleChangedSlot(const QString &styleName);
 	void variantChangedSlot(const QString &variantName);

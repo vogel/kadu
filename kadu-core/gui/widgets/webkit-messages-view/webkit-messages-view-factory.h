@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Chat;
 class ChatStyleRendererFactoryProvider;
@@ -36,12 +37,8 @@ class KADUAPI WebkitMessagesViewFactory : public QObject
 	Q_OBJECT
 
 public:
-	explicit WebkitMessagesViewFactory(QObject *parent = nullptr);
+	Q_INVOKABLE explicit WebkitMessagesViewFactory(QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewFactory();
-
-	void setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider);
-	void setInjectedFactory(InjectedFactory *injectedFactory);
-	void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 
 	owned_qptr<WebkitMessagesView> createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent);
 
@@ -49,5 +46,10 @@ private:
 	QPointer<ChatStyleRendererFactoryProvider> m_chatStyleRendererFactoryProvider;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
+
+private slots:
+	INJEQT_SET void setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 
 };

@@ -32,7 +32,6 @@
 #include <injeqt/injeqt.h>
 
 class ChatStyleEngine;
-class ChatStylePreview;
 class Configuration;
 class ConfiguredChatStyleRendererFactoryProvider;
 class FormattedStringFactory;

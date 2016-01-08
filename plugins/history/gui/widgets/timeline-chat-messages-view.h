@@ -18,11 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TIMELINE_CHAT_MESSAGES_VIEW_H
-#define TIMELINE_CHAT_MESSAGES_VIEW_H
+#pragma once
 
 #include <QtCore/QFutureWatcher>
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "misc/memory.h"
 
@@ -38,6 +39,7 @@ class Message;
 class SearchBar;
 class SortedMessages;
 class WaitOverlay;
+class WebkitMessagesViewFactory;
 class WebkitMessagesView;
 class WebViewHighlighter;
 
@@ -58,6 +60,8 @@ class TimelineChatMessagesView : public QWidget
 {
 	Q_OBJECT
 
+	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
+
 	WaitOverlay *TimelineWaitOverlay;
 	WaitOverlay *MessagesViewWaitOverlay;
 
@@ -75,6 +79,10 @@ class TimelineChatMessagesView : public QWidget
 	void createGui();
 
 private slots:
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
+	INJEQT_INIT void init();
+
 	void futureResultsAvailable();
 	void futureResultsCanceled();
 
@@ -89,7 +97,7 @@ public:
 	 * @short Creates new TimelineChatMessagesView.
 	 * @param parent parent widget
 	 */
-	explicit TimelineChatMessagesView(MessageManager *messageManager, QWidget *parent = nullptr);
+	explicit TimelineChatMessagesView(QWidget *parent = nullptr);
 	virtual ~TimelineChatMessagesView();
 
 	/**
@@ -265,5 +273,3 @@ signals:
 /**
  * @}
  */
-
-#endif // TIMELINE_CHAT_MESSAGES_VIEW_H

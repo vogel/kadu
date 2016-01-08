@@ -17,12 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SEARCH_TAB
-#define SEARCH_TAB
-
-#include <QtCore/QDate>
+#pragma once
 
 #include "gui/widgets/history-tab.h"
+
+#include <QtCore/QDate>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QAbstractButton;
 class QCheckBox;
@@ -33,11 +34,14 @@ class QSplitter;
 
 class HistoryMessagesStorage;
 class HistoryTalkableComboBox;
+class InjectedFactory;
 class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
 {
 	Q_OBJECT
+
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	HistoryMessagesStorage *ChatStorage;
 	HistoryMessagesStorage *StatusStorage;
@@ -65,6 +69,9 @@ class SearchTab : public HistoryTab
 	void createGui();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void kindChanged(QAbstractButton *button);
 	void fromDateChanged(const QDate &date);
 	void toDateChanged(const QDate &date);
@@ -86,5 +93,3 @@ public:
 	virtual void setSizes(const QList<int> &newSizes);
 
 };
-
-#endif // SEARCH_TAB

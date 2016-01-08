@@ -23,6 +23,7 @@
 #include "chat-style/engine/chat-style-engine.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/injected-factory.h"
 #include "misc/memory.h"
 #include "gui/widgets/chat-style-preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -61,6 +62,11 @@ void ChatStyleConfigurationUiHandler::setConfiguration(Configuration *configurat
 	m_configuration = configuration;
 }
 
+void ChatStyleConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void ChatStyleConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	m_chatStyleManager->loadStyles(); // reload styles to allow style testing without application restart
@@ -85,7 +91,7 @@ void ChatStyleConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigu
 	editorLayout->addWidget(m_syntaxListCombo, 100);
 
 //preview
-	m_enginePreview = new ChatStylePreview();
+	m_enginePreview = m_injectedFactory->makeInjected<ChatStylePreview>();
 
 //variants
 	m_variantListCombo = new QComboBox();

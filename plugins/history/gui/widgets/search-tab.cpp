@@ -33,6 +33,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
@@ -52,11 +53,20 @@
 SearchTab::SearchTab(QWidget *parent) :
 		HistoryTab(parent), ChatStorage(0), StatusStorage(0), SmsStorage(0), SearchedStorage(&ChatStorage)
 {
-	createGui();
 }
 
 SearchTab::~SearchTab()
 {
+}
+
+void SearchTab::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SearchTab::init()
+{
+	createGui();
 }
 
 void SearchTab::createGui()
@@ -148,7 +158,7 @@ void SearchTab::createGui()
 
 	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
 
-	TimelineView = new TimelineChatMessagesView(Core::instance()->messageManager(), Splitter);
+	TimelineView = m_injectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
 	TimelineView->setTalkableVisible(true);
 	TimelineView->setTitleVisible(true);
 	TimelineView->setLengthHeader(tr("Found"));

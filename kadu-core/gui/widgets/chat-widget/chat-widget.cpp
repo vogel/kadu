@@ -129,6 +129,11 @@ void ChatWidget::setMessageManager(MessageManager *messageManager)
 	m_messageManager = messageManager;
 }
 
+void ChatWidget::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
+{
+	m_webkitMessagesViewFactory = webkitMessagesViewFactory;
+}
+
 void ChatWidget::init()
 {
 	kdebugf();
@@ -184,7 +189,7 @@ void ChatWidget::createGui()
 	frameLayout->setMargin(0);
 	frameLayout->setSpacing(0);
 
-	MessagesView = Core::instance()->webkitMessagesViewFactory()->createWebkitMessagesView(CurrentChat, true, frame);
+	MessagesView = m_webkitMessagesViewFactory->createWebkitMessagesView(CurrentChat, true, frame);
 
 	frameLayout->addWidget(MessagesView.get());
 

@@ -18,11 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_MESSAGES_TAB_H
-#define HISTORY_MESSAGES_TAB_H
+#pragma once
 
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "talkable/talkable.h"
 
@@ -38,6 +39,7 @@ class ChatListModel;
 class FilteredTreeView;
 class HistoryQueryResult;
 class HistoryMessagesStorage;
+class InjectedFactory;
 class Message;
 class ModelChain;
 class TalkableTreeView;
@@ -63,6 +65,8 @@ class HistoryMessagesTab : public HistoryTab
 {
 	Q_OBJECT
 
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	HistoryMessagesStorage *Storage;
 
 	QSplitter *Splitter;
@@ -86,6 +90,9 @@ class HistoryMessagesTab : public HistoryTab
 	void createModelChain();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void futureTalkablesAvailable();
 	void futureTalkablesCanceled();
 
@@ -238,5 +245,3 @@ public:
 /**
  * @}
  */
-
-#endif // HISTORY_MESSAGES_TAB_H

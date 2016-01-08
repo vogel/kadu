@@ -36,19 +36,30 @@ ChatStylePreview::ChatStylePreview(QWidget *parent) :
 	setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	setFixedHeight(250);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-
-	auto layout = make_owned<QHBoxLayout>(this);
-	layout->setContentsMargins(0, 0, 0, 0);
-
-	m_view = preparePreview();
-
-	layout->addWidget(m_view.get());
-
-	configurationUpdated();
 }
 
 ChatStylePreview::~ChatStylePreview()
 {
+}
+
+void ChatStylePreview::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	m_formattedStringFactory = formattedStringFactory;
+}
+
+void ChatStylePreview::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
+{
+	m_webkitMessagesViewFactory = webkitMessagesViewFactory;
+}
+
+void ChatStylePreview::init()
+{
+	auto layout = make_owned<QHBoxLayout>(this);
+	layout->setContentsMargins(0, 0, 0, 0);
+	m_view = preparePreview();
+	layout->addWidget(m_view.get());
+
+	configurationUpdated();
 }
 
 void ChatStylePreview::setRendererFactory(std::unique_ptr<ChatStyleRendererFactory> rendererFactory)
@@ -77,7 +88,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
 	sentMessage.setMessageSender(contact);
-	sentMessage.setContent(Core::instance()->formattedStringFactory()->fromPlainText(tr("Your message")));
+	sentMessage.setContent(m_formattedStringFactory->fromPlainText(tr("Your message")));
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
@@ -85,11 +96,11 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
 	receivedMessage.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
-	receivedMessage.setContent(Core::instance()->formattedStringFactory()->fromPlainText(tr("Message from Your friend")));
+	receivedMessage.setContent(m_formattedStringFactory->fromPlainText(tr("Message from Your friend")));
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 
-	auto result = Core::instance()->webkitMessagesViewFactory()->createWebkitMessagesView(chat, false, this);
+	auto result = m_webkitMessagesViewFactory->createWebkitMessagesView(chat, false, this);
 	result->add(sentMessage);
 	result->add(receivedMessage);
 	return std::move(result);

@@ -71,9 +71,6 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
@@ -626,15 +623,6 @@ void Core::runServices()
 	m_injector.get<PluginMetadataFinder>()->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
-	CurrentWebkitMessagesViewHandlerFactory = make_owned<WebkitMessagesViewHandlerFactory>(this);
-	CurrentWebkitMessagesViewHandlerFactory->setChatStyleManager(chatStyleManager());
-	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(m_injector.get<WebkitMessagesViewDisplayFactory>());
-
-	CurrentWebkitMessagesViewFactory = make_owned<WebkitMessagesViewFactory>(this);
-	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(m_injector.get<ChatStyleRendererFactoryProvider>());
-	CurrentWebkitMessagesViewFactory->setInjectedFactory(m_injector.get<InjectedFactory>());
-	CurrentWebkitMessagesViewFactory->setWebkitMessagesViewHandlerFactory(CurrentWebkitMessagesViewHandlerFactory.get());
-
 	// moved here because of #2758
 	ContactManager::instance()->init();
 
@@ -803,16 +791,6 @@ PluginStateManager * Core::pluginStateManager() const
 PluginStateService * Core::pluginStateService() const
 {
 	return m_injector.get<PluginStateService>();
-}
-
-WebkitMessagesViewFactory * Core::webkitMessagesViewFactory() const
-{
-	return CurrentWebkitMessagesViewFactory.get();
-}
-
-WebkitMessagesViewHandlerFactory * Core::webkitMessagesViewHandlerFactory() const
-{
-	return CurrentWebkitMessagesViewHandlerFactory.get();
 }
 
 RosterReplacer * Core::rosterReplacer() const

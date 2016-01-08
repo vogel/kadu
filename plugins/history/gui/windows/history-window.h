@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_WINDOW_H
-#define HISTORY_WINDOW_H
+#pragma once
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -32,6 +31,7 @@ class ChatHistoryTab;
 class HistoryMessagesTab;
 class HistoryStorage;
 class History;
+class InjectedFactory;
 class SearchTab;
 
 /*!
@@ -47,6 +47,7 @@ class HistoryWindow : public QWidget
 	static HistoryWindow *Instance;
 	
 	QPointer<History> m_history;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QTabWidget *TabWidget;
 	int CurrentTab;
@@ -56,7 +57,7 @@ class HistoryWindow : public QWidget
 	HistoryMessagesTab *SmsTab;
 	SearchTab *MySearchTab;
 
-	explicit HistoryWindow(History *history, QWidget *parent = 0);
+	explicit HistoryWindow(InjectedFactory *injectedFactory, History *history, QWidget *parent = 0);
 
 	void createGui();
 
@@ -72,10 +73,8 @@ protected:
 
 public:
 	static HistoryWindow * instance();
-	static void show(History *history, const Chat &chat);
+	static void show(InjectedFactory *injectedFactory, History *history, const Chat &chat);
 
 	virtual ~HistoryWindow();
 
 };
-
-#endif // HISTORY_WINDOW_H

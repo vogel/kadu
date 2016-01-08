@@ -19,14 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QSplitter>
-#include <QtWidgets/QTreeView>
-#include <QtWidgets/QVBoxLayout>
+#include "timeline-chat-messages-view.h"
+
+#include "model/history-query-results-model.h"
+#include "model/history-query-results-proxy-model.h"
+#include "history-query-result.h"
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
@@ -39,18 +39,37 @@
 #include "message/sorted-messages.h"
 #include "model/roles.h"
 
-#include "model/history-query-results-model.h"
-#include "model/history-query-results-proxy-model.h"
-#include "history-query-result.h"
-
-#include "timeline-chat-messages-view.h"
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QVBoxLayout>
 
 #define DATE_TITLE_LENGTH 120
 
-TimelineChatMessagesView::TimelineChatMessagesView(MessageManager *messageManager, QWidget *parent) :
+TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 		QWidget(parent),
 		TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
 		ResultsFutureWatcher (0), MessagesFutureWatcher(0)
+{
+
+}
+
+TimelineChatMessagesView::~TimelineChatMessagesView()
+{
+}
+
+void TimelineChatMessagesView::setMessageManager(MessageManager *messageManager)
+{
+	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(newMessage(Message)));
+	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(newMessage(Message)));
+}
+
+void TimelineChatMessagesView::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
+{
+	m_webkitMessagesViewFactory = webkitMessagesViewFactory;
+}
+
+void TimelineChatMessagesView::init()
 {
 	ResultsModel = new HistoryQueryResultsModel(this);
 	ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
@@ -61,13 +80,6 @@ TimelineChatMessagesView::TimelineChatMessagesView(MessageManager *messageManage
 	layout()->setSpacing(0);
 
 	createGui();
-
-	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(newMessage(Message)));
-	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(newMessage(Message)));
-}
-
-TimelineChatMessagesView::~TimelineChatMessagesView()
-{
 }
 
 void TimelineChatMessagesView::createGui()
@@ -91,7 +103,7 @@ void TimelineChatMessagesView::createGui()
 	frameLayout->setMargin(0);
 	frameLayout->setSpacing(0);
 
-	MessagesView = Core::instance()->webkitMessagesViewFactory()->createWebkitMessagesView(Chat::null, false, frame);
+	MessagesView = m_webkitMessagesViewFactory->createWebkitMessagesView(Chat::null, false, frame);
 	MessagesView->setFocusPolicy(Qt::StrongFocus);
 	MessagesView->setForcePruneDisabled(true);
 

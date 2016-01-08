@@ -18,21 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_HISTORY_TAB_H
-#define CHAT_HISTORY_TAB_H
-
-#include "talkable/talkable.h"
+#pragma once
 
 #include "gui/widgets/history-messages-tab.h"
+#include "talkable/talkable.h"
+
+#include <injeqt/injeqt.h>
 
 class ChatHistoryTab : public HistoryMessagesTab
 {
 	Q_OBJECT
-
-	Talkable TalkableToSelect;
-
-protected:
-	virtual void talkablesAvailable();
 
 public:
 	explicit ChatHistoryTab(QWidget *parent = 0);
@@ -40,6 +35,13 @@ public:
 
 	void selectTalkable(const Talkable &talkable);
 
-};
+protected:
+	virtual void talkablesAvailable();
 
-#endif // CHAT_HISTORY_TAB_H
+private:
+	Talkable m_talkableToSelect;
+
+private slots:
+	INJEQT_INIT void init();
+
+};

@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHOW_HISTORY_ACTION_DESCRIPTION_H
-#define SHOW_HISTORY_ACTION_DESCRIPTION_H
+#pragma once
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
@@ -29,12 +28,14 @@
 #include "gui/actions/action-description.h"
 
 class History;
+class InjectedFactory;
 
 class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
 	QPointer<History> m_history;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	int ChatHistoryQuotationTime;
 
@@ -54,9 +55,7 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
-	explicit ShowHistoryActionDescription(History *history, QObject *parent);
+	explicit ShowHistoryActionDescription(InjectedFactory *injectedFactory, History *history, QObject *parent);
 	virtual ~ShowHistoryActionDescription();
 
 };
-
-#endif // SHOW_HISTORY_ACTION_DESCRIPTION_H

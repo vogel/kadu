@@ -40,6 +40,7 @@
 #include "contacts/contact-set.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -89,14 +90,6 @@ History::History(QObject *parent) :
 		QObject{parent},
 		SyncEnabled(true), SaveThread(0), CurrentStorage(0)
 {
-	createActionDescriptions();
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
-		this, SLOT(accountRegistered(Account)));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
-		this, SLOT(accountUnregistered(Account)));
-
-	createDefaultConfiguration();
-	configurationUpdated();
 }
 
 History::~History()
@@ -111,17 +104,34 @@ void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
 }
 
+void History::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void History::setMessageManager(MessageManager* messageManager)
 {
 	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(enqueueMessage(Message)));
 	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(enqueueMessage(Message)));
 }
 
+void History::init()
+{
+	createActionDescriptions();
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+		this, SLOT(accountRegistered(Account)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+		this, SLOT(accountUnregistered(Account)));
+
+	createDefaultConfiguration();
+	configurationUpdated();
+}
+
 void History::createActionDescriptions()
 {
 	Actions::instance()->blockSignals();
 
-	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this, this);
+	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(m_injectedFactory, this, this);
 
 	MenuInventory::instance()
 		->menu("buddy-list")

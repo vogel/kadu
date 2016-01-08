@@ -18,20 +18,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QModelIndexList>
-#include <QtWidgets/QAbstractItemView>
+#include "chat-history-tab.h"
+
+#include "gui/widgets/timeline-chat-messages-view.h"
+#include "storage/history-messages-storage.h"
 
 #include "contacts/contact-set.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
 
-#include "gui/widgets/timeline-chat-messages-view.h"
-#include "storage/history-messages-storage.h"
-
-#include "chat-history-tab.h"
+#include <QtCore/QModelIndexList>
+#include <QtWidgets/QAbstractItemView>
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 		HistoryMessagesTab(parent)
+{
+}
+
+ChatHistoryTab::~ChatHistoryTab()
+{
+}
+
+void ChatHistoryTab::init()
 {
 	timelineView()->setTalkableVisible(false);
 	timelineView()->setTitleVisible(true);
@@ -39,19 +47,15 @@ ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 	setClearHistoryMenuItemTitle(tr("&Clear Chat History"));
 }
 
-ChatHistoryTab::~ChatHistoryTab()
-{
-}
-
 void ChatHistoryTab::talkablesAvailable()
 {
-	if (!TalkableToSelect.isValidChat())
+	if (!m_talkableToSelect.isValidChat())
 		return;
 
 	QModelIndexList indexesToSelect;
 
-	Chat chat = TalkableToSelect.toChat();
-	TalkableToSelect = Talkable();
+	auto chat = m_talkableToSelect.toChat();
+	m_talkableToSelect = Talkable();
 
 	if (chat.contacts().size() == 1)
 		indexesToSelect = modelChain()->indexListForValue(chat.contacts().begin()->ownerBuddy());
@@ -70,7 +74,7 @@ void ChatHistoryTab::talkablesAvailable()
 
 void ChatHistoryTab::selectTalkable(const Talkable &talkable)
 {
-	TalkableToSelect = talkable;
+	m_talkableToSelect = talkable;
 }
 
 #include "moc_chat-history-tab.cpp"

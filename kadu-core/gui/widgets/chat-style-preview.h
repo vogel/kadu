@@ -23,8 +23,12 @@
 #include "configuration/configuration-aware-object.h"
 #include "misc/memory.h"
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
+#include <injeqt/injeqt.h>
 
+class FormattedStringFactory;
+class WebkitMessagesViewFactory;
 class WebkitMessagesView;
 
 class ChatStylePreview : public QFrame, public ConfigurationAwareObject
@@ -41,8 +45,15 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 	owned_qptr<WebkitMessagesView> m_view;
 
 	owned_qptr<WebkitMessagesView> preparePreview();
+
+private slots:
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
+	INJEQT_INIT void init();
 
 };

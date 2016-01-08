@@ -48,6 +48,7 @@ class MessageManager;
 class Protocol;
 class SortedMessages;
 class TalkableProxyModel;
+class WebkitMessagesViewFactory;
 class WebkitMessagesView;
 
 class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
@@ -59,6 +60,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MessageManager> m_messageManager;
+	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 
 	Chat CurrentChat;
 	ChatTopBarContainerWidget *TopBarContainer;
@@ -93,6 +95,7 @@ private slots:
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
 	INJEQT_INIT void init();
 
 	void configurationUpdated();

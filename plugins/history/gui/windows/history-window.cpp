@@ -27,6 +27,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "os/generic/window-geometry-manager.h"
 #include "activate.h"
@@ -45,14 +46,14 @@ HistoryWindow * HistoryWindow::instance()
 	return Instance;
 }
 
-void HistoryWindow::show(History *history, const Chat &chat)
+void HistoryWindow::show(InjectedFactory *injectedFactory, History *history, const Chat &chat)
 {
 	Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
 	if (!buddyChat)
 		buddyChat = chat;
 
 	if (!Instance)
-		Instance = new HistoryWindow(history);
+		Instance = new HistoryWindow(injectedFactory, history);
 
 	Instance->updateData();
 	Instance->selectChat(buddyChat);
@@ -61,9 +62,10 @@ void HistoryWindow::show(History *history, const Chat &chat)
 	_activateWindow(Instance);
 }
 
-HistoryWindow::HistoryWindow(History *history, QWidget *parent) :
+HistoryWindow::HistoryWindow(InjectedFactory *injectedFactory, History *history, QWidget *parent) :
 		QWidget(parent),
 		m_history{history},
+		m_injectedFactory{injectedFactory},
 		CurrentTab(-1)
 {
 	setWindowRole("kadu-history");
@@ -97,17 +99,17 @@ void HistoryWindow::createGui()
 	connect(TabWidget, SIGNAL(currentChanged(int)),
 			this, SLOT(currentTabChanged(int)));
 
-	ChatTab = new ChatHistoryTab(TabWidget);
+	ChatTab = m_injectedFactory->makeInjected<ChatHistoryTab>(TabWidget);
 
-	StatusTab = new HistoryMessagesTab(TabWidget);
+	StatusTab = m_injectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
 	StatusTab->timelineView()->setTalkableVisible(false);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
 
-	SmsTab = new HistoryMessagesTab(TabWidget);
+	SmsTab = m_injectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
 	SmsTab->timelineView()->setTalkableVisible(false);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
-	MySearchTab = new SearchTab(TabWidget);
+	MySearchTab = m_injectedFactory->makeInjected<SearchTab>(TabWidget);
 
 	TabWidget->addTab(ChatTab, tr("Chats"));
 	TabWidget->addTab(StatusTab, tr("Statuses"));

@@ -32,6 +32,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/model/chat-list-model.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -61,12 +62,21 @@ HistoryMessagesTab::HistoryMessagesTab(QWidget *parent) :
 		HistoryTab(parent), Storage(0),
 		TabWaitOverlay(0), TalkablesFutureWatcher(0)
 {
-	createGui();
-	createModelChain();
 }
 
 HistoryMessagesTab::~HistoryMessagesTab()
 {
+}
+
+void HistoryMessagesTab::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void HistoryMessagesTab::init()
+{
+	createGui();
+	createModelChain();
 }
 
 void HistoryMessagesTab::createGui()
@@ -103,7 +113,7 @@ void HistoryMessagesTab::createGui()
 
 	FilteredView->setView(TalkableTree);
 
-	TimelineView = new TimelineChatMessagesView(Core::instance()->messageManager(), Splitter);
+	TimelineView = m_injectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
 	TimelineView->searchBar()->setAutoVisibility(false);
 	TimelineView->searchBar()->setSearchWidget(this);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);

@@ -27,6 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -40,9 +41,10 @@
 
 #include "show-history-action-description.h"
 
-ShowHistoryActionDescription::ShowHistoryActionDescription(History *history, QObject *parent) :
+ShowHistoryActionDescription::ShowHistoryActionDescription(InjectedFactory *injectedFactory, History *history, QObject *parent) :
 		ActionDescription(parent),
-		m_history{history}
+		m_history{history},
+		m_injectedFactory{injectedFactory}
 {
 	setType(ActionDescription::TypeUser);
 	setName("showHistoryAction");
@@ -137,14 +139,14 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	ChatWidget *chatWidget = action->data().value<ChatWidget *>();
 	if (!chatWidget)
 	{
-		HistoryWindow::show(m_history, actionChat);
+		HistoryWindow::show(m_injectedFactory, m_history, actionChat);
 		return;
 	}
 
 	WebkitMessagesView *chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
 	{
-		HistoryWindow::show(m_history, actionChat);
+		HistoryWindow::show(m_injectedFactory, m_history, actionChat);
 		return;
 	}
 
@@ -152,7 +154,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 
 	if (-1 == days)
 	{
-		HistoryWindow::show(m_history, chatWidget->chat());
+		HistoryWindow::show(m_injectedFactory, m_history, chatWidget->chat());
 		return;
 	}
 
