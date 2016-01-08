@@ -26,10 +26,13 @@
 #include "message/message-filter.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QSet>
+#include <injeqt/injeqt.h>
 
 class AutoresponderConfigurator;
 class ChatWidget;
+class MessageManager;
 
 class AutoresponderMessageFilter : public QObject, public MessageFilter
 {
@@ -47,9 +50,14 @@ public slots:
 	void chatWidgetClosed(ChatWidget *chat);
 
 private:
+	QPointer<MessageManager> m_messageManager;
+
 	AutoresponderConfigurator *Configurator;
 	AutoresponderConfiguration Configuration;
 
 	QSet<Chat> RepliedChats;
+
+private slots:
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 
 };

@@ -23,6 +23,7 @@
 
 #include "event-listener.h"
 
+class MessageManager;
 class Message;
 
 class ChatEventListener : public EventListener
@@ -33,7 +34,7 @@ private slots:
 	void messageReceived(const Message &message);
 
 public:
-	ChatEventListener(NotificationService *service);
+	explicit ChatEventListener(MessageManager *messageManager, NotificationService *service);
 	virtual ~ChatEventListener();
 
 };

@@ -44,6 +44,7 @@ class CustomInput;
 class FilteredTreeView;
 class FormattedStringFactory;
 class InjectedFactory;
+class MessageManager;
 class Protocol;
 class SortedMessages;
 class TalkableProxyModel;
@@ -57,6 +58,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MessageManager> m_messageManager;
 
 	Chat CurrentChat;
 	ChatTopBarContainerWidget *TopBarContainer;
@@ -90,6 +92,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 private slots:
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_INIT void init();
 
 	void configurationUpdated();

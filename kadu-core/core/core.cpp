@@ -604,7 +604,7 @@ void Core::runServices()
 	CurrentChatWidgetMessageHandler->setChatWidgetActivationService(m_injector.get<ChatWidgetActivationService>());
 	CurrentChatWidgetMessageHandler->setChatWidgetManager(m_injector.get<ChatWidgetManager>());
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
-	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
+	CurrentChatWidgetMessageHandler->setMessageManager(m_injector.get<MessageManager>());
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(m_injector.get<UnreadMessageRepository>());
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
@@ -620,10 +620,6 @@ void Core::runServices()
 
 	m_injector.get<ChatImageRequestService>()->setAccountManager(AccountManager::instance());
 	m_injector.get<ChatImageRequestService>()->setContactManager(ContactManager::instance());
-
-	MessageManager::instance()->setMessageFilterService(m_injector.get<MessageFilterService>());
-	MessageManager::instance()->setMessageTransformerService(m_injector.get<MessageTransformerService>());
-	MessageManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
 
@@ -671,6 +667,11 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
+}
+
+MessageManager * Core::messageManager() const
+{
+	return m_injector.get<MessageManager>();
 }
 
 MessageHtmlRendererService * Core::messageHtmlRendererService() const

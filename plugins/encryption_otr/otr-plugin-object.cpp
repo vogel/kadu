@@ -169,7 +169,6 @@ void OtrPluginObject::init()
 	m_otrInstanceTagService->readInstanceTags();
 
 	m_otrIsLoggedInService->setContactManager(ContactManager::instance());
-	m_otrMessageService->setMessageManager(MessageManager::instance());
 
 	connect(m_otrPeerIdentityVerificationService, SIGNAL(questionAnswerRequested(Contact,QString)),
 			m_otrPeerIdentityVerificationWindowRepository, SLOT(showRespondQuestionAndAnswerVerificationWindow(Contact,QString)));
@@ -198,7 +197,6 @@ void OtrPluginObject::init()
 			m_otrNotifier, SLOT(notifyStillSecure(Contact)));
 
 	m_otrTrustLevelService->updateTrustLevels();
-	m_otrSessionService->setMessageManager(MessageManager::instance());
 
 	m_otrRawMessageTransformer->setEnableFragments(fragmentsFixAvailable());
 	m_rawMessageTransformerService->registerTransformer(m_otrRawMessageTransformer);

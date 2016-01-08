@@ -29,6 +29,7 @@
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "message/message-manager.h"
 #include "notification/listener/account-event-listener.h"
 #include "notification/listener/chat-event-listener.h"
 #include "notification/listener/group-event-listener.h"
@@ -66,11 +67,6 @@ NotificationService::NotificationService(QObject *parent) :
 	MultilogonNotification::registerEvents();
 
 	connect(Core::instance()->statusContainerManager(), SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
-
-	createEventListeners();
-	createActionDescriptions();
-
-	CurrentWindowNotifier = new WindowNotifier(this);
 }
 
 NotificationService::~NotificationService()
@@ -94,15 +90,11 @@ void NotificationService::setConfigurationUiHandlerRepository(ConfigurationUiHan
 void NotificationService::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-
-	createDefaultConfiguration();
-	configurationUpdated();
 }
 
 void NotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
 {
 	m_notificationCallbackRepository = notificationCallbackRepository;
-	CurrentWindowNotifier->setNotificationCallbackRepository(m_notificationCallbackRepository);
 
 	auto ignoreCallback = NotificationCallback{
 		"ignore",
@@ -121,6 +113,23 @@ void NotificationService::setNotificationCallbackRepository(NotificationCallback
 
 	m_notificationCallbackRepository->addCallback(ignoreCallback);
 	m_notificationCallbackRepository->addCallback(openChatCallback);
+}
+
+void NotificationService::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+}
+
+void NotificationService::init()
+{
+	createEventListeners();
+	createActionDescriptions();
+
+	CurrentWindowNotifier = new WindowNotifier(this);
+	CurrentWindowNotifier->setNotificationCallbackRepository(m_notificationCallbackRepository);
+
+	createDefaultConfiguration();
+	configurationUpdated();
 }
 
 void NotificationService::createActionDescriptions()
@@ -151,7 +160,7 @@ void NotificationService::createActionDescriptions()
 
 void NotificationService::createEventListeners()
 {
-	ChatListener = new ChatEventListener(this);
+	ChatListener = new ChatEventListener(m_messageManager, this);
 	AccountListener = new AccountEventListener(this);
 	GroupListener = new GroupEventListener(this);
 }

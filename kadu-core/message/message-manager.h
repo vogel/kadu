@@ -18,15 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_MANAGER_H
-#define MESSAGE_MANAGER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "message/message.h"
-
 #include "exports.h"
+
+#include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 class FormattedStringFactory;
 class MessageFilterService;
@@ -48,66 +47,10 @@ class MessageTransformerService;
 class KADUAPI MessageManager : public QObject, public AccountsAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(MessageManager)
-
-	static MessageManager * Instance;
-
-	QPointer<MessageFilterService> CurrentMessageFilterService;
-	QPointer<MessageTransformerService> CurrentMessageTransformerService;
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-
-	MessageManager();
-	virtual ~MessageManager();
-
-	/**
-	 * @short Create outoing message for given chat and given content.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of outgoing message
-	 * @param content content of outgoing message
-	 */
-	Message createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content);
-
-private slots:
-	/**
-	 * @short Slot called every time a new message was received from any of registered accounts.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message received message
-	 *
-	 * This slot is called every time a new message was received from any of registered accounts.
-	 * Each receied message is automatically recorded as unread message and can be set as pending message
-	 * if no applicable chat widget is available.
-	 *
-	 * This slot emits messageReceived and unreadMessageAdded signals.
-	 */
-	void messageReceivedSlot(const Message &message);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
-	static MessageManager * instance();
-
-	/**
-	 * @short Set message filter service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param messageFilterService message filter service for this service
-	 */
-	void setMessageFilterService(MessageFilterService *messageFilterService);
-
-	/**
-	 * @short Set message transformer service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param messageTransformerService message transformer service for this service
-	 */
-	void setMessageTransformerService(MessageTransformerService *messageTransformerService);
-
-	/**
-	 * @short Set formatted string factory for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param formattedStringFactory formatted string factory for this service
-	 */
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	Q_INVOKABLE explicit MessageManager(QObject *parent = nullptr);
+	virtual ~MessageManager();
 
 	/**
 	 * @short Send new message to given chat.
@@ -150,6 +93,10 @@ public:
 	 */
 	bool sendRawMessage(const Chat &chat, const QByteArray &content);
 
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+
 signals:
 	/**
 	 * @short Signal emited every time a message is received from one of registered acocunts.
@@ -170,10 +117,56 @@ signals:
 	 */
 	void messageSent(const Message &message);
 
+private:
+	QPointer<MessageFilterService> m_messageFilterService;
+	QPointer<MessageTransformerService> m_messageTransformerService;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
+
+	/**
+	 * @short Create outoing message for given chat and given content.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param chat chat of outgoing message
+	 * @param content content of outgoing message
+	 */
+	Message createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content);
+
+private slots:
+	/**
+	 * @short Set message filter service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param messageFilterService message filter service for this service
+	 */
+	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
+
+	/**
+	 * @short Set message transformer service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param messageTransformerService message transformer service for this service
+	 */
+	INJEQT_SET void setMessageTransformerService(MessageTransformerService *messageTransformerService);
+
+	/**
+	 * @short Set formatted string factory for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param formattedStringFactory formatted string factory for this service
+	 */
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+
+	/**
+	 * @short Slot called every time a new message was received from any of registered accounts.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param message received message
+	 *
+	 * This slot is called every time a new message was received from any of registered accounts.
+	 * Each receied message is automatically recorded as unread message and can be set as pending message
+	 * if no applicable chat widget is available.
+	 *
+	 * This slot emits messageReceived and unreadMessageAdded signals.
+	 */
+	void messageReceivedSlot(const Message &message);
+
 };
 
 /**
  * @}
  */
-
-#endif // MESSAGE_MANAGER_H

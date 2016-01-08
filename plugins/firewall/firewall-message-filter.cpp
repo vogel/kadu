@@ -117,6 +117,11 @@ void FirewallMessageFilter::setHistory(History *history)
 	m_history = history;
 }
 
+void FirewallMessageFilter::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+}
+
 void FirewallMessageFilter::accountRegistered(Account account)
 {
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
@@ -286,7 +291,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 					return false;
 				}
 
-				MessageManager::instance()->sendMessage(chat, tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first."), true);
+				m_messageManager->sendMessage(chat, tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first."), true);
 			}
 
 			writeLog(sender, tr("Chat with invisible anonim ignored.\n") + "----------------------------------------------------\n");
@@ -309,7 +314,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 				return false;
 			}
 
-			MessageManager::instance()->sendMessage(chat, ConfirmationText, true);
+			m_messageManager->sendMessage(chat, ConfirmationText, true);
 		}
 
 		writeLog(sender, tr("User wrote right answer!\n") + "----------------------------------------------------\n");
@@ -343,7 +348,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 				return false;
 			}
 
-			MessageManager::instance()->sendMessage(chat, ConfirmationQuestion, true);
+			m_messageManager->sendMessage(chat, ConfirmationQuestion, true);
 		}
 
 		kdebugf2();

@@ -46,6 +46,7 @@ RecentChatManager * RecentChatManager::instance()
 	if (0 == Instance)
 	{
 		Instance = new RecentChatManager();
+		Instance->setMessageManager(Core::instance()->messageManager());
 		Instance->init();
 	}
 
@@ -62,6 +63,11 @@ RecentChatManager::~RecentChatManager()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
+void RecentChatManager::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+}
+
 void RecentChatManager::init()
 {
 	setState(StateNotLoaded);
@@ -72,10 +78,8 @@ void RecentChatManager::init()
 
 	configurationUpdated();
 
-	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
-			this, SLOT(onNewMessage(Message)));
-	connect(MessageManager::instance(), SIGNAL(messageSent(Message)),
-			this, SLOT(onNewMessage(Message)));
+	connect(m_messageManager, SIGNAL(messageReceived(Message)), this, SLOT(onNewMessage(Message)));
+	connect(m_messageManager, SIGNAL(messageSent(Message)), this, SLOT(onNewMessage(Message)));
 }
 
 /**

@@ -35,6 +35,11 @@ AntistringMessageFilter::~AntistringMessageFilter()
 {
 }
 
+void AntistringMessageFilter::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+}
+
 bool AntistringMessageFilter::acceptMessage(const Message &message)
 {
 	if (!Configuration.enabled())
@@ -47,7 +52,7 @@ bool AntistringMessageFilter::acceptMessage(const Message &message)
 		return true;
 
 	AntistringNotification::notifyStringReceived(message.messageChat());
-	MessageManager::instance()->sendMessage(message.messageChat(), Configuration.returnMessage(), true);
+	m_messageManager->sendMessage(message.messageChat(), Configuration.returnMessage(), true);
 
 	if (Configuration.logMessage())
 		writeLog(message.messageSender(), message.htmlContent());

@@ -30,14 +30,15 @@ class QDate;
 class QSplitter;
 class QTreeView;
 
-class WebkitMessagesView;
 class HistoryQueryResult;
 class HistoryQueryResultsModel;
 class HistoryQueryResultsProxyModel;
+class MessageManager;
 class Message;
 class SearchBar;
 class SortedMessages;
 class WaitOverlay;
+class WebkitMessagesView;
 class WebViewHighlighter;
 
 /**
@@ -88,7 +89,7 @@ public:
 	 * @short Creates new TimelineChatMessagesView.
 	 * @param parent parent widget
 	 */
-	explicit TimelineChatMessagesView(QWidget *parent = 0);
+	explicit TimelineChatMessagesView(MessageManager *messageManager, QWidget *parent = nullptr);
 	virtual ~TimelineChatMessagesView();
 
 	/**

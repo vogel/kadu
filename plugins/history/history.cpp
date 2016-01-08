@@ -89,40 +89,32 @@ History::History(QObject *parent) :
 		QObject{parent},
 		SyncEnabled(true), SaveThread(0), CurrentStorage(0)
 {
-	kdebugf();
 	createActionDescriptions();
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
 		this, SLOT(accountRegistered(Account)));
 	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
 		this, SLOT(accountUnregistered(Account)));
-	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
-		this, SLOT(enqueueMessage(Message)));
-	connect(MessageManager::instance(), SIGNAL(messageSent(Message)),
-		this, SLOT(enqueueMessage(Message)));
 
 	createDefaultConfiguration();
 	configurationUpdated();
-	kdebugf2();
 }
 
 History::~History()
 {
-	kdebugf();
-
-	disconnect(MessageManager::instance(), 0, this, 0);
-
 	stopSaveThread();
 	deleteActionDescriptions();
-
-	kdebugf2();
 }
 
 void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+}
 
-	if (m_chatWidgetRepository)
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+void History::setMessageManager(MessageManager* messageManager)
+{
+	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(enqueueMessage(Message)));
+	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(enqueueMessage(Message)));
 }
 
 void History::createActionDescriptions()

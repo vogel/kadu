@@ -40,6 +40,7 @@ class Contact;
 class FormattedStringFactory;
 class History;
 class IncomingMessageFirewallFilter;
+class MessageManager;
 class Message;
 class OutgoingMessageFirewallFilter;
 
@@ -60,6 +61,7 @@ private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<History> m_history;
+	QPointer<MessageManager> m_messageManager;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;
@@ -101,6 +103,7 @@ private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setHistory(History *history);
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 
 	void accountConnected();
 

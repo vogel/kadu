@@ -25,6 +25,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QTimer>
 
 #include "configuration/configuration-aware-object.h"
@@ -33,6 +34,7 @@
 class QTimer;
 
 class Chat;
+class MessageManager;
 class Message;
 
 /**
@@ -60,6 +62,8 @@ class KADUAPI RecentChatManager : public QObject, public StorableObject, private
 	Q_DISABLE_COPY(RecentChatManager)
 
 	static RecentChatManager * Instance;
+
+	QPointer<MessageManager> m_messageManager;
 
 	QList<Chat> RecentChats;
 	QTimer CleanUpTimer;
@@ -107,6 +111,8 @@ public:
 	virtual StorableObject* storageParent() { return 0; }
 
 	const QList<Chat> & recentChats();
+
+	void setMessageManager(MessageManager *messageManager);
 
 signals:
 	/**

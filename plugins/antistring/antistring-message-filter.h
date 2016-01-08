@@ -30,6 +30,7 @@
 
 class Account;
 class Contact;
+class MessageManager;
 
 class AntistringMessageFilter : public QObject, public MessageFilter
 {
@@ -44,9 +45,13 @@ public:
 	virtual bool acceptMessage(const Message &message);
 
 private:
+	QPointer<MessageManager> m_messageManager;
 	AntistringConfiguration Configuration;
 
 	int points(const QString &message);
 	void writeLog(Contact sender, const QString &message);
+
+private slots:
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 
 };

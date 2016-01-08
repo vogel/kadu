@@ -22,6 +22,8 @@
 #define CENZOR_H
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "message/message-filter.h"
 
@@ -29,6 +31,7 @@
 
 class Chat;
 class Contact;
+class MessageManager;
 
 class CenzorMessageFilter : public QObject, public MessageFilter
 {
@@ -44,10 +47,15 @@ protected:
 	virtual bool acceptMessage(const Message &message);
 
 private:
+	QPointer<MessageManager> m_messageManager;
+
 	CenzorConfiguration Configuration;
 
 	bool shouldIgnore(const QString &message);
 	bool isExclusion(const QString &word);
+
+private slots:
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 
 };
 

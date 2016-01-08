@@ -68,6 +68,7 @@ class KaduIcon;
 class KaduWindow;
 class Message;
 class MessageHtmlRendererService;
+class MessageManager;
 class MessageTransformerService;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
@@ -159,6 +160,7 @@ public:
 
 	void activatePlugins();
 
+	MessageManager * messageManager() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
 	MessageTransformerService * messageTransformerService() const;
 	NotificationCallbackRepository * notificationCallbackRepository() const;

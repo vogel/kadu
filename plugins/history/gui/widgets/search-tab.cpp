@@ -32,6 +32,7 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QVBoxLayout>
 
+#include "core/core.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
@@ -147,7 +148,7 @@ void SearchTab::createGui()
 
 	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
 
-	TimelineView = new TimelineChatMessagesView(Splitter);
+	TimelineView = new TimelineChatMessagesView(Core::instance()->messageManager(), Splitter);
 	TimelineView->setTalkableVisible(true);
 	TimelineView->setTitleVisible(true);
 	TimelineView->setLengthHeader(tr("Found"));

@@ -54,6 +54,7 @@ class ChatWidget;
 class ChatWidgetRepository;
 class HistorySaveThread;
 class HistoryWindow;
+class MessageManager;
 class ShowHistoryActionDescription;
 
 class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareObject
@@ -105,6 +106,7 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 
 	void accountRegistered(Account);
 	void accountUnregistered(Account);

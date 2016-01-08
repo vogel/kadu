@@ -55,6 +55,11 @@ AutoresponderMessageFilter::~AutoresponderMessageFilter()
 {
 }
 
+void AutoresponderMessageFilter::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+}
+
 bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 {
 	printf("should I do accept?\n");
@@ -80,7 +85,7 @@ bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 			|| (Configuration.statusInvisible() && protocol->status().group() == StatusTypeGroupInvisible)
 			|| (Configuration.statusBusy() && protocol->status().group() == StatusTypeGroupAway))
 	{
-		MessageManager::instance()->sendMessage(message.messageChat(), tr("KADU AUTORESPONDER:") + '\n'
+		m_messageManager->sendMessage(message.messageChat(), tr("KADU AUTORESPONDER:") + '\n'
 				+ Parser::parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape), true);
 
 		RepliedChats.insert(message.messageChat());

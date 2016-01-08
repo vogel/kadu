@@ -28,20 +28,12 @@
 
 #include "message-manager.h"
 
-MessageManager * MessageManager::Instance = 0;
-
-MessageManager * MessageManager::instance()
+MessageManager::MessageManager(QObject *parent) :
+		QObject{parent}
 {
+	// TODO: move somewhere else?
 	qRegisterMetaType<Message>();
 
-	if (0 == Instance)
-		Instance = new MessageManager();
-
-	return Instance;
-}
-
-MessageManager::MessageManager()
-{
 	triggerAllAccountsRegistered();
 }
 
@@ -81,12 +73,12 @@ void MessageManager::accountUnregistered(Account account)
 
 void MessageManager::messageReceivedSlot(const Message &message)
 {
-	Message transformedMessage = CurrentMessageTransformerService
-			? CurrentMessageTransformerService.data()->transform(message)
+	Message transformedMessage = m_messageTransformerService
+			? m_messageTransformerService.data()->transform(message)
 			: message;
 
-	if (CurrentMessageFilterService)
-		if (!CurrentMessageFilterService.data()->acceptMessage(transformedMessage))
+	if (m_messageFilterService)
+		if (!m_messageFilterService.data()->acceptMessage(transformedMessage))
 			return;
 
 	emit messageReceived(transformedMessage);
@@ -94,25 +86,25 @@ void MessageManager::messageReceivedSlot(const Message &message)
 
 void MessageManager::setMessageFilterService(MessageFilterService *messageFilterService)
 {
-	CurrentMessageFilterService = messageFilterService;
+	m_messageFilterService = messageFilterService;
 }
 
 void MessageManager::setMessageTransformerService(MessageTransformerService *messageTransformerService)
 {
-	CurrentMessageTransformerService = messageTransformerService;
+	m_messageTransformerService = messageTransformerService;
 }
 
 void MessageManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 bool MessageManager::sendMessage(const Chat &chat, const QString &content, bool silent)
 {
-	if (!CurrentFormattedStringFactory)
+	if (!m_formattedStringFactory)
 		return false;
 
-	return sendMessage(chat, CurrentFormattedStringFactory.data()->fromText(content), silent);
+	return sendMessage(chat, m_formattedStringFactory.data()->fromText(content), silent);
 }
 
 Message MessageManager::createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content)
@@ -135,11 +127,11 @@ bool MessageManager::sendMessage(const Chat &chat, std::unique_ptr<FormattedStri
 		return false;
 
 	Message message = createOutgoingMessage(chat, std::move(content));
-	if (CurrentMessageFilterService && !CurrentMessageFilterService.data()->acceptMessage(message))
+	if (m_messageFilterService && !m_messageFilterService.data()->acceptMessage(message))
 		return false;
 
-	Message transformedMessage = CurrentMessageTransformerService
-			? CurrentMessageTransformerService.data()->transform(message)
+	Message transformedMessage = m_messageTransformerService
+			? m_messageTransformerService.data()->transform(message)
 			: message;
 
 	bool sent = protocol->chatService()->sendMessage(transformedMessage);

@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -46,11 +47,12 @@ public:
 	Q_INVOKABLE OtrMessageService();
 	virtual ~OtrMessageService();
 
-	void setMessageManager(MessageManager *messageManager);
-
 	void injectMessage(const Contact &contact, const QByteArray &message) const;
 	int maxMessageSize(const Account &account) const;
 	QString resentMessagePrefix() const;
+
+private slots:
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 
 };
 

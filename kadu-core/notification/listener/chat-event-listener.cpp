@@ -31,15 +31,14 @@
 
 #include "chat-event-listener.h"
 
-ChatEventListener::ChatEventListener(NotificationService *service)
+ChatEventListener::ChatEventListener(MessageManager *messageManager, NotificationService *service)
 		: EventListener(service)
 {
-	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
 }
 
 ChatEventListener::~ChatEventListener()
 {
-	disconnect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
 }
 
 void ChatEventListener::messageReceived(const Message &message)

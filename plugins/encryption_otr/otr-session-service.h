@@ -48,8 +48,6 @@ public:
 	Q_INVOKABLE OtrSessionService();
 	virtual ~OtrSessionService();
 
-	void setMessageManager(MessageManager *messageManager);
-
 public slots:
 	void startSession(const Contact &contact);
 	void endSession(const Contact &contact);
@@ -64,6 +62,8 @@ signals:
 
 private slots:
 	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
+
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
 	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);

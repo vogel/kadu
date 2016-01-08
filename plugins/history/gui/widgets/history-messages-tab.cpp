@@ -31,6 +31,7 @@
 #include "buddies/model/buddy-list-model.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/model/chat-list-model.h"
+#include "core/core.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -102,7 +103,7 @@ void HistoryMessagesTab::createGui()
 
 	FilteredView->setView(TalkableTree);
 
-	TimelineView = new TimelineChatMessagesView(Splitter);
+	TimelineView = new TimelineChatMessagesView(Core::instance()->messageManager(), Splitter);
 	TimelineView->searchBar()->setAutoVisibility(false);
 	TimelineView->searchBar()->setSearchWidget(this);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);

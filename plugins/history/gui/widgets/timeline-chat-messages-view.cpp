@@ -47,7 +47,7 @@
 
 #define DATE_TITLE_LENGTH 120
 
-TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
+TimelineChatMessagesView::TimelineChatMessagesView(MessageManager *messageManager, QWidget *parent) :
 		QWidget(parent),
 		TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
 		ResultsFutureWatcher (0), MessagesFutureWatcher(0)
@@ -62,8 +62,8 @@ TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 
 	createGui();
 
-	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(newMessage(Message)));
-	connect(MessageManager::instance(), SIGNAL(messageSent(Message)), this, SLOT(newMessage(Message)));
+	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(newMessage(Message)));
+	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(newMessage(Message)));
 }
 
 TimelineChatMessagesView::~TimelineChatMessagesView()

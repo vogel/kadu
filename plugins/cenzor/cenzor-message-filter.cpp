@@ -33,6 +33,11 @@ CenzorMessageFilter::~CenzorMessageFilter()
 {
 }
 
+void CenzorMessageFilter::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+}
+
 bool CenzorMessageFilter::acceptMessage(const Message &message)
 {
 	if (MessageTypeSent == message.type())
@@ -51,7 +56,7 @@ bool CenzorMessageFilter::acceptMessage(const Message &message)
 		return false;
 
 
-	if (MessageManager::instance()->sendMessage(message.messageChat(), Configuration.admonition(), true))
+	if (m_messageManager->sendMessage(message.messageChat(), Configuration.admonition(), true))
 		CenzorNotification::notifyCenzored(message.messageChat());
 
 	return false;

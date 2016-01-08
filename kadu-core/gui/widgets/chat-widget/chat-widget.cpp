@@ -124,6 +124,11 @@ void ChatWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void ChatWidget::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+}
+
 void ChatWidget::init()
 {
 	kdebugf();
@@ -465,7 +470,7 @@ void ChatWidget::sendMessage()
 		return;
 	}
 
-	if (!MessageManager::instance()->sendMessage(CurrentChat, InputBox->inputBox()->formattedString()))
+	if (!m_messageManager->sendMessage(CurrentChat, InputBox->inputBox()->formattedString()))
 		return;
 
 	resetEditBox();
