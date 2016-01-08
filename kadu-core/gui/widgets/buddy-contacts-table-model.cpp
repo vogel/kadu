@@ -25,6 +25,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/kadu-icon.h"
@@ -198,7 +199,7 @@ void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *it
 	if (display.isEmpty())
 		return;
 
-	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd);
+	Buddy newBuddy = Core::instance()->buddyManager()->byDisplay(display, ActionCreateAndAdd);
 	newBuddy.setAnonymous(false);
 	contact.setOwnerBuddy(newBuddy);
 }

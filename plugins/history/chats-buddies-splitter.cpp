@@ -26,6 +26,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "talkable/talkable.h"
 
 #include "chats-buddies-splitter.h"
@@ -65,7 +66,7 @@ void ChatsBuddiesSplitter::assignChat(const Chat &chat)
 {
 	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
 	if (chatType && (chatType->name() == "Contact" || chatType->name() == "Buddy"))
-		Buddies.insert(BuddyManager::instance()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
+		Buddies.insert(Core::instance()->buddyManager()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
 	else
 		Chats.insert(chat);
 }

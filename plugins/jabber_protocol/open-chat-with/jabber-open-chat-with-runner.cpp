@@ -22,6 +22,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "debug.h"
 
 #include "jabber-id-validator.h"
@@ -45,7 +46,7 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreate);
+	Buddy buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreate);
 	matchedContacts.append(buddy);
 
 	return matchedContacts;

@@ -26,6 +26,7 @@
 #include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "model/roles.h"
 #include "status/status-container.h"
 
@@ -119,8 +120,8 @@ Buddy Talkable::toBuddy() const
 	switch (Type)
 	{
 		case ItemBuddy: return MyBuddy;
-		case ItemContact: return BuddyManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-		case ItemChat: return BuddyManager::instance()->byContact(toContact(), ActionCreateAndAdd);
+		case ItemContact: return Core::instance()->buddyManager()->byContact(MyContact, ActionCreateAndAdd);
+		case ItemChat: return Core::instance()->buddyManager()->byContact(toContact(), ActionCreateAndAdd);
 		default:
 			return Buddy::null;
 	}

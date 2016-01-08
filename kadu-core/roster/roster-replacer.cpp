@@ -114,7 +114,7 @@ void RosterReplacer::performRenames(const QMap<Buddy, Contact> &contactsToRename
 	}
 
 	for (auto &&buddy : buddiesToRemove)
-		BuddyManager::instance()->removeBuddyIfEmpty(buddy, true);
+		Core::instance()->buddyManager()->removeBuddyIfEmpty(buddy, true);
 }
 
 QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account account, const BuddyList &buddies, bool ask)
@@ -138,7 +138,7 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account ac
 				break;
 			}
 		if (!targetBuddy)
-			targetBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
+			targetBuddy = Core::instance()->buddyManager()->byDisplay(buddy.display(), ActionCreate);
 		targetBuddy.setAnonymous(false);
 
 		for (auto &&contact : buddy.contacts(account))
@@ -190,7 +190,7 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account ac
 		copySupportedBuddyInformation(i.key(), i.value());
 		// sometimes when a new Contact is added from server on login, sorting fails on that Contact
 		// TODO 0.10: find out why it happens and fix it _properly_ as it _might_ be a bug in model
-		BuddyManager::instance()->addItem(i.key());
+		Core::instance()->buddyManager()->addItem(i.key());
 	}
 
 	return qMakePair(allContacts, resultContacts);

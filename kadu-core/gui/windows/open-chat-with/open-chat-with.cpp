@@ -205,7 +205,7 @@ void OpenChatWith::inputChanged(const QString &text)
 	kdebugf();
 
 	BuddyList matchingContacts = text.isEmpty()
-			? BuddyManager::instance()->items().toList()
+			? Core::instance()->buddyManager()->items().toList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	ListModel->setBuddyList(matchingContacts);

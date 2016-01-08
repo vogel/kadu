@@ -52,7 +52,7 @@ ContactManager * ContactManager::instance()
 		// if ContactManager is called first and import from 0.6.5 is done
 		// when ContactManager's storage() point will be modified from Contacts to OldContacts
 		// and everything will be fucked up
-		BuddyManager::instance();
+		Core::instance()->buddyManager();
 
 		Instance = new ContactManager();
 

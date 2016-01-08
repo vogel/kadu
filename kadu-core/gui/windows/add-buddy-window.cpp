@@ -375,7 +375,7 @@ void AddBuddyWindow::validateData()
 		}
 		else
 		{
-			Buddy existingBuddy = BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull);
+			Buddy existingBuddy = Core::instance()->buddyManager()->byDisplay(DisplayNameEdit->text(), ActionReturnNull);
 			if (existingBuddy && existingBuddy != MyBuddy)
 			{
 				displayErrorMessage(tr("Visible name is already used for another buddy"));
@@ -494,7 +494,7 @@ bool AddBuddyWindow::addContact()
 		else
 			buddy = MyBuddy;
 
-		BuddyManager::instance()->addItem(buddy);
+		Core::instance()->buddyManager()->addItem(buddy);
 
 		buddy.setAnonymous(false);
 		buddy.setOfflineTo(!AllowToSeeMeCheck->isChecked());
@@ -541,7 +541,7 @@ bool AddBuddyWindow::addMobile()
 	buddy.setDisplay(DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text());
 	buddy.addToGroup(GroupCombo->currentGroup());
 
-	BuddyManager::instance()->addItem(buddy);
+	Core::instance()->buddyManager()->addItem(buddy);
 
 	return true;
 }
@@ -555,7 +555,7 @@ bool AddBuddyWindow::addEmail()
 	buddy.setDisplay(DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text());
 	buddy.addToGroup(GroupCombo->currentGroup());
 
-	BuddyManager::instance()->addItem(buddy);
+	Core::instance()->buddyManager()->addItem(buddy);
 
 	return true;
 }

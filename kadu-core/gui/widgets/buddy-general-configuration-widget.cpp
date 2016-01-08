@@ -39,6 +39,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "gui/widgets/buddy-avatar-widget.h"
 #include "gui/widgets/buddy-contacts-table.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
@@ -150,7 +151,7 @@ bool BuddyGeneralConfigurationWidget::isValid() const
 	if (display.isEmpty())
 		return false;
 
-	Buddy buddy = BuddyManager::instance()->byDisplay(display, ActionReturnNull);
+	Buddy buddy = Core::instance()->buddyManager()->byDisplay(display, ActionReturnNull);
 	if (buddy && buddy != MyBuddy)
 		return false;
 

@@ -20,8 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
+#include "buddy-manager.h"
 
+#include "accounts/account.h"
 #include "buddies/buddy-list.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-manager.h"
@@ -29,27 +30,12 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "roster/roster.h"
 #include "storage/storage-point.h"
 #include "debug.h"
 
-#include "buddy-manager.h"
-
-BuddyManager * BuddyManager::Instance = 0;
-
-BuddyManager * BuddyManager::instance()
-{
-	if (0 == Instance)
-	{
-		Instance = new BuddyManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-BuddyManager::BuddyManager()
+BuddyManager::BuddyManager(QObject *parent) :
+		QObject{parent}
 {
 }
 
@@ -57,16 +43,21 @@ BuddyManager::~BuddyManager()
 {
 }
 
+void BuddyManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void BuddyManager::init()
 {
 	QMutexLocker locker(&mutex());
 
 	int itemsSize = items().size();
-	QDomElement buddiesNode = Application::instance()->configuration()->api()->getNode("Buddies", ConfigurationApi::ModeFind);
-	QDomElement oldContactsNode = Application::instance()->configuration()->api()->getNode("OldContacts", ConfigurationApi::ModeFind);
+	QDomElement buddiesNode = m_configuration->api()->getNode("Buddies", ConfigurationApi::ModeFind);
+	QDomElement oldContactsNode = m_configuration->api()->getNode("OldContacts", ConfigurationApi::ModeFind);
 	if (oldContactsNode.isNull() && (buddiesNode.isNull() || (itemsSize == 0 && !buddiesNode.hasAttribute("imported"))))
 	{
-		importConfiguration(Application::instance()->configuration()->api());
+		importConfiguration(m_configuration->api());
 		buddiesNode.setAttribute("imported", "true");
 	}
 }

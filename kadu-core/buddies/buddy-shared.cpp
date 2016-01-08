@@ -109,7 +109,7 @@ void BuddyShared::collectGarbage()
 
 StorableObject * BuddyShared::storageParent()
 {
-	return BuddyManager::instance();
+	return Core::instance()->buddyManager();
 }
 
 QString BuddyShared::storageNodeName()

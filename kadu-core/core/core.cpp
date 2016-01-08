@@ -250,7 +250,7 @@ void Core::importPre10Configuration()
 		return;
 	}
 
-	foreach (const Buddy &buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, buddyManager()->items())
 	{
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
@@ -480,7 +480,7 @@ void Core::init()
 	notificationManager();
 
 	AccountManager::instance()->ensureLoaded();
-	BuddyManager::instance()->ensureLoaded();
+	buddyManager()->ensureLoaded();
 	ContactManager::instance()->ensureLoaded();
 	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
 	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
@@ -595,7 +595,7 @@ void Core::runServices()
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
-		Core::instance()->notificationEventRepository()->addNotificationEvent(notifyEvent);
+		notificationEventRepository()->addNotificationEvent(notifyEvent);
 
 	auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
 	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_injector.get<WindowChatWidgetContainerHandler>());
@@ -609,7 +609,7 @@ void Core::runServices()
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
 
-	m_injector.get<ChatWindowStorage>()->setChatManager(Core::instance()->chatManager());
+	m_injector.get<ChatWindowStorage>()->setChatManager(chatManager());
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());
 
@@ -667,6 +667,11 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
+}
+
+BuddyManager * Core::buddyManager() const
+{
+	return m_injector.get<BuddyManager>();
 }
 
 MessageManager * Core::messageManager() const

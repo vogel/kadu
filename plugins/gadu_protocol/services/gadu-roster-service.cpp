@@ -27,6 +27,7 @@
 #include "gadu-account-details.h"
 
 #include "buddies/buddy-manager.h"
+#include "core/core.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-notifier.h"
@@ -166,7 +167,7 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 		{
 			auto ownerBuddy = contact.ownerBuddy();
 			contact.setOwnerBuddy(Buddy::null);
-			BuddyManager::instance()->removeBuddyIfEmpty(ownerBuddy, true);
+			Core::instance()->buddyManager()->removeBuddyIfEmpty(ownerBuddy, true);
 			removeContact(contact);
 			contact.rosterEntry()->setSynchronized();
 		}

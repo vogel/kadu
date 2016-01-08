@@ -38,6 +38,11 @@ UnreadMessageRepository::~UnreadMessageRepository()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
+void UnreadMessageRepository::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
 void UnreadMessageRepository::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
@@ -114,7 +119,7 @@ void UnreadMessageRepository::addUnreadMessage(const Message &message)
 {
 	// just ensure that owner buddy is managed - we need it to be shown on contact list
 	// todo: rethink this one
-	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
+	m_buddyManager->byContact(message.messageSender(), ActionCreateAndAdd);
 
 	m_unreadMessages.append(message);
 

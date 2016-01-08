@@ -140,7 +140,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 	QList<Contact> contacts = buddy.contacts();
 
 	// this set owner buddy on all of the contacts
-	BuddyManager::instance()->removeItem(buddy);
+	Core::instance()->buddyManager()->removeItem(buddy);
 
 	foreach (const Contact &contact, contacts)
 		Roster::instance()->removeContact(contact);
@@ -152,7 +152,7 @@ void BuddyDeleteWindow::accept()
 
 	foreach (const Buddy &buddy, BuddiesToDelete)
 		deleteBuddy(buddy);
-	BuddyManager::instance()->ensureStored();
+	Core::instance()->buddyManager()->ensureStored();
 }
 
 void BuddyDeleteWindow::reject()

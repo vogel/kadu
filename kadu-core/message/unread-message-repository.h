@@ -27,6 +27,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class BuddyManager;
 class Buddy;
 class Chat;
 class Configuration;
@@ -179,6 +180,7 @@ protected:
 	virtual void store();
 
 private:
+	QPointer<BuddyManager> m_buddyManager;
 	QPointer<Configuration> m_configuration;
 
 	QList<Message> m_unreadMessages;
@@ -194,6 +196,7 @@ private:
 	bool importFromPendingMessages();
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 };

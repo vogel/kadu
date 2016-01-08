@@ -23,6 +23,7 @@
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 
 #include "hide-offline-talkable-filter.h"
 
@@ -73,12 +74,12 @@ void HideOfflineTalkableFilter::setEnabled(bool enabled)
 	// TODO Qt5: Check whether we actually need it (QTBUG-27122 is fixed in Qt5) and remove if not.
 	if (enabled)
 	{
-		connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
+		connect(Core::instance()->buddyManager(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
 		connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
 	}
 	else
 	{
-		disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
+		disconnect(Core::instance()->buddyManager(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
 		disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
 	}
 }

@@ -20,15 +20,16 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"
+#include "core/core.h"
 
 #include "buddy-manager-adapter.h"
 
 BuddyManagerAdapter::BuddyManagerAdapter(BuddyListModel *model) :
 		QObject(model), Model(model)
 {
-	Model->setBuddyList(BuddyManager::instance()->items().toList());
+	Model->setBuddyList(Core::instance()->buddyManager()->items().toList());
 
-	BuddyManager *manager = BuddyManager::instance();
+	BuddyManager *manager = Core::instance()->buddyManager();
 	connect(manager, SIGNAL(buddyAdded(Buddy)),
 			this, SLOT(buddyAdded(Buddy)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyRemoved(Buddy)),
@@ -37,7 +38,7 @@ BuddyManagerAdapter::BuddyManagerAdapter(BuddyListModel *model) :
 
 BuddyManagerAdapter::~BuddyManagerAdapter()
 {
-	BuddyManager *manager = BuddyManager::instance();
+	BuddyManager *manager = Core::instance()->buddyManager();
 	disconnect(manager, 0, this, 0);
 }
 

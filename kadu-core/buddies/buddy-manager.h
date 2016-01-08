@@ -21,57 +21,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_MANAGER_H
-#define BUDDY_MANAGER_H
-
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
+#pragma once
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy.h"
 #include "storage/simple-manager.h"
-
 #include "exports.h"
+
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QUuid>
+#include <injeqt/injeqt.h>
 
 class Account;
 class ConfigurationApi;
+class Configuration;
 
 class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(BuddyManager)
-
-	static BuddyManager * Instance;
-
-	BuddyManager();
-	virtual ~BuddyManager();
-
-	void init();
-
-	void importConfiguration(ConfigurationApi *configurationStorage);
-
-	QString mergeValue(const QString &destination, const QString &source) const;
-
-private slots:
-	void buddyDataUpdated();
-	void buddySubscriptionChanged();
-
-	void buddyContactAboutToBeAdded(const Contact &contact);
-	void buddyContactAdded(const Contact &contact);
-	void buddyContactAboutToBeRemoved(const Contact &contact);
-	void buddyContactRemoved(const Contact &contact);
-
-protected:
-	virtual void load();
-
-	virtual void itemAboutToBeAdded(Buddy buddy);
-	virtual void itemAdded(Buddy buddy);
-	virtual void itemAboutToBeRemoved(Buddy buddy);
-	virtual void itemRemoved(Buddy buddy);
 
 public:
-	static BuddyManager * instance();
+	Q_INVOKABLE explicit BuddyManager(QObject *parent = nullptr);
+	virtual ~BuddyManager();
 
 	virtual QString storageNodeName() { return QLatin1String("Buddies"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Buddy"); }
@@ -87,6 +60,14 @@ public:
 	void removeBuddyIfEmpty(Buddy buddy, bool checkOnlyForContacts = false);
 	void clearOwnerAndRemoveEmptyBuddy(Contact contact, bool checkBuddyOnlyForOtherContacts = false);
 
+protected:
+	virtual void load();
+
+	virtual void itemAboutToBeAdded(Buddy buddy);
+	virtual void itemAdded(Buddy buddy);
+	virtual void itemAboutToBeRemoved(Buddy buddy);
+	virtual void itemRemoved(Buddy buddy);
+
 signals:
 	void buddyAboutToBeAdded(const Buddy &buddy);
 	void buddyAdded(const Buddy &buddy);
@@ -101,6 +82,23 @@ signals:
 	void buddyUpdated(const Buddy &buddy);
 	void buddySubscriptionChanged(const Buddy &buddy);
 
-};
+private:
+	QPointer<Configuration> m_configuration;
 
-#endif // BUDDY_MANAGER_H
+	void importConfiguration(ConfigurationApi *configurationStorage);
+
+	QString mergeValue(const QString &destination, const QString &source) const;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
+	void buddyDataUpdated();
+	void buddySubscriptionChanged();
+
+	void buddyContactAboutToBeAdded(const Contact &contact);
+	void buddyContactAdded(const Contact &contact);
+	void buddyContactAboutToBeRemoved(const Contact &contact);
+	void buddyContactRemoved(const Contact &contact);
+
+};

@@ -50,7 +50,7 @@ BuddyChatManager::BuddyChatManager()
 
 BuddyChatManager::~BuddyChatManager()
 {
-	disconnect(BuddyManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->buddyManager(), 0, this, 0);
 	disconnect(Core::instance()->chatManager(), 0, this, 0);
 
 	foreach (const Chat &chat, Core::instance()->chatManager()->items())
@@ -59,9 +59,9 @@ BuddyChatManager::~BuddyChatManager()
 
 void BuddyChatManager::init()
 {
-	connect(BuddyManager::instance(), SIGNAL(buddyContactAdded(Buddy,Contact)),
+	connect(Core::instance()->buddyManager(), SIGNAL(buddyContactAdded(Buddy,Contact)),
 	        this, SLOT(buddyContactAdded(Buddy,Contact)));
-	connect(BuddyManager::instance(), SIGNAL(buddyContactRemoved(Buddy,Contact)),
+	connect(Core::instance()->buddyManager(), SIGNAL(buddyContactRemoved(Buddy,Contact)),
 	        this, SLOT(buddyContactRemoved(Buddy,Contact)));
 
 	connect(Core::instance()->chatManager(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));

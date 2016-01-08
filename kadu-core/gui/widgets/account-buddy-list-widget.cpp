@@ -147,7 +147,7 @@ void AccountBuddyListWidget::restoreFromFile()
 					Buddy ownerBuddy = contact.ownerBuddy();
 					contact.setOwnerBuddy(Buddy::null);
 					// remove even if it still has some data, e.g. mobile number
-					BuddyManager::instance()->removeBuddyIfEmpty(ownerBuddy, true);
+					Core::instance()->buddyManager()->removeBuddyIfEmpty(ownerBuddy, true);
 					Roster::instance()->removeContact(contact);
 				}
 			}
@@ -169,7 +169,7 @@ void AccountBuddyListWidget::storeToFile()
 
 	if (file.open(QFile::WriteOnly))
 	{
-		file.write(service->serialize(BuddyManager::instance()->buddies(CurrentAccount)));
+		file.write(service->serialize(Core::instance()->buddyManager()->buddies(CurrentAccount)));
 		file.close();
 	}
 }

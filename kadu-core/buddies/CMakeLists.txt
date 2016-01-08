@@ -5,6 +5,7 @@ set (buddies_SRCS
 	buddy-list.cpp
 	buddy-list-mime-data-helper.cpp
 	buddy-manager.cpp
+	buddy-module.cpp
 	buddy-preferred-manager.cpp
 	buddy-search-criteria.cpp
 	buddy-set.cpp

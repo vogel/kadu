@@ -29,6 +29,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "qxmpp/jabber-roster-extension.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
@@ -111,7 +112,7 @@ void JabberRosterService::ensureContactHasBuddyWithDisplay(const Contact &contac
 {
 	if (contact.isAnonymous()) // contact has anonymous buddy, we should search for other
 	{
-		contact.setOwnerBuddy(BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd));
+		contact.setOwnerBuddy(Core::instance()->buddyManager()->byDisplay(display, ActionCreateAndAdd));
 		contact.ownerBuddy().setAnonymous(false);
 	}
 	else
@@ -134,8 +135,8 @@ void JabberRosterService::remoteContactUpdated(const QString &bareJid)
 	contact.rosterEntry()->setSynchronizingFromRemote();
 	ensureContactHasBuddyWithDisplay(contact, itemDisplay(bareJid));
 
-	auto buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-	BuddyManager::instance()->addItem(buddy);
+	auto buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreateAndAdd);
+	Core::instance()->buddyManager()->addItem(buddy);
 
 	auto item = m_roster->getRosterEntry(bareJid);
 
@@ -169,7 +170,7 @@ void JabberRosterService::remoteContactDeleted(const QString &bareJid)
 	if (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType)
 	{
 		contact.rosterEntry()->setSynchronizingFromRemote();
-		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+		Core::instance()->buddyManager()->clearOwnerAndRemoveEmptyBuddy(contact);
 		contact.rosterEntry()->setSynchronized();
 
 		RosterService::removeContact(contact);
@@ -205,7 +206,7 @@ void JabberRosterService::deleteMarkedContacts()
 {
 	for (auto &&contact : m_markedForDelete)
 	{
-		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+		Core::instance()->buddyManager()->clearOwnerAndRemoveEmptyBuddy(contact);
 		contact.rosterEntry()->setSynchronized();
 	}
 }

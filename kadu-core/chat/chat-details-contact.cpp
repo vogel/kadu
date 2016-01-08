@@ -24,6 +24,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "protocols/protocol.h"
 
 #include "chat-details-contact.h"
@@ -71,7 +72,7 @@ void ChatDetailsContact::load()
 	if (!CurrentContact)
 	{
 		// import from old 0.6.6 releases
-		Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
+		Buddy buddy = Core::instance()->buddyManager()->byUuid(cadUuid);
 		if (buddy)
 		{
 			QVector<Contact> contactList = buddy.contacts(mainData()->chatAccount());

@@ -29,6 +29,7 @@
 #include "buddies/group.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "protocols/protocol.h"
 
 #include "misc/misc.h"
@@ -39,7 +40,7 @@
 QString GaduListHelper::contactToLine70(Contact contact)
 {
 	QStringList list;
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+	Buddy buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreateAndAdd);
 
 	list.append(buddy.firstName());
 	list.append(buddy.lastName());

@@ -24,6 +24,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
+#include "core/core.h"
 
 #include "buddy-list-mime-data-helper.h"
 
@@ -62,7 +63,7 @@ BuddyList BuddyListMimeDataHelper::fromMimeData(const QMimeData *mimeData)
 	QStringList buddyListStrings = buddyListString.split(':');
 	foreach (const QString &buddyListString, buddyListStrings)
 	{
-		Buddy buddy = BuddyManager::instance()->byUuid(buddyListString);
+		auto buddy = Core::instance()->buddyManager()->byUuid(buddyListString);
 		if (buddy.isNull())
 			continue;
 

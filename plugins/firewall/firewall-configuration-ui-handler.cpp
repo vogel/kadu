@@ -86,7 +86,7 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigur
 
 	secureGroupBox->addWidgets(0, secure);
 
-	foreach (const Buddy &buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, Core::instance()->buddyManager()->items())
 		if (!buddy.isAnonymous())
 		{
 			if (!buddy.property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
@@ -213,7 +213,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 	int count = SecureList->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(SecureList->item(i)->text(), ActionReturnNull);
+		Buddy buddy = Core::instance()->buddyManager()->byDisplay(SecureList->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
@@ -223,7 +223,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 	count = AllList->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(AllList->item(i)->text(), ActionReturnNull);
+		Buddy buddy = Core::instance()->buddyManager()->byDisplay(AllList->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 

@@ -24,6 +24,7 @@
 #include "buddies/group.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/core.h"
 #include "notification/notification-service.h"
 
 #include "group-event-listener.h"
@@ -52,7 +53,7 @@ void GroupEventListener::groupUpdated()
 
 	bool notify = group.notifyAboutStatusChanges();
 
-	foreach (const Buddy &buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, Core::instance()->buddyManager()->items())
 	{
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;

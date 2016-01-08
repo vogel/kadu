@@ -81,7 +81,7 @@ void MergeBuddiesDialogWidget::dialogAccepted()
 	if (mergeWith.isNull() || MyBuddy.isNull())
 		return;
 
-	BuddyManager::instance()->mergeBuddies(mergeWith, MyBuddy);
+	Core::instance()->buddyManager()->mergeBuddies(mergeWith, MyBuddy);
 }
 
 void MergeBuddiesDialogWidget::dialogRejected()

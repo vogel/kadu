@@ -29,6 +29,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "gui/windows/add-buddy-window.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
@@ -104,7 +105,7 @@ SubscriptionWindow::~SubscriptionWindow()
 
 void SubscriptionWindow::accepted()
 {
-	Buddy buddy = BuddyManager::instance()->byContact(CurrentContact, ActionCreate);
+	Buddy buddy = Core::instance()->buddyManager()->byContact(CurrentContact, ActionCreate);
 	buddy.setAnonymous(true);
 	(new AddBuddyWindow(0, buddy))->show();
 	allowed();

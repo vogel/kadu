@@ -217,7 +217,7 @@ void AccountManager::removeAccountAndBuddies(Account account)
 
 	QVector<Contact> contacts = ContactManager::instance()->contacts(account);
 	foreach (const Contact &contact, contacts)
-		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+		Core::instance()->buddyManager()->clearOwnerAndRemoveEmptyBuddy(contact);
 
 	QVector<Chat> chats = Core::instance()->chatManager()->chats(account);
 	foreach (const Chat &chat, chats)

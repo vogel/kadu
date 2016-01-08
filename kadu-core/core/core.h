@@ -47,6 +47,7 @@ class DefaultProvider;
 class AccountConfigurationWidgetFactoryRepository;
 class BuddyAdditionalDataDeleteHandlerManager;
 class BuddyConfigurationWidgetFactoryRepository;
+class BuddyManager;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatImageRequestService;
 class ChatManager;
@@ -160,6 +161,7 @@ public:
 
 	void activatePlugins();
 
+	BuddyManager * buddyManager() const;
 	MessageManager * messageManager() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
 	MessageTransformerService * messageTransformerService() const;

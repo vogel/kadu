@@ -329,7 +329,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 		if (LastContact != sender && Search)
 		{
 			SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(),
-			                                    BuddyManager::instance()->byContact(sender, ActionCreateAndAdd));
+			                                    Core::instance()->buddyManager()->byContact(sender, ActionCreateAndAdd));
 			sd->show();
 			sd->firstSearch();
 

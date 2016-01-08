@@ -139,10 +139,10 @@ void GaduImporter::importAccounts()
 
 void GaduImporter::importContacts()
 {
-	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy)),
+	connect(Core::instance()->buddyManager(), SIGNAL(buddyAdded(Buddy)),
 			this, SLOT(buddyAdded(Buddy)));
 
-	foreach (Buddy buddy, BuddyManager::instance()->items())
+	foreach (Buddy buddy, Core::instance()->buddyManager()->items())
 		buddyAdded(buddy);
 
 	importIgnored();
@@ -184,7 +184,7 @@ void GaduImporter::importIgnored()
 		if (1 == ignoredContacts.count())
 		{
 			QDomElement ignoredContact = ignoredContacts.at(0);
-			Buddy buddy = BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd);
+			Buddy buddy = Core::instance()->buddyManager()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd);
 			buddy.setBlocked(true);
 		}
 	}

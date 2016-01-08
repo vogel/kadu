@@ -23,6 +23,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 
 #include "open-chat-with-contact-list-runner.h"
 
@@ -30,7 +31,7 @@ BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 {
 	BuddyList matchedContacts;
 
-	foreach (const Buddy &buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, Core::instance()->buddyManager()->items())
 	{
 		bool found = false;
 		foreach (const Contact &data, buddy.contacts())

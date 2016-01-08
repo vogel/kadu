@@ -87,7 +87,7 @@ BuddyDataWindow::BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *budd
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ManageUsersDialogGeometry"), QRect(0, 50, 425, 500), this);
 
-	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy)),
+	connect(Core::instance()->buddyManager(), SIGNAL(buddyRemoved(Buddy)),
 			this, SLOT(buddyRemoved(Buddy)));
 
 	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
