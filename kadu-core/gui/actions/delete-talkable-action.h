@@ -18,21 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DELETE_TALKABLE_ACTION_H
-#define DELETE_TALKABLE_ACTION_H
-
-#include <QtWidgets/QAction>
-
-#include "model/roles.h"
+#pragma once
 
 #include "gui/actions/action-description.h"
+#include "model/roles.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QAction>
+#include <injeqt/injeqt.h>
 
 class Buddy;
 class Chat;
+class InjectedFactory;
 
 class DeleteTalkableAction : public ActionDescription
 {
 	Q_OBJECT
+
+public:
+	explicit DeleteTalkableAction(QObject *parent);
+	virtual ~DeleteTalkableAction();
+
+	void trigger(ActionContext *context);
+
+protected:
+	virtual void actionInstanceCreated(Action *action);
+	virtual void updateActionState(Action *action);
+	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	int actionRole(ActionContext *context) const;
 	Chat actionChat(ActionContext *context) const;
@@ -47,17 +62,7 @@ class DeleteTalkableAction : public ActionDescription
 	void chatActionTriggered(ActionContext *context);
 	void buddyActionTriggered(ActionContext *context);
 
-protected:
-	virtual void actionInstanceCreated(Action *action);
-	virtual void updateActionState(Action *action);
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
-
-public:
-	explicit DeleteTalkableAction(QObject *parent);
-	virtual ~DeleteTalkableAction();
-
-	void trigger(ActionContext *context);
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };
-
-#endif // DELETE_TALKABLE_ACTION_H

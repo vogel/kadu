@@ -45,7 +45,6 @@ template<class T>
 class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
-class BuddyAdditionalDataDeleteHandlerManager;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyManager;
 class ChatConfigurationWidgetFactoryRepository;
@@ -205,7 +204,6 @@ public:
 	UrlHandlerManager * urlHandlerManager() const;
 	ChatManager * chatManager() const;
 	StatusContainerManager * statusContainerManager() const;
-	BuddyAdditionalDataDeleteHandlerManager * buddyAdditionalDataDeleteHandlerManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

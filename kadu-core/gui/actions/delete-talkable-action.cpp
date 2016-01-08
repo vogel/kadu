@@ -25,6 +25,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/windows/buddy-delete-window.h"
@@ -48,6 +49,11 @@ DeleteTalkableAction::DeleteTalkableAction(QObject *parent) :
 
 DeleteTalkableAction::~DeleteTalkableAction()
 {
+}
+
+void DeleteTalkableAction::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 int DeleteTalkableAction::actionRole(ActionContext *context) const
@@ -154,11 +160,11 @@ void DeleteTalkableAction::chatActionTriggered(ActionContext *context)
 
 void DeleteTalkableAction::buddyActionTriggered(ActionContext *context)
 {
-	BuddySet buddySet = context->buddies();
+	auto buddySet = context->buddies();
 	if (buddySet.empty())
 		return;
 
-	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow(buddySet);
+	auto deleteWindow = m_injectedFactory->makeInjected<BuddyDeleteWindow>(buddySet);
 	deleteWindow->show();
 }
 

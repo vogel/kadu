@@ -20,20 +20,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_DELETE_WINDOW_H
-#define BUDDY_DELETE_WINDOW_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidgetItem>
+#include <injeqt/injeqt.h>
 
 #include "buddies/buddy-set.h"
 
 class QListWidget;
 
+class BuddyAdditionalDataDeleteHandlerManager;
+class BuddyManager;
+
 class BuddyDeleteWindow : public QDialog
 {
 	Q_OBJECT
 
+	QPointer<BuddyAdditionalDataDeleteHandlerManager> m_buddyAdditionalDataDeleteHandlerManager;
+	QPointer<BuddyManager> m_buddyManager;
 	BuddySet BuddiesToDelete;
 
 	QListWidget *AdditionalDataListView;
@@ -46,6 +52,10 @@ class BuddyDeleteWindow : public QDialog
 	void deleteBuddy(Buddy buddy);
 
 private slots:
+	INJEQT_SET void setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_INIT void init();
+
 	void additionalDataListViewItemPressed(QListWidgetItem *item);
 	void additionalDataListViewItemClicked(QListWidgetItem *item);
 
@@ -58,5 +68,3 @@ public slots:
 	virtual void reject();
 
 };
-
-#endif // BUDDY_DELETE_WINDOW_H

@@ -869,11 +869,6 @@ StatusContainerManager * Core::statusContainerManager() const
 	return m_injector.get<StatusContainerManager>();
 }
 
-BuddyAdditionalDataDeleteHandlerManager * Core::buddyAdditionalDataDeleteHandlerManager() const
-{
-	return m_injector.get<BuddyAdditionalDataDeleteHandlerManager>();
-}
-
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)

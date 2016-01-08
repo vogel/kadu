@@ -20,6 +20,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddy-delete-window.h"
+
+#include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "buddies/buddy-additional-data-delete-handler.h"
+#include "buddies/buddy-manager.h"
+#include "icons/kadu-icon.h"
+#include "roster/roster.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QLabel>
@@ -28,15 +36,6 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "buddies/buddy-additional-data-delete-handler.h"
-#include "buddies/buddy-manager.h"
-#include "core/core.h"
-#include "icons/kadu-icon.h"
-#include "roster/roster.h"
-
-#include "buddy-delete-window.h"
-
 BuddyDeleteWindow::BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent) :
 		QDialog(parent), BuddiesToDelete(buddiesToDelete)
 {
@@ -44,15 +43,27 @@ BuddyDeleteWindow::BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *p
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setModal(false);
-
-	createGui();
-
 	setMaximumHeight(250);
 }
 
 BuddyDeleteWindow::~BuddyDeleteWindow()
 {
 
+}
+
+void BuddyDeleteWindow::setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager)
+{
+	m_buddyAdditionalDataDeleteHandlerManager = buddyAdditionalDataDeleteHandlerManager;
+}
+
+void BuddyDeleteWindow::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void BuddyDeleteWindow::init()
+{
+	createGui();
 }
 
 void BuddyDeleteWindow::createGui()
@@ -103,7 +114,7 @@ void BuddyDeleteWindow::createGui()
 
 void BuddyDeleteWindow::fillAdditionalDataListView()
 {
-	for (auto handler : Core::instance()->buddyAdditionalDataDeleteHandlerManager()->items())
+	for (auto handler : m_buddyAdditionalDataDeleteHandlerManager->items())
 	{
 		QListWidgetItem *item = new QListWidgetItem(AdditionalDataListView);
 		item->setText(handler->displayName());
@@ -131,7 +142,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 		if (Qt::Checked == item->checkState())
 		{
 			QString deleteHandlerName = item->data(Qt::UserRole).toString();
-			BuddyAdditionalDataDeleteHandler *handler = Core::instance()->buddyAdditionalDataDeleteHandlerManager()->byName(deleteHandlerName);
+			BuddyAdditionalDataDeleteHandler *handler = m_buddyAdditionalDataDeleteHandlerManager->byName(deleteHandlerName);
 			if (handler)
 				handler->deleteBuddyAdditionalData(buddy);
 		}
@@ -140,7 +151,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 	QList<Contact> contacts = buddy.contacts();
 
 	// this set owner buddy on all of the contacts
-	Core::instance()->buddyManager()->removeItem(buddy);
+	m_buddyManager->removeItem(buddy);
 
 	foreach (const Contact &contact, contacts)
 		Roster::instance()->removeContact(contact);
@@ -152,7 +163,7 @@ void BuddyDeleteWindow::accept()
 
 	foreach (const Buddy &buddy, BuddiesToDelete)
 		deleteBuddy(buddy);
-	Core::instance()->buddyManager()->ensureStored();
+	m_buddyManager->ensureStored();
 }
 
 void BuddyDeleteWindow::reject()

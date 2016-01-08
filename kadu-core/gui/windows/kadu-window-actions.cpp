@@ -413,7 +413,7 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(Core::instance()->chatWidgetActions()->blockUser(), KaduMenu::SectionManagement, 500);
 
-	DeleteTalkable = new DeleteTalkableAction(this);
+	DeleteTalkable = m_injectedFactory->makeInjected<DeleteTalkableAction>(this);
 
 	MenuInventory::instance()
 		->menu("buddy-list")

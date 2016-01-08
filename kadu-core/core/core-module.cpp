@@ -19,7 +19,6 @@
 
 #include "core-module.h"
 
-#include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "chat/chat-manager.h"
 #include "core/application.h"
 #include "core/injected-factory.h"
@@ -28,7 +27,6 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
-#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "misc/paths-provider.h"
@@ -49,8 +47,6 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<AccountConfigurationWidgetFactoryRepository>();
 	add_type<Application>();
 	add_type<AttentionService>();
-	add_type<BuddyAdditionalDataDeleteHandlerManager>();
-	add_type<BuddyConfigurationWidgetFactoryRepository>();
 	add_type<ChatConfigurationWidgetFactoryRepository>();
 	add_type<ChatImageRequestService>();
 	add_type<ChatManager>();
