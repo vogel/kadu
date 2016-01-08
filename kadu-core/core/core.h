@@ -89,7 +89,6 @@ class StatusContainerManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class UrlHandlerManager;
-class WebkitMessagesViewDisplayFactory;
 class WebkitMessagesViewFactory;
 class WebkitMessagesViewHandlerFactory;
 
@@ -108,7 +107,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWidgetActions *CurrentChatWidgetActions;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
 
-	owned_qptr<WebkitMessagesViewDisplayFactory> CurrentWebkitMessagesViewDisplayFactory;
 	owned_qptr<WebkitMessagesViewFactory> CurrentWebkitMessagesViewFactory;
 	owned_qptr<WebkitMessagesViewHandlerFactory> CurrentWebkitMessagesViewHandlerFactory;
 
@@ -190,7 +188,6 @@ public:
 	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
 
-	WebkitMessagesViewDisplayFactory * webkitMessagesViewDisplayFactory() const;
 	WebkitMessagesViewFactory * webkitMessagesViewFactory() const;
 	WebkitMessagesViewHandlerFactory * webkitMessagesViewHandlerFactory() const;
 	RosterReplacer * rosterReplacer() const;

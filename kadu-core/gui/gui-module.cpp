@@ -20,6 +20,7 @@
 #include "gui-module.h"
 
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 
@@ -28,6 +29,7 @@ GuiModule::GuiModule()
 	add_type<BuddyDataWindowRepository>();
 	add_type<ChatDataWindowRepository>();
 	add_type<ChatWidgetActions>();
+	add_type<WebkitMessagesViewDisplayFactory>();
 }
 
 GuiModule::~GuiModule()

@@ -626,13 +626,9 @@ void Core::runServices()
 	m_injector.get<PluginMetadataFinder>()->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
-	CurrentWebkitMessagesViewDisplayFactory = make_owned<WebkitMessagesViewDisplayFactory>(this);
-	CurrentWebkitMessagesViewDisplayFactory->setChatStyleManager(chatStyleManager());
-	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(m_injector.get<MessageRenderInfoFactory>());
-
 	CurrentWebkitMessagesViewHandlerFactory = make_owned<WebkitMessagesViewHandlerFactory>(this);
 	CurrentWebkitMessagesViewHandlerFactory->setChatStyleManager(chatStyleManager());
-	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(CurrentWebkitMessagesViewDisplayFactory.get());
+	CurrentWebkitMessagesViewHandlerFactory->setWebkitMessagesViewDisplayFactory(m_injector.get<WebkitMessagesViewDisplayFactory>());
 
 	CurrentWebkitMessagesViewFactory = make_owned<WebkitMessagesViewFactory>(this);
 	CurrentWebkitMessagesViewFactory->setChatStyleRendererFactoryProvider(m_injector.get<ChatStyleRendererFactoryProvider>());
@@ -807,11 +803,6 @@ PluginStateManager * Core::pluginStateManager() const
 PluginStateService * Core::pluginStateService() const
 {
 	return m_injector.get<PluginStateService>();
-}
-
-WebkitMessagesViewDisplayFactory * Core::webkitMessagesViewDisplayFactory() const
-{
-	return CurrentWebkitMessagesViewDisplayFactory.get();
 }
 
 WebkitMessagesViewFactory * Core::webkitMessagesViewFactory() const

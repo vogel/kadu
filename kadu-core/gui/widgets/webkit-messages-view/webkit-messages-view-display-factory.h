@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <memory>
+#include <injeqt/injeqt.h>
 
 class ChatStyleManager;
 class ChatStyleRenderer;
@@ -51,24 +52,8 @@ public:
 	 * @short Create new instance of WebkitMessagesViewDisplayFactory.
 	 * @param parent QObject parent of service.
 	 */
-	explicit WebkitMessagesViewDisplayFactory(QObject *parent = nullptr);
+	Q_INVOKABLE explicit WebkitMessagesViewDisplayFactory(QObject *parent = nullptr);
 	virtual ~WebkitMessagesViewDisplayFactory();
-
-	/**
-	 * @short Set ChatStyleManager service instance.
-	 * @param chatStyleManager ChatStyleManager service instance.
-	 *
-	 * This service is used to select one of implementations of WebkitMessagesViewDisplay.
-	 */
-	void setChatStyleManager(ChatStyleManager *chatStyleManager);
-
-	/**
-	 * @short Set MessageRenderInfoFactory service instance.
-	 * @param messageRenderInfoFactory MessageRenderInfoFactory service instance.
-	 *
-	 * This service is passed to created instances of WebkitMessagesViewDisplay.
-	 */
-	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 
 	/**
 	 * @short Create new WebkitMessagesViewDisplay instance for given ChatStyleRenderer.
@@ -82,6 +67,23 @@ public:
 private:
 	QPointer<ChatStyleManager> m_chatStyleManager;
 	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
+
+private slots:
+	/**
+	 * @short Set ChatStyleManager service instance.
+	 * @param chatStyleManager ChatStyleManager service instance.
+	 *
+	 * This service is used to select one of implementations of WebkitMessagesViewDisplay.
+	 */
+	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
+
+	/**
+	 * @short Set MessageRenderInfoFactory service instance.
+	 * @param messageRenderInfoFactory MessageRenderInfoFactory service instance.
+	 *
+	 * This service is passed to created instances of WebkitMessagesViewDisplay.
+	 */
+	INJEQT_SET void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 
 };
 
