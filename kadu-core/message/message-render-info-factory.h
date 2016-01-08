@@ -23,6 +23,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ChatStyleManager;
 class Message;
@@ -35,10 +36,8 @@ class KADUAPI MessageRenderInfoFactory : public QObject
 	Q_OBJECT
 
 public:
-	explicit MessageRenderInfoFactory(QObject *parent = nullptr);
+	Q_INVOKABLE explicit MessageRenderInfoFactory(QObject *parent = nullptr);
 	virtual ~MessageRenderInfoFactory();
-
-	void setChatStyleManager(ChatStyleManager *chatStylesManager);
 
 	MessageRenderInfo messageRenderInfo(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior);
 
@@ -51,5 +50,8 @@ private:
 	bool includeHeader(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const;
 	int separatorSize(bool includeHeader) const;
 	bool showServerTime(const Message &message) const;
+
+private slots:
+	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStylesManager);
 
 };

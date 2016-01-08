@@ -182,7 +182,6 @@ Core::Core(injeqt::injector &injector) :
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
 		CurrentMessageHtmlRendererService{nullptr},
-		CurrentMessageRenderInfoFactory{nullptr},
 		CurrentMessageTransformerService{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
@@ -629,15 +628,13 @@ void Core::runServices()
 	MessageManager::instance()->setFormattedStringFactory(m_injector.get<FormattedStringFactory>());
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
-	CurrentMessageRenderInfoFactory = new MessageRenderInfoFactory();
-	CurrentMessageRenderInfoFactory->setChatStyleManager(chatStyleManager());
 
 	m_injector.get<PluginMetadataFinder>()->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
 	CurrentWebkitMessagesViewDisplayFactory = make_owned<WebkitMessagesViewDisplayFactory>(this);
 	CurrentWebkitMessagesViewDisplayFactory->setChatStyleManager(chatStyleManager());
-	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(CurrentMessageRenderInfoFactory);
+	CurrentWebkitMessagesViewDisplayFactory->setMessageRenderInfoFactory(m_injector.get<MessageRenderInfoFactory>());
 
 	CurrentWebkitMessagesViewHandlerFactory = make_owned<WebkitMessagesViewHandlerFactory>(this);
 	CurrentWebkitMessagesViewHandlerFactory->setChatStyleManager(chatStyleManager());
@@ -678,19 +675,9 @@ void Core::activatePlugins()
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
 }
 
-MessageFilterService * Core::messageFilterService() const
-{
-	return m_injector.get<MessageFilterService>();
-}
-
 MessageHtmlRendererService * Core::messageHtmlRendererService() const
 {
 	return CurrentMessageHtmlRendererService;
-}
-
-MessageRenderInfoFactory * Core::messageRenderInfoFactory() const
-{
-	return CurrentMessageRenderInfoFactory;
 }
 
 MessageTransformerService * Core::messageTransformerService() const

@@ -67,9 +67,7 @@ class Application;
 class KaduIcon;
 class KaduWindow;
 class Message;
-class MessageFilterService;
 class MessageHtmlRendererService;
-class MessageRenderInfoFactory;
 class MessageTransformerService;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
@@ -107,7 +105,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
-	MessageRenderInfoFactory *CurrentMessageRenderInfoFactory;
 	MessageTransformerService *CurrentMessageTransformerService;
 	ChatWidgetActions *CurrentChatWidgetActions;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
@@ -163,9 +160,7 @@ public:
 
 	void activatePlugins();
 
-	MessageFilterService * messageFilterService() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
-	MessageRenderInfoFactory * messageRenderInfoFactory() const;
 	MessageTransformerService * messageTransformerService() const;
 	NotificationCallbackRepository * notificationCallbackRepository() const;
 	NotificationEventRepository * notificationEventRepository() const;
