@@ -90,7 +90,7 @@ ContactShared::~ContactShared()
 
 StorableObject * ContactShared::storageParent()
 {
-	return ContactManager::instance();
+	return Core::instance()->contactManager();
 }
 
 QString ContactShared::storageNodeName()

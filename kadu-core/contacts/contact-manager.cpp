@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QPair>
-#include <QtCore/QTimer>
+#include "contact-manager.h"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
@@ -40,41 +39,21 @@
 #include "roster/roster-entry.h"
 #include "debug.h"
 
-#include "contact-manager.h"
+#include <QtCore/QPair>
+#include <QtCore/QTimer>
 
-ContactManager * ContactManager::Instance = 0;
-
-ContactManager * ContactManager::instance()
-{
-	if (0 == Instance)
-	{
-		// this must be called before ContactManager has its own pretty storage point
-		// if ContactManager is called first and import from 0.6.5 is done
-		// when ContactManager's storage() point will be modified from Contacts to OldContacts
-		// and everything will be fucked up
-		Core::instance()->buddyManager();
-
-		Instance = new ContactManager();
-
-		// moved from here because of #2758
-		// Instance->init();
-	}
-
-	return Instance;
-}
-
-ContactManager::ContactManager()
+ContactManager::ContactManager(QObject *parent) :
+		QObject{parent}
 {
 }
 
 ContactManager::~ContactManager()
 {
-	disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
+}
 
-	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
-		unreadMessageRemoved(message);
-
-	ContactParserTags::unregisterParserTags();
+void ContactManager::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void ContactManager::init()
@@ -84,13 +63,21 @@ void ContactManager::init()
 
 	ContactParserTags::registerParserTags();
 
-	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
+	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
 		unreadMessageAdded(message);
 
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)),
-	        this, SLOT(unreadMessageAdded(Message)));
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)),
-	        this, SLOT(unreadMessageRemoved(Message)));
+	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
+	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
+}
+
+void ContactManager::done()
+{
+	disconnect(m_unreadMessageRepository, 0, this, 0);
+
+	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+		unreadMessageRemoved(message);
+
+	ContactParserTags::unregisterParserTags();
 }
 
 void ContactManager::unreadMessageAdded(const Message &message)

@@ -28,6 +28,7 @@
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
@@ -56,7 +57,7 @@ AvatarManager::AvatarManager() :
 AvatarManager::~AvatarManager()
 {
 	triggerAllAccountsUnregistered();
-	disconnect(ContactManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->contactManager(), 0, this, 0);
 }
 
 void AvatarManager::init()
@@ -66,7 +67,7 @@ void AvatarManager::init()
 	UpdateTimer = new QTimer(this);
 	UpdateTimer->setInterval(30 * 60 * 1000); // half an hour
 	connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
+	connect(Core::instance()->contactManager(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 
 	UpdateTimer->start();
 }
@@ -171,7 +172,7 @@ void AvatarManager::updateAvatars()
 {
 	QMutexLocker locker(&mutex());
 
-	foreach (const Contact &contact, ContactManager::instance()->items())
+	foreach (const Contact &contact, Core::instance()->contactManager()->items())
 		if (!contact.isAnonymous())
 		{
 			auto account = contact.contactAccount();
@@ -196,7 +197,7 @@ void AvatarManager::updateAccountAvatars()
 	if (account.protocolHandler()->avatarService()->eventBasedUpdates())
 		return;
 
-	foreach (const Contact &contact, ContactManager::instance()->contacts(account))
+	foreach (const Contact &contact, Core::instance()->contactManager()->contacts(account))
 		if (!contact.isAnonymous())
 			updateAvatar(contact, true);
 }

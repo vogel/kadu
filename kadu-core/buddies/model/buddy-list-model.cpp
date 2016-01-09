@@ -28,6 +28,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "contacts/model/contact-data-extractor.h"
+#include "core/core.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "talkable/talkable.h"
@@ -46,7 +47,7 @@ BuddyListModel::BuddyListModel(QObject *parent) :
 
 	triggerAllAccountsRegistered();
 
-	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)),
+	connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)),
 	        this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
 }
 
@@ -56,7 +57,7 @@ BuddyListModel::~BuddyListModel()
 
 	triggerAllAccountsUnregistered();
 
-	disconnect(ContactManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->contactManager(), 0, this, 0);
 }
 
 Buddy BuddyListModel::buddyFromVariant(const QVariant &variant) const

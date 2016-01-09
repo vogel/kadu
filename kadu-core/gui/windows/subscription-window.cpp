@@ -57,7 +57,7 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 
 	// It'd be too unsafe to not add this contact to the manager now and rely later on addItem()
 	// as the contact might be added in the meantime. See bug #2222.
-	Contact knownContact = ContactManager::instance()->byId(CurrentContact.contactAccount(), CurrentContact.id(), ActionReturnNull);
+	Contact knownContact = Core::instance()->contactManager()->byId(CurrentContact.contactAccount(), CurrentContact.id(), ActionReturnNull);
 	if (knownContact)
 		CurrentContact = knownContact;
 

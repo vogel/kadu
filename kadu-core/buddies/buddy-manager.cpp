@@ -48,6 +48,11 @@ void BuddyManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void BuddyManager::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 void BuddyManager::load()
 {
 	QMutexLocker locker(&mutex());
@@ -168,7 +173,7 @@ Buddy BuddyManager::byId(Account account, const QString &id, NotFoundAction acti
 
 	ensureLoaded();
 
-	Contact contact = ContactManager::instance()->byId(account, id, action);
+	auto contact = m_contactManager->byId(account, id, action);
 	if (contact.isNull())
 		return Buddy::null;
 

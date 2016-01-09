@@ -152,7 +152,7 @@ Contact GaduImporter::importGaduContact(Account account, Buddy buddy)
 {
 	QString id = buddy.customData("uin");
 
-	Contact contact = ContactManager::instance()->byId(account, id, ActionCreateAndAdd);
+	Contact contact = Core::instance()->contactManager()->byId(account, id, ActionCreateAndAdd);
 
 	buddy.removeCustomData("uin");
 	buddy.setBlocked(QVariant(buddy.customData("blocking")).toBool());

@@ -305,7 +305,7 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 		int id = query.value(0).toInt();
 		QString uuid = query.value(1).toString();
 
-		Contact contact = ContactManager::instance()->byUuid(uuid);
+		Contact contact = Core::instance()->contactManager()->byUuid(uuid);
 		if (contact && contact.contactAccount() && !contact.id().isEmpty())
 			contacts.insert(id, contact);
 	}
@@ -340,7 +340,7 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 	// force creating contacts table entries for all contacts used in statuses
 	while (query.next())
 	{
-		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
+		Contact contact = Core::instance()->contactManager()->byUuid(query.value(0).toString());
 		if (contact)
 			contactsMapping.idByContact(contact, true);
 	}

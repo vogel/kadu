@@ -31,6 +31,7 @@ extern "C" {
 
 class AccountManager;
 class Chat;
+class ContactManager;
 class Contact;
 
 class OtrUserStateService;
@@ -51,10 +52,12 @@ public:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<ContactManager> m_contactManager;
 	QPointer<OtrUserStateService> m_userStateService;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 };

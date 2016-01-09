@@ -37,6 +37,7 @@
 class Account;
 class ConfigurationApi;
 class Configuration;
+class ContactManager;
 
 class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 {
@@ -84,11 +85,13 @@ signals:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<ContactManager> m_contactManager;
 
 	QString mergeValue(const QString &destination, const QString &source) const;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 	void buddyDataUpdated();
 	void buddySubscriptionChanged();

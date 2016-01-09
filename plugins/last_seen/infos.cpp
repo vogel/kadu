@@ -27,8 +27,6 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/application.h"
-#include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
@@ -42,11 +40,62 @@ Infos::Infos(QObject *parent) :
 		QObject{parent},
 		menuID{}
 {
+}
+
+Infos::~Infos()
+{
+	kdebugf();
+
+	updateTimes();
+	QFile file(fileName);
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+	{
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
+		QTextStream stream(&file);
+		for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
+		{
+			QPair<QString, QString> lastSeenKey = it.key();
+			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
+			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
+		}
+		file.close();
+	}
+	else
+	{
+		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
+		fflush(stderr);
+	}
+
+	MenuInventory::instance()
+		->menu("tools")
+		->removeAction(lastSeenActionDescription)
+		->update();
+
+	kdebugf2();
+}
+
+void Infos::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void Infos::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void Infos::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void Infos::init()
+{
 	kdebugf();
 
 	triggerAllAccountsRegistered();
 
-	fileName = Application::instance()->pathsProvider()->profilePath() + QLatin1String("last_seen.data");
+	fileName = m_pathsProvider->profilePath() + QLatin1String("last_seen.data");
 
 	if (QFile::exists(fileName))
 	{
@@ -67,9 +116,9 @@ Infos::Infos(QObject *parent) :
 
 				Contact contact;
 				// wstawiamy tylko konta, które są na liście kontaktów
-				foreach(Account account, Core::instance()->accountManager()->byProtocolName(protocol))
+				foreach(Account account, m_accountManager->byProtocolName(protocol))
 				{
-					contact = ContactManager::instance()->byId(account, uin, ActionReturnNull);
+					contact = m_contactManager->byId(account, uin, ActionReturnNull);
 					if (contact.isNull())
 						continue;
 					if (!contact.isAnonymous())
@@ -100,38 +149,6 @@ Infos::Infos(QObject *parent) :
 	MenuInventory::instance()
 		->menu("tools")
 		->addAction(lastSeenActionDescription, KaduMenu::SectionTools, 3)
-		->update();
-
-	kdebugf2();
-}
-
-Infos::~Infos()
-{
-	kdebugf();
-
-	updateTimes();
-	QFile file(fileName);
-	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
-		QTextStream stream(&file);
-		for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
-		{
-			QPair<QString, QString> lastSeenKey = it.key();
-			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
-			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
-		}
-		file.close();
-	}
-	else
-	{
-		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
-		fflush(stderr);
-	}
-
-	MenuInventory::instance()
-		->menu("tools")
-		->removeAction(lastSeenActionDescription)
 		->update();
 
 	kdebugf2();
@@ -181,7 +198,7 @@ void Infos::contactStatusChanged(Contact contact, Status status)
 void Infos::updateTimes()
 {
 	kdebugf();
-	foreach (const Contact &contact, ContactManager::instance()->items())
+	foreach (const Contact &contact, m_contactManager->items())
 	{
 		if (!contact.currentStatus().isDisconnected())
 		{

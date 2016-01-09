@@ -44,6 +44,11 @@ void OtrContextConverter::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void OtrContextConverter::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 void OtrContextConverter::setUserStateService(OtrUserStateService *userStateService)
 {
 	m_userStateService = userStateService;
@@ -58,7 +63,7 @@ Chat OtrContextConverter::connectionContextToChat(ConnContext *context) const
 Contact OtrContextConverter::connectionContextToContact(ConnContext *context) const
 {
 	auto account = m_accountManager->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
-	return ContactManager::instance()->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
+	return m_contactManager->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
 }
 
 ConnContext * OtrContextConverter::chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction) const

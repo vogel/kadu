@@ -22,6 +22,8 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
@@ -31,7 +33,10 @@
 //! A "dictionary oriented" list type, holding uins and "Last seen" times.
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
 
+class AccountManager;
 class ActionDescription;
+class ContactManager;
+class PathsProvider;
 
 /*!
  * This class handles the "Last seen" time for InfosDialog class.
@@ -41,7 +46,16 @@ class Infos : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<PathsProvider> m_pathsProvider;
+
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
 	void contactStatusChanged(Contact contact, Status status);
 
 protected:

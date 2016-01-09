@@ -36,7 +36,8 @@ int OtrIsLoggedInService::wrapperOtrIsLoggedIn(void *data, const char *accountNa
 		return static_cast<int>(OtrIsLoggedInService::NotSure);
 }
 
-OtrIsLoggedInService::OtrIsLoggedInService()
+OtrIsLoggedInService::OtrIsLoggedInService(QObject *parent) :
+		QObject{parent}
 {
 }
 
@@ -46,15 +47,12 @@ OtrIsLoggedInService::~OtrIsLoggedInService()
 
 void OtrIsLoggedInService::setContactManager(ContactManager *contactManager)
 {
-	CurrentContactManager = contactManager;
+	m_contactManager = contactManager;
 }
 
 OtrIsLoggedInService::IsLoggedInStatus OtrIsLoggedInService::isLoggedIn(const Account &account, const QString &contactId)
 {
-	if (!CurrentContactManager)
-		return NotSure;
-
-	Contact contact = CurrentContactManager.data()->byId(account, contactId, ActionReturnNull);
+	auto contact = m_contactManager->byId(account, contactId, ActionReturnNull);
 
 	if (!contact)
 		return NotSure;

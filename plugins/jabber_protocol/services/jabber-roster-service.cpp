@@ -124,7 +124,7 @@ void JabberRosterService::remoteContactUpdated(const QString &bareJid)
 	if (JabberRosterState::NonInitialized == state())
 		return;
 
-	auto contact = ContactManager::instance()->byId(account(), bareJid, ActionCreateAndAdd);
+	auto contact = Core::instance()->contactManager()->byId(account(), bareJid, ActionCreateAndAdd);
 	if (!contact || contact == account().accountContact())
 		return;
 
@@ -164,7 +164,7 @@ void JabberRosterService::remoteContactDeleted(const QString &bareJid)
 	if (JabberRosterState::NonInitialized == state())
 		return;
 
-	auto contact = ContactManager::instance()->byId(account(), bareJid, ActionReturnNull);
+	auto contact = Core::instance()->contactManager()->byId(account(), bareJid, ActionReturnNull);
 
 	auto rosterTaskType = m_tasks->taskType(contact.id());
 	if (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType)
@@ -179,7 +179,7 @@ void JabberRosterService::remoteContactDeleted(const QString &bareJid)
 
 void JabberRosterService::rosterCancelationReceived(const Jid &jid)
 {
-	auto contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
+	auto contact = Core::instance()->contactManager()->byId(account(), jid.bare(), ActionReturnNull);
 	if (!contact)
 		return;
 
@@ -276,7 +276,7 @@ void JabberRosterService::executeTask(const RosterTask& task)
 {
 	Q_ASSERT(JabberRosterState::Initialized == state());
 
-	auto contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
+	auto contact = Core::instance()->contactManager()->byId(account(), task.id(), ActionReturnNull);
 	auto taskType = contact ? task.type() : RosterTaskType::Delete;
 	if (contact)
 	{

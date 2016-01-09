@@ -181,7 +181,7 @@ Message JabberRoomChatService::handleReceivedMessage(const QXmppMessage &xmppMes
 	if (jid.resource() == roomChat->nick()) // message from myself
 		return Message::null;
 
-	auto contact = ContactManager::instance()->byId(account(), jid.full(), ActionCreateAndAdd);
+	auto contact = Core::instance()->contactManager()->byId(account(), jid.full(), ActionCreateAndAdd);
 	auto buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreateAndAdd);
 	buddy.setDisplay(jid.resource());
 	buddy.setTemporary(true);

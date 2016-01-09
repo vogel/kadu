@@ -351,7 +351,7 @@ void AddBuddyWindow::validateData()
 		return;
 	}
 
-	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionReturnNull);
+	Contact contact = Core::instance()->contactManager()->byId(account, UserNameEdit->text(), ActionReturnNull);
 	if (!contact.isAnonymous())
 	{
 		displayErrorMessage(tr("This contact is already available as <i>%1</i>").arg(contact.display(true)));
@@ -514,7 +514,7 @@ bool AddBuddyWindow::addContact()
 			? ActionCreateAndAdd
 			: ActionReturnNull;
 
-	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), action);
+	Contact contact = Core::instance()->contactManager()->byId(account, UserNameEdit->text(), action);
 
 	if (contact)
 	{

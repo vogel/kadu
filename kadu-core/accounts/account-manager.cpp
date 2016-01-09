@@ -49,6 +49,11 @@ AccountManager::~AccountManager()
 {
 }
 
+void AccountManager::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 void AccountManager::init()
 {
 	// needed for QueuedConnection
@@ -203,7 +208,7 @@ void AccountManager::removeAccountAndBuddies(Account account)
 
 	removeItem(account);
 
-	QVector<Contact> contacts = ContactManager::instance()->contacts(account);
+	QVector<Contact> contacts = m_contactManager->contacts(account);
 	foreach (const Contact &contact, contacts)
 		Core::instance()->buddyManager()->clearOwnerAndRemoveEmptyBuddy(contact);
 

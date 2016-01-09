@@ -68,7 +68,7 @@ void ChatDetailsContact::load()
 
 	QString cadUuid = loadValue<QString>("Contact");
 
-	CurrentContact = ContactManager::instance()->byUuid(cadUuid);
+	CurrentContact = Core::instance()->contactManager()->byUuid(cadUuid);
 	if (!CurrentContact)
 	{
 		// import from old 0.6.6 releases

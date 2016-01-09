@@ -478,7 +478,7 @@ void Core::init()
 
 	accountManager()->ensureLoaded();
 	buddyManager()->ensureLoaded();
-	ContactManager::instance()->ensureLoaded();
+	contactManager()->ensureLoaded();
 	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
 	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
@@ -615,15 +615,10 @@ void Core::runServices()
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
-	m_injector.get<ChatImageRequestService>()->setContactManager(ContactManager::instance());
-
 	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
 
 	m_injector.get<PluginMetadataFinder>()->setDirectory(Application::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginStateManager>()->loadPluginStates();
-
-	// moved here because of #2758
-	ContactManager::instance()->init();
 
 	configurationUiHandlerRepository()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
 }
@@ -860,6 +855,11 @@ IconsManager * Core::iconsManager() const
 StatusSetter * Core::statusSetter() const
 {
 	return m_injector.get<StatusSetter>();
+}
+
+ContactManager * Core::contactManager() const
+{
+	return m_injector.get<ContactManager>();
 }
 
 void Core::showMainWindow()

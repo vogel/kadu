@@ -102,7 +102,7 @@ void Protocol::setAllOffline()
 	Status status;
 	Status oldStatus;
 
-	foreach (const Contact &contact, ContactManager::instance()->contacts(CurrentAccount))
+	foreach (const Contact &contact, Core::instance()->contactManager()->contacts(CurrentAccount))
 	{
 		oldStatus = contact.currentStatus();
 

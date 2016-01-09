@@ -34,7 +34,6 @@
 #include "otr-session-service.h"
 #include "otr-trust-level-service.h"
 
-#include "contacts/contact-manager.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
@@ -167,8 +166,6 @@ void OtrPluginObject::init()
 	connect(m_otrFingerprintService, SIGNAL(fingerprintsUpdated()), m_otrTrustLevelService, SLOT(updateTrustLevels()));
 	m_otrFingerprintService->readFingerprints();
 	m_otrInstanceTagService->readInstanceTags();
-
-	m_otrIsLoggedInService->setContactManager(ContactManager::instance());
 
 	connect(m_otrPeerIdentityVerificationService, SIGNAL(questionAnswerRequested(Contact,QString)),
 			m_otrPeerIdentityVerificationWindowRepository, SLOT(showRespondQuestionAndAnswerVerificationWindow(Contact,QString)));

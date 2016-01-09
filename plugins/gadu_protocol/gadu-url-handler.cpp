@@ -56,6 +56,11 @@ void GaduUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void GaduUrlHandler::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 {
 	return m_gaduRegExp.exactMatch(QString::fromUtf8(url));
@@ -76,7 +81,7 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 	if (gaduAccounts.count() == 1 || disableMenu)
 	{
-		const Contact &contact = ContactManager::instance()->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
+		const Contact &contact = m_contactManager->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
 		const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 		if (chat)
 		{
@@ -115,7 +120,7 @@ void GaduUrlHandler::accountSelected(QAction *action)
 	if (!account)
 		return;
 
-	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
+	const Contact &contact = m_contactManager->byId(account, ids[1], ActionCreateAndAdd);
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }

@@ -73,7 +73,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 			<< tr("Last time seen on");
 	ListView->setHeaderLabels(labels);
 
-	foreach (const Contact &contact, ContactManager::instance()->items())
+	foreach (const Contact &contact, Core::instance()->contactManager()->items())
 	{
 		if (contact.isAnonymous())
 			continue;

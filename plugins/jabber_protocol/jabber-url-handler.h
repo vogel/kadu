@@ -29,6 +29,7 @@
 
 class AccountManager;
 class ChatWidgetManager;
+class ContactManager;
 
 class QAction;
 
@@ -46,11 +47,14 @@ public:
 private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<ContactManager> m_contactManager;
 	QRegExp m_jabberRegExp;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+
 	void accountSelected(QAction *action);
 
 };

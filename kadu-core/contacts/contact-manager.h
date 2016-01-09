@@ -23,49 +23,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACT_MANAGER_H
-#define CONTACT_MANAGER_H
-
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
+#pragma once
 
 #include "contacts/contact.h"
 #include "message/message.h"
 #include "storage/simple-manager.h"
 #include "exports.h"
 
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QUuid>
+#include <injeqt/injeqt.h>
+
 class Account;
+class UnreadMessageRepository;
 
 class KADUAPI ContactManager : public QObject, public SimpleManager<Contact>
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ContactManager)
-
-	friend class Core;
-
-	static ContactManager * Instance;
-
-	ContactManager();
-	virtual ~ContactManager();
-
-	void init();
-
-private slots:
-	void removeDuplicateContacts();
-
-	void contactDataUpdated();
-
-	void unreadMessageAdded(const Message &message);
-	void unreadMessageRemoved(const Message &message);
-
-protected:
-	virtual void loaded();
-
-	virtual void itemAboutToBeAdded(Contact item) override;
-	virtual void itemAdded(Contact item) override;
-	virtual void itemAboutToBeRemoved(Contact item) override;
-	virtual void itemRemoved(Contact item) override;
 
 public:
 	enum AnonymousInclusion
@@ -74,7 +49,8 @@ public:
 		ExcludeAnonymous
 	};
 
-	static ContactManager * instance();
+	Q_INVOKABLE explicit ContactManager(QObject *parent = nullptr);
+	virtual ~ContactManager();
 
 	virtual QString storageNodeName() { return QLatin1String("Contacts"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
@@ -90,6 +66,27 @@ signals:
 
 	void contactUpdated(const Contact &contact);
 
-};
+protected:
+	virtual void loaded();
 
-#endif // CONTACT_MANAGER_H
+	virtual void itemAboutToBeAdded(Contact item) override;
+	virtual void itemAdded(Contact item) override;
+	virtual void itemAboutToBeRemoved(Contact item) override;
+	virtual void itemRemoved(Contact item) override;
+
+private:
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+
+private slots:
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
+	void removeDuplicateContacts();
+
+	void contactDataUpdated();
+
+	void unreadMessageAdded(const Message &message);
+	void unreadMessageRemoved(const Message &message);
+
+};

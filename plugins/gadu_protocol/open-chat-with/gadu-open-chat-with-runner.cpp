@@ -46,7 +46,7 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 	if (createNotOwnedGaduIdValidator()->validate(queryCopy, pos) != QValidator::Acceptable)
 		return matchedContacts;
 
-	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);
+	Contact contact = Core::instance()->contactManager()->byId(ParentAccount, query, ActionCreate);
 	Buddy buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreate);
 	matchedContacts.append(buddy);
 

@@ -160,9 +160,9 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 	}
 
 	// First we need to remove existing contact from the manager to avoid duplicates.
-	Contact existingContact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionReturnNull);
+	Contact existingContact = Core::instance()->contactManager()->byId(item->itemAccount(), item->id(), ActionReturnNull);
 	if (existingContact)
-		ContactManager::instance()->removeItem(existingContact);
+		Core::instance()->contactManager()->removeItem(existingContact);
 
 	Roster::instance()->removeContact(contact);
 	contact.setContactAccount(item->itemAccount());
@@ -177,7 +177,7 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 
 void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 {
-	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
+	Contact contact = Core::instance()->contactManager()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(ModelBuddy);
 	contact.setPriority(item->itemContactPriority());
 	if (item->rosterDetached())

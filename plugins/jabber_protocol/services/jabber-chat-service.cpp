@@ -201,7 +201,7 @@ Message JabberChatService::handleNormalReceivedMessage(const QXmppMessage &xmppM
 {
 	auto jid = Jid::parse(xmppMessage.from());
 
-	auto contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
+	auto contact = Core::instance()->contactManager()->byId(account(), jid.bare(), ActionCreateAndAdd);
 	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 
 	contact.addProperty("jabber:chat-resource", jid.resource(), CustomProperties::NonStorable);

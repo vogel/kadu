@@ -89,6 +89,11 @@ GaduProtocol::~GaduProtocol()
 	kdebugf2();
 }
 
+void GaduProtocol::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 void GaduProtocol::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -142,9 +147,9 @@ void GaduProtocol::init()
 
 	CurrentUserDataService = new GaduUserDataService{account(), this};
 	CurrentUserDataService->setAvatarManager(AvatarManager::instance());
-	CurrentUserDataService->setContactManager(ContactManager::instance());
+	CurrentUserDataService->setContactManager(m_contactManager);
 
-	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
+	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
 	auto rosterService = new GaduRosterService{contacts, this};
 	rosterService->setConnection(Connection);
 	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
@@ -348,7 +353,7 @@ void GaduProtocol::afterLoggedIn()
 	// fetch current avatar after connection
 	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
 
-	auto contacts = ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous);
+	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
 	CurrentNotifyService->sendInitialData(contacts);
 
 	static_cast<GaduRosterService *>(rosterService())->prepareRoster();
@@ -464,7 +469,7 @@ void GaduProtocol::cleanUpLoginParams()
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
 {
-	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin), ActionReturnNull);
+	Contact contact = m_contactManager->byId(account(), QString::number(uin), ActionReturnNull);
 
 	if (contact.isAnonymous())
 	{

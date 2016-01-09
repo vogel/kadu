@@ -407,7 +407,7 @@ Contact AccountShared::accountContact()
 	ensureLoaded();
 
 	if (!*AccountContact)
-		*AccountContact = ContactManager::instance()->byId(this, Id, ActionCreateAndAdd);
+		*AccountContact = Core::instance()->contactManager()->byId(this, Id, ActionCreateAndAdd);
 
 	return *AccountContact;
 }

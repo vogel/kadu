@@ -30,6 +30,7 @@
 #include "configuration/configuration.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 
 #include "contact-set-configuration-helper.h"
 
@@ -52,7 +53,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ConfigurationApi
 	result.reserve(contactElements.count());
 	foreach (const QDomElement &contactElement, contactElements)
 	{
-		Contact contact = ContactManager::instance()->byUuid(contactElement.text());
+		Contact contact = Core::instance()->contactManager()->byUuid(contactElement.text());
 		if (!contact.isNull())
 			result.insert(contact);
 	}

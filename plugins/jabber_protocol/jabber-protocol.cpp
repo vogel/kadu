@@ -111,7 +111,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	m_roomChatService = new JabberRoomChatService{m_client, m_mucManager.get(), account, this};
 	m_roomChatService->setBuddyManager(Core::instance()->buddyManager());
 	m_roomChatService->setChatManager(Core::instance()->chatManager());
-	m_roomChatService->setContactManager(ContactManager::instance());
+	m_roomChatService->setContactManager(Core::instance()->contactManager());
 	m_roomChatService->initialize();
 
 	auto chatStateService = new JabberChatStateService{m_client, account, this};
@@ -119,7 +119,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	m_avatarService = new JabberAvatarService{m_client, account, this};
 	m_avatarService->setAvatarManager(AvatarManager::instance());
-	m_avatarService->setContactManager(ContactManager::instance());
+	m_avatarService->setContactManager(Core::instance()->contactManager());
 
 	auto chatService = new JabberChatService{m_client, account, this};
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
@@ -141,7 +141,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	m_contactPersonalInfoService->setVCardService(m_vcardService);
 	m_personalInfoService->setVCardService(m_vcardService);
 
-	auto contacts = ContactManager::instance()->contacts(account, ContactManager::ExcludeAnonymous);
+	auto contacts = Core::instance()->contactManager()->contacts(account, ContactManager::ExcludeAnonymous);
 	auto rosterService = new JabberRosterService{&m_client->rosterManager(), m_rosterExtension.get(), contacts, this};
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
@@ -151,7 +151,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	setRosterService(rosterService);
 
 	m_subscriptionService = new JabberSubscriptionService{&m_client->rosterManager(), this};
-	m_subscriptionService->setContactManager(ContactManager::instance());
+	m_subscriptionService->setContactManager(Core::instance()->contactManager());
 }
 
 JabberProtocol::~JabberProtocol()
@@ -347,7 +347,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 
 	auto jid = Jid::parse(presence.from());
 	auto id = jid.bare();
-	auto contact = ContactManager::instance()->byId(account(), id, ActionReturnNull);
+	auto contact = Core::instance()->contactManager()->byId(account(), id, ActionReturnNull);
 	if (!contact)
 		return;
 

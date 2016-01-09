@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_IS_LOGGED_IN_SERVICE_H
-#define OTR_IS_LOGGED_IN_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -30,8 +29,6 @@ class OtrIsLoggedInService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<ContactManager> CurrentContactManager;
-
 public:
 	enum IsLoggedInStatus
 	{
@@ -42,13 +39,15 @@ public:
 
 	static int wrapperOtrIsLoggedIn(void *data, const char *accountName, const char *protocol, const char *recipient);
 
-	Q_INVOKABLE OtrIsLoggedInService();
+	Q_INVOKABLE explicit OtrIsLoggedInService(QObject *parent = nullptr);
 	virtual ~OtrIsLoggedInService();
-
-	void setContactManager(ContactManager *contactManager);
 
 	IsLoggedInStatus isLoggedIn(const Account &account, const QString &contactId);
 
-};
+private:
+	QPointer<ContactManager> m_contactManager;
 
-#endif // OTR_IS_LOGGED_IN_SERVICE_H
+private slots:
+	void setContactManager(ContactManager *contactManager);
+
+};

@@ -93,7 +93,7 @@ QList<Contact> RosterReplacer::performAdds(const QMap<Buddy, Contact> &contactsT
 
 	for (QMap<Buddy, Contact>::const_iterator i = contactsToAdd.constBegin(); i != contactsToAdd.constEnd(); i++)
 	{
-		ContactManager::instance()->addItem(i.value());
+		Core::instance()->contactManager()->addItem(i.value());
 		i.value().setOwnerBuddy(i.key());
 		resultContacts.append(i.value());
 
@@ -143,7 +143,7 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account ac
 
 		for (auto &&contact : buddy.contacts(account))
 		{
-			Contact knownContact = ContactManager::instance()->byId(account, contact.id(), ActionReturnNull);
+			Contact knownContact = Core::instance()->contactManager()->byId(account, contact.id(), ActionReturnNull);
 			if (knownContact)
 			{
 				allContacts.append(knownContact);
@@ -198,7 +198,7 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account ac
 
 QPair<QList<Contact>, QList<Contact>> RosterReplacer::replaceRoster(Account account, const BuddyList &buddies, bool ask)
 {
-	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(account).toList();
+	QList<Contact> unImportedContacts = Core::instance()->contactManager()->contacts(account).toList();
 
 	for (auto &&myselfContact : Core::instance()->myself().contacts(account))
 		unImportedContacts.removeAll(myselfContact);

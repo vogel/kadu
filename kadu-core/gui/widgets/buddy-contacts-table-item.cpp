@@ -20,6 +20,7 @@
  */
 
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "roster/roster-entry-state.h"
@@ -125,7 +126,7 @@ bool BuddyContactsTableItem::isAddValid() const
 		return false;
 
 	// allow contacts without buddy or new ones
-	Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
+	Contact contact = Core::instance()->contactManager()->byId(ItemAccount, Id, ActionReturnNull);
 	return contact.ownerBuddy().isAnonymous();
 }
 
@@ -150,7 +151,7 @@ bool BuddyContactsTableItem::isEditValid() const
 	if (ItemAccount != ItemContact.contactAccount() || Id != ItemContact.id())
 	{
 		// allow contacts without buddy or new ones
-		Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
+		Contact contact = Core::instance()->contactManager()->byId(ItemAccount, Id, ActionReturnNull);
 		return contact.ownerBuddy().isAnonymous();
 	}
 

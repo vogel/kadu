@@ -74,6 +74,17 @@ private slots:
 	 */
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 
+	/**
+	 * @short Sets contact manager to use by this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param contactManager contact manager to use by this service
+	 *
+	 * This service will use this manager to resolve names of contacts that ids are provided by ChatImageService signals.
+	 * Resolved names are used for asking end-user about images that are too big to be accepted without asking.
+	 * If no ContactManager is available then no asking will be done - too big images will be ignored.
+	 */
+	void setContactManager(ContactManager *contactManager);
+
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 
 	void accountRegistered(Account account);
@@ -92,17 +103,6 @@ public:
 	 */
 	Q_INVOKABLE explicit ChatImageRequestService(QObject *parent = nullptr);
 	virtual ~ChatImageRequestService();
-
-	/**
-	 * @short Sets contact manager to use by this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param contactManager contact manager to use by this service
-	 *
-	 * This service will use this manager to resolve names of contacts that ids are provided by ChatImageService signals.
-	 * Resolved names are used for asking end-user about images that are too big to be accepted without asking.
-	 * If no ContactManager is available then no asking will be done - too big images will be ignored.
-	 */
-	void setContactManager(ContactManager *contactManager);
 
 	/**
 	 * @short Sets configuration to use by this service.

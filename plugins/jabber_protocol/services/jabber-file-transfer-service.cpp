@@ -92,7 +92,7 @@ void JabberFileTransferService::dataTransferProxyChanged()
 void JabberFileTransferService::fileReceived(QXmppTransferJob *transferJob)
 {
 	auto jid = Jid::parse(transferJob->jid());
-	auto peer = ContactManager::instance()->byId(m_account, jid.bare(), ActionCreateAndAdd);
+	auto peer = Core::instance()->contactManager()->byId(m_account, jid.bare(), ActionCreateAndAdd);
 
 	auto transfer = FileTransfer::create();
 	transfer.setPeer(peer);

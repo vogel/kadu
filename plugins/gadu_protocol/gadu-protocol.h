@@ -46,6 +46,7 @@
 
 #include "protocols/protocol.h"
 
+class ContactManager;
 class GaduContactListHandler;
 class GaduDriveService;
 class GaduIMTokenService;
@@ -81,6 +82,7 @@ public:
 	typedef unsigned int UinType;
 
 private:
+	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
@@ -129,6 +131,7 @@ private:
 	void configureServices();
 
 private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 

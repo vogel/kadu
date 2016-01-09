@@ -35,7 +35,7 @@
 TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 		KaduTreeViewDelegate(parent)
 {
-	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
+	connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
 	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));

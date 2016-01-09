@@ -75,12 +75,12 @@ void HideOfflineTalkableFilter::setEnabled(bool enabled)
 	if (enabled)
 	{
 		connect(Core::instance()->buddyManager(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
-		connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
+		connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
 	}
 	else
 	{
 		disconnect(Core::instance()->buddyManager(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
-		disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
+		disconnect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
 	}
 }
 

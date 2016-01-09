@@ -23,6 +23,7 @@
 #include "accounts/account.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 
 #include "storage/sql-accounts-mapping.h"
 
@@ -35,7 +36,7 @@ SqlContactsMapping::SqlContactsMapping(const QSqlDatabase &database, SqlAccounts
 
 	loadMappingsFromDatabase();
 
-	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
+	connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
 }
 
 SqlContactsMapping::~SqlContactsMapping()
@@ -88,7 +89,7 @@ void SqlContactsMapping::loadMappingsFromDatabase()
 
 		// This contact needs to be known to the manager even if it's not on our roster,
 		// in case we want to add him later or even talk to her without adding.
-		Contact contact = ContactManager::instance()->byId(account, contactId, ActionCreateAndAdd);
+		Contact contact = Core::instance()->contactManager()->byId(account, contactId, ActionCreateAndAdd);
 		if (contact)
 			addMapping(id, contact);
 	}

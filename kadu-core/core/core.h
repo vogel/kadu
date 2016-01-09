@@ -61,6 +61,7 @@ class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
 class ConfigurationUiHandlerRepository;
+class ContactManager;
 class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
@@ -204,6 +205,7 @@ public:
 	InjectedFactory * injectedFactory() const;
 	IconsManager * iconsManager() const;
 	StatusSetter * statusSetter() const;
+	ContactManager * contactManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

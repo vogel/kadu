@@ -90,7 +90,7 @@ void MessageShared::load()
 	Shared::load();
 
 	*MessageChat = Core::instance()->chatManager()->byUuid(loadValue<QString>("Chat"));
-	*MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
+	*MessageSender = Core::instance()->contactManager()->byUuid(loadValue<QString>("Sender"));
 
 	if (CurrentFormattedStringFactory)
 		setContent(CurrentFormattedStringFactory.data()->fromHtml(loadValue<QString>("Content")));

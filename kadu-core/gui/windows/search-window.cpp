@@ -311,7 +311,7 @@ ContactSet SearchWindow::selectedContacts() const
 	else
 		altNick = uin;
 
-	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, ActionCreateAndAdd);
+	Contact contact = Core::instance()->contactManager()->byId(CurrentAccount, uin, ActionCreateAndAdd);
 	Buddy buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreateAndAdd);
 
 	if (buddy.isAnonymous())

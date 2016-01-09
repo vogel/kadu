@@ -73,6 +73,11 @@ void JabberUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void JabberUrlHandler::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 {
 	if (url == "xmpp:")
@@ -96,7 +101,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 	if (jabberAccounts.count() == 1 || disableMenu)
 	{
-		const Contact &contact = ContactManager::instance()->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
+		const Contact &contact = m_contactManager->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
 		const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 		if (chat)
 		{
@@ -135,7 +140,7 @@ void JabberUrlHandler::accountSelected(QAction *action)
 	if (!account)
 		return;
 
-	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
+	const Contact &contact = m_contactManager->byId(account, ids[1], ActionCreateAndAdd);
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }

@@ -35,12 +35,16 @@
 
 class Status;
 class ConfigurationApi;
+class ContactManager;
 
 class KADUAPI AccountManager : public QObject, public Manager<Account>
 {
 	Q_OBJECT
 
+	QPointer<ContactManager> m_contactManager;
+
 private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_INIT void init();
 
 	void passwordProvided(const QVariant &data, const QString &password, bool permament);
