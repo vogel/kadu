@@ -19,6 +19,7 @@
  */
 
 #include "account-manager.h"
+#include "core/core.h"
 
 #include "accounts-aware-object.h"
 
@@ -70,24 +71,24 @@ void AccountsAwareObject::notifyAccountUnregistered(Account account)
 
 void AccountsAwareObject::triggerAllAccountsAdded()
 {
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 		accountAdded(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRemoved()
 {
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 		accountRemoved(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRegistered()
 {
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 		accountRegistered(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsUnregistered()
 {
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 		accountUnregistered(account);
 }

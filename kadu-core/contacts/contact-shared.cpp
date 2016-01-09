@@ -127,7 +127,7 @@ void ContactShared::load()
 	else
 		Entry->setSynchronized();
 
-	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
+	*ContactAccount = Core::instance()->accountManager()->byUuid(loadValue<QString>("Account"));
 	doSetOwnerBuddy(Core::instance()->buddyManager()->byUuid(loadValue<QString>("Buddy")));
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 

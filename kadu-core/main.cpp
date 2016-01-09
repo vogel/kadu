@@ -43,6 +43,7 @@
 #include <unistd.h>
 #endif // !Q_OS_WIN
 
+#include "accounts/account-module.h"
 #include "buddies/buddy-module.h"
 #include "chat-style/chat-style-module.h"
 #include "configuration/configuration-api.h"
@@ -213,6 +214,7 @@ int main(int argc, char *argv[]) try
 			: executionArguments.profileDirectory();
 
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	modules.emplace_back(make_unique<AccountModule>());
 	modules.emplace_back(make_unique<BuddyModule>());
 	modules.emplace_back(make_unique<ChatStyleModule>());
 	modules.emplace_back(make_unique<ChatWidgetModule>());

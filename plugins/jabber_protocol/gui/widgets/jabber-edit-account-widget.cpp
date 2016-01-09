@@ -35,6 +35,7 @@
 #include "accounts/account.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/core.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
@@ -376,8 +377,8 @@ void JabberEditAccountWidget::dataChanged()
 		return;
 	}
 
-	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), AccountId->text())
-			&& AccountManager::instance()->byId(account().protocolName(), AccountId->text()) != account();
+	bool sameIdExists = Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text())
+			&& Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text()) != account();
 
 	if (/*AccountName->text().isEmpty()
 		|| sameNameExists
@@ -493,7 +494,7 @@ void JabberEditAccountWidget::removeAccount()
 
 	if (decision == QMessageBox::Yes)
 	{
-		AccountManager::instance()->removeAccountAndBuddies(account());
+		Core::instance()->accountManager()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
 }

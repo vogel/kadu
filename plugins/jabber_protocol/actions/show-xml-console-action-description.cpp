@@ -24,6 +24,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/xml-console.h"
@@ -40,9 +41,9 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 
 	registerAction();
 
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
 
 	// It is needed bacause of loading protocol plugins before creating GUI.
@@ -85,12 +86,12 @@ void ShowXmlConsoleActionDescription::actionTriggered(QAction *sender, bool togg
 
 void ShowXmlConsoleActionDescription::updateShowXmlConsoleMenu()
 {
-	QVector<Account> jabberAccounts = AccountManager::instance()->byProtocolName("jabber");
+	QVector<Account> jabberAccounts = Core::instance()->accountManager()->byProtocolName("jabber");
 
 	foreach (Action *action, actions())
 	{
 		QMenu *menu = action->menu();
-		if (jabberAccounts.isEmpty() || 1 == AccountManager::instance()->items().count())
+		if (jabberAccounts.isEmpty() || 1 == Core::instance()->accountManager()->items().count())
 		{
 			delete menu;
 			action->setMenu(0);

@@ -33,6 +33,7 @@
 
 class QAction;
 
+class AccountManager;
 class Action;
 class ActionContext;
 class ActionDescription;
@@ -51,6 +52,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<AccountManager> m_accountManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	friend class KaduWindow;
@@ -91,6 +93,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	DefaultProxyAction *DefaultProxy;
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 

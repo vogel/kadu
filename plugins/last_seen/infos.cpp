@@ -28,6 +28,7 @@
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
@@ -66,7 +67,7 @@ Infos::Infos(QObject *parent) :
 
 				Contact contact;
 				// wstawiamy tylko konta, które są na liście kontaktów
-				foreach(Account account, AccountManager::instance()->byProtocolName(protocol))
+				foreach(Account account, Core::instance()->accountManager()->byProtocolName(protocol))
 				{
 					contact = ContactManager::instance()->byId(account, uin, ActionReturnNull);
 					if (contact.isNull())

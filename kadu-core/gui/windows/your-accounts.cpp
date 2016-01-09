@@ -428,7 +428,7 @@ void YourAccounts::accountCreated(Account account)
 	if (!account)
 		return;
 
-	AccountManager::instance()->addItem(account);
+	Core::instance()->accountManager()->addItem(account);
 	account.accountContact().setOwnerBuddy(Core::instance()->myself());
 
 	ConfigurationManager::instance()->flush();

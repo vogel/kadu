@@ -21,6 +21,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/windows/add-conference-window.h"
 
@@ -35,9 +36,9 @@ AddConferenceAction::AddConferenceAction(QObject *parent) :
 
 	registerAction();
 
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
 
 	updateAddChatMenuItem();
@@ -59,7 +60,7 @@ void AddConferenceAction::updateAddChatMenuItem()
 {
 	bool isConferenceSupported = false;
 
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 	{
 		if (account.protocolName() == "gadu")
 			isConferenceSupported = true;

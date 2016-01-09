@@ -108,7 +108,7 @@ AccountShared::~AccountShared()
 
 StorableObject * AccountShared::storageParent()
 {
-	return AccountManager::instance();
+	return Core::instance()->accountManager();
 }
 
 QString AccountShared::storageNodeName()
@@ -261,7 +261,7 @@ void AccountShared::aboutToBeRemoved()
 		Details = 0;
 	}
 
-	AccountManager::instance()->unregisterItem(this);
+	Core::instance()->accountManager()->unregisterItem(this);
 	setAccountIdentity(Identity::null);
 }
 
@@ -320,7 +320,7 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 
 	MyStatusContainer->triggerStatusUpdated();
 
-	AccountManager::instance()->registerItem(this);
+	Core::instance()->accountManager()->registerItem(this);
 
 	emit updated();
 	emit protocolHandlerChanged();
@@ -350,7 +350,7 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	// dont get deleted in next line
 	Account guard(this);
-	AccountManager::instance()->unregisterItem(this);
+	Core::instance()->accountManager()->unregisterItem(this);
 
 	delete ProtocolHandler;
 	ProtocolHandler = 0;

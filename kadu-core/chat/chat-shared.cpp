@@ -162,7 +162,7 @@ void ChatShared::load()
 		}
 	}
 
-	*ChatAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
+	*ChatAccount = Core::instance()->accountManager()->byUuid(QUuid(loadValue<QString>("Account")));
 	Display = loadValue<QString>("Display");
 	Type = loadValue<QString>("Type");
 

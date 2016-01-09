@@ -18,24 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_URL_HANDLER_H
-#define GADU_URL_HANDLER_H
-
-#include <QtCore/QObject>
-#include <QtCore/QRegExp>
+#pragma once
 
 #include "url-handlers/url-handler.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QRegExp>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class ChatWidgetManager;
 
 class QAction;
 
 class GaduUrlHandler : public QObject, public UrlHandler
 {
 	Q_OBJECT
-
-	QRegExp GaduRegExp;
-
-private slots:
-	void accountSelected(QAction *action);
 
 public:
 	Q_INVOKABLE explicit GaduUrlHandler(QObject *parent = nullptr);
@@ -44,6 +43,15 @@ public:
 	virtual bool isUrlValid(const QByteArray &url);
 	virtual void openUrl(const QByteArray &url, bool disableMenu = false);
 
-};
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QRegExp m_gaduRegExp;
 
-#endif // GADU_URL_HANDLER_H
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+
+	void accountSelected(QAction *action);
+
+};

@@ -39,6 +39,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
@@ -384,8 +385,8 @@ void GaduEditAccountWidget::dataChanged()
 		return;
 	}
 
-	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), AccountId->text())
-			&& AccountManager::instance()->byId(account().protocolName(), AccountId->text()) != account();
+	bool sameIdExists = Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text())
+			&& Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text()) != account();
 
 	if (AccountId->text().isEmpty() || sameIdExists || StateChangedDataInvalid == widgetsState)
 		simpleStateNotifier()->setState(StateChangedDataInvalid);
@@ -436,7 +437,7 @@ void GaduEditAccountWidget::removeAccount()
 
 	if (decision == QMessageBox::Yes)
 	{
-		AccountManager::instance()->removeAccountAndBuddies(account());
+		Core::instance()->accountManager()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
 }

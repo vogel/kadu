@@ -29,7 +29,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
@@ -48,14 +47,14 @@ JabberUrlHandler::JabberUrlHandler(QObject *parent) :
 	// (RFC5122 - 3.3, XEP-0147)
 	// "(?:xmpp|jabber):" - if we ever need to handle jabber: links
 
-	JabberRegExp = QRegExp("\\b"
-	                       "xmpp:"
-	                       "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
-	                       "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
-	                       "(?:\\?([^&# ]+)"                              // querytype
-	                       "(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
-	                       "(?:#(\\S*))?"                                 // fragment
-	                       "\\b"
+	m_jabberRegExp = QRegExp("\\b"
+	                         "xmpp:"
+	                         "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
+	                         "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
+	                         "(?:\\?([^&# ]+)"                              // querytype
+	                         "(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
+	                         "(?:#(\\S*))?"                                 // fragment
+	                         "\\b"
 	);
 	// Reparse pair with: "&([^=]+)=([^&]+)"
 }
@@ -64,17 +63,27 @@ JabberUrlHandler::~JabberUrlHandler()
 {
 }
 
+void JabberUrlHandler::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void JabberUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
 bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 {
 	if (url == "xmpp:")
 		return false;
 
-	return JabberRegExp.exactMatch(QString::fromUtf8(url));
+	return m_jabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
-	QVector<Account> jabberAccounts = AccountManager::instance()->byProtocolName("jabber");
+	QVector<Account> jabberAccounts = m_accountManager->byProtocolName("jabber");
 	if (jabberAccounts.isEmpty())
 		return;
 
@@ -91,7 +100,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 		if (chat)
 		{
-			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 			return;
 		}
 	}
@@ -122,13 +131,13 @@ void JabberUrlHandler::accountSelected(QAction *action)
 	if (ids.count() != 2)
 		return;
 
-	const Account &account = AccountManager::instance()->byId("jabber", ids[0]);
+	const Account &account = m_accountManager->byId("jabber", ids[0]);
 	if (!account)
 		return;
 
 	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 
 #include "moc_jabber-url-handler.cpp"

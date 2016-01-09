@@ -40,20 +40,8 @@
 
 #include "account-manager.h"
 
-AccountManager * AccountManager::Instance = 0;
-
-AccountManager * AccountManager::instance()
-{
-	if (0 == Instance)
-	{
-		Instance = new AccountManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-AccountManager::AccountManager()
+AccountManager::AccountManager(QObject *parent) :
+		QObject{parent}
 {
 }
 

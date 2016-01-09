@@ -25,6 +25,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
+#include <injeqt/injeqt.h>
 
 #include "accounts/account.h"
 #include "protocols/protocol-factory.h"
@@ -38,16 +39,10 @@ class ConfigurationApi;
 class KADUAPI AccountManager : public QObject, public Manager<Account>
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AccountManager)
-
-	static AccountManager *Instance;
-
-	AccountManager();
-	virtual ~AccountManager();
-
-	void init();
 
 private slots:
+	INJEQT_INIT void init();
+
 	void passwordProvided(const QVariant &data, const QString &password, bool permament);
 
 	void accountDataUpdated();
@@ -65,7 +60,8 @@ protected:
 	virtual void loaded();
 
 public:
-	static AccountManager * instance();
+	Q_INVOKABLE explicit AccountManager(QObject *parent = nullptr);
+	virtual ~AccountManager();
 
 	template<template <class> class Container>
 	static Account bestAccount(const Container<Account> &accounts)

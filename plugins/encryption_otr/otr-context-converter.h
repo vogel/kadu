@@ -29,6 +29,7 @@ extern "C" {
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class AccountManager;
 class Chat;
 class Contact;
 
@@ -39,7 +40,7 @@ class OtrContextConverter : public QObject
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE OtrContextConverter();
+	Q_INVOKABLE explicit OtrContextConverter(QObject *parent = nullptr);
 	virtual ~OtrContextConverter();
 
 	Chat connectionContextToChat(ConnContext *context) const;
@@ -48,10 +49,12 @@ public:
 	ConnContext * chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction = ActionReturnNull) const;
 	ConnContext * contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction = ActionReturnNull) const;
 
-private slots:
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
-
 private:
-	QPointer<OtrUserStateService> UserStateService;
+	QPointer<AccountManager> m_accountManager;
+	QPointer<OtrUserStateService> m_userStateService;
+
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 };

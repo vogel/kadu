@@ -29,7 +29,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -40,21 +39,31 @@
 GaduUrlHandler::GaduUrlHandler(QObject *parent) :
 		QObject{parent}
 {
-	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
+	m_gaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
 }
 
 GaduUrlHandler::~GaduUrlHandler()
 {
 }
 
+void GaduUrlHandler::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void GaduUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
 bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 {
-	return GaduRegExp.exactMatch(QString::fromUtf8(url));
+	return m_gaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
-	QVector<Account> gaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	QVector<Account> gaduAccounts = m_accountManager->byProtocolName("gadu");
 	if (gaduAccounts.isEmpty())
 		return;
 
@@ -71,7 +80,7 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 		if (chat)
 		{
-			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 			return;
 		}
 	}
@@ -97,18 +106,18 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 void GaduUrlHandler::accountSelected(QAction *action)
 {
-	QStringList ids = action->data().toStringList();
+	auto ids = action->data().toStringList();
 
 	if (ids.count() != 2)
 		return;
 
-	Account account = AccountManager::instance()->byId("gadu", ids[0]);
+	auto account = m_accountManager->byId("gadu", ids[0]);
 	if (!account)
 		return;
 
 	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 
 #include "moc_gadu-url-handler.cpp"

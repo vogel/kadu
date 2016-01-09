@@ -476,7 +476,7 @@ void Core::init()
 	// TODO: add some life-cycle management
 	notificationManager();
 
-	AccountManager::instance()->ensureLoaded();
+	accountManager()->ensureLoaded();
 	buddyManager()->ensureLoaded();
 	ContactManager::instance()->ensureLoaded();
 	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
@@ -615,7 +615,6 @@ void Core::runServices()
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
-	m_injector.get<ChatImageRequestService>()->setAccountManager(AccountManager::instance());
 	m_injector.get<ChatImageRequestService>()->setContactManager(ContactManager::instance());
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
@@ -651,6 +650,11 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
+}
+
+AccountManager * Core::accountManager() const
+{
+	return m_injector.get<AccountManager>();
 }
 
 BuddyManager * Core::buddyManager() const

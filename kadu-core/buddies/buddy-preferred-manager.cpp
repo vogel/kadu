@@ -193,7 +193,7 @@ bool BuddyPreferredManager::isAccountCommon(const Account &account, const BuddyS
 
 Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
 {
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 		if (isAccountCommon(account, buddies))
 			return account;
 

@@ -22,6 +22,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class AccountManager;
 class DomProcessorService;
 class GaduProtocolFactory;
 class GaduProtocolMenuManager;
@@ -40,6 +41,7 @@ public:
 	virtual ~GaduPluginObject();
 
 private:
+	QPointer<AccountManager> m_accountManager;
 	QPointer<DomProcessorService> m_domProcessorService;
 	QPointer<GaduProtocolFactory> m_gaduProtocolFactory;
 	QPointer<GaduProtocolMenuManager> m_gaduProtocolMenuManager;
@@ -51,6 +53,7 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_SET void setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory);
 	INJEQT_SET void setGaduProtocolMenuManager(GaduProtocolMenuManager *gaduProtocolMenuManager);

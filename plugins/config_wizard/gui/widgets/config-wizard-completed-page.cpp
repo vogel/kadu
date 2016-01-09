@@ -23,6 +23,7 @@
 #include <QtWidgets/QLabel>
 
 #include "accounts/account-manager.h"
+#include "core/core.h"
 #include "gui/windows/your-accounts.h"
 
 #include "config-wizard-completed-page.h"
@@ -50,7 +51,7 @@ void ConfigWizardCompletedPage::createGui()
 
 void ConfigWizardCompletedPage::initializePage()
 {
-	ConfigureAccouuntsCheckBox->setChecked(AccountManager::instance()->items().isEmpty());
+	ConfigureAccouuntsCheckBox->setChecked(Core::instance()->accountManager()->items().isEmpty());
 }
 
 void ConfigWizardCompletedPage::acceptPage()

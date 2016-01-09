@@ -21,6 +21,7 @@
 #include <QtWidgets/QAbstractItemView>
 
 #include "accounts/account-manager.h"
+#include "core/core.h"
 #include "gui/widgets/talkable-painter.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "identities/identity-manager.h"
@@ -62,14 +63,14 @@ void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany
 	ShowIdentityNameIfMany = showIdentityNameIfMany;
 	if (ShowIdentityNameIfMany)
 	{
-		connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(updateShowIdentityName()));
-		connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)), this, SLOT(updateShowIdentityName()));
-		connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
+		connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)), this, SLOT(updateShowIdentityName()));
+		connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)), this, SLOT(updateShowIdentityName()));
+		connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
 		updateShowIdentityName();
 	}
 	else
 	{
-		disconnect(AccountManager::instance(), 0, this, 0);
+		disconnect(Core::instance()->accountManager(), 0, this, 0);
 		Configuration.setShowIdentityName(false);
 	}
 }

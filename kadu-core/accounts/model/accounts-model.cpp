@@ -24,6 +24,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -34,21 +35,21 @@
 AccountsModel::AccountsModel(QObject *parent) :
 		QAbstractListModel(parent), IncludeIdInDisplay(false)
 {
-	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)),
 			this, SLOT(accountUpdated(Account)));
-	connect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountAboutToBeRegistered(Account)),
 			this, SLOT(accountAboutToBeRegistered(Account)));
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)),
 			this, SLOT(accountRegistered(Account)));
-	connect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountAboutToBeUnregistered(Account)),
 			this, SLOT(accountAboutToBeUnregistered(Account)));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+	connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)),
 			this, SLOT(accountUnregistered(Account)));
 }
 
 AccountsModel::~AccountsModel()
 {
-	disconnect(AccountManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->accountManager(), 0, this, 0);
 }
 
 int AccountsModel::columnCount(const QModelIndex &parent) const
@@ -58,7 +59,7 @@ int AccountsModel::columnCount(const QModelIndex &parent) const
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : AccountManager::instance()->count();
+	return parent.isValid() ? 0 : Core::instance()->accountManager()->count();
 }
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const
@@ -98,12 +99,12 @@ Account AccountsModel::account(const QModelIndex &index) const
 	if (index.row() < 0 || index.row() >= rowCount())
 		return Account::null;
 
-	return AccountManager::instance()->byIndex(index.row());
+	return Core::instance()->accountManager()->byIndex(index.row());
 }
 
 int AccountsModel::accountIndex(Account account) const
 {
-	return AccountManager::instance()->indexOf(account);
+	return Core::instance()->accountManager()->indexOf(account);
 }
 
 QModelIndexList AccountsModel::indexListForValue(const QVariant &value) const

@@ -30,7 +30,8 @@ extern "C" {
 
 #include "otr-context-converter.h"
 
-OtrContextConverter::OtrContextConverter()
+OtrContextConverter::OtrContextConverter(QObject *parent) :
+		QObject{parent}
 {
 }
 
@@ -38,37 +39,41 @@ OtrContextConverter::~OtrContextConverter()
 {
 }
 
+void OtrContextConverter::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
 void OtrContextConverter::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserStateService = userStateService;
+	m_userStateService = userStateService;
 }
 
 Chat OtrContextConverter::connectionContextToChat(ConnContext *context) const
 {
-	Contact contact = connectionContextToContact(context);
+	auto contact = connectionContextToContact(context);
 	return ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 }
 
 Contact OtrContextConverter::connectionContextToContact(ConnContext *context) const
 {
-	Account account = AccountManager::instance()->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
+	auto account = m_accountManager->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
 	return ContactManager::instance()->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
 }
 
 ConnContext * OtrContextConverter::chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction) const
 {
-	if (!UserStateService || !chat)
-		return 0;
-
-	return contactToContextConverter(chat.contacts().toContact(), notFoundAction);
+	return chat
+			? contactToContextConverter(chat.contacts().toContact(), notFoundAction)
+			: nullptr;
 }
 
 ConnContext * OtrContextConverter::contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction) const
 {
-	if (!UserStateService || !contact)
+	if (!contact)
 		return 0;
 
-	return otrl_context_find(UserStateService.data()->userState(), qPrintable(contact.id()), qPrintable(contact.contactAccount().id()),
+	return otrl_context_find(m_userStateService->userState(), qPrintable(contact.id()), qPrintable(contact.contactAccount().id()),
 							 qPrintable(contact.contactAccount().protocolName()), OTRL_INSTAG_BEST, notFoundAction == ActionCreateAndAdd,
 							 0, 0, 0);
 }

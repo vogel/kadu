@@ -27,6 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -95,8 +96,8 @@ QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty al
 	if (realPath == QLatin1String("protocols/common"))
 	{
 		QString protocolPath;
-		if (AccountManager::instance()->defaultAccount().protocolHandler())
-			protocolPath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
+		if (Core::instance()->accountManager()->defaultAccount().protocolHandler())
+			protocolPath = Core::instance()->accountManager()->defaultAccount().protocolHandler()->statusPixmapPath();
 		else
 			protocolPath = localProtocolPath;
 
@@ -190,8 +191,8 @@ QIcon IconsManager::iconByPath(const QString &themePath, const QString &path, Al
 				if (path.contains(commonRegexp))
 				{
 					QString protocolpath;
-					if (AccountManager::instance()->defaultAccount().protocolHandler())
-						protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
+					if (Core::instance()->accountManager()->defaultAccount().protocolHandler())
+						protocolpath = Core::instance()->accountManager()->defaultAccount().protocolHandler()->statusPixmapPath();
 					else
 						protocolpath = localProtocolPath;
 					return iconByPath(themePath, QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1)));

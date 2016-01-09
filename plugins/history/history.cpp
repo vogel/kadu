@@ -98,10 +98,19 @@ History::~History()
 	deleteActionDescriptions();
 }
 
+void History::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
 void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+}
+
+void History::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void History::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -118,10 +127,9 @@ void History::setMessageManager(MessageManager* messageManager)
 void History::init()
 {
 	createActionDescriptions();
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
-		this, SLOT(accountRegistered(Account)));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
-		this, SLOT(accountUnregistered(Account)));
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(accountRegistered(Account)));
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), this, SLOT(accountUnregistered(Account)));
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -203,7 +211,7 @@ void History::chatWidgetAdded(ChatWidget *chatWidget)
 	HistoryQuery query;
 	query.setTalkable(chat ? chat : chatWidget->chat());
 	query.setFromDateTime(QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600));
-	query.setLimit(Application::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10));
+	query.setLimit(m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10));
 
 	new HistoryMessagesPrepender(CurrentStorage->messages(query), chatMessagesView);
 }
@@ -355,13 +363,13 @@ void History::configurationUpdated()
 {
 	kdebugf();
 
-	ChatHistoryCitation = Application::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation");
-	ChatHistoryQuotationTime = Application::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
+	ChatHistoryCitation = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation");
+	ChatHistoryQuotationTime = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 
-	SaveChats = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
-	SaveChatsWithAnonymous = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChatsWithAnonymous", true);
-	SaveStatuses = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveStatusChanges", false);
-	SaveOnlyStatusesWithDescription = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveOnlyStatusWithDescription", false);
+	SaveChats = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
+	SaveChatsWithAnonymous = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChatsWithAnonymous", true);
+	SaveStatuses = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveStatusChanges", false);
+	SaveOnlyStatusesWithDescription = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveOnlyStatusWithDescription", false);
 
 	kdebugf2();
 }
@@ -381,7 +389,7 @@ void History::registerStorage(HistoryStorage *storage)
 		for (ChatWidget *chat : m_chatWidgetRepository.data())
 			chatWidgetAdded(chat);
 
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, m_accountManager->items())
 		accountRegistered(account);
 
 	emit storageChanged(CurrentStorage);
@@ -392,7 +400,7 @@ void History::unregisterStorage(HistoryStorage *storage)
 	if (CurrentStorage != storage)
 		return;
 
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, m_accountManager->items())
 		accountUnregistered(account);
 
 	stopSaveThread();
@@ -404,19 +412,19 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 void History::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveChats", Application::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "Logging", true));
-	Application::instance()->configuration()->deprecatedApi()->removeVariable("History", "Logging");
+	m_configuration->deprecatedApi()->addVariable("History", "SaveChats", m_configuration->deprecatedApi()->readBoolEntry("History", "Logging", true));
+	m_configuration->deprecatedApi()->removeVariable("History", "Logging");
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
+	m_configuration->deprecatedApi()->addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveStatusChanges", true);
+	m_configuration->deprecatedApi()->addVariable("History", "SaveStatusChanges", true);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveChatsWithAnonymous", true);
+	m_configuration->deprecatedApi()->addVariable("History", "SaveChatsWithAnonymous", true);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("History", "SaveOnlyStatusWithDescription", true);
+	m_configuration->deprecatedApi()->addVariable("History", "SaveOnlyStatusWithDescription", true);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("History", "ChatHistoryCitation", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("History", "ChatHistoryQuotationTime", -24);
+	m_configuration->deprecatedApi()->addVariable("History", "ChatHistoryCitation", 10);
+	m_configuration->deprecatedApi()->addVariable("History", "ChatHistoryQuotationTime", -24);
 }
 
 void History::forceSync()

@@ -64,6 +64,16 @@ class ChatImageRequestService : public QObject
 	bool acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const;
 
 private slots:
+	/**
+	 * @short Sets account manager to use by this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param accountManager account manager to use by this service
+	 *
+	 * This service will listen on registering/unregistering accounts to connect to ChatImageService instances
+	 * from these accounts.
+	 */
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 
 	void accountRegistered(Account account);
@@ -82,16 +92,6 @@ public:
 	 */
 	Q_INVOKABLE explicit ChatImageRequestService(QObject *parent = nullptr);
 	virtual ~ChatImageRequestService();
-
-	/**
-	 * @short Sets account manager to use by this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param accountManager account manager to use by this service
-	 *
-	 * This service will listen on registering/unregistering accounts to connect to ChatImageService instances
-	 * from these accounts.
-	 */
-	void setAccountManager(AccountManager *accountManager);
 
 	/**
 	 * @short Sets contact manager to use by this service.

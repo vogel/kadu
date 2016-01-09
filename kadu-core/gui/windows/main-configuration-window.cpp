@@ -196,7 +196,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	disconnectDescription = static_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
 	onStartupSetDescription = static_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
 
-	Account account = AccountManager::instance()->defaultAccount();
+	Account account = Core::instance()->accountManager()->defaultAccount();
 	if (!account.isNull() && account.protocolHandler())
 	{
 		disconnectDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());

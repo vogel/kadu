@@ -45,6 +45,11 @@ GaduPluginObject::~GaduPluginObject()
 {
 }
 
+void GaduPluginObject::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
 void GaduPluginObject::setDomProcessorService(DomProcessorService *domProcessorService)
 {
 	m_domProcessorService = domProcessorService;
@@ -101,7 +106,7 @@ void GaduPluginObject::init()
 	m_domProcessorService->registerVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
 
 	auto importer = make_not_owned<GaduImporter>();
-	if (AccountManager::instance()->allItems().isEmpty())
+	if (m_accountManager->allItems().isEmpty())
 		importer->importAccounts();
 	importer->importContacts();
 

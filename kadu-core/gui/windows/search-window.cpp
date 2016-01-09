@@ -106,7 +106,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	else
 	{
 		// TODO choose proper account
-		foreach (const Account &account, AccountManager::instance()->items())
+		foreach (const Account &account, Core::instance()->accountManager()->items())
 			if (account.protocolHandler() && account.protocolHandler()->isConnected() &&
 					account.protocolHandler()->searchService())
 			{
@@ -115,7 +115,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 			}
 
 		if (CurrentAccount.isNull())
-			CurrentAccount = AccountManager::instance()->defaultAccount();
+			CurrentAccount = Core::instance()->accountManager()->defaultAccount();
 	}
 
 	if (CurrentAccount.protocolHandler())

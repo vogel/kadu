@@ -49,9 +49,11 @@
 
 #include "history-exports.h"
 
+class AccountManager;
 class Account;
 class ChatWidget;
 class ChatWidgetRepository;
+class Configuration;
 class HistorySaveThread;
 class HistoryWindow;
 class InjectedFactory;
@@ -62,7 +64,9 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 {
 	Q_OBJECT
 
+	QPointer<AccountManager> m_accountManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	bool SaveChats;
@@ -107,7 +111,9 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	bool shouldEnqueueMessage(const Message &message);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_INIT void init();

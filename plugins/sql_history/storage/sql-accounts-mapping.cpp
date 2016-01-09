@@ -22,6 +22,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/core.h"
 
 #include "sql-accounts-mapping.h"
 
@@ -32,7 +33,7 @@ SqlAccountsMapping::SqlAccountsMapping(const QSqlDatabase &database, QObject *pa
 
 	triggerAllAccountsAdded();
 
-	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
+	connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
 }
 
 SqlAccountsMapping::~SqlAccountsMapping()
@@ -110,7 +111,7 @@ void SqlAccountsMapping::loadMappingsFromDatabase()
 		if (id <= 0 || protocol.isEmpty() || accountId.isEmpty())
 			continue;
 
-		Account account = AccountManager::instance()->byId(protocol, accountId);
+		Account account = Core::instance()->accountManager()->byId(protocol, accountId);
 		if (account)
 			addMapping(id, account);
 	}

@@ -32,6 +32,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "core/core.h"
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
@@ -50,7 +51,7 @@ JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, b
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
+	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
 
 	createGui(showButtons);
 	resetGui();
@@ -157,7 +158,7 @@ void JabberAddAccountWidget::dataChanged()
 	bool valid = !Username->text().isEmpty()
 			&& !AccountPassword->text().isEmpty()
 			&& !Domain->currentText().isEmpty()
-			&& !AccountManager::instance()->byId("jabber", Username->text() + '@' + Domain->currentText())
+			&& !Core::instance()->accountManager()->byId("jabber", Username->text() + '@' + Domain->currentText())
 			&& Identity->currentIdentity();
 
 	AddAccountButton->setEnabled(valid);

@@ -30,6 +30,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "core/core.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
@@ -49,7 +50,7 @@ GaduAddAccountWidget::GaduAddAccountWidget(bool showButtons, QWidget *parent) :
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
+	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
 
 	createGui(showButtons);
 	resetGui();
@@ -166,7 +167,7 @@ void GaduAddAccountWidget::dataChanged()
 {
 	bool valid = !AccountId->text().isEmpty()
 			&& !AccountPassword->text().isEmpty()
-			&& !AccountManager::instance()->byId("gadu", AccountId->text())
+			&& !Core::instance()->accountManager()->byId("gadu", AccountId->text())
 			&& Identity->currentIdentity();
 
 	AddAccountButton->setEnabled(valid);

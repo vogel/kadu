@@ -94,7 +94,7 @@ void GaduImporter::importAccounts()
 
 	QString importUinString = QString::number(importUin);
 
-	if (AccountManager::instance()->byId("gadu", importUinString))
+	if (Core::instance()->accountManager()->byId("gadu", importUinString))
 		return;
 
 	Account defaultGaduGadu = Account::create("gadu");
@@ -131,7 +131,7 @@ void GaduImporter::importAccounts()
 			defaultGaduGadu.setProxy(networkProxy);
 	}
 
-	AccountManager::instance()->addItem(defaultGaduGadu);
+	Core::instance()->accountManager()->addItem(defaultGaduGadu);
 	defaultGaduGadu.accountContact().setOwnerBuddy(Core::instance()->myself());
 
 	markImported();
@@ -169,7 +169,7 @@ Contact GaduImporter::importGaduContact(Account account, Buddy buddy)
 
 void GaduImporter::importIgnored()
 {
-	Account account = AccountManager::instance()->defaultAccount();
+	Account account = Core::instance()->accountManager()->defaultAccount();
 	if (account.isNull())
 		return;
 
@@ -197,7 +197,7 @@ void GaduImporter::buddyAdded(const Buddy &buddy)
 	if (buddy.customData("uin").isEmpty())
 		return;
 
-	QVector<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	QVector<Account> allGaduAccounts = Core::instance()->accountManager()->byProtocolName("gadu");
 	if (allGaduAccounts.isEmpty())
 		return;
 

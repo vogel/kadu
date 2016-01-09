@@ -45,6 +45,7 @@ template<class T>
 class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
+class AccountManager;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyManager;
 class ChatConfigurationWidgetFactoryRepository;
@@ -154,6 +155,7 @@ public:
 
 	void activatePlugins();
 
+	AccountManager * accountManager() const;
 	BuddyManager * buddyManager() const;
 	MessageManager * messageManager() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;

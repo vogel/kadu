@@ -94,7 +94,7 @@
 void hideNoMultilogonAccounts(Action *action)
 {
 	bool hasMultilogonAccount = false;
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 		if (account.protocolHandler() && account.protocolHandler()->multilogonService())
 		{
 			hasMultilogonAccount = true;
@@ -107,7 +107,7 @@ void hideNoMultilogonAccounts(Action *action)
 void hideNoSearchServiceAccounts(Action *action)
 {
 	bool hasSearchServiceAccount = false;
-	foreach (const Account &account, AccountManager::instance()->items())
+	foreach (const Account &account, Core::instance()->accountManager()->items())
 		if (account.protocolHandler() && account.protocolHandler()->searchService())
 		{
 			hasSearchServiceAccount = true;
@@ -184,6 +184,11 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 KaduWindowActions::~KaduWindowActions()
 {
+}
+
+void KaduWindowActions::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
 }
 
 void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -430,14 +435,14 @@ void KaduWindowActions::init()
 
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)
 {
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
 }
 
 void KaduWindowActions::openSearchActionCreated(Action *action)
 {
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
 }
 
 void KaduWindowActions::inactiveUsersActionCreated(Action *action)
