@@ -29,6 +29,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/status-menu.h"
 #include "icons/kadu-icon.h"
@@ -60,7 +62,7 @@ void StatusButton::createGui()
 	QMenu *menu = new QMenu(this);
 	if (!MyStatusContainer->statusContainerName().isEmpty())
 		addTitleToMenu(MyStatusContainer->statusContainerName(), menu);
-	new StatusMenu(MyStatusContainer, false, menu);
+	Core::instance()->injectedFactory()->makeInjected<StatusMenu>(MyStatusContainer, false, menu);
 
 	setMenu(menu);
 	setIcon(Icon->icon().icon());

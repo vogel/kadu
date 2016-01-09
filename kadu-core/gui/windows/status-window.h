@@ -20,10 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_WINDOW_H
-#define STATUS_WINDOW_H
+#pragma once
 
 #include <QtWidgets/QDialog>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "os/generic/desktop-aware-object.h"
 #include "status/status.h"
@@ -34,12 +35,13 @@ class QLabel;
 class QTextEdit;
 
 class StatusContainer;
+class StatusTypeManager;
 
 class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	static QMap<StatusContainer *, StatusWindow *> Dialogs;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	StatusContainer *Container;
 
@@ -57,9 +59,6 @@ class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 	 */
 	bool IgnoreNextTextChange;
 
-	explicit StatusWindow(StatusContainer *Container, QWidget *parent = 0);
-	virtual ~StatusWindow();
-
 	void createLayout();
 	void setupStatusSelect();
 	void setupDescriptionSelect(const QString &description);
@@ -69,6 +68,9 @@ class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 	StatusType findCommonStatusType(const QList<StatusContainer *> &containers);
 
 private slots:
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
+
 	void applyStatus();
 	void descriptionSelected(int index);
 	void clearDescriptionsHistory();
@@ -79,17 +81,12 @@ protected:
 	virtual bool eventFilter(QObject *source, QEvent *event);
 
 public:
-	/**
-	 * @short Shows new status window.
-	 * @param statusContainer status container
-	 * @param parent dialog's parent widget, null by default
-	 * @return Pointer to the created StatusWindow dialog.
-	 *
-	 * Creates and shows new status window.
-	 */
-	static StatusWindow * showDialog(StatusContainer *statusContainer, QWidget *parent = 0);
+	explicit StatusWindow(StatusContainer *Container, QWidget *parent = nullptr);
+	virtual ~StatusWindow();
 
 	virtual QSize sizeHint() const;
-};
 
-#endif // STATUS_WINDOW_H
+signals:
+	void statusWindowClosed(StatusContainer *statusContainer);
+
+};

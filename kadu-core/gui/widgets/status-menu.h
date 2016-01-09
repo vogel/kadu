@@ -21,11 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_MENU_H
-#define STATUS_MENU_H
+#pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QPoint>
+#include <injeqt/injeqt.h>
 
 #include "exports.h"
 
@@ -35,10 +36,13 @@ class QMenu;
 
 class StatusActions;
 class StatusContainer;
+class StatusWindowService;
 
 class KADUAPI StatusMenu : public QObject
 {
 	Q_OBJECT
+
+	QPointer<StatusWindowService> m_statusWindowService;
 
 	QMenu *Menu;
 	StatusActions *Actions;
@@ -48,6 +52,8 @@ class KADUAPI StatusMenu : public QObject
 	StatusContainer *Container;
 
 private slots:
+	INJEQT_SET void setStatusWindowService(StatusWindowService *statusWindowService);
+
 	void addStatusActions();
 	void aboutToHide();
 	void changeStatus(QAction *action);
@@ -61,5 +67,3 @@ signals:
 	void menuRecreated();
 
 };
-
-#endif // STATUS_MENU_H

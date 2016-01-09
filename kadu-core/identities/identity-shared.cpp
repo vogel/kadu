@@ -196,7 +196,7 @@ KaduIcon IdentityShared::statusIcon(const Status &status)
 		protocols.insert(account.protocolName());
 
 	if (protocols.count() > 1)
-		return StatusTypeManager::instance()->statusIcon("common", status);
+		return Core::instance()->statusTypeManager()->statusIcon("common", status);
 
 	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.statusContainer()->statusIcon(status) : KaduIcon();

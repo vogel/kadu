@@ -70,7 +70,7 @@ void StatusActions::createActions()
 		if (StatusTypeNone == statusType)
 			continue;
 
-		const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(statusType);
+		const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(statusType);
 
 		if (StatusTypeGroupNone == currentGroup)
 			currentGroup = typeData.typeGroup();

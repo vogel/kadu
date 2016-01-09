@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "status/status-type-data.h"
 #include "status/status-type-group.h"
 #include "status/status-type-manager.h"
@@ -49,7 +50,7 @@ void Status::setType(StatusType type)
 {
 	Type = type;
 
-	const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(Type);
+	const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(Type);
 	DisplayName = typeData.displayName();
 	Group = typeData.typeGroup();
 }

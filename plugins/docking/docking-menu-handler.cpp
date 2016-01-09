@@ -22,6 +22,7 @@
 #include "docking-menu-action-repository.h"
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
@@ -156,10 +157,10 @@ void DockingMenuHandler::addStatusContainerMenus()
 			addStatusContainerMenu(statusContainer);
 		m_menu->addSeparator();
 	}
-	
+
 	if (showAllAccountsMenu)
 	{
-		auto allAccountsMenu = new StatusMenu{Core::instance()->statusContainerManager(), multipleMenus, m_menu};
+		auto allAccountsMenu = Core::instance()->injectedFactory()->makeInjected<StatusMenu>(Core::instance()->statusContainerManager(), multipleMenus, m_menu);
 		connect(allAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(update()));
 	}
 }

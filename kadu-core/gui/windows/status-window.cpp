@@ -52,35 +52,24 @@
 
 #include "status-window.h"
 
-QMap<StatusContainer *, StatusWindow *> StatusWindow::Dialogs;
-
-StatusWindow * StatusWindow::showDialog(StatusContainer *statusContainer, QWidget *parent)
-{
-	if (!statusContainer)
-		return 0;
-
-	StatusWindow *dialog;
-	if (Dialogs.contains(statusContainer))
-		dialog = Dialogs.value(statusContainer);
-	else
-	{
-		dialog = new StatusWindow(statusContainer, parent);
-		Dialogs.insert(statusContainer, dialog);
-	}
-
-	dialog->show();
-	_activateWindow(dialog);
-
-	return dialog;
-}
-
 StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
 		QDialog(parent), DesktopAwareObject(this), Container(statusContainer), IgnoreNextTextChange(false)
 {
 	Q_ASSERT(Container);
+}
 
-	kdebugf();
+StatusWindow::~StatusWindow()
+{
+	emit statusWindowClosed(Container);
+}
 
+void StatusWindow::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void StatusWindow::init()
+{
 	setWindowRole("kadu-status-window");
 
 	QString windowTitle = Container->subStatusContainers().count() > 1
@@ -119,13 +108,6 @@ StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
 	connect(this, SIGNAL(accepted()), this, SLOT(applyStatus()));
 
 	setFixedSize(sizeHint().expandedTo(QSize(460, 1)));
-
-	kdebugf2();
-}
-
-StatusWindow::~StatusWindow()
-{
-	Dialogs.remove(Container);
 }
 
 void StatusWindow::createLayout()
@@ -229,7 +211,7 @@ void StatusWindow::setupStatusSelect()
 	{
 		if (StatusTypeNone == statusType)
 			continue;
-		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(statusType);
+		const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(statusType);
 		StatusSelect->addItem(Container->statusIcon(typeData.type()).icon(), typeData.displayName(), QVariant(typeData.type()));
 	}
 

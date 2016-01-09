@@ -22,40 +22,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtAlgorithms>
-#include <QtWidgets/QApplication>
+#include "status-type-manager.h"
 
 #include "icons/kadu-icon.h"
 #include "status/status-type-data.h"
 #include "status/status-type.h"
 #include "status/status.h"
 
-#include "status-type-manager.h"
+#include <QtCore/QtAlgorithms>
+#include <QtWidgets/QApplication>
 
-StatusTypeManager * StatusTypeManager::Instance = 0;
-
-StatusTypeManager * StatusTypeManager::instance()
+StatusTypeManager::StatusTypeManager(QObject *parent) :
+		QObject{parent}
 {
-	if (0 == Instance)
-		Instance = new StatusTypeManager();
-	return Instance;
-}
-
-StatusTypeManager::StatusTypeManager()
-{
-	StatusTypes.insert(StatusTypeFreeForChat,
+	m_statusTypes.insert(StatusTypeFreeForChat,
 	                   StatusTypeData(StatusTypeFreeForChat, "FreeForChat", QCoreApplication::translate("@default", "Free for chat"), "free_for_chat", StatusTypeGroupOnline));
-	StatusTypes.insert(StatusTypeOnline,
+	m_statusTypes.insert(StatusTypeOnline,
 	                   StatusTypeData(StatusTypeOnline, "Online", QCoreApplication::translate("@default", "Online"), "online", StatusTypeGroupOnline));
-	StatusTypes.insert(StatusTypeAway,
+	m_statusTypes.insert(StatusTypeAway,
 	                   StatusTypeData(StatusTypeAway, "Away", QCoreApplication::translate("@default", "Away"), "away", StatusTypeGroupAway));
-	StatusTypes.insert(StatusTypeNotAvailable,
+	m_statusTypes.insert(StatusTypeNotAvailable,
 	                   StatusTypeData(StatusTypeNotAvailable, "NotAvailable", QCoreApplication::translate("@default", "Not available"), "not_available", StatusTypeGroupAway));
-	StatusTypes.insert(StatusTypeDoNotDisturb,
+	m_statusTypes.insert(StatusTypeDoNotDisturb,
 	                   StatusTypeData(StatusTypeDoNotDisturb, "DoNotDisturb", QCoreApplication::translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupAway));
-	StatusTypes.insert(StatusTypeInvisible,
+	m_statusTypes.insert(StatusTypeInvisible,
 	                   StatusTypeData(StatusTypeInvisible, "Invisible", QCoreApplication::translate("@default", "Invisible"), "invisible", StatusTypeGroupInvisible));
-	StatusTypes.insert(StatusTypeOffline,
+	m_statusTypes.insert(StatusTypeOffline,
 	                   StatusTypeData(StatusTypeOffline, "Offline", QCoreApplication::translate("@default", "Offline"), "offline", StatusTypeGroupOffline));
 }
 
@@ -65,7 +57,7 @@ StatusTypeManager::~StatusTypeManager()
 
 StatusType StatusTypeManager::fromName(const QString &name)
 {
-	for (QMap<StatusType, StatusTypeData>::const_iterator it = StatusTypes.constBegin(), end = StatusTypes.constEnd(); it != end; ++it)
+	for (QMap<StatusType, StatusTypeData>::const_iterator it = m_statusTypes.constBegin(), end = m_statusTypes.constEnd(); it != end; ++it)
 		if (it.value().name() == name)
 			return it.key();
 	return StatusTypeOffline;
@@ -73,9 +65,9 @@ StatusType StatusTypeManager::fromName(const QString &name)
 
 const StatusTypeData StatusTypeManager::statusTypeData(StatusType statusType)
 {
-	if (StatusTypes.contains(statusType))
-		return StatusTypes.value(statusType);
-	return StatusTypes.value(StatusTypeOffline);
+	if (m_statusTypes.contains(statusType))
+		return m_statusTypes.value(statusType);
+	return m_statusTypes.value(StatusTypeOffline);
 }
 
 KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const Status &status)
@@ -89,3 +81,5 @@ KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const Status &st
 
 	return KaduIcon(iconName, "16x16");
 }
+
+#include "moc_status-type-manager.cpp"

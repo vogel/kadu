@@ -201,7 +201,7 @@ KaduIcon Protocol::statusIcon()
 
 KaduIcon Protocol::statusIcon(const Status &status)
 {
-	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status);
+	return Core::instance()->statusTypeManager()->statusIcon(statusPixmapPath(), status);
 }
 
 void Protocol::loggingInStateEntered()

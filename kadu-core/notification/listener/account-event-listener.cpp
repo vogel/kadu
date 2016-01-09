@@ -22,6 +22,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
+#include "core/core.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification/multilogon-notification.h"
 #include "notification/notification/status-changed-notification.h"
@@ -134,7 +135,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 			!oldStatus.isDisconnected())
 		return;
 
-	const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(status.type());
+	const StatusTypeData &typeData = Core::instance()->statusTypeManager()->statusTypeData(status.type());
 	QString changedTo = "/To" + typeData.name();
 
 	auto statusChangedNotification = new StatusChangedNotification(changedTo, contact, statusDisplayName, description);

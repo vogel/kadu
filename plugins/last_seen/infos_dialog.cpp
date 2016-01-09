@@ -31,6 +31,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/menu/menu-inventory.h"
 #include "model/roles.h"
@@ -88,7 +89,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 				<< contact.id()
 				<< contact.ownerBuddy().nickName()
 				<< desc
-				<< StatusTypeManager::instance()->statusTypeData(contact.currentStatus().type()).name()
+				<< Core::instance()->statusTypeManager()->statusTypeData(contact.currentStatus().type()).name()
 				<< lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())];
 
 		QTreeWidgetItem *item = new QTreeWidgetItem(labels);

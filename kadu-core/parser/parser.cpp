@@ -247,13 +247,13 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 					pe.setContent(QCoreApplication::translate("@default", "Blocking"));
 				else
 				{
-					const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(contact.currentStatus().type());
+					const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(contact.currentStatus().type());
 					pe.setContent(typeData.displayName());
 				}
 			}
 			else if (chat && chat.chatAccount().statusContainer())
 			{
-				const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(chat.chatAccount().statusContainer()->status().type());
+				const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(chat.chatAccount().statusContainer()->status().type());
 				pe.setContent(typeData.displayName());
 			}
 

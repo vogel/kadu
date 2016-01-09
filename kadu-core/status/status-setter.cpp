@@ -55,7 +55,7 @@ void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 		status.setDescription(StartupDescription);
 
 	if (StartupStatus != "LastStatus")
-		status.setType(StatusTypeManager::instance()->fromName(StartupStatus));
+		status.setType(Core::instance()->statusTypeManager()->fromName(StartupStatus));
 
 	if (StatusTypeNone == status.type())
 		status.setType(StatusTypeOnline);

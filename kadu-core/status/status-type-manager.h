@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_TYPE_MANAGER
-#define STATUS_TYPE_MANAGER
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -51,26 +50,13 @@ class StatusTypeData;
  *
  * This singleton class contains instances of StatusTypeData for each value of StatusType enum.
  */
-class KADUAPI StatusTypeManager
+class KADUAPI StatusTypeManager : public QObject
 {
-	Q_DISABLE_COPY(StatusTypeManager)
-
-	static StatusTypeManager *Instance;
-
-	QMap<StatusType, StatusTypeData> StatusTypes;
-
-	StatusTypeManager();
-	~StatusTypeManager();
+	Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns StatusTypeManager singleton instance.
-	 * @return StatusTypeManager singleton instance
-	 *
-	 * Returns StatusTypeManager singleton instance.
-	 */
-	static StatusTypeManager * instance();
+	Q_INVOKABLE explicit StatusTypeManager(QObject *parent = nullptr);
+	virtual ~StatusTypeManager();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -106,11 +92,12 @@ public:
 	 */
 	KaduIcon statusIcon(const QString &protocol, const Status &status);
 
+private:
+	QMap<StatusType, StatusTypeData> m_statusTypes;
+
 };
 
 /**
  * @addtogroup Status
  * @}
  */
-
-#endif // STATUS_TYPE_MANAGER

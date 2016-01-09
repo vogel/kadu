@@ -207,8 +207,9 @@ set (gui_SRCS
 	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
-	windows/status-window.cpp
 	windows/status-window-description-proxy-model.cpp
+	windows/status-window-service.cpp
+	windows/status-window.cpp
 	windows/string-list-dialog.cpp
 	windows/subscription-window.cpp
 	windows/token-window.cpp

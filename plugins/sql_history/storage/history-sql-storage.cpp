@@ -366,7 +366,7 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 
 	QMutexLocker locker(&DatabaseMutex);
 
-	StatusTypeData statusTypeData = StatusTypeManager::instance()->statusTypeData(status.type());
+	StatusTypeData statusTypeData = Core::instance()->statusTypeManager()->statusTypeData(status.type());
 
 	AppendStatusQuery.bindValue(":contact_id", ContactsMapping->idByContact(contact, true));
 	AppendStatusQuery.bindValue(":status", statusTypeData.name());
@@ -1058,8 +1058,8 @@ SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSql
 	auto statuses = std::vector<Message>{};
 	while (query.next())
 	{
-		StatusType type = StatusTypeManager::instance()->fromName(query.value(1).toString());
-		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(type);
+		StatusType type = Core::instance()->statusTypeManager()->fromName(query.value(1).toString());
+		const StatusTypeData &typeData = Core::instance()->statusTypeManager()->statusTypeData(type);
 
 		auto message = Message::create();
 

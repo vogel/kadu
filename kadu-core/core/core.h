@@ -86,9 +86,11 @@ class RosterReplacer;
 class SslCertificateManager;
 class StatusChangerManager;
 class StatusContainerManager;
+class StatusTypeManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class UrlHandlerManager;
+class InjectedFactory;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -194,6 +196,8 @@ public:
 	UrlHandlerManager * urlHandlerManager() const;
 	ChatManager * chatManager() const;
 	StatusContainerManager * statusContainerManager() const;
+	StatusTypeManager * statusTypeManager() const;
+	InjectedFactory * injectedFactory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

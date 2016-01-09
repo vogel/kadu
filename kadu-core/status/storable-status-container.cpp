@@ -21,6 +21,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/core.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "storage/storable-object.h"
@@ -50,7 +51,7 @@ Status StorableStatusContainer::loadStatus()
 		name = "Online";
 
 	Status status;
-	status.setType(StatusTypeManager::instance()->fromName(name));
+	status.setType(Core::instance()->statusTypeManager()->fromName(name));
 	status.setDescription(description);
 
 	return status;
@@ -62,7 +63,7 @@ void StorableStatusContainer::storeStatus(Status status)
 		return;
 
 	MyStorableObject->storeValue("LastStatusDescription", status.description());
-	MyStorableObject->storeValue("LastStatusName", StatusTypeManager::instance()->statusTypeData(status.type()).name());
+	MyStorableObject->storeValue("LastStatusName", Core::instance()->statusTypeManager()->statusTypeData(status.type()).name());
 
 	ConfigurationManager::instance()->flush();
 }

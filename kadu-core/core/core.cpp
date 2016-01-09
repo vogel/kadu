@@ -838,6 +838,16 @@ StatusContainerManager * Core::statusContainerManager() const
 	return m_injector.get<StatusContainerManager>();
 }
 
+StatusTypeManager * Core::statusTypeManager() const
+{
+	return m_injector.get<StatusTypeManager>();
+}
+
+InjectedFactory * Core::injectedFactory() const
+{
+	return m_injector.get<InjectedFactory>();
+}
+
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)
