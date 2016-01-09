@@ -20,7 +20,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 
 #include "configuration/image-link-configuration.h"
 #include "image-expander-dom-visitor-provider.h"
@@ -56,15 +56,15 @@ void ImageLinkConfigurator::configure()
 
 void ImageLinkConfigurator::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_image", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_image", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
 }
 
 void ImageLinkConfigurator::configurationUpdated()
 {
 	ImageLinkConfiguration configuration;
-	configuration.setShowImages(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
-	configuration.setShowVideos(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
+	configuration.setShowImages(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
+	configuration.setShowVideos(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
 
 	if (m_imageExpander)
 		m_imageExpander->setConfiguration(configuration);

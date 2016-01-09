@@ -21,7 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 
@@ -36,11 +36,11 @@ FacebookDepreceatedMessage::~FacebookDepreceatedMessage()
 
 void FacebookDepreceatedMessage::showIfNotSeen()
 {
-	auto depreceatedMessageSeen = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", false);
+	auto depreceatedMessageSeen = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", false);
 	if (depreceatedMessageSeen)
 		return;
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", true);
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", true);
 
 	auto message = tr(
 		"Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to "

@@ -56,7 +56,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/message-dialog.h"
@@ -271,7 +271,7 @@ void KaduWebView::saveImage()
 	QPointer<QFileDialog> fd = new QFileDialog(this);
 	fd->setFileMode(QFileDialog::AnyFile);
 	fd->setAcceptMode(QFileDialog::AcceptSave);
-	fd->setDirectory(Application::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"));
+	fd->setDirectory(Core::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"));
 	fd->setNameFilter(QString("%1 (*%2)").arg(QCoreApplication::translate("ImageDialog", "Images"), fileExt));
 	fd->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
 	fd->setWindowTitle(tr("Save image"));
@@ -325,7 +325,7 @@ void KaduWebView::saveImage()
 			}
 		}
 
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
 	} while (false);
 
 	delete fd.data();

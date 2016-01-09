@@ -36,7 +36,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"
@@ -568,7 +568,7 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 
 void ToolBar::configurationUpdated()
 {
-	QDomElement toolbarsConfig = Application::instance()->configuration()->api()->findElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = Core::instance()->configuration()->api()->findElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	if (!toolbarsConfig.hasAttribute("blocked"))
 		toolbarsConfig.setAttribute("blocked", "1");
@@ -583,14 +583,14 @@ void ToolBar::configurationUpdated()
 void ToolBar::writeToConfig(const QDomElement &parent_element)
 {
 	kdebugf();
-	QDomElement toolbar_elem = Application::instance()->configuration()->api()->createElement(parent_element, "ToolBar");
+	QDomElement toolbar_elem = Core::instance()->configuration()->api()->createElement(parent_element, "ToolBar");
 
 	toolbar_elem.setAttribute("x_offset", pos().x());
 	toolbar_elem.setAttribute("y_offset", pos().y());
 
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 	{
-		QDomElement button_elem = Application::instance()->configuration()->api()->createElement(toolbar_elem, "ToolButton");
+		QDomElement button_elem = Core::instance()->configuration()->api()->createElement(toolbar_elem, "ToolButton");
 		if (toolBarAction.actionName.startsWith(QLatin1String("__separator")))
 			button_elem.setAttribute("action_name", "__separator");
 		else if (toolBarAction.actionName.startsWith(QLatin1String("__spacer")))
@@ -839,18 +839,18 @@ void ToolBar::removeToolbar()
 
 bool ToolBar::isBlockToolbars()
 {
-	QDomElement toolbarsConfig = Application::instance()->configuration()->api()->findElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = Core::instance()->configuration()->api()->findElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = Application::instance()->configuration()->api()->createElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+		toolbarsConfig = Core::instance()->configuration()->api()->createElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	return toolbarsConfig.attribute("blocked") == "1";
 }
 
 void ToolBar::setBlockToolbars(bool checked)
 {
-	QDomElement toolbarsConfig = Application::instance()->configuration()->api()->findElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = Core::instance()->configuration()->api()->findElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = Application::instance()->configuration()->api()->createElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+		toolbarsConfig = Core::instance()->configuration()->api()->createElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	toolbarsConfig.setAttribute("blocked", checked ? "1" : "0");
 	ConfigurationAwareObject::notifyAll();

@@ -113,6 +113,7 @@ private slots:
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };
 

@@ -18,7 +18,7 @@
  */
 
 #include "accounts/account.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "otr-op-data.h"

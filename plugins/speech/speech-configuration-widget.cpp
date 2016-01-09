@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 
 #include "speech-configuration-widget.h"
 
@@ -62,7 +62,7 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 	{
 		i.next();
 		const QString &eventName = i.key();
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
 	}
 
 	QMapIterator<QString, QString> j(femaleFormat);
@@ -70,7 +70,7 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 	{
 		j.next();
 		const QString &eventName = j.key();
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
 	}
 }
 
@@ -86,12 +86,12 @@ void SpeechConfigurationWidget::switchToEvent(const QString &event)
 	if (maleFormat.contains(event))
 		maleLineEdit->setText(maleFormat[event]);
 	else
-		maleLineEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
+		maleLineEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
 
 	if (femaleFormat.contains(event))
 		femaleLineEdit->setText(femaleFormat[event]);
 	else
-		femaleLineEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
+		femaleLineEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
 }
 
 #include "moc_speech-configuration-widget.cpp"

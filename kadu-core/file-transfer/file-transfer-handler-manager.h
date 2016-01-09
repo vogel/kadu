@@ -40,6 +40,7 @@ public:
 
 private slots:
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_DONE void done();
 
 	void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
 	void fileTransferRemoved(FileTransfer fileTransfer);

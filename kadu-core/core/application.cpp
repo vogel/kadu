@@ -31,60 +31,25 @@
 #include "core/application.h"
 
 #include "configuration/configuration-writer.h"
-#include "configuration/configuration.h"
-#include "misc/paths-provider.h"
 
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
 
-Application * Application::m_instance = nullptr;
-
-Application * Application::instance()
-{
-	return m_instance;
-}
-
-Application::Application() :
-		m_configuration{nullptr},
-		m_configurationWriter{nullptr},
-		m_pathsProvider{nullptr}
+Application::Application(QObject *parent) :
+		QObject{parent}
 {
 #ifdef Q_OS_WIN
 	// Fix for #2491
 	qApp->setStyleSheet("QToolBar{border:0px}");
 #endif
-
-	m_instance = this;
 }
 
 Application::~Application()
 {
-	m_instance = nullptr;
-}
-
-void Application::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void Application::setConfigurationWriter(ConfigurationWriter *configurationWriter)
 {
 	m_configurationWriter = configurationWriter;
-}
-
-void Application::setPathsProvider(PathsProvider *pathsProvider)
-{
-	m_pathsProvider = pathsProvider;
-}
-
-Configuration * Application::configuration() const
-{
-	return m_configuration;
-}
-
-PathsProvider * Application::pathsProvider() const
-{
-	return m_pathsProvider;
 }
 
 void Application::flushConfiguration()

@@ -20,7 +20,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/memory.h"
 #include "themes.h"
 
@@ -30,14 +30,14 @@ SoundThemeManager::SoundThemeManager(QObject *parent) :
 		QObject{parent},
 		m_themes{make_unique<Themes>("sounds", "sound.conf")}
 {
-	m_themes->setPaths(Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+	m_themes->setPaths(Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	auto soundThemes = themes()->themes();
-	auto soundTheme = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundTheme");
+	auto soundTheme = Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
 		soundTheme = "default";
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
 	}
 
 	if (soundTheme != "custom")
@@ -56,7 +56,7 @@ void SoundThemeManager::applyTheme(const QString &themeName)
 
 	while (i != entries.constEnd())
 	{
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", m_themes->themePath() + i.value());
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", m_themes->themePath() + i.value());
 		++i;
 	}
 }

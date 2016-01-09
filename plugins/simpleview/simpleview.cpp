@@ -27,7 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddy-info-panel.h"
@@ -204,10 +204,10 @@ void SimpleView::simpleViewToggle(bool activate)
 			MainWindowHandle->setGeometry(r);
 
 			/* Status button */
-			StatusButtonsHandle->setVisible(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
+			StatusButtonsHandle->setVisible(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
 
 			/* Info panel*/
-			if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+			if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 				KaduWindowHandle->infoPanel()->show();
 
 			/* ScrollBar */
@@ -219,7 +219,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
+			if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
 				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
@@ -256,9 +256,9 @@ void SimpleView::configurationUpdated()
 	/* Give the kadu update the GUI with old configuration */
 	simpleViewToggle(false);
 
-	KeepSize = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-	Borderless = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
+	KeepSize = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
 
 }
 

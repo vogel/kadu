@@ -21,6 +21,7 @@
 
 #include "chat/chat-manager.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
 #include "dom/dom-processor-service.h"

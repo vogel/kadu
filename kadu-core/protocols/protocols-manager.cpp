@@ -37,12 +37,16 @@ ProtocolsManager::ProtocolsManager(QObject *parent) :
 
 ProtocolsManager::~ProtocolsManager()
 {
-	ConnectionErrorNotification::unregisterEvent();
 }
 
 void ProtocolsManager::init()
 {
 	ConnectionErrorNotification::registerEvent();
+}
+
+void ProtocolsManager::done()
+{
+	ConnectionErrorNotification::unregisterEvent();
 }
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)

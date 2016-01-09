@@ -39,6 +39,25 @@ MessageManager::MessageManager(QObject *parent) :
 
 MessageManager::~MessageManager()
 {
+}
+
+void MessageManager::setMessageFilterService(MessageFilterService *messageFilterService)
+{
+	m_messageFilterService = messageFilterService;
+}
+
+void MessageManager::setMessageTransformerService(MessageTransformerService *messageTransformerService)
+{
+	m_messageTransformerService = messageTransformerService;
+}
+
+void MessageManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	m_formattedStringFactory = formattedStringFactory;
+}
+
+void MessageManager::done()
+{
 	triggerAllAccountsUnregistered();
 }
 
@@ -82,21 +101,6 @@ void MessageManager::messageReceivedSlot(const Message &message)
 			return;
 
 	emit messageReceived(transformedMessage);
-}
-
-void MessageManager::setMessageFilterService(MessageFilterService *messageFilterService)
-{
-	m_messageFilterService = messageFilterService;
-}
-
-void MessageManager::setMessageTransformerService(MessageTransformerService *messageTransformerService)
-{
-	m_messageTransformerService = messageTransformerService;
-}
-
-void MessageManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
 }
 
 bool MessageManager::sendMessage(const Chat &chat, const QString &content, bool silent)

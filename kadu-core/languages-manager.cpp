@@ -20,7 +20,7 @@
 
 #include <QtCore/QDir>
 
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "languages-manager.h"
@@ -29,7 +29,7 @@ QMap<QString, QString> LanguagesManager::Languages;
 
 void LanguagesManager::loadLanguages()
 {
-	QDir tranlationsDir(Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	QDir tranlationsDir(Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
 
 	QStringList languagesFilter;
 	languagesFilter << "*.language";

@@ -85,6 +85,7 @@ private:
 
 private slots:
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_DONE void done();
 
 	void incomingFileTransfer(FileTransfer fileTransfer);
 	void updateProgress();

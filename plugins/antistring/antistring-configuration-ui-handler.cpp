@@ -26,7 +26,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "gui/widgets/configuration/config-group-box.h"

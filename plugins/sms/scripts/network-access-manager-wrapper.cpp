@@ -27,7 +27,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "network/proxy/network-proxy-manager.h"
 
 #include "scripts/network-reply-wrapper.h"
@@ -48,10 +48,10 @@ void NetworkAccessManagerWrapper::configurationUpdated()
 {
 	NetworkProxy networkProxy;
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
 		networkProxy = NetworkProxyManager::instance()->defaultProxy();
 	else
-		networkProxy = NetworkProxyManager::instance()->byUuid(Application::instance()->configuration()->deprecatedApi()->readEntry("SMS", "Proxy"));
+		networkProxy = NetworkProxyManager::instance()->byUuid(Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "Proxy"));
 
 	QNetworkProxy proxy;
 

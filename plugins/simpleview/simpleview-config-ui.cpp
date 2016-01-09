@@ -21,13 +21,13 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 
 #include "simpleview-config-ui.h"
 
 void SimpleViewConfigUi::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewKeepSize", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewBorderless", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewKeepSize", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "SimpleViewBorderless", true);
 }

@@ -23,7 +23,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"

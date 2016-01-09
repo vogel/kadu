@@ -90,7 +90,7 @@ static void kadu_signal_handler(int signal)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		FILE *backtraceFile = fopen(qPrintable(QString(Application::instance()->pathsProvider()->profilePath() + backtraceFileName)), "w");
+		FILE *backtraceFile = fopen(qPrintable(QString(Core::instance()->pathsProvider()->profilePath() + backtraceFileName)), "w");
 		if (backtraceFile)
 		{
 			fprintf(backtraceFile, "======= BEGIN OF BACKTRACE =====\n");
@@ -119,7 +119,7 @@ static void kadu_signal_handler(int signal)
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
-		Application::instance()->backupConfiguration();
+		Core::instance()->application()->backupConfiguration();
 		abort();
 	}
 	else if (signal == SIGUSR1)

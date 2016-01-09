@@ -20,7 +20,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
 
@@ -29,9 +29,9 @@
 MPDConfig::MPDConfig()
 {
 	createDefaultConfiguration();
-	Host = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
-	Port = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
-	Timeout = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
+	Host = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
 }
 
 MPDConfig::~MPDConfig()
@@ -40,14 +40,14 @@ MPDConfig::~MPDConfig()
 
 void MPDConfig::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDHost", "localhost");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDPort", "6600");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDTimeout", "10");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDHost", "localhost");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDPort", "6600");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDTimeout", "10");
 }
 
 void MPDConfig::configurationUpdated()
 {
-	Host = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
-	Port = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
-	Timeout = Application::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
+	Host = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
 }

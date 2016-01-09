@@ -64,6 +64,7 @@ template<class Item>
 class SimpleManager : public StorableObject
 {
 	QMutex Mutex;
+	bool SaveOnExit;
 
 	QVector<Item> Items;
 
@@ -76,8 +77,9 @@ protected:
 	 * in @link ConfigurationManager @endlink singleton, so this class
 	 * will automatically store itself on each configuration flush request.
 	 */
-	SimpleManager() :
-			Mutex(QMutex::Recursive)
+	SimpleManager(bool saveOnExit = true) :
+			Mutex(QMutex::Recursive),
+			SaveOnExit{saveOnExit}
 	{
 		setState(StateNotLoaded);
 		ConfigurationManager::instance()->registerStorableObject(this);
@@ -92,7 +94,8 @@ protected:
 	 */
 	virtual ~SimpleManager()
 	{
-		ConfigurationManager::instance()->unregisterStorableObject(this);
+		if (SaveOnExit)
+			ConfigurationManager::instance()->unregisterStorableObject(this);
 	}
 
 	QMutex & mutex()

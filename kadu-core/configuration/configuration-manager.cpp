@@ -26,6 +26,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/configuration/toolbar-configuration-manager.h"
 #include "storage/storable-object.h"
 
@@ -61,11 +62,11 @@ ConfigurationManager::~ConfigurationManager()
 
 void ConfigurationManager::load()
 {
-	Application::instance()->backupConfiguration();
+	Core::instance()->application()->backupConfiguration();
 
 	importConfiguration();
 
-	Uuid = Application::instance()->configuration()->api()->rootElement().attribute("uuid");
+	Uuid = Core::instance()->configuration()->api()->rootElement().attribute("uuid");
 	if (Uuid.isNull())
 		Uuid = QUuid::createUuid();
 }
@@ -75,8 +76,8 @@ void ConfigurationManager::flush()
 	foreach (StorableObject *object, RegisteredStorableObjects)
 		object->ensureStored();
 
-	Application::instance()->configuration()->api()->rootElement().setAttribute("uuid", Uuid.toString());
-	Application::instance()->flushConfiguration();
+	Core::instance()->configuration()->api()->rootElement().setAttribute("uuid", Uuid.toString());
+	Core::instance()->application()->flushConfiguration();
 }
 
 void ConfigurationManager::registerStorableObject(StorableObject *object)
@@ -104,9 +105,9 @@ void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 
 void ConfigurationManager::importConfiguration()
 {
-	QDomElement root = Application::instance()->configuration()->api()->rootElement();
-	QDomElement general = Application::instance()->configuration()->api()->findElementByProperty(root.firstChild().firstChild().toElement(), "Group", "name", "General");
-	QDomElement mainConfiguration = Application::instance()->configuration()->api()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
+	QDomElement root = Core::instance()->configuration()->api()->rootElement();
+	QDomElement general = Core::instance()->configuration()->api()->findElementByProperty(root.firstChild().firstChild().toElement(), "Group", "name", "General");
+	QDomElement mainConfiguration = Core::instance()->configuration()->api()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
 
 	if (!mainConfiguration.isNull())
 		  mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");

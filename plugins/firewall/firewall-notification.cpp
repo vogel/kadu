@@ -22,7 +22,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-event-repository.h"
@@ -34,7 +34,7 @@ void FirewallNotification::notify(const Chat &chat, const Contact &sender, const
 {
 	auto notification = new FirewallNotification(chat);
 	notification->setTitle(tr("Message was blocked"));
-	notification->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "notification_syntax",
+	notification->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));
 	notification->setDetails(Qt::escape(message));
 	Core::instance()->notificationManager()->notify(notification);

@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 
 SpellcheckerConfiguration::SpellcheckerConfiguration(QObject *parent) :
 		QObject{parent},
@@ -53,31 +53,31 @@ void SpellcheckerConfiguration::setSpellChecker(SpellChecker *spellChecker)
 
 void SpellcheckerConfiguration::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Bold", "false");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Italic", "false");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Underline", "true");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Color", "#FF0101");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Checked", Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Accents", "false");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Case", "false");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Suggester", "true");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "SuggesterWordCount", "10");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Bold", "false");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Italic", "false");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Underline", "true");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Color", "#FF0101");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Checked", Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Accents", "false");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Case", "false");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "Suggester", "true");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ASpell", "SuggesterWordCount", "10");
 }
 
 void SpellcheckerConfiguration::configurationUpdated()
 {
-	bool bold = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Bold", false);
-	bool italic = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Italic", false);
-	bool underline = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Underline", false);
-	bool accents = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Accents", false);
-	bool caseSensivity = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Case", false);
-	bool suggester = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Suggester", true);
+	bool bold = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Bold", false);
+	bool italic = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Italic", false);
+	bool underline = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Underline", false);
+	bool accents = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Accents", false);
+	bool caseSensivity = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Case", false);
+	bool suggester = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
 
-	auto color = Application::instance()->configuration()->deprecatedApi()->readColorEntry("ASpell", "Color", &colorMark);
-	auto checkedEntry = Application::instance()->configuration()->deprecatedApi()->readEntry("ASpell", "Checked", Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
+	auto color = Core::instance()->configuration()->deprecatedApi()->readColorEntry("ASpell", "Color", &colorMark);
+	auto checkedEntry = Core::instance()->configuration()->deprecatedApi()->readEntry("ASpell", "Checked", Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
 	auto checked = checkedEntry == "empty" ? QStringList{} : checkedEntry.split(',', QString::SkipEmptyParts);
-	int suggesterWordCount = Application::instance()->configuration()->deprecatedApi()->readNumEntry("ASpell", "SuggesterWordCount");
+	int suggesterWordCount = Core::instance()->configuration()->deprecatedApi()->readNumEntry("ASpell", "SuggesterWordCount");
 
 	if (bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
 			caseSensivity == Case && suggester == Suggester && color == Color &&
@@ -104,9 +104,9 @@ void SpellcheckerConfiguration::configurationUpdated()
 void SpellcheckerConfiguration::setChecked(const QStringList &checked)
 {
 	if (checked.empty())
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", "empty");
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", "empty");
 	else
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", checked.join(","));
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("ASpell", "Checked", checked.join(","));
 }
 
 #include "moc_spellchecker-configuration.cpp"

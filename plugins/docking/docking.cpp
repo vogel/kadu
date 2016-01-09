@@ -34,7 +34,7 @@
 #include "status-notifier-item-attention-mode.h"
 #include "status-notifier-item-configuration.h"
 
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"

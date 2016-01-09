@@ -22,7 +22,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 
 #include "config-file-variant-wrapper.h"
 
@@ -37,10 +37,10 @@ ConfigFileVariantWrapper::~ConfigFileVariantWrapper()
 
 QVariant ConfigFileVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return Application::instance()->configuration()->deprecatedApi()->readEntry(Group, Name, defaultValue.toString());
+	return Core::instance()->configuration()->deprecatedApi()->readEntry(Group, Name, defaultValue.toString());
 }
 
 void ConfigFileVariantWrapper::set(const QVariant &value)
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry(Group, Name, value.toString());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry(Group, Name, value.toString());
 }

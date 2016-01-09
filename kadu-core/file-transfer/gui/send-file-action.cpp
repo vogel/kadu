@@ -23,7 +23,7 @@
 #include "chat/chat.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
@@ -142,7 +142,7 @@ QStringList SendFileAction::selectFilesToSend() const
 {
 	return QFileDialog::getOpenFileNames(
 			nullptr, tr("Select file location"),
-			Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
+			Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
 }
 
 #include "moc_send-file-action.cpp"

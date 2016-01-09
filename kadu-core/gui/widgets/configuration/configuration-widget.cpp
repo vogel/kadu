@@ -34,7 +34,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-color-button.h"
@@ -95,7 +95,7 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 ConfigurationWidget::~ConfigurationWidget()
 {
 	if (SectionsListWidget->currentItem())
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
 
 	disconnect(SectionsListWidget, 0, this, 0);
 
@@ -109,7 +109,7 @@ ConfigurationWidget::~ConfigurationWidget()
 
 void ConfigurationWidget::init()
 {
-	auto lastSection = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
+	auto lastSection = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
 	auto section = ConfigSections.value(lastSection);
 	if (section)
 		section->activate();
@@ -218,7 +218,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 	QString iconPath = sectionElement.attribute("icon");
 	// Additional slash is needed so that QUrl would treat the rest as _path_, which is desired here.
 	if (iconPath.startsWith("datapath:///"))
-		iconPath = Application::instance()->pathsProvider()->dataPath() + iconPath.midRef(static_cast<int>(qstrlen("datapath:///")));
+		iconPath = Core::instance()->pathsProvider()->dataPath() + iconPath.midRef(static_cast<int>(qstrlen("datapath:///")));
 	configSection(KaduIcon(iconPath), QCoreApplication::translate("@default", sectionName.toUtf8().constData()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();

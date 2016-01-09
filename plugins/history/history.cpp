@@ -38,7 +38,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/actions.h"

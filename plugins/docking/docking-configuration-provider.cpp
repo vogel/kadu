@@ -23,7 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 
 DockingConfigurationProvider::DockingConfigurationProvider(QObject *parent) :
 		QObject{parent}
@@ -38,9 +38,9 @@ DockingConfigurationProvider::~DockingConfigurationProvider()
 
 void DockingConfigurationProvider::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "RunDocked", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowTooltipInTray", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("General", "RunDocked", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("General", "ShowTooltipInTray", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "NewMessageIcon", 0);
 }
 
 const DockingConfiguration & DockingConfigurationProvider::configuration() const
@@ -52,9 +52,9 @@ void DockingConfigurationProvider::configurationUpdated()
 {
 	m_configuration = DockingConfiguration
 	{
-		RunDocked: Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"),
-		ShowTooltipInTray: Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"),
-		NewMessageIcon: static_cast<StatusNotifierItemAttentionMode>(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NewMessageIcon"))
+		RunDocked: Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "RunDocked"),
+		ShowTooltipInTray: Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"),
+		NewMessageIcon: static_cast<StatusNotifierItemAttentionMode>(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "NewMessageIcon"))
 	};
 
 	emit updated();

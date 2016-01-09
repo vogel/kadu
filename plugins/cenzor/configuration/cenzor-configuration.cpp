@@ -23,7 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "cenzor-configuration.h"
@@ -65,7 +65,7 @@ void CenzorConfiguration::setSwearList(const QList<QRegExp> &swearList)
 
 QList<QRegExp> CenzorConfiguration::loadRegExpList(const QString &itemName, const QString &fileName)
 {
-	QList<QRegExp> result = toRegExpList(Application::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", itemName).split('\t', QString::SkipEmptyParts));
+	QList<QRegExp> result = toRegExpList(Core::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", itemName).split('\t', QString::SkipEmptyParts));
 
 	if (!result.empty())
 		return result;
@@ -85,14 +85,14 @@ QList<QRegExp> CenzorConfiguration::loadRegExpList(const QString &itemName, cons
 
 void CenzorConfiguration::configurationUpdated()
 {
-	Enabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_cenzor");
-	Admonition = Application::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
-	SwearList = loadRegExpList("cenzor swearwords", Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words.conf"));
-	ExclusionList = loadRegExpList("cenzor exclusions", Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words_ok.conf"));
+	Enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_cenzor");
+	Admonition = Core::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
+	SwearList = loadRegExpList("cenzor swearwords", Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words.conf"));
+	ExclusionList = loadRegExpList("cenzor exclusions", Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words_ok.conf"));
 }
 
 void CenzorConfiguration::saveConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("PowerKadu", "cenzor swearwords", toStringList(SwearList).join("\t"));
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("PowerKadu", "cenzor exclusions", toStringList(ExclusionList).join("\t"));
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("PowerKadu", "cenzor swearwords", toStringList(SwearList).join("\t"));
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("PowerKadu", "cenzor exclusions", toStringList(ExclusionList).join("\t"));
 }

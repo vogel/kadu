@@ -43,7 +43,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -111,7 +111,7 @@ OpenChatWith::OpenChatWith() :
 
 	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	BuddiesView->setResizeMode(QQuickWidget::SizeRootObjectToView);
-	BuddiesView->setSource(QUrl("file:///" + Application::instance()->pathsProvider()->dataPath() + "qml/openChatWith.qml"));
+	BuddiesView->setSource(QUrl("file:///" + Core::instance()->pathsProvider()->dataPath() + "qml/openChatWith.qml"));
 
 	if (BuddiesView->rootObject())
 		connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));

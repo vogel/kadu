@@ -31,7 +31,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -112,11 +112,11 @@ Automatic question GUI
 
 	QuestionEdit = new QTextEdit(question);
 	QuestionEdit->setAcceptRichText(false);
-	QuestionEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "question"));
+	QuestionEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "question"));
 	QuestionEdit->setToolTip(tr("This message will be send to unknown person."));
 
 	AnswerEdit = new QLineEdit(question);
-	AnswerEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer"));
+	AnswerEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer"));
 	AnswerEdit->setToolTip(tr("Right answer for question above - you can use regexp."));
 	QLabel *label = new QLabel(tr("Answer:"), question);
 	label->setToolTip(tr("Right answer for question above - you can use regexp."));
@@ -230,8 +230,8 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		buddy.removeProperty("firewall-secured-sending:FirewallSecuredSending");
 	}
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "question", QuestionEdit->toPlainText());
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "answer", AnswerEdit->text());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "question", QuestionEdit->toPlainText());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "answer", AnswerEdit->text());
 }
 
 #include "moc_firewall-configuration-ui-handler.cpp"

@@ -27,7 +27,7 @@
 #include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "mpris_mediaplayer.h"
@@ -48,8 +48,8 @@ class MPRISPlayer : public MPRISMediaPlayer
 	void choosePlayer(const QString &key, const QString &value);
 
 public:
-	static QString userPlayersListFileName() { return Application::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }
-	static QString globalPlayersListFileName() { return Application::instance()->pathsProvider()->dataPath() + GlobalPlayersListFile; }
+	static QString userPlayersListFileName() { return Core::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }
+	static QString globalPlayersListFileName() { return Core::instance()->pathsProvider()->dataPath() + GlobalPlayersListFile; }
 
 	Q_INVOKABLE explicit MPRISPlayer(QObject *parent = nullptr);
 	virtual ~MPRISPlayer();

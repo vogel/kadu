@@ -31,7 +31,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"

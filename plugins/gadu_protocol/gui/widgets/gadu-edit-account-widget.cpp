@@ -38,7 +38,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
@@ -330,8 +330,8 @@ void GaduEditAccountWidget::apply()
 		Details->setReceiveSpam(!ReceiveSpam->isChecked());
 	}
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
 	m_gaduServersManager->buildServerList();
 
 	if (gpiw->isModified())
@@ -374,8 +374,8 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& Details->chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
 
-		&& Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
-		&& Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
+		&& Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
+		&& Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& Details->receiveSpam() != ReceiveSpam->isChecked()
@@ -418,8 +418,8 @@ void GaduEditAccountWidget::loadAccountData()
 		ReceiveSpam->setChecked(!details->receiveSpam());
 	}
 
-	useDefaultServers->setChecked(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
-	ipAddresses->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
+	useDefaultServers->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
+	ipAddresses->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }

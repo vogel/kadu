@@ -25,7 +25,7 @@
 #include "chat/chat-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "message/message-manager.h"
 #include "message/message.h"
@@ -147,7 +147,7 @@ void RecentChatManager::store()
 	for (int i = 0; i < count; i++)
 		mainElement.removeChild(chatElements.at(i));
 
-	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "RecentChatsClear", false))
+	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (const Chat &chat, RecentChats)
 			if (chat && !chat.uuid().isNull())
 			{
@@ -241,7 +241,7 @@ void RecentChatManager::removeRecentChat(Chat chat)
 void RecentChatManager::configurationUpdated()
 {
 	CleanUpTimer.stop();
-	RecentChatsTimeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "RecentChatsTimeout") * 60;
+	RecentChatsTimeout = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "RecentChatsTimeout") * 60;
 	if (RecentChatsTimeout > 0)
 		CleanUpTimer.start();
 

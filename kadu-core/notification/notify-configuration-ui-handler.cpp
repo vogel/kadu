@@ -33,7 +33,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
@@ -116,7 +116,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 		for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
 		{
 			if (!NotifierGui[notifier].Events.contains(notifyEvent.name()))
-				NotifierGui[notifier].Events[notifyEvent.name()] = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyEvent.name() + '_' + notifier->name());
+				NotifierGui[notifier].Events[notifyEvent.name()] = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", notifyEvent.name() + '_' + notifier->name());
 		}
 	}
 
@@ -129,7 +129,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 		NotificationEventConfigurationItem item;
 		item.event = notifyEvent;
-		item.useCustomSettings = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
+		item.useCustomSettings = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 
 		NotificationEvents[eventName] = item;
 	}
@@ -171,7 +171,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowApplied()
 		if (notifyEvent.category().isEmpty() || !NotificationEvents.contains(notifyEvent.name()))
 			continue;
 
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent.name() + "_UseCustomSettings", NotificationEvents[notifyEvent.name()].useCustomSettings);
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Notify", notifyEvent.name() + "_UseCustomSettings", NotificationEvents[notifyEvent.name()].useCustomSettings);
 	}
 
 	foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
@@ -184,7 +184,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowApplied()
 			gui.ConfigurationWidget->saveNotifyConfigurations();
 
 		for (QMap<QString, bool>::const_iterator it = gui.Events.constBegin(), end = gui.Events.constEnd(); it != end; ++it)
-			Application::instance()->configuration()->deprecatedApi()->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
+			Core::instance()->configuration()->deprecatedApi()->writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
 	}
 }
 
@@ -217,7 +217,7 @@ void NotifyConfigurationUiHandler::notificationEventAdded(NotificationEvent noti
 		NotificationEventConfigurationItem item;
 		item.event = notifyEvent;
 		if (!notifyEvent.category().isEmpty())
-			item.useCustomSettings = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
+			item.useCustomSettings = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 		else
 			item.useCustomSettings = true;
 
@@ -283,7 +283,7 @@ void NotifyConfigurationUiHandler::eventSwitched()
 		NotifierConfigurationGuiItem &gui = NotifierGui[notifier];
 
 		if (!gui.Events.contains(CurrentEvent))
-			gui.Events[CurrentEvent] = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
+			gui.Events[CurrentEvent] = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
 
 		if (gui.ConfigurationWidget)
 			gui.ConfigurationWidget->switchToEvent(CurrentEvent);

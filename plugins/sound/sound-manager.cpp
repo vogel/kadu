@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "themes.h"
 
 #include <QtMultimedia/QSound>
@@ -36,7 +36,7 @@ SoundManager::SoundManager(QObject *parent) :
 		m_mute{false}
 {
 	createDefaultConfiguration();
-	setMute(!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
+	setMute(!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Sounds", "PlaySound"));
 }
 
 SoundManager::~SoundManager()
@@ -51,19 +51,19 @@ void SoundManager::setSoundThemeManager(SoundThemeManager *soundThemeManager)
 
 void SoundManager::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_Sound", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "InvalidPassword_Sound", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Sound", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_Sound", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Sound", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_Sound", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "InvalidPassword_Sound", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Sound", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_Sound", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Sound", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "PlaySound", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPaths", QString());
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundTheme", "default");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundVolume", 100);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "PlaySound", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPaths", QString());
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundTheme", "default");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundVolume", 100);
 }
 
 bool SoundManager::isMuted() const
@@ -105,7 +105,7 @@ QObject * SoundManager::playSoundByName(const QString &soundName)
 	if (isMuted())
 		return nullptr;
 
-	auto file = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", soundName + "_sound");
+	auto file = Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", soundName + "_sound");
 	return playFile(file);
 }
 

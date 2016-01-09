@@ -22,7 +22,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
@@ -58,27 +58,10 @@
 NotificationService::NotificationService(QObject *parent) :
 		QObject(parent), SilentMode(false), AutoSilentMode(false), IsFullScreen(false), FullscreenChecker(0)
 {
-	Notification::registerParserTags();
-
-	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
-
-	MessageNotification::registerEvents();
-	StatusChangedNotification::registerEvents();
-	MultilogonNotification::registerEvents();
-
-	connect(Core::instance()->statusContainerManager(), SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 }
 
 NotificationService::~NotificationService()
 {
-	Notification::unregisterParserTags();
-
-	if (m_configurationUiHandlerRepository)
-		m_configurationUiHandlerRepository->removeConfigurationUiHandler(NotifyUiHandler);
-
-	StatusChangedNotification::unregisterEvents();
-	MessageNotification::unregisterEvents();
-	MultilogonNotification::unregisterEvents();
 }
 
 void NotificationService::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
@@ -122,6 +105,16 @@ void NotificationService::setMessageManager(MessageManager *messageManager)
 
 void NotificationService::init()
 {
+	Notification::registerParserTags();
+
+	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
+
+	MessageNotification::registerEvents();
+	StatusChangedNotification::registerEvents();
+	MultilogonNotification::registerEvents();
+
+	connect(Core::instance()->statusContainerManager(), SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
+
 	createEventListeners();
 	createActionDescriptions();
 
@@ -130,6 +123,21 @@ void NotificationService::init()
 
 	createDefaultConfiguration();
 	configurationUpdated();
+}
+
+void NotificationService::done()
+{
+	Notification::unregisterParserTags();
+
+	if (m_configurationUiHandlerRepository)
+		m_configurationUiHandlerRepository->removeConfigurationUiHandler(NotifyUiHandler);
+
+	StatusChangedNotification::unregisterEvents();
+	MessageNotification::unregisterEvents();
+	MultilogonNotification::unregisterEvents();
+
+	delete CurrentWindowNotifier;
+	CurrentWindowNotifier = nullptr;
 }
 
 void NotificationService::createActionDescriptions()

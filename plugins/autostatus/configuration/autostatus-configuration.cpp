@@ -20,7 +20,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "autostatus-configuration.h"
@@ -32,7 +32,7 @@ AutostatusConfiguration::AutostatusConfiguration()
 
 void AutostatusConfiguration::configurationUpdated()
 {
-	AutoTime = Application::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autostatus_time", 10);
-	AutoStatus = Application::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autoStatus");
-	StatusFilePath = Application::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "status_file_path", Application::instance()->pathsProvider()->profilePath() + QLatin1String("autostatus.list"));
+	AutoTime = Core::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autostatus_time", 10);
+	AutoStatus = Core::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "autoStatus");
+	StatusFilePath = Core::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "status_file_path", Core::instance()->pathsProvider()->profilePath() + QLatin1String("autostatus.list"));
 }

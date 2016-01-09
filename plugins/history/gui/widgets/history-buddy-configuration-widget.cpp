@@ -24,7 +24,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
 #include "history-buddy-configuration-widget.h"
@@ -57,7 +57,7 @@ void HistoryBuddyConfigurationWidget::createGui()
 
 void HistoryBuddyConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
+	GlobalStoreHistory = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
 	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 

@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/windows/window-notifier-window.h"
 #include "icons/icons-manager.h"
@@ -79,7 +79,7 @@ void WindowNotifier::notificationClosed(Notification *notification)
 
 void WindowNotifier::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
 }
 
 /** @} */

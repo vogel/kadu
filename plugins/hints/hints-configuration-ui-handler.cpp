@@ -32,7 +32,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/config-file-data-manager.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -79,8 +79,8 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
 	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
 
 	auto style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
-			.arg(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
-			.arg(Application::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
+			.arg(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
+			.arg(Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
 	previewHintsFrame->setStyleSheet(style);
 
@@ -153,7 +153,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 	if (!AdvancedWindow)
 	{
 		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
-		AdvancedWindow->widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
+		AdvancedWindow->widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 

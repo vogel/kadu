@@ -32,7 +32,7 @@
 #include "configuration/configuration.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -181,12 +181,12 @@ void MainWindow::loadToolBarsFromConfig(Qt::ToolBarArea area)
 
 bool MainWindow::loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area)
 {
-	QDomElement toolbarsConfig = Application::instance()->configuration()->api()->findElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = Core::instance()->configuration()->api()->findElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	if (toolbarsConfig.isNull())
 		return false;
 
-	QDomElement dockareaConfig = Application::instance()->configuration()->api()->findElementByProperty(toolbarsConfig, "DockArea", "name", configName);
+	QDomElement dockareaConfig = Core::instance()->configuration()->api()->findElementByProperty(toolbarsConfig, "DockArea", "name", configName);
 	if (dockareaConfig.isNull())
 		return false;
 
@@ -198,9 +198,9 @@ bool MainWindow::loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBa
 
 QDomElement MainWindow::getToolbarsConfigElement()
 {
-	QDomElement toolbarsConfig = Application::instance()->configuration()->api()->findElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+	QDomElement toolbarsConfig = Core::instance()->configuration()->api()->findElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = Application::instance()->configuration()->api()->createElement(Application::instance()->configuration()->api()->rootElement(), "Toolbars");
+		toolbarsConfig = Core::instance()->configuration()->api()->createElement(Core::instance()->configuration()->api()->rootElement(), "Toolbars");
 
 	return toolbarsConfig;
 }
@@ -236,10 +236,10 @@ QDomElement MainWindow::getDockAreaConfigElement(Qt::ToolBarArea area)
 
 QDomElement MainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name)
 {
-	QDomElement dockAreaConfig = Application::instance()->configuration()->api()->findElementByProperty(toolbarsConfig, "DockArea", "name", name);
+	QDomElement dockAreaConfig = Core::instance()->configuration()->api()->findElementByProperty(toolbarsConfig, "DockArea", "name", name);
 	if (dockAreaConfig.isNull())
 	{
-		dockAreaConfig = Application::instance()->configuration()->api()->createElement(toolbarsConfig, "DockArea");
+		dockAreaConfig = Core::instance()->configuration()->api()->createElement(toolbarsConfig, "DockArea");
 		dockAreaConfig.setAttribute("name", name);
 	}
 
@@ -248,24 +248,24 @@ QDomElement MainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig, con
 
 void MainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionName, Qt::ToolButtonStyle style)
 {
-	QDomElement buttonConfig = Application::instance()->configuration()->api()->findElementByProperty(toolbarConfig, "ToolButton", "action_name", actionName);
+	QDomElement buttonConfig = Core::instance()->configuration()->api()->findElementByProperty(toolbarConfig, "ToolButton", "action_name", actionName);
 //don't add element if exists
 	if (!buttonConfig.isNull())
 		return;
-	buttonConfig = Application::instance()->configuration()->api()->createElement(toolbarConfig, "ToolButton");
+	buttonConfig = Core::instance()->configuration()->api()->createElement(toolbarConfig, "ToolButton");
 	buttonConfig.setAttribute("action_name", actionName);
 	buttonConfig.setAttribute("toolbutton_style", style);
 }
 
 QDomElement MainWindow::findExistingToolbarOnArea(const QString &areaName)
 {
-	QDomElement dockAreaConfig = Application::instance()->configuration()->api()->findElementByProperty(getToolbarsConfigElement(), "DockArea", "name", areaName);
+	QDomElement dockAreaConfig = Core::instance()->configuration()->api()->findElementByProperty(getToolbarsConfigElement(), "DockArea", "name", areaName);
 	QDomElement nullResult;
 
 	if (dockAreaConfig.isNull())
 		return nullResult;
 
-	QDomElement toolbarElement = Application::instance()->configuration()->api()->findElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarElement = Core::instance()->configuration()->api()->findElement(dockAreaConfig, "ToolBar");
 	if (toolbarElement.isNull())
 		return nullResult;
 
@@ -295,7 +295,7 @@ QDomElement MainWindow::findExistingToolbar(const QString &prefix)
 		return toolbarElement;
 
 	QDomElement dockAreaConfig = getDockAreaConfigElement(getToolbarsConfigElement(), realPrefix + "topDockArea");
-	return Application::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
+	return Core::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
 }
 
 void MainWindow::writeToolBarsToConfig()
@@ -309,7 +309,7 @@ void MainWindow::writeToolBarsToConfig()
 void MainWindow::writeToolBarsToConfig(Qt::ToolBarArea area)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(area);
-	Application::instance()->configuration()->api()->removeChildren(dockAreaConfig);
+	Core::instance()->configuration()->api()->removeChildren(dockAreaConfig);
 
 	// TODO: laaaaame
 	foreach(QObject *child, children())

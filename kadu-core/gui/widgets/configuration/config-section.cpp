@@ -28,7 +28,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-section.h"
@@ -57,7 +57,7 @@ ConfigSection::~ConfigSection()
 	blockSignals(false);
 	emit destroyed(this);
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
 			TabWidget->tabText(TabWidget->currentIndex()));
 
 	// delete them here, since they manually delete child widgets of our TabWidget
@@ -91,7 +91,7 @@ void ConfigSection::activate()
 	if (Activated)
 		return;
 
-	QString tab = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
+	QString tab = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
 	if (ConfigTabs.contains(tab))
 	{
 		auto configTab = ConfigTabs.value(tab);

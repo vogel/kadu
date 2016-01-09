@@ -23,7 +23,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "status/description-model.h"
 
@@ -44,7 +44,7 @@ DescriptionManager::DescriptionManager()
 
 	configurationUpdated();
 
-	if (Application::instance()->configuration()->api()->getNode("Descriptions", ConfigurationApi::ModeFind).isNull())
+	if (Core::instance()->configuration()->api()->getNode("Descriptions", ConfigurationApi::ModeFind).isNull())
 		import();
 	else
 		setState(StateNotLoaded);
@@ -80,7 +80,7 @@ DescriptionModel * DescriptionManager::model()
 void DescriptionManager::import()
 {
 	StringList.clear();
-	StringList.append(Application::instance()->configuration()->deprecatedApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
+	StringList.append(Core::instance()->configuration()->deprecatedApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
 	StringList.removeDuplicates();
 
 	truncate();
@@ -101,7 +101,7 @@ void DescriptionManager::truncate()
 
 void DescriptionManager::configurationUpdated()
 {
-	MaxNumberOfDescriptions = Application::instance()->configuration()->deprecatedApi()->readNumEntry("General", "NumberOfDescriptions");
+	MaxNumberOfDescriptions = Core::instance()->configuration()->deprecatedApi()->readNumEntry("General", "NumberOfDescriptions");
 	truncate();
 }
 

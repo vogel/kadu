@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
@@ -51,7 +51,7 @@ Speech::Speech(QObject *parent) :
 {
 	kdebugf();
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
 
 	kdebugf2();
 }
@@ -72,14 +72,14 @@ void Speech::say(const QString &s, const QString &path,
 
 	if (path.isEmpty())
 	{
-		t = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech","SpeechProgram", "powiedz");
-		klatt = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "KlattSynt");
-		melody = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "Melody");
-		soundSystem = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "SoundSystem");
-		dev = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "DspDev", "/dev/dsp");
-		freq = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Frequency");
-		tempo = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Tempo");
-		basefreq = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "BaseFrequency");
+		t = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech","SpeechProgram", "powiedz");
+		klatt = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "KlattSynt");
+		melody = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "Melody");
+		soundSystem = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Speech", "SoundSystem");
+		dev = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", "DspDev", "/dev/dsp");
+		freq = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Frequency");
+		tempo = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "Tempo");
+		basefreq = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "BaseFrequency");
 	}
 	else
 	{
@@ -142,14 +142,14 @@ void Speech::notify(Notification *notification)
 			sex = "Female";
 	}
 
-	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
+	QString syntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else
 	{
 		QString details = notification->details().join(QLatin1String("\n"));
-		if (details.length() > Application::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
-			syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
+		if (details.length() > Core::instance()->configuration()->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
+			syntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
 
 		syntax = syntax.arg(details);
 

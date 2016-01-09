@@ -20,7 +20,7 @@
 
 #include "plugin-loader.h"
 
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
@@ -69,7 +69,7 @@ injeqt::injector & PluginLoader::injector() const noexcept
 
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginName) const
 {
-	auto result = make_unique<QPluginLoader>(Application::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT));
+	auto result = make_unique<QPluginLoader>(Core::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT));
 	result->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 	return result;
 }

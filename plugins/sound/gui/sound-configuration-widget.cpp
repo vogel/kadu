@@ -24,7 +24,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
 
@@ -56,7 +56,7 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 		m_soundFiles[m_currentNotificationEvent] = m_soundSelectFile->file();
 
 	for (auto it = m_soundFiles.constBegin(), end = m_soundFiles.constEnd(); it != end; ++it)
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", it.key() + "_sound", it.value());
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", it.key() + "_sound", it.value());
 }
 
 void SoundConfigurationWidget::switchToEvent(const QString &event)
@@ -70,7 +70,7 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 	if (m_soundFiles.contains(event))
 		m_soundSelectFile->setFile(m_soundFiles[event]);
 	else
-		m_soundSelectFile->setFile(Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", event + "_sound"));
+		m_soundSelectFile->setFile(Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", event + "_sound"));
 }
 
 void SoundConfigurationWidget::themeChanged(int index)
@@ -81,7 +81,7 @@ void SoundConfigurationWidget::themeChanged(int index)
 	//refresh soundFiles
 	for (auto it = m_soundFiles.begin(), end = m_soundFiles.end(); it != end; ++it)
 	{
-		it.value() = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", it.key() + "_sound");
+		it.value() = Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", it.key() + "_sound");
 		if (it.key() == m_currentNotificationEvent)
 			m_soundSelectFile->setFile(it.value());
 	}

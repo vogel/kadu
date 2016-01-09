@@ -44,7 +44,7 @@
 #include "contacts/model/chat-adapter.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -441,7 +441,7 @@ void ChatWidget::clearChatWindow()
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
+	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
 		MessagesView->setForcePruneDisabled(false);

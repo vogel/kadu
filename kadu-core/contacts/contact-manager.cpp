@@ -29,7 +29,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-parser-tags.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
@@ -43,7 +43,8 @@
 #include <QtCore/QTimer>
 
 ContactManager::ContactManager(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		SimpleManager<Contact>{false}
 {
 }
 
@@ -78,6 +79,8 @@ void ContactManager::done()
 		unreadMessageRemoved(message);
 
 	ContactParserTags::unregisterParserTags();
+
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void ContactManager::unreadMessageAdded(const Message &message)
@@ -213,14 +216,14 @@ void ContactManager::removeDuplicateContacts()
 			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
 	}
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
 }
 
 void ContactManager::loaded()
 {
 	SimpleManager<Contact>::loaded();
 
-	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
+	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }

@@ -36,7 +36,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -67,7 +67,7 @@ static void prepareSearchChars(bool forceExecSeachChars = false)
 		foreach (QChar c, QString(SEARCH_CHARS))
 			chars.insert(c);
 
-	bool allowExec = forceExecSeachChars || Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
+	bool allowExec = forceExecSeachChars || Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
 	foreach (QChar c, QString(EXEC_SEARCH_CHARS))
 		if (allowExec)
 			chars.insert(c);
@@ -290,7 +290,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 				pe.setContent(description);
 
-				if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
+				if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
 				{
 					QString content = pe.decodedContent();
 					content.replace('\n', QLatin1String("<br/>"));

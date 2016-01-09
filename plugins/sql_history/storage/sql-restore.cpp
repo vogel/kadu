@@ -25,7 +25,7 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "sql-restore.h"
@@ -71,7 +71,7 @@ QString SqlRestore::errorMessage(SqlRestore::RestoreError error)
 
 SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFilePath)
 {
-	QString recoveryScriptPath = Application::instance()->pathsProvider()->dataPath() + QLatin1String(RECOVERY_SCRIPT);
+	QString recoveryScriptPath = Core::instance()->pathsProvider()->dataPath() + QLatin1String(RECOVERY_SCRIPT);
 
 	QFileInfo recoveryScriptFileInfo(recoveryScriptPath);
 	if (!recoveryScriptFileInfo.exists())

@@ -91,6 +91,7 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 
 private slots:
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void chatDataUpdated();
 	void chatOpened();

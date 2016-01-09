@@ -23,7 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 
 #include <QtCore/QProcess>
 
@@ -44,7 +44,7 @@ QObject * ExternalPlayer::playSound(const QString &path)
 	if (m_playerProcess)
 		return nullptr;
 
-	auto playerCommand = Application::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
+	auto playerCommand = Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
 	if (playerCommand.isEmpty())
 		return nullptr;
 
@@ -60,9 +60,9 @@ QObject * ExternalPlayer::playSound(const QString &path)
 void ExternalPlayer::createDefaultConfiguration()
 {
 #ifdef Q_OS_MAC
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
 #else
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
 }
 

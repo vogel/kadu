@@ -37,7 +37,7 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
@@ -145,7 +145,7 @@ void SmsDialog::createGui()
 	LengthLabel = new QLabel("0", this);
 	formLayout->addRow(0, LengthLabel);
 
-	SignatureEdit = new QLineEdit(Application::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsNick"), this);
+	SignatureEdit = new QLineEdit(Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsNick"), this);
 	connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
 	formLayout->addRow(tr("Signature") + ':', SignatureEdit);
@@ -198,7 +198,7 @@ void SmsDialog::validate()
 
 void SmsDialog::configurationUpdated()
 {
-	ContentEdit->setFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "ChatFont"));
+	ContentEdit->setFont(Core::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "ChatFont"));
 }
 
 void SmsDialog::setRecipient(const QString &phone)
@@ -277,7 +277,7 @@ void SmsDialog::sendSms()
 
 	SmsSender *sender;
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "BuiltInApp"))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "BuiltInApp"))
 	{
 		int gatewayIndex = ProviderComboBox->currentIndex();
 		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
@@ -285,7 +285,7 @@ void SmsDialog::sendSms()
 	}
 	else
 	{
-		if (Application::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsApp").isEmpty())
+		if (Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsApp").isEmpty())
 		{
 			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
 					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);

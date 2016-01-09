@@ -34,7 +34,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "misc/change-notifier.h"
 #include "parser/parser.h"
@@ -234,7 +234,7 @@ bool ChatShared::shouldStore()
 		return false;
 
 	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (Application::instance()->configuration()->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
+	if (Core::instance()->configuration()->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
 		return true;
 
 	if (customProperties()->shouldStore())

@@ -66,7 +66,7 @@ protected:
 	void updateTimes();
 
 	/*!
-	 * It holds the data file name. It's set to <i>Application::instance()->pathsProvider()->profilePath() + QLatin1String("last_seen.data")</i>
+	 * It holds the data file name. It's set to <i>Core::instance()->pathsProvider()->profilePath() + QLatin1String("last_seen.data")</i>
 	 * in the constructor.
 	 */
 	QString fileName;

@@ -27,7 +27,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action.h"
@@ -259,7 +259,7 @@ void ChatWidgetActions::configurationUpdated()
 
 void ChatWidgetActions::autoSendActionCreated(Action *action)
 {
-	action->setChecked(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
+	action->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
 }
 
 void ChatWidgetActions::clearChatActionCreated(Action *action)
@@ -288,7 +288,7 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 
 void ChatWidgetActions::autoSendActionCheck()
 {
- 	bool check = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
+ 	bool check = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
  	foreach (Action *action, AutoSend->actions())
  		action->setChecked(check);
 }
@@ -301,7 +301,7 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
 	autoSendActionCheck();
 
 	ChatConfigurationHolder::instance()->configurationUpdated();

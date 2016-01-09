@@ -37,7 +37,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string.h"
@@ -61,10 +61,10 @@ WordFix::WordFix(QObject *parent) :
 	ExtractBody.setPattern("<body[^>]*>.*</body>");
 
 	// Loading list
-	QString data = Application::instance()->configuration()->deprecatedApi()->readEntry("word_fix", "WordFix_list");
+	QString data = Core::instance()->configuration()->deprecatedApi()->readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
-		QFile defList(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
+		QFile defList(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
 		if (defList.open(QIODevice::ReadOnly))
 		{
 			QTextStream s(&defList);
@@ -131,7 +131,7 @@ void WordFix::chatWidgetRemoved(ChatWidget *chatWidget)
 
 void WordFix::sendRequest(ChatWidget* chat)
 {
-	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
+	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
 		return;
 
 	auto formattedString = chat->edit()->formattedString();

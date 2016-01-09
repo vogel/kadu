@@ -453,7 +453,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 	if (!window->talkableProxyModel())
 		return;
 
-	bool enabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowOffline");
+	bool enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowOffline");
 	HideOfflineTalkableFilter *filter = new HideOfflineTalkableFilter(action);
 	filter->setEnabled(!enabled);
 
@@ -471,7 +471,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	if (!window->talkableProxyModel())
 		return;
 
-	bool enabled = !Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription");
+	bool enabled = !Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription");
 	HideWithoutDescriptionTalkableFilter *filter = new HideWithoutDescriptionTalkableFilter(action);
 	filter->setEnabled(enabled);
 
@@ -483,7 +483,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 
 void KaduWindowActions::showDescriptionsActionCreated(Action *action)
 {
-	bool enabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
+	bool enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
 	action->setChecked(enabled);
 }
 
@@ -495,7 +495,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	if (!window->talkableProxyModel())
 		return;
 
-	bool enabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription");
+	bool enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription");
 	HideOfflineWithoutDescriptionTalkableFilter *filter = new HideOfflineWithoutDescriptionTalkableFilter(action);
 	filter->setEnabled(enabled);
 
@@ -507,7 +507,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 
 void KaduWindowActions::showInfoPanelActionCreated(Action *action)
 {
-	action->setChecked(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"));
+	action->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"));
 }
 
 void KaduWindowActions::showBlockedActionCreated(Action *action)
@@ -518,7 +518,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	if (!window->talkableProxyModel())
 		return;
 
-	bool enabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowBlocked");
+	bool enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowBlocked");
 	BlockedTalkableFilter *blockedTalkableFilter = new BlockedTalkableFilter(action);
 	blockedTalkableFilter->setEnabled(!enabled);
 
@@ -536,7 +536,7 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 	if (!window->talkableProxyModel())
 		return;
 
-	bool enabled = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowMyself", false);
+	bool enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowMyself", false);
 	TalkableModel *model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
 	if (model)
 	{
@@ -634,7 +634,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	auto window = new GroupEditWindow(GroupManager::instance(), Application::instance()->configuration()->deprecatedApi(), Group::null, sender->parentWidget());
+	auto window = new GroupEditWindow(GroupManager::instance(), Core::instance()->configuration()->deprecatedApi(), Group::null, sender->parentWidget());
 	window->show();
 }
 
@@ -650,7 +650,7 @@ void KaduWindowActions::forumActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	if (Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
+	if (Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
 		UrlOpener::openUrl("http://www.kadu.im/forum/");
 	else
 		UrlOpener::openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
@@ -661,7 +661,7 @@ void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	if (Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
+	if (Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
 		UrlOpener::openUrl("http://www.kadu.im/w/B%C5%82%C4%99dy");
 	else
 		UrlOpener::openUrl("http://www.kadu.im/w/English:Bugs");
@@ -672,7 +672,7 @@ void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	if (Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
+	if (Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
 		UrlOpener::openUrl("http://www.kadu.im/w/Do%C5%82%C4%85cz");
 	else
 		UrlOpener::openUrl("http://www.kadu.im/w/English:GetInvolved");
@@ -701,7 +701,7 @@ void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggl
 
 	Core::instance()->kaduWindow()->infoPanel()->setVisible(toggled);
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "ShowInfoPanel", toggled);
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Look", "ShowInfoPanel", toggled);
 }
 
 void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
@@ -711,7 +711,7 @@ void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled
 	{
 		BlockedTalkableFilter *blockedTalkableFilter = v.value<BlockedTalkableFilter *>();
 		blockedTalkableFilter->setEnabled(!toggled);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowBlocked", toggled);
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowBlocked", toggled);
 	}
 }
 
@@ -727,7 +727,7 @@ void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
 	if (model)
 	{
 		model->setIncludeMyself(toggled);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowMyself", toggled);
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowMyself", toggled);
 	}
 }
 
@@ -818,7 +818,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 			+ Parser::escape(tr("First name:")) + " %f\n]["
 			+ Parser::escape(tr("Last name:")) + " %r\n]["
 			+ Parser::escape(tr("Mobile:")) + " %m\n]";
-	QString copyPersonalDataSyntax = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
+	QString copyPersonalDataSyntax = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
 	foreach (Contact contact, contacts)
 		infoList.append(Parser::parse(copyPersonalDataSyntax, Talkable(contact), ParserEscape::NoEscape));
 
@@ -863,7 +863,7 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 	{
 		HideOfflineTalkableFilter *filter = v.value<HideOfflineTalkableFilter *>();
 		filter->setEnabled(!toggled);
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowOffline", toggled);
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowOffline", toggled);
 	}
 }
 
@@ -881,13 +881,13 @@ void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool to
 {
 	Q_UNUSED(sender)
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "ShowDesc", toggled);
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Look", "ShowDesc", toggled);
 	ConfigurationAwareObject::notifyAll();
 }
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowOnlineAndDescription", toggled);
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ShowOnlineAndDescription", toggled);
 
 	QVariant v = sender->data();
 	if (v.canConvert<HideOfflineWithoutDescriptionTalkableFilter *>())
@@ -901,16 +901,16 @@ void KaduWindowActions::configurationUpdated()
 {
 	ActionContext *context = Core::instance()->kaduWindow()->actionContext();
 
-	if (ShowInfoPanel->action(context)->isChecked() != Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+	if (ShowInfoPanel->action(context)->isChecked() != Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 		ShowInfoPanel->action(context)->trigger();
 
-	if (InactiveUsers->action(context)->isChecked() != Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
+	if (InactiveUsers->action(context)->isChecked() != Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
 		InactiveUsers->action(context)->trigger();
 
-	if (ShowBlockedBuddies->action(context)->isChecked() != Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
+	if (ShowBlockedBuddies->action(context)->isChecked() != Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
 		ShowBlockedBuddies->action(context)->trigger();
 
-	if (ShowMyself->action(context)->isChecked() != Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
+	if (ShowMyself->action(context)->isChecked() != Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
 		ShowMyself->action(context)->trigger();
 }
 

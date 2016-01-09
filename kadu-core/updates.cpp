@@ -33,7 +33,7 @@
 #include "accounts/account.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/updates-dialog.h"
@@ -67,7 +67,7 @@ void Updates::buildQuery()
 {
 	Query = QString("/update-new.php?uuid=%1&version=%2").arg(ConfigurationManager::instance()->uuid().toString()).arg(Core::version());
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
 	{
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
@@ -210,7 +210,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 	reply->deleteLater();
 	deleteLater();
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates"))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates"))
 	{
 		auto newestVersion = QString::fromUtf8(reply->readAll());
 		if (newestVersion.size() > 31)

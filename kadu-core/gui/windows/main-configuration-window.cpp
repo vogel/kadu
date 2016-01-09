@@ -45,7 +45,7 @@
 #include "configuration/gui/configuration-ui-handler.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
@@ -166,7 +166,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 {
 	setWindowRole("kadu-configuration");
 
-	widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog.ui"));
+	widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog.ui"));
 
 #ifndef DEBUG_ENABLED
 	widget()->widgetById("debug")->hide();
@@ -317,7 +317,7 @@ void MainConfigurationWindow::installIconTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &profilePath = Application::instance()->pathsProvider()->profilePath();
+	const QString &profilePath = Core::instance()->pathsProvider()->profilePath();
 	ArchiveExtractor extractor;
 	bool success = extractor.extract(fileName, profilePath + "icons");
 	if (success)
@@ -402,7 +402,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
-		lookChatAdvanced.data()->widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced.data()->widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 	}
 
 	lookChatAdvanced.data()->show();

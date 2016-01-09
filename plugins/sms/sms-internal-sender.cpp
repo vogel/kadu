@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
 
@@ -120,7 +120,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 
 QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
 {
-	return Application::instance()->configuration()->deprecatedApi()->readEntry(group, name, defaultValue);
+	return Core::instance()->configuration()->deprecatedApi()->readEntry(group, name, defaultValue);
 }
 
 void SmsInternalSender::sendSms()

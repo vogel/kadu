@@ -22,10 +22,10 @@
 #include <QtCore/QTimer>
 
 #include "avatars/avatar-job-runner.h"
+#include "core/core.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 
-#include <configuration/deprecated-configuration-api.h>
-#include <core/application.h>
 #include "avatar-job-manager.h"
 
 AvatarJobManager * AvatarJobManager::Instance = 0;
@@ -67,7 +67,7 @@ void AvatarJobManager::runJob()
 	if (!hasJob())
 		return;
 
-	if (!Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
+	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
 		return;
 
 	IsJobRunning = true;

@@ -21,7 +21,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
-#include "core/application.h"
+#include "core/core.h"
 #include "url-handlers/standard-url-expander-configuration.h"
 #include "url-handlers/standard-url-expander.h"
 
@@ -37,8 +37,8 @@ void StandardUrlExpanderConfigurator::setStandardUrlExpander(StandardUrlExpander
 
 void StandardUrlExpanderConfigurator::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "FoldLink", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Chat", "LinkFoldTreshold", 50);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Chat", "FoldLink", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Chat", "LinkFoldTreshold", 50);
 }
 
 void StandardUrlExpanderConfigurator::configurationUpdated()
@@ -48,8 +48,8 @@ void StandardUrlExpanderConfigurator::configurationUpdated()
 
 	StandardUrlExpanderConfiguration configuration;
 
-	configuration.setFoldLink(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "FoldLink"));
-	configuration.setFoldLinkThreshold(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "LinkFoldTreshold"));
+	configuration.setFoldLink(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "FoldLink"));
+	configuration.setFoldLinkThreshold(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "LinkFoldTreshold"));
 
 	ConfigurableStandardUrlExpander->setConfiguration(configuration);
 }

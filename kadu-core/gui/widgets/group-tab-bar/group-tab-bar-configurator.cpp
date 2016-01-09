@@ -26,6 +26,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar-configuration.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar.h"
 
@@ -45,9 +46,9 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "AlwaysShowGroupTabUngroupped", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "AlwaysShowGroupTabUngroupped", false);
 }
 
 void GroupTabBarConfigurator::configurationUpdated()
@@ -62,10 +63,10 @@ GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
 {
 	auto configuration = GroupTabBarConfiguration();
 
-	configuration.setDisplayGroupTabs(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs", true));
-	configuration.setShowGroupTabEverybody(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowGroupAll", true));
-	configuration.setAlwaysShowGroupTabUngroupped(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
-	configuration.setCurrentGroupTab(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "CurrentGroupTab", 0));
+	configuration.setDisplayGroupTabs(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs", true));
+	configuration.setShowGroupTabEverybody(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowGroupAll", true));
+	configuration.setAlwaysShowGroupTabUngroupped(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
+	configuration.setCurrentGroupTab(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "CurrentGroupTab", 0));
 	configuration.setGroupFilters(loadGroupFilters(configuration.showGroupTabEverybody()));
 
 	return configuration;
@@ -77,21 +78,21 @@ void GroupTabBarConfigurator::storeConfiguration()
 		return;
 
 	auto configuration = ConfigurableGroupTabBar.data()->configuration();
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
 
 	storeGroupFilters(configuration.groupFilters());
 
-	Application::instance()->flushConfiguration(); // TODO: fix whole configuration system
+	Core::instance()->application()->flushConfiguration(); // TODO: fix whole configuration system
 }
 
 QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTabEverybody) const
 {
-	auto groupTabBarNode = Application::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeGet);
+	auto groupTabBarNode = Core::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeGet);
 	if (groupTabBarNode.isNull())
 		return import_0_12_groupFilters(showGroupTabEverybody);
 
 	auto result = QVector<GroupFilter>();
-	auto groupFilterNodes = Application::instance()->configuration()->api()->getNodes(groupTabBarNode, "GroupFilter");
+	auto groupFilterNodes = Core::instance()->configuration()->api()->getNodes(groupTabBarNode, "GroupFilter");
 	foreach (const auto &groupFilterNode, groupFilterNodes)
 	{
 		auto groupFilter = loadGroupFilter(groupFilterNode);
@@ -104,8 +105,8 @@ QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTab
 
 GroupFilter GroupTabBarConfigurator::loadGroupFilter(QDomElement element) const
 {
-	auto type = Application::instance()->configuration()->api()->getTextNode(element, "Type");
-	auto groupUuid = Application::instance()->configuration()->api()->getTextNode(element, "Group");
+	auto type = Core::instance()->configuration()->api()->getTextNode(element, "Type");
+	auto groupUuid = Core::instance()->configuration()->api()->getTextNode(element, "Group");
 
 	if (type == "Regular")
 		return GroupFilter(GroupManager::instance()->byUuid(groupUuid));
@@ -120,8 +121,8 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 {
 	auto result = QVector<GroupFilter>();
 	auto position = showGroupTabEverybody
-			? Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
-			: Application::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
+			? Core::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
+			: Core::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
 
 	auto groups = GroupManager::instance()->items().toList();
 	qStableSort(groups.begin(), groups.end(), [](const Group &a, const Group &b){ return a.tabPosition() < b.tabPosition(); });
@@ -136,7 +137,7 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 
 void GroupTabBarConfigurator::storeGroupFilters(const QVector<GroupFilter> &groupFilters)
 {
-	auto groupTabBarNode = Application::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeCreate);
+	auto groupTabBarNode = Core::instance()->configuration()->api()->getNode("GroupTabBar", ConfigurationApi::ModeCreate);
 	foreach (const auto &groupFilter, groupFilters)
 		storeGroupFilter(groupTabBarNode, groupFilter);
 }
@@ -146,18 +147,18 @@ void GroupTabBarConfigurator::storeGroupFilter(QDomElement parentElement, const 
 	if (GroupFilterInvalid == groupFilter.filterType())
 		return;
 
-	auto groupFilterNode = Application::instance()->configuration()->api()->getNode(parentElement, "GroupFilter", ConfigurationApi::ModeAppend);
+	auto groupFilterNode = Core::instance()->configuration()->api()->getNode(parentElement, "GroupFilter", ConfigurationApi::ModeAppend);
 	switch (groupFilter.filterType())
 	{
 		case GroupFilterRegular:
-			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Regular");
-			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Group", groupFilter.group().uuid().toString());
+			Core::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Regular");
+			Core::instance()->configuration()->api()->createTextNode(groupFilterNode, "Group", groupFilter.group().uuid().toString());
 			break;
 		case GroupFilterEverybody:
-			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Everybody");
+			Core::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Everybody");
 			break;
 		case GroupFilterUngroupped:
-			Application::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Ungroupped");
+			Core::instance()->configuration()->api()->createTextNode(groupFilterNode, "Type", "Ungroupped");
 			break;
 		default:
 			break;

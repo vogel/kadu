@@ -29,7 +29,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "misc/paths-provider.h"
@@ -155,11 +155,11 @@ QStringList Themes::defaultPathsProviderWithThemes() const
 {
 	QStringList result;
 
-	foreach(const QString &it, getSubDirs(Application::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name))
-		result << (Application::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(Core::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name))
+		result << (Core::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(Application::instance()->pathsProvider()->profilePath() + Name))
-		result << (Application::instance()->pathsProvider()->profilePath() + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(Core::instance()->pathsProvider()->profilePath() + Name))
+		result << (Core::instance()->pathsProvider()->profilePath() + Name + '/' + it + '/');
 
 	return result;
 }

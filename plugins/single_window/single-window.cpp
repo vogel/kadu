@@ -78,7 +78,7 @@ void SingleWindowManager::done()
 
 void SingleWindowManager::configurationUpdated()
 {
-	int newRosterPos = Application::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
+	int newRosterPos = Core::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_singleWindow->rosterPosition() != newRosterPos)
 		m_singleWindow->changeRosterPos(newRosterPos);
 }
@@ -97,7 +97,7 @@ SingleWindow::SingleWindow(QWidget *parent) :
 	m_tabs = new QTabWidget(this);
 	m_tabs->setTabsClosable(true);
 
-	m_rosterPos = Application::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
+	m_rosterPos = Core::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_rosterPos == 0)
 	{
 		m_split->addWidget(kadu);
@@ -116,7 +116,7 @@ SingleWindow::SingleWindow(QWidget *parent) :
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
-	int kaduwidth = Application::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
+	int kaduwidth = Core::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
 	if (m_rosterPos == 0)
 	{
@@ -153,7 +153,7 @@ SingleWindow::~SingleWindow()
 	KaduWindow *kadu = Core::instance()->kaduWindow();
 	bool visible = isVisible();
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
 	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
 	disconnect(m_tabs, 0, this, 0);
@@ -287,11 +287,11 @@ void SingleWindow::configurationUpdated()
 
 void SingleWindow::setConfiguration(ChatWidget *chatWidget)
 {
-	auto blinkChatTitle = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
+	auto blinkChatTitle = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
 	chatWidget->title()->setBlinkIconWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setBlinkTitleWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setComposingStatePosition(ChatConfigurationHolder::instance()->composingStatePosition());
-	chatWidget->title()->setShowUnreadMessagesCount(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
+	chatWidget->title()->setShowUnreadMessagesCount(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
 
 void SingleWindow::closeEvent(QCloseEvent *event)

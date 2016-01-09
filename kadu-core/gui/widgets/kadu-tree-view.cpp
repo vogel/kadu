@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "icons/kadu-icon.h"
 
@@ -56,7 +56,7 @@ KaduTreeView::~KaduTreeView()
 
 void KaduTreeView::configurationUpdated()
 {
-	bool showExpandingControl = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowExpandingControl", false);
+	bool showExpandingControl = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowExpandingControl", false);
 
 	if (rootIsDecorated() && !showExpandingControl)
 		collapseAll();
@@ -80,7 +80,7 @@ void KaduTreeView::updateBackground()
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop"))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop"))
 	{
 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
 		     "{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-closed", "16x16").fullPath() + "); margin-top: 4px; image-position: top }");

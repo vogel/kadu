@@ -20,7 +20,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "talkable/talkable.h"
 
 #include "tool-tip-class-manager.h"
@@ -38,7 +38,7 @@ ToolTipClassManager * ToolTipClassManager::instance()
 ToolTipClassManager::ToolTipClassManager() :
 		CurrentToolTipClass(0)
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
 	configurationUpdated();
 }
 
@@ -110,5 +110,5 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
+	useToolTipClass(Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
 }

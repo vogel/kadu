@@ -30,7 +30,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
@@ -68,16 +68,20 @@ FileTransferManager::FileTransferManager(QObject *parent) :
 
 FileTransferManager::~FileTransferManager()
 {
-	m_window.data()->deleteLater();
-
-	triggerAllAccountsUnregistered();
-
-	NewFileTransferNotification::unregisterEvents();
 }
 
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
+}
+
+void FileTransferManager::done()
+{
+	m_window.data()->deleteLater();
+
+	triggerAllAccountsUnregistered();
+
+	NewFileTransferNotification::unregisterEvents();
 }
 
 void FileTransferManager::addFileTransferService(Account account)
@@ -229,13 +233,13 @@ QString FileTransferManager::getSaveFileName(QString fileName, QString remoteFil
 	{
 		if (fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(parent, tr("Select file location"),
-					Application::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + remoteFileName,
+					Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + remoteFileName,
 							QString(), 0, QFileDialog::DontConfirmOverwrite);
 
 		if (fileName.isEmpty())
 			return fileName;
 
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
 		auto info = QFileInfo{fileName};
 
 		if (!haveFileName && info.exists())

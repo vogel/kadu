@@ -22,7 +22,7 @@
 #include "chat-notifier.h"
 
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "notification/notification-manager.h"
 
 ChatNotifyPluginObject::ChatNotifyPluginObject(QObject *parent) :
@@ -58,16 +58,16 @@ void ChatNotifyPluginObject::done()
 
 void ChatNotifyPluginObject::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "OTR_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "OTR_ChatNotifier", true);
 }
 
 #include "moc_chat-notify-plugin-object.cpp"

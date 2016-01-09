@@ -21,7 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata-reader-exception.h"
@@ -45,7 +45,7 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 	if (!fileInfo.exists() || !fileInfo.isReadable())
 		throw PluginMetadataReaderException{};
 
-	auto const lang = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language");
+	auto const lang = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language");
 	QSettings file{filePath, QSettings::IniFormat};
 	file.setIniCodec("UTF-8");
 

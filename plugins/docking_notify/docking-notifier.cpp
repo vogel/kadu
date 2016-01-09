@@ -27,7 +27,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
@@ -101,10 +101,10 @@ void DockingNotifier::notify(Notification *notification)
 
 	notification->acquire(this);
 
-	unsigned int timeout = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_timeout");
-	unsigned int icon = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_icon");
-	QString title = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_title");
-	QString syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_syntax");
+	unsigned int timeout = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_timeout");
+	unsigned int icon = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_icon");
+	QString title = Core::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_title");
+	QString syntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_syntax");
 
 	m_docking->showMessage(parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
@@ -128,66 +128,66 @@ NotifierConfigurationWidget *DockingNotifier::createConfigurationWidget(QWidget 
 
 void DockingNotifier::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_syntax", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_title", "%&t");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_icon", 3);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_syntax", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_title", "%&t");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_ConnectionError_icon", 3);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_icon", 1);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewChat_icon", 1);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_icon", 1);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_NewMessage_icon", 1);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChangedt_icon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChangedt_icon", 0);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_icon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToFreeForChat_icon", 0);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_icon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOnline_icon", 0);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_icon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToAway_icon", 0);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_icon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToNotAvailable_icon", 0);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_icon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToDoNotDisturb_icon", 0);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_syntax", "%&d");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_title", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_icon", 0);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_syntax", "%&d");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_title", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_StatusChanged/ToOffline_icon", 0);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_syntax", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_title", "%&t");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_icon", 2);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_syntax", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_title", "%&t");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/Finished_icon", 2);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_timeout", 10);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_syntax", "%&m");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_title", "%&t");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_icon", 2);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Qt4DockingNotificationEventConfiguration_Geometry", "50, 50, 615, 290");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_timeout", 10);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_syntax", "%&m");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_title", "%&t");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Event_FileTransfer/IncomingFile_icon", 2);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Qt4DockingNotifier", "Qt4DockingNotificationEventConfiguration_Geometry", "50, 50, 615, 290");
 }
 
 /** @} */

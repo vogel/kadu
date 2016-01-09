@@ -19,7 +19,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "status-configuration-holder.h"
@@ -51,7 +51,7 @@ StatusConfigurationHolder::StatusConfigurationHolder() :
 
 void StatusConfigurationHolder::configurationUpdated()
 {
-	QString statusContainerType = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
+	QString statusContainerType = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
 
 	SetStatusMode newStatus = SetStatusPerIdentity;
 	if (statusContainerType == "Account")

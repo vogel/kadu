@@ -22,7 +22,7 @@
 #include <QtGui/QPalette>
 #include <QtWidgets/QSpinBox>
 
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-select-font.h"
@@ -38,7 +38,7 @@ QMap<QString, HintsConfigurationWindow *> HintsConfigurationWindow::Configuratio
 HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager) :
 	ConfigurationWindow("HintEventConfiguration", tr("Hints configuration"), "Hints", dataManager), EventName(eventName)
 {
-	widget()->appendUiFile(Application::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-notifier.ui"));
+	widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-notifier.ui"));
 
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
 	static_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));

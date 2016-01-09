@@ -213,9 +213,9 @@ void TabWidget::closeTab(ChatWidget *chatWidget)
 	if (!chatWidget)
 		return;
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		unsigned int period = Application::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("Chat",
+		unsigned int period = Core::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < chatWidget->lastReceivedMessageTime().addSecs(period))
@@ -480,7 +480,7 @@ void TabWidget::tabRemoved(int index)
 
 void TabWidget::compositingEnabled()
 {
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -502,13 +502,13 @@ void TabWidget::configurationUpdated()
 
 	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 
-	setTabsClosable(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButtonOnTab"));
-	config_oldStyleClosing = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing");
+	setTabsClosable(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButtonOnTab"));
+	config_oldStyleClosing = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing");
 
 	bool isOpenChatButtonEnabled = (cornerWidget(Qt::TopLeftCorner) == OpenChatButtonsWidget);
-	bool shouldEnableOpenChatButton = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OpenChatButton");
+	bool shouldEnableOpenChatButton = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OpenChatButton");
 	bool isCloseButtonEnabled = CloseChatButton->isVisible();
-	bool shouldEnableCloseButton = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButton");
+	bool shouldEnableCloseButton = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButton");
 
 	if (isOpenChatButtonEnabled != shouldEnableOpenChatButton)
 	{

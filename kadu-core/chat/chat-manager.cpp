@@ -31,19 +31,13 @@
 #include "chat-manager.h"
 
 ChatManager::ChatManager(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		Manager<Chat>{false}
 {
 }
 
 ChatManager::~ChatManager()
 {
-	if (Core::instance())
-	{
-		disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
-
-		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
-			unreadMessageRemoved(message);
-	}
 }
 
 void ChatManager::init()
@@ -55,6 +49,19 @@ void ChatManager::init()
 	        this, SLOT(unreadMessageAdded(Message)));
 	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)),
 	        this, SLOT(unreadMessageRemoved(Message)));
+}
+
+void ChatManager::done()
+{
+	if (Core::instance())
+	{
+		disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
+
+		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
+			unreadMessageRemoved(message);
+	}
+
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void ChatManager::itemAboutToBeRegistered(Chat item)

@@ -29,7 +29,7 @@
 #include "configuration/configuration.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "roster/roster.h"
 #include "storage/storage-point.h"
 #include "debug.h"

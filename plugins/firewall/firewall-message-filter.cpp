@@ -49,7 +49,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -496,51 +496,51 @@ void FirewallMessageFilter::writeLog(const Contact &contact, const QString &mess
 
 void FirewallMessageFilter::configurationUpdated()
 {
-	CheckFloodingEmoticons = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "dos_emoticons", true);
-	EmoticonsAllowKnown = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "emoticons_allow_known", false);
-	WriteLog = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "write_log", true);
-	LogFilePath = Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "logFile", Application::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
-	CheckDos = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "dos", true);
-	CheckChats = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "chats", true);
-	IgnoreConferences = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "ignore_conferences", true);
-	DropAnonymousWhenInvisible = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
-	IgnoreInvisible = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "ignore_invisible", false);
-	Confirmation = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "confirmation", true);
-	ConfirmationText = Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"));
-	Search = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "search", true);
-	ConfirmationQuestion = Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"));
-	WriteInHistory = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "write_history", true);
-	DosInterval = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Firewall", "dos_interval", 500);
-	MaxEmoticons = Application::instance()->configuration()->deprecatedApi()->readNumEntry("Firewall", "emoticons_max", 15);
-	SafeSending = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "safe_sending", false);
+	CheckFloodingEmoticons = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "dos_emoticons", true);
+	EmoticonsAllowKnown = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "emoticons_allow_known", false);
+	WriteLog = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "write_log", true);
+	LogFilePath = Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "logFile", Core::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
+	CheckDos = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "dos", true);
+	CheckChats = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "chats", true);
+	IgnoreConferences = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "ignore_conferences", true);
+	DropAnonymousWhenInvisible = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
+	IgnoreInvisible = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "ignore_invisible", false);
+	Confirmation = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "confirmation", true);
+	ConfirmationText = Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"));
+	Search = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "search", true);
+	ConfirmationQuestion = Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"));
+	WriteInHistory = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "write_history", true);
+	DosInterval = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Firewall", "dos_interval", 500);
+	MaxEmoticons = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Firewall", "emoticons_max", 15);
+	SafeSending = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Firewall", "safe_sending", false);
 
-	pattern.setPattern(Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer", tr("I want something")));
+	pattern.setPattern(Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer", tr("I want something")));
 }
 
 void FirewallMessageFilter::createDefaultConfiguration()
 {
 	//domy�lne powiadamianie dymkiem
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Firewall_Hints", Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "show_hint", "true"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "notification_syntax", Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "hint_syntax", tr("%u writes")));
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Firewall_Hints", Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "show_hint", "true"));
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "notification_syntax", Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "hint_syntax", tr("%u writes")));
 	//domy�lne kolory dymk�w
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_Firewall_fgcolor", Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "fg_color", "#000080"));//navy
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_Firewall_bgcolor", Application::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "bg_color", "#add8e6"));//lightblue
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_Firewall_fgcolor", Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "fg_color", "#000080"));//navy
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_Firewall_bgcolor", Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "bg_color", "#add8e6"));//lightblue
 	//domy�lne warto�ci zmiennych konfiguracyjnych
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "ignore_conferences", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "search", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "chats", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)") );
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "answer", tr("I want something") );
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "confirmation", true );
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)") );
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "dos", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "dos_interval", 500);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "dos_emoticons", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "emoticons_max", 15);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "emoticons_allow_known", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "safe_sending", false);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "write_log", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "logFile", Application::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "ignore_conferences", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "search", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "chats", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)") );
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "answer", tr("I want something") );
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "confirmation", true );
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)") );
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "dos", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "dos_interval", 500);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "dos_emoticons", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "emoticons_max", 15);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "emoticons_allow_known", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "safe_sending", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "write_log", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Firewall", "logFile", Core::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
 }
 
 #include "moc_firewall-message-filter.cpp"

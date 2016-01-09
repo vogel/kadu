@@ -28,7 +28,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "chat/chat-list-mime-data-helper.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-edit-window.h"
@@ -329,7 +329,7 @@ void GroupTabBar::deleteGroup()
 
 void GroupTabBar::createNewGroup()
 {
-	auto editWindow = new GroupEditWindow{GroupManager::instance(), Application::instance()->configuration()->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{GroupManager::instance(), Core::instance()->configuration()->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
 	editWindow->show();
 }
 
@@ -343,7 +343,7 @@ void GroupTabBar::groupProperties()
 	if (!group)
 		return;
 
-	auto editWindow = new GroupEditWindow{GroupManager::instance(), Application::instance()->configuration()->deprecatedApi(), group, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{GroupManager::instance(), Core::instance()->configuration()->deprecatedApi(), group, Core::instance()->kaduWindow()};
 	editWindow->show();
 }
 

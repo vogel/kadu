@@ -23,7 +23,7 @@ extern "C" {
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "otr-context-converter.h"

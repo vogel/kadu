@@ -34,6 +34,10 @@ FileTransferHandlerManager::FileTransferHandlerManager(QObject *parent) :
 
 FileTransferHandlerManager::~FileTransferHandlerManager()
 {
+}
+
+void FileTransferHandlerManager::done()
+{
 	triggerAllAccountsUnregistered();
 }
 

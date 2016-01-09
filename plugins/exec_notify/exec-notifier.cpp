@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include <notification/notification/notification.h>
 #include "parser/parser.h"
 
@@ -45,16 +45,16 @@ ExecNotifier::~ExecNotifier()
 
 void ExecNotifier::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToFreeForChatCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToNotAvailableCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToDoNotDisturbCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Application::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToFreeForChatCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToNotAvailableCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToDoNotDisturbCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 }
 
 // TODO: merge with HistoryManager version
@@ -145,7 +145,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotifier::notify(Notification *notification)
 {
-	auto syntax = Application::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
+	auto syntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	auto s = mySplit(' ', syntax);

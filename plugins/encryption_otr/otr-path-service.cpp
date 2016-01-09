@@ -19,7 +19,7 @@
 
 #include "otr-path-service.h"
 
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include <QtCore/QDir>
@@ -27,7 +27,7 @@
 OtrPathService::OtrPathService(QObject *parent) :
 		QObject{parent}
 {
-	m_dir = Application::instance()->pathsProvider()->profilePath() + QString("/keys/");
+	m_dir = Core::instance()->pathsProvider()->profilePath() + QString("/keys/");
 
 	QDir dir{m_dir};
 	if (!dir.exists())

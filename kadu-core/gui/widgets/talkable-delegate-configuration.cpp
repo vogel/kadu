@@ -20,7 +20,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "icons/kadu-icon.h"
 
@@ -39,23 +39,23 @@ TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *l
 
 void TalkableDelegateConfiguration::configurationUpdated()
 {
-	Font = QFont(Application::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "UserboxFont"), ListView);
+	Font = QFont(Core::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "UserboxFont"), ListView);
 	BoldFont = Font;
 	BoldFont.setBold(true);
 
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
-	AlwaysShowIdentityName = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "TalkableListAlwaysShowIdentityName");
-	ShowAvatars = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars");
-	AvatarBorder = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarBorder");
-	AvatarGreyOut = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarGreyOut");
-	AlignTop = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop");
-	ShowBold = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowBold");
-	ShowDescription = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
-	ShowMultiLineDescription = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc");
-	DescriptionColor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "DescriptionColor");
-	FontColor = Application::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "UserboxFgColor");
+	AlwaysShowIdentityName = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "TalkableListAlwaysShowIdentityName");
+	ShowAvatars = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars");
+	AvatarBorder = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarBorder");
+	AvatarGreyOut = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarGreyOut");
+	AlignTop = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop");
+	ShowBold = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowBold");
+	ShowDescription = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
+	ShowMultiLineDescription = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc");
+	DescriptionColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "DescriptionColor");
+	FontColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "UserboxFgColor");
 
 	ListView->scheduleDelayedItemsLayout();
 }

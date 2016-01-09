@@ -28,7 +28,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "notification/notification/aggregate-notification.h"

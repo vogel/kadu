@@ -26,7 +26,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/change-notifier.h"
 #include "misc/paths-provider.h"
 
@@ -51,7 +51,7 @@ AvatarShared * AvatarShared::loadFromStorage(const std::shared_ptr<StoragePoint>
 AvatarShared::AvatarShared(const QUuid &uuid) :
 		Shared(uuid)
 {
-	AvatarsDir = Application::instance()->pathsProvider()->profilePath() + QLatin1String("avatars/");
+	AvatarsDir = Core::instance()->pathsProvider()->profilePath() + QLatin1String("avatars/");
 
 	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
@@ -142,7 +142,7 @@ void AvatarShared::storeAvatar()
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
 
-	QDir avatarsDir(Application::instance()->pathsProvider()->profilePath() + QLatin1String("avatars"));
+	QDir avatarsDir(Core::instance()->pathsProvider()->profilePath() + QLatin1String("avatars"));
 	if (!avatarsDir.exists())
 		avatarsDir.mkpath(QLatin1String("."));
 
@@ -172,7 +172,7 @@ void AvatarShared::storeSmallPixmap()
 	if (!isValidStorage())
 		return;
 
-	QDir avatarsDir(Application::instance()->pathsProvider()->profilePath() + QLatin1String("avatars"));
+	QDir avatarsDir(Core::instance()->pathsProvider()->profilePath() + QLatin1String("avatars"));
 	if (!avatarsDir.exists())
 		avatarsDir.mkpath(QLatin1String("."));
 

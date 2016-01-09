@@ -21,7 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/algorithm.h"
 #include "plugin/state/plugin-state.h"
 
@@ -38,12 +38,12 @@ QMap<QString, PluginState> PluginStateStorage09::load(const ::std::set<QString> 
 {
 	auto result = QMap<QString, PluginState>{};
 
-	auto everLoaded = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
-	auto loaded = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "LoadedModules");
+	auto everLoaded = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
+	auto loaded = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "LoadedModules");
 
 	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
 	everLoaded += loadedPlugins;
-	auto unloaded_str = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "UnloadedModules");
+	auto unloaded_str = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "UnloadedModules");
 	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...

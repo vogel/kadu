@@ -32,7 +32,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/configuration/config-combo-box.h"
@@ -141,12 +141,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());
-	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
-	Application::instance()->configuration()->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());
+	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
+	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
 
-	Application::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+	Core::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

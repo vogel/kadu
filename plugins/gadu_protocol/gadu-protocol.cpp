@@ -49,7 +49,7 @@
 #include "status/status-type.h"
 #include "status/status.h"
 
-#include "core/application.h"
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "debug.h"
@@ -442,9 +442,9 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
 	GaduLoginParams.has_audio = false;
-	GaduLoginParams.last_sysmsg = Application::instance()->configuration()->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
+	GaduLoginParams.last_sysmsg = Core::instance()->configuration()->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
 
-	GaduLoginParams.image_size = qMax(qMin(Application::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
+	GaduLoginParams.image_size = qMax(qMin(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
 
 	GaduLoginParams.struct_size = sizeof(struct gg_login_params);
 

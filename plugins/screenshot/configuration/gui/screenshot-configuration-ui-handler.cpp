@@ -22,7 +22,7 @@
 #include <QtGui/QImageWriter>
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "misc/paths-provider.h"
 

@@ -39,7 +39,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
@@ -239,7 +239,7 @@ QString About::loadFile(const QString &name)
 {
 	kdebugf();
 
-	QFile file(Application::instance()->pathsProvider()->dataPath() + name);
+	QFile file(Core::instance()->pathsProvider()->dataPath() + name);
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));

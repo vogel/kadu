@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
 
@@ -61,7 +61,7 @@ void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 		Sounds[CurrentNotificationEvent] = soundEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = Sounds.constBegin(), end = Sounds.constEnd(); it != end; ++it)
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
+		Core::instance()->configuration()->deprecatedApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
 }
 
 void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
@@ -74,7 +74,7 @@ void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 	if (Sounds.contains(event))
 		soundEdit->setText(Sounds[event]);
 	else
-		soundEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("PC Speaker", event + "_Sound"));
+		soundEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("PC Speaker", event + "_Sound"));
 }
 
 void PCSpeakerConfigurationWidget::test()

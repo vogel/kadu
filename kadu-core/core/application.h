@@ -33,27 +33,18 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-#ifndef Q_MOC_RUN
-#  define INJEQT_SET
-#endif
-
-class Configuration;
 class ConfigurationWriter;
-class PathsProvider;
 
 class KADUAPI Application : public QObject
 {
 	Q_OBJECT
 
 public:
-	static Application * instance();
-
-	Q_INVOKABLE Application();
+	Q_INVOKABLE explicit Application(QObject *parent = nullptr);
 	virtual ~Application();
-
-	Configuration * configuration() const;
-	PathsProvider * pathsProvider() const;
 
 	void flushConfiguration();
 	void backupConfiguration();
@@ -62,15 +53,9 @@ public:
 	void quit();
 
 private:
-	static Application * m_instance;
-
-	Configuration *m_configuration;
-	ConfigurationWriter *m_configurationWriter;
-	PathsProvider *m_pathsProvider;
+	QPointer<ConfigurationWriter> m_configurationWriter;
 
 public slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setConfigurationWriter(ConfigurationWriter *configurationWriter);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

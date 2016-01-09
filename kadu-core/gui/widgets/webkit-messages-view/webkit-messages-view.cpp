@@ -24,7 +24,7 @@
 #include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/chat-style-renderer.h"
 #include "contacts/contact-set.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -214,7 +214,7 @@ void WebkitMessagesView::refreshView()
 
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
-	QFile file{Application::instance()->pathsProvider()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	QFile file{Core::instance()->pathsProvider()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};

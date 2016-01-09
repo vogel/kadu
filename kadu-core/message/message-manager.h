@@ -152,6 +152,8 @@ private slots:
 	 */
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
+	INJEQT_DONE void done();
+
 	/**
 	 * @short Slot called every time a new message was received from any of registered accounts.
 	 * @author Rafał 'Vogel' Malinowski

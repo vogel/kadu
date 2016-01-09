@@ -235,7 +235,6 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<StatusModule>());
 
 	auto injector = injeqt::injector{std::move(modules)};
-	injector.get<InjectorProvider>()->setInjector(&injector);
 
 	try
 	{
@@ -263,7 +262,8 @@ int main(int argc, char *argv[]) try
 
 	enableSignalHandling();
 
-	auto lang = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
+	Core::createInstance(std::move(injector));
+	auto lang = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
 
 	QTranslator qt_qm;
 	QTranslator qtbase_qm;
@@ -274,14 +274,14 @@ int main(int argc, char *argv[]) try
 	QTranslator qtxmlpatterns_qm;
 	QTranslator kadu_qm;
 
-	qt_qm.load("qt_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
-	qtbase_qm.load("qtbase_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
-	qtdeclarative_qm.load("qtdeclarative_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
-	qtmultimedia_qm.load("qtmultimedia_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
-	qtquick1_qm.load("qtquick1_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
-	qtscript_qm.load("qtscript_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
-	qtxmlpatterns_qm.load("qtxmlpatterns_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
-	kadu_qm.load("kadu_" + lang, Application::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qt_qm.load("qt_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtbase_qm.load("qtbase_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtdeclarative_qm.load("qtdeclarative_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtmultimedia_qm.load("qtmultimedia_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtquick1_qm.load("qtquick1_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtscript_qm.load("qtscript_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	qtxmlpatterns_qm.load("qtxmlpatterns_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	kadu_qm.load("kadu_" + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
 
 	QCoreApplication::installTranslator(&qt_qm);
 	QCoreApplication::installTranslator(&qtbase_qm);
@@ -293,10 +293,9 @@ int main(int argc, char *argv[]) try
 	QCoreApplication::installTranslator(&kadu_qm);
 
 	auto ret = 0;
-	auto applicationId = QString{"kadu-%1"}.arg(Application::instance()->pathsProvider()->profilePath());
+	auto applicationId = QString{"kadu-%1"}.arg(Core::instance()->pathsProvider()->profilePath());
 
 	auto executeAsFirst = [&](){
-		Core::createInstance(injector);
 		Core::instance()->createGui();
 		Core::instance()->runGuiServices();
 

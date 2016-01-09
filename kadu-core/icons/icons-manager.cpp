@@ -25,7 +25,7 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"

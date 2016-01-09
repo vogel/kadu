@@ -23,7 +23,7 @@ extern "C" {
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "otr-create-private-key-job.h"

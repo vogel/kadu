@@ -27,7 +27,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "languages-manager.h"
 
@@ -74,19 +74,19 @@ void ConfigWizardProfilePage::setLanguages()
 
 void ConfigWizardProfilePage::initializePage()
 {
-	int languageIndex = LanguagesCombo->findData(Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
+	int languageIndex = LanguagesCombo->findData(Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
 	if (-1 == languageIndex)
 		languageIndex = LanguagesCombo->findData("en");
 	if (-1 != languageIndex)
 		LanguagesCombo->setCurrentIndex(languageIndex);
 
-	NickNameEdit->setText(Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", "Me"));
+	NickNameEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", "Me"));
 }
 
 void ConfigWizardProfilePage::acceptPage()
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
 
 	Core::instance()->myself().setDisplay(NickNameEdit->text());
 }

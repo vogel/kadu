@@ -28,7 +28,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "storage/storage-point.h"
@@ -89,7 +89,7 @@ void GroupManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	QDomElement groupsNode = Application::instance()->configuration()->api()->getNode("Groups", ConfigurationApi::ModeFind);
+	QDomElement groupsNode = Core::instance()->configuration()->api()->getNode("Groups", ConfigurationApi::ModeFind);
 	if (groupsNode.isNull())
 	{
 		importConfiguration();

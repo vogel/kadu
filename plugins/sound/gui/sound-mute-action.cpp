@@ -23,7 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/actions/action.h"
 
 SoundMuteAction::SoundMuteAction(QObject *parent) :
@@ -55,7 +55,7 @@ void SoundMuteAction::actionTriggered(QAction *sender, bool toggled)
 	m_soundManager->setMute(!toggled);
 	updateActionStates();
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundMuteAction::updateActionState(Action *action)

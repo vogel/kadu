@@ -27,7 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -105,8 +105,8 @@ void SpeechConfigurationUiHandler::testSpeech()
 
 	QString program = programSelectFile->file();
 	// TODO: mo�e u�ywa� jakiego� normalnego tekstu ?
-	QString formatM = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
-	QString formatF = Application::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
+	QString formatM = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
+	QString formatF = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
 	QString device = dspDeviceLineEdit->text();
 	bool klatt = klattSyntCheckBox->isChecked();
 	bool mel = melodyCheckBox->isChecked();

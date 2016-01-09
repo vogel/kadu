@@ -33,7 +33,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/kadu-text-edit.h"
 #include "gui/windows/kadu-window.h"
@@ -281,7 +281,7 @@ void StatusWindow::applyStatus()
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
 
 	for (auto &&container : Container->subStatusContainers())

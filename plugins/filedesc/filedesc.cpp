@@ -24,7 +24,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include <QtCore/QFile>
@@ -65,9 +65,9 @@ void FileDescription::configurationUpdated()
 	if (!m_fileDescStatusChanger || !m_pathsProvider)
 		return;
 
-	m_file = Application::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
-	m_forceDesc = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
-	m_allowOther = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
+	m_file = Core::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
+	m_forceDesc = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
+	m_allowOther = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
@@ -93,9 +93,9 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "file", Application::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
-	Application::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "file", Core::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
+	Core::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
+	Core::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

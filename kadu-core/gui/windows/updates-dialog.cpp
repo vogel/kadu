@@ -32,7 +32,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "os/generic/url-opener.h"
 
 #include "updates-dialog.h"
@@ -63,7 +63,7 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 	connect(messageLabel, SIGNAL(linkActivated(QString)), this, SLOT(downloadClicked()));
 
 	CheckForUpdates = new QCheckBox(tr("Check for updates when Kadu is opened"));
-	CheckForUpdates->setChecked(Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
+	CheckForUpdates->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -87,7 +87,7 @@ UpdatesDialog::~UpdatesDialog()
 
 void UpdatesDialog::downloadClicked()
 {
-	if (Application::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
+	if (Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
 		UrlOpener::openUrl("http://www.kadu.im/w/Pobierz");
 	else
 		UrlOpener::openUrl("http://www.kadu.im/w/English:Download");
@@ -95,7 +95,7 @@ void UpdatesDialog::downloadClicked()
 
 void UpdatesDialog::accepted()
 {
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("General", "CheckUpdates", CheckForUpdates->isChecked());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "CheckUpdates", CheckForUpdates->isChecked());
 
 	close();
 }

@@ -57,7 +57,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 
-#include "core/application.h"
+#include "core/core.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -73,7 +73,7 @@ static void disableNewTab(Action *action)
 
 	action->setEnabled(action->context()->chat());
 
-	if (Application::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
+	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
 		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
 	else
 		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));

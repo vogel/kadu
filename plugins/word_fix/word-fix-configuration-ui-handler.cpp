@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -154,7 +154,7 @@ void WordFixConfigurationUiHandler::saveList()
 	for (QMap<QString, QString>::const_iterator i = m_wordFix->wordsList().constBegin(); i != m_wordFix->wordsList().constEnd(); ++i)
 		list.append(i.key() + '\t' + i.value());
 
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
 }
 
 void WordFixConfigurationUiHandler::wordSelected()

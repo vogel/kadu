@@ -61,6 +61,7 @@ class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
 class ConfigurationUiHandlerRepository;
+class Configuration;
 class ContactManager;
 class FileTransferHandlerManager;
 class FileTransferManager;
@@ -77,6 +78,7 @@ class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationManager;
 class NotificationService;
+class PathsProvider;
 class PluginActivationService;
 class PluginConflictResolver;
 class PluginDependencyHandler;
@@ -103,7 +105,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	static Core *Instance;
 
-	injeqt::v1::injector &m_injector;
+	mutable injeqt::v1::injector m_injector;
 	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
@@ -118,7 +120,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	bool IsClosing;
 	bool ShowMainWindowOnStart; // TODO: 0.11.0, it is a hack
 
-	Core(injeqt::v1::injector &injector);
+	Core(injeqt::v1::injector &&injector);
 	virtual ~Core();
 
 	void importPre10Configuration();
@@ -140,13 +142,12 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static void createInstance(injeqt::v1::injector &injector);
+	static void createInstance(injeqt::v1::injector &&injector);
 	static Core * instance();
 
 	static QString name();
 	static QString version();
 	static QString nameWithVersion();
-	static Application * application();
 
 	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }
@@ -206,6 +207,9 @@ public:
 	IconsManager * iconsManager() const;
 	StatusSetter * statusSetter() const;
 	ContactManager * contactManager() const;
+	Configuration * configuration() const;
+	PathsProvider * pathsProvider() const;
+	Application * application() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);
