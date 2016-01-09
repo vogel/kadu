@@ -28,12 +28,15 @@
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtWidgets/QSystemTrayIcon>
 #include <injeqt/injeqt.h>
 
 class AttentionService;
 class DockingConfigurationProvider;
 class DockingMenuActionRepository;
+class IconsManager;
+class StatusContainerManager;
 class StatusNotifierItem;
 
 class DOCKINGAPI Docking final : public QObject
@@ -52,7 +55,8 @@ signals:
 	void messageClicked();
 
 private:
-	static Docking *m_instance;
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	owned_qptr<DockingConfigurationProvider> m_dockingConfigurationProvider;
 	owned_qptr<DockingMenuActionRepository> m_dockingMenuActionRepository;
@@ -62,6 +66,9 @@ private:
 
 private slots:
 	INJEQT_SET void setAttentionService(AttentionService *attentionService);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_INIT void init();
 
 	void configurationUpdated();
 	void needAttentionChanged(bool needAttention);

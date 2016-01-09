@@ -43,12 +43,15 @@ ChatWidgetTitle::ChatWidgetTitle(ChatWidget *parent) :
 		if (contact.ownerBuddy())
 			connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(update()));
 	}
-
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(update()));
 }
 
 ChatWidgetTitle::~ChatWidgetTitle()
 {
+}
+
+void ChatWidgetTitle::setIconsManager(IconsManager *iconsManager)
+{
+	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
 }
 
 ChatWidget * ChatWidgetTitle::chatWidget() const

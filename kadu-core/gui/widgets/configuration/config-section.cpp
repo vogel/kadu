@@ -29,6 +29,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-tab.h"
@@ -44,7 +45,7 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configura
 	TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	TabWidget->hide();
 
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 ConfigSection::~ConfigSection()

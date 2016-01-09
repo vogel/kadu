@@ -50,7 +50,7 @@ StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefi
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 StatusActions::~StatusActions()

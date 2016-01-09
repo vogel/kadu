@@ -89,6 +89,7 @@ void AccountsAwareObject::triggerAllAccountsRegistered()
 
 void AccountsAwareObject::triggerAllAccountsUnregistered()
 {
-	foreach (const Account &account, Core::instance()->accountManager()->items())
-		accountUnregistered(account);
+	if (Core::instance())
+		foreach (const Account &account, Core::instance()->accountManager()->items())
+			accountUnregistered(account);
 }

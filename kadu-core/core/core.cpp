@@ -470,7 +470,7 @@ void Core::init()
 	new Updates(this);
 
 	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
+	connect(iconsManager(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
@@ -850,6 +850,11 @@ StatusTypeManager * Core::statusTypeManager() const
 InjectedFactory * Core::injectedFactory() const
 {
 	return m_injector.get<InjectedFactory>();
+}
+
+IconsManager * Core::iconsManager() const
+{
+	return m_injector.get<IconsManager>();
 }
 
 void Core::showMainWindow()

@@ -335,20 +335,20 @@ void MainConfigurationWindow::setIconThemes()
 	ConfigListWidget *iconThemes = static_cast<ConfigListWidget *>(widget()->widgetById("iconThemes"));
 	iconThemes->clear();
 
-	IconsManager::instance()->themeManager()->loadThemes();
+	Core::instance()->iconsManager()->themeManager()->loadThemes();
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 
 	QStringList values;
 	QStringList captions;
-	foreach (const Theme &theme, IconsManager::instance()->themeManager()->themes())
+	foreach (const Theme &theme, Core::instance()->iconsManager()->themeManager()->themes())
 	{
 		values.append(theme.name());
 		captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	iconThemes->setItems(values, captions);
-	iconThemes->setCurrentItem(IconsManager::instance()->themeManager()->currentTheme().name());
+	iconThemes->setCurrentItem(Core::instance()->iconsManager()->themeManager()->currentTheme().name());
 
 	QStringList iconPaths;
 	iconPaths
@@ -358,7 +358,7 @@ void MainConfigurationWindow::setIconThemes()
 			<< "preferences-other";
 
 	QList<QIcon> icons;
-	foreach (const Theme &theme, IconsManager::instance()->themeManager()->themes())
+	foreach (const Theme &theme, Core::instance()->iconsManager()->themeManager()->themes())
 	{
 		QPixmap combinedIcon(iconPaths.count() * 36, 36);
 		combinedIcon.fill(Qt::transparent);

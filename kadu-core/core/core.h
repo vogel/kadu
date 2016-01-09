@@ -46,6 +46,7 @@ class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
 class AccountManager;
+class Application;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyManager;
 class ChatConfigurationWidgetFactoryRepository;
@@ -63,7 +64,8 @@ class ConfigurationUiHandlerRepository;
 class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
-class Application;
+class IconsManager;
+class InjectedFactory;
 class KaduIcon;
 class KaduWindow;
 class Message;
@@ -91,7 +93,6 @@ class StatusTypeManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
 class UrlHandlerManager;
-class InjectedFactory;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -200,6 +201,7 @@ public:
 	StatusContainerManager * statusContainerManager() const;
 	StatusTypeManager * statusTypeManager() const;
 	InjectedFactory * injectedFactory() const;
+	IconsManager * iconsManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

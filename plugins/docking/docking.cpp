@@ -51,9 +51,35 @@
 Docking::Docking(QObject *parent) :
 		QObject{parent}
 {
+}
+
+Docking::~Docking()
+{
+	if (!Core::instance()->isClosing())
+		Core::instance()->kaduWindow()->window()->show();
+	Core::instance()->kaduWindow()->setDocked(false);
+}
+
+void Docking::setAttentionService(AttentionService *attentionService)
+{
+	connect(attentionService, SIGNAL(needAttentionChanged(bool)), this, SLOT(needAttentionChanged(bool)));
+}
+
+void Docking::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void Docking::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
+void Docking::init()
+{
 	m_dockingMenuActionRepository = make_owned<DockingMenuActionRepository>(this);
 
-	auto statusIcon = make_owned<StatusIcon>(Core::instance()->statusContainerManager(), this);
+	auto statusIcon = make_owned<StatusIcon>(m_statusContainerManager, this);
 	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
@@ -72,7 +98,7 @@ Docking::Docking(QObject *parent) :
 
 	auto dockingMenuHandler = make_owned<DockingMenuHandler>(m_statusNotifierItem->contextMenu(), this);
 	dockingMenuHandler->setDockingMenuActionRepository(m_dockingMenuActionRepository.get());
-	dockingMenuHandler->setIconsManager(IconsManager::instance());
+	dockingMenuHandler->setIconsManager(m_iconsManager);
 	dockingMenuHandler->setNotificationService(Core::instance()->notificationService());
 	dockingMenuHandler->setStatusContainerManager(Core::instance()->statusContainerManager());
 
@@ -86,18 +112,6 @@ Docking::Docking(QObject *parent) :
 	if (m_dockingConfigurationProvider->configuration().RunDocked)
 		Core::instance()->setShowMainWindowOnStart(false);
 	Core::instance()->kaduWindow()->setDocked(true);
-}
-
-Docking::~Docking()
-{
-	if (!Core::instance()->isClosing())
-		Core::instance()->kaduWindow()->window()->show();
-	Core::instance()->kaduWindow()->setDocked(false);
-}
-
-void Docking::setAttentionService(AttentionService *attentionService)
-{
-	connect(attentionService, SIGNAL(needAttentionChanged(bool)), this, SLOT(needAttentionChanged(bool)));
 }
 
 DockingMenuActionRepository * Docking::dockingMenuActionRepository() const

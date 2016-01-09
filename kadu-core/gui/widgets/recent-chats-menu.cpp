@@ -40,7 +40,7 @@ RecentChatsMenu::RecentChatsMenu(QWidget *parent) :
 
 	RecentChatsMenuNeedsUpdate = true;
 
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(invalidate()));
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(invalidate()));
 	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));

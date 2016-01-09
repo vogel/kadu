@@ -37,6 +37,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
+#include "core/core.h"
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"
@@ -106,7 +107,7 @@ ToolBar::ToolBar(QWidget *parent) :
 	dropmarker.visible = false;
 
 	setAcceptDrops(true);
-	setIconSize(IconsManager::instance()->getIconsSize());
+	setIconSize(Core::instance()->iconsManager()->getIconsSize());
 
 	if (!watcher)
 		watcher = new DisabledActionsWatcher();
@@ -576,7 +577,7 @@ void ToolBar::configurationUpdated()
 		return setMovable(false);
 
 	setMovable(!toolbarsConfig.attribute("blocked").toInt());
-	setIconSize(IconsManager::instance()->getIconsSize());
+	setIconSize(Core::instance()->iconsManager()->getIconsSize());
 }
 
 void ToolBar::writeToConfig(const QDomElement &parent_element)

@@ -26,6 +26,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
+#include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/hot-key.h"
@@ -41,7 +42,7 @@ Action::Action(ActionDescription *description, ActionContext *context, QObject *
 
 	if (!Description->icon().isNull())
 	{
-		connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
+		connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
 		setIcon(Description->icon());
 	}
 

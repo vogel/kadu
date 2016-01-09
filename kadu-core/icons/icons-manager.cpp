@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
+#include "icons-manager.h"
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration.h"
@@ -34,37 +33,43 @@
 #include "themes/icon-theme-manager.h"
 #include "debug.h"
 
-#include "icons-manager.h"
+#include <QtCore/QFileInfo>
 
-IconsManager * IconsManager::Instance = 0;
-
-IconsManager * IconsManager::instance()
+IconsManager::IconsManager(QObject *parent) :
+		QObject{parent}
 {
-	if (Instance == 0)
-		Instance = new IconsManager();
-	return Instance;
 }
 
-IconsManager::IconsManager()
+IconsManager::~IconsManager()
 {
-	kdebugf();
-
-	ThemeManager = new IconThemeManager(this);
-	ThemeManager->loadThemes();
-	ThemeManager->setCurrentTheme(Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "IconTheme"));
-	configurationUpdated();
-
-	Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
-
-	// TODO: localized protocol
-	localProtocolPath = "gadu-gadu";
-
-	kdebugf2();
 }
 
 IconThemeManager * IconsManager::themeManager() const
 {
 	return ThemeManager;
+}
+
+void IconsManager::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void IconsManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void IconsManager::init()
+{
+	ThemeManager = new IconThemeManager(this);
+	ThemeManager->loadThemes();
+	ThemeManager->setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
+	configurationUpdated();
+
+	m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+
+	// TODO: localized protocol
+	localProtocolPath = "gadu-gadu";
 }
 
 QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty allowEmpty) const
@@ -96,8 +101,8 @@ QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty al
 	if (realPath == QLatin1String("protocols/common"))
 	{
 		QString protocolPath;
-		if (Core::instance()->accountManager()->defaultAccount().protocolHandler())
-			protocolPath = Core::instance()->accountManager()->defaultAccount().protocolHandler()->statusPixmapPath();
+		if (m_accountManager->defaultAccount().protocolHandler())
+			protocolPath = m_accountManager->defaultAccount().protocolHandler()->statusPixmapPath();
 		else
 			protocolPath = localProtocolPath;
 
@@ -191,8 +196,8 @@ QIcon IconsManager::iconByPath(const QString &themePath, const QString &path, Al
 				if (path.contains(commonRegexp))
 				{
 					QString protocolpath;
-					if (Core::instance()->accountManager()->defaultAccount().protocolHandler())
-						protocolpath = Core::instance()->accountManager()->defaultAccount().protocolHandler()->statusPixmapPath();
+					if (m_accountManager->defaultAccount().protocolHandler())
+						protocolpath = m_accountManager->defaultAccount().protocolHandler()->statusPixmapPath();
 					else
 						protocolpath = localProtocolPath;
 					return iconByPath(themePath, QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1)));
@@ -220,12 +225,12 @@ void IconsManager::clearCache()
 
 void IconsManager::configurationUpdated()
 {
-	bool themeWasChanged = Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
+	bool themeWasChanged = m_configuration->deprecatedApi()->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
 	if (themeWasChanged)
 	{
 		clearCache();
-		ThemeManager->setCurrentTheme(Application::instance()->configuration()->deprecatedApi()->readEntry("Look", "IconTheme"));
-		Application::instance()->configuration()->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+		ThemeManager->setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
+		m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 		emit themeChanged();
 	}

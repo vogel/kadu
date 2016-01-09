@@ -22,6 +22,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHBoxLayout>
 
+#include "core/core.h"
 #include "icons/icons-manager.h"
 
 #include "notify-group-box.h"
@@ -36,7 +37,7 @@ NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QW
 	NotifierCheckBox = new QCheckBox(caption);
 	layout->addWidget(NotifierCheckBox);
 	connect(NotifierCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggledSlot(bool)));
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 void NotifyGroupBox::setChecked(bool checked)

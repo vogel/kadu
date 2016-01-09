@@ -25,9 +25,11 @@
 #include <QtCore/QPointer>
 #include <QtCore/QTimer>
 #include <QtGui/QIcon>
+#include <injeqt/injeqt.h>
 
 class Chat;
 class ChatWidget;
+class IconsManager;
 
 enum class ChatWidgetTitleComposingStatePosition;
 
@@ -80,6 +82,8 @@ private:
 	QIcon chatIcon(const Chat &chat) const;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void startBlinking();
 	void stopBlinking();
 	void blink();

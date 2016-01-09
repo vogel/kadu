@@ -138,7 +138,7 @@ void ChatWidget::init()
 {
 	kdebugf();
 
-	Title = new ChatWidgetTitle{this};
+	Title = m_injectedFactory->makeInjected<ChatWidgetTitle>(this);
 
 	setAcceptDrops(true);
 

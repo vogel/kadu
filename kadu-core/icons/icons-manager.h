@@ -18,27 +18,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ICONS_MANAGER_H
-#define ICONS_MANAGER_H
-
-#include <QtCore/QHash>
-#include <QtGui/QIcon>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "themes/theme.h"
 #include "exports.h"
 
+#include <QtCore/QHash>
+#include <QtCore/QPointer>
+#include <QtGui/QIcon>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class Configuration;
 class IconThemeManager;
 class KaduIcon;
 
 class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(IconsManager)
 
-	IconsManager();
+public:
+	enum AllowEmpty
+	{
+		EmptyNotAllowed,
+		EmptyAllowed
+	};
 
-	static IconsManager *Instance;
+	Q_INVOKABLE explicit IconsManager(QObject *parent = nullptr);
+	virtual ~IconsManager();
+
+	IconThemeManager * themeManager() const;
+
+	QString iconPath(const KaduIcon &icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
+	QIcon iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
+
+	QSize getIconsSize();
+
+signals:
+	void themeChanged();
+
+protected:
+	virtual void configurationUpdated();
+
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<Configuration> m_configuration;
 
 	IconThemeManager *ThemeManager;
 
@@ -51,28 +76,9 @@ class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 	QIcon buildPngIcon(const QString &themePath, const QString &path);
 	QIcon buildSvgIcon(const QString &themePath, const QString &path);
 
-protected:
-	virtual void configurationUpdated();
-
-public:
-	enum AllowEmpty
-	{
-		EmptyNotAllowed,
-		EmptyAllowed
-	};
-
-	static IconsManager * instance();
-
-	IconThemeManager * themeManager() const;
-
-	QString iconPath(const KaduIcon &icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
-	QIcon iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
-
-	QSize getIconsSize();
-
-signals:
-	void themeChanged();
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };
-
-#endif //ICONS_MANAGER_H
