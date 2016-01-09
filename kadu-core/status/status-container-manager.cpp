@@ -39,6 +39,19 @@
 StatusContainerManager::StatusContainerManager(QObject *parent) :
 		StatusContainer(parent), DefaultStatusContainer(0)
 {
+}
+
+StatusContainerManager::~StatusContainerManager()
+{
+}
+
+void StatusContainerManager::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void StatusContainerManager::init()
+{
 	AllAccountsContainer = new AllAccountsStatusContainer(this);
 
 	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
@@ -49,10 +62,10 @@ StatusContainerManager::StatusContainerManager(QObject *parent) :
 		registerStatusContainer(AllAccountsContainer);
 
 	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
-	connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
+	connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
 }
 
-StatusContainerManager::~StatusContainerManager()
+void StatusContainerManager::done()
 {
 	if (StatusConfigurationHolder::instance())
 	{
@@ -66,7 +79,7 @@ StatusContainerManager::~StatusContainerManager()
 			unregisterStatusContainer(AllAccountsContainer);
 	}
 
-	disconnect(Core::instance()->accountManager(), 0, this, 0);
+	disconnect(m_accountManager, 0, this, 0);
 }
 
 void StatusContainerManager::updateIdentities()
@@ -119,7 +132,7 @@ void StatusContainerManager::cleanStatusContainers()
 
 void StatusContainerManager::addAllAccounts()
 {
-	foreach (Account account, Core::instance()->accountManager()->items())
+	foreach (Account account, m_accountManager->items())
 		registerStatusContainer(account.statusContainer());
 }
 

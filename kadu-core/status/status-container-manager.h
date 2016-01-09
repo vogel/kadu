@@ -20,13 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_CONTAINER_MANAGER_H
-#define STATUS_CONTAINER_MANAGER_H
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "identities/identities-aware-object.h"
 #include "status/status-container.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
 class AllAccountsStatusContainer;
 
 /**
@@ -59,6 +62,8 @@ class AllAccountsStatusContainer;
 class KADUAPI StatusContainerManager : public StatusContainer, private AccountsAwareObject, private IdentitiesAwareObject
 {
 	Q_OBJECT
+
+	QPointer<AccountManager> m_accountManager;
 
 	QList<StatusContainer *> StatusContainers;
 	StatusContainer *DefaultStatusContainer;
@@ -122,6 +127,10 @@ class KADUAPI StatusContainerManager : public StatusContainer, private AccountsA
 	void unregisterStatusContainer(StatusContainer *statusContainer);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called when identity data needs update.
@@ -368,5 +377,3 @@ signals:
 /**
  * @}
  */
-
-#endif // STATUS_CONTAINER_MANAGER_H

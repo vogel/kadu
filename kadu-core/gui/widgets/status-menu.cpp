@@ -26,7 +26,6 @@
 #include <QtWidgets/QActionGroup>
 #include <QtWidgets/QMenu>
 
-#include "core/core.h"
 #include "gui/window-manager.h"
 #include "gui/windows/status-window-service.h"
 #include "gui/windows/status-window.h"
@@ -58,6 +57,11 @@ StatusMenu::~StatusMenu()
 {
 }
 
+void StatusMenu::setStatusSetter(StatusSetter *statusSetter)
+{
+	m_statusSetter = statusSetter;
+}
+
 void StatusMenu::setStatusWindowService(StatusWindowService *statusWindowService)
 {
 	m_statusWindowService = statusWindowService;
@@ -80,10 +84,10 @@ void StatusMenu::changeStatus(QAction *action)
 
 	for (auto &&container : Container->subStatusContainers())
 	{
-		Status status(StatusSetter::instance()->manuallySetStatus(container));
+		Status status(m_statusSetter->manuallySetStatus(container));
 		status.setType(statusType);
 
-		StatusSetter::instance()->setStatusManually(container, status);
+		m_statusSetter->setStatusManually(container, status);
 		container->storeStatus(status);
 	}
 }

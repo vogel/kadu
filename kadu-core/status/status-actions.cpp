@@ -149,7 +149,7 @@ void StatusActions::statusUpdated(StatusContainer *container)
 
 	StatusType currentStatusType = container
 		? container->status().type()
-		: StatusSetter::instance()->manuallySetStatus(MyStatusContainer).type();
+		: Core::instance()->statusSetter()->manuallySetStatus(MyStatusContainer).type();
 
 	if (!MyStatusContainer->supportedStatusTypes().contains(currentStatusType))
 		currentStatusType = MyStatusContainer->status().type();

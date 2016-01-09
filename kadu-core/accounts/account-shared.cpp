@@ -288,7 +288,7 @@ void AccountShared::setDisconnectStatus()
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
-	StatusSetter::instance()->setStatusManually(MyStatusContainer, disconnectStatus);
+	Core::instance()->statusSetter()->setStatusManually(MyStatusContainer, disconnectStatus);
 }
 
 void AccountShared::protocolRegistered(ProtocolFactory *factory)

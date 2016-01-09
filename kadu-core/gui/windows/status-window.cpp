@@ -63,6 +63,11 @@ StatusWindow::~StatusWindow()
 	emit statusWindowClosed(Container);
 }
 
+void StatusWindow::setStatusSetter(StatusSetter *statusSetter)
+{
+	m_statusSetter = statusSetter;
+}
+
 void StatusWindow::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
 	m_statusTypeManager = statusTypeManager;
@@ -84,7 +89,7 @@ void StatusWindow::init()
 
 	setupStatusSelect();
 
-	QString description = StatusSetter::instance()->manuallySetStatus(Container->subStatusContainers().first()).description();
+	QString description = m_statusSetter->manuallySetStatus(Container->subStatusContainers().first()).description();
 
 	setupDescriptionSelect(description);
 
@@ -281,14 +286,14 @@ void StatusWindow::applyStatus()
 
 	for (auto &&container : Container->subStatusContainers())
 	{
-		Status status = StatusSetter::instance()->manuallySetStatus(container);
+		Status status = m_statusSetter->manuallySetStatus(container);
 		status.setDescription(description);
 
 		StatusType statusType = static_cast<StatusType>(StatusSelect->itemData(StatusSelect->currentIndex()).toInt());
 		if (statusType != StatusTypeNone)
 			status.setType(statusType);
 
-		StatusSetter::instance()->setStatusManually(container, status);
+		m_statusSetter->setStatusManually(container, status);
 		container->storeStatus(status);
 	}
 }

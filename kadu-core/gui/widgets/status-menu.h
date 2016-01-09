@@ -36,12 +36,14 @@ class QMenu;
 
 class StatusActions;
 class StatusContainer;
+class StatusSetter;
 class StatusWindowService;
 
 class KADUAPI StatusMenu : public QObject
 {
 	Q_OBJECT
 
+	QPointer<StatusSetter> m_statusSetter;
 	QPointer<StatusWindowService> m_statusWindowService;
 
 	QMenu *Menu;
@@ -52,6 +54,7 @@ class KADUAPI StatusMenu : public QObject
 	StatusContainer *Container;
 
 private slots:
+	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
 	INJEQT_SET void setStatusWindowService(StatusWindowService *statusWindowService);
 
 	void addStatusActions();

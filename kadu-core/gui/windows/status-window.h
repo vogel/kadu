@@ -35,12 +35,14 @@ class QLabel;
 class QTextEdit;
 
 class StatusContainer;
+class StatusSetter;
 class StatusTypeManager;
 
 class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
+	QPointer<StatusSetter> m_statusSetter;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	StatusContainer *Container;
@@ -68,6 +70,7 @@ class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 	StatusType findCommonStatusType(const QList<StatusContainer *> &containers);
 
 private slots:
+	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 

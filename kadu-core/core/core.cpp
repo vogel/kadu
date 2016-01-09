@@ -493,7 +493,7 @@ void Core::init()
 
 void Core::initialized()
 {
-	StatusSetter::instance()->coreInitialized();
+	statusSetter()->coreInitialized();
 }
 
 void Core::deleteOldConfigurationFiles()
@@ -855,6 +855,11 @@ InjectedFactory * Core::injectedFactory() const
 IconsManager * Core::iconsManager() const
 {
 	return m_injector.get<IconsManager>();
+}
+
+StatusSetter * Core::statusSetter() const
+{
+	return m_injector.get<StatusSetter>();
 }
 
 void Core::showMainWindow()

@@ -17,34 +17,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "status-setter.h"
+
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
 
-#include "status-setter.h"
-
-StatusSetter * StatusSetter::Instance = 0;
-
-StatusSetter * StatusSetter::instance()
+StatusSetter::StatusSetter(QObject *parent) :
+		QObject{parent},
+		CoreInitialized{false}
 {
-	if (0 == Instance)
-		Instance = new StatusSetter();
-
-	return Instance;
-}
-
-StatusSetter::StatusSetter() :
-		CoreInitialized(false)
-{
-	configurationUpdated();
 }
 
 StatusSetter::~StatusSetter()
 {
+}
+
+void StatusSetter::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void StatusSetter::setStatusChangerManager(StatusChangerManager *statusChangerManager)
+{
+	m_statusChangerManager = statusChangerManager;
+}
+
+void StatusSetter::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void StatusSetter::init()
+{
+	configurationUpdated();
 }
 
 void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
@@ -55,14 +64,14 @@ void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 		status.setDescription(StartupDescription);
 
 	if (StartupStatus != "LastStatus")
-		status.setType(Core::instance()->statusTypeManager()->fromName(StartupStatus));
+		status.setType(m_statusTypeManager->fromName(StartupStatus));
 
 	if (StatusTypeNone == status.type())
 		status.setType(StatusTypeOnline);
 	else if (StatusTypeOffline == status.type() && OfflineToInvisible)
 		status.setType(StatusTypeInvisible);
 
-	StatusSetter::instance()->setStatusManually(statusContainer, status);
+	setStatusManually(statusContainer, status);
 }
 
 void StatusSetter::coreInitialized()
@@ -73,10 +82,10 @@ void StatusSetter::coreInitialized()
 
 void StatusSetter::configurationUpdated()
 {
-	StartupStatus = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "StartupStatus");
-	StartupLastDescription = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = Application::instance()->configuration()->deprecatedApi()->readEntry("General", "StartupDescription");
-	OfflineToInvisible = Application::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+	StartupStatus = m_configuration->deprecatedApi()->readEntry("General", "StartupStatus");
+	StartupLastDescription = m_configuration->deprecatedApi()->readBoolEntry("General", "StartupLastDescription");
+	StartupDescription = m_configuration->deprecatedApi()->readEntry("General", "StartupDescription");
+	OfflineToInvisible = m_configuration->deprecatedApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
 
 	if (StartupStatus.isEmpty())
 		StartupStatus = "LastStatus";
@@ -97,10 +106,10 @@ void StatusSetter::statusContainerUnregistered(StatusContainer *statusContainer)
 
 void StatusSetter::setStatusManually(StatusContainer *statusContainer, Status status)
 {
-	Core::instance()->statusChangerManager()->setStatusManually(statusContainer, status);
+	m_statusChangerManager->setStatusManually(statusContainer, status);
 }
 
 Status StatusSetter::manuallySetStatus(StatusContainer *statusContainer)
 {
-	return Core::instance()->statusChangerManager()->manuallySetStatus(statusContainer);
+	return m_statusChangerManager->manuallySetStatus(statusContainer);
 }

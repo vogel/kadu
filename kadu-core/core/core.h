@@ -89,6 +89,7 @@ class RosterReplacer;
 class SslCertificateManager;
 class StatusChangerManager;
 class StatusContainerManager;
+class StatusSetter;
 class StatusTypeManager;
 class StoragePointFactory;
 class UnreadMessageRepository;
@@ -202,6 +203,7 @@ public:
 	StatusTypeManager * statusTypeManager() const;
 	InjectedFactory * injectedFactory() const;
 	IconsManager * iconsManager() const;
+	StatusSetter * statusSetter() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);
