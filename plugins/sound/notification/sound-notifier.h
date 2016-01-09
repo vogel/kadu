@@ -31,7 +31,6 @@ class SoundNotifier : public QObject, public Notifier
 {
 	Q_OBJECT
 
-	static SoundNotifier *Instance;
 	QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
 	QPointer<SoundManager> m_soundManager;
 
