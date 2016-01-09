@@ -48,45 +48,6 @@ void BuddyManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void BuddyManager::init()
-{
-	QMutexLocker locker(&mutex());
-
-	int itemsSize = items().size();
-	QDomElement buddiesNode = m_configuration->api()->getNode("Buddies", ConfigurationApi::ModeFind);
-	QDomElement oldContactsNode = m_configuration->api()->getNode("OldContacts", ConfigurationApi::ModeFind);
-	if (oldContactsNode.isNull() && (buddiesNode.isNull() || (itemsSize == 0 && !buddiesNode.hasAttribute("imported"))))
-	{
-		importConfiguration(m_configuration->api());
-		buddiesNode.setAttribute("imported", "true");
-	}
-}
-
-void BuddyManager::importConfiguration(ConfigurationApi *configurationStorage)
-{
-	QMutexLocker locker(&mutex());
-
-	QDomElement contactsNode = configurationStorage->getNode("Contacts", ConfigurationApi::ModeFind);
-	if (contactsNode.isNull())
-		return;
-
-	contactsNode.setTagName("OldContacts");
-	QVector<QDomElement> contactElements = configurationStorage->getNodes(contactsNode, "Contact");
-	foreach (const QDomElement &contactElement, contactElements)
-	{
-		Buddy buddy = Buddy::create();
-		buddy.importConfiguration(contactElement);
-
-		addItem(buddy);
-	}
-
-	// OldContacts is no longer needed
-	contactsNode.parentNode().removeChild(contactsNode);
-
-	// flush configuration to save all changes
-	ConfigurationManager::instance()->flush();
-}
-
 void BuddyManager::load()
 {
 	QMutexLocker locker(&mutex());

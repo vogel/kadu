@@ -85,13 +85,10 @@ signals:
 private:
 	QPointer<Configuration> m_configuration;
 
-	void importConfiguration(ConfigurationApi *configurationStorage);
-
 	QString mergeValue(const QString &destination, const QString &source) const;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
 
 	void buddyDataUpdated();
 	void buddySubscriptionChanged();
