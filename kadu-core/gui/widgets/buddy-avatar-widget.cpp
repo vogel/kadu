@@ -30,6 +30,7 @@
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "core/core.h"
 
 #include "buddy-avatar-widget.h"
 
@@ -67,7 +68,7 @@ void BuddyAvatarWidget::showBuddyAvatar()
 void BuddyAvatarWidget::showContactAvatar()
 {
 	Contact preferredContact = BuddyPreferredManager::instance()->preferredContact(MyBuddy);
-	showAvatar(AvatarManager::instance()->byContact(preferredContact, ActionCreateAndAdd).pixmap());
+	showAvatar(Core::instance()->avatarManager()->byContact(preferredContact, ActionCreateAndAdd).pixmap());
 	BuddyAvatar = false;
 }
 

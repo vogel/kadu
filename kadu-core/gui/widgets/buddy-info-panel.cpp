@@ -177,7 +177,7 @@ void BuddyInfoPanel::connectItem()
 	if (contact)
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(update()));
-		auto avatar = AvatarManager::instance()->byContact(contact, ActionReturnNull);
+		auto avatar = Core::instance()->avatarManager()->byContact(contact, ActionReturnNull);
 		if (avatar)
 			connect(avatar, SIGNAL(updated()), this, SLOT(update()));
 	}
@@ -197,7 +197,7 @@ void BuddyInfoPanel::disconnectItem()
 	if (contact)
 	{
 		disconnect(contact, 0, this, 0);
-		auto avatar = AvatarManager::instance()->byContact(contact, ActionReturnNull);
+		auto avatar = Core::instance()->avatarManager()->byContact(contact, ActionReturnNull);
 		if (avatar)
 			disconnect(avatar, 0, this, 0);
 	}

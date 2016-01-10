@@ -44,6 +44,7 @@
 #endif // !Q_OS_WIN
 
 #include "accounts/account-module.h"
+#include "avatars/avatar-module.h"
 #include "buddies/buddy-module.h"
 #include "chat/chat-module.h"
 #include "chat-style/chat-style-module.h"
@@ -220,6 +221,7 @@ int main(int argc, char *argv[]) try
 
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
 	modules.emplace_back(make_unique<AccountModule>());
+	modules.emplace_back(make_unique<AvatarModule>());
 	modules.emplace_back(make_unique<BuddyModule>());
 	modules.emplace_back(make_unique<ChatModule>());
 	modules.emplace_back(make_unique<ChatStyleModule>());

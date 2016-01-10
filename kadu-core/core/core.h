@@ -47,6 +47,7 @@ class DefaultProvider;
 class AccountConfigurationWidgetFactoryRepository;
 class AccountManager;
 class Application;
+class AvatarManager;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyManager;
 class ChatConfigurationWidgetFactoryRepository;
@@ -222,6 +223,7 @@ public:
 	NetworkProxyManager * networkProxyManager() const;
 	DescriptionManager * descriptionManager() const;
 	ConfigurationManager * configurationManager() const;
+	AvatarManager * avatarManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

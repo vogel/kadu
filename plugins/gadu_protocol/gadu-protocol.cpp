@@ -146,7 +146,7 @@ void GaduProtocol::init()
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
 	CurrentUserDataService = new GaduUserDataService{account(), this};
-	CurrentUserDataService->setAvatarManager(AvatarManager::instance());
+	CurrentUserDataService->setAvatarManager(Core::instance()->avatarManager());
 	CurrentUserDataService->setContactManager(m_contactManager);
 
 	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
@@ -351,7 +351,7 @@ void GaduProtocol::connectedToServer()
 void GaduProtocol::afterLoggedIn()
 {
 	// fetch current avatar after connection
-	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
+	Core::instance()->avatarManager()->updateAvatar(account().accountContact(), true);
 
 	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
 	CurrentNotifyService->sendInitialData(contacts);

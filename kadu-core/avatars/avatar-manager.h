@@ -19,55 +19,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_MANAGER_H
-#define AVATAR_MANAGER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "avatars/avatar.h"
 #include "storage/simple-manager.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class AvatarJobManager;
 class AvatarService;
 class Buddy;
+class ContactManager;
 class Contact;
 
 class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AvatarManager)
-
-	static AvatarManager *Instance;
-
-	QTimer *UpdateTimer;
-
-	AvatarManager();
-	virtual ~AvatarManager();
-
-	void init();
-
-	bool needUpdate(const Contact &contact);
-
-private slots:
-	void avatarDataUpdated();
-	void avatarPixmapUpdated();
-
-	void updateAvatars();
-	void updateAccountAvatars();
-	void contactAdded(Contact contact);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
-	virtual void itemAboutToBeAdded(Avatar item);
-	virtual void itemAdded(Avatar item);
-	virtual void itemAboutToBeRemoved(Avatar item);
-	virtual void itemRemoved(Avatar item);
 
 public:
-	static AvatarManager * instance();
+	Q_INVOKABLE explicit AvatarManager(QObject *parent = nullptr);
+	virtual ~AvatarManager();
 
 	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }
@@ -86,6 +61,33 @@ signals:
 
 	void avatarUpdated(Avatar avatar);
 
-};
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
-#endif // AVATAR_MANAGER_H
+	virtual void itemAboutToBeAdded(Avatar item);
+	virtual void itemAdded(Avatar item);
+	virtual void itemAboutToBeRemoved(Avatar item);
+	virtual void itemRemoved(Avatar item);
+
+private:
+	QPointer<AvatarJobManager> m_avatarJobManager;
+	QPointer<ContactManager> m_contactManager;
+	QTimer *UpdateTimer;
+
+	bool needUpdate(const Contact &contact);
+
+private slots:
+	INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
+	void avatarDataUpdated();
+	void avatarPixmapUpdated();
+
+	void updateAvatars();
+	void updateAccountAvatars();
+	void contactAdded(Contact contact);
+
+};

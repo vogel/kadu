@@ -19,32 +19,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
+#include "avatar-job-manager.h"
 
 #include "avatars/avatar-job-runner.h"
-#include "core/core.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 
-#include "avatar-job-manager.h"
+#include <QtCore/QTimer>
 
-AvatarJobManager * AvatarJobManager::Instance = 0;
-
-AvatarJobManager * AvatarJobManager::instance()
-{
-	if (!Instance)
-		Instance = new AvatarJobManager();
-
-	return Instance;
-}
-
-AvatarJobManager::AvatarJobManager() :
-		Mutex(QMutex::Recursive), IsJobRunning(false)
+AvatarJobManager::AvatarJobManager(QObject *parent) :
+		QObject{parent},
+		Mutex{QMutex::Recursive},
+		IsJobRunning{false}
 {
 }
 
 AvatarJobManager::~AvatarJobManager()
 {
+}
+
+void AvatarJobManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void AvatarJobManager::scheduleJob()
@@ -67,7 +63,7 @@ void AvatarJobManager::runJob()
 	if (!hasJob())
 		return;
 
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
 		return;
 
 	IsJobRunning = true;

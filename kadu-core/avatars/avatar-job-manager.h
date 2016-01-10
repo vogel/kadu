@@ -18,44 +18,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_JOB_MANAGER_H
-#define AVATAR_JOB_MANAGER_H
-
-#include <QtCore/QObject>
-#include <QtCore/QSet>
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "avatars/avatar.h"
 #include "storage/simple-manager.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QSet>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 class Contact;
 
 class KADUAPI AvatarJobManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AvatarJobManager)
-
-	static AvatarJobManager *Instance;
-
-	QMutex Mutex;
-	bool IsJobRunning;
-
-	QSet<Contact> Jobs;
-
-	AvatarJobManager();
-	virtual ~AvatarJobManager();
-
-	QMutex & mutex() { return Mutex; }
-
-	void scheduleJob();
-
-private slots:
-	void runJob();
-	void jobFinished();
 
 public:
-	static AvatarJobManager * instance();
+	Q_INVOKABLE explicit AvatarJobManager(QObject *parent = nullptr);
+	virtual ~AvatarJobManager();
 
 	void addJob(const Contact &contact);
 
@@ -65,6 +49,22 @@ public:
 signals:
 	void jobAvailable();
 
-};
+private:
+	QPointer<Configuration> m_configuration;
 
-#endif // AVATAR_JOB_MANAGER_H
+	QMutex Mutex;
+	bool IsJobRunning;
+
+	QSet<Contact> Jobs;
+
+	QMutex & mutex() { return Mutex; }
+
+	void scheduleJob();
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+
+	void runJob();
+	void jobFinished();
+
+};

@@ -3,6 +3,7 @@ set (avatars_SRCS
 	avatar-job-manager.cpp
 	avatar-job-runner.cpp
 	avatar-manager.cpp
+	avatar-module.cpp
 	avatar-shared.cpp
 )
 

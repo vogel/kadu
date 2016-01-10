@@ -196,7 +196,7 @@ void BuddyShared::load()
 		}
 	}
 
-	setBuddyAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
+	setBuddyAvatar(Core::instance()->avatarManager()->byUuid(loadValue<QString>("Avatar")));
 	Display = loadValue<QString>("Display");
 	FirstName = loadValue<QString>("FirstName");
 	LastName = loadValue<QString>("LastName");
@@ -282,7 +282,7 @@ void BuddyShared::aboutToBeRemoved()
 	Contacts.clear();
 	Groups.clear();
 
-	AvatarManager::instance()->removeItem(*BuddyAvatar);
+	Core::instance()->avatarManager()->removeItem(*BuddyAvatar);
 	setBuddyAvatar(Avatar::null);
 }
 

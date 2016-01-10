@@ -188,13 +188,13 @@ void BuddyGeneralConfigurationWidget::removeBuddyAvatar()
 		return;
 
 	buddyAvatar.setPixmap(QPixmap());
-	AvatarManager::instance()->removeItem(buddyAvatar);
+	Core::instance()->avatarManager()->removeItem(buddyAvatar);
 	MyBuddy.setBuddyAvatar(Avatar::null);
 }
 
 void BuddyGeneralConfigurationWidget::setBuddyAvatar(const QPixmap& avatar)
 {
-	Avatar buddyAvatar = AvatarManager::instance()->byBuddy(MyBuddy, ActionCreateAndAdd);
+	Avatar buddyAvatar = Core::instance()->avatarManager()->byBuddy(MyBuddy, ActionCreateAndAdd);
 	buddyAvatar.setPixmap(avatar);
 }
 

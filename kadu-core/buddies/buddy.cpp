@@ -244,7 +244,7 @@ Buddy Buddy::dummy()
 	contact.setCurrentStatus(Status(StatusTypeAway, QApplication::translate("Buddy", "Example description")));
 
 	// this is just an example contact, do not add avatar to list
-	Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);
+	Avatar avatar = Core::instance()->avatarManager()->byContact(contact, ActionCreate);
 
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 	avatar.setFilePath(KaduIcon("kadu_icons/buddy0", "96x96").fullPath());

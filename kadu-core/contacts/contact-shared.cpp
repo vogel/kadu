@@ -129,7 +129,7 @@ void ContactShared::load()
 
 	*ContactAccount = Core::instance()->accountManager()->byUuid(loadValue<QString>("Account"));
 	doSetOwnerBuddy(Core::instance()->buddyManager()->byUuid(loadValue<QString>("Buddy")));
-	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
+	doSetContactAvatar(Core::instance()->avatarManager()->byUuid(loadValue<QString>("Avatar")));
 
 	protocolFactoryRegistered(Core::instance()->protocolsManager()->byName(ContactAccount->protocolName()));
 	addToBuddy();
@@ -142,7 +142,7 @@ void ContactShared::aboutToBeRemoved()
 	removeFromBuddy();
 	doSetOwnerBuddy(Buddy::null);
 
-	AvatarManager::instance()->removeItem(*ContactAvatar);
+	Core::instance()->avatarManager()->removeItem(*ContactAvatar);
 	doSetContactAvatar(Avatar::null);
 
 	changeNotifier().notify();

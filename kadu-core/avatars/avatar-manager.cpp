@@ -28,7 +28,6 @@
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
@@ -36,28 +35,24 @@
 
 #include "avatar-manager.h"
 
-AvatarManager * AvatarManager::Instance = 0;
-
-AvatarManager * AvatarManager::instance()
-{
-	if (!Instance)
-	{
-		Instance = new AvatarManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-AvatarManager::AvatarManager() :
+AvatarManager::AvatarManager(QObject *parent) :
+		QObject{parent},
 		UpdateTimer{nullptr}
 {
 }
 
 AvatarManager::~AvatarManager()
 {
-	triggerAllAccountsUnregistered();
-	disconnect(Core::instance()->contactManager(), 0, this, 0);
+}
+
+void AvatarManager::setAvatarJobManager(AvatarJobManager *avatarJobManager)
+{
+	m_avatarJobManager = avatarJobManager;
+}
+
+void AvatarManager::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
 }
 
 void AvatarManager::init()
@@ -67,9 +62,14 @@ void AvatarManager::init()
 	UpdateTimer = new QTimer(this);
 	UpdateTimer->setInterval(30 * 60 * 1000); // half an hour
 	connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
-	connect(Core::instance()->contactManager(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
+	connect(m_contactManager, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 
 	UpdateTimer->start();
+}
+
+void AvatarManager::done()
+{
+	triggerAllAccountsUnregistered();
 }
 
 void AvatarManager::itemAboutToBeAdded(Avatar item)
@@ -154,7 +154,7 @@ void AvatarManager::updateAvatar(const Contact &contact, bool force)
 	if (!force && !needUpdate(contact))
 		return;
 
-	AvatarJobManager::instance()->addJob(contact);
+	m_avatarJobManager->addJob(contact);
 }
 
 void AvatarManager::removeAvatar(const Contact &contact)
@@ -172,7 +172,7 @@ void AvatarManager::updateAvatars()
 {
 	QMutexLocker locker(&mutex());
 
-	foreach (const Contact &contact, Core::instance()->contactManager()->items())
+	foreach (const Contact &contact, m_contactManager->items())
 		if (!contact.isAnonymous())
 		{
 			auto account = contact.contactAccount();
@@ -197,7 +197,7 @@ void AvatarManager::updateAccountAvatars()
 	if (account.protocolHandler()->avatarService()->eventBasedUpdates())
 		return;
 
-	foreach (const Contact &contact, Core::instance()->contactManager()->contacts(account))
+	foreach (const Contact &contact, m_contactManager->contacts(account))
 		if (!contact.isAnonymous())
 			updateAvatar(contact, true);
 }

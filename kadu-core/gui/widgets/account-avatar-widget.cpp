@@ -79,14 +79,14 @@ void AccountAvatarWidget::createGui()
 
 	layout->addWidget(ChangePhotoButton, 0, Qt::AlignHCenter);
 
-	auto avatar = AvatarManager::instance()->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
+	auto avatar = Core::instance()->avatarManager()->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
 	connect(avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 	avatarUpdated();
 }
 
 void AccountAvatarWidget::setupMode()
 {
-	auto avatar = AvatarManager::instance()->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
+	auto avatar = Core::instance()->avatarManager()->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
 	if (MyAccount.protocolHandler()->protocolFactory()->canRemoveAvatar() && !avatar.isEmpty())
 		Mode = ModeRemove;
 	else
@@ -182,7 +182,7 @@ void AccountAvatarWidget::removeAvatar()
 void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 {
 	if (ok)
-		AvatarManager::instance()->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
+		Core::instance()->avatarManager()->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
 
 	avatarUpdated();
 	ChangePhotoButton->setEnabled(true);

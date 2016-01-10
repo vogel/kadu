@@ -23,6 +23,7 @@
 
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
+#include "core/core.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-downloader.h"
 #include "protocols/services/avatar-service.h"
@@ -71,7 +72,7 @@ void AvatarJobRunner::avatarDownloaded(bool ok, QImage avatar)
 	if (Timer)
 		Timer->stop();
 
-	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+	Avatar contactAvatar = Core::instance()->avatarManager()->byContact(MyContact, ActionCreateAndAdd);
 	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
 	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 	contactAvatar.setPixmap(QPixmap::fromImage(avatar));

@@ -63,7 +63,7 @@ AvatarShared::~AvatarShared()
 
 StorableObject * AvatarShared::storageParent()
 {
-	return AvatarManager::instance();
+	return Core::instance()->avatarManager();
 }
 
 QString AvatarShared::storageNodeName()

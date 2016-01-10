@@ -118,7 +118,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	chatStateService->setResourceService(m_resourceService);
 
 	m_avatarService = new JabberAvatarService{m_client, account, this};
-	m_avatarService->setAvatarManager(AvatarManager::instance());
+	m_avatarService->setAvatarManager(Core::instance()->avatarManager());
 	m_avatarService->setContactManager(Core::instance()->contactManager());
 
 	auto chatService = new JabberChatService{m_client, account, this};
