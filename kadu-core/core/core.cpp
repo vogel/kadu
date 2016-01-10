@@ -875,6 +875,11 @@ Application * Core::application() const
 	return m_injector.get<Application>();
 }
 
+GroupManager * Core::groupManager() const
+{
+	return m_injector.get<GroupManager>();
+}
+
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)

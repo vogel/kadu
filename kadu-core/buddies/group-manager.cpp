@@ -37,31 +37,28 @@
 
 #include "group-manager.h"
 
-GroupManager * GroupManager::Instance = 0;
-
-GroupManager * GroupManager::instance()
+GroupManager::GroupManager(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-	{
-		Instance = new GroupManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-GroupManager::GroupManager()
-{
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 GroupManager::~GroupManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void GroupManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void GroupManager::init()
 {
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+void GroupManager::done()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void GroupManager::importConfiguration()
@@ -92,7 +89,7 @@ void GroupManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	QDomElement groupsNode = Core::instance()->configuration()->api()->getNode("Groups", ConfigurationApi::ModeFind);
+	QDomElement groupsNode = m_configuration->api()->getNode("Groups", ConfigurationApi::ModeFind);
 	if (groupsNode.isNull())
 	{
 		importConfiguration();

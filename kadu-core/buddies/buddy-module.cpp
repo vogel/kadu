@@ -21,6 +21,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "buddies/group-manager.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 
 BuddyModule::BuddyModule()
@@ -28,6 +29,7 @@ BuddyModule::BuddyModule()
 	add_type<BuddyAdditionalDataDeleteHandlerManager>();
 	add_type<BuddyConfigurationWidgetFactoryRepository>();
 	add_type<BuddyManager>();
+	add_type<GroupManager>();
 }
 
 BuddyModule::~BuddyModule()

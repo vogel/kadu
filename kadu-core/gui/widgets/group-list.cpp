@@ -20,13 +20,14 @@
  */
 
 #include "buddies/group-manager.h"
+#include "core/core.h"
 
 #include "group-list.h"
 
 GroupList::GroupList(QWidget *parent) :
 		QListWidget(parent)
 {
-	foreach (const Group &group, GroupManager::instance()->items())
+	foreach (const Group &group, Core::instance()->groupManager()->items())
 	{
 		QListWidgetItem * const groupItem = new QListWidgetItem(this);
 		groupItem->setText(group.name());
@@ -63,7 +64,7 @@ QSet<Group> GroupList::checkedGroups()
 	{
 		const QListWidgetItem * const groupItem = item(i);
 		if (Qt::Checked == groupItem->checkState())
-			result.insert(GroupManager::instance()->byName(groupItem->text()));
+			result.insert(Core::instance()->groupManager()->byName(groupItem->text()));
 	}
 
 	return result;

@@ -19,46 +19,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUP_MANAGER_H
-#define GROUP_MANAGER_H
-
-#include <QtCore/QList>
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#pragma once
 
 #include "buddies/group.h"
 #include "storage/simple-manager.h"
-
 #include "exports.h"
+
+#include <QtCore/QList>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QString>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 
 class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(GroupManager)
-
-	static GroupManager *Instance;
-
-	GroupManager();
-	virtual ~GroupManager();
-
-	void init();
-
-	void importConfiguration();
-
-private slots:
-	void groupDataUpdated();
-
-protected:
-	virtual void load();
-	virtual void store();
-
-	virtual void itemAboutToBeAdded(Group item);
-	virtual void itemAdded(Group item);
-	virtual void itemAboutToBeRemoved(Group item);
-	virtual void itemRemoved(Group item);
 
 public:
-	static GroupManager * instance();
+	Q_INVOKABLE explicit GroupManager(QObject *parent = nullptr);
+	virtual ~GroupManager();
 
 	virtual QString storageNodeName() { return QLatin1String("Groups"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Group"); }
@@ -78,6 +59,25 @@ signals:
 
 	void saveGroupData();
 
-};
+protected:
+	virtual void load();
+	virtual void store();
 
-#endif // GROUP_MANAGER_H
+	virtual void itemAboutToBeAdded(Group item);
+	virtual void itemAdded(Group item);
+	virtual void itemAboutToBeRemoved(Group item);
+	virtual void itemRemoved(Group item);
+
+private:
+	QPointer<Configuration> m_configuration;
+
+	void importConfiguration();
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
+	void groupDataUpdated();
+
+};

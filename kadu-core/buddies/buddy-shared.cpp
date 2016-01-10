@@ -141,7 +141,7 @@ void BuddyShared::importConfiguration()
 {
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	for (auto &&group : groups)
-		doAddToGroup(GroupManager::instance()->byName(group));
+		doAddToGroup(Core::instance()->groupManager()->byName(group));
 
 	CustomData.remove("groups");
 
@@ -192,7 +192,7 @@ void BuddyShared::load()
 			QDomElement groupElement = groupsList.at(i).toElement();
 			if (groupElement.isNull())
 				continue;
-			doAddToGroup(GroupManager::instance()->byUuid(groupElement.text()));
+			doAddToGroup(Core::instance()->groupManager()->byUuid(groupElement.text()));
 		}
 	}
 

@@ -142,7 +142,7 @@ void JabberRosterService::remoteContactUpdated(const QString &bareJid)
 
 	auto groups = QSet<Group>{};
 	for (auto &&group : item.groups())
-		groups << GroupManager::instance()->byName(group);
+		groups << Core::instance()->groupManager()->byName(group);
 	buddy.setGroups(groups);
 
 	contact.rosterEntry()->setSynchronized();

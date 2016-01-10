@@ -109,7 +109,7 @@ GroupFilter GroupTabBarConfigurator::loadGroupFilter(QDomElement element) const
 	auto groupUuid = Core::instance()->configuration()->api()->getTextNode(element, "Group");
 
 	if (type == "Regular")
-		return GroupFilter(GroupManager::instance()->byUuid(groupUuid));
+		return GroupFilter(Core::instance()->groupManager()->byUuid(groupUuid));
 	if (type == "Everybody")
 		return GroupFilter(GroupFilterEverybody);
 	if (type == "Ungroupped")
@@ -124,7 +124,7 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 			? Core::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
 			: Core::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
 
-	auto groups = GroupManager::instance()->items().toList();
+	auto groups = Core::instance()->groupManager()->items().toList();
 	qStableSort(groups.begin(), groups.end(), [](const Group &a, const Group &b){ return a.tabPosition() < b.tabPosition(); });
 
 	foreach (const auto &group, groups)

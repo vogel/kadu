@@ -158,7 +158,7 @@ void ChatShared::load()
 			QDomElement groupElement = groupsList.at(i).toElement();
 			if (groupElement.isNull())
 				continue;
-			doAddToGroup(GroupManager::instance()->byUuid(groupElement.text()));
+			doAddToGroup(Core::instance()->groupManager()->byUuid(groupElement.text()));
 		}
 	}
 

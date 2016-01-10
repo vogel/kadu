@@ -634,7 +634,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	auto window = new GroupEditWindow(GroupManager::instance(), Core::instance()->configuration()->deprecatedApi(), Group::null, sender->parentWidget());
+	auto window = new GroupEditWindow(Core::instance()->groupManager(), Core::instance()->configuration()->deprecatedApi(), Group::null, sender->parentWidget());
 	window->show();
 }
 

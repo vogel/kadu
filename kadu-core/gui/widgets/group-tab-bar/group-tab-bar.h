@@ -21,7 +21,9 @@
 #ifndef GROUP_TAB_BAR_H
 #define GROUP_TAB_BAR_H
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QTabBar>
+#include <injeqt/injeqt.h>
 
 #include "buddies/buddy-list.h"
 #include "buddies/group.h"
@@ -33,6 +35,8 @@ class GroupFilter;
 class KADUAPI GroupTabBar : public QTabBar
 {
 	Q_OBJECT
+
+	QPointer<GroupManager> m_groupManager;
 
 	GroupTabBarConfiguration Configuration;
 	GroupFilter CurrentGroupFilter;
@@ -50,6 +54,9 @@ class KADUAPI GroupTabBar : public QTabBar
 	bool shouldShowUngrouppedTab() const;
 
 private slots:
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_INIT void init();
+
 	void addGroup(Group group);
 	void removeGroup(Group group);
 	void updateGroup(Group group);

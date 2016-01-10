@@ -56,14 +56,22 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 	setIconSize(QSize(16, 16));
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChangedSlot(int)));
-
-	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)), this, SLOT(addGroup(Group)));
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
-	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 }
 
 GroupTabBar::~GroupTabBar()
 {
+}
+
+void GroupTabBar::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void GroupTabBar::init()
+{
+	connect(m_groupManager, SIGNAL(groupAdded(Group)), this, SLOT(addGroup(Group)));
+	connect(m_groupManager, SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
+	connect(m_groupManager, SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 }
 
 void GroupTabBar::setInitialConfiguration(GroupTabBarConfiguration configuration)
@@ -71,7 +79,7 @@ void GroupTabBar::setInitialConfiguration(GroupTabBarConfiguration configuration
 	foreach (const auto &groupFilter, configuration.groupFilters())
 		insertGroupFilter(count(), groupFilter);
 
-	foreach (const Group &group, GroupManager::instance()->items())
+	foreach (const Group &group, m_groupManager->items())
 		addGroup(group);
 
 	setConfiguration(configuration);
@@ -260,11 +268,11 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 				return;
 			}
 
-			ok = GroupManager::instance()->acceptableGroupName(newGroupName);
+			ok = m_groupManager->acceptableGroupName(newGroupName);
 		}
 		while (!ok);
 
-		Group group = GroupManager::instance()->byName(newGroupName);
+		Group group = m_groupManager->byName(newGroupName);
 
 		foreach (const Buddy &buddy, buddies)
 			buddy.addToGroup(group);
@@ -324,12 +332,12 @@ void GroupTabBar::deleteGroup()
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
 	if (group && dialog->ask())
-		GroupManager::instance()->removeItem(group);
+		m_groupManager->removeItem(group);
 }
 
 void GroupTabBar::createNewGroup()
 {
-	auto editWindow = new GroupEditWindow{GroupManager::instance(), Core::instance()->configuration()->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{m_groupManager, Core::instance()->configuration()->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
 	editWindow->show();
 }
 
@@ -343,7 +351,7 @@ void GroupTabBar::groupProperties()
 	if (!group)
 		return;
 
-	auto editWindow = new GroupEditWindow{GroupManager::instance(), Core::instance()->configuration()->deprecatedApi(), group, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{m_groupManager, Core::instance()->configuration()->deprecatedApi(), group, Core::instance()->kaduWindow()};
 	editWindow->show();
 }
 
@@ -367,7 +375,7 @@ void GroupTabBar::moveToGroup()
 	if (!action)
 		return;
 
-	const Group &removeFromGroup = GroupManager::instance()->byUuid(tabData(currentIndex()).toString());
+	const Group &removeFromGroup = m_groupManager->byUuid(tabData(currentIndex()).toString());
 	const Group &group = action->data().value<Group>();
 
 	foreach (const Buddy &buddy, DNDBuddies)

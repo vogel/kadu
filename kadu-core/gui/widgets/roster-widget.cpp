@@ -28,6 +28,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar-configurator.h"
@@ -72,7 +73,7 @@ void RosterWidget::createGui()
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	GroupBar = new GroupTabBar(this);
+	GroupBar = Core::instance()->injectedFactory()->makeInjected<GroupTabBar>(this);
 	connect(GroupBar, SIGNAL(currentChanged(int)), this, SLOT(storeConfiguration()));
 	connect(GroupBar, SIGNAL(tabMoved(int,int)), this, SLOT(storeConfiguration()));
 

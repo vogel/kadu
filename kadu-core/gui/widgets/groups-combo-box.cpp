@@ -27,6 +27,7 @@
 
 #include "buddies/group-manager.h"
 #include "buddies/model/groups-model.h"
+#include "core/core.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 
@@ -81,11 +82,11 @@ void GroupsComboBox::createNewGroup()
 	if (!ok)
 		return;
 
-	ok = GroupManager::instance()->acceptableGroupName(newGroupName, true);
+	ok = Core::instance()->groupManager()->acceptableGroupName(newGroupName, true);
 	if (!ok)
 		return;
 
-	Group newGroup = GroupManager::instance()->byName(newGroupName, ok);
+	Group newGroup = Core::instance()->groupManager()->byName(newGroupName, ok);
 	if (newGroup)
 		setCurrentGroup(newGroup);
 }

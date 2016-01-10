@@ -66,6 +66,7 @@ class ContactManager;
 class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
+class GroupManager;
 class IconsManager;
 class InjectedFactory;
 class KaduIcon;
@@ -210,6 +211,7 @@ public:
 	Configuration * configuration() const;
 	PathsProvider * pathsProvider() const;
 	Application * application() const;
+	GroupManager * groupManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

@@ -22,9 +22,8 @@
 
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
-
+#include "core/core.h"
 #include "model/roles.h"
-
 #include "protocols/protocol.h"
 
 #include "groups-model.h"
@@ -32,24 +31,24 @@
 GroupsModel::GroupsModel(QObject *parent)
 	: QAbstractListModel(parent)
 {
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeAdded(Group)),
+	connect(Core::instance()->groupManager(), SIGNAL(groupAboutToBeAdded(Group)),
 			this, SLOT(groupAboutToBeAdded(Group)), Qt::DirectConnection);
-	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)),
+	connect(Core::instance()->groupManager(), SIGNAL(groupAdded(Group)),
 			this, SLOT(groupAdded(Group)), Qt::DirectConnection);
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)),
+	connect(Core::instance()->groupManager(), SIGNAL(groupAboutToBeRemoved(Group)),
 			this, SLOT(groupAboutToBeRemoved(Group)), Qt::DirectConnection);
-	connect(GroupManager::instance(), SIGNAL(groupRemoved(Group)),
+	connect(Core::instance()->groupManager(), SIGNAL(groupRemoved(Group)),
 			this, SLOT(groupRemoved(Group)), Qt::DirectConnection);
 }
 
 GroupsModel::~GroupsModel()
 {
-	disconnect(GroupManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->groupManager(), 0, this, 0);
 }
 
 int GroupsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : GroupManager::instance()->count();
+	return parent.isValid() ? 0 : Core::instance()->groupManager()->count();
 }
 
 QVariant GroupsModel::data(const QModelIndex &index, int role) const
@@ -81,12 +80,12 @@ Group GroupsModel::group(const QModelIndex &index) const
 	if (index.row() < 0 || index.row() >= rowCount())
 		return Group::null;
 
-	return GroupManager::instance()->byIndex(index.row());
+	return Core::instance()->groupManager()->byIndex(index.row());
 }
 
 int GroupsModel::groupIndex(Group group) const
 {
-	return GroupManager::instance()->indexOf(group);
+	return Core::instance()->groupManager()->indexOf(group);
 }
 
 

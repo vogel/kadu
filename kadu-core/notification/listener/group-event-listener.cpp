@@ -32,7 +32,7 @@
 GroupEventListener::GroupEventListener(NotificationService *service)
 		: EventListener(service)
 {
-	foreach (const Group &group, GroupManager::instance()->items())
+	foreach (const Group &group, Core::instance()->groupManager()->items())
 		groupAdded(group);
 }
 

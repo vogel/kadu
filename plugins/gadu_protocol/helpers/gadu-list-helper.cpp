@@ -203,7 +203,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 			if (nameElement.text().isEmpty())
 				continue;
 
-			importedGroups.insert(idElement.text(), GroupManager::instance()->byName(nameElement.text()));
+			importedGroups.insert(idElement.text(), Core::instance()->groupManager()->byName(nameElement.text()));
 		}
 	}
 
@@ -274,7 +274,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 
 	groups.clear();
 	if (!sections[5].isEmpty())
-		groups.insert(GroupManager::instance()->byName(sections[5]));
+		groups.insert(Core::instance()->groupManager()->byName(sections[5]));
 
 	i = 6;
 	while (!ok && i < secCount)
@@ -282,7 +282,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 		sections[i].toULong(&ok);
 		ok = ok || sections[i].isEmpty();
 		if (!ok)
-			groups.insert(GroupManager::instance()->byName(sections[i]));
+			groups.insert(Core::instance()->groupManager()->byName(sections[i]));
 		++i;
 	}
 	buddy.setGroups(groups);
@@ -350,7 +350,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	if (!sections[5].isEmpty())
 	{
 		foreach (const QString &group, sections[5].split(',', QString::SkipEmptyParts))
-			groups.insert(GroupManager::instance()->byName(group));
+			groups.insert(Core::instance()->groupManager()->byName(group));
 
 		buddy.setGroups(groups);
 	}

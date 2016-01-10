@@ -59,7 +59,7 @@ GroupShared::~GroupShared()
 
 StorableObject * GroupShared::storageParent()
 {
-	return GroupManager::instance();
+	return Core::instance()->groupManager();
 }
 
 QString GroupShared::storageNodeName()
