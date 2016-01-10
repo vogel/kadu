@@ -46,7 +46,7 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
 	if (UsedChats.contains(chat))
 		return;
 
-	Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+	Chat buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
 	if (!buddyChat)
 	{
 		UsedChats.insert(chat);

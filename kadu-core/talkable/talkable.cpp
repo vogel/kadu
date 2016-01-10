@@ -150,7 +150,7 @@ Chat Talkable::toChat() const
 		case ItemBuddy:
 		{
 			const Chat &chat = ChatTypeContact::findChat(BuddyPreferredManager::instance()->preferredContact2(MyBuddy), ActionCreateAndAdd);
-			const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+			const Chat &buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
 			return buddyChat ? buddyChat : chat;
 		}
 		case ItemContact: return ChatTypeContact::findChat(MyContact, ActionCreateAndAdd);

@@ -626,7 +626,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			continue;
 
 		Chat chat = ChatsMapping->chatById(query.value(3).toInt());
-		Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+		Chat buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
 		chat = buddyChat ? buddyChat : chat;
 
 		if (chat != lastChat || date != lastDate)

@@ -165,7 +165,7 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 	Chat chat = CurrentTalkable.toChat();
 	// if buddy do not have any contact we have to create chat manually
 	if (!chat)
-		chat = BuddyChatManager::instance()->buddyChat(CurrentTalkable.toBuddy());
+		chat = Core::instance()->buddyChatManager()->buddyChat(CurrentTalkable.toBuddy());
 
 	TimelineView->messagesView()->setChat(chat);
 
@@ -290,7 +290,7 @@ void HistoryMessagesTab::currentDateChanged()
 	Chat chat = CurrentTalkable.toChat();
 	// if buddy do not have any contact we have to create chat manually
 	if (!chat)
-		chat = BuddyChatManager::instance()->buddyChat(CurrentTalkable.toBuddy());
+		chat = Core::instance()->buddyChatManager()->buddyChat(CurrentTalkable.toBuddy());
 
 	timelineView()->messagesView()->setChat(chat);
 	TimelineView->setFutureMessages(Storage->messages(query));

@@ -158,7 +158,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 		return;
 	}
 
-	const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chatWidget->chat());
+	const Chat &buddyChat = Core::instance()->buddyChatManager()->buddyChat(chatWidget->chat());
 	const Chat &messagesChat = buddyChat ? buddyChat : chatWidget->chat();
 	HistoryStorage *historyStorage = m_history->currentStorage();
 

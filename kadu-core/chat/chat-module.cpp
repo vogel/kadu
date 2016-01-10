@@ -19,10 +19,12 @@
 
 #include "chat-module.h"
 
+#include "chat/buddy-chat-manager.h"
 #include "chat/recent-chat-manager.h"
 
 ChatModule::ChatModule()
 {
+	add_type<BuddyChatManager>();
 	add_type<RecentChatManager>();
 }
 

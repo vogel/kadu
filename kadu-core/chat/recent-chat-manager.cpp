@@ -72,6 +72,7 @@ void RecentChatManager::init()
 void RecentChatManager::done()
 {
 	m_configurationManager->unregisterStorableObject(this);
+	RecentChats.clear(); // TODO: should not be needed, but is because of stupid code in ChatShared::~ChatShared
 }
 
 /**

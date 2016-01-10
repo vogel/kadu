@@ -18,57 +18,57 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account-manager.h"
-#include "protocols/protocol.h"
 
+#include "buddy-chat-manager.h"
+
+#include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-buddy.h"
 #include "chat/chat-details-contact.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
+#include "protocols/protocol.h"
 
-#include "buddy-chat-manager.h"
-
-BuddyChatManager * BuddyChatManager::Instance = 0;
-
-BuddyChatManager * BuddyChatManager::instance()
-{
-	if (!Instance)
-	{
-		Instance = new BuddyChatManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-BuddyChatManager::BuddyChatManager()
+BuddyChatManager::BuddyChatManager(QObject *parent) :
+		QObject{parent}
 {
 }
 
 BuddyChatManager::~BuddyChatManager()
 {
-	disconnect(Core::instance()->buddyManager(), 0, this, 0);
-	disconnect(Core::instance()->chatManager(), 0, this, 0);
+	disconnect(m_buddyManager, 0, this, 0);
+	disconnect(m_chatManager, 0, this, 0);
+}
 
-	foreach (const Chat &chat, Core::instance()->chatManager()->items())
-		chatRemoved(chat);
+void BuddyChatManager::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void BuddyChatManager::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
 }
 
 void BuddyChatManager::init()
 {
-	connect(Core::instance()->buddyManager(), SIGNAL(buddyContactAdded(Buddy,Contact)),
+	connect(m_buddyManager, SIGNAL(buddyContactAdded(Buddy,Contact)),
 	        this, SLOT(buddyContactAdded(Buddy,Contact)));
-	connect(Core::instance()->buddyManager(), SIGNAL(buddyContactRemoved(Buddy,Contact)),
+	connect(m_buddyManager, SIGNAL(buddyContactRemoved(Buddy,Contact)),
 	        this, SLOT(buddyContactRemoved(Buddy,Contact)));
 
-	connect(Core::instance()->chatManager(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
-	connect(Core::instance()->chatManager(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
+	connect(m_chatManager, SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
+	connect(m_chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
-	foreach (const Chat &chat, Core::instance()->chatManager()->items())
+	foreach (const Chat &chat, m_chatManager->items())
 		chatAdded(chat);
+}
+
+void BuddyChatManager::done()
+{
+	foreach (const Chat &chat, m_chatManager->items())
+		chatRemoved(chat);
 }
 
 Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)

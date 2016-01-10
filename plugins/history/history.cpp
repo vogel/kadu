@@ -206,7 +206,7 @@ void History::chatWidgetAdded(ChatWidget *chatWidget)
 	if (!chatMessagesView)
 		return;
 
-	Chat chat = BuddyChatManager::instance()->buddyChat(chatWidget->chat());
+	Chat chat = Core::instance()->buddyChatManager()->buddyChat(chatWidget->chat());
 
 	HistoryQuery query;
 	query.setTalkable(chat ? chat : chatWidget->chat());

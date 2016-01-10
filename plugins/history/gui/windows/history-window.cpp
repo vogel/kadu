@@ -48,7 +48,7 @@ HistoryWindow * HistoryWindow::instance()
 
 void HistoryWindow::show(InjectedFactory *injectedFactory, History *history, const Chat &chat)
 {
-	Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+	Chat buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
 	if (!buddyChat)
 		buddyChat = chat;
 

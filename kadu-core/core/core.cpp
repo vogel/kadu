@@ -914,6 +914,11 @@ AvatarManager * Core::avatarManager() const
 	return m_injector.get<AvatarManager>();
 }
 
+BuddyChatManager * Core::buddyChatManager() const
+{
+	return m_injector.get<BuddyChatManager>();
+}
+
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)

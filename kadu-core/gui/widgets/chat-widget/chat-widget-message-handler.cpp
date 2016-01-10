@@ -147,7 +147,7 @@ void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 SortedMessages ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &chat) const
 {
 	// TODO: BuddyChatManager cannot be injected here, because it crashes, find out why
-	auto buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+	auto buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
 	auto unreadChat = buddyChat ? buddyChat : chat;
 	return m_unreadMessageRepository.data()->unreadMessagesForChat(unreadChat);
 }
