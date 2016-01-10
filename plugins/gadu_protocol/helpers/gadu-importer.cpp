@@ -125,7 +125,7 @@ void GaduImporter::importAccounts()
 		QString user = Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "ProxyUser");
 		QString password = Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "ProxyPassword");
 
-		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
+		NetworkProxy networkProxy = Core::instance()->networkProxyManager()->byConfiguration(
 		            address, port, user, password, ActionCreateAndAdd);
 		if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "UseProxy"))
 			defaultGaduGadu.setProxy(networkProxy);

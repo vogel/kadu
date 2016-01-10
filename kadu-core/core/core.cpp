@@ -95,6 +95,7 @@
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -890,6 +891,11 @@ RecentChatManager * Core::recentChatManager() const
 IdentityManager * Core::identityManager() const
 {
 	return m_injector.get<IdentityManager>();
+}
+
+NetworkProxyManager * Core::networkProxyManager() const
+{
+	return m_injector.get<NetworkProxyManager>();
 }
 
 void Core::showMainWindow()

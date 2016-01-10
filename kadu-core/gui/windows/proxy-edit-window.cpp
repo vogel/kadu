@@ -35,6 +35,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/core.h"
 #include "model/action-filter-proxy-model.h"
 #include "model/action-list-model.h"
 #include "model/merged-proxy-model-factory.h"
@@ -254,7 +255,7 @@ void ProxyEditWindow::removeButtonClicked()
 		return;
 
 	if (messageBox.data()->clickedButton() == removeButton)
-		NetworkProxyManager::instance()->removeItem(proxy);
+		Core::instance()->networkProxyManager()->removeItem(proxy);
 
 	delete messageBox.data();
 }
@@ -271,7 +272,7 @@ void ProxyEditWindow::saveProxy(NetworkProxy proxy)
 		proxy.setPollingUrl(PollingUrl->text());
 	}
 	else
-		proxy = NetworkProxyManager::instance()->byConfiguration(Host->text(), Port->text().toInt(), User->text(), Password->text(),
+		proxy = Core::instance()->networkProxyManager()->byConfiguration(Host->text(), Port->text().toInt(), User->text(), Password->text(),
 		                                                 ActionCreateAndAdd);
 
 	ForceProxyChange = true;

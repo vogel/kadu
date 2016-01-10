@@ -133,7 +133,7 @@ void AccountShared::importNetworkProxy()
 	NetworkProxy importedProxy;
 
 	if (!address.isEmpty())
-		importedProxy = NetworkProxyManager::instance()->byConfiguration(
+		importedProxy = Core::instance()->networkProxyManager()->byConfiguration(
 		            address, port, user, password, ActionCreateAndAdd);
 
 	if (loadValue<bool>("UseProxy"))
@@ -186,7 +186,7 @@ void AccountShared::load()
 	{
 		UseDefaultProxy = loadValue<bool>("UseDefaultProxy", true);
 		if (!UseDefaultProxy)
-			Proxy = NetworkProxyManager::instance()->byUuid(loadValue<QString>("Proxy"));
+			Proxy = Core::instance()->networkProxyManager()->byUuid(loadValue<QString>("Proxy"));
 	}
 
 	PrivateStatus = loadValue<bool>("PrivateStatus", true);

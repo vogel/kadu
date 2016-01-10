@@ -22,6 +22,7 @@
 #include <QtWidgets/QLabel>
 #include <QtXml/QDomElement>
 
+#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-proxy-combo-box.h"
 #include "network/proxy/network-proxy-manager.h"
@@ -61,13 +62,13 @@ void ConfigProxyComboBox::loadConfiguration()
 		return;
 
 	if (DefaultItem.isEmpty())
-		setCurrentProxy(NetworkProxyManager::instance()->byUuid(dataManager->readEntry(section, item).toString()));
+		setCurrentProxy(Core::instance()->networkProxyManager()->byUuid(dataManager->readEntry(section, item).toString()));
 
 	QVariant defaultValue = dataManager->readEntry(section, DefaultItem);
 	if (defaultValue.isNull() || defaultValue.toBool())
 		selectDefaultProxy();
 	else
-		setCurrentProxy(NetworkProxyManager::instance()->byUuid(dataManager->readEntry(section, item).toString()));
+		setCurrentProxy(Core::instance()->networkProxyManager()->byUuid(dataManager->readEntry(section, item).toString()));
 }
 
 void ConfigProxyComboBox::saveConfiguration()

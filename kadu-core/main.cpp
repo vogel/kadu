@@ -73,6 +73,7 @@
 #include "message/message-module.h"
 #include "misc/date-time.h"
 #include "misc/paths-provider.h"
+#include "network/network-module.h"
 #include "notification/notification-module.h"
 #include "os/single-application/single-application.h"
 #include "os/win/wsa-exception.h"
@@ -232,6 +233,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<IconsModule>());
 	modules.emplace_back(make_unique<IdentityModule>());
 	modules.emplace_back(make_unique<MessageModule>());
+	modules.emplace_back(make_unique<NetworkModule>());
 	modules.emplace_back(make_unique<NotificationModule>());
 	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());

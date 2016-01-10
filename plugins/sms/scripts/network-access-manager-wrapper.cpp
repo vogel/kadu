@@ -49,9 +49,9 @@ void NetworkAccessManagerWrapper::configurationUpdated()
 	NetworkProxy networkProxy;
 
 	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
-		networkProxy = NetworkProxyManager::instance()->defaultProxy();
+		networkProxy = Core::instance()->networkProxyManager()->defaultProxy();
 	else
-		networkProxy = NetworkProxyManager::instance()->byUuid(Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "Proxy"));
+		networkProxy = Core::instance()->networkProxyManager()->byUuid(Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "Proxy"));
 
 	QNetworkProxy proxy;
 

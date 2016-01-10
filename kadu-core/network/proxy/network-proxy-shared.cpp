@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "misc/change-notifier.h"
 #include "network/proxy/network-proxy-manager.h"
 
@@ -53,7 +54,7 @@ NetworkProxyShared::~NetworkProxyShared()
 
 StorableObject * NetworkProxyShared::storageParent()
 {
-	return NetworkProxyManager::instance();
+	return Core::instance()->networkProxyManager();
 }
 
 QString NetworkProxyShared::storageNodeName()

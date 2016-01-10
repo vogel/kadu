@@ -76,6 +76,7 @@ class Message;
 class MessageHtmlRendererService;
 class MessageManager;
 class MessageTransformerService;
+class NetworkProxyManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationManager;
@@ -216,6 +217,7 @@ public:
 	GroupManager * groupManager() const;
 	RecentChatManager * recentChatManager() const;
 	IdentityManager * identityManager() const;
+	NetworkProxyManager * networkProxyManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

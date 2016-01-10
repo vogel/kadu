@@ -29,23 +29,22 @@
 
 #include "network-proxy-manager.h"
 
-NetworkProxyManager *NetworkProxyManager::Instance = 0;
-
-NetworkProxyManager * NetworkProxyManager::instance()
+NetworkProxyManager::NetworkProxyManager(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new NetworkProxyManager();
-
-	return Instance;
 }
 
-NetworkProxyManager::NetworkProxyManager()
+NetworkProxyManager::~NetworkProxyManager()
+{
+}
+
+void NetworkProxyManager::init()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 	configurationUpdated();
 }
 
-NetworkProxyManager::~NetworkProxyManager()
+void NetworkProxyManager::done()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }

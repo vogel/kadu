@@ -18,49 +18,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_PROXY_MANAGER_H
-#define NETWORK_PROXY_MANAGER_H
-
-#include <QtCore/QList>
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "network/proxy/network-proxy.h"
 #include "storage/simple-manager.h"
-
 #include "exports.h"
+
+#include <QtCore/QList>
+#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <injeqt/injeqt.h>
 
 class NetworkProxy;
 
 class KADUAPI NetworkProxyManager : public QObject, public SimpleManager<NetworkProxy>, ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(NetworkProxyManager)
-
-	static NetworkProxyManager *Instance;
-
-	NetworkProxy DefaultProxy;
-
-	NetworkProxyManager();
-	virtual ~NetworkProxyManager();
-
-private slots:
-	void networkProxyDataUpdated();
-
-protected:
-	virtual void load();
-	virtual void store();
-
-	virtual void itemAboutToBeAdded(NetworkProxy item);
-	virtual void itemAdded(NetworkProxy item);
-	virtual void itemAboutToBeRemoved(NetworkProxy item);
-	virtual void itemRemoved(NetworkProxy item);
-
-	virtual void configurationUpdated();
 
 public:
-	static NetworkProxyManager * instance();
+	Q_INVOKABLE explicit NetworkProxyManager(QObject *parent = nullptr);
+	virtual ~NetworkProxyManager();
 
 	virtual QString storageNodeName() { return QLatin1String("Proxys"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Proxy"); }
@@ -79,6 +57,24 @@ signals:
 
 	void networkProxyUpdated(NetworkProxy networkProxy);
 
-};
+protected:
+	virtual void load();
+	virtual void store();
 
-#endif // NETWORK_PROXY_MANAGER_H
+	virtual void itemAboutToBeAdded(NetworkProxy item);
+	virtual void itemAdded(NetworkProxy item);
+	virtual void itemAboutToBeRemoved(NetworkProxy item);
+	virtual void itemRemoved(NetworkProxy item);
+
+	virtual void configurationUpdated();
+
+private:
+	NetworkProxy DefaultProxy;
+
+private slots:
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
+	void networkProxyDataUpdated();
+
+};

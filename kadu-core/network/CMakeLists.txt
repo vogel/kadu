@@ -8,6 +8,7 @@ set (network_SRCS
 
 	network-aware-object.cpp
 	network-manager.cpp
+	network-module.cpp
 )
 
 set (network_MOC_SRCS

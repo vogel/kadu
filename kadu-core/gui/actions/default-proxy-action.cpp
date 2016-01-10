@@ -21,6 +21,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/windows/proxy-edit-window.h"
 #include "model/roles.h"
@@ -89,7 +90,7 @@ void DefaultProxyAction::prepareMenu()
 
 	menu->clear();
 
-	NetworkProxy defaultProxy = NetworkProxyManager::instance()->defaultProxy();
+	NetworkProxy defaultProxy = Core::instance()->networkProxyManager()->defaultProxy();
 
 	QAction *proxyAction = menu->addAction(tr(" - No proxy - "));
 
@@ -110,7 +111,7 @@ void DefaultProxyAction::prepareMenu()
 void DefaultProxyAction::selectProxyActionTriggered(QAction *action)
 {
 	NetworkProxy defaultProxy = qvariant_cast<NetworkProxy>(action->data());
-	NetworkProxyManager::instance()->setDefaultProxy(defaultProxy);
+	Core::instance()->networkProxyManager()->setDefaultProxy(defaultProxy);
 }
 
 void DefaultProxyAction::editProxyConfiguration()

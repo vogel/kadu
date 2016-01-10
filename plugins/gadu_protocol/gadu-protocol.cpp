@@ -306,7 +306,7 @@ void GaduProtocol::login()
 	}
 
 	GaduProxyHelper::setupProxy(account().useDefaultProxy()
-			? NetworkProxyManager::instance()->defaultProxy()
+			? Core::instance()->networkProxyManager()->defaultProxy()
 			: account().proxy());
 
 	setupLoginParams();
