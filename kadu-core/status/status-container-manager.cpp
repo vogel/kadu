@@ -57,14 +57,12 @@ void StatusContainerManager::setIdentityManager(IdentityManager *identityManager
 
 void StatusContainerManager::init()
 {
-	AllAccountsContainer = new AllAccountsStatusContainer(this);
-
 	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesAdded();
 	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		triggerAllAccountsRegistered();
 	else
-		registerStatusContainer(AllAccountsContainer);
+		registerStatusContainer(m_allAccountsStatusContainer);
 
 	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
 	connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
@@ -81,7 +79,7 @@ void StatusContainerManager::done()
 		else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 			triggerAllAccountsUnregistered();
 		else
-			unregisterStatusContainer(AllAccountsContainer);
+			unregisterStatusContainer(m_allAccountsStatusContainer);
 	}
 
 	disconnect(m_accountManager, 0, this, 0);
@@ -146,6 +144,11 @@ void StatusContainerManager::addAllIdentities()
 	updateIdentities();
 }
 
+void StatusContainerManager::setAllAccountsStatusContainer(AllAccountsStatusContainer *allAccountsStatusContainer)
+{
+	m_allAccountsStatusContainer = allAccountsStatusContainer;
+}
+
 void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultStatusContainer)
 {
 	if (defaultStatusContainer == DefaultStatusContainer)
@@ -173,7 +176,7 @@ void StatusContainerManager::setStatusModeChanged()
 	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
 		addAllAccounts();
 	else
-		registerStatusContainer(AllAccountsContainer);
+		registerStatusContainer(m_allAccountsStatusContainer);
 }
 
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)

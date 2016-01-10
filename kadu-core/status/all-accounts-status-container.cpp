@@ -30,10 +30,18 @@
 AllAccountsStatusContainer::AllAccountsStatusContainer(QObject *parent) :
 		StatusContainer(parent)
 {
-	triggerAllAccountsRegistered();
 }
 
 AllAccountsStatusContainer::~AllAccountsStatusContainer()
+{
+}
+
+void AllAccountsStatusContainer::init()
+{
+	triggerAllAccountsRegistered();
+}
+
+void AllAccountsStatusContainer::done()
 {
 	triggerAllAccountsUnregistered();
 }

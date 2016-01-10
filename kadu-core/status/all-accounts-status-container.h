@@ -17,11 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALL_ACCOUNTS_STATUS_CONTAINER_H
-#define ALL_ACCOUNTS_STATUS_CONTAINER_H
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "status/status-container.h"
+
+#include <injeqt/injeqt.h>
 
 class Account;
 
@@ -42,7 +43,6 @@ class Account;
 class KADUAPI AllAccountsStatusContainer : public StatusContainer, public AccountsAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AllAccountsStatusContainer)
 
 	QList<Account> Accounts;
 	Status LastSetStatus;
@@ -69,7 +69,7 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 public:
-	explicit AllAccountsStatusContainer(QObject *parent = 0);
+	Q_INVOKABLE explicit AllAccountsStatusContainer(QObject *parent = nullptr);
 	virtual ~AllAccountsStatusContainer();
 
 	/**
@@ -171,10 +171,12 @@ public:
 	 */
 	virtual void storeStatus(Status status);
 
+private slots:
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
 };
 
 /**
  * @}
  */
-
-#endif // ALL_ACCOUNTS_STATUS_CONTAINER_H
