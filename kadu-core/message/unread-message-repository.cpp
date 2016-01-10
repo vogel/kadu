@@ -23,6 +23,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-buddy.h"
 #include "chat/chat.h"
+#include "configuration/configuration-manager.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
 
@@ -30,12 +31,10 @@ UnreadMessageRepository::UnreadMessageRepository(QObject *parent) :
 		QObject{parent}
 {
 	setState(StateNotLoaded);
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 UnreadMessageRepository::~UnreadMessageRepository()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void UnreadMessageRepository::setBuddyManager(BuddyManager *buddyManager)
@@ -46,6 +45,16 @@ void UnreadMessageRepository::setBuddyManager(BuddyManager *buddyManager)
 void UnreadMessageRepository::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void UnreadMessageRepository::init()
+{
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+void UnreadMessageRepository::done()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 bool UnreadMessageRepository::importFromPendingMessages()

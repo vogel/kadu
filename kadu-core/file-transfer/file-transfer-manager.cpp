@@ -64,10 +64,14 @@ FileTransferManager::FileTransferManager(QObject *parent) :
 	NewFileTransferNotification::registerEvents();
 
 	triggerAllAccountsRegistered();
+
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 FileTransferManager::~FileTransferManager()
 {
+
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)

@@ -21,6 +21,7 @@
 #include <QtXml/QDomElement>
 
 #include "configuration/configuration-api.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
@@ -40,11 +41,13 @@ NetworkProxyManager * NetworkProxyManager::instance()
 
 NetworkProxyManager::NetworkProxyManager()
 {
+	ConfigurationManager::instance()->registerStorableObject(this);
 	configurationUpdated();
 }
 
 NetworkProxyManager::~NetworkProxyManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void NetworkProxyManager::load()

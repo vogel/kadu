@@ -43,8 +43,7 @@
 #include <QtCore/QTimer>
 
 ContactManager::ContactManager(QObject *parent) :
-		QObject{parent},
-		SimpleManager<Contact>{false}
+		QObject{parent}
 {
 }
 
@@ -69,6 +68,8 @@ void ContactManager::init()
 
 	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
 	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
+
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 void ContactManager::done()

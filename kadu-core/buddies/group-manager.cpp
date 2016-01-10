@@ -27,6 +27,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "core/core.h"
 #include "core/core.h"
@@ -51,10 +52,12 @@ GroupManager * GroupManager::instance()
 
 GroupManager::GroupManager()
 {
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 GroupManager::~GroupManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void GroupManager::init()

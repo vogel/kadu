@@ -198,6 +198,8 @@ private:
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };
 

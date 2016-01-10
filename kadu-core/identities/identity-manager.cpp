@@ -39,10 +39,12 @@ IdentityManager * IdentityManager::instance()
 
 IdentityManager::IdentityManager()
 {
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 IdentityManager::~IdentityManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 Identity IdentityManager::byName(const QString &name, bool create)

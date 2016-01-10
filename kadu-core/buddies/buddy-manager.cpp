@@ -53,6 +53,16 @@ void BuddyManager::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
+void BuddyManager::init()
+{
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+void BuddyManager::done()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
 void BuddyManager::load()
 {
 	QMutexLocker locker(&mutex());

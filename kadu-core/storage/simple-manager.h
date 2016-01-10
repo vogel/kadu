@@ -30,7 +30,6 @@
 #include <QtCore/QUuid>
 #include <QtCore/QVector>
 
-#include "configuration/configuration-manager.h"
 #include "storage/manager-common.h"
 #include "storage/storable-object.h"
 
@@ -64,38 +63,18 @@ template<class Item>
 class SimpleManager : public StorableObject
 {
 	QMutex Mutex;
-	bool SaveOnExit;
 
 	QVector<Item> Items;
 
 protected:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Contructs empty, 'not loaded', object.
-	 *
-	 * Contructs empty, 'not loaded', object. Also registers this object
-	 * in @link ConfigurationManager @endlink singleton, so this class
-	 * will automatically store itself on each configuration flush request.
-	 */
-	SimpleManager(bool saveOnExit = true) :
-			Mutex(QMutex::Recursive),
-			SaveOnExit{saveOnExit}
+	SimpleManager() :
+			Mutex(QMutex::Recursive)
 	{
 		setState(StateNotLoaded);
-		ConfigurationManager::instance()->registerStorableObject(this);
 	}
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Destroys object.
-	 *
-	 * Destroys object. Also unregisters this object in @link ConfigurationManager @endlink
-	 * singleton.
-	 */
 	virtual ~SimpleManager()
 	{
-		if (SaveOnExit)
-			ConfigurationManager::instance()->unregisterStorableObject(this);
 	}
 
 	QMutex & mutex()
