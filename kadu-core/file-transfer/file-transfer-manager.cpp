@@ -71,6 +71,11 @@ FileTransferManager::~FileTransferManager()
 {
 }
 
+void FileTransferManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
@@ -78,12 +83,12 @@ void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManag
 
 void FileTransferManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void FileTransferManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 
 	m_window.data()->deleteLater();
 

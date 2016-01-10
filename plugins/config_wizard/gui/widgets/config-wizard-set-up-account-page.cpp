@@ -120,7 +120,7 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 
 	AccountSuccessfullyCreated = true;
 
-	ConfigurationManager::instance()->flush();
+	Core::instance()->configurationManager()->flush();
 }
 
 #include "moc_config-wizard-set-up-account-page.cpp"

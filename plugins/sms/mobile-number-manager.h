@@ -22,13 +22,17 @@
 
 #include "storage/storable-object.h"
 
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ConfigurationManager;
 class MobileNumber;
 
 class MobileNumberManager : public QObject, public StorableObject
 {
 	Q_OBJECT
+
+	QPointer<ConfigurationManager> m_configurationManager;
 
 	QList<MobileNumber *> Numbers;
 
@@ -52,6 +56,7 @@ public:
 	QString gatewayId(const QString &mobileNumber);
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

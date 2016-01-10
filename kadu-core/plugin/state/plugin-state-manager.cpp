@@ -37,6 +37,11 @@ PluginStateManager::~PluginStateManager()
 {
 }
 
+void PluginStateManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void PluginStateManager::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
@@ -82,7 +87,7 @@ QMap<QString, PluginState> PluginStateManager::loadPluginStates(StoragePoint *st
 void PluginStateManager::storePluginStatesAndFlush()
 {
 	storePluginStates();
-	ConfigurationManager::instance()->flush();
+	m_configurationManager->flush();
 }
 
 void PluginStateManager::storePluginStates()

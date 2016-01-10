@@ -129,7 +129,7 @@ void ConfigurationWindow::updateConfig()
 	emit configurationSaved();
 	ConfigurationAwareObject::notifyAll();
 
-	ConfigurationManager::instance()->flush();
+	Core::instance()->configurationManager()->flush();
 }
 
 void ConfigurationWindow::keyPressEvent(QKeyEvent *e)

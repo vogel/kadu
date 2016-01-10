@@ -70,7 +70,7 @@ MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidge
 {
 	Q_ASSERT(0 != Context);
 
-	connect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
+	connect(Core::instance()->configurationManager()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
 	connect(Actions::instance(), SIGNAL(actionLoaded(ActionDescription*)),
 			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
@@ -81,7 +81,7 @@ MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidge
 MainWindow::~MainWindow()
 {
 	disconnect(Actions::instance(), 0, this, 0);
-	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), 0, this, 0);
+	disconnect(Core::instance()->configurationManager()->toolbarConfigurationManager(), 0, this, 0);
 
 	delete Context;
 	Context = 0;
@@ -456,7 +456,7 @@ void MainWindow::toolbarUpdated()
 {
 	writeToolBarsToConfig();
 
-	ConfigurationManager::instance()->toolbarConfigurationManager()->notifyConfigurationUpdated();
+	Core::instance()->configurationManager()->toolbarConfigurationManager()->notifyConfigurationUpdated();
 }
 
 void MainWindow::toolbarRemoved(ToolBar *toolBar)

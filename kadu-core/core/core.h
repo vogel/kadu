@@ -60,6 +60,7 @@ class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
+class ConfigurationManager;
 class ConfigurationUiHandlerRepository;
 class Configuration;
 class ContactManager;
@@ -220,6 +221,7 @@ public:
 	IdentityManager * identityManager() const;
 	NetworkProxyManager * networkProxyManager() const;
 	DescriptionManager * descriptionManager() const;
+	ConfigurationManager * configurationManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

@@ -40,9 +40,14 @@ ChatManager::~ChatManager()
 {
 }
 
+void ChatManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void ChatManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 
 	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 		unreadMessageAdded(message);
@@ -63,7 +68,7 @@ void ChatManager::done()
 			unreadMessageRemoved(message);
 	}
 
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 void ChatManager::itemAboutToBeRegistered(Chat item)

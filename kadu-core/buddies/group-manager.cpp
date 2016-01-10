@@ -46,6 +46,11 @@ GroupManager::~GroupManager()
 {
 }
 
+void GroupManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void GroupManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
@@ -53,12 +58,12 @@ void GroupManager::setConfiguration(Configuration *configuration)
 
 void GroupManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void GroupManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 void GroupManager::importConfiguration()

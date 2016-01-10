@@ -50,6 +50,11 @@ AccountManager::~AccountManager()
 {
 }
 
+void AccountManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void AccountManager::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
@@ -59,12 +64,12 @@ void AccountManager::init()
 {
 	// needed for QueuedConnection
 	qRegisterMetaType<Account>("Account");
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void AccountManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 void AccountManager::itemAdded(Account item)

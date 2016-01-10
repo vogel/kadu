@@ -43,6 +43,11 @@ BuddyManager::~BuddyManager()
 {
 }
 
+void BuddyManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void BuddyManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
@@ -55,12 +60,12 @@ void BuddyManager::setContactManager(ContactManager *contactManager)
 
 void BuddyManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void BuddyManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 void BuddyManager::load()
@@ -147,7 +152,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	// each item that stores pointer to "source" will now use the same uuid as "destination"
 	source.data()->setUuid(destination.uuid());
 
-	ConfigurationManager::instance()->flush();
+	m_configurationManager->flush();
 }
 
 Buddy BuddyManager::byDisplay(const QString &display, NotFoundAction action)

@@ -36,14 +36,19 @@ IdentityManager::~IdentityManager()
 {
 }
 
+void IdentityManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void IdentityManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void IdentityManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 Identity IdentityManager::byName(const QString &name, bool create)

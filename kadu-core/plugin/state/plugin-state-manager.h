@@ -25,6 +25,7 @@
 #include <injeqt/injeqt.h>
 #include <set>
 
+class ConfigurationManager;
 class PluginDependencyHandler;
 class PluginStateService;
 class StoragePoint;
@@ -72,6 +73,7 @@ public:
 	void storePluginStates();
 
 private:
+	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateService> m_pluginStateService;
 	QPointer<StoragePointFactory> m_storagePointFactory;
@@ -79,6 +81,7 @@ private:
 	QMap<QString, PluginState> loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const;
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);

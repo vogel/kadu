@@ -38,15 +38,20 @@ NetworkProxyManager::~NetworkProxyManager()
 {
 }
 
+void NetworkProxyManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void NetworkProxyManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 	configurationUpdated();
 }
 
 void NetworkProxyManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 void NetworkProxyManager::load()

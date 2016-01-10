@@ -51,6 +51,11 @@ ContactManager::~ContactManager()
 {
 }
 
+void ContactManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void ContactManager::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
@@ -69,7 +74,7 @@ void ContactManager::init()
 	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
 	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
 
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void ContactManager::done()
@@ -81,7 +86,7 @@ void ContactManager::done()
 
 	ContactParserTags::unregisterParserTags();
 
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 void ContactManager::unreadMessageAdded(const Message &message)

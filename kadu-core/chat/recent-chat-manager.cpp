@@ -45,6 +45,11 @@ RecentChatManager::~RecentChatManager()
 {
 }
 
+void RecentChatManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void RecentChatManager::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
@@ -53,7 +58,7 @@ void RecentChatManager::setMessageManager(MessageManager *messageManager)
 void RecentChatManager::init()
 {
 	setState(StateNotLoaded);
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 
 	CleanUpTimer.setInterval(30 * 1000);
 	connect(&CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
@@ -66,7 +71,7 @@ void RecentChatManager::init()
 
 void RecentChatManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 /**

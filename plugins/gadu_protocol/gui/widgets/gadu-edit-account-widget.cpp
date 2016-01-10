@@ -339,7 +339,7 @@ void GaduEditAccountWidget::apply()
 		gpiw->apply();
 
 	Core::instance()->identityManager()->removeUnused();
-	ConfigurationManager::instance()->flush();
+	Core::instance()->configurationManager()->flush();
 
 	simpleStateNotifier()->setState(StateNotChanged);
 

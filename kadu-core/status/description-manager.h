@@ -24,8 +24,10 @@
 #include "configuration/configuration-aware-object.h"
 #include "storage/storable-string-list.h"
 
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ConfigurationManager;
 class DescriptionModel;
 
 class KADUAPI DescriptionManager : public QObject, public StorableStringList, private ConfigurationAwareObject
@@ -56,12 +58,15 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<ConfigurationManager> m_configurationManager;
+
 	int MaxNumberOfDescriptions;
 
 	void import();
 	void truncate();
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

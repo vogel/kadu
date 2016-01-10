@@ -21,6 +21,7 @@
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "configuration/configuration-factory.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration-writer.h"
 #include "configuration/configuration.h"
@@ -28,6 +29,7 @@
 ConfigurationModule::ConfigurationModule()
 {
 	add_type<ConfigurationFactory>();
+	add_type<ConfigurationManager>();
 	add_type<ConfigurationPathProvider>();
 	add_type<ConfigurationUiHandlerRepository>();
 	add_type<ConfigurationWriter>();

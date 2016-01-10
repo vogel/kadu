@@ -41,14 +41,19 @@ MobileNumberManager::~MobileNumberManager()
 	qDeleteAll(Numbers);
 }
 
+void MobileNumberManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void MobileNumberManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void MobileNumberManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)

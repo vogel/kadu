@@ -28,10 +28,12 @@
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QUuid>
 #include <injeqt/injeqt.h>
 
 class Account;
+class ConfigurationManager;
 class Status;
 
 class KADUAPI IdentityManager : public QObject, public SimpleManager<Identity>
@@ -65,9 +67,12 @@ protected:
 	virtual void load();
 
 private:
+	QPointer<ConfigurationManager> m_configurationManager;
+
 	void addDefaultIdentities();
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

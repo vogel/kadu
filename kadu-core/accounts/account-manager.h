@@ -35,15 +35,18 @@
 
 class Status;
 class ConfigurationApi;
+class ConfigurationManager;
 class ContactManager;
 
 class KADUAPI AccountManager : public QObject, public Manager<Account>
 {
 	Q_OBJECT
 
+	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<ContactManager> m_contactManager;
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

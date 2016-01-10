@@ -27,9 +27,11 @@
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QString>
 #include <injeqt/injeqt.h>
 
+class ConfigurationManager;
 class NetworkProxy;
 
 class KADUAPI NetworkProxyManager : public QObject, public SimpleManager<NetworkProxy>, ConfigurationAwareObject
@@ -69,9 +71,12 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<ConfigurationManager> m_configurationManager;
+
 	NetworkProxy DefaultProxy;
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

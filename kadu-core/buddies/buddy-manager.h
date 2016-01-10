@@ -36,6 +36,7 @@
 
 class Account;
 class ConfigurationApi;
+class ConfigurationManager;
 class Configuration;
 class ContactManager;
 
@@ -84,12 +85,14 @@ signals:
 	void buddySubscriptionChanged(const Buddy &buddy);
 
 private:
+	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
 
 	QString mergeValue(const QString &destination, const QString &source) const;
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_INIT void init();

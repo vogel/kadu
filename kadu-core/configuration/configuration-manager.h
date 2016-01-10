@@ -21,15 +21,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGURATION_MANAGER
-#define CONFIGURATION_MANAGER
-
-#include <QtCore/QList>
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
+#pragma once
 
 #include "exports.h"
 
+#include <QtCore/QList>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QUuid>
+#include <injeqt/injeqt.h>
+
+class Application;
+class Configuration;
 class StorableObject;
 class ToolbarConfigurationManager;
 
@@ -37,33 +40,34 @@ class KADUAPI ConfigurationManager : public QObject
 {
 	Q_OBJECT
 
-	static ConfigurationManager *Instance;
-
-	QUuid Uuid;
-	QList<StorableObject *> RegisteredStorableObjects;
-
-	ToolbarConfigurationManager *ToolbarConfiguration;
-
-	ConfigurationManager(QObject *parent = 0);
+public:
+	Q_INVOKABLE explicit ConfigurationManager(QObject *parent = nullptr);
 	virtual ~ConfigurationManager();
 
-	void importConfiguration();
-
-public:
-	static ConfigurationManager * instance();
-
-	void load();
-
-	const QUuid & uuid() const { return Uuid; }
+	const QUuid & uuid() const { return m_uuid; }
 
 	void registerStorableObject(StorableObject *object);
 	void unregisterStorableObject(StorableObject *object);
 
-	ToolbarConfigurationManager * toolbarConfigurationManager() { return ToolbarConfiguration; }
+	ToolbarConfigurationManager * toolbarConfigurationManager() { return m_toolbarConfiguration; }
 
 public slots:
 	void flush();
 
-};
+private:
+	QPointer<Application> m_application;
+	QPointer<Configuration> m_configuration;
 
-#endif // CONFIGURATION_MANAGER
+	QUuid m_uuid;
+	QList<StorableObject *> m_registeredStorableObjects;
+
+	ToolbarConfigurationManager *m_toolbarConfiguration;
+
+	void importConfiguration();
+
+private slots:
+	INJEQT_SET void setApplication(Application *application);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
+};

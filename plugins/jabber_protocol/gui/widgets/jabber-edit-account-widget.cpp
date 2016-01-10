@@ -464,7 +464,7 @@ void JabberEditAccountWidget::apply()
 		PersonalInfoWidget->apply();
 
 	Core::instance()->identityManager()->removeUnused();
-	ConfigurationManager::instance()->flush();
+	Core::instance()->configurationManager()->flush();
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }

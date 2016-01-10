@@ -38,9 +38,14 @@ DescriptionManager::~DescriptionManager()
 {
 }
 
+void DescriptionManager::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void DescriptionManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 
 	configurationUpdated();
 
@@ -52,7 +57,7 @@ void DescriptionManager::init()
 
 void DescriptionManager::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 StorableObject * DescriptionManager::storageParent()

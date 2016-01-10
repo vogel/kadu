@@ -42,6 +42,11 @@ void UnreadMessageRepository::setBuddyManager(BuddyManager *buddyManager)
 	m_buddyManager = buddyManager;
 }
 
+void UnreadMessageRepository::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
 void UnreadMessageRepository::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
@@ -49,12 +54,12 @@ void UnreadMessageRepository::setConfiguration(Configuration *configuration)
 
 void UnreadMessageRepository::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
+	m_configurationManager->registerStorableObject(this);
 }
 
 void UnreadMessageRepository::done()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
+	m_configurationManager->unregisterStorableObject(this);
 }
 
 bool UnreadMessageRepository::importFromPendingMessages()

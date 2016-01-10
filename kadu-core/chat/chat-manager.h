@@ -67,6 +67,7 @@
 class Account;
 class BuddySet;
 class ConfigurationApi;
+class ConfigurationManager;
 
 /**
  * @class ChatManager
@@ -87,9 +88,11 @@ class ConfigurationApi;
 class KADUAPI ChatManager : public QObject, public Manager<Chat>
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatManager)
+
+	QPointer<ConfigurationManager> m_configurationManager;
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

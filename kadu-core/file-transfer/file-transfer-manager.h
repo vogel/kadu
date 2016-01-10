@@ -35,6 +35,7 @@ class FileTransferActions;
 class FileTransferHandlerManager;
 class FileTransferWindow;
 class ConfigurationApi;
+class ConfigurationManager;
 
 class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTransfer>, AccountsAwareObject
 {
@@ -75,6 +76,7 @@ protected:
 
 private:
 	FileTransferActions *m_actions;
+	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
 	int m_totalProgress;
@@ -84,6 +86,7 @@ private:
 	void setTotalProgress(int totalProgress);
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

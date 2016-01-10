@@ -31,6 +31,7 @@
 #include <QtCore/QString>
 #include <injeqt/injeqt.h>
 
+class ConfigurationManager;
 class Configuration;
 
 class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
@@ -69,11 +70,13 @@ protected:
 	virtual void itemRemoved(Group item);
 
 private:
+	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
 
 	void importConfiguration();
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

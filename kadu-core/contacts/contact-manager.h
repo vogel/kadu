@@ -36,6 +36,7 @@
 #include <injeqt/injeqt.h>
 
 class Account;
+class ConfigurationManager;
 class UnreadMessageRepository;
 
 class KADUAPI ContactManager : public QObject, public SimpleManager<Contact>
@@ -75,9 +76,11 @@ protected:
 	virtual void itemRemoved(Contact item) override;
 
 private:
+	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

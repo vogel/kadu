@@ -65,7 +65,7 @@ void StorableStatusContainer::storeStatus(Status status)
 	MyStorableObject->storeValue("LastStatusDescription", status.description());
 	MyStorableObject->storeValue("LastStatusName", Core::instance()->statusTypeManager()->statusTypeData(status.type()).name());
 
-	ConfigurationManager::instance()->flush();
+	Core::instance()->configurationManager()->flush();
 }
 
 #include "moc_storable-status-container.cpp"

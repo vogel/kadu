@@ -220,7 +220,7 @@ Core::~Core()
 
 	// some plugins crash on deactivation
 	// ensure we have at least some configuration stored
-	ConfigurationManager::instance()->flush();
+	configurationManager()->flush();
 	application()->backupConfiguration();
 
 	m_injector.get<PluginManager>()->deactivatePlugins();
@@ -228,7 +228,7 @@ Core::~Core()
 
 	stopServices();
 
-	ConfigurationManager::instance()->flush();
+	configurationManager()->flush();
 	application()->backupConfiguration();
 
 	KaduWindowProvider->provideValue(0);
@@ -902,6 +902,11 @@ NetworkProxyManager * Core::networkProxyManager() const
 DescriptionManager * Core::descriptionManager() const
 {
 	return m_injector.get<DescriptionManager>();
+}
+
+ConfigurationManager * Core::configurationManager() const
+{
+	return m_injector.get<ConfigurationManager>();
 }
 
 void Core::showMainWindow()
