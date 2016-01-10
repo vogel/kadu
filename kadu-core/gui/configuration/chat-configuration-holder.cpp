@@ -19,25 +19,12 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-title-composing-state-position.h"
 
 #include "chat-configuration-holder.h"
 
-ChatConfigurationHolder *ChatConfigurationHolder::Instance = 0;
-
-ChatConfigurationHolder * ChatConfigurationHolder::instance()
-{
-	if (!Instance)
-	{
-		Instance = new ChatConfigurationHolder();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-ChatConfigurationHolder::ChatConfigurationHolder() :
+ChatConfigurationHolder::ChatConfigurationHolder(QObject *parent) :
+		ConfigurationHolder{parent},
 		AutoSend{},
 		NiceDateFormat{},
 		ChatTextCustomColors{},
@@ -50,6 +37,15 @@ ChatConfigurationHolder::ChatConfigurationHolder() :
 {
 }
 
+ChatConfigurationHolder::~ChatConfigurationHolder()
+{
+}
+
+void ChatConfigurationHolder::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ChatConfigurationHolder::init()
 {
 	configurationUpdated();
@@ -57,31 +53,31 @@ void ChatConfigurationHolder::init()
 
 void ChatConfigurationHolder::configurationUpdated()
 {
-	AutoSend = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
-	NiceDateFormat = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "NiceDateFormat");
+	AutoSend = m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
+	NiceDateFormat = m_configuration->deprecatedApi()->readBoolEntry("Look", "NiceDateFormat");
 
-	ChatTextCustomColors = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ChatTextCustomColors");
-	ChatTextBgColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor");
-	ChatTextFontColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatTextFontColor");
+	ChatTextCustomColors = m_configuration->deprecatedApi()->readBoolEntry("Look", "ChatTextCustomColors");
+	ChatTextBgColor = m_configuration->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor");
+	ChatTextFontColor = m_configuration->deprecatedApi()->readColorEntry("Look", "ChatTextFontColor");
 
-	ForceCustomChatFont = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ForceCustomChatFont");
-	ChatFont = Core::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "ChatFont");
+	ForceCustomChatFont = m_configuration->deprecatedApi()->readBoolEntry("Look", "ForceCustomChatFont");
+	ChatFont = m_configuration->deprecatedApi()->readFontEntry("Look", "ChatFont");
 
-	MyBackgroundColor = Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatMyBgColor");
-	MyFontColor = Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatMyFontColor");
-	MyNickColor = Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatMyNickColor");
-	UsrBackgroundColor = Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatUsrBgColor");
-	UsrFontColor = Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatUsrFontColor");
-	UsrNickColor = Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "ChatUsrNickColor");
+	MyBackgroundColor = m_configuration->deprecatedApi()->readEntry("Look", "ChatMyBgColor");
+	MyFontColor = m_configuration->deprecatedApi()->readEntry("Look", "ChatMyFontColor");
+	MyNickColor = m_configuration->deprecatedApi()->readEntry("Look", "ChatMyNickColor");
+	UsrBackgroundColor = m_configuration->deprecatedApi()->readEntry("Look", "ChatUsrBgColor");
+	UsrFontColor = m_configuration->deprecatedApi()->readEntry("Look", "ChatUsrFontColor");
+	UsrNickColor = m_configuration->deprecatedApi()->readEntry("Look", "ChatUsrNickColor");
 
-	ContactStateChats = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ContactStateChats");
-	ContactStateWindowTitle = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ContactStateWindowTitle");
-	ContactStateWindowTitlePosition = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ContactStateWindowTitlePosition");
+	ContactStateChats = m_configuration->deprecatedApi()->readBoolEntry("Chat", "ContactStateChats");
+	ContactStateWindowTitle = m_configuration->deprecatedApi()->readBoolEntry("Chat", "ContactStateWindowTitle");
+	ContactStateWindowTitlePosition = m_configuration->deprecatedApi()->readNumEntry("Chat", "ContactStateWindowTitlePosition");
 
-	ChatBgFilled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ChatBgFilled");
-	ChatBgColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "ChatBgColor");
+	ChatBgFilled = m_configuration->deprecatedApi()->readBoolEntry("Look", "ChatBgFilled");
+	ChatBgColor = m_configuration->deprecatedApi()->readColorEntry("Look", "ChatBgColor");
 
-	UseTransparency = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency");
+	UseTransparency = m_configuration->deprecatedApi()->readBoolEntry("Chat", "UseTransparency");
 
 	emit chatConfigurationUpdated();
 }

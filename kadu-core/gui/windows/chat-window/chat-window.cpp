@@ -57,6 +57,11 @@ ChatWindow::~ChatWindow()
 	emit windowDestroyed(this);
 }
 
+void ChatWindow::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
 void ChatWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -104,7 +109,7 @@ void ChatWindow::configurationUpdated()
 		// Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true));
 	m_chatWidget->title()->setBlinkTitleWhenUnreadMessages(
 		Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false));
-	m_chatWidget->title()->setComposingStatePosition(ChatConfigurationHolder::instance()->composingStatePosition());
+	m_chatWidget->title()->setComposingStatePosition(m_chatConfigurationHolder->composingStatePosition());
 	m_chatWidget->title()->setShowUnreadMessagesCount(
 		Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }

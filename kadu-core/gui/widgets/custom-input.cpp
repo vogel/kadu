@@ -60,6 +60,11 @@ CustomInput::CustomInput(Chat chat, QWidget *parent) :
 	kdebugf2();
 }
 
+void CustomInput::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
 void CustomInput::setImageStorageService(ImageStorageService *imageStorageService)
 {
 	CurrentImageStorageService = imageStorageService;
@@ -90,7 +95,7 @@ void CustomInput::showEvent(QShowEvent *e)
 	QTextEdit::showEvent(e);
 
 	// see #2837 - windows bug
-	setFont(ChatConfigurationHolder::instance()->chatFont());
+	setFont(m_chatConfigurationHolder->chatFont());
 }
 
 void CustomInput::keyPressEvent(QKeyEvent *e)

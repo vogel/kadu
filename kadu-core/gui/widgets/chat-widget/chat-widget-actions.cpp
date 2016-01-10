@@ -304,7 +304,7 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	Core::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
 	autoSendActionCheck();
 
-	ChatConfigurationHolder::instance()->configurationUpdated();
+	Core::instance()->chatConfigurationHolder()->configurationUpdated();
 }
 
 void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled)

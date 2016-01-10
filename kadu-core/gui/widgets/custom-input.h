@@ -30,6 +30,7 @@
 
 #include "exports.h"
 
+class ChatConfigurationHolder;
 class FormattedString;
 class FormattedStringFactory;
 class ImageStorageService;
@@ -38,6 +39,7 @@ class KADUAPI CustomInput : public QTextEdit
 {
 	Q_OBJECT
 
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ImageStorageService> CurrentImageStorageService;
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
@@ -46,6 +48,7 @@ class KADUAPI CustomInput : public QTextEdit
 	bool CopyPossible;
 
 private slots:
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 

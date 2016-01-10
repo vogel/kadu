@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ChatConfigurationHolder;
 class ChatStyleManager;
 class Message;
 class MessageRenderInfo;
@@ -42,7 +43,8 @@ public:
 	MessageRenderInfo messageRenderInfo(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior);
 
 private:
-	QPointer<ChatStyleManager> m_chatStylesManager;
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<ChatStyleManager> m_chatStyleManager;
 
 	QString backgroundColor(const Message &message) const;
 	QString nickColor(const Message &message) const;
@@ -52,6 +54,7 @@ private:
 	bool showServerTime(const Message &message) const;
 
 private slots:
-	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStylesManager);
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
 
 };

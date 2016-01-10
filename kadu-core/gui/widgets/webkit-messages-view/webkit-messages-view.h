@@ -30,6 +30,7 @@
 
 #include <injeqt/injeqt.h>
 
+class ChatConfigurationHolder;
 class ChatImage;
 class ChatImageRequestService;
 class ChatStyleRendererConfiguration;
@@ -90,6 +91,7 @@ protected:
 	virtual void compositingDisabled() override;
 
 private:
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatImageRequestService> m_chatImageRequestService;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
@@ -109,6 +111,7 @@ private:
 	void setWebkitMessagesViewHandler(owned_qptr<WebkitMessagesViewHandler> handler);
 
 private slots:
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();

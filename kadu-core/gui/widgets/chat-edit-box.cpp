@@ -128,7 +128,7 @@ void ChatEditBox::init()
 	connect(InputBox, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
-	connect(ChatConfigurationHolder::instance(), SIGNAL(chatConfigurationUpdated()), this, SLOT(configurationUpdated()));
+	connect(Core::instance()->chatConfigurationHolder(), SIGNAL(chatConfigurationUpdated()), this, SLOT(configurationUpdated()));
 
 	configurationUpdated();
 }
@@ -158,7 +158,7 @@ void ChatEditBox::configurationUpdated()
 {
 	setColorFromCurrentText(true);
 
-	InputBox->setAutoSend(ChatConfigurationHolder::instance()->autoSend());
+	InputBox->setAutoSend(Core::instance()->chatConfigurationHolder()->autoSend());
 }
 
 void ChatEditBox::setAutoSend(bool autoSend)

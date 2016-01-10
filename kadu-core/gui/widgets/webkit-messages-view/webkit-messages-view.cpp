@@ -56,6 +56,11 @@ WebkitMessagesView::~WebkitMessagesView()
 	disconnectChat();
 }
 
+void WebkitMessagesView::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
 void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
 {
 	if (m_chatImageRequestService)
@@ -218,7 +223,7 @@ ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};
-	auto transparency = ChatConfigurationHolder::instance()->useTransparency() && supportTransparency() && isCompositingEnabled();
+	auto transparency = m_chatConfigurationHolder->useTransparency() && supportTransparency() && isCompositingEnabled();
 	return ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 }
 
@@ -327,7 +332,7 @@ void WebkitMessagesView::forceScrollToBottom()
 
 void WebkitMessagesView::configurationUpdated()
 {
-	setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
+	setUserFont(m_chatConfigurationHolder->chatFont().toString(), m_chatConfigurationHolder->forceCustomChatFont());
 	refreshView();
 }
 

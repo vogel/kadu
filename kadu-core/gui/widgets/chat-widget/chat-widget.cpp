@@ -114,6 +114,11 @@ ChatWidget::~ChatWidget()
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
 
+void ChatWidget::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
 void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	CurrentFormattedStringFactory = formattedStringFactory;
@@ -288,13 +293,13 @@ void ChatWidget::createContactsList()
 
 void ChatWidget::configurationUpdated()
 {
-	InputBox->inputBox()->setFont(ChatConfigurationHolder::instance()->chatFont());
+	InputBox->inputBox()->setFont(m_chatConfigurationHolder->chatFont());
 	QString style;
 	QColor color = qApp->palette().text().color();
-	if (ChatConfigurationHolder::instance()->chatTextCustomColors())
+	if (m_chatConfigurationHolder->chatTextCustomColors())
 	{
-		style = QString("background-color:%1;").arg(ChatConfigurationHolder::instance()->chatTextBgColor().name());
-		color = ChatConfigurationHolder::instance()->chatTextFontColor();
+		style = QString("background-color:%1;").arg(m_chatConfigurationHolder->chatTextBgColor().name());
+		color = m_chatConfigurationHolder->chatTextFontColor();
 	}
 	InputBox->inputBox()->viewport()->setStyleSheet(style);
 	QPalette palette = InputBox->inputBox()->palette();
@@ -721,7 +726,7 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatState state)
 	if (!CurrentFormattedStringFactory)
 		return;
 
-	if (ChatConfigurationHolder::instance()->contactStateChats())
+	if (m_chatConfigurationHolder->contactStateChats())
 		MessagesView->contactActivityChanged(contact, state);
 
 	if (CurrentContactActivity == ChatState::Gone)

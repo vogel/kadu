@@ -36,9 +36,14 @@ MessageRenderInfoFactory::~MessageRenderInfoFactory()
 {
 }
 
-void MessageRenderInfoFactory::setChatStyleManager(ChatStyleManager *chatStylesManager)
+void MessageRenderInfoFactory::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
-	m_chatStylesManager = chatStylesManager;
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void MessageRenderInfoFactory::setChatStyleManager(ChatStyleManager *chatStyleManager)
+{
+	m_chatStyleManager = chatStyleManager;
 }
 
 MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior)
@@ -52,8 +57,8 @@ MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(const Message &pre
 			.setFontColor(fontColor(message))
 			.setIncludeHeader(header)
 			.setSeparatorSize(header
-					? Core::instance()->chatStyleManager()->cfgHeaderSeparatorHeight()
-					: Core::instance()->chatStyleManager()->paragraphSeparator())
+					? m_chatStyleManager->cfgHeaderSeparatorHeight()
+					: m_chatStyleManager->paragraphSeparator())
 			.setShowServerTime(showServerTime(message))
 			.create();
 }
@@ -61,22 +66,22 @@ MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(const Message &pre
 QString MessageRenderInfoFactory::backgroundColor(const Message &message) const
 {
 	return message.type() == MessageTypeSent
-			? ChatConfigurationHolder::instance()->myBackgroundColor()
-			: ChatConfigurationHolder::instance()->usrBackgroundColor();
+			? m_chatConfigurationHolder->myBackgroundColor()
+			: m_chatConfigurationHolder->usrBackgroundColor();
 }
 
 QString MessageRenderInfoFactory::nickColor(const Message &message) const
 {
 	return message.type() == MessageTypeSent
-			? ChatConfigurationHolder::instance()->myNickColor()
-			: ChatConfigurationHolder::instance()->usrNickColor();
+			? m_chatConfigurationHolder->myNickColor()
+			: m_chatConfigurationHolder->usrNickColor();
 }
 
 QString MessageRenderInfoFactory::fontColor(const Message &message) const
 {
 	return message.type() == MessageTypeSent
-			? ChatConfigurationHolder::instance()->myFontColor()
-			: ChatConfigurationHolder::instance()->usrFontColor();
+			? m_chatConfigurationHolder->myFontColor()
+			: m_chatConfigurationHolder->usrFontColor();
 }
 
 bool MessageRenderInfoFactory::includeHeader(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const
@@ -91,7 +96,7 @@ bool MessageRenderInfoFactory::includeHeader(const Message &previous, const Mess
 	if (message.receiveDate().toTime_t() < previous.receiveDate().toTime_t())
 		qWarning("New message has earlier date than last message");
 
-	auto minimumInterval = m_chatStylesManager->cfgNoHeaderInterval() * 60;
+	auto minimumInterval = m_chatStyleManager->cfgNoHeaderInterval() * 60;
 	auto actualInterval = static_cast<int>(message.receiveDate().toTime_t() - previous.receiveDate().toTime_t());
 	return actualInterval > minimumInterval;
 }
@@ -99,18 +104,18 @@ bool MessageRenderInfoFactory::includeHeader(const Message &previous, const Mess
 int MessageRenderInfoFactory::separatorSize(bool includeHeader) const
 {
 	return includeHeader
-			? m_chatStylesManager->cfgHeaderSeparatorHeight()
-			: m_chatStylesManager->paragraphSeparator();
+			? m_chatStyleManager->cfgHeaderSeparatorHeight()
+			: m_chatStyleManager->paragraphSeparator();
 }
 
 bool MessageRenderInfoFactory::showServerTime(const Message &message) const
 {
 	if (message.type() == MessageTypeSystem || !message.sendDate().isValid())
 		return false;
-	if (!m_chatStylesManager->noServerTime())
+	if (!m_chatStyleManager->noServerTime())
 		return true;
 
-	auto minimumInterval = m_chatStylesManager->noServerTimeDiff();
+	auto minimumInterval = m_chatStyleManager->noServerTimeDiff();
 	auto actuvalInterval = static_cast<int>(message.receiveDate().toTime_t()) - static_cast<int>(message.sendDate().toTime_t());
 	return abs(actuvalInterval) > minimumInterval;
 }

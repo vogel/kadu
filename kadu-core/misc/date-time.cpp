@@ -33,6 +33,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/core.h"
 #include "gui/configuration/chat-configuration-holder.h"
 
 #include "date-time.h"
@@ -51,7 +52,7 @@ QString printDateTime(const QDateTime &datetime)
 
 	if (delta != 0)
 	{
-		if (ChatConfigurationHolder::instance()->niceDateFormat())
+		if (Core::instance()->chatConfigurationHolder()->niceDateFormat())
 		{
 			if (delta == 1) // 1 day ago
 				ret.prepend(QCoreApplication::translate("@default", "Yesterday at "));

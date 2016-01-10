@@ -17,51 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_CONFIGURATION_H
-#define CHAT_CONFIGURATION_H
-
-#include <QtGui/QColor>
-#include <QtGui/QFont>
+#pragma once
 
 #include "configuration/configuration-holder.h"
-
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtGui/QColor>
+#include <QtGui/QFont>
+#include <injeqt/injeqt.h>
+
 enum class ChatWidgetTitleComposingStatePosition;
+
+class Configuration;
 
 class KADUAPI ChatConfigurationHolder : public ConfigurationHolder
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatConfigurationHolder)
-
-	static ChatConfigurationHolder *Instance;
-	explicit ChatConfigurationHolder();
-
-	void init();
-
-	bool AutoSend;
-	bool NiceDateFormat;
-	bool ChatTextCustomColors;
-	QColor ChatTextBgColor;
-	QColor ChatTextFontColor;
-	bool ForceCustomChatFont;
-	QFont ChatFont;
-	QString MyBackgroundColor;
-	QString MyFontColor;
-	QString MyNickColor;
-	QString UsrBackgroundColor;
-	QString UsrFontColor;
-	QString UsrNickColor;
-	bool ChatBgFilled;
-	QColor ChatBgColor;
-	bool UseTransparency;
-
-	bool ContactStateChats;
-	bool ContactStateWindowTitle;
-	int ContactStateWindowTitlePosition;
 
 public:
-	static ChatConfigurationHolder * instance();
+	Q_INVOKABLE explicit ChatConfigurationHolder(QObject *parent = nullptr);
+	virtual ~ChatConfigurationHolder();
+
 	void configurationUpdated();
 
 	bool autoSend() const { return AutoSend; }
@@ -89,6 +66,32 @@ public:
 signals:
 	void chatConfigurationUpdated();
 
-};
+private:
+	QPointer<Configuration> m_configuration;
 
-#endif // CHAT_CONFIGURATION_H
+	bool AutoSend;
+	bool NiceDateFormat;
+	bool ChatTextCustomColors;
+	QColor ChatTextBgColor;
+	QColor ChatTextFontColor;
+	bool ForceCustomChatFont;
+	QFont ChatFont;
+	QString MyBackgroundColor;
+	QString MyFontColor;
+	QString MyNickColor;
+	QString UsrBackgroundColor;
+	QString UsrFontColor;
+	QString UsrNickColor;
+	bool ChatBgFilled;
+	QColor ChatBgColor;
+	bool UseTransparency;
+
+	bool ContactStateChats;
+	bool ContactStateWindowTitle;
+	int ContactStateWindowTitlePosition;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
+};

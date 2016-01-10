@@ -290,7 +290,7 @@ void SingleWindow::setConfiguration(ChatWidget *chatWidget)
 	auto blinkChatTitle = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
 	chatWidget->title()->setBlinkIconWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setBlinkTitleWhenUnreadMessages(blinkChatTitle);
-	chatWidget->title()->setComposingStatePosition(ChatConfigurationHolder::instance()->composingStatePosition());
+	chatWidget->title()->setComposingStatePosition(Core::instance()->chatConfigurationHolder()->composingStatePosition());
 	chatWidget->title()->setShowUnreadMessagesCount(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
 

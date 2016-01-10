@@ -53,7 +53,6 @@ ChatStyleManager::ChatStyleManager(QObject *parent) :
 		CfgNoHeaderInterval{}, ParagraphSeparator{}, Prune{}, NoServerTime{},
 		NoServerTimeDiff{}
 {
-	init();
 }
 
 ChatStyleManager::~ChatStyleManager()
@@ -62,16 +61,19 @@ ChatStyleManager::~ChatStyleManager()
 	unregisterChatStyleEngine("Adium");
 }
 
+void ChatStyleManager::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
 void ChatStyleManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-	configurationUpdated();
 }
 
 void ChatStyleManager::setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider)
 {
 	m_configuredChatStyleRendererFactoryProvider = configuredChatStyleRendererFactoryProvider;
-	configurationUpdated();
 }
 
 void ChatStyleManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
@@ -88,6 +90,8 @@ void ChatStyleManager::init()
 	registerChatStyleEngine("Adium", std::move(adiumStyleEngine));
 
 	loadStyles();
+	configurationUpdated();
+
 }
 
 void ChatStyleManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
@@ -103,9 +107,6 @@ void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 
 void ChatStyleManager::configurationUpdated()
 {
-	if (!m_configuration)
-		return;
-
 	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "ChatPrune", true))
 		Prune = m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatPruneLen");
 	else
@@ -129,8 +130,8 @@ void ChatStyleManager::configurationUpdated()
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
 	QString backgroundColor = "transparent";
-	if (ChatConfigurationHolder::instance()->chatBgFilled())
-		backgroundColor = ChatConfigurationHolder::instance()->chatBgColor().name();
+	if (m_chatConfigurationHolder->chatBgFilled())
+		backgroundColor = m_chatConfigurationHolder->chatBgColor().name();
 
 	MainStyle = QString(
 		"html {"

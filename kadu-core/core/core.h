@@ -51,6 +51,7 @@ class AvatarManager;
 class BuddyChatManager;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyManager;
+class ChatConfigurationHolder;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatImageRequestService;
 class ChatManager;
@@ -226,6 +227,7 @@ public:
 	ConfigurationManager * configurationManager() const;
 	AvatarManager * avatarManager() const;
 	BuddyChatManager * buddyChatManager() const;
+	ChatConfigurationHolder * chatConfigurationHolder() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

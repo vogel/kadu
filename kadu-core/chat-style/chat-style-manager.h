@@ -31,6 +31,7 @@
 #include <memory>
 #include <injeqt/injeqt.h>
 
+class ChatConfigurationHolder;
 class ChatStyleEngine;
 class Configuration;
 class ConfiguredChatStyleRendererFactoryProvider;
@@ -52,11 +53,10 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<Configuration> m_configuration;
 	QPointer<ConfiguredChatStyleRendererFactoryProvider> m_configuredChatStyleRendererFactoryProvider;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
-
-	void init();
 
 	std::map<QString, std::unique_ptr<ChatStyleEngine>> RegisteredEngines;
 	ChatStyle m_currentChatStyle;
@@ -80,9 +80,11 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 	QString fixedVariantName(const QString &styleName, QString variantName);
 
 private slots:
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_INIT void init();
 
 protected:
 	virtual void configurationUpdated();

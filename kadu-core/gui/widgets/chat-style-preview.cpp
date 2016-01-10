@@ -108,7 +108,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 
 void ChatStylePreview::configurationUpdated()
 {
-	m_view->setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
+	m_view->setUserFont(Core::instance()->chatConfigurationHolder()->chatFont().toString(), Core::instance()->chatConfigurationHolder()->forceCustomChatFont());
 }
 
 #include "moc_chat-style-preview.cpp"

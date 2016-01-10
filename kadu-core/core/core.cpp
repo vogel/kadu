@@ -60,6 +60,7 @@
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "gui/configuration/chat-configuration-holder.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
@@ -917,6 +918,11 @@ AvatarManager * Core::avatarManager() const
 BuddyChatManager * Core::buddyChatManager() const
 {
 	return m_injector.get<BuddyChatManager>();
+}
+
+ChatConfigurationHolder * Core::chatConfigurationHolder() const
+{
+	return m_injector.get<ChatConfigurationHolder>();
 }
 
 void Core::showMainWindow()

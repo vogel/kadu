@@ -30,8 +30,9 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
-class Chat;
+class ChatConfigurationHolder;
 class ChatWidget;
+class Chat;
 class InjectedFactory;
 
 class KADUAPI ChatWindow : public QWidget, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
@@ -63,6 +64,7 @@ protected:
 	virtual void compositingDisabled() override;
 
 private:
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	Chat m_chat;
@@ -71,6 +73,7 @@ private:
 	QRect defaultGeometry() const;
 
 private slots:
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
