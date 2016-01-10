@@ -34,15 +34,21 @@ MobileNumberManager::MobileNumberManager(QObject *parent) :
 		QObject{parent}
 {
 	setState(StateNotLoaded);
-
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 MobileNumberManager::~MobileNumberManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
-
 	qDeleteAll(Numbers);
+}
+
+void MobileNumberManager::init()
+{
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+void MobileNumberManager::done()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)

@@ -22,6 +22,8 @@
 
 #include "storage/storable-object.h"
 
+#include <injeqt/injeqt.h>
+
 class MobileNumber;
 
 class MobileNumberManager : public QObject, public StorableObject
@@ -48,5 +50,9 @@ public:
 	virtual StorableObject * storageParent();
 
 	QString gatewayId(const QString &mobileNumber);
+
+private slots:
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };
