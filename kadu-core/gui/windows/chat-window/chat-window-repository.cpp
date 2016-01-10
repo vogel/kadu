@@ -35,6 +35,10 @@ ChatWindowRepository::ChatWindowRepository(QObject *parent) :
 
 ChatWindowRepository::~ChatWindowRepository()
 {
+}
+
+void ChatWindowRepository::done()
+{
 	// neeed to emit signals on finish
 	while (!m_windows.empty())
 		delete (*m_windows.begin()).second;

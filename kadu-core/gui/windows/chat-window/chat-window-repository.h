@@ -105,6 +105,9 @@ private:
 
 	Storage m_windows;
 
+private slots:
+	INJEQT_DONE void done();
+
 };
 
 inline ChatWindowRepository::Iterator begin(ChatWindowRepository *chatWindowRepository)
