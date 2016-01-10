@@ -88,6 +88,7 @@ class PluginStateManager;
 class PluginStateService;
 class ProtocolsManager;
 class RawMessageTransformerService;
+class RecentChatManager;
 class RosterNotifier;
 class RosterReplacer;
 class SslCertificateManager;
@@ -212,6 +213,7 @@ public:
 	PathsProvider * pathsProvider() const;
 	Application * application() const;
 	GroupManager * groupManager() const;
+	RecentChatManager * recentChatManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

@@ -43,8 +43,8 @@ RecentChatsMenu::RecentChatsMenu(QWidget *parent) :
 	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(invalidate()));
 	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(invalidate()));
-	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
-	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
+	connect(Core::instance()->recentChatManager(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
+	connect(Core::instance()->recentChatManager(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
 	connect(this, SIGNAL(aboutToShow()), this, SLOT(update()));
 }
 
@@ -62,7 +62,7 @@ void RecentChatsMenu::invalidate()
 void RecentChatsMenu::checkIfListAvailable()
 {
 	//check if all recent chats are opened -> disable button
-	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
+	foreach (const Chat &chat, Core::instance()->recentChatManager()->recentChats())
 		if (!Core::instance()->chatWidgetRepository()->widgetForChat(chat))
 		{
 			emit chatsListAvailable(true);
@@ -79,7 +79,7 @@ void RecentChatsMenu::update()
 
 	clear();
 
-	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
+	foreach (const Chat &chat, Core::instance()->recentChatManager()->recentChats())
 		if (!Core::instance()->chatWidgetRepository()->widgetForChat(chat))
 		{
 			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());

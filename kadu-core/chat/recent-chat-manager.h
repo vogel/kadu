@@ -20,16 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECENT_CHAT_MANAGER_H
-#define RECENT_CHAT_MANAGER_H
+#pragma once
+
+#include "configuration/configuration-aware-object.h"
+#include "storage/storable-object.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QTimer>
-
-#include "configuration/configuration-aware-object.h"
-#include "storage/storable-object.h"
+#include <injeqt/injeqt.h>
 
 class QTimer;
 
@@ -59,37 +59,10 @@ class Message;
 class KADUAPI RecentChatManager : public QObject, public StorableObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(RecentChatManager)
-
-	static RecentChatManager * Instance;
-
-	QPointer<MessageManager> m_messageManager;
-
-	QList<Chat> RecentChats;
-	QTimer CleanUpTimer;
-
-	int RecentChatsTimeout;
-
-	RecentChatManager();
-	virtual ~RecentChatManager();
-
-	void init();
-
-	void addRecentChat(Chat chat, QDateTime datetime = QDateTime::currentDateTime());
-	void removeRecentChat(Chat chat);
-
-private slots:
-	void cleanUp();
-	void onNewMessage(const Message &message);
-
-protected:
-	virtual void load();
-	virtual void store();
-
-	virtual void configurationUpdated();
 
 public:
-	static RecentChatManager * instance();
+	Q_INVOKABLE explicit RecentChatManager(QObject *parent = nullptr);
+	virtual ~RecentChatManager();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -111,8 +84,6 @@ public:
 	virtual StorableObject* storageParent() { return 0; }
 
 	const QList<Chat> & recentChats();
-
-	void setMessageManager(MessageManager *messageManager);
 
 signals:
 	/**
@@ -151,10 +122,33 @@ signals:
 	 */
 	void recentChatRemoved(Chat chat);
 
+protected:
+	virtual void load();
+	virtual void store();
+
+	virtual void configurationUpdated();
+
+private:
+	QPointer<MessageManager> m_messageManager;
+
+	QList<Chat> RecentChats;
+	QTimer CleanUpTimer;
+
+	int RecentChatsTimeout;
+
+	void addRecentChat(Chat chat, QDateTime datetime = QDateTime::currentDateTime());
+	void removeRecentChat(Chat chat);
+
+private slots:
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
+	void cleanUp();
+	void onNewMessage(const Message &message);
+
 };
 
 /**
  * @}
  */
-
-#endif // RECENT_CHAT_MANAGER_H

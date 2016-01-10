@@ -46,6 +46,7 @@
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/recent-chat-manager.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -878,6 +879,11 @@ Application * Core::application() const
 GroupManager * Core::groupManager() const
 {
 	return m_injector.get<GroupManager>();
+}
+
+RecentChatManager * Core::recentChatManager() const
+{
+	return m_injector.get<RecentChatManager>();
 }
 
 void Core::showMainWindow()

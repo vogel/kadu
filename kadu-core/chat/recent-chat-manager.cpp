@@ -35,33 +35,14 @@
 
 #define MAX_RECENT_CHAT_COUNT 20
 
-RecentChatManager * RecentChatManager::Instance = 0;
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Returns singleton instance of RecentChatManager.
- * @return singleton instance of RecentChatManager
- */
-RecentChatManager * RecentChatManager::instance()
-{
-	if (0 == Instance)
-	{
-		Instance = new RecentChatManager();
-		Instance->setMessageManager(Core::instance()->messageManager());
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-RecentChatManager::RecentChatManager() :
-		RecentChatsTimeout{0}
+RecentChatManager::RecentChatManager(QObject *parent) :
+		QObject{parent},
+		RecentChatsTimeout(0)
 {
 }
 
 RecentChatManager::~RecentChatManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void RecentChatManager::setMessageManager(MessageManager *messageManager)
@@ -81,6 +62,11 @@ void RecentChatManager::init()
 
 	connect(m_messageManager, SIGNAL(messageReceived(Message)), this, SLOT(onNewMessage(Message)));
 	connect(m_messageManager, SIGNAL(messageSent(Message)), this, SLOT(onNewMessage(Message)));
+}
+
+void RecentChatManager::done()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 /**
