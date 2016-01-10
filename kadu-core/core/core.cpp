@@ -126,6 +126,7 @@
 #include "services/message-transformer-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "ssl/ssl-certificate-manager.h"
+#include "status/description-manager.h"
 #include "status/status-changer-manager.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
@@ -896,6 +897,11 @@ IdentityManager * Core::identityManager() const
 NetworkProxyManager * Core::networkProxyManager() const
 {
 	return m_injector.get<NetworkProxyManager>();
+}
+
+DescriptionManager * Core::descriptionManager() const
+{
+	return m_injector.get<DescriptionManager>();
 }
 
 void Core::showMainWindow()

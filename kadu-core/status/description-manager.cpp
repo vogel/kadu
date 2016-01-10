@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "description-manager.h"
+
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -27,18 +29,16 @@
 #include "core/core.h"
 #include "status/description-model.h"
 
-#include "description-manager.h"
-
-DescriptionManager * DescriptionManager::Instance = 0;
-
-DescriptionManager * DescriptionManager::instance()
+DescriptionManager::DescriptionManager(QObject *parent) :
+		QObject{parent}
 {
-	if (0 == Instance)
-		Instance = new DescriptionManager();
-	return Instance;
 }
 
-DescriptionManager::DescriptionManager()
+DescriptionManager::~DescriptionManager()
+{
+}
+
+void DescriptionManager::init()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
@@ -50,7 +50,7 @@ DescriptionManager::DescriptionManager()
 		setState(StateNotLoaded);
 }
 
-DescriptionManager::~DescriptionManager()
+void DescriptionManager::done()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }

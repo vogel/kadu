@@ -20,11 +20,13 @@
 #include "status-module.h"
 
 #include "gui/windows/status-window-service.h"
+#include "status/description-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
 
 StatusModule::StatusModule()
 {
+	add_type<DescriptionManager>();
 	add_type<StatusSetter>();
 	add_type<StatusTypeManager>();
 	add_type<StatusWindowService>();

@@ -226,7 +226,7 @@ void StatusWindow::setupStatusSelect()
 void StatusWindow::setupDescriptionSelect(const QString &description)
 {
 	StatusWindowDescriptionProxyModel *proxyModel = new StatusWindowDescriptionProxyModel(this);
-	proxyModel->setSourceModel(DescriptionManager::instance()->model());
+	proxyModel->setSourceModel(Core::instance()->descriptionManager()->model());
 
 	DescriptionSelect->setModel(proxyModel);
 	DescriptionSelect->setEnabled(false);
@@ -234,13 +234,13 @@ void StatusWindow::setupDescriptionSelect(const QString &description)
 
 	Q_ASSERT(Container->subStatusContainers().count() > 0);
 
-	if (DescriptionManager::instance()->model()->rowCount() > 0)
+	if (Core::instance()->descriptionManager()->model()->rowCount() > 0)
 	{
 		DescriptionSelect->setEnabled(true);
 		ClearDescriptionsHistoryButton->setEnabled(true);
 
-		QModelIndexList matching = DescriptionManager::instance()->model()->match(
-			DescriptionManager::instance()->model()->index(0, 0),
+		QModelIndexList matching = Core::instance()->descriptionManager()->model()->match(
+			Core::instance()->descriptionManager()->model()->index(0, 0),
 			DescriptionRole, QVariant(description),
 			1,
 			Qt::MatchFixedString | Qt::MatchCaseSensitive
@@ -279,7 +279,7 @@ void StatusWindow::applyStatus()
 	disconnect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
 
 	QString description = DescriptionEdit->toPlainText();
-	DescriptionManager::instance()->addDescription(description);
+	Core::instance()->descriptionManager()->addDescription(description);
 
 	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
@@ -303,7 +303,7 @@ void StatusWindow::descriptionSelected(int index)
 	if (index < 0)
 		return;
 
-	QString description = DescriptionManager::instance()->model()->data(DescriptionManager::instance()->model()->index(index, 0), DescriptionRole).toString();
+	QString description = Core::instance()->descriptionManager()->model()->data(Core::instance()->descriptionManager()->model()->index(index, 0), DescriptionRole).toString();
 
 	IgnoreNextTextChange = true;
 	DescriptionEdit->setPlainText(description);
@@ -389,8 +389,8 @@ void StatusWindow::clearDescriptionsHistory()
 	if (!dialog->ask())
 		return;
 
-	DescriptionManager::instance()->clearDescriptions();
-	DescriptionSelect->setModel(DescriptionManager::instance()->model());
+	Core::instance()->descriptionManager()->clearDescriptions();
+	DescriptionSelect->setModel(Core::instance()->descriptionManager()->model());
 	DescriptionSelect->setCurrentIndex(-1);
 	DescriptionSelect->setEnabled(false);
 	ClearDescriptionsHistoryButton->setEnabled(false);

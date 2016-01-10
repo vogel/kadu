@@ -19,34 +19,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DESCRIPTION_MANAGER_H
-#define DESCRIPTION_MANAGER_H
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "storage/storable-string-list.h"
+
+#include <injeqt/injeqt.h>
 
 class DescriptionModel;
 
 class KADUAPI DescriptionManager : public QObject, public StorableStringList, private ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(DescriptionManager)
-
-	static DescriptionManager *Instance;
-
-	int MaxNumberOfDescriptions;
-
-	DescriptionManager();
-	virtual ~DescriptionManager();
-
-	void import();
-	void truncate();
-
-protected:
-	virtual void configurationUpdated();
 
 public:
-	static DescriptionManager * instance();
+	Q_INVOKABLE explicit DescriptionManager(QObject *parent = nullptr);
+	virtual ~DescriptionManager();
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
@@ -64,6 +52,17 @@ signals:
 	void descriptionAboutToBeRemoved(const QString &description);
 	void descriptionRemoved(const QString &description);
 
-};
+protected:
+	virtual void configurationUpdated();
 
-#endif // DESCRIPTION_MANAGER_H
+private:
+	int MaxNumberOfDescriptions;
+
+	void import();
+	void truncate();
+
+private slots:
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
+};

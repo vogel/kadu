@@ -63,6 +63,7 @@ class ClipboardHtmlTransformerService;
 class ConfigurationUiHandlerRepository;
 class Configuration;
 class ContactManager;
+class DescriptionManager;
 class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
@@ -218,6 +219,7 @@ public:
 	RecentChatManager * recentChatManager() const;
 	IdentityManager * identityManager() const;
 	NetworkProxyManager * networkProxyManager() const;
+	DescriptionManager * descriptionManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);
