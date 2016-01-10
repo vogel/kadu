@@ -24,6 +24,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-api.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
@@ -58,6 +59,12 @@ void AccountManager::init()
 {
 	// needed for QueuedConnection
 	qRegisterMetaType<Account>("Account");
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+void AccountManager::done()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void AccountManager::itemAdded(Account item)

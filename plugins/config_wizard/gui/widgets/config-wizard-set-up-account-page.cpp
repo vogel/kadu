@@ -23,6 +23,8 @@
 #include <QtWidgets/QLabel>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration-manager.h"
+#include "configuration/configuration.h"
 #include "core/core.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"

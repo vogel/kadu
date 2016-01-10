@@ -46,6 +46,7 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void passwordProvided(const QVariant &data, const QString &password, bool permament);
 

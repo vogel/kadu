@@ -23,6 +23,7 @@
 #include <QtCore/QVector>
 
 #include "chat/chat-manager.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"

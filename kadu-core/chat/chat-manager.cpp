@@ -25,14 +25,14 @@
 #include "chat/chat-details-contact-set.h"
 #include "chat/chat-details-contact.h"
 #include "chat/type/chat-type-manager.h"
+#include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "message/unread-message-repository.h"
 
 #include "chat-manager.h"
 
 ChatManager::ChatManager(QObject *parent) :
-		QObject{parent},
-		Manager<Chat>{false}
+		QObject{parent}
 {
 }
 
@@ -42,6 +42,8 @@ ChatManager::~ChatManager()
 
 void ChatManager::init()
 {
+	ConfigurationManager::instance()->registerStorableObject(this);
+
 	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 		unreadMessageAdded(message);
 

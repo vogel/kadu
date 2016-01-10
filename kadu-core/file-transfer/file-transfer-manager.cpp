@@ -27,6 +27,7 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
@@ -64,14 +65,10 @@ FileTransferManager::FileTransferManager(QObject *parent) :
 	NewFileTransferNotification::registerEvents();
 
 	triggerAllAccountsRegistered();
-
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 FileTransferManager::~FileTransferManager()
 {
-
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
@@ -79,8 +76,15 @@ void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManag
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
 }
 
+void FileTransferManager::init()
+{
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
 void FileTransferManager::done()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+
 	m_window.data()->deleteLater();
 
 	triggerAllAccountsUnregistered();

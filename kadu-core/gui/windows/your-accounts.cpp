@@ -41,6 +41,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
 #include "gui/widgets/account-add-widget.h"

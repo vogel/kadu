@@ -31,6 +31,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"

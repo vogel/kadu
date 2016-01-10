@@ -28,7 +28,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "configuration/configuration-manager.h"
 #include "storage/manager-common.h"
 #include "storage/storable-object.h"
 
@@ -65,7 +64,6 @@
 template<class Item>
 class Manager : public StorableObject
 {
-	bool StoreOnExit;
 	QMutex Mutex;
 
 	QMap<QUuid, Item> Items;
@@ -80,12 +78,10 @@ protected:
 	 * in @link ConfigurationManager @endlink singleton, so this class
 	 * will automatically store itself on each configuration flush request.
 	 */
-	Manager(bool storeOnExit = true) :
-			StoreOnExit(storeOnExit),
+	Manager() :
 			Mutex(QMutex::Recursive)
 	{
 		setState(StateNotLoaded);
-		ConfigurationManager::instance()->registerStorableObject(this);
 	}
 
 	/**
@@ -97,8 +93,6 @@ protected:
 	 */
 	virtual ~Manager()
 	{
-		if (StoreOnExit)
-			ConfigurationManager::instance()->unregisterStorableObject(this);
 	}
 
 	QMutex & mutex()
