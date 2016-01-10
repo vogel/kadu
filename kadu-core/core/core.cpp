@@ -85,6 +85,7 @@
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity-manager.h"
 #include "message/message-filter-service.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-manager.h"
@@ -884,6 +885,11 @@ GroupManager * Core::groupManager() const
 RecentChatManager * Core::recentChatManager() const
 {
 	return m_injector.get<RecentChatManager>();
+}
+
+IdentityManager * Core::identityManager() const
+{
+	return m_injector.get<IdentityManager>();
 }
 
 void Core::showMainWindow()

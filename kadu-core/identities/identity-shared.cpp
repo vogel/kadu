@@ -64,7 +64,7 @@ IdentityShared::~IdentityShared()
 
 StorableObject * IdentityShared::storageParent()
 {
-	return IdentityManager::instance();
+	return Core::instance()->identityManager();
 }
 
 QString IdentityShared::storageNodeName()

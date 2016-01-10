@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "identity-manager.h"
 
 #include "identities-aware-object.h"
@@ -38,12 +39,12 @@ void IdentitiesAwareObject::notifyIdentityRemoved(Identity identity)
 
 void IdentitiesAwareObject::triggerAllIdentitiesAdded()
 {
-	foreach (const Identity &identity, IdentityManager::instance()->items())
+	foreach (const Identity &identity, Core::instance()->identityManager()->items())
 		identityAdded(identity);
 }
 
 void IdentitiesAwareObject::triggerAllIdentitiesRemoved()
 {
-	foreach (const Identity &identity, IdentityManager::instance()->items())
+	foreach (const Identity &identity, Core::instance()->identityManager()->items())
 		identityRemoved(identity);
 }

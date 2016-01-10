@@ -163,9 +163,9 @@ void AccountShared::load()
 
 	Shared::load();
 
-	Identity identity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
-	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
-		identity = IdentityManager::instance()->items().at(0);
+	Identity identity = Core::instance()->identityManager()->byUuid(loadValue<QString>("Identity"));
+	if (identity.isNull() && !Core::instance()->identityManager()->items().isEmpty())
+		identity = Core::instance()->identityManager()->items().at(0);
 	doSetAccountIdentity(identity);
 
 	ProtocolName = loadValue<QString>("Protocol");

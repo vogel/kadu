@@ -1,9 +1,10 @@
 set (identities_SRCS
 	model/identity-model.cpp
 	identities-aware-object.cpp
-	identity.cpp
 	identity-manager.cpp
+	identity-module.cpp
 	identity-shared.cpp
+	identity.cpp
 )
 
 set (identities_MOC_SRCS

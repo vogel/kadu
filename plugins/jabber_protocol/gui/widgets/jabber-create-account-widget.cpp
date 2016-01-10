@@ -208,7 +208,7 @@ void JabberCreateAccountWidget::resetGui()
 	NewPassword->clear();
 	ReNewPassword->clear();
 	RememberPassword->setChecked(true);
-	IdentityManager::instance()->removeUnused();
+	Core::instance()->identityManager()->removeUnused();
 	IdentityCombo->setCurrentIndex(0);
 	RegisterAccountButton->setEnabled(false);
 

@@ -69,6 +69,7 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/icons-module.h"
+#include "identities/identity-module.h"
 #include "message/message-module.h"
 #include "misc/date-time.h"
 #include "misc/paths-provider.h"
@@ -229,6 +230,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<FileTransferModule>());
 	modules.emplace_back(make_unique<GuiModule>());
 	modules.emplace_back(make_unique<IconsModule>());
+	modules.emplace_back(make_unique<IdentityModule>());
 	modules.emplace_back(make_unique<MessageModule>());
 	modules.emplace_back(make_unique<NotificationModule>());
 	modules.emplace_back(make_unique<PluginModule>());

@@ -23,6 +23,7 @@
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QLineEdit>
 
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "identities/model/identity-model.h"
@@ -34,7 +35,7 @@
 IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	IdentityManager::instance()->removeUnused();
+	Core::instance()->identityManager()->removeUnused();
 
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
 	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
@@ -53,7 +54,7 @@ IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
 
 IdentitiesComboBox::~IdentitiesComboBox()
 {
-	IdentityManager::instance()->removeUnused();
+	Core::instance()->identityManager()->removeUnused();
 }
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
@@ -77,7 +78,7 @@ void IdentitiesComboBox::createNewIdentity()
 	if (!ok)
 		return;
 
-	Identity newIdentity = IdentityManager::instance()->byName(identityName, true);
+	Identity newIdentity = Core::instance()->identityManager()->byName(identityName, true);
 	if (newIdentity)
 		setCurrentIdentity(newIdentity);
 }

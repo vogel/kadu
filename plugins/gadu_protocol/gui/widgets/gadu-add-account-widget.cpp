@@ -130,7 +130,7 @@ void GaduAddAccountWidget::resetGui()
 	AccountId->clear();
 	AccountPassword->clear();
 	RememberPassword->setChecked(true);
-	IdentityManager::instance()->removeUnused();
+	Core::instance()->identityManager()->removeUnused();
 	Identity->setCurrentIndex(0);
 
 	dataChanged();

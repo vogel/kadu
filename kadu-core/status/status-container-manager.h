@@ -31,6 +31,7 @@
 
 class AccountManager;
 class AllAccountsStatusContainer;
+class IdentityManager;
 
 /**
  * @addtogroup Status
@@ -64,6 +65,7 @@ class KADUAPI StatusContainerManager : public StatusContainer, private AccountsA
 	Q_OBJECT
 
 	QPointer<AccountManager> m_accountManager;
+	QPointer<IdentityManager> m_identityManager;
 
 	QList<StatusContainer *> StatusContainers;
 	StatusContainer *DefaultStatusContainer;
@@ -128,6 +130,7 @@ class KADUAPI StatusContainerManager : public StatusContainer, private AccountsA
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

@@ -108,8 +108,8 @@ void GaduImporter::importAccounts()
 	// bad code: order of calls is important here
 	// we have to set identity after password
 	// so in cache of identity status container it already knows password and can do status change without asking user for it
-	if (!IdentityManager::instance()->items().isEmpty())
-		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items().at(0));
+	if (!Core::instance()->identityManager()->items().isEmpty())
+		defaultGaduGadu.setAccountIdentity(Core::instance()->identityManager()->items().at(0));
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
 	if (accountDetails)

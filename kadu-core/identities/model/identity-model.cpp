@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "identities/identity-manager.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
@@ -28,24 +29,24 @@
 IdentityModel::IdentityModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
-	connect(IdentityManager::instance(), SIGNAL(identityAboutToBeAdded(Identity)),
+	connect(Core::instance()->identityManager(), SIGNAL(identityAboutToBeAdded(Identity)),
 			this, SLOT(identityAboutToBeAdded(Identity)), Qt::DirectConnection);
-	connect(IdentityManager::instance(), SIGNAL(identityAdded(Identity)),
+	connect(Core::instance()->identityManager(), SIGNAL(identityAdded(Identity)),
 			this, SLOT(identityAdded(Identity)), Qt::DirectConnection);
-	connect(IdentityManager::instance(), SIGNAL(identityAboutToBeRemoved(Identity)),
+	connect(Core::instance()->identityManager(), SIGNAL(identityAboutToBeRemoved(Identity)),
 			this, SLOT(identityAboutToBeRemoved(Identity)), Qt::DirectConnection);
-	connect(IdentityManager::instance(), SIGNAL(identityRemoved(Identity)),
+	connect(Core::instance()->identityManager(), SIGNAL(identityRemoved(Identity)),
 			this, SLOT(identityRemoved(Identity)), Qt::DirectConnection);
 }
 
 IdentityModel::~IdentityModel()
 {
-	disconnect(IdentityManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->identityManager(), 0, this, 0);
 }
 
 int IdentityModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : IdentityManager::instance()->count();
+	return parent.isValid() ? 0 : Core::instance()->identityManager()->count();
 }
 
 QVariant IdentityModel::data(const QModelIndex &index, int role) const
@@ -75,12 +76,12 @@ Identity IdentityModel::identity(const QModelIndex &index) const
 	if (index.row() < 0 || index.row() >= rowCount())
 		return Identity::null;
 
-	return IdentityManager::instance()->byIndex(index.row());
+	return Core::instance()->identityManager()->byIndex(index.row());
 }
 
 int IdentityModel::identityIndex(Identity identity) const
 {
-	return IdentityManager::instance()->indexOf(identity);
+	return Core::instance()->identityManager()->indexOf(identity);
 }
 
 QModelIndexList IdentityModel::indexListForValue(const QVariant &value) const

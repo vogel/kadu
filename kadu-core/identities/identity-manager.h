@@ -20,17 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDENTITY_MANAGER_H
-#define IDENTITY_MANAGER_H
+#pragma once
+
+#include "identities/identity.h"
+#include "storage/simple-manager.h"
+#include "exports.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
-
-#include "identities/identity.h"
-#include "storage/simple-manager.h"
-
-#include "exports.h"
+#include <injeqt/injeqt.h>
 
 class Account;
 class Status;
@@ -38,25 +37,10 @@ class Status;
 class KADUAPI IdentityManager : public QObject, public SimpleManager<Identity>
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(IdentityManager)
-
-	static IdentityManager *Instance;
-
-	IdentityManager();
-	virtual ~IdentityManager();
-
-	void addDefaultIdentities();
-
-protected:
-	virtual void itemAboutToBeAdded(Identity item);
-	virtual void itemAdded(Identity item);
-	virtual void itemAboutToBeRemoved(Identity item);
-	virtual void itemRemoved(Identity item);
-
-	virtual void load();
 
 public:
-	static IdentityManager * instance();
+	Q_INVOKABLE explicit IdentityManager(QObject *parent = nullptr);
+	virtual ~IdentityManager();
 
 	virtual QString storageNodeName() { return QLatin1String("Identities"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Identity"); }
@@ -72,6 +56,19 @@ signals:
 	void identityAboutToBeRemoved(Identity);
 	void identityRemoved(Identity);
 
-};
+protected:
+	virtual void itemAboutToBeAdded(Identity item);
+	virtual void itemAdded(Identity item);
+	virtual void itemAboutToBeRemoved(Identity item);
+	virtual void itemRemoved(Identity item);
 
-#endif // IDENTITY_MANAGER_H
+	virtual void load();
+
+private:
+	void addDefaultIdentities();
+
+private slots:
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
+};

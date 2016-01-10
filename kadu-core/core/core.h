@@ -68,6 +68,7 @@ class FileTransferManager;
 class FormattedStringFactory;
 class GroupManager;
 class IconsManager;
+class IdentityManager;
 class InjectedFactory;
 class KaduIcon;
 class KaduWindow;
@@ -214,6 +215,7 @@ public:
 	Application * application() const;
 	GroupManager * groupManager() const;
 	RecentChatManager * recentChatManager() const;
+	IdentityManager * identityManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

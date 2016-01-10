@@ -27,22 +27,21 @@
 
 #include "identity-manager.h"
 
-IdentityManager * IdentityManager::Instance = 0;
-
-IdentityManager * IdentityManager::instance()
+IdentityManager::IdentityManager(QObject *parent) :
+		QObject{parent}
 {
-	if (0 == Instance)
-		Instance = new IdentityManager();
-
-	return Instance;
 }
 
-IdentityManager::IdentityManager()
+IdentityManager::~IdentityManager()
+{
+}
+
+void IdentityManager::init()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
-IdentityManager::~IdentityManager()
+void IdentityManager::done()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }

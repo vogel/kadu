@@ -219,7 +219,7 @@ void JabberAddAccountWidget::resetGui()
 	Username->clear();
 	Domain->setEditText(Factory->defaultServer());
 	RememberPassword->setChecked(true);
-	IdentityManager::instance()->removeUnused();
+	Core::instance()->identityManager()->removeUnused();
 	Identity->setCurrentIndex(0);
 	AddAccountButton->setDisabled(true);
 

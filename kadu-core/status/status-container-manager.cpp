@@ -50,6 +50,11 @@ void StatusContainerManager::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void StatusContainerManager::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
 void StatusContainerManager::init()
 {
 	AllAccountsContainer = new AllAccountsStatusContainer(this);
@@ -87,7 +92,7 @@ void StatusContainerManager::updateIdentities()
 	if (!StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
 		return;
 
-	foreach (const Identity &identity, IdentityManager::instance()->items())
+	foreach (const Identity &identity, m_identityManager->items())
 		if (StatusContainers.contains(identity) && !identity.hasAnyAccountWithDetails())
 			unregisterStatusContainer(identity);
 		else if (!StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
