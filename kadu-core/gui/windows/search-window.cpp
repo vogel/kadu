@@ -99,7 +99,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	if (buddy)
 	{
-		CurrentAccount = BuddyPreferredManager::instance()->preferredAccount(buddy);
+		CurrentAccount = Core::instance()->buddyPreferredManager()->preferredAccount(buddy);
 
 		CurrentSearchCriteria.SearchBuddy = buddy;
 	}

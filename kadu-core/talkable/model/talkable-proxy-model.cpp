@@ -28,6 +28,7 @@
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "model/roles.h"
 #include "status/status-type.h"
 #include "status/status.h"
@@ -108,8 +109,8 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 		if (left.isAnonymous() && !right.isAnonymous())
 			return false;
 
-		const Contact &leftContact = BuddyPreferredManager::instance()->preferredContact(left, false);
-		const Contact &rightContact = BuddyPreferredManager::instance()->preferredContact(right, false);
+		const Contact &leftContact = Core::instance()->buddyPreferredManager()->preferredContact(left, false);
+		const Contact &rightContact = Core::instance()->buddyPreferredManager()->preferredContact(right, false);
 
 		if (!leftContact.isBlocking() && rightContact.isBlocking())
 			return true;

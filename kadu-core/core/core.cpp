@@ -39,6 +39,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "buddies/group-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat-style/chat-style-manager.h"
@@ -923,6 +924,11 @@ BuddyChatManager * Core::buddyChatManager() const
 ChatConfigurationHolder * Core::chatConfigurationHolder() const
 {
 	return m_injector.get<ChatConfigurationHolder>();
+}
+
+BuddyPreferredManager * Core::buddyPreferredManager() const
+{
+	return m_injector.get<BuddyPreferredManager>();
 }
 
 void Core::showMainWindow()

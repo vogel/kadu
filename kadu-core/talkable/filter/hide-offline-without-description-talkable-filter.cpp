@@ -21,6 +21,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 
 #include "hide-offline-without-description-talkable-filter.h"
 
@@ -38,7 +39,7 @@ TalkableFilter::FilterResult HideOfflineWithoutDescriptionTalkableFilter::filter
 	if (!Enabled)
 		return Undecided;
 
-	const Contact &contact = BuddyPreferredManager::instance()->preferredContact(buddy, false);
+	const Contact &contact = Core::instance()->buddyPreferredManager()->preferredContact(buddy, false);
 	if (!contact)
 		return Rejected;
 

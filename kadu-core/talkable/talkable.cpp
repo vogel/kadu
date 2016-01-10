@@ -131,7 +131,7 @@ Contact Talkable::toContact() const
 {
 	switch (Type)
 	{
-		case ItemBuddy: return BuddyPreferredManager::instance()->preferredContact(MyBuddy);
+		case ItemBuddy: return Core::instance()->buddyPreferredManager()->preferredContact(MyBuddy);
 		case ItemContact: return MyContact;
 		case ItemChat:
 			if (MyChat.contacts().size() == 1)
@@ -149,7 +149,7 @@ Chat Talkable::toChat() const
 	{
 		case ItemBuddy:
 		{
-			const Chat &chat = ChatTypeContact::findChat(BuddyPreferredManager::instance()->preferredContact2(MyBuddy), ActionCreateAndAdd);
+			const Chat &chat = ChatTypeContact::findChat(Core::instance()->buddyPreferredManager()->preferredContact2(MyBuddy), ActionCreateAndAdd);
 			const Chat &buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
 			return buddyChat ? buddyChat : chat;
 		}

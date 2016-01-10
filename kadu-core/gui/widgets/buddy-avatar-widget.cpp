@@ -67,7 +67,7 @@ void BuddyAvatarWidget::showBuddyAvatar()
 
 void BuddyAvatarWidget::showContactAvatar()
 {
-	Contact preferredContact = BuddyPreferredManager::instance()->preferredContact(MyBuddy);
+	Contact preferredContact = Core::instance()->buddyPreferredManager()->preferredContact(MyBuddy);
 	showAvatar(Core::instance()->avatarManager()->byContact(preferredContact, ActionCreateAndAdd).pixmap());
 	BuddyAvatar = false;
 }

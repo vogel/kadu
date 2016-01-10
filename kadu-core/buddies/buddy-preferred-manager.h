@@ -21,18 +21,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_PREFERRED_MANAGER_H
-#define BUDDY_PREFERRED_MANAGER_H
-
-#include <QtCore/QMap>
-#include <QtCore/QObject>
+#pragma once
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "message/message.h"
 
-class Account;
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
 class Buddy;
 class BuddySet;
 class ChatWidgetRepository;
@@ -42,10 +42,10 @@ class ContactSet;
 class KADUAPI BuddyPreferredManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(BuddyPreferredManager)
 
 public:
-	static BuddyPreferredManager *instance();
+	Q_INVOKABLE explicit BuddyPreferredManager(QObject *parent = nullptr);
+	virtual ~BuddyPreferredManager();
 
 	Contact preferredContact(const Buddy &buddy, const Account &account, bool includechats = true);
 	Contact preferredContact(const Buddy &buddy, bool includechats = true);
@@ -67,18 +67,14 @@ signals:
 	void buddyUpdated(const Buddy &buddy);
 
 private:
-	static BuddyPreferredManager *m_instance;
-
+	QPointer<AccountManager> m_accountManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-
-	BuddyPreferredManager();
-	~BuddyPreferredManager();
-
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	bool isAccountCommon(const Account &account, const BuddySet &buddies);
 	Account getCommonAccount(const BuddySet &buddies);
 
-};
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-#endif // BUDDY_PREFERRED_MANAGER_H
+};

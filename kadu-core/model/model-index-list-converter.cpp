@@ -113,9 +113,9 @@ Chat ModelIndexListConverter::chatFromBuddies() const
 		return Chat::null;
 
 	if (1 == buddies.size())
-		return ChatTypeContact::findChat(BuddyPreferredManager::instance()->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
+		return ChatTypeContact::findChat(Core::instance()->buddyPreferredManager()->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
 	else
-		return ChatTypeContactSet::findChat(BuddyPreferredManager::instance()->preferredContacts(buddies), ActionCreateAndAdd);
+		return ChatTypeContactSet::findChat(Core::instance()->buddyPreferredManager()->preferredContacts(buddies), ActionCreateAndAdd);
 }
 
 Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
@@ -158,7 +158,7 @@ Account ModelIndexListConverter::commonAccount() const
 Contact ModelIndexListConverter::contactForAccount(const QModelIndex &index, const Account &account) const
 {
 	if (index.data(ItemTypeRole) == BuddyRole)
-		return BuddyPreferredManager::instance()->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
+		return Core::instance()->buddyPreferredManager()->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
 
 	const Contact &contact = index.data(ContactRole).value<Contact>();
 	if (contact.contactAccount() == account)

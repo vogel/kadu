@@ -52,12 +52,12 @@ BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 		"XMLHttpRequest.prototype.send = function() { return false; };"
 	);
 
-	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
+	connect(Core::instance()->buddyPreferredManager(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 }
 
 BuddyInfoPanel::~BuddyInfoPanel()
 {
-	disconnect(BuddyPreferredManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->buddyPreferredManager(), 0, this, 0);
 }
 
 void BuddyInfoPanel::setConfiguration(Configuration *configuration)

@@ -26,7 +26,6 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "status/status-container.h"
@@ -34,25 +33,18 @@
 
 #include "buddies/buddy-preferred-manager.h"
 
-BuddyPreferredManager *BuddyPreferredManager::m_instance = 0;
-
-BuddyPreferredManager *BuddyPreferredManager::instance()
-{
-	if (0 == m_instance)
-	{
-		m_instance = new BuddyPreferredManager();
-		m_instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
-	}
-
-	return m_instance;
-}
-
-BuddyPreferredManager::BuddyPreferredManager()
+BuddyPreferredManager::BuddyPreferredManager(QObject *parent) :
+		QObject{parent}
 {
 }
 
 BuddyPreferredManager::~BuddyPreferredManager()
 {
+}
+
+void BuddyPreferredManager::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
 }
 
 void BuddyPreferredManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -75,9 +67,9 @@ Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Accoun
 
 Contact BuddyPreferredManager::preferredContact2(const Buddy &buddy)
 {
-	Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(buddy);
+	auto contact = preferredContactByUnreadMessages(buddy);
 	if (!contact)
-		contact = BuddyPreferredManager::instance()->preferredContact(buddy);
+		contact = preferredContact(buddy);
 
 	return contact;
 }
@@ -193,7 +185,7 @@ bool BuddyPreferredManager::isAccountCommon(const Account &account, const BuddyS
 
 Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
 {
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	foreach (const Account &account, m_accountManager->items())
 		if (isAccountCommon(account, buddies))
 			return account;
 

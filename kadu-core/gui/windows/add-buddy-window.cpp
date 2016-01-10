@@ -82,7 +82,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBu
 
 	if (MyBuddy)
 	{
-		MyAccount = BuddyPreferredManager::instance()->preferredAccount(MyBuddy);
+		MyAccount = Core::instance()->buddyPreferredManager()->preferredAccount(MyBuddy);
 		if (!MyAccount)
 			MyBuddy = Buddy::null;
 	}

@@ -76,7 +76,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 
 	auto details = static_cast<ChatDetailsContact *>(chat.details());
 	details->setState(StorableObject::StateNew);
-	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
+	details->setContact(Core::instance()->buddyPreferredManager()->preferredContact(example));
 
 	auto buddy = Buddy::create();
 	buddy.setDisplay(Core::instance()->myself().display());
@@ -95,7 +95,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	auto receivedMessage = Message::create();
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
-	receivedMessage.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
+	receivedMessage.setMessageSender(Core::instance()->buddyPreferredManager()->preferredContact(example));
 	receivedMessage.setContent(m_formattedStringFactory->fromPlainText(tr("Message from Your friend")));
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
