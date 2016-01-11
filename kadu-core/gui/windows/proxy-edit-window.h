@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROXY_EDIT_WINDOW_H
-#define PROXY_EDIT_WINDOW_H
+#pragma once
 
 #include <QtCore/QItemSelection>
 #include <QtWidgets/QWidget>
@@ -39,8 +38,6 @@ class NetworkProxyProxyModel;
 class ProxyEditWindow : public QWidget
 {
 	Q_OBJECT
-
-	static ProxyEditWindow *Instance;
 
 	QListView *ProxyView;
 	NetworkProxyModel *ProxyModel;
@@ -66,8 +63,6 @@ class ProxyEditWindow : public QWidget
 	 */
 	bool ForceProxyChange;
 
-	explicit ProxyEditWindow(QWidget *parent = 0);
-
 	void createGui();
 	void updateProxyView();
 	void saveProxy(NetworkProxy proxy);
@@ -90,10 +85,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	static void show();
-
+	explicit ProxyEditWindow(QWidget *parent = nullptr);
 	virtual ~ProxyEditWindow();
 
 };
-
-#endif // PROXY_EDIT_WINDOW_H

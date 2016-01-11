@@ -87,6 +87,7 @@
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/proxy-edit-window-service.h"
 #include "gui/windows/search-window-actions.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts-window-service.h"
@@ -978,6 +979,11 @@ YourAccountsWindowService * Core::yourAccountsWindowService() const
 SearchWindowActions * Core::searchWindowActions() const
 {
 	return m_injector.get<SearchWindowActions>();
+}
+
+ProxyEditWindowService * Core::proxyEditWindowService() const
+{
+	return m_injector.get<ProxyEditWindowService>();
 }
 
 void Core::showMainWindow()

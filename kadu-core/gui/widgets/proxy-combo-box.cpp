@@ -20,7 +20,8 @@
 
 #include <QtWidgets/QAction>
 
-#include "gui/windows/proxy-edit-window.h"
+#include "core/core.h"
+#include "gui/windows/proxy-edit-window-service.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
@@ -88,7 +89,7 @@ NetworkProxy ProxyComboBox::currentProxy()
 
 void ProxyComboBox::editProxy()
 {
-	ProxyEditWindow::show();
+	Core::instance()->proxyEditWindowService()->show();
 }
 
 #include "moc_proxy-combo-box.cpp"

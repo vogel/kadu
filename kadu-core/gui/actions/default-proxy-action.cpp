@@ -23,7 +23,7 @@
 
 #include "core/core.h"
 #include "gui/actions/action.h"
-#include "gui/windows/proxy-edit-window.h"
+#include "gui/windows/proxy-edit-window-service.h"
 #include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
@@ -116,7 +116,7 @@ void DefaultProxyAction::selectProxyActionTriggered(QAction *action)
 
 void DefaultProxyAction::editProxyConfiguration()
 {
-	ProxyEditWindow::show();
+	Core::instance()->proxyEditWindowService()->show();
 }
 
 #include "moc_default-proxy-action.cpp"

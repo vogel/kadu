@@ -48,17 +48,6 @@
 
 #include "proxy-edit-window.h"
 
-ProxyEditWindow * ProxyEditWindow::Instance = 0;
-
-void ProxyEditWindow::show()
-{
-	if (!Instance)
-		Instance = new ProxyEditWindow();
-
-	Instance->setVisible(true);
-	_activateWindow(Instance);
-}
-
 ProxyEditWindow::ProxyEditWindow(QWidget *parent) :
 		QWidget(parent), ForceProxyChange(false)
 {
@@ -75,7 +64,6 @@ ProxyEditWindow::ProxyEditWindow(QWidget *parent) :
 
 ProxyEditWindow::~ProxyEditWindow()
 {
-	Instance = 0;
 }
 
 void ProxyEditWindow::createGui()

@@ -99,6 +99,7 @@ class PluginRepository;
 class PluginStateManager;
 class PluginStateService;
 class ProtocolsManager;
+class ProxyEditWindowService;
 class RawMessageTransformerService;
 class RecentChatManager;
 class RosterNotifier;
@@ -248,6 +249,7 @@ public:
 	SystemInfo * systemInfo() const;
 	YourAccountsWindowService * yourAccountsWindowService() const;
 	SearchWindowActions * searchWindowActions() const;
+	ProxyEditWindowService * proxyEditWindowService() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

@@ -204,6 +204,7 @@ set (gui_SRCS
 	windows/multilogon-window.cpp
 	windows/progress-window.cpp
 	windows/proxy-action-context.cpp
+	windows/proxy-edit-window-service.cpp
 	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
