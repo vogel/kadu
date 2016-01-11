@@ -18,12 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_MANAGER_H
-#define NETWORK_MANAGER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "exports.h"
+
+#include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 /**
  * @addtogroup Network
@@ -48,19 +48,11 @@
 class KADUAPI NetworkManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(NetworkManager)
-
-	static NetworkManager *Instance;
-
-protected slots:
-	void onlineStateChanged(bool isOnline);
-
-protected:
-	NetworkManager();
-	virtual ~NetworkManager();
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
-	static NetworkManager * instance();
+	explicit NetworkManager(QObject *parent = nullptr);
+	virtual ~NetworkManager();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -101,10 +93,11 @@ signals:
 	 */
 	void offline();
 
+protected slots:
+	void onlineStateChanged(bool isOnline);
+
 };
 
 /**
  * @}
  */
-
-#endif // NETWORK_MANAGER_H

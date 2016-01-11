@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_MANAGER_DUMMY_H
-#define NETWORK_MANAGER_DUMMY_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -45,7 +44,7 @@ class KADUAPI NetworkManagerDummy : public NetworkManager
 	Q_OBJECT
 
 public:
-	NetworkManagerDummy();
+	Q_INVOKABLE explicit NetworkManagerDummy(QObject *parent = nullptr);
 	virtual ~NetworkManagerDummy();
 
 	virtual bool isOnline();
@@ -58,5 +57,3 @@ public slots:
 /**
  * @}
  */
-
-#endif // NETWORK_MANAGER_DUMMY_H

@@ -23,9 +23,9 @@
 
 #include "network-manager-ntrack.h"
 
-NetworkManagerNTrack::NetworkManagerNTrack()
+NetworkManagerNTrack::NetworkManagerNTrack(QObject *parent) :
+		QObject{parent}
 {
-	// fuck QtNtrack
 	int argc = QCoreApplication::argc();
 	char **argv = QCoreApplication::argv();
 	QNtrack::instance()->init(&argc, &argv);

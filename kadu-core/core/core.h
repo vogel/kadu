@@ -85,6 +85,7 @@ class Message;
 class MessageHtmlRendererService;
 class MessageManager;
 class MessageTransformerService;
+class NetworkManager;
 class NetworkProxyManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
@@ -236,6 +237,7 @@ public:
 	ChatTypeManager * chatTypeManager() const;
 	Actions * actions() const;
 	MenuInventory * menuInventory() const;
+	NetworkManager * networkManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

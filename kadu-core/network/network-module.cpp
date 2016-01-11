@@ -19,11 +19,14 @@
 
 #include "network-module.h"
 
+#include "network/kadu-network-config.h"
 #include "network/proxy/network-proxy-manager.h"
+#include NETWORK_IMPLEMENTATION_INCLUDE
 
 NetworkModule::NetworkModule()
 {
 	add_type<NetworkProxyManager>();
+	add_type<NETWORK_IMPLEMENTATION_CLASS_NAME>();
 }
 
 NetworkModule::~NetworkModule()

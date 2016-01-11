@@ -20,7 +20,8 @@
 
 #include "network-manager-dummy.h"
 
-NetworkManagerDummy::NetworkManagerDummy()
+NetworkManagerDummy::NetworkManagerDummy(QObject *parent) :
+		QObject{parent}
 {
 }
 

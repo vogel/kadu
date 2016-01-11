@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_MANAGER_NTRACK_H
-#define NETWORK_MANAGER_NTRACK_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -55,7 +54,7 @@ private slots:
 	void stateChanged(QNTrackState oldState, QNTrackState newState);
 
 public:
-	NetworkManagerNTrack();
+	Q_INVOKABLE explicit NetworkManagerNTrack(QObject *parent = nullptr);
 	virtual ~NetworkManagerNTrack();
 
 	virtual bool isOnline();
@@ -68,5 +67,3 @@ public slots:
 /**
  * @}
  */
-
-#endif // NETWORK_MANAGER_NTRACK_H

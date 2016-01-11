@@ -20,37 +20,11 @@
  */
 
 #include "network/network-aware-object.h"
-#include "kadu-network-config.h"
 
 #include "network-manager.h"
 
-#include NETWORK_IMPLEMENTATION_INCLUDE
-
-NetworkManager *NetworkManager::Instance = 0;
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @author Piotr 'ultr' Dąbrowski
- * @short Returns singleton instance of NetworkManager.
- * @return singleton instance of NetworkManager
- *
- * This static method returns singleton instance of NetworkManager. Implementation class is selected at compile
- * time and can be of one of the following classes:
- * <ul>
- *   <li>NetworkManagerDummy</li>
- *   <li>NetworkManagerNTrack</li>
- *   <li>NetworkManagerQt</li>
- * </ul>
- */
-NetworkManager * NetworkManager::instance()
-{
-	if (!Instance)
-		Instance = new NETWORK_IMPLEMENTATION_CLASS_NAME();
-
-	return Instance;
-}
-
-NetworkManager::NetworkManager()
+NetworkManager::NetworkManager(QObject *parent) :
+		QObject{parent}
 {
 }
 

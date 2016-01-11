@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "network/network-manager.h"
 
 #include "network-aware-object.h"
@@ -25,7 +26,7 @@ KADU_AWARE_CLASS(NetworkAwareObject)
 
 NetworkAwareObject::NetworkAwareObject()
 {
-	NetworkManager::instance(); // initialize, just in case
+	Core::instance()->networkManager(); // initialize, just in case
 }
 
 void NetworkAwareObject::notifyOnlineStateChanged(bool available)
@@ -36,10 +37,10 @@ void NetworkAwareObject::notifyOnlineStateChanged(bool available)
 
 bool NetworkAwareObject::isOnline()
 {
-	return NetworkManager::instance()->isOnline();
+	return Core::instance()->networkManager()->isOnline();
 }
 
 void NetworkAwareObject::triggerOnlineStateChanged()
 {
-	onlineStateChanged(NetworkManager::instance()->isOnline());
+	onlineStateChanged(Core::instance()->networkManager()->isOnline());
 }

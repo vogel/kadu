@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_MANAGER_QT_H
-#define NETWORK_MANAGER_QT_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -55,7 +54,7 @@ class KADUAPI NetworkManagerQt : public NetworkManager
 	bool HasValidCapabilities;
 
 public:
-	NetworkManagerQt();
+	Q_INVOKABLE explicit NetworkManagerQt(QObject *parent = nullptr);
 	virtual ~NetworkManagerQt();
 
 	virtual bool isOnline();
@@ -68,5 +67,3 @@ public slots:
 /**
  * @}
  */
-
-#endif // NETWORK_MANAGER_QT_H

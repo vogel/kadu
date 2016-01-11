@@ -24,7 +24,8 @@
 
 #include "network-manager-qt.h"
 
-NetworkManagerQt::NetworkManagerQt()
+NetworkManagerQt::NetworkManagerQt(QObject *parent) :
+		NetworkManager{parent}
 {
 #ifdef Q_OS_WIN
 	// Kadu bug #2591
