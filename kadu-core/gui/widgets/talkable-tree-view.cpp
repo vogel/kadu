@@ -71,7 +71,7 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
 	Context = new BaseActionContext{this};
-	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+	connect(Core::instance()->statusConfigurationHolder(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	Delegate = new TalkableDelegate(this);
 	setItemDelegate(Delegate);
@@ -86,7 +86,7 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 
 TalkableTreeView::~TalkableTreeView()
 {
-	disconnect(StatusConfigurationHolder::instance(), 0, this, 0);
+	disconnect(Core::instance()->statusConfigurationHolder(), 0, this, 0);
 
 	delete Context;
 	Context = 0;
@@ -238,9 +238,9 @@ void TalkableTreeView::mouseMoveEvent(QMouseEvent *event)
 
 StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) const
 {
-	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
 		return chat.chatAccount().accountIdentity().data();
-	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
+	else if (Core::instance()->statusConfigurationHolder()->isSetStatusPerAccount())
 		return chat.chatAccount().statusContainer();
 	else
 		return Core::instance()->statusContainerManager();

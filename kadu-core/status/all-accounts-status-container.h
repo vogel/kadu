@@ -22,9 +22,11 @@
 #include "accounts/accounts-aware-object.h"
 #include "status/status-container.h"
 
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class Account;
+class StatusConfigurationHolder;
 
 /**
  * @addtogroup Status
@@ -171,7 +173,11 @@ public:
 	 */
 	virtual void storeStatus(Status status);
 
+private:
+	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+
 private slots:
+	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

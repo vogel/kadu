@@ -17,43 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "status-configuration-holder.h"
+
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "misc/paths-provider.h"
 
-#include "status-configuration-holder.h"
-
-StatusConfigurationHolder *StatusConfigurationHolder::Instance = 0;
-
-StatusConfigurationHolder * StatusConfigurationHolder::instance()
+StatusConfigurationHolder::StatusConfigurationHolder(QObject *parent) :
+		ConfigurationHolder{parent},
+		SetStatus{SetStatusPerIdentity}
 {
-	return Instance;
 }
 
-void StatusConfigurationHolder::createInstance()
+StatusConfigurationHolder::~StatusConfigurationHolder()
 {
-	if (!Instance)
-		Instance = new StatusConfigurationHolder();
 }
 
-void StatusConfigurationHolder::destroyInstance()
+void StatusConfigurationHolder::setConfiguration(Configuration *configuration)
 {
-	delete Instance;
-	Instance = 0;
+	m_configuration = configuration;
 }
 
-StatusConfigurationHolder::StatusConfigurationHolder() :
-		SetStatus(SetStatusPerIdentity)
+void StatusConfigurationHolder::init()
 {
 	configurationUpdated();
 }
 
 void StatusConfigurationHolder::configurationUpdated()
 {
-	QString statusContainerType = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
+	auto statusContainerType = m_configuration->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
 
-	SetStatusMode newStatus = SetStatusPerIdentity;
+	auto newStatus = SetStatusPerIdentity;
 	if (statusContainerType == "Account")
 		newStatus = SetStatusPerAccount;
 	else if (statusContainerType == "All")

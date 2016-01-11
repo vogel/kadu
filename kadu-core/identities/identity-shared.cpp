@@ -117,7 +117,7 @@ void IdentityShared::addAccount(const Account &account)
 
 	Accounts.append(account);
 	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
-	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
 		account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
 
 	emit statusUpdated(this);

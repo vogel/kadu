@@ -203,8 +203,6 @@ Core::Core(injeqt::injector &&injector) :
 	createDefaultConfiguration();
 	configurationUpdated();
 
-	StatusConfigurationHolder::createInstance();
-
 	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), pathsProvider()->dataPath());
 	Parser::GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
 	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), pathsProvider()->profilePath());
@@ -243,8 +241,6 @@ Core::~Core()
 	delete Window;
 	Window = 0;
 	delete hiddenParent;
-
-	StatusConfigurationHolder::destroyInstance();
 
 	triggerAllAccountsUnregistered();
 }
@@ -959,6 +955,11 @@ NetworkManager * Core::networkManager() const
 Roster * Core::roster() const
 {
 	return m_injector.get<Roster>();
+}
+
+StatusConfigurationHolder * Core::statusConfigurationHolder() const
+{
+	return m_injector.get<StatusConfigurationHolder>();
 }
 
 void Core::showMainWindow()

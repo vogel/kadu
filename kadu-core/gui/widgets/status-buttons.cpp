@@ -22,6 +22,7 @@
  */
 
 #include "accounts/account-manager.h"
+#include "core/core.h"
 #include "gui/widgets/status-button.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
@@ -42,7 +43,7 @@ StatusButtons::~StatusButtons()
 
 void StatusButtons::enableStatusName()
 {
-	if (StatusConfigurationHolder::instance()->setStatusMode() != SetStatusPerAccount && 1 == Buttons.count())
+	if (Core::instance()->statusConfigurationHolder()->setStatusMode() != SetStatusPerAccount && 1 == Buttons.count())
 		Buttons.begin().value()->setDisplayStatusName(true);
 }
 

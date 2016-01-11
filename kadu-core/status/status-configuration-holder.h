@@ -17,10 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAIN_CONFIGURATION_HOLDER_H
-#define MAIN_CONFIGURATION_HOLDER_H
+#pragma once
 
 #include "configuration/configuration-holder.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 enum SetStatusMode
 {
@@ -29,20 +31,16 @@ enum SetStatusMode
 	SetStatusForAll
 };
 
+class Configuration;
+
 class StatusConfigurationHolder : public ConfigurationHolder
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(StatusConfigurationHolder)
-
-	static StatusConfigurationHolder *Instance;
-	explicit StatusConfigurationHolder();
-
-	SetStatusMode SetStatus;
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static StatusConfigurationHolder * instance();
+	Q_INVOKABLE explicit StatusConfigurationHolder(QObject *parent = nullptr);
+	virtual ~StatusConfigurationHolder();
+
 	void configurationUpdated();
 
 	SetStatusMode setStatusMode() const { return SetStatus; }
@@ -52,6 +50,13 @@ public:
 signals:
 	void setStatusModeChanged();
 
-};
+private:
+	QPointer<Configuration> m_configuration;
 
-#endif // MAIN_CONFIGURATION_HOLDER_H
+	SetStatusMode SetStatus;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
+};

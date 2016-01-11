@@ -113,7 +113,7 @@ void StatusButton::updateStatus()
 	}
 	else
 	{
-		if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
+		if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
 		{
 			setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 			setText(MyStatusContainer->statusContainerName());

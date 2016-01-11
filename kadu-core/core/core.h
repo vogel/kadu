@@ -106,6 +106,7 @@ class RosterReplacer;
 class Roster;
 class SslCertificateManager;
 class StatusChangerManager;
+class StatusConfigurationHolder;
 class StatusContainerManager;
 class StatusSetter;
 class StatusTypeManager;
@@ -240,6 +241,7 @@ public:
 	MenuInventory * menuInventory() const;
 	NetworkManager * networkManager() const;
 	Roster * roster() const;
+	StatusConfigurationHolder * statusConfigurationHolder() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

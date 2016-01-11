@@ -103,7 +103,7 @@ void ChatEditBox::init()
 	Context->setBuddies(CurrentChat.contacts().toBuddySet());
 	updateContext();
 
-	connect(StatusConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+	connect(Core::instance()->statusConfigurationHolder(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	InputBox = m_injectedFactory->makeInjected<CustomInput>(CurrentChat, this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
@@ -187,9 +187,9 @@ TalkableProxyModel * ChatEditBox::talkableProxyModel()
 
 void ChatEditBox::updateContext()
 {
-	if (StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
 		Context->setStatusContainer(CurrentChat.chatAccount().accountIdentity().data());
-	else if (StatusConfigurationHolder::instance()->isSetStatusPerAccount())
+	else if (Core::instance()->statusConfigurationHolder()->isSetStatusPerAccount())
 		Context->setStatusContainer(CurrentChat.chatAccount().statusContainer());
 	else
 		Context->setStatusContainer(Core::instance()->statusContainerManager());

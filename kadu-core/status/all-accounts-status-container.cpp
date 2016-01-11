@@ -36,6 +36,11 @@ AllAccountsStatusContainer::~AllAccountsStatusContainer()
 {
 }
 
+void AllAccountsStatusContainer::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
+{
+	m_statusConfigurationHolder = statusConfigurationHolder;
+}
+
 void AllAccountsStatusContainer::init()
 {
 	triggerAllAccountsRegistered();
@@ -50,7 +55,7 @@ void AllAccountsStatusContainer::accountRegistered(Account account)
 {
 	Accounts.append(account);
 	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
-	if (!StatusConfigurationHolder::instance()->isSetStatusPerAccount() && !StatusConfigurationHolder::instance()->isSetStatusPerIdentity())
+	if (!m_statusConfigurationHolder->isSetStatusPerAccount() && !m_statusConfigurationHolder->isSetStatusPerIdentity())
 		account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
 
 	emit statusUpdated(this);
