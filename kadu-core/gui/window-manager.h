@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOW_MANAGER_H
-#define WINDOW_MANAGER_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -40,18 +39,9 @@ class WindowManager : public QObject
 {
 	Q_OBJECT
 
-	static WindowManager *Instance;
-
-	WindowManager();
-	virtual ~WindowManager();
-
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns WindowManager singleton instance.
-	 * @return WindowManager instance
-	 */
-	static WindowManager * instance();
+	Q_INVOKABLE WindowManager(QObject *parent = nullptr);
+	virtual ~WindowManager();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -84,5 +74,3 @@ public:
 /**
  * @}
  */
-
-#endif // WINDOW_MANAGER_H

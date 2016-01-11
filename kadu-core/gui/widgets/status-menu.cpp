@@ -67,6 +67,11 @@ void StatusMenu::setStatusWindowService(StatusWindowService *statusWindowService
 	m_statusWindowService = statusWindowService;
 }
 
+void StatusMenu::setWindowManager(WindowManager *windowManager)
+{
+	m_windowManager = windowManager;
+}
+
 void StatusMenu::addStatusActions()
 {
 	foreach (QAction *action, Actions->actions())
@@ -94,8 +99,8 @@ void StatusMenu::changeStatus(QAction *action)
 
 void StatusMenu::changeDescription()
 {
-	QWidget *statusWindow = m_statusWindowService->showDialog(Container, Menu);
-	WindowManager::instance()->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
+	auto statusWindow = m_statusWindowService->showDialog(Container, Menu);
+	m_windowManager->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
 }
 
 #include "moc_status-menu.cpp"

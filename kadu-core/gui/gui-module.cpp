@@ -30,6 +30,7 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/widgets/custom-input-menu-manager.h"
+#include "gui/window-manager.h"
 
 GuiModule::GuiModule()
 {
@@ -44,6 +45,7 @@ GuiModule::GuiModule()
 	add_type<WebkitMessagesViewDisplayFactory>();
 	add_type<WebkitMessagesViewFactory>();
 	add_type<WebkitMessagesViewHandlerFactory>();
+	add_type<WindowManager>();
 }
 
 GuiModule::~GuiModule()

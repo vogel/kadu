@@ -18,23 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "window-manager.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QWidget>
 
-#include "window-manager.h"
-
-WindowManager *WindowManager::Instance = 0;
-
-WindowManager * WindowManager::instance()
-{
-	if (!Instance)
-		Instance = new WindowManager();
-
-	return Instance;
-}
-
-WindowManager::WindowManager() : QObject()
+WindowManager::WindowManager(QObject *parent) :
+		QObject{parent}
 {
 }
 
