@@ -125,7 +125,7 @@ bool ChatDetailsContact::shouldStore()
  */
 ChatType * ChatDetailsContact::type() const
 {
-	return ChatTypeManager::instance()->chatType("Contact");
+	return Core::instance()->chatTypeManager()->chatType("Contact");
 }
 
 /**

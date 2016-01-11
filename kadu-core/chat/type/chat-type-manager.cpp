@@ -28,25 +28,8 @@
 
 #include "chat-type-manager.h"
 
-ChatTypeManager * ChatTypeManager::Instance = 0;
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Returns singleton instance of ChatTypeManager.
- * @return singleton instance of ChatTypeManager
- */
-ChatTypeManager * ChatTypeManager::instance()
-{
-	if (0 == Instance)
-	{
-		Instance = new ChatTypeManager();
-		Instance->init();
-	}
-
-	return Instance;
-}
-
-ChatTypeManager::ChatTypeManager()
+ChatTypeManager::ChatTypeManager(QObject *parent) :
+		QObject{parent}
 {
 }
 

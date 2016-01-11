@@ -21,6 +21,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 
 #include "chat-details-buddy.h"
 
@@ -59,7 +60,7 @@ bool ChatDetailsBuddy::shouldStore()
  */
 ChatType * ChatDetailsBuddy::type() const
 {
-	return ChatTypeManager::instance()->chatType("Buddy");
+	return Core::instance()->chatTypeManager()->chatType("Buddy");
 }
 
 /**

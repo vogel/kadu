@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class Chat;
+class ChatTypeManager;
 class ChatWidget;
 class IconsManager;
 
@@ -60,6 +61,8 @@ signals:
 	void titleChanged(ChatWidget *chatWidget);
 
 private:
+	QPointer<ChatTypeManager> m_chatTypeManager;
+
 	QString m_title;
 	QString m_fullTitle;
 	QString m_tooltip;
@@ -82,6 +85,7 @@ private:
 	QIcon chatIcon(const Chat &chat) const;
 
 private slots:
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 	void startBlinking();

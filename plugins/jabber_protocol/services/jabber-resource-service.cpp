@@ -24,6 +24,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 
 JabberResourceService::JabberResourceService(QObject *parent) :
 		QObject{parent}
@@ -83,7 +84,7 @@ Jid JabberResourceService::bestChatJid(const Chat &chat) const
 	if (!chat)
 		return Jid{};
 
-	auto chatType = ChatTypeManager::instance()->chatType(chat.type());
+	auto chatType = Core::instance()->chatTypeManager()->chatType(chat.type());
 	if (!chatType)
 		return Jid{};
 

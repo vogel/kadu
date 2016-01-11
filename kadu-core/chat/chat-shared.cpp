@@ -167,7 +167,7 @@ void ChatShared::load()
 	Type = loadValue<QString>("Type");
 
 	// import from alias to new name of chat type
-	ChatType *chatType = ChatTypeManager::instance()->chatType(Type);
+	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(Type);
 	if (chatType)
 		Type = chatType->name();
 
@@ -200,7 +200,7 @@ void ChatShared::store()
 	storeValue("Display", Display);
 
 	// import from alias to new name of chat type
-	ChatType *chatType = ChatTypeManager::instance()->chatType(Type);
+	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(Type);
 	if (chatType)
 		Type = chatType->name();
 
@@ -368,7 +368,7 @@ void ChatShared::setType(const QString &type)
 
 	Type = type;
 
-	ChatType *chatType = ChatTypeManager::instance()->chatType(type);
+	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(type);
 	if (chatType)
 		chatTypeRegistered(chatType); // this will add details
 }

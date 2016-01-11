@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ChatTypeManager;
 class OtrChatTopBarWidget;
 class OtrPeerIdentityVerificationWindowRepository;
 class OtrSessionService;
@@ -40,17 +41,19 @@ public:
 
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
 
+private:
+	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
+	QPointer<OtrSessionService> SessionService;
+	QPointer<OtrTrustLevelService> TrustLevelService;
+	QList<OtrChatTopBarWidget *> Widgets;
+
 private slots:
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
 	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
 	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	void widgetDestroyed(QObject *widget);
-
-private:
-	QPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
-	QPointer<OtrSessionService> SessionService;
-	QPointer<OtrTrustLevelService> TrustLevelService;
-	QList<OtrChatTopBarWidget *> Widgets;
 
 };

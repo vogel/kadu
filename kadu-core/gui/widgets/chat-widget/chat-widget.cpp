@@ -119,6 +119,11 @@ void ChatWidget::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigu
 	m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
+void ChatWidget::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
 void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	CurrentFormattedStringFactory = formattedStringFactory;
@@ -227,7 +232,7 @@ void ChatWidget::createGui()
 
 	messagesSearchBar->setSearchWidget(InputBox->inputBox());
 
-	ChatType *chatType = ChatTypeManager::instance()->chatType(CurrentChat.type());
+	auto *chatType = m_chatTypeManager->chatType(CurrentChat.type());
 	if (chatType && chatType->name() != "Contact")
 		createContactsList();
 

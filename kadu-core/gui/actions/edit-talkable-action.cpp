@@ -109,7 +109,7 @@ void EditTalkableAction::updateChatActionState(Action *action)
 	setChatActionTitleAndIcon(action);
 
 	const Chat &chat = actionChat(action->context());
-	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(chat.type());
 	action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
 }
 

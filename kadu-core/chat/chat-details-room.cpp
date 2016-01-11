@@ -21,6 +21,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
+#include "core/core.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -110,7 +111,7 @@ bool ChatDetailsRoom::shouldStore()
  */
 ChatType * ChatDetailsRoom::type() const
 {
-	return ChatTypeManager::instance()->chatType("Room");
+	return Core::instance()->chatTypeManager()->chatType("Room");
 }
 
 void ChatDetailsRoom::setRoom(const QString &room)

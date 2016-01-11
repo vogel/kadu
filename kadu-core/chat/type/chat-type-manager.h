@@ -19,15 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_MANAGER
-#define CHAT_TYPE_MANAGER
+#pragma once
+
+#include "chat/type/chat-type.h"
+#include "exports.h"
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QObject>
-
-#include "chat/type/chat-type.h"
-#include "exports.h"
+#include <injeqt/injeqt.h>
 
 /**
  * @addtogroup Chat
@@ -45,20 +45,14 @@
 class KADUAPI ChatTypeManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeManager)
 
-	static ChatTypeManager * Instance;
-
+private:
 	QList<ChatType *> ChatTypes;
 	QMap<QString, ChatType *> ChatTypesMap;
 
-	ChatTypeManager();
-	virtual ~ChatTypeManager();
-
-	void init();
-
 public:
-	static ChatTypeManager * instance();
+	Q_INVOKABLE explicit ChatTypeManager(QObject *parent = nullptr);
+	virtual ~ChatTypeManager();
 
 	void registerChatType(ChatType *chatType);
 	void unregisterChatType(ChatType *chatType);
@@ -103,10 +97,11 @@ signals:
 	 */
 	void chatTypeRemoved(ChatType *chatType);
 
+private slots:
+	INJEQT_INIT void init();
+
 };
 
 /**
  * @}
  */
-
-#endif // CHAT_TYPE_MANAGER

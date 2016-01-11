@@ -36,6 +36,11 @@ OtrChatTopBarWidgetFactory::~OtrChatTopBarWidgetFactory()
 {
 }
 
+void OtrChatTopBarWidgetFactory::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
 void OtrChatTopBarWidgetFactory::setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository)
 {
 	PeerIdentityVerificationWindowRepository = peerIdentityVerificationWindowRepository;
@@ -53,7 +58,7 @@ void OtrChatTopBarWidgetFactory::setTrustLevelService(OtrTrustLevelService *trus
 
 QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
 {
-	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	auto *chatType = m_chatTypeManager->chatType(chat.type());
 	if (chatType->name() != "Contact")
 		return 0;
 

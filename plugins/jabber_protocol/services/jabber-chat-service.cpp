@@ -90,7 +90,7 @@ int JabberChatService::maxMessageLength() const
 
 QXmppMessage::Type JabberChatService::chatMessageType(const Chat &chat, const QString &bareJid) const
 {
-	auto chatType = ChatTypeManager::instance()->chatType(chat.type());
+	auto chatType = Core::instance()->chatTypeManager()->chatType(chat.type());
 	if (!chatType)
 		return QXmppMessage::QXmppMessage::Normal;
 

@@ -82,7 +82,7 @@ void RecentChatsMenu::update()
 	foreach (const Chat &chat, Core::instance()->recentChatManager()->recentChats())
 		if (!Core::instance()->chatWidgetRepository()->widgetForChat(chat))
 		{
-			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
+			ChatType *type = Core::instance()->chatTypeManager()->chatType(chat.type());
 			QAction *action = new QAction(type ? type->icon().icon() : QIcon(),
 			                              ChatDataExtractor::data(chat, Qt::DisplayRole).toString(),
 			                              this);

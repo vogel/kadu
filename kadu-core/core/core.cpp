@@ -48,6 +48,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/recent-chat-manager.h"
+#include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -929,6 +930,11 @@ ChatConfigurationHolder * Core::chatConfigurationHolder() const
 BuddyPreferredManager * Core::buddyPreferredManager() const
 {
 	return m_injector.get<BuddyPreferredManager>();
+}
+
+ChatTypeManager * Core::chatTypeManager() const
+{
+	return m_injector.get<ChatTypeManager>();
 }
 
 void Core::showMainWindow()

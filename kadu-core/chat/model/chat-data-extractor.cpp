@@ -24,6 +24,7 @@
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "talkable/talkable.h"
@@ -49,7 +50,7 @@ QVariant ChatDataExtractor::data(const Chat &chat, int role)
 		case Qt::DecorationRole:
 		{
 			QString chatTypeName = chat.type();
-			ChatType *chatType = ChatTypeManager::instance()->chatType(chatTypeName);
+			ChatType *chatType = Core::instance()->chatTypeManager()->chatType(chatTypeName);
 			if (chatType)
 				return chatType->icon().icon();
 			else

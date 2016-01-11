@@ -49,6 +49,11 @@ ChatWidgetTitle::~ChatWidgetTitle()
 {
 }
 
+void ChatWidgetTitle::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
 void ChatWidgetTitle::setIconsManager(IconsManager *iconsManager)
 {
 	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
@@ -279,7 +284,7 @@ QIcon ChatWidgetTitle::chatIcon(const Chat& chat) const
 			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 	else if (contactsCount > 1)
-		return ChatTypeManager::instance()->chatType("ContactSet")->icon().icon();
+		return m_chatTypeManager->chatType("ContactSet")->icon().icon();
 
 	return KaduIcon("internet-group-chat").icon();
 }

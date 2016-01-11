@@ -161,7 +161,7 @@ void ChatDataWindow::createGui()
 
 	TabWidget->addTab(GeneralTab, tr("General"));
 
-	ChatType *chatType = ChatTypeManager::instance()->chatType(MyChat.type());
+	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(MyChat.type());
 	if (chatType)
 	{
 		EditWidget = chatType->createEditWidget(MyChat, TabWidget);

@@ -57,6 +57,7 @@ class ChatConfigurationWidgetFactoryRepository;
 class ChatImageRequestService;
 class ChatManager;
 class ChatTopBarWidgetFactoryRepository;
+class ChatTypeManager;
 class ChatStyleManager;
 class ChatWidgetActions;
 class ChatWidgetContainerHandlerRepository;
@@ -230,6 +231,7 @@ public:
 	BuddyChatManager * buddyChatManager() const;
 	ChatConfigurationHolder * chatConfigurationHolder() const;
 	BuddyPreferredManager * buddyPreferredManager() const;
+	ChatTypeManager * chatTypeManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

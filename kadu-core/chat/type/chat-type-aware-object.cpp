@@ -18,6 +18,7 @@
  */
 
 #include "chat/type/chat-type-manager.h"
+#include "core/core.h"
 
 #include "chat-type-aware-object.h"
 
@@ -60,7 +61,7 @@ void ChatTypeAwareObject::notifyChatTypeUnregistered(ChatType *chatType)
  */
 void ChatTypeAwareObject::triggerAllChatTypesRegistered()
 {
-	foreach (ChatType *chatType, ChatTypeManager::instance()->chatTypes())
+	foreach (ChatType *chatType, Core::instance()->chatTypeManager()->chatTypes())
 		chatTypeRegistered(chatType);
 }
 
@@ -73,6 +74,6 @@ void ChatTypeAwareObject::triggerAllChatTypesRegistered()
  */
 void ChatTypeAwareObject::triggerAllChatTypesUnregistered()
 {
-	foreach (ChatType *chatType, ChatTypeManager::instance()->chatTypes())
+	foreach (ChatType *chatType, Core::instance()->chatTypeManager()->chatTypes())
 		chatTypeUnregistered(chatType);
 }
