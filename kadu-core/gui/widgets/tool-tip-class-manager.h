@@ -18,32 +18,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOOL_TIP_CLASS_MANAGER_H
-#define TOOL_TIP_CLASS_MANAGER_H
-
-#include <QtCore/QMap>
-#include <QtCore/QStringList>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"
+#include "gui/widgets/abstract-tool-tip.h"
 
-#include "abstract-tool-tip.h"
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QStringList>
+#include <injeqt/injeqt.h>
 
-class KADUAPI ToolTipClassManager : private ConfigurationAwareObject
+class Configuration;
+
+class KADUAPI ToolTipClassManager : public QObject, private ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(ToolTipClassManager)
-
-	static ToolTipClassManager * Instance;
-
-	QMap<QString, AbstractToolTip *> ToolTipClasses;
-	QString ToolTipClassName;
-	AbstractToolTip *CurrentToolTipClass;
-
-	ToolTipClassManager();
-	~ToolTipClassManager();
+	Q_OBJECT
 
 public:
-	static ToolTipClassManager * instance();
+	Q_INVOKABLE explicit ToolTipClassManager(QObject *parent = nullptr);
+	virtual ~ToolTipClassManager();
 
 	void registerToolTipClass(const QString &toolTipClassName, AbstractToolTip *toolTipClass);
 	void unregisterToolTipClass(const QString &toolTipClassName);
@@ -56,6 +51,15 @@ public:
 
 	virtual void configurationUpdated();
 
-};
+private:
+	QPointer<Configuration> m_configuration;
 
-#endif // TOOL_TIP_CLASS_MANAGER_H
+	QMap<QString, AbstractToolTip *> ToolTipClasses;
+	QString ToolTipClassName;
+	AbstractToolTip *CurrentToolTipClass;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
+};

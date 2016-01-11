@@ -288,7 +288,7 @@ void TalkableTreeView::toolTipTimeout()
 {
 	if (Talkable::ItemNone != ToolTipItem.type())
 	{
-		ToolTipClassManager::instance()->showToolTip(QCursor::pos(), ToolTipItem);
+		Core::instance()->toolTipClassManager()->showToolTip(QCursor::pos(), ToolTipItem);
 		ToolTipTimeoutTimer.stop();
 	}
 }
@@ -316,7 +316,7 @@ void TalkableTreeView::toolTipRestart(QPoint pos)
 
 void TalkableTreeView::toolTipHide(bool waitForAnother)
 {
-	ToolTipClassManager::instance()->hideToolTip();
+	Core::instance()->toolTipClassManager()->hideToolTip();
 
 	if (waitForAnother)
 		ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);

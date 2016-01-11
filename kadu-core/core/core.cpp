@@ -79,6 +79,7 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
@@ -984,6 +985,11 @@ SearchWindowActions * Core::searchWindowActions() const
 ProxyEditWindowService * Core::proxyEditWindowService() const
 {
 	return m_injector.get<ProxyEditWindowService>();
+}
+
+ToolTipClassManager * Core::toolTipClassManager() const
+{
+	return m_injector.get<ToolTipClassManager>();
 }
 
 void Core::showMainWindow()

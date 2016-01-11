@@ -18,34 +18,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "talkable/talkable.h"
-
 #include "tool-tip-class-manager.h"
 
-ToolTipClassManager * ToolTipClassManager::Instance = 0;
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "talkable/talkable.h"
 
-ToolTipClassManager * ToolTipClassManager::instance()
+ToolTipClassManager::ToolTipClassManager(QObject *parent) :
+		QObject{parent},
+		CurrentToolTipClass{}
 {
-	if (!Instance)
-		Instance = new ToolTipClassManager();
-
-	return Instance;
-}
-
-ToolTipClassManager::ToolTipClassManager() :
-		CurrentToolTipClass(0)
-{
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
-	configurationUpdated();
 }
 
 ToolTipClassManager::~ToolTipClassManager()
 {
 	if (CurrentToolTipClass)
 		CurrentToolTipClass->hideToolTip();
+}
+
+void ToolTipClassManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ToolTipClassManager::init()
+{
+	m_configuration->deprecatedApi()->addVariable("Look", "UserboxToolTipStyle", "Hints");
+	configurationUpdated();
 }
 
 void ToolTipClassManager::registerToolTipClass(const QString &toolTipClassName, AbstractToolTip *toolTipClass)
@@ -110,5 +109,7 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
+	useToolTipClass(m_configuration->deprecatedApi()->readEntry("Look", "UserboxToolTipStyle", "Hints"));
 }
+
+#include "moc_tool-tip-class-manager.cpp"

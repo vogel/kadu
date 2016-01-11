@@ -33,6 +33,7 @@
 #include "gui/windows/search-window-actions.h"
 #include "gui/windows/your-accounts-window-service.h"
 #include "gui/widgets/custom-input-menu-manager.h"
+#include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/window-manager.h"
 
 GuiModule::GuiModule()
@@ -47,6 +48,7 @@ GuiModule::GuiModule()
 	add_type<MenuInventory>();
 	add_type<ProxyEditWindowService>();
 	add_type<SearchWindowActions>();
+	add_type<ToolTipClassManager>();
 	add_type<WebkitMessagesViewDisplayFactory>();
 	add_type<WebkitMessagesViewFactory>();
 	add_type<WebkitMessagesViewHandlerFactory>();

@@ -114,6 +114,7 @@ class StatusSetter;
 class StatusTypeManager;
 class StoragePointFactory;
 class SystemInfo;
+class ToolTipClassManager;
 class UnreadMessageRepository;
 class UrlHandlerManager;
 class YourAccountsWindowService;
@@ -250,6 +251,7 @@ public:
 	YourAccountsWindowService * yourAccountsWindowService() const;
 	SearchWindowActions * searchWindowActions() const;
 	ProxyEditWindowService * proxyEditWindowService() const;
+	ToolTipClassManager * toolTipClassManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

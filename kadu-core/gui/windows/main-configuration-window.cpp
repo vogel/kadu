@@ -387,7 +387,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	captions << tr("None");
 	values << QLatin1String("none");
 
-	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
+	QStringList toolTipClasses = Core::instance()->toolTipClassManager()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
 	{
 		captions << QCoreApplication::translate("@default", toolTipClass.toUtf8().constData());
