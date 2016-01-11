@@ -39,6 +39,7 @@ class QSplitter;
 
 class Actions;
 class ChatConfigurationHolder;
+class ChatEditBoxSizeManager;
 class ChatEditBox;
 class ChatTopBarContainerWidget;
 class ChatTypeManager;
@@ -62,6 +63,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	QPointer<Actions> m_actions;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<ChatEditBoxSizeManager> m_chatEditBoxSizeManager;
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -100,6 +102,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

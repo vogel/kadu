@@ -27,6 +27,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
+#include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/windows/chat-data-window-repository.h"
 
 GuiModule::GuiModule()
@@ -35,6 +36,7 @@ GuiModule::GuiModule()
 	add_type<BuddyDataWindowRepository>();
 	add_type<ChatConfigurationHolder>();
 	add_type<ChatDataWindowRepository>();
+	add_type<ChatEditBoxSizeManager>();
 	add_type<ChatWidgetActions>();
 	add_type<MenuInventory>();
 	add_type<WebkitMessagesViewDisplayFactory>();

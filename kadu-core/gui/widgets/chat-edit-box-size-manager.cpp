@@ -18,35 +18,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-edit-box-size-manager.h"
+
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 
-#include "chat-edit-box-size-manager.h"
-
-ChatEditBoxSizeManager * ChatEditBoxSizeManager::Instance = 0;
-
-ChatEditBoxSizeManager * ChatEditBoxSizeManager::instance()
+ChatEditBoxSizeManager::ChatEditBoxSizeManager(QObject *parent) :
+		QObject{parent},
+		CommonHeight{}
 {
-	if (!Instance)
-		Instance = new ChatEditBoxSizeManager();
-
-	return Instance;
-}
-
-ChatEditBoxSizeManager::ChatEditBoxSizeManager() :
-		CommonHeight(0)
-{
-	configurationUpdated();
 }
 
 ChatEditBoxSizeManager::~ChatEditBoxSizeManager()
 {
 }
 
+void ChatEditBoxSizeManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ChatEditBoxSizeManager::init()
+{
+	configurationUpdated();
+}
+
 void ChatEditBoxSizeManager::configurationUpdated()
 {
-	setCommonHeight(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
+	setCommonHeight(m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
 }
 
 void ChatEditBoxSizeManager::setCommonHeight(int height)
@@ -54,7 +54,7 @@ void ChatEditBoxSizeManager::setCommonHeight(int height)
 	if (height != CommonHeight)
 	{
 		CommonHeight = height;
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
+		m_configuration->deprecatedApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
 		emit commonHeightChanged(CommonHeight);
 	}
 }

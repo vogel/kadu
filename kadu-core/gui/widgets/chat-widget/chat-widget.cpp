@@ -124,6 +124,11 @@ void ChatWidget::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigu
 	m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
+void ChatWidget::setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager)
+{
+	m_chatEditBoxSizeManager = chatEditBoxSizeManager;
+}
+
 void ChatWidget::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
 	m_chatTypeManager = chatTypeManager;
@@ -372,8 +377,8 @@ void ChatWidget::resizeEvent(QResizeEvent *e)
 {
 	QWidget::resizeEvent(e);
 
-	if (ChatEditBoxSizeManager::instance()->initialized())
-		commonHeightChanged(ChatEditBoxSizeManager::instance()->commonHeight());
+	if (m_chatEditBoxSizeManager->initialized())
+		commonHeightChanged(m_chatEditBoxSizeManager->commonHeight());
 }
 
 ChatWidgetTitle * ChatWidget::title() const
@@ -597,7 +602,7 @@ void ChatWidget::verticalSplitterMoved(int pos, int index)
 	Q_UNUSED(index)
 
 	if (SplittersInitialized)
-		ChatEditBoxSizeManager::instance()->setCommonHeight(VerticalSplitter->sizes().at(1));
+		m_chatEditBoxSizeManager->setCommonHeight(VerticalSplitter->sizes().at(1));
 }
 
 void ChatWidget::kaduRestoreGeometry()
@@ -635,12 +640,12 @@ void ChatWidget::showEvent(QShowEvent *e)
 void ChatWidget::setUpVerticalSizes()
 {
 	// now we can accept this signal
-	connect(ChatEditBoxSizeManager::instance(), SIGNAL(commonHeightChanged(int)), this, SLOT(commonHeightChanged(int)));
+	connect(m_chatEditBoxSizeManager, SIGNAL(commonHeightChanged(int)), this, SLOT(commonHeightChanged(int)));
 
 	// already set up by other window, so we use this window setting
-	if (ChatEditBoxSizeManager::instance()->initialized())
+	if (m_chatEditBoxSizeManager->initialized())
 	{
-		commonHeightChanged(ChatEditBoxSizeManager::instance()->commonHeight());
+		commonHeightChanged(m_chatEditBoxSizeManager->commonHeight());
 		SplittersInitialized = true;
 		return;
 	}
@@ -652,7 +657,7 @@ void ChatWidget::setUpVerticalSizes()
 
 	VerticalSplitter->setSizes(vertSizes);
 	SplittersInitialized = true;
-	ChatEditBoxSizeManager::instance()->setCommonHeight(vertSizes.at(1));
+	m_chatEditBoxSizeManager->setCommonHeight(vertSizes.at(1));
 }
 
 void ChatWidget::commonHeightChanged(int commonHeight)

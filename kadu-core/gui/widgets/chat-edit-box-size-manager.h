@@ -17,31 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_EDIT_BOX_SIZE_MANAGER_H
-#define CHAT_EDIT_BOX_SIZE_MANAGER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+
 class KADUAPI ChatEditBoxSizeManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatEditBoxSizeManager)
-
-	static ChatEditBoxSizeManager *Instance;
-
-	int CommonHeight;
-
-	ChatEditBoxSizeManager();
-	virtual ~ChatEditBoxSizeManager();
-
-protected:
-	virtual void configurationUpdated();
 
 public:
-	static ChatEditBoxSizeManager * instance();
+	Q_INVOKABLE explicit ChatEditBoxSizeManager(QObject *parent = nullptr);
+	virtual ~ChatEditBoxSizeManager();
 
 	void setCommonHeight(int height);
 	int commonHeight() { return CommonHeight; }
@@ -51,6 +44,16 @@ public:
 signals:
 	void commonHeightChanged(int height);
 
-};
+protected:
+	virtual void configurationUpdated();
 
-#endif // CHAT_EDIT_BOX_SIZE_MANAGER_H
+private:
+	QPointer<Configuration> m_configuration;
+
+	int CommonHeight;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
+};
