@@ -48,8 +48,6 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	static GaduServersManager * Instance;
-
 	QList<int> AllPorts;
 	QList<GaduServer> AllServers;
 	QList<GaduServer> GoodServers;
