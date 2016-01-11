@@ -50,6 +50,16 @@ AccountManager::~AccountManager()
 {
 }
 
+void AccountManager::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void AccountManager::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void AccountManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
 	m_configurationManager = configurationManager;
@@ -222,9 +232,9 @@ void AccountManager::removeAccountAndBuddies(Account account)
 
 	QVector<Contact> contacts = m_contactManager->contacts(account);
 	foreach (const Contact &contact, contacts)
-		Core::instance()->buddyManager()->clearOwnerAndRemoveEmptyBuddy(contact);
+		m_buddyManager->clearOwnerAndRemoveEmptyBuddy(contact);
 
-	QVector<Chat> chats = Core::instance()->chatManager()->chats(account);
+	QVector<Chat> chats = m_chatManager->chats(account);
 	foreach (const Chat &chat, chats)
 		chat.setDisplay(QString());
 }

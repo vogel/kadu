@@ -19,13 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_MANAGER_H
-#define ACCOUNT_MANAGER_H
-
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
-#include <injeqt/injeqt.h>
+#pragma once
 
 #include "accounts/account.h"
 #include "protocols/protocol-factory.h"
@@ -33,19 +27,30 @@
 #include "storage/manager.h"
 #include "exports.h"
 
-class Status;
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QUuid>
+#include <injeqt/injeqt.h>
+
+class BuddyManager;
+class ChatManager;
 class ConfigurationApi;
 class ConfigurationManager;
 class ContactManager;
+class Status;
 
 class KADUAPI AccountManager : public QObject, public Manager<Account>
 {
 	Q_OBJECT
 
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ChatManager> m_chatManager;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<ContactManager> m_contactManager;
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_INIT void init();
@@ -126,5 +131,3 @@ signals:
 	void accountUpdated(Account);
 
 };
-
-#endif // ACCOUNT_MANAGER_H
