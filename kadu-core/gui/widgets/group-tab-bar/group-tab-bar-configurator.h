@@ -18,21 +18,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUP_TAB_BAR_CONFIGURATOR_H
-#define GROUP_TAB_BAR_CONFIGURATOR_H
-
-#include <QtCore/QPointer>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
-class QDomElement;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class Application;
+class Configuration;
 class GroupFilter;
+class GroupManager;
 class GroupTabBar;
 class GroupTabBarConfiguration;
 
-class GroupTabBarConfigurator : private ConfigurationAwareObject
+class QDomElement;
+
+class GroupTabBarConfigurator : public QObject, private ConfigurationAwareObject
 {
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit GroupTabBarConfigurator(QObject *parent = nullptr);
+	virtual ~GroupTabBarConfigurator();
+
+	void setGroupTabBar(GroupTabBar *groupTabBar);
+
+	GroupTabBarConfiguration loadConfiguration() const;
+	void storeConfiguration();
+
+protected:
+	virtual void configurationUpdated();
+
+private:
+	QPointer<Application> m_application;
+	QPointer<Configuration> m_configuration;
+	QPointer<GroupManager> m_groupManager;
 	QPointer<GroupTabBar> ConfigurableGroupTabBar;
 
 	void createDefaultConfiguration();
@@ -44,17 +66,10 @@ class GroupTabBarConfigurator : private ConfigurationAwareObject
 	void storeGroupFilters(const QVector<GroupFilter> &groupFilters);
 	void storeGroupFilter(QDomElement parentElement, const GroupFilter &groupFilter);
 
-protected:
-	virtual void configurationUpdated();
-
-public:
-	GroupTabBarConfigurator();
-
-	void setGroupTabBar(GroupTabBar *groupTabBar);
-
-	GroupTabBarConfiguration loadConfiguration() const;
-	void storeConfiguration();
+private slots:
+	INJEQT_SET void setApplication(Application *application);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_INIT void init();
 
 };
-
-#endif // GROUP_TAB_BAR_CONFIGURATOR_H

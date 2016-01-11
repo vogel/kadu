@@ -19,15 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QStackedWidget>
+#include "roster-widget.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -45,18 +40,15 @@
 #include "talkable/model/talkable-model-factory.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-#include "roster-widget.h"
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QStackedWidget>
 
 RosterWidget::RosterWidget(QWidget *parent) :
 	QWidget(parent), CompositingEnabled(false)
 {
-	Context = new ProxyActionContext();
-	createGui();
-
-	Context->setForwardActionContext(TalkableTree->actionContext());
-	MyGroupFilter->setGroupFilter(GroupBar->groupFilter());
-
-	configurationUpdated();
 }
 
 RosterWidget::~RosterWidget()
@@ -67,17 +59,38 @@ RosterWidget::~RosterWidget()
 	Context = 0;
 }
 
+void RosterWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void RosterWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void RosterWidget::init()
+{
+	Context = new ProxyActionContext();
+	createGui();
+
+	Context->setForwardActionContext(TalkableTree->actionContext());
+	MyGroupFilter->setGroupFilter(GroupBar->groupFilter());
+
+	configurationUpdated();
+}
+
 void RosterWidget::createGui()
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	GroupBar = Core::instance()->injectedFactory()->makeInjected<GroupTabBar>(this);
+	GroupBar = m_injectedFactory->makeInjected<GroupTabBar>(this);
 	connect(GroupBar, SIGNAL(currentChanged(int)), this, SLOT(storeConfiguration()));
 	connect(GroupBar, SIGNAL(tabMoved(int,int)), this, SLOT(storeConfiguration()));
 
-	TabBarConfigurator.reset(new GroupTabBarConfigurator());
+	TabBarConfigurator.reset(m_injectedFactory->makeInjected<GroupTabBarConfigurator>());
 	TabBarConfigurator->setGroupTabBar(GroupBar);
 
 	createTalkableWidget(this);
@@ -93,12 +106,12 @@ void RosterWidget::createGui()
 
 void RosterWidget::configurationUpdated()
 {
-	QString bgColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look","UserboxBgColor").name();
-	QString alternateBgColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look","UserboxAlternateBgColor").name();
+	QString bgColor = m_configuration->deprecatedApi()->readColorEntry("Look","UserboxBgColor").name();
+	QString alternateBgColor = m_configuration->deprecatedApi()->readColorEntry("Look","UserboxAlternateBgColor").name();
 
-	if (CompositingEnabled && Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
+	if (CompositingEnabled && m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
 	{
-		int alpha = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Look", "UserboxAlpha");
+		int alpha = m_configuration->deprecatedApi()->readNumEntry("Look", "UserboxAlpha");
 
 		QColor color(bgColor);
 		bgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
@@ -110,9 +123,9 @@ void RosterWidget::configurationUpdated()
 			alternateBgColor = QString("transparent");
 	}
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UseUserboxBackground", true))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "UseUserboxBackground", true))
 	{
-		QString typeName = Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBackgroundDisplayStyle");
+		QString typeName = m_configuration->deprecatedApi()->readEntry("Look", "UserboxBackgroundDisplayStyle");
 
 		KaduTreeView::BackgroundMode type;
 		if (typeName == "Centered")
@@ -126,7 +139,7 @@ void RosterWidget::configurationUpdated()
 		else
 			type = KaduTreeView::BackgroundNone;
 
-		TalkableTree->setBackground(bgColor, alternateBgColor, Core::instance()->configuration()->deprecatedApi()->readEntry("Look", "UserboxBackground"), type);
+		TalkableTree->setBackground(bgColor, alternateBgColor, m_configuration->deprecatedApi()->readEntry("Look", "UserboxBackground"), type);
 	}
 	else
 	{
@@ -144,7 +157,7 @@ void RosterWidget::storeConfiguration()
 
 void RosterWidget::compositingEnabled()
 {
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
 	{
 		compositingDisabled();
 		return;

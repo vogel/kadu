@@ -128,7 +128,7 @@ void KaduWindow::createGui()
 
 	Split = new QSplitter(Qt::Vertical, MainWidget);
 
-	Roster = new RosterWidget(Split);
+	Roster = Core::instance()->injectedFactory()->makeInjected<RosterWidget>(Split);
 	InfoPanel = m_injectedFactory->makeInjected<BuddyInfoPanel>(Split);
 
 	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));

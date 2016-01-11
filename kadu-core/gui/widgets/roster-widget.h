@@ -19,10 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_WIDGET_H
-#define ROSTER_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/actions/action-context-provider.h"
@@ -30,10 +27,16 @@
 #include "talkable/talkable.h"
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 class FilteredTreeView;
 class GroupTabBar;
 class GroupTabBarConfigurator;
 class GroupTalkableFilter;
+class InjectedFactory;
 class ProxyActionContext;
 class ModelChain;
 class TalkableProxyModel;
@@ -42,6 +45,9 @@ class TalkableTreeView;
 class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	GroupTabBar *GroupBar;
 	QScopedPointer<GroupTabBarConfigurator> TabBarConfigurator;
@@ -60,6 +66,11 @@ class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, Confi
 
 	ModelChain * createModelChain();
 	void createTalkableWidget(QWidget *parent);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
 
 protected:
 	void configurationUpdated();
@@ -88,5 +99,3 @@ signals:
 	void talkableActivated(const Talkable &talkable);
 
 };
-
-#endif // ROSTER_WIDGET_H
