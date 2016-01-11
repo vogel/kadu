@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_WINDOW_ACTIONS_H
-#define KADU_WINDOW_ACTIONS_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -48,6 +47,7 @@ class InjectedFactory;
 class MainWindow;
 class RecentChatsAction;
 class StatusContainer;
+class YourAccountsWindowService;
 
 class KaduWindowActions : public QObject, ConfigurationAwareObject
 {
@@ -56,6 +56,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<AccountManager> m_accountManager;
 	QPointer<Actions> m_actions;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
 	ActionDescription *Configuration;
@@ -98,6 +99,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
 
 	void showMultilogonsActionCreated(Action *action);
@@ -159,5 +161,3 @@ void disableNoContact(Action *action);
 void disableNoDescription(Action *action);
 void disableNoDescriptionUrl(Action *action);
 void disableNoEMail(Action *action);
-
-#endif // KADU_WINDOW_ACTIONS_H

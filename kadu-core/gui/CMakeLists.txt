@@ -215,6 +215,7 @@ set (gui_SRCS
 	windows/token-window.cpp
 	windows/updates-dialog.cpp
 	windows/window-notifier-window.cpp
+	windows/your-accounts-window-service.cpp
 	windows/your-accounts.cpp
 
 	windows/open-chat-with/open-chat-with.cpp

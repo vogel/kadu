@@ -22,17 +22,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef YOUR_ACCOUNTS
-#define YOUR_ACCOUNTS
-
-#include <QtCore/QItemSelection>
-#include <QtCore/QModelIndex>
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+
+#include <QtCore/QItemSelection>
+#include <QtCore/QModelIndex>
+#include <QtWidgets/QWidget>
 
 class QHBoxLayout;
 class QGroupBox;
@@ -53,8 +52,6 @@ class ProtocolsComboBox;
 class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareObject
 {
 	Q_OBJECT
-
-	static YourAccounts *Instance;
 
 	QListView *AccountsView;
 	AccountsModel *MyAccountsModel;
@@ -88,8 +85,6 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareOb
 
 	CanRegisterProtocolFilter *CanRegisterFilter;
 
-	explicit YourAccounts(QWidget *parent = 0);
-
 	void createGui();
 	void createAccountWidget();
 	void createEditAccountWidget();
@@ -122,11 +117,7 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 public:
-	static YourAccounts * instance();
-
+	explicit YourAccounts(QWidget *parent = nullptr);
 	virtual ~YourAccounts();
-	void show();
 
 };
-
-#endif // YOUR_ACCOUNT

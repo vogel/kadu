@@ -88,6 +88,7 @@
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
+#include "gui/windows/your-accounts-window-service.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
@@ -966,6 +967,11 @@ StatusConfigurationHolder * Core::statusConfigurationHolder() const
 SystemInfo * Core::systemInfo() const
 {
 	return m_injector.get<SystemInfo>();
+}
+
+YourAccountsWindowService * Core::yourAccountsWindowService() const
+{
+	return m_injector.get<YourAccountsWindowService>();
 }
 
 void Core::showMainWindow()

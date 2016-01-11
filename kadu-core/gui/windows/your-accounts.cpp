@@ -65,8 +65,6 @@
 
 #include "your-accounts.h"
 
-YourAccounts *YourAccounts::Instance = 0;
-
 YourAccounts::YourAccounts(QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this), CurrentWidget(0), IsCurrentWidgetEditAccount(false),
 		ForceWidgetChange(false), LastProtocol(0), CanRegisterFilter(new CanRegisterProtocolFilter())
@@ -84,22 +82,6 @@ YourAccounts::YourAccounts(QWidget *parent) :
 
 YourAccounts::~YourAccounts()
 {
-	Instance = 0;
-}
-
-YourAccounts * YourAccounts::instance()
-{
-	if (!Instance)
-		Instance = new YourAccounts();
-
-	return Instance;
-}
-
-void YourAccounts::show()
-{
-	QWidget::show();
-
-	_activateWindow(this);
 }
 
 void YourAccounts::createGui()

@@ -114,6 +114,7 @@ class StoragePointFactory;
 class SystemInfo;
 class UnreadMessageRepository;
 class UrlHandlerManager;
+class YourAccountsWindowService;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -244,6 +245,7 @@ public:
 	Roster * roster() const;
 	StatusConfigurationHolder * statusConfigurationHolder() const;
 	SystemInfo * systemInfo() const;
+	YourAccountsWindowService * yourAccountsWindowService() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

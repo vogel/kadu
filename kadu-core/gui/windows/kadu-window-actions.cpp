@@ -70,6 +70,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/multilogon-window.h"
 #include "gui/windows/search-window.h"
+#include "gui/windows/your-accounts-window-service.h"
 #include "gui/windows/your-accounts.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -199,6 +200,11 @@ void KaduWindowActions::setActions(Actions *actions)
 void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void KaduWindowActions::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
+{
+	m_yourAccountsWindowService = yourAccountsWindowService;
 }
 
 void KaduWindowActions::init()
@@ -570,7 +576,7 @@ void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggle
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	YourAccounts::instance()->show();
+	m_yourAccountsWindowService->show();
 }
 
 void KaduWindowActions::showMultilogonsActionActivated(QAction *sender, bool toggled)
