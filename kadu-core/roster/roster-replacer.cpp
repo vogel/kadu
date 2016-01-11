@@ -44,6 +44,11 @@ RosterReplacer::~RosterReplacer()
 {
 }
 
+void RosterReplacer::setRoster(Roster *roster)
+{
+	m_roster = roster;
+}
+
 bool RosterReplacer::askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename)
 {
 	if (contactsToAdd.isEmpty() && contactsToRename.isEmpty())
@@ -97,7 +102,7 @@ QList<Contact> RosterReplacer::performAdds(const QMap<Buddy, Contact> &contactsT
 		i.value().setOwnerBuddy(i.key());
 		resultContacts.append(i.value());
 
-		Roster::instance()->addContact(i.value());
+		m_roster->addContact(i.value());
 	}
 
 	return resultContacts;

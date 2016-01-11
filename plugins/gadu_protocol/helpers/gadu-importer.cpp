@@ -162,7 +162,7 @@ Contact GaduImporter::importGaduContact(Account account, Buddy buddy)
 
 	contact.setOwnerBuddy(buddy);
 
-	Roster::instance()->addContact(contact);
+	Core::instance()->roster()->addContact(contact);
 
 	return contact;
 }

@@ -25,16 +25,6 @@
 #include "roster/roster-entry.h"
 #include "roster/roster-service.h"
 
-Roster * Roster::sm_instance = nullptr;
-
-Roster * Roster::instance()
-{
-	if (!sm_instance)
-		sm_instance = new Roster{};
-
-	return sm_instance;
-}
-
 RosterService * Roster::rosterService(const Contact &contact)
 {
 	if (!contact)
@@ -49,7 +39,8 @@ RosterService * Roster::rosterService(const Contact &contact)
 	return contact.contactAccount().protocolHandler()->rosterService();
 }
 
-Roster::Roster()
+Roster::Roster(QObject *parent) :
+		QObject{parent}
 {
 }
 

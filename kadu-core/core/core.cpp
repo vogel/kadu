@@ -126,6 +126,7 @@
 #include "provider/simple-provider.h"
 #include "roster/roster-notifier.h"
 #include "roster/roster-replacer.h"
+#include "roster/roster.h"
 #include "services/chat-image-request-service-configurator.h"
 #include "services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
@@ -953,6 +954,11 @@ MenuInventory * Core::menuInventory() const
 NetworkManager * Core::networkManager() const
 {
 	return m_injector.get<NetworkManager>();
+}
+
+Roster * Core::roster() const
+{
+	return m_injector.get<Roster>();
 }
 
 void Core::showMainWindow()

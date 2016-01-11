@@ -33,6 +33,7 @@ class QListWidget;
 
 class BuddyAdditionalDataDeleteHandlerManager;
 class BuddyManager;
+class Roster;
 
 class BuddyDeleteWindow : public QDialog
 {
@@ -40,6 +41,7 @@ class BuddyDeleteWindow : public QDialog
 
 	QPointer<BuddyAdditionalDataDeleteHandlerManager> m_buddyAdditionalDataDeleteHandlerManager;
 	QPointer<BuddyManager> m_buddyManager;
+	QPointer<Roster> m_roster;
 	BuddySet BuddiesToDelete;
 
 	QListWidget *AdditionalDataListView;
@@ -54,6 +56,7 @@ class BuddyDeleteWindow : public QDialog
 private slots:
 	INJEQT_SET void setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setRoster(Roster *roster);
 	INJEQT_INIT void init();
 
 	void additionalDataListViewItemPressed(QListWidgetItem *item);

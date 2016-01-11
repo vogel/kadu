@@ -44,13 +44,10 @@ class RosterService;
 class KADUAPI Roster : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(Roster)
 
 public:
-	/**
-	 * @return singleton instance of Roster calss
-	 */
-	static Roster * instance();
+	Q_INVOKABLE explicit Roster(QObject *parent = nullptr);
+	virtual ~Roster();
 
 	/**
 	 * @return RosterService instance suitable to given @p contact
@@ -70,12 +67,6 @@ public slots:
 	 * @short Remove @p contact from remote roster.
 	 */
 	void removeContact(const Contact &contact) const;
-
-private:
-	static Roster *sm_instance;
-
-	Roster();
-	virtual ~Roster();
 
 };
 

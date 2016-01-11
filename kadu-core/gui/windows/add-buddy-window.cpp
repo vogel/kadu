@@ -520,7 +520,7 @@ bool AddBuddyWindow::addContact()
 	{
 		contact.setOwnerBuddy(buddy);
 
-		Roster::instance()->addContact(contact);
+		Core::instance()->roster()->addContact(contact);
 
 		if (!buddy.isOfflineTo())
 			sendAuthorization(contact);

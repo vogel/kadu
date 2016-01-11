@@ -164,14 +164,14 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 	if (existingContact)
 		Core::instance()->contactManager()->removeItem(existingContact);
 
-	Roster::instance()->removeContact(contact);
+	Core::instance()->roster()->removeContact(contact);
 	contact.setContactAccount(item->itemAccount());
 	contact.setId(item->id());
 	if (item->rosterDetached())
 		contact.rosterEntry()->setDetached();
 	else
 		contact.rosterEntry()->setSynchronized();
-	Roster::instance()->addContact(contact);
+	Core::instance()->roster()->addContact(contact);
 	sendAuthorization(contact);
 }
 
@@ -185,7 +185,7 @@ void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 	else
 		contact.rosterEntry()->setSynchronized();
 
-	Roster::instance()->addContact(contact);
+	Core::instance()->roster()->addContact(contact);
 	sendAuthorization(contact);
 }
 
@@ -223,7 +223,7 @@ void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *it
 	Contact contact = item->itemContact();
 	contact.setOwnerBuddy(Buddy::null);
 
-	Roster::instance()->removeContact(contact);
+	Core::instance()->roster()->removeContact(contact);
 }
 
 void BuddyContactsTableModel::addItem(BuddyContactsTableItem *item, bool emitRowsInserted)

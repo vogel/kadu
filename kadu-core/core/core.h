@@ -103,6 +103,7 @@ class RawMessageTransformerService;
 class RecentChatManager;
 class RosterNotifier;
 class RosterReplacer;
+class Roster;
 class SslCertificateManager;
 class StatusChangerManager;
 class StatusContainerManager;
@@ -238,6 +239,7 @@ public:
 	Actions * actions() const;
 	MenuInventory * menuInventory() const;
 	NetworkManager * networkManager() const;
+	Roster * roster() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

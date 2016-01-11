@@ -61,6 +61,11 @@ void BuddyDeleteWindow::setBuddyManager(BuddyManager *buddyManager)
 	m_buddyManager = buddyManager;
 }
 
+void BuddyDeleteWindow::setRoster(Roster *roster)
+{
+	m_roster = roster;
+}
+
 void BuddyDeleteWindow::init()
 {
 	createGui();
@@ -154,7 +159,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 	m_buddyManager->removeItem(buddy);
 
 	foreach (const Contact &contact, contacts)
-		Roster::instance()->removeContact(contact);
+		m_roster->removeContact(contact);
 }
 
 void BuddyDeleteWindow::accept()

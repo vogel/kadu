@@ -148,7 +148,7 @@ void AccountBuddyListWidget::restoreFromFile()
 					contact.setOwnerBuddy(Buddy::null);
 					// remove even if it still has some data, e.g. mobile number
 					Core::instance()->buddyManager()->removeBuddyIfEmpty(ownerBuddy, true);
-					Roster::instance()->removeContact(contact);
+					Core::instance()->roster()->removeContact(contact);
 				}
 			}
 		}
