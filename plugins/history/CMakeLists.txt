@@ -29,6 +29,7 @@ set (SOURCES
 	gui/widgets/search-tab.cpp
 	gui/widgets/timeline-chat-messages-view.cpp
 
+	gui/windows/history-window-service.cpp
 	gui/windows/history-window.cpp
 
 	model/history-query-results-model.cpp

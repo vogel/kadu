@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,59 +19,35 @@
 
 #pragma once
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
-class QTabWidget;
-
+class BuddyChatManager;
 class Chat;
-class ChatHistoryTab;
-class HistoryMessagesTab;
-class HistoryStorage;
+class HistoryWindow;
 class History;
 class InjectedFactory;
-class SearchTab;
 
-/*!
-\class HistoryWindow
-\author Juzef, Vogel
-*/
-class HistoryWindow : public QWidget
+class HistoryWindowService : public QObject
 {
 	Q_OBJECT
 
-	friend class History;
+public:
+	Q_INVOKABLE explicit HistoryWindowService(QObject *parent = nullptr);
+	virtual ~HistoryWindowService();
 
+	void show(const Chat &chat);
+
+private:
+	QPointer<BuddyChatManager> m_buddyChatManager;
+	QPointer<HistoryWindow> m_historyWindow;
 	QPointer<History> m_history;
 	QPointer<InjectedFactory> m_injectedFactory;
 
-	QTabWidget *TabWidget;
-	int CurrentTab;
-
-	ChatHistoryTab *ChatTab;
-	HistoryMessagesTab *StatusTab;
-	HistoryMessagesTab *SmsTab;
-	SearchTab *MySearchTab;
-
-	void createGui();
-
 private slots:
+	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
-
-	void currentTabChanged(int newTabIndex);
-	void storageChanged(HistoryStorage *historyStorage);
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *event);
-
-public:
-	explicit HistoryWindow(QWidget *parent = nullptr);
-	virtual ~HistoryWindow();
-
-	void updateData();
-	void selectChat(const Chat &chat);
 
 };

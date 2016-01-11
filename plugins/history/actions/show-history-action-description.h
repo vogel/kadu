@@ -22,11 +22,15 @@
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
+#include <injeqt/injeqt.h>
 
 #include "history-exports.h"
 
 #include "gui/actions/action-description.h"
 
+class BuddyChatManager;
+class Configuration;
+class HistoryWindowService;
 class History;
 class InjectedFactory;
 
@@ -34,14 +38,22 @@ class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
+	QPointer<BuddyChatManager> m_buddyChatManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<HistoryWindowService> m_historyWindowService;
 	QPointer<History> m_history;
-	QPointer<InjectedFactory> m_injectedFactory;
 
 	int ChatHistoryQuotationTime;
 
 	void showDaysMessages(QAction *action, int days);
 
 private slots:
+	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setHistoryWindowService(HistoryWindowService *historyWindowService);
+	INJEQT_SET void setHistory(History *history);
+	INJEQT_INIT void init();
+
 	void showPruneMessages();
 	void showOneDayMessages();
 	void show7DaysMessages();
@@ -55,7 +67,7 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
-	explicit ShowHistoryActionDescription(InjectedFactory *injectedFactory, History *history, QObject *parent);
+	Q_INVOKABLE explicit ShowHistoryActionDescription(QObject *parent = nullptr);
 	virtual ~ShowHistoryActionDescription();
 
 };

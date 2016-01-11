@@ -72,6 +72,7 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<ShowHistoryActionDescription> m_showHistoryActionDescription;
 
 	bool SaveChats;
 	bool SaveChatsWithAnonymous;
@@ -89,7 +90,6 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 
 	HistoryStorage *CurrentStorage;
 
-	ShowHistoryActionDescription *ShowHistoryActionDescriptionInstance;
 	ActionDescription *ClearHistoryActionDescription;
 
 	QListWidget *allStatusUsers;
@@ -122,6 +122,7 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setShowHistoryActionDescription(ShowHistoryActionDescription *showHistoryActionDescription);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

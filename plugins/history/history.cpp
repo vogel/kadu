@@ -132,6 +132,11 @@ void History::setMessageManager(MessageManager* messageManager)
 	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(enqueueMessage(Message)));
 }
 
+void History::setShowHistoryActionDescription(ShowHistoryActionDescription *showHistoryActionDescription)
+{
+	m_showHistoryActionDescription = showHistoryActionDescription;
+}
+
 void History::init()
 {
 	createActionDescriptions();
@@ -153,15 +158,13 @@ void History::createActionDescriptions()
 {
 	m_actions->blockSignals();
 
-	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(m_injectedFactory, this, this);
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionView, 100)
+		->addAction(m_showHistoryActionDescription, KaduMenu::SectionView, 100)
 		->update();
 	m_menuInventory
 		->menu("main")
-		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionRecentChats)
+		->addAction(m_showHistoryActionDescription, KaduMenu::SectionRecentChats)
 		->update();
 
 	// The last ActionDescription will send actionLoaded() signal.
@@ -180,15 +183,12 @@ void History::deleteActionDescriptions()
 {
 	m_menuInventory
 		->menu("buddy-list")
-		->removeAction(ShowHistoryActionDescriptionInstance)
+		->removeAction(m_showHistoryActionDescription)
 		->update();
 	m_menuInventory
 		->menu("main")
-		->removeAction(ShowHistoryActionDescriptionInstance)
+		->removeAction(m_showHistoryActionDescription)
 		->update();
-
-	delete ShowHistoryActionDescriptionInstance;
-	ShowHistoryActionDescriptionInstance = 0;
 }
 
 void History::clearHistoryActionActivated(QAction *sender, bool toggled)

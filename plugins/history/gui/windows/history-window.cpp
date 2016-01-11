@@ -39,34 +39,27 @@
 
 #include "history-window.h"
 
-HistoryWindow * HistoryWindow::Instance = 0;
-
-HistoryWindow * HistoryWindow::instance()
-{
-	return Instance;
-}
-
-void HistoryWindow::show(InjectedFactory *injectedFactory, History *history, const Chat &chat)
-{
-	Chat buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
-	if (!buddyChat)
-		buddyChat = chat;
-
-	if (!Instance)
-		Instance = new HistoryWindow(injectedFactory, history);
-
-	Instance->updateData();
-	Instance->selectChat(buddyChat);
-
-	Instance->setVisible(true);
-	_activateWindow(Instance);
-}
-
-HistoryWindow::HistoryWindow(InjectedFactory *injectedFactory, History *history, QWidget *parent) :
+HistoryWindow::HistoryWindow(QWidget *parent) :
 		QWidget(parent),
-		m_history{history},
-		m_injectedFactory{injectedFactory},
 		CurrentTab(-1)
+{
+}
+
+HistoryWindow::~HistoryWindow()
+{
+}
+
+void HistoryWindow::setHistory(History *history)
+{
+	m_history = history;
+}
+
+void HistoryWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void HistoryWindow::init()
 {
 	setWindowRole("kadu-history");
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -79,11 +72,6 @@ HistoryWindow::HistoryWindow(InjectedFactory *injectedFactory, History *history,
 	new WindowGeometryManager(new ConfigFileVariantWrapper("History", "HistoryWindowGeometry"), QRect(200, 200, 750, 500), this);
 
 	connect(m_history, SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
-}
-
-HistoryWindow::~HistoryWindow()
-{
-	Instance = 0;
 }
 
 void HistoryWindow::createGui()

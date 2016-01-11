@@ -26,7 +26,6 @@
 #include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -34,6 +33,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "message/sorted-messages.h"
 
+#include "gui/windows/history-window-service.h"
 #include "gui/windows/history-window.h"
 #include "history-messages-prepender.h"
 #include "history-query.h"
@@ -41,10 +41,36 @@
 
 #include "show-history-action-description.h"
 
-ShowHistoryActionDescription::ShowHistoryActionDescription(InjectedFactory *injectedFactory, History *history, QObject *parent) :
-		ActionDescription(parent),
-		m_history{history},
-		m_injectedFactory{injectedFactory}
+ShowHistoryActionDescription::ShowHistoryActionDescription(QObject *parent) :
+		ActionDescription(parent)
+{
+}
+
+ShowHistoryActionDescription::~ShowHistoryActionDescription()
+{
+}
+
+void ShowHistoryActionDescription::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+{
+	m_buddyChatManager = buddyChatManager;
+}
+
+void ShowHistoryActionDescription::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ShowHistoryActionDescription::setHistoryWindowService(HistoryWindowService *historyWindowService)
+{
+	m_historyWindowService = historyWindowService;
+}
+
+void ShowHistoryActionDescription::setHistory(History *history)
+{
+	m_history = history;
+}
+
+void ShowHistoryActionDescription::init()
 {
 	setType(ActionDescription::TypeUser);
 	setName("showHistoryAction");
@@ -57,15 +83,11 @@ ShowHistoryActionDescription::ShowHistoryActionDescription(InjectedFactory *inje
 	configurationUpdated();
 }
 
-ShowHistoryActionDescription::~ShowHistoryActionDescription()
-{
-}
-
 void ShowHistoryActionDescription::configurationUpdated()
 {
 	ActionDescription::configurationUpdated();
 
-	ChatHistoryQuotationTime = Core::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
+	ChatHistoryQuotationTime = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 }
 
 void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
@@ -84,9 +106,9 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
 
-	if (Core::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10) > 0)
+	if (m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10) > 0)
 	{
-		int prune = Core::instance()->configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10);
+		int prune = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10);
 		menu->addAction(tr("Show last %1 messages").arg(prune), this, SLOT(showPruneMessages()))->setData(chatWidgetData);
 		menu->addSeparator();
 	}
@@ -139,14 +161,14 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	ChatWidget *chatWidget = action->data().value<ChatWidget *>();
 	if (!chatWidget)
 	{
-		HistoryWindow::show(m_injectedFactory, m_history, actionChat);
+		m_historyWindowService->show(actionChat);
 		return;
 	}
 
 	WebkitMessagesView *chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
 	{
-		HistoryWindow::show(m_injectedFactory, m_history, actionChat);
+		m_historyWindowService->show(actionChat);
 		return;
 	}
 
@@ -154,11 +176,11 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 
 	if (-1 == days)
 	{
-		HistoryWindow::show(m_injectedFactory, m_history, chatWidget->chat());
+		m_historyWindowService->show(chatWidget->chat());
 		return;
 	}
 
-	const Chat &buddyChat = Core::instance()->buddyChatManager()->buddyChat(chatWidget->chat());
+	const Chat &buddyChat = m_buddyChatManager->buddyChat(chatWidget->chat());
 	const Chat &messagesChat = buddyChat ? buddyChat : chatWidget->chat();
 	HistoryStorage *historyStorage = m_history->currentStorage();
 
@@ -169,7 +191,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	query.setTalkable(messagesChat);
 
 	if (0 == days)
-		query.setLimit(Core::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
+		query.setLimit(m_configuration->deprecatedApi()->readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
 	else
 		query.setFromDate(QDate::currentDate().addDays(-days));
 
