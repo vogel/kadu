@@ -104,6 +104,7 @@ class RecentChatManager;
 class RosterNotifier;
 class RosterReplacer;
 class Roster;
+class SearchWindowActions;
 class SslCertificateManager;
 class StatusChangerManager;
 class StatusConfigurationHolder;
@@ -246,6 +247,7 @@ public:
 	StatusConfigurationHolder * statusConfigurationHolder() const;
 	SystemInfo * systemInfo() const;
 	YourAccountsWindowService * yourAccountsWindowService() const;
+	SearchWindowActions * searchWindowActions() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

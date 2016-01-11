@@ -347,32 +347,32 @@ void SearchWindow::clearResults()
 {
 	ResultsListWidget->clear();
 
-	setActionEnabled(SearchWindowActions::instance()->AddFound, false);
-	setActionEnabled(SearchWindowActions::instance()->ClearResults, false);
-	setActionEnabled(SearchWindowActions::instance()->ChatFound, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->AddFound, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->ClearResults, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->ChatFound, false);
 }
 
 void SearchWindow::stopSearch()
 {
 	CurrentSearchService->stop();
 
-	setActionEnabled(SearchWindowActions::instance()->StopSearch, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->StopSearch, false);
 
 	if ((PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty()) ||
 			(UinRadioButton->isChecked() && !UinEdit->text().isEmpty()))
-		setActionEnabled(SearchWindowActions::instance()->FirstSearch, true);
+		setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, true);
 
 	if (!ResultsListWidget->selectedItems().isEmpty())
 	{
 		if (PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty())
-			setActionEnabled(SearchWindowActions::instance()->NextResults, true);
+			setActionEnabled(Core::instance()->searchWindowActions()->NextResults, true);
 
-		setActionEnabled(SearchWindowActions::instance()->AddFound, true);
-		setActionEnabled(SearchWindowActions::instance()->ChatFound, true);
+		setActionEnabled(Core::instance()->searchWindowActions()->AddFound, true);
+		setActionEnabled(Core::instance()->searchWindowActions()->ChatFound, true);
 	}
 
 	if (ResultsListWidget->topLevelItemCount() > 0)
-		setActionEnabled(SearchWindowActions::instance()->ClearResults, true);
+		setActionEnabled(Core::instance()->searchWindowActions()->ClearResults, true);
 }
 
 void SearchWindow::firstSearch()
@@ -438,11 +438,11 @@ void SearchWindow::firstSearch()
 
 	SearchInProgress = true;
 
-	setActionEnabled(SearchWindowActions::instance()->StopSearch, true);
-	setActionEnabled(SearchWindowActions::instance()->FirstSearch, false);
-	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
-	setActionEnabled(SearchWindowActions::instance()->AddFound, false);
-	setActionEnabled(SearchWindowActions::instance()->ChatFound, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->StopSearch, true);
+	setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->NextResults, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->AddFound, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->ChatFound, false);
 
 	CurrentSearchService->searchFirst(CurrentSearchCriteria);
 
@@ -456,11 +456,11 @@ void SearchWindow::nextSearch()
 
 	SearchInProgress = true;
 
-	setActionEnabled(SearchWindowActions::instance()->StopSearch, true);
-	setActionEnabled(SearchWindowActions::instance()->FirstSearch, false);
-	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
-	setActionEnabled(SearchWindowActions::instance()->AddFound, false);
-	setActionEnabled(SearchWindowActions::instance()->ChatFound, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->StopSearch, true);
+	setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->NextResults, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->AddFound, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->ChatFound, false);
 
 	CurrentSearchService->searchNext();
 
@@ -498,9 +498,9 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 
 	if ((PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty()) ||
 			(UinRadioButton->isChecked() && !UinEdit->text().isEmpty()))
-		setActionEnabled(SearchWindowActions::instance()->FirstSearch, true);
+		setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, true);
 
-	setActionEnabled(SearchWindowActions::instance()->StopSearch, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->StopSearch, false);
 
 	if (buddies.isEmpty())
 		MessageDialog::show(KaduIcon("dialog-information"), windowTitle(),
@@ -508,16 +508,16 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 	else
 	{
 		if (PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty())
-			setActionEnabled(SearchWindowActions::instance()->NextResults, true);
+			setActionEnabled(Core::instance()->searchWindowActions()->NextResults, true);
 
 		if (ResultsListWidget->topLevelItemCount() > 0)
-			setActionEnabled(SearchWindowActions::instance()->ClearResults, true);
+			setActionEnabled(Core::instance()->searchWindowActions()->ClearResults, true);
 	}
 
 	if (!ResultsListWidget->selectedItems().isEmpty())
 	{
-		setActionEnabled(SearchWindowActions::instance()->AddFound, true);
-		setActionEnabled(SearchWindowActions::instance()->ChatFound, true);
+		setActionEnabled(Core::instance()->searchWindowActions()->AddFound, true);
+		setActionEnabled(Core::instance()->searchWindowActions()->ChatFound, true);
 	}
 
 	SearchInProgress = false;
@@ -527,7 +527,7 @@ void SearchWindow::uinTyped()
 {
 	UinRadioButton->setChecked(true);
 
-	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !UinEdit->text().isEmpty());
+	setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, !UinEdit->text().isEmpty());
 }
 
 void SearchWindow::personalDataTyped()
@@ -542,8 +542,8 @@ void SearchWindow::personalDataTyped()
 	else
 		PersonalDataRadioButton->setChecked(true);
 
-	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !isPersonalDataEmpty());
-	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, !isPersonalDataEmpty());
+	setActionEnabled(Core::instance()->searchWindowActions()->NextResults, false);
 }
 
 void SearchWindow::endBirthYearTyped()
@@ -567,7 +567,7 @@ void SearchWindow::personalDataToggled(bool toggled)
 	if (!DoNotTransferFocus)
 		NickNameEdit->setFocus();
 
-	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !isPersonalDataEmpty());
+	setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, !isPersonalDataEmpty());
 }
 
 void SearchWindow::uinToggled(bool toggled)
@@ -578,8 +578,8 @@ void SearchWindow::uinToggled(bool toggled)
 	OnlyActiveCheckBox->setEnabled(false);
 	UinEdit->setFocus();
 
-	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !UinEdit->text().isEmpty());
-	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
+	setActionEnabled(Core::instance()->searchWindowActions()->FirstSearch, !UinEdit->text().isEmpty());
+	setActionEnabled(Core::instance()->searchWindowActions()->NextResults, false);
 }
 
 bool SearchWindow::isPersonalDataEmpty() const
@@ -595,8 +595,8 @@ bool SearchWindow::isPersonalDataEmpty() const
 void SearchWindow::selectionChanged()
 {
 	bool enableActions = !ResultsListWidget->selectedItems().isEmpty();
-	setActionEnabled(SearchWindowActions::instance()->AddFound, enableActions);
-	setActionEnabled(SearchWindowActions::instance()->ChatFound, enableActions);
+	setActionEnabled(Core::instance()->searchWindowActions()->AddFound, enableActions);
+	setActionEnabled(Core::instance()->searchWindowActions()->ChatFound, enableActions);
 }
 
 void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool enable)

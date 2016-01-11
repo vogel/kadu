@@ -19,33 +19,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "search-window-actions.h"
+
+#include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
+#include "gui/actions/actions.h"
+#include "gui/windows/search-window.h"
+
 #include <QtCore/QList>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QTreeWidget>
 
-#include "core/core.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
-#include "gui/actions/actions.h"
-#include "gui/windows/search-window.h"
-
-#include "search-window-actions.h"
-
-SearchWindowActions * SearchWindowActions::Instance = 0;
-
-SearchWindowActions * SearchWindowActions::instance()
+SearchWindowActions::SearchWindowActions(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new SearchWindowActions();
-	
-	return Instance;
 }
 
-SearchWindowActions::SearchWindowActions()
+SearchWindowActions::~SearchWindowActions()
 {
-	Core::instance()->actions()->blockSignals();
+}
+
+void SearchWindowActions::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
+void SearchWindowActions::init()
+{
+	m_actions->blockSignals();
 
 	FirstSearch = new ActionDescription(this,
 		ActionDescription::TypeSearch, "firstSearchAction",
@@ -83,7 +86,7 @@ SearchWindowActions::SearchWindowActions()
 	connect(AddFound, SIGNAL(actionCreated(Action*)), this, SLOT(actionsFoundActionCreated(Action*)));
 
 	// The last ActionDescription will send actionLoaded() signal.
-	Core::instance()->actions()->unblockSignals();
+	m_actions->unblockSignals();
 
 	ChatFound = new ActionDescription(this,
 		ActionDescription::TypeSearch, "chatSearchedAction",
@@ -91,11 +94,6 @@ SearchWindowActions::SearchWindowActions()
 		KaduIcon("internet-group-chat"), tr("&Chat")
 	);
 	connect(ChatFound, SIGNAL(actionCreated(Action*)), this, SLOT(actionsFoundActionCreated(Action*)));
-}
-
-SearchWindowActions::~SearchWindowActions()
-{
-	Instance = 0;
 }
 
 void SearchWindowActions::firstSearchActionCreated(Action *action)

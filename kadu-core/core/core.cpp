@@ -87,6 +87,7 @@
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/search-window-actions.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts-window-service.h"
 #include "icons/icons-manager.h"
@@ -972,6 +973,11 @@ SystemInfo * Core::systemInfo() const
 YourAccountsWindowService * Core::yourAccountsWindowService() const
 {
 	return m_injector.get<YourAccountsWindowService>();
+}
+
+SearchWindowActions * Core::searchWindowActions() const
+{
+	return m_injector.get<SearchWindowActions>();
 }
 
 void Core::showMainWindow()

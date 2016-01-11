@@ -19,23 +19,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SEARCH_WINDOW_ACTIONS_H
-#define SEARCH_WINDOW_ACTIONS_H
+#pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ActionDescription;
+class Actions;
+class Action;
 
 class QAction;
-
-class Action;
-class ActionDescription;
 
 class SearchWindowActions : public QObject
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE explicit SearchWindowActions(QObject *parent = nullptr);
+	virtual ~SearchWindowActions();
+
+private:
 	friend class SearchWindow;
 
-	static SearchWindowActions *Instance;
+	QPointer<Actions> m_actions;
 
 	ActionDescription *FirstSearch;
 	ActionDescription *NextResults;
@@ -43,11 +50,11 @@ class SearchWindowActions : public QObject
 	ActionDescription *ClearResults;
 	ActionDescription *AddFound;
 	ActionDescription *ChatFound;
-	
-	SearchWindowActions();
-	virtual ~SearchWindowActions();
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_INIT void init();
+
 	void firstSearchActionCreated(Action *action);
 	void nextResultsActionCreated(Action *action);
 	void stopSearchActionCreated(Action *action);
@@ -61,9 +68,4 @@ private slots:
 	void addFoundActionActivated(QAction *sender);
 	void chatFoundActionActivated(QAction *sender);
 
-public:
-	static SearchWindowActions * instance();
-
 };
-
-#endif // SEARCH_WINDOW_ACTIONS_H
