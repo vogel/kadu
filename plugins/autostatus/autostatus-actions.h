@@ -26,6 +26,7 @@
 class AutostatusService;
 
 class ActionDescription;
+class MenuInventory;
 
 class QAction;
 
@@ -42,11 +43,15 @@ public:
 
 private:
 	QPointer<AutostatusService> m_autostatusService;
+	QPointer<MenuInventory> m_menuInventory;
 
 	ActionDescription *AutostatusActionDescription;
 
 private slots:
 	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	//! This slot is called when new Autostatus it starts
 	void autostatusActionActivated(QAction *, bool);

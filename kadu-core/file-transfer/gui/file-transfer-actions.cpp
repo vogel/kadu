@@ -19,6 +19,7 @@
 
 #include "file-transfer-actions.h"
 
+#include "core/core.h"
 #include "file-transfer/gui/send-file-action.h"
 #include "file-transfer/gui/show-file-transfer-window-action.h"
 #include "gui/menu/menu-inventory.h"
@@ -29,22 +30,22 @@ FileTransferActions::FileTransferActions(QObject *parent) :
 	m_sendFileAction = new SendFileAction{this};
 	m_showFileTransferWindow = new ShowFileTransferWindowAction{this};
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(m_sendFileAction, KaduMenu::SectionSend, 100);
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("tools")
 		->addAction(m_showFileTransferWindow, KaduMenu::SectionTools, 5);
 }
 
 FileTransferActions::~FileTransferActions()
 {
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->removeAction(m_sendFileAction);
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("tools")
 		->removeAction(m_showFileTransferWindow);
 }

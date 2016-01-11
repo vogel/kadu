@@ -94,8 +94,6 @@ History::History(QObject *parent) :
 
 History::~History()
 {
-	stopSaveThread();
-	deleteActionDescriptions();
 }
 
 void History::setAccountManager(AccountManager *accountManager)
@@ -123,6 +121,11 @@ void History::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void History::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
 void History::setMessageManager(MessageManager* messageManager)
 {
 	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(enqueueMessage(Message)));
@@ -140,17 +143,23 @@ void History::init()
 	configurationUpdated();
 }
 
+void History::done()
+{
+	stopSaveThread();
+	deleteActionDescriptions();
+}
+
 void History::createActionDescriptions()
 {
 	m_actions->blockSignals();
 
 	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(m_injectedFactory, this, this);
 
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("buddy-list")
 		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionView, 100)
 		->update();
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("main")
 		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionRecentChats)
 		->update();
@@ -169,11 +178,11 @@ void History::createActionDescriptions()
 
 void History::deleteActionDescriptions()
 {
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("buddy-list")
 		->removeAction(ShowHistoryActionDescriptionInstance)
 		->update();
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("main")
 		->removeAction(ShowHistoryActionDescriptionInstance)
 		->update();

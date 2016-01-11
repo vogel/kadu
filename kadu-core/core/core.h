@@ -80,6 +80,7 @@ class IdentityManager;
 class InjectedFactory;
 class KaduIcon;
 class KaduWindow;
+class MenuInventory;
 class Message;
 class MessageHtmlRendererService;
 class MessageManager;
@@ -234,6 +235,7 @@ public:
 	BuddyPreferredManager * buddyPreferredManager() const;
 	ChatTypeManager * chatTypeManager() const;
 	Actions * actions() const;
+	MenuInventory * menuInventory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

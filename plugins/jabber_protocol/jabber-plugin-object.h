@@ -29,6 +29,7 @@ class JabberProtocolFactory;
 class JabberProtocolMenuManager;
 class JabberUrlDomVisitorProvider;
 class JabberUrlHandler;
+class MenuInventory;
 class ProtocolsManager;
 class UrlHandlerManager;
 
@@ -49,6 +50,7 @@ private:
 	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
 	QPointer<JabberUrlDomVisitorProvider> m_jabberUrlDomVisitorProvider;
 	QPointer<JabberUrlHandler> m_jabberUrlHandler;
+	QPointer<MenuInventory> m_menuInventory;
 	QPointer<ProtocolsManager> m_protocolsManager;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
@@ -62,6 +64,7 @@ private slots:
 	INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
 	INJEQT_SET void setJabberUrlDomVisitorProvider(JabberUrlDomVisitorProvider *jabberUrlDomVisitorProvider);
 	INJEQT_SET void setJabberUrlHandler(JabberUrlHandler *jabberUrlHandler);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 

@@ -21,6 +21,7 @@
 
 #include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
@@ -35,6 +36,7 @@ GuiModule::GuiModule()
 	add_type<ChatConfigurationHolder>();
 	add_type<ChatDataWindowRepository>();
 	add_type<ChatWidgetActions>();
+	add_type<MenuInventory>();
 	add_type<WebkitMessagesViewDisplayFactory>();
 	add_type<WebkitMessagesViewFactory>();
 	add_type<WebkitMessagesViewHandlerFactory>();

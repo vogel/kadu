@@ -46,43 +46,20 @@
 SmsActions::SmsActions(QObject *parent) :
 		QObject{parent}
 {
-	connect(Core::instance()->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
-			this, SLOT(talkableActivated(Talkable)));
-
-	sendSmsActionDescription = new ActionDescription(this,
-		ActionDescription::TypeGlobal, "sendSmsAction",
-		this, SLOT(sendSmsActionActivated(QAction *)),
-		KaduIcon("phone"), tr("Send SMS...")
-	);
-	sendSmsActionDescription->setShortcut("kadu_sendsms");
-
-	MenuInventory::instance()
-		->menu("buddy-list")
-		->addAction(sendSmsActionDescription, KaduMenu::SectionSend, 10)
-		->update();
-	MenuInventory::instance()
-		->menu("buddy")
-		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5)
-		->update();
 }
 
 SmsActions::~SmsActions()
 {
-	disconnect(Core::instance()->kaduWindow(), 0, this, 0);
-
-	MenuInventory::instance()
-		->menu("buddy-list")
-		->removeAction(sendSmsActionDescription)
-		->update();
-	MenuInventory::instance()
-		->menu("buddy")
-		->removeAction(sendSmsActionDescription)
-		->update();
 }
 
 void SmsActions::setHistory(History *history)
 {
 	m_history = history;
+}
+
+void SmsActions::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
 }
 
 void SmsActions::setMobileNumberManager(MobileNumberManager *mobileNumberManager)
@@ -103,6 +80,42 @@ void SmsActions::setSmsGatewayManager(SmsGatewayManager *smsGatewayManager)
 void SmsActions::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 {
 	m_smsScriptsManager = smsScriptsManager;
+}
+
+void SmsActions::init()
+{
+	connect(Core::instance()->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
+			this, SLOT(talkableActivated(Talkable)));
+
+	sendSmsActionDescription = new ActionDescription(this,
+		ActionDescription::TypeGlobal, "sendSmsAction",
+		this, SLOT(sendSmsActionActivated(QAction *)),
+		KaduIcon("phone"), tr("Send SMS...")
+	);
+	sendSmsActionDescription->setShortcut("kadu_sendsms");
+
+	m_menuInventory
+		->menu("buddy-list")
+		->addAction(sendSmsActionDescription, KaduMenu::SectionSend, 10)
+		->update();
+	m_menuInventory
+		->menu("buddy")
+		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5)
+		->update();
+}
+
+void SmsActions::done()
+{
+	disconnect(Core::instance()->kaduWindow(), 0, this, 0);
+
+	m_menuInventory
+		->menu("buddy-list")
+		->removeAction(sendSmsActionDescription)
+		->update();
+	m_menuInventory
+		->menu("buddy")
+		->removeAction(sendSmsActionDescription)
+		->update();
 }
 
 void SmsActions::newSms(const QString &mobile)

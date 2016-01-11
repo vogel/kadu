@@ -88,30 +88,6 @@ TabsManager::TabsManager(QObject *parent) :
 
 TabsManager::~TabsManager()
 {
-	kdebugf();
-
-	MenuInventory::instance()
-		->menu("buddy-list")
-		->removeAction(OpenInNewTabActionDescription)
-		->update();
-
-	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
-
-	if (m_chatWidgetRepository)
-		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
-
-	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
-	if (!Core::instance()->isClosing())
-		for (int i = TabDialog->count() - 1; i >= 0; i--)
-			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
-
-	delete TabDialog;
-	TabDialog = 0;
-
-	delete Menu;
-	Menu = 0;
-
-	kdebugf2();
 }
 
 void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -133,6 +109,11 @@ void TabsManager::setConfiguration(Configuration *configuration)
 void TabsManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void TabsManager::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
 }
 
 void TabsManager::init()
@@ -165,7 +146,7 @@ void TabsManager::init()
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false, disableNewTab
 	);
 
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("buddy-list")
 		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20)
 		->update();
@@ -176,6 +157,34 @@ void TabsManager::init()
 		KaduIcon("kadu_icons/tab-detach"), tr("Attach Chat to Tabs"), true
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
+
+	kdebugf2();
+}
+
+void TabsManager::done()
+{
+	kdebugf();
+
+	m_menuInventory
+		->menu("buddy-list")
+		->removeAction(OpenInNewTabActionDescription)
+		->update();
+
+	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
+
+	if (m_chatWidgetRepository)
+		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
+
+	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
+	if (!Core::instance()->isClosing())
+		for (int i = TabDialog->count() - 1; i >= 0; i--)
+			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
+
+	delete TabDialog;
+	TabDialog = 0;
+
+	delete Menu;
+	Menu = 0;
 
 	kdebugf2();
 }

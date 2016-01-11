@@ -73,6 +73,11 @@ void HistoryMessagesTab::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void HistoryMessagesTab::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
 void HistoryMessagesTab::init()
 {
 	createGui();
@@ -304,8 +309,8 @@ void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistor
 void HistoryMessagesTab::showTalkablePopupMenu()
 {
 	QScopedPointer<QMenu> menu(new QMenu());
-	MenuInventory::instance()->menu("buddy-list")->attachToMenu(menu.data());
-	MenuInventory::instance()->menu("buddy-list")->applyTo(menu.data(), TalkableTree->actionContext());
+	m_menuInventory->menu("buddy-list")->attachToMenu(menu.data());
+	m_menuInventory->menu("buddy-list")->applyTo(menu.data(), TalkableTree->actionContext());
 
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),

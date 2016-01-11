@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MENU_INVENTORY_H
-#define MENU_INVENTORY_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -37,17 +36,10 @@ class ProtocolMenuManager;
 class KADUAPI MenuInventory : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(MenuInventory)
-
-	static MenuInventory *Instance;
-
-	QMap<QString, KaduMenu *> Menus;
-	QList<ProtocolMenuManager *> ProtocolMenuManagers;
-
-	MenuInventory();
 
 public:
-	static MenuInventory * instance();
+	Q_INVOKABLE explicit MenuInventory(QObject *parent = nullptr);
+    virtual ~MenuInventory();
 
 	KaduMenu * menu(const QString &category);
 
@@ -56,6 +48,8 @@ public:
 
 	QList<ProtocolMenuManager *> & protocolMenuManagers() { return ProtocolMenuManagers; }
 
-};
+private:
+	QMap<QString, KaduMenu *> Menus;
+	QList<ProtocolMenuManager *> ProtocolMenuManagers;
 
-#endif // MENU_INVENTORY_H
+};

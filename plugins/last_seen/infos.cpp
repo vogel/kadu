@@ -44,34 +44,6 @@ Infos::Infos(QObject *parent) :
 
 Infos::~Infos()
 {
-	kdebugf();
-
-	updateTimes();
-	QFile file(fileName);
-	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
-		QTextStream stream(&file);
-		for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
-		{
-			QPair<QString, QString> lastSeenKey = it.key();
-			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
-			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
-		}
-		file.close();
-	}
-	else
-	{
-		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
-		fflush(stderr);
-	}
-
-	MenuInventory::instance()
-		->menu("tools")
-		->removeAction(lastSeenActionDescription)
-		->update();
-
-	kdebugf2();
 }
 
 void Infos::setAccountManager(AccountManager *accountManager)
@@ -82,6 +54,11 @@ void Infos::setAccountManager(AccountManager *accountManager)
 void Infos::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void Infos::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
 }
 
 void Infos::setPathsProvider(PathsProvider *pathsProvider)
@@ -146,9 +123,41 @@ void Infos::init()
 		KaduIcon(), qApp->translate("Infos", "&Show infos about buddies")
 	);
 
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("tools")
 		->addAction(lastSeenActionDescription, KaduMenu::SectionTools, 3)
+		->update();
+
+	kdebugf2();
+}
+
+void Infos::done()
+{
+	kdebugf();
+
+	updateTimes();
+	QFile file(fileName);
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+	{
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
+		QTextStream stream(&file);
+		for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
+		{
+			QPair<QString, QString> lastSeenKey = it.key();
+			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
+			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
+		}
+		file.close();
+	}
+	else
+	{
+		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
+		fflush(stderr);
+	}
+
+	m_menuInventory
+		->menu("tools")
+		->removeAction(lastSeenActionDescription)
 		->update();
 
 	kdebugf2();

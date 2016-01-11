@@ -98,6 +98,11 @@ void NotificationService::setNotificationCallbackRepository(NotificationCallback
 	m_notificationCallbackRepository->addCallback(openChatCallback);
 }
 
+void NotificationService::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
 void NotificationService::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
@@ -149,7 +154,7 @@ void NotificationService::createActionDescriptions()
 		checkNotify
 	);
 
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("buddy-list")
 		->addAction(notifyAboutUserActionDescription, KaduMenu::SectionActions);
 
@@ -161,7 +166,7 @@ void NotificationService::createActionDescriptions()
 
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("main")
 		->addAction(SilentModeActionDescription, KaduMenu::SectionMiscTools, 5);
 }

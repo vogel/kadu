@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QMenu>
+#include "menu-inventory.h"
 
 #include "accounts/account.h"
 #include "contacts/contact-set.h"
@@ -28,19 +28,14 @@
 #include "gui/actions/action.h"
 #include "protocols/protocol-menu-manager.h"
 
-#include "menu-inventory.h"
+#include <QtWidgets/QMenu>
 
-MenuInventory * MenuInventory::Instance = 0;
-
-MenuInventory * MenuInventory::instance()
+MenuInventory::MenuInventory(QObject *parent) :
+		QObject{parent}
 {
-	if (!Instance)
-		Instance = new MenuInventory();
-
-	return Instance;
 }
 
-MenuInventory::MenuInventory()
+MenuInventory::~MenuInventory()
 {
 }
 

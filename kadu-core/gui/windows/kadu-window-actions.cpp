@@ -313,10 +313,10 @@ void KaduWindowActions::init()
 	auto expandAction = new ExpandAction{this};
 	auto collapseAction = new CollapseAction{this};
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(expandAction, KaduMenu::SectionActionsGui, 2);
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(collapseAction, KaduMenu::SectionActionsGui, 1);
 
@@ -326,7 +326,7 @@ void KaduWindowActions::init()
 		KaduIcon("edit-copy"), tr("Copy Description"), false,
 		disableNoDescription
 	);
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(CopyDescription, KaduMenu::SectionActions, 10);
 
@@ -335,7 +335,7 @@ void KaduWindowActions::init()
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/copy-personal-info"), tr("Copy Personal Info")
 	);
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(CopyPersonalInfo, KaduMenu::SectionActions, 20);
 
@@ -345,7 +345,7 @@ void KaduWindowActions::init()
 		KaduIcon("go-jump"), tr("Open Description Link in Browser"), false,
 		disableNoDescriptionUrl
 	);
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(OpenDescriptionLink, KaduMenu::SectionActions, 30);
 
@@ -357,7 +357,7 @@ void KaduWindowActions::init()
 	);
 	connect(WriteEmail, SIGNAL(actionCreated(Action *)), this, SLOT(writeEmailActionCreated(Action *)));
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(WriteEmail, KaduMenu::SectionSend, 200);
 
@@ -404,7 +404,7 @@ void KaduWindowActions::init()
 
 	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(EditTalkable, KaduMenu::SectionView);
 
@@ -415,17 +415,17 @@ void KaduWindowActions::init()
 		disableMerge
 	);
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(MergeContact, KaduMenu::SectionManagement, 100);
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(Core::instance()->chatWidgetActions()->blockUser(), KaduMenu::SectionManagement, 500);
 
 	DeleteTalkable = m_injectedFactory->makeInjected<DeleteTalkableAction>(this);
 
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("buddy-list")
 		->addAction(DeleteTalkable, KaduMenu::SectionManagement, 1000);
 

@@ -145,9 +145,9 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 	actionContext.setRoles(RoleSet() << ContactRole);
 
 	QScopedPointer<QMenu> menu(new QMenu());
-	MenuInventory::instance()->menu("buddy-list")->attachToMenu(menu.data());
-	MenuInventory::instance()->menu("buddy-list")->applyTo(menu.data(), &actionContext);
-	MenuInventory::instance()->menu("buddy-list")->update();
+	Core::instance()->menuInventory()->menu("buddy-list")->attachToMenu(menu.data());
+	Core::instance()->menuInventory()->menu("buddy-list")->applyTo(menu.data(), &actionContext);
+	Core::instance()->menuInventory()->menu("buddy-list")->update();
 	menu->exec(QCursor::pos());
 }
 

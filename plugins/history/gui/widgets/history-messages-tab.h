@@ -40,6 +40,7 @@ class FilteredTreeView;
 class HistoryQueryResult;
 class HistoryMessagesStorage;
 class InjectedFactory;
+class MenuInventory;
 class Message;
 class ModelChain;
 class TalkableTreeView;
@@ -66,6 +67,7 @@ class HistoryMessagesTab : public HistoryTab
 	Q_OBJECT
 
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MenuInventory> m_menuInventory;
 
 	HistoryMessagesStorage *Storage;
 
@@ -91,6 +93,7 @@ class HistoryMessagesTab : public HistoryTab
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();
 
 	void futureTalkablesAvailable();

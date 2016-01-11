@@ -70,6 +70,11 @@ void JabberPluginObject::setJabberUrlHandler(JabberUrlHandler *jabberUrlHandler)
 	m_jabberUrlHandler = jabberUrlHandler;
 }
 
+void JabberPluginObject::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
 void JabberPluginObject::setJabberUrlDomVisitorProvider(JabberUrlDomVisitorProvider *jabberUrlDomVisitorProvider)
 {
 	m_jabberUrlDomVisitorProvider = jabberUrlDomVisitorProvider;
@@ -93,12 +98,12 @@ void JabberPluginObject::init()
 	// install before mail handler
 	m_domProcessorService->registerVisitorProvider(m_jabberUrlDomVisitorProvider, 2000);
 
-	MenuInventory::instance()->registerProtocolMenuManager(m_jabberProtocolMenuManager);
+	m_menuInventory->registerProtocolMenuManager(m_jabberProtocolMenuManager);
 }
 
 void JabberPluginObject::done()
 {
-	MenuInventory::instance()->unregisterProtocolMenuManager(m_jabberProtocolMenuManager);
+	m_menuInventory->unregisterProtocolMenuManager(m_jabberProtocolMenuManager);
 
 	m_domProcessorService->unregisterVisitorProvider(m_jabberUrlDomVisitorProvider);
 	m_urlHandlerManager->unregisterUrlHandler(m_jabberUrlHandler);

@@ -65,14 +65,19 @@ void GaduPluginObject::setGaduProtocolMenuManager(GaduProtocolMenuManager *gaduP
 	m_gaduProtocolMenuManager = gaduProtocolMenuManager;
 }
 
+void GaduPluginObject::setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider)
+{
+	m_gaduUrlDomVisitorProvider = gaduUrlDomVisitorProvider;
+}
+
 void GaduPluginObject::setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler)
 {
 	m_gaduUrlHandler = gaduUrlHandler;
 }
 
-void GaduPluginObject::setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider)
+void GaduPluginObject::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_gaduUrlDomVisitorProvider = gaduUrlDomVisitorProvider;
+	m_menuInventory = menuInventory;
 }
 
 void GaduPluginObject::setProtocolsManager(ProtocolsManager *protocolsManager)
@@ -110,12 +115,12 @@ void GaduPluginObject::init()
 		importer->importAccounts();
 	importer->importContacts();
 
-	MenuInventory::instance()->registerProtocolMenuManager(m_gaduProtocolMenuManager);
+	m_menuInventory->registerProtocolMenuManager(m_gaduProtocolMenuManager);
 }
 
 void GaduPluginObject::done()
 {
-	MenuInventory::instance()->unregisterProtocolMenuManager(m_gaduProtocolMenuManager);
+	m_menuInventory->unregisterProtocolMenuManager(m_gaduProtocolMenuManager);
 	m_domProcessorService->unregisterVisitorProvider(m_gaduUrlDomVisitorProvider);
 	m_urlHandlerManager->unregisterUrlHandler(m_gaduUrlHandler);
 	m_protocolsManager->unregisterProtocolFactory(m_gaduProtocolFactory);

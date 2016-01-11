@@ -157,7 +157,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 	auto isOneContactbuddy = actionContext->roles().contains(BuddyRole) && 1 == actionContext->buddies().size() && 1 == actionContext->buddies().begin()->contacts().size();
 	if (isContact || isOneContactbuddy)
 	{
-		foreach (ProtocolMenuManager *manager, MenuInventory::instance()->protocolMenuManagers())
+		foreach (ProtocolMenuManager *manager, Core::instance()->menuInventory()->protocolMenuManagers())
 		{
 			Contact contact = *actionContext->contacts().constBegin();
 			if (contact.contactAccount().protocolName() != manager->protocolName())

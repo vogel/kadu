@@ -158,6 +158,11 @@ void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
@@ -236,7 +241,7 @@ void ChatWidgetActions::init()
 		disableNoChat
 	);
 
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("buddy-list")
 		->addAction(OpenChat, KaduMenu::SectionChat, 1000);
 

@@ -28,6 +28,7 @@ class GaduProtocolFactory;
 class GaduProtocolMenuManager;
 class GaduUrlDomVisitorProvider;
 class GaduUrlHandler;
+class MenuInventory;
 class ProtocolsManager;
 class UrlHandlerManager;
 
@@ -47,6 +48,7 @@ private:
 	QPointer<GaduProtocolMenuManager> m_gaduProtocolMenuManager;
 	QPointer<GaduUrlDomVisitorProvider> m_gaduUrlDomVisitorProvider;
 	QPointer<GaduUrlHandler> m_gaduUrlHandler;
+	QPointer<MenuInventory> m_menuInventory;
 	QPointer<ProtocolsManager> m_protocolsManager;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
@@ -59,6 +61,7 @@ private slots:
 	INJEQT_SET void setGaduProtocolMenuManager(GaduProtocolMenuManager *gaduProtocolMenuManager);
 	INJEQT_SET void setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider);
 	INJEQT_SET void setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 

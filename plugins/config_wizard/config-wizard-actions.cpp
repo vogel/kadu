@@ -47,9 +47,14 @@ ConfigWizardActions::~ConfigWizardActions()
 	delete m_wizard.data();
 }
 
+void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
 void ConfigWizardActions::registerActions()
 {
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("tools")
 		->addAction(m_showConfigWizardActionDescription, KaduMenu::SectionTools)
 		->update();
@@ -57,7 +62,7 @@ void ConfigWizardActions::registerActions()
 
 void ConfigWizardActions::unregisterActions()
 {
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("tools")
 		->removeAction(m_showConfigWizardActionDescription)
 		->update();

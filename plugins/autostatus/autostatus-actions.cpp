@@ -32,17 +32,30 @@ AutostatusActions::AutostatusActions(QObject *parent) :
 		QObject{parent},
 		AutostatusActionDescription{}
 {
-	registerActions();
 }
 
 AutostatusActions::~AutostatusActions()
 {
-	unregisterActions();
 }
 
 void AutostatusActions::setAutostatusService(AutostatusService *autostatusService)
 {
 	m_autostatusService = autostatusService;
+}
+
+void AutostatusActions::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
+void AutostatusActions::init()
+{
+	registerActions();
+}
+
+void AutostatusActions::done()
+{
+	unregisterActions();
 }
 
 void AutostatusActions::registerActions()
@@ -53,7 +66,7 @@ void AutostatusActions::registerActions()
 		KaduIcon(), tr("&Autostatus"), true
 	);
 
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("main")
 		->addAction(AutostatusActionDescription, KaduMenu::SectionMiscTools, 2)
 		->update();
@@ -61,7 +74,7 @@ void AutostatusActions::registerActions()
 
 void AutostatusActions::unregisterActions()
 {
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("main")
 		->removeAction(AutostatusActionDescription)
 		->update();

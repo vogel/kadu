@@ -64,6 +64,7 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
@@ -941,6 +942,11 @@ ChatTypeManager * Core::chatTypeManager() const
 Actions * Core::actions() const
 {
 	return m_injector.get<Actions>();
+}
+
+MenuInventory * Core::menuInventory() const
+{
+	return m_injector.get<MenuInventory>();
 }
 
 void Core::showMainWindow()

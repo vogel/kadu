@@ -22,10 +22,12 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ConfigWizardWindow;
 
 class ActionDescription;
+class MenuInventory;
 
 class QAction;
 
@@ -42,12 +44,16 @@ public:
 
 	void showConfigWizard();
 
+public slots:
+	void showConfigWizardSlot();
+
 private:
 	QPointer<ConfigWizardWindow> m_wizard;
+	QPointer<MenuInventory> m_menuInventory;
 
 	ActionDescription *m_showConfigWizardActionDescription;
 
-public slots:
-	void showConfigWizardSlot();
+private slots:
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 
 };

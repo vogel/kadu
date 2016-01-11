@@ -54,7 +54,7 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 {
 	// actions will delete their menus
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("tools")
 		->removeAction(this)
 		->update();
@@ -62,7 +62,7 @@ ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 
 void ShowXmlConsoleActionDescription::insertMenuActionDescription()
 {
-	MenuInventory::instance()
+	Core::instance()->menuInventory()
 		->menu("tools")
 		->addAction(this, KaduMenu::SectionTools)
 		->update();

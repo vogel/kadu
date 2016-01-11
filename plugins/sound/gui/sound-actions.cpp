@@ -27,27 +27,41 @@
 SoundActions::SoundActions(QObject *parent) :
 		QObject{parent}
 {
-	m_soundMuteAction = new SoundMuteAction{this};
-
-	MenuInventory::instance()
-		->menu("main")
-		->addAction(m_soundMuteAction, KaduMenu::SectionMiscTools, 7)
-		->update();
 }
 
 SoundActions::~SoundActions()
 {
-	MenuInventory::instance()
-		->menu("main")
-		->removeAction(m_soundMuteAction)
-		->update();
+}
+
+void SoundActions::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
 }
 
 void SoundActions::setSoundManager(SoundManager *soundManager)
 {
 	m_soundManager = soundManager;
+}
+
+void SoundActions::init()
+{
+	m_soundMuteAction = new SoundMuteAction{this};
+
+	m_menuInventory
+		->menu("main")
+		->addAction(m_soundMuteAction, KaduMenu::SectionMiscTools, 7)
+		->update();
+
 	m_soundMuteAction->setSoundManager(m_soundManager);
 	m_soundMuteAction->updateActionStates();
+}
+
+void SoundActions::done()
+{
+	m_menuInventory
+		->menu("main")
+		->removeAction(m_soundMuteAction)
+		->update();
 }
 
 void SoundActions::configurationUpdated()

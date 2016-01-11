@@ -22,6 +22,7 @@ class ChatWidgetRepository;
 class Configuration;
 class CustomInput;
 class Docking;
+class MenuInventory;
 class PlayerCommands;
 class PlayerInfo;
 class ToolBar;
@@ -38,6 +39,7 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<Docking> m_docking;
+	QPointer<MenuInventory> m_menuInventory;
 
 	MediaPlayerStatusChanger *Changer;
 	PlayerInfo *playerInfo;
@@ -87,6 +89,7 @@ private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDocking(Docking *docking);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

@@ -109,6 +109,11 @@ void MediaPlayer::setDocking(Docking*docking)
 	m_docking = docking;
 }
 
+void MediaPlayer::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
 void MediaPlayer::init()
 {
 	kdebugf();
@@ -223,7 +228,7 @@ void MediaPlayer::done()
 
 	// Remove menu item (statuses)
 // 	Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
-	MenuInventory::instance()
+	m_menuInventory
 		->menu("main")
 		->removeAction(enableMediaPlayerStatuses)
 		->update();
@@ -739,7 +744,7 @@ void MediaPlayer::configurationUpdated()
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("MediaPlayer", "dockMenu", false))
 	{
-		MenuInventory::instance()
+		m_menuInventory
 			->menu("main")
 			->removeAction(enableMediaPlayerStatuses)
 			->update();
@@ -756,7 +761,7 @@ void MediaPlayer::configurationUpdated()
 	}
 	else
 	{
-		MenuInventory::instance()
+		m_menuInventory
 			->menu("main")
 			->addAction(enableMediaPlayerStatuses, KaduMenu::SectionMiscTools, 7)
 			->update();
