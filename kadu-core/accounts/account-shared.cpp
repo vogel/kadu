@@ -28,6 +28,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
 #include "identities/identity.h"
@@ -53,7 +54,7 @@ AccountShared * AccountShared::loadStubFromStorage(const std::shared_ptr<Storage
 
 AccountShared * AccountShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	AccountShared *result = new AccountShared();
+	auto result = Core::instance()->injectedFactory()->makeInjected<AccountShared>();
 	result->setStorage(storagePoint);
 
 	return result;
@@ -66,22 +67,6 @@ AccountShared::AccountShared(const QString &protocolName) :
 {
 	AccountIdentity = new Identity();
 	AccountContact = new Contact();
-
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
-	        this, SLOT(protocolRegistered(ProtocolFactory*)));
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
-	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
-
-	// ProtocolName is not empty here only if a new Account has just been created
-	// it that case load() method will not be called so we need to call triggerAllProtocolsRegistered here
-	if (!ProtocolName.isEmpty())
-	{
-		ProtocolFactory *factory = Core::instance()->protocolsManager()->byName(ProtocolName);
-		if (factory)
-			protocolRegistered(factory);
-	}
-
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 AccountShared::~AccountShared()
@@ -90,7 +75,7 @@ AccountShared::~AccountShared()
 
 	if (!ProtocolName.isEmpty())
 	{
-		ProtocolFactory *factory = Core::instance()->protocolsManager()->byName(ProtocolName);
+		ProtocolFactory *factory = m_protocolsManager->byName(ProtocolName);
 		if (factory)
 			protocolUnregistered(factory);
 	}
@@ -105,9 +90,63 @@ AccountShared::~AccountShared()
 	delete AccountIdentity;
 }
 
+void AccountShared::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void AccountShared::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void AccountShared::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void AccountShared::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void AccountShared::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
+}
+
+void AccountShared::setProtocolsManager(ProtocolsManager *protocolsManager)
+{
+	m_protocolsManager = protocolsManager;
+}
+
+void AccountShared::setStatusSetter(StatusSetter *statusSetter)
+{
+	m_statusSetter = statusSetter;
+}
+
+void AccountShared::init()
+{
+	connect(m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	        this, SLOT(protocolRegistered(ProtocolFactory*)));
+	connect(m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
+
+	// ProtocolName is not empty here only if a new Account has just been created
+	// it that case load() method will not be called so we need to call triggerAllProtocolsRegistered here
+	if (!ProtocolName.isEmpty())
+	{
+		ProtocolFactory *factory = m_protocolsManager->byName(ProtocolName);
+		if (factory)
+			protocolRegistered(factory);
+	}
+
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+}
+
 StorableObject * AccountShared::storageParent()
 {
-	return Core::instance()->accountManager();
+	return m_accountManager;
 }
 
 QString AccountShared::storageNodeName()
@@ -133,7 +172,7 @@ void AccountShared::importNetworkProxy()
 	NetworkProxy importedProxy;
 
 	if (!address.isEmpty())
-		importedProxy = Core::instance()->networkProxyManager()->byConfiguration(
+		importedProxy = m_networkProxyManager->byConfiguration(
 		            address, port, user, password, ActionCreateAndAdd);
 
 	if (loadValue<bool>("UseProxy"))
@@ -163,9 +202,9 @@ void AccountShared::load()
 
 	Shared::load();
 
-	Identity identity = Core::instance()->identityManager()->byUuid(loadValue<QString>("Identity"));
-	if (identity.isNull() && !Core::instance()->identityManager()->items().isEmpty())
-		identity = Core::instance()->identityManager()->items().at(0);
+	Identity identity = m_identityManager->byUuid(loadValue<QString>("Identity"));
+	if (identity.isNull() && !m_identityManager->items().isEmpty())
+		identity = m_identityManager->items().at(0);
 	doSetAccountIdentity(identity);
 
 	ProtocolName = loadValue<QString>("Protocol");
@@ -186,14 +225,14 @@ void AccountShared::load()
 	{
 		UseDefaultProxy = loadValue<bool>("UseDefaultProxy", true);
 		if (!UseDefaultProxy)
-			Proxy = Core::instance()->networkProxyManager()->byUuid(loadValue<QString>("Proxy"));
+			Proxy = m_networkProxyManager->byUuid(loadValue<QString>("Proxy"));
 	}
 
 	PrivateStatus = loadValue<bool>("PrivateStatus", true);
 
 	if (!ProtocolName.isEmpty())
 	{
-		ProtocolFactory *factory = Core::instance()->protocolsManager()->byName(ProtocolName);
+		ProtocolFactory *factory = m_protocolsManager->byName(ProtocolName);
 		if (factory)
 			protocolRegistered(factory);
 	}
@@ -260,7 +299,7 @@ void AccountShared::aboutToBeRemoved()
 		Details = 0;
 	}
 
-	Core::instance()->accountManager()->unregisterItem(this);
+	m_accountManager->unregisterItem(this);
 	setAccountIdentity(Identity::null);
 }
 
@@ -276,8 +315,8 @@ void AccountShared::setDisconnectStatus()
 	if (!ProtocolHandler->isConnected() && !ProtocolHandler->isDisconnecting())
 		return;
 
-	bool disconnectWithCurrentDescription = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
-	QString disconnectDescription = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "DisconnectDescription");
+	bool disconnectWithCurrentDescription = m_configuration->deprecatedApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = m_configuration->deprecatedApi()->readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
 	disconnectStatus.setType(StatusTypeOffline);
@@ -287,7 +326,7 @@ void AccountShared::setDisconnectStatus()
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
-	Core::instance()->statusSetter()->setStatusManually(MyStatusContainer, disconnectStatus);
+	m_statusSetter->setStatusManually(MyStatusContainer, disconnectStatus);
 }
 
 void AccountShared::protocolRegistered(ProtocolFactory *factory)
@@ -319,7 +358,7 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 
 	MyStatusContainer->triggerStatusUpdated();
 
-	Core::instance()->accountManager()->registerItem(this);
+	m_accountManager->registerItem(this);
 
 	emit updated();
 	emit protocolHandlerChanged();
@@ -349,7 +388,7 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	// dont get deleted in next line
 	Account guard(this);
-	Core::instance()->accountManager()->unregisterItem(this);
+	m_accountManager->unregisterItem(this);
 
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
@@ -406,7 +445,7 @@ Contact AccountShared::accountContact()
 	ensureLoaded();
 
 	if (!*AccountContact)
-		*AccountContact = Core::instance()->contactManager()->byId(this, Id, ActionCreateAndAdd);
+		*AccountContact = m_contactManager->byId(this, Id, ActionCreateAndAdd);
 
 	return *AccountContact;
 }

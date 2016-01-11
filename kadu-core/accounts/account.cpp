@@ -30,6 +30,8 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
 #include "protocols/protocol-factory.h"
@@ -45,7 +47,7 @@ Account Account::null;
 
 Account Account::create(const QString &protocolName)
 {
-	return new AccountShared(protocolName);
+	return Core::instance()->injectedFactory()->makeInjected<AccountShared>(protocolName);
 }
 
 Account Account::loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)

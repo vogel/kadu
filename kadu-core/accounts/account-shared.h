@@ -21,24 +21,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_SHARED_H
-#define ACCOUNT_SHARED_H
-
-#include <QtNetwork/QHostAddress>
+#pragma once
 
 #include "network/proxy/network-proxy.h"
 #include "status/status.h"
 #include "storage/shared.h"
 
+#include <QtCore/QPointer>
+#include <QtNetwork/QHostAddress>
+#include <injeqt/injeqt.h>
+
 class AccountDetails;
+class AccountManager;
 class AccountStatusContainer;
+class Configuration;
+class ContactManager;
 class Contact;
 class FileTransferService;
+class IdentityManager;
 class Identity;
-class Protocol;
+class NetworkProxyManager;
 class ProtocolFactory;
+class ProtocolsManager;
+class Protocol;
 class RosterTask;
 class StatusContainer;
+class StatusSetter;
 
 class KADUAPI AccountShared : public QObject, public Shared
 {
@@ -46,6 +54,14 @@ class KADUAPI AccountShared : public QObject, public Shared
 	Q_DISABLE_COPY(AccountShared)
 
 	friend class AccountStatusContainer;
+
+	QPointer<AccountManager> m_accountManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<IdentityManager> m_identityManager;
+	QPointer<NetworkProxyManager> m_networkProxyManager;
+	QPointer<ProtocolsManager> m_protocolsManager;
+	QPointer<StatusSetter> m_statusSetter;
 
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
@@ -79,6 +95,15 @@ class KADUAPI AccountShared : public QObject, public Shared
 	void storeRosterTasks(const QVector<RosterTask> &tasks);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
+	INJEQT_INIT void init();
+
 	void protocolRegistered(ProtocolFactory *protocolHandler);
 	void protocolUnregistered(ProtocolFactory *protocolHandler);
 
@@ -139,5 +164,3 @@ signals:
 };
 
 KADUAPI Protocol * protocol(AccountShared *account);
-
-#endif // ACCOUNT_SHARED_H
