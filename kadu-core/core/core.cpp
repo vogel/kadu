@@ -107,6 +107,7 @@
 #include "notification/notification-event.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-service.h"
+#include "os/generic/system-info.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
 #include "plugin/activation/plugin-activation-service.h"
@@ -960,6 +961,11 @@ Roster * Core::roster() const
 StatusConfigurationHolder * Core::statusConfigurationHolder() const
 {
 	return m_injector.get<StatusConfigurationHolder>();
+}
+
+SystemInfo * Core::systemInfo() const
+{
+	return m_injector.get<SystemInfo>();
 }
 
 void Core::showMainWindow()

@@ -111,6 +111,7 @@ class StatusContainerManager;
 class StatusSetter;
 class StatusTypeManager;
 class StoragePointFactory;
+class SystemInfo;
 class UnreadMessageRepository;
 class UrlHandlerManager;
 
@@ -242,6 +243,7 @@ public:
 	NetworkManager * networkManager() const;
 	Roster * roster() const;
 	StatusConfigurationHolder * statusConfigurationHolder() const;
+	SystemInfo * systemInfo() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

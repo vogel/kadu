@@ -6,6 +6,7 @@ set (os_SRCS
 	generic/url-opener.cpp
 	generic/window-geometry-manager.cpp
 	win/wsa-handler.cpp
+	os-module.cpp
 )
 
 set (os_MOC_SRCS

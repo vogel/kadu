@@ -21,6 +21,7 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
+#include "core/core.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "misc/misc.h"
 #include "os/generic/system-info.h"
@@ -62,7 +63,7 @@ void JabberAccountDetails::load()
 		resourceString = "Kadu-" + guid.mid(1, guid.length() - 2);
 	}
 
-	Resource = AutoResource ? SystemInfo::instance()->localHostName() : resourceString;
+	Resource = AutoResource ? Core::instance()->systemInfo()->localHostName() : resourceString;
 	bool ok = false;
 	int priority = priorityString.toInt(&ok);
 	if (!ok)

@@ -193,7 +193,7 @@ void JabberProtocol::login()
 	{
 		m_client->versionManager().setClientName("Kadu");
 		m_client->versionManager().setClientVersion(Core::instance()->version());
-		m_client->versionManager().setClientOs(SystemInfo::instance()->osFullName());
+		m_client->versionManager().setClientOs(Core::instance()->systemInfo()->osFullName());
 	}
 	else
 	{

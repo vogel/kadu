@@ -15,18 +15,30 @@
  ***************************************************************************
 *****************************************************************************/
 
-#ifndef SYSTEM_INFO_H
-#define SYSTEM_INFO_H
-
-#include <QtCore/QString>
+#pragma once
 
 #include "exports.h"
 
-class KADUAPI SystemInfo
-{
-	static SystemInfo *Instance;
-    	SystemInfo();
+#include <QtCore/QObject>
 
+class KADUAPI SystemInfo : public QObject
+{
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit SystemInfo(QObject *parent = nullptr);
+	virtual ~SystemInfo();
+
+	const QString & osFullName() const { return OsFullName; }
+	const QString & osName() const { return OsName; }
+	const QString & osVersion() const { return OsVersion; }
+
+	int timezoneOffset() const { return TimezoneOffset; }
+	const QString & timezone() const { return Timezone; }
+
+	QString localHostName();
+
+private:
 	int TimezoneOffset;
 	QString Timezone;
 	QString OsFullName;
@@ -38,17 +50,4 @@ class KADUAPI SystemInfo
 	QString linuxHeuristicDetect();
     #endif
 
-public:
-    	static SystemInfo * instance();
-
-	const QString & osFullName() const { return OsFullName; }
-	const QString & osName() const { return OsName; }
-	const QString & osVersion() const { return OsVersion; }
-
-	int timezoneOffset() const { return TimezoneOffset; }
-	const QString & timezone() const { return Timezone; }
-
-	QString localHostName();
 };
-
-#endif //SYSTEM_INFO_H

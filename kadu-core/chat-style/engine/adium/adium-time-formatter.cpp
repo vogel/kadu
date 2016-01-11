@@ -18,6 +18,7 @@
 
 #include "adium-time-formatter.h"
 
+#include "core/core.h"
 #include "os/generic/system-info.h"
 
 #include <QtCore/QChar>
@@ -216,13 +217,13 @@ while (length > NUM) \
 				// I don't understand the difference
 			case L'z':
 				// There should be localized name, but I don't know how get it
-				str += SystemInfo::instance()->timezone();
+				str += Core::instance()->systemInfo()->timezone();
 				break;
 			case L'Z':
 			{
 				if (length == 4)
 					str += "GMT";
-				int offset = SystemInfo::instance()->timezoneOffset();
+				int offset = Core::instance()->systemInfo()->timezoneOffset();
 				if (offset < 0)
 					str += '+';
 				else
@@ -322,11 +323,11 @@ while (length > NUM) \
 							break;
 						case L'Z':
 							// It should be localized, isn't it?..
-							appendStr(str, SystemInfo::instance()->timezone(), length);
+							appendStr(str, Core::instance()->systemInfo()->timezone(), length);
 							break;
 						case L'z':
 						{
-							int offset = SystemInfo::instance()->timezoneOffset();
+							int offset = Core::instance()->systemInfo()->timezoneOffset();
 							appendInt(str, (offset/60)*100 + offset%60, length > 0 ? length : 4);
 							break;
 						}

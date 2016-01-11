@@ -42,13 +42,9 @@
 
 #include "system-info.h"
 
-SystemInfo * SystemInfo::Instance = 0;
 
-SystemInfo * SystemInfo::instance()
+SystemInfo::~SystemInfo()
 {
-	if (!Instance)
-		Instance = new SystemInfo();
-	return Instance;
 }
 
 #if defined(Q_OS_LINUX)
@@ -189,7 +185,8 @@ QString SystemInfo::linuxHeuristicDetect()
 }
 #endif
 
-SystemInfo::SystemInfo()
+SystemInfo::SystemInfo(QObject *parent) :
+		QObject{parent}
 {
 	// Initialize
 	TimezoneOffset = 0;
@@ -398,3 +395,5 @@ QString SystemInfo::localHostName()
 	else
 		return hostname;
 }
+
+#include "moc_system-info.cpp"

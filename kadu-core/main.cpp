@@ -76,6 +76,7 @@
 #include "misc/paths-provider.h"
 #include "network/network-module.h"
 #include "notification/notification-module.h"
+#include "os/os-module.h"
 #include "os/single-application/single-application.h"
 #include "os/win/wsa-exception.h"
 #include "os/win/wsa-handler.h"
@@ -237,6 +238,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<MessageModule>());
 	modules.emplace_back(make_unique<NetworkModule>());
 	modules.emplace_back(make_unique<NotificationModule>());
+	modules.emplace_back(make_unique<OsModule>());
 	modules.emplace_back(make_unique<PluginModule>());
 	modules.emplace_back(make_unique<RosterModule>());
 	modules.emplace_back(make_unique<SslModule>());
