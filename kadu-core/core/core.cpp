@@ -62,6 +62,7 @@
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
@@ -935,6 +936,11 @@ BuddyPreferredManager * Core::buddyPreferredManager() const
 ChatTypeManager * Core::chatTypeManager() const
 {
 	return m_injector.get<ChatTypeManager>();
+}
+
+Actions * Core::actions() const
+{
+	return m_injector.get<Actions>();
 }
 
 void Core::showMainWindow()

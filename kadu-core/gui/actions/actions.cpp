@@ -26,18 +26,13 @@
 
 #include "actions.h"
 
-Actions * Actions::Instance = 0;
-
-Actions * Actions::instance()
+Actions::Actions(QObject *parent) :
+		QObject{parent},
+		BlockSignals{false}
 {
-	if (!Instance)
-		Instance = new Actions();
-
-	return Instance;
 }
 
-Actions::Actions() :
-	BlockSignals(false)
+Actions::~Actions()
 {
 }
 

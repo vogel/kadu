@@ -62,7 +62,7 @@ JabberActions::JabberActions(QObject *parent) :
 {
 	new ShowXmlConsoleActionDescription(this);
 
-	Actions::instance()->blockSignals();
+	Core::instance()->actions()->blockSignals();
 
 	ResendSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterResendSubscription",
 			this, SLOT(resendSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Resend Subscription"),
@@ -72,7 +72,7 @@ JabberActions::JabberActions(QObject *parent) :
 			false, disableNoRosterContact);
 
 	// The last ActionDescription will send actionLoaded() signal.
-	Actions::instance()->unblockSignals();
+	Core::instance()->actions()->unblockSignals();
 
 	AskForSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterAskForSubscription",
 			this, SLOT(askForSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Ask for Subscription"),

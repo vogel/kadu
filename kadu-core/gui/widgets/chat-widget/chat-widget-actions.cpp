@@ -148,6 +148,11 @@ ChatWidgetActions::~ChatWidgetActions()
 {
 }
 
+void ChatWidgetActions::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -155,7 +160,7 @@ void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
 
 void ChatWidgetActions::init()
 {
-	Actions::instance()->blockSignals();
+	m_actions->blockSignals();
 
 	MoreActions = new ActionDescription(0,
 		ActionDescription::TypeChat, "moreActionsAction",
@@ -222,7 +227,7 @@ void ChatWidgetActions::init()
 	);
 
 	// The last ActionDescription of each type will send actionLoaded() signal.
-	Actions::instance()->unblockSignals();
+	m_actions->unblockSignals();
 
 	OpenChat = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
@@ -336,16 +341,16 @@ void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled
 	QMenu menu;
 	QMenu *subMenu = new QMenu(tr("More"), &menu);
 
-	foreach (const QString &actionName, Actions::instance()->keys())
+	foreach (const QString &actionName, m_actions->keys())
 	{
 		if (toolbar && toolbar->windowHasAction(actionName, false))
 			continue;
 
-		ActionDescription *actionDescription = Actions::instance()->value(actionName);
+		ActionDescription *actionDescription = m_actions->value(actionName);
 		if (ActionDescription::TypeChat == actionDescription->type())
-			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
+			menu.addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
 		else if (ActionDescription::TypeUser == actionDescription->type())
-			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
+			subMenu->addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
 	}
 
 	menu.addSeparator();

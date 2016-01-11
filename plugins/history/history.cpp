@@ -103,6 +103,11 @@ void History::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void History::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
@@ -137,7 +142,7 @@ void History::init()
 
 void History::createActionDescriptions()
 {
-	Actions::instance()->blockSignals();
+	m_actions->blockSignals();
 
 	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(m_injectedFactory, this, this);
 
@@ -151,7 +156,7 @@ void History::createActionDescriptions()
 		->update();
 
 	// The last ActionDescription will send actionLoaded() signal.
-	Actions::instance()->unblockSignals();
+	m_actions->unblockSignals();
 
 	ClearHistoryActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "clearHistoryAction",

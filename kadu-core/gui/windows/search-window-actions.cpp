@@ -25,6 +25,7 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QTreeWidget>
 
+#include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -44,7 +45,7 @@ SearchWindowActions * SearchWindowActions::instance()
 
 SearchWindowActions::SearchWindowActions()
 {
-	Actions::instance()->blockSignals();
+	Core::instance()->actions()->blockSignals();
 
 	FirstSearch = new ActionDescription(this,
 		ActionDescription::TypeSearch, "firstSearchAction",
@@ -82,7 +83,7 @@ SearchWindowActions::SearchWindowActions()
 	connect(AddFound, SIGNAL(actionCreated(Action*)), this, SLOT(actionsFoundActionCreated(Action*)));
 
 	// The last ActionDescription will send actionLoaded() signal.
-	Actions::instance()->unblockSignals();
+	Core::instance()->actions()->unblockSignals();
 
 	ChatFound = new ActionDescription(this,
 		ActionDescription::TypeSearch, "chatSearchedAction",

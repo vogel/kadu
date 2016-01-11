@@ -22,6 +22,7 @@
 #include <QtCore/QLatin1String>
 #include <QtCore/QMetaMethod>
 
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/hot-key.h"
@@ -58,12 +59,12 @@ ActionDescription::~ActionDescription()
 
 void ActionDescription::registerAction()
 {
-	Actions::instance()->insert(this);
+	Core::instance()->actions()->insert(this);
 }
 
 void ActionDescription::unregisterAction()
 {
-	Actions::instance()->remove(this);
+	Core::instance()->actions()->remove(this);
 }
 
 void ActionDescription::actionAboutToBeDestroyed(Action *action)

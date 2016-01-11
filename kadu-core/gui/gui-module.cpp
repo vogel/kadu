@@ -19,6 +19,7 @@
 
 #include "gui-module.h"
 
+#include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
@@ -29,6 +30,7 @@
 
 GuiModule::GuiModule()
 {
+	add_type<Actions>();
 	add_type<BuddyDataWindowRepository>();
 	add_type<ChatConfigurationHolder>();
 	add_type<ChatDataWindowRepository>();

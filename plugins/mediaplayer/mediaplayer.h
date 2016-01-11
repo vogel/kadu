@@ -16,6 +16,7 @@ class QPushButton;
 class QTimer;
 
 class ActionDescription;
+class Actions;
 class ChatWidget;
 class ChatWidgetRepository;
 class Configuration;
@@ -33,6 +34,7 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<Actions> m_actions;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<Docking> m_docking;
@@ -81,6 +83,7 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDocking(Docking *docking);

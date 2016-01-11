@@ -27,8 +27,9 @@
 
 class QAction;
 
-class Action;
 class ActionDescription;
+class Actions;
+class Action;
 class Buddy;
 class EditTalkableAction;
 class InjectedFactory;
@@ -38,6 +39,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<Actions> m_actions;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	ActionDescription *MoreActions;
@@ -60,6 +62,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	void updateBlockingActions(Buddy buddy);
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 

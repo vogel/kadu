@@ -34,9 +34,10 @@
 class QAction;
 
 class AccountManager;
-class Action;
 class ActionContext;
 class ActionDescription;
+class Actions;
+class Action;
 class AddConferenceAction;
 class AddRoomChatAction;
 class ChangeStatusAction;
@@ -53,6 +54,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	Q_OBJECT
 
 	QPointer<AccountManager> m_accountManager;
+	QPointer<Actions> m_actions;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	friend class KaduWindow;
@@ -94,6 +96,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 

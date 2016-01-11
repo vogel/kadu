@@ -51,6 +51,7 @@
 
 class AccountManager;
 class Account;
+class Actions;
 class ChatWidget;
 class ChatWidgetRepository;
 class Configuration;
@@ -65,6 +66,7 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	Q_OBJECT
 
 	QPointer<AccountManager> m_accountManager;
+	QPointer<Actions> m_actions;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -112,6 +114,7 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

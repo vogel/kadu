@@ -114,6 +114,11 @@ ChatWidget::~ChatWidget()
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
 
+void ChatWidget::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void ChatWidget::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
@@ -284,8 +289,8 @@ void ChatWidget::createContactsList()
 	BuddiesWidget->setView(view);
 
 	QToolBar *toolBar = new QToolBar(contactsListContainer);
-	toolBar->addAction(Actions::instance()->createAction("editUserAction", InputBox->actionContext(), InputBox));
-	toolBar->addAction(Actions::instance()->createAction("leaveChatAction", InputBox->actionContext(), InputBox));
+	toolBar->addAction(m_actions->createAction("editUserAction", InputBox->actionContext(), InputBox));
+	toolBar->addAction(m_actions->createAction("leaveChatAction", InputBox->actionContext(), InputBox));
 
 	layout->addWidget(toolBar);
 	layout->addWidget(BuddiesWidget);
@@ -340,13 +345,13 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		Actions::instance()->createAction("lookupUserInfoAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
+		m_actions->createAction("lookupUserInfoAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
-		Actions::instance()->createAction("openChatWithAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
+		m_actions->createAction("openChatWithAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 

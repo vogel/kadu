@@ -46,6 +46,7 @@ class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
 class AccountManager;
+class Actions;
 class Application;
 class AvatarManager;
 class BuddyChatManager;
@@ -232,6 +233,7 @@ public:
 	ChatConfigurationHolder * chatConfigurationHolder() const;
 	BuddyPreferredManager * buddyPreferredManager() const;
 	ChatTypeManager * chatTypeManager() const;
+	Actions * actions() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

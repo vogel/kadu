@@ -19,13 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTIONS_H
-#define ACTIONS_H
+#pragma once
+
+#include "exports.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
-
-#include "exports.h"
 
 class QAction;
 
@@ -51,36 +50,9 @@ class KADUAPI Actions : public QObject, public QMap<QString, ActionDescription *
 {
 	Q_OBJECT
 
-	static Actions * Instance;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Registers new ActionDescription class.
-	 * @param action registered action
-	 *
-	 * This method can only by called from ActionDescription instances when they are ready to be registered.
-	 * Signal actionLoaded is emited if signals are non blocked.
-	 */
-	void insert(ActionDescription *action);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Unregisters an ActionDescription class.
-	 * @param action unregistered action
-	 *
-	 * This method can only by called from ActionDescription instances when they are ready to be unregistered.
-	 * Signal actionUnloaded is emited if signals are non blocked.
-	 */
-	void remove(ActionDescription *action);
-	friend class ActionDescription;
-
-	Actions();
-	virtual ~Actions() {}
-
-	bool BlockSignals;
-
 public:
-	static Actions * instance();
+	Q_INVOKABLE explicit Actions(QObject *parent = nullptr);
+	virtual ~Actions();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -140,10 +112,33 @@ signals:
 	 */
 	void actionUnloaded(ActionDescription *action);
 
+private:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Registers new ActionDescription class.
+	 * @param action registered action
+	 *
+	 * This method can only by called from ActionDescription instances when they are ready to be registered.
+	 * Signal actionLoaded is emited if signals are non blocked.
+	 */
+	void insert(ActionDescription *action);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Unregisters an ActionDescription class.
+	 * @param action unregistered action
+	 *
+	 * This method can only by called from ActionDescription instances when they are ready to be unregistered.
+	 * Signal actionUnloaded is emited if signals are non blocked.
+	 */
+	void remove(ActionDescription *action);
+	friend class ActionDescription;
+
+
+	bool BlockSignals;
+
 };
 
 /**
  * @}
  */
-
-#endif // ACTIONS_H

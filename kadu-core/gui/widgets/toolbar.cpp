@@ -147,21 +147,21 @@ ToolBarSpacer * ToolBar::createSpacer(QAction *before, ToolBarAction &action)
 
 QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 {
-	if (!Actions::instance()->contains(action.actionName))
+	if (!Core::instance()->actions()->contains(action.actionName))
 		return nullptr;
 
 	MainWindow *kaduMainWindow = qobject_cast<MainWindow *>(parentWidget());
 	if (!kaduMainWindow)
 		return nullptr;
 
-	auto actionByName = Actions::instance()->value(action.actionName);
+	auto actionByName = Core::instance()->actions()->value(action.actionName);
 	if (!actionByName)
 		return nullptr;
 
 	if (!kaduMainWindow->supportsActionType(actionByName->type()))
 		return nullptr;
 
-	action.action = Actions::instance()->createAction(action.actionName, kaduMainWindow->actionContext(), kaduMainWindow);
+	action.action = Core::instance()->actions()->createAction(action.actionName, kaduMainWindow->actionContext(), kaduMainWindow);
 	insertAction(before, action.action);
 
 	QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(action.action));
@@ -173,9 +173,9 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 		button->installEventFilter(watcher);
 		button->setToolButtonStyle(action.style);
 
-		if (action.action->menu() && Actions::instance()->contains(action.actionName))
+		if (action.action->menu() && Core::instance()->actions()->contains(action.actionName))
 		{
-			ActionDescription *actionDescription = Actions::instance()->value(action.actionName);
+			ActionDescription *actionDescription = Core::instance()->actions()->value(action.actionName);
 			if (actionDescription)
 				button->setPopupMode(actionDescription->buttonPopupMode());
 		}
@@ -318,7 +318,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 		}
 
 		auto mine = source == this;
-		auto action = Actions::instance()->value(actionName);
+		auto action = Core::instance()->actions()->value(actionName);
 		auto mainWindow = qobject_cast<MainWindow *>(parentWidget());
 		auto supportedAction = action && mainWindow && mainWindow->supportsActionType(action->type());
 		auto isSeparator = actionName.startsWith(QLatin1String("__separator"));
@@ -745,7 +745,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 		QMenu *actionsMenu = new QMenu(tr("Add new button"), menu);
 		QList<QAction *> actions;
-		foreach (ActionDescription *actionDescription, Actions::instance()->values())
+		foreach (ActionDescription *actionDescription, Core::instance()->actions()->values())
 		{
 			bool supportsAction;
 			MainWindow *kaduMainWindow = qobject_cast<MainWindow *>(parentWidget());

@@ -191,6 +191,11 @@ void KaduWindowActions::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void KaduWindowActions::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -198,7 +203,7 @@ void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
 
 void KaduWindowActions::init()
 {
-	Actions::instance()->blockSignals();
+	m_actions->blockSignals();
 
 	Configuration = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "configurationAction",
@@ -427,7 +432,7 @@ void KaduWindowActions::init()
 	// The last ActionDescription will send actionLoaded() signal.
 	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)
 	// but will work good since KaduActions is created very early. Of course we still need a better mechanism for that.
-	Actions::instance()->unblockSignals();
+	m_actions->unblockSignals();
 
 	ChangeStatus = new ChangeStatusAction(this);
 	DefaultProxy = new DefaultProxyAction(this);

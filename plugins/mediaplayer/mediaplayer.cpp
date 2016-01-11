@@ -73,6 +73,44 @@ const char DEFAULT_SIGNATURES[] = "! WWW.POLSKIE-MP3.TK ! \n! www.polskie-mp3.tk
 MediaPlayer::MediaPlayer(QObject *parent) :
 		QObject{parent}
 {
+}
+
+MediaPlayer::~MediaPlayer()
+{
+}
+
+void MediaPlayer::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
+void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (m_chatWidgetRepository)
+	{
+		// Monitor of creating chats
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetRemoved(ChatWidget *)));
+
+		for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
+			chatWidgetAdded(chatWidget);
+	}
+}
+
+void MediaPlayer::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void MediaPlayer::setDocking(Docking*docking)
+{
+	m_docking = docking;
+}
+
+void MediaPlayer::init()
+{
 	kdebugf();
 
 	// Initialization
@@ -98,7 +136,7 @@ MediaPlayer::MediaPlayer(QObject *parent) :
 		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
 	);
 
-	Actions::instance()->blockSignals();
+	Core::instance()->actions()->blockSignals();
 
 	mediaPlayerMenu = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_button",
@@ -132,7 +170,7 @@ MediaPlayer::MediaPlayer(QObject *parent) :
 	);
 
 	// The last ActionDescription will send actionLoaded() signal.
-	Actions::instance()->unblockSignals();
+	Core::instance()->actions()->unblockSignals();
 
 	volDownAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
@@ -154,10 +192,17 @@ MediaPlayer::MediaPlayer(QObject *parent) :
 	isPaused = true;
 
 	MediaPlayerNotification::registerNotifications();
+
+	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)m_configuration->deprecatedApi()->readNumEntry("MediaPlayer", "statusPosition"));
+	createDefaultConfiguration();
+	configurationUpdated();
 }
 
-MediaPlayer::~MediaPlayer()
+void MediaPlayer::done()
 {
+	if (DockedMediaplayerStatus)
+		m_docking->dockingMenuActionRepository()->removeAction(DockedMediaplayerStatus);
+
 	kdebugf();
 
 	MediaPlayerNotification::unregisterNotifications();
@@ -182,44 +227,6 @@ MediaPlayer::~MediaPlayer()
 		->menu("main")
 		->removeAction(enableMediaPlayerStatuses)
 		->update();
-}
-
-void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
-{
-	m_chatWidgetRepository = chatWidgetRepository;
-
-	if (m_chatWidgetRepository)
-	{
-		// Monitor of creating chats
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetRemoved(ChatWidget *)));
-
-		for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
-			chatWidgetAdded(chatWidget);
-	}
-}
-
-void MediaPlayer::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
-}
-
-void MediaPlayer::setDocking(Docking*docking)
-{
-	m_docking = docking;
-}
-
-void MediaPlayer::init()
-{
-	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)m_configuration->deprecatedApi()->readNumEntry("MediaPlayer", "statusPosition"));
-	createDefaultConfiguration();
-	configurationUpdated();
-}
-
-void MediaPlayer::done()
-{
-	if (DockedMediaplayerStatus)
-		m_docking->dockingMenuActionRepository()->removeAction(DockedMediaplayerStatus);
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)
