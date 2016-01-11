@@ -30,18 +30,13 @@
 
 #include "custom-input-menu-manager.h"
 
-CustomInputMenuManager * CustomInputMenuManager::Instance = 0;
-
-CustomInputMenuManager * CustomInputMenuManager::instance()
+CustomInputMenuManager::CustomInputMenuManager(QObject *parent) :
+		QObject{parent},
+		InputContextMenuSorted{true}
 {
-	if (!Instance)
-		Instance = new CustomInputMenuManager();
-
-	return Instance;
 }
 
-CustomInputMenuManager::CustomInputMenuManager() :
-		InputContextMenuSorted(true)
+CustomInputMenuManager::~CustomInputMenuManager()
 {
 }
 

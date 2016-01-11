@@ -29,6 +29,7 @@
 #include <injeqt/injeqt.h>
 
 class ActionDescription;
+class CustomInputMenuManager;
 class SpellcheckerConfiguration;
 class SpellChecker;
 
@@ -36,6 +37,7 @@ class Suggester : public QObject
 {
 	Q_OBJECT
 
+	QPointer<CustomInputMenuManager> m_customInputMenuManager;
 	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
 	QPointer<SpellChecker> m_spellChecker;
 
@@ -47,6 +49,7 @@ class Suggester : public QObject
 	void addWordListToMenu(const QTextCursor &textCursor);
 
 private slots:
+	INJEQT_SET void setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager);
 	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
 	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 

@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CUSTOM_ITEM_MENU_MANAGER_H
-#define CUSTOM_ITEM_MENU_MANAGER_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -36,24 +35,20 @@ class ActionDescription;
 class KADUAPI CustomInputMenuManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(CustomInputMenuManager)
-
-	static CustomInputMenuManager *Instance;
-
-	QList<CustomInputMenuItem> InputContextMenu;
-	bool InputContextMenuSorted;
-
-	CustomInputMenuManager();
-
-	void sortInputContextMenu();
 
 public:
-	static CustomInputMenuManager * instance();
+	Q_INVOKABLE explicit CustomInputMenuManager(QObject *parent = nullptr);
+	virtual ~CustomInputMenuManager();
 
 	void addActionDescription(ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority);
 	void removeActionDescription(ActionDescription *actionDescription);
 
 	QMenu * menu(QWidget *parent);
-};
 
-#endif // CUSTOM_ITEM_MENU_MANAGER_H
+private:
+	QList<CustomInputMenuItem> InputContextMenu;
+	bool InputContextMenuSorted;
+
+	void sortInputContextMenu();
+
+};

@@ -65,6 +65,11 @@ void CustomInput::setChatConfigurationHolder(ChatConfigurationHolder *chatConfig
 	m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
+void CustomInput::setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager)
+{
+	m_customInputMenuManager = customInputMenuManager;
+}
+
 void CustomInput::setImageStorageService(ImageStorageService *imageStorageService)
 {
 	CurrentImageStorageService = imageStorageService;
@@ -206,7 +211,7 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 
 void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 {
-	QScopedPointer<QMenu> menu(CustomInputMenuManager::instance()->menu(this));
+	QScopedPointer<QMenu> menu(m_customInputMenuManager->menu(this));
 
 	QAction *undo = new QAction(tr("Undo"), menu.data());
 	undo->setShortcut(QKeySequence::Undo);

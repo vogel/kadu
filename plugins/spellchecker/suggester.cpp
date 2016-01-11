@@ -43,6 +43,11 @@ Suggester::~Suggester()
 	clearWordMenu();
 }
 
+void Suggester::setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager)
+{
+	m_customInputMenuManager = customInputMenuManager;
+}
+
 void Suggester::setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration)
 {
 	m_spellcheckerConfiguration = spellcheckerConfiguration;
@@ -69,14 +74,14 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 
 	unsigned int actionPriority = 0;
 	foreach (ActionDescription *action, SuggestActions)
-		CustomInputMenuManager::instance()->addActionDescription(action, CustomInputMenuItem::MenuCategorySuggestion, actionPriority++);
+		m_customInputMenuManager->addActionDescription(action, CustomInputMenuItem::MenuCategorySuggestion, actionPriority++);
 }
 
 void Suggester::clearWordMenu()
 {
 	// Remove old actions
 	foreach (ActionDescription *action, SuggestActions)
-		CustomInputMenuManager::instance()->removeActionDescription(action);
+		m_customInputMenuManager->removeActionDescription(action);
 
 	qDeleteAll(SuggestActions);
 	SuggestActions.clear();
