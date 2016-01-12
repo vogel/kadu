@@ -18,31 +18,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QAbstractItemView>
+#include "talkable-delegate.h"
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "gui/widgets/talkable-painter.h"
 #include "message/unread-message-repository.h"
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
 
-#include "talkable-delegate.h"
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QAbstractItemView>
 
 TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 		KaduTreeViewDelegate(parent)
 {
-	connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
-	connect(Core::instance()->buddyPreferredManager(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 TalkableDelegate::~TalkableDelegate()
 {
+}
+
+void TalkableDelegate::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void TalkableDelegate::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void TalkableDelegate::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
+}
+
+void TalkableDelegate::init()
+{
+	connect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
+	connect(m_buddyPreferredManager, SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
+	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
+	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 void TalkableDelegate::setChain(ModelChain *chain)

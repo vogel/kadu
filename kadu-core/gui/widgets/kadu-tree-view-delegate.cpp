@@ -21,7 +21,6 @@
 #include <QtWidgets/QAbstractItemView>
 
 #include "accounts/account-manager.h"
-#include "core/core.h"
 #include "gui/widgets/talkable-painter.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "identities/identity-manager.h"
@@ -32,13 +31,27 @@
 KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) :
 		QItemDelegate(parent), Configuration(parent)
 {
-	// force initial signal/slot connection to happen
-	ShowIdentityNameIfMany = false;
-	setShowIdentityNameIfMany(true);
 }
 
 KaduTreeViewDelegate::~KaduTreeViewDelegate()
 {
+}
+
+void KaduTreeViewDelegate::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void KaduTreeViewDelegate::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void KaduTreeViewDelegate::init()
+{
+	// force initial signal/slot connection to happen
+	ShowIdentityNameIfMany = false;
+	setShowIdentityNameIfMany(true);
 }
 
 void KaduTreeViewDelegate::updateShowIdentityName()
@@ -47,7 +60,7 @@ void KaduTreeViewDelegate::updateShowIdentityName()
 		return;
 
 	int activeIdentitiesCount = 0;
-	foreach (const Identity &identity, Core::instance()->identityManager()->items())
+	foreach (const Identity &identity, m_identityManager->items())
 		if (identity.hasAnyAccountWithDetails())
 			if (++activeIdentitiesCount > 1)
 				break;
@@ -63,14 +76,14 @@ void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany
 	ShowIdentityNameIfMany = showIdentityNameIfMany;
 	if (ShowIdentityNameIfMany)
 	{
-		connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)), this, SLOT(updateShowIdentityName()));
-		connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)), this, SLOT(updateShowIdentityName()));
-		connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
+		connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(updateShowIdentityName()));
+		connect(m_accountManager, SIGNAL(accountUnregistered(Account)), this, SLOT(updateShowIdentityName()));
+		connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
 		updateShowIdentityName();
 	}
 	else
 	{
-		disconnect(Core::instance()->accountManager(), 0, this, 0);
+		disconnect(m_accountManager, 0, this, 0);
 		Configuration.setShowIdentityName(false);
 	}
 }
@@ -115,6 +128,5 @@ void KaduTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	TalkablePainter talkablePainter(Configuration, options, index);
 	talkablePainter.paint(painter);
 }
-
 
 #include "moc_kadu-tree-view-delegate.cpp"

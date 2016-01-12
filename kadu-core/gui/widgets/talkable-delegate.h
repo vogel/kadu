@@ -18,41 +18,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TALKABLE_DELEGATE_H
-#define TALKABLE_DELEGATE_H
-
-// for OS X
-#undef check
-
-#include <QtCore/QPointer>
+#pragma once
 
 #include "buddies/buddy.h"
 #include "gui/widgets/kadu-tree-view-delegate.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "message/message.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyPreferredManager;
+class ContactManager;
 class Contact;
 class ModelChain;
+class UnreadMessageRepository;
 
 class TalkableDelegate : public KaduTreeViewDelegate
 {
 	Q_OBJECT
 
-	QPointer<ModelChain> Chain;
-
-private slots:
-	void contactUpdated(const Contact &contact);
-	void buddyUpdated(const Buddy &buddy);
-	void messageStatusChanged(Message message);
-
 public:
-	explicit TalkableDelegate(TalkableTreeView *parent = 0);
+	explicit TalkableDelegate(TalkableTreeView *parent = nullptr);
 	virtual ~TalkableDelegate();
 
 	virtual void setChain(ModelChain *chain);
 
 	virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 
-};
+private:
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-#endif // TALKABLE_DELEGATE_H
+	QPointer<ModelChain> Chain;
+
+private slots:
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+	INJEQT_INIT void init();
+
+	void contactUpdated(const Contact &contact);
+	void buddyUpdated(const Buddy &buddy);
+	void messageStatusChanged(Message message);
+
+};

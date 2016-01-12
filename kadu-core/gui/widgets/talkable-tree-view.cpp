@@ -39,6 +39,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
@@ -73,7 +74,7 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 	Context = new BaseActionContext{this};
 	connect(Core::instance()->statusConfigurationHolder(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
-	Delegate = new TalkableDelegate(this);
+	Delegate = Core::instance()->injectedFactory()->makeInjected<TalkableDelegate>(this);
 	setItemDelegate(Delegate);
 
 	ToolTipTimeoutTimer.setSingleShot(true);

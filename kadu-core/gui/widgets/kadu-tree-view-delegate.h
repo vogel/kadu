@@ -18,29 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_TREE_VIEW_DELEGATE_H
-#define KADU_TREE_VIEW_DELEGATE_H
-
-#include <QtWidgets/QItemDelegate>
+#pragma once
 
 #include "gui/widgets/talkable-delegate-configuration.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QItemDelegate>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class IdentityManager;
 
 class KaduTreeViewDelegate : public QItemDelegate
 {
 	Q_OBJECT
 
-	TalkableDelegateConfiguration Configuration;
-
-	bool ShowIdentityNameIfMany;
-
-private slots:
-	void updateShowIdentityName();
-
-protected:
-	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
-
 public:
-	explicit KaduTreeViewDelegate(TalkableTreeView *parent = 0);
+	explicit KaduTreeViewDelegate(TalkableTreeView *parent = nullptr);
 	virtual ~KaduTreeViewDelegate();
 
 	void setShowIdentityNameIfMany(bool showIdentityNameIfMany);
@@ -51,6 +45,22 @@ public:
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-};
+protected:
+	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
-#endif // KADU_TREE_VIEW_DELEGATE_H
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<IdentityManager> m_identityManager;
+
+	TalkableDelegateConfiguration Configuration;
+
+	bool ShowIdentityNameIfMany;
+
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_INIT void init();
+
+	void updateShowIdentityName();
+
+};
