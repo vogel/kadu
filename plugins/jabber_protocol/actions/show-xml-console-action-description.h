@@ -18,19 +18,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHOW_XML_CONSOLE_ACTION_DESCRIPTION_H
-#define SHOW_XML_CONSOLE_ACTION_DESCRIPTION_H
+#pragma once
 
 #include "gui/actions/action-description.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class MenuInventory;
 
 class ShowXmlConsoleActionDescription : public ActionDescription
 {
 	Q_OBJECT
-
-private slots:
-	void insertMenuActionDescription();
-	void updateShowXmlConsoleMenu();
-	void menuActionTriggered(QAction *action);
 
 protected:
 	virtual void actionInstanceCreated(Action *action);
@@ -40,6 +40,17 @@ public:
 	explicit ShowXmlConsoleActionDescription(QObject *parent);
 	virtual ~ShowXmlConsoleActionDescription();
 
-};
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<MenuInventory> m_menuInventory;
 
-#endif // SHOW_XML_CONSOLE_ACTION_DESCRIPTION_H
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_INIT void init();
+
+	void insertMenuActionDescription();
+	void updateShowXmlConsoleMenu();
+	void menuActionTriggered(QAction *action);
+
+};

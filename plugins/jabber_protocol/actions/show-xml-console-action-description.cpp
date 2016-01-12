@@ -24,7 +24,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/xml-console.h"
@@ -38,12 +37,34 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 	setType(ActionDescription::TypeMainMenu);
 	setName("showXmlConsole");
 	setText(tr("Show XML Console"));
+}
 
+ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
+{
+	// actions will delete their menus
+	m_menuInventory
+		->menu("tools")
+		->removeAction(this)
+		->update();
+}
+
+void ShowXmlConsoleActionDescription::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void ShowXmlConsoleActionDescription::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
+void ShowXmlConsoleActionDescription::init()
+{
 	registerAction();
 
-	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)),
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
-	connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)),
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
 
 	// It is needed bacause of loading protocol plugins before creating GUI.
@@ -51,18 +72,9 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 	QTimer::singleShot(0, this, SLOT(insertMenuActionDescription()));
 }
 
-ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
-{
-	// actions will delete their menus
-	Core::instance()->menuInventory()
-		->menu("tools")
-		->removeAction(this)
-		->update();
-}
-
 void ShowXmlConsoleActionDescription::insertMenuActionDescription()
 {
-	Core::instance()->menuInventory()
+	m_menuInventory
 		->menu("tools")
 		->addAction(this, KaduMenu::SectionTools)
 		->update();
@@ -86,12 +98,12 @@ void ShowXmlConsoleActionDescription::actionTriggered(QAction *sender, bool togg
 
 void ShowXmlConsoleActionDescription::updateShowXmlConsoleMenu()
 {
-	QVector<Account> jabberAccounts = Core::instance()->accountManager()->byProtocolName("jabber");
+	QVector<Account> jabberAccounts = m_accountManager->byProtocolName("jabber");
 
 	foreach (Action *action, actions())
 	{
 		QMenu *menu = action->menu();
-		if (jabberAccounts.isEmpty() || 1 == Core::instance()->accountManager()->items().count())
+		if (jabberAccounts.isEmpty() || 1 == m_accountManager->items().count())
 		{
 			delete menu;
 			action->setMenu(0);

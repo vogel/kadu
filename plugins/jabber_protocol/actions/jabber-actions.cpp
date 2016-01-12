@@ -22,6 +22,7 @@
 #include "buddies/buddy-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
@@ -61,7 +62,7 @@ static void disableNoRosterContact(Action *action)
 JabberActions::JabberActions(QObject *parent) :
 		QObject{parent}
 {
-	new ShowXmlConsoleActionDescription(this);
+	Core::instance()->injectedFactory()->makeInjected<ShowXmlConsoleActionDescription>(this);
 
 	Core::instance()->actions()->blockSignals();
 
