@@ -25,8 +25,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_WINDOW_H
-#define KADU_WINDOW_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QPair>
@@ -46,13 +45,21 @@ class QMenuBar;
 class QVBoxLayout;
 
 class ActionDescription;
+class Application;
 class BuddyInfoPanel;
+class ChatWidgetActions;
+class ChatWidgetManager;
+class Configuration;
+class FileTransferManager;
 class InjectedFactory;
-class ProxyActionContext;
 class KaduWindowActions;
+class MenuInventory;
+class Myself;
+class ProxyActionContext;
 class RosterWidget;
 class StatusButtons;
 class TalkableTreeView;
+class UrlHandlerManager;
 
 class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject, CompositingAwareObject
 {
@@ -68,7 +75,15 @@ public:
 	};
 
 private:
+	QPointer<Application> m_application;
+	QPointer<ChatWidgetActions> m_chatWidgetActions;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<FileTransferManager> m_fileTransferManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MenuInventory> m_menuInventory;
+	QPointer<Myself> m_myself;
+	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 	bool Docked; // TODO: 0.11.0 it is a hack
 	QSplitter *Split;
@@ -115,7 +130,15 @@ private:
 	virtual void compositingDisabled();
 
 private slots:
+	INJEQT_SET void setApplication(Application *application);
+	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_INIT void init();
 
 #ifdef Q_OS_WIN
@@ -132,7 +155,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static void createDefaultToolbars(QDomElement parentConfig);
+	static void createDefaultToolbars(Configuration *configuration, QDomElement parentConfig);
 
 	KaduWindow();
 	virtual ~KaduWindow();
@@ -157,5 +180,3 @@ signals:
 	void talkableActivated(const Talkable &talkable);
 
 };
-
-#endif // KADU_WINDOW_H

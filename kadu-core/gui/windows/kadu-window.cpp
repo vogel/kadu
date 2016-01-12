@@ -46,9 +46,9 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
+#include "file-transfer/file-transfer-manager.h"
 #include "gui/actions/action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
@@ -81,7 +81,61 @@ KaduWindow::KaduWindow() :
 		MainWindow(new ProxyActionContext(), QString(), 0), Docked(false),
 		WindowParent(0), CompositingEnabled(false)
 {
-	new TaskbarProgress{Core::instance()->fileTransferManager(), this};
+}
+
+KaduWindow::~KaduWindow()
+{
+	storeConfiguration();
+}
+
+void KaduWindow::setApplication(Application *application)
+{
+	m_application = application;
+}
+
+void KaduWindow::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
+{
+	m_chatWidgetActions = chatWidgetActions;
+}
+
+void KaduWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void KaduWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void KaduWindow::setFileTransferManager(FileTransferManager *fileTransferManager)
+{
+	m_fileTransferManager = fileTransferManager;
+}
+
+void KaduWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void KaduWindow::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
+void KaduWindow::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void KaduWindow::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
+{
+	m_urlHandlerManager = urlHandlerManager;
+}
+
+void KaduWindow::init()
+{
+	new TaskbarProgress{m_fileTransferManager, this};
 	setWindowRole("kadu-main");
 
 #ifdef Q_OS_WIN
@@ -90,20 +144,7 @@ KaduWindow::KaduWindow() :
 #endif
 
 	setWindowTitle(QLatin1String("Kadu"));
-}
 
-KaduWindow::~KaduWindow()
-{
-	storeConfiguration();
-}
-
-void KaduWindow::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
-void KaduWindow::init()
-{
 	// we need to create gui first, then actions, then menus
 	// TODO: fix it in 0.10 or whenever
 	createGui();
@@ -129,7 +170,7 @@ void KaduWindow::createGui()
 
 	Split = new QSplitter(Qt::Vertical, MainWidget);
 
-	Roster = Core::instance()->injectedFactory()->makeInjected<RosterWidget>(Split);
+	Roster = m_injectedFactory->makeInjected<RosterWidget>(Split);
 	InfoPanel = m_injectedFactory->makeInjected<BuddyInfoPanel>(Split);
 
 	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
@@ -137,15 +178,15 @@ void KaduWindow::createGui()
 
 	ChangeStatusButtons = new StatusButtons(MainWidget);
 
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
 		ChangeStatusButtons->hide();
 
 	QList<int> splitSizes;
 
-	splitSizes.append(Core::instance()->configuration()->deprecatedApi()->readNumEntry("General", "UserBoxHeight"));
-	splitSizes.append(Core::instance()->configuration()->deprecatedApi()->readNumEntry("General", "DescriptionHeight"));
+	splitSizes.append(m_configuration->deprecatedApi()->readNumEntry("General", "UserBoxHeight"));
+	splitSizes.append(m_configuration->deprecatedApi()->readNumEntry("General", "DescriptionHeight"));
 
 	Split->setSizes(splitSizes);
 
@@ -169,8 +210,8 @@ void KaduWindow::createMenu()
 void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu(this);
-	Core::instance()->menuInventory()->menu("main")->attachToMenu(KaduMenu);
-	Core::instance()->menuInventory()->menu("main")
+	m_menuInventory->menu("main")->attachToMenu(KaduMenu);
+	m_menuInventory->menu("main")
 		->addAction(Actions->Configuration, KaduMenu::SectionConfig, 30)
 		->addAction(Actions->ShowYourAccounts, KaduMenu::SectionConfig, 29)
 		->addAction(Actions->RecentChats, KaduMenu::SectionRecentChats, 28)
@@ -187,14 +228,14 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu = new QMenu(this);
 	ContactsMenu->setTitle(tr("&Buddies"));
 
-	Core::instance()->menuInventory()->menu("buddy")->attachToMenu(ContactsMenu);
-	Core::instance()->menuInventory()->menu("buddy")
+	m_menuInventory->menu("buddy")->attachToMenu(ContactsMenu);
+	m_menuInventory->menu("buddy")
 		->addAction(Actions->AddUser, KaduMenu::SectionBuddies, 50)
 		->addAction(Actions->addConference(), KaduMenu::SectionBuddies, 40)
 		->addAction(Actions->addRoomChat(), KaduMenu::SectionBuddies, 30)
 		->addAction(Actions->AddGroup, KaduMenu::SectionBuddies, 20)
 		->addAction(Actions->OpenSearch, KaduMenu::SectionBuddies, 10)
-		->addAction(Core::instance()->chatWidgetActions()->openChatWith(), KaduMenu::SectionOpenChat)
+		->addAction(m_chatWidgetActions->openChatWith(), KaduMenu::SectionOpenChat)
 		->addAction(Actions->InactiveUsers, KaduMenu::SectionBuddyListFilters, 4)
 		->addAction(Actions->ShowBlockedBuddies, KaduMenu::SectionBuddyListFilters, 3)
 		->addAction(Actions->ShowMyself, KaduMenu::SectionBuddyListFilters, 2)
@@ -209,8 +250,8 @@ void KaduWindow::createToolsMenu()
 	ToolsMenu = new QMenu(this);
 	ToolsMenu->setTitle(tr("&Tools"));
 
-	Core::instance()->menuInventory()->menu("tools")->attachToMenu(ToolsMenu);
-	Core::instance()->menuInventory()->menu("tools")
+	m_menuInventory->menu("tools")->attachToMenu(ToolsMenu);
+	m_menuInventory->menu("tools")
 		->addAction(Actions->ShowMultilogons, KaduMenu::SectionTools, 1)
 		->update();
 
@@ -222,8 +263,8 @@ void KaduWindow::createHelpMenu()
 	HelpMenu = new QMenu(this);
 	HelpMenu->setTitle(tr("&Help"));
 
-	Core::instance()->menuInventory()->menu("help")->attachToMenu(HelpMenu);
-	Core::instance()->menuInventory()->menu("help")
+	m_menuInventory->menu("help")->attachToMenu(HelpMenu);
+	m_menuInventory->menu("help")
 		->addAction(Actions->Forum, KaduMenu::SectionHelp, 2)
 		->addAction(Actions->Bugs, KaduMenu::SectionHelp, 1)
 		->addAction(Actions->GetInvolved, KaduMenu::SectionGetInvolved, 2)
@@ -236,7 +277,7 @@ void KaduWindow::createHelpMenu()
 
 void KaduWindow::compositingEnabled()
 {
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
 	{
 		compositingDisabled();
 		return;
@@ -285,14 +326,14 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 		return;
 
 	auto chat = talkable.toChat();
-	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()->buddy()))
+	if (chat && !chat.contacts().toBuddySet().contains(m_myself->buddy()))
 	{
-		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+		m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 		return;
 	}
 
 	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
-		if (buddy.email().indexOf(Core::instance()->urlHandlerManager()->mailRegExp()) == 0)
+		if (buddy.email().indexOf(m_urlHandlerManager->mailRegExp()) == 0)
 			UrlOpener::openEmail(buddy.email().toUtf8());
 
 	emit talkableActivated(talkable);
@@ -309,13 +350,13 @@ void KaduWindow::storeConfiguration()
 	}
 #endif
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 	{
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
+		m_configuration->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
+		m_configuration->deprecatedApi()->writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 	}
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
+	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
+		m_configuration->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -327,7 +368,7 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 	}
 
 	// do not block window closing when session is about to close
-	if (Core::instance()->application()->isSavingSession())
+	if (m_application->isSavingSession())
 	{
 		MainWindow::closeEvent(e);
 		return;
@@ -341,7 +382,7 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 	else
 	{
 		MainWindow::closeEvent(e);
-		Core::instance()->application()->quit();
+		m_application->quit();
 	}
 }
 
@@ -386,7 +427,7 @@ void KaduWindow::hideWindowFromTaskbar()
 {
 	auto *w = window();
 	auto newWindowLongPtr = GetWindowLongPtr(reinterpret_cast<HWND>(w->winId()), GWL_EXSTYLE);
-	auto hideFromTaskbar = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar");
+	auto hideFromTaskbar = m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar");
 	if (hideFromTaskbar == !(newWindowLongPtr & WS_EX_APPWINDOW))
 		return;
 
@@ -413,7 +454,7 @@ void KaduWindow::changeEvent(QEvent *event)
 #ifdef Q_OS_WIN
 	else if (event->type() == QEvent::WindowStateChange)
 	{
-		if (Docked && isMinimized() && Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
+		if (Docked && isMinimized() && m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
 			QMetaObject::invokeMethod(this, "hide", Qt::QueuedConnection);
 	}
 #endif
@@ -458,16 +499,16 @@ void KaduWindow::configurationUpdated()
 
 	setDocked(Docked);
 
-	ChangeStatusButtons->setVisible(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
+	ChangeStatusButtons->setVisible(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
 
 	triggerCompositingStateChanged();
-	setBlur(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency") && Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxBlur"));
+	setBlur(m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency") && m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxBlur"));
 }
 
-void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
+void KaduWindow::createDefaultToolbars(Configuration *configuration, QDomElement parentConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(parentConfig, "topDockArea");
-	QDomElement toolbarConfig = Core::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
+	QDomElement toolbarConfig = configuration->api()->createElement(dockAreaConfig, "ToolBar");
 
 	addToolButton(toolbarConfig, "addUserAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "addGroupAction", Qt::ToolButtonTextUnderIcon);
