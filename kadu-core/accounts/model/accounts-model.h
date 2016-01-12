@@ -19,30 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNTS_MODEL
-#define ACCOUNTS_MODEL
-
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QModelIndex>
+#pragma once
 
 #include "accounts/account.h"
 #include "model/kadu-abstract-model.h"
+
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+
+class AccountManager;
 
 class AccountsModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
-	bool IncludeIdInDisplay;
-
-private slots:
-	void accountUpdated(Account account);
-	void accountAboutToBeRegistered(Account account);
-	void accountRegistered(Account account);
-	void accountAboutToBeUnregistered(Account account);
-	void accountUnregistered(Account account);
-
 public:
-	explicit AccountsModel(QObject *parent = 0);
+	explicit AccountsModel(AccountManager *accountManager, QObject *parent = nullptr);
 	virtual ~AccountsModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -56,6 +49,15 @@ public:
 
 	void setIncludeIdInDisplay(bool includeIdInDisplay);
 
-};
+private:
+	QPointer<AccountManager> m_accountManager;
+	bool m_includeIdInDisplay;
 
-#endif // ACCOUNTS_MODEL
+private slots:
+	void accountUpdated(Account account);
+	void accountAboutToBeRegistered(Account account);
+	void accountRegistered(Account account);
+	void accountAboutToBeUnregistered(Account account);
+	void accountUnregistered(Account account);
+
+};

@@ -44,6 +44,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
@@ -95,7 +96,7 @@ void YourAccounts::createGui()
 	AccountsView = new QListView(this);
 	AccountsView->setMinimumWidth(150);
 	contentLayout->addWidget(AccountsView);
-	MyAccountsModel = new AccountsModel(AccountsView);
+	MyAccountsModel = new AccountsModel(Core::instance()->accountManager(), AccountsView);
 
 	QAction *separator = new QAction(this);
 	separator->setSeparator(true);

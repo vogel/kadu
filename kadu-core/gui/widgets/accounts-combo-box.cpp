@@ -24,6 +24,8 @@
 #include "accounts/filter/abstract-account-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 
@@ -36,7 +38,7 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionVisibility v
 		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
 
 	ModelChain *chain = new ModelChain(this);
-	Model = new AccountsModel(chain);
+	Model = new AccountsModel(Core::instance()->accountManager(), chain);
 	ProxyModel = new AccountsProxyModel(chain);
 	chain->setBaseModel(Model);
 	chain->addProxyModel(ProxyModel);

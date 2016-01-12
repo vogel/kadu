@@ -32,24 +32,25 @@
 
 #include "accounts-model.h"
 
-AccountsModel::AccountsModel(QObject *parent) :
-		QAbstractListModel(parent), IncludeIdInDisplay(false)
+AccountsModel::AccountsModel(AccountManager *accountManager, QObject *parent) :
+		QAbstractListModel{parent},
+		m_accountManager{accountManager},
+		m_includeIdInDisplay{}
 {
-	connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)),
+	connect(m_accountManager, SIGNAL(accountUpdated(Account)),
 			this, SLOT(accountUpdated(Account)));
-	connect(Core::instance()->accountManager(), SIGNAL(accountAboutToBeRegistered(Account)),
+	connect(m_accountManager, SIGNAL(accountAboutToBeRegistered(Account)),
 			this, SLOT(accountAboutToBeRegistered(Account)));
-	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)),
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 			this, SLOT(accountRegistered(Account)));
-	connect(Core::instance()->accountManager(), SIGNAL(accountAboutToBeUnregistered(Account)),
+	connect(m_accountManager, SIGNAL(accountAboutToBeUnregistered(Account)),
 			this, SLOT(accountAboutToBeUnregistered(Account)));
-	connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)),
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
 			this, SLOT(accountUnregistered(Account)));
 }
 
 AccountsModel::~AccountsModel()
 {
-	disconnect(Core::instance()->accountManager(), 0, this, 0);
 }
 
 int AccountsModel::columnCount(const QModelIndex &parent) const
@@ -59,7 +60,7 @@ int AccountsModel::columnCount(const QModelIndex &parent) const
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Core::instance()->accountManager()->count();
+	return parent.isValid() ? 0 : m_accountManager->count();
 }
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const
@@ -71,7 +72,7 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			if (IncludeIdInDisplay)
+			if (m_includeIdInDisplay)
 				return QString("%1 (%2)").arg(acc.accountIdentity().name(), acc.id());
 			else
 				return acc.accountIdentity().name();
@@ -99,12 +100,12 @@ Account AccountsModel::account(const QModelIndex &index) const
 	if (index.row() < 0 || index.row() >= rowCount())
 		return Account::null;
 
-	return Core::instance()->accountManager()->byIndex(index.row());
+	return m_accountManager->byIndex(index.row());
 }
 
 int AccountsModel::accountIndex(Account account) const
 {
-	return Core::instance()->accountManager()->indexOf(account);
+	return m_accountManager->indexOf(account);
 }
 
 QModelIndexList AccountsModel::indexListForValue(const QVariant &value) const
@@ -155,10 +156,10 @@ void AccountsModel::accountUnregistered(Account account)
 
 void AccountsModel::setIncludeIdInDisplay(bool includeIdInDisplay)
 {
-	if (IncludeIdInDisplay == includeIdInDisplay)
+	if (m_includeIdInDisplay == includeIdInDisplay)
 		return;
 
-	IncludeIdInDisplay = includeIdInDisplay;
+	m_includeIdInDisplay = includeIdInDisplay;
 	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
 
