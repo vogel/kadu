@@ -36,7 +36,6 @@ set (SOURCES
 
 	helpers/formatted-string-gadu-html-visitor.cpp
 	helpers/formatted-string-image-key-received-visitor.cpp
-	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
 	helpers/gadu-protocol-helper.cpp
 	helpers/gadu-proxy-helper.cpp

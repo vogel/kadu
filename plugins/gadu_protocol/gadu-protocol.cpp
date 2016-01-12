@@ -58,7 +58,6 @@
 #include "server/protocol-gadu-connection.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
-#include "helpers/gadu-importer.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "helpers/gadu-proxy-helper.h"
 #include "server/gadu-writable-session-token.h"

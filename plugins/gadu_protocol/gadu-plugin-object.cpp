@@ -20,7 +20,6 @@
 #include "gadu-plugin-object.h"
 
 #include "actions/gadu-protocol-menu-manager.h"
-#include "helpers/gadu-importer.h"
 #include "protocols/protocols-manager.h"
 #include "gadu-protocol-factory.h"
 #include "gadu-url-dom-visitor-provider.h"
@@ -109,12 +108,6 @@ void GaduPluginObject::init()
 	m_protocolsManager->registerProtocolFactory(m_gaduProtocolFactory);
 	m_urlHandlerManager->registerUrlHandler(m_gaduUrlHandler);
 	m_domProcessorService->registerVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
-
-	auto importer = make_not_owned<GaduImporter>();
-	if (m_accountManager->allItems().isEmpty())
-		importer->importAccounts();
-	importer->importContacts();
-
 	m_menuInventory->registerProtocolMenuManager(m_gaduProtocolMenuManager);
 }
 
