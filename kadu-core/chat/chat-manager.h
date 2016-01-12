@@ -68,6 +68,7 @@ class Account;
 class BuddySet;
 class ConfigurationApi;
 class ConfigurationManager;
+class UnreadMessageRepository;
 
 /**
  * @class ChatManager
@@ -90,9 +91,11 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	Q_OBJECT
 
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

@@ -26,7 +26,6 @@
 #include "chat/chat-details-contact.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-manager.h"
-#include "core/core.h"
 #include "message/unread-message-repository.h"
 
 #include "chat-manager.h"
@@ -45,28 +44,30 @@ void ChatManager::setConfigurationManager(ConfigurationManager *configurationMan
 	m_configurationManager = configurationManager;
 }
 
+void ChatManager::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
+}
+
 void ChatManager::init()
 {
 	m_configurationManager->registerStorableObject(this);
 
-	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
+	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
 		unreadMessageAdded(message);
 
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)),
+	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)),
 	        this, SLOT(unreadMessageAdded(Message)));
-	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)),
+	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)),
 	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void ChatManager::done()
 {
-	if (Core::instance())
-	{
-		disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
+	disconnect(m_unreadMessageRepository, 0, this, 0);
 
-		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
-			unreadMessageRemoved(message);
-	}
+	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+		unreadMessageRemoved(message);
 
 	m_configurationManager->unregisterStorableObject(this);
 }
