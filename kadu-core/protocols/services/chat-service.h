@@ -22,18 +22,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_SERVICE_H
-#define CHAT_SERVICE_H
-
-#include <QtCore/QPointer>
+#pragma once
 
 #include "buddies/buddy-list.h"
-
 #include "chat/chat.h"
-
 #include "exports.h"
 
 #include "protocols/services/account-service.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class FormattedString;
 class Message;
@@ -58,20 +56,11 @@ class KADUAPI ChatService : public AccountService
 {
 	Q_OBJECT
 
-	QPointer<RawMessageTransformerService> CurrentRawMessageTransformerService;
-
 protected:
 	explicit ChatService(Account account, QObject *parent = 0);
 	virtual ~ChatService();
 
 public:
-	/**
-	 * @short Set raw message transformer service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param rawMessageTransformerService raw message transformer service for this service
-	 */
-	void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
-
 	/**
 	 * @short Return raw message transformer service of this service.
 	 * @author Rafał 'Vogel' Malinowski
@@ -144,10 +133,19 @@ signals:
 	 */
 	void messageReceived(const Message &message);
 
+private:
+	QPointer<RawMessageTransformerService> m_rawMessageTransformerService;
+
+private slots:
+	/**
+	 * @short Set raw message transformer service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param rawMessageTransformerService raw message transformer service for this service
+	 */
+	INJEQT_SET void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
+
 };
 
 /**
  * @}
  */
-
-#endif // CHAT_SERVICE_H

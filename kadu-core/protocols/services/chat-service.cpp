@@ -37,12 +37,12 @@ ChatService::~ChatService()
 
 void ChatService::setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService)
 {
-	CurrentRawMessageTransformerService = rawMessageTransformerService;
+	m_rawMessageTransformerService = rawMessageTransformerService;
 }
 
 RawMessageTransformerService * ChatService::rawMessageTransformerService() const
 {
-	return CurrentRawMessageTransformerService.data();
+	return m_rawMessageTransformerService.data();
 }
 
 #include "moc_chat-service.cpp"

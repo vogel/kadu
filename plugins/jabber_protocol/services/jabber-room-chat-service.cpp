@@ -69,7 +69,7 @@ void JabberRoomChatService::setPresenceService(JabberPresenceService *presenceSe
 	m_presenceService = presenceService;
 }
 
-void JabberRoomChatService::initialize()
+void JabberRoomChatService::init()
 {
 	for (auto &&chat : m_chatManager->chats(account()))
 		if (chat.isOpen() && myRoomChatDetails(chat))

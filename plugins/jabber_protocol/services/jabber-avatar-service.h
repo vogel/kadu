@@ -20,9 +20,10 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
-
 #include "protocols/services/avatar-service.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class JabberVCardService;
 
@@ -62,9 +63,6 @@ public:
 	explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = 0);
 	virtual ~JabberAvatarService();
 
-	void setAvatarManager(AvatarManager *avatarManager);
-	void setContactManager(ContactManager *contactManager);
-
 	/**
 	 * @short Set VCard service object to use in this service.
 	 * @author Rafał 'Vogel' Malinowski
@@ -84,6 +82,9 @@ private:
 	QPointer<JabberVCardService> VCardService;
 
 private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+
     void rosterReceived();
 	void presenceReceived(const QXmppPresence &presence);
 

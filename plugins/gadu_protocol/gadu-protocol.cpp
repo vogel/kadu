@@ -121,7 +121,6 @@ void GaduProtocol::init()
 	CurrentChatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	CurrentChatService->setGaduChatImageService(CurrentChatImageService);
 	CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
-	CurrentChatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
 	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(account(), this);

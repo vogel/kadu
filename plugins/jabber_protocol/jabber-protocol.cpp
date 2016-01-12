@@ -52,6 +52,7 @@
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
@@ -72,6 +73,25 @@
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol{account, factory},
 		m_contactsListReadOnly(false)
+{
+}
+
+JabberProtocol::~JabberProtocol()
+{
+	logout();
+}
+
+void JabberProtocol::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void JabberProtocol::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void JabberProtocol::init()
 {
 	auto details = dynamic_cast<JabberAccountDetails *>(account.details());
 	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
@@ -108,22 +128,14 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	m_resourceService = new JabberResourceService{this};
 
-	m_roomChatService = new JabberRoomChatService{m_client, m_mucManager.get(), account, this};
-	m_roomChatService->setBuddyManager(Core::instance()->buddyManager());
-	m_roomChatService->setChatManager(Core::instance()->chatManager());
-	m_roomChatService->setContactManager(Core::instance()->contactManager());
-	m_roomChatService->initialize();
+	m_roomChatService = m_injectedFactory->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account, this);
 
 	auto chatStateService = new JabberChatStateService{m_client, account, this};
 	chatStateService->setResourceService(m_resourceService);
 
-	m_avatarService = new JabberAvatarService{m_client, account, this};
-	m_avatarService->setAvatarManager(Core::instance()->avatarManager());
-	m_avatarService->setContactManager(Core::instance()->contactManager());
+	m_avatarService = m_injectedFactory->makeInjected<JabberAvatarService>(m_client, account, this);
 
-	auto chatService = new JabberChatService{m_client, account, this};
-	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
-	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
+	auto chatService = m_injectedFactory->makeInjected<JJabberChatService>(m_client, account, this);
 	chatService->setChatStateService(chatStateService);
 	chatService->setResourceService(m_resourceService);
 	chatService->setRoomChatService(m_roomChatService);
@@ -141,7 +153,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	m_contactPersonalInfoService->setVCardService(m_vcardService);
 	m_personalInfoService->setVCardService(m_vcardService);
 
-	auto contacts = Core::instance()->contactManager()->contacts(account, ContactManager::ExcludeAnonymous);
+	auto contacts = m_contactManager->contacts(account, ContactManager::ExcludeAnonymous);
 	auto rosterService = new JabberRosterService{&m_client->rosterManager(), m_rosterExtension.get(), contacts, this};
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
@@ -150,13 +162,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
-	m_subscriptionService = new JabberSubscriptionService{&m_client->rosterManager(), this};
-	m_subscriptionService->setContactManager(Core::instance()->contactManager());
-}
-
-JabberProtocol::~JabberProtocol()
-{
-	logout();
+	m_subscriptionService = m_injectedFactory->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -347,7 +353,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 
 	auto jid = Jid::parse(presence.from());
 	auto id = jid.bare();
-	auto contact = Core::instance()->contactManager()->byId(account(), id, ActionReturnNull);
+	auto contact = m_contactManager->byId(account(), id, ActionReturnNull);
 	if (!contact)
 		return;
 

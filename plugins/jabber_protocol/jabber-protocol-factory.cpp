@@ -20,6 +20,7 @@
  */
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
@@ -77,7 +78,7 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 	if (account.id().toLower().endsWith("@chat.facebook.com"))
 		m_facebookDepreceatedMessage->showIfNotSeen();
 
-	return new JabberProtocol(account, this);
+	return Core::instance()->injectedFactory()->makeInjected<JabberProtocol>(account, this);
 }
 
 AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)

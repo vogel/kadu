@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class JabberProtocol;
 
@@ -39,8 +40,6 @@ public:
 	explicit JabberSubscriptionService(QXmppRosterManager *roster, JabberProtocol *protocol);
 	virtual ~JabberSubscriptionService();
 
-	void setContactManager(ContactManager *contactManager);
-
 	virtual void resendSubscription(const Contact &contact);
 	virtual void removeSubscription(const Contact &contact);
 	virtual void requestSubscription(const Contact &contact);
@@ -55,6 +54,8 @@ private:
 	QPointer<ContactManager> m_contactManager;
 
 private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+
 	void subscriptionReceived(const QString &bareJid);
 
 };

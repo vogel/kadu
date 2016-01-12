@@ -25,6 +25,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <qxmpp/QXmppMessage.h>
 
 class Chat;
@@ -45,8 +46,6 @@ class JabberChatService : public ChatService
 public:
 	explicit JabberChatService(QXmppClient *client, Account account, QObject *parent = nullptr);
 	virtual ~JabberChatService();
-
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void setChatStateService(JabberChatStateService *chatStateService);
 	void setResourceService(JabberResourceService *resourceService);
@@ -79,5 +78,8 @@ private:
 
 	QXmppMessage::Type chatMessageType(const Chat &chat, const QString &bareJid) const;
 	Message handleNormalReceivedMessage(const QXmppMessage &xmppMessage);
+
+private slots:
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 };

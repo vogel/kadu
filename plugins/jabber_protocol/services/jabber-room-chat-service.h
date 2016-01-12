@@ -22,6 +22,7 @@
 #include "protocols/services/account-service.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class JabberPresenceService;
 class JabberRoomChat;
@@ -45,23 +46,13 @@ public:
 	explicit JabberRoomChatService(QXmppClient *client, QXmppMucManager *muc, Account account, QObject *parent = nullptr);
 	virtual ~JabberRoomChatService();
 
-	void setBuddyManager(BuddyManager *buddyManager);
-	void setChatManager(ChatManager *chatManager);
-	void setContactManager(ContactManager *contactManager);
 	void setPresenceService(JabberPresenceService *presenceService);
-	void initialize();
 
 	Message handleReceivedMessage(const QXmppMessage &xmppMessage) const;
 
 	void joinOpenedRoomChats();
 	bool isRoomChat(const Chat &chat) const;
 	void leaveChat(const Chat &chat);
-
-private slots:
-	void connected();
-
-	void chatOpened(const Chat &chat);
-	void chatClosed(const Chat &chat);
 
 private:
 	QPointer<QXmppClient> m_client;
@@ -77,5 +68,16 @@ private:
 	JabberRoomChat * getRoomChat(const Chat &chat) const;
 	JabberRoomChat * getOrCreateRoomChat(const Chat &chat);
 	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_INIT void init();
+
+	void connected();
+
+	void chatOpened(const Chat &chat);
+	void chatClosed(const Chat &chat);
 
 };
