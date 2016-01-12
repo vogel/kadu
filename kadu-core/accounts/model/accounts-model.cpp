@@ -24,7 +24,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"

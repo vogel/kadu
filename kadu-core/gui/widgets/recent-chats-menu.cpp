@@ -22,7 +22,6 @@
 #include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -35,26 +34,50 @@
 RecentChatsMenu::RecentChatsMenu(QWidget *parent) :
 		QMenu(parent)
 {
-	setIcon(KaduIcon("internet-group-chat").icon());
-	setTitle(tr("Recent chats"));
-
-	RecentChatsMenuNeedsUpdate = true;
-
-	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
-	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(invalidate()));
-	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(invalidate()));
-	connect(Core::instance()->recentChatManager(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
-	connect(Core::instance()->recentChatManager(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
-	connect(this, SIGNAL(aboutToShow()), this, SLOT(update()));
 }
 
 RecentChatsMenu::~RecentChatsMenu()
 {
 }
 
+void RecentChatsMenu::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
+void RecentChatsMenu::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+}
+
+void RecentChatsMenu::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void RecentChatsMenu::setRecentChatManager(RecentChatManager *recentChatManager)
+{
+	m_recentChatManager = recentChatManager;
+}
+
+void RecentChatsMenu::init()
+{
+	setIcon(KaduIcon("internet-group-chat").icon());
+	setTitle(tr("Recent chats"));
+
+	m_recentChatsMenuNeedsUpdate = true;
+
+	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(invalidate()));
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(invalidate()));
+	connect(m_recentChatManager, SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
+	connect(m_recentChatManager, SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
+	connect(this, SIGNAL(aboutToShow()), this, SLOT(update()));
+}
+
 void RecentChatsMenu::invalidate()
 {
-	RecentChatsMenuNeedsUpdate = true;
+	m_recentChatsMenuNeedsUpdate = true;
 
 	checkIfListAvailable();
 }
@@ -62,8 +85,8 @@ void RecentChatsMenu::invalidate()
 void RecentChatsMenu::checkIfListAvailable()
 {
 	//check if all recent chats are opened -> disable button
-	foreach (const Chat &chat, Core::instance()->recentChatManager()->recentChats())
-		if (!Core::instance()->chatWidgetRepository()->widgetForChat(chat))
+	foreach (const Chat &chat, m_recentChatManager->recentChats())
+		if (!m_chatWidgetRepository->widgetForChat(chat))
 		{
 			emit chatsListAvailable(true);
 			return;
@@ -74,15 +97,15 @@ void RecentChatsMenu::checkIfListAvailable()
 
 void RecentChatsMenu::update()
 {
-	if (!RecentChatsMenuNeedsUpdate)
+	if (!m_recentChatsMenuNeedsUpdate)
 		return;
 
 	clear();
 
-	foreach (const Chat &chat, Core::instance()->recentChatManager()->recentChats())
-		if (!Core::instance()->chatWidgetRepository()->widgetForChat(chat))
+	foreach (const Chat &chat, m_recentChatManager->recentChats())
+		if (!m_chatWidgetRepository->widgetForChat(chat))
 		{
-			ChatType *type = Core::instance()->chatTypeManager()->chatType(chat.type());
+			ChatType *type = m_chatTypeManager->chatType(chat.type());
 			QAction *action = new QAction(type ? type->icon().icon() : QIcon(),
 			                              ChatDataExtractor::data(chat, Qt::DisplayRole).toString(),
 			                              this);
@@ -92,7 +115,7 @@ void RecentChatsMenu::update()
 
 	emit chatsListAvailable(!actions().isEmpty());
 
-	RecentChatsMenuNeedsUpdate = false;
+	m_recentChatsMenuNeedsUpdate = false;
 }
 
 void RecentChatsMenu::iconThemeChanged()

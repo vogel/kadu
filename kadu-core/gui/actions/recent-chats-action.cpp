@@ -24,6 +24,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/recent-chats-menu.h"
@@ -38,7 +39,7 @@ RecentChatsAction::RecentChatsAction(QObject *parent) :
 	setIcon(KaduIcon("internet-group-chat"));
 	setText(tr("Recent Chats"));
 
-	RecentChatsMenuInstance = new RecentChatsMenu();
+	RecentChatsMenuInstance = Core::instance()->injectedFactory()->makeInjected<RecentChatsMenu>();
 	connect(RecentChatsMenuInstance, SIGNAL(triggered(QAction *)),
 		this, SLOT(openRecentChats(QAction *)));
 }

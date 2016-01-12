@@ -32,6 +32,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -92,7 +93,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(openRecentChatsMenu()));
 
 	//menu for recent chats
-	RecentChatsMenuWidget = new RecentChatsMenu(OpenRecentChatButton);
+	RecentChatsMenuWidget = Core::instance()->injectedFactory()->makeInjected<RecentChatsMenu>(OpenRecentChatButton);
 	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChat(QAction *)));
 	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)), OpenRecentChatButton, SLOT(setEnabled(bool)));
 

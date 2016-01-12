@@ -19,32 +19,48 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECENT_CHATS_MENU_H
-#define RECENT_CHATS_MENU_H
-
-#include <QtWidgets/QMenu>
+#pragma once
 
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QMenu>
+#include <injeqt/injeqt.h>
+
+class ChatWidgetRepository;
+class ChatTypeManager;
+class IconsManager;
+class RecentChatManager;
 
 class KADUAPI RecentChatsMenu : public QMenu
 {
 	Q_OBJECT
 
-	bool RecentChatsMenuNeedsUpdate;
-
 public:
 	explicit RecentChatsMenu(QWidget *parent = 0);
 	virtual ~RecentChatsMenu();
 
+signals:
+	void chatsListAvailable(bool available);
+
+private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<RecentChatManager> m_recentChatManager;
+
+	bool m_recentChatsMenuNeedsUpdate;
+
 private slots:
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setRecentChatManager(RecentChatManager *recentChatManager);
+	INJEQT_INIT void init();
+
 	void invalidate();
 	void checkIfListAvailable();
 	void update();
 	void iconThemeChanged();
 
-signals:
-	void chatsListAvailable(bool available);
-
 };
-
-#endif // RECENT_CHATS_MENU_H
