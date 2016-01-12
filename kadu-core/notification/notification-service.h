@@ -34,15 +34,19 @@ class AccountEventListener;
 class Action;
 class ActionDescription;
 class ChatEventListener;
+class ChatWidgetManager;
 class ConfigurationUiHandlerRepository;
 class Configuration;
 class GroupEventListener;
 class MenuInventory;
 class MessageManager;
-class Notification;
+class NotificationManager;
 class NotificationCallbackRepository;
+class NotificationEventRepository;
+class Notification;
 class NotifyConfigurationUiHandler;
 class ScreenModeChecker;
+class StatusContainerManager;
 class StatusContainer;
 class WindowNotifier;
 
@@ -50,11 +54,15 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<NotificationEventRepository> m_notificationEventRepository;
+	QPointer<NotificationManager> m_notificationManager;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	bool NewMessageOnlyIfInactive;
 	bool NotifyIgnoreOnConnection;
@@ -110,11 +118,15 @@ signals:
 	void silentModeToggled(bool);
 
 private slots:
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

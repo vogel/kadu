@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_CHANGED_NOTIFICATION_H
-#define STATUS_CHANGED_NOTIFICATION_H
+#pragma once
 
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
@@ -34,13 +33,8 @@ class StatusChangedNotification : public Notification
 	Contact CurrentContact;
 
 public:
-	static void registerEvents();
-	static void unregisterEvents();
-
 	virtual QString groupKey() const { return CurrentContact.id(); }
 
 	StatusChangedNotification(const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description);
 	virtual ~StatusChangedNotification() {}
 };
-
-#endif // STATUS_CHANGED_NOTIFICATION_H

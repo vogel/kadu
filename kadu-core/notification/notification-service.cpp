@@ -22,8 +22,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -38,6 +36,7 @@
 #include "notification/notification/notification.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
+#include "notification/notification-event-repository.h"
 #include "notification/notification/status-changed-notification.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/window-notifier.h"
@@ -64,38 +63,19 @@ NotificationService::~NotificationService()
 {
 }
 
+void NotificationService::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
 void NotificationService::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(NotifyUiHandler);
 }
 
 void NotificationService::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-}
-
-void NotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
-{
-	m_notificationCallbackRepository = notificationCallbackRepository;
-
-	auto ignoreCallback = NotificationCallback{
-		"ignore",
-		tr("Ignore"),
-		[](Notification *) {}
-	};
-	auto openChatCallback = NotificationCallback{
-		"chat-open",
-		tr("Chat"),
-		[](Notification *notification) {
-			auto chat = notification->data()["chat"].value<Chat>();
-			if (chat)
-				Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
-		}
-	};
-
-	m_notificationCallbackRepository->addCallback(ignoreCallback);
-	m_notificationCallbackRepository->addCallback(openChatCallback);
 }
 
 void NotificationService::setMenuInventory(MenuInventory *menuInventory)
@@ -108,17 +88,65 @@ void NotificationService::setMessageManager(MessageManager *messageManager)
 	m_messageManager = messageManager;
 }
 
+void NotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+{
+	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
+void NotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+{
+	m_notificationEventRepository = notificationEventRepository;
+}
+
+void NotificationService::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
+void NotificationService::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
 void NotificationService::init()
 {
+	m_configurationUiHandlerRepository->addConfigurationUiHandler(NotifyUiHandler);
+
+	auto ignoreCallback = NotificationCallback{
+		"ignore",
+		tr("Ignore"),
+		[](Notification *) {}
+	};
+	auto openChatCallback = NotificationCallback{
+		"chat-open",
+		tr("Chat"),
+		[this](Notification *notification) {
+			auto chat = notification->data()["chat"].value<Chat>();
+			if (chat)
+				m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+		}
+	};
+
+	m_notificationCallbackRepository->addCallback(ignoreCallback);
+	m_notificationCallbackRepository->addCallback(openChatCallback);
+
 	Notification::registerParserTags();
 
 	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
 
 	MessageNotification::registerEvents();
-	StatusChangedNotification::registerEvents();
+
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
+
 	MultilogonNotification::registerEvents();
 
-	connect(Core::instance()->statusContainerManager(), SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
+	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
 	createEventListeners();
 	createActionDescriptions();
@@ -137,7 +165,14 @@ void NotificationService::done()
 	if (m_configurationUiHandlerRepository)
 		m_configurationUiHandlerRepository->removeConfigurationUiHandler(NotifyUiHandler);
 
-	StatusChangedNotification::unregisterEvents();
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
+
 	MessageNotification::unregisterEvents();
 	MultilogonNotification::unregisterEvents();
 
@@ -315,7 +350,7 @@ void NotificationService::createDefaultConfiguration()
 void NotificationService::notify(Notification* notification)
 {
 	if (!ignoreNotifications())
-		Core::instance()->notificationManager()->notify(notification);
+		m_notificationManager->notify(notification);
 	else
 		notification->callbackDiscard();
 }
