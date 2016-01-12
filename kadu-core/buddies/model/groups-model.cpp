@@ -20,35 +20,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "groups-model.h"
+
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
-#include "core/core.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
-#include "groups-model.h"
-
-GroupsModel::GroupsModel(QObject *parent)
-	: QAbstractListModel(parent)
+GroupsModel::GroupsModel(GroupManager *groupManager, QObject *parent) :
+		QAbstractListModel{parent},
+		m_groupManager{groupManager}
 {
-	connect(Core::instance()->groupManager(), SIGNAL(groupAboutToBeAdded(Group)),
+	connect(m_groupManager, SIGNAL(groupAboutToBeAdded(Group)),
 			this, SLOT(groupAboutToBeAdded(Group)), Qt::DirectConnection);
-	connect(Core::instance()->groupManager(), SIGNAL(groupAdded(Group)),
+	connect(m_groupManager, SIGNAL(groupAdded(Group)),
 			this, SLOT(groupAdded(Group)), Qt::DirectConnection);
-	connect(Core::instance()->groupManager(), SIGNAL(groupAboutToBeRemoved(Group)),
+	connect(m_groupManager, SIGNAL(groupAboutToBeRemoved(Group)),
 			this, SLOT(groupAboutToBeRemoved(Group)), Qt::DirectConnection);
-	connect(Core::instance()->groupManager(), SIGNAL(groupRemoved(Group)),
+	connect(m_groupManager, SIGNAL(groupRemoved(Group)),
 			this, SLOT(groupRemoved(Group)), Qt::DirectConnection);
 }
 
 GroupsModel::~GroupsModel()
 {
-	disconnect(Core::instance()->groupManager(), 0, this, 0);
 }
 
 int GroupsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Core::instance()->groupManager()->count();
+	return parent.isValid() ? 0 : m_groupManager->count();
 }
 
 QVariant GroupsModel::data(const QModelIndex &index, int role) const
@@ -80,12 +79,12 @@ Group GroupsModel::group(const QModelIndex &index) const
 	if (index.row() < 0 || index.row() >= rowCount())
 		return Group::null;
 
-	return Core::instance()->groupManager()->byIndex(index.row());
+	return m_groupManager->byIndex(index.row());
 }
 
 int GroupsModel::groupIndex(Group group) const
 {
-	return Core::instance()->groupManager()->indexOf(group);
+	return m_groupManager->indexOf(group);
 }
 
 

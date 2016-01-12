@@ -19,28 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUPS_MODEL_H
-#define GROUPS_MODEL_H
-
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QModelIndex>
+#pragma once
 
 #include "model/kadu-abstract-model.h"
 
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+
+class GroupManager;
 class Group;
 
 class GroupsModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
-private slots:
-	void groupAboutToBeAdded(Group group);
-	void groupAdded(Group group);
-	void groupAboutToBeRemoved(Group group);
-	void groupRemoved(Group group);
-
 public:
-	explicit GroupsModel(QObject *parent = 0);
+	explicit GroupsModel(GroupManager *groupManager, QObject *parent = nullptr);
 	virtual ~GroupsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -51,6 +46,13 @@ public:
 	int groupIndex(Group group) const;
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
-};
+private:
+	QPointer<GroupManager> m_groupManager;
 
-#endif // GROUPS_MODEL_H
+private slots:
+	void groupAboutToBeAdded(Group group);
+	void groupAdded(Group group);
+	void groupAboutToBeRemoved(Group group);
+	void groupRemoved(Group group);
+
+};
