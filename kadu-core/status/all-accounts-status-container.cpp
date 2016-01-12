@@ -36,6 +36,11 @@ AllAccountsStatusContainer::~AllAccountsStatusContainer()
 {
 }
 
+void AllAccountsStatusContainer::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
 void AllAccountsStatusContainer::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
 	m_statusConfigurationHolder = statusConfigurationHolder;
@@ -43,12 +48,12 @@ void AllAccountsStatusContainer::setStatusConfigurationHolder(StatusConfiguratio
 
 void AllAccountsStatusContainer::init()
 {
-	triggerAllAccountsRegistered();
+	triggerAllAccountsRegistered(m_accountManager);
 }
 
 void AllAccountsStatusContainer::done()
 {
-	triggerAllAccountsUnregistered();
+	triggerAllAccountsUnregistered(m_accountManager);
 }
 
 void AllAccountsStatusContainer::accountRegistered(Account account)

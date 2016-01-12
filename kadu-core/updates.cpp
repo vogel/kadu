@@ -47,7 +47,7 @@ Updates::Updates(QObject *parent) :
 {
 	kdebugf();
 	buildQuery();
-	triggerAllAccountsRegistered();
+	triggerAllAccountsRegistered(Core::instance()->accountManager());
 }
 
 Updates::~Updates()

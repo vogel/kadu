@@ -37,12 +37,12 @@
 AccountEventListener::AccountEventListener(NotificationService *service)
 		: EventListener(service)
 {
-	triggerAllAccountsRegistered();
+	triggerAllAccountsRegistered(Core::instance()->accountManager());
 }
 
 AccountEventListener::~AccountEventListener()
 {
-	triggerAllAccountsUnregistered();
+	triggerAllAccountsUnregistered(Core::instance()->accountManager());
 }
 
 void AccountEventListener::accountRegistered(Account account)

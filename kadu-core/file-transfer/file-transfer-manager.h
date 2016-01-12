@@ -31,6 +31,7 @@
 #include <QtCore/QUuid>
 #include <injeqt/injeqt.h>
 
+class AccountManager;
 class FileTransferActions;
 class FileTransferHandlerManager;
 class FileTransferWindow;
@@ -40,7 +41,6 @@ class ConfigurationManager;
 class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTransfer>, AccountsAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(FileTransferManager)
 
 public:
 	Q_INVOKABLE explicit FileTransferManager(QObject *parent = nullptr);
@@ -76,6 +76,7 @@ protected:
 
 private:
 	FileTransferActions *m_actions;
+	QPointer<AccountManager> m_accountManager;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
@@ -86,6 +87,7 @@ private:
 	void setTotalProgress(int totalProgress);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
 	INJEQT_INIT void init();

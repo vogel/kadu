@@ -248,7 +248,7 @@ Core::~Core()
 	Window = 0;
 	delete hiddenParent;
 
-	triggerAllAccountsUnregistered();
+	triggerAllAccountsUnregistered(accountManager());
 }
 
 void Core::importPre10Configuration()

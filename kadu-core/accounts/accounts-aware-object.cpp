@@ -19,7 +19,6 @@
  */
 
 #include "account-manager.h"
-#include "core/core.h"
 
 #include "accounts-aware-object.h"
 
@@ -47,49 +46,48 @@ void AccountsAwareObject::accountUnregistered(Account account)
 
 void AccountsAwareObject::notifyAccountAdded(Account account)
 {
-	foreach (AccountsAwareObject *object, Objects)
+	for (AccountsAwareObject *object : Objects)
 		object->accountAdded(account);
 }
 
 void AccountsAwareObject::notifyAccountRemoved(Account account)
 {
-	foreach (AccountsAwareObject *object, Objects)
+	for (AccountsAwareObject *object : Objects)
 		object->accountRemoved(account);
 }
 
 void AccountsAwareObject::notifyAccountRegistered(Account account)
 {
-	foreach (AccountsAwareObject *object, Objects)
+	for (AccountsAwareObject *object : Objects)
 		object->accountRegistered(account);
 }
 
 void AccountsAwareObject::notifyAccountUnregistered(Account account)
 {
-	foreach (AccountsAwareObject *object, Objects)
+	for (AccountsAwareObject *object : Objects)
 		object->accountUnregistered(account);
 }
 
-void AccountsAwareObject::triggerAllAccountsAdded()
+void AccountsAwareObject::triggerAllAccountsAdded(AccountManager *accountManager)
 {
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	for (auto const &account : accountManager->items())
 		accountAdded(account);
 }
 
-void AccountsAwareObject::triggerAllAccountsRemoved()
+void AccountsAwareObject::triggerAllAccountsRemoved(AccountManager *accountManager)
 {
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	for (auto const &account : accountManager->items())
 		accountRemoved(account);
 }
 
-void AccountsAwareObject::triggerAllAccountsRegistered()
+void AccountsAwareObject::triggerAllAccountsRegistered(AccountManager *accountManager)
 {
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	for (auto const &account : accountManager->items())
 		accountRegistered(account);
 }
 
-void AccountsAwareObject::triggerAllAccountsUnregistered()
+void AccountsAwareObject::triggerAllAccountsUnregistered(AccountManager *accountManager)
 {
-	if (Core::instance())
-		foreach (const Account &account, Core::instance()->accountManager()->items())
-			accountUnregistered(account);
+	for (auto const &account : accountManager->items())
+		accountUnregistered(account);
 }

@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account-manager.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "message/message-filter-service.h"
@@ -31,14 +32,15 @@
 MessageManager::MessageManager(QObject *parent) :
 		QObject{parent}
 {
-	// TODO: move somewhere else?
-	qRegisterMetaType<Message>();
-
-	triggerAllAccountsRegistered();
 }
 
 MessageManager::~MessageManager()
 {
+}
+
+void MessageManager::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
 }
 
 void MessageManager::setMessageFilterService(MessageFilterService *messageFilterService)
@@ -56,9 +58,16 @@ void MessageManager::setFormattedStringFactory(FormattedStringFactory *formatted
 	m_formattedStringFactory = formattedStringFactory;
 }
 
+void MessageManager::init()
+{
+	// TODO: move somewhere else?
+	qRegisterMetaType<Message>();
+	triggerAllAccountsRegistered(m_accountManager);
+}
+
 void MessageManager::done()
 {
-	triggerAllAccountsUnregistered();
+	triggerAllAccountsUnregistered(m_accountManager);
 }
 
 void MessageManager::accountRegistered(Account account)

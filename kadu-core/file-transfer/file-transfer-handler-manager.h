@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class AccountManager;
 class FileTransfer;
 class FileTransferManager;
 
@@ -39,7 +40,9 @@ public:
 	bool ensureHandler(FileTransfer transfer);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
 	void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
@@ -50,6 +53,7 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 private:
+	QPointer<AccountManager> m_accountManager;
 	QPointer<FileTransferManager> m_fileTransferManager;
 
 	void createHandlers(Account account);

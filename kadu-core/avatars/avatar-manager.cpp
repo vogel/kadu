@@ -22,6 +22,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
 
+#include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "avatars/avatar-job-manager.h"
 #include "avatars/avatar.h"
@@ -45,6 +46,11 @@ AvatarManager::~AvatarManager()
 {
 }
 
+void AvatarManager::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
 void AvatarManager::setAvatarJobManager(AvatarJobManager *avatarJobManager)
 {
 	m_avatarJobManager = avatarJobManager;
@@ -57,7 +63,7 @@ void AvatarManager::setContactManager(ContactManager *contactManager)
 
 void AvatarManager::init()
 {
-	triggerAllAccountsRegistered();
+	triggerAllAccountsRegistered(m_accountManager);
 
 	UpdateTimer = new QTimer(this);
 	UpdateTimer->setInterval(30 * 60 * 1000); // half an hour
@@ -69,7 +75,7 @@ void AvatarManager::init()
 
 void AvatarManager::done()
 {
-	triggerAllAccountsUnregistered();
+	triggerAllAccountsUnregistered(m_accountManager);
 }
 
 void AvatarManager::itemAboutToBeAdded(Avatar item)

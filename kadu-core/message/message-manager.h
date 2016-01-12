@@ -27,6 +27,7 @@
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
 
+class AccountManager;
 class FormattedStringFactory;
 class MessageFilterService;
 class MessageTransformerService;
@@ -118,6 +119,7 @@ signals:
 	void messageSent(const Message &message);
 
 private:
+	QPointer<AccountManager> m_accountManager;
 	QPointer<MessageFilterService> m_messageFilterService;
 	QPointer<MessageTransformerService> m_messageTransformerService;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
@@ -131,6 +133,8 @@ private:
 	Message createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+
 	/**
 	 * @short Set message filter service for this service.
 	 * @author Rafał 'Vogel' Malinowski
@@ -152,6 +156,7 @@ private slots:
 	 */
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
+	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
 	/**

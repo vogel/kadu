@@ -45,7 +45,7 @@ BuddyListModel::BuddyListModel(QObject *parent) :
 	roles[StatusIconPath] = "statusIcon";
 	setRoleNames(roles);
 
-	triggerAllAccountsRegistered();
+	triggerAllAccountsRegistered(Core::instance()->accountManager());
 
 	connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)),
 	        this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
@@ -55,7 +55,7 @@ BuddyListModel::~BuddyListModel()
 {
 	setBuddyList(BuddyList());
 
-	triggerAllAccountsUnregistered();
+	triggerAllAccountsUnregistered(Core::instance()->accountManager());
 
 	disconnect(Core::instance()->contactManager(), 0, this, 0);
 }

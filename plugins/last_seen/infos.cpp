@@ -70,7 +70,7 @@ void Infos::init()
 {
 	kdebugf();
 
-	triggerAllAccountsRegistered();
+	triggerAllAccountsRegistered(m_accountManager);
 
 	fileName = m_pathsProvider->profilePath() + QLatin1String("last_seen.data");
 

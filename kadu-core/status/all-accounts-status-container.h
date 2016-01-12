@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class AccountManager;
 class Account;
 class StatusConfigurationHolder;
 
@@ -45,9 +46,6 @@ class StatusConfigurationHolder;
 class KADUAPI AllAccountsStatusContainer : public StatusContainer, public AccountsAwareObject
 {
 	Q_OBJECT
-
-	QList<Account> Accounts;
-	Status LastSetStatus;
 
 protected:
 	/**
@@ -174,9 +172,14 @@ public:
 	virtual void storeStatus(Status status);
 
 private:
+	QPointer<AccountManager> m_accountManager;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
 
+	QList<Account> Accounts;
+	Status LastSetStatus;
+
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

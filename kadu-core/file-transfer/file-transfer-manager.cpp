@@ -23,6 +23,7 @@
 
 #include "file-transfer-manager.h"
 
+#include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
@@ -61,14 +62,15 @@ FileTransferManager::FileTransferManager(QObject *parent) :
 		QObject{parent},
 		m_totalProgress{100}
 {
-	m_actions = new FileTransferActions{this};
-	NewFileTransferNotification::registerEvents();
-
-	triggerAllAccountsRegistered();
 }
 
 FileTransferManager::~FileTransferManager()
 {
+}
+
+void FileTransferManager::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
 }
 
 void FileTransferManager::setConfigurationManager(ConfigurationManager *configurationManager)
@@ -83,17 +85,17 @@ void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManag
 
 void FileTransferManager::init()
 {
+	NewFileTransferNotification::registerEvents();
+	m_actions = new FileTransferActions{this};
 	m_configurationManager->registerStorableObject(this);
+	triggerAllAccountsRegistered(m_accountManager);
 }
 
 void FileTransferManager::done()
 {
+	triggerAllAccountsUnregistered(m_accountManager);
 	m_configurationManager->unregisterStorableObject(this);
-
 	m_window.data()->deleteLater();
-
-	triggerAllAccountsUnregistered();
-
 	NewFileTransferNotification::unregisterEvents();
 }
 

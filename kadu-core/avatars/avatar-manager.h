@@ -30,6 +30,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class AccountManager;
 class AvatarJobManager;
 class AvatarService;
 class Buddy;
@@ -71,6 +72,7 @@ protected:
 	virtual void itemRemoved(Avatar item);
 
 private:
+	QPointer<AccountManager> m_accountManager;
 	QPointer<AvatarJobManager> m_avatarJobManager;
 	QPointer<ContactManager> m_contactManager;
 	QTimer *UpdateTimer;
@@ -78,6 +80,7 @@ private:
 	bool needUpdate(const Contact &contact);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_INIT void init();

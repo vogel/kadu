@@ -74,29 +74,15 @@ FirewallMessageFilter::FirewallMessageFilter(QObject *parent) :
 		QObject{parent},
 		FloodMessages(0)
 {
-	kdebugf();
-
-	pattern.setCaseSensitivity(Qt::CaseSensitive);
-
-	createDefaultConfiguration();
-
-	configurationUpdated();
-
-	LastMsg.start();
-	LastNotify.start();
-
-	triggerAllAccountsRegistered();
-
-	kdebugf2();
 }
 
 FirewallMessageFilter::~FirewallMessageFilter()
 {
-	kdebugf();
+}
 
-	triggerAllAccountsUnregistered();
-
-	kdebugf2();
+void FirewallMessageFilter::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
 }
 
 void FirewallMessageFilter::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -120,6 +106,25 @@ void FirewallMessageFilter::setHistory(History *history)
 void FirewallMessageFilter::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
+}
+
+void FirewallMessageFilter::init()
+{
+	pattern.setCaseSensitivity(Qt::CaseSensitive);
+
+	createDefaultConfiguration();
+
+	configurationUpdated();
+
+	LastMsg.start();
+	LastNotify.start();
+
+	triggerAllAccountsRegistered(m_accountManager);
+}
+
+void FirewallMessageFilter::done()
+{
+	triggerAllAccountsUnregistered(m_accountManager);
 }
 
 void FirewallMessageFilter::accountRegistered(Account account)

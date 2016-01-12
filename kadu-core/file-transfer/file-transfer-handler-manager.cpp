@@ -19,6 +19,7 @@
 
 #include "file-transfer-handler-manager.h"
 
+#include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-handler.h"
@@ -36,18 +37,27 @@ FileTransferHandlerManager::~FileTransferHandlerManager()
 {
 }
 
-void FileTransferHandlerManager::done()
+void FileTransferHandlerManager::setAccountManager(AccountManager *accountManager)
 {
-	triggerAllAccountsUnregistered();
+	m_accountManager = accountManager;
 }
 
 void FileTransferHandlerManager::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
 	m_fileTransferManager = fileTransferManager;
+}
+
+void FileTransferHandlerManager::init()
+{
 	connect(m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeAdded(FileTransfer)), this, SLOT(fileTransferAboutToBeAdded(FileTransfer)));
 	connect(m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeRemoved(FileTransfer)), this, SLOT(fileTransferRemoved(FileTransfer)));
 
-	triggerAllAccountsRegistered();
+	triggerAllAccountsRegistered(m_accountManager);
+}
+
+void FileTransferHandlerManager::done()
+{
+	triggerAllAccountsUnregistered(m_accountManager);
 }
 
 void FileTransferHandlerManager::createHandlers(Account account)

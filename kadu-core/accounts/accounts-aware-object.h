@@ -20,13 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNTS_AWARE_OBJECT
-#define ACCOUNTS_AWARE_OBJECT
-
-#include <QtCore/QList>
+#pragma once
 
 #include "aware-object.h"
 
+#include <QtCore/QList>
+
+class AccountManager;
 class Account;
 
 class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
@@ -44,11 +44,9 @@ public:
 	static void notifyAccountRegistered(Account account);
 	static void notifyAccountUnregistered(Account account);
 
-	void triggerAllAccountsAdded();
-	void triggerAllAccountsRemoved();
-	void triggerAllAccountsRegistered();
-	void triggerAllAccountsUnregistered();
+	void triggerAllAccountsAdded(AccountManager *accountManager);
+	void triggerAllAccountsRemoved(AccountManager *accountManager);
+	void triggerAllAccountsRegistered(AccountManager *accountManager);
+	void triggerAllAccountsUnregistered(AccountManager *accountManager);
 
 };
-
-#endif // ACCOUNTS_AWARE_OBJECT

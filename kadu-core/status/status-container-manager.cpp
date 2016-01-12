@@ -69,7 +69,7 @@ void StatusContainerManager::init()
 	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 		triggerAllIdentitiesAdded();
 	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-		triggerAllAccountsRegistered();
+		triggerAllAccountsRegistered(m_accountManager);
 	else
 		registerStatusContainer(m_allAccountsStatusContainer);
 
@@ -81,17 +81,13 @@ void StatusContainerManager::done()
 {
 	if (m_statusConfigurationHolder)
 	{
-		disconnect(m_statusConfigurationHolder, 0, this, 0);
-
 		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 			triggerAllIdentitiesRemoved();
 		else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-			triggerAllAccountsUnregistered();
+			triggerAllAccountsUnregistered(m_accountManager);
 		else
 			unregisterStatusContainer(m_allAccountsStatusContainer);
 	}
-
-	disconnect(m_accountManager, 0, this, 0);
 }
 
 void StatusContainerManager::updateIdentities()

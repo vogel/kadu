@@ -31,7 +31,7 @@ SqlAccountsMapping::SqlAccountsMapping(const QSqlDatabase &database, QObject *pa
 {
 	loadMappingsFromDatabase();
 
-	triggerAllAccountsAdded();
+	triggerAllAccountsAdded(Core::instance()->accountManager());
 
 	connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
 }
