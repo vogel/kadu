@@ -28,7 +28,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "contacts/model/contact-data-extractor.h"
-#include "core/core.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "talkable/talkable.h"
@@ -39,25 +38,42 @@
 BuddyListModel::BuddyListModel(QObject *parent) :
 		QAbstractItemModel(parent), Checkable(false)
 {
-	QHash<int, QByteArray> roles;
-	roles[Qt::DisplayRole] = "display";
-	roles[AvatarPathRole] = "avatar";
-	roles[StatusIconPath] = "statusIcon";
-	setRoleNames(roles);
-
-	triggerAllAccountsRegistered(Core::instance()->accountManager());
-
-	connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)),
-	        this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
 }
 
 BuddyListModel::~BuddyListModel()
 {
 	setBuddyList(BuddyList());
 
-	triggerAllAccountsUnregistered(Core::instance()->accountManager());
+	triggerAllAccountsUnregistered(m_accountManager);
+}
 
-	disconnect(Core::instance()->contactManager(), 0, this, 0);
+void BuddyListModel::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void BuddyListModel::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void BuddyListModel::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void BuddyListModel::init()
+{
+	QHash<int, QByteArray> roles;
+	roles[Qt::DisplayRole] = "display";
+	roles[AvatarPathRole] = "avatar";
+	roles[StatusIconPath] = "statusIcon";
+	setRoleNames(roles);
+
+	triggerAllAccountsRegistered(m_accountManager);
+
+	connect(m_contactManager, SIGNAL(contactUpdated(Contact)),
+	        this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
 }
 
 Buddy BuddyListModel::buddyFromVariant(const QVariant &variant) const
@@ -414,7 +430,7 @@ QVariant BuddyListModel::data(const QModelIndex &index, int role) const
 				return QVariant();
 		}
 
-		const Contact &contact = Core::instance()->buddyPreferredManager()->preferredContact(buddy);
+		const Contact &contact = m_buddyPreferredManager->preferredContact(buddy);
 
 		return TalkableRole != role && !contact.isNull()
 				? ContactDataExtractor::data(contact, role, true)

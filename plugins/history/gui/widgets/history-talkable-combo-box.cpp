@@ -23,6 +23,8 @@
 
 #include "buddies/model/buddy-list-model.h"
 #include "chat/model/chat-list-model.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "model/action-list-model.h"
 #include "model/merged-proxy-model-factory.h"
 #include "chats-buddies-splitter.h"
@@ -39,7 +41,7 @@ HistoryTalkableComboBox::HistoryTalkableComboBox(QWidget *parent) :
 	actionModel->appendAction(AllAction);
 
 	ChatsModel = new ChatListModel(this);
-	BuddiesModel = new BuddyListModel(this);
+	BuddiesModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(this);
 
 	QList<KaduAbstractModel *> models;
 	models.append(actionModel);

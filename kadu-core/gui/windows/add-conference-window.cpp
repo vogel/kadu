@@ -32,6 +32,7 @@
 #include "chat/type/chat-type-contact-set.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -105,7 +106,7 @@ void AddConferenceWindow::createGui()
 
 	ModelChain *chain = new ModelChain(this);
 
-	Model = new BuddyListModel(chain);
+	Model = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(chain);
 	new BuddyManagerAdapter(Model);
 
 	// will be removed when Qt 4.8 .is required

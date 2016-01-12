@@ -32,6 +32,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
@@ -58,7 +59,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	ModelChain *chain = new ModelChain(this)
 ;
-	BuddyListModel *buddyListModel = new BuddyListModel(chain);
+	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(chain);
 	new BuddyManagerAdapter(buddyListModel);
 	chain->setBaseModel(buddyListModel);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);

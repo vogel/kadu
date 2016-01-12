@@ -28,6 +28,7 @@
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
@@ -59,7 +60,7 @@ void MergeBuddiesDialogWidget::createGui()
 	SelectCombo = new SelectTalkableComboBox(this);
 	SelectCombo->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectCombo));
 
-	BuddyListModel *buddyListModel = new BuddyListModel(SelectCombo);
+	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(SelectCombo);
 	new BuddyManagerAdapter(buddyListModel);
 	SelectCombo->setBaseModel(buddyListModel);
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(MyBuddy, SelectCombo));

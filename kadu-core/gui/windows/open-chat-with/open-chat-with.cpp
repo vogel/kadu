@@ -44,7 +44,7 @@
 #include "configuration/configuration.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
@@ -102,7 +102,7 @@ OpenChatWith::OpenChatWith() :
 	BuddiesView = new QQuickWidget();
 
 	Chain = new ModelChain(this);
-	ListModel = new BuddyListModel(Chain);
+	ListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(Chain);
 	Chain->setBaseModel(ListModel);
 	Chain->addProxyModel(new TalkableProxyModel(Chain));
 

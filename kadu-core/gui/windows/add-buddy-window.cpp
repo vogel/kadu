@@ -51,6 +51,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/accounts-combo-box.h"
@@ -176,7 +177,7 @@ void AddBuddyWindow::createGui()
 	SelectBuddy = new SelectTalkableComboBox(this);
 	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
 
-	BuddyListModel *buddyListModel = new BuddyListModel(SelectBuddy);
+	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(SelectBuddy);
 	new BuddyManagerAdapter(buddyListModel);
 	SelectBuddy->setBaseModel(buddyListModel);
 	SelectBuddy->setEnabled(false);

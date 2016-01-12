@@ -38,7 +38,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
@@ -113,7 +113,7 @@ void SmsDialog::createGui()
 	RecipientComboBox = new SelectTalkableComboBox(this);
 	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
 
-	BuddyListModel *buddyListModel = new BuddyListModel(RecipientComboBox);
+	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(RecipientComboBox);
 	new BuddyManagerAdapter(buddyListModel);
 
 	RecipientComboBox->setBaseModel(buddyListModel);

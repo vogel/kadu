@@ -139,7 +139,7 @@ void HistoryMessagesTab::createGui()
 void HistoryMessagesTab::createModelChain()
 {
 	ChatsModel = new ChatListModel(TalkableTree);
-	BuddiesModel = new BuddyListModel(TalkableTree);
+	BuddiesModel = m_injectedFactory->makeInjected<BuddyListModel>(TalkableTree);
 
 	QList<KaduAbstractModel *> models;
 	models.append(ChatsModel);

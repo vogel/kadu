@@ -23,6 +23,7 @@
 #include "chat/model/chat-list-model.h"
 #include "chat/model/chat-manager-adapter.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 
 #include "talkable-model.h"
@@ -32,7 +33,7 @@ TalkableModel::TalkableModel(QObject *parent) :
 {
 	Chats = new ChatListModel(this);
 	new ChatManagerAdapter(Chats);
-	Buddies = new BuddyListModel(this);
+	Buddies = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(this);
 	BuddiesAdapter = new BuddyManagerAdapter(Buddies);
 
 	QList<QAbstractItemModel *> models;
