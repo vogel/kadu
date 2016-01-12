@@ -28,19 +28,33 @@
 #include "hint.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QHBoxLayout;
 class QFrame;
 
-class ChatWidget;
 class BuddyList;
+class ChatManager;
+class ChatWidgetManager;
+class ChatWidget;
+class Configuration;
 class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
 class HintOverUserConfigurationWindow;
+class NotificationManager;
+class ToolTipClassManager;
+class UnreadMessageRepository;
 
 class HintManager : public QObject, public Notifier, public AbstractToolTip, public ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<NotificationManager> m_notificationManager;
+	QPointer<ToolTipClassManager> m_toolTipClassManager;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	QPointer<QFrame> frame;
 	QPointer<QTimer> hint_timer;
@@ -66,6 +80,15 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
+
 	/**
 		min��a sekunda: aktualizuje czasy wszystkich dymk�w
 		usuwa te, kt�rym min�� czas

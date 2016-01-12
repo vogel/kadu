@@ -64,6 +64,44 @@ HintManager::HintManager(QObject *parent) :
 		hint_timer(new QTimer(this)),
 		tipFrame(0), hints()
 {
+}
+
+HintManager::~HintManager()
+{
+}
+
+void HintManager::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void HintManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void HintManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void HintManager::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
+void HintManager::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
+{
+	m_toolTipClassManager = toolTipClassManager;
+}
+
+void HintManager::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
+}
+
+void HintManager::init()
+{
 	kdebugf();
 
 	createDefaultConfiguration();
@@ -80,7 +118,7 @@ HintManager::HintManager(QObject *parent) :
 	layout->setMargin(0);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(Core::instance()->chatManager(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
+	connect(m_chatManager, SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
@@ -98,13 +136,13 @@ HintManager::HintManager(QObject *parent) :
 "</tr>"
 "</table>"
 "[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
-	if (Core::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax").isEmpty())
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
+	if (m_configuration->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax").isEmpty())
+		m_configuration->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
-	Core::instance()->notificationManager()->registerNotifier(this);
-	Core::instance()->toolTipClassManager()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
+	m_notificationManager->registerNotifier(this);
+	m_toolTipClassManager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
 	configurationUpdated();
 
@@ -113,19 +151,15 @@ HintManager::HintManager(QObject *parent) :
 	kdebugf2();
 }
 
-HintManager::~HintManager()
+void HintManager::done()
 {
 	kdebugf();
 
 	if (hint_timer)
 		hint_timer->stop();
 
-	Core::instance()->toolTipClassManager()->unregisterToolTipClass("Hints");
-
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationManager()->unregisterNotifier(this);
-	}
+	m_toolTipClassManager->unregisterToolTipClass("Hints");
+	m_notificationManager->unregisterNotifier(this);
 
 	disconnect();
 
@@ -146,12 +180,12 @@ void HintManager::hintUpdated()
 void HintManager::configurationUpdated()
 {
 	Style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
-			.arg(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
-			.arg(Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
+			.arg(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
+			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
 	frame->setStyleSheet(Style);
 
-	Opacity = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_transparency", 0);
+	Opacity = m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_transparency", 0);
 	Opacity = 1 - Opacity/100;
 
 	setHint();
@@ -168,8 +202,8 @@ void HintManager::setHint()
 		return;
 	}
 
-	int minimumWidth = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 285);
-	int maximumWidth = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500);
+	int minimumWidth = m_configuration->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 285);
+	int maximumWidth = m_configuration->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500);
 
 	minimumWidth = minimumWidth >= 285 ? minimumWidth : 285;
 	maximumWidth = maximumWidth >= 285 ? maximumWidth : 285;
@@ -186,12 +220,12 @@ void HintManager::setHint()
 	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 
 	emit searchingForTrayPosition(trayPosition);
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
+	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
 	{
-		newPosition = QPoint(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintsPositionX"), Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintsPositionY"));
+		newPosition = QPoint(m_configuration->deprecatedApi()->readNumEntry("Hints", "HintsPositionX"), m_configuration->deprecatedApi()->readNumEntry("Hints", "HintsPositionY"));
 
-//		kdebugm(KDEBUG_INFO, "%d %d %d\n", Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
-		switch(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Corner"))
+//		kdebugm(KDEBUG_INFO, "%d %d %d\n", m_configuration->deprecatedApi()->readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
+		switch(m_configuration->deprecatedApi()->readNumEntry("Hints", "Corner"))
 		{
 			case 1: // "TopRight"
 				newPosition -= QPoint(preferredSize.width(), 0);
@@ -315,18 +349,18 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.toUtf8().constData());
 
-	switch (Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", buttonName))
+	switch (m_configuration->deprecatedApi()->readNumEntry("Hints", buttonName))
 	{
 		case 1:
 			hint->acceptNotification();
 			break;
 
 		case 2:
-			if (hint->chat() && Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+			if (hint->chat() && m_configuration->deprecatedApi()->readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
 			{
-				auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(hint->chat());
+				auto unreadMessages = m_unreadMessageRepository->unreadMessagesForChat(hint->chat());
 				for (auto const &message : unreadMessages)
-					Core::instance()->unreadMessageRepository()->removeUnreadMessage(message);
+					m_unreadMessageRepository->removeUnreadMessage(message);
 			}
 
 			hint->discardNotification();
@@ -364,11 +398,11 @@ void HintManager::openChat(Hint *hint)
 	if (!hint->chat())
 		return;
 
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "OpenChatOnEveryNotification"))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Hints", "OpenChatOnEveryNotification"))
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	Core::instance()->chatWidgetManager()->openChat(hint->chat(), OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(hint->chat(), OpenChatActivation::Activate);
 
 	deleteHintAndUpdate(hint);
 
@@ -452,12 +486,12 @@ void HintManager::setLayoutDirection()
 	QPoint trayPosition;
 	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 	emit searchingForTrayPosition(trayPosition);
-	switch (Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "NewHintUnder"))
+	switch (m_configuration->deprecatedApi()->readNumEntry("Hints", "NewHintUnder"))
 	{
 		case 0:
-			if (trayPosition.isNull() || Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints","UseUserPosition"))
+			if (trayPosition.isNull() || m_configuration->deprecatedApi()->readBoolEntry("Hints","UseUserPosition"))
 			{
-				if (Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints","HintsPositionY") < desktopSize.height()/2)
+				if (m_configuration->deprecatedApi()->readNumEntry("Hints","HintsPositionY") < desktopSize.height()/2)
 					layout->setDirection(QBoxLayout::Down);
 				else
 					layout->setDirection(QBoxLayout::Up);
@@ -482,7 +516,7 @@ void HintManager::setLayoutDirection()
 
 void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable)
 {
-	auto syntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax");
+	auto syntax = m_configuration->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax");
 	// file:/// is added by parser where required
 	syntax = syntax.remove("file:///");
 
@@ -496,17 +530,17 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkab
 	text = text.remove("file://");
 #endif
 
-	tipLabel->setFont(Core::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "HintOverUser_font"));
+	tipLabel->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
 
 	tipFrame->setObjectName("tip_frame");
 	QString style = QString("QFrame#tip_frame {border-width: %1px; border-style: solid; border-color: %2;"
 				"border-radius: %3px; background-color: %4} QFrame { color: %5}")
-			.arg(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", FRAME_WIDTH))
-			.arg(Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name())
+			.arg(m_configuration->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", FRAME_WIDTH))
+			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name())
 			.arg(BORDER_RADIUS)
-			.arg(Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name())
-			.arg(Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name());
+			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name())
+			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name());
 
 	tipFrame->setStyleSheet(style);
 
@@ -539,7 +573,7 @@ void HintManager::showToolTip(const QPoint &point, Talkable talkable)
 
 	prepareOverUserHint(tipFrame, tipLabel, talkable);
 
-	double opacity = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintOverUser_transparency", 0);
+	double opacity = m_configuration->deprecatedApi()->readNumEntry("Hints", "HintOverUser_transparency", 0);
 	opacity = 1 - opacity/100;
 	tipFrame->setWindowOpacity(opacity);
 
@@ -586,31 +620,31 @@ void HintManager::createDefaultConfiguration()
 {
 	// TODO: this should be more like: if (plugins.loaded(freedesktop_notify) && this_is_first_time_we_are_loaded_or_whatever)
 #if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
 #endif
 
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Corner", 0);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
+	m_configuration->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
+	m_configuration->deprecatedApi()->addVariable("Hints", "Corner", 0);
+	m_configuration->deprecatedApi()->addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
 
 	//TODO:
 	QStringList events;
@@ -620,39 +654,39 @@ void HintManager::createDefaultConfiguration()
 		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished" << "InvalidPassword";
 	foreach (const QString &event, events)
 	{
-		Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().window().color());
-		Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().windowText().color());
-		Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_" + event + "_font", qApp->font());
-		Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "Event_" + event + "_timeout", 10);
+		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().window().color());
+		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().windowText().color());
+		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_font", qApp->font());
+		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_timeout", 10);
 	}
 
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintsPositionX", 0);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintsPositionY", 0);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "LeftButton", 1);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "RightButton", 2);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "MaximumWidth", 500);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "MiddleButton", 3);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "MinimumWidth", 285);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "MouseOverUserSyntax", QString());
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "NewHintUnder", 0);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "UseUserPosition", false);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "OpenChatOnEveryNotification", false);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "MarginSize", 2);
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionX", 0);
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionY", 0);
+	m_configuration->deprecatedApi()->addVariable("Hints", "LeftButton", 1);
+	m_configuration->deprecatedApi()->addVariable("Hints", "RightButton", 2);
+	m_configuration->deprecatedApi()->addVariable("Hints", "MaximumWidth", 500);
+	m_configuration->deprecatedApi()->addVariable("Hints", "MiddleButton", 3);
+	m_configuration->deprecatedApi()->addVariable("Hints", "MinimumWidth", 285);
+	m_configuration->deprecatedApi()->addVariable("Hints", "MouseOverUserSyntax", QString());
+	m_configuration->deprecatedApi()->addVariable("Hints", "NewHintUnder", 0);
+	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
+	m_configuration->deprecatedApi()->addVariable("Hints", "UseUserPosition", false);
+	m_configuration->deprecatedApi()->addVariable("Hints", "OpenChatOnEveryNotification", false);
+	m_configuration->deprecatedApi()->addVariable("Hints", "MarginSize", 2);
 
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "AllEvents_transparency", 0);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", 32);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "AllEvents_borderWidth", FRAME_WIDTH);
+	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_transparency", 0);
+	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", 32);
+	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_borderWidth", FRAME_WIDTH);
 
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_transparency", 0);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_iconSize", 32);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_bdcolor", qApp->palette().window().color());
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_bgcolor", qApp->palette().window().color());
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_fgcolor", qApp->palette().windowText().color());
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_font", qApp->font());
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_transparency", 0);
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_iconSize", 32);
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_bdcolor", qApp->palette().window().color());
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_bgcolor", qApp->palette().window().color());
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_fgcolor", qApp->palette().windowText().color());
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_font", qApp->font());
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
+	m_configuration->deprecatedApi()->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
 }
 
 HintManager *hint_manager = NULL;
