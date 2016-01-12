@@ -23,6 +23,7 @@
 #include <QtXmlPatterns/QXmlResultItems>
 
 #include "accounts/account-manager.h"
+#include "accounts/account-storage.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
@@ -97,7 +98,7 @@ void GaduImporter::importAccounts()
 	if (Core::instance()->accountManager()->byId("gadu", importUinString))
 		return;
 
-	Account defaultGaduGadu = Account::create("gadu");
+	Account defaultGaduGadu = Core::instance()->accountStorage()->create("gadu");
 
 	defaultGaduGadu.setId(importUinString);
 	defaultGaduGadu.setPassword(pwHash(Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Password")));

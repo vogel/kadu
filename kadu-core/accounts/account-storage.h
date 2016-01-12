@@ -17,17 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "account-module.h"
+#pragma once
 
-#include "accounts/account-manager.h"
-#include "accounts/account-storage.h"
+#include "exports.h"
 
-AccountModule::AccountModule()
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+#include <memory>
+
+class Account;
+class InjectedFactory;
+class StoragePoint;
+
+class KADUAPI AccountStorage : public QObject
 {
-	add_type<AccountManager>();
-	add_type<AccountStorage>();
-}
+	Q_OBJECT
 
-AccountModule::~AccountModule()
-{
-}
+public:
+	Q_INVOKABLE explicit AccountStorage(QObject *parent = nullptr);
+	virtual ~AccountStorage();
+
+	Account create(const QString &protocolName);
+	Account loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	Account loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+};

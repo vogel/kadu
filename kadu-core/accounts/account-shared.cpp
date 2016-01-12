@@ -44,22 +44,6 @@
 
 #include "account-shared.h"
 
-AccountShared * AccountShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	AccountShared *result = loadFromStorage(storagePoint);
-	result->loadStub();
-
-	return result;
-}
-
-AccountShared * AccountShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	auto result = Core::instance()->injectedFactory()->makeInjected<AccountShared>();
-	result->setStorage(storagePoint);
-
-	return result;
-}
-
 AccountShared::AccountShared(const QString &protocolName) :
 		QObject(), Shared(QUuid()), ProtocolName(protocolName),
 		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)), Details(0),

@@ -46,6 +46,7 @@ class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
 class AccountManager;
+class AccountStorage;
 class Actions;
 class Application;
 class AvatarManager;
@@ -251,6 +252,7 @@ public:
 	ProxyEditWindowService * proxyEditWindowService() const;
 	ToolTipClassManager * toolTipClassManager() const;
 	Myself * myself() const;
+	AccountStorage * accountStorage() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

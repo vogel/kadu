@@ -107,6 +107,8 @@ private slots:
 	void unreadMessageRemoved(const Message &message);
 
 protected:
+	virtual Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+
 	virtual void itemAboutToBeRegistered(Chat item);
 	virtual void itemRegistered(Chat item);
 	virtual void itemAboutToBeUnregisterd(Chat item);

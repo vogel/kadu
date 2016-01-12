@@ -32,6 +32,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "accounts/account-storage.h"
 #include "core/core.h"
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
@@ -175,7 +176,7 @@ void JabberAddAccountWidget::dataChanged()
 
 void JabberAddAccountWidget::apply()
 {
-	Account jabberAccount = Account::create("jabber");
+	Account jabberAccount = Core::instance()->accountStorage()->create("jabber");
 
 	jabberAccount.setId(Username->text() + '@' + Domain->currentText());
 	jabberAccount.setPassword(AccountPassword->text());

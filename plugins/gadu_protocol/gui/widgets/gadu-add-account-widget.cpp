@@ -30,6 +30,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "accounts/account-storage.h"
 #include "core/core.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
@@ -138,7 +139,7 @@ void GaduAddAccountWidget::resetGui()
 
 void GaduAddAccountWidget::apply()
 {
-	Account gaduAccount = Account::create("gadu");
+	Account gaduAccount = Core::instance()->accountStorage()->create("gadu");
 
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());

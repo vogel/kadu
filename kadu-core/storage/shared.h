@@ -252,11 +252,12 @@ class KADUAPI Shared : public UuidStorableObject, public QSharedData
 protected:
 	virtual void load();
 	virtual void store();
-	void loadStub();
 
 public:
 	explicit Shared(const QUuid &uuid);
 	virtual ~Shared();
+
+	void loadStub();
 
 	virtual void aboutToBeRemoved();
 

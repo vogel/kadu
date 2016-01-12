@@ -42,9 +42,6 @@ class KADUAPI Account : public SharedBase<AccountShared>
 	KaduSharedBaseClass(Account)
 
 public:
-	static Account create(const QString &protocolName);
-	static Account loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
-	static Account loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
 	static Account null;
 
 	Account();

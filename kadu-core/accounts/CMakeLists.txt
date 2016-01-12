@@ -5,6 +5,7 @@ set (accounts_SRCS
 	account-module.cpp
 	account-shared.cpp
 	account-status-container.cpp
+	account-storage.cpp
 	accounts-aware-object.cpp
 
 	filter/have-multilogon-filter.cpp

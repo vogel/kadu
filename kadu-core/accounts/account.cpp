@@ -45,21 +45,6 @@ KaduSharedBaseClassImpl(Account)
 
 Account Account::null;
 
-Account Account::create(const QString &protocolName)
-{
-	return Core::instance()->injectedFactory()->makeInjected<AccountShared>(protocolName);
-}
-
-Account Account::loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)
-{
-	return AccountShared::loadStubFromStorage(accountStoragePoint);
-}
-
-Account Account::loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)
-{
-	return AccountShared::loadFromStorage(accountStoragePoint);
-}
-
 Account::Account()
 {
 }

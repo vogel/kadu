@@ -21,6 +21,7 @@
  */
 
 #include "accounts/accounts-aware-object.h"
+#include "accounts/account-storage.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-api.h"
@@ -48,6 +49,11 @@ AccountManager::AccountManager(QObject *parent) :
 
 AccountManager::~AccountManager()
 {
+}
+
+void AccountManager::setAccountStorage(AccountStorage *accountStorage)
+{
+	m_accountStorage = accountStorage;
 }
 
 void AccountManager::setBuddyManager(BuddyManager *buddyManager)
@@ -85,6 +91,11 @@ void AccountManager::init()
 void AccountManager::done()
 {
 	m_configurationManager->unregisterStorableObject(this);
+}
+
+Account AccountManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return m_accountStorage->loadStubFromStorage(storagePoint);
 }
 
 void AccountManager::itemAdded(Account item)

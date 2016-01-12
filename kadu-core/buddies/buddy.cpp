@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account-storage.h"
 #include "accounts/account.h"
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
@@ -234,7 +235,7 @@ Buddy Buddy::dummy()
 	Identity identity = Identity::create();
 	identity.setName(QApplication::translate("Buddy", "Example identity"));
 
-	Account account = Account::create("");
+	Account account = Core::instance()->accountStorage()->create("");
 	account.setAccountIdentity(identity);
 
 	Contact contact = Contact::create();

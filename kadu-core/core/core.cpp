@@ -36,6 +36,7 @@
 #include <injeqt/injector.h>
 
 #include "accounts/account-manager.h"
+#include "accounts/account-storage.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-manager.h"
@@ -991,6 +992,11 @@ ToolTipClassManager * Core::toolTipClassManager() const
 Myself * Core::myself() const
 {
 	return m_injector.get<Myself>();
+}
+
+AccountStorage * Core::accountStorage() const
+{
+	return m_injector.get<AccountStorage>();
 }
 
 void Core::showMainWindow()

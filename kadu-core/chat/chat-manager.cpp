@@ -72,6 +72,11 @@ void ChatManager::done()
 	m_configurationManager->unregisterStorableObject(this);
 }
 
+Chat ChatManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return Chat::loadStubFromStorage(storagePoint);
+}
+
 void ChatManager::itemAboutToBeRegistered(Chat item)
 {
 	connect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));

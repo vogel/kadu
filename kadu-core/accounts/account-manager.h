@@ -32,6 +32,7 @@
 #include <QtCore/QUuid>
 #include <injeqt/injeqt.h>
 
+class AccountStorage;
 class BuddyManager;
 class ChatManager;
 class ConfigurationApi;
@@ -44,6 +45,7 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 {
 	Q_OBJECT
 
+	QPointer<AccountStorage> m_accountStorage;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ConfigurationManager> m_configurationManager;
@@ -51,6 +53,7 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	QPointer<Myself> m_myself;
 
 private slots:
+	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
@@ -65,6 +68,8 @@ private slots:
 	void connectionError(Account account, const QString &server, const QString &message);
 
 protected:
+	virtual Account loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+
 	virtual void itemAdded(Account item);
 	virtual void itemRemoved(Account item);
 

@@ -118,9 +118,6 @@ protected:
 	void forceEmitUpdated();
 
 public:
-	static AccountShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	static AccountShared * loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-
 	explicit AccountShared(const QString &protocolName = QString());
 	virtual ~AccountShared();
 

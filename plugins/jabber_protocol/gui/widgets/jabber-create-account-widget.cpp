@@ -32,6 +32,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "accounts/account-storage.h"
 #include "core/core.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
@@ -223,7 +224,7 @@ void JabberCreateAccountWidget::jidRegistered(const Jid &jid)
 		return;
 	}
 
-	Account jabberAccount = Account::create("jabber");
+	Account jabberAccount = Core::instance()->accountStorage()->create("jabber");
 	jabberAccount.setId(jid.bare());
 	jabberAccount.setHasPassword(true);
 	jabberAccount.setPassword(NewPassword->text());
