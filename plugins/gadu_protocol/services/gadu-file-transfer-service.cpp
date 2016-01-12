@@ -29,6 +29,7 @@
 
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
@@ -67,7 +68,7 @@ FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTra
 
 FileTransferCanSendResult GaduFileTransferService::canSend(Contact contact)
 {
-	if (Core::instance()->myself() == contact.ownerBuddy())
+	if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
 		return {false, {}};
 
 	if (!Protocol->isConnected())

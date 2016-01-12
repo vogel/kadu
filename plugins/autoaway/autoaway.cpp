@@ -30,7 +30,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
@@ -198,7 +198,7 @@ void Autoaway::configurationUpdated()
 QString Autoaway::parseDescription(const QString &parseDescription)
 {
 	if (m_parseAutoStatus)
-		return (Parser::parse(parseDescription, Talkable(Core::instance()->myself()), ParserEscape::HtmlEscape));
+		return (Parser::parse(parseDescription, Talkable(Core::instance()->myself()->buddy()), ParserEscape::HtmlEscape));
 	else
 		return parseDescription;
 }

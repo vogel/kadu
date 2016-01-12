@@ -58,6 +58,7 @@
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
+#include "myself.h"
 #include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -194,7 +195,7 @@ Core::Core(injeqt::injector &&injector) :
 		CurrentMessageHtmlRendererService{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
-		Myself(Buddy::create()), IsClosing(false),
+		IsClosing(false),
 		ShowMainWindowOnStart(true)
 {
 	// must be created first
@@ -474,9 +475,6 @@ void Core::init()
 		m_injector.get<PluginManager>()->activateProtocolPlugins();
 	}
 
-	Myself.setAnonymous(false);
-	Myself.setDisplay(configuration()->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
-
 	new Updates(this);
 
 	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
@@ -581,8 +579,6 @@ void Core::configurationUpdated()
 	bool ok;
 	int newMask = qgetenv("DEBUG_MASK").toInt(&ok);
 	debug_mask = ok ? newMask : configuration()->deprecatedApi()->readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
-
-	Myself.setDisplay(configuration()->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
 }
 
 void Core::createGui()
@@ -990,6 +986,11 @@ ProxyEditWindowService * Core::proxyEditWindowService() const
 ToolTipClassManager * Core::toolTipClassManager() const
 {
 	return m_injector.get<ToolTipClassManager>();
+}
+
+Myself * Core::myself() const
+{
+	return m_injector.get<Myself>();
 }
 
 void Core::showMainWindow()

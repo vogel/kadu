@@ -49,6 +49,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory.h"
 #include "gui/widgets/buddy-configuration-widget-group-boxes-adapter.h"
@@ -75,7 +76,7 @@ BuddyDataWindow::BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *budd
 		QWidget(0, Qt::Dialog), MyBuddyConfigurationWidgetFactoryRepository(buddyConfigurationWidgetFactoryRepository), MyBuddy(buddy),
 		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
-	Q_ASSERT(MyBuddy != Core::instance()->myself());
+	Q_ASSERT(MyBuddy != Core::instance()->myself()->buddy());
 
 	kdebugf();
 

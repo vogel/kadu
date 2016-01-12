@@ -34,7 +34,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "gui/widgets/kadu-text-edit.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -282,7 +282,7 @@ void StatusWindow::applyStatus()
 	Core::instance()->descriptionManager()->addDescription(description);
 
 	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
-		description = Parser::parse(description, Talkable(Core::instance()->myself()), ParserEscape::NoEscape);
+		description = Parser::parse(description, Talkable(Core::instance()->myself()->buddy()), ParserEscape::NoEscape);
 
 	for (auto &&container : Container->subStatusContainers())
 	{

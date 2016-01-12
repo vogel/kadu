@@ -23,6 +23,7 @@
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat/chat-details-contact.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
@@ -79,7 +80,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	details->setContact(Core::instance()->buddyPreferredManager()->preferredContact(example));
 
 	auto buddy = Buddy::create();
-	buddy.setDisplay(Core::instance()->myself().display());
+	buddy.setDisplay(Core::instance()->myself()->buddy().display());
 	auto contact = Contact::create();
 	contact.setId("id@network");
 	contact.setOwnerBuddy(buddy);

@@ -5,6 +5,7 @@ set (core_SRCS
 	crash-aware-object.cpp
 	injected-factory.cpp
 	injector-provider.cpp
+	myself.cpp
 )
 
 set (core_MOC_SRCS

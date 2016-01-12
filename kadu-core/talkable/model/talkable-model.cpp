@@ -23,6 +23,7 @@
 #include "chat/model/chat-list-model.h"
 #include "chat/model/chat-manager-adapter.h"
 #include "core/core.h"
+#include "core/myself.h"
 
 #include "talkable-model.h"
 
@@ -51,9 +52,9 @@ void TalkableModel::setIncludeMyself(bool includeMyself)
 
 	IncludeMyself = includeMyself;
 	if (IncludeMyself)
-		Buddies->addBuddy(Core::instance()->myself());
+		Buddies->addBuddy(Core::instance()->myself()->buddy());
 	else
-		Buddies->removeBuddy(Core::instance()->myself());
+		Buddies->removeBuddy(Core::instance()->myself()->buddy());
 }
 
 bool TalkableModel::includeMyself() const

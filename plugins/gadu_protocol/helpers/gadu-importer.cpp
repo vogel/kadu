@@ -32,7 +32,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "identities/identity-manager.h"
 #include "misc/misc.h"
 #include "network/proxy/network-proxy-manager.h"
@@ -132,7 +132,7 @@ void GaduImporter::importAccounts()
 	}
 
 	Core::instance()->accountManager()->addItem(defaultGaduGadu);
-	defaultGaduGadu.accountContact().setOwnerBuddy(Core::instance()->myself());
+	defaultGaduGadu.accountContact().setOwnerBuddy(Core::instance()->myself()->buddy());
 
 	markImported();
 }

@@ -26,6 +26,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/myself.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/windows/buddy-delete-window.h"
@@ -104,7 +105,7 @@ void DeleteTalkableAction::updateBuddyActionState(Action *action)
 	setBuddyActionTitleAndIcon(action);
 
 	const BuddySet &buddies = action->context()->buddies();
-	if (buddies.isEmpty() || buddies.contains(Core::instance()->myself()))
+	if (buddies.isEmpty() || buddies.contains(Core::instance()->myself()->buddy()))
 		return;
 
 	action->setEnabled(true);

@@ -41,6 +41,7 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/myself.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
@@ -156,7 +157,7 @@ void disableIfContactSelected(Action *action)
 
 	action->setEnabled(!action->context()->roles().contains(ContactRole) && !action->context()->buddies().isEmpty());
 
-	if (action->context()->buddies().contains(Core::instance()->myself()))
+	if (action->context()->buddies().contains(Core::instance()->myself()->buddy()))
 		action->setEnabled(false);
 	else
 		action->setEnabled(true);
@@ -170,7 +171,7 @@ void disableMerge(Action *action)
 		return;
 	}
 
-	if (action->context()->buddies().contains(Core::instance()->myself()))
+	if (action->context()->buddies().contains(Core::instance()->myself()->buddy()))
 		action->setEnabled(false);
 	else
 		action->setEnabled(true);

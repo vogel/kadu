@@ -18,6 +18,7 @@
  */
 
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/windows/buddy-data-window.h"
 
 #include "buddy-data-window-repository.h"
@@ -37,7 +38,7 @@ BuddyDataWindow * BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
 	if (Windows.contains(buddy))
 		return Windows.value(buddy);
 
-	if (buddy == Core::instance()->myself())
+	if (buddy == Core::instance()->myself()->buddy())
 		return 0;
 
 	BuddyDataWindow *result = new BuddyDataWindow(Core::instance()->buddyConfigurationWidgetFactoryRepository(), buddy);

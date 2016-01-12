@@ -24,7 +24,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -90,7 +90,7 @@ void SendFileAction::updateActionState(Action *action)
 
 	for (auto &contact : contacts)
 	{
-		if (Core::instance()->myself() == contact.ownerBuddy())
+		if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
 			return;
 
 		auto account = contact.contactAccount();

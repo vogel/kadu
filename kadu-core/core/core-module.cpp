@@ -24,6 +24,7 @@
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
+#include "core/myself.h"
 #include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
@@ -58,6 +59,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<ImageStorageService>();
 	add_type<InjectedFactory>();
 	add_type<InjectorProvider>();
+	add_type<Myself>();
 	add_ready_object<PathsProvider>(m_pathsProvider.get());
 	add_type<ProtocolsManager>();
 	add_type<RawMessageTransformerService>();

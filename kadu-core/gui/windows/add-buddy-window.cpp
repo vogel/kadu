@@ -51,6 +51,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
@@ -180,7 +181,7 @@ void AddBuddyWindow::createGui()
 	SelectBuddy->setBaseModel(buddyListModel);
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
-	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself(), SelectBuddy));
+	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself()->buddy(), SelectBuddy));
 	Layout->addRow(tr("Merge with:"), SelectBuddy);
 
 	MergeWidgets.append(SelectBuddy);

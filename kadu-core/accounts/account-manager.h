@@ -37,6 +37,7 @@ class ChatManager;
 class ConfigurationApi;
 class ConfigurationManager;
 class ContactManager;
+class Myself;
 class Status;
 
 class KADUAPI AccountManager : public QObject, public Manager<Account>
@@ -47,12 +48,14 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<Myself> m_myself;
 
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

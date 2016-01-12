@@ -24,6 +24,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/windows/add-buddy-window.h"
@@ -121,7 +122,7 @@ void EditTalkableAction::updateBuddyActionState(Action *action)
 	if (!buddy)
 		return;
 
-	if (buddy == Core::instance()->myself())
+	if (buddy == Core::instance()->myself()->buddy())
 		return;
 
 	action->setEnabled(true);

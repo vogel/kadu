@@ -44,6 +44,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/account-edit-widget.h"
@@ -412,7 +413,7 @@ void YourAccounts::accountCreated(Account account)
 		return;
 
 	Core::instance()->accountManager()->addItem(account);
-	account.accountContact().setOwnerBuddy(Core::instance()->myself());
+	account.accountContact().setOwnerBuddy(Core::instance()->myself()->buddy());
 
 	Core::instance()->configurationManager()->flush();
 	selectAccount(account);

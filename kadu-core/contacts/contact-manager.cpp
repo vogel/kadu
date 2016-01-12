@@ -30,7 +30,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-parser-tags.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
 #include "protocols/protocol-factory.h"
@@ -120,7 +120,7 @@ void ContactManager::itemAdded(Contact item)
 
 	emit contactAdded(item);
 
-	if (Core::instance()->myself() == item.ownerBuddy())
+	if (Core::instance()->myself()->buddy() == item.ownerBuddy())
 		item.rosterEntry()->setSynchronized();
 }
 

@@ -39,7 +39,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
@@ -74,7 +74,7 @@ void disableNonHistoryContacts(Action *action)
 
 	foreach (const Contact &contact, contacts)
 	{
-		if (Core::instance()->myself() == contact.ownerBuddy())
+		if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
 			return;
 
 		Account account = contact.contactAccount();

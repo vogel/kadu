@@ -27,6 +27,7 @@
 #include "jid.h"
 
 #include "core/core.h"
+#include "core/myself.h"
 #include "contacts/contact-manager.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
@@ -76,7 +77,7 @@ FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileT
 
 FileTransferCanSendResult JabberFileTransferService::canSend(Contact contact)
 {
-	if (Core::instance()->myself() == contact.ownerBuddy())
+	if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
 		return {false, {}};
 
 	return {true, {}};

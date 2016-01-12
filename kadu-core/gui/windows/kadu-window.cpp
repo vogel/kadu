@@ -48,6 +48,7 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/myself.h"
 #include "gui/actions/action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
@@ -284,7 +285,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 		return;
 
 	auto chat = talkable.toChat();
-	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()))
+	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()->buddy()))
 	{
 		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 		return;

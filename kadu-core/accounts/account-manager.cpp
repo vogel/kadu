@@ -28,7 +28,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "gui/widgets/dialog/password-dialog-widget.h"
 #include "gui/windows/kadu-dialog.h"
 #include "identities/identity.h"
@@ -68,6 +68,11 @@ void AccountManager::setConfigurationManager(ConfigurationManager *configuration
 void AccountManager::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void AccountManager::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void AccountManager::init()
@@ -274,7 +279,7 @@ void AccountManager::loaded()
 	Manager<Account>::loaded();
 
 	foreach (const Account &account, allItems())
-		account.accountContact().setOwnerBuddy(Core::instance()->myself());
+		account.accountContact().setOwnerBuddy(m_myself->buddy());
 }
 
 #include "moc_account-manager.cpp"

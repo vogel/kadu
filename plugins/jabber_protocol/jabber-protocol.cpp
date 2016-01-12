@@ -93,11 +93,11 @@ void JabberProtocol::setInjectedFactory(InjectedFactory *injectedFactory)
 
 void JabberProtocol::init()
 {
-	auto details = dynamic_cast<JabberAccountDetails *>(account.details());
+	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
 	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
 
 	// TODO: remove after 01.05.2015
-	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
+	if (account().id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
 	m_presenceService = new JabberPresenceService{this};
@@ -128,23 +128,23 @@ void JabberProtocol::init()
 
 	m_resourceService = new JabberResourceService{this};
 
-	m_roomChatService = m_injectedFactory->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account, this);
+	m_roomChatService = m_injectedFactory->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
 
-	auto chatStateService = new JabberChatStateService{m_client, account, this};
+	auto chatStateService = new JabberChatStateService{m_client, account(), this};
 	chatStateService->setResourceService(m_resourceService);
 
-	m_avatarService = m_injectedFactory->makeInjected<JabberAvatarService>(m_client, account, this);
+	m_avatarService = m_injectedFactory->makeInjected<JabberAvatarService>(m_client, account(), this);
 
-	auto chatService = m_injectedFactory->makeInjected<JJabberChatService>(m_client, account, this);
+	auto chatService = m_injectedFactory->makeInjected<JabberChatService>(m_client, account(), this);
 	chatService->setChatStateService(chatStateService);
 	chatService->setResourceService(m_resourceService);
 	chatService->setRoomChatService(m_roomChatService);
 
-	m_contactPersonalInfoService = new JabberContactPersonalInfoService{account, this};
-	m_personalInfoService = new JabberPersonalInfoService{account, this};
+	m_contactPersonalInfoService = new JabberContactPersonalInfoService{account(), this};
+	m_personalInfoService = new JabberPersonalInfoService{account(), this};
 	m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
-	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account, this};
+	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account(), this};
 	m_fileTransferService->setResourceService(m_resourceService);
 
 	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
@@ -153,7 +153,7 @@ void JabberProtocol::init()
 	m_contactPersonalInfoService->setVCardService(m_vcardService);
 	m_personalInfoService->setVCardService(m_vcardService);
 
-	auto contacts = m_contactManager->contacts(account, ContactManager::ExcludeAnonymous);
+	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
 	auto rosterService = new JabberRosterService{&m_client->rosterManager(), m_rosterExtension.get(), contacts, this};
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));

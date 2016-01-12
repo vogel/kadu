@@ -28,6 +28,7 @@
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
@@ -62,7 +63,7 @@ void MergeBuddiesDialogWidget::createGui()
 	new BuddyManagerAdapter(buddyListModel);
 	SelectCombo->setBaseModel(buddyListModel);
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(MyBuddy, SelectCombo));
-	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself(), SelectCombo));
+	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself()->buddy(), SelectCombo));
 	connect(SelectCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(selectedBuddyChanged()));
 	formLayout->addRow(selectLabel, SelectCombo);
 

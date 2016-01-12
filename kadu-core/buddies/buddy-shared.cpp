@@ -35,6 +35,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "misc/change-notifier.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
@@ -540,7 +541,7 @@ quint16 BuddyShared::unreadMessagesCount()
 std::shared_ptr<StoragePoint> BuddyShared::createStoragePoint()
 {
 	// TODO: fix this, it is only a workaround for an empty buddy on list
-	if (Core::instance()->myself() == Buddy(this))
+	if (Core::instance()->myself()->buddy() == Buddy(this))
 		return {};
 	else
 		return Shared::createStoragePoint();

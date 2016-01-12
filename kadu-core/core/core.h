@@ -85,6 +85,7 @@ class Message;
 class MessageHtmlRendererService;
 class MessageManager;
 class MessageTransformerService;
+class Myself;
 class NetworkManager;
 class NetworkProxyManager;
 class NotificationCallbackRepository;
@@ -136,8 +137,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	KaduWindow *Window;
 
-	Buddy Myself;
-
 	bool IsClosing;
 	bool ShowMainWindowOnStart; // TODO: 0.11.0, it is a hack
 
@@ -171,7 +170,6 @@ public:
 	static QString nameWithVersion();
 
 	bool isClosing() { return IsClosing; }
-	Buddy myself() { return Myself; }
 
 	void createGui();
 	void runServices();
@@ -252,6 +250,7 @@ public:
 	SearchWindowActions * searchWindowActions() const;
 	ProxyEditWindowService * proxyEditWindowService() const;
 	ToolTipClassManager * toolTipClassManager() const;
+	Myself * myself() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

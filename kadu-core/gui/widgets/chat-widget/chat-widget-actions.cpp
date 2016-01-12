@@ -28,7 +28,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -97,7 +97,7 @@ static void checkBlocking(Action *action)
 {
 	BuddySet buddies = action->context()->buddies();
 
-	if (!buddies.count() || buddies.contains(Core::instance()->myself()))
+	if (!buddies.count() || buddies.contains(Core::instance()->myself()->buddy()))
 	{
 		action->setEnabled(false);
 		return;

@@ -26,6 +26,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/windows/your-accounts.h"
@@ -116,7 +117,7 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 	}
 
 	Core::instance()->accountManager()->addItem(account);
-	account.accountContact().setOwnerBuddy(Core::instance()->myself());
+	account.accountContact().setOwnerBuddy(Core::instance()->myself()->buddy());
 
 	AccountSuccessfullyCreated = true;
 

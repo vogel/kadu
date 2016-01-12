@@ -28,7 +28,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/myself.h"
 #include "languages-manager.h"
 
 #include "config-wizard-profile-page.h"
@@ -88,7 +88,8 @@ void ConfigWizardProfilePage::acceptPage()
 	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
 	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
 
-	Core::instance()->myself().setDisplay(NickNameEdit->text());
+	// TODO: check if needed
+	Core::instance()->myself()->buddy().setDisplay(NickNameEdit->text());
 }
 
 #include "moc_config-wizard-profile-page.cpp"

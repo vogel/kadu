@@ -27,6 +27,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/myself.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "roster/roster-entry-state.h"
@@ -205,7 +206,7 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::replaceRoster(Account acco
 {
 	QList<Contact> unImportedContacts = Core::instance()->contactManager()->contacts(account).toList();
 
-	for (auto &&myselfContact : Core::instance()->myself().contacts(account))
+	for (auto &&myselfContact : Core::instance()->myself()->buddy().contacts(account))
 		unImportedContacts.removeAll(myselfContact);
 
 	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS
