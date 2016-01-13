@@ -183,7 +183,6 @@ public:
 	BuddyManager * buddyManager() const;
 	MessageManager * messageManager() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
-	MessageTransformerService * messageTransformerService() const;
 	NotificationCallbackRepository * notificationCallbackRepository() const;
 	NotificationEventRepository * notificationEventRepository() const;
 	NotificationManager * notificationManager() const;
