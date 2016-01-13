@@ -66,7 +66,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	setPage(ProfilePage, new ConfigWizardProfilePage(this));
 	setPage(ChooseNetworkPage, new ConfigWizardChooseNetworkPage(this));
 	setPage(SetUpAccountPage, Core::instance()->injectedFactory()->makeInjected<ConfigWizardSetUpAccountPage>(this));
-	setPage(CompletedPage, new ConfigWizardCompletedPage(this));
+	setPage(CompletedPage, Core::instance()->injectedFactory()->makeInjected<ConfigWizardCompletedPage>(this));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
 	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));

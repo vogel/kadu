@@ -18,15 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config-wizard-completed-page.h"
+
+#include "accounts/account-manager.h"
+#include "gui/windows/your-accounts-window-service.h"
+
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
-
-#include "accounts/account-manager.h"
-#include "core/core.h"
-#include "gui/windows/your-accounts-window-service.h"
-
-#include "config-wizard-completed-page.h"
 
 ConfigWizardCompletedPage::ConfigWizardCompletedPage(QWidget *parent) :
 		ConfigWizardPage(parent)
@@ -40,6 +39,16 @@ ConfigWizardCompletedPage::~ConfigWizardCompletedPage()
 {
 }
 
+void ConfigWizardCompletedPage::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void ConfigWizardCompletedPage::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
+{
+	m_yourAccountsWindowService = yourAccountsWindowService;
+}
+
 void ConfigWizardCompletedPage::createGui()
 {
 	formLayout()->addRow(new QLabel(tr("<h3>Configuration Wizard Completed</h3>"), this));
@@ -51,13 +60,13 @@ void ConfigWizardCompletedPage::createGui()
 
 void ConfigWizardCompletedPage::initializePage()
 {
-	ConfigureAccouuntsCheckBox->setChecked(Core::instance()->accountManager()->items().isEmpty());
+	ConfigureAccouuntsCheckBox->setChecked(m_accountManager->items().isEmpty());
 }
 
 void ConfigWizardCompletedPage::acceptPage()
 {
     if (ConfigureAccouuntsCheckBox->isChecked())
-		Core::instance()->yourAccountsWindowService()->show();
+		m_yourAccountsWindowService->show();
 }
 
 #include "moc_config-wizard-completed-page.cpp"

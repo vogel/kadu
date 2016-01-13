@@ -17,10 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_COMPLETED_PAGE_H
-#define CONFIG_WIZARD_COMPLETED_PAGE_H
+#pragma once
 
 #include "gui/widgets/config-wizard-page.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class YourAccountsWindowService;
 
 class QCheckBox;
 
@@ -28,17 +33,23 @@ class ConfigWizardCompletedPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
-	QCheckBox *ConfigureAccouuntsCheckBox;
-
-	void createGui();
-
 public:
-	explicit ConfigWizardCompletedPage(QWidget *parent = 0);
+	explicit ConfigWizardCompletedPage(QWidget *parent = nullptr);
 	virtual ~ConfigWizardCompletedPage();
 
     virtual void initializePage();
 	virtual void acceptPage();
 
-};
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
-#endif // CONFIG_WIZARD_COMPLETED_PAGE_H
+	QCheckBox *ConfigureAccouuntsCheckBox;
+
+	void createGui();
+
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
+
+};
