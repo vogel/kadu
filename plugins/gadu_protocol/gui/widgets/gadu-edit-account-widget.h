@@ -23,6 +23,18 @@
 #include "gui/widgets/account-edit-widget.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class ConfigurationManager;
+class Configuration;
+class ContactManager;
+class GaduAccountDetails;
+class GaduPersonalInfoWidget;
+class GaduServersManager;
+class IdentitiesComboBox;
+class IdentityManager;
+class ProxyComboBox;
 
 class QCheckBox;
 class QComboBox;
@@ -31,17 +43,25 @@ class QSpinBox;
 class QTabWidget;
 class QVBoxLayout;
 
-class GaduAccountDetails;
-class GaduPersonalInfoWidget;
-class GaduServersManager;
-class IdentitiesComboBox;
-class ProxyComboBox;
-
 class GaduEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
 
+public:
+	explicit GaduEditAccountWidget(GaduServersManager *gaduServersManager, AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
+	virtual ~GaduEditAccountWidget();
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
+
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduServersManager> m_gaduServersManager;
+	QPointer<IdentityManager> m_identityManager;
 
 	GaduAccountDetails *Details;
 
@@ -82,19 +102,18 @@ class GaduEditAccountWidget : public AccountEditWidget
 	void loadAccountData();
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_INIT void init();
+
 	virtual void removeAccount();
 	void dataChanged();
 	void remindUin();
 	void remindPassword();
 	void showStatusToEveryoneToggled(bool toggled);
 	void stateChangedSlot(ConfigurationValueState state);
-
-public:
-	explicit GaduEditAccountWidget(GaduServersManager *gaduServersManager, AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
-	virtual ~GaduEditAccountWidget();
-
-public slots:
-	virtual void apply();
-	virtual void cancel();
 
 };

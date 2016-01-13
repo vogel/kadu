@@ -19,6 +19,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gadu-edit-account-widget.h"
+
+#include "gadu-account-details.h"
+#include "gadu-id-validator.h"
+#include "gadu-personal-info-widget.h"
+
+#include "accounts/account-manager.h"
+#include "accounts/account.h"
+#include "configuration/configuration-manager.h"
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "contacts/contact-manager.h"
+#include "gui/widgets/account-avatar-widget.h"
+#include "gui/widgets/account-buddy-list-widget.h"
+#include "gui/widgets/account-configuration-widget-tab-adapter.h"
+#include "gui/widgets/identities-combo-box.h"
+#include "gui/widgets/proxy-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
+#include "identities/identity-manager.h"
+#include "os/generic/url-opener.h"
+#include "protocols/protocol.h"
+#include "protocols/services/avatar-service.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
@@ -33,47 +58,48 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "configuration/configuration-manager.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact-manager.h"
-#include "core/core.h"
-#include "core/core.h"
-#include "gui/widgets/account-avatar-widget.h"
-#include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/widgets/account-configuration-widget-tab-adapter.h"
-#include "gui/widgets/identities-combo-box.h"
-#include "gui/widgets/proxy-combo-box.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "identities/identity-manager.h"
-#include "os/generic/url-opener.h"
-#include "protocols/protocol.h"
-#include "protocols/services/avatar-service.h"
-
-#include "gadu-account-details.h"
-#include "gadu-id-validator.h"
-
-#include "gadu-personal-info-widget.h"
-
-#include "gadu-edit-account-widget.h"
-
 GaduEditAccountWidget::GaduEditAccountWidget(GaduServersManager *gaduServersManager, AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
 		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent),
 		m_gaduServersManager{gaduServersManager}
 {
-	Details = dynamic_cast<GaduAccountDetails *>(account.details());
-
-	createGui();
-	loadAccountData();
-	stateChangedSlot(stateNotifier()->state());
 }
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
 {
+}
+
+void GaduEditAccountWidget::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void GaduEditAccountWidget::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
+void GaduEditAccountWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void GaduEditAccountWidget::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void GaduEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void GaduEditAccountWidget::init()
+{
+	Details = dynamic_cast<GaduAccountDetails *>(account().details());
+
+	createGui();
+	loadAccountData();
+	stateChangedSlot(stateNotifier()->state());
 }
 
 void GaduEditAccountWidget::createGui()
@@ -331,15 +357,15 @@ void GaduEditAccountWidget::apply()
 		Details->setReceiveSpam(!ReceiveSpam->isChecked());
 	}
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
+	m_configuration->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
+	m_configuration->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
 	m_gaduServersManager->buildServerList();
 
 	if (gpiw->isModified())
 		gpiw->apply();
 
-	Core::instance()->identityManager()->removeUnused();
-	Core::instance()->configurationManager()->flush();
+	m_identityManager->removeUnused();
+	m_configurationManager->flush();
 
 	simpleStateNotifier()->setState(StateNotChanged);
 
@@ -355,7 +381,7 @@ void GaduEditAccountWidget::cancel()
 	loadAccountData();
 	gpiw->cancel();
 
-	Core::instance()->identityManager()->removeUnused();
+	m_identityManager->removeUnused();
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }
@@ -375,8 +401,8 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& Details->chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
 
-		&& Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
-		&& Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
+		&& m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
+		&& m_configuration->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& Details->receiveSpam() != ReceiveSpam->isChecked()
@@ -386,8 +412,8 @@ void GaduEditAccountWidget::dataChanged()
 		return;
 	}
 
-	bool sameIdExists = Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text())
-			&& Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text()) != account();
+	bool sameIdExists = m_accountManager->byId(account().protocolName(), AccountId->text())
+			&& m_accountManager->byId(account().protocolName(), AccountId->text()) != account();
 
 	if (AccountId->text().isEmpty() || sameIdExists || StateChangedDataInvalid == widgetsState)
 		simpleStateNotifier()->setState(StateChangedDataInvalid);
@@ -419,8 +445,8 @@ void GaduEditAccountWidget::loadAccountData()
 		ReceiveSpam->setChecked(!details->receiveSpam());
 	}
 
-	useDefaultServers->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
-	ipAddresses->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
+	useDefaultServers->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
+	ipAddresses->setText(m_configuration->deprecatedApi()->readEntry("Network", "Server"));
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }
@@ -438,7 +464,7 @@ void GaduEditAccountWidget::removeAccount()
 
 	if (decision == QMessageBox::Yes)
 	{
-		Core::instance()->accountManager()->removeAccountAndBuddies(account());
+		m_accountManager->removeAccountAndBuddies(account());
 		deleteLater();
 	}
 }
@@ -460,7 +486,7 @@ void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
 
 	int count = 0;
 
-	const QVector<Contact> &contacts = Core::instance()->contactManager()->contacts(account());
+	const QVector<Contact> &contacts = m_contactManager->contacts(account());
 	foreach (const Contact &contact, contacts)
 		if (!contact.isAnonymous() && contact.ownerBuddy().isOfflineTo())
 			count++;
